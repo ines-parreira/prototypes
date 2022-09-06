@@ -8,6 +8,7 @@ export const user: User = {
             data: {
                 show_macros: true,
                 macros_default_to_search_popover: true,
+                prefill_best_macro: true,
                 available: true,
                 hide_tips: true,
                 forward_calls: false,

@@ -1453,6 +1453,7 @@ export const DEFAULT_ACTIONS = ACTION_TEMPLATES.map<string>(
 export const DEFAULT_PREFERENCES = {
     show_macros: false,
     available: true,
+    prefill_best_macro: true,
 }
 
 /**

@@ -125,6 +125,26 @@ describe('responseUtils', () => {
             expect(newContext.forceUpdate).toBe(true)
             expect(newContext.forceFocus).toBe(true)
         })
+
+        it('should apply macro and extend existing state', () => {
+            const existingState = ContentState.createFromText(
+                'this is existing text'
+            )
+            const context: MessageContext = {
+                ...applyMacroContext,
+                contentState: existingState,
+                state: newMessageInitialState.setIn(
+                    ['newMessage', 'source', 'type'],
+                    TicketMessageSourceType.Aircall
+                ),
+            }
+            const newContext = applyMacro(context)
+
+            const expectedValue = `this is existing text\nHello, check this out\n\n \n\nshould be good now`
+            expect(newContext.contentState.getPlainText()).toBe(expectedValue)
+            expect(newContext.forceUpdate).toBe(true)
+            expect(newContext.forceFocus).toBe(true)
+        })
     })
 
     describe('addCache', () => {
@@ -370,6 +390,22 @@ describe('responseUtils', () => {
                 selectionState,
                 sourceType,
                 emailExtraAdded,
+            })
+        })
+
+        it('should keep top rank macro state in the cache if not empty', () => {
+            const topRankMacroState = {macroId: 10, state: 'pending' as const}
+            const context: MessageContext = {
+                ...updateCacheContext,
+                contentState: ContentState.createFromText(''),
+                topRankMacroState,
+            }
+            const {
+                action: {ticketId},
+            } = context
+            updateCache(context)
+            expect(ticketReplyCacheSetSpy).toHaveBeenLastCalledWith(ticketId, {
+                topRankMacroState,
             })
         })
     })

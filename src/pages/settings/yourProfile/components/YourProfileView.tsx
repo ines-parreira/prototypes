@@ -1,4 +1,4 @@
-import React, {Component, SyntheticEvent} from 'react'
+import React, {Component, SyntheticEvent, ComponentClass} from 'react'
 import classnames from 'classnames'
 import _merge from 'lodash/merge'
 import _pick from 'lodash/pick'
@@ -8,6 +8,9 @@ import {Container, Form, FormGroup, FormText, Label} from 'reactstrap'
 import {Link} from 'react-router-dom'
 import {Map} from 'immutable'
 
+import {withLDConsumer} from 'launchdarkly-react-client-sdk'
+import {LDFlagSet} from 'launchdarkly-js-client-sdk'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {CallForwardingCountries} from 'business/twilio'
 import {AVAILABLE_LANGUAGES} from 'config'
 import {EditableUserProfile, User, UserSetting} from 'config/types/user'
@@ -20,6 +23,8 @@ import InputField from 'pages/common/forms/input/InputField'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
+import Tooltip from 'pages/common/components/Tooltip'
+import Group from 'pages/common/components/layout/Group'
 import settingsCss from 'pages/settings/settings.less'
 
 const defaultContent: Pick<
@@ -42,6 +47,7 @@ type Props = {
         notification: boolean
     ) => Promise<unknown>
     preferences: Map<any, any>
+    flags: LDFlagSet
 }
 
 type State = {
@@ -57,7 +63,7 @@ type State = {
     timezone: string
 }
 
-export default class YourProfileView extends Component<Props, State> {
+export class YourProfileView extends Component<Props, State> {
     isInitialized: boolean
 
     constructor(props: Props) {
@@ -154,6 +160,10 @@ export default class YourProfileView extends Component<Props, State> {
 
     render() {
         const {isLoading, hasChangedEmail, password_confirmation} = this.state
+
+        const {flags} = this.props
+        const isPrefillBestMacroEnabled: boolean | undefined =
+            flags[FeatureFlagKey.PrefillBestMacro]
 
         return (
             <div className="full-width">
@@ -365,6 +375,45 @@ export default class YourProfileView extends Component<Props, State> {
                                     'body-regular'
                                 )}
                             >
+                                {isPrefillBestMacroEnabled && (
+                                    <Group className={'align-items-baseline'}>
+                                        <CheckBox
+                                            className="mb-2 pr-1"
+                                            name="prefill_best_macro"
+                                            isChecked={
+                                                this.state.preferences.get(
+                                                    'prefill_best_macro'
+                                                ) as boolean
+                                            }
+                                            onChange={(value: boolean) =>
+                                                this.setState({
+                                                    preferences:
+                                                        this.state.preferences.set(
+                                                            'prefill_best_macro',
+                                                            value
+                                                        ),
+                                                })
+                                            }
+                                        >
+                                            Auto-fill macros with high success
+                                            rate
+                                        </CheckBox>
+                                        <i
+                                            id="autofill-tooltip"
+                                            className="material-icons md-1 mr-1"
+                                        >
+                                            info
+                                        </i>
+                                        <Tooltip
+                                            target="autofill-tooltip"
+                                            placement="top-start"
+                                        >
+                                            Whenever a macro responds a question
+                                            accurately, it’s going to be
+                                            pre-filled.
+                                        </Tooltip>
+                                    </Group>
+                                )}
                                 <CheckBox
                                     className="mb-2"
                                     name="show_macros"
@@ -486,3 +535,7 @@ export default class YourProfileView extends Component<Props, State> {
         )
     }
 }
+
+export default withLDConsumer()(
+    YourProfileView as any as ComponentClass<Omit<Props, 'flags'>>
+)

@@ -31,6 +31,7 @@ import * as viewsSelectors from 'state/views/selectors'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {isCurrentlyOnTicket, isTabActive} from 'utils'
 import {getLDClient} from 'utils/launchDarkly'
+import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'
 
 import {
     Action,
@@ -610,13 +611,37 @@ export const applyMacroAction =
     }
 
 export const applyMacro =
-    (macro: Macro, ticketId: number, shouldUpdateNewMessage = true) =>
+    (
+        macro: Macro,
+        ticketId: number,
+        shouldUpdateNewMessage = true,
+        topRankMacroState?: TopRankMacroState
+    ) =>
     (
         dispatch: StoreDispatch,
         getState: () => RootState
     ): Promise<ReturnType<StoreDispatch>> => {
         // render macro action arguments
         const state = getState()
+
+        const prevTopRankMacroState = state.ticket.getIn([
+            'state',
+            'topRankMacroState',
+        ]) as Map<any, any> | undefined
+
+        if (
+            !topRankMacroState &&
+            prevTopRankMacroState?.get('state') === 'pending'
+        ) {
+            dispatch({
+                type: newMessageTypes.NEW_MESSAGE_RESET_CONTENT_STATE,
+                ticketId,
+            })
+            dispatch({
+                type: types.CLEAR_APPLIED_MACRO,
+                ticketId,
+            })
+        }
 
         const renderedMacro = macro.update('actions', (actions: List<any>) => {
             return actions.map((action: Map<any, any>) => {
@@ -654,6 +679,14 @@ export const applyMacro =
             dispatch({
                 type: newMessageTypes.NEW_MESSAGE_RECORD_MACRO,
                 macro,
+            })
+        }
+
+        if (topRankMacroState) {
+            dispatch({
+                type: types.SET_TOP_RANK_MACRO_STATE,
+                ticketId,
+                topRankMacroState,
             })
         }
 

@@ -10,6 +10,7 @@ import {
 } from 'models/integration/types'
 import {PaginationMeta, OrderDirection} from 'models/api/types'
 
+import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'
 import {BillingContact, Subscription} from './billing/types'
 import {AccountSetting} from './currentAccount/types'
 import {MacrosAction} from './entities/macros/types'
@@ -110,6 +111,7 @@ export type GorgiasAction = {
     args?: Map<any, any>
     index?: number
     macro?: Map<any, any>
+    topRankMacroState?: TopRankMacroState | null
     messages?: Message[]
     resetMessage?: boolean
     sourceType?: TicketMessageSourceType

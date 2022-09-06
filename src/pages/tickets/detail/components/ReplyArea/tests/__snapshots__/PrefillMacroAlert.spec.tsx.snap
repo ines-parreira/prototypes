@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PrefillMacroAlert /> should render alert 1`] = `
+<body>
+  <div>
+    <div
+      class="component"
+    >
+      <div
+        class="alert info alert"
+      >
+        <div
+          class="content"
+        >
+          <span
+            class="label"
+          >
+            <span
+              class="content group horizontal"
+            >
+              <p
+                class="textInfo"
+              >
+                We pre-selected a macro for you:
+                 
+                <span
+                  class="macroName"
+                />
+              </p>
+              <div
+                class="buttonGroup"
+              >
+                <button
+                  class="wrapper p-0 ghost destructive medium right"
+                  color="secondary"
+                  type="button"
+                >
+                  <i
+                    class="material-icons pr-1"
+                  >
+                    close
+                  </i>
+                  Remove Macro
+                </button>
+                <button
+                  class="wrapper p-0 ghost primary medium right"
+                  color="primary"
+                  type="button"
+                >
+                  <i
+                    class="material-icons pr-1"
+                  >
+                    done
+                  </i>
+                  Keep Macro
+                </button>
+              </div>
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;

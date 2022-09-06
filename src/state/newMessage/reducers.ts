@@ -21,6 +21,7 @@ import * as ticketTypes from '../ticket/constants'
 import * as ticketConfig from '../../config/ticket'
 import {GorgiasAction} from '../types'
 
+import ticketReplyCache from './ticketReplyCache'
 import {getReceiversProperties} from './selectors'
 import * as responseUtils from './responseUtils'
 import * as types from './constants'
@@ -183,6 +184,19 @@ export default function reducer(
 
         case ticketTypes.CLEAR_TICKET: {
             return initialState
+        }
+
+        case types.NEW_MESSAGE_RESET_CONTENT_STATE: {
+            ticketReplyCache.set(action.ticketId as string, {
+                contentState: null,
+                selectionState: null,
+            })
+            return state
+                .setIn(
+                    ['state', 'contentState'],
+                    ContentState.createFromText('')
+                )
+                .setIn(['state', 'selectionState'], null)
         }
 
         case types.NEW_MESSAGE_QUICK_RESPONSE_FLOW: {
@@ -349,7 +363,7 @@ export default function reducer(
             let selectionState =
                 action.args?.get('selectionState') ||
                 state.getIn(['state', 'selectionState'])
-            const {appliedMacro, forceFocus} = action
+            const {appliedMacro, forceFocus, topRankMacroState} = action
             let {forceUpdate} = action
             const source = state.getIn(
                 ['newMessage', 'source'],
@@ -382,6 +396,7 @@ export default function reducer(
                 appliedMacro: appliedMacro as Map<any, any>,
                 forceUpdate: forceUpdate as boolean,
                 forceFocus: forceFocus as boolean,
+                topRankMacroState,
             }
 
             context = responseUtils.addCache(context)

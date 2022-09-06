@@ -7,5 +7,6 @@ Immutable.Map {
   "macro": null,
   "sourceType": null,
   "emailExtraAdded": false,
+  "topRankMacroState": null,
 }
 `;

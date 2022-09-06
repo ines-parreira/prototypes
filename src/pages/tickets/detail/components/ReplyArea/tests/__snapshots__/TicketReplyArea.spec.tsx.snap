@@ -14,7 +14,19 @@ exports[`<TicketReplyArea/> should block the reply area because the customer is 
   currentUser={Immutable.Map {}}
   customers={Object {}}
   fetchMacrosCancellable={[Function]}
-  newMessage={Object {}}
+  lastMessage={
+    Immutable.Map {
+      "id": 10,
+    }
+  }
+  newMessage={
+    Immutable.Map {
+      "contentState": null,
+      "newMessage": Immutable.Map {
+        "body_text": "Hello world",
+      },
+    }
+  }
   newMessageType="internal-note"
   notify={[Function]}
   page={1}
@@ -153,6 +165,7 @@ exports[`<TicketReplyArea/> should render 1`] = `
     <TicketReplyMock
       applyMacro={[Function]}
       macros={Immutable.List []}
+      replyAreaFooter={false}
       richAreaRef={[Function]}
       shouldDisplayQuickReply={false}
       ticket={Immutable.Map {}}

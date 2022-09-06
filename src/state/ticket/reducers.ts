@@ -329,9 +329,24 @@ export default function reducer(
             return state.setIn(['state', 'appliedMacro'], null)
         }
 
+        case types.SET_TOP_RANK_MACRO_STATE: {
+            ticketReplyCache.set(action.ticketId as string, {
+                topRankMacroState: action.topRankMacroState,
+            })
+            return state.setIn(
+                ['state', 'topRankMacroState'],
+                fromJS(action.topRankMacroState)
+            )
+        }
+
         case types.FETCH_TICKET_REPLY_MACRO: {
-            const cache = ticketReplyCache.get(state.get('id')).get('macro')
-            return state.setIn(['state', 'appliedMacro'], cache)
+            const cache = ticketReplyCache.get(state.get('id'))
+            return state
+                .setIn(['state', 'appliedMacro'], cache.get('macro'))
+                .setIn(
+                    ['state', 'topRankMacroState'],
+                    cache.get('topRankMacroState')
+                )
         }
 
         case types.UPDATE_ACTION_ARGS_ON_APPLIED: {

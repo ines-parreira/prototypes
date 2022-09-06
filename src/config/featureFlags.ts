@@ -5,4 +5,5 @@ export enum FeatureFlagKey {
     SelfServiceStandalonePortal = 'self-service-standalone-portal',
     SelfServiceStatsV2 = 'self-service-stats-v2',
     MacroResponseTextCcBcc = 'macro-response-text-cc-bcc',
+    PrefillBestMacro = 'pre-fill-best-macro',
 }

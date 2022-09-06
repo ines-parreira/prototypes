@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component, ReactNode} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import classNames from 'classnames'
 import {List, Map} from 'immutable'
@@ -17,6 +17,7 @@ import TicketReplyEditor from './TicketReplyEditor'
 import TicketReplyActions from './TicketReplyActions'
 
 type Props = {
+    replyAreaFooter?: ReactNode
     appliedMacro?: Map<any, any>
     applyMacro: (macro: Map<any, any>) => void
     className?: string
@@ -53,6 +54,7 @@ export class TicketReplyContainer extends Component<Props> {
             applyMacro,
             shouldDisplayQuickReply,
             deleteActionOnApplied,
+            replyAreaFooter,
         } = this.props
 
         const canReplyResult = canReply(
@@ -77,6 +79,7 @@ export class TicketReplyContainer extends Component<Props> {
                         macros={macros}
                         applyMacro={applyMacro}
                         shouldDisplayQuickReply={shouldDisplayQuickReply}
+                        replyAreaFooter={replyAreaFooter}
                     />
                 )}
                 {this.renderAttachments()}

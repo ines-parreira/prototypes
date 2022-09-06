@@ -411,6 +411,9 @@ Array [
     "type": "NEW_MESSAGE_FETCH_TICKET_SUCCESS",
   },
   Object {
+    "type": "FETCH_TICKET_REPLY_MACRO",
+  },
+  Object {
     "appliedMacro": null,
     "args": Immutable.Map {},
     "currentUser": Immutable.Map {
@@ -463,10 +466,8 @@ Array [
       "customer": null,
     },
     "ticketId": 1,
+    "topRankMacroState": null,
     "type": "setResponseText",
-  },
-  Object {
-    "type": "FETCH_TICKET_REPLY_MACRO",
   },
   Object {
     "subject": "",
@@ -527,6 +528,9 @@ Array [
     "type": "NEW_MESSAGE_FETCH_TICKET_SUCCESS",
   },
   Object {
+    "type": "FETCH_TICKET_REPLY_MACRO",
+  },
+  Object {
     "appliedMacro": null,
     "args": Immutable.Map {},
     "currentUser": Immutable.Map {
@@ -579,10 +583,8 @@ Array [
       "customer": null,
     },
     "ticketId": 1,
+    "topRankMacroState": null,
     "type": "setResponseText",
-  },
-  Object {
-    "type": "FETCH_TICKET_REPLY_MACRO",
   },
   Object {
     "receivers": Object {
@@ -600,6 +602,9 @@ Array [
 
 exports[`ticket actions fetchTicket() new ticket 1`] = `
 Array [
+  Object {
+    "type": "FETCH_TICKET_REPLY_MACRO",
+  },
   Object {
     "appliedMacro": null,
     "args": Immutable.Map {},
@@ -650,10 +655,8 @@ Array [
       "customer": null,
     },
     "ticketId": undefined,
+    "topRankMacroState": null,
     "type": "setResponseText",
-  },
-  Object {
-    "type": "FETCH_TICKET_REPLY_MACRO",
   },
 ]
 `;
@@ -679,6 +682,9 @@ Array [
       "messages": Array [],
     },
     "type": "NEW_MESSAGE_FETCH_TICKET_SUCCESS",
+  },
+  Object {
+    "type": "FETCH_TICKET_REPLY_MACRO",
   },
   Object {
     "appliedMacro": null,
@@ -733,10 +739,8 @@ Array [
       "customer": null,
     },
     "ticketId": 1,
+    "topRankMacroState": null,
     "type": "setResponseText",
-  },
-  Object {
-    "type": "FETCH_TICKET_REPLY_MACRO",
   },
   Object {
     "ticketId": 1,
@@ -818,6 +822,9 @@ Array [
     "type": "NEW_MESSAGE_FETCH_TICKET_SUCCESS",
   },
   Object {
+    "type": "FETCH_TICKET_REPLY_MACRO",
+  },
+  Object {
     "appliedMacro": null,
     "args": Immutable.Map {},
     "currentUser": undefined,
@@ -867,10 +874,8 @@ Array [
       "customer": null,
     },
     "ticketId": undefined,
+    "topRankMacroState": null,
     "type": "setResponseText",
-  },
-  Object {
-    "type": "FETCH_TICKET_REPLY_MACRO",
   },
   Object {
     "receivers": Object {
@@ -921,6 +926,9 @@ Array [
     "type": "NEW_MESSAGE_FETCH_TICKET_SUCCESS",
   },
   Object {
+    "type": "FETCH_TICKET_REPLY_MACRO",
+  },
+  Object {
     "appliedMacro": null,
     "args": Immutable.Map {},
     "currentUser": undefined,
@@ -970,10 +978,8 @@ Array [
       "customer": null,
     },
     "ticketId": undefined,
+    "topRankMacroState": null,
     "type": "setResponseText",
-  },
-  Object {
-    "type": "FETCH_TICKET_REPLY_MACRO",
   },
   Object {
     "subject": "",
@@ -1031,6 +1037,9 @@ Array [
     "type": "NEW_MESSAGE_FETCH_TICKET_SUCCESS",
   },
   Object {
+    "type": "FETCH_TICKET_REPLY_MACRO",
+  },
+  Object {
     "appliedMacro": null,
     "args": Immutable.Map {},
     "currentUser": undefined,
@@ -1080,10 +1089,8 @@ Array [
       "customer": null,
     },
     "ticketId": undefined,
+    "topRankMacroState": null,
     "type": "setResponseText",
-  },
-  Object {
-    "type": "FETCH_TICKET_REPLY_MACRO",
   },
   Object {
     "receivers": Object {
@@ -1154,6 +1161,9 @@ Array [
     "type": "NEW_MESSAGE_FETCH_TICKET_SUCCESS",
   },
   Object {
+    "type": "FETCH_TICKET_REPLY_MACRO",
+  },
+  Object {
     "appliedMacro": null,
     "args": Immutable.Map {},
     "currentUser": undefined,
@@ -1203,10 +1213,8 @@ Array [
       "customer": null,
     },
     "ticketId": undefined,
+    "topRankMacroState": null,
     "type": "setResponseText",
-  },
-  Object {
-    "type": "FETCH_TICKET_REPLY_MACRO",
   },
   Object {
     "receivers": Object {
@@ -1257,6 +1265,9 @@ Array [
     "type": "NEW_MESSAGE_FETCH_TICKET_SUCCESS",
   },
   Object {
+    "type": "FETCH_TICKET_REPLY_MACRO",
+  },
+  Object {
     "appliedMacro": null,
     "args": Immutable.Map {},
     "currentUser": undefined,
@@ -1306,10 +1317,8 @@ Array [
       "customer": null,
     },
     "ticketId": undefined,
+    "topRankMacroState": null,
     "type": "setResponseText",
-  },
-  Object {
-    "type": "FETCH_TICKET_REPLY_MACRO",
   },
   Object {
     "subject": "",
@@ -1367,6 +1376,9 @@ Array [
     "type": "NEW_MESSAGE_FETCH_TICKET_SUCCESS",
   },
   Object {
+    "type": "FETCH_TICKET_REPLY_MACRO",
+  },
+  Object {
     "appliedMacro": null,
     "args": Immutable.Map {},
     "currentUser": undefined,
@@ -1416,10 +1428,8 @@ Array [
       "customer": null,
     },
     "ticketId": undefined,
+    "topRankMacroState": null,
     "type": "setResponseText",
-  },
-  Object {
-    "type": "FETCH_TICKET_REPLY_MACRO",
   },
   Object {
     "receivers": Object {
@@ -1461,6 +1471,9 @@ Array [
     "type": "NEW_MESSAGE_FETCH_TICKET_SUCCESS",
   },
   Object {
+    "type": "FETCH_TICKET_REPLY_MACRO",
+  },
+  Object {
     "appliedMacro": null,
     "args": Immutable.Map {},
     "currentUser": undefined,
@@ -1510,10 +1523,8 @@ Array [
       "customer": null,
     },
     "ticketId": undefined,
+    "topRankMacroState": null,
     "type": "setResponseText",
-  },
-  Object {
-    "type": "FETCH_TICKET_REPLY_MACRO",
   },
   Object {
     "receivers": Object {
@@ -1555,6 +1566,9 @@ Array [
     "type": "NEW_MESSAGE_FETCH_TICKET_SUCCESS",
   },
   Object {
+    "type": "FETCH_TICKET_REPLY_MACRO",
+  },
+  Object {
     "appliedMacro": null,
     "args": Immutable.Map {},
     "currentUser": undefined,
@@ -1604,10 +1618,8 @@ Array [
       "customer": null,
     },
     "ticketId": undefined,
+    "topRankMacroState": null,
     "type": "setResponseText",
-  },
-  Object {
-    "type": "FETCH_TICKET_REPLY_MACRO",
   },
   Object {
     "receivers": Object {

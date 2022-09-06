@@ -1252,6 +1252,7 @@ Array [
       ],
     },
     "ticketId": undefined,
+    "topRankMacroState": null,
     "type": "setResponseText",
   },
 ]
@@ -2160,6 +2161,7 @@ Array [
       "customer": null,
     },
     "ticketId": 12,
+    "topRankMacroState": null,
     "type": "setResponseText",
   },
   Object {
@@ -2175,6 +2177,11 @@ Array [
       "address": "support@acme.gorgias.io",
     },
     "type": "NEW_MESSAGE_SET_SENDER",
+  },
+  Object {
+    "ticketId": 12,
+    "topRankMacroState": null,
+    "type": "SET_TOP_RANK_MACRO_STATE",
   },
 ]
 `;
@@ -2289,6 +2296,7 @@ Array [
       ],
     },
     "ticketId": undefined,
+    "topRankMacroState": null,
     "type": "setResponseText",
   },
 ]
@@ -2388,6 +2396,7 @@ Array [
       "id": 1,
     },
     "ticketId": 1,
+    "topRankMacroState": null,
     "type": "setResponseText",
   },
 ]
@@ -2463,6 +2472,7 @@ Array [
       "id": 1,
     },
     "ticketId": 1,
+    "topRankMacroState": null,
     "type": "setResponseText",
   },
 ]
@@ -2527,6 +2537,7 @@ Array [
       "id": 1,
     },
     "ticketId": 1,
+    "topRankMacroState": null,
     "type": "setResponseText",
   },
 ]
@@ -2591,6 +2602,7 @@ Array [
       "id": 1,
     },
     "ticketId": 1,
+    "topRankMacroState": null,
     "type": "setResponseText",
   },
 ]
@@ -2666,6 +2678,7 @@ Array [
       "id": 1,
     },
     "ticketId": 1,
+    "topRankMacroState": null,
     "type": "setResponseText",
   },
 ]

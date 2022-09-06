@@ -1,6 +1,7 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS, Map, List} from 'immutable'
 
+import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'
 import * as selectors from '../selectors'
 import {initialState} from '../reducers'
 import {TicketVia} from '../../../business/types/ticket'
@@ -252,5 +253,26 @@ describe('ticket selectors', () => {
         expect(selectors.getAppliedMacro({} as RootState)).toEqualImmutable(
             fromJS({})
         )
+    })
+
+    it.each([
+        [{state: {}}, null],
+        [
+            {
+                state: {
+                    topRankMacroState: {
+                        macroId: 10,
+                        state: 'pending',
+                    } as TopRankMacroState,
+                },
+            },
+            {macroId: 10, state: 'pending'} as TopRankMacroState,
+        ],
+    ])('getTopRankMacroState', (ticketState, expected) => {
+        state.ticket = fromJS(ticketState)
+        const topRankMacroState = selectors.getTopRankMacroState(state)
+        expected?.constructor === Object
+            ? expect(topRankMacroState).toMatchObject(expected)
+            : expect(topRankMacroState).toBe(expected)
     })
 })

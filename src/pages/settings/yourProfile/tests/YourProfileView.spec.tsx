@@ -2,13 +2,14 @@ import React, {ComponentProps, SyntheticEvent} from 'react'
 import {shallow} from 'enzyme'
 import {fromJS, Map} from 'immutable'
 import {Provider} from 'react-redux'
-import {render, fireEvent} from '@testing-library/react'
+import {render, fireEvent, waitFor} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import {user} from 'fixtures/users'
 
-import YourProfileView from '../components/YourProfileView'
+import {YourProfileView} from '../components/YourProfileView'
 
 const mockedStore = configureMockStore([thunk])
 const minProps: ComponentProps<typeof YourProfileView> = {
@@ -16,6 +17,7 @@ const minProps: ComponentProps<typeof YourProfileView> = {
     currentUser: fromJS(user),
     submitSetting: jest.fn(),
     preferences: fromJS({data: {}}),
+    flags: [],
 }
 const defaultState = {}
 
@@ -181,5 +183,35 @@ describe('YourProfileView', () => {
             const form = component.instance()._getForm(minProps)
             expect(form).toMatchSnapshot()
         })
+    })
+
+    describe('Macro prefill settings', () => {
+        it.each([true, false])(
+            'Should display checkbox if feature flag is %s',
+            async (prefillSetting) => {
+                minProps.flags = {
+                    [FeatureFlagKey.PrefillBestMacro]: prefillSetting,
+                }
+
+                const {queryByText} = render(
+                    <YourProfileView {...minProps} />,
+                    {
+                        wrapper: ({children}) => (
+                            <Provider store={mockedStore(defaultState)}>
+                                {children}
+                            </Provider>
+                        ),
+                    }
+                )
+                await waitFor(() => {
+                    const queryResult = expect(
+                        queryByText(/Auto-fill macros with high/i)
+                    )
+                    prefillSetting
+                        ? queryResult.toBeTruthy()
+                        : queryResult.toBeFalsy()
+                })
+            }
+        )
     })
 })

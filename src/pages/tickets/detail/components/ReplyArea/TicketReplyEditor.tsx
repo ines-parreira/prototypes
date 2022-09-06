@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component, ReactNode} from 'react'
 import {ContentState, EditorState} from 'draft-js'
 import {fromJS, Map, List} from 'immutable'
 import _debounce from 'lodash/debounce'
@@ -36,6 +36,7 @@ import MacrosQuickReply from './MacrosQuickReply/MacrosQuickReply'
 import css from './TicketReplyEditor.less'
 
 type Props = {
+    replyAreaFooter?: ReactNode
     applyMacro: (macro: Map<any, any>) => void
     macros: List<any>
     richAreaRef: (ref: DEPRECATED_RichField | null) => void
@@ -347,6 +348,7 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
             macros,
             applyMacro,
             shouldDisplayQuickReply,
+            replyAreaFooter,
         } = this.props
 
         const isNewMessageRichType = isRichType(newMessageType)
@@ -397,6 +399,7 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
         return (
             <div className={css.component}>
                 <DEPRECATED_RichField
+                    footer={replyAreaFooter}
                     ref={(richArea) => {
                         this.richArea = richArea
                         richAreaRef(richArea)

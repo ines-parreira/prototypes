@@ -243,6 +243,7 @@ export const setResponseText =
             }
         }
 
+        const topRankMacroState = ticketSelectors.getTopRankMacroState(state)
         // should have the same params in state/ticket/actions/applyMacroAction
         return dispatch({
             type: constants.SET_RESPONSE_TEXT,
@@ -255,6 +256,7 @@ export const setResponseText =
             currentUser, // used in middleware, not in reducer
             signature,
             fromMacro: false, // used in middleware, not in reducer
+            topRankMacroState,
         })
     }
 
@@ -601,10 +603,10 @@ export const updatePotentialCustomers =
         )
 
 export const initializeMessageDraft = () => (dispatch: StoreDispatch) => {
-    // get cached ticket reply message
-    dispatch(setResponseText())
     // get cached macro
     dispatch(ticketActions.fetchTicketReplyMacro())
+    // get cached ticket reply message
+    dispatch(setResponseText())
 }
 
 /**
@@ -977,6 +979,12 @@ export function prepareTicketMessage(
                 messageId,
                 messageToSend,
                 replyAreaState,
+            })
+
+            dispatch({
+                type: ticketConstants.SET_TOP_RANK_MACRO_STATE,
+                ticketId: ticket.get('id'),
+                topRankMacroState: null,
             })
         })
 }

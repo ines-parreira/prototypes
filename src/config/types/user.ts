@@ -79,6 +79,7 @@ export type UserPreferences = {
     forward_calls?: boolean
     forwarding_phone_number?: string
     macros_default_to_search_popover?: boolean
+    prefill_best_macro?: boolean
 }
 
 export type UserTicketSettings = {

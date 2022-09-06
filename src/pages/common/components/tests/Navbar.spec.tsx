@@ -69,7 +69,11 @@ describe('<Navbar />', () => {
         userEvent.click(getByText(/available/i))
         expect(minProps.submitSetting).toHaveBeenCalledWith(
             {
-                data: {available: false, show_macros: false},
+                data: {
+                    available: false,
+                    show_macros: false,
+                    prefill_best_macro: true,
+                },
                 type: 'preferences',
             },
             false

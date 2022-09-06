@@ -64,6 +64,7 @@ export enum SegmentEvent {
     MacroDefaultMacroToSearch = 'macro-default-macro-to-search',
     MacrosExportClicked = 'macros-export-clicked',
     MacrosImportClicked = 'macros-import-clicked',
+    TopRankMacro = 'top-rank-macro',
     MacrosQuickReplyTooltip = 'macros-quick-reply-tooltip',
     MacrosQuickReplyGetDetails = 'macros-quick-reply-get-details',
     MacrosQuickReplySent = 'macros-quick-reply-sent',

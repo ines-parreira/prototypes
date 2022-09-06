@@ -1,10 +1,16 @@
-import React, {Component, KeyboardEvent as KeyboardEventReact} from 'react'
+import React, {
+    Component,
+    KeyboardEvent as KeyboardEventReact,
+    ComponentClass,
+} from 'react'
 import classnames from 'classnames'
 import {fromJS, List, Map} from 'immutable'
 import _debounce from 'lodash/debounce'
 import {connect, ConnectedProps} from 'react-redux'
-import {ContentState} from 'draft-js'
+import {ContentState, EditorState} from 'draft-js'
 
+import {withLDConsumer} from 'launchdarkly-react-client-sdk'
+import {LDFlagSet} from 'launchdarkly-js-client-sdk'
 import {clearMacroBeforeApply} from 'business/macro'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import DEPRECATED_RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'
@@ -20,26 +26,40 @@ import {
     getCurrentMacro,
     getDefaultSelectedMacroId,
 } from 'pages/tickets/common/macros/utils'
+import {nestedReplace} from 'state/ticket/utils'
 import shortcutManager from 'services/shortcutManager/index'
 import {getPreferences} from 'state/currentUser/selectors'
 import {getNewMessageType, isCacheAdded} from 'state/newMessage/selectors'
+import {setResponseText} from 'state/newMessage/actions'
+
 import {notify} from 'state/notifications/actions'
-import {applyMacro} from 'state/ticket/actions'
-import {DEPRECATED_getTicket} from 'state/ticket/selectors'
+import {applyMacro, clearAppliedMacro} from 'state/ticket/actions'
+import {
+    DEPRECATED_getTicket,
+    getAppliedMacro,
+    getTopRankMacroState,
+    getLastMessage,
+} from 'state/ticket/selectors'
 import {RootState} from 'state/types'
 import {getMacroParametersOptions} from 'state/macro/selectors'
 import {MacrosProperties} from 'models/macro/types'
+import {FeatureFlagKey} from 'config/featureFlags'
+import PrefillMacroAlert from 'pages/tickets/detail/components/ReplyArea/PrefillMacroAlert'
+import {MacroActionName} from 'models/macroAction/types'
 
+import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'
 import TicketMacros from './TicketMacros'
 import TicketReply from './TicketReply'
 import TicketMacrosSearch from './TicketMacrosSearch'
 import css from './TicketReplyArea.less'
 
 const CONTENT_STATE_PATH = ['state', 'contentState']
+const PREFILL_TOP_MACRO_SCORE_THRESHOLD = 0.8
 
 type Props = {
     currentUser: Map<any, any>
     ticket: Map<any, any>
+    flags?: LDFlagSet
 } & CancellableRequestInjectedProps<
     'fetchMacrosCancellable',
     'cancelFetchMacrosCancellable',
@@ -55,6 +75,7 @@ type State = {
     macrosVisible: boolean
     selectedMacroId?: Maybe<number>
     shouldFocusEditor: boolean
+    topRankMacro: Map<any, any> | null
 }
 
 export class TicketReplyArea extends Component<Props, State> {
@@ -90,14 +111,129 @@ export class TicketReplyArea extends Component<Props, State> {
             isInitialMacrosLoading: false,
             shouldFocusEditor: false,
             hasShownMacros: false,
+            topRankMacro: null,
         }
     }
 
     async componentDidMount() {
+        const {flags} = this.props
+
         this.bindKeys()
         this.setState({isInitialMacrosLoading: true})
         await this.loadMacros(this.state.searchParams)
         this.setState({isInitialMacrosLoading: false})
+
+        if (flags && flags[FeatureFlagKey.PrefillBestMacro]) {
+            this.checkTopRankMacro()
+        }
+    }
+
+    applyTopRankMacro(macro: Map<any, any>, state: TopRankMacroState['state']) {
+        void this.props.applyMacro(
+            macro,
+            this.props.currentTicket.get('id'),
+            state === 'pending',
+            {
+                macroId: macro.get('id'),
+                state: state,
+            }
+        )
+        logEvent(SegmentEvent.TopRankMacro, {
+            action: state === 'pending' ? 'applied' : state,
+            user_id: this.props.currentUser.get('id'),
+            ticketId: this.props.currentTicket.get('id'),
+            macro: macro?.toJS(),
+        })
+    }
+
+    checkTopRankMacro() {
+        if (this.props.topRankMacroState?.state === 'pending') {
+            this.setState({topRankMacro: this.props.appliedMacro})
+            return
+        }
+
+        if (
+            this.props.preferences?.getIn(['data', 'prefill_best_macro']) ===
+            false
+        )
+            return
+
+        const topRankMacro: Map<any, any> | undefined = (
+            this.state.searchResults.macros as List<Map<any, any>>
+        ).find(
+            (macro) =>
+                macro?.get('relevance_rank') === 1 &&
+                macro?.get('score') > PREFILL_TOP_MACRO_SCORE_THRESHOLD
+        )
+        if (!topRankMacro) return
+
+        const topRankMacroStateId = this.props.topRankMacroState?.['macroId']
+        const topRankMacroId: number | undefined = topRankMacro?.get('id')
+        if (
+            topRankMacroStateId &&
+            topRankMacroId &&
+            topRankMacroStateId === topRankMacroId &&
+            this.props.topRankMacroState?.state === 'rejected'
+        ) {
+            return
+        }
+
+        const hasMacroActions = (
+            this.props.appliedMacro?.get('actions') as Map<
+                string,
+                Map<string, any>
+            >
+        )?.some(
+            (action) => action?.get('name') !== MacroActionName.SetResponseText
+        )
+
+        if (hasMacroActions) return
+
+        const contentState = this.props.newMessage.getIn(
+            CONTENT_STATE_PATH
+        ) as ContentState
+
+        if (contentState?.hasText()) return
+
+        this.applyTopRankMacro(topRankMacro, 'pending')
+        this.hideMacros()
+
+        const renderedTopRankMacro = topRankMacro.update(
+            'actions',
+            (actions: List<any>) => {
+                return actions.map((action: Map<any, any>) => {
+                    return action.update(
+                        'arguments',
+                        (args: List<any>) =>
+                            nestedReplace(
+                                args,
+                                this.props.currentTicket,
+                                this.props.currentUser
+                            ) as List<any>
+                    )
+                })
+            }
+        )
+
+        this.setState({topRankMacro: renderedTopRankMacro})
+    }
+
+    acceptTopRankMacro = () => {
+        this.setState({topRankMacro: null})
+        this.applyTopRankMacro(this.props.appliedMacro, 'accepted')
+    }
+
+    rejectTopRankMacro = () => {
+        this.setState({topRankMacro: null})
+        this.applyTopRankMacro(this.props.appliedMacro, 'rejected')
+
+        const editorState = this.richArea?.state.editorState
+        if (editorState) {
+            const newState = EditorState.createEmpty()
+            this.richArea?.setEditorState(newState)
+        }
+
+        this.props.clearAppliedMacro(this.props.ticket.get('id'))
     }
 
     componentDidUpdate = (prevProps: Props, prevState: State) => {
@@ -122,6 +258,36 @@ export class TicketReplyArea extends Component<Props, State> {
             this.setState({shouldFocusEditor: false})
             if (this.richArea) {
                 this.richArea.focusEditor()
+            }
+        }
+
+        if (this.state.topRankMacro && this.props.appliedMacro) {
+            const macroResponseText = (
+                this.props.appliedMacro?.get('actions') as
+                    | Immutable.Map<string, Map<string, any>>
+                    | undefined
+            )?.find(
+                (action) =>
+                    action?.get('name') === MacroActionName.SetResponseText
+            )
+
+            const macroBodyText = macroResponseText?.getIn([
+                'arguments',
+                'body_text',
+            ]) as string | undefined
+
+            const contentState = ContentState.createFromText(
+                macroBodyText ?? ''
+            )
+
+            const newMessageBodyText: string | undefined =
+                this.props.newMessage?.getIn(['newMessage', 'body_text'])
+
+            if (
+                contentState.getPlainText() !== newMessageBodyText ||
+                !this.props.appliedMacro.equals(this.state.topRankMacro)
+            ) {
+                this.acceptTopRankMacro()
             }
         }
     }
@@ -169,6 +335,15 @@ export class TicketReplyArea extends Component<Props, State> {
             any
         >
 
+        const hasMacroActions = (
+            this.props.appliedMacro?.get('actions') as Map<
+                string,
+                Map<string, any>
+            >
+        )?.some(
+            (action) => action?.get('name') !== MacroActionName.SetResponseText
+        )
+
         if (preferences) {
             showMacros = preferences.getIn(['data', 'show_macros'])
         }
@@ -186,7 +361,8 @@ export class TicketReplyArea extends Component<Props, State> {
             // editor is not focused
             // fixes issues caused by the debounced setResponseText,
             // that causes the contentState to be set with a delay.
-            !editorFocused
+            !editorFocused &&
+            !hasMacroActions
         ) {
             this.showMacros()
         }
@@ -465,6 +641,15 @@ export class TicketReplyArea extends Component<Props, State> {
                         />
                     ) : (
                         <TicketReply
+                            replyAreaFooter={
+                                this.props.topRankMacroState?.state ===
+                                    'pending' && (
+                                    <PrefillMacroAlert
+                                        onKeepMacro={this.acceptTopRankMacro}
+                                        onRemoveMacro={this.rejectTopRankMacro}
+                                    />
+                                )
+                            }
                             ticket={this.props.ticket}
                             appliedMacro={this.props.ticket.getIn([
                                 'state',
@@ -488,12 +673,17 @@ const connector = connect(
         currentTicket: DEPRECATED_getTicket(state),
         newMessage: state.newMessage,
         newMessageType: getNewMessageType(state),
+        lastMessage: getLastMessage(state),
         preferences: getPreferences(state),
         macroParametersOptions: getMacroParametersOptions(state),
+        appliedMacro: getAppliedMacro(state),
+        topRankMacroState: getTopRankMacroState(state),
     }),
     {
         applyMacro,
+        clearAppliedMacro,
         notify,
+        setResponseText,
     }
 )
 
@@ -504,4 +694,10 @@ export default withCancellableRequest<
 >(
     'fetchMacrosCancellable',
     fetchMacros
-)(connector(TicketReplyArea))
+)(
+    connector(
+        withLDConsumer()(
+            TicketReplyArea as any as ComponentClass<Omit<Props, 'flags'>>
+        )
+    )
+)

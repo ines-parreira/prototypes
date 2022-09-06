@@ -1,11 +1,18 @@
 import React, {ComponentProps} from 'react'
 import {shallow, mount, ReactWrapper} from 'enzyme'
 import {fromJS} from 'immutable'
-
+import {waitFor} from '@testing-library/react'
+import configureMockStore from 'redux-mock-store'
+import {Provider} from 'react-redux'
+import thunk from 'redux-thunk'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {Macro} from 'state/macro/types'
 import TicketReply from '../TicketReply'
 import {TicketReplyArea} from '../TicketReplyArea'
 import TicketMacros from '../TicketMacros'
 import {TicketMessageSourceType} from '../../../../../../business/types/ticket'
+
+const mockedStore = configureMockStore([thunk])
 
 type Props = {
     richAreaRef: (value: any) => void
@@ -21,6 +28,7 @@ jest.mock('../TicketReply', () => {
 
     class TicketReplyMock extends Component<Props> {
         focusEditor = focusEditor
+        isFocused = jest.fn().mockReturnValue(false)
 
         render() {
             const {richAreaRef}: Props = this.props
@@ -52,9 +60,13 @@ jest.mock('../TicketMacros', () => ({onClearMacro}: TicketMacrosMockProps) => (
 const minProps = {
     ticket: fromJS({}),
     currentUser: fromJS({}),
+    lastMessage: fromJS({id: 10}),
     customers: {},
     preferences: fromJS({}),
-    newMessage: {},
+    newMessage: fromJS({
+        contentState: null,
+        newMessage: {body_text: 'Hello world'},
+    }),
     newMessageType: TicketMessageSourceType.Email,
     notify: () => Promise.resolve,
     currentMacro: {},
@@ -63,7 +75,10 @@ const minProps = {
     selectMacro: jest.fn(),
     fetchMacrosCancellable: () => Promise.resolve(),
     applyMacro: jest.fn(),
-    currentTicket: fromJS({}),
+    currentTicket: fromJS({
+        id: 1,
+        messages: [{id: 1}],
+    }),
     cacheAdded: false,
 } as unknown as ComponentProps<typeof TicketReplyArea>
 
@@ -124,5 +139,141 @@ describe('<TicketReplyArea/>', () => {
         focusMacroInput(component)
         component.find('input').simulate('keyDown', {key: 'Enter'})
         expect(minProps.applyMacro).not.toHaveBeenCalled()
+    })
+
+    describe('prefill macro alert', () => {
+        it.each([
+            [
+                [
+                    {
+                        id: 1,
+                        external_id: null,
+                        name: 'Macro 1',
+                        intent: null,
+                        language: 'en',
+                        usage: 0,
+                        actions: [],
+                        relevance_rank: 1,
+                        score: 0.99,
+                    },
+                    {
+                        id: 2,
+                        external_id: null,
+                        name: 'Macro 2',
+                        intent: null,
+                        language: 'en',
+                        usage: 0,
+                        actions: [],
+                        relevance_rank: 2,
+                    },
+                ],
+                true,
+            ],
+            [
+                [
+                    {
+                        id: 1,
+                        external_id: null,
+                        name: 'Macro 1',
+                        intent: null,
+                        language: 'en',
+                        usage: 0,
+                        actions: [],
+                        relevance_rank: 1,
+                        score: 0.99,
+                    },
+                    {
+                        id: 2,
+                        external_id: null,
+                        name: 'Macro 2',
+                        intent: null,
+                        language: 'en',
+                        usage: 0,
+                        actions: [],
+                        relevance_rank: 2,
+                    },
+                    {
+                        id: 3,
+                        external_id: null,
+                        name: 'Macro 3',
+                        intent: null,
+                        language: 'en',
+                        usage: 0,
+                        actions: [],
+                        relevance_rank: 0,
+                        score: 0.29,
+                    },
+                ],
+                true,
+            ],
+            [
+                [
+                    {
+                        id: 1,
+                        external_id: null,
+                        name: 'Macro 1',
+                        intent: null,
+                        language: 'en',
+                        usage: 0,
+                        actions: [],
+                        relevance_rank: 2,
+                        score: 0.99,
+                    },
+                ],
+                false,
+            ],
+            [
+                [
+                    {
+                        id: 1,
+                        external_id: null,
+                        name: 'Macro 1',
+                        intent: null,
+                        language: 'en',
+                        usage: 0,
+                        actions: [],
+                        relevance_rank: 1,
+                        score: 0.5,
+                    },
+                ],
+                false,
+            ],
+        ])(
+            'should apply top one macro based on macros search results',
+            async (macros, shouldApplyMacro) => {
+                const component = mount(
+                    <Provider store={mockedStore({})}>
+                        <TicketReplyArea
+                            {...minProps}
+                            flags={{[FeatureFlagKey.PrefillBestMacro]: true}}
+                        />
+                    </Provider>
+                )
+                const ticketReplyArea = component.find('TicketReplyArea')
+                ticketReplyArea.setState({
+                    searchResults: {
+                        macros: fromJS(macros),
+                    },
+                })
+
+                await waitFor(() => {
+                    if (shouldApplyMacro) {
+                        const topOneMacro = fromJS({
+                            ...macros.find(
+                                (macro) => macro.relevance_rank === 1
+                            ),
+                        }) as Macro
+                        expect(minProps.applyMacro).toHaveBeenCalledWith(
+                            topOneMacro,
+                            minProps.currentTicket.get('id'),
+                            true,
+                            {macroId: topOneMacro.get('id'), state: 'pending'}
+                        )
+                    } else {
+                        expect(minProps.applyMacro).not.toHaveBeenCalled()
+                    }
+                })
+            }
+        )
     })
 })

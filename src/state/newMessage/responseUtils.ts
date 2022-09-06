@@ -15,7 +15,7 @@ import {convertToRawWithoutPredictions} from '../../pages/common/draftjs/plugins
 import {toJS} from '../../utils'
 
 import * as selectors from './selectors'
-import ticketReplyCache from './ticketReplyCache'
+import ticketReplyCache, {TopRankMacroState} from './ticketReplyCache'
 import {
     deleteEmailExtraContent,
     hasEmailExtraContent,
@@ -34,6 +34,7 @@ export type MessageContext = {
         signature: Signature
     }
     appliedMacro?: Map<any, any>
+    topRankMacroState?: TopRankMacroState | null
     contentState: ContentState
     forceUpdate: boolean
     forceFocus: boolean
@@ -122,6 +123,13 @@ const getCache = (context: MessageContext): MessageContext => {
                 }
             }
         }
+        const topRankMacroState = cachedContent.get('topRankMacroState') as Map<
+            any,
+            any
+        >
+        if (topRankMacroState && !topRankMacroState.isEmpty()) {
+            context.topRankMacroState = fromJS(topRankMacroState)
+        }
     }
 
     return context
@@ -138,6 +146,7 @@ export const updateCache = (context: MessageContext) => {
         action,
         sourceType,
         emailExtraAdded,
+        topRankMacroState,
     } = context
     // We're storing the content state in a persistent storage so we can keep it after page refresh
     if (
@@ -155,6 +164,11 @@ export const updateCache = (context: MessageContext) => {
             sourceType,
             emailExtraAdded,
             contentState: convertToRawWithoutPredictions(contentState),
+        })
+    } else if (topRankMacroState) {
+        ticketReplyCache.delete(action.ticketId)
+        ticketReplyCache.set(action.ticketId, {
+            topRankMacroState,
         })
     } else {
         // we're deleting the data from cache so we don't explode the storage

@@ -54,6 +54,7 @@ type suggestionsType = List<any>
 type canAddMentionType = boolean
 
 export type Props = {
+    footer?: ReactNode
     quickReply?: ReactNode
     editorState: EditorState
     onChange: (editorState: EditorState) => void
@@ -345,6 +346,7 @@ export class RichFieldEditor extends Component<Props, State> {
             emailExtraEnabled,
             ticket,
             productCardsEnabled,
+            footer,
         } = this.props
         // $TsFixMe remove casting after migrating createMentionPlugin
         const {MentionSuggestions} = this.mentionPlugin as {
@@ -397,6 +399,7 @@ export class RichFieldEditor extends Component<Props, State> {
                             spellCheck={this.props.spellCheck}
                             ticket={ticket}
                         />
+                        {footer}
                         <MentionSuggestions
                             onSearchChange={this.props.onMentionSearchChange}
                             suggestions={this.props.mentionSearchResults}

@@ -3,6 +3,11 @@ import {RawDraftContentState, SelectionState} from 'draft-js'
 
 import {tryLocalStorage} from '../../services/common/utils'
 
+export interface TopRankMacroState {
+    state: 'accepted' | 'pending' | 'rejected'
+    macroId: number
+}
+
 const CACHE_KEY_SEPARATOR = '~'
 const CACHE_KEY_PREFIX = `G${CACHE_KEY_SEPARATOR}`
 export const CACHE_MAX_ITEMS = 30
@@ -13,6 +18,7 @@ export type RawCachedTicket = {
     macro: Map<any, any> | null
     sourceType: string | null
     emailExtraAdded: boolean
+    topRankMacroState?: TopRankMacroState | null
 }
 
 const defaultRawCachedTicket: RawCachedTicket = {
@@ -21,6 +27,7 @@ const defaultRawCachedTicket: RawCachedTicket = {
     macro: null,
     sourceType: null,
     emailExtraAdded: false,
+    topRankMacroState: null,
 }
 
 const defaultCachedTicket: Map<any, any> = fromJS(defaultRawCachedTicket)

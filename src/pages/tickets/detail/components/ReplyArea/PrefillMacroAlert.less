@@ -1,0 +1,47 @@
+@import '~css/new/colorTokens';
+
+:local .component {
+    @break-point-1: 1230px;
+
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+
+    .alert {
+        margin-top: 20px;
+    }
+
+    .content {
+        color: @classic-neutral-grey-6;
+        display: grid;
+        align-items: center;
+        @media (min-width: @break-point-1) {
+            grid-template-columns: 2fr 1fr;
+        }
+    }
+
+    .textInfo {
+        margin: 0;
+        overflow: hidden;
+        display: -webkit-inline-box;
+        -webkit-box-orient: vertical;
+        justify-self: flex-start;
+        @media (min-width: @break-point-1) {
+            -webkit-line-clamp: 1;
+        }
+        -webkit-line-clamp: 2;
+    }
+
+    .macroName {
+        font-weight: bold;
+    }
+
+    .buttonGroup {
+        display: flex;
+        gap: 2rem;
+
+        @media (min-width: @break-point-1) {
+            justify-self: flex-end;
+        }
+    }
+}
