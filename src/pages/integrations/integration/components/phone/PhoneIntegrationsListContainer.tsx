@@ -48,12 +48,8 @@ export function PhoneIntegrationsListContainer(): JSX.Element {
                 fluid
                 className={css.pageContainer}
             >
-                Chat with your customers over the phone from Gorgias.
-                {isEmpty(integrations) && (
-                    <div className="mt-3">
-                        You don't have any voice integrations at the moment.
-                    </div>
-                )}
+                {!isEmpty(integrations) &&
+                    'Make and receive phone calls from Gorgias with easy access to customer data and conversation history.'}
             </Container>
             <PhoneIntegrationsList type={IntegrationType.Phone} />
             <Container fluid data-candu-id="integration-list-bottom" />

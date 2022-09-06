@@ -48,12 +48,8 @@ export function SmsIntegrationsListContainer(): JSX.Element {
                 fluid
                 className={css.pageContainer}
             >
-                Chat with your customers via SMS from Gorgias.
-                {isEmpty(integrations) && (
-                    <div className="mt-3">
-                        You don't have any SMS integrations at the moment.
-                    </div>
-                )}
+                {!isEmpty(integrations) &&
+                    'Send and receive text messages in Gorgias for seamless conversations with customers on the go.'}
             </Container>
             <PhoneIntegrationsList type={IntegrationType.Sms} />
             <Container fluid data-candu-id="integration-list-bottom" />
