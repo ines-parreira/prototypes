@@ -54,7 +54,7 @@ exports[`<Source /> should render the tooltip on hover 1`] = `
     <span
       class="text-faded"
     >
-      Send via: 
+      Sent via: 
     </span>
     <strong>
       email

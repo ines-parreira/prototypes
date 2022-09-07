@@ -40,7 +40,7 @@ export default function Source({
                     className="uncolored"
                 />
             </span>
-            <Tooltip className={css.tooltip} target={id} placement="bottom">
+            <Tooltip target={id} placement="bottom" autohide={false}>
                 <div className={css.details}>
                     <ul>
                         <SourceAddressElement
@@ -64,7 +64,7 @@ export default function Source({
                             source={source}
                         />
                         <li>
-                            <span className="text-faded">Send via: </span>
+                            <span className="text-faded">Sent via: </span>
                             <strong>{source.type}</strong>
                         </li>
                         <li>
