@@ -1,5 +1,6 @@
 import {createSelector} from 'reselect'
 import {fromJS, List, Map} from 'immutable'
+import _isEmpty from 'lodash/isEmpty'
 
 import {
     createAutomationPlanFromProducts,
@@ -58,7 +59,7 @@ const getCurrentProducts = createSelector(
     getAutomationProduct,
     (currentSubscription, helpdeskProduct, automationProduct) => {
         const currentSubscriptionProducts: Record<string, string> = (
-            currentSubscription.get('products') as Map<any, any>
+            (currentSubscription.get('products') || fromJS({})) as Map<any, any>
         ).toJS()
 
         const currentProducts: {
@@ -82,22 +83,18 @@ const getCurrentProducts = createSelector(
                 }
             }
         )
-        return currentProducts
+        return !_isEmpty(currentProducts) ? currentProducts : undefined
     }
 )
 
 const getCurrentHelpdeskProduct = createSelector(
     getCurrentProducts,
-    (currentProducts) => {
-        return currentProducts.helpdesk
-    }
+    (currentProducts) => currentProducts?.helpdesk
 )
 
 const getCurrentAutomationProduct = createSelector(
     getCurrentProducts,
-    (currentProducts) => {
-        return currentProducts.automation
-    }
+    (currentProducts) => currentProducts?.automation
 )
 
 export const currentPlanId = createSelector(
