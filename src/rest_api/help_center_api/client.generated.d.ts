@@ -949,6 +949,18 @@ declare namespace Components {
        */
       custom_footer_deactivated?: boolean;
     }
+    export interface FallbackIntegrationDto {
+      /**
+       * example:
+       * 12345
+       */
+      id: number;
+      /**
+       * example:
+       * acme-support@gorgias.xyz
+       */
+      email: string;
+    }
     export interface GetHelpCenterDto {
       created_datetime: string; // date-time
       updated_datetime: string; // date-time
@@ -1304,18 +1316,6 @@ declare namespace Components {
       subject: string;
       message: string;
     }
-    export interface ToIntegrationDto {
-      /**
-       * example:
-       * 12345
-       */
-      id: number;
-      /**
-       * example:
-       * acme-support@gorgias.xyz
-       */
-      email: string;
-    }
     export interface UpdateArticleDto {
       category_id?: number | null;
     }
@@ -1441,8 +1441,8 @@ declare namespace Components {
        * example:
        * 2
        */
-      from_integration_id: number;
-      to_integration?: {
+      deactivated_integration_id: number;
+      fallback_integration?: {
         /**
          * example:
          * 12345
@@ -2765,6 +2765,8 @@ export interface OperationMethods {
   ): OperationResponse<any>
   /**
    * updateContactFormIntegration - Update the help centers contact form integration values
+   * 
+   * This will update all the help centers that are using the "deactivated_integration_id" for the contact form feature. If a "fallback_integration" is provided, those help centers will use this new integration for the contact form feature. Else, the contact form feature will be disabled.
    */
   'updateContactFormIntegration'(
     parameters?: Parameters<UnknownParamsObject> | null,
@@ -3421,6 +3423,8 @@ export interface PathsDictionary {
   ['/api/help-center/help-centers/update-contact-form-integration']: {
     /**
      * updateContactFormIntegration - Update the help centers contact form integration values
+     * 
+     * This will update all the help centers that are using the "deactivated_integration_id" for the contact form feature. If a "fallback_integration" is provided, those help centers will use this new integration for the contact form feature. Else, the contact form feature will be disabled.
      */
     'post'(
       parameters?: Parameters<UnknownParamsObject> | null,

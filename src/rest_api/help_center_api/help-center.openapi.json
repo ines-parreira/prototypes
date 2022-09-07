@@ -477,6 +477,7 @@
             "post": {
                 "operationId": "updateContactFormIntegration",
                 "summary": "Update the help centers contact form integration values",
+                "description": "This will update all the help centers that are using the \"deactivated_integration_id\" for the contact form feature. If a \"fallback_integration\" is provided, those help centers will use this new integration for the contact form feature. Else, the contact form feature will be disabled.",
                 "parameters": [],
                 "requestBody": {
                     "required": true,
@@ -3933,7 +3934,7 @@
                 },
                 "required": ["account_id"]
             },
-            "ToIntegrationDto": {
+            "FallbackIntegrationDto": {
                 "type": "object",
                 "properties": {
                     "id": {"type": "number", "example": 12345},
@@ -3952,19 +3953,21 @@
                         "description": "The account id whose help centers should be deleted",
                         "example": 1
                     },
-                    "from_integration_id": {
+                    "deactivated_integration_id": {
                         "type": "number",
                         "description": "The target email integration id",
                         "example": 2
                     },
-                    "to_integration": {
+                    "fallback_integration": {
                         "nullable": true,
                         "allOf": [
-                            {"$ref": "#/components/schemas/ToIntegrationDto"}
+                            {
+                                "$ref": "#/components/schemas/FallbackIntegrationDto"
+                            }
                         ]
                     }
                 },
-                "required": ["account_id", "from_integration_id"]
+                "required": ["account_id", "deactivated_integration_id"]
             },
             "HelpCenterTranslationsListPageDto": {
                 "type": "object",
