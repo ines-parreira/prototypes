@@ -14,6 +14,8 @@ import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/
 import {SelfServiceConfigurationsState} from 'state/entities/selfServiceConfigurations/types'
 import {RootState, StoreDispatch} from 'state/types'
 import {updateSelfServiceConfiguration} from 'models/selfServiceConfiguration/resources'
+import {billingState} from 'fixtures/billing'
+import {account} from 'fixtures/account'
 import {CancellationsPolicyView} from '../CancellationsPolicyView'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -81,7 +83,7 @@ describe('<CancellationsPolicyView/>', () => {
     const selfServiceConfigurations = createSelfServiceConfigurationFixtures(4)
 
     const defaultState = {
-        billing: fromJS({plans: []}),
+        billing: fromJS(billingState),
         currentAccount: fromJS({
             features: {
                 automation_return_flow: {enabled: true},
@@ -90,6 +92,7 @@ describe('<CancellationsPolicyView/>', () => {
                 automation_report_issue_flow: {enabled: true},
             },
             created_datetime: '2021-08-01T00:00:00Z',
+            current_subscription: account.current_subscription,
         }),
         entities: {
             macros: {},

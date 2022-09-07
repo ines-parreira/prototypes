@@ -5,27 +5,28 @@ import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import _noop from 'lodash/noop'
+import _cloneDeep from 'lodash/cloneDeep'
 
-import {notify} from '../../../../../state/notifications/actions'
-import BillingPlansComparison from '../BillingPlansComparison'
+import {notify} from 'state/notifications/actions'
+import {RootState, StoreDispatch} from 'state/types'
+import {account, automationSubscriptionProductPrices} from 'fixtures/account'
+import {billingState} from 'fixtures/billing'
 import {
-    advancedPlan,
-    basicPlan,
-    legacyPlan,
-    proPlan,
-    basicAutomationPlan,
-    proAutomationPlan,
-    advancedAutomationPlan,
-    customPlan,
-    customLegacyPlan,
-} from '../../../../../fixtures/subscriptionPlan'
-import {RootState, StoreDispatch} from '../../../../../state/types'
-import {account} from '../../../../../fixtures/account'
-import {billingState} from '../../../../../fixtures/billing'
-import {Plan, PlanInterval} from '../../../../../models/billing/types'
-import * as utils from '../../../../../utils'
-import * as billingSelectors from '../../../../../state/billing/selectors'
-import {updateSubscription} from '../../../../../state/currentAccount/actions'
+    AUTOMATION_PRODUCT_ID,
+    basicMonthlyAutomationPrice,
+    customAutomationPrice,
+    customHelpdeskPrice,
+    HELPDESK_PRODUCT_ID,
+    legacyBasicAutomationPrice,
+    legacyBasicHelpdeskPrice,
+    products,
+    proMonthlyHelpdeskPrice,
+} from 'fixtures/productPrices'
+import {PlanInterval} from 'models/billing/types'
+import {updateSubscription} from 'state/currentAccount/actions'
+import * as utils from 'utils'
+import * as billingSelectors from 'state/billing/selectors'
+import BillingPlansComparison from '../BillingPlansComparison'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const notifyMock = notify as jest.MockedFunction<typeof notify>
@@ -36,55 +37,18 @@ jest.mock('../../../../../state/notifications/actions')
 jest.mock('lodash/uniqueId', () => () => '42')
 
 describe('<BillingPlansComparison />', () => {
-    const defaultPlans = [
-        basicPlan,
-        advancedPlan,
-        proPlan,
-        basicAutomationPlan,
-        proAutomationPlan,
-        advancedAutomationPlan,
-    ].reduce((acc, plan) => {
-        let monthlyId
-        let yearlyId
-        if (plan.automation_addon_included) {
-            monthlyId = `${plan.name.toLowerCase()}-automation-monthly`
-            yearlyId = `${plan.name.toLowerCase()}-automation-yearly`
-        } else {
-            monthlyId = `${plan.name.toLowerCase()}-monthly`
-            yearlyId = `${plan.name.toLowerCase()}-yearly`
-        }
-        return {
-            ...acc,
-            [monthlyId]: {
-                ...plan,
-                id: monthlyId,
-                interval: PlanInterval.Month,
-                automation_addon_equivalent_plan: plan.automation_addon_included
-                    ? `${plan.name.toLowerCase()}-monthly`
-                    : `${plan.name.toLowerCase()}-automation-monthly`,
-            },
-            [yearlyId]: {
-                ...plan,
-                id: yearlyId,
-                interval: PlanInterval.Year,
-                automation_addon_equivalent_plan: plan.automation_addon_included
-                    ? `${plan.name.toLowerCase()}-yearly`
-                    : `${plan.name.toLowerCase()}-automation-yearly`,
-            },
-        }
-    }, {} as Partial<Record<string, Plan>>)
+    const defaultProductPrices: typeof products = _cloneDeep(products)
 
     const defaultState: Partial<RootState> = {
         currentAccount: fromJS({
             ...account,
             current_subscription: {
                 ...account.current_subscription,
-                plan: Object.values(defaultPlans)[0]!.id,
             },
         }),
         billing: fromJS({
             ...billingState,
-            plans: defaultPlans,
+            products: defaultProductPrices,
         }),
     }
     const minProps: ComponentProps<typeof BillingPlansComparison> = {
@@ -118,8 +82,12 @@ describe('<BillingPlansComparison />', () => {
                 store={mockStore({
                     ...defaultState,
                     currentAccount: defaultState.currentAccount?.setIn(
-                        ['current_subscription', 'plan'],
-                        'some-unknown-plan'
+                        [
+                            'current_subscription',
+                            'products',
+                            HELPDESK_PRODUCT_ID,
+                        ],
+                        'price_foo'
                     ),
                 })}
             >
@@ -132,20 +100,22 @@ describe('<BillingPlansComparison />', () => {
     describe.each<PlanInterval>(Object.values(PlanInterval))(
         '%s interval',
         (interval) => {
-            const currentPlan = (Object.values(defaultPlans) as Plan[]).find(
-                (plan) => plan.interval === interval
-            )
+            const helpdeskProduct = defaultProductPrices[0].prices.find(
+                (product) => product.interval === interval
+            )!
 
-            it(`should render only plans with the selected interval for ${
-                currentPlan!.id
-            } plan`, () => {
+            it(`should render only plans with the selected interval for ${helpdeskProduct.legacy_id} plan`, () => {
                 const {queryAllByText} = render(
                     <Provider
                         store={mockStore({
                             ...defaultState,
                             currentAccount: defaultState.currentAccount?.setIn(
-                                ['current_subscription', 'plan'],
-                                currentPlan!.id
+                                [
+                                    'current_subscription',
+                                    'products',
+                                    HELPDESK_PRODUCT_ID,
+                                ],
+                                helpdeskProduct.price_id
                             ),
                         })}
                     >
@@ -166,8 +136,12 @@ describe('<BillingPlansComparison />', () => {
                         store={mockStore({
                             ...defaultState,
                             currentAccount: defaultState.currentAccount?.setIn(
-                                ['current_subscription', 'plan'],
-                                currentPlan!.id
+                                [
+                                    'current_subscription',
+                                    'products',
+                                    HELPDESK_PRODUCT_ID,
+                                ],
+                                helpdeskProduct.price_id
                             ),
                         })}
                     >
@@ -195,23 +169,25 @@ describe('<BillingPlansComparison />', () => {
     )
 
     it('should render a legacy plan', () => {
+        const productsWithLegacyPrices = _cloneDeep(products)
+        productsWithLegacyPrices[0].prices.push(legacyBasicHelpdeskPrice)
+        productsWithLegacyPrices[1].prices.push(legacyBasicAutomationPrice)
+
         const {container} = render(
             <Provider
                 store={mockStore({
                     ...defaultState,
                     currentAccount: defaultState.currentAccount?.setIn(
-                        ['current_subscription', 'plan'],
-                        legacyPlan.id
+                        [
+                            'current_subscription',
+                            'products',
+                            HELPDESK_PRODUCT_ID,
+                        ],
+                        legacyBasicHelpdeskPrice.price_id
                     ),
                     billing: fromJS({
                         ...billingState,
-                        plans: {
-                            ...defaultPlans,
-                            [legacyPlan.id]: {
-                                ...legacyPlan,
-                                legacy_features: legacyPlan.features,
-                            },
-                        },
+                        products: productsWithLegacyPrices,
                     }),
                 })}
             >
@@ -222,23 +198,25 @@ describe('<BillingPlansComparison />', () => {
     })
 
     it('should render a custom plan', () => {
+        const productsWithCustomPrice = _cloneDeep(products)
+        productsWithCustomPrice[0].prices.push(customHelpdeskPrice)
+        productsWithCustomPrice[1].prices.push(customAutomationPrice)
+
         const {container} = render(
             <Provider
                 store={mockStore({
                     ...defaultState,
                     currentAccount: defaultState.currentAccount?.setIn(
-                        ['current_subscription', 'plan'],
-                        customPlan.id
+                        ['current_subscription', 'products'],
+                        fromJS({
+                            [HELPDESK_PRODUCT_ID]: customHelpdeskPrice.price_id,
+                            [AUTOMATION_PRODUCT_ID]:
+                                customAutomationPrice.price_id,
+                        })
                     ),
                     billing: fromJS({
                         ...billingState,
-                        plans: {
-                            ...defaultPlans,
-                            [customLegacyPlan.id]: customLegacyPlan,
-                            [customPlan.id]: {
-                                ...customPlan,
-                            },
-                        },
+                        products: productsWithCustomPrice,
                     }),
                 })}
             >
@@ -259,7 +237,7 @@ describe('<BillingPlansComparison />', () => {
 
         fireEvent.click(
             getByRole('button', {
-                name: `Upgrade to ${defaultPlans['pro-monthly']!.name} Plan`,
+                name: `Upgrade to ${proMonthlyHelpdeskPrice.name} Plan`,
             })
         )
         fireEvent.click(getByRole('button', {name: 'Confirm'}))
@@ -277,14 +255,14 @@ describe('<BillingPlansComparison />', () => {
 
         fireEvent.click(
             getByRole('button', {
-                name: `Upgrade to ${defaultPlans['pro-monthly']!.name} Plan`,
+                name: `Upgrade to ${proMonthlyHelpdeskPrice.name} Plan`,
             })
         )
         fireEvent.click(getByRole('button', {name: 'Confirm'}))
 
         expect(store.getActions()).toMatchSnapshot()
         expect(updateSubscriptionMock).toHaveBeenLastCalledWith({
-            plan: defaultPlans['pro-monthly']!.id,
+            plan: proMonthlyHelpdeskPrice.legacy_id,
         })
         await waitFor(() => {
             expect(minProps.onSubscriptionChanged).toHaveBeenLastCalledWith(
@@ -305,7 +283,7 @@ describe('<BillingPlansComparison />', () => {
 
         fireEvent.click(
             getByRole('button', {
-                name: `Upgrade to ${defaultPlans['pro-monthly']!.name} Plan`,
+                name: `Upgrade to ${proMonthlyHelpdeskPrice.name} Plan`,
             })
         )
         fireEvent.click(getByRole('button', {name: 'Confirm'}))
@@ -318,13 +296,10 @@ describe('<BillingPlansComparison />', () => {
             <Provider
                 store={mockStore({
                     ...defaultState,
-                    currentAccount: fromJS({
-                        ...account,
-                        current_subscription: {
-                            ...account.current_subscription,
-                            plan: `basic-automation-monthly`,
-                        },
-                    }),
+                    currentAccount: defaultState.currentAccount?.setIn(
+                        ['current_subscription', 'products'],
+                        fromJS(automationSubscriptionProductPrices)
+                    ),
                 })}
             >
                 <BillingPlansComparison {...minProps} />
@@ -352,10 +327,7 @@ describe('<BillingPlansComparison />', () => {
 
         fireEvent.click(getByRole('button', {name: 'Confirm'}))
         expect(updateSubscriptionMock).toHaveBeenLastCalledWith({
-            plan: defaultPlans['basic-monthly']!.id.replace(
-                /\-/,
-                '-automation-'
-            ),
+            plan: basicMonthlyAutomationPrice.legacy_id,
         })
     })
 })

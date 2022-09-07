@@ -6,15 +6,12 @@ import userEvent from '@testing-library/user-event'
 import thunk from 'redux-thunk'
 import MockDate from 'mockdate'
 import {fromJS} from 'immutable'
-
 import configureMockStore from 'redux-mock-store'
 
 import * as utils from 'utils/environment'
 import {RootState, StoreDispatch} from 'state/types'
 
 import {account} from 'fixtures/account'
-import {basicPlan} from 'fixtures/subscriptionPlan'
-
 import history from '../../../../../history'
 import QuickResponseFlowsPreferences from '../QuickResponseFlowsPreferences'
 import {defaultState} from './constants'
@@ -58,7 +55,6 @@ describe('<QuickResponseFlowsPreferences />', () => {
                 ...account,
                 current_subscription: {
                     ...account.current_subscription,
-                    plan: basicPlan.id,
                     status: 'active',
                 },
             }),

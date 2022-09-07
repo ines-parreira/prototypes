@@ -5,14 +5,11 @@ import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 
-import {RootState, StoreDispatch} from '../../../../state/types'
-import {AccountFeature} from '../../../../state/currentAccount/types'
-import {
-    advancedPlan,
-    basicPlan,
-    proPlan,
-} from '../../../../fixtures/subscriptionPlan'
-import {PaywallConfig, paywallConfigs} from '../../../../config/paywalls'
+import {AccountFeature} from 'state/currentAccount/types'
+import {billingState} from 'fixtures/billing'
+import {RootState, StoreDispatch} from 'state/types'
+import {PaywallConfig, paywallConfigs} from 'config/paywalls'
+import {account} from 'fixtures/account'
 
 import withFeaturePaywall from '../withFeaturePaywall'
 
@@ -29,18 +26,13 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 describe('withFeaturePaywall', () => {
     const defaultState: Partial<RootState> = {
         currentAccount: fromJS({
+            current_subscription: account.current_subscription,
             features: fromJS({
                 [AccountFeature.InstagramComment]: {enabled: true},
                 [AccountFeature.RevenueStatistics]: {enabled: false},
             }),
         }),
-        billing: fromJS({
-            plans: fromJS({
-                [basicPlan.id]: basicPlan,
-                [proPlan.id]: proPlan,
-                [advancedPlan.id]: advancedPlan,
-            }),
-        }),
+        billing: fromJS(billingState),
     }
 
     it('should render the passed component when the feature is available', () => {

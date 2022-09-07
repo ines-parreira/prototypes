@@ -1,21 +1,14 @@
 import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
+import {fromJS} from 'immutable'
 import userEvent from '@testing-library/user-event'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
 import {RootState, StoreDispatch} from 'state/types'
-import {
-    basicPlan,
-    proPlan,
-    advancedPlan,
-    basicAutomationPlan,
-} from 'fixtures/subscriptionPlan'
-import {account} from 'fixtures/account'
+import {account, automationSubscriptionProductPrices} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
-import {PlanInterval} from 'models/billing/types'
 import SynchronizedScrollTopContainer from 'pages/common/components/SynchronizedScrollTop/SynchronizedScrollTopContainer'
 
 import ChangePlanModal from '../ChangePlanModal'
@@ -60,13 +53,8 @@ jest.mock(
 )
 
 describe('<ChangePlanModal />', () => {
-    const minProps = {
+    const minProps: ComponentProps<typeof ChangePlanModal> = {
         confirmLabel: 'Confirm',
-        currentPlan: fromJS({
-            ...proPlan,
-            id: `${proPlan.name.toLowerCase()}-monthly`,
-            interval: PlanInterval.Month,
-        }) as Map<any, any>,
         description: 'description of the plan change',
         header: 'Title of modal',
         isOpen: true,
@@ -75,24 +63,15 @@ describe('<ChangePlanModal />', () => {
         onConfirm: jest.fn(),
         renderComparedPlan: () => <div>renderComparedPlan</div>,
     }
-    const plans = {
-        [basicPlan.id]: basicPlan,
-        [basicAutomationPlan.id]: basicAutomationPlan,
-        [proPlan.id]: proPlan,
-        [advancedPlan.id]: advancedPlan,
-    }
+
     const defaultState: Partial<RootState> = {
         currentAccount: fromJS({
             ...account,
             current_subscription: {
                 ...account.current_subscription,
-                plan: basicPlan.id,
             },
         }),
-        billing: fromJS({
-            ...billingState,
-            plans,
-        }),
+        billing: fromJS(billingState),
     }
 
     it('should not render the modal', () => {
@@ -123,7 +102,7 @@ describe('<ChangePlanModal />', () => {
                         ...account,
                         current_subscription: {
                             ...account.current_subscription,
-                            plan: basicAutomationPlan.id,
+                            products: automationSubscriptionProductPrices,
                         },
                     }),
                 })}
@@ -152,8 +131,12 @@ describe('<ChangePlanModal />', () => {
                 store={mockStore({
                     ...defaultState,
                     currentAccount: defaultState.currentAccount?.setIn(
-                        ['current_subscription', 'plan'],
-                        'some-unknown-plan'
+                        [
+                            'current_subscription',
+                            'products',
+                            'prod_LsH6kV35G6zKWo',
+                        ],
+                        'price_foo'
                     ),
                 })}
             >

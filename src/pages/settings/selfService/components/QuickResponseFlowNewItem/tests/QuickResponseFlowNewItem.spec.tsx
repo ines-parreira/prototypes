@@ -5,14 +5,10 @@ import {render, screen, fireEvent, waitFor} from '@testing-library/react'
 import thunk from 'redux-thunk'
 import MockDate from 'mockdate'
 import {fromJS, List, Map} from 'immutable'
-
 import configureMockStore from 'redux-mock-store'
 
 import {RootState, StoreDispatch} from 'state/types'
-
 import {account} from 'fixtures/account'
-import {basicPlan} from 'fixtures/subscriptionPlan'
-
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import history from '../../../../../history'
@@ -72,7 +68,6 @@ describe('<QuickResponseFlowNewItem />', () => {
                 ...account,
                 current_subscription: {
                     ...account.current_subscription,
-                    plan: basicPlan.id,
                     status: 'active',
                 },
             }),

@@ -200,6 +200,950 @@ Object {
         "integrations": 150,
       },
     },
+    "products": Immutable.List [
+      Immutable.Map {
+        "id": "prod_LsH6kV35G6zKWo",
+        "type": "helpdesk",
+        "prices": Immutable.List [
+          Immutable.Map {
+            "cost_per_ticket": 0.4,
+            "interval": "month",
+            "phone_limits": Immutable.Map {
+              "billing": 50,
+            },
+            "public": true,
+            "product_id": "prod_LsH6kV35G6zKWo",
+            "name": "Basic",
+            "trial_period_days": 7,
+            "order": 2,
+            "currency": "usd",
+            "legacy_id": "basic-monthly-usd-4",
+            "price_id": "price_1LJBjWI9qXomtXqSPZn8LqlD",
+            "addons": Immutable.List [
+              "price_1LJBjXI9qXomtXqSSX34F3we",
+            ],
+            "free_tickets": 300,
+            "limits": Immutable.Map {
+              "messages": Immutable.Map {
+                "default": 100,
+                "max": 100,
+                "min": 75,
+              },
+              "tickets": Immutable.Map {
+                "default": 100,
+                "max": 100,
+                "min": 75,
+              },
+            },
+            "amount": 6000,
+            "features": Immutable.Map {
+              "view_sharing": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_cancellations_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "revenue_statistics": Immutable.Map {
+                "enabled": false,
+              },
+              "facebook_comment": Immutable.Map {
+                "enabled": true,
+              },
+              "satisfaction_surveys": Immutable.Map {
+                "enabled": true,
+              },
+              "api_1st_party_rate_limit": Immutable.Map {
+                "enabled": true,
+                "rate_limit": Immutable.Map {
+                  "interval_ms": 2000,
+                  "max_burst": 40,
+                },
+              },
+              "twitter_integration": Immutable.Map {
+                "enabled": false,
+                "limit": 0,
+              },
+              "user_roles": Immutable.Map {
+                "enabled": true,
+              },
+              "magento_integration": Immutable.Map {
+                "enabled": false,
+              },
+              "automation_managed_rules": Immutable.Map {
+                "enabled": false,
+              },
+              "overview_live_statistics": Immutable.Map {
+                "enabled": true,
+              },
+              "instagram_comment": Immutable.Map {
+                "enabled": true,
+              },
+              "yotpo_integration": Immutable.Map {
+                "enabled": true,
+              },
+              "help_center": Immutable.Map {
+                "enabled": true,
+              },
+              "api_3rd_party_rate_limit": Immutable.Map {
+                "enabled": true,
+                "rate_limit": Immutable.Map {
+                  "interval_ms": 20000,
+                  "max_burst": 40,
+                },
+              },
+              "automation_return_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "instagram_dm": Immutable.Map {
+                "enabled": true,
+              },
+              "teams": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_report_issue_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "automation_self_service_statistics": Immutable.Map {
+                "enabled": false,
+              },
+              "phone_number": Immutable.Map {
+                "enabled": true,
+                "limit": 1,
+              },
+              "automation_track_order_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "chat_campaigns": Immutable.Map {
+                "enabled": true,
+              },
+              "auto_assignment": Immutable.Map {
+                "enabled": true,
+              },
+              "users_live_statistics": Immutable.Map {
+                "enabled": false,
+              },
+            },
+            "is_legacy": false,
+            "integrations": 150,
+          },
+          Immutable.Map {
+            "cost_per_ticket": 0.4,
+            "interval": "year",
+            "phone_limits": Immutable.Map {
+              "billing": 50,
+            },
+            "public": true,
+            "product_id": "prod_LsH6kV35G6zKWo",
+            "name": "Basic",
+            "trial_period_days": 7,
+            "order": 2,
+            "currency": "usd",
+            "legacy_id": "basic-yearly-usd-4",
+            "price_id": "price_1LJBjYI9qXomtXqSLEjOrpmV",
+            "addons": Immutable.List [
+              "price_1LJBjZI9qXomtXqSPNgkEZpl",
+            ],
+            "free_tickets": 3600,
+            "limits": Immutable.Map {
+              "messages": Immutable.Map {
+                "default": 100,
+                "max": 100,
+                "min": 75,
+              },
+              "tickets": Immutable.Map {
+                "default": 100,
+                "max": 100,
+                "min": 75,
+              },
+            },
+            "amount": 60000,
+            "features": Immutable.Map {
+              "view_sharing": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_cancellations_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "revenue_statistics": Immutable.Map {
+                "enabled": false,
+              },
+              "facebook_comment": Immutable.Map {
+                "enabled": true,
+              },
+              "satisfaction_surveys": Immutable.Map {
+                "enabled": true,
+              },
+              "api_1st_party_rate_limit": Immutable.Map {
+                "enabled": true,
+                "rate_limit": Immutable.Map {
+                  "interval_ms": 2000,
+                  "max_burst": 40,
+                },
+              },
+              "twitter_integration": Immutable.Map {
+                "enabled": false,
+                "limit": 0,
+              },
+              "user_roles": Immutable.Map {
+                "enabled": true,
+              },
+              "magento_integration": Immutable.Map {
+                "enabled": false,
+              },
+              "automation_managed_rules": Immutable.Map {
+                "enabled": false,
+              },
+              "overview_live_statistics": Immutable.Map {
+                "enabled": true,
+              },
+              "instagram_comment": Immutable.Map {
+                "enabled": true,
+              },
+              "yotpo_integration": Immutable.Map {
+                "enabled": true,
+              },
+              "help_center": Immutable.Map {
+                "enabled": true,
+              },
+              "api_3rd_party_rate_limit": Immutable.Map {
+                "enabled": true,
+                "rate_limit": Immutable.Map {
+                  "interval_ms": 20000,
+                  "max_burst": 40,
+                },
+              },
+              "automation_return_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "instagram_dm": Immutable.Map {
+                "enabled": true,
+              },
+              "teams": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_report_issue_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "automation_self_service_statistics": Immutable.Map {
+                "enabled": false,
+              },
+              "phone_number": Immutable.Map {
+                "enabled": true,
+                "limit": 1,
+              },
+              "automation_track_order_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "chat_campaigns": Immutable.Map {
+                "enabled": true,
+              },
+              "auto_assignment": Immutable.Map {
+                "enabled": true,
+              },
+              "users_live_statistics": Immutable.Map {
+                "enabled": false,
+              },
+            },
+            "is_legacy": false,
+            "integrations": 150,
+          },
+          Immutable.Map {
+            "cost_per_ticket": 0.36,
+            "interval": "month",
+            "phone_limits": Immutable.Map {
+              "billing": 200,
+            },
+            "public": true,
+            "product_id": "prod_LsH6kV35G6zKWo",
+            "name": "Pro",
+            "trial_period_days": 7,
+            "order": 3,
+            "currency": "usd",
+            "legacy_id": "pro-monthly-usd-4",
+            "price_id": "price_1LJBjaI9qXomtXqSvYfzmmEU",
+            "addons": Immutable.List [
+              "price_1LJBjbI9qXomtXqS2sfi1J7P",
+            ],
+            "free_tickets": 2000,
+            "limits": Immutable.Map {
+              "messages": Immutable.Map {
+                "default": 100,
+                "max": 100,
+                "min": 75,
+              },
+              "tickets": Immutable.Map {
+                "default": 100,
+                "max": 100,
+                "min": 75,
+              },
+            },
+            "amount": 36000,
+            "features": Immutable.Map {
+              "view_sharing": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_cancellations_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "revenue_statistics": Immutable.Map {
+                "enabled": true,
+              },
+              "facebook_comment": Immutable.Map {
+                "enabled": true,
+              },
+              "satisfaction_surveys": Immutable.Map {
+                "enabled": true,
+              },
+              "api_1st_party_rate_limit": Immutable.Map {
+                "enabled": true,
+                "rate_limit": Immutable.Map {
+                  "interval_ms": 2000,
+                  "max_burst": 40,
+                },
+              },
+              "twitter_integration": Immutable.Map {
+                "enabled": false,
+                "limit": 0,
+              },
+              "user_roles": Immutable.Map {
+                "enabled": true,
+              },
+              "magento_integration": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_managed_rules": Immutable.Map {
+                "enabled": false,
+              },
+              "overview_live_statistics": Immutable.Map {
+                "enabled": true,
+              },
+              "instagram_comment": Immutable.Map {
+                "enabled": true,
+              },
+              "yotpo_integration": Immutable.Map {
+                "enabled": true,
+              },
+              "help_center": Immutable.Map {
+                "enabled": true,
+              },
+              "api_3rd_party_rate_limit": Immutable.Map {
+                "enabled": true,
+                "rate_limit": Immutable.Map {
+                  "interval_ms": 20000,
+                  "max_burst": 40,
+                },
+              },
+              "automation_return_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "instagram_dm": Immutable.Map {
+                "enabled": true,
+              },
+              "teams": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_report_issue_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "automation_self_service_statistics": Immutable.Map {
+                "enabled": false,
+              },
+              "phone_number": Immutable.Map {
+                "enabled": true,
+                "limit": 3,
+              },
+              "automation_track_order_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "chat_campaigns": Immutable.Map {
+                "enabled": true,
+              },
+              "auto_assignment": Immutable.Map {
+                "enabled": true,
+              },
+              "users_live_statistics": Immutable.Map {
+                "enabled": true,
+              },
+            },
+            "is_legacy": false,
+            "integrations": 150,
+          },
+          Immutable.Map {
+            "cost_per_ticket": 0.36,
+            "interval": "year",
+            "phone_limits": Immutable.Map {
+              "billing": 200,
+            },
+            "public": true,
+            "product_id": "prod_LsH6kV35G6zKWo",
+            "name": "Pro",
+            "trial_period_days": 7,
+            "order": 3,
+            "currency": "usd",
+            "legacy_id": "pro-yearly-usd-4",
+            "price_id": "price_1LJBjbI9qXomtXqShB9YLy7V",
+            "addons": Immutable.List [
+              "price_1LJBjdI9qXomtXqSlp9sh6iQ",
+            ],
+            "free_tickets": 24000,
+            "limits": Immutable.Map {
+              "messages": Immutable.Map {
+                "default": 100,
+                "max": 100,
+                "min": 75,
+              },
+              "tickets": Immutable.Map {
+                "default": 100,
+                "max": 100,
+                "min": 75,
+              },
+            },
+            "amount": 360000,
+            "features": Immutable.Map {
+              "view_sharing": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_cancellations_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "revenue_statistics": Immutable.Map {
+                "enabled": true,
+              },
+              "facebook_comment": Immutable.Map {
+                "enabled": true,
+              },
+              "satisfaction_surveys": Immutable.Map {
+                "enabled": true,
+              },
+              "api_1st_party_rate_limit": Immutable.Map {
+                "enabled": true,
+                "rate_limit": Immutable.Map {
+                  "interval_ms": 2000,
+                  "max_burst": 40,
+                },
+              },
+              "twitter_integration": Immutable.Map {
+                "enabled": false,
+                "limit": 0,
+              },
+              "user_roles": Immutable.Map {
+                "enabled": true,
+              },
+              "magento_integration": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_managed_rules": Immutable.Map {
+                "enabled": false,
+              },
+              "overview_live_statistics": Immutable.Map {
+                "enabled": true,
+              },
+              "instagram_comment": Immutable.Map {
+                "enabled": true,
+              },
+              "yotpo_integration": Immutable.Map {
+                "enabled": true,
+              },
+              "help_center": Immutable.Map {
+                "enabled": true,
+              },
+              "api_3rd_party_rate_limit": Immutable.Map {
+                "enabled": true,
+                "rate_limit": Immutable.Map {
+                  "interval_ms": 20000,
+                  "max_burst": 40,
+                },
+              },
+              "automation_return_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "instagram_dm": Immutable.Map {
+                "enabled": true,
+              },
+              "teams": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_report_issue_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "automation_self_service_statistics": Immutable.Map {
+                "enabled": false,
+              },
+              "phone_number": Immutable.Map {
+                "enabled": true,
+                "limit": 3,
+              },
+              "automation_track_order_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "chat_campaigns": Immutable.Map {
+                "enabled": true,
+              },
+              "auto_assignment": Immutable.Map {
+                "enabled": true,
+              },
+              "users_live_statistics": Immutable.Map {
+                "enabled": true,
+              },
+            },
+            "is_legacy": false,
+            "integrations": 150,
+          },
+          Immutable.Map {
+            "cost_per_ticket": 0.36,
+            "interval": "month",
+            "phone_limits": Immutable.Map {
+              "billing": 750,
+            },
+            "public": true,
+            "product_id": "prod_LsH6kV35G6zKWo",
+            "name": "Advanced",
+            "trial_period_days": 7,
+            "order": 4,
+            "currency": "usd",
+            "legacy_id": "advanced-monthly-usd-4",
+            "price_id": "price_1LJBjdI9qXomtXqS8RzPPA7K",
+            "addons": Immutable.List [
+              "price_1LJBjeI9qXomtXqSXRjmhPsL",
+            ],
+            "free_tickets": 5000,
+            "limits": Immutable.Map {
+              "messages": Immutable.Map {
+                "default": 100,
+                "max": 100,
+                "min": 75,
+              },
+              "tickets": Immutable.Map {
+                "default": 100,
+                "max": 100,
+                "min": 75,
+              },
+            },
+            "amount": 90000,
+            "features": Immutable.Map {
+              "view_sharing": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_cancellations_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "revenue_statistics": Immutable.Map {
+                "enabled": true,
+              },
+              "facebook_comment": Immutable.Map {
+                "enabled": true,
+              },
+              "satisfaction_surveys": Immutable.Map {
+                "enabled": true,
+              },
+              "api_1st_party_rate_limit": Immutable.Map {
+                "enabled": true,
+                "rate_limit": Immutable.Map {
+                  "interval_ms": 2000,
+                  "max_burst": 40,
+                },
+              },
+              "twitter_integration": Immutable.Map {
+                "enabled": true,
+                "limit": 2,
+              },
+              "user_roles": Immutable.Map {
+                "enabled": true,
+              },
+              "magento_integration": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_managed_rules": Immutable.Map {
+                "enabled": false,
+              },
+              "overview_live_statistics": Immutable.Map {
+                "enabled": true,
+              },
+              "instagram_comment": Immutable.Map {
+                "enabled": true,
+              },
+              "yotpo_integration": Immutable.Map {
+                "enabled": true,
+              },
+              "help_center": Immutable.Map {
+                "enabled": true,
+              },
+              "api_3rd_party_rate_limit": Immutable.Map {
+                "enabled": true,
+                "rate_limit": Immutable.Map {
+                  "interval_ms": 20000,
+                  "max_burst": 40,
+                },
+              },
+              "automation_return_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "instagram_dm": Immutable.Map {
+                "enabled": true,
+              },
+              "teams": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_report_issue_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "automation_self_service_statistics": Immutable.Map {
+                "enabled": false,
+              },
+              "phone_number": Immutable.Map {
+                "enabled": true,
+                "limit": 10,
+              },
+              "automation_track_order_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "chat_campaigns": Immutable.Map {
+                "enabled": true,
+              },
+              "auto_assignment": Immutable.Map {
+                "enabled": true,
+              },
+              "users_live_statistics": Immutable.Map {
+                "enabled": true,
+              },
+            },
+            "is_legacy": false,
+            "integrations": 150,
+          },
+          Immutable.Map {
+            "cost_per_ticket": 0.36,
+            "interval": "year",
+            "phone_limits": Immutable.Map {
+              "billing": 750,
+            },
+            "public": true,
+            "product_id": "prod_LsH6kV35G6zKWo",
+            "name": "Advanced",
+            "trial_period_days": 7,
+            "order": 4,
+            "currency": "usd",
+            "legacy_id": "advanced-yearly-usd-4",
+            "price_id": "price_1LJBjfI9qXomtXqSeKJ5lJjD",
+            "addons": Immutable.List [
+              "price_1LJBjgI9qXomtXqSBZoBcg7G",
+            ],
+            "free_tickets": 60000,
+            "limits": Immutable.Map {
+              "messages": Immutable.Map {
+                "default": 100,
+                "max": 100,
+                "min": 75,
+              },
+              "tickets": Immutable.Map {
+                "default": 100,
+                "max": 100,
+                "min": 75,
+              },
+            },
+            "amount": 900000,
+            "features": Immutable.Map {
+              "view_sharing": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_cancellations_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "revenue_statistics": Immutable.Map {
+                "enabled": true,
+              },
+              "facebook_comment": Immutable.Map {
+                "enabled": true,
+              },
+              "satisfaction_surveys": Immutable.Map {
+                "enabled": true,
+              },
+              "api_1st_party_rate_limit": Immutable.Map {
+                "enabled": true,
+                "rate_limit": Immutable.Map {
+                  "interval_ms": 2000,
+                  "max_burst": 40,
+                },
+              },
+              "twitter_integration": Immutable.Map {
+                "enabled": true,
+                "limit": 2,
+              },
+              "user_roles": Immutable.Map {
+                "enabled": true,
+              },
+              "magento_integration": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_managed_rules": Immutable.Map {
+                "enabled": false,
+              },
+              "overview_live_statistics": Immutable.Map {
+                "enabled": true,
+              },
+              "instagram_comment": Immutable.Map {
+                "enabled": true,
+              },
+              "yotpo_integration": Immutable.Map {
+                "enabled": true,
+              },
+              "help_center": Immutable.Map {
+                "enabled": true,
+              },
+              "api_3rd_party_rate_limit": Immutable.Map {
+                "enabled": true,
+                "rate_limit": Immutable.Map {
+                  "interval_ms": 20000,
+                  "max_burst": 40,
+                },
+              },
+              "automation_return_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "instagram_dm": Immutable.Map {
+                "enabled": true,
+              },
+              "teams": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_report_issue_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "automation_self_service_statistics": Immutable.Map {
+                "enabled": false,
+              },
+              "phone_number": Immutable.Map {
+                "enabled": true,
+                "limit": 10,
+              },
+              "automation_track_order_flow": Immutable.Map {
+                "enabled": false,
+              },
+              "chat_campaigns": Immutable.Map {
+                "enabled": true,
+              },
+              "auto_assignment": Immutable.Map {
+                "enabled": true,
+              },
+              "users_live_statistics": Immutable.Map {
+                "enabled": true,
+              },
+            },
+            "is_legacy": false,
+            "integrations": 150,
+          },
+        ],
+      },
+      Immutable.Map {
+        "id": "prod_LsHD5xmSqoFBBs",
+        "type": "automation",
+        "prices": Immutable.List [
+          Immutable.Map {
+            "automation_addon_included": true,
+            "interval": "month",
+            "additional_cost_per_ticket": 0.2,
+            "automation_addon_discount": 0,
+            "product_id": "prod_LsHD5xmSqoFBBs",
+            "name": "Basic",
+            "order": 2,
+            "currency": "usd",
+            "legacy_id": "basic-automation-full-price-monthly-usd-4",
+            "price_id": "price_1LJBjXI9qXomtXqSSX34F3we",
+            "amount": 3000,
+            "features": Immutable.Map {
+              "automation_managed_rules": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_track_order_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_report_issue_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_cancellations_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_return_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_self_service_statistics": Immutable.Map {
+                "enabled": true,
+              },
+            },
+            "base_price_id": "price_1LJBjWI9qXomtXqSPZn8LqlD",
+          },
+          Immutable.Map {
+            "automation_addon_included": true,
+            "interval": "year",
+            "additional_cost_per_ticket": 0.2,
+            "automation_addon_discount": 0,
+            "product_id": "prod_LsHD5xmSqoFBBs",
+            "name": "Basic",
+            "order": 2,
+            "currency": "usd",
+            "legacy_id": "basic-automation-full-price-yearly-usd-4",
+            "price_id": "price_1LJBjZI9qXomtXqSPNgkEZpl",
+            "amount": 30000,
+            "features": Immutable.Map {
+              "automation_managed_rules": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_track_order_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_report_issue_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_cancellations_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_return_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_self_service_statistics": Immutable.Map {
+                "enabled": true,
+              },
+            },
+            "base_price_id": "price_1LJBjYI9qXomtXqSLEjOrpmV",
+          },
+          Immutable.Map {
+            "automation_addon_included": true,
+            "interval": "month",
+            "additional_cost_per_ticket": 0.18,
+            "automation_addon_discount": 0,
+            "product_id": "prod_LsHD5xmSqoFBBs",
+            "name": "Pro",
+            "order": 3,
+            "currency": "usd",
+            "legacy_id": "pro-automation-full-price-monthly-usd-4",
+            "price_id": "price_1LJBjbI9qXomtXqS2sfi1J7P",
+            "amount": 18000,
+            "features": Immutable.Map {
+              "automation_managed_rules": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_track_order_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_report_issue_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_cancellations_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_return_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_self_service_statistics": Immutable.Map {
+                "enabled": true,
+              },
+            },
+            "base_price_id": "price_1LJBjaI9qXomtXqSvYfzmmEU",
+          },
+          Immutable.Map {
+            "automation_addon_included": true,
+            "interval": "year",
+            "additional_cost_per_ticket": 0.18,
+            "automation_addon_discount": 0,
+            "product_id": "prod_LsHD5xmSqoFBBs",
+            "name": "Pro",
+            "order": 3,
+            "currency": "usd",
+            "legacy_id": "pro-automation-full-price-yearly-usd-4",
+            "price_id": "price_1LJBjdI9qXomtXqSlp9sh6iQ",
+            "amount": 180000,
+            "features": Immutable.Map {
+              "automation_managed_rules": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_track_order_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_report_issue_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_cancellations_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_return_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_self_service_statistics": Immutable.Map {
+                "enabled": true,
+              },
+            },
+            "base_price_id": "price_1LJBjbI9qXomtXqShB9YLy7V",
+          },
+          Immutable.Map {
+            "automation_addon_included": true,
+            "interval": "month",
+            "additional_cost_per_ticket": 0.18,
+            "automation_addon_discount": 0,
+            "product_id": "prod_LsHD5xmSqoFBBs",
+            "name": "Advanced",
+            "order": 4,
+            "currency": "usd",
+            "legacy_id": "advanced-automation-full-price-monthly-usd-4",
+            "price_id": "price_1LJBjeI9qXomtXqSXRjmhPsL",
+            "amount": 45000,
+            "features": Immutable.Map {
+              "automation_managed_rules": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_track_order_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_report_issue_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_cancellations_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_return_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_self_service_statistics": Immutable.Map {
+                "enabled": true,
+              },
+            },
+            "base_price_id": "price_1LJBjdI9qXomtXqS8RzPPA7K",
+          },
+          Immutable.Map {
+            "automation_addon_included": true,
+            "interval": "year",
+            "additional_cost_per_ticket": 0.18,
+            "automation_addon_discount": 0,
+            "product_id": "prod_LsHD5xmSqoFBBs",
+            "name": "Advanced",
+            "order": 4,
+            "currency": "usd",
+            "legacy_id": "advanced-automation-full-price-yearly-usd-4",
+            "price_id": "price_1LJBjgI9qXomtXqSBZoBcg7G",
+            "amount": 450000,
+            "features": Immutable.Map {
+              "automation_managed_rules": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_track_order_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_report_issue_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_cancellations_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_return_flow": Immutable.Map {
+                "enabled": true,
+              },
+              "automation_self_service_statistics": Immutable.Map {
+                "enabled": true,
+              },
+            },
+            "base_price_id": "price_1LJBjfI9qXomtXqSeKJ5lJjD",
+          },
+        ],
+      },
+    ],
   },
   "chats": Immutable.Map {
     "tickets": Immutable.List [
@@ -244,6 +1188,9 @@ Object {
       "plan": "team-usd-1",
       "status": "trialing",
       "start_datetime": "2017-08-23T01:38:53+00:00",
+      "products": Immutable.Map {
+        "prod_LsH6kV35G6zKWo": "price_1LJBjWI9qXomtXqSPZn8LqlD",
+      },
     },
     "domain": "acme",
     "meta": Immutable.Map {},

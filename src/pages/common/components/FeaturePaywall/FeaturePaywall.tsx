@@ -2,8 +2,11 @@ import React from 'react'
 
 import {paywallConfigs as defaultPaywallConfigs} from 'config/paywalls'
 import {AccountFeature} from 'state/currentAccount/types'
-import {hasLegacyPlan, DEPRECATED_getCurrentPlan} from 'state/billing/selectors'
-import {BillingImmutableState} from 'state/billing/types'
+import {
+    hasLegacyPlan,
+    DEPRECATED_getCurrentPlan,
+    DEPRECATED_getPlans,
+} from 'state/billing/selectors'
 import {Plan} from 'models/billing/types'
 import {toJS} from 'utils'
 import {getCheapestPlanNameForFeature} from 'utils/paywalls'
@@ -20,14 +23,10 @@ const FeaturePaywall = ({
     feature,
     paywallConfigs = defaultPaywallConfigs,
 }: Props) => {
-    const billingState = useAppSelector<BillingImmutableState>(
-        (state) => state.billing
-    )
+    const immutablePlans = useAppSelector(DEPRECATED_getPlans)
     const isLegacyPlan = useAppSelector(hasLegacyPlan)
     const currentPlan = useAppSelector(DEPRECATED_getCurrentPlan)
-    const plans: Record<string, Plan> | undefined = toJS(
-        billingState.get('plans')
-    )
+    const plans: Record<string, Plan> | undefined = toJS(immutablePlans)
     const shouldKeepPlan =
         currentPlan.get('custom') ||
         (isLegacyPlan &&

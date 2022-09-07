@@ -15,8 +15,9 @@ import {IntegrationType} from 'models/integration/types'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import {updateOrCreateIntegration} from 'state/integrations/actions'
 import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
-
-import {basicAutomationPlan} from 'fixtures/subscriptionPlan'
+import {billingState} from 'fixtures/billing'
+import {automationPriceFeatures} from 'fixtures/productPrices'
+import {automationSubscriptionProductPrices} from 'fixtures/account'
 
 import GorgiasChatIntegrationSelfService from '..'
 
@@ -75,21 +76,12 @@ describe('<GorgiasChatIntegrationSelfService/>', () => {
     const defaultState = {
         currentAccount: fromJS({
             current_subscription: {
-                plan: basicAutomationPlan.id,
+                products: automationSubscriptionProductPrices,
             },
-            features: {
-                automation_return_flow: {enabled: true},
-                automation_cancellations_flow: {enabled: true},
-                automation_track_order_flow: {enabled: true},
-                automation_report_issue_flow: {enabled: true},
-            },
+            features: automationPriceFeatures,
             created_datetime: '2021-08-01T00:00:00Z',
         }),
-        billing: fromJS({
-            plans: fromJS({
-                [basicAutomationPlan.id]: basicAutomationPlan,
-            }),
-        }),
+        billing: fromJS(billingState),
         entities: {
             macros: {},
             rules: {},

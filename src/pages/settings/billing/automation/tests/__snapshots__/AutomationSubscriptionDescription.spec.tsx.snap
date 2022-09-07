@@ -28,7 +28,7 @@ exports[`<AutomationSubscriptionDescription /> should render for customers alrea
         class="amount"
       >
         <b>
-          $0
+          $30
         </b>
          
         / 
@@ -65,14 +65,8 @@ exports[`<AutomationSubscriptionDescription /> should render for customers alrea
       <span
         class="amount"
       >
-        <span
-          class="fullAmount"
-        >
-          $40
-        </span>
-        <wbr />
         <b>
-          $20
+          $30
         </b>
          
         / 
@@ -183,14 +177,8 @@ exports[`<AutomationSubscriptionDescription /> should render for customers witho
       <span
         class="amount"
       >
-        <span
-          class="fullAmount"
-        >
-          $40
-        </span>
-        <wbr />
         <b>
-          $20
+          $30
         </b>
          
         / 

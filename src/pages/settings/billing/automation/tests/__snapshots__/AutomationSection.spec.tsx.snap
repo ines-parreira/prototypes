@@ -14,14 +14,8 @@ exports[`<AutomationSection /> should render 1`] = `
       <span
         class="amount"
       >
-        <span
-          class="fullAmount"
-        >
-          $40
-        </span>
-        <wbr />
         <b>
-          $20
+          $30
         </b>
          
         / 
@@ -180,14 +174,8 @@ exports[`<AutomationSection /> should render for customers already with legacy a
       <span
         class="amount"
       >
-        <span
-          class="fullAmount"
-        >
-          $40
-        </span>
-        <wbr />
         <b>
-          $20
+          $30
         </b>
          
         / 
@@ -261,14 +249,8 @@ exports[`<AutomationSection /> should render for trialing customers 1`] = `
       <span
         class="amount"
       >
-        <span
-          class="fullAmount"
-        >
-          $40
-        </span>
-        <wbr />
         <b>
-          $20
+          $30
         </b>
          
         / 

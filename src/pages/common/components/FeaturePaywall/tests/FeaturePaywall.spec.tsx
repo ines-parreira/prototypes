@@ -4,15 +4,20 @@ import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
+import _cloneDeep from 'lodash/cloneDeep'
 
-import {PaywallConfig} from '../../../../../config/paywalls'
-import {AccountFeature} from '../../../../../state/currentAccount/types'
-import {RootState, StoreDispatch} from '../../../../../state/types'
+import {AccountFeature} from 'state/currentAccount/types'
+import {billingState} from 'fixtures/billing'
 import {
-    advancedPlan,
-    basicPlan,
-    proPlan,
-} from '../../../../../fixtures/subscriptionPlan'
+    customHelpdeskPrice,
+    HELPDESK_PRODUCT_ID,
+    legacyBasicHelpdeskPrice,
+    products,
+} from 'fixtures/productPrices'
+import {account} from 'fixtures/account'
+import {PaywallConfig} from 'config/paywalls'
+import {RootState, StoreDispatch} from 'state/types'
+
 import FeaturePaywall from '../FeaturePaywall'
 
 jest.mock('react-images', () => {
@@ -48,13 +53,8 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('<FeaturePaywall />', () => {
     const defaultState: Partial<RootState> = {
-        billing: fromJS({
-            plans: fromJS({
-                [basicPlan.id]: basicPlan,
-                [proPlan.id]: proPlan,
-                [advancedPlan.id]: advancedPlan,
-            }),
-        }),
+        currentAccount: fromJS(account),
+        billing: fromJS(billingState),
     }
 
     const defaultPaywallConfig: PaywallConfig = {
@@ -97,8 +97,8 @@ describe('<FeaturePaywall />', () => {
         ],
         [
             'required plan name was not found',
-            minProps,
-            {...defaultState, billing: fromJS({})},
+            {...minProps, feature: AccountFeature.Api1stPartyRateLimit},
+            defaultState,
         ],
     ])('should render empty page when %s', (testName, props, state) => {
         const {container} = render(
@@ -121,34 +121,32 @@ describe('<FeaturePaywall />', () => {
     })
 
     it('should ask to upgrade legacy plan into new plan', () => {
+        const productsWithLegacyPrice = _cloneDeep(products)
+        productsWithLegacyPrice[0].prices.push(legacyBasicHelpdeskPrice)
+
         const {container} = render(
             <Provider
                 store={mockStore({
                     ...defaultState,
                     currentAccount: fromJS({
                         current_subscription: {
-                            plan: advancedPlan.id,
+                            products: {
+                                [HELPDESK_PRODUCT_ID]:
+                                    legacyBasicHelpdeskPrice.price_id,
+                            },
                         },
                     }),
                     billing: fromJS({
-                        plans: {
-                            [basicPlan.id]: basicPlan,
-                            [proPlan.id]: proPlan,
-                            [advancedPlan.id]: {
-                                ...advancedPlan,
-                                is_legacy: true,
-                                public: false,
-                            },
-                        },
+                        ...billingState,
+                        products: productsWithLegacyPrice,
                     }),
                 } as Partial<RootState>)}
             >
                 <FeaturePaywall
                     {...minProps}
-                    feature={AccountFeature.OverviewLiveStatistics}
+                    feature={AccountFeature.AutoAssignment}
                     paywallConfigs={{
-                        [AccountFeature.OverviewLiveStatistics]:
-                            defaultPaywallConfig,
+                        [AccountFeature.AutoAssignment]: defaultPaywallConfig,
                     }}
                 />
             </Provider>
@@ -158,19 +156,24 @@ describe('<FeaturePaywall />', () => {
     })
 
     it('should ask to upgrade custom plan when missing feature', () => {
+        const productsWithCustomPrice = _cloneDeep(products)
+        productsWithCustomPrice[0].prices.push(customHelpdeskPrice)
+
         const {container} = render(
             <Provider
                 store={mockStore({
                     ...defaultState,
                     currentAccount: fromJS({
                         current_subscription: {
-                            plan: advancedPlan.id,
+                            products: {
+                                [HELPDESK_PRODUCT_ID]:
+                                    customHelpdeskPrice.price_id,
+                            },
                         },
                     }),
                     billing: fromJS({
-                        plans: {
-                            [advancedPlan.id]: {...advancedPlan, custom: true},
-                        },
+                        ...billingState,
+                        products: productsWithCustomPrice,
                     }),
                 } as Partial<RootState>)}
             >

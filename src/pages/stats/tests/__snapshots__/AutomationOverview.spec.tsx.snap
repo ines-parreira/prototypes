@@ -623,25 +623,21 @@ exports[`AutomationOverview should render the filters and stats when stats filte
                 <div
                   class="d-flex align-items-center upgradeLink"
                 >
-                  <a
-                    to="[object Object]"
+                  <button
+                    class="wrapper fill primary medium"
+                    type="button"
                   >
-                    <button
-                      class="wrapper fill primary medium"
-                      type="button"
+                    <span
+                      class="wrapper"
                     >
-                      <span
-                        class="wrapper"
+                      Get Automation Features
+                      <i
+                        class="material-icons icon isRight medium"
                       >
-                        Upgrade
-                        <i
-                          class="material-icons icon isRight medium"
-                        >
-                          auto_awesome
-                        </i>
-                      </span>
-                    </button>
-                  </a>
+                        auto_awesome
+                      </i>
+                    </span>
+                  </button>
                 </div>
               </div>
             </div>

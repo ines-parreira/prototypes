@@ -25,7 +25,7 @@ exports[`<BillingPlanCard /> should render features list from the feature plan 1
           <span
             class="amount"
           >
-            $6,000
+            $60
              
             / 
             month
@@ -194,7 +194,7 @@ exports[`<BillingPlanCard /> should render features list from the feature plan 1
         </span>
       </li>
       <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+        class="d-flex align-items-center featureListItem"
       >
         <span
           class="featureIcon mr-3"
@@ -293,7 +293,7 @@ exports[`<BillingPlanCard /> should render plan card for the Advanced automation
           <span
             class="amount"
           >
-            $100,000
+            $1,350
              
             / 
             month
@@ -325,7 +325,7 @@ exports[`<BillingPlanCard /> should render plan card for the Advanced automation
             class="billableTickets"
             id="billable-ticket-label-42"
           >
-            350
+            300
              
             billable tickets
           </span>
@@ -401,7 +401,7 @@ exports[`<BillingPlanCard /> should render plan card for the Advanced automation
         </span>
       </li>
       <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+        class="d-flex align-items-center featureListItem"
       >
         <span
           class="featureIcon mr-3"
@@ -477,7 +477,7 @@ exports[`<BillingPlanCard /> should render plan card for the Advanced automation
         </span>
       </li>
       <li
-        class="d-flex align-items-center featureListItem"
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
       >
         <span
           class="featureIcon mr-3"
@@ -560,7 +560,7 @@ exports[`<BillingPlanCard /> should render plan card for the Advanced plan 1`] =
           <span
             class="amount"
           >
-            $70,000
+            $900
              
             / 
             month
@@ -592,7 +592,7 @@ exports[`<BillingPlanCard /> should render plan card for the Advanced plan 1`] =
             class="billableTickets"
             id="billable-ticket-label-42"
           >
-            350
+            300
              
             billable tickets
           </span>
@@ -668,7 +668,7 @@ exports[`<BillingPlanCard /> should render plan card for the Advanced plan 1`] =
         </span>
       </li>
       <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+        class="d-flex align-items-center featureListItem"
       >
         <span
           class="featureIcon mr-3"
@@ -744,7 +744,7 @@ exports[`<BillingPlanCard /> should render plan card for the Advanced plan 1`] =
         </span>
       </li>
       <li
-        class="d-flex align-items-center featureListItem"
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
       >
         <span
           class="featureIcon mr-3"
@@ -827,7 +827,7 @@ exports[`<BillingPlanCard /> should render plan card for the Basic automation pl
           <span
             class="amount"
           >
-            $8,000
+            $90
              
             / 
             month
@@ -859,7 +859,7 @@ exports[`<BillingPlanCard /> should render plan card for the Basic automation pl
             class="billableTickets"
             id="billable-ticket-label-42"
           >
-            350
+            300
              
             billable tickets
           </span>
@@ -935,7 +935,7 @@ exports[`<BillingPlanCard /> should render plan card for the Basic automation pl
         </span>
       </li>
       <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+        class="d-flex align-items-center featureListItem"
       >
         <span
           class="featureIcon mr-3"
@@ -1011,7 +1011,7 @@ exports[`<BillingPlanCard /> should render plan card for the Basic automation pl
         </span>
       </li>
       <li
-        class="d-flex align-items-center featureListItem"
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
       >
         <span
           class="featureIcon mr-3"
@@ -1094,7 +1094,7 @@ exports[`<BillingPlanCard /> should render plan card for the Basic plan 1`] = `
           <span
             class="amount"
           >
-            $6,000
+            $60
              
             / 
             month
@@ -1126,7 +1126,7 @@ exports[`<BillingPlanCard /> should render plan card for the Basic plan 1`] = `
             class="billableTickets"
             id="billable-ticket-label-42"
           >
-            350
+            300
              
             billable tickets
           </span>
@@ -1202,7 +1202,7 @@ exports[`<BillingPlanCard /> should render plan card for the Basic plan 1`] = `
         </span>
       </li>
       <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+        class="d-flex align-items-center featureListItem"
       >
         <span
           class="featureIcon mr-3"
@@ -1278,7 +1278,7 @@ exports[`<BillingPlanCard /> should render plan card for the Basic plan 1`] = `
         </span>
       </li>
       <li
-        class="d-flex align-items-center featureListItem"
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
       >
         <span
           class="featureIcon mr-3"
@@ -1361,7 +1361,7 @@ exports[`<BillingPlanCard /> should render plan card for the Custom automation p
           <span
             class="amount"
           >
-            $54,000
+            $2,400
              
             / 
             month
@@ -1393,7 +1393,7 @@ exports[`<BillingPlanCard /> should render plan card for the Custom automation p
             class="billableTickets"
             id="billable-ticket-label-42"
           >
-            350
+            300
              
             billable tickets
           </span>
@@ -1469,7 +1469,7 @@ exports[`<BillingPlanCard /> should render plan card for the Custom automation p
         </span>
       </li>
       <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+        class="d-flex align-items-center featureListItem"
       >
         <span
           class="featureIcon mr-3"
@@ -1545,7 +1545,7 @@ exports[`<BillingPlanCard /> should render plan card for the Custom automation p
         </span>
       </li>
       <li
-        class="d-flex align-items-center featureListItem"
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
       >
         <span
           class="featureIcon mr-3"
@@ -1628,7 +1628,7 @@ exports[`<BillingPlanCard /> should render plan card for the Custom plan 1`] = `
           <span
             class="amount"
           >
-            $54,000
+            $1,600
              
             / 
             month
@@ -1660,7 +1660,7 @@ exports[`<BillingPlanCard /> should render plan card for the Custom plan 1`] = `
             class="billableTickets"
             id="billable-ticket-label-42"
           >
-            350
+            300
              
             billable tickets
           </span>
@@ -1736,7 +1736,7 @@ exports[`<BillingPlanCard /> should render plan card for the Custom plan 1`] = `
         </span>
       </li>
       <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+        class="d-flex align-items-center featureListItem"
       >
         <span
           class="featureIcon mr-3"
@@ -1812,274 +1812,7 @@ exports[`<BillingPlanCard /> should render plan card for the Custom plan 1`] = `
         </span>
       </li>
       <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon"
-            style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
-          />
-        </span>
-        <span>
-          Magento integration
-        </span>
-      </li>
-      <li
         class="d-flex align-items-center featureListItem disabledFeatureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            person_pin
-          </i>
-        </span>
-        <span>
-          Dedicated success manager
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            blur_on
-          </i>
-        </span>
-        <span>
-          Custom services
-        </span>
-      </li>
-    </ul>
-  </div>
-  <div
-    class="cardFooter card-footer"
-  >
-    <span>
-      Foo footer
-    </span>
-  </div>
-</div>
-`;
-
-exports[`<BillingPlanCard /> should render plan card for the Enterprise plan 1`] = `
-<div
-  class="plan goldTheme fooClass card"
->
-  <div
-    class="planHeader card-header"
-  >
-    <div
-      class="headerText"
-    >
-      <div
-        class="planName"
-        title="Enterprise"
-      >
-        Enterprise
-      </div>
-      <span
-        class="headerPrice"
-      >
-        <div
-          class="amountWrapper"
-        >
-          <span
-            class="amount"
-          >
-            $70,000
-             
-            / 
-            month
-          </span>
-        </div>
-      </span>
-    </div>
-  </div>
-  <div
-    class="cardBody card-body"
-  >
-    <ul
-      class="featureList"
-    >
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            playlist_add_check
-          </i>
-        </span>
-        <span>
-          <span
-            class="billableTickets"
-            id="billable-ticket-label-42"
-          >
-            350
-             
-            billable tickets
-          </span>
-           
-          included
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            thumb_up
-          </i>
-        </span>
-        <span>
-          Facebook, Messenger, Instagram & DMs
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            forum
-          </i>
-        </span>
-        <span>
-          Live chat
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            phone
-          </i>
-        </span>
-        <span>
-          <b>
-            1
-          </b>
-           Phone number
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            auto_awesome
-          </i>
-        </span>
-        <span>
-          Macros and rules
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            insert_emoticon
-          </i>
-        </span>
-        <span>
-          Satisfaction surveys
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            web_asset
-          </i>
-        </span>
-        <span>
-          <div>
-            Unlimited
-             
-            <span
-              class="underline"
-              id="help-center-label-42"
-            >
-              Help centers
-            </span>
-          </div>
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            directions_walk
-          </i>
-        </span>
-        <span>
-          <b>
-            Self
-          </b>
-           onboarding
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            attach_money
-          </i>
-        </span>
-        <span>
-          Revenue statistics
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
       >
         <span
           class="featureIcon mr-3"
@@ -2149,9 +1882,9 @@ exports[`<BillingPlanCard /> should render plan card for the Legacy plan 1`] = `
     >
       <div
         class="planName"
-        title="Standard"
+        title="Basic Plan"
       >
-        Standard
+        Basic
       </div>
       <span
         class="headerPrice"
@@ -2162,7 +1895,7 @@ exports[`<BillingPlanCard /> should render plan card for the Legacy plan 1`] = `
           <span
             class="amount"
           >
-            $3,000
+            $60
              
             / 
             month
@@ -2194,7 +1927,7 @@ exports[`<BillingPlanCard /> should render plan card for the Legacy plan 1`] = `
             class="billableTickets"
             id="billable-ticket-label-42"
           >
-            350
+            300
              
             billable tickets
           </span>
@@ -2270,7 +2003,7 @@ exports[`<BillingPlanCard /> should render plan card for the Legacy plan 1`] = `
         </span>
       </li>
       <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+        class="d-flex align-items-center featureListItem"
       >
         <span
           class="featureIcon mr-3"
@@ -2346,7 +2079,7 @@ exports[`<BillingPlanCard /> should render plan card for the Legacy plan 1`] = `
         </span>
       </li>
       <li
-        class="d-flex align-items-center featureListItem"
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
       >
         <span
           class="featureIcon mr-3"
@@ -2429,7 +2162,7 @@ exports[`<BillingPlanCard /> should render plan card for the Pro automation plan
           <span
             class="amount"
           >
-            $40,000
+            $540
              
             / 
             month
@@ -2461,7 +2194,7 @@ exports[`<BillingPlanCard /> should render plan card for the Pro automation plan
             class="billableTickets"
             id="billable-ticket-label-42"
           >
-            350
+            300
              
             billable tickets
           </span>
@@ -2537,7 +2270,7 @@ exports[`<BillingPlanCard /> should render plan card for the Pro automation plan
         </span>
       </li>
       <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+        class="d-flex align-items-center featureListItem"
       >
         <span
           class="featureIcon mr-3"
@@ -2613,7 +2346,7 @@ exports[`<BillingPlanCard /> should render plan card for the Pro automation plan
         </span>
       </li>
       <li
-        class="d-flex align-items-center featureListItem"
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
       >
         <span
           class="featureIcon mr-3"
@@ -2696,7 +2429,7 @@ exports[`<BillingPlanCard /> should render plan card for the Pro plan 1`] = `
           <span
             class="amount"
           >
-            $30,000
+            $360
              
             / 
             month
@@ -2728,7 +2461,7 @@ exports[`<BillingPlanCard /> should render plan card for the Pro plan 1`] = `
             class="billableTickets"
             id="billable-ticket-label-42"
           >
-            350
+            300
              
             billable tickets
           </span>
@@ -2804,7 +2537,7 @@ exports[`<BillingPlanCard /> should render plan card for the Pro plan 1`] = `
         </span>
       </li>
       <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+        class="d-flex align-items-center featureListItem"
       >
         <span
           class="featureIcon mr-3"
@@ -2880,7 +2613,7 @@ exports[`<BillingPlanCard /> should render plan card for the Pro plan 1`] = `
         </span>
       </li>
       <li
-        class="d-flex align-items-center featureListItem"
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
       >
         <span
           class="featureIcon mr-3"
@@ -2970,9 +2703,9 @@ exports[`<BillingPlanCard /> should render the legacy badge for current legacy p
     >
       <div
         class="planName"
-        title="Standard"
+        title="Basic Plan"
       >
-        Standard
+        Basic
       </div>
       <span
         class="headerPrice"
@@ -2983,7 +2716,7 @@ exports[`<BillingPlanCard /> should render the legacy badge for current legacy p
           <span
             class="amount"
           >
-            $3,000
+            $60
              
             / 
             month
@@ -3015,7 +2748,7 @@ exports[`<BillingPlanCard /> should render the legacy badge for current legacy p
             class="billableTickets"
             id="billable-ticket-label-42"
           >
-            350
+            300
              
             billable tickets
           </span>
@@ -3091,7 +2824,7 @@ exports[`<BillingPlanCard /> should render the legacy badge for current legacy p
         </span>
       </li>
       <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+        class="d-flex align-items-center featureListItem"
       >
         <span
           class="featureIcon mr-3"
@@ -3167,7 +2900,7 @@ exports[`<BillingPlanCard /> should render the legacy badge for current legacy p
         </span>
       </li>
       <li
-        class="d-flex align-items-center featureListItem"
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
       >
         <span
           class="featureIcon mr-3"

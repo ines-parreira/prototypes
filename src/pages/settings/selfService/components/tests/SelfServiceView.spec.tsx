@@ -13,6 +13,9 @@ import {RootState, StoreDispatch} from 'state/types'
 import {fetchSelfServiceConfigurations} from 'models/selfServiceConfiguration/resources'
 import {SelfServiceConfigurationsState} from 'state/entities/selfServiceConfigurations/types'
 import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
+import {account} from 'fixtures/account'
+import {billingState} from 'fixtures/billing'
+import {automationPriceFeatures} from 'fixtures/productPrices'
 import {SelfServiceView} from '../SelfServiceView'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -66,14 +69,10 @@ const createSelfServiceConfigurationFixtures = (length: number) => {
 
 describe('<SelfServiceView/>', () => {
     const defaultState = {
-        billing: fromJS({plans: []}),
+        billing: fromJS(billingState),
         currentAccount: fromJS({
-            features: {
-                automation_return_flow: {enabled: true},
-                automation_cancellations_flow: {enabled: true},
-                automation_track_order_flow: {enabled: true},
-                automation_report_issue_flow: {enabled: true},
-            },
+            ...account,
+            features: automationPriceFeatures,
             created_datetime: '2021-08-01T00:00:00Z',
         }),
         entities: {

@@ -1,9 +1,23 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
-import {fromJS, List, Map, OrderedMap} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
+import _cloneDeep from 'lodash/cloneDeep'
 
-import * as billingFixtures from '../../../fixtures/billing'
-import {Plan} from '../../../models/billing/types'
-import {initialState as initialCurrentAccountState} from '../../currentAccount/reducers'
+import {Plan} from 'models/billing/types'
+import {
+    AUTOMATION_PRODUCT_ID,
+    automationProduct,
+    basicDiscountedAutomationPrice,
+    basicMonthlyAutomationPrice,
+    basicMonthlyHelpdeskPrice,
+    basicYearlyHelpdeskPrice,
+    HELPDESK_PRODUCT_ID,
+    helpdeskProduct,
+    legacyBasicAutomationPrice,
+    legacyBasicHelpdeskPrice,
+    products,
+} from 'fixtures/productPrices'
+import * as billingFixtures from 'fixtures/billing'
+import {automationSubscriptionProductPrices} from 'fixtures/account'
 import {RootState} from '../../types'
 import * as selectors from '../selectors'
 import {initialState} from '../reducers'
@@ -16,7 +30,12 @@ describe('billing selectors', () => {
     beforeEach(() => {
         state = {
             currentAccount: fromJS({
-                current_subscription: {plan: 'free'},
+                current_subscription: {
+                    products: {
+                        [HELPDESK_PRODUCT_ID]:
+                            basicMonthlyHelpdeskPrice.price_id,
+                    },
+                },
             }),
             billing: initialState.mergeDeep(billingFixtures.billingState),
             integrations: fromJS({
@@ -47,13 +66,16 @@ describe('billing selectors', () => {
     })
 
     it('getPlans (deprecated)', () => {
-        expect(selectors.DEPRECATED_getPlans({} as RootState)).toEqualImmutable(
-            OrderedMap()
-        )
-
         const plans = selectors.DEPRECATED_getPlans(state)
 
-        expect((state.billing.get('plans') as List<any>).size).toBe(plans.size)
+        expect(
+            (state.billing.get('products') as List<any>)
+                .map(
+                    (product: Map<any, any>) =>
+                        product.get('prices') as List<any>
+                )
+                .flatten(1).size
+        ).toBe(plans.size)
 
         plans.forEach((plan: Map<any, any>) => {
             const planJS = plan.toJS()
@@ -65,9 +87,14 @@ describe('billing selectors', () => {
     it('getPlans', () => {
         const plans = selectors.getPlans(state)
 
-        expect((state.billing.get('plans') as List<any>).size).toBe(
-            plans.length
-        )
+        expect(
+            (state.billing.get('products') as List<any>)
+                .map(
+                    (product: Map<any, any>) =>
+                        product.get('prices') as List<any>
+                )
+                .flatten(1).size
+        ).toBe(plans.length)
 
         plans.forEach((plan: Plan) => {
             expect(plan).toHaveProperty('amount')
@@ -76,55 +103,32 @@ describe('billing selectors', () => {
     })
 
     it('getCurrentPlan (deprecated)', () => {
-        const statePlan = {
-            id: 'plan-123',
-        }
-        state = {
-            currentAccount: fromJS({
-                current_subscription: {plan: 'plan-123'},
-            }),
-            billing: fromJS({
-                plans: {
-                    'plan-123': statePlan,
-                },
-            }),
-        } as RootState
         expect(selectors.DEPRECATED_getCurrentPlan(state).get('id')).toBe(
-            statePlan.id
+            basicMonthlyHelpdeskPrice.legacy_id
         )
     })
 
     it('getCurrentPlan', () => {
-        const statePlan = {
-            id: 'plan-123',
-        }
-        state = {
-            currentAccount: fromJS({
-                current_subscription: {plan: 'plan-123'},
-            }),
-            billing: fromJS({
-                plans: {
-                    'plan-123': statePlan,
-                },
-            }),
-        } as RootState
         const plan = selectors.getCurrentPlan(state)
-        expect(plan?.id).toBe(statePlan.id)
+        expect(plan?.id).toBe(basicMonthlyHelpdeskPrice.legacy_id)
     })
 
     it('DEPRECATED_getPlan', () => {
-        expect(
-            selectors.DEPRECATED_getPlan('')({} as RootState)
-        ).toEqualImmutable(fromJS({}))
         expect(selectors.DEPRECATED_getPlan('')(state)).toEqualImmutable(
             fromJS({})
         )
         expect(
-            selectors.DEPRECATED_getPlan('growth-usd-1')(state).get('name')
-        ).toBe(state.billing.getIn(['plans', 'growth-usd-1', 'name']))
+            selectors
+                .DEPRECATED_getPlan('basic-monthly-usd-4')(state)
+                .get('name')
+        ).toBe(basicMonthlyHelpdeskPrice.name)
         expect(
-            selectors.DEPRECATED_getPlan('standard-1')(state).get('name')
-        ).toBe(state.billing.getIn(['plans', 'standard-1', 'name']))
+            selectors
+                .DEPRECATED_getPlan(
+                    'basic-automation-full-price-monthly-usd-4'
+                )(state)
+                .get('name')
+        ).toBe(basicMonthlyAutomationPrice.name)
     })
 
     describe('getPlan', () => {
@@ -133,7 +137,11 @@ describe('billing selectors', () => {
                 selectors.getPlan('')({
                     ...state,
                     billing: fromJS({
-                        plans: {},
+                        ...billingFixtures.billingState,
+                        products: [
+                            {...helpdeskProduct, prices: []},
+                            {...automationProduct, prices: []},
+                        ],
                     }),
                 })
             ).toBe(undefined)
@@ -144,7 +152,9 @@ describe('billing selectors', () => {
         })
 
         it('should return the plan from the state', () => {
-            expect(selectors.getPlan('growth-usd-1')(state)).toMatchSnapshot()
+            expect(
+                selectors.getPlan('basic-monthly-usd-4')(state)
+            ).toMatchSnapshot()
         })
     })
 
@@ -188,113 +198,158 @@ describe('billing selectors', () => {
     it('isAllowedToCreateIntegration', () => {
         expect(
             selectors.isAllowedToCreateIntegration({
-                billing: fromJS({plans: []}),
+                ...state,
+                billing: fromJS({
+                    ...billingFixtures.billingState,
+                    products: [
+                        {
+                            ...helpdeskProduct,
+                            prices: [
+                                {
+                                    ...basicMonthlyHelpdeskPrice,
+                                    integrations: 5,
+                                },
+                            ],
+                        },
+                        {
+                            ...automationProduct,
+                            prices: [basicMonthlyAutomationPrice],
+                        },
+                    ],
+                }),
             } as RootState)
         ).toBe(false)
         expect(
             selectors.isAllowedToCreateIntegration({
                 ...state,
-                currentAccount: initialCurrentAccountState.set(
-                    'current_subscription',
-                    fromJS({plan: 'standard-usd-1'})
-                ),
-            })
-        ).toBe(false)
-        expect(
-            selectors.isAllowedToCreateIntegration({
-                ...state,
-                currentAccount: initialCurrentAccountState.set(
-                    'current_subscription',
-                    fromJS({plan: 'growth-usd-1'})
-                ),
-            })
+                billing: fromJS({
+                    ...billingFixtures.billingState,
+                    products: [
+                        {
+                            ...helpdeskProduct,
+                            prices: [
+                                {
+                                    ...basicMonthlyHelpdeskPrice,
+                                    integrations: 7,
+                                },
+                            ],
+                        },
+                        {
+                            ...automationProduct,
+                            prices: [basicMonthlyAutomationPrice],
+                        },
+                    ],
+                }),
+            } as RootState)
         ).toBe(true)
     })
 
     it('planIntegrations', () => {
-        expect(
-            selectors.planIntegrations({
-                billing: fromJS({plans: []}),
-            } as RootState)
-        ).toBe(0)
-        expect(selectors.planIntegrations(state)).toBe(15)
+        expect(selectors.planIntegrations(state)).toBe(150)
     })
 
     it('isAllowedToChangePlan', () => {
-        expect(selectors.isAllowedToChangePlan('')({} as RootState)).toBe(true)
-        expect(selectors.isAllowedToChangePlan('standard-usd-1')(state)).toBe(
-            false
-        )
-        expect(selectors.isAllowedToChangePlan('growth-usd-1')(state)).toBe(
-            true
-        )
+        expect(
+            selectors.isAllowedToChangePlan('basic-yearly-usd-4')({
+                ...state,
+                billing: fromJS({
+                    ...billingFixtures.billingState,
+                    products: [
+                        {
+                            ...helpdeskProduct,
+                            prices: [
+                                basicMonthlyHelpdeskPrice,
+                                {
+                                    ...basicYearlyHelpdeskPrice,
+                                    integrations: 5,
+                                },
+                            ],
+                        },
+                        {
+                            ...automationProduct,
+                            prices: [basicMonthlyAutomationPrice],
+                        },
+                    ],
+                }),
+            } as RootState)
+        ).toBe(false)
+        expect(
+            selectors.isAllowedToChangePlan('basic-yearly-usd-4')(state)
+        ).toBe(true)
     })
 
     describe('accountHasLegacyPlan', () => {
+        const productsWithLegacyPrice = _cloneDeep(products)
+        productsWithLegacyPrice[0].prices.push(legacyBasicHelpdeskPrice)
+        productsWithLegacyPrice[1].prices.push(legacyBasicAutomationPrice)
+
         it('should return the proper value for a legacy and non legacy plan', () => {
-            state = {
-                ...state,
-                currentAccount: fromJS({
-                    current_subscription: {plan: 'pro-monthly-usd-2'},
-                }),
-            }
             expect(selectors.hasLegacyPlan(state)).toBe(false)
             state = {
                 ...state,
                 currentAccount: fromJS({
-                    current_subscription: {plan: 'growth-usd-1'},
+                    current_subscription: {
+                        products: {
+                            [HELPDESK_PRODUCT_ID]:
+                                legacyBasicHelpdeskPrice.price_id,
+                        },
+                    },
+                }),
+                billing: fromJS({
+                    ...billingFixtures.billingState,
+                    products: productsWithLegacyPrice,
                 }),
             }
             expect(selectors.hasLegacyPlan(state)).toBe(true)
-        })
-
-        it('should return false when the current plan is empty', () => {
-            state = {
-                ...state,
-                currentAccount: fromJS({
-                    current_subscription: null,
-                }),
-            }
-            expect(selectors.hasLegacyPlan(state)).toBe(false)
         })
     })
 
     describe('currentPlanId()', () => {
         it('should return undefined when no current subscription', () => {
-            state = {billing: fromJS({plans: []})} as RootState
+            state = {
+                ...state,
+                billing: fromJS({
+                    ...billingFixtures.billingState,
+                }),
+                currentAccount: fromJS({
+                    current_subscription: {
+                        products: {[HELPDESK_PRODUCT_ID]: null},
+                    },
+                }),
+            }
             expect(selectors.currentPlanId(state)).toEqual(undefined)
         })
 
         it('should return plan of the current subscription', () => {
-            state = {
-                currentAccount: fromJS({
-                    current_subscription: {plan: 'subscription-plan-123'},
-                }),
-                billing: fromJS({futureSubscriptionPlan: 'future-plan-123'}),
-            } as RootState
             expect(selectors.currentPlanId(state)).toEqual(
-                'subscription-plan-123'
+                'basic-monthly-usd-4'
             )
         })
 
         it('should return the future subscription plan', () => {
             state = {
-                currentAccount: fromJS({current_subscription: null}),
-                billing: fromJS({futureSubscriptionPlan: 'future-plan-123'}),
+                currentAccount: fromJS({
+                    current_subscription: {
+                        products: {[HELPDESK_PRODUCT_ID]: null},
+                    },
+                }),
+                billing: fromJS({
+                    ...billingFixtures.billingState,
+                    futureSubscriptionPlan: 'future-plan-123',
+                }),
             } as RootState
             expect(selectors.currentPlanId(state)).toEqual('future-plan-123')
         })
     })
 
     describe('getEquivalentAutomationCurrentPlan()', () => {
-        const regularPlan = 'pro-monthly-usd-2'
-        const automationPlan = 'pro-automation-monthly-usd-2'
-
         it('should return undefined when no current plan', () => {
             state = {
                 ...state,
                 currentAccount: fromJS({
-                    current_subscription: null,
+                    current_subscription: {
+                        products: {[HELPDESK_PRODUCT_ID]: null},
+                    },
                 }),
             } as RootState
             expect(selectors.getEquivalentAutomationCurrentPlan(state)).toBe(
@@ -303,12 +358,6 @@ describe('billing selectors', () => {
         })
 
         it('should return automation plan when current plan is regular', () => {
-            state = {
-                ...state,
-                currentAccount: fromJS({
-                    current_subscription: {plan: regularPlan},
-                }),
-            }
             expect(
                 selectors.getEquivalentAutomationCurrentPlan(state)
             ).toMatchSnapshot()
@@ -318,7 +367,9 @@ describe('billing selectors', () => {
             state = {
                 ...state,
                 currentAccount: fromJS({
-                    current_subscription: {plan: automationPlan},
+                    current_subscription: {
+                        products: automationSubscriptionProductPrices,
+                    },
                 }),
             }
             expect(
@@ -328,14 +379,13 @@ describe('billing selectors', () => {
     })
 
     describe('getEquivalentRegularCurrentPlan()', () => {
-        const regularPlan = 'pro-monthly-usd-2'
-        const automationPlan = 'pro-automation-monthly-usd-2'
-
         it('should return undefined when no current plan', () => {
             state = {
                 ...state,
                 currentAccount: fromJS({
-                    current_subscription: null,
+                    current_subscription: {
+                        products: {[HELPDESK_PRODUCT_ID]: null},
+                    },
                 }),
             } as RootState
             expect(selectors.getEquivalentRegularCurrentPlan(state)).toBe(
@@ -344,12 +394,6 @@ describe('billing selectors', () => {
         })
 
         it('should return regular plan when current plan is also regular', () => {
-            state = {
-                ...state,
-                currentAccount: fromJS({
-                    current_subscription: {plan: regularPlan},
-                }),
-            }
             expect(
                 selectors.getEquivalentRegularCurrentPlan(state)
             ).toMatchSnapshot()
@@ -359,7 +403,9 @@ describe('billing selectors', () => {
             state = {
                 ...state,
                 currentAccount: fromJS({
-                    current_subscription: {plan: automationPlan},
+                    current_subscription: {
+                        products: automationSubscriptionProductPrices,
+                    },
                 }),
             }
             expect(
@@ -370,12 +416,6 @@ describe('billing selectors', () => {
 
     describe('getAddOnAutomationAmountCurrentPlan()', () => {
         it('should return the amount of automation add-on', () => {
-            state = {
-                ...state,
-                currentAccount: fromJS({
-                    current_subscription: {plan: 'pro-monthly-usd-2'},
-                }),
-            }
             expect(
                 selectors.getAddOnAutomationAmountCurrentPlan(state)
             ).toMatchSnapshot()
@@ -384,13 +424,12 @@ describe('billing selectors', () => {
         it('should return undefined when equivalent plan does not exist', () => {
             state = {
                 ...state,
-                billing: fromJS({
-                    ...billingFixtures.billingState,
-                    plans: {},
-                }),
                 currentAccount: fromJS({
                     current_subscription: {
-                        plan: 'pro-automation-monthly-usd-2',
+                        products: {
+                            [HELPDESK_PRODUCT_ID]:
+                                legacyBasicHelpdeskPrice.price_id,
+                        },
                     },
                 }),
             }
@@ -402,24 +441,31 @@ describe('billing selectors', () => {
 
     describe('getAddOnAutomationDiscountCurrentPlan()', () => {
         it('should return the discount of automation add-on amount', () => {
-            state = {
-                ...state,
-                currentAccount: fromJS({
-                    current_subscription: {plan: 'pro-monthly-usd-2'},
-                }),
-            }
             expect(
                 selectors.getAddOnAutomationDiscountCurrentPlan(state)
             ).toMatchSnapshot()
         })
 
         it('should return the add-on amount discount of the current plan when plan is an automation plan', () => {
+            const productsWithDiscountedAutomationPrice = _cloneDeep(products)
+            productsWithDiscountedAutomationPrice[1].prices.push(
+                basicDiscountedAutomationPrice
+            )
             state = {
                 ...state,
                 currentAccount: fromJS({
                     current_subscription: {
-                        plan: 'pro-automation-monthly-usd-2',
+                        products: {
+                            [HELPDESK_PRODUCT_ID]:
+                                basicMonthlyHelpdeskPrice.price_id,
+                            [AUTOMATION_PRODUCT_ID]:
+                                basicDiscountedAutomationPrice.price_id,
+                        },
                     },
+                }),
+                billing: fromJS({
+                    ...billingFixtures.billingState,
+                    products: productsWithDiscountedAutomationPrice,
                 }),
             }
             expect(
@@ -430,13 +476,12 @@ describe('billing selectors', () => {
         it('should return undefined when equivalent plan does not exist', () => {
             state = {
                 ...state,
-                billing: fromJS({
-                    ...billingFixtures.billingState,
-                    plans: {},
-                }),
                 currentAccount: fromJS({
                     current_subscription: {
-                        plan: 'pro-automation-monthly-usd-2',
+                        products: {
+                            [HELPDESK_PRODUCT_ID]:
+                                legacyBasicHelpdeskPrice.price_id,
+                        },
                     },
                 }),
             }
@@ -448,33 +493,26 @@ describe('billing selectors', () => {
 
     describe('getAddOnAutomationFullAmountCurrentPlan()', () => {
         it('should return the full amount of automation add-on', () => {
+            const productsWithDiscountedAutomationPrice = _cloneDeep(products)
+            productsWithDiscountedAutomationPrice[1].prices.push(
+                basicDiscountedAutomationPrice
+            )
+
             state = {
                 ...state,
                 currentAccount: fromJS({
-                    current_subscription: {plan: 'pro-monthly-usd-2'},
-                }),
-            }
-            expect(
-                selectors.getAddOnAutomationFullAmountCurrentPlan(state)
-            ).toMatchSnapshot()
-        })
-
-        it('should return undefined when discount number is not valid', () => {
-            state = {
-                ...state,
-                billing: fromJS({
-                    ...billingFixtures.billingState,
-                    plans: {
-                        'pro-automation-monthly-usd-2': {
-                            id: 'pro-automation-monthly-usd-2',
-                            automation_addon_equivalent_plan:
-                                'pro-monthly-usd-2',
-                            automation_addon_discount: 2,
+                    current_subscription: {
+                        products: {
+                            [HELPDESK_PRODUCT_ID]:
+                                basicMonthlyHelpdeskPrice.price_id,
+                            [AUTOMATION_PRODUCT_ID]:
+                                basicDiscountedAutomationPrice.price_id,
                         },
                     },
                 }),
-                currentAccount: fromJS({
-                    current_subscription: {plan: 'pro-monthly-usd-2'},
+                billing: fromJS({
+                    ...billingFixtures.billingState,
+                    products: productsWithDiscountedAutomationPrice,
                 }),
             }
             expect(
@@ -485,12 +523,13 @@ describe('billing selectors', () => {
         it('should return undefined when no automation add-on amount or discount exists', () => {
             state = {
                 ...state,
-                billing: fromJS({
-                    ...billingFixtures.billingState,
-                    plans: {},
-                }),
                 currentAccount: fromJS({
-                    current_subscription: {plan: 'pro-monthly-usd-2'},
+                    current_subscription: {
+                        products: {
+                            [HELPDESK_PRODUCT_ID]:
+                                legacyBasicHelpdeskPrice.price_id,
+                        },
+                    },
                 }),
             }
             expect(
@@ -506,7 +545,7 @@ describe('billing selectors', () => {
                     ...state,
                     currentAccount: fromJS({
                         current_subscription: {
-                            plan: 'pro-automation-monthly-usd-2',
+                            products: automationSubscriptionProductPrices,
                         },
                     }),
                 })

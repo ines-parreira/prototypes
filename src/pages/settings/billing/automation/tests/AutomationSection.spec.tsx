@@ -5,9 +5,8 @@ import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 
-import {account} from 'fixtures/account'
+import {account, automationSubscriptionProductPrices} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
-import {basicPlan, starterPlan} from 'fixtures/subscriptionPlan'
 import {RootState, StoreDispatch} from 'state/types'
 
 import AutomationSection from '../AutomationSection'
@@ -15,30 +14,16 @@ import AutomationSection from '../AutomationSection'
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('<AutomationSection />', () => {
-    const automationPlanId = basicPlan.id.replace(/\-/, '-automation-')
-
     const defaultState: Partial<RootState> = {
         currentAccount: fromJS({
             ...account,
             current_subscription: {
                 ...account.current_subscription,
                 status: 'active',
-                plan: basicPlan.id,
             },
         }),
         billing: fromJS({
             ...billingState,
-            plans: fromJS({
-                [basicPlan.id]: basicPlan,
-                [automationPlanId]: {
-                    ...basicPlan,
-                    id: automationPlanId,
-                    amount: basicPlan.amount + 2000,
-                    automation_addon_included: true,
-                    automation_addon_discount: 0.5,
-                },
-                [starterPlan.id]: starterPlan,
-            }),
         }),
     }
 
@@ -60,7 +45,7 @@ describe('<AutomationSection />', () => {
                         ...account,
                         current_subscription: {
                             ...account.current_subscription,
-                            plan: automationPlanId,
+                            products: automationSubscriptionProductPrices,
                         },
                     }),
                 })}
@@ -98,7 +83,6 @@ describe('<AutomationSection />', () => {
                         current_subscription: {
                             ...account.current_subscription,
                             status: 'trialing',
-                            plan: basicPlan.id,
                         },
                     }),
                 })}

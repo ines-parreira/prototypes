@@ -4,13 +4,20 @@ import {fromJS, List} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import _cloneDeep from 'lodash/cloneDeep'
 
 import {AUTOMATION_OVERVIEW, stats as statsConfig} from 'config/stats'
-
 import {AutomationStatsSelfServiceMetric} from 'pages/stats/AutomationStatsSelfServiceMetric'
 import {RootState, StoreDispatch} from 'state/types'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
+import {billingState} from 'fixtures/billing'
+import {
+    HELPDESK_PRODUCT_ID,
+    products,
+    starterHelpdeskPrice,
+} from 'fixtures/productPrices'
+import {automationSubscriptionProductPrices} from 'fixtures/account'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -43,9 +50,19 @@ describe('<AutomationStatsSelfServiceMetric />', () => {
     const afterAddonLaunch = '2021-11-01T00:00:00Z'
     const beforeAddonLaunch = '2021-01-01T00:00:00Z'
 
+    const productsWithStarterPrice = _cloneDeep(products)
+    productsWithStarterPrice[0].prices.push(starterHelpdeskPrice)
+
     const defaultState = {
-        billing: fromJS({plans: []}),
-        currentAccount: fromJS({created_datetime: afterAddonLaunch}),
+        billing: fromJS({...billingState, products: productsWithStarterPrice}),
+        currentAccount: fromJS({
+            created_datetime: afterAddonLaunch,
+            current_subscription: {
+                products: {
+                    [HELPDESK_PRODUCT_ID]: starterHelpdeskPrice.price_id,
+                },
+            },
+        }),
         entities: {
             macros: {},
             rules: {},
@@ -96,14 +113,30 @@ describe('<AutomationStatsSelfServiceMetric />', () => {
             'setup and paywall',
             {
                 ...defaultState,
-                currentAccount: fromJS({created_datetime: beforeAddonLaunch}),
+                currentAccount: fromJS({
+                    created_datetime: beforeAddonLaunch,
+                    current_subscription: {
+                        products: {
+                            [HELPDESK_PRODUCT_ID]:
+                                starterHelpdeskPrice.price_id,
+                        },
+                    },
+                }),
             },
         ],
         [
             'stats and paywall',
             {
                 ...defaultState,
-                currentAccount: fromJS({created_datetime: beforeAddonLaunch}),
+                currentAccount: fromJS({
+                    created_datetime: beforeAddonLaunch,
+                    current_subscription: {
+                        products: {
+                            [HELPDESK_PRODUCT_ID]:
+                                starterHelpdeskPrice.price_id,
+                        },
+                    },
+                }),
                 entities: {
                     ...defaultState.entities,
                     selfServiceConfigurations: {'0': selfServiceConfiguration},
@@ -116,12 +149,9 @@ describe('<AutomationStatsSelfServiceMetric />', () => {
                 ...defaultState,
                 currentAccount: fromJS({
                     created_datetime: afterAddonLaunch,
-                    current_subscription: {plan: 'AutomationAddon'},
-                }),
-                billing: fromJS({
-                    plans: fromJS({
-                        ['AutomationAddon']: {automation_addon_included: true},
-                    }),
+                    current_subscription: {
+                        products: automationSubscriptionProductPrices,
+                    },
                 }),
             },
         ],
@@ -130,17 +160,15 @@ describe('<AutomationStatsSelfServiceMetric />', () => {
             {
                 currentAccount: fromJS({
                     created_datetime: afterAddonLaunch,
-                    current_subscription: {plan: 'AutomationAddon'},
+                    current_subscription: {
+                        products: automationSubscriptionProductPrices,
+                    },
                 }),
                 entities: {
                     ...defaultState.entities,
                     selfServiceConfigurations: {'0': selfServiceConfiguration},
                 },
-                billing: fromJS({
-                    plans: fromJS({
-                        ['AutomationAddon']: {automation_addon_included: true},
-                    }),
-                }),
+                billing: fromJS(billingState),
             },
         ],
     ])('should render %s', (_, state) => {

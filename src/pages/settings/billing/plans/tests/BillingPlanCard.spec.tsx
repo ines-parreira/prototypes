@@ -4,78 +4,73 @@ import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
+import _cloneDeep from 'lodash/cloneDeep'
 
-import {
-    advancedAutomationPlan,
-    advancedPlan,
-    basicAutomationPlan,
-    basicPlan,
-    customPlan,
-    enterprisePlan,
-    legacyPlan,
-    proAutomationPlan,
-    proPlan,
-} from 'fixtures/subscriptionPlan'
 import {account} from 'fixtures/account'
-import {Plan} from 'models/billing/types'
 import {RootState, StoreDispatch} from 'state/types'
 import * as billingSelectors from 'state/billing/selectors'
+import {billingState} from 'fixtures/billing'
+import {
+    customAutomationPrice,
+    customHelpdeskPrice,
+    legacyBasicAutomationPrice,
+    legacyBasicHelpdeskPrice,
+    products,
+    transitoryPlans,
+} from 'fixtures/productPrices'
+import {PlanWithCurrencySign} from 'state/billing/types'
 import BillingPlanCard from '../BillingPlanCard'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 jest.mock('lodash/uniqueId', () => () => '42')
 
 describe('<BillingPlanCard />', () => {
+    const {
+        basicPlan,
+        basicAutomationPlan,
+        proPlan,
+        proAutomationPlan,
+        advancedPlan,
+        advancedAutomationPlan,
+        customPlan,
+        customAutomationPlan,
+        legacyPlan,
+    } = transitoryPlans
+
+    const productPrices = _cloneDeep(products)
+    products[0].prices.push(legacyBasicHelpdeskPrice, customHelpdeskPrice)
+    products[1].prices.push(legacyBasicAutomationPrice, customAutomationPrice)
+
     const defaultState: Partial<RootState> = {
         billing: fromJS({
-            plans: {
-                [basicPlan.id]: basicPlan,
-                [basicAutomationPlan.id]: basicAutomationPlan,
-                [advancedPlan.id]: advancedPlan,
-                [advancedAutomationPlan.id]: advancedAutomationPlan,
-                [proPlan.id]: proPlan,
-                [proAutomationPlan.id]: proAutomationPlan,
-                [enterprisePlan.id]: enterprisePlan,
-                [legacyPlan.id]: legacyPlan,
-                [customPlan.id]: customPlan,
-            },
+            ...billingState,
+            products: productPrices,
         }),
         currentAccount: fromJS(account),
     }
 
     const minProps: ComponentProps<typeof BillingPlanCard> = {
-        plan: {...basicPlan, currencySign: '$'},
-        featuresPlan: {...basicPlan, currencySign: '$'},
+        plan: basicPlan,
+        featuresPlan: basicPlan,
         isCurrentPlan: false,
         footer: <span>Foo footer</span>,
         className: 'fooClass',
     }
 
-    it.each<[string, Plan]>([
+    it.each<[string, PlanWithCurrencySign]>([
         ['Basic plan', basicPlan],
         ['Advanced plan', advancedPlan],
         ['Pro plan', proPlan],
-        ['Enterprise plan', enterprisePlan],
         ['Custom plan', customPlan],
         ['Legacy plan', legacyPlan],
         ['Basic automation plan', basicAutomationPlan],
         ['Advanced automation plan', advancedAutomationPlan],
         ['Pro automation plan', proAutomationPlan],
-        [
-            'Custom automation plan',
-            {
-                ...customPlan,
-                id: 'custom-automation-monthly-usd-2',
-                automation_addon_included: true,
-            },
-        ],
+        ['Custom automation plan', customAutomationPlan],
     ])('should render plan card for the %s', (testName, plan) => {
         const {container} = render(
             <Provider store={mockStore(defaultState)}>
-                <BillingPlanCard
-                    {...minProps}
-                    plan={{...plan, currencySign: '$'}}
-                />
+                <BillingPlanCard {...minProps} plan={plan} />
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
@@ -86,8 +81,8 @@ describe('<BillingPlanCard />', () => {
             <Provider store={mockStore(defaultState)}>
                 <BillingPlanCard
                     {...minProps}
-                    plan={{...basicPlan, currencySign: '$'}}
-                    featuresPlan={{...proPlan, currencySign: '$'}}
+                    plan={basicPlan}
+                    featuresPlan={proPlan}
                 />
             </Provider>
         )
@@ -102,7 +97,7 @@ describe('<BillingPlanCard />', () => {
             <Provider store={mockStore(defaultState)}>
                 <BillingPlanCard
                     {...minProps}
-                    plan={{...legacyPlan, currencySign: '$'}}
+                    plan={legacyPlan}
                     isCurrentPlan
                 />
             </Provider>

@@ -6,14 +6,12 @@ import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {RootState} from 'state/types'
 
-import {Plan} from 'models/billing/types'
-import {account} from '../../../../fixtures/account'
-import {billingState} from '../../../../fixtures/billing'
+import {account} from 'fixtures/account'
+import {billingState} from 'fixtures/billing'
 import {
-    advancedPlan,
-    basicPlan,
-    proPlan,
-} from '../../../../fixtures/subscriptionPlan'
+    HELPDESK_PRODUCT_ID,
+    proMonthlyHelpdeskPrice,
+} from 'fixtures/productPrices'
 import BillingUsage from '../BillingUsage'
 
 jest.mock('../../../common/components/LegacyPlanBanner', () => () => (
@@ -24,33 +22,19 @@ jest.mock('../../../../state/billing/actions.ts')
 const mockStore = configureMockStore([thunk])
 
 describe('<BillingUsage/>', () => {
-    const defaultPlans: Record<string, Plan> = [
-        basicPlan,
-        proPlan,
-        advancedPlan,
-    ].reduce((acc, plan) => {
-        const id = `${plan.name.toLowerCase()}-monthly`
-        return {
-            ...acc,
-            [id]: {
-                ...plan,
-                id,
-                interval: 'month',
-            },
-        }
-    }, {})
     const defaultState: Partial<RootState> = {
         currentAccount: fromJS({
             ...account,
             current_subscription: {
                 ...account.current_subscription,
-                plan: Object.values(defaultPlans)[1].id,
+                products: {
+                    [HELPDESK_PRODUCT_ID]: proMonthlyHelpdeskPrice.price_id,
+                },
                 status: 'active',
             },
         }),
         billing: fromJS({
             ...billingState,
-            plans: defaultPlans,
             currentUsage: fromJS({
                 meta: {
                     start_datetime: '2010-10-10',
@@ -109,7 +93,6 @@ describe('<BillingUsage/>', () => {
                     ...defaultState,
                     billing: fromJS({
                         ...billingState,
-                        plans: defaultPlans,
                         currentUsage: {
                             meta: {
                                 start_datetime: '2010-10-10',
@@ -141,7 +124,6 @@ describe('<BillingUsage/>', () => {
                     ...defaultState,
                     billing: fromJS({
                         ...billingState,
-                        plans: defaultPlans,
                         currentUsage: {
                             meta: {
                                 start_datetime: '2010-10-10',

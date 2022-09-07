@@ -2,34 +2,20 @@ import {fromJS, List} from 'immutable'
 
 import {ShopType} from 'models/selfServiceConfiguration/types'
 import {billingState} from 'fixtures/billing'
-import {basicPlan} from 'fixtures/subscriptionPlan'
-import {account} from 'fixtures/account'
+import {account, automationSubscriptionProductPrices} from 'fixtures/account'
 
 import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
-
-const automationPlanId = basicPlan.automation_addon_equivalent_plan!
 
 export const defaultState = {
     currentAccount: fromJS({
         ...account,
         current_subscription: {
             ...account.current_subscription,
-            plan: automationPlanId,
+            products: automationSubscriptionProductPrices,
             status: 'active',
         },
     }),
-    billing: fromJS({
-        ...billingState,
-        plans: fromJS({
-            [basicPlan.id]: basicPlan,
-            [automationPlanId]: {
-                ...basicPlan,
-                id: automationPlanId,
-                amount: basicPlan.amount + 2000,
-                automation_addon_included: true,
-            },
-        }),
-    }),
+    billing: fromJS(billingState),
     entities: {
         auditLogEvents: {},
         macros: {},

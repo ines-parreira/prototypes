@@ -1,147 +1,627 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`billing selectors getAddOnAutomationAmountCurrentPlan() should return the amount of automation add-on 1`] = `20`;
+exports[`billing selectors getAddOnAutomationAmountCurrentPlan() should return the amount of automation add-on 1`] = `30`;
 
 exports[`billing selectors getAddOnAutomationAmountCurrentPlan() should return undefined when equivalent plan does not exist 1`] = `undefined`;
 
 exports[`billing selectors getAddOnAutomationDiscountCurrentPlan() should return the add-on amount discount of the current plan when plan is an automation plan 1`] = `0.5`;
 
-exports[`billing selectors getAddOnAutomationDiscountCurrentPlan() should return the discount of automation add-on amount 1`] = `0.5`;
+exports[`billing selectors getAddOnAutomationDiscountCurrentPlan() should return the discount of automation add-on amount 1`] = `0`;
 
 exports[`billing selectors getAddOnAutomationDiscountCurrentPlan() should return undefined when equivalent plan does not exist 1`] = `undefined`;
 
-exports[`billing selectors getAddOnAutomationFullAmountCurrentPlan() should return the full amount of automation add-on 1`] = `40`;
-
-exports[`billing selectors getAddOnAutomationFullAmountCurrentPlan() should return undefined when discount number is not valid 1`] = `undefined`;
+exports[`billing selectors getAddOnAutomationFullAmountCurrentPlan() should return the full amount of automation add-on 1`] = `30`;
 
 exports[`billing selectors getAddOnAutomationFullAmountCurrentPlan() should return undefined when no automation add-on amount or discount exists 1`] = `undefined`;
 
 exports[`billing selectors getEquivalentAutomationCurrentPlan() should return automation plan when current plan is also automation 1`] = `
 Object {
-  "amount": 120,
-  "automation_addon_discount": 0.5,
-  "automation_addon_equivalent_plan": "pro-monthly-usd-2",
+  "amount": 90,
+  "automation_addon_discount": 0,
+  "automation_addon_equivalent_plan": "basic-monthly-usd-4",
   "automation_addon_included": true,
-  "cost_per_ticket": 0.05,
+  "cost_per_ticket": 0.6,
   "currency": "usd",
   "currencySign": "$",
-  "free_tickets": 2000,
-  "id": "pro-automation-monthly-usd-2",
-  "integrations": 10,
+  "features": Object {
+    "api_1st_party_rate_limit": Object {
+      "enabled": true,
+      "rate_limit": Object {
+        "interval_ms": 2000,
+        "max_burst": 40,
+      },
+    },
+    "api_3rd_party_rate_limit": Object {
+      "enabled": true,
+      "rate_limit": Object {
+        "interval_ms": 20000,
+        "max_burst": 40,
+      },
+    },
+    "auto_assignment": Object {
+      "enabled": true,
+    },
+    "automation_cancellations_flow": Object {
+      "enabled": true,
+    },
+    "automation_managed_rules": Object {
+      "enabled": true,
+    },
+    "automation_report_issue_flow": Object {
+      "enabled": true,
+    },
+    "automation_return_flow": Object {
+      "enabled": true,
+    },
+    "automation_self_service_statistics": Object {
+      "enabled": true,
+    },
+    "automation_track_order_flow": Object {
+      "enabled": true,
+    },
+    "chat_campaigns": Object {
+      "enabled": true,
+    },
+    "facebook_comment": Object {
+      "enabled": true,
+    },
+    "help_center": Object {
+      "enabled": true,
+    },
+    "instagram_comment": Object {
+      "enabled": true,
+    },
+    "instagram_dm": Object {
+      "enabled": true,
+    },
+    "magento_integration": Object {
+      "enabled": false,
+    },
+    "overview_live_statistics": Object {
+      "enabled": true,
+    },
+    "phone_number": Object {
+      "enabled": true,
+      "limit": 1,
+    },
+    "revenue_statistics": Object {
+      "enabled": false,
+    },
+    "satisfaction_surveys": Object {
+      "enabled": true,
+    },
+    "teams": Object {
+      "enabled": true,
+    },
+    "twitter_integration": Object {
+      "enabled": false,
+      "limit": 0,
+    },
+    "user_roles": Object {
+      "enabled": true,
+    },
+    "users_live_statistics": Object {
+      "enabled": false,
+    },
+    "view_sharing": Object {
+      "enabled": true,
+    },
+    "yotpo_integration": Object {
+      "enabled": true,
+    },
+  },
+  "free_tickets": 300,
+  "id": "basic-automation-full-price-monthly-usd-4",
+  "integrations": 150,
   "interval": "month",
   "is_legacy": false,
   "limits": Object {
-    "default": 300,
-    "max": 400,
-    "min": 200,
+    "messages": Object {
+      "default": 100,
+      "max": 100,
+      "min": 75,
+    },
+    "tickets": Object {
+      "default": 100,
+      "max": 100,
+      "min": 75,
+    },
   },
-  "name": "Pro",
+  "name": "Basic",
   "order": 2,
+  "phone_limits": Object {
+    "billing": 50,
+  },
   "public": true,
-  "trial_period_days": 14,
+  "trial_period_days": 7,
 }
 `;
 
 exports[`billing selectors getEquivalentAutomationCurrentPlan() should return automation plan when current plan is regular 1`] = `
 Object {
-  "amount": 120,
-  "automation_addon_discount": 0.5,
-  "automation_addon_equivalent_plan": "pro-monthly-usd-2",
+  "amount": 90,
+  "automation_addon_discount": 0,
+  "automation_addon_equivalent_plan": "basic-monthly-usd-4",
   "automation_addon_included": true,
-  "cost_per_ticket": 0.05,
+  "cost_per_ticket": 0.6,
   "currency": "usd",
   "currencySign": "$",
-  "free_tickets": 2000,
-  "id": "pro-automation-monthly-usd-2",
-  "integrations": 10,
+  "features": Object {
+    "api_1st_party_rate_limit": Object {
+      "enabled": true,
+      "rate_limit": Object {
+        "interval_ms": 2000,
+        "max_burst": 40,
+      },
+    },
+    "api_3rd_party_rate_limit": Object {
+      "enabled": true,
+      "rate_limit": Object {
+        "interval_ms": 20000,
+        "max_burst": 40,
+      },
+    },
+    "auto_assignment": Object {
+      "enabled": true,
+    },
+    "automation_cancellations_flow": Object {
+      "enabled": true,
+    },
+    "automation_managed_rules": Object {
+      "enabled": true,
+    },
+    "automation_report_issue_flow": Object {
+      "enabled": true,
+    },
+    "automation_return_flow": Object {
+      "enabled": true,
+    },
+    "automation_self_service_statistics": Object {
+      "enabled": true,
+    },
+    "automation_track_order_flow": Object {
+      "enabled": true,
+    },
+    "chat_campaigns": Object {
+      "enabled": true,
+    },
+    "facebook_comment": Object {
+      "enabled": true,
+    },
+    "help_center": Object {
+      "enabled": true,
+    },
+    "instagram_comment": Object {
+      "enabled": true,
+    },
+    "instagram_dm": Object {
+      "enabled": true,
+    },
+    "magento_integration": Object {
+      "enabled": false,
+    },
+    "overview_live_statistics": Object {
+      "enabled": true,
+    },
+    "phone_number": Object {
+      "enabled": true,
+      "limit": 1,
+    },
+    "revenue_statistics": Object {
+      "enabled": false,
+    },
+    "satisfaction_surveys": Object {
+      "enabled": true,
+    },
+    "teams": Object {
+      "enabled": true,
+    },
+    "twitter_integration": Object {
+      "enabled": false,
+      "limit": 0,
+    },
+    "user_roles": Object {
+      "enabled": true,
+    },
+    "users_live_statistics": Object {
+      "enabled": false,
+    },
+    "view_sharing": Object {
+      "enabled": true,
+    },
+    "yotpo_integration": Object {
+      "enabled": true,
+    },
+  },
+  "free_tickets": 300,
+  "id": "basic-automation-full-price-monthly-usd-4",
+  "integrations": 150,
   "interval": "month",
   "is_legacy": false,
   "limits": Object {
-    "default": 300,
-    "max": 400,
-    "min": 200,
+    "messages": Object {
+      "default": 100,
+      "max": 100,
+      "min": 75,
+    },
+    "tickets": Object {
+      "default": 100,
+      "max": 100,
+      "min": 75,
+    },
   },
-  "name": "Pro",
+  "name": "Basic",
   "order": 2,
+  "phone_limits": Object {
+    "billing": 50,
+  },
   "public": true,
-  "trial_period_days": 14,
+  "trial_period_days": 7,
 }
 `;
 
 exports[`billing selectors getEquivalentRegularCurrentPlan() should return regular plan when current plan is also regular 1`] = `
 Immutable.Map {
-  "cost_per_ticket": 0.05,
-  "automation_addon_included": false,
+  "cost_per_ticket": 0.4,
   "interval": "month",
   "automation_addon_discount": 0,
+  "phone_limits": Immutable.Map {
+    "billing": 50,
+  },
   "public": true,
-  "name": "Pro",
-  "trial_period_days": 14,
+  "name": "Basic",
+  "trial_period_days": 7,
   "currencySign": "$",
   "order": 2,
   "currency": "usd",
-  "free_tickets": 2000,
-  "automation_addon_equivalent_plan": "pro-automation-monthly-usd-2",
+  "free_tickets": 300,
+  "automation_addon_equivalent_plan": "basic-automation-full-price-monthly-usd-4",
   "limits": Immutable.Map {
-    "default": 300,
-    "max": 400,
-    "min": 200,
+    "messages": Immutable.Map {
+      "default": 100,
+      "max": 100,
+      "min": 75,
+    },
+    "tickets": Immutable.Map {
+      "default": 100,
+      "max": 100,
+      "min": 75,
+    },
   },
-  "amount": 100,
-  "id": "pro-monthly-usd-2",
+  "amount": 60,
+  "id": "basic-monthly-usd-4",
+  "features": Immutable.Map {
+    "view_sharing": Immutable.Map {
+      "enabled": true,
+    },
+    "automation_cancellations_flow": Immutable.Map {
+      "enabled": false,
+    },
+    "revenue_statistics": Immutable.Map {
+      "enabled": false,
+    },
+    "facebook_comment": Immutable.Map {
+      "enabled": true,
+    },
+    "satisfaction_surveys": Immutable.Map {
+      "enabled": true,
+    },
+    "api_1st_party_rate_limit": Immutable.Map {
+      "enabled": true,
+      "rate_limit": Immutable.Map {
+        "interval_ms": 2000,
+        "max_burst": 40,
+      },
+    },
+    "twitter_integration": Immutable.Map {
+      "enabled": false,
+      "limit": 0,
+    },
+    "user_roles": Immutable.Map {
+      "enabled": true,
+    },
+    "magento_integration": Immutable.Map {
+      "enabled": false,
+    },
+    "automation_managed_rules": Immutable.Map {
+      "enabled": false,
+    },
+    "overview_live_statistics": Immutable.Map {
+      "enabled": true,
+    },
+    "instagram_comment": Immutable.Map {
+      "enabled": true,
+    },
+    "yotpo_integration": Immutable.Map {
+      "enabled": true,
+    },
+    "help_center": Immutable.Map {
+      "enabled": true,
+    },
+    "api_3rd_party_rate_limit": Immutable.Map {
+      "enabled": true,
+      "rate_limit": Immutable.Map {
+        "interval_ms": 20000,
+        "max_burst": 40,
+      },
+    },
+    "automation_return_flow": Immutable.Map {
+      "enabled": false,
+    },
+    "instagram_dm": Immutable.Map {
+      "enabled": true,
+    },
+    "teams": Immutable.Map {
+      "enabled": true,
+    },
+    "automation_report_issue_flow": Immutable.Map {
+      "enabled": false,
+    },
+    "automation_self_service_statistics": Immutable.Map {
+      "enabled": false,
+    },
+    "phone_number": Immutable.Map {
+      "enabled": true,
+      "limit": 1,
+    },
+    "automation_track_order_flow": Immutable.Map {
+      "enabled": false,
+    },
+    "chat_campaigns": Immutable.Map {
+      "enabled": true,
+    },
+    "auto_assignment": Immutable.Map {
+      "enabled": true,
+    },
+    "users_live_statistics": Immutable.Map {
+      "enabled": false,
+    },
+  },
   "is_legacy": false,
-  "integrations": 10,
+  "integrations": 150,
 }
 `;
 
 exports[`billing selectors getEquivalentRegularCurrentPlan() should return regular plan when current plan is automation 1`] = `
 Immutable.Map {
-  "cost_per_ticket": 0.05,
-  "automation_addon_included": false,
+  "cost_per_ticket": 0.4,
   "interval": "month",
   "automation_addon_discount": 0,
+  "phone_limits": Immutable.Map {
+    "billing": 50,
+  },
   "public": true,
-  "name": "Pro",
-  "trial_period_days": 14,
+  "name": "Basic",
+  "trial_period_days": 7,
   "currencySign": "$",
   "order": 2,
   "currency": "usd",
-  "free_tickets": 2000,
-  "automation_addon_equivalent_plan": "pro-automation-monthly-usd-2",
+  "free_tickets": 300,
+  "automation_addon_equivalent_plan": "basic-automation-full-price-monthly-usd-4",
   "limits": Immutable.Map {
-    "default": 300,
-    "max": 400,
-    "min": 200,
+    "messages": Immutable.Map {
+      "default": 100,
+      "max": 100,
+      "min": 75,
+    },
+    "tickets": Immutable.Map {
+      "default": 100,
+      "max": 100,
+      "min": 75,
+    },
   },
-  "amount": 100,
-  "id": "pro-monthly-usd-2",
+  "amount": 60,
+  "id": "basic-monthly-usd-4",
+  "features": Immutable.Map {
+    "view_sharing": Immutable.Map {
+      "enabled": true,
+    },
+    "automation_cancellations_flow": Immutable.Map {
+      "enabled": false,
+    },
+    "revenue_statistics": Immutable.Map {
+      "enabled": false,
+    },
+    "facebook_comment": Immutable.Map {
+      "enabled": true,
+    },
+    "satisfaction_surveys": Immutable.Map {
+      "enabled": true,
+    },
+    "api_1st_party_rate_limit": Immutable.Map {
+      "enabled": true,
+      "rate_limit": Immutable.Map {
+        "interval_ms": 2000,
+        "max_burst": 40,
+      },
+    },
+    "twitter_integration": Immutable.Map {
+      "enabled": false,
+      "limit": 0,
+    },
+    "user_roles": Immutable.Map {
+      "enabled": true,
+    },
+    "magento_integration": Immutable.Map {
+      "enabled": false,
+    },
+    "automation_managed_rules": Immutable.Map {
+      "enabled": false,
+    },
+    "overview_live_statistics": Immutable.Map {
+      "enabled": true,
+    },
+    "instagram_comment": Immutable.Map {
+      "enabled": true,
+    },
+    "yotpo_integration": Immutable.Map {
+      "enabled": true,
+    },
+    "help_center": Immutable.Map {
+      "enabled": true,
+    },
+    "api_3rd_party_rate_limit": Immutable.Map {
+      "enabled": true,
+      "rate_limit": Immutable.Map {
+        "interval_ms": 20000,
+        "max_burst": 40,
+      },
+    },
+    "automation_return_flow": Immutable.Map {
+      "enabled": false,
+    },
+    "instagram_dm": Immutable.Map {
+      "enabled": true,
+    },
+    "teams": Immutable.Map {
+      "enabled": true,
+    },
+    "automation_report_issue_flow": Immutable.Map {
+      "enabled": false,
+    },
+    "automation_self_service_statistics": Immutable.Map {
+      "enabled": false,
+    },
+    "phone_number": Immutable.Map {
+      "enabled": true,
+      "limit": 1,
+    },
+    "automation_track_order_flow": Immutable.Map {
+      "enabled": false,
+    },
+    "chat_campaigns": Immutable.Map {
+      "enabled": true,
+    },
+    "auto_assignment": Immutable.Map {
+      "enabled": true,
+    },
+    "users_live_statistics": Immutable.Map {
+      "enabled": false,
+    },
+  },
   "is_legacy": false,
-  "integrations": 10,
+  "integrations": 150,
 }
 `;
 
 exports[`billing selectors getPlan should return the plan from the state 1`] = `
 Object {
-  "amount": 500,
+  "amount": 60,
   "automation_addon_discount": 0,
-  "automation_addon_equivalent_plan": "growth-automation-usd-1",
-  "automation_addon_included": false,
-  "cost_per_ticket": 0.045,
+  "automation_addon_equivalent_plan": "basic-automation-full-price-monthly-usd-4",
+  "cost_per_ticket": 0.4,
   "currency": "usd",
   "currencySign": "$",
-  "free_tickets": 10000,
-  "id": "growth-usd-1",
-  "integrations": 15,
-  "interval": "month",
-  "is_legacy": true,
-  "limits": Object {
-    "default": 300,
-    "max": 400,
-    "min": 200,
+  "features": Object {
+    "api_1st_party_rate_limit": Object {
+      "enabled": true,
+      "rate_limit": Object {
+        "interval_ms": 2000,
+        "max_burst": 40,
+      },
+    },
+    "api_3rd_party_rate_limit": Object {
+      "enabled": true,
+      "rate_limit": Object {
+        "interval_ms": 20000,
+        "max_burst": 40,
+      },
+    },
+    "auto_assignment": Object {
+      "enabled": true,
+    },
+    "automation_cancellations_flow": Object {
+      "enabled": false,
+    },
+    "automation_managed_rules": Object {
+      "enabled": false,
+    },
+    "automation_report_issue_flow": Object {
+      "enabled": false,
+    },
+    "automation_return_flow": Object {
+      "enabled": false,
+    },
+    "automation_self_service_statistics": Object {
+      "enabled": false,
+    },
+    "automation_track_order_flow": Object {
+      "enabled": false,
+    },
+    "chat_campaigns": Object {
+      "enabled": true,
+    },
+    "facebook_comment": Object {
+      "enabled": true,
+    },
+    "help_center": Object {
+      "enabled": true,
+    },
+    "instagram_comment": Object {
+      "enabled": true,
+    },
+    "instagram_dm": Object {
+      "enabled": true,
+    },
+    "magento_integration": Object {
+      "enabled": false,
+    },
+    "overview_live_statistics": Object {
+      "enabled": true,
+    },
+    "phone_number": Object {
+      "enabled": true,
+      "limit": 1,
+    },
+    "revenue_statistics": Object {
+      "enabled": false,
+    },
+    "satisfaction_surveys": Object {
+      "enabled": true,
+    },
+    "teams": Object {
+      "enabled": true,
+    },
+    "twitter_integration": Object {
+      "enabled": false,
+      "limit": 0,
+    },
+    "user_roles": Object {
+      "enabled": true,
+    },
+    "users_live_statistics": Object {
+      "enabled": false,
+    },
+    "view_sharing": Object {
+      "enabled": true,
+    },
+    "yotpo_integration": Object {
+      "enabled": true,
+    },
   },
-  "name": "Growth Plan",
-  "order": 3,
-  "public": false,
-  "trial_period_days": 14,
+  "free_tickets": 300,
+  "id": "basic-monthly-usd-4",
+  "integrations": 150,
+  "interval": "month",
+  "is_legacy": false,
+  "limits": Object {
+    "messages": Object {
+      "default": 100,
+      "max": 100,
+      "min": 75,
+    },
+    "tickets": Object {
+      "default": 100,
+      "max": 100,
+      "min": 75,
+    },
+  },
+  "name": "Basic",
+  "order": 2,
+  "phone_limits": Object {
+    "billing": 50,
+  },
+  "public": true,
+  "trial_period_days": 7,
 }
 `;

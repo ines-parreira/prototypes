@@ -62,8 +62,31 @@ exports[`HelpCenterChangePlanModal should render the automation plan card when c
                 </span>
               </div>
               <div
-                class="m-3 flex justify-content-center"
+                class="m-3 flex justify-content-between"
               >
+                <div>
+                  BillingPlanCard mock,
+                  <div>
+                    theme: 
+                    Grey
+                  </div>
+                  <div>
+                    className: 
+                    plan
+                  </div>
+                  <div>
+                    plan: 
+                    basic-monthly-usd-4
+                  </div>
+                  <div>
+                    features plan: 
+                    basic-automation-full-price-monthly-usd-4
+                  </div>
+                </div>
+                <img
+                  alt="arrow-icon"
+                  src="test-file-stub"
+                />
                 <div>
                   BillingPlanCard mock,
                   <div>
@@ -71,15 +94,15 @@ exports[`HelpCenterChangePlanModal should render the automation plan card when c
                   </div>
                   <div>
                     className: 
-                    plan isSinglePlan
+                    plan
                   </div>
                   <div>
                     plan: 
-                    basic-monthly-usd-2
+                    basic-monthly-usd-4
                   </div>
                   <div>
                     features plan: 
-                    basic-monthly-usd-2
+                    basic-automation-full-price-monthly-usd-4
                   </div>
                 </div>
               </div>

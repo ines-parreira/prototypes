@@ -4,11 +4,16 @@ import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
+import _cloneDeep from 'lodash/cloneDeep'
 
 import {RootState, StoreDispatch} from 'state/types'
-import {basicPlan, starterPlan} from 'fixtures/subscriptionPlan'
 import {billingState} from 'fixtures/billing'
 import {account} from 'fixtures/account'
+import {
+    HELPDESK_PRODUCT_ID,
+    products,
+    starterHelpdeskPrice,
+} from 'fixtures/productPrices'
 import {PlanName} from 'utils/paywalls'
 import UpgradeButton from 'pages/common/components/UpgradeButton'
 
@@ -27,21 +32,8 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('AutomationSubscriptionButton', () => {
     const defaultState = {
-        billing: fromJS({
-            ...billingState,
-            plans: fromJS({
-                [basicPlan.id]: basicPlan,
-                [starterPlan.id]: starterPlan,
-            }),
-        }),
-        currentAccount: fromJS({
-            ...account,
-            current_subscription: {
-                ...account.current_subscription,
-                plan: basicPlan.id,
-                status: 'active',
-            },
-        }),
+        billing: fromJS(billingState),
+        currentAccount: fromJS(account),
     } as RootState
 
     const minProps: ComponentProps<typeof AutomationSubscriptionButton> = {
@@ -64,14 +56,23 @@ describe('AutomationSubscriptionButton', () => {
     })
 
     it('should pass label "Upgrade" and undefined onClick and the state with automation add-on checked and basic plan modal opened to the upgrade button for the starter plan', () => {
+        const productsWithStarterPrice = _cloneDeep(products)
+        products[0].prices.push(starterHelpdeskPrice)
+
         render(
             <Provider
                 store={mockStore({
-                    ...defaultState,
-                    currentAccount: defaultState.currentAccount.mergeDeep({
+                    currentAccount: fromJS({
                         current_subscription: {
-                            plan: starterPlan.id,
+                            products: {
+                                [HELPDESK_PRODUCT_ID]:
+                                    starterHelpdeskPrice.price_id,
+                            },
                         },
+                    }),
+                    billing: fromJS({
+                        ...billingState,
+                        products: productsWithStarterPrice,
                     }),
                 })}
             >

@@ -1,9 +1,15 @@
 import {
+    basicMonthlyAutomationPrice,
+    basicMonthlyHelpdeskPrice,
+    AUTOMATION_PRODUCT_ID,
+    HELPDESK_PRODUCT_ID,
+} from 'fixtures/productPrices'
+import {
     Account,
     AccountFeature,
     AccountSettingType,
     AccountStatus,
-} from '../state/currentAccount/types'
+} from 'state/currentAccount/types'
 
 export const account: Account = {
     id: 1,
@@ -13,6 +19,9 @@ export const account: Account = {
         plan: 'team-usd-1',
         status: 'trialing',
         start_datetime: '2017-08-23T01:38:53+00:00',
+        products: {
+            [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
+        },
     },
     created_datetime: '2017-08-23T01:38:52.479339+00:00',
     deactivated_datetime: null,
@@ -71,4 +80,9 @@ export const account: Account = {
         [AccountFeature.AutomationReturnFlow]: {enabled: true},
         [AccountFeature.AutomationSelfServiceStatistics]: {enabled: true},
     },
+}
+
+export const automationSubscriptionProductPrices = {
+    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
+    [AUTOMATION_PRODUCT_ID]: basicMonthlyAutomationPrice.price_id,
 }

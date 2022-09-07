@@ -16,6 +16,7 @@ import {
     emptyRuleRecipeFixtureWithSections,
 } from 'fixtures/ruleRecipe'
 import {billingState} from 'fixtures/billing'
+import {account} from 'fixtures/account'
 
 import RuleRecipeCard from '../RuleRecipeCard'
 
@@ -70,6 +71,7 @@ describe('<RuleRecipeCard/>', () => {
         defaultStore = mockStore({
             entities: {},
             billing: fromJS(billingState),
+            currentAccount: fromJS(account),
         })
         createRuleMock.mockReset()
         createViewMock.mockReset()

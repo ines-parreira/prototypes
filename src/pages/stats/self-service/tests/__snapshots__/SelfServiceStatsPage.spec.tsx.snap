@@ -222,13 +222,13 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
                 >
                   <label
                     class="label label quickSelectionOption"
-                    for="checkbox-2"
+                    for="checkbox-4"
                   >
                     <input
                       checked=""
                       class="input"
-                      id="checkbox-2"
-                      name="checkbox-2"
+                      id="checkbox-4"
+                      name="checkbox-4"
                       type="checkbox"
                     />
                     Deselect
@@ -1449,13 +1449,13 @@ exports[`<SelfServiceStatsPage /> should render the stats variant when the SelfS
                 >
                   <label
                     class="label label quickSelectionOption"
-                    for="checkbox-4"
+                    for="checkbox-6"
                   >
                     <input
                       checked=""
                       class="input"
-                      id="checkbox-4"
-                      name="checkbox-4"
+                      id="checkbox-6"
+                      name="checkbox-6"
                       type="checkbox"
                     />
                     Deselect
@@ -2645,13 +2645,13 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
                 >
                   <label
                     class="label label quickSelectionOption"
-                    for="checkbox-6"
+                    for="checkbox-8"
                   >
                     <input
                       checked=""
                       class="input"
-                      id="checkbox-6"
-                      name="checkbox-6"
+                      id="checkbox-8"
+                      name="checkbox-8"
                       type="checkbox"
                     />
                     Deselect

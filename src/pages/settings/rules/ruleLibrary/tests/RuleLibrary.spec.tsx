@@ -9,6 +9,7 @@ import _noop from 'lodash/noop'
 import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
 import {billingState} from 'fixtures/billing'
 import {RuleRecipeTag} from 'models/ruleRecipe/types'
+import {account} from 'fixtures/account'
 import RuleLibrary from '../RuleLibrary'
 
 describe('<RuleLibrary/>', () => {
@@ -16,6 +17,7 @@ describe('<RuleLibrary/>', () => {
     const defaultStore = mockStore({
         entities: {},
         billing: fromJS(billingState),
+        currentAccount: fromJS(account),
     })
     const minProps: ComponentProps<typeof RuleLibrary> = {
         recipes: [

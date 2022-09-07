@@ -6,6 +6,8 @@ import configureMockStore from 'redux-mock-store'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {renderWithRouter} from 'utils/testing'
+import {billingState} from 'fixtures/billing'
+import {account} from 'fixtures/account'
 import {getLocalesResponseFixture} from '../../fixtures/getLocalesResponse.fixtures'
 import {useHelpCenterApi} from '../../hooks/useHelpCenterApi'
 import {useSupportedLocales} from '../../providers/SupportedLocales'
@@ -14,11 +16,8 @@ import HelpCenterNewView from '../HelpCenterNewView'
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
 const defaultState: Partial<RootState> = {
-    billing: fromJS({
-        plans: fromJS({
-            ['AutomationAddon']: {automation_addon_included: true},
-        }),
-    }),
+    currentAccount: fromJS(account),
+    billing: fromJS(billingState),
 }
 const store = mockStore(defaultState)
 

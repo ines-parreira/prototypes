@@ -193,7 +193,7 @@ exports[`<FeaturePaywall /> should ask to upgrade legacy plan into new plan 1`] 
         class="align-items-center mx-0 row"
       >
         <div
-          class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview advanced col-12 col-lg-6 col-xl-6"
+          class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview basic col-12 col-lg-6 col-xl-6"
         >
           <div
             class=""
@@ -232,7 +232,7 @@ exports[`<FeaturePaywall /> should ask to upgrade legacy plan into new plan 1`] 
               <div
                 class="badge"
               >
-                Advanced Plan
+                Basic Plan
               </div>
             </div>
             <h1
@@ -305,7 +305,7 @@ exports[`<FeaturePaywall /> should ask to upgrade legacy plan into new plan 1`] 
                     <span
                       class="wrapper"
                     >
-                      Upgrade to New Advanced
+                      Upgrade to New Basic
                       <i
                         class="material-icons icon isRight medium"
                       >
@@ -367,7 +367,7 @@ exports[`<FeaturePaywall /> should render paywall for the feature 1`] = `
         class="align-items-center mx-0 row"
       >
         <div
-          class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview advanced col-12 col-lg-6 col-xl-6"
+          class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview pro col-12 col-lg-6 col-xl-6"
         >
           <div
             class=""
@@ -391,7 +391,7 @@ exports[`<FeaturePaywall /> should render paywall for the feature 1`] = `
               <div
                 class="badge"
               >
-                Advanced Plan
+                Pro Plan
               </div>
             </div>
             <h1
@@ -464,7 +464,7 @@ exports[`<FeaturePaywall /> should render paywall for the feature 1`] = `
                     <span
                       class="wrapper"
                     >
-                      Upgrade to Advanced
+                      Upgrade to Pro
                       <i
                         class="material-icons icon isRight medium"
                       >

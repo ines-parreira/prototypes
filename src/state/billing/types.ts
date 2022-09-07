@@ -1,6 +1,6 @@
 import {Map} from 'immutable'
 
-import {Plan} from '../../models/billing/types'
+import {Plan, Product} from 'models/billing/types'
 
 export type BillingContactImmutable = Map<any, any>
 
@@ -88,17 +88,24 @@ export type Subscription = {
     plan: SubscriptionPlan
 }
 
+export type ProductPriceSubscription =
+    | {prices: string[]}
+    | Record<string, string>
+
 export type PlanWithCurrencySign = Plan & {
     currencySign: '$'
 }
 
 export type BillingImmutableState = Map<any, any>
 
+export type BillingProducts = Product[]
+
 export type BillingState = {
     contact?: BillingContact
     plans: {
         [plan in SubscriptionPlan]: Plan
     }
+    products: BillingProducts
     futureSubscriptionPlan?: string
     invoices: Invoice[]
 }

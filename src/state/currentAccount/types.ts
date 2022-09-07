@@ -135,6 +135,7 @@ export type Account = {
         status: 'active' | 'past_due' | 'trialing'
         trial_end_datetime: string | null
         trial_start_datetime: string | null
+        products: Record<string, string>
     }
     created_datetime: string
     deactivated_datetime: Maybe<string>

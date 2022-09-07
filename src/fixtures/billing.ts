@@ -1,3 +1,5 @@
+import {products} from 'fixtures/productPrices'
+
 export const billingState = {
     paymentMethod: 'stripe',
     plans: {
@@ -223,4 +225,5 @@ export const billingState = {
         expDate: '10/23',
         cvc: '123',
     },
+    products: products,
 }

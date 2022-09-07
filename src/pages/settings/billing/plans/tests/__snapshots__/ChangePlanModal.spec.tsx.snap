@@ -172,11 +172,11 @@ exports[`<ChangePlanModal /> should render 1`] = `
                   </div>
                   <div>
                     plan: 
-                    basic-monthly-usd-2
+                    basic-monthly-usd-4
                   </div>
                   <div>
                     features plan: 
-                    basic-monthly-usd-2
+                    basic-monthly-usd-4
                   </div>
                 </div>
                 <img
@@ -293,11 +293,11 @@ exports[`<ChangePlanModal /> should render the automation plan features for the 
                   </div>
                   <div>
                     plan: 
-                    basic-monthly-usd-2
+                    basic-monthly-usd-4
                   </div>
                   <div>
                     features plan: 
-                    basic-automation-monthly-usd-2
+                    basic-automation-full-price-monthly-usd-4
                   </div>
                 </div>
                 <img

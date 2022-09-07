@@ -15,6 +15,7 @@ import {View} from 'models/view/types'
 import {Account} from 'state/currentAccount/types'
 import {Tag} from 'state/tags/types'
 import {Team} from 'state/teams/types'
+import {BillingProducts} from 'state/billing/types'
 
 export type Attachment = {
     content_type: string
@@ -47,6 +48,7 @@ export type GorgiasInitialState = {
         plans: {
             [key: string]: Plan
         }
+        products: BillingProducts
     }
     chats: {
         tickets: GorgiasInitialStateRecentChatTicket[]

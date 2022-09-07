@@ -1,16 +1,26 @@
 import {createSelector} from 'reselect'
-import {fromJS, Map, List} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 
-import {getFullPrice} from 'models/billing/utils'
-import {Plan} from '../../models/billing/types'
+import {
+    createAutomationPlanFromProducts,
+    createHelpdeskPlanFromProducts,
+    getFullPrice,
+} from 'models/billing/utils'
+import {
+    AutomationPrice,
+    HelpdeskPrice,
+    Plan,
+    Product,
+    ProductType,
+} from 'models/billing/types'
 import {CurrentAccountState} from '../currentAccount/types'
-import {getCurrentAccountState} from '../currentAccount/selectors'
+import {getCurrentSubscription} from '../currentAccount/selectors'
 import {getActiveIntegrations} from '../integrations/selectors'
 import {RootState} from '../types'
 
 import {
-    BillingState,
     BillingImmutableState,
+    BillingState,
     PlanWithCurrencySign,
 } from './types'
 
@@ -20,56 +30,144 @@ export const DEPRECATED_getBillingState = (
     state: RootState
 ): BillingImmutableState => state.billing || fromJS({})
 
-export const getBillingState = (state: RootState): BillingState =>
-    state.billing.toJS() as BillingState
+export const getBillingState = (state: RootState): BillingState => {
+    return state.billing.toJS() as BillingState
+}
 
-export const currentPlanId = createSelector<
-    RootState,
-    string | undefined,
-    CurrentAccountState,
-    BillingState
->(
-    getCurrentAccountState as (state: RootState) => CurrentAccountState,
-    getBillingState,
-    (currentAccountState, billingState) => {
-        return (currentAccountState.getIn(['current_subscription', 'plan']) ||
-            billingState.futureSubscriptionPlan) as string | undefined
+const getProducts = createSelector(getBillingState, (billingState) => {
+    return billingState.products
+})
+
+const getHelpdeskProduct = createSelector(getProducts, (products) => {
+    return products.find(
+        (product): product is Product<HelpdeskPrice> =>
+            product.type === ProductType.Helpdesk
+    )!
+})
+
+const getAutomationProduct = createSelector(getProducts, (products) => {
+    return products.find(
+        (product): product is Product<AutomationPrice> =>
+            product.type === ProductType.Automation
+    )!
+})
+
+const getCurrentProducts = createSelector(
+    getCurrentSubscription as (state: RootState) => CurrentAccountState,
+    getHelpdeskProduct,
+    getAutomationProduct,
+    (currentSubscription, helpdeskProduct, automationProduct) => {
+        const currentSubscriptionProducts: Record<string, string> = (
+            currentSubscription.get('products') as Map<any, any>
+        ).toJS()
+
+        const currentProducts: {
+            [ProductType.Helpdesk]: HelpdeskPrice
+            [ProductType.Automation]?: AutomationPrice
+        } = {} as any
+        Object.entries(currentSubscriptionProducts).forEach(
+            ([productId, priceId]) => {
+                if (helpdeskProduct.id === productId) {
+                    currentProducts[ProductType.Helpdesk] =
+                        helpdeskProduct.prices.find(
+                            (price) => price.price_id === priceId
+                        )!
+                }
+
+                if (automationProduct.id === productId) {
+                    currentProducts[ProductType.Automation] =
+                        automationProduct.prices.find(
+                            (price) => price.price_id === priceId
+                        )!
+                }
+            }
+        )
+        return currentProducts
     }
 )
+
+const getCurrentHelpdeskProduct = createSelector(
+    getCurrentProducts,
+    (currentProducts) => {
+        return currentProducts.helpdesk
+    }
+)
+
+const getCurrentAutomationProduct = createSelector(
+    getCurrentProducts,
+    (currentProducts) => {
+        return currentProducts.automation
+    }
+)
+
+export const currentPlanId = createSelector(
+    getCurrentHelpdeskProduct,
+    getCurrentAutomationProduct,
+    getBillingState,
+    (helpdeskProduct, automationProduct, billingState) => {
+        return (
+            automationProduct?.legacy_id ||
+            helpdeskProduct?.legacy_id ||
+            billingState.futureSubscriptionPlan
+        )
+    }
+)
+
+export const getPlans = createSelector(getProducts, (products) => {
+    const helpdeskProductPrices = products.find(
+        (product): product is Product<HelpdeskPrice> =>
+            product.type === ProductType.Helpdesk
+    )!.prices
+    const automationProductPrices = products.find(
+        (product): product is Product<AutomationPrice> =>
+            product.type === ProductType.Automation
+    )!.prices
+
+    const basePlans: PlanWithCurrencySign[] = helpdeskProductPrices.map(
+        (product) => {
+            const equivalentAutomationPriceId = product.addons
+                ? product.addons[0]
+                : undefined
+            const equivalentAutomationProduct = equivalentAutomationPriceId
+                ? automationProductPrices.find(
+                      (price) => price.price_id === equivalentAutomationPriceId
+                  )
+                : undefined
+            return createHelpdeskPlanFromProducts(
+                product,
+                equivalentAutomationProduct
+            )
+        }
+    )
+    const automationPlans = automationProductPrices.map((product) => {
+        const equivalentHelpdeskProduct = helpdeskProductPrices.find(
+            (price) => price.price_id === product.base_price_id
+        )!
+
+        return createAutomationPlanFromProducts(
+            product,
+            equivalentHelpdeskProduct
+        )
+    })
+    return [...basePlans, ...automationPlans].sort(
+        ({order: orderA}, {order: orderB}) =>
+            (orderA || Infinity) - (orderB || Infinity)
+    )
+})
 
 export const DEPRECATED_getPlans = createSelector<
     RootState,
     Map<any, any>,
-    BillingImmutableState
->(DEPRECATED_getBillingState, (state) => {
-    return (
-        (state.get('plans', fromJS({})) as Map<any, any>).sortBy(
-            (plan: Map<any, any>) => (plan.get('order') as number) || Infinity
-        ) as Map<any, any>
-    ).map((plan: Map<any, any>) => {
-        const amount = (plan.get('amount') as number) || 0
-        return plan
-            .set('amount', amount / 100) // stripe amount are in cents
-            .set('currencySign', '$') // we only have USD today, change this when we add more currencies
-    }) as Map<any, any>
+    PlanWithCurrencySign[]
+>(getPlans, (plans) => {
+    const planDictionary: Record<string, PlanWithCurrencySign> = {}
+    plans.forEach((plan) => {
+        planDictionary[plan.id] = plan
+    })
+    return (fromJS(planDictionary) as Map<any, any>).sortBy(
+        (plan: Map<any, any>) => (plan.get('order') as number) || Infinity
+    ) as Map<any, any>
 })
-
-export const getPlans = createSelector<
-    RootState,
-    PlanWithCurrencySign[],
-    BillingState
->(getBillingState, (state) =>
-    Object.values(state.plans)
-        .map(
-            (plan) =>
-                ({
-                    ...plan,
-                    amount: (plan.amount || 0) / 100, // stripe amount are in cents
-                    currencySign: '$', // we only have USD today, change this when we add more currencies
-                } as PlanWithCurrencySign)
-        )
-        .sort(({order: orderA}, {order: orderB}) => orderA - orderB)
-)
 
 export const DEPRECATED_getCurrentPlan = createSelector<
     RootState,
@@ -87,7 +185,9 @@ export const getCurrentPlan = createSelector<
     Plan | undefined,
     Plan[],
     string | undefined
->(getPlans, currentPlanId, (plans, id) => plans.find((plan) => plan.id === id))
+>(getPlans, currentPlanId, (plans, id) => {
+    return plans.find((plan) => plan.id === id)
+})
 
 export const DEPRECATED_getPlan = (planId: string) =>
     createSelector<RootState, Map<any, any>, Map<any, any>>(
@@ -186,7 +286,7 @@ export const getAddOnAutomationFullAmountCurrentPlan = createSelector<
     getAddOnAutomationDiscountCurrentPlan,
     (amount, discount) => {
         if (amount && discount) {
-            return getFullPrice(amount, discount) || undefined
+            return getFullPrice(amount, discount)
         }
 
         return undefined

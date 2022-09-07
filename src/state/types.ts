@@ -11,7 +11,7 @@ import {
 import {PaginationMeta, OrderDirection} from 'models/api/types'
 
 import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'
-import {BillingContact, Subscription} from './billing/types'
+import {BillingContact} from './billing/types'
 import {AccountSetting} from './currentAccount/types'
 import {MacrosAction} from './entities/macros/types'
 import {AuditLogEventsAction} from './entities/auditLogEvents/types'
@@ -75,7 +75,7 @@ export type GorgiasAction = {
     ticketId?: number | string
     ticketVia?: TicketVia
     userId?: number
-    subscription?: Subscription
+    subscription?: Record<string, string>
     setting?: AccountSetting
     isUpdate?: boolean
     settingType?: string

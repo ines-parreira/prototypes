@@ -7,9 +7,9 @@ import thunk from 'redux-thunk'
 import _noop from 'lodash/noop'
 import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 
+import _cloneDeep from 'lodash/cloneDeep'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {RootState, StoreDispatch} from 'state/types'
-import {proPlan} from 'fixtures/subscriptionPlan'
 import {flushPromises, renderWithRouter} from 'utils/testing'
 import {AccountFeature} from 'state/currentAccount/types'
 import {integrationsState} from 'fixtures/integrations'
@@ -43,6 +43,14 @@ import {
 import {StatsFilters} from 'models/stat/types'
 import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
 
+import {billingState} from 'fixtures/billing'
+import {
+    starterHelpdeskPriceFeatures,
+    starterHelpdeskPrice,
+    products,
+    HELPDESK_PRODUCT_ID,
+} from 'fixtures/productPrices'
+import {account} from 'fixtures/account'
 import useStatResource from '../../useStatResource'
 import SelfServiceStatsPage from '../SelfServiceStatsPage'
 
@@ -79,6 +87,7 @@ describe('<SelfServiceStatsPage />', () => {
                 },
             },
             created_datetime: '2021-08-01T00:00:00Z',
+            current_subscription: account.current_subscription,
         }),
         entities: {
             macros: {},
@@ -96,7 +105,7 @@ describe('<SelfServiceStatsPage />', () => {
             auditLogEvents: {},
         } as RootState['entities'],
         integrations: fromJS({}),
-        billing: fromJS({plans: []}),
+        billing: fromJS(billingState),
     } as RootState
 
     beforeEach(() => {
@@ -113,19 +122,7 @@ describe('<SelfServiceStatsPage />', () => {
 
     it('should display the loader on loading', () => {
         const {container} = render(
-            <Provider
-                store={mockStore({
-                    ...defaultState,
-                    currentAccount: fromJS({
-                        current_subscription: fromJS({
-                            plan: proPlan.id,
-                        }),
-                        features: {
-                            ...proPlan.features,
-                        },
-                    }),
-                })}
-            >
+            <Provider store={mockStore(defaultState)}>
                 <SelfServiceStatsPage />
             </Provider>
         )
@@ -133,18 +130,26 @@ describe('<SelfServiceStatsPage />', () => {
     })
 
     it('should render the automation add-on upgrade paywall if the current account doesnt have the feature', () => {
+        const productsWithStarterPrice = _cloneDeep(products)
+        productsWithStarterPrice[0].prices.push(starterHelpdeskPrice)
+
         act(() => {
             const {container} = render(
                 <Provider
                     store={mockStore({
                         ...defaultState,
                         currentAccount: fromJS({
-                            current_subscription: fromJS({
-                                plan: proPlan.id,
-                            }),
-                            features: {
-                                ...proPlan.features,
+                            current_subscription: {
+                                products: {
+                                    [HELPDESK_PRODUCT_ID]:
+                                        starterHelpdeskPrice.price_id,
+                                },
                             },
+                            features: starterHelpdeskPriceFeatures,
+                        }),
+                        billing: fromJS({
+                            ...billingState,
+                            products: productsWithStarterPrice,
                         }),
                     })}
                 >

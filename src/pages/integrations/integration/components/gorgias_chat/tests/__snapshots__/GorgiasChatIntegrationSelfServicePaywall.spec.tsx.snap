@@ -147,6 +147,20 @@ exports[`GorgiasChatIntegrationSelfServicePaywall should show modal on button cl
                 </b>
               </a>
             </div>
+            <div
+              class="amountWrapper amount"
+            >
+              <span
+                class="amount"
+              >
+                <b>
+                  $30
+                </b>
+                 
+                / 
+                month
+              </span>
+            </div>
           </div>
           <div
             class="features"

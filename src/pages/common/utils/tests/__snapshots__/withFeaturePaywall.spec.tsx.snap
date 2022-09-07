@@ -24,7 +24,7 @@ exports[`withFeaturePaywall should not render the passed component when the feat
           class="align-items-center mx-0 row"
         >
           <div
-            class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview advanced col-12 col-lg-6 col-xl-6"
+            class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview pro col-12 col-lg-6 col-xl-6"
           >
             <div
               class=""
@@ -48,7 +48,7 @@ exports[`withFeaturePaywall should not render the passed component when the feat
                 <div
                   class="badge"
                 >
-                  Advanced Plan
+                  Pro Plan
                 </div>
               </div>
               <h1
@@ -121,7 +121,7 @@ exports[`withFeaturePaywall should not render the passed component when the feat
                       <span
                         class="wrapper"
                       >
-                        Upgrade to Advanced
+                        Upgrade to Pro
                         <i
                           class="material-icons icon isRight medium"
                         >
@@ -175,7 +175,7 @@ exports[`withFeaturePaywall should pass custom paywall configuration props 1`] =
           class="align-items-center mx-0 row"
         >
           <div
-            class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview advanced col-12 col-lg-6 col-xl-6"
+            class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview pro col-12 col-lg-6 col-xl-6"
           >
             <div
               class=""
@@ -199,7 +199,7 @@ exports[`withFeaturePaywall should pass custom paywall configuration props 1`] =
                 <div
                   class="badge"
                 >
-                  Advanced Plan
+                  Pro Plan
                 </div>
               </div>
               <h1
@@ -272,7 +272,7 @@ exports[`withFeaturePaywall should pass custom paywall configuration props 1`] =
                       <span
                         class="wrapper"
                       >
-                        Upgrade to Advanced
+                        Upgrade to Pro
                         <i
                           class="material-icons icon isRight medium"
                         >

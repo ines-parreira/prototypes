@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react'
+import React, {useCallback, useEffect, useMemo} from 'react'
 import classnames from 'classnames'
 import moment from 'moment'
 import {Link} from 'react-router-dom'
@@ -12,13 +12,14 @@ import {
 } from 'reactstrap'
 import {useAsyncFn} from 'react-use'
 
+import {fromJS} from 'immutable'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {fetchCurrentUsage} from 'state/billing/actions'
 import {openChat} from 'utils'
 import {
     getCurrentUsage,
-    DEPRECATED_getPlan,
     hasLegacyPlan,
+    getCurrentPlan,
 } from 'state/billing/selectors'
 import {getCurrentSubscription} from 'state/currentAccount/selectors'
 import {getActiveIntegrations} from 'state/integrations/selectors'
@@ -43,8 +44,10 @@ const BillingUsage = () => {
     const accountHasLegacyPlan = useAppSelector(hasLegacyPlan)
     const activeIntegrations = useAppSelector(getActiveIntegrations)
     const currentSubscription = useAppSelector(getCurrentSubscription)
-    const currentPlan = useAppSelector(
-        DEPRECATED_getPlan(currentSubscription.get('plan'))
+    const currentPlan = useAppSelector(getCurrentPlan)
+    const immutableCurrentPlan = useMemo(
+        () => fromJS(currentPlan || {}) as Map<any, any>,
+        [currentPlan]
     )
     const currentUsage = useAppSelector(getCurrentUsage)
 
@@ -77,7 +80,8 @@ const BillingUsage = () => {
         ).format(dateFormat)
 
         // tickets included/used + extra cost
-        const includedTickets = (currentPlan.get('free_tickets') as number) || 0
+        const includedTickets =
+            (immutableCurrentPlan.get('free_tickets') as number) || 0
         const usedTickets =
             (currentUsage.getIn(['data', 'tickets']) as number) || 0
         const extraCost = (currentUsage.getIn(['data', 'cost']) as number) || 0
@@ -149,11 +153,11 @@ const BillingUsage = () => {
                 </div>
             </div>
         )
-    }, [currentPlan, currentUsage])
+    }, [immutableCurrentPlan, currentUsage])
 
     const renderIntegrationUsage = useCallback(() => {
         // integrations included/used
-        const includedIntegrations = currentPlan.get('integrations')
+        const includedIntegrations = immutableCurrentPlan.get('integrations')
         const usedIntegrations = activeIntegrations
             ? activeIntegrations.size
             : 0
@@ -175,7 +179,7 @@ const BillingUsage = () => {
                 </UncontrolledTooltip>
             </div>
         )
-    }, [activeIntegrations, currentPlan])
+    }, [activeIntegrations, immutableCurrentPlan])
 
     const renderNoSubscription = () => (
         <CardGroup className={css['card-group']}>
@@ -209,9 +213,9 @@ const BillingUsage = () => {
         const dateFormat = 'MMM DD'
 
         const isTrialing = currentSubscription.get('status') === 'trialing'
-        const planName = currentPlan.get('name') as string
+        const planName = immutableCurrentPlan.get('name') as string
         const planTitle = `${planName} ${
-            currentPlan.get('interval') as string
+            immutableCurrentPlan.get('interval') as string
         }ly plan`
 
         const currentSubscriptionStart = moment(
@@ -290,7 +294,9 @@ const BillingUsage = () => {
     ) : (
         <div className={css.wrapper}>
             {accountHasLegacyPlan && (
-                <LegacyPlanBanner isCustomPlan={currentPlan.get('custom')} />
+                <LegacyPlanBanner
+                    isCustomPlan={immutableCurrentPlan.get('custom')}
+                />
             )}
             <BillingHeader icon="insert_chart">Usage & Plans</BillingHeader>
 

@@ -2,14 +2,16 @@ import React from 'react'
 import {mount} from 'enzyme'
 import {fromJS} from 'immutable'
 
+import {billingState} from 'fixtures/billing'
 import {
     GORGIAS_CHAT_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
-} from '../../../../../../../constants/integration'
-import configureStore from '../../../../../../../store/configureStore'
+} from 'constants/integration'
+import configureStore from 'store/configureStore'
+import {InitialRootState} from 'types'
+import {account} from 'fixtures/account'
 import GorgiasChatIntegrationInstall from '../GorgiasChatIntegrationInstall'
 import {renderChatCodeSnippet} from '../../renderChatCodeSnippet'
-import {InitialRootState} from '../../../../../../../types'
 
 describe('renderChatCodeSnippet()', () => {
     it('should render correctly with new format', () => {
@@ -60,7 +62,9 @@ describe('<GorgiasChatIntegrationInstall/>', () => {
         }),
         currentAccount: fromJS({
             domain: 'acme',
+            current_subscription: account.current_subscription,
         }),
+        billing: fromJS(billingState),
     }
 
     const minProps = {

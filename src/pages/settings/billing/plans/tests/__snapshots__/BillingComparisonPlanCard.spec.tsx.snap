@@ -43,19 +43,19 @@ exports[`<BillingComparisonPlanCard /> should not render plan as current plan 1`
       >
         <label
           class="label label"
-          for="basic-monthly-usd-242"
+          for="basic-monthly-usd-442"
         >
           <input
             class="input"
-            id="basic-monthly-usd-242"
-            name="basic-monthly-usd-242"
+            id="basic-monthly-usd-442"
+            name="basic-monthly-usd-442"
             type="checkbox"
           />
           <div
             class="align-middle checkboxLabel"
           >
             <span
-              id="automation-text-basic-monthly-usd-242"
+              id="automation-text-basic-monthly-usd-442"
             >
               Automation
             </span>
@@ -71,14 +71,8 @@ exports[`<BillingComparisonPlanCard /> should not render plan as current plan 1`
           <span
             class="amount"
           >
-            <span
-              class="fullAmount"
-            >
-              $40
-            </span>
-            <wbr />
             <b>
-              $20
+              $30
             </b>
              
             / 
@@ -111,7 +105,7 @@ exports[`<BillingComparisonPlanCard /> should not render plan as current plan 1`
             class="billableTickets"
             id="billable-ticket-label-42"
           >
-            350
+            300
              
             billable tickets
           </span>
@@ -187,7 +181,7 @@ exports[`<BillingComparisonPlanCard /> should not render plan as current plan 1`
         </span>
       </li>
       <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+        class="d-flex align-items-center featureListItem"
       >
         <span
           class="featureIcon mr-3"
@@ -263,7 +257,7 @@ exports[`<BillingComparisonPlanCard /> should not render plan as current plan 1`
         </span>
       </li>
       <li
-        class="d-flex align-items-center featureListItem"
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
       >
         <span
           class="featureIcon mr-3"
@@ -369,355 +363,7 @@ exports[`<BillingComparisonPlanCard /> should render current legacy plan 1`] = `
     >
       <div
         class="planName"
-        title="Standard"
-      >
-        Standard
-      </div>
-      <span
-        class="headerPrice"
-      >
-        <div
-          class="amountWrapper"
-        >
-          <span
-            class="amount"
-          >
-            $3,000
-             
-            / 
-            month
-          </span>
-        </div>
-      </span>
-    </div>
-  </div>
-  <div>
-    <div
-      class="automationRow"
-    >
-      <div
-        class="checkbox"
-      >
-        <label
-          class="label label"
-          for="standard-usd-142"
-        >
-          <input
-            class="input"
-            id="standard-usd-142"
-            name="standard-usd-142"
-            type="checkbox"
-          />
-          <div
-            class="align-middle checkboxLabel"
-          >
-            <span
-              id="automation-text-standard-usd-142"
-            >
-              Automation
-            </span>
-          </div>
-        </label>
-      </div>
-      <div
-        class="amountContainer"
-      >
-        <div
-          class="amountWrapper amount amountDisabled"
-        >
-          <span
-            class="amount"
-          >
-            <span
-              class="fullAmount"
-            >
-              $5,928
-            </span>
-            <wbr />
-            <b>
-              $2,964
-            </b>
-             
-            / 
-            mo
-          </span>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div
-    class="cardBody card-body"
-  >
-    <ul
-      class="featureList"
-    >
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            playlist_add_check
-          </i>
-        </span>
-        <span>
-          <span
-            class="billableTickets"
-            id="billable-ticket-label-42"
-          >
-            350
-             
-            billable tickets
-          </span>
-           
-          included
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            thumb_up
-          </i>
-        </span>
-        <span>
-          Facebook, Messenger, Instagram & DMs
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            forum
-          </i>
-        </span>
-        <span>
-          Live chat
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            phone
-          </i>
-        </span>
-        <span>
-          Phone
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            auto_awesome
-          </i>
-        </span>
-        <span>
-          Macros and rules
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            insert_emoticon
-          </i>
-        </span>
-        <span>
-          Satisfaction surveys
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            web_asset
-          </i>
-        </span>
-        <span>
-          <span>
-            No Help center
-          </span>
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            directions_bike
-          </i>
-        </span>
-        <span>
-          <b>
-            Lite
-          </b>
-           onboarding
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            attach_money
-          </i>
-        </span>
-        <span>
-          Revenue statistics
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon"
-            style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
-          />
-        </span>
-        <span>
-          Magento integration
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            person_pin
-          </i>
-        </span>
-        <span>
-          Dedicated success manager
-        </span>
-      </li>
-      <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
-      >
-        <span
-          class="featureIcon mr-3"
-        >
-          <i
-            class="icon material-icons"
-          >
-            blur_on
-          </i>
-        </span>
-        <span>
-          Custom services
-        </span>
-      </li>
-    </ul>
-  </div>
-  <div
-    class="cardFooter card-footer"
-  >
-    <div
-      class="row"
-    >
-      <div>
-        Total
-      </div>
-      <div
-        class="amountContainer"
-      >
-        <div
-          class="amountWrapper amount"
-        >
-          <span
-            class="amount"
-          >
-            <b>
-              $3,000
-            </b>
-             
-            / 
-            month
-          </span>
-        </div>
-      </div>
-    </div>
-    <button
-      aria-label="Current Plan"
-      class="wrapper footerButton ghost primary medium isDisabled"
-      disabled=""
-      type="button"
-    >
-      Current Plan
-    </button>
-  </div>
-</div>
-`;
-
-exports[`<BillingComparisonPlanCard /> should render current plan 1`] = `
-<div
-  class="plan greyTheme card"
->
-  <div
-    class="planHeader card-header"
-  >
-    <div>
-      <div
-        class="badge"
-      >
-        CURRENT PLAN
-      </div>
-    </div>
-    <div
-      class="headerText"
-    >
-      <div
-        class="planName"
-        title="Basic"
+        title="Basic Plan"
       >
         Basic
       </div>
@@ -748,19 +394,19 @@ exports[`<BillingComparisonPlanCard /> should render current plan 1`] = `
       >
         <label
           class="label label"
-          for="basic-monthly-usd-242"
+          for="basic-usd-142"
         >
           <input
             class="input"
-            id="basic-monthly-usd-242"
-            name="basic-monthly-usd-242"
+            id="basic-usd-142"
+            name="basic-usd-142"
             type="checkbox"
           />
           <div
             class="align-middle checkboxLabel"
           >
             <span
-              id="automation-text-basic-monthly-usd-242"
+              id="automation-text-basic-usd-142"
             >
               Automation
             </span>
@@ -779,11 +425,11 @@ exports[`<BillingComparisonPlanCard /> should render current plan 1`] = `
             <span
               class="fullAmount"
             >
-              $40
+              $30
             </span>
             <wbr />
             <b>
-              $20
+              $15
             </b>
              
             / 
@@ -816,7 +462,7 @@ exports[`<BillingComparisonPlanCard /> should render current plan 1`] = `
             class="billableTickets"
             id="billable-ticket-label-42"
           >
-            350
+            600
              
             billable tickets
           </span>
@@ -892,7 +538,359 @@ exports[`<BillingComparisonPlanCard /> should render current plan 1`] = `
         </span>
       </li>
       <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            insert_emoticon
+          </i>
+        </span>
+        <span>
+          Satisfaction surveys
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            web_asset
+          </i>
+        </span>
+        <span>
+          <div>
+            Unlimited
+             
+            <span
+              class="underline"
+              id="help-center-label-42"
+            >
+              Help centers
+            </span>
+          </div>
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            directions_bike
+          </i>
+        </span>
+        <span>
+          <b>
+            Lite
+          </b>
+           onboarding
+        </span>
+      </li>
+      <li
         class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            attach_money
+          </i>
+        </span>
+        <span>
+          Revenue statistics
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon"
+            style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
+          />
+        </span>
+        <span>
+          Magento integration
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            person_pin
+          </i>
+        </span>
+        <span>
+          Dedicated success manager
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            blur_on
+          </i>
+        </span>
+        <span>
+          Custom services
+        </span>
+      </li>
+    </ul>
+  </div>
+  <div
+    class="cardFooter card-footer"
+  >
+    <div
+      class="row"
+    >
+      <div>
+        Total
+      </div>
+      <div
+        class="amountContainer"
+      >
+        <div
+          class="amountWrapper amount"
+        >
+          <span
+            class="amount"
+          >
+            <b>
+              $60
+            </b>
+             
+            / 
+            month
+          </span>
+        </div>
+      </div>
+    </div>
+    <button
+      aria-label="Current Plan"
+      class="wrapper footerButton ghost primary medium isDisabled"
+      disabled=""
+      type="button"
+    >
+      Current Plan
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<BillingComparisonPlanCard /> should render current plan 1`] = `
+<div
+  class="plan greyTheme card"
+>
+  <div
+    class="planHeader card-header"
+  >
+    <div>
+      <div
+        class="badge"
+      >
+        CURRENT PLAN
+      </div>
+    </div>
+    <div
+      class="headerText"
+    >
+      <div
+        class="planName"
+        title="Basic"
+      >
+        Basic
+      </div>
+      <span
+        class="headerPrice"
+      >
+        <div
+          class="amountWrapper"
+        >
+          <span
+            class="amount"
+          >
+            $60
+             
+            / 
+            month
+          </span>
+        </div>
+      </span>
+    </div>
+  </div>
+  <div>
+    <div
+      class="automationRow"
+    >
+      <div
+        class="checkbox"
+      >
+        <label
+          class="label label"
+          for="basic-monthly-usd-442"
+        >
+          <input
+            class="input"
+            id="basic-monthly-usd-442"
+            name="basic-monthly-usd-442"
+            type="checkbox"
+          />
+          <div
+            class="align-middle checkboxLabel"
+          >
+            <span
+              id="automation-text-basic-monthly-usd-442"
+            >
+              Automation
+            </span>
+          </div>
+        </label>
+      </div>
+      <div
+        class="amountContainer"
+      >
+        <div
+          class="amountWrapper amount amountDisabled"
+        >
+          <span
+            class="amount"
+          >
+            <b>
+              $30
+            </b>
+             
+            / 
+            mo
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="cardBody card-body"
+  >
+    <ul
+      class="featureList"
+    >
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            playlist_add_check
+          </i>
+        </span>
+        <span>
+          <span
+            class="billableTickets"
+            id="billable-ticket-label-42"
+          >
+            300
+             
+            billable tickets
+          </span>
+           
+          included
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            thumb_up
+          </i>
+        </span>
+        <span>
+          Facebook, Messenger, Instagram & DMs
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            forum
+          </i>
+        </span>
+        <span>
+          Live chat
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            phone
+          </i>
+        </span>
+        <span>
+          <b>
+            1
+          </b>
+           Phone number
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
+      >
+        <span
+          class="featureIcon mr-3"
+        >
+          <i
+            class="icon material-icons"
+          >
+            auto_awesome
+          </i>
+        </span>
+        <span>
+          Macros and rules
+        </span>
+      </li>
+      <li
+        class="d-flex align-items-center featureListItem"
       >
         <span
           class="featureIcon mr-3"
@@ -968,7 +966,7 @@ exports[`<BillingComparisonPlanCard /> should render current plan 1`] = `
         </span>
       </li>
       <li
-        class="d-flex align-items-center featureListItem"
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
       >
         <span
           class="featureIcon mr-3"
@@ -1088,7 +1086,7 @@ exports[`<BillingComparisonPlanCard /> should render custom plan 1`] = `
           <span
             class="amount"
           >
-            $540
+            $1,600
              
             / 
             month
@@ -1105,7 +1103,7 @@ exports[`<BillingComparisonPlanCard /> should render custom plan 1`] = `
         class="align-middle checkboxLabel"
       >
         <span
-          id="automation-text-custom-monthly-usd-242"
+          id="automation-text-custom-monthly-usd-4-142"
         >
           Automation
         </span>
@@ -1140,7 +1138,7 @@ exports[`<BillingComparisonPlanCard /> should render custom plan 1`] = `
             class="billableTickets"
             id="billable-ticket-label-42"
           >
-            2,000
+            10,000
              
             billable tickets
           </span>
@@ -1194,7 +1192,7 @@ exports[`<BillingComparisonPlanCard /> should render custom plan 1`] = `
         </span>
         <span>
           <b>
-            50
+            150
           </b>
            Phone number
           s
@@ -1277,7 +1275,7 @@ exports[`<BillingComparisonPlanCard /> should render custom plan 1`] = `
         </span>
       </li>
       <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+        class="d-flex align-items-center featureListItem"
       >
         <span
           class="featureIcon mr-3"
@@ -1360,7 +1358,7 @@ exports[`<BillingComparisonPlanCard /> should render custom plan 1`] = `
             class="amount"
           >
             <b>
-              $540
+              $1,600
             </b>
              
             / 
@@ -1413,7 +1411,7 @@ exports[`<BillingComparisonPlanCard /> should render customLegacyPlan plan 1`] =
           <span
             class="amount"
           >
-            $540
+            $1,600
              
             / 
             month
@@ -1463,7 +1461,7 @@ exports[`<BillingComparisonPlanCard /> should render customLegacyPlan plan 1`] =
             class="billableTickets"
             id="billable-ticket-label-42"
           >
-            2,000
+            10,000
              
             billable tickets
           </span>
@@ -1517,7 +1515,7 @@ exports[`<BillingComparisonPlanCard /> should render customLegacyPlan plan 1`] =
         </span>
         <span>
           <b>
-            50
+            150
           </b>
            Phone number
           s
@@ -1556,7 +1554,7 @@ exports[`<BillingComparisonPlanCard /> should render customLegacyPlan plan 1`] =
         </span>
       </li>
       <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+        class="d-flex align-items-center featureListItem"
       >
         <span
           class="featureIcon mr-3"
@@ -1568,9 +1566,16 @@ exports[`<BillingComparisonPlanCard /> should render customLegacyPlan plan 1`] =
           </i>
         </span>
         <span>
-          <span>
-            No Help center
-          </span>
+          <div>
+            Unlimited
+             
+            <span
+              class="underline"
+              id="help-center-label-42"
+            >
+              Help centers
+            </span>
+          </div>
         </span>
       </li>
       <li
@@ -1593,7 +1598,7 @@ exports[`<BillingComparisonPlanCard /> should render customLegacyPlan plan 1`] =
         </span>
       </li>
       <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+        class="d-flex align-items-center featureListItem"
       >
         <span
           class="featureIcon mr-3"
@@ -1676,7 +1681,7 @@ exports[`<BillingComparisonPlanCard /> should render customLegacyPlan plan 1`] =
             class="amount"
           >
             <b>
-              $540
+              $1,600
             </b>
              
             / 
@@ -1740,19 +1745,19 @@ exports[`<BillingComparisonPlanCard /> should render spinner when plan is updati
       >
         <label
           class="label label"
-          for="basic-monthly-usd-242"
+          for="basic-monthly-usd-442"
         >
           <input
             class="input"
-            id="basic-monthly-usd-242"
-            name="basic-monthly-usd-242"
+            id="basic-monthly-usd-442"
+            name="basic-monthly-usd-442"
             type="checkbox"
           />
           <div
             class="align-middle checkboxLabel"
           >
             <span
-              id="automation-text-basic-monthly-usd-242"
+              id="automation-text-basic-monthly-usd-442"
             >
               Automation
             </span>
@@ -1768,14 +1773,8 @@ exports[`<BillingComparisonPlanCard /> should render spinner when plan is updati
           <span
             class="amount"
           >
-            <span
-              class="fullAmount"
-            >
-              $40
-            </span>
-            <wbr />
             <b>
-              $20
+              $30
             </b>
              
             / 
@@ -1808,7 +1807,7 @@ exports[`<BillingComparisonPlanCard /> should render spinner when plan is updati
             class="billableTickets"
             id="billable-ticket-label-42"
           >
-            350
+            300
              
             billable tickets
           </span>
@@ -1884,7 +1883,7 @@ exports[`<BillingComparisonPlanCard /> should render spinner when plan is updati
         </span>
       </li>
       <li
-        class="d-flex align-items-center featureListItem disabledFeatureListItem"
+        class="d-flex align-items-center featureListItem"
       >
         <span
           class="featureIcon mr-3"
@@ -1960,7 +1959,7 @@ exports[`<BillingComparisonPlanCard /> should render spinner when plan is updati
         </span>
       </li>
       <li
-        class="d-flex align-items-center featureListItem"
+        class="d-flex align-items-center featureListItem disabledFeatureListItem"
       >
         <span
           class="featureIcon mr-3"
@@ -2124,20 +2123,20 @@ exports[`<BillingComparisonPlanCard /> should render the automation plan feature
           >
             <label
               class="label label"
-              for="basic-monthly-usd-242"
+              for="basic-monthly-usd-442"
             >
               <input
                 checked=""
                 class="input"
-                id="basic-monthly-usd-242"
-                name="basic-monthly-usd-242"
+                id="basic-monthly-usd-442"
+                name="basic-monthly-usd-442"
                 type="checkbox"
               />
               <div
                 class="align-middle checkboxLabel"
               >
                 <span
-                  id="automation-text-basic-monthly-usd-242"
+                  id="automation-text-basic-monthly-usd-442"
                 >
                   Automation
                 </span>
@@ -2153,14 +2152,8 @@ exports[`<BillingComparisonPlanCard /> should render the automation plan feature
               <span
                 class="amount"
               >
-                <span
-                  class="fullAmount"
-                >
-                  $40
-                </span>
-                <wbr />
                 <b>
-                  $20
+                  $30
                 </b>
                  
                 / 
@@ -2193,7 +2186,7 @@ exports[`<BillingComparisonPlanCard /> should render the automation plan feature
                 class="billableTickets"
                 id="billable-ticket-label-42"
               >
-                400
+                300
                  
                 billable tickets
               </span>
@@ -2269,7 +2262,7 @@ exports[`<BillingComparisonPlanCard /> should render the automation plan feature
             </span>
           </li>
           <li
-            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+            class="d-flex align-items-center featureListItem"
           >
             <span
               class="featureIcon mr-3"
@@ -2345,7 +2338,7 @@ exports[`<BillingComparisonPlanCard /> should render the automation plan feature
             </span>
           </li>
           <li
-            class="d-flex align-items-center featureListItem"
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
           >
             <span
               class="featureIcon mr-3"
@@ -2412,7 +2405,7 @@ exports[`<BillingComparisonPlanCard /> should render the automation plan feature
                 class="amount"
               >
                 <b>
-                  $80
+                  $90
                 </b>
                  
                 / 
@@ -2422,11 +2415,11 @@ exports[`<BillingComparisonPlanCard /> should render the automation plan feature
           </div>
         </div>
         <button
-          aria-label="Downgrade to Basic Plan"
+          aria-label="Upgrade to Basic Plan"
           class="wrapper footerButton ghost primary medium"
           type="button"
         >
-          Downgrade to Basic Plan
+          Upgrade to Basic Plan
         </button>
       </div>
     </div>
@@ -2457,7 +2450,7 @@ exports[`<BillingComparisonPlanCard /> should render the automation plan feature
               <h5
                 class="modal-title"
               >
-                Are you sure you want to switch plans?
+                We're happy to see you grow 👏
               </h5>
               <button
                 aria-label="Close"
@@ -2477,26 +2470,15 @@ exports[`<BillingComparisonPlanCard /> should render the automation plan feature
               <div
                 class="m-3"
               >
-                Note that your number of tickets will decrease from
+                Our Basic plan is perfect for small businesses: centralize all your customer conversations, connect your Shopify instantly and add a Live Chat! Questions?
                  
-                <b>
-                  2000
-                </b>
-                 to
-                 
-                <b>
-                  350
-                </b>
-                 and the extra ticket price will change to
-                 
-                <b>
-                  $
-                  25.00
-                   per extra 
-                  100
-                   tickets
-                </b>
-                .
+                <a
+                  href="mailto:undefined"
+                >
+                  <b>
+                    Get in touch!
+                  </b>
+                </a>
               </div>
               <div
                 class="m-3 flex justify-content-between"
@@ -2532,7 +2514,7 @@ exports[`<BillingComparisonPlanCard /> should render the automation plan feature
                           <span
                             class="amount"
                           >
-                            $300
+                            $360
                              
                             / 
                             month
@@ -2708,7 +2690,7 @@ exports[`<BillingComparisonPlanCard /> should render the automation plan feature
                             </span>
                           </li>
                           <li
-                            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+                            class="d-flex align-items-center featureListItem"
                           >
                             <span
                               class="featureIcon mr-3"
@@ -2785,12 +2767,12 @@ exports[`<BillingComparisonPlanCard /> should render the automation plan feature
                       >
                         <label
                           class="label label"
-                          for="pro-monthly-usd-242"
+                          for="pro-monthly-usd-442"
                         >
                           <input
                             class="input"
-                            id="pro-monthly-usd-242"
-                            name="pro-monthly-usd-242"
+                            id="pro-monthly-usd-442"
+                            name="pro-monthly-usd-442"
                             readonly=""
                             type="checkbox"
                           />
@@ -2798,7 +2780,7 @@ exports[`<BillingComparisonPlanCard /> should render the automation plan feature
                             class="align-middle checkboxLabel"
                           >
                             <span
-                              id="automation-text-pro-monthly-usd-242"
+                              id="automation-text-pro-monthly-usd-442"
                             >
                               Automation
                             </span>
@@ -2814,14 +2796,8 @@ exports[`<BillingComparisonPlanCard /> should render the automation plan feature
                           <span
                             class="amount"
                           >
-                            <span
-                              class="fullAmount"
-                            >
-                              $200
-                            </span>
-                            <wbr />
                             <b>
-                              $100
+                              $180
                             </b>
                              
                             / 
@@ -2846,7 +2822,7 @@ exports[`<BillingComparisonPlanCard /> should render the automation plan feature
                             class="amount"
                           >
                             <b>
-                              $300
+                              $360
                             </b>
                              
                             / 
@@ -2924,7 +2900,7 @@ exports[`<BillingComparisonPlanCard /> should render the automation plan feature
                                 class="billableTickets"
                                 id="billable-ticket-label-42"
                               >
-                                400
+                                300
                                  
                                 billable tickets
                               </span>
@@ -3000,7 +2976,7 @@ exports[`<BillingComparisonPlanCard /> should render the automation plan feature
                             </span>
                           </li>
                           <li
-                            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+                            class="d-flex align-items-center featureListItem"
                           >
                             <span
                               class="featureIcon mr-3"
@@ -3076,7 +3052,7 @@ exports[`<BillingComparisonPlanCard /> should render the automation plan feature
                             </span>
                           </li>
                           <li
-                            class="d-flex align-items-center featureListItem"
+                            class="d-flex align-items-center featureListItem disabledFeatureListItem"
                           >
                             <span
                               class="featureIcon mr-3"
@@ -3137,20 +3113,20 @@ exports[`<BillingComparisonPlanCard /> should render the automation plan feature
                       >
                         <label
                           class="label label"
-                          for="basic-monthly-usd-242"
+                          for="basic-monthly-usd-442"
                         >
                           <input
                             checked=""
                             class="input"
-                            id="basic-monthly-usd-242"
-                            name="basic-monthly-usd-242"
+                            id="basic-monthly-usd-442"
+                            name="basic-monthly-usd-442"
                             type="checkbox"
                           />
                           <div
                             class="align-middle checkboxLabel"
                           >
                             <span
-                              id="automation-text-basic-monthly-usd-242"
+                              id="automation-text-basic-monthly-usd-442"
                             >
                               Automation
                             </span>
@@ -3166,14 +3142,8 @@ exports[`<BillingComparisonPlanCard /> should render the automation plan feature
                           <span
                             class="amount"
                           >
-                            <span
-                              class="fullAmount"
-                            >
-                              $40
-                            </span>
-                            <wbr />
                             <b>
-                              $20
+                              $30
                             </b>
                              
                             / 
@@ -3198,7 +3168,7 @@ exports[`<BillingComparisonPlanCard /> should render the automation plan feature
                             class="amount"
                           >
                             <b>
-                              $80
+                              $90
                             </b>
                              
                             / 

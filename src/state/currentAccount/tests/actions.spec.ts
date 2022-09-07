@@ -3,20 +3,37 @@ import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import MockAdapter from 'axios-mock-adapter'
 
+import {billingState} from 'fixtures/billing'
+import client from 'models/api/resources'
 import * as actions from '../actions'
 import {initialState} from '../reducers'
 import {StoreDispatch} from '../../types'
 import {AccountSettingType, AccountSetting} from '../types'
-import client from '../../../models/api/resources'
 
 type MockedRootState = {
     currentAccount: Map<any, any>
+    billing: Map<any, any>
 }
 
 const middlewares = [thunk]
 const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
     middlewares
 )
+
+type fromJSType = typeof fromJS
+
+jest.mock('init', () => {
+    /* eslint-disable @typescript-eslint/no-var-requires,@typescript-eslint/no-unsafe-member-access */
+    const {fromJS} = require.requireActual('immutable')
+    const {billingState} = require('fixtures/billing')
+    return {
+        store: {
+            getState: () => ({
+                billing: (fromJS as fromJSType)(billingState),
+            }),
+        },
+    }
+})
 
 jest.mock('../../notifications/actions', () => {
     return {
@@ -29,7 +46,10 @@ describe('current account actions', () => {
     let mockServer: MockAdapter
 
     beforeEach(() => {
-        store = mockStore({currentAccount: initialState})
+        store = mockStore({
+            currentAccount: initialState,
+            billing: fromJS(billingState),
+        })
         mockServer = new MockAdapter(client)
     })
 
@@ -108,7 +128,10 @@ describe('current account actions', () => {
 
     describe('submitSettingSuccess', () => {
         it('should dispatch the next setting', () => {
-            store = mockStore({currentAccount: initialState})
+            store = mockStore({
+                currentAccount: initialState,
+                billing: fromJS(billingState),
+            })
             const req = {
                 data: {
                     views: {

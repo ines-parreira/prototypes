@@ -5,15 +5,17 @@ import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 
+import _cloneDeep from 'lodash/cloneDeep'
 import {RootState, StoreDispatch} from 'state/types'
-import {
-    basicLegacyPlan,
-    basicPlan,
-    basicAutomationPlan,
-} from 'fixtures/subscriptionPlan'
-import {PlanWithCurrencySign} from 'state/billing/types'
 import BillingPlanCard from 'pages/settings/billing/plans/BillingPlanCard'
-
+import {billingState} from 'fixtures/billing'
+import {
+    HELPDESK_PRODUCT_ID,
+    legacyBasicHelpdeskPrice,
+    products,
+    transitoryPlans,
+} from 'fixtures/productPrices'
+import {automationSubscriptionProductPrices} from 'fixtures/account'
 import HelpCenterChangePlanModal from '../HelpCenterChangePlanModal'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -52,27 +54,27 @@ jest.mock(
 describe('HelpCenterChangePlanModal', () => {
     const props = {
         isOpen: true,
-        currentPlan: fromJS(basicLegacyPlan),
-        suitablePlanWithoutAutomationAddOn: {
-            ...basicPlan,
-            currencySign: '$',
-        } as PlanWithCurrencySign,
+        currentPlan: fromJS(transitoryPlans.legacyPlan),
+        suitablePlanWithoutAutomationAddOn: transitoryPlans.basicPlan,
         onClose: jest.fn(),
     }
 
     it('should upgrade plan when clicking on the "Upgrade" button', async () => {
+        const productWithLegacyPrice = _cloneDeep(products)
+        productWithLegacyPrice[0].prices.push(legacyBasicHelpdeskPrice)
+
         const state: Partial<RootState> = {
             currentAccount: fromJS({
                 current_subscription: {
-                    plan: basicLegacyPlan.id,
+                    products: {
+                        [HELPDESK_PRODUCT_ID]:
+                            legacyBasicHelpdeskPrice.price_id,
+                    },
                 },
             }),
             billing: fromJS({
-                plans: fromJS({
-                    [basicLegacyPlan.id]: basicLegacyPlan,
-                    [basicPlan.id]: basicPlan,
-                    [basicAutomationPlan.id]: basicAutomationPlan,
-                }),
+                ...billingState,
+                products: productWithLegacyPrice,
             }),
         }
         const {findByRole} = render(
@@ -88,24 +90,24 @@ describe('HelpCenterChangePlanModal', () => {
         fireEvent.click(upgradeButton)
 
         expect(mockedHandleSubscriptionUpdate).toHaveBeenCalledWith(
-            'basic-monthly-usd-2'
+            'basic-monthly-usd-4'
         )
     })
 
     it('should render the automation plan card when current plan has automation enabled', () => {
         const state: Partial<RootState> = {
-            billing: fromJS({
-                plans: fromJS({
-                    [basicPlan.id]: basicPlan,
-                    [basicAutomationPlan.id]: basicAutomationPlan,
-                }),
+            billing: fromJS(billingState),
+            currentAccount: fromJS({
+                current_subscription: {
+                    products: automationSubscriptionProductPrices,
+                },
             }),
         }
         const {baseElement} = render(
             <Provider store={mockStore(state)}>
                 <HelpCenterChangePlanModal
                     {...props}
-                    currentPlan={fromJS(basicAutomationPlan)}
+                    currentPlan={transitoryPlans.basicAutomationPlan}
                 />
             </Provider>
         )

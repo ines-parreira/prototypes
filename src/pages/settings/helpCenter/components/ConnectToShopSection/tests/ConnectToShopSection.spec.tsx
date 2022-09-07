@@ -12,12 +12,15 @@ import {initialState as categoriesState} from 'state/entities/helpCenter/categor
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
 import {RootState, StoreDispatch} from 'state/types'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import {billingState} from 'fixtures/billing'
+import {account} from 'fixtures/account'
 import {ConnectToShopSection} from '../ConnectToShopSection'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 const defaultState: Partial<RootState> = {
-    billing: fromJS({plans: []}),
+    currentAccount: fromJS(account),
+    billing: fromJS(billingState),
     entities: {
         helpCenter: {
             helpCenters: {

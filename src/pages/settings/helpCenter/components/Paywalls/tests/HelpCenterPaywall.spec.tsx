@@ -5,16 +5,15 @@ import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 
-import {RootState, StoreDispatch} from '../../../../../../state/types'
+import _cloneDeep from 'lodash/cloneDeep'
+import {billingState} from 'fixtures/billing'
 import {
-    basicLegacyPlan,
-    proLegacyPlan,
-    advancedLegacyPlan,
-    customLegacyPlan,
-    basicPlan,
-    proPlan,
-    advancedPlan,
-} from '../../../../../../fixtures/subscriptionPlan'
+    HELPDESK_PRODUCT_ID,
+    legacyBasicHelpdeskPrice,
+    products,
+} from 'fixtures/productPrices'
+import {PlanName} from 'utils/paywalls'
+import {RootState, StoreDispatch} from 'state/types'
 
 import HelpCenterPaywall from '../HelpCenterPaywall'
 
@@ -30,17 +29,25 @@ jest.mock('../../../../../../utils', () => {
     return mock
 })
 
+const createProductPricesWithLegacyPrice = (name: PlanName) => {
+    const productsWithLegacyPrice = _cloneDeep(products)
+    productsWithLegacyPrice[0].prices.push({
+        ...legacyBasicHelpdeskPrice,
+        price_id: 'legacyPlan',
+        name,
+    })
+
+    return productsWithLegacyPrice
+}
+
 describe('HelpCenterPaywall', () => {
     it('should render the component correctly for when the plan is unavailable', () => {
         const state: Partial<RootState> = {
+            billing: fromJS(billingState),
             currentAccount: fromJS({
-                current_subscription: undefined,
-            }),
-            billing: fromJS({
-                plans: fromJS({
-                    [basicLegacyPlan.id]: basicLegacyPlan,
-                    [basicPlan.id]: basicPlan,
-                }),
+                current_subscription: {
+                    products: {},
+                },
             }),
         }
 
@@ -54,17 +61,21 @@ describe('HelpCenterPaywall', () => {
     })
 
     it('should render the component correctly for "Basic" legacy plan', () => {
+        const productsWithLegacyPrice = _cloneDeep(products)
+        productsWithLegacyPrice[0].prices.push(legacyBasicHelpdeskPrice)
+
         const state: Partial<RootState> = {
             currentAccount: fromJS({
                 current_subscription: {
-                    plan: basicLegacyPlan.id,
+                    products: {
+                        [HELPDESK_PRODUCT_ID]:
+                            legacyBasicHelpdeskPrice.price_id,
+                    },
                 },
             }),
             billing: fromJS({
-                plans: fromJS({
-                    [basicLegacyPlan.id]: basicLegacyPlan,
-                    [basicPlan.id]: basicPlan,
-                }),
+                ...billingState,
+                products: productsWithLegacyPrice,
             }),
         }
 
@@ -81,14 +92,14 @@ describe('HelpCenterPaywall', () => {
         const state: Partial<RootState> = {
             currentAccount: fromJS({
                 current_subscription: {
-                    plan: proLegacyPlan.id,
+                    products: {
+                        [HELPDESK_PRODUCT_ID]: 'legacyPlan',
+                    },
                 },
             }),
             billing: fromJS({
-                plans: fromJS({
-                    [proLegacyPlan.id]: proLegacyPlan,
-                    [proPlan.id]: proPlan,
-                }),
+                ...billingState,
+                products: createProductPricesWithLegacyPrice(PlanName.Pro),
             }),
         }
         const {container} = render(
@@ -104,14 +115,14 @@ describe('HelpCenterPaywall', () => {
         const state: Partial<RootState> = {
             currentAccount: fromJS({
                 current_subscription: {
-                    plan: advancedLegacyPlan.id,
+                    products: {
+                        [HELPDESK_PRODUCT_ID]: 'legacyPlan',
+                    },
                 },
             }),
             billing: fromJS({
-                plans: fromJS({
-                    [advancedLegacyPlan.id]: advancedLegacyPlan,
-                    [advancedPlan.id]: advancedPlan,
-                }),
+                ...billingState,
+                products: createProductPricesWithLegacyPrice(PlanName.Advanced),
             }),
         }
         const {container} = render(
@@ -127,13 +138,16 @@ describe('HelpCenterPaywall', () => {
         const state: Partial<RootState> = {
             currentAccount: fromJS({
                 current_subscription: {
-                    plan: customLegacyPlan.id,
+                    products: {
+                        [HELPDESK_PRODUCT_ID]: 'legacyPlan',
+                    },
                 },
             }),
             billing: fromJS({
-                plans: fromJS({
-                    [customLegacyPlan.id]: customLegacyPlan,
-                }),
+                ...billingState,
+                products: createProductPricesWithLegacyPrice(
+                    PlanName.Enterprise
+                ),
             }),
         }
         const {container} = render(
@@ -149,13 +163,16 @@ describe('HelpCenterPaywall', () => {
         const state: Partial<RootState> = {
             currentAccount: fromJS({
                 current_subscription: {
-                    plan: customLegacyPlan.id,
+                    products: {
+                        [HELPDESK_PRODUCT_ID]: 'legacyPlan',
+                    },
                 },
             }),
             billing: fromJS({
-                plans: fromJS({
-                    [customLegacyPlan.id]: customLegacyPlan,
-                }),
+                ...billingState,
+                products: createProductPricesWithLegacyPrice(
+                    PlanName.Enterprise
+                ),
             }),
         }
         const {findByRole} = render(

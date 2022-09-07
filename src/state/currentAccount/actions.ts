@@ -2,11 +2,12 @@ import {AxiosError} from 'axios'
 import _capitalize from 'lodash/capitalize'
 import {Map} from 'immutable'
 
-import {Subscription} from '../billing/types'
+import {getPricesByPlanId} from 'models/billing/utils'
+import {BillingState, Subscription} from '../billing/types'
 import GorgiasApi from '../../services/gorgiasApi'
 import {notify} from '../notifications/actions'
 import {NotificationStatus} from '../notifications/types'
-import {StoreDispatch} from '../types'
+import {RootState, StoreDispatch} from '../types'
 import client from '../../models/api/resources'
 
 import * as constants from './constants'
@@ -91,9 +92,15 @@ export function submitSetting(setting: AccountSetting, notification?: string) {
 }
 
 export function updateSubscription(subscription: Subscription) {
-    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
+    return (
+        dispatch: StoreDispatch,
+        getState: () => RootState
+    ): Promise<ReturnType<StoreDispatch>> => {
+        const state = getState()
+        const products = (state.billing.toJS() as BillingState).products
+        const prices = getPricesByPlanId(products, subscription.plan)
         return client
-            .put<Subscription>('/api/billing/subscription/', subscription)
+            .put<Record<string, string>>('/api/billing/subscription/', prices)
             .then((json) => json?.data)
             .then(
                 (resp) => {

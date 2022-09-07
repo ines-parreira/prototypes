@@ -129,7 +129,7 @@ exports[`<AutomationSubscriptionModal /> should render for customers already wit
                       class="amount"
                     >
                       <b>
-                        $0
+                        $30
                       </b>
                        
                       / 
@@ -240,14 +240,8 @@ exports[`<AutomationSubscriptionModal /> should render the modal 1`] = `
                     <span
                       class="amount"
                     >
-                      <span
-                        class="fullAmount"
-                      >
-                        $40
-                      </span>
-                      <wbr />
                       <b>
-                        $20
+                        $30
                       </b>
                        
                       / 

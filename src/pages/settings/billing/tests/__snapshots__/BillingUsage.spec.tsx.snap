@@ -130,7 +130,7 @@ exports[`<BillingUsage/> should display price 1`] = `
         >
           0
           /
-          200
+          150
            
           <b>
             <a
@@ -177,6 +177,20 @@ exports[`<BillingUsage/> should display price 1`] = `
         class="card-title card-title"
       >
         Automation
+        <div
+          class="amountWrapper automation-amount"
+        >
+          <span
+            class="amount"
+          >
+            <b>
+              $180
+            </b>
+             
+            / 
+            month
+          </span>
+        </div>
       </div>
       <div
         class="card-body automation-card-body card-body"
@@ -371,7 +385,7 @@ exports[`<BillingUsage/> should load with empty props 1`] = `
         >
           0
           /
-          200
+          150
            
           <b>
             <a
@@ -418,6 +432,20 @@ exports[`<BillingUsage/> should load with empty props 1`] = `
         class="card-title card-title"
       >
         Automation
+        <div
+          class="amountWrapper automation-amount"
+        >
+          <span
+            class="amount"
+          >
+            <b>
+              $180
+            </b>
+             
+            / 
+            month
+          </span>
+        </div>
       </div>
       <div
         class="card-body automation-card-body card-body"

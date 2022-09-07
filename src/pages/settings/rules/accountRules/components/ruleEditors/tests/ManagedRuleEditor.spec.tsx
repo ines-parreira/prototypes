@@ -10,6 +10,8 @@ import {ManagedRulesSlugs} from 'state/rules/types'
 import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
 import {emptyManagedRule} from 'fixtures/rule'
 import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
+import {billingState} from 'fixtures/billing'
+import {account} from 'fixtures/account'
 import ManagedRuleEditor from '../ManagedRuleEditor'
 
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
@@ -47,7 +49,8 @@ describe('<ManagedRuleEditor/>', () => {
             },
             helpCenter: helpCenterInitialState,
         },
-        billing: fromJS({plans: []}),
+        billing: fromJS(billingState),
+        currentAccount: fromJS(account),
     } as RootState)
 
     beforeEach(() => {

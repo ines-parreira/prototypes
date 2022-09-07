@@ -4,27 +4,27 @@ import {screen} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import _cloneDeep from 'lodash/cloneDeep'
 
-import {AccountFeature} from 'state/currentAccount/types'
 import {IntegrationType} from 'models/integration/types'
 import {renderWithRouter} from 'utils/testing'
+import {billingState} from 'fixtures/billing'
+import {
+    basicMonthlyHelpdeskPrice,
+    HELPDESK_PRODUCT_ID,
+    products,
+    proMonthlyHelpdeskPrice,
+} from 'fixtures/productPrices'
 import Magento2 from '../Magento2'
 
 const mockStore = configureMockStore([thunk])
 const store = mockStore({
-    billing: fromJS({
-        plans: {
-            yes: {
-                id: 'yes',
-                features: {
-                    [AccountFeature.MagentoIntegration]: {enabled: true},
-                },
-            },
-        },
-    }),
+    billing: fromJS(billingState),
     currentAccount: fromJS({
         current_subscription: {
-            plan: 'yes',
+            products: {
+                [HELPDESK_PRODUCT_ID]: proMonthlyHelpdeskPrice.price_id,
+            },
         },
     }),
 })
@@ -141,25 +141,27 @@ describe('<Magento2/>', () => {
     })
 
     describe('Not in plan', () => {
+        const productsWithMagentoDisabled = _cloneDeep(products)
+        const basicPriceWithMagentoDisabled = basicMonthlyHelpdeskPrice
+        basicPriceWithMagentoDisabled.features.magento_integration.enabled =
+            false
+        productsWithMagentoDisabled[0].prices[0] = basicPriceWithMagentoDisabled
+
         const noEnabledFeatureStore = mockStore({
             billing: fromJS({
-                plans: {
-                    yes: {
-                        id: 'yes',
-                        features: {
-                            [AccountFeature.MagentoIntegration]: {
-                                enabled: false,
-                            },
-                        },
-                    },
-                },
+                ...billingState,
+                products: productsWithMagentoDisabled,
             }),
             currentAccount: fromJS({
                 current_subscription: {
-                    plan: 'yes',
+                    products: {
+                        [HELPDESK_PRODUCT_ID]:
+                            basicPriceWithMagentoDisabled.price_id,
+                    },
                 },
             }),
         })
+
         it.each([
             '/magento2/',
             '/magento2/new/',

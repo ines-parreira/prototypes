@@ -18,7 +18,8 @@ import {integrationsState} from 'fixtures/integrations'
 import {agents} from 'fixtures/agents'
 import {teams} from 'fixtures/teams'
 import {StatsFilters} from 'models/stat/types'
-
+import {billingState} from 'fixtures/billing'
+import {account} from 'fixtures/account'
 import useStatResource from '../useStatResource'
 import AutomationOverview from '../AutomationOverview'
 
@@ -56,7 +57,8 @@ describe('AutomationOverview', () => {
         entities: {
             selfServiceConfigurations: {},
         },
-        billing: fromJS({plans: []}),
+        billing: fromJS(billingState),
+        currentAccount: fromJS(account),
     } as RootState
 
     beforeEach(() => {
