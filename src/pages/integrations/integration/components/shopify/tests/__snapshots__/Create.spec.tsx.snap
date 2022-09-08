@@ -52,7 +52,7 @@ exports[`<Create/> should render a create view 1`] = `
             class="wrapper fill primary medium"
             type="submit"
           >
-            Add integration
+            Connect App
           </button>
         </div>
       </form>

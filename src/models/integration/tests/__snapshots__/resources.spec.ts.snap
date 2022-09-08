@@ -6,7 +6,7 @@ exports[`integration resource fetchApp should return a formatted app 1`] = `
 Object {
   "appId": "someid",
   "categories": Array [
-    "Ecomm Platforms",
+    "Ecommerce",
     "Reviews & UGC",
   ],
   "company": "myCompany",

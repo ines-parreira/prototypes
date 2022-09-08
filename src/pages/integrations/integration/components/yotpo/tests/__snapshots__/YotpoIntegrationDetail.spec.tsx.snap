@@ -158,7 +158,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should not render anything 
             <ButtonIconLabel
               icon="delete"
             >
-              Delete integration
+              Delete App
             </ButtonIconLabel>
           </ConfirmButton>
         </div>
@@ -292,7 +292,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render a small parag
             <ButtonIconLabel
               icon="delete"
             >
-              Delete integration
+              Delete App
             </ButtonIconLabel>
           </ConfirmButton>
         </div>
@@ -418,7 +418,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render an alert beca
             <ButtonIconLabel
               icon="delete"
             >
-              Delete integration
+              Delete App
             </ButtonIconLabel>
           </ConfirmButton>
         </div>
@@ -544,7 +544,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render buttons loadi
             <ButtonIconLabel
               icon="delete"
             >
-              Delete integration
+              Delete App
             </ButtonIconLabel>
           </ConfirmButton>
         </div>
@@ -670,7 +670,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render not render de
             <ButtonIconLabel
               icon="delete"
             >
-              Delete integration
+              Delete App
             </ButtonIconLabel>
           </ConfirmButton>
         </div>

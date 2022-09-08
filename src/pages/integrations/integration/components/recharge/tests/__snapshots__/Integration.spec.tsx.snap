@@ -120,7 +120,7 @@ exports[`<RechargeIntegration/> render() should render an integration with a del
               >
                 delete
               </i>
-              Delete integration
+              Delete App
             </span>
           </button>
         </div>

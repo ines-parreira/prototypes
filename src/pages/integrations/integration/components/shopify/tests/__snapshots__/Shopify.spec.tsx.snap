@@ -75,7 +75,7 @@ exports[`<Shopify/> Detail should render a detail view 1`] = `
         <span
           class="badge badge badge-secondary badge-pill"
         >
-          ECOMM PLATFORMS
+          ECOMMERCE
         </span>
         <span
           class="badge badge badge-success badge-pill"
@@ -496,7 +496,7 @@ exports[`<Shopify/> Integration should render 1`] = `
                 >
                   delete
                 </i>
-                Delete integration
+                Delete App
               </span>
             </button>
           </div>

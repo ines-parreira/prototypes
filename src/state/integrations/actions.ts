@@ -421,8 +421,8 @@ export function updateOrCreateIntegrationRequest(
                         error,
                         verbose: true,
                         reason: isUpdate
-                            ? 'Failed to update integration'
-                            : 'Failed to add integration',
+                            ? 'Failed to update connection'
+                            : 'Failed to connect app',
                     })
                 }
             )
@@ -464,8 +464,8 @@ export function createImportIntegration(integration: Map<any, any>) {
                             : constants.CREATE_INTEGRATION_ERROR,
                         error,
                         reason: isUpdate
-                            ? 'Failed to update integration'
-                            : 'Failed to add integration',
+                            ? 'Failed to update connection'
+                            : 'Failed to connect app',
                         verbose: true,
                     })
                 }

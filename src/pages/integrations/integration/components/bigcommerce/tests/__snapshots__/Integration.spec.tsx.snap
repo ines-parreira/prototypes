@@ -116,7 +116,7 @@ exports[`<BigCommerceIntegration/> render() should render an integration with a 
                 >
                   delete
                 </i>
-                Delete integration
+                Delete App
               </span>
             </button>
           </div>

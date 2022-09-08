@@ -242,7 +242,7 @@ export function DraftOrderModalContainer({
                     >
                         settings page of your Shopify integration
                     </Link>{' '}
-                    and click on "Update app permissions".
+                    and click on "Update App Permissions".
                 </Alert>
             </DEPRECATED_Modal>
         )

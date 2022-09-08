@@ -116,7 +116,7 @@ const Integration = ({integration, loading}: Props) => {
                                     isLoading={isSubmitting}
                                     onClick={retriggerOAuthFlow}
                                 >
-                                    Update app permissions
+                                    Update App Permissions
                                 </Button>
                             )}
 
@@ -130,7 +130,7 @@ const Integration = ({integration, loading}: Props) => {
                                 intent="destructive"
                             >
                                 <ButtonIconLabel icon="delete">
-                                    Delete integration
+                                    Delete App
                                 </ButtonIconLabel>
                             </ConfirmButton>
                         </div>

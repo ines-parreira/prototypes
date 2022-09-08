@@ -68,7 +68,7 @@ export default function Create({redirectUri}: Props) {
 
                         <div>
                             <Button type="submit" isDisabled={Boolean(error)}>
-                                Add integration
+                                Connect App
                             </Button>
                         </div>
                     </Form>

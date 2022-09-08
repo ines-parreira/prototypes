@@ -22,6 +22,7 @@ function Integration({integration, loading, redirectUri}: Props) {
     const isSubmitting = !!loading.get('updateIntegration')
     const isManual = integration.getIn(['meta', 'is_manual'], false)
     const isSyncOver = integration.getIn(['meta', 'import_state', 'is_over'])
+    const isDeactivated = integration.get('deactivated_datetime', undefined)
 
     useQueryNotify()
     useAuthenticationPolling(integration)
@@ -34,22 +35,27 @@ function Integration({integration, loading, redirectUri}: Props) {
         <Container fluid className={settingsCss.pageContainer}>
             <Row>
                 <Col md="8">
-                    {isSyncOver ? (
-                        <LinkAlert
-                            className="mb-4"
-                            actionLabel="Review your customers."
-                            actionHref="/app/customers"
-                        >
-                            All your Magento2 customers have been imported. You
-                            can now see their info in the sidebar.
-                        </LinkAlert>
-                    ) : (
-                        <Alert className="mb-4" type={AlertType.Loading} icon>
-                            Import in progress. We typically sync 3,000
-                            customers an hour.We will send you an email once it
-                            is done. Feel free to leave this page.
-                        </Alert>
-                    )}
+                    {!isDeactivated &&
+                        (isSyncOver ? (
+                            <LinkAlert
+                                className="mb-4"
+                                actionLabel="Review your customers."
+                                actionHref="/app/customers"
+                            >
+                                All your Magento2 customers have been imported.
+                                You can now see their info in the sidebar.
+                            </LinkAlert>
+                        ) : (
+                            <Alert
+                                className="mb-4"
+                                type={AlertType.Loading}
+                                icon
+                            >
+                                Import in progress. We typically sync 3,000
+                                customers an hour.We will send you an email once
+                                it is done. Feel free to leave this page.
+                            </Alert>
+                        ))}
 
                     {isManual ? (
                         <ManualIntegrationForm

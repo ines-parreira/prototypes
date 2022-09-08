@@ -1,15 +1,16 @@
 import React, {useState} from 'react'
 import {Map} from 'immutable'
 import {Col, Container, Row} from 'reactstrap'
-import classNames from 'classnames'
 
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Label from 'pages/common/forms/Label/Label'
+import useId from 'hooks/useId'
+import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
+import Tooltip from 'pages/common/components/Tooltip'
 import settingsCss from 'pages/settings/settings.less'
 
-import css from './ModeSelectionButton.less'
+import css from './Create.less'
 import ManualIntegrationForm from './ManualIntegrationForm'
 import OneClickIntegrationForm from './OneClickIntegrationForm'
-import ModeSelectionButton from './ModeSelectionButton'
 
 type Props = {
     integration: Map<any, any>
@@ -21,72 +22,63 @@ function Create({integration, loading, redirectUri}: Props) {
     const [isManual, setManual] = useState(false)
     const isSubmitting = Boolean(loading.get('updateIntegration'))
 
+    const id = useId()
+    const tooltipTargetId = 'magento-manual-connect' + id
+
     return (
         <Container fluid className={settingsCss.pageContainer}>
             <Row>
                 <Col md="8">
-                    <div>
-                        <p>
-                            Let's connect your store to Gorgias. We'll import
-                            your Magento 2 customers in Gorgias, along with
-                            their order information. This way, when they contact
-                            you, you'll be able to see their Magento 2
-                            information next to tickets.
-                        </p>
-                        <Alert
-                            type={AlertType.Warning}
-                            className={settingsCss.mb16}
+                    <h2 className={css.stepTitle}>Step 1</h2>
+                    <p>
+                        Follow{' '}
+                        <a
+                            href="https://docs.gorgias.com/en-US/magento-2-81817"
+                            target="_blank"
+                            rel="noopener noreferrer"
                         >
-                            To add a Magento 2 integration to Gorgias, you will
-                            need to have installed the{' '}
-                            <a
-                                href="https://marketplace.magento.com/gorgias-module-magento-connect.html"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                Gorgias plugin
-                            </a>{' '}
-                            on your store first. Please follow instructions{' '}
-                            <a
-                                href="https://docs.gorgias.com/ecommerce-integrations/magento-2"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                here
-                            </a>{' '}
-                            for more details about how to do that.
-                        </Alert>
-                    </div>
-
-                    <span>How do you want to add this integration?</span>
-                    <div
-                        className={classNames(
-                            css['selection-button-group'],
-                            settingsCss.mt4
-                        )}
-                    >
-                        <ModeSelectionButton
-                            text="One-click installation"
-                            icon="storefront"
-                            selected={!isManual}
+                            these instructions
+                        </a>{' '}
+                        to install Gorgias extension to your Magento 2 store.
+                        <br />
+                        Make sure to complete this step, or else the connection
+                        will not work.
+                    </p>
+                    <h2 className={css.stepTitle}>Step 2</h2>
+                    <Label isRequired>
+                        How do you want to connect this app?
+                    </Label>
+                    <div className={css.selectionButtonGroup}>
+                        <PreviewRadioButton
+                            className={css.selectionButton}
+                            isSelected={!isManual}
+                            label="Connect in 1 click"
+                            value="oneStepConnect"
                             onClick={() => setManual(false)}
                         />
-                        <ModeSelectionButton
-                            text="Manual installation"
-                            icon="build"
-                            selected={isManual}
+                        <PreviewRadioButton
+                            className={css.selectionButton}
+                            id={tooltipTargetId}
+                            isSelected={isManual}
+                            label="Connect manually"
+                            value="manualConnect"
                             onClick={() => setManual(true)}
                         />
+                        <Tooltip
+                            autohide
+                            delay={{show: 200, hide: 0}}
+                            placement="bottom"
+                            target={tooltipTargetId}
+                            style={{
+                                textAlign: 'center',
+                                width: 300,
+                            }}
+                        >
+                            Choose this option if you have a firewall configured
+                            on your Magento store and it prevents you from
+                            connecting the store using the one-click option.
+                        </Tooltip>
                     </div>
-
-                    {isManual && (
-                        <Alert type={AlertType.Warning} className="mb-3">
-                            This option is useful if you have a firewall
-                            configured on your Magento store that prevents you
-                            from adding the integration using the one-click
-                            installation process.
-                        </Alert>
-                    )}
 
                     {isManual ? (
                         <ManualIntegrationForm

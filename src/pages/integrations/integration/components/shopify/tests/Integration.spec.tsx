@@ -112,7 +112,7 @@ describe('<ShopifyIntegration/>', () => {
             )
 
             fireEvent.click(
-                screen.getByRole('button', {name: 'Update app permissions'})
+                screen.getByRole('button', {name: 'Update App Permissions'})
             )
             expect(window.location.href).toBe('okokkumquat')
         })

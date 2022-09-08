@@ -96,7 +96,7 @@ const ManualIntegrationForm = ({
                 })
             }}
         >
-            <Label htmlFor="store-field" className="mb-2">
+            <Label htmlFor="store-field" className="mb-2" isRequired>
                 Store admin URL
             </Label>
             {isUpdate ? (
@@ -150,7 +150,7 @@ const ManualIntegrationForm = ({
                 className="mb-4"
                 name="consumerKey"
                 placeholder={isUpdate ? placeholder : undefined}
-                label="Consumer Key"
+                label="Consumer key"
                 value={values.consumerKey}
                 onChange={(value: string) =>
                     setValues({...values, ...{consumerKey: value}})
@@ -162,7 +162,7 @@ const ManualIntegrationForm = ({
                 className="mb-4"
                 name="consumerSecret"
                 placeholder={isUpdate ? placeholder : undefined}
-                label="Consumer Secret"
+                label="Consumer secret"
                 value={values.consumerSecret}
                 onChange={(value: string) =>
                     setValues({...values, ...{consumerSecret: value}})
@@ -174,7 +174,7 @@ const ManualIntegrationForm = ({
                 name="accessToken"
                 className="mb-4"
                 placeholder={isUpdate ? placeholder : undefined}
-                label="Access Token"
+                label="Access token"
                 value={values.accessToken}
                 onChange={(value: string) =>
                     setValues({...values, ...{accessToken: value}})
@@ -186,7 +186,7 @@ const ManualIntegrationForm = ({
                 name="accessTokenSecret"
                 className="mb-4"
                 placeholder={isUpdate ? placeholder : undefined}
-                label="Access Token Secret"
+                label="Access token secret"
                 value={values.accessTokenSecret}
                 onChange={(value: string) =>
                     setValues({...values, ...{accessTokenSecret: value}})
@@ -198,7 +198,15 @@ const ManualIntegrationForm = ({
                 integration={integration}
                 isUpdate={isUpdate}
                 isSubmitting={isSubmitting}
-                submitIsDisabled={false}
+                submitIsDisabled={
+                    (!isUpdate &&
+                        (!values.storeURL ||
+                            !values.consumerKey ||
+                            !values.consumerSecret ||
+                            !values.accessToken ||
+                            !values.accessTokenSecret)) ||
+                    (isUpdate && !values.adminURLSuffix)
+                }
             />
         </Form>
     )

@@ -46,7 +46,7 @@ export const IntegrationActionButtons = ({
                 isLoading={isSubmitting}
                 isDisabled={submitIsDisabled}
             >
-                {isUpdate ? 'Update integration' : 'Add integration'}
+                {isUpdate ? 'Update Connection' : 'Connect App'}
             </Button>
             {isUpdate &&
                 isDeactivated &&
@@ -77,9 +77,7 @@ export const IntegrationActionButtons = ({
                     confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
                     intent="destructive"
                 >
-                    <ButtonIconLabel icon="delete">
-                        Delete integration
-                    </ButtonIconLabel>
+                    <ButtonIconLabel icon="delete">Delete App</ButtonIconLabel>
                 </ConfirmButton>
             )}
         </div>

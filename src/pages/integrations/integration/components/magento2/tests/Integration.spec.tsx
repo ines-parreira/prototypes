@@ -79,7 +79,7 @@ describe('<Integration/>', () => {
             </Provider>
         )
 
-        expect(screen.queryByLabelText(/Consumer Key/)).toBe(null)
+        expect(screen.queryByLabelText(/Consumer key/)).toBe(null)
     })
 
     it('should show the manual editor if installation was manual', () => {
@@ -96,6 +96,6 @@ describe('<Integration/>', () => {
             </Provider>
         )
 
-        expect(screen.getByLabelText(/Consumer Key/))
+        expect(screen.getByLabelText(/Consumer key/))
     })
 })

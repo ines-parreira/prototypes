@@ -75,7 +75,7 @@ exports[`<Magento2/> Detail should render a detail view 1`] = `
         <span
           class="badge badge badge-secondary badge-pill"
         >
-          ECOMM PLATFORMS
+          ECOMMERCE
         </span>
         <span
           class="by"
@@ -107,44 +107,52 @@ exports[`<Magento2/> Detail should render a detail view 1`] = `
       <div>
         <p>
           Securely connect with Magento to have your customers’ order history at your agents’ fingertips.
-        </p>
-        <p>
           <br />
-        </p>
-        <p>
           Magento is an ecommerce platform built on open source technology which provides online merchants with a flexible shopping cart system, as well as control over the look, content and functionality of their online store.
         </p>
         <p>
-          <br />
-        </p>
-        <p>
-          The Gorgias plugin for Magento is currently compatible with Magento 2.2, 2.3 and 2.4 for all Magento versions: Open Source (CE), Commerce using on prem (EE), Commerce on Cloud (ECE).
-        </p>
-        <p>
-          <br />
-        </p>
-        <p>
-          <span
-            data-mce-style="text-decoration: underline;"
-            style="text-decoration: underline;"
-          >
-            <strong>
-              Integration benefits
-            </strong>
-          </span>
+          The Gorgias plugin for Magento is currently compatible with 
+          <strong>
+            Magento 2.2
+          </strong>
+          , 
+          <strong>
+            2.3
+          </strong>
+           and 
+          <strong>
+            2.4
+          </strong>
+           for all Magento versions:
         </p>
         <ul>
           <li>
-            Display customer profiles next to tickets
+            Open Source (CE);
           </li>
           <li>
-            Display orders, shipments and credit memos
+            Commerce using on prem (EE);
           </li>
           <li>
-            Insert Magento 2 variables in macros
+            Commerce on Cloud (ECE).
+          </li>
+        </ul>
+        <h5
+          class="mt-4"
+        >
+          Integration benefits
+        </h5>
+        <ul>
+          <li>
+            Display customer profiles next to tickets;
           </li>
           <li>
-            Use Magento 2 variables as filters in rules
+            Display orders, shipments and credit memos;
+          </li>
+          <li>
+            Insert Magento 2 variables in macros;
+          </li>
+          <li>
+            Use Magento 2 variables as filters in rules.
           </li>
         </ul>
       </div>
@@ -360,6 +368,13 @@ exports[`<Magento2/> Integration should render 1`] = `
             for="store-field"
           >
             Store admin URL
+            <abbr
+              aria-label="required"
+              class="abbr"
+              title="required"
+            >
+              *
+            </abbr>
           </label>
           <span
             class="mb-4 wrapper group horizontal"
@@ -389,7 +404,7 @@ exports[`<Magento2/> Integration should render 1`] = `
               disabled=""
               type="submit"
             >
-              Update integration
+              Update Connection
             </button>
             <button
               class="wrapper float-right fill destructive medium"
@@ -404,7 +419,7 @@ exports[`<Magento2/> Integration should render 1`] = `
                 >
                   delete
                 </i>
-                Delete integration
+                Delete App
               </span>
             </button>
           </div>
@@ -549,7 +564,7 @@ exports[`<Magento2/> New should render 1`] = `
           aria-current="page"
           class="active breadcrumb-item"
         >
-          Add integration
+          Connect app
         </li>
       </ol>
     </nav>
@@ -563,70 +578,92 @@ exports[`<Magento2/> New should render 1`] = `
       <div
         class="col-md-8"
       >
-        <div>
-          <p>
-            Let's connect your store to Gorgias. We'll import your Magento 2 customers in Gorgias, along with their order information. This way, when they contact you, you'll be able to see their Magento 2 information next to tickets.
-          </p>
-          <div
-            class="alert warning mb16"
+        <h2
+          class="stepTitle"
+        >
+          Step 1
+        </h2>
+        <p>
+          Follow
+           
+          <a
+            href="https://docs.gorgias.com/en-US/magento-2-81817"
+            rel="noopener noreferrer"
+            target="_blank"
           >
-            <div
-              class="content"
-            >
-              <span
-                class="label"
+            these instructions
+          </a>
+           
+          to install Gorgias extension to your Magento 2 store.
+          <br />
+          Make sure to complete this step, or else the connection will not work.
+        </p>
+        <h2
+          class="stepTitle"
+        >
+          Step 2
+        </h2>
+        <label
+          class="label"
+        >
+          How do you want to connect this app?
+          <abbr
+            aria-label="required"
+            class="abbr"
+            title="required"
+          >
+            *
+          </abbr>
+        </label>
+        <div
+          class="selectionButtonGroup"
+        >
+          <div
+            aria-checked="true"
+            aria-label="Connect in 1 click"
+            class="wrapper selected selectionButton"
+            role="radio"
+            tabindex="0"
+          >
+            <div>
+              <label
+                class="label label"
+                for="oneStepConnect"
               >
-                To add a Magento 2 integration to Gorgias, you will need to have installed the
-                 
-                <a
-                  href="https://marketplace.magento.com/gorgias-module-magento-connect.html"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  Gorgias plugin
-                </a>
-                 
-                on your store first. Please follow instructions
-                 
-                <a
-                  href="https://docs.gorgias.com/ecommerce-integrations/magento-2"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  here
-                </a>
-                 
-                for more details about how to do that.
-              </span>
+                <input
+                  checked=""
+                  class="input"
+                  id="oneStepConnect"
+                  tabindex="-1"
+                  type="radio"
+                />
+                Connect in 1 click
+              </label>
             </div>
           </div>
-        </div>
-        <span>
-          How do you want to add this integration?
-        </span>
-        <div
-          class="selection-button-group mt4"
-        >
-          <span
-            class="selection-button selected-button"
+          <div
+            aria-checked="false"
+            aria-label="Connect manually"
+            class="wrapper selectionButton"
+            id="magento-manual-connect3"
+            role="radio"
+            tabindex="0"
           >
-            <i
-              class="selection-button-icon material-icons blue"
-            >
-              storefront
-            </i>
-            One-click installation
-          </span>
-          <span
-            class="selection-button"
-          >
-            <i
-              class="selection-button-icon material-icons blue"
-            >
-              build
-            </i>
-            Manual installation
-          </span>
+            <div>
+              <label
+                class="label label"
+                for="manualConnect"
+              >
+                <input
+                  class="input"
+                  id="manualConnect"
+                  tabindex="-1"
+                  type="radio"
+                />
+                Connect manually
+              </label>
+            </div>
+          </div>
         </div>
         <form
           class=""
@@ -636,6 +673,13 @@ exports[`<Magento2/> New should render 1`] = `
             for="store-field"
           >
             Store admin URL
+            <abbr
+              aria-label="required"
+              class="abbr"
+              title="required"
+            >
+              *
+            </abbr>
           </label>
           <span
             class="mb-4 wrapper group horizontal"
@@ -662,10 +706,11 @@ exports[`<Magento2/> New should render 1`] = `
           </span>
           <div>
             <button
-              class="wrapper mr-2 fill primary medium"
+              class="wrapper mr-2 fill primary medium isDisabled"
+              disabled=""
               type="submit"
             >
-              Add integration
+              Connect App
             </button>
           </div>
         </form>

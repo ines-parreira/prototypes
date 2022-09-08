@@ -105,7 +105,7 @@ describe('<RechargeIntegration/>', () => {
             expect(container).toMatchSnapshot()
         })
 
-        it('should render an "Update app permissions" button because the integration need scope update', () => {
+        it('should render an "Update App Permissions" button because the integration need scope update', () => {
             renderWithRouter(
                 <Provider store={store}>
                     <Integration
@@ -119,7 +119,7 @@ describe('<RechargeIntegration/>', () => {
                 </Provider>
             )
 
-            expect(screen.getByRole('button', {name: 'Update app permissions'}))
+            expect(screen.getByRole('button', {name: 'Update App Permissions'}))
         })
 
         it('should render a reconnect button because the integration is deactivated', () => {

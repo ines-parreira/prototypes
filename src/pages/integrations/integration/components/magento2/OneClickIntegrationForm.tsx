@@ -50,6 +50,7 @@ const OneClickIntegrationForm = ({
     const submitIsDisabled =
         isSubmitting ||
         Boolean(error) ||
+        (!isUpdate && !storeURL) ||
         (isUpdate && meta.get('admin_url_suffix', '') === values.adminURLSuffix)
 
     const handleUpdate = () => {
@@ -88,7 +89,7 @@ const OneClickIntegrationForm = ({
                 }
             }}
         >
-            <Label htmlFor="store-field" className="mb-2">
+            <Label htmlFor="store-field" className="mb-2" isRequired>
                 Store admin URL
             </Label>
             {isUpdate ? (

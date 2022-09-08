@@ -72,7 +72,7 @@ exports[`App should render 2`] = `
         <span
           class="badge badge badge-secondary badge-pill"
         >
-          ECOMM PLATFORMS
+          ECOMMERCE
         </span>
         <span
           class="badge badge badge-secondary badge-pill"

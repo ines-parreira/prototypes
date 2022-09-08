@@ -35,19 +35,19 @@ describe('<ManualIntegrationForm/>', () => {
                 </Provider>
             )
 
-            fireEvent.change(screen.getByLabelText('Store admin URL'), {
+            fireEvent.change(screen.getByLabelText(/Store admin URL/), {
                 target: {value: 'myShopURL/admin'},
             })
 
-            fireEvent.change(screen.getByLabelText(/Consumer Key/), {
+            fireEvent.change(screen.getByLabelText(/Consumer key/), {
                 target: {value: 'consumerkey'},
             })
 
-            fireEvent.change(screen.getByLabelText(/Consumer Secret/), {
+            fireEvent.change(screen.getByLabelText(/Consumer secret/), {
                 target: {value: 'consumersecret'},
             })
 
-            const accesTokens = screen.getAllByLabelText(/Access Token/)
+            const accesTokens = screen.getAllByLabelText(/Access token/)
 
             fireEvent.change(accesTokens[0], {
                 target: {value: 'accesstoken'},
@@ -57,9 +57,7 @@ describe('<ManualIntegrationForm/>', () => {
                 target: {value: 'tokensecret'},
             })
 
-            fireEvent.click(
-                screen.getByRole('button', {name: 'Add integration'})
-            )
+            fireEvent.click(screen.getByRole('button', {name: 'Connect App'}))
 
             expect(updateOrCreateIntegrationRequest.mock.calls)
                 .toMatchInlineSnapshot(`
@@ -105,28 +103,28 @@ describe('<ManualIntegrationForm/>', () => {
                 </Provider>
             )
 
-            fireEvent.change(screen.getByLabelText('Store admin URL'), {
+            fireEvent.change(screen.getByLabelText(/Store admin URL/), {
                 target: {value: 'admin'},
             })
 
-            fireEvent.change(screen.getByLabelText('Consumer Key'), {
+            fireEvent.change(screen.getByLabelText('Consumer key'), {
                 target: {value: 'consumerkey'},
             })
 
-            fireEvent.change(screen.getByLabelText('Consumer Secret'), {
+            fireEvent.change(screen.getByLabelText('Consumer secret'), {
                 target: {value: 'consumersecret'},
             })
 
-            fireEvent.change(screen.getByLabelText('Access Token'), {
+            fireEvent.change(screen.getByLabelText('Access token'), {
                 target: {value: 'accesstoken'},
             })
 
-            fireEvent.change(screen.getByLabelText('Access Token Secret'), {
+            fireEvent.change(screen.getByLabelText('Access token secret'), {
                 target: {value: 'tokensecret'},
             })
 
             fireEvent.click(
-                screen.getByRole('button', {name: 'Update integration'})
+                screen.getByRole('button', {name: 'Update Connection'})
             )
 
             expect(updateOrCreateIntegrationRequest.mock.calls)
@@ -170,7 +168,7 @@ describe('<ManualIntegrationForm/>', () => {
                 </Provider>
             )
 
-            fireEvent.change(screen.getByLabelText('Store admin URL'), {
+            fireEvent.change(screen.getByLabelText(/Store admin URL/), {
                 target: {value: 'myShopURL1/admin'},
             })
 

@@ -147,7 +147,7 @@ export default function Integration({
                                     isLoading={isSubmitting}
                                     onClick={retriggerOAuthFlow}
                                 >
-                                    Update app permissions
+                                    Update App Permissions
                                 </Button>
                             )}
 
@@ -185,7 +185,7 @@ export default function Integration({
                                 intent="destructive"
                             >
                                 <ButtonIconLabel icon="delete">
-                                    Delete integration
+                                    Delete App
                                 </ButtonIconLabel>
                             </ConfirmButton>
                         </div>

@@ -54,7 +54,7 @@ describe('<OneClickIntegrationForm/>', () => {
                 </Provider>
             )
 
-            fireEvent.change(screen.getByLabelText('Store admin URL'), {
+            fireEvent.change(screen.getByLabelText(/Store admin URL/), {
                 target: {value: STORE_URL},
             })
 
@@ -79,13 +79,11 @@ describe('<OneClickIntegrationForm/>', () => {
                 </Provider>
             )
 
-            fireEvent.change(screen.getByLabelText('Store admin URL'), {
+            fireEvent.change(screen.getByLabelText(/Store admin URL/), {
                 target: {value: 'myShopURL1/admin'},
             })
 
-            fireEvent.click(
-                screen.getByRole('button', {name: 'Add integration'})
-            )
+            fireEvent.click(screen.getByRole('button', {name: 'Connect App'}))
 
             expect(window.location.href).toBe(
                 `something?store_url=myShopURL1&admin_url_suffix=admin`
@@ -109,12 +107,12 @@ describe('<OneClickIntegrationForm/>', () => {
                 </Provider>
             )
 
-            fireEvent.change(screen.getByLabelText('Store admin URL'), {
+            fireEvent.change(screen.getByLabelText(/Store admin URL/), {
                 target: {value: 'admin'},
             })
 
             fireEvent.click(
-                screen.getByRole('button', {name: 'Update integration'})
+                screen.getByRole('button', {name: 'Update Connection'})
             )
 
             expect(updateOrCreateIntegrationRequest.mock.calls)
@@ -147,7 +145,7 @@ describe('<OneClickIntegrationForm/>', () => {
                 </Provider>
             )
 
-            fireEvent.change(screen.getByLabelText('Store admin URL'), {
+            fireEvent.change(screen.getByLabelText(/Store admin URL/), {
                 target: {value: 'myShopURL1/admin'},
             })
 

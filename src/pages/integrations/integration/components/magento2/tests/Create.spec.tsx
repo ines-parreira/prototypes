@@ -24,8 +24,8 @@ describe('<Create/>', () => {
             </Provider>
         )
 
-        fireEvent.click(screen.getByText('One-click installation'))
-        expect(screen.queryByLabelText(/Consumer Key/)).toBe(null)
+        fireEvent.click(screen.getByText('Connect in 1 click'))
+        expect(screen.queryByLabelText(/Consumer key/)).toBe(null)
     })
 
     it('should show the manual editor when clicking on the related button', () => {
@@ -35,7 +35,7 @@ describe('<Create/>', () => {
             </Provider>
         )
 
-        fireEvent.click(screen.getByText('Manual installation'))
-        expect(screen.getByLabelText(/Consumer Key/))
+        fireEvent.click(screen.getByText('Connect manually'))
+        expect(screen.getByLabelText(/Consumer key/))
     })
 })

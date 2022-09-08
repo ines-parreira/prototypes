@@ -114,7 +114,7 @@ export default function Integration({
                                     >
                                         {!isActive
                                             ? 'Reconnect'
-                                            : 'Update app permissions'}
+                                            : 'Update App Permissions'}
                                     </Button>
                                 )}
                                 <ConfirmButton
@@ -127,7 +127,7 @@ export default function Integration({
                                     intent="destructive"
                                 >
                                     <ButtonIconLabel icon="delete">
-                                        Delete integration
+                                        Delete App
                                     </ButtonIconLabel>
                                 </ConfirmButton>
                             </div>

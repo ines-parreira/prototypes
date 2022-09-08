@@ -27,7 +27,7 @@ exports[`Header should render 1`] = `
         <span
           class="badge badge badge-secondary badge-pill"
         >
-          ECOMM PLATFORMS
+          ECOMMERCE
         </span>
         <span
           class="badge badge badge-secondary badge-pill"

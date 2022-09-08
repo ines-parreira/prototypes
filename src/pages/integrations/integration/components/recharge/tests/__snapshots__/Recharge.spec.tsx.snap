@@ -322,7 +322,7 @@ exports[`<Recharge/> Integration should render 1`] = `
               >
                 delete
               </i>
-              Delete integration
+              Delete App
             </span>
           </button>
         </div>
@@ -368,7 +368,7 @@ exports[`<Recharge/> Integration should render shopify integrations list 1`] = `
           aria-current="page"
           class="active breadcrumb-item"
         >
-          Add integration
+          Connect app
         </li>
       </ol>
     </nav>

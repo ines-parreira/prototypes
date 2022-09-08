@@ -86,7 +86,7 @@ function Recharge({integration, integrations, loading, redirectUri}: Props) {
                         {isIntegration && (
                             <BreadcrumbItem active>
                                 {isNew
-                                    ? 'Add integration'
+                                    ? 'Connect app'
                                     : integration.get('name')}
                             </BreadcrumbItem>
                         )}

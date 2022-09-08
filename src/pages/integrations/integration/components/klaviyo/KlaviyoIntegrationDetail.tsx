@@ -227,7 +227,7 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
                             <BreadcrumbItem active>
                                 {isUpdate
                                     ? integration.get('name')
-                                    : 'Add integration'}
+                                    : 'Connect app'}
                             </BreadcrumbItem>
                         </Breadcrumb>
                     }
@@ -491,7 +491,7 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
                                         >
                                             {isUpdate
                                                 ? 'Save changes'
-                                                : 'Add integration'}
+                                                : 'Connect App'}
                                         </Button>
                                         {isUpdate && (
                                             <ConfirmButton
@@ -508,7 +508,7 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
                                                 intent="destructive"
                                             >
                                                 <ButtonIconLabel icon="delete">
-                                                    Delete integration
+                                                    Delete App
                                                 </ButtonIconLabel>
                                             </ConfirmButton>
                                         )}

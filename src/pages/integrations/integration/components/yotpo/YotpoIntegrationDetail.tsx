@@ -220,7 +220,7 @@ export class YotpoIntegrationDetailComponent extends Component<Props, State> {
                                     intent="destructive"
                                 >
                                     <ButtonIconLabel icon="delete">
-                                        Delete integration
+                                        Delete App
                                     </ButtonIconLabel>
                                 </ConfirmButton>
                             </div>
