@@ -14,6 +14,7 @@ Object {
   "connectUrl": "https://ok.com",
   "description": "Some tagline here",
   "freeTrialPeriod": "14 days",
+  "grantedScopes": undefined,
   "hasFreeTrial": true,
   "image": "https://ok.com/1.png",
   "isConnected": false,
@@ -79,6 +80,7 @@ Array [
   Object {
     "appId": "someid",
     "description": "Some tagline here",
+    "grantedScopes": undefined,
     "image": "https://ok.com/1.png",
     "isConnected": false,
     "title": "My test app",

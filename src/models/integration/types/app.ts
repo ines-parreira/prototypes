@@ -36,6 +36,7 @@ export type AppListData = {
     headline: string
     app_icon: string
     is_installed: boolean
+    granted_scopes?: string[]
 }
 
 export type AppData = AppListData & {
@@ -61,12 +62,14 @@ export type AppListItem = Omit<IntegrationListItem, 'count'> & {
     type: IntegrationType.App
     appId: AppListData['id']
     isConnected: AppListData['is_installed']
+    grantedScopes: AppListData['granted_scopes']
     image: AppListData['app_icon']
 }
 
 export type AppDetail = Omit<IntegrationConfig, 'isExternalConnectUrl'> & {
     type: IntegrationType.App
     isConnected: AppListData['is_installed']
+    grantedScopes: AppListData['granted_scopes']
     appId: AppListData['id']
     image: AppListData['app_icon']
     isUnapproved: AppData['is_unapproved']

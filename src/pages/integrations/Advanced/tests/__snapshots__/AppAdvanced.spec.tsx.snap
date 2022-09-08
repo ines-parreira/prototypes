@@ -5,7 +5,112 @@ exports[`AppAdvanced should render 1`] = `
   <div
     class="p-4"
   >
-    <h2>
+    <h2
+      class="mb-4"
+    >
+      Granted permissions
+    </h2>
+    <div>
+      <div
+        class="container"
+      >
+        <i
+          class="material-icons"
+        >
+          folder
+        </i>
+        <div
+          class="content"
+        >
+          <div
+            class="name"
+          >
+            All resources
+          </div>
+          <div
+            class="permissions"
+          >
+            Read & write access
+          </div>
+        </div>
+        <span
+          id="app-permission-tooltip-1"
+        >
+          <i
+            class="material-icons"
+          >
+            info_outline
+          </i>
+        </span>
+      </div>
+      <div
+        class="container"
+      >
+        <i
+          class="material-icons"
+        >
+          business
+        </i>
+        <div
+          class="content"
+        >
+          <div
+            class="name"
+          >
+            Users & Teams
+          </div>
+          <div
+            class="permissions"
+          >
+            Read & write access
+          </div>
+        </div>
+        <span
+          id="app-permission-tooltip-2"
+        >
+          <i
+            class="material-icons"
+          >
+            info_outline
+          </i>
+        </span>
+      </div>
+      <div
+        class="container"
+      >
+        <i
+          class="material-icons"
+        >
+          account_circle
+        </i>
+        <div
+          class="content"
+        >
+          <div
+            class="name"
+          >
+            Your account
+          </div>
+          <div
+            class="permissions"
+          >
+            Read access
+          </div>
+        </div>
+        <span
+          id="app-permission-tooltip-3"
+        >
+          <i
+            class="material-icons"
+          >
+            info_outline
+          </i>
+        </span>
+      </div>
+    </div>
+    <h2
+      class="mb-4 mt-5"
+    >
       Error Logs
     </h2>
     <div
@@ -117,7 +222,17 @@ exports[`AppAdvanced should render an empty list 1`] = `
   <div
     class="p-4"
   >
-    <h2>
+    <h2
+      class="mb-4"
+    >
+      Granted permissions
+    </h2>
+    <p>
+      This application does not have any permission.
+    </p>
+    <h2
+      class="mb-4 mt-5"
+    >
       Error Logs
     </h2>
     <p>

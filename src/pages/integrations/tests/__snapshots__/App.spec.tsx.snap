@@ -357,7 +357,17 @@ exports[`App should render the advanced tab 2`] = `
   <div
     class="p-4"
   >
-    <h2>
+    <h2
+      class="mb-4"
+    >
+      Granted permissions
+    </h2>
+    <p>
+      This application does not have any permission.
+    </p>
+    <h2
+      class="mb-4 mt-5"
+    >
       Error Logs
     </h2>
     <p>

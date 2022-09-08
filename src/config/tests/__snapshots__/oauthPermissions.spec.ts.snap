@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Config: oauthPermissions scopesToPermissions can handle the legacy "write:all" scope 1`] = `
+Array [
+  Object {
+    "description": "View and manage all resources in Gorgias.",
+    "icon": "folder",
+    "name": "All resources",
+    "verbs": Array [
+      "read",
+      "write",
+    ],
+  },
+]
+`;
+
+exports[`Config: oauthPermissions scopesToPermissions converts scopes to a list of permissions and verbs 1`] = `
+Array [
+  Object {
+    "description": "Users of your helpdesk and any data associated with them, including: email address; first name; last name; bio; role (basic agent, admin, etc.); teams.",
+    "icon": "business",
+    "name": "Users & Teams",
+    "verbs": Array [
+      "read",
+      "write",
+    ],
+  },
+  Object {
+    "description": "Information about your account, including account-wide settings like business hours. The write scope can be used to update the account owner.",
+    "icon": "account_circle",
+    "name": "Your account",
+    "verbs": Array [
+      "read",
+    ],
+  },
+]
+`;

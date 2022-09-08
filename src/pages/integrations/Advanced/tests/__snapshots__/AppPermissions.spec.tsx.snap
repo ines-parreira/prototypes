@@ -1,0 +1,254 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AppErrorRow should hide permissions if there are more than 5 1`] = `
+<div>
+  <div>
+    <div
+      class="container"
+    >
+      <i
+        class="material-icons"
+      >
+        account_circle
+      </i>
+      <div
+        class="content"
+      >
+        <div
+          class="name"
+        >
+          Your account
+        </div>
+        <div
+          class="permissions"
+        >
+          Read access
+        </div>
+      </div>
+      <span
+        id="app-permission-tooltip-3"
+      >
+        <i
+          class="material-icons"
+        >
+          info_outline
+        </i>
+      </span>
+    </div>
+    <div
+      class="container"
+    >
+      <i
+        class="material-icons"
+      >
+        business
+      </i>
+      <div
+        class="content"
+      >
+        <div
+          class="name"
+        >
+          Users & Teams
+        </div>
+        <div
+          class="permissions"
+        >
+          Read & write access
+        </div>
+      </div>
+      <span
+        id="app-permission-tooltip-4"
+      >
+        <i
+          class="material-icons"
+        >
+          info_outline
+        </i>
+      </span>
+    </div>
+    <div
+      class="container"
+    >
+      <i
+        class="material-icons"
+      >
+        contacts
+      </i>
+      <div
+        class="content"
+      >
+        <div
+          class="name"
+        >
+          Customers
+        </div>
+        <div
+          class="permissions"
+        >
+          Write access
+        </div>
+      </div>
+      <span
+        id="app-permission-tooltip-5"
+      >
+        <i
+          class="material-icons"
+        >
+          info_outline
+        </i>
+      </span>
+    </div>
+    <div
+      class="container"
+    >
+      <i
+        class="material-icons"
+      >
+        forum
+      </i>
+      <div
+        class="content"
+      >
+        <div
+          class="name"
+        >
+          Tickets & Ticket Views
+        </div>
+        <div
+          class="permissions"
+        >
+          Read access
+        </div>
+      </div>
+      <span
+        id="app-permission-tooltip-6"
+      >
+        <i
+          class="material-icons"
+        >
+          info_outline
+        </i>
+      </span>
+    </div>
+    <div
+      class="container"
+    >
+      <i
+        class="material-icons"
+      >
+        history
+      </i>
+      <div
+        class="content"
+      >
+        <div
+          class="name"
+        >
+          Helpdesk Events
+        </div>
+        <div
+          class="permissions"
+        >
+          Read access
+        </div>
+      </div>
+      <span
+        id="app-permission-tooltip-7"
+      >
+        <i
+          class="material-icons"
+        >
+          info_outline
+        </i>
+      </span>
+    </div>
+  </div>
+  <button
+    class="wrapper mt-2 ghost primary medium"
+    type="button"
+  >
+    <span
+      class="wrapper"
+    >
+      <i
+        class="material-icons icon isLeft medium"
+      >
+        unfold_more
+      </i>
+      Show all
+    </span>
+  </button>
+</div>
+`;
+
+exports[`AppErrorRow should render 1`] = `
+<div>
+  <div>
+    <div
+      class="container"
+    >
+      <i
+        class="material-icons"
+      >
+        account_circle
+      </i>
+      <div
+        class="content"
+      >
+        <div
+          class="name"
+        >
+          Your account
+        </div>
+        <div
+          class="permissions"
+        >
+          Read access
+        </div>
+      </div>
+      <span
+        id="app-permission-tooltip-1"
+      >
+        <i
+          class="material-icons"
+        >
+          info_outline
+        </i>
+      </span>
+    </div>
+    <div
+      class="container"
+    >
+      <i
+        class="material-icons"
+      >
+        business
+      </i>
+      <div
+        class="content"
+      >
+        <div
+          class="name"
+        >
+          Users & Teams
+        </div>
+        <div
+          class="permissions"
+        >
+          Read & write access
+        </div>
+      </div>
+      <span
+        id="app-permission-tooltip-2"
+      >
+        <i
+          class="material-icons"
+        >
+          info_outline
+        </i>
+      </span>
+    </div>
+  </div>
+</div>
+`;

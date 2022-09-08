@@ -33,6 +33,7 @@ describe('IntegrationsListRow', () => {
         const integration: AppListItem = {
             type: IntegrationType.App,
             isConnected: false,
+            grantedScopes: [],
             title: 'an integration',
             description: 'this is a cool integration',
             appId: '420',
@@ -51,6 +52,7 @@ describe('IntegrationsListRow', () => {
         const integration: AppListItem = {
             type: IntegrationType.App,
             isConnected: true,
+            grantedScopes: ['write:all'],
             title: 'an integration',
             description: 'this is a cool integration',
             appId: '420',

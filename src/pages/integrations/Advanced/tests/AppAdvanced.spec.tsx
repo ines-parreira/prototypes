@@ -30,7 +30,15 @@ describe(`AppAdvanced`, () => {
 
         const {container, findByText} = render(
             <Provider store={store}>
-                <AppAdvanced {...dummyAppDetail} />
+                <AppAdvanced
+                    {...dummyAppDetail}
+                    grantedScopes={[
+                        'write:all',
+                        'users:read',
+                        'users:write',
+                        'account:read',
+                    ]}
+                />
             </Provider>
         )
         await findByText('Error Logs')

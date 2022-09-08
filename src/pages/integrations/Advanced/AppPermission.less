@@ -1,0 +1,46 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .container {
+        width: 400px;
+        padding: 16px 24px;
+        border: 1px solid @classic-neutral-grey-3;
+        display: flex;
+        align-items: center;
+
+        &:not(:last-child) {
+            border-bottom: none;
+        }
+
+        > i {
+            margin-right: 16px;
+            align-self: flex-start;
+            font-size: 18px;
+        }
+
+        .content {
+            .name {
+                font-weight: bold;
+            }
+
+            .permissions {
+                color: @classic-neutral-grey-5;
+                font-size: 0.9rem;
+                margin-top: 4px;
+            }
+        }
+
+        span {
+            margin-left: auto;
+
+            i {
+                color: @classic-neutral-grey-4;
+                font-size: 22px;
+            }
+        }
+    }
+
+    .tooltip {
+        text-align: left;
+    }
+}
