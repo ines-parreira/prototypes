@@ -3,33 +3,303 @@
 exports[`<ChatApplication /> allows to enable chat widget and selects the first chat by default 1`] = `
 <div>
   <section
-    class="leftColumn"
+    class="container"
   >
     <div
-      class="toggle"
+      class="leftColumn"
     >
-      <label
-        aria-checked="false"
-        class="label label"
-        for="toggle-button-1"
-        role="switch"
+      <div
+        class="leftColumn"
       >
-        <input
-          class="input"
-          disabled=""
-          id="toggle-button-1"
-          name="toggle-button-1"
-          type="checkbox"
-        />
         <div
-          class="slider"
-        />
-        Enable chat widget
-      </label>
+          class="heading"
+        >
+          <div>
+            <h3>
+              Chat
+            </h3>
+            <p>
+              Allow customers to reach out to you through chat from the help center.
+            </p>
+          </div>
+        </div>
+        <div
+          class="toggle"
+        >
+          <label
+            aria-checked="false"
+            class="label label"
+            for="toggle-button-1"
+            role="switch"
+          >
+            <input
+              class="input"
+              disabled=""
+              id="toggle-button-1"
+              name="toggle-button-1"
+              type="checkbox"
+            />
+            <div
+              class="slider"
+            />
+            Enable chat widget
+          </label>
+          <div
+            class="caption caption"
+          >
+            This makes a chat widget visible for all Help Center pages.
+          </div>
+        </div>
+        <label
+          class="control-label"
+          disabled=""
+        >
+          Select chat integration
+        </label>
+        <div>
+          <div
+            class="dropdown"
+          >
+            <div
+              aria-expanded="false"
+              aria-haspopup="true"
+              class=""
+              data-toggle="dropdown"
+            >
+              <div
+                class="select dropdown-toggle selectFullWidth disabled"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  forum
+                </i>
+                <span
+                  class="label placeholder"
+                  style="min-width: 10px; opacity: 1;"
+                >
+                  Select a chat
+                </span>
+                <input
+                  autocomplete="chrome-off"
+                  class="input iconPadding"
+                  disabled=""
+                  style="min-width: 10px;"
+                  type="text"
+                  value=""
+                />
+                <i
+                  class="material-icons dropdownIcon"
+                >
+                  arrow_drop_down
+                </i>
+              </div>
+            </div>
+            <div
+              aria-hidden="true"
+              class="options optionsFullWidth dropdown-menu"
+              role="menu"
+              tabindex="-1"
+            >
+              
+              <button
+                class="option option--focused dropdown-item"
+                role="menuitem"
+                tabindex="0"
+                type="button"
+              >
+                <span>
+                  <span>
+                    testchat
+                     
+                    (English (US))
+                  </span>
+                </span>
+              </button>
+              <button
+                class="option dropdown-item"
+                role="menuitem"
+                tabindex="0"
+                type="button"
+              >
+                <span>
+                  <span>
+                    another chat
+                     
+                    (English (US))
+                  </span>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div
+          class="chatContactCard"
+        >
+          <div
+            class="toggle"
+          >
+            <label
+              aria-checked="false"
+              aria-label="Enable chat contact card"
+              class="label isDisabled label disabledLabel"
+              for="toggle-button-2"
+              role="switch"
+            >
+              <input
+                aria-label="Enable chat contact card"
+                class="input"
+                disabled=""
+                id="toggle-button-2"
+                name="toggle-button-2"
+                type="checkbox"
+              />
+              <div
+                class="slider"
+              />
+              Chat contact card
+            </label>
+          </div>
+          <div>
+            <label
+              class="label isDisabled label"
+              for="textarea-3"
+            >
+              Card description
+            </label>
+            <textarea
+              class="textarea"
+              disabled=""
+              id="textarea-3"
+              name="textarea-3"
+              rows="1"
+            >
+              Start live conversation with our agents
+            </textarea>
+          </div>
+        </div>
+      </div>
     </div>
-    <p>
-      This makes a chat widget visible for all Help Center pages.
-    </p>
+    <div
+      class="container card"
+    >
+      <div
+        class="card disabled"
+      >
+        <div
+          class="header"
+        >
+          <i
+            class="material-icons icon"
+          >
+            forum
+          </i>
+          <span
+            class="title"
+          >
+            Chat
+          </span>
+          <i
+            class="material-icons chevron"
+          >
+            chevron_right
+          </i>
+        </div>
+        <pre
+          class="content"
+        >
+          <div
+            class="content"
+          >
+            <div
+              class="wrapper"
+            >
+              <div
+                style="transform: translateX(-0px);"
+              >
+                <img
+                  alt="avatar-0"
+                  class="avatar"
+                  src="test-file-stub"
+                />
+              </div>
+              <div
+                style="transform: translateX(-10px);"
+              >
+                <img
+                  alt="avatar-1"
+                  class="avatar"
+                  src="test-file-stub"
+                />
+              </div>
+              <div
+                style="transform: translateX(-20px);"
+              >
+                <img
+                  alt="avatar-2"
+                  class="avatar"
+                  src="test-file-stub"
+                />
+              </div>
+            </div>
+            Start live conversation with our agents
+            <span>
+              <b>
+                Sunday - Saturday
+              </b>
+               
+              09:00 AM
+               
+              - 
+              11:00 AM
+               
+              PDT
+            </span>
+            <span>
+              <b>
+                Sunday - Saturday
+              </b>
+               
+              02:00 PM
+               
+              - 
+              04:00 PM
+               
+              PDT
+            </span>
+            <span>
+              <b>
+                Sunday - Saturday
+              </b>
+               
+              08:00 AM
+               
+              - 
+              12:00 PM
+               
+              PDT
+            </span>
+            <span>
+              <b>
+                Sunday - Saturday
+              </b>
+               
+              01:00 PM
+               
+              - 
+              05:30 PM
+               
+              PDT
+            </span>
+          </div>
+        </pre>
+      </div>
+      <span
+        class="help"
+      >
+        Chat card preview
+      </span>
+    </div>
   </section>
 </div>
 `;
@@ -37,55 +307,242 @@ exports[`<ChatApplication /> allows to enable chat widget and selects the first 
 exports[`<ChatApplication /> is disabled if there are no chat integrations 1`] = `
 <div>
   <section
-    class="leftColumn"
+    class="container"
   >
     <div
-      class="toggle"
+      class="leftColumn"
     >
-      <label
-        aria-checked="false"
-        class="label isDisabled label disabledLabel"
-        for="toggle-button-2"
-        role="switch"
+      <div
+        class="leftColumn"
       >
-        <input
-          class="input"
-          disabled=""
-          id="toggle-button-2"
-          name="toggle-button-2"
-          type="checkbox"
-        />
         <div
-          class="slider"
-        />
-        Enable chat widget
-      </label>
+          class="heading"
+        >
+          <div>
+            <h3>
+              Chat
+            </h3>
+            <p>
+              Allow customers to reach out to you through chat from the help center.
+            </p>
+          </div>
+        </div>
+        <div
+          class="toggle"
+        >
+          <label
+            aria-checked="false"
+            class="label isDisabled label disabledLabel"
+            for="toggle-button-4"
+            role="switch"
+          >
+            <input
+              class="input"
+              disabled=""
+              id="toggle-button-4"
+              name="toggle-button-4"
+              type="checkbox"
+            />
+            <div
+              class="slider"
+            />
+            Enable chat widget
+          </label>
+          <div
+            class="caption caption"
+          >
+            This makes a chat widget visible for all Help Center pages.
+          </div>
+        </div>
+        <div
+          class="warning-no-chat"
+        >
+          <span
+            class="float-right"
+          >
+            <a
+              to="/app/settings/integrations/gorgias_chat"
+            >
+              Create Chat
+            </a>
+          </span>
+          <span
+            class="warning-icon mr-2"
+          >
+            <i
+              class="material-icons"
+            >
+              report_problem
+            </i>
+          </span>
+          You don't have any existing chat integration. Please create one to enable.
+        </div>
+        <div
+          class="chatContactCard"
+        >
+          <div
+            class="toggle"
+          >
+            <label
+              aria-checked="false"
+              aria-label="Enable chat contact card"
+              class="label isDisabled label disabledLabel"
+              for="toggle-button-5"
+              role="switch"
+            >
+              <input
+                aria-label="Enable chat contact card"
+                class="input"
+                disabled=""
+                id="toggle-button-5"
+                name="toggle-button-5"
+                type="checkbox"
+              />
+              <div
+                class="slider"
+              />
+              Chat contact card
+            </label>
+          </div>
+          <div>
+            <label
+              class="label isDisabled label"
+              for="textarea-6"
+            >
+              Card description
+            </label>
+            <textarea
+              class="textarea"
+              disabled=""
+              id="textarea-6"
+              name="textarea-6"
+              rows="1"
+            >
+              Start live conversation with our agents
+            </textarea>
+          </div>
+        </div>
+      </div>
     </div>
-    <p>
-      This makes a chat widget visible for all Help Center pages.
-    </p>
     <div
-      class="warning-no-chat"
+      class="container card"
     >
-      <span
-        class="float-right"
+      <div
+        class="card disabled"
       >
-        <a
-          to="/app/settings/integrations/gorgias_chat"
+        <div
+          class="header"
         >
-          Create Chat
-        </a>
-      </span>
+          <i
+            class="material-icons icon"
+          >
+            forum
+          </i>
+          <span
+            class="title"
+          >
+            Chat
+          </span>
+          <i
+            class="material-icons chevron"
+          >
+            chevron_right
+          </i>
+        </div>
+        <pre
+          class="content"
+        >
+          <div
+            class="content"
+          >
+            <div
+              class="wrapper"
+            >
+              <div
+                style="transform: translateX(-0px);"
+              >
+                <img
+                  alt="avatar-0"
+                  class="avatar"
+                  src="test-file-stub"
+                />
+              </div>
+              <div
+                style="transform: translateX(-10px);"
+              >
+                <img
+                  alt="avatar-1"
+                  class="avatar"
+                  src="test-file-stub"
+                />
+              </div>
+              <div
+                style="transform: translateX(-20px);"
+              >
+                <img
+                  alt="avatar-2"
+                  class="avatar"
+                  src="test-file-stub"
+                />
+              </div>
+            </div>
+            Start live conversation with our agents
+            <span>
+              <b>
+                Sunday - Saturday
+              </b>
+               
+              09:00 AM
+               
+              - 
+              11:00 AM
+               
+              PDT
+            </span>
+            <span>
+              <b>
+                Sunday - Saturday
+              </b>
+               
+              02:00 PM
+               
+              - 
+              04:00 PM
+               
+              PDT
+            </span>
+            <span>
+              <b>
+                Sunday - Saturday
+              </b>
+               
+              08:00 AM
+               
+              - 
+              12:00 PM
+               
+              PDT
+            </span>
+            <span>
+              <b>
+                Sunday - Saturday
+              </b>
+               
+              01:00 PM
+               
+              - 
+              05:30 PM
+               
+              PDT
+            </span>
+          </div>
+        </pre>
+      </div>
       <span
-        class="warning-icon mr-2"
+        class="help"
       >
-        <i
-          class="material-icons"
-        >
-          report_problem
-        </i>
+        Chat card preview
       </span>
-      You don't have any existing chat integration. Please create one to enable.
     </div>
   </section>
 </div>

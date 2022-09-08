@@ -54,12 +54,20 @@ const PhoneNumbersForm: React.FC<Props> = ({
                     <FormGroup>
                         <Label className="control-label">Reference</Label>
                         {phoneNumbers.map((phoneNumber, index) => (
-                            <InputField
+                            <div
                                 key={`${phoneNumber.phone_number}-${index}`}
-                                value={phoneNumber.reference}
-                                onChange={changePhoneNumber('reference', index)}
-                                isDisabled={disabled}
-                            />
+                                className="d-flex"
+                            >
+                                <InputField
+                                    value={phoneNumber.reference}
+                                    onChange={changePhoneNumber(
+                                        'reference',
+                                        index
+                                    )}
+                                    isDisabled={disabled}
+                                    className={css.phoneNumberInput}
+                                />
+                            </div>
                         ))}
                     </FormGroup>
                     <FormGroup>
@@ -99,6 +107,7 @@ const PhoneNumbersForm: React.FC<Props> = ({
                 isDisabled={disabled}
                 intent="secondary"
                 onClick={addPhoneNumber}
+                className={css.addPhoneNumberButton}
             >
                 <i className="material-icons">add</i>&nbsp;Add Number
             </Button>

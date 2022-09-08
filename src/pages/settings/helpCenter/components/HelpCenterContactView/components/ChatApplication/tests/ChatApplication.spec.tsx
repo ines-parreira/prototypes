@@ -9,8 +9,8 @@ import {contactInfoFixture} from 'pages/settings/helpCenter/fixtures/contactInfo
 import {useHelpCenterTranslation} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
 import {useChatHelpCenterConfiguration} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationSelfService/hooks'
 
-import {RootState, StoreDispatch} from '../../../../../../../../state/types'
-import {renderWithRouter} from '../../../../../../../../utils/testing'
+import {RootState, StoreDispatch} from 'state/types'
+import {renderWithRouter} from 'utils/testing'
 import ChatApplication from '../ChatApplication'
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
@@ -20,6 +20,67 @@ const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
 const mockedUpdateTranslation = jest.fn()
 
 const defaultState: Partial<RootState> = {
+    currentAccount: fromJS({
+        settings: [
+            {
+                data: {
+                    business_hours: [
+                        {
+                            days: '0,1,2,3,4,5,6',
+                            from_time: '9:00',
+                            to_time: '11:00',
+                        },
+                        {
+                            days: '0,1,2,3,4,5,6',
+                            from_time: '14:00',
+                            to_time: '16:00',
+                        },
+                        {
+                            days: '0,1,2,3,4,5,6',
+                            from_time: '8:00',
+                            to_time: '12:00',
+                        },
+                        {
+                            days: '0,1,2,3,4,5,6',
+                            from_time: '13:00',
+                            to_time: '17:30',
+                        },
+                    ],
+                    timezone: 'US/Pacific',
+                },
+                id: 2,
+                type: 'business-hours',
+            },
+        ],
+    }),
+    ui: {
+        helpCenter: {
+            currentLanguage: 'en-US',
+            currentId: 1,
+        },
+        editor: {
+            isEditingLink: false,
+        },
+        stats: {
+            fetchingMap: {},
+        },
+        ticketNavbar: {
+            optimisticAccountSettings: {
+                views: {},
+                view_sections: {},
+            },
+            optimisticUserSettings: {
+                views: {},
+                view_sections: {},
+            },
+        },
+        views: {
+            activeViewId: 1,
+        },
+        selfServiceConfigurations: {
+            loading: false,
+        },
+    },
     integrations: fromJS({
         integrations: [
             {

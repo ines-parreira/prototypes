@@ -4,7 +4,7 @@ exports[`SourceIcon component should show HELP_CENTER_CONTACT_FORM icons 1`] = `
 <i
   className="icon d-inline-block material-icons"
 >
-  forum
+  email
 </i>
 `;
 

@@ -6,12 +6,10 @@ import TextArea from 'pages/common/forms/TextArea'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import {useHelpCenterTranslation} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
 
-import settingsCss from 'pages/settings/settings.less'
-
 import ContactCard from '../ContactCard'
 
 import helpCenterContactViewCss from '../../HelpCenterContactView.less'
-import {MAX_DESCRIPTION_LENGTH} from '../EmailContactInfoSection/EmailContactInfoSection'
+import {MAX_DESCRIPTION_LENGTH} from '../../constants'
 import PhoneNumbersForm from './PhoneNumbersForm'
 import css from './PhoneContactInfoSection.less'
 
@@ -39,16 +37,28 @@ const PhoneContactInfoSection: React.FC = () => {
     return (
         <section className={css.container}>
             <div className={helpCenterContactViewCss.leftColumn}>
+                <section>
+                    <div className={css.heading}>
+                        <div>
+                            <h3>Phone</h3>
+                            <p>
+                                Provide phone numbers customers can call to get
+                                phone support.
+                            </p>
+                        </div>
+                    </div>
+                </section>
                 <ToggleInput
                     className={css.toggle}
                     isToggled={enabled}
                     onClick={handleChange('enabled')}
                 >
-                    Phone number card
+                    Phone contact card
                 </ToggleInput>
                 <TextArea
-                    label="Description text"
-                    className={settingsCss.mb16}
+                    label="Card description"
+                    rows={1}
+                    value={description}
                     onChange={(value: string) => {
                         if (value.length > MAX_DESCRIPTION_LENGTH) {
                             setIsDescriptionTooLong(true)
@@ -68,9 +78,7 @@ const PhoneContactInfoSection: React.FC = () => {
                             ? `Description should be no longer than ${MAX_DESCRIPTION_LENGTH} characters`
                             : undefined
                     }
-                >
-                    {description}
-                </TextArea>
+                />
                 <PhoneNumbersForm
                     phoneNumbers={phone_numbers}
                     onChange={handleChange('phone_numbers')}

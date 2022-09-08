@@ -1,11 +1,10 @@
 import React from 'react'
 
 import {useCurrentHelpCenter} from '../../providers/CurrentHelpCenter'
-import {HelpCenterTranslation} from '../../providers/HelpCenterTranslation'
+import {HelpCenterTranslationProvider} from '../../providers/HelpCenterTranslation'
 import HelpCenterPageWrapper from '../HelpCenterPageWrapper'
 import ChatApplication from './components/ChatApplication'
-import ChatContactInfoSection from './components/ChatContactInfoSection'
-import EmailContactInfoSection from './components/EmailContactInfoSection'
+import ContactFormInfoSection from './components/ContactFormInfoSection'
 import FooterActions from './components/FooterActions'
 import PhoneContactInfoSection from './components/PhoneContactInfoSection'
 
@@ -20,36 +19,12 @@ const HelpCenterContactView: React.FC = () => {
             showLanguageSelector
             wrapperClassName={css.contentWrapper}
         >
-            <HelpCenterTranslation helpCenter={helpCenter}>
-                <section className={css.leftColumn}>
-                    <div className={css.heading}>
-                        <div>
-                            <h3>Chat Widget</h3>
-                            <p>
-                                This chat integration is going to be displayed
-                                as a widget on every page of your Help Center.
-                            </p>
-                        </div>
-                    </div>
-                </section>
+            <HelpCenterTranslationProvider helpCenter={helpCenter}>
+                <ContactFormInfoSection />
                 <ChatApplication helpCenterId={helpCenter.id} />
-
-                <section>
-                    <div className={css.heading}>
-                        <div>
-                            <h3>Contact cards</h3>
-                            <p>
-                                This section is displayed in your home page
-                                after the articles and before the footer.
-                            </p>
-                        </div>
-                    </div>
-                </section>
-                <EmailContactInfoSection />
                 <PhoneContactInfoSection />
-                <ChatContactInfoSection />
                 <FooterActions />
-            </HelpCenterTranslation>
+            </HelpCenterTranslationProvider>
         </HelpCenterPageWrapper>
     )
 }

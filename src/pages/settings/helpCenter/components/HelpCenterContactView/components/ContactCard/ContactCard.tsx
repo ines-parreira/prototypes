@@ -6,7 +6,7 @@ import css from './ContactCard.less'
 type Props = {
     icon: string
     title: string
-    disabled: boolean
+    disabled?: boolean
     children: ReactNode
     helpText?: string
     clickable?: boolean
@@ -37,7 +37,7 @@ const ContactCard: React.FC<Props> = ({
                     </i>
                 )}
             </div>
-            {!disabled && <pre className={css.content}>{children}</pre>}
+            <pre className={css.content}>{children}</pre>
         </div>
         {helpText && <span className={css.help}>{helpText}</span>}
     </div>

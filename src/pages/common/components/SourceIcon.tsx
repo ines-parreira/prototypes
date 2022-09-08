@@ -31,6 +31,7 @@ const sourceTypeToIcon = (
         case TicketMessageSourceType.Email:
         case IntegrationType.Gmail:
         case IntegrationType.Outlook:
+        case TicketMessageSourceType.HelpCenterContactForm:
             icon.name = 'email'
             break
         case TicketMessageSourceType.EmailForward:
@@ -40,7 +41,6 @@ const sourceTypeToIcon = (
         case IntegrationType.GorgiasChat:
         case IntegrationType.Smooch:
         case IntegrationType.SmoochInside:
-        case TicketMessageSourceType.HelpCenterContactForm:
         case TicketMessageSourceType.ChatContactForm:
             icon.name = 'forum'
             break

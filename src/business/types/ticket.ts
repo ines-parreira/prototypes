@@ -68,6 +68,7 @@ export enum TicketChannel {
 
 export enum TicketVia {
     GorgiasChat = 'gorgias_chat',
+    ContactForm = 'contact_form',
     Email = 'email',
     Helpdesk = 'helpdesk',
     Facebook = 'facebook',

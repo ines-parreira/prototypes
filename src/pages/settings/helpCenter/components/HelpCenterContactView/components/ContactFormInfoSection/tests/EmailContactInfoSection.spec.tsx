@@ -1,20 +1,20 @@
 import React, {FC} from 'react'
-import {render} from '@testing-library/react'
+
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {RootState, StoreDispatch} from 'state/types'
+import {renderWithRouter} from 'utils/testing'
 import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
 import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
-import PhoneContactInfoSection from '../PhoneContactInfoSection'
+import ContactFormInfoSection from '../ContactFormInfoSection'
 import {getSingleHelpCenterResponseFixture} from '../../../../../fixtures/getHelpCentersResponse.fixture'
-import {HelpCenterTranslationProvider} from '../../../../../providers/HelpCenterTranslation'
-import {RootState, StoreDispatch} from '../../../../../../../../state/types'
-import {useCurrentHelpCenter} from '../../../../../providers/CurrentHelpCenter'
 import {getHelpCenterTranslationsResponseFixture} from '../../../../../fixtures/getHelpCenterTranslationsResponse.fixture'
-import {useSupportedLocales} from '../../../../../providers/SupportedLocales'
 import {getLocalesResponseFixture} from '../../../../../fixtures/getLocalesResponse.fixtures'
-
+import {useCurrentHelpCenter} from '../../../../../providers/CurrentHelpCenter'
+import {HelpCenterTranslationProvider} from '../../../../../providers/HelpCenterTranslation'
+import {useSupportedLocales} from '../../../../../providers/SupportedLocales'
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
     thunk,
 ])
@@ -86,14 +86,14 @@ const DefaultProviders: FC = ({children}) => (
         </HelpCenterTranslationProvider>
     </Provider>
 )
-describe('<PhoneContactInfoSection />', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
+
+describe('<ContactFormInfoSection />', () => {
     it('should render the component', () => {
-        const {container} = render(<PhoneContactInfoSection />, {
-            wrapper: DefaultProviders,
-        })
+        const {container} = renderWithRouter(
+            <DefaultProviders>
+                <ContactFormInfoSection />
+            </DefaultProviders>
+        )
 
         expect(container.firstChild).toMatchSnapshot()
     })

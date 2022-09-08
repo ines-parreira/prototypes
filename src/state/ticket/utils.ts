@@ -538,6 +538,13 @@ export function getNewMessageSender(
         return getOutboundCallFrom(ticket, channels)
     }
 
+    if (
+        ticket.get('channel') === TicketChannel.HelpCenter &&
+        ticket.get('via') === TicketVia.ContactForm
+    ) {
+        return ticket.getIn(['messages', 0, 'source', 'to', 0]) as Map<any, any>
+    }
+
     const preferredChannel =
         getPreferredChannel(newMessageSourceType, channels) || fromJS({})
     const lastMessage: Map<any, any> | undefined = (

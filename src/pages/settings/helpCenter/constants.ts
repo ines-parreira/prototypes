@@ -148,3 +148,6 @@ export enum EditingStateEnum {
 export const CATEGORY_TREE_MAX_LEVEL = 4
 // category depth represents the total number of category levels
 export const MAX_CATEGORY_DEPTH = CATEGORY_TREE_MAX_LEVEL + 1
+
+export const CONTACT_FORM_ALERT_ACKNOWLEDGED_LOCAL_STORAGE_KEY =
+    'gorgias-contact-form-alert-acknowledged'

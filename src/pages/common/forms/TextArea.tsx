@@ -1,4 +1,10 @@
-import React, {forwardRef, TextareaHTMLAttributes, ReactNode, Ref} from 'react'
+import React, {
+    forwardRef,
+    TextareaHTMLAttributes,
+    ReactNode,
+    Ref,
+    useCallback,
+} from 'react'
 import classnames from 'classnames'
 
 import useId from 'hooks/useId'
@@ -13,6 +19,11 @@ type Props = {
     isRequired?: boolean
     label?: string
     onChange: (nextValue: string) => void
+
+    /**
+     * Will automatically add or remove rows from the textarea as the user types.
+     */
+    autoRowHeight?: boolean
 } & Omit<
     TextareaHTMLAttributes<HTMLTextAreaElement>,
     'disabled' | 'onChange' | 'required'
@@ -28,6 +39,7 @@ function TextArea(
         id,
         label,
         onChange,
+        autoRowHeight,
         ...props
     }: Props,
     ref: Ref<HTMLTextAreaElement> | null | undefined
@@ -35,6 +47,19 @@ function TextArea(
     const randomId = useId()
     const textareaId = id || 'textarea-' + randomId
     const captionId = `${textareaId}-caption`
+
+    const onChangeHandler = useCallback(
+        (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+            if (autoRowHeight) {
+                // Based on: https://stackoverflow.com/a/53426195
+                event.target.style.height = 'inherit'
+                event.target.style.height = `${event.target.scrollHeight}px`
+            }
+
+            return onChange(event.target.value)
+        },
+        [onChange, autoRowHeight]
+    )
 
     return (
         <div className={className}>
@@ -52,7 +77,7 @@ function TextArea(
                 className={classnames(css.textarea, {[css.error]: !!error})}
                 id={textareaId}
                 name={textareaId}
-                onChange={(event) => onChange(event.target.value)}
+                onChange={onChangeHandler}
                 required={isRequired}
                 disabled={isDisabled}
                 {...(caption && {'aria-describedby': captionId})}

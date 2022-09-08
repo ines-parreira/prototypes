@@ -16,13 +16,12 @@ export const useHelpCenterActions = () => {
     const fetchHelpCenterTranslations = useCallback(async () => {
         if (client && helpCenter) {
             try {
-                const {
-                    data: {data: translations},
-                } = await client.listHelpCenterTranslations({
+                const {data} = await client.getHelpCenter({
                     help_center_id: helpCenter.id,
+                    fields: ['translations'],
                 })
 
-                dispatch(helpCenterUpdated({...helpCenter, translations}))
+                dispatch(helpCenterUpdated(data))
             } catch (err) {
                 void dispatch(
                     notify({

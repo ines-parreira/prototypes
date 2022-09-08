@@ -43,6 +43,7 @@ import {
     twitterQuotedTweet,
     twitterTweet,
     chatTicket,
+    helpCenterContactFormTicket,
 } from './fixtures'
 
 jest.addMatchers(immutableMatchers)
@@ -425,6 +426,24 @@ describe('ticket utils', () => {
                 getNewMessageSender(
                     smoochTicket,
                     TicketMessageSourceType.Chat,
+                    channels,
+                    integrations
+                )
+            ).toEqualImmutable(expected)
+        })
+
+        it('should return `to` field from first message from shopper (help center contact form)', () => {
+            const expected = helpCenterContactFormTicket.getIn([
+                'messages',
+                0,
+                'source',
+                'to',
+                0,
+            ])
+            expect(
+                getNewMessageSender(
+                    helpCenterContactFormTicket,
+                    TicketMessageSourceType.HelpCenterContactForm,
                     channels,
                     integrations
                 )

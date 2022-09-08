@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {FC} from 'react'
 import {fireEvent, waitFor} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -15,6 +15,7 @@ import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentH
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import HelpCenterAppearanceView from '../HelpCenterAppearanceView'
 import {getHelpCenterTranslationsResponseFixture} from '../../fixtures/getHelpCenterTranslationsResponse.fixture'
+import {HelpCenterTranslationProvider} from '../../providers/HelpCenterTranslation'
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
     thunk,
@@ -39,6 +40,10 @@ const mockedUpdateHelpCenter = jest
     .fn()
     .mockResolvedValue({data: getSingleHelpCenterResponseFixture})
 
+const mockedGetHelpCenter = jest
+    .fn()
+    .mockResolvedValue({data: getSingleHelpCenterResponseFixture})
+
 const mockedUpdateHelpCenterTranslation = jest.fn()
 const mockedListHelpCenterTranslations = jest
     .fn()
@@ -59,6 +64,7 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
                 updateHelpCenter: mockedUpdateHelpCenter,
                 updateHelpCenterTranslation: mockedUpdateHelpCenterTranslation,
                 listHelpCenterTranslations: mockedListHelpCenterTranslations,
+                getHelpCenter: mockedGetHelpCenter,
                 listGoogleFonts: mockedListGoogleFonts,
             },
         }),
@@ -78,6 +84,16 @@ const route = {
     route: '/app/settings/help-center/1/appearance',
 }
 
+const DefaultProviders: FC = ({children}) => (
+    <Provider store={mockedStore(defaultState)}>
+        <HelpCenterTranslationProvider
+            helpCenter={getSingleHelpCenterResponseFixture}
+        >
+            {children}
+        </HelpCenterTranslationProvider>
+    </Provider>
+)
+
 describe('<HelpCenterAppearanceView />', () => {
     beforeEach(() => {
         jest.clearAllMocks()
@@ -85,36 +101,21 @@ describe('<HelpCenterAppearanceView />', () => {
 
     it('should render the component', () => {
         const {container} = renderWithRouter(
-            <Provider store={mockedStore(defaultState)}>
+            <DefaultProviders>
                 <HelpCenterAppearanceView />
-            </Provider>,
+            </DefaultProviders>,
+
             route
         )
 
         expect(container).toMatchSnapshot()
     })
 
-    it('should have call translation list', async () => {
-        renderWithRouter(
-            <Provider store={mockedStore(defaultState)}>
-                <HelpCenterAppearanceView />
-            </Provider>,
-            route
-        )
-
-        await waitFor(() => {
-            expect(mockedListHelpCenterTranslations).toHaveBeenCalledTimes(1)
-            expect(mockedListHelpCenterTranslations).toHaveBeenCalledWith({
-                help_center_id: 1,
-            })
-        })
-    })
-
     it('disables "Save Changes" button if there are no changes', () => {
         const {getByRole, getByLabelText} = renderWithRouter(
-            <Provider store={mockedStore(defaultState)}>
+            <DefaultProviders>
                 <HelpCenterAppearanceView />
-            </Provider>,
+            </DefaultProviders>,
             route
         )
 
@@ -144,9 +145,9 @@ describe('<HelpCenterAppearanceView />', () => {
 
     it('restores the default state when "Cancel" is clicked', () => {
         const {getByRole, getByLabelText} = renderWithRouter(
-            <Provider store={mockedStore(defaultState)}>
+            <DefaultProviders>
                 <HelpCenterAppearanceView />
-            </Provider>,
+            </DefaultProviders>,
             route
         )
 
@@ -176,6 +177,7 @@ describe('<HelpCenterAppearanceView />', () => {
                 [imageField]: 'https://picsum.photos/200',
             })
 
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const stateWithImage: Partial<RootState> = {
                 ...defaultState,
                 entities: {
@@ -196,7 +198,7 @@ describe('<HelpCenterAppearanceView />', () => {
             }
 
             const {getByText, getByRole} = renderWithRouter(
-                <Provider store={mockedStore(stateWithImage)}>
+                <Provider store={mockedStore(defaultState)}>
                     <HelpCenterAppearanceView />
                 </Provider>,
                 route

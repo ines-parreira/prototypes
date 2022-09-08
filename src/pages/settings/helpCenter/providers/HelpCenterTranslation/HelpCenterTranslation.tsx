@@ -5,12 +5,13 @@ import React, {
     useCallback,
     useContext,
     useEffect,
+    useMemo,
     useState,
 } from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {ContactInfoDto, HelpCenter} from 'models/helpCenter/types'
+import {ContactForm, ContactInfoDto, HelpCenter} from 'models/helpCenter/types'
 import {getViewLanguage} from 'state/ui/helpCenter'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -30,8 +31,10 @@ type Props = {
 
 type HelpCenterTranslationContext = {
     translation: HelpCenterTranslationState
+    contactForm: ContactForm
     updateTranslation: (payload: Partial<HelpCenterTranslationState>) => void
-    saveTranslation: () => Promise<void>
+    updateContactForm: (payload: ContactForm) => void
+    updateHelpCenter: () => Promise<void>
     resetTranslation: () => void
 }
 
@@ -55,14 +58,16 @@ const defaultTranslation: HelpCenterTranslationState = {
     },
 }
 
-const TranslationContext = createContext<HelpCenterTranslationContext>({
-    translation: defaultTranslation,
-    updateTranslation: () => null,
-    saveTranslation: () => Promise.resolve(),
-    resetTranslation: () => null,
-})
+const defaultEmailIntegration: ContactForm = {
+    helpdesk_integration_email: null,
+    helpdesk_integration_id: null,
+}
 
-export const HelpCenterTranslation: React.FC<Props> = ({
+const TranslationContext = createContext<HelpCenterTranslationContext | null>(
+    null
+)
+
+export const HelpCenterTranslationProvider: React.FC<Props> = ({
     children,
     helpCenter,
 }: Props) => {
@@ -73,8 +78,11 @@ export const HelpCenterTranslation: React.FC<Props> = ({
         useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
     const [translation, updateTranslation] =
         useState<HelpCenterTranslationState>(defaultTranslation)
+    const [contactForm, updateContactForm] = useState<ContactForm>(
+        defaultEmailIntegration
+    )
 
-    const saveTranslation = async () => {
+    const updateHelpCenter = useCallback(async () => {
         if (!client) return
 
         try {
@@ -88,6 +96,18 @@ export const HelpCenterTranslation: React.FC<Props> = ({
                 {
                     chat_application_id: chatApplicationId,
                     contact_info: contactInfo,
+                }
+            )
+
+            await client.updateHelpCenter(
+                {help_center_id: helpCenter.id},
+                {
+                    contact_form: {
+                        helpdesk_integration_email:
+                            contactForm.helpdesk_integration_email,
+                        helpdesk_integration_id:
+                            contactForm.helpdesk_integration_id,
+                    },
                 }
             )
 
@@ -114,7 +134,15 @@ export const HelpCenterTranslation: React.FC<Props> = ({
 
             console.error(err)
         }
-    }
+    }, [
+        client,
+        dispatch,
+        contactForm,
+        fetchHelpCenterTranslations,
+        helpCenter,
+        viewLanguage,
+        translation,
+    ])
 
     const handleOnUpdate = useCallback(
         (payload: Partial<HelpCenterTranslationState>) => {
@@ -124,6 +152,13 @@ export const HelpCenterTranslation: React.FC<Props> = ({
             })
         },
         [updateTranslation, translation]
+    )
+
+    const handleOnUpdateContactForm = useCallback(
+        (payload: ContactForm) => {
+            updateContactForm(payload)
+        },
+        [updateContactForm]
     )
 
     const updateTranslationFromData = useCallback(() => {
@@ -159,8 +194,25 @@ export const HelpCenterTranslation: React.FC<Props> = ({
             }
         }
 
+        const updateContactFormFn = (draftSettings: Draft<ContactForm>) => {
+            draftSettings.helpdesk_integration_email = helpCenter.contact_form
+                ? helpCenter.contact_form.helpdesk_integration_email
+                : null
+
+            draftSettings.helpdesk_integration_id = helpCenter.contact_form
+                ? helpCenter.contact_form.helpdesk_integration_id
+                : null
+        }
+
         updateTranslation(produce(translation, updateFn))
-    }, [helpCenter, translation, viewLanguage])
+        updateContactForm(produce(contactForm, updateContactFormFn))
+    }, [
+        contactForm,
+        helpCenter.contact_form,
+        helpCenter.translations,
+        translation,
+        viewLanguage,
+    ])
 
     useEffect(() => {
         updateTranslationFromData()
@@ -174,20 +226,40 @@ export const HelpCenterTranslation: React.FC<Props> = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    const value = useMemo(
+        () => ({
+            translation,
+            contactForm,
+            updateTranslation: handleOnUpdate,
+            updateContactForm: handleOnUpdateContactForm,
+            updateHelpCenter,
+            resetTranslation: updateTranslationFromData,
+        }),
+        [
+            translation,
+            contactForm,
+            handleOnUpdate,
+            handleOnUpdateContactForm,
+            updateHelpCenter,
+            updateTranslationFromData,
+        ]
+    )
+
     return (
-        <TranslationContext.Provider
-            value={{
-                translation,
-                updateTranslation: handleOnUpdate,
-                saveTranslation,
-                resetTranslation: updateTranslationFromData,
-            }}
-        >
+        <TranslationContext.Provider value={value}>
             {children}
         </TranslationContext.Provider>
     )
 }
 
 export const useHelpCenterTranslation = (): HelpCenterTranslationContext => {
-    return useContext(TranslationContext)
+    const translationContext = useContext(TranslationContext)
+
+    if (!translationContext) {
+        throw new Error(
+            'useHelpCenterTranslation must be used within a HelpCenterTranslationProvider'
+        )
+    }
+
+    return translationContext
 }
