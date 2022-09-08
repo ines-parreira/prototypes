@@ -113,6 +113,7 @@ describe('<ChatIntegrationPreview/>', () => {
                     <RequiredEmailCapture
                         conversationColor={conversationColor}
                         language={GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT}
+                        name="My little chat integration"
                     />
                 </ChatIntegrationPreview>
             )

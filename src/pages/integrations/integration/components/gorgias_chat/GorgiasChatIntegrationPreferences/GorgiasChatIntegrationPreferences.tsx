@@ -328,6 +328,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                 <RequiredEmailCapturePreview
                     conversationColor={conversationColor}
                     language={language}
+                    name={integration.get('name')}
                 />
             )
         }

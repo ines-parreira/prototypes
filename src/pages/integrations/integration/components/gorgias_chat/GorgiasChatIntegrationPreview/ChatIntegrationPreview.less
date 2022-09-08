@@ -386,81 +386,9 @@
         }
     }
 
-    .requiredEmailCapture {
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
-        background: white;
-        padding-top: 10px;
-
-        .emailInputWrapper {
-            width: 100%;
-            padding: 10px 0 0 0;
-            border-bottom: 1px solid @lightGrey;
-            flex-grow: 0;
-
-            input {
-                font-size: 14px;
-                background: white !important; // `important` to override default grey background for readonly inputs
-                padding: 10px 15px 10px 15px;
-                border-radius: 5px;
-                border: none;
-                outline: none;
-                box-shadow: none;
-                height: 100%;
-                width: 100%;
-
-                &::placeholder {
-                    color: @grey !important;
-                }
-            }
-        }
-
-        .messageInputWrapper {
-            width: 100%;
-            padding: 0;
-            flex-grow: 1;
-
-            textarea {
-                resize: none;
-                font-size: 14px;
-                background: none;
-                padding: 10px 15px 10px 15px;
-                border-radius: 5px;
-                border: none;
-                height: 100%;
-                width: 100%;
-                box-sizing: border-box;
-
-                &::placeholder {
-                    color: @grey !important;
-                }
-            }
-        }
-
-        .buttonWrapper {
-            width: 100%;
-            padding: 20px;
-
-            button {
-                border: none;
-                border-radius: 3px;
-
-                color: @classic-neutral-grey-0;
-                background: @primary;
-                text-align: center;
-                font-size: 15px;
-                width: 100%;
-                height: 50px;
-
-                &:focus {
-                    box-shadow: none;
-                    outline: none;
-                }
-            }
-        }
+    .content.requiredEmailCaptureContent {
+        flex: 0;
+        margin-top: auto;
     }
 
     .footer {

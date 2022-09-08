@@ -1,4 +1,5 @@
 import React from 'react'
+import classnames from 'classnames'
 
 import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
@@ -8,8 +9,9 @@ import {
 import css from './ChatIntegrationPreview.less'
 
 type Props = {
+    name: Maybe<string>
     language: Maybe<string>
-    conversationColor?: Maybe<string>
+    conversationColor: string
 }
 
 export default class RequiredEmailCapture extends React.Component<Props> {
@@ -18,32 +20,65 @@ export default class RequiredEmailCapture extends React.Component<Props> {
     }
 
     render() {
-        const {language, conversationColor} = this.props
-        const translatedTexts = GORGIAS_CHAT_WIDGET_TEXTS[language!]
+        const {conversationColor, name, language} = this.props
+
+        const translatedTexts =
+            GORGIAS_CHAT_WIDGET_TEXTS[
+                language || GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT
+            ]
 
         return (
-            <div className={css.requiredEmailCapture}>
-                <div className={css.emailInputWrapper}>
-                    <input
-                        type="email"
-                        placeholder={
-                            translatedTexts.emailCaptureRequiredEmailPlaceholder
-                        }
-                        readOnly
-                    />
-                </div>
-                <div className={css.messageInputWrapper}>
-                    <textarea
-                        placeholder={
-                            translatedTexts.emailCaptureRequiredMessagePlaceholder
-                        }
-                        readOnly
-                    />
-                </div>
-                <div className={css.buttonWrapper}>
-                    <button style={{backgroundColor: conversationColor!}}>
-                        {translatedTexts.send}
-                    </button>
+            <div
+                className={classnames(
+                    css.content,
+                    css.requiredEmailCaptureContent
+                )}
+            >
+                <div className={css.appMakerMessageWrapper}>
+                    <div className={classnames(css.avatar, css.robotLogo)}>
+                        <img
+                            src={`${
+                                window.GORGIAS_ASSETS_URL || ''
+                            }/static/private/js/assets/img/icons/robot-icon.svg`}
+                            alt="Robot icon"
+                        />
+                    </div>
+                    <div>
+                        <div className={css.user}>{name}</div>
+
+                        <div
+                            className={classnames(
+                                css.bubble,
+                                css.firstMessageOfAppMaker,
+                                'mb-2'
+                            )}
+                        >
+                            {translatedTexts.requiredEmailCaptureWelcomeMessage}
+                        </div>
+
+                        <div className={css.optionalEmailCapture}>
+                            <div className={css.inputLabel}>
+                                {translatedTexts.emailCaptureInputLabel}
+                            </div>
+                            <div className={css.inputWrapper}>
+                                <input
+                                    className="input"
+                                    placeholder={
+                                        translatedTexts.emailCapturePlaceholder
+                                    }
+                                    type="email"
+                                    readOnly
+                                />
+                                <button
+                                    style={{backgroundColor: conversationColor}}
+                                >
+                                    <i className="material-icons">
+                                        chevron_right
+                                    </i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         )
