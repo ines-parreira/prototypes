@@ -26,13 +26,13 @@ describe('actions', () => {
                     {id: 2, order: 1},
                     {id: 3, order: 2},
                 ],
+                meta: {next_cursor: null},
             }
 
             mockServer.onGet('/api/widgets/').reply(200, response)
 
             const res = await store.dispatch(actions.fetchWidgets())
             expect(res).toMatchSnapshot()
-            expect(mockServer.history.get[0].params).toMatchSnapshot()
         })
     })
 })

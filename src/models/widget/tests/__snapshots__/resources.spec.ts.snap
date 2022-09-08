@@ -1,0 +1,245 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`widgets resources fetchWidgets should resolve with a list of widgets on success 1`] = `
+Object {
+  "config": Object {
+    "data": undefined,
+    "headers": Object {
+      "Accept": "application/json, text/plain, */*",
+      "X-CSRF-Token": "abcd",
+      "X-Gorgias-User-Client": "web",
+    },
+    "maxBodyLength": -1,
+    "maxContentLength": -1,
+    "method": "get",
+    "params": Object {
+      "limit": 100,
+    },
+    "timeout": 0,
+    "transformRequest": Array [
+      [Function],
+    ],
+    "transformResponse": Array [
+      [Function],
+    ],
+    "url": "/api/widgets/",
+    "validateStatus": [Function],
+    "xsrfCookieName": "XSRF-TOKEN",
+    "xsrfHeaderName": "X-XSRF-TOKEN",
+  },
+  "data": Object {
+    "data": Array [
+      Object {
+        "context": "ticket",
+        "created_datetime": "2017-08-17T22:46:50.922473+00:00",
+        "deactivated_datetime": null,
+        "deleted_datetime": null,
+        "id": 2,
+        "integration_id": null,
+        "order": 0,
+        "template": Object {
+          "type": "wrapper",
+          "widgets": Array [
+            Object {
+              "path": "customer",
+              "title": "{first_name} {last_name}",
+              "type": "card",
+              "widgets": Array [
+                Object {
+                  "path": "created_at",
+                  "title": "Created at",
+                  "type": "date",
+                },
+              ],
+            },
+            Object {
+              "meta": Object {
+                "limit": "2",
+                "orderBy": "",
+              },
+              "path": "orders",
+              "type": "list",
+              "widgets": Array [
+                Object {
+                  "meta": Object {
+                    "displayCard": true,
+                    "link": "",
+                  },
+                  "title": "Order {name}",
+                  "type": "card",
+                  "widgets": Array [
+                    Object {
+                      "path": "id",
+                      "title": "Id",
+                      "type": "text",
+                    },
+                    Object {
+                      "path": "created_at",
+                      "title": "Created at",
+                      "type": "date",
+                    },
+                    Object {
+                      "meta": Object {
+                        "limit": "",
+                        "orderBy": "",
+                      },
+                      "path": "fulfillments",
+                      "type": "list",
+                      "widgets": Array [
+                        Object {
+                          "meta": Object {
+                            "link": "{tracking_url}",
+                          },
+                          "title": ":shipment_status: Shipment",
+                          "type": "card",
+                          "widgets": Array [
+                            Object {
+                              "path": "tracking_url",
+                              "title": "Tracking url",
+                              "type": "url",
+                            },
+                            Object {
+                              "path": "tracking_number",
+                              "title": "Tracking number",
+                              "type": "text",
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    Object {
+                      "meta": Object {
+                        "limit": "",
+                        "orderBy": "",
+                      },
+                      "path": "refunds",
+                      "type": "list",
+                      "widgets": Array [
+                        Object {
+                          "meta": Object {
+                            "link": "",
+                          },
+                          "title": ":refund: Refund",
+                          "type": "card",
+                          "widgets": Array [
+                            Object {
+                              "path": "processed_at",
+                              "title": "Processed at",
+                              "type": "date",
+                            },
+                            Object {
+                              "meta": Object {
+                                "limit": "",
+                                "orderBy": "",
+                              },
+                              "path": "refund_line_items",
+                              "type": "list",
+                              "widgets": Array [
+                                Object {
+                                  "meta": Object {
+                                    "link": "",
+                                  },
+                                  "title": "{quantity} × {line_item.name}",
+                                  "type": "card",
+                                  "widgets": Array [
+                                    Object {
+                                      "path": "subtotal",
+                                      "title": "Subtotal",
+                                      "type": "text",
+                                    },
+                                  ],
+                                },
+                              ],
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    Object {
+                      "meta": Object {
+                        "link": "",
+                      },
+                      "path": "shipping_address",
+                      "title": ":shipping_address: Shipping address",
+                      "type": "card",
+                      "widgets": Array [
+                        Object {
+                          "path": "address1",
+                          "title": "Address1",
+                          "type": "text",
+                        },
+                        Object {
+                          "path": "address2",
+                          "title": "Address2",
+                          "type": "text",
+                        },
+                        Object {
+                          "path": "city",
+                          "title": "City",
+                          "type": "text",
+                        },
+                        Object {
+                          "path": "country",
+                          "title": "Country",
+                          "type": "text",
+                        },
+                        Object {
+                          "path": "province_code",
+                          "title": "Province code",
+                          "type": "text",
+                        },
+                        Object {
+                          "path": "zip",
+                          "title": "Zip",
+                          "type": "text",
+                        },
+                      ],
+                    },
+                    Object {
+                      "meta": Object {
+                        "limit": "",
+                        "orderBy": "",
+                      },
+                      "path": "line_items",
+                      "type": "list",
+                      "widgets": Array [
+                        Object {
+                          "meta": Object {
+                            "link": "",
+                          },
+                          "title": ":product: {quantity} × {name}",
+                          "type": "card",
+                          "widgets": Array [
+                            Object {
+                              "path": "price",
+                              "title": "Price",
+                              "type": "text",
+                            },
+                            Object {
+                              "path": "sku",
+                              "title": "Sku",
+                              "type": "text",
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        "type": "shopify",
+        "updated_datetime": "2017-08-17T23:33:46.991886+00:00",
+        "uri": "/api/widgets/2/",
+      },
+    ],
+  },
+  "headers": undefined,
+  "request": Object {
+    "responseUrl": "/api/widgets/",
+  },
+  "status": 200,
+}
+`;

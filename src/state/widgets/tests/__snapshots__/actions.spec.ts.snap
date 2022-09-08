@@ -19,9 +19,3 @@ Object {
   "type": "FETCH_WIDGETS_SUCCESS",
 }
 `;
-
-exports[`actions fetchWidgets() should dispatch results 2`] = `
-Object {
-  "order_by": "order:asc",
-}
-`;

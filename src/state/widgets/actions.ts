@@ -5,51 +5,58 @@ import _last from 'lodash/last'
 import _isUndefined from 'lodash/isUndefined'
 import {Map} from 'immutable'
 
+import client from 'models/api/resources'
+import {deepMapKeysToSnakeCase} from 'models/api/utils'
+import {
+    fetchWidgets as fetchWidgetsRequest,
+    APIFetchWidgetsOptions,
+} from 'models/widget/resources'
 import {PartialTemplate} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/types'
 import {
     Button,
     Link,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
-import {getSources, getSourcesWithCustomer} from '../widgets/selectors'
-
-import {jsonToWidgets} from '../../pages/common/components/infobar/utils'
-import * as integrationsSelectors from '../integrations/selectors'
-import {notify} from '../notifications/actions'
-import {NotificationStatus} from '../notifications/types'
-import {StoreDispatch, RootState} from '../types'
-import client from '../../models/api/resources'
+import {jsonToWidgets} from 'pages/common/components/infobar/utils'
+import GorgiasApi from 'services/gorgiasApi'
+import * as integrationsSelectors from 'state/integrations/selectors'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {StoreDispatch, RootState} from 'state/types'
+import {getSources, getSourcesWithCustomer} from 'state/widgets/selectors'
 
 import * as types from './constants'
-import {Widget, WidgetContextType} from './types'
+import {FetchWidgetsOptions, Widget, WidgetContextType} from './types'
 
-export function fetchWidgets() {
-    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
+export function fetchWidgets(options: FetchWidgetsOptions = {}) {
+    return async (dispatch: StoreDispatch) => {
+        const params: APIFetchWidgetsOptions = deepMapKeysToSnakeCase(options)
+        if (!options.orderBy) {
+            params.order_by = 'order:asc'
+        }
+
         dispatch({
             type: types.FETCH_WIDGETS_START,
         })
 
-        return client
-            .get<{data: Widget[]}>('/api/widgets/', {
-                params: {
-                    order_by: 'order:asc',
-                },
+        const client = new GorgiasApi()
+        const generator = client.cursorPaginate(fetchWidgetsRequest, params)
+
+        let result: Widget[] = []
+        try {
+            for await (const page of generator) {
+                result = result.concat(page)
+            }
+            return dispatch({
+                type: types.FETCH_WIDGETS_SUCCESS,
+                items: result,
             })
-            .then((json) => json?.data)
-            .then(
-                (resp) => {
-                    return dispatch({
-                        type: types.FETCH_WIDGETS_SUCCESS,
-                        items: resp.data,
-                    })
-                },
-                (error: AxiosError) => {
-                    return dispatch({
-                        type: types.FETCH_WIDGETS_ERROR,
-                        error,
-                        reason: 'Failed to fetch widgets',
-                    })
-                }
-            )
+        } catch (error) {
+            return dispatch({
+                type: types.FETCH_WIDGETS_ERROR,
+                error,
+                reason: 'Failed to fetch widgets',
+            })
+        }
     }
 }
 
