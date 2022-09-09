@@ -1878,59 +1878,6 @@ export const selfServiceVolumePerFlowNoData: Stat<TwoDimensionalChart> = {
     },
 }
 
-export const selfServiceFlowsDistribution: Stat<TwoDimensionalChart> = {
-    meta: {
-        end_datetime: '2022-01-12T23:59:59+01:00',
-        previous_end_datetime: '2022-01-06T00:00:00+01:00',
-        previous_start_datetime: '2021-12-30T00:00:01+01:00',
-        start_datetime: '2022-01-06T00:00:00+01:00',
-    },
-    data: {
-        label: 'Self-service flows distribution',
-        legend: {
-            axes: {
-                x: 'Interaction date',
-                y: 'Flow usage',
-            },
-        },
-        data: {
-            axes: {
-                x: [
-                    1641423600, 1641510000, 1641596400, 1641682800, 1641769200,
-                    1641855600, 1641942000,
-                ],
-                y: [],
-            },
-            lines: [
-                {
-                    name: 'track',
-                    data: [0, 0, 0, 0, 0, 3, 0],
-                },
-                {
-                    name: 'report_issues',
-                    data: [0, 0, 0, 0, 0, 0, 0],
-                },
-                {
-                    name: 'returns',
-                    data: [0, 0, 0, 0, 0, 0, 0],
-                },
-                {
-                    name: 'cancellations',
-                    data: [0, 0, 0, 0, 0, 0, 0],
-                },
-                {
-                    name: 'quick_responses',
-                    data: [0, 0, 0, 0, 0, 0, 0],
-                },
-                {
-                    name: 'other_tickets',
-                    data: [1, 0, 0, 0, 1, 0, 0],
-                },
-            ],
-        },
-    },
-}
-
 export const selfServiceQuickResponsePerformance: Stat<TwoDimensionalChart> = {
     data: {
         label: 'Quick response performance',
@@ -2106,56 +2053,6 @@ export const selfServiceArticleRecommendationPerformanceNoData: Stat<TwoDimensio
         },
     }
 
-export const selfServiceProductsWithMostIssues: Stat<TwoDimensionalChart> = {
-    meta: {
-        end_datetime: '2022-01-12T23:59:59+01:00',
-        previous_end_datetime: '2021-12-14T00:00:00+01:00',
-        previous_start_datetime: '2021-11-14T00:00:01+01:00',
-        start_datetime: '2021-12-14T00:00:00+01:00',
-    },
-    data: {
-        label: 'Products with most issues',
-        data: {
-            axes: {
-                x: [
-                    {
-                        name: 'Product',
-                        type: StatType.Product,
-                    },
-                    {
-                        name: 'Total issues reported',
-                        type: StatType.Number,
-                    },
-                    {
-                        name: 'Issue',
-                        type: StatType.String,
-                    },
-                ],
-            },
-            lines: [
-                [
-                    {
-                        type: StatType.Product,
-                        value: {
-                            image_url:
-                                'https://cdn.shopify.com/s/files/1/0518/0525/7901/products/ezgif-1-5cb6817b37ad_100x100.jpg?v=1607704148',
-                            name: 'Hoodie - M',
-                        },
-                    },
-                    {
-                        type: StatType.Number,
-                        value: 2,
-                    },
-                    {
-                        type: StatType.String,
-                        value: 'reasonPastExpectedDeliveryDate',
-                    },
-                ],
-            ],
-        },
-    },
-}
-
 export const selfServiceProductsWithMostIssuesAndReturnRequests: Stat<TwoDimensionalChart> =
     {
         meta: {
@@ -2329,48 +2226,6 @@ export const selfServiceTopReportedIssuesNoData: Stat<TwoDimensionalChart> = {
                 ],
             },
             lines: [],
-        },
-    },
-}
-
-export const selfServiceMostReturnedProducts: Stat<TwoDimensionalChart> = {
-    meta: {
-        end_datetime: '2022-01-12T23:59:59+01:00',
-        previous_end_datetime: '2021-11-14T00:00:00+01:00',
-        previous_start_datetime: '2021-09-15T00:00:01+01:00',
-        start_datetime: '2021-11-14T00:00:00+01:00',
-    },
-    data: {
-        label: 'Products with most return requests',
-        data: {
-            axes: {
-                x: [
-                    {
-                        name: 'Product',
-                        type: StatType.Product,
-                    },
-                    {
-                        name: 'Return requests',
-                        type: StatType.Number,
-                    },
-                ],
-            },
-            lines: [
-                [
-                    {
-                        type: StatType.Product,
-                        value: {
-                            image_url:
-                                'https://cdn.shopify.com/s/files/1/0518/0525/7901/products/RadHat_100x100.png?v=1608219661',
-                            name: 'Hat',
-                        },
-                    },
-                    {
-                        type: StatType.Number,
-                        value: 6,
-                    },
-                ],
-            ],
         },
     },
 }

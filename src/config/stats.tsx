@@ -67,23 +67,15 @@ export const AUTOMATION_FLOW = 'automation-flow'
 export const AUTOMATION_PER_CHANNEL = 'automation-per-channel'
 export const SELF_SERVICE_OVERVIEW = 'self-service-overview'
 export const SELF_SERVICE_OVERVIEW_V2 = 'self-service-overview-v2'
-export const SELF_SERVICE_CHAT_FLOWS_DISTRIBUTION =
-    'self-service-chat-flows-distribution'
 export const SELF_SERVICE_VOLUME_PER_FLOW = 'self-service-volume-per-flow'
 export const SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE =
     'self-service-article-recommendation-performance'
 export const SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE =
     'self-service-quick-response-performance'
-export const SELF_SERVICE_HELP_CENTER_FLOWS_DISTRIBUTION =
-    'self-service-help-center-flows-distribution'
-export const SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES =
-    'self-service-product-with-most-issues'
 export const SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES_AND_RETURN_REQUESTS =
     'self-service-products-with-most-issues-and-return-requests'
 export const SELF_SERVICE_TOP_REPORTED_ISSUES =
     'self-service-top-reported-issues'
-export const SELF_SERVICE_MOST_RETURNED_PRODUCTS =
-    'self-service-most-returned-products'
 export const SELF_SERVICE_TOTAL_INTERACTIONS = 'self-service-total-interactions'
 export const SELF_SERVICE_TOTAL_UNIQUE_CUSTOMERS =
     'self-service-total-unique-customers'
@@ -1566,171 +1558,6 @@ export const stats = toImmutable<
             },
         }),
     },
-    [SELF_SERVICE_CHAT_FLOWS_DISTRIBUTION]: {
-        style: 'normalized-bar',
-        padding: '0px 30px 30px 30px',
-        downloadable: true,
-        totalOptions: {
-            label: 'Total chat interactions',
-            tooltip: 'Average distribution of the different self-service flows',
-        },
-        lines: {
-            quick_responses: {
-                label: 'Quick response',
-                color: '#C593A4',
-                disabledLink: '/app/settings/self-service',
-            },
-            track: {
-                label: 'Track (automated)',
-                color: '#4A8DF9',
-                disabledLink: '/app/settings/self-service',
-            },
-            report_issues: {
-                label: 'Report issue',
-                color: '#24D69D',
-                disabledLink: '/app/settings/self-service',
-            },
-            returns: {
-                label: 'Return',
-                color: '#8088D6',
-                disabledLink: '/app/settings/self-service',
-            },
-            cancellations: {
-                label: 'Cancel',
-                color: '#FD9B5A',
-                disabledLink: '/app/settings/self-service',
-            },
-            other_tickets: {
-                label: 'Chat tickets',
-                color: '#D2D7DE',
-            },
-        },
-        options: (legend: Map<any, any>) => ({
-            scales: {
-                x: {
-                    stacked: true,
-                    grid: defaultXAxeGridLines,
-                    ticks: _merge({}, defaultTicks, {
-                        callback: formatDateAxeCb,
-                    }),
-                },
-
-                y: {
-                    title: _merge({}, defaultScaleLabel, {
-                        text: legend.getIn(['axes', 'y']),
-                        display: !!legend.getIn(['axes', 'y']),
-                    }),
-                    ticks: _merge({}, defaultTicks, {
-                        callback: (value: string) => `${value}%`,
-                    }),
-                    min: 0,
-                    max: 100,
-                    grid: defaultYAxeGridLines,
-                    stacked: true,
-                },
-            },
-            plugins: {
-                tooltip: {
-                    intersect: true,
-                    position: 'nearest',
-                    callbacks: {
-                        label: ({
-                            dataset,
-                            dataIndex,
-                        }: {
-                            dataset: {
-                                label: string
-                                dataRaw: number[]
-                                data: number[]
-                            }
-                            dataIndex: number
-                        }) =>
-                            ` ${dataset.label}: ${
-                                dataset.dataRaw[dataIndex]
-                            } (${dataset.data[dataIndex].toFixed(0)}%)`,
-                    },
-                },
-            },
-        }),
-    },
-    [SELF_SERVICE_HELP_CENTER_FLOWS_DISTRIBUTION]: {
-        style: 'normalized-bar',
-        padding: '0px 30px 30px 30px',
-        downloadable: true,
-        totalOptions: {
-            label: 'Total help center interactions',
-            tooltip: 'Average distribution of the different self-service flows',
-        },
-        lines: {
-            track: {
-                label: 'Track (automated)',
-                color: '#4A8DF9',
-                disabledLink: '/app/settings/self-service',
-            },
-            report_issues: {
-                label: 'Report issue',
-                color: '#24D69D',
-                disabledLink: '/app/settings/self-service',
-            },
-            returns: {
-                label: 'Return',
-                color: '#8088D6',
-                disabledLink: '/app/settings/self-service',
-            },
-            cancellations: {
-                label: 'Cancel',
-                color: '#FD9B5A',
-                disabledLink: '/app/settings/self-service',
-            },
-        },
-        options: (legend: Map<any, any>) => ({
-            scales: {
-                x: {
-                    stacked: true,
-                    grid: defaultXAxeGridLines,
-                    ticks: _merge({}, defaultTicks, {
-                        callback: formatDateAxeCb,
-                    }),
-                },
-
-                y: {
-                    title: _merge({}, defaultScaleLabel, {
-                        text: legend.getIn(['axes', 'y']),
-                        display: !!legend.getIn(['axes', 'y']),
-                    }),
-                    ticks: _merge({}, defaultTicks, {
-                        callback: (value: string) => `${value}%`,
-                    }),
-                    min: 0,
-                    max: 100,
-                    grid: defaultYAxeGridLines,
-                    stacked: true,
-                },
-            },
-            plugins: {
-                tooltip: {
-                    intersect: true,
-                    position: 'nearest',
-                    callbacks: {
-                        label: ({
-                            dataset,
-                            dataIndex,
-                        }: {
-                            dataset: {
-                                label: string
-                                dataRaw: number[]
-                                data: number[]
-                            }
-                            dataIndex: number
-                        }) =>
-                            ` ${dataset.label}: ${
-                                dataset.dataRaw[dataIndex]
-                            } (${dataset.data[dataIndex].toFixed(0)}%)`,
-                    },
-                },
-            },
-        }),
-    },
     [SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE]: {
         style: 'table',
         downloadable: true,
@@ -1771,29 +1598,6 @@ export const stats = toImmutable<
         style: 'table',
         downloadable: true,
         tableOptions: {showLines: 4},
-    },
-    [SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES]: {
-        style: 'table',
-        downloadable: true,
-        callbacks: {
-            cell: ({value, axis}) => {
-                if (axis.name === 'Issue') {
-                    const translatedIssue = (
-                        REASONS_DROPDOWN_OPTIONS as SelectableOption[]
-                    ).find(
-                        ({value: dropDownValue}) => value === dropDownValue
-                    )?.label
-
-                    return (
-                        <span className="fit-cell">
-                            {translatedIssue || value}
-                        </span>
-                    )
-                }
-
-                return value
-            },
-        } as StatConfigCallbacks<ReactNode>,
     },
     [SELF_SERVICE_TOP_REPORTED_ISSUES]: {
         axisHelpers: {
@@ -1842,10 +1646,6 @@ export const stats = toImmutable<
                 return value
             },
         } as StatConfigCallbacks<ReactNode>,
-    },
-    [SELF_SERVICE_MOST_RETURNED_PRODUCTS]: {
-        style: 'table',
-        downloadable: true,
     },
     [SELF_SERVICE_SECTION_REPORT_ISSUE]: {
         style: 'element',

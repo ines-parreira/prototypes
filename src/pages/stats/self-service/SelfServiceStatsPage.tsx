@@ -1,17 +1,11 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {useAsyncFn} from 'react-use'
 import {fromJS, Map} from 'immutable'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     SELF_SERVICE_OVERVIEW,
-    SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES,
     SELF_SERVICE_TOP_REPORTED_ISSUES,
     stats as statsConfig,
-    SELF_SERVICE_MOST_RETURNED_PRODUCTS,
-    SELF_SERVICE_CHAT_FLOWS_DISTRIBUTION,
-    SELF_SERVICE_HELP_CENTER_FLOWS_DISTRIBUTION,
     SELF_SERVICE_VOLUME_PER_FLOW,
     SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE,
     SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE,
@@ -48,7 +42,6 @@ import AutomationSubscriptionButton from 'pages/settings/billing/automation/Auto
 
 import {getIntegrations} from 'state/integrations/selectors'
 import KeyMetricStat from '../common/components/charts/KeyMetricStat/KeyMetricStat'
-import NormalizedBarStat from '../common/components/charts/NormalizedBarStat'
 import TableStat from '../common/components/charts/TableStat/TableStat'
 import KeyMetricStatWrapper from '../KeyMetricStatWrapper'
 import PeriodStatsFilter from '../PeriodStatsFilter'
@@ -92,8 +85,6 @@ export const SelfServiceStatsPage = (): JSX.Element => {
     const currentPlan = useAppSelector(DEPRECATED_getCurrentPlan)
     const integrations = useAppSelector(getIntegrations)
     const statsFilters = useAppSelector(getStatsFilters)
-    const hasSelfServiceStatisticsV2: boolean | undefined =
-        useFlags()[FeatureFlagKey.SelfServiceStatsV2]
 
     const pageStatsFilters = useMemo<StatsFilters>(() => {
         const {period, integrations} = statsFilters
@@ -205,27 +196,6 @@ export const SelfServiceStatsPage = (): JSX.Element => {
         articleRecommendationPerformanceNoData
     )
 
-    const [chatFlowsDistribution, isFetchingChatFlowsDistribution] =
-        useStatResource<TwoDimensionalChart>({
-            statName: AUTOMATION_SELF_SERVICE_STAT_NAME,
-            resourceName: SELF_SERVICE_CHAT_FLOWS_DISTRIBUTION,
-            statsFilters: pageStatsFilters,
-        })
-
-    const [helpCenterFlowsDistribution, isFetchingHelpCenterFlowsDistribution] =
-        useStatResource<TwoDimensionalChart>({
-            statName: AUTOMATION_SELF_SERVICE_STAT_NAME,
-            resourceName: SELF_SERVICE_HELP_CENTER_FLOWS_DISTRIBUTION,
-            statsFilters: pageStatsFilters,
-        })
-
-    const [productWithMostIssues, isFetchingProductWithMostIssues] =
-        useStatResource<TwoDimensionalChart>({
-            statName: AUTOMATION_SELF_SERVICE_STAT_NAME,
-            resourceName: SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES,
-            statsFilters: pageStatsFilters,
-        })
-
     const [topReportedIssues, isFetchingTopReportedIssues] =
         useStatResource<TwoDimensionalChart>({
             statName: AUTOMATION_SELF_SERVICE_STAT_NAME,
@@ -249,13 +219,6 @@ export const SelfServiceStatsPage = (): JSX.Element => {
     const productsWithMostIssuesAndReturnRequestsNoData =
         (productsWithMostIssuesAndReturnRequests?.data.data.lines.length ??
             0) === 0
-
-    const [mostReturnedProducts, isFetchingMostReturnedProducts] =
-        useStatResource<TwoDimensionalChart>({
-            statName: AUTOMATION_SELF_SERVICE_STAT_NAME,
-            resourceName: SELF_SERVICE_MOST_RETURNED_PRODUCTS,
-            statsFilters: pageStatsFilters,
-        })
 
     const handleIntegrationsFilterChange = useCallback(
         (values) => {
@@ -335,269 +298,159 @@ export const SelfServiceStatsPage = (): JSX.Element => {
         >
             {pageStatsFilters && (
                 <>
-                    {hasSelfServiceStatisticsV2 && (
-                        <KeyMetricStatWrapper>
-                            <KeyMetricStat
-                                data={immutableOverview.getIn(['data', 'data'])}
-                                meta={immutableOverview.get('meta')}
-                                loading={isFetchingOverview}
+                    <KeyMetricStatWrapper>
+                        <KeyMetricStat
+                            data={immutableOverview.getIn(['data', 'data'])}
+                            meta={immutableOverview.get('meta')}
+                            loading={isFetchingOverview}
+                            config={statsConfig.get(SELF_SERVICE_OVERVIEW_V2)}
+                        />
+                    </KeyMetricStatWrapper>
+                    {allSectionsNoData && !noActivityAlertDismissed && (
+                        <Alert
+                            type={AlertType.Error}
+                            className={css.noActivityAlert}
+                            icon
+                            onClose={() => {
+                                setNoActivityAlertDismissed(true)
+                            }}
+                        >
+                            There is no Self-service activity. Your Chat or Help
+                            Center may not be properly installed.
+                        </Alert>
+                    )}
+                    <StatWrapper
+                        stat={volumePerFlow}
+                        isFetchingStat={isFetchingVolumePerFlow}
+                        resourceName={SELF_SERVICE_VOLUME_PER_FLOW}
+                        statsFilters={pageStatsFilters}
+                        isDownloadable
+                    >
+                        {(stat) => (
+                            <NormalizedLineStat
+                                data={stat.getIn(['data', 'data'])}
+                                legend={stat.getIn(['data', 'legend'], null)}
                                 config={statsConfig.get(
-                                    SELF_SERVICE_OVERVIEW_V2
+                                    SELF_SERVICE_VOLUME_PER_FLOW
                                 )}
                             />
-                        </KeyMetricStatWrapper>
-                    )}
-                    {!hasSelfServiceStatisticsV2 && (
-                        <KeyMetricStatWrapper>
-                            <KeyMetricStat
-                                data={immutableOverview.getIn(['data', 'data'])}
-                                meta={immutableOverview.get('meta')}
-                                loading={isFetchingOverview}
-                                config={statsConfig.get(SELF_SERVICE_OVERVIEW)}
-                            />
-                        </KeyMetricStatWrapper>
-                    )}
-                    {hasSelfServiceStatisticsV2 &&
-                        allSectionsNoData &&
-                        !noActivityAlertDismissed && (
-                            <Alert
-                                type={AlertType.Error}
-                                className={css.noActivityAlert}
-                                icon
-                                onClose={() => {
-                                    setNoActivityAlertDismissed(true)
-                                }}
-                            >
-                                There is no Self-service activity. Your Chat or
-                                Help Center may not be properly installed.
-                            </Alert>
                         )}
-                    {hasSelfServiceStatisticsV2 && (
-                        <>
-                            <StatWrapper
-                                stat={volumePerFlow}
-                                isFetchingStat={isFetchingVolumePerFlow}
-                                resourceName={SELF_SERVICE_VOLUME_PER_FLOW}
-                                statsFilters={pageStatsFilters}
-                                isDownloadable
-                            >
-                                {(stat) => (
-                                    <NormalizedLineStat
-                                        data={stat.getIn(['data', 'data'])}
-                                        legend={stat.getIn(
-                                            ['data', 'legend'],
-                                            null
-                                        )}
-                                        config={statsConfig.get(
-                                            SELF_SERVICE_VOLUME_PER_FLOW
-                                        )}
-                                    />
-                                )}
-                            </StatWrapper>
-                            <StatWrapper
-                                stat={quickResponsePerformance}
-                                isFetchingStat={
-                                    isFetchingQuickResponsePerformance
-                                }
-                                resourceName={
-                                    SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE
-                                }
-                                statsFilters={pageStatsFilters}
-                                helpText={
-                                    <span>
-                                        You can enable up to four Quick Response
-                                        flows at a time to automatically answer
-                                        shopper questions. Only flows enabled
-                                        during the selected time period are
-                                        displayed below.{' '}
-                                        <a
-                                            href="https://docs.gorgias.com/en-US/custom-self-service-flows-81897"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            Learn more
-                                        </a>
-                                    </span>
-                                }
-                                helpAutoHide={false}
-                                isDownloadable
-                            >
-                                {(stat) => (
-                                    <>
-                                        {quickResponsePerformanceNoData &&
-                                        quickResponseDisabled ? (
-                                            <SelfServiceFeaturePreview
-                                                title="Automate up to 14% of
+                    </StatWrapper>
+                    <StatWrapper
+                        stat={quickResponsePerformance}
+                        isFetchingStat={isFetchingQuickResponsePerformance}
+                        resourceName={SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE}
+                        statsFilters={pageStatsFilters}
+                        helpText={
+                            <span>
+                                You can enable up to four Quick Response flows
+                                at a time to automatically answer shopper
+                                questions. Only flows enabled during the
+                                selected time period are displayed below.{' '}
+                                <a
+                                    href="https://docs.gorgias.com/en-US/custom-self-service-flows-81897"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    Learn more
+                                </a>
+                            </span>
+                        }
+                        helpAutoHide={false}
+                        isDownloadable
+                    >
+                        {(stat) => (
+                            <>
+                                {quickResponsePerformanceNoData &&
+                                quickResponseDisabled ? (
+                                    <SelfServiceFeaturePreview
+                                        title="Automate up to 14% of
                                                         interactions with quick
                                                         response flows"
-                                                description="Enable and customize up
+                                        description="Enable and customize up
                                                         to 4 quick response
                                                         flows at a time in
                                                         Self-service."
-                                                buttonText="Check out quick response"
-                                                buttonRedirectUrl="/app/settings/self-service"
-                                                imageUrl={`${ASSETS_URL}/static/private/js/assets/img/presentationals/quick-response-preview.png`}
-                                                imageAltText="Quick response feature preview"
-                                            />
-                                        ) : (
-                                            <TableStat
-                                                context={{tagColors: null}}
-                                                data={stat.getIn([
-                                                    'data',
-                                                    'data',
-                                                ])}
-                                                meta={stat.get('meta')}
-                                                config={statsConfig.get(
-                                                    SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE
-                                                )}
-                                                name={
-                                                    SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE
-                                                }
-                                                integrations={integrations}
-                                                selfServiceConfigurations={
-                                                    selfServiceConfigurations
-                                                }
-                                            />
-                                        )}
-                                    </>
-                                )}
-                            </StatWrapper>
-                            <StatWrapper
-                                stat={articleRecommendationPerformance}
-                                isFetchingStat={
-                                    isFetchingArticleRecommendationPerformance
-                                }
-                                resourceName={
-                                    SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE
-                                }
-                                statsFilters={pageStatsFilters}
-                                helpText={
-                                    <span>
-                                        When enabled, relevant articles display
-                                        in chat to automatically answer customer
-                                        questions. Only articles recommended
-                                        during the selected time period are
-                                        displayed below.{' '}
-                                        <a
-                                            href="https://docs.gorgias.com/en-US/help-center-article-recommendation-in-chat-89341"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            Learn more
-                                        </a>
-                                    </span>
-                                }
-                                helpAutoHide={false}
-                                isDownloadable
-                            >
-                                {(stat) => (
-                                    <>
-                                        {articleRecommendationPerformanceNoData &&
-                                        articleRecommendationDisabled ? (
-                                            <SelfServiceFeaturePreview
-                                                title="Leverage your Help Center to automate tickets"
-                                                description="Enable article recommendation in Chat settings to automatically recommend relevant Help Center articles to shoppers."
-                                                buttonText="Set up article recommendation"
-                                                buttonRedirectUrl="/app/settings/integrations/gorgias_chat"
-                                                imageUrl={`${ASSETS_URL}/static/private/js/assets/img/presentationals/article-recommendation-preview.png`}
-                                                imageAltText="Article Recommendation feature preview"
-                                            />
-                                        ) : (
-                                            <TableStat
-                                                context={{tagColors: null}}
-                                                data={stat.getIn([
-                                                    'data',
-                                                    'data',
-                                                ])}
-                                                meta={stat.get('meta')}
-                                                config={statsConfig.get(
-                                                    SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE
-                                                )}
-                                                name={
-                                                    SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE
-                                                }
-                                            />
-                                        )}
-                                    </>
-                                )}
-                            </StatWrapper>
-                        </>
-                    )}
-                    {!hasSelfServiceStatisticsV2 && (
-                        <>
-                            <StatWrapper
-                                stat={chatFlowsDistribution}
-                                isFetchingStat={isFetchingChatFlowsDistribution}
-                                resourceName={
-                                    SELF_SERVICE_CHAT_FLOWS_DISTRIBUTION
-                                }
-                                statsFilters={pageStatsFilters}
-                                isDownloadable
-                            >
-                                {(stat) => (
-                                    <NormalizedBarStat
-                                        data={stat.getIn(['data', 'data'])}
-                                        legend={stat.getIn(
-                                            ['data', 'legend'],
-                                            null
-                                        )}
-                                        config={statsConfig.get(
-                                            SELF_SERVICE_CHAT_FLOWS_DISTRIBUTION
-                                        )}
+                                        buttonText="Check out quick response"
+                                        buttonRedirectUrl="/app/settings/self-service"
+                                        imageUrl={`${ASSETS_URL}/static/private/js/assets/img/presentationals/quick-response-preview.png`}
+                                        imageAltText="Quick response feature preview"
                                     />
-                                )}
-                            </StatWrapper>
-                            <StatWrapper
-                                stat={helpCenterFlowsDistribution}
-                                isFetchingStat={
-                                    isFetchingHelpCenterFlowsDistribution
-                                }
-                                resourceName={
-                                    SELF_SERVICE_HELP_CENTER_FLOWS_DISTRIBUTION
-                                }
-                                statsFilters={pageStatsFilters}
-                                isDownloadable
-                            >
-                                {(stat) => (
-                                    <NormalizedBarStat
-                                        data={stat.getIn(['data', 'data'])}
-                                        legend={stat.getIn(
-                                            ['data', 'legend'],
-                                            null
-                                        )}
-                                        config={statsConfig.get(
-                                            SELF_SERVICE_HELP_CENTER_FLOWS_DISTRIBUTION
-                                        )}
-                                    />
-                                )}
-                            </StatWrapper>
-                        </>
-                    )}
-                    {!hasSelfServiceStatisticsV2 && (
-                        <>
-                            <h3 className={css.section}>Report issues flow</h3>
-                            <StatWrapper
-                                stat={productWithMostIssues}
-                                isFetchingStat={isFetchingProductWithMostIssues}
-                                resourceName={
-                                    SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES
-                                }
-                                statsFilters={pageStatsFilters}
-                                isDownloadable
-                            >
-                                {(stat) => (
+                                ) : (
                                     <TableStat
                                         context={{tagColors: null}}
                                         data={stat.getIn(['data', 'data'])}
                                         meta={stat.get('meta')}
                                         config={statsConfig.get(
-                                            SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES
+                                            SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE
                                         )}
+                                        name={
+                                            SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE
+                                        }
+                                        integrations={integrations}
+                                        selfServiceConfigurations={
+                                            selfServiceConfigurations
+                                        }
                                     />
                                 )}
-                            </StatWrapper>
-                        </>
-                    )}
+                            </>
+                        )}
+                    </StatWrapper>
+                    <StatWrapper
+                        stat={articleRecommendationPerformance}
+                        isFetchingStat={
+                            isFetchingArticleRecommendationPerformance
+                        }
+                        resourceName={
+                            SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE
+                        }
+                        statsFilters={pageStatsFilters}
+                        helpText={
+                            <span>
+                                When enabled, relevant articles display in chat
+                                to automatically answer customer questions. Only
+                                articles recommended during the selected time
+                                period are displayed below.{' '}
+                                <a
+                                    href="https://docs.gorgias.com/en-US/help-center-article-recommendation-in-chat-89341"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    Learn more
+                                </a>
+                            </span>
+                        }
+                        helpAutoHide={false}
+                        isDownloadable
+                    >
+                        {(stat) => (
+                            <>
+                                {articleRecommendationPerformanceNoData &&
+                                articleRecommendationDisabled ? (
+                                    <SelfServiceFeaturePreview
+                                        title="Leverage your Help Center to automate tickets"
+                                        description="Enable article recommendation in Chat settings to automatically recommend relevant Help Center articles to shoppers."
+                                        buttonText="Set up article recommendation"
+                                        buttonRedirectUrl="/app/settings/integrations/gorgias_chat"
+                                        imageUrl={`${ASSETS_URL}/static/private/js/assets/img/presentationals/article-recommendation-preview.png`}
+                                        imageAltText="Article Recommendation feature preview"
+                                    />
+                                ) : (
+                                    <TableStat
+                                        context={{tagColors: null}}
+                                        data={stat.getIn(['data', 'data'])}
+                                        meta={stat.get('meta')}
+                                        config={statsConfig.get(
+                                            SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE
+                                        )}
+                                        name={
+                                            SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE
+                                        }
+                                    />
+                                )}
+                            </>
+                        )}
+                    </StatWrapper>
                     <StatWrapper
                         stat={topReportedIssues}
                         isFetchingStat={isFetchingTopReportedIssues}
@@ -622,8 +475,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                     >
                         {(stat) => (
                             <>
-                                {hasSelfServiceStatisticsV2 &&
-                                topReportedIssuesNoData &&
+                                {topReportedIssuesNoData &&
                                 reportIssueDisabled ? (
                                     <SelfServiceFeaturePreview
                                         title="Track order issues by enabling the report issue flow"
@@ -646,70 +498,43 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                             </>
                         )}
                     </StatWrapper>
-                    {!hasSelfServiceStatisticsV2 && (
-                        <>
-                            <h3 className={css.section}>Returns flow</h3>
-                            <StatWrapper
-                                stat={mostReturnedProducts}
-                                isFetchingStat={isFetchingMostReturnedProducts}
-                                resourceName={
-                                    SELF_SERVICE_MOST_RETURNED_PRODUCTS
-                                }
-                                statsFilters={pageStatsFilters}
-                                isDownloadable
-                            >
-                                {(stat) => (
+                    <StatWrapper
+                        stat={productsWithMostIssuesAndReturnRequests}
+                        isFetchingStat={
+                            isFetchingProductsWithMostIssuesAndReturnRequests
+                        }
+                        resourceName={
+                            SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES_AND_RETURN_REQUESTS
+                        }
+                        statsFilters={pageStatsFilters}
+                        isDownloadable
+                    >
+                        {(stat) => (
+                            <>
+                                {productsWithMostIssuesAndReturnRequestsNoData &&
+                                returnOrderDisabled &&
+                                reportIssueDisabled ? (
+                                    <SelfServiceFeaturePreview
+                                        title="Gain product insights by enabling the report issue and return flows"
+                                        description="Enable and customize these order management flows in Self-service."
+                                        buttonText="Check out order management flows"
+                                        buttonRedirectUrl="/app/settings/self-service"
+                                        imageUrl={`${ASSETS_URL}/static/private/js/assets/img/presentationals/return-order-preview.png`}
+                                        imageAltText="Return Order feature preview"
+                                    />
+                                ) : (
                                     <TableStat
                                         context={{tagColors: null}}
                                         data={stat.getIn(['data', 'data'])}
                                         meta={stat.get('meta')}
                                         config={statsConfig.get(
-                                            SELF_SERVICE_MOST_RETURNED_PRODUCTS
+                                            SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES_AND_RETURN_REQUESTS
                                         )}
                                     />
                                 )}
-                            </StatWrapper>
-                        </>
-                    )}
-                    {hasSelfServiceStatisticsV2 && (
-                        <StatWrapper
-                            stat={productsWithMostIssuesAndReturnRequests}
-                            isFetchingStat={
-                                isFetchingProductsWithMostIssuesAndReturnRequests
-                            }
-                            resourceName={
-                                SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES_AND_RETURN_REQUESTS
-                            }
-                            statsFilters={pageStatsFilters}
-                            isDownloadable
-                        >
-                            {(stat) => (
-                                <>
-                                    {productsWithMostIssuesAndReturnRequestsNoData &&
-                                    returnOrderDisabled &&
-                                    reportIssueDisabled ? (
-                                        <SelfServiceFeaturePreview
-                                            title="Gain product insights by enabling the report issue and return flows"
-                                            description="Enable and customize these order management flows in Self-service."
-                                            buttonText="Check out order management flows"
-                                            buttonRedirectUrl="/app/settings/self-service"
-                                            imageUrl={`${ASSETS_URL}/static/private/js/assets/img/presentationals/return-order-preview.png`}
-                                            imageAltText="Return Order feature preview"
-                                        />
-                                    ) : (
-                                        <TableStat
-                                            context={{tagColors: null}}
-                                            data={stat.getIn(['data', 'data'])}
-                                            meta={stat.get('meta')}
-                                            config={statsConfig.get(
-                                                SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES_AND_RETURN_REQUESTS
-                                            )}
-                                        />
-                                    )}
-                                </>
-                            )}
-                        </StatWrapper>
-                    )}
+                            </>
+                        )}
+                    </StatWrapper>
                 </>
             )}
         </StatsPage>

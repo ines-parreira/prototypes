@@ -95,14 +95,6 @@ exports[`StatsNavbarView should render 1`] = `
         activeClassName="active"
         className="link"
         exact={true}
-        to="/app/stats/automation"
-      >
-        Overview
-      </NavLink>
-      <NavLink
-        activeClassName="active"
-        className="link"
-        exact={true}
         to="/app/stats/macros"
       >
         Macros

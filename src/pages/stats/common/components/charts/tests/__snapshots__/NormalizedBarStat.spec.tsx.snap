@@ -39,20 +39,20 @@ exports[`NormalizedBarStat should render a bar with total chart and disabled lab
         labels={
           Array [
             Object {
-              "background": "#4A8DF9",
-              "name": "Track (automated)",
+              "background": "#abd1e9",
+              "name": "Track order",
             },
             Object {
-              "background": "#24D69D",
-              "name": "Report issue",
+              "background": "#ffa8d9",
+              "name": "Report order issue",
             },
             Object {
-              "background": "#FD9B5A",
-              "name": "Cancel",
+              "background": "#EB6260",
+              "name": "Cancel order",
             },
             Object {
-              "background": "#D2D7DE",
-              "name": "Chat tickets",
+              "background": "#dfee90",
+              "name": "other_tickets",
             },
           ]
         }
@@ -72,6 +72,19 @@ exports[`NormalizedBarStat should render a bar with total chart and disabled lab
       </span>
       <span
         className="disabled-legend-label mr-4 mb-2"
+        key="article_recommendation"
+      >
+        <span
+          className="disabled-legend-label-circle mr-2"
+        />
+        <Link
+          to="/app/settings/self-service"
+        >
+          Enable Article recommendation flow
+        </Link>
+      </span>
+      <span
+        className="disabled-legend-label mr-4 mb-2"
         key="returns"
       >
         <span
@@ -80,7 +93,7 @@ exports[`NormalizedBarStat should render a bar with total chart and disabled lab
         <Link
           to="/app/settings/self-service"
         >
-          Enable Return flow
+          Enable Return order flow
         </Link>
       </span>
     </Col>
@@ -118,7 +131,7 @@ exports[`NormalizedBarStat should render a bar with total chart and disabled lab
             Object {
               "datasets": Array [
                 Object {
-                  "backgroundColor": "#4A8DF9",
+                  "backgroundColor": "#abd1e9",
                   "data": Array [
                     10.550458715596331,
                     2.877697841726619,
@@ -131,10 +144,10 @@ exports[`NormalizedBarStat should render a bar with total chart and disabled lab
                     445,
                     56,
                   ],
-                  "label": "Track (automated)",
+                  "label": "Track order",
                 },
                 Object {
-                  "backgroundColor": "#24D69D",
+                  "backgroundColor": "#ffa8d9",
                   "data": Array [
                     29.81651376146789,
                     32.37410071942446,
@@ -147,10 +160,10 @@ exports[`NormalizedBarStat should render a bar with total chart and disabled lab
                     87,
                     9,
                   ],
-                  "label": "Report issue",
+                  "label": "Report order issue",
                 },
                 Object {
-                  "backgroundColor": "#FD9B5A",
+                  "backgroundColor": "#EB6260",
                   "data": Array [
                     29.81651376146789,
                     32.37410071942446,
@@ -163,10 +176,10 @@ exports[`NormalizedBarStat should render a bar with total chart and disabled lab
                     87,
                     9,
                   ],
-                  "label": "Cancel",
+                  "label": "Cancel order",
                 },
                 Object {
-                  "backgroundColor": "#D2D7DE4D",
+                  "backgroundColor": "#dfee904D",
                   "data": Array [
                     29.81651376146789,
                     32.37410071942446,
@@ -179,7 +192,7 @@ exports[`NormalizedBarStat should render a bar with total chart and disabled lab
                     87,
                     9,
                   ],
-                  "label": "Chat tickets",
+                  "label": "other_tickets",
                 },
               ],
               "labels": Array [
@@ -195,9 +208,6 @@ exports[`NormalizedBarStat should render a bar with total chart and disabled lab
             Object {
               "plugins": Object {
                 "tooltip": Object {
-                  "callbacks": Object {
-                    "label": [Function],
-                  },
                   "intersect": true,
                   "position": "nearest",
                 },
@@ -208,14 +218,16 @@ exports[`NormalizedBarStat should render a bar with total chart and disabled lab
                     "borderColor": "#d2d7de",
                     "borderDash": Array [
                       2,
-                      4,
                     ],
                     "color": "#dfe3f1",
-                    "display": false,
+                    "display": true,
                     "drawBorder": true,
+                    "tickBorderDash": Array [
+                      2,
+                    ],
                     "z": -1,
                   },
-                  "stacked": true,
+                  "offset": true,
                   "ticks": Object {
                     "callback": [Function],
                     "color": "#b2bddd",
@@ -225,19 +237,19 @@ exports[`NormalizedBarStat should render a bar with total chart and disabled lab
                   "grid": Object {
                     "borderDash": Array [
                       2,
-                      4,
                     ],
                     "color": "#dfe3f1",
-                    "drawBorder": false,
+                    "drawBorder": true,
                     "drawTicks": false,
+                    "tickBorderDash": Array [
+                      2,
+                    ],
                     "z": -1,
                   },
-                  "max": 100,
                   "min": 0,
-                  "stacked": true,
                   "ticks": Object {
-                    "callback": [Function],
                     "color": "#b2bddd",
+                    "padding": 10,
                   },
                   "title": Object {
                     "color": "#b2bddd",
@@ -273,20 +285,7 @@ exports[`NormalizedBarStat should render a bar with total chart and disabled lab
         <div
           className="bar-total-title-wrapper"
         >
-          <h5>
-            Total chat interactions
-          </h5>
-          <span>
-            <StatsHelpIcon
-              id="normalized-bar-title-tooltip"
-            />
-            <Tooltip
-              placement="top"
-              target="normalized-bar-title-tooltip"
-            >
-              Average distribution of the different self-service flows
-            </Tooltip>
-          </span>
+          <h5 />
         </div>
         <div
           className="bar-total-dates"
@@ -296,21 +295,21 @@ exports[`NormalizedBarStat should render a bar with total chart and disabled lab
         </div>
         <div
           className="bar-total-data-wrapper"
-          key="Track (automated)"
+          key="Track order"
         >
           <div
             className="label mr-4 mb-2"
-            key="Track (automated)"
+            key="Track order"
           >
             <span
               className="circle mr-2"
               style={
                 Object {
-                  "background": "#4A8DF9",
+                  "background": "#abd1e9",
                 }
               }
             />
-            Track (automated)
+            Track order
           </div>
           <div
             className="data"
@@ -323,21 +322,21 @@ exports[`NormalizedBarStat should render a bar with total chart and disabled lab
         </div>
         <div
           className="bar-total-data-wrapper"
-          key="Report issue"
+          key="Report order issue"
         >
           <div
             className="label mr-4 mb-2"
-            key="Report issue"
+            key="Report order issue"
           >
             <span
               className="circle mr-2"
               style={
                 Object {
-                  "background": "#24D69D",
+                  "background": "#ffa8d9",
                 }
               }
             />
-            Report issue
+            Report order issue
           </div>
           <div
             className="data"
@@ -350,21 +349,21 @@ exports[`NormalizedBarStat should render a bar with total chart and disabled lab
         </div>
         <div
           className="bar-total-data-wrapper"
-          key="Cancel"
+          key="Cancel order"
         >
           <div
             className="label mr-4 mb-2"
-            key="Cancel"
+            key="Cancel order"
           >
             <span
               className="circle mr-2"
               style={
                 Object {
-                  "background": "#FD9B5A",
+                  "background": "#EB6260",
                 }
               }
             />
-            Cancel
+            Cancel order
           </div>
           <div
             className="data"
@@ -377,21 +376,21 @@ exports[`NormalizedBarStat should render a bar with total chart and disabled lab
         </div>
         <div
           className="bar-total-data-wrapper"
-          key="Chat tickets"
+          key="other_tickets"
         >
           <div
             className="label mr-4 mb-2"
-            key="Chat tickets"
+            key="other_tickets"
           >
             <span
               className="circle mr-2"
               style={
                 Object {
-                  "background": "#D2D7DE",
+                  "background": "#dfee90",
                 }
               }
             />
-            Chat tickets
+            other_tickets
           </div>
           <div
             className="data"

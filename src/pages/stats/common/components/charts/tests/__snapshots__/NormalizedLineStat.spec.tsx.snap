@@ -42,8 +42,9 @@ exports[`NormalizedLineStat should render a line chart with total and disabled l
           Object {
             "datasets": Array [
               Object {
-                "backgroundColor": "#abd1e9",
-                "color": "#4A8DF9",
+                "backgroundColor": "#1D786B",
+                "borderColor": "#1D786B",
+                "borderWidth": 1,
                 "data": Array [
                   23,
                   4,
@@ -51,12 +52,56 @@ exports[`NormalizedLineStat should render a line chart with total and disabled l
                   56,
                 ],
                 "disabledLink": "/app/settings/self-service",
-                "label": "Track (automated)",
+                "fill": false,
+                "label": "Quick response",
+                "name": "quick_responses",
+                "pointHoverBackgroundColor": "#1D786B",
+                "pointHoverBorderColor": "#1D786B",
+                "pointHoverRadius": 6,
+                "pointRadius": 4,
+              },
+              Object {
+                "backgroundColor": "#001874",
+                "borderColor": "#001874",
+                "borderWidth": 1,
+                "data": Array [
+                  65,
+                  45,
+                  87,
+                  9,
+                ],
+                "disabledLink": "/app/settings/self-service",
+                "fill": false,
+                "label": "Article recommendation",
+                "name": "article_recommendation",
+                "pointHoverBackgroundColor": "#001874",
+                "pointHoverBorderColor": "#001874",
+                "pointHoverRadius": 6,
+                "pointRadius": 4,
+              },
+              Object {
+                "backgroundColor": "#4A8DF9",
+                "borderColor": "#4A8DF9",
+                "borderWidth": 1,
+                "data": Array [
+                  65,
+                  45,
+                  87,
+                  9,
+                ],
+                "disabledLink": "/app/settings/self-service",
+                "fill": false,
+                "label": "Track order",
                 "name": "track",
+                "pointHoverBackgroundColor": "#4A8DF9",
+                "pointHoverBorderColor": "#4A8DF9",
+                "pointHoverRadius": 6,
+                "pointRadius": 4,
               },
               Object {
-                "backgroundColor": "#ffa8d9",
-                "color": "#24D69D",
+                "backgroundColor": "#74B510",
+                "borderColor": "#74B510",
+                "borderWidth": 1,
                 "data": Array [
                   65,
                   45,
@@ -64,33 +109,13 @@ exports[`NormalizedLineStat should render a line chart with total and disabled l
                   9,
                 ],
                 "disabledLink": "/app/settings/self-service",
-                "label": "Report issue",
+                "fill": false,
+                "label": "Report order issue",
                 "name": "report_issues",
-              },
-              Object {
-                "backgroundColor": "#fec18c",
-                "color": "#FD9B5A",
-                "data": Array [
-                  65,
-                  45,
-                  87,
-                  9,
-                ],
-                "disabledLink": "/app/settings/self-service",
-                "label": "Cancel",
-                "name": "cancellations",
-              },
-              Object {
-                "backgroundColor": "#dfee90",
-                "color": "#D2D7DE",
-                "data": Array [
-                  65,
-                  45,
-                  87,
-                  9,
-                ],
-                "label": "Chat tickets",
-                "name": "other_tickets",
+                "pointHoverBackgroundColor": "#74B510",
+                "pointHoverBorderColor": "#74B510",
+                "pointHoverRadius": 6,
+                "pointRadius": 4,
               },
             ],
             "labels": Array [
@@ -106,9 +131,6 @@ exports[`NormalizedLineStat should render a line chart with total and disabled l
           Object {
             "plugins": Object {
               "tooltip": Object {
-                "callbacks": Object {
-                  "label": [Function],
-                },
                 "intersect": true,
                 "position": "nearest",
               },
@@ -119,14 +141,16 @@ exports[`NormalizedLineStat should render a line chart with total and disabled l
                   "borderColor": "#d2d7de",
                   "borderDash": Array [
                     2,
-                    4,
                   ],
                   "color": "#dfe3f1",
-                  "display": false,
+                  "display": true,
                   "drawBorder": true,
+                  "tickBorderDash": Array [
+                    2,
+                  ],
                   "z": -1,
                 },
-                "stacked": true,
+                "offset": true,
                 "ticks": Object {
                   "callback": [Function],
                   "color": "#b2bddd",
@@ -136,19 +160,19 @@ exports[`NormalizedLineStat should render a line chart with total and disabled l
                 "grid": Object {
                   "borderDash": Array [
                     2,
-                    4,
                   ],
                   "color": "#dfe3f1",
-                  "drawBorder": false,
+                  "drawBorder": true,
                   "drawTicks": false,
+                  "tickBorderDash": Array [
+                    2,
+                  ],
                   "z": -1,
                 },
-                "max": 100,
                 "min": 0,
-                "stacked": true,
                 "ticks": Object {
-                  "callback": [Function],
                   "color": "#b2bddd",
+                  "padding": 10,
                 },
                 "title": Object {
                   "color": "#b2bddd",
@@ -183,21 +207,21 @@ exports[`NormalizedLineStat should render a line chart with total and disabled l
     >
       <div
         className="bar-total-data-wrapper"
-        key="Track (automated)"
+        key="Quick response"
       >
         <div
           className="label mr-4 mb-2"
-          key="Track (automated)"
+          key="Quick response"
         >
           <span
             className="circle mr-2"
             style={
               Object {
-                "backgroundColor": "#abd1e9",
+                "backgroundColor": "#1D786B",
               }
             }
           />
-          Track (automated)
+          Quick response
         </div>
         <div
           className="data"
@@ -207,21 +231,21 @@ exports[`NormalizedLineStat should render a line chart with total and disabled l
       </div>
       <div
         className="bar-total-data-wrapper"
-        key="Report issue"
+        key="Article recommendation"
       >
         <div
           className="label mr-4 mb-2"
-          key="Report issue"
+          key="Article recommendation"
         >
           <span
             className="circle mr-2"
             style={
               Object {
-                "backgroundColor": "#ffa8d9",
+                "backgroundColor": "#001874",
               }
             }
           />
-          Report issue
+          Article recommendation
         </div>
         <div
           className="data"
@@ -231,21 +255,21 @@ exports[`NormalizedLineStat should render a line chart with total and disabled l
       </div>
       <div
         className="bar-total-data-wrapper"
-        key="Cancel"
+        key="Track order"
       >
         <div
           className="label mr-4 mb-2"
-          key="Cancel"
+          key="Track order"
         >
           <span
             className="circle mr-2"
             style={
               Object {
-                "backgroundColor": "#fec18c",
+                "backgroundColor": "#4A8DF9",
               }
             }
           />
-          Cancel
+          Track order
         </div>
         <div
           className="data"
@@ -255,21 +279,21 @@ exports[`NormalizedLineStat should render a line chart with total and disabled l
       </div>
       <div
         className="bar-total-data-wrapper"
-        key="Chat tickets"
+        key="Report order issue"
       >
         <div
           className="label mr-4 mb-2"
-          key="Chat tickets"
+          key="Report order issue"
         >
           <span
             className="circle mr-2"
             style={
               Object {
-                "backgroundColor": "#dfee90",
+                "backgroundColor": "#74B510",
               }
             }
           />
-          Chat tickets
+          Report order issue
         </div>
         <div
           className="data"

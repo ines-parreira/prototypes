@@ -5,20 +5,16 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import _noop from 'lodash/noop'
-import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 
 import _cloneDeep from 'lodash/cloneDeep'
-import {FeatureFlagKey} from 'config/featureFlags'
+
 import {RootState, StoreDispatch} from 'state/types'
 import {flushPromises, renderWithRouter} from 'utils/testing'
 import {AccountFeature} from 'state/currentAccount/types'
 import {integrationsState} from 'fixtures/integrations'
 import {
     SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE,
-    SELF_SERVICE_CHAT_FLOWS_DISTRIBUTION,
-    SELF_SERVICE_HELP_CENTER_FLOWS_DISTRIBUTION,
     SELF_SERVICE_OVERVIEW,
-    SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES,
     SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE,
     SELF_SERVICE_TOP_REPORTED_ISSUES,
     SELF_SERVICE_VOLUME_PER_FLOW,
@@ -26,11 +22,8 @@ import {
 import {
     selfServiceArticleRecommendationPerformance,
     selfServiceArticleRecommendationPerformanceNoData,
-    selfServiceFlowsDistribution,
-    selfServiceMostReturnedProducts,
     selfServiceOverview,
     selfServiceOverviewNoData,
-    selfServiceProductsWithMostIssues,
     selfServiceProductsWithMostIssuesAndReturnRequests,
     selfServiceProductsWithMostIssuesAndReturnRequestsNoData,
     selfServiceQuickResponsePerformance,
@@ -109,10 +102,6 @@ describe('<SelfServiceStatsPage />', () => {
     } as RootState
 
     beforeEach(() => {
-        resetLDMocks()
-        mockFlags({
-            [FeatureFlagKey.SelfServiceStatsV2]: false,
-        })
         useStatResourceMock.mockReturnValue([null, true, _noop])
     })
 
@@ -166,42 +155,6 @@ describe('<SelfServiceStatsPage />', () => {
                 return [selfServiceOverview, false, _noop]
             } else if (resourceName === SELF_SERVICE_VOLUME_PER_FLOW) {
                 return [selfServiceVolumePerFlow, false, _noop]
-            } else if (resourceName === SELF_SERVICE_CHAT_FLOWS_DISTRIBUTION) {
-                return [selfServiceFlowsDistribution, false, _noop]
-            } else if (
-                resourceName === SELF_SERVICE_HELP_CENTER_FLOWS_DISTRIBUTION
-            ) {
-                return [selfServiceFlowsDistribution, false, _noop]
-            } else if (
-                resourceName === SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES
-            ) {
-                return [selfServiceProductsWithMostIssues, false, _noop]
-            } else if (resourceName === SELF_SERVICE_TOP_REPORTED_ISSUES) {
-                return [selfServiceTopReportedIssues, false, _noop]
-            }
-            return [selfServiceMostReturnedProducts, false, _noop]
-        })
-
-        const {container} = renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <SelfServiceStatsPage />
-            </Provider>
-        )
-
-        await flushPromises()
-
-        expect(container.firstChild).toMatchSnapshot()
-    })
-
-    it('should render the stats variant when the SelfServiceStatsV2 feature flag is truthy', async () => {
-        mockFlags({
-            [FeatureFlagKey.SelfServiceStatsV2]: true,
-        })
-        useStatResourceMock.mockImplementation(({resourceName}) => {
-            if (resourceName === SELF_SERVICE_OVERVIEW) {
-                return [selfServiceOverview, false, _noop]
-            } else if (resourceName === SELF_SERVICE_VOLUME_PER_FLOW) {
-                return [selfServiceVolumePerFlow, false, _noop]
             } else if (
                 resourceName === SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE
             ) {
@@ -237,10 +190,6 @@ describe('<SelfServiceStatsPage />', () => {
     })
 
     it('should render the stats with the feature preview when there is no data and the features are disabled', async () => {
-        mockFlags({
-            [FeatureFlagKey.SelfServiceStatsV2]: true,
-        })
-
         useStatResourceMock.mockImplementation(({resourceName}) => {
             if (resourceName === SELF_SERVICE_OVERVIEW) {
                 return [selfServiceOverviewNoData, false, _noop]
