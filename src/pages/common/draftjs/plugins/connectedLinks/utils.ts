@@ -1,5 +1,7 @@
 import {EditorState, EditorChangeType} from 'draft-js'
 
+export type ConnectedLinksEntityData = {url?: string; connected?: boolean}
+
 const hasProtocol = (url: string): boolean => {
     return url.indexOf('//') === 0 || url.includes('://')
 }
@@ -43,8 +45,11 @@ export const parseUrl = (url = '', target = ''): string => {
         }
     }
 
-    // chrome encodes special chars like {&}
-    return decodeURI(a.href)
+    try {
+        return decodeURI(a.href)
+    } catch (error) {
+        return a.href
+    }
 }
 
 // connected links have the same text and href
@@ -67,8 +72,9 @@ export const setConnectedLinks = (editorState: EditorState): EditorState => {
                 const value = plainText.substring(start, end)
                 const entityKey = block!.getEntityAt(start)
                 const entity = newContentState.getEntity(entityKey)
-                const {url, connected} = entity.getData()
-                const newEntityData: {url?: string; connected?: boolean} = {}
+                const {url, connected} =
+                    entity.getData() as ConnectedLinksEntityData
+                const newEntityData: ConnectedLinksEntityData = {}
 
                 if (connected) {
                     // link is already connected, update its url.

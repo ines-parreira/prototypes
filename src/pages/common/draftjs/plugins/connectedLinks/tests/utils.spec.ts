@@ -1,7 +1,7 @@
 import {EditorState} from 'draft-js'
 import {convertFromHTML} from 'draft-convert'
 
-import {setConnectedLinks, parseUrl} from '../utils.ts'
+import {setConnectedLinks, parseUrl, ConnectedLinksEntityData} from '../utils'
 
 describe('Connected Links utils', () => {
     describe('parseUrl', () => {
@@ -45,6 +45,18 @@ describe('Connected Links utils', () => {
                 parseUrl('http://gorgias.io', 'http://pizza.gorgias.io')
             ).toBe('http://gorgias.io/')
         })
+
+        it('should decode encoded URI', () => {
+            expect(parseUrl('https://example.com/foo%21')).toBe(
+                'https://example.com/foo!'
+            )
+        })
+
+        it('should not throw on malformed URI', () => {
+            expect(parseUrl('https://example.com%')).toBe(
+                'https://example.com%'
+            )
+        })
     })
 
     describe('setConnectedLinks', () => {
@@ -65,9 +77,13 @@ describe('Connected Links utils', () => {
             const contentState = editorState.getCurrentContent()
             const entityKey = contentState.getLastCreatedEntityKey()
 
-            expect(contentState.getEntity(entityKey).getData().connected).toBe(
-                true
-            )
+            expect(
+                (
+                    contentState
+                        .getEntity(entityKey)
+                        .getData() as ConnectedLinksEntityData
+                ).connected
+            ).toBe(true)
         })
 
         it('should transform link without protocol into connected link', () => {
@@ -87,9 +103,13 @@ describe('Connected Links utils', () => {
             const contentState = editorState.getCurrentContent()
             const entityKey = contentState.getLastCreatedEntityKey()
 
-            expect(contentState.getEntity(entityKey).getData().connected).toBe(
-                true
-            )
+            expect(
+                (
+                    contentState
+                        .getEntity(entityKey)
+                        .getData() as ConnectedLinksEntityData
+                ).connected
+            ).toBe(true)
         })
 
         it('should transform link without www and protocol into connected link', () => {
@@ -109,9 +129,13 @@ describe('Connected Links utils', () => {
             const contentState = editorState.getCurrentContent()
             const entityKey = contentState.getLastCreatedEntityKey()
 
-            expect(contentState.getEntity(entityKey).getData().connected).toBe(
-                true
-            )
+            expect(
+                (
+                    contentState
+                        .getEntity(entityKey)
+                        .getData() as ConnectedLinksEntityData
+                ).connected
+            ).toBe(true)
         })
     })
 })
