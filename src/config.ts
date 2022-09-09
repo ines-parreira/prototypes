@@ -326,7 +326,11 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         categories: [Category.ECOMMERCE],
         longDescription:
             "<p>BigCommerce is an ecommerce platform that provides 'software as a service' services to retailers. The company’s platform includes online store creation, search engine optimization, hosting, marketing and security.</p><p>With Gorgias, you can:</p><ul><li>View BigCommerce customer and order information in a customer's ticket.</li><li>Easily access links to customer and order profile.</li></ul>",
-        screenshots: ['bigcommerce-1.png'],
+        screenshots: [
+            'bigcommerce-1.png',
+            'bigcommerce-2.png',
+            'bigcommerce-3.png',
+        ],
         pricingPlan: PricingPlan.RECURRING,
         pricingDetails: 'Contact BigCommerce for pricing details.',
         pricingLink: 'https://www.bigcommerce.com/essentials/pricing/',

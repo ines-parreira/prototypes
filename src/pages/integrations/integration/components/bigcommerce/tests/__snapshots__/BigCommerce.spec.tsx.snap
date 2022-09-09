@@ -137,6 +137,24 @@ exports[`<BigCommerce/> Detail should render a detail view 1`] = `
             src="/static/private/js/assets/img/integrations/screenshots/bigcommerce-1.png"
           />
         </li>
+        <li
+          class="screenshotListItem"
+        >
+          <img
+            alt="Screenshot number 2 of things this app allows you to do in Gorgias"
+            class="screenshot"
+            src="/static/private/js/assets/img/integrations/screenshots/bigcommerce-2.png"
+          />
+        </li>
+        <li
+          class="screenshotListItem"
+        >
+          <img
+            alt="Screenshot number 3 of things this app allows you to do in Gorgias"
+            class="screenshot"
+            src="/static/private/js/assets/img/integrations/screenshots/bigcommerce-3.png"
+          />
+        </li>
       </ul>
     </section>
     <div
