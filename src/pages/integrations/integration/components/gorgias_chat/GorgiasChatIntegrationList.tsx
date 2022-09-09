@@ -54,7 +54,7 @@ function GorgiasChatIntegrationList({integrations, loading}: Props) {
             onClose={() => setCalloutDisplayed(false)}
         >
             The toggle to hide the chat from your website was moved to the{' '}
-            <b>Installation tab</b> tab of your chat's settings.
+            <b>Installation</b> tab of your chat's settings.
         </Alert>
     )
 
