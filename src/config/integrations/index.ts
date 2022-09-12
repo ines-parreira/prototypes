@@ -1,4 +1,5 @@
-import CHAT_AUTO_RESPONDER_TEXTS_IMPORT from './chat_auto_responder_texts.json'
+import CHAT_AUTO_RESPONDER_TEXTS_IMPORT from '../../../../../integrations/common/texts/chat_auto_responder_texts.json'
+
 import * as facebook from './facebook'
 import * as magento2 from './magento2'
 import * as recharge from './recharge'
