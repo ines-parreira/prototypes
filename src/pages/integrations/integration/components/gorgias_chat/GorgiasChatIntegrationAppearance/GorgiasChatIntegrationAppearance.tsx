@@ -47,6 +47,7 @@ import Tooltip from 'pages/common/components/Tooltip'
 import ColorField from 'pages/common/forms/ColorField'
 import FileField from 'pages/common/forms/FileField'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import NumberInput from 'pages/common/forms/input/NumberInput'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import GorgiasChatIntegrationNavigation from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationNavigation'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
@@ -767,92 +768,128 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                     )}
                                 </DEPRECATED_InputField>
                                 <div className={css.positionInputsWrapper}>
-                                    <DEPRECATED_InputField
-                                        className={css.formGroup}
-                                        type="number"
-                                        value={position.offsetX}
-                                        onChange={(offsetX: number) => {
-                                            setState((prevState) => ({
-                                                ...prevState,
-                                                position: {
-                                                    ...position,
-                                                    offsetX,
-                                                },
-                                            }))
-                                        }}
-                                        min="-20"
-                                        max="200"
-                                        label="Move widget left / right"
-                                        tooltip="Move the chat left or right to avoid overlap with other widgets you might have.
-                                            By default, the chat icon is displayed at 22px from the left/right edges and and 22px from the top/bottom edges."
-                                        tooltipIcon={
-                                            <i
-                                                className={classNames(
-                                                    'material-icons-outlined',
-                                                    css.tooltipIcon
-                                                )}
-                                            >
-                                                info
-                                            </i>
-                                        }
-                                        suffix="px"
-                                        onFocus={() => {
-                                            setState((prevState) => ({
-                                                ...prevState,
-                                                editedPositionAxis:
-                                                    PositionAxis.AXIS_X,
-                                            }))
-                                        }}
-                                        onBlur={() => {
-                                            setState((prevState) => ({
-                                                ...prevState,
-                                                editedPositionAxis: null,
-                                            }))
-                                        }}
-                                    />
-                                    <DEPRECATED_InputField
-                                        className={css.formGroup}
-                                        type="number"
-                                        value={position.offsetY}
-                                        onChange={(offsetY: number) => {
-                                            setState((prevState) => ({
-                                                ...prevState,
-                                                position: {
-                                                    ...position,
-                                                    offsetY,
-                                                },
-                                            }))
-                                        }}
-                                        min="-20"
-                                        max="200"
-                                        label="Move widget up / down"
-                                        tooltip="Move the chat up or down to avoid overlap with other widgets you might have.
-                                            By default, the chat icon is displayed at 22px from the left/right edges and and 22px from the top/bottom edges."
-                                        tooltipIcon={
-                                            <i
-                                                className={classNames(
-                                                    'material-icons-outlined',
-                                                    css.tooltipIcon
-                                                )}
-                                            >
-                                                info
-                                            </i>
-                                        }
-                                        suffix="px"
-                                        onFocus={() => {
-                                            setState((prevState) => ({
-                                                ...prevState,
-                                                editedPositionAxis:
-                                                    PositionAxis.AXIS_Y,
-                                            }))
-                                        }}
-                                        onBlur={() => {
-                                            setState((prevState) => ({
-                                                ...prevState,
-                                                editedPositionAxis: null,
-                                            }))
-                                        }}
-                                    />
+                                    <div
+                                        className={classNames(
+                                            css.fieldset,
+                                            css.formGroup
+                                        )}
+                                    >
+                                        <Label className={css.bold}>
+                                            Move widget left / right
+                                            <span id="move-widget-left-right">
+                                                <i
+                                                    className={classNames(
+                                                        'material-icons-outlined',
+                                                        css.tooltipIcon
+                                                    )}
+                                                >
+                                                    info
+                                                </i>
+                                                <Tooltip
+                                                    style={{textAlign: 'left'}}
+                                                    target="move-widget-left-right"
+                                                >
+                                                    Move the chat left or right
+                                                    to avoid overlap with other
+                                                    widgets you might have. By
+                                                    default, the chat icon is
+                                                    displayed at 22px from the
+                                                    left/right edges and and
+                                                    22px from the top/bottom
+                                                    edges.
+                                                </Tooltip>
+                                            </span>
+                                        </Label>
+                                        <NumberInput
+                                            value={position.offsetX}
+                                            onChange={(offsetX) => {
+                                                setState((prevState) => ({
+                                                    ...prevState,
+                                                    position: {
+                                                        ...position,
+                                                        offsetX: offsetX || 0,
+                                                    },
+                                                }))
+                                            }}
+                                            min={-20}
+                                            max={200}
+                                            suffix="px"
+                                            onFocus={() => {
+                                                setState((prevState) => ({
+                                                    ...prevState,
+                                                    editedPositionAxis:
+                                                        PositionAxis.AXIS_X,
+                                                }))
+                                            }}
+                                            onBlur={() => {
+                                                setState((prevState) => ({
+                                                    ...prevState,
+                                                    editedPositionAxis: null,
+                                                }))
+                                            }}
+                                        />
+                                    </div>
+                                    <div
+                                        className={classNames(
+                                            css.fieldset,
+                                            css.formGroup
+                                        )}
+                                    >
+                                        <Label className={css.bold}>
+                                            Move widget up / down
+                                            <span id="move-widget-up-down">
+                                                <i
+                                                    className={classNames(
+                                                        'material-icons-outlined',
+                                                        css.tooltipIcon
+                                                    )}
+                                                >
+                                                    info
+                                                </i>
+                                                <Tooltip
+                                                    style={{textAlign: 'left'}}
+                                                    target="move-widget-up-down"
+                                                >
+                                                    Move the chat up or down to
+                                                    avoid overlap with other
+                                                    widgets you might have. By
+                                                    default, the chat icon is
+                                                    displayed at 22px from the
+                                                    left/right edges and and
+                                                    22px from the top/bottom
+                                                    edges.
+                                                </Tooltip>
+                                            </span>
+                                        </Label>
+                                        <NumberInput
+                                            value={position.offsetY}
+                                            onChange={(offsetY) => {
+                                                setState((prevState) => ({
+                                                    ...prevState,
+                                                    position: {
+                                                        ...position,
+                                                        offsetY: offsetY || 0,
+                                                    },
+                                                }))
+                                            }}
+                                            min={-20}
+                                            max={200}
+                                            suffix="px"
+                                            onFocus={() => {
+                                                setState((prevState) => ({
+                                                    ...prevState,
+                                                    editedPositionAxis:
+                                                        PositionAxis.AXIS_Y,
+                                                }))
+                                            }}
+                                            onBlur={() => {
+                                                setState((prevState) => ({
+                                                    ...prevState,
+                                                    editedPositionAxis: null,
+                                                }))
+                                            }}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>

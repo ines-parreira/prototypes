@@ -473,20 +473,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     class="positionInputsWrapper"
                   >
                     <div
-                      class="InputField formGroup form-group"
-                      color=""
+                      class="fieldset formGroup"
                     >
-                      <div
-                        class="label-wrapper"
+                      <label
+                        class="bold"
                       >
-                        <label
-                          class="control-label"
-                          for="id-input-42"
-                        >
-                          Move widget left / right
-                        </label>
+                        Move widget left / right
                         <span
-                          id="id-input-42-tooltip"
+                          id="move-widget-left-right"
                         >
                           <i
                             class="material-icons-outlined tooltipIcon"
@@ -494,51 +488,57 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                             info
                           </i>
                         </span>
-                      </div>
-                      <div
-                        class="with-suffix"
+                      </label>
+                      <span
+                        class="wrapper group horizontal"
                       >
                         <input
-                          class="field form-control"
-                          id="id-input-42"
+                          class="input isAlignedRight"
                           max="200"
                           min="-20"
-                          suffix="px"
-                          tooltipicon="[object Object]"
                           type="number"
                           value="0"
                         />
-                        <div
-                          class="input-suffix-wrapper"
+                        <span
+                          class="suffix"
                         >
-                          <div
-                            class="spacer"
+                          px
+                        </span>
+                        <span
+                          class="controls group vertical"
+                        >
+                          <button
+                            class="wrapper button wrapper small fill secondary small top"
+                            type="button"
                           >
-                            0
-                          </div>
-                          <div
-                            class="suffix"
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_up
+                            </i>
+                          </button>
+                          <button
+                            class="wrapper button wrapper small fill secondary small bottom"
+                            type="button"
                           >
-                            px
-                          </div>
-                        </div>
-                      </div>
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_down
+                            </i>
+                          </button>
+                        </span>
+                      </span>
                     </div>
                     <div
-                      class="InputField formGroup form-group"
-                      color=""
+                      class="fieldset formGroup"
                     >
-                      <div
-                        class="label-wrapper"
+                      <label
+                        class="bold"
                       >
-                        <label
-                          class="control-label"
-                          for="id-input-42"
-                        >
-                          Move widget up / down
-                        </label>
+                        Move widget up / down
                         <span
-                          id="id-input-42-tooltip"
+                          id="move-widget-up-down"
                         >
                           <i
                             class="material-icons-outlined tooltipIcon"
@@ -546,35 +546,47 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                             info
                           </i>
                         </span>
-                      </div>
-                      <div
-                        class="with-suffix"
+                      </label>
+                      <span
+                        class="wrapper group horizontal"
                       >
                         <input
-                          class="field form-control"
-                          id="id-input-42"
+                          class="input isAlignedRight"
                           max="200"
                           min="-20"
-                          suffix="px"
-                          tooltipicon="[object Object]"
                           type="number"
                           value="0"
                         />
-                        <div
-                          class="input-suffix-wrapper"
+                        <span
+                          class="suffix"
                         >
-                          <div
-                            class="spacer"
+                          px
+                        </span>
+                        <span
+                          class="controls group vertical"
+                        >
+                          <button
+                            class="wrapper button wrapper small fill secondary small top"
+                            type="button"
                           >
-                            0
-                          </div>
-                          <div
-                            class="suffix"
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_up
+                            </i>
+                          </button>
+                          <button
+                            class="wrapper button wrapper small fill secondary small bottom"
+                            type="button"
                           >
-                            px
-                          </div>
-                        </div>
-                      </div>
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_down
+                            </i>
+                          </button>
+                        </span>
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -1191,20 +1203,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     class="positionInputsWrapper"
                   >
                     <div
-                      class="InputField formGroup form-group"
-                      color=""
+                      class="fieldset formGroup"
                     >
-                      <div
-                        class="label-wrapper"
+                      <label
+                        class="bold"
                       >
-                        <label
-                          class="control-label"
-                          for="id-input-42"
-                        >
-                          Move widget left / right
-                        </label>
+                        Move widget left / right
                         <span
-                          id="id-input-42-tooltip"
+                          id="move-widget-left-right"
                         >
                           <i
                             class="material-icons-outlined tooltipIcon"
@@ -1212,51 +1218,57 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                             info
                           </i>
                         </span>
-                      </div>
-                      <div
-                        class="with-suffix"
+                      </label>
+                      <span
+                        class="wrapper group horizontal"
                       >
                         <input
-                          class="field form-control"
-                          id="id-input-42"
+                          class="input isAlignedRight"
                           max="200"
                           min="-20"
-                          suffix="px"
-                          tooltipicon="[object Object]"
                           type="number"
                           value="0"
                         />
-                        <div
-                          class="input-suffix-wrapper"
+                        <span
+                          class="suffix"
                         >
-                          <div
-                            class="spacer"
+                          px
+                        </span>
+                        <span
+                          class="controls group vertical"
+                        >
+                          <button
+                            class="wrapper button wrapper small fill secondary small top"
+                            type="button"
                           >
-                            0
-                          </div>
-                          <div
-                            class="suffix"
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_up
+                            </i>
+                          </button>
+                          <button
+                            class="wrapper button wrapper small fill secondary small bottom"
+                            type="button"
                           >
-                            px
-                          </div>
-                        </div>
-                      </div>
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_down
+                            </i>
+                          </button>
+                        </span>
+                      </span>
                     </div>
                     <div
-                      class="InputField formGroup form-group"
-                      color=""
+                      class="fieldset formGroup"
                     >
-                      <div
-                        class="label-wrapper"
+                      <label
+                        class="bold"
                       >
-                        <label
-                          class="control-label"
-                          for="id-input-42"
-                        >
-                          Move widget up / down
-                        </label>
+                        Move widget up / down
                         <span
-                          id="id-input-42-tooltip"
+                          id="move-widget-up-down"
                         >
                           <i
                             class="material-icons-outlined tooltipIcon"
@@ -1264,35 +1276,47 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                             info
                           </i>
                         </span>
-                      </div>
-                      <div
-                        class="with-suffix"
+                      </label>
+                      <span
+                        class="wrapper group horizontal"
                       >
                         <input
-                          class="field form-control"
-                          id="id-input-42"
+                          class="input isAlignedRight"
                           max="200"
                           min="-20"
-                          suffix="px"
-                          tooltipicon="[object Object]"
                           type="number"
                           value="0"
                         />
-                        <div
-                          class="input-suffix-wrapper"
+                        <span
+                          class="suffix"
                         >
-                          <div
-                            class="spacer"
+                          px
+                        </span>
+                        <span
+                          class="controls group vertical"
+                        >
+                          <button
+                            class="wrapper button wrapper small fill secondary small top"
+                            type="button"
                           >
-                            0
-                          </div>
-                          <div
-                            class="suffix"
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_up
+                            </i>
+                          </button>
+                          <button
+                            class="wrapper button wrapper small fill secondary small bottom"
+                            type="button"
                           >
-                            px
-                          </div>
-                        </div>
-                      </div>
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_down
+                            </i>
+                          </button>
+                        </span>
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -1938,20 +1962,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     class="positionInputsWrapper"
                   >
                     <div
-                      class="InputField formGroup form-group"
-                      color=""
+                      class="fieldset formGroup"
                     >
-                      <div
-                        class="label-wrapper"
+                      <label
+                        class="bold"
                       >
-                        <label
-                          class="control-label"
-                          for="id-input-42"
-                        >
-                          Move widget left / right
-                        </label>
+                        Move widget left / right
                         <span
-                          id="id-input-42-tooltip"
+                          id="move-widget-left-right"
                         >
                           <i
                             class="material-icons-outlined tooltipIcon"
@@ -1959,51 +1977,57 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                             info
                           </i>
                         </span>
-                      </div>
-                      <div
-                        class="with-suffix"
+                      </label>
+                      <span
+                        class="wrapper group horizontal"
                       >
                         <input
-                          class="field form-control"
-                          id="id-input-42"
+                          class="input isAlignedRight"
                           max="200"
                           min="-20"
-                          suffix="px"
-                          tooltipicon="[object Object]"
                           type="number"
                           value="0"
                         />
-                        <div
-                          class="input-suffix-wrapper"
+                        <span
+                          class="suffix"
                         >
-                          <div
-                            class="spacer"
+                          px
+                        </span>
+                        <span
+                          class="controls group vertical"
+                        >
+                          <button
+                            class="wrapper button wrapper small fill secondary small top"
+                            type="button"
                           >
-                            0
-                          </div>
-                          <div
-                            class="suffix"
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_up
+                            </i>
+                          </button>
+                          <button
+                            class="wrapper button wrapper small fill secondary small bottom"
+                            type="button"
                           >
-                            px
-                          </div>
-                        </div>
-                      </div>
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_down
+                            </i>
+                          </button>
+                        </span>
+                      </span>
                     </div>
                     <div
-                      class="InputField formGroup form-group"
-                      color=""
+                      class="fieldset formGroup"
                     >
-                      <div
-                        class="label-wrapper"
+                      <label
+                        class="bold"
                       >
-                        <label
-                          class="control-label"
-                          for="id-input-42"
-                        >
-                          Move widget up / down
-                        </label>
+                        Move widget up / down
                         <span
-                          id="id-input-42-tooltip"
+                          id="move-widget-up-down"
                         >
                           <i
                             class="material-icons-outlined tooltipIcon"
@@ -2011,35 +2035,47 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                             info
                           </i>
                         </span>
-                      </div>
-                      <div
-                        class="with-suffix"
+                      </label>
+                      <span
+                        class="wrapper group horizontal"
                       >
                         <input
-                          class="field form-control"
-                          id="id-input-42"
+                          class="input isAlignedRight"
                           max="200"
                           min="-20"
-                          suffix="px"
-                          tooltipicon="[object Object]"
                           type="number"
                           value="0"
                         />
-                        <div
-                          class="input-suffix-wrapper"
+                        <span
+                          class="suffix"
                         >
-                          <div
-                            class="spacer"
+                          px
+                        </span>
+                        <span
+                          class="controls group vertical"
+                        >
+                          <button
+                            class="wrapper button wrapper small fill secondary small top"
+                            type="button"
                           >
-                            0
-                          </div>
-                          <div
-                            class="suffix"
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_up
+                            </i>
+                          </button>
+                          <button
+                            class="wrapper button wrapper small fill secondary small bottom"
+                            type="button"
                           >
-                            px
-                          </div>
-                        </div>
-                      </div>
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_down
+                            </i>
+                          </button>
+                        </span>
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -2663,20 +2699,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                     class="positionInputsWrapper"
                   >
                     <div
-                      class="InputField formGroup form-group"
-                      color=""
+                      class="fieldset formGroup"
                     >
-                      <div
-                        class="label-wrapper"
+                      <label
+                        class="bold"
                       >
-                        <label
-                          class="control-label"
-                          for="id-input-42"
-                        >
-                          Move widget left / right
-                        </label>
+                        Move widget left / right
                         <span
-                          id="id-input-42-tooltip"
+                          id="move-widget-left-right"
                         >
                           <i
                             class="material-icons-outlined tooltipIcon"
@@ -2684,51 +2714,57 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                             info
                           </i>
                         </span>
-                      </div>
-                      <div
-                        class="with-suffix"
+                      </label>
+                      <span
+                        class="wrapper group horizontal"
                       >
                         <input
-                          class="field form-control"
-                          id="id-input-42"
+                          class="input isAlignedRight"
                           max="200"
                           min="-20"
-                          suffix="px"
-                          tooltipicon="[object Object]"
                           type="number"
                           value="0"
                         />
-                        <div
-                          class="input-suffix-wrapper"
+                        <span
+                          class="suffix"
                         >
-                          <div
-                            class="spacer"
+                          px
+                        </span>
+                        <span
+                          class="controls group vertical"
+                        >
+                          <button
+                            class="wrapper button wrapper small fill secondary small top"
+                            type="button"
                           >
-                            0
-                          </div>
-                          <div
-                            class="suffix"
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_up
+                            </i>
+                          </button>
+                          <button
+                            class="wrapper button wrapper small fill secondary small bottom"
+                            type="button"
                           >
-                            px
-                          </div>
-                        </div>
-                      </div>
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_down
+                            </i>
+                          </button>
+                        </span>
+                      </span>
                     </div>
                     <div
-                      class="InputField formGroup form-group"
-                      color=""
+                      class="fieldset formGroup"
                     >
-                      <div
-                        class="label-wrapper"
+                      <label
+                        class="bold"
                       >
-                        <label
-                          class="control-label"
-                          for="id-input-42"
-                        >
-                          Move widget up / down
-                        </label>
+                        Move widget up / down
                         <span
-                          id="id-input-42-tooltip"
+                          id="move-widget-up-down"
                         >
                           <i
                             class="material-icons-outlined tooltipIcon"
@@ -2736,35 +2772,47 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                             info
                           </i>
                         </span>
-                      </div>
-                      <div
-                        class="with-suffix"
+                      </label>
+                      <span
+                        class="wrapper group horizontal"
                       >
                         <input
-                          class="field form-control"
-                          id="id-input-42"
+                          class="input isAlignedRight"
                           max="200"
                           min="-20"
-                          suffix="px"
-                          tooltipicon="[object Object]"
                           type="number"
                           value="0"
                         />
-                        <div
-                          class="input-suffix-wrapper"
+                        <span
+                          class="suffix"
                         >
-                          <div
-                            class="spacer"
+                          px
+                        </span>
+                        <span
+                          class="controls group vertical"
+                        >
+                          <button
+                            class="wrapper button wrapper small fill secondary small top"
+                            type="button"
                           >
-                            0
-                          </div>
-                          <div
-                            class="suffix"
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_up
+                            </i>
+                          </button>
+                          <button
+                            class="wrapper button wrapper small fill secondary small bottom"
+                            type="button"
                           >
-                            px
-                          </div>
-                        </div>
-                      </div>
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_down
+                            </i>
+                          </button>
+                        </span>
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -3380,20 +3428,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     class="positionInputsWrapper"
                   >
                     <div
-                      class="InputField formGroup form-group"
-                      color=""
+                      class="fieldset formGroup"
                     >
-                      <div
-                        class="label-wrapper"
+                      <label
+                        class="bold"
                       >
-                        <label
-                          class="control-label"
-                          for="id-input-42"
-                        >
-                          Move widget left / right
-                        </label>
+                        Move widget left / right
                         <span
-                          id="id-input-42-tooltip"
+                          id="move-widget-left-right"
                         >
                           <i
                             class="material-icons-outlined tooltipIcon"
@@ -3401,51 +3443,57 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                             info
                           </i>
                         </span>
-                      </div>
-                      <div
-                        class="with-suffix"
+                      </label>
+                      <span
+                        class="wrapper group horizontal"
                       >
                         <input
-                          class="field form-control"
-                          id="id-input-42"
+                          class="input isAlignedRight"
                           max="200"
                           min="-20"
-                          suffix="px"
-                          tooltipicon="[object Object]"
                           type="number"
                           value="0"
                         />
-                        <div
-                          class="input-suffix-wrapper"
+                        <span
+                          class="suffix"
                         >
-                          <div
-                            class="spacer"
+                          px
+                        </span>
+                        <span
+                          class="controls group vertical"
+                        >
+                          <button
+                            class="wrapper button wrapper small fill secondary small top"
+                            type="button"
                           >
-                            0
-                          </div>
-                          <div
-                            class="suffix"
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_up
+                            </i>
+                          </button>
+                          <button
+                            class="wrapper button wrapper small fill secondary small bottom"
+                            type="button"
                           >
-                            px
-                          </div>
-                        </div>
-                      </div>
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_down
+                            </i>
+                          </button>
+                        </span>
+                      </span>
                     </div>
                     <div
-                      class="InputField formGroup form-group"
-                      color=""
+                      class="fieldset formGroup"
                     >
-                      <div
-                        class="label-wrapper"
+                      <label
+                        class="bold"
                       >
-                        <label
-                          class="control-label"
-                          for="id-input-42"
-                        >
-                          Move widget up / down
-                        </label>
+                        Move widget up / down
                         <span
-                          id="id-input-42-tooltip"
+                          id="move-widget-up-down"
                         >
                           <i
                             class="material-icons-outlined tooltipIcon"
@@ -3453,35 +3501,47 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                             info
                           </i>
                         </span>
-                      </div>
-                      <div
-                        class="with-suffix"
+                      </label>
+                      <span
+                        class="wrapper group horizontal"
                       >
                         <input
-                          class="field form-control"
-                          id="id-input-42"
+                          class="input isAlignedRight"
                           max="200"
                           min="-20"
-                          suffix="px"
-                          tooltipicon="[object Object]"
                           type="number"
                           value="0"
                         />
-                        <div
-                          class="input-suffix-wrapper"
+                        <span
+                          class="suffix"
                         >
-                          <div
-                            class="spacer"
+                          px
+                        </span>
+                        <span
+                          class="controls group vertical"
+                        >
+                          <button
+                            class="wrapper button wrapper small fill secondary small top"
+                            type="button"
                           >
-                            0
-                          </div>
-                          <div
-                            class="suffix"
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_up
+                            </i>
+                          </button>
+                          <button
+                            class="wrapper button wrapper small fill secondary small bottom"
+                            type="button"
                           >
-                            px
-                          </div>
-                        </div>
-                      </div>
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_down
+                            </i>
+                          </button>
+                        </span>
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -4111,20 +4171,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     class="positionInputsWrapper"
                   >
                     <div
-                      class="InputField formGroup form-group"
-                      color=""
+                      class="fieldset formGroup"
                     >
-                      <div
-                        class="label-wrapper"
+                      <label
+                        class="bold"
                       >
-                        <label
-                          class="control-label"
-                          for="id-input-42"
-                        >
-                          Move widget left / right
-                        </label>
+                        Move widget left / right
                         <span
-                          id="id-input-42-tooltip"
+                          id="move-widget-left-right"
                         >
                           <i
                             class="material-icons-outlined tooltipIcon"
@@ -4132,51 +4186,57 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                             info
                           </i>
                         </span>
-                      </div>
-                      <div
-                        class="with-suffix"
+                      </label>
+                      <span
+                        class="wrapper group horizontal"
                       >
                         <input
-                          class="field form-control"
-                          id="id-input-42"
+                          class="input isAlignedRight"
                           max="200"
                           min="-20"
-                          suffix="px"
-                          tooltipicon="[object Object]"
                           type="number"
                           value="0"
                         />
-                        <div
-                          class="input-suffix-wrapper"
+                        <span
+                          class="suffix"
                         >
-                          <div
-                            class="spacer"
+                          px
+                        </span>
+                        <span
+                          class="controls group vertical"
+                        >
+                          <button
+                            class="wrapper button wrapper small fill secondary small top"
+                            type="button"
                           >
-                            0
-                          </div>
-                          <div
-                            class="suffix"
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_up
+                            </i>
+                          </button>
+                          <button
+                            class="wrapper button wrapper small fill secondary small bottom"
+                            type="button"
                           >
-                            px
-                          </div>
-                        </div>
-                      </div>
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_down
+                            </i>
+                          </button>
+                        </span>
+                      </span>
                     </div>
                     <div
-                      class="InputField formGroup form-group"
-                      color=""
+                      class="fieldset formGroup"
                     >
-                      <div
-                        class="label-wrapper"
+                      <label
+                        class="bold"
                       >
-                        <label
-                          class="control-label"
-                          for="id-input-42"
-                        >
-                          Move widget up / down
-                        </label>
+                        Move widget up / down
                         <span
-                          id="id-input-42-tooltip"
+                          id="move-widget-up-down"
                         >
                           <i
                             class="material-icons-outlined tooltipIcon"
@@ -4184,35 +4244,47 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                             info
                           </i>
                         </span>
-                      </div>
-                      <div
-                        class="with-suffix"
+                      </label>
+                      <span
+                        class="wrapper group horizontal"
                       >
                         <input
-                          class="field form-control"
-                          id="id-input-42"
+                          class="input isAlignedRight"
                           max="200"
                           min="-20"
-                          suffix="px"
-                          tooltipicon="[object Object]"
                           type="number"
                           value="0"
                         />
-                        <div
-                          class="input-suffix-wrapper"
+                        <span
+                          class="suffix"
                         >
-                          <div
-                            class="spacer"
+                          px
+                        </span>
+                        <span
+                          class="controls group vertical"
+                        >
+                          <button
+                            class="wrapper button wrapper small fill secondary small top"
+                            type="button"
                           >
-                            0
-                          </div>
-                          <div
-                            class="suffix"
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_up
+                            </i>
+                          </button>
+                          <button
+                            class="wrapper button wrapper small fill secondary small bottom"
+                            type="button"
                           >
-                            px
-                          </div>
-                        </div>
-                      </div>
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_down
+                            </i>
+                          </button>
+                        </span>
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -4859,20 +4931,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                     class="positionInputsWrapper"
                   >
                     <div
-                      class="InputField formGroup form-group"
-                      color=""
+                      class="fieldset formGroup"
                     >
-                      <div
-                        class="label-wrapper"
+                      <label
+                        class="bold"
                       >
-                        <label
-                          class="control-label"
-                          for="id-input-42"
-                        >
-                          Move widget left / right
-                        </label>
+                        Move widget left / right
                         <span
-                          id="id-input-42-tooltip"
+                          id="move-widget-left-right"
                         >
                           <i
                             class="material-icons-outlined tooltipIcon"
@@ -4880,51 +4946,57 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                             info
                           </i>
                         </span>
-                      </div>
-                      <div
-                        class="with-suffix"
+                      </label>
+                      <span
+                        class="wrapper group horizontal"
                       >
                         <input
-                          class="field form-control"
-                          id="id-input-42"
+                          class="input isAlignedRight"
                           max="200"
                           min="-20"
-                          suffix="px"
-                          tooltipicon="[object Object]"
                           type="number"
                           value="0"
                         />
-                        <div
-                          class="input-suffix-wrapper"
+                        <span
+                          class="suffix"
                         >
-                          <div
-                            class="spacer"
+                          px
+                        </span>
+                        <span
+                          class="controls group vertical"
+                        >
+                          <button
+                            class="wrapper button wrapper small fill secondary small top"
+                            type="button"
                           >
-                            0
-                          </div>
-                          <div
-                            class="suffix"
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_up
+                            </i>
+                          </button>
+                          <button
+                            class="wrapper button wrapper small fill secondary small bottom"
+                            type="button"
                           >
-                            px
-                          </div>
-                        </div>
-                      </div>
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_down
+                            </i>
+                          </button>
+                        </span>
+                      </span>
                     </div>
                     <div
-                      class="InputField formGroup form-group"
-                      color=""
+                      class="fieldset formGroup"
                     >
-                      <div
-                        class="label-wrapper"
+                      <label
+                        class="bold"
                       >
-                        <label
-                          class="control-label"
-                          for="id-input-42"
-                        >
-                          Move widget up / down
-                        </label>
+                        Move widget up / down
                         <span
-                          id="id-input-42-tooltip"
+                          id="move-widget-up-down"
                         >
                           <i
                             class="material-icons-outlined tooltipIcon"
@@ -4932,35 +5004,47 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                             info
                           </i>
                         </span>
-                      </div>
-                      <div
-                        class="with-suffix"
+                      </label>
+                      <span
+                        class="wrapper group horizontal"
                       >
                         <input
-                          class="field form-control"
-                          id="id-input-42"
+                          class="input isAlignedRight"
                           max="200"
                           min="-20"
-                          suffix="px"
-                          tooltipicon="[object Object]"
                           type="number"
                           value="0"
                         />
-                        <div
-                          class="input-suffix-wrapper"
+                        <span
+                          class="suffix"
                         >
-                          <div
-                            class="spacer"
+                          px
+                        </span>
+                        <span
+                          class="controls group vertical"
+                        >
+                          <button
+                            class="wrapper button wrapper small fill secondary small top"
+                            type="button"
                           >
-                            0
-                          </div>
-                          <div
-                            class="suffix"
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_up
+                            </i>
+                          </button>
+                          <button
+                            class="wrapper button wrapper small fill secondary small bottom"
+                            type="button"
                           >
-                            px
-                          </div>
-                        </div>
-                      </div>
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_down
+                            </i>
+                          </button>
+                        </span>
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -5687,20 +5771,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     class="positionInputsWrapper"
                   >
                     <div
-                      class="InputField formGroup form-group"
-                      color=""
+                      class="fieldset formGroup"
                     >
-                      <div
-                        class="label-wrapper"
+                      <label
+                        class="bold"
                       >
-                        <label
-                          class="control-label"
-                          for="id-input-42"
-                        >
-                          Move widget left / right
-                        </label>
+                        Move widget left / right
                         <span
-                          id="id-input-42-tooltip"
+                          id="move-widget-left-right"
                         >
                           <i
                             class="material-icons-outlined tooltipIcon"
@@ -5708,51 +5786,57 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                             info
                           </i>
                         </span>
-                      </div>
-                      <div
-                        class="with-suffix"
+                      </label>
+                      <span
+                        class="wrapper group horizontal"
                       >
                         <input
-                          class="field form-control"
-                          id="id-input-42"
+                          class="input isAlignedRight"
                           max="200"
                           min="-20"
-                          suffix="px"
-                          tooltipicon="[object Object]"
                           type="number"
                           value="0"
                         />
-                        <div
-                          class="input-suffix-wrapper"
+                        <span
+                          class="suffix"
                         >
-                          <div
-                            class="spacer"
+                          px
+                        </span>
+                        <span
+                          class="controls group vertical"
+                        >
+                          <button
+                            class="wrapper button wrapper small fill secondary small top"
+                            type="button"
                           >
-                            0
-                          </div>
-                          <div
-                            class="suffix"
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_up
+                            </i>
+                          </button>
+                          <button
+                            class="wrapper button wrapper small fill secondary small bottom"
+                            type="button"
                           >
-                            px
-                          </div>
-                        </div>
-                      </div>
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_down
+                            </i>
+                          </button>
+                        </span>
+                      </span>
                     </div>
                     <div
-                      class="InputField formGroup form-group"
-                      color=""
+                      class="fieldset formGroup"
                     >
-                      <div
-                        class="label-wrapper"
+                      <label
+                        class="bold"
                       >
-                        <label
-                          class="control-label"
-                          for="id-input-42"
-                        >
-                          Move widget up / down
-                        </label>
+                        Move widget up / down
                         <span
-                          id="id-input-42-tooltip"
+                          id="move-widget-up-down"
                         >
                           <i
                             class="material-icons-outlined tooltipIcon"
@@ -5760,35 +5844,47 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                             info
                           </i>
                         </span>
-                      </div>
-                      <div
-                        class="with-suffix"
+                      </label>
+                      <span
+                        class="wrapper group horizontal"
                       >
                         <input
-                          class="field form-control"
-                          id="id-input-42"
+                          class="input isAlignedRight"
                           max="200"
                           min="-20"
-                          suffix="px"
-                          tooltipicon="[object Object]"
                           type="number"
                           value="0"
                         />
-                        <div
-                          class="input-suffix-wrapper"
+                        <span
+                          class="suffix"
                         >
-                          <div
-                            class="spacer"
+                          px
+                        </span>
+                        <span
+                          class="controls group vertical"
+                        >
+                          <button
+                            class="wrapper button wrapper small fill secondary small top"
+                            type="button"
                           >
-                            0
-                          </div>
-                          <div
-                            class="suffix"
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_up
+                            </i>
+                          </button>
+                          <button
+                            class="wrapper button wrapper small fill secondary small bottom"
+                            type="button"
                           >
-                            px
-                          </div>
-                        </div>
-                      </div>
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_down
+                            </i>
+                          </button>
+                        </span>
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -6412,20 +6508,14 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     class="positionInputsWrapper"
                   >
                     <div
-                      class="InputField formGroup form-group"
-                      color=""
+                      class="fieldset formGroup"
                     >
-                      <div
-                        class="label-wrapper"
+                      <label
+                        class="bold"
                       >
-                        <label
-                          class="control-label"
-                          for="id-input-42"
-                        >
-                          Move widget left / right
-                        </label>
+                        Move widget left / right
                         <span
-                          id="id-input-42-tooltip"
+                          id="move-widget-left-right"
                         >
                           <i
                             class="material-icons-outlined tooltipIcon"
@@ -6433,51 +6523,57 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                             info
                           </i>
                         </span>
-                      </div>
-                      <div
-                        class="with-suffix"
+                      </label>
+                      <span
+                        class="wrapper group horizontal"
                       >
                         <input
-                          class="field form-control"
-                          id="id-input-42"
+                          class="input isAlignedRight"
                           max="200"
                           min="-20"
-                          suffix="px"
-                          tooltipicon="[object Object]"
                           type="number"
                           value="0"
                         />
-                        <div
-                          class="input-suffix-wrapper"
+                        <span
+                          class="suffix"
                         >
-                          <div
-                            class="spacer"
+                          px
+                        </span>
+                        <span
+                          class="controls group vertical"
+                        >
+                          <button
+                            class="wrapper button wrapper small fill secondary small top"
+                            type="button"
                           >
-                            0
-                          </div>
-                          <div
-                            class="suffix"
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_up
+                            </i>
+                          </button>
+                          <button
+                            class="wrapper button wrapper small fill secondary small bottom"
+                            type="button"
                           >
-                            px
-                          </div>
-                        </div>
-                      </div>
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_down
+                            </i>
+                          </button>
+                        </span>
+                      </span>
                     </div>
                     <div
-                      class="InputField formGroup form-group"
-                      color=""
+                      class="fieldset formGroup"
                     >
-                      <div
-                        class="label-wrapper"
+                      <label
+                        class="bold"
                       >
-                        <label
-                          class="control-label"
-                          for="id-input-42"
-                        >
-                          Move widget up / down
-                        </label>
+                        Move widget up / down
                         <span
-                          id="id-input-42-tooltip"
+                          id="move-widget-up-down"
                         >
                           <i
                             class="material-icons-outlined tooltipIcon"
@@ -6485,35 +6581,47 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                             info
                           </i>
                         </span>
-                      </div>
-                      <div
-                        class="with-suffix"
+                      </label>
+                      <span
+                        class="wrapper group horizontal"
                       >
                         <input
-                          class="field form-control"
-                          id="id-input-42"
+                          class="input isAlignedRight"
                           max="200"
                           min="-20"
-                          suffix="px"
-                          tooltipicon="[object Object]"
                           type="number"
                           value="0"
                         />
-                        <div
-                          class="input-suffix-wrapper"
+                        <span
+                          class="suffix"
                         >
-                          <div
-                            class="spacer"
+                          px
+                        </span>
+                        <span
+                          class="controls group vertical"
+                        >
+                          <button
+                            class="wrapper button wrapper small fill secondary small top"
+                            type="button"
                           >
-                            0
-                          </div>
-                          <div
-                            class="suffix"
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_up
+                            </i>
+                          </button>
+                          <button
+                            class="wrapper button wrapper small fill secondary small bottom"
+                            type="button"
                           >
-                            px
-                          </div>
-                        </div>
-                      </div>
+                            <i
+                              class="material-icons icon"
+                            >
+                              arrow_drop_down
+                            </i>
+                          </button>
+                        </span>
+                      </span>
                     </div>
                   </div>
                 </div>
