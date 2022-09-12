@@ -1,5 +1,7 @@
 import {TwilioError} from '@twilio/voice-sdk'
 
+export const DEVICE_INITIALIZATION_TIMEOUT = 20 * 1000
+
 export enum PhoneCallDirection {
     Inbound = 'inbound',
     OutboundApi = 'outbound-api',

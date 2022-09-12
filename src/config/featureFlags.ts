@@ -5,4 +5,5 @@ export enum FeatureFlagKey {
     SelfServiceStandalonePortal = 'self-service-standalone-portal',
     MacroResponseTextCcBcc = 'macro-response-text-cc-bcc',
     PrefillBestMacro = 'pre-fill-best-macro',
+    NewPhoneErrorHandling = 'new-phone-error-handling',
 }

@@ -15,7 +15,9 @@ const defaultOptions: Options = {
     ignoredErrorCodes: [],
 }
 
-export function usePhoneError({ignoredErrorCodes}: Options = defaultOptions): {
+export function usePhoneError_DEPRECATED({
+    ignoredErrorCodes,
+}: Options = defaultOptions): {
     onErrorMessage: (message: string, title?: string) => void
     onError: (error: Error, title?: string) => void
     onTwilioError: (error: TwilioError.TwilioError, title?: string) => void

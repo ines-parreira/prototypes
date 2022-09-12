@@ -5,10 +5,13 @@ import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import {Device} from '@twilio/voice-sdk'
+import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 
-import {RootState, StoreDispatch} from '../../../../../../state/types'
-import {mockDevice} from '../../../../../../tests/twilioMocks'
-import {initialState} from '../../../../../../state/twilio/reducers'
+import {FeatureFlagKey} from 'config/featureFlags'
+
+import {RootState, StoreDispatch} from 'state/types'
+import {mockDevice} from 'tests/twilioMocks'
+import {initialState} from 'state/twilio/reducers'
 import PhoneTicketSubmitButtons from '../PhoneTicketSubmitButtons'
 
 describe('<PhoneTicketSubmitButtons/>', () => {
@@ -58,6 +61,10 @@ describe('<PhoneTicketSubmitButtons/>', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
+        resetLDMocks()
+        mockFlags({
+            [FeatureFlagKey.NewPhoneErrorHandling]: false,
+        })
     })
 
     it('should render', () => {

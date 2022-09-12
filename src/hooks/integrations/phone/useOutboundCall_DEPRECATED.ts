@@ -22,7 +22,7 @@ type Options = {
     agentId: number
 }
 
-export function useOutboundCall(): (options: Options) => void {
+export function useOutboundCall_DEPRECATED(): (options: Options) => void {
     const dispatch = useAppDispatch()
     const device = useAppSelector((state: RootState) => state.twilio.device)
 
@@ -115,7 +115,6 @@ export function useOutboundCall(): (options: Options) => void {
 
             call.on('error', (error: TwilioError.TwilioError) => {
                 dispatch(setError(error))
-                reportError(error)
                 sendTwilioSocketEvent({
                     type: TwilioSocketEventType.CallError,
                     data: {

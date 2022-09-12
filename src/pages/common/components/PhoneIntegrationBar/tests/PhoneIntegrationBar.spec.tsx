@@ -5,16 +5,14 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import MockAdapter from 'axios-mock-adapter'
 import {Call, Device} from '@twilio/voice-sdk'
+import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 
-import {
-    mockIncomingCall,
-    mockDevice,
-    mockOutgoingCall,
-} from '../../../../../tests/twilioMocks'
-import {SET_TWILIO_DEVICE} from '../../../../../state/twilio/constants'
-import {RootState, StoreDispatch} from '../../../../../state/types'
-import {initialState} from '../../../../../state/twilio/reducers'
-import client from '../../../../../models/api/resources'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {mockIncomingCall, mockDevice, mockOutgoingCall} from 'tests/twilioMocks'
+import {SET_TWILIO_DEVICE} from 'state/twilio/constants'
+import {RootState, StoreDispatch} from 'state/types'
+import {initialState} from 'state/twilio/reducers'
+import client from 'models/api/resources'
 import PhoneIntegrationBar from '../PhoneIntegrationBar'
 
 jest.mock('@twilio/voice-sdk')
@@ -31,6 +29,10 @@ describe('<PhoneIntegrationBar/>', () => {
         window.location.protocol = 'https:'
         jest.resetAllMocks()
         mockedServer.reset()
+        resetLDMocks()
+        mockFlags({
+            [FeatureFlagKey.NewPhoneErrorHandling]: false,
+        })
     })
 
     it('should fetch token, set device and not render anything because there is no call', async () => {

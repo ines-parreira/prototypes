@@ -6,6 +6,8 @@ import {
     SET_TWILIO_IS_DIALING,
     SET_TWILIO_IS_RECORDING,
     SET_TWILIO_IS_RINGING,
+    SET_TWILIO_ERROR,
+    SET_TWILIO_WARNING,
 } from './constants'
 
 export type SetDeviceAction = {
@@ -31,6 +33,14 @@ export type SetIsRingingAction = {
 export type SetIsRecordingAction = {
     type: string
     payload: boolean
+}
+export type SetErrorAction = {
+    type: string
+    payload: Error | null
+}
+export type SetWarningAction = {
+    type: string
+    payload: string | null
 }
 
 export type TwilioAction =
@@ -71,5 +81,19 @@ export function setIsRecording(isRecording: boolean): SetIsRingingAction {
     return {
         type: SET_TWILIO_IS_RECORDING,
         payload: isRecording,
+    }
+}
+
+export function setError(error: Error | null): SetErrorAction {
+    return {
+        type: SET_TWILIO_ERROR,
+        payload: error,
+    }
+}
+
+export function setWarning(warning: string | null): SetWarningAction {
+    return {
+        type: SET_TWILIO_WARNING,
+        payload: warning,
     }
 }

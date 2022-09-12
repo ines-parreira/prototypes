@@ -51,6 +51,8 @@ describe('<OngoingPhoneCall/>', () => {
                 isDialing: false,
                 isRinging: false,
                 isRecording: false,
+                warning: null,
+                error: null,
             },
             integrations: fromJS({
                 integrations: [integration],
