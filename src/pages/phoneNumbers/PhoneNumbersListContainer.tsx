@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 
-import {Container} from 'reactstrap'
+import {Container, Row} from 'reactstrap'
 import {useAsyncFn} from 'react-use'
 import {isEmpty} from 'lodash'
 
@@ -71,7 +71,10 @@ export function PhoneNumbersListContainer() {
                 </Button>
             </PageHeader>
             <Container fluid className={css.pageContainer}>
-                <div>Chat with your customers over the phone from Gorgias.</div>
+                <div>
+                    Create a phone number in Gorgias to connect Voice and SMS
+                    capabilities.
+                </div>
                 <PhoneNumbersLimitAlert
                     currentPhoneNumbers={currentPhoneNumbers}
                     maxPhoneNumbers={maxPhoneNumbers}
@@ -80,9 +83,12 @@ export function PhoneNumbersListContainer() {
                     (isLoading ? (
                         <Loader />
                     ) : (
-                        <div className="mt-3">
-                            You don't have any phone numbers at the moment.
-                        </div>
+                        <Row>
+                            <Container
+                                fluid
+                                data-candu-id="phone-numbers-empty-placeholder"
+                            />
+                        </Row>
                     ))}
             </Container>
             <PhoneNumbersList />

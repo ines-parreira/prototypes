@@ -1,0 +1,363 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PhoneNumberListContainer /> render() should render Candu selector without numbers 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <h1
+      class="d-flex align-items-center"
+    >
+      Phone Numbers
+    </h1>
+    <div>
+      <button
+        class="wrapper fill primary medium"
+        type="button"
+      >
+        Add Phone Number
+      </button>
+    </div>
+  </div>
+  <div
+    class="pageContainer container-fluid"
+  >
+    <div>
+      Create a phone number in Gorgias to connect Voice and SMS capabilities.
+    </div>
+    <div
+      class="row"
+    >
+      <div
+        class="container-fluid"
+        data-candu-id="phone-numbers-empty-placeholder"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PhoneNumberListContainer /> render() should render with a number 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <h1
+      class="d-flex align-items-center"
+    >
+      Phone Numbers
+    </h1>
+    <div>
+      <button
+        class="wrapper fill primary medium"
+        type="button"
+      >
+        Add Phone Number
+      </button>
+    </div>
+  </div>
+  <div
+    class="pageContainer container-fluid"
+  >
+    <div>
+      Create a phone number in Gorgias to connect Voice and SMS capabilities.
+    </div>
+  </div>
+  <table
+    class="table table"
+  >
+    <thead
+      class="header"
+    >
+      <tr
+        class="headerRow"
+      >
+        <td
+          class="wrapper is-clickable normal"
+        >
+          <div
+            class="content"
+          >
+            <div>
+              <span
+                class="title"
+              >
+                Phone Number
+              </span>
+              <i
+                class="material-icons md-1 directionIcon"
+              >
+                arrow_drop_up
+              </i>
+            </div>
+          </div>
+        </td>
+        <td
+          class="wrapper is-clickable normal"
+        >
+          <div
+            class="content"
+          >
+            <div>
+              <span
+                class="title"
+              >
+                Type
+              </span>
+              <i
+                class="material-icons md-1 directionIcon"
+              >
+                arrow_drop_up
+              </i>
+            </div>
+          </div>
+        </td>
+        <td
+          class="wrapper is-clickable normal"
+        >
+          <div
+            class="content"
+          >
+            <div>
+              <span
+                class="title"
+              >
+                Integrations
+              </span>
+              <i
+                class="material-icons md-1 directionIcon"
+              >
+                arrow_drop_up
+              </i>
+            </div>
+          </div>
+        </td>
+        <td
+          class="wrapper normal"
+        />
+      </tr>
+    </thead>
+    <tbody
+      class="tableBody"
+    >
+      <tr
+        class="row isClickable"
+      >
+        <td
+          class="wrapper small"
+        >
+          <div
+            class="cellContent"
+          >
+            <div
+              class="wrapper"
+            >
+              <div
+                class="wrapper round"
+              >
+                <span
+                  role="img"
+                  style="display: inline-block; font-size: 1em; line-height: 1em; vertical-align: middle;"
+                >
+                  🇬🇧
+                </span>
+              </div>
+              <strong>
+                Intl. Phone Number
+              </strong>
+               
+              <span>
+                +44 7123 456789
+              </span>
+            </div>
+          </div>
+        </td>
+        <td
+          class="wrapper small"
+        >
+          <div
+            class="cellContent"
+          >
+            <span
+              class="badge-tag badge badge-secondary"
+              style="color: rgb(128, 136, 214);"
+            >
+              Mobile
+            </span>
+          </div>
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent"
+          >
+            <a
+              to="/app/settings/phone-numbers/3"
+            >
+              <i
+                class="material-icons md-2 align-middle icon-go-forward"
+              >
+                keyboard_arrow_right
+              </i>
+            </a>
+          </div>
+        </td>
+      </tr>
+      <tr
+        class="row isClickable"
+      >
+        <td
+          class="wrapper small"
+        >
+          <div
+            class="cellContent"
+          >
+            <div
+              class="wrapper"
+            >
+              <div
+                class="wrapper round"
+              >
+                <span
+                  role="img"
+                  style="display: inline-block; font-size: 1em; line-height: 1em; vertical-align: middle;"
+                >
+                  🇨🇦
+                </span>
+              </div>
+              <strong>
+                Another Phone Number
+              </strong>
+               
+              <span>
+                +1 813 111 2223
+              </span>
+            </div>
+          </div>
+        </td>
+        <td
+          class="wrapper small"
+        >
+          <div
+            class="cellContent"
+          >
+            <span
+              class="badge-tag badge badge-secondary"
+              style="color: rgb(128, 136, 214);"
+            >
+              Toll Free
+            </span>
+          </div>
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent"
+          >
+            <a
+              to="/app/settings/phone-numbers/2"
+            >
+              <i
+                class="material-icons md-2 align-middle icon-go-forward"
+              >
+                keyboard_arrow_right
+              </i>
+            </a>
+          </div>
+        </td>
+      </tr>
+      <tr
+        class="row isClickable"
+      >
+        <td
+          class="wrapper small"
+        >
+          <div
+            class="cellContent"
+          >
+            <div
+              class="wrapper"
+            >
+              <div
+                class="wrapper round"
+              >
+                <span
+                  role="img"
+                  style="display: inline-block; font-size: 1em; line-height: 1em; vertical-align: middle;"
+                >
+                  🇺🇸
+                </span>
+              </div>
+              <strong>
+                A Phone Number
+              </strong>
+               
+              <span>
+                +1 415 111 2222
+              </span>
+            </div>
+          </div>
+        </td>
+        <td
+          class="wrapper small"
+        >
+          <div
+            class="cellContent"
+          >
+            <span
+              class="badge-tag badge badge-secondary"
+              style="color: rgb(128, 136, 214);"
+            >
+              Local
+            </span>
+          </div>
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent"
+          >
+            <a
+              to="/app/settings/phone-numbers/1"
+            >
+              <i
+                class="material-icons md-2 align-middle icon-go-forward"
+              >
+                keyboard_arrow_right
+              </i>
+            </a>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
