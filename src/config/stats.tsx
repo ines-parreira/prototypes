@@ -192,7 +192,8 @@ _merge(defaults, {
             position: 'nearest',
             bodyColor: mainBlue,
             titleMarginBottom: 15,
-            bodySpacing: 10,
+            bodySpacing: 12,
+            boxPadding: 8,
             bodyFont: {
                 size: 14,
             },

@@ -73,7 +73,7 @@ export function SankeyStat({data, config, legend}: Props) {
                             tooltip: {
                                 callbacks: {
                                     title: (
-                                        tooltipItems: TooltipItem<any>[]
+                                        tooltipItems: TooltipItem<'sankey'>[]
                                     ) => {
                                         const data = tooltipItems[0].dataset
                                             .data as SankeyDataPoint[]
@@ -93,7 +93,9 @@ export function SankeyStat({data, config, legend}: Props) {
                                             labels ? labels[from] : from
                                         } ➞ ${labels ? labels[to] : to}`
                                     },
-                                    label: (tooltipItem: TooltipItem<any>) => {
+                                    label: (
+                                        tooltipItem: TooltipItem<'sankey'>
+                                    ) => {
                                         const data = tooltipItem.dataset
                                             .data as SankeyDataPoint[]
                                         const {from, flow} =
