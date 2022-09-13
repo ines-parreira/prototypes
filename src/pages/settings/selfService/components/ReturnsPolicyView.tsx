@@ -206,8 +206,9 @@ export const ReturnsPolicyView = () => {
                             <h4 className={css.returnsPolicyTitle}>Return</h4>
                             <p>
                                 Let customers request returns directly from the
-                                chat portal. Returns can only be initiated if
-                                the order has been delivered.
+                                Self-service Portal in Chat and Help Center.
+                                Returns can only be initiated if the order has
+                                been delivered.
                             </p>
                             <br></br>
                             {loading || !configuration ? (

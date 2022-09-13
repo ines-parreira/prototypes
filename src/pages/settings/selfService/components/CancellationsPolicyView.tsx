@@ -187,7 +187,8 @@ export const CancellationsPolicyView = () => {
                             </h4>
                             <p className={css.cancellationsPolicyDescription}>
                                 Let customers request order cancellations
-                                directly from the chat portal.
+                                directly from the Self-service Portal in Chat
+                                and Help Center.
                             </p>
                             <br></br>
                             {loading || !configuration ? (

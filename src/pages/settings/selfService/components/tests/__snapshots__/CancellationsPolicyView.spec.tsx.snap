@@ -62,7 +62,7 @@ exports[`<CancellationsPolicyView/> onSubmit() should set the eligibility option
             <p
               class="cancellationsPolicyDescription"
             >
-              Let customers request order cancellations directly from the chat portal.
+              Let customers request order cancellations directly from the Self-service Portal in Chat and Help Center.
             </p>
             <br />
             <h5
@@ -246,7 +246,7 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
             <p
               class="cancellationsPolicyDescription"
             >
-              Let customers request order cancellations directly from the chat portal.
+              Let customers request order cancellations directly from the Self-service Portal in Chat and Help Center.
             </p>
             <br />
             <h5
