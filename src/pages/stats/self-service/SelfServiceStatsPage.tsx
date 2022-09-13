@@ -65,8 +65,7 @@ const DESCRIPTION = (
     <div>
         Self-service statistics give you an overview of the performance of your
         self-service features which can automate tickets and save you time. This
-        view shows data from the{' '}
-        <b>Chat channels and the Help centers combined</b>.
+        view shows data from <b>chat and help centers combined</b>.
     </div>
 )
 const HELP_URL = 'https://docs.gorgias.com/statistics/self-service-statistics'
