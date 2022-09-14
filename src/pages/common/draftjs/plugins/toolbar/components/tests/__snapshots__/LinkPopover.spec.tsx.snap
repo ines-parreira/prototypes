@@ -22,7 +22,7 @@ exports[`<LinkPopover /> should render the popover on a specified modal 1`] = `
     aria-describedby="modal-1-desc"
     aria-labelledby="modal-1-title"
     aria-modal="true"
-    class="modal default"
+    class="modal default open"
     role="dialog"
   >
     <div

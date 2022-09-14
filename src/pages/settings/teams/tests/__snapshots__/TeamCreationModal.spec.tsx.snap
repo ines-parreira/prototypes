@@ -4,12 +4,15 @@ exports[`<TeamCreationModal /> should not render anything when the modal is clos
 
 exports[`<TeamCreationModal /> should render the opened modal 1`] = `
 <body>
+  <div
+    id="floating-ui-root"
+  />
   <div />
   <div
-    aria-describedby="modal-2-desc"
-    aria-labelledby="modal-2-title"
+    aria-describedby="modal-5-desc"
+    aria-labelledby="modal-5-title"
     aria-modal="true"
-    class="modal default"
+    class="modal default open"
     role="dialog"
   >
     <div
@@ -26,7 +29,7 @@ exports[`<TeamCreationModal /> should render the opened modal 1`] = `
               <div>
                 <div
                   class="title"
-                  id="modal-2-title"
+                  id="modal-5-title"
                 >
                   Create team
                 </div>
@@ -42,7 +45,7 @@ exports[`<TeamCreationModal /> should render the opened modal 1`] = `
             </div>
             <div
               class="wrapper"
-              id="modal-2-desc"
+              id="modal-5-desc"
             >
               <label
                 class="label label"
@@ -172,8 +175,5 @@ exports[`<TeamCreationModal /> should render the opened modal 1`] = `
       </div>
     </div>
   </div>
-  <div
-    id="floating-ui-root"
-  />
 </body>
 `;

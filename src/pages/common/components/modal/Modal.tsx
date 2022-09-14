@@ -12,7 +12,6 @@ import React, {
     MouseEvent,
 } from 'react'
 import {createPortal} from 'react-dom'
-import {CSSTransition} from 'react-transition-group'
 import classnames from 'classnames'
 import {useKey} from 'react-use'
 
@@ -103,47 +102,36 @@ const Modal = (
 
     const modal = (
         <ModalContext.Provider value={contextValue}>
-            <CSSTransition
-                in={isOpen}
-                unmountOnExit
-                timeout={{enter: 0, exit: 300}}
-                classNames={{
-                    enterDone: css.enterDone,
-                    exit: css.exit,
-                }}
+            <div
+                className={classnames(css.modal, className, {
+                    [css[animation]]: animation !== 'none',
+                    [css.open]: isOpen,
+                })}
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby={labelId}
+                aria-describedby={bodyId}
+                onClick={handleClose}
             >
                 <div
-                    className={classnames(
-                        css.modal,
-                        {[css[animation]]: animation !== 'none'},
-                        className
-                    )}
-                    role="dialog"
-                    aria-modal="true"
-                    aria-labelledby={labelId}
-                    aria-describedby={bodyId}
-                    onClick={handleClose}
+                    className={classnames(css.dialog, {
+                        [css[size!]]: !!size,
+                        [css.scrollableDialog]: isScrollable,
+                    })}
                 >
                     <div
-                        className={classnames(css.dialog, {
-                            [css[size!]]: !!size,
-                            [css.scrollableDialog]: isScrollable,
+                        ref={ref}
+                        className={classnames(css.modalContent, {
+                            [css.scrollableContent]: isScrollable,
+                            [css.bounceModal]: bounceModal,
+                            [css[animation]]: animation !== 'none',
                         })}
+                        onTransitionEnd={() => setBounceModal(false)}
                     >
-                        <div
-                            ref={ref}
-                            className={classnames(css.modalContent, {
-                                [css.scrollableContent]: isScrollable,
-                                [css.bounceModal]: bounceModal,
-                                [css[animation]]: animation !== 'none',
-                            })}
-                            onTransitionEnd={() => setBounceModal(false)}
-                        >
-                            {children}
-                        </div>
+                        {children}
                     </div>
                 </div>
-            </CSSTransition>
+            </div>
         </ModalContext.Provider>
     )
 

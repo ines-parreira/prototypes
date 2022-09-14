@@ -6,6 +6,7 @@ import {act, render, RenderOptions} from '@testing-library/react'
 import {Router, Route} from 'react-router-dom'
 import {createMemoryHistory, History} from 'history'
 import _last from 'lodash/last'
+import _findLast from 'lodash/findLast'
 
 import shortcutManager from '../services/shortcutManager/shortcutManager'
 
@@ -97,7 +98,8 @@ export const flushPromises = () => new Promise(setImmediate)
 
 export const makeExecuteKeyboardAction = (
     shortcutManagerMock: jest.Mocked<typeof shortcutManager>,
-    shortcutEventMock?: jest.Mocked<Event>
+    shortcutEventMock?: jest.Mocked<Event>,
+    component?: string
 ) => {
     const eventMock =
         shortcutEventMock ||
@@ -106,7 +108,12 @@ export const makeExecuteKeyboardAction = (
         } as unknown as jest.Mocked<Event>)
 
     return (shortcutName: string) => {
-        const lastCall = _last(shortcutManagerMock.bind.mock.calls)
+        const lastCall = component
+            ? _findLast(
+                  shortcutManagerMock.bind.mock.calls,
+                  ([name]) => component === name
+              )
+            : _last(shortcutManagerMock.bind.mock.calls)
         if (!lastCall) {
             return
         }

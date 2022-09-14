@@ -3,15 +3,9 @@
 exports[`<PhoneNumberCreateModalForm/> render() should not render when isOpen is false 1`] = `
 <body>
   <div />
-</body>
-`;
-
-exports[`<PhoneNumberCreateModalForm/> render() should render a second with for address validation for certain countries 1`] = `
-<body>
-  <div />
   <div
-    aria-describedby="modal-8-desc"
-    aria-labelledby="modal-8-title"
+    aria-describedby="modal-1-desc"
+    aria-labelledby="modal-1-title"
     aria-modal="true"
     class="modal default"
     role="dialog"
@@ -28,7 +22,7 @@ exports[`<PhoneNumberCreateModalForm/> render() should render a second with for 
           <div>
             <div
               class="title"
-              id="modal-8-title"
+              id="modal-1-title"
             >
               Create Phone Number
             </div>
@@ -47,7 +41,7 @@ exports[`<PhoneNumberCreateModalForm/> render() should render a second with for 
         >
           <div
             class="wrapper"
-            id="modal-8-desc"
+            id="modal-1-desc"
           >
             <div
               class="row"
@@ -61,7 +55,7 @@ exports[`<PhoneNumberCreateModalForm/> render() should render a second with for 
                   <div>
                     <label
                       class="label label"
-                      for="input-text-23"
+                      for="input-text-2"
                     >
                       Title
                       <abbr
@@ -77,8 +71,290 @@ exports[`<PhoneNumberCreateModalForm/> render() should render a second with for 
                     >
                       <input
                         class="input"
-                        id="input-text-23"
-                        name="input-text-23"
+                        id="input-text-2"
+                        name="input-text-2"
+                        placeholder="Ex: Company Support Line"
+                        required=""
+                        type="text"
+                        value=""
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="row"
+                >
+                  <div
+                    class="col"
+                  >
+                    <div
+                      class="form-group"
+                    >
+                      <label
+                        class="control-label"
+                        for="country"
+                      >
+                        Country
+                      </label>
+                      <div>
+                        <div
+                          class="dropdown"
+                        >
+                          <div
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class=""
+                            data-toggle="dropdown"
+                          >
+                            <div
+                              class="select dropdown-toggle selectFullWidth"
+                            >
+                              <span
+                                class="label placeholder"
+                                style="min-width: 10px; opacity: 1;"
+                              >
+                                Select an option
+                              </span>
+                              <input
+                                autocomplete="chrome-off"
+                                class="input"
+                                id="country"
+                                required=""
+                                style="min-width: 10px;"
+                                type="text"
+                                value=""
+                              />
+                              <i
+                                class="material-icons dropdownIcon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </div>
+                          </div>
+                          <div
+                            aria-hidden="true"
+                            class="options optionsFullWidth dropdown-menu"
+                            role="menu"
+                            tabindex="-1"
+                          >
+                            
+                            <button
+                              class="option option--focused dropdown-item"
+                              role="menuitem"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span>
+                                Canada
+                              </span>
+                            </button>
+                            <button
+                              class="option dropdown-item"
+                              role="menuitem"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span>
+                                United States
+                              </span>
+                            </button>
+                            <button
+                              class="option dropdown-item"
+                              role="menuitem"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span>
+                                Australia
+                              </span>
+                            </button>
+                            <button
+                              class="option dropdown-item"
+                              role="menuitem"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span>
+                                United Kingdom
+                              </span>
+                            </button>
+                            <button
+                              class="option dropdown-item"
+                              role="menuitem"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span>
+                                France
+                              </span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="form-group"
+                    >
+                      <label
+                        class="control-label"
+                        for="area-code"
+                      >
+                        Area code
+                      </label>
+                      <div>
+                        <div
+                          class="dropdown"
+                        >
+                          <div
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class=""
+                            data-toggle="dropdown"
+                          >
+                            <div
+                              class="select dropdown-toggle selectFullWidth"
+                            >
+                              <span
+                                class="label placeholder"
+                                style="min-width: 10px; opacity: 1;"
+                              >
+                                Select an option
+                              </span>
+                              <input
+                                autocomplete="chrome-off"
+                                class="input"
+                                id="area-code"
+                                required=""
+                                style="min-width: 10px;"
+                                type="text"
+                                value=""
+                              />
+                              <i
+                                class="material-icons dropdownIcon"
+                              >
+                                arrow_drop_down
+                              </i>
+                            </div>
+                          </div>
+                          <div
+                            aria-hidden="true"
+                            class="options optionsFullWidth dropdown-menu"
+                            role="menu"
+                            tabindex="-1"
+                          >
+                            <h6
+                              class="dropdown-header"
+                              tabindex="-1"
+                            >
+                              No result
+                            </h6>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="wrapper wrapper"
+          >
+            <div
+              class="actions"
+            >
+              <div
+                class="childWrapper"
+              >
+                <button
+                  class="wrapper fill primary medium"
+                  type="button"
+                >
+                  Create phone number
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`<PhoneNumberCreateModalForm/> render() should render a second with for address validation for certain countries 1`] = `
+<body>
+  <div />
+  <div
+    aria-describedby="modal-10-desc"
+    aria-labelledby="modal-10-title"
+    aria-modal="true"
+    class="modal default open"
+    role="dialog"
+  >
+    <div
+      class="dialog"
+    >
+      <div
+        class="modalContent default"
+      >
+        <div
+          class="wrapper"
+        >
+          <div>
+            <div
+              class="title"
+              id="modal-10-title"
+            >
+              Create Phone Number
+            </div>
+            <div
+              class="subtitle"
+            />
+          </div>
+          <i
+            class="material-icons icon"
+          >
+            close
+          </i>
+        </div>
+        <form
+          class=""
+        >
+          <div
+            class="wrapper"
+            id="modal-10-desc"
+          >
+            <div
+              class="row"
+            >
+              <div
+                class="col"
+              >
+                <div
+                  class="form-group"
+                >
+                  <div>
+                    <label
+                      class="label label"
+                      for="input-text-25"
+                    >
+                      Title
+                      <abbr
+                        aria-label="required"
+                        class="abbr"
+                        title="required"
+                      >
+                        *
+                      </abbr>
+                    </label>
+                    <div
+                      class="wrapper"
+                    >
+                      <input
+                        class="input"
+                        id="input-text-25"
+                        name="input-text-25"
                         placeholder="Ex: Company Support Line"
                         required=""
                         type="text"
@@ -821,10 +1097,10 @@ exports[`<PhoneNumberCreateModalForm/> render() should render no steps when no a
 <body>
   <div />
   <div
-    aria-describedby="modal-5-desc"
-    aria-labelledby="modal-5-title"
+    aria-describedby="modal-7-desc"
+    aria-labelledby="modal-7-title"
     aria-modal="true"
-    class="modal default"
+    class="modal default open"
     role="dialog"
   >
     <div
@@ -839,7 +1115,7 @@ exports[`<PhoneNumberCreateModalForm/> render() should render no steps when no a
           <div>
             <div
               class="title"
-              id="modal-5-title"
+              id="modal-7-title"
             >
               Create Phone Number
             </div>
@@ -858,7 +1134,7 @@ exports[`<PhoneNumberCreateModalForm/> render() should render no steps when no a
         >
           <div
             class="wrapper"
-            id="modal-5-desc"
+            id="modal-7-desc"
           >
             <div
               class="row"
@@ -872,7 +1148,7 @@ exports[`<PhoneNumberCreateModalForm/> render() should render no steps when no a
                   <div>
                     <label
                       class="label label"
-                      for="input-text-6"
+                      for="input-text-8"
                     >
                       Title
                       <abbr
@@ -888,8 +1164,8 @@ exports[`<PhoneNumberCreateModalForm/> render() should render no steps when no a
                     >
                       <input
                         class="input"
-                        id="input-text-6"
-                        name="input-text-6"
+                        id="input-text-8"
+                        name="input-text-8"
                         placeholder="Ex: Company Support Line"
                         required=""
                         type="text"
@@ -1682,10 +1958,10 @@ exports[`<PhoneNumberCreateModalForm/> render() should render when isOpen is tru
 <body>
   <div />
   <div
-    aria-describedby="modal-2-desc"
-    aria-labelledby="modal-2-title"
+    aria-describedby="modal-4-desc"
+    aria-labelledby="modal-4-title"
     aria-modal="true"
-    class="modal default"
+    class="modal default open"
     role="dialog"
   >
     <div
@@ -1700,7 +1976,7 @@ exports[`<PhoneNumberCreateModalForm/> render() should render when isOpen is tru
           <div>
             <div
               class="title"
-              id="modal-2-title"
+              id="modal-4-title"
             >
               Create Phone Number
             </div>
@@ -1719,7 +1995,7 @@ exports[`<PhoneNumberCreateModalForm/> render() should render when isOpen is tru
         >
           <div
             class="wrapper"
-            id="modal-2-desc"
+            id="modal-4-desc"
           >
             <div
               class="row"
@@ -1733,7 +2009,7 @@ exports[`<PhoneNumberCreateModalForm/> render() should render when isOpen is tru
                   <div>
                     <label
                       class="label label"
-                      for="input-text-3"
+                      for="input-text-5"
                     >
                       Title
                       <abbr
@@ -1749,8 +2025,8 @@ exports[`<PhoneNumberCreateModalForm/> render() should render when isOpen is tru
                     >
                       <input
                         class="input"
-                        id="input-text-3"
-                        name="input-text-3"
+                        id="input-text-5"
+                        name="input-text-5"
                         placeholder="Ex: Company Support Line"
                         required=""
                         type="text"

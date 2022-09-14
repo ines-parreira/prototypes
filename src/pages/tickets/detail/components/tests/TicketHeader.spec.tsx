@@ -271,7 +271,8 @@ describe('<TicketHeader />', () => {
 
         makeExecuteKeyboardAction(
             shortcutManagerMock,
-            shortcutEventMock
+            shortcutEventMock,
+            'TicketDetailContainer'
         )('DELETE_TICKET')
 
         expect(queryByText(/You are about to /)).toBeFalsy()

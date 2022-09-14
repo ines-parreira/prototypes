@@ -25,19 +25,6 @@ describe('<Modal />', () => {
         jest.resetAllMocks()
     })
 
-    it('should not render a modal', () => {
-        const {baseElement} = render(
-            <Modal {...minProps}>
-                <ModalHeader
-                    subtitle="Random mythological facts"
-                    title="Did you know?"
-                />
-            </Modal>
-        )
-
-        expect(baseElement.firstChild).toMatchSnapshot()
-    })
-
     it('should render an opened modal', () => {
         const {baseElement} = render(
             <Modal {...minProps} isOpen={true}>
