@@ -31,9 +31,12 @@ export const DEPRECATED_getBillingState = (
     state: RootState
 ): BillingImmutableState => state.billing || fromJS({})
 
-export const getBillingState = (state: RootState): BillingState => {
-    return state.billing.toJS() as BillingState
-}
+export const getBillingState = createSelector(
+    DEPRECATED_getBillingState,
+    (billingState) => {
+        return billingState.toJS() as BillingState
+    }
+)
 
 const getProducts = createSelector(getBillingState, (billingState) => {
     return billingState.products

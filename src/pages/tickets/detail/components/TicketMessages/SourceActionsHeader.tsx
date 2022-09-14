@@ -1,4 +1,4 @@
-import React, {Component, ReactNode} from 'react'
+import React, {Component} from 'react'
 import classNamesBind from 'classnames/bind'
 import {connect, ConnectedProps} from 'react-redux'
 
@@ -73,10 +73,8 @@ export class SourceActionsHeader extends Component<Props> {
             collapseIntents,
         } = this.props
 
-        const widgets: ReactNode[] = []
-
         if (!source || !source.type || meta?.is_duplicated) {
-            return widgets
+            return null
         }
 
         const isInstagramComment = [
@@ -107,79 +105,77 @@ export class SourceActionsHeader extends Component<Props> {
 
         const showIntents = !fromAgent
 
-        if (showIntents && !collapseIntents) {
-            widgets.push(<IntentsFeedback message={this.props.message} />)
-        }
-
-        if (collapseActions) {
-            widgets.push(
-                <CollapsedSourceActions
-                    key="collapsed-source-actions"
-                    message={this.props.message}
-                    showPrivateReplyAction={showPrivateReplyAction}
-                    showHideAction={showHideAction}
-                    showIntentsAction={showIntents}
-                    shouldHide={shouldHide}
-                    isFacebookComment={isFacebookComment}
-                    toggleHideComment={toggleHideComment}
-                    collapseIntents={collapseIntents}
-                />
-            )
-        } else {
-            // If the comment is a Facebook comment, posted by the page, then the API will never allow us to hide it.
-            // So we don't even display the `hide` button to avoid frustration.
-            if (showHideAction) {
-                if (showPrivateReplyAction) {
-                    widgets.push(
-                        <PrivateReply
-                            key="private_reply-action"
-                            integrationId={integrationId!}
-                            messageId={messageId!}
-                            ticketMessageId={ticketMessageId!}
-                            senderId={senderId}
-                            ticketId={ticketId!}
-                            commentMessage={bodyText!}
-                            source={source}
-                            sender={sender}
-                            meta={meta!}
-                            messageCreatedDatetime={messageCreatedDatetime}
-                            isFacebookComment={isFacebookComment}
+        return (
+            <div className={css.widgets}>
+                {showIntents && !collapseIntents && (
+                    <IntentsFeedback message={this.props.message} />
+                )}
+                {collapseActions ? (
+                    <CollapsedSourceActions
+                        key="collapsed-source-actions"
+                        message={this.props.message}
+                        showPrivateReplyAction={showPrivateReplyAction}
+                        showHideAction={showHideAction}
+                        showIntentsAction={showIntents}
+                        shouldHide={shouldHide}
+                        isFacebookComment={isFacebookComment}
+                        toggleHideComment={toggleHideComment}
+                        collapseIntents={collapseIntents}
+                    />
+                ) : showHideAction ? (
+                    <>
+                        {showPrivateReplyAction && (
+                            <PrivateReply
+                                key="private_reply-action"
+                                integrationId={integrationId!}
+                                messageId={messageId!}
+                                ticketMessageId={ticketMessageId!}
+                                senderId={senderId}
+                                ticketId={ticketId!}
+                                commentMessage={bodyText!}
+                                source={source}
+                                sender={sender}
+                                meta={meta!}
+                                messageCreatedDatetime={messageCreatedDatetime}
+                                isFacebookComment={isFacebookComment}
+                                className={classNames(
+                                    'hidden-sm-down',
+                                    css.actionButton,
+                                    css.replyButton
+                                )}
+                            />
+                        )}
+                        <span
+                            key="hide-action"
                             className={classNames(
+                                'btn',
+                                'btn-secondary',
                                 'hidden-sm-down',
-                                css.actionButton,
-                                css.replyButton
+                                css.visibilityButton,
+                                css.actionButton
                             )}
-                        />
-                    )
-                }
-
-                widgets.push(
-                    <span
-                        key="hide-action"
-                        className={classNames(
-                            'btn',
-                            'btn-secondary',
-                            'hidden-sm-down',
-                            css.visibilityButton,
-                            css.actionButton
-                        )}
-                        onClick={toggleHideComment}
-                    >
-                        {shouldHide ? (
-                            <i className="material-icons md-36" title="Hide">
-                                visibility_off
-                            </i>
-                        ) : (
-                            <i className="material-icons md-36" title="Unhide">
-                                visibility
-                            </i>
-                        )}
-                    </span>
-                )
-            }
-        }
-
-        return <div className={css.widgets}>{widgets}</div>
+                            onClick={toggleHideComment}
+                        >
+                            {shouldHide ? (
+                                <i
+                                    className="material-icons md-36"
+                                    title="Hide"
+                                >
+                                    visibility_off
+                                </i>
+                            ) : (
+                                <i
+                                    className="material-icons md-36"
+                                    title="Unhide"
+                                >
+                                    visibility
+                                </i>
+                            )}
+                        </span>
+                    </>
+                ) : null}
+            </div>
+        )
     }
 }
 

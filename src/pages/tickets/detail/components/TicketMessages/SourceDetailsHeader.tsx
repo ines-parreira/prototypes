@@ -1,6 +1,6 @@
 import classnames from 'classnames'
-import React, {ReactNode, useState, createContext} from 'react'
-import {useMeasure} from 'react-use'
+import React, {ReactNode, useState, createContext, useMemo} from 'react'
+import {useDebounce, useMeasure} from 'react-use'
 
 import _noop from 'lodash/noop'
 
@@ -34,41 +34,47 @@ export default function SourceDetailsHeader(props: Props) {
     const [focus, setFocus] = useState(false)
 
     const [ref, {width}] = useMeasure()
+    const [debouncedWidth, setDebouncedWidth] = useState(width)
 
-    const collapseActions = width < 400
-    const collapseIntents = width < 300
+    useDebounce(() => setDebouncedWidth(width), 300, [width])
 
     const {message, isLastRead, timezone, isMessageDeleted} = props
-    let actionHeader: ReactNode
-    let infoWidget: ReactNode
 
-    if (!isMessageDeleted) {
-        actionHeader = (
-            <SourceDetailsContext.Provider value={{setFocus}}>
-                <SourceActionsHeader
-                    message={message}
-                    collapseActions={collapseActions}
-                    collapseIntents={collapseIntents}
-                />
-            </SourceDetailsContext.Provider>
-        )
-    }
+    const actionHeader = useMemo(() => {
+        const collapseActions = debouncedWidth < 400
+        const collapseIntents = debouncedWidth < 300
 
-    if (message?.meta?.is_duplicated) {
-        infoWidget = (
-            <From label="go to" key="ref-widget">
-                <a
-                    target="_blank"
-                    href={message.meta.private_reply!.original_ticket_id}
-                    rel="noopener noreferrer"
-                >
-                    ticket
-                </a>
-            </From>
-        )
-    } else {
-        infoWidget = <DatetimeLabel dateTime={message.created_datetime} />
-    }
+        if (!isMessageDeleted) {
+            return (
+                <SourceDetailsContext.Provider value={{setFocus}}>
+                    <SourceActionsHeader
+                        message={message}
+                        collapseActions={collapseActions}
+                        collapseIntents={collapseIntents}
+                    />
+                </SourceDetailsContext.Provider>
+            )
+        }
+
+        return null
+    }, [isMessageDeleted, message, debouncedWidth])
+
+    const infoWidget = useMemo(() => {
+        if (message?.meta?.is_duplicated) {
+            return (
+                <From label="go to" key="ref-widget">
+                    <a
+                        target="_blank"
+                        href={message.meta.private_reply!.original_ticket_id}
+                        rel="noopener noreferrer"
+                    >
+                        ticket
+                    </a>
+                </From>
+            )
+        }
+        return <DatetimeLabel dateTime={message.created_datetime} />
+    }, [message?.meta, message.created_datetime])
 
     return (
         <div
