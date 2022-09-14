@@ -1,25 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`widgets infobar utils displayValue() should return a comma-separated list of rendered values because passed data is an array 1`] = `
-Array [
-  <span>
-    123
-  </span>,
-  <span>
-    , 
-    test
-  </span>,
-  <span>
-    , 
-    <Badge
-      type="success"
-    >
-      True
-    </Badge>
-  </span>,
-]
-`;
-
 exports[`widgets infobar utils displayValue() should return a danger badge because passed data is a \`false\` value 1`] = `
 <Badge
   type="error"

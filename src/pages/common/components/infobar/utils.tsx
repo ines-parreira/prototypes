@@ -40,7 +40,6 @@ import {
     CardTemplate,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/types'
 import EditableListWidget from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/EditableListWidget'
-import {toJS} from 'utils'
 import {DatetimeLabel} from '../../utils/labels'
 import css from './utils.less'
 import {
@@ -676,9 +675,8 @@ export function guessFieldValueFromRawData(
             break
         }
         case 'array': {
-            const jsData = toJS<any>(data)
-            if (_isArray(jsData)) {
-                fieldValue = jsData
+            if (_isArray(data)) {
+                fieldValue = data.join(', ')
             }
             break
         }
@@ -767,11 +765,8 @@ export function guessFieldValueFromRawData(
 /**
  * Display a widget field label (before the value)
  */
-export const displayValue = (value: any): ReactNode => {
+export const displayValue = (label: any) => {
     const defaultValue = '-'
-
-    // Handle Immutable.js values
-    const label = toJS(value)
 
     if (_isUndefined(label)) {
         return defaultValue
@@ -791,15 +786,6 @@ export const displayValue = (value: any): ReactNode => {
                 {label ? 'True' : 'False'}
             </Badge>
         )
-    }
-
-    if (_isArray(label)) {
-        return label.map((val: any, index: number) => (
-            <span key={index}>
-                {index > 0 && ', '}
-                {displayValue(val)}
-            </span>
-        ))
     }
 
     return label as ReactNode
