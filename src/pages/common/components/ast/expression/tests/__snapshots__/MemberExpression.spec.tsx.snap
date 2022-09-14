@@ -142,6 +142,48 @@ exports[`<MemberExpression/> should render 1`] = `
           <span
             class="categoryLabel"
           >
+            BigCommerce Last Order
+          </span>
+          <i
+            class="optionArrow material-icons"
+          >
+            keyboard_arrow_right
+          </i>
+        </span>
+      </button>
+      <button
+        class="option dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        <span
+          class="optionContent"
+        >
+          <span
+            class="categoryLabel"
+          >
+            BigCommerce Customer
+          </span>
+          <i
+            class="optionArrow material-icons"
+          >
+            keyboard_arrow_right
+          </i>
+        </span>
+      </button>
+      <button
+        class="option dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        <span
+          class="optionContent"
+        >
+          <span
+            class="categoryLabel"
+          >
             Magento2 Last Order
           </span>
           <i

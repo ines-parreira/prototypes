@@ -51,6 +51,10 @@ export function getCategoryFromPath(path: string[]): IdentifierCategoryKey {
         return IdentifierCategoryKey.RechargeLastSubscription
     } else if (jointPath.includes('recharge.customer')) {
         return IdentifierCategoryKey.RechargeCustomer
+    } else if (jointPath.includes('bigcommerce.last_order')) {
+        return IdentifierCategoryKey.BigCommerceLastOrder
+    } else if (jointPath.includes('bigcommerce.customer')) {
+        return IdentifierCategoryKey.BigCommerceCustomer
     } else if (jointPath.includes('integrations.smile.customer')) {
         return IdentifierCategoryKey.SmileCustomer
     } else if (jointPath.includes('ticket.customer')) {

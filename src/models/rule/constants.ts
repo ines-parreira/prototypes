@@ -30,6 +30,14 @@ export const IDENTIFIER_CATEGORIES: {
         value: IdentifierCategoryKey.ShopifyCustomer,
     },
     {
+        label: IdentifierCategoryValue.BigCommerceLastOrder,
+        value: IdentifierCategoryKey.BigCommerceLastOrder,
+    },
+    {
+        label: IdentifierCategoryValue.BigCommerceCustomer,
+        value: IdentifierCategoryKey.BigCommerceCustomer,
+    },
+    {
         label: IdentifierCategoryValue.Magento2LastOrder,
         value: IdentifierCategoryKey.Magento2LastOrder,
     },
@@ -345,6 +353,65 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
             value: 'ticket.customer.integrations.shopify.customer.total_spent',
         },
     ],
+    [IdentifierCategoryKey.BigCommerceLastOrder]: [
+        {
+            label: 'Created date',
+            text: 'date of last order',
+            value: 'ticket.customer.integrations.bigcommerce.last_order.date_created',
+        },
+        {
+            label: 'Status',
+            text: 'last order status',
+            value: 'ticket.customer.integrations.bigcommerce.last_order.status',
+        },
+        {
+            label: 'Total price',
+            text: 'total price of last order',
+            value: 'ticket.customer.integrations.bigcommerce.last_order.total_inc_tax',
+        },
+        {
+            label: 'Shipping date',
+            text: 'shipping date of last order',
+            value: 'ticket.customer.integrations.bigcommerce.last_order.date_shipped',
+        },
+        {
+            label: IdentifierSubCategoryValue.LastOrderShipments,
+            children: [
+                {
+                    label: 'Tracking number',
+                    text: 'last order tracking number',
+                    value: 'ticket.customer.integrations.bigcommerce.last_order.last_order_shipments.tracking_number',
+                },
+            ],
+        },
+        {
+            label: IdentifierSubCategoryValue.LastShipping,
+            children: [
+                {
+                    label: 'Country',
+                    text: 'destination country of last order',
+                    value: 'ticket.customer.integrations.bigcommerce.last_order.last_shipping.country',
+                },
+                {
+                    label: 'State',
+                    text: 'destination state of last order',
+                    value: 'ticket.customer.integrations.bigcommerce.last_order.last_shipping.state',
+                },
+                {
+                    label: 'City',
+                    text: 'destination city of last order',
+                    value: 'ticket.customer.integrations.bigcommerce.last_order.last_shipping.city',
+                },
+            ],
+        },
+    ],
+    [IdentifierCategoryKey.BigCommerceCustomer]: [
+        {
+            label: 'Created date',
+            text: 'customer created date',
+            value: 'ticket.customer.integrations.bigcommerce.customer.date_created',
+        },
+    ],
     [IdentifierCategoryKey.Magento2LastOrder]: [
         {
             label: 'Date of last order',
@@ -441,6 +508,8 @@ export const IDENTIFIER_CATEGORY_KEYS = Object.freeze({
     RECHARGE_LAST_SUBSCRIPTION: 'rechargeLastSubscription',
     RECHARGE_CUSTOMER: 'rechargeCustomer',
     SMILE_CUSTOMER: 'smileCustomer',
+    BIGCOMMERCE_LAST_ORDER: 'bigcommerceLastOrder',
+    BIGCOMMERCE_CUSTOMER: 'bigcommerceCustomer',
 })
 
 //$TsFixMe remove this constant on FlowJS removal
@@ -455,6 +524,8 @@ export const IDENTIFIER_CATEGORY_VALUES = Object.freeze({
     SHOPIFY_CUSTOMER: 'Shopify Customer',
     SHOPIFY_LAST_ORDER: 'Shopify Last Order',
     SMILE_CUSTOMER: 'Smile Customer',
+    BIGCOMMERCE_LAST_ORDER: 'BigCommerce Last Order',
+    BIGCOMMERCE_CUSTOMER: 'BigCommerce Customer',
 })
 
 //$TsFixMe remove this constant on FlowJS removal
@@ -462,6 +533,8 @@ export const IDENTIFIER_SUBCATEGORY_VALUES = Object.freeze({
     RECEIVER: 'Receiver',
     SENDER: 'Sender',
     SOURCE: 'Source',
+    LAST_ORDER_SHIPMENTS: 'Last Order Shipments',
+    LAST_SHIPPING: 'Last Shipping',
     LAST_FULFILLMENT: 'Last Fulfillment',
     SHIPPING_ADDRESS: 'Shipping Address',
 })
@@ -489,6 +562,7 @@ export const IDENTIFIER_VARIABLE_NAMES = Object.freeze({
     DATE_OF_LAST_ORDER: 'date of last order',
     GRAND_TOTAL: 'grand total',
     STATE: 'state',
+    CITY: 'city',
     OTHER_INTEGRATIONS: 'other integrations',
     STATUS: 'status',
     DATE_NEXT_SCHEDULED_CHARGE: 'date of next scheduled charge',
@@ -500,6 +574,7 @@ export const IDENTIFIER_VARIABLE_NAMES = Object.freeze({
     FULFILLMENT_STATUS: 'fulfillment status',
     SHIPMENT_STATUS: 'shipment status',
     TRACKING_NUMBER: 'tracking number',
+    SHIPPING_DATE: 'shipping date',
     COUNTRY: 'country',
     TOTAL_PRICE: 'total price',
     POINT_BALANCE: 'point balance',

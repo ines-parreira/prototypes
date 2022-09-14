@@ -100,6 +100,17 @@ describe('rule utils', () => {
                 ],
             ],
             [
+                IdentifierCategoryKey.BigCommerceCustomer,
+                [
+                    'ticket',
+                    'customer',
+                    'integrations',
+                    'bigcommerce',
+                    'customer',
+                    'date_created',
+                ],
+            ],
+            [
                 IdentifierCategoryKey.Customer,
                 ['ticket', 'customer', 'created_at'],
             ],

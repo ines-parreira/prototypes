@@ -17,6 +17,8 @@ export enum IdentifierCategoryKey {
     RechargeCustomer = 'rechargeCustomer',
     SmileCustomer = 'smileCustomer',
     SelfServiceFlow = 'selfServiceFlow',
+    BigCommerceCustomer = 'bigcommerceCustomer',
+    BigCommerceLastOrder = 'bigcommerceLastOrder',
 }
 
 export enum IdentifierCategoryValue {
@@ -31,6 +33,8 @@ export enum IdentifierCategoryValue {
     ShopifyLastOrder = 'Shopify Last Order',
     SmileCustomer = 'Smile Customer',
     SelfServiceFlow = 'Self Service',
+    BigCommerceCustomer = 'BigCommerce Customer',
+    BigCommerceLastOrder = 'BigCommerce Last Order',
 }
 
 export enum IdentifierSubCategoryValue {
@@ -39,6 +43,8 @@ export enum IdentifierSubCategoryValue {
     Source = 'Source',
     LastFulfillment = 'Last Fulfillment',
     ShippingAddress = 'Shipping Address',
+    LastOrderShipments = 'Last Order Shipments',
+    LastShipping = 'Last Shipping',
 }
 
 export enum IdentifierVariableName {
@@ -70,11 +76,13 @@ export enum IdentifierVariableName {
     OrdersCount = 'orders count',
     Tags = 'tags',
     TotalSpent = 'total spent',
+    ShippingDate = 'shipping date',
     FinancialStatus = 'financial status',
     FulfillmentStatus = 'fulfillment status',
     ShipmentStatus = 'shipment status',
     TrackingNumber = 'tracking number',
     Country = 'country',
+    City = 'city',
     TotalPrice = 'total price',
     PointBalance = 'point balance',
     VipTier = 'vip tier',
