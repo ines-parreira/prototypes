@@ -1,5 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`widgets infobar utils displayValue() should return a danger badge because passed data is a \`false\` value 1`] = `
+<Badge
+  type="error"
+>
+  False
+</Badge>
+`;
+
+exports[`widgets infobar utils displayValue() should return a success badge because passed data is a \`true\` value 1`] = `
+<Badge
+  type="success"
+>
+  True
+</Badge>
+`;
+
 exports[`widgets infobar utils guessFieldValueFromRawData() given "-1" and "sentiment" as arguments, returns correct value 1`] = `
 <React.Fragment>
   <React.Fragment>
@@ -247,78 +263,6 @@ exports[`widgets infobar utils guessFieldValueFromRawData() given 555 and "perce
 exports[`widgets infobar utils guessFieldValueFromRawData() given 555 and "points" as arguments, returns correct value 1`] = `
 <Badge>
   555
-</Badge>
-`;
-
-exports[`widgets infobar utils guessFieldValueFromRawData() should render a danger badge because passed type is \`boolean\` and passed data is a \`false\` value 1`] = `
-<Badge
-  type="error"
->
-  False
-</Badge>
-`;
-
-exports[`widgets infobar utils guessFieldValueFromRawData() should render a danger badge because passed type is \`boolean\` and passed data is a \`false\` value 2`] = `
-<Badge
-  type="error"
->
-  False
-</Badge>
-`;
-
-exports[`widgets infobar utils guessFieldValueFromRawData() should render a danger badge because passed type is \`boolean\` and passed data is a \`false\` value 3`] = `
-<Badge
-  type="error"
->
-  False
-</Badge>
-`;
-
-exports[`widgets infobar utils guessFieldValueFromRawData() should render a danger badge because passed type is \`boolean\` and passed data is a \`false\` value 4`] = `
-<Badge
-  type="error"
->
-  False
-</Badge>
-`;
-
-exports[`widgets infobar utils guessFieldValueFromRawData() should render a success badge because passed type is \`boolean\` and passed data is a \`true\` value 1`] = `
-<Badge
-  type="success"
->
-  True
-</Badge>
-`;
-
-exports[`widgets infobar utils guessFieldValueFromRawData() should render a success badge because passed type is \`boolean\` and passed data is a \`true\` value 2`] = `
-<Badge
-  type="success"
->
-  True
-</Badge>
-`;
-
-exports[`widgets infobar utils guessFieldValueFromRawData() should render a success badge because passed type is \`boolean\` and passed data is a \`true\` value 3`] = `
-<Badge
-  type="success"
->
-  True
-</Badge>
-`;
-
-exports[`widgets infobar utils guessFieldValueFromRawData() should render a success badge because passed type is \`boolean\` and passed data is a \`true\` value 4`] = `
-<Badge
-  type="success"
->
-  True
-</Badge>
-`;
-
-exports[`widgets infobar utils guessFieldValueFromRawData() should render a success badge because passed type is \`boolean\` and passed data is a \`true\` value 5`] = `
-<Badge
-  type="success"
->
-  True
 </Badge>
 `;
 

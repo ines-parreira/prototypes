@@ -671,11 +671,7 @@ export function guessFieldValueFromRawData(
                 isTrue = data !== 0
             }
 
-            fieldValue = (
-                <Badge type={isTrue ? ColorType.Success : ColorType.Error}>
-                    {isTrue ? 'True' : 'False'}
-                </Badge>
-            )
+            fieldValue = isTrue
             break
         }
         case 'array': {
@@ -782,6 +778,14 @@ export const displayValue = (label: any) => {
 
     if (_isString(label) && !label) {
         return defaultValue
+    }
+
+    if (_isBoolean(label)) {
+        return (
+            <Badge type={label ? ColorType.Success : ColorType.Error}>
+                {label ? 'True' : 'False'}
+            </Badge>
+        )
     }
 
     return label as ReactNode

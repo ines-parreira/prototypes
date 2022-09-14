@@ -290,37 +290,25 @@ describe('widgets infobar utils', () => {
             ).toEqual(passedData)
         })
 
-        it('should render a success badge because passed type is `boolean` and passed data is a `true` value', () => {
-            expect(
-                utils.guessFieldValueFromRawData(true, 'boolean')
-            ).toMatchSnapshot()
-            expect(
-                utils.guessFieldValueFromRawData('true', 'boolean')
-            ).toMatchSnapshot()
-            expect(
-                utils.guessFieldValueFromRawData('1', 'boolean')
-            ).toMatchSnapshot()
-            expect(
-                utils.guessFieldValueFromRawData(1, 'boolean')
-            ).toMatchSnapshot()
-            expect(
-                utils.guessFieldValueFromRawData(42, 'boolean')
-            ).toMatchSnapshot()
+        it('should return `true` because passed type is `boolean` and passed data is a `true` value', () => {
+            expect(utils.guessFieldValueFromRawData(true, 'boolean')).toBe(true)
+            expect(utils.guessFieldValueFromRawData('true', 'boolean')).toBe(
+                true
+            )
+            expect(utils.guessFieldValueFromRawData('1', 'boolean')).toBe(true)
+            expect(utils.guessFieldValueFromRawData(1, 'boolean')).toBe(true)
+            expect(utils.guessFieldValueFromRawData(42, 'boolean')).toBe(true)
         })
 
-        it('should render a danger badge because passed type is `boolean` and passed data is a `false` value', () => {
-            expect(
-                utils.guessFieldValueFromRawData(false, 'boolean')
-            ).toMatchSnapshot()
-            expect(
-                utils.guessFieldValueFromRawData('false', 'boolean')
-            ).toMatchSnapshot()
-            expect(
-                utils.guessFieldValueFromRawData('0', 'boolean')
-            ).toMatchSnapshot()
-            expect(
-                utils.guessFieldValueFromRawData(0, 'boolean')
-            ).toMatchSnapshot()
+        it('should return `false` because passed type is `boolean` and passed data is a `false` value', () => {
+            expect(utils.guessFieldValueFromRawData(false, 'boolean')).toBe(
+                false
+            )
+            expect(utils.guessFieldValueFromRawData('false', 'boolean')).toBe(
+                false
+            )
+            expect(utils.guessFieldValueFromRawData('0', 'boolean')).toBe(false)
+            expect(utils.guessFieldValueFromRawData(0, 'boolean')).toBe(false)
         })
 
         const validValues = [
@@ -361,6 +349,22 @@ describe('widgets infobar utils', () => {
                 expect(result).toMatchSnapshot()
             }
         )
+    })
+
+    describe('displayValue()', () => {
+        it('should return the default value when passed an empty value', () => {
+            expect(utils.displayValue(undefined)).toEqual('-')
+            expect(utils.displayValue(null)).toEqual('-')
+            expect(utils.displayValue('')).toEqual('-')
+        })
+
+        it('should return a success badge because passed data is a `true` value', () => {
+            expect(utils.displayValue(true)).toMatchSnapshot()
+        })
+
+        it('should return a danger badge because passed data is a `false` value', () => {
+            expect(utils.displayValue(false)).toMatchSnapshot()
+        })
     })
 
     describe('getLocalTime()', () => {
