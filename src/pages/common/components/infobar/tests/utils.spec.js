@@ -365,6 +365,10 @@ describe('widgets infobar utils', () => {
         it('should return a danger badge because passed data is a `false` value', () => {
             expect(utils.displayValue(false)).toMatchSnapshot()
         })
+
+        it('should return a comma-separated list of rendered values because passed data is an array', () => {
+            expect(utils.displayValue([123, 'test', true])).toMatchSnapshot()
+        })
     })
 
     describe('getLocalTime()', () => {
