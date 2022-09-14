@@ -4,8 +4,11 @@ import {render} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
+import LD from 'launchdarkly-react-client-sdk'
 
 import {CampaignDetail} from '../CampaignDetail'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -43,6 +46,11 @@ jest.mock('draft-js/lib/generateRandomKey', () => () => 'someRandomKey')
 describe('CampaignDetail component', () => {
     let store = mockStore({})
     const realDateNow = Date.now
+    beforeAll(() => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.RevenueAlphaTesters]: false,
+        }))
+    })
     beforeEach(() => {
         jest.resetAllMocks()
         store = mockStore({})

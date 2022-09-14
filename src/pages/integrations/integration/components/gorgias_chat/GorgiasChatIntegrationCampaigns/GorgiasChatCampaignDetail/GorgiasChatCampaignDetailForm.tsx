@@ -1,4 +1,10 @@
-import React, {useState, useEffect, FormEvent} from 'react'
+import React, {
+    useState,
+    useEffect,
+    FormEvent,
+    useCallback,
+    useMemo,
+} from 'react'
 import {
     Button,
     DropdownItem,
@@ -11,6 +17,7 @@ import {fromJS, Map, List} from 'immutable'
 import classnames from 'classnames'
 import {EditorState} from 'draft-js'
 import {Link} from 'react-router-dom'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {
     CAMPAIGNS_TRIGGER_KEYS,
@@ -18,6 +25,7 @@ import {
     GORGIAS_CHAT_WIDGET_TEXTS,
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
 } from 'config/integrations/gorgias_chat'
+import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import DEPRECATED_RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import CampaignPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/CampaignPreview'
@@ -31,6 +39,7 @@ import ArrowBackwardIcon from 'assets/img/icons/arrow-backward.svg'
 import GorgiasChatIntegrationPreviewContainer from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import css from './GorgiasChatCampaignDetailForm.less'
 import {GorgiasChatCampaignDetailTriggerRow} from './GorgiasChatCampaignDetailTriggerRow'
@@ -82,6 +91,17 @@ export const GorgiasChatCampaignDetailForm = ({
     updateCampaign,
     deleteCampaign,
 }: Props) => {
+    const flags = useFlags()
+    const isRevenueAlphaTester = useMemo(() => {
+        if (
+            flags &&
+            Object.keys(flags).includes(FeatureFlagKey.RevenueAlphaTesters)
+        ) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+            return flags[FeatureFlagKey.RevenueAlphaTesters]
+        }
+        return false
+    }, [flags])
     const [state, setState] = useState<State>({
         name: '',
         triggers: fromJS({}),
@@ -91,23 +111,84 @@ export const GorgiasChatCampaignDetailForm = ({
 
     const [stateInitialized, setStateInitialialized] = useState(false)
 
-    const initState = (_campaign: Map<any, any>) => {
-        setStateInitialialized(true)
-        setState({
-            name: _campaign.get('name'),
-            triggers:
-                _campaign.get('triggers') ||
-                fromJS([
-                    DEFAULT_TRIGGER(0), // default `current_url` empty trigger in case of new campaign
-                ]),
-            message: _campaign.get('message') || fromJS({}),
-            loading: false,
-        })
-    }
+    const initState = useCallback(
+        (_campaign: Map<any, any>) => {
+            const defaultTriggers = isRevenueAlphaTester
+                ? [
+                      DEFAULT_TRIGGER(0), // default `business_hours` empty trigger in case of new campaign
+                      DEFAULT_TRIGGER(1), // default `current_url` empty trigger in case of new campaign
+                  ]
+                : [
+                      DEFAULT_TRIGGER(1), // default `current_url` empty trigger in case of new campaign
+                  ]
+
+            setStateInitialialized(true)
+            setState({
+                name: _campaign.get('name'),
+                triggers: _campaign.get('triggers') || fromJS(defaultTriggers),
+                message: _campaign.get('message') || fromJS({}),
+                loading: false,
+            })
+        },
+        [setStateInitialialized, setState, isRevenueAlphaTester]
+    )
+
+    // We do not allow a second "business_hours" trigger so we should
+    // not allow the user to add this kind of condition
+    const triggerOptions = useMemo(() => {
+        return (CAMPAIGNS_TRIGGER_KEYS as List<any>).filter(
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+            (trigger) => trigger.get('name') !== 'business_hours'
+        )
+    }, [])
+
+    const businessHourTrigger = useMemo(() => {
+        const found: Map<any, any> = state.triggers.find(
+            (trigger: Map<any, any>) => trigger.get('key') === 'business_hours'
+        )
+
+        if (found) {
+            return {
+                key: found.get('key'),
+                operator: found.get('operator'),
+                value: found.get('value'),
+            }
+        }
+        return null
+    }, [state.triggers])
+
+    const audienceTriggers = useMemo(() => {
+        return state.triggers.filter(
+            (trigger: Map<any, any>) => trigger.get('key') !== 'business_hours'
+        )
+    }, [state.triggers])
 
     useEffect(() => {
-        initState(campaign)
-    }, [campaign])
+        if (isRevenueAlphaTester) {
+            const {triggers} = campaign.toJS()
+            let immutableTriggers: List<Map<any, any>> =
+                campaign.get('triggers')
+            if (Array.isArray(triggers)) {
+                const triggerKeys = triggers.map(
+                    (trigger: Record<string, string>) => trigger.key
+                )
+
+                if (!triggerKeys.includes('business_hours')) {
+                    immutableTriggers = immutableTriggers.insert(
+                        0,
+                        DEFAULT_TRIGGER(0)
+                    )
+                }
+            }
+            const defaultedCampaign = campaign.set(
+                'triggers',
+                immutableTriggers
+            )
+            initState(defaultedCampaign)
+        } else {
+            initState(campaign)
+        }
+    }, [initState, isRevenueAlphaTester, campaign])
 
     const addNewTrigger = (keyConfigIdx: number) => {
         setState((state) => ({
@@ -115,6 +196,26 @@ export const GorgiasChatCampaignDetailForm = ({
             triggers: state.triggers.push(DEFAULT_TRIGGER(keyConfigIdx)),
         }))
     }
+
+    const handleUpdateBusinessHoursSchedule = useCallback(
+        (value: string) => {
+            const triggerIndex = state.triggers.findIndex(
+                (trigger: Map<any, any>) =>
+                    trigger.get('key') === 'business_hours'
+            )
+
+            if (triggerIndex >= 0) {
+                setState((state) => ({
+                    ...state,
+                    triggers: state.triggers.setIn(
+                        [triggerIndex, 'operator'],
+                        value
+                    ),
+                }))
+            }
+        },
+        [setState, state.triggers]
+    )
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -305,9 +406,49 @@ export const GorgiasChatCampaignDetailForm = ({
 
                         {/* TRIGGERS */}
 
+                        {businessHourTrigger && (
+                            <>
+                                <h5 className={css.section}>
+                                    Schedule delivery
+                                </h5>
+
+                                <div className="mb-4">
+                                    <RadioFieldSet
+                                        selectedValue={
+                                            businessHourTrigger?.operator ??
+                                            'during'
+                                        }
+                                        options={[
+                                            {
+                                                value: 'during',
+                                                label: 'Inside business hours',
+                                            },
+                                            {
+                                                value: 'outside',
+                                                label: 'Outside business hours',
+                                            },
+                                        ]}
+                                        onChange={
+                                            handleUpdateBusinessHoursSchedule
+                                        }
+                                    />
+                                    <div className="mt-2">
+                                        <span>
+                                            You can check or update your
+                                            business hours{' '}
+                                            <Link to="/app/settings/business-hours">
+                                                here
+                                            </Link>
+                                            .
+                                        </span>
+                                    </div>
+                                </div>
+                            </>
+                        )}
+
                         <h5 className={css.section}>Choose your audience</h5>
                         <div className="mb-4">
-                            {triggers
+                            {audienceTriggers
                                 .map((trigger, idx) => {
                                     return (
                                         idx !== undefined && (
@@ -321,7 +462,7 @@ export const GorgiasChatCampaignDetailForm = ({
                                                         triggers:
                                                             state.triggers.setIn(
                                                                 [
-                                                                    idx,
+                                                                    idx + 1,
                                                                     'operator',
                                                                 ],
                                                                 value
@@ -333,7 +474,10 @@ export const GorgiasChatCampaignDetailForm = ({
                                                         ...state,
                                                         triggers:
                                                             state.triggers.setIn(
-                                                                [idx, 'value'],
+                                                                [
+                                                                    idx + 1,
+                                                                    'value',
+                                                                ],
                                                                 value
                                                             ),
                                                     }))
@@ -343,7 +487,7 @@ export const GorgiasChatCampaignDetailForm = ({
                                                         ...state,
                                                         triggers:
                                                             triggers.delete(
-                                                                idx
+                                                                idx + 1
                                                             ),
                                                     }))
                                                 }}
@@ -366,7 +510,7 @@ export const GorgiasChatCampaignDetailForm = ({
                                     Add condition
                                 </DropdownToggle>
                                 <DropdownMenu>
-                                    {(CAMPAIGNS_TRIGGER_KEYS as List<any>).map(
+                                    {triggerOptions.map(
                                         (keyConfig: Map<any, any>, idx) => {
                                             return (
                                                 idx !== undefined && (
@@ -376,7 +520,9 @@ export const GorgiasChatCampaignDetailForm = ({
                                                         )}
                                                         type="button"
                                                         onClick={() =>
-                                                            addNewTrigger(idx)
+                                                            addNewTrigger(
+                                                                idx + 1
+                                                            )
                                                         }
                                                     >
                                                         {keyConfig.get('label')}

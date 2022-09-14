@@ -97,6 +97,22 @@ export const QUICK_REPLIES_MAX_ITEM_LENGTH = 20
 // Campaigns
 export const CAMPAIGNS_TRIGGER_KEYS = fromJS([
     {
+        label: 'Business hours',
+        name: 'business_hours',
+        operators: {
+            during: {
+                label: 'During business hours',
+            },
+            outside: {
+                label: 'Outside business hours',
+            },
+        },
+        value: {
+            input: 'boolean',
+            default: true,
+        },
+    },
+    {
         label: 'Current URL',
         name: 'current_url',
         operators: {

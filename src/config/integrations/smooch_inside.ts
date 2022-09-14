@@ -39,6 +39,22 @@ export const SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT =
 // Campaigns
 export const CAMPAIGNS_TRIGGER_KEYS = fromJS([
     {
+        label: 'Business Hours',
+        name: 'business_hours',
+        operators: {
+            during: {
+                label: 'During business hours',
+            },
+            outside: {
+                label: 'Outside business hours',
+            },
+        },
+        value: {
+            input: 'boolean',
+            default: true,
+        },
+    },
+    {
         label: 'Current URL',
         name: 'current_url',
         operators: {

@@ -88,9 +88,11 @@ export const GorgiasChatCampaignDetailTriggerRow = ({
                 onChange={onValueChange}
                 className={css.last}
             />
-            <div className={css.closeWrapper} onClick={onDelete}>
-                <i className="material-icons md-2 text-danger">clear</i>
-            </div>
+            {trigger.get('key') !== 'business_hours' && (
+                <div className={css.closeWrapper} onClick={onDelete}>
+                    <i className="material-icons md-2 text-danger">clear</i>
+                </div>
+            )}
         </div>
     )
 }

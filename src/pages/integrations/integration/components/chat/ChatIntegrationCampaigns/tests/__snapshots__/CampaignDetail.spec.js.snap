@@ -153,7 +153,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                 <div
                   class="btn-frozen btn btn-info"
                 >
-                  Current URL
+                  Business Hours
                 </div>
                 <div>
                   <div
@@ -172,7 +172,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                           class="label"
                           style="min-width: 10px; opacity: 1;"
                         >
-                          is
+                          During business hours
                         </span>
                         <input
                           autocomplete="chrome-off"
@@ -202,67 +202,13 @@ exports[`CampaignDetail component should display default value when it's a new c
                         type="button"
                       >
                         <span>
-                          is not
-                        </span>
-                      </button>
-                      <button
-                        class="option dropdown-item"
-                        role="menuitem"
-                        tabindex="0"
-                        type="button"
-                      >
-                        <span>
-                          contains
-                        </span>
-                      </button>
-                      <button
-                        class="option dropdown-item"
-                        role="menuitem"
-                        tabindex="0"
-                        type="button"
-                      >
-                        <span>
-                          does not contain
-                        </span>
-                      </button>
-                      <button
-                        class="option dropdown-item"
-                        role="menuitem"
-                        tabindex="0"
-                        type="button"
-                      >
-                        <span>
-                          starts with
-                        </span>
-                      </button>
-                      <button
-                        class="option dropdown-item"
-                        role="menuitem"
-                        tabindex="0"
-                        type="button"
-                      >
-                        <span>
-                          ends with
+                          Outside business hours
                         </span>
                       </button>
                     </div>
                   </div>
                 </div>
-                <div
-                  class="InputField form-group"
-                  color=""
-                >
-                  <div
-                    class=""
-                  >
-                    <input
-                      class="field form-control"
-                      id="id-value"
-                      type="input"
-                      value=""
-                    />
-                  </div>
-                </div>
+                <div />
                 <div
                   class="closeWrapper"
                 >
@@ -295,6 +241,14 @@ exports[`CampaignDetail component should display default value when it's a new c
                   role="menu"
                   tabindex="-1"
                 >
+                  <button
+                    class="dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    Business Hours
+                  </button>
                   <button
                     class="dropdown-item"
                     role="menuitem"
@@ -1055,6 +1009,14 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                   role="menu"
                   tabindex="-1"
                 >
+                  <button
+                    class="dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    Business Hours
+                  </button>
                   <button
                     class="dropdown-item"
                     role="menuitem"
@@ -1827,6 +1789,14 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                   role="menu"
                   tabindex="-1"
                 >
+                  <button
+                    class="dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    Business Hours
+                  </button>
                   <button
                     class="dropdown-item"
                     role="menuitem"

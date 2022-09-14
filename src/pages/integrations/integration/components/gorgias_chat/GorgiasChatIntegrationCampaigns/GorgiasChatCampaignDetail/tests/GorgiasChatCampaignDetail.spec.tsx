@@ -4,8 +4,10 @@ import {render} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
+import LD from 'launchdarkly-react-client-sdk'
 
 import {RootState} from 'state/types'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import GorgiasChatCampaignDetail from '../GorgiasChatCampaignDetail'
 
@@ -43,6 +45,11 @@ describe('<GorgiasChatCampaignDetail/>', () => {
     const mockStore = configureMockStore([thunk])
 
     const realDateNow = Date.now
+    beforeAll(() => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.RevenueAlphaTesters]: false,
+        }))
+    })
     beforeEach(() => {
         jest.resetAllMocks()
         Date.now = jest.fn(() => 42)
