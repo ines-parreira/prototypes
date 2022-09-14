@@ -101,7 +101,7 @@ export default class ObjectListField extends Component<Props> {
                         </Col>
                     </Row>
                 ))}
-                <Button size="small" onClick={this._add}>
+                <Button intent="secondary" size="small" onClick={this._add}>
                     <ButtonIconLabel icon="add">
                         Add {this.props.fieldName}
                     </ButtonIconLabel>
