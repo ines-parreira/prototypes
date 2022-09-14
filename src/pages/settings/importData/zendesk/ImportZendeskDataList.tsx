@@ -1,11 +1,14 @@
 import React from 'react'
 import {Progress, Table} from 'reactstrap'
-import {Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 
-import {getIntegrationsByTypes} from '../../../../state/integrations/selectors'
+import {getIntegrationsByType} from '../../../../state/integrations/selectors'
 import {getTimezone} from '../../../../state/currentUser/selectors'
-import {IntegrationType} from '../../../../models/integration/types'
+import {
+    IntegrationType,
+    ZendeskIntegration,
+    ZendeskIntegrationMeta,
+} from '../../../../models/integration/types'
 import {RootState} from '../../../../state/types'
 import history from '../../../history'
 
@@ -17,15 +20,13 @@ export const ImportZendeskDataList = (
 ) => {
     const {zendeskImports, img, timezone} = props
     const renderImportStatus = (
-        integrationMeta: Map<any, any>
+        integrationMeta: ZendeskIntegrationMeta
     ): React.ReactChild => {
-        const importStatus = integrationMeta.get('status')
+        const importStatus = integrationMeta.status
 
         if (importStatus === ImportStatus.Success) {
-            const synchronizationEnabled = integrationMeta.get(
-                'continuous_import_enabled',
-                false
-            )
+            const synchronizationEnabled =
+                integrationMeta.continuous_import_enabled
             if (synchronizationEnabled) {
                 return (
                     <span className="float-right">
@@ -47,20 +48,19 @@ export const ImportZendeskDataList = (
                 </span>
             )
         } else if (importStatus === ImportStatus.Pending) {
-            const displayImportStats = integrationMeta.get(
-                'display_import_stats',
-                false
-            )
-            const accountTicketsCount = integrationMeta.getIn([
-                'account_stats',
-                'tickets_count',
-            ])
-            const ticketsCount = integrationMeta.getIn([
-                'sync_tickets',
-                'count',
-            ])
+            const displayImportStats = integrationMeta.display_import_stats
+            const accountTicketsCount =
+                integrationMeta.account_stats.tickets_count
+            const ticketsCount = integrationMeta.sync_tickets.count
 
             const getPercentage = (): number => {
+                if (
+                    ticketsCount === undefined ||
+                    accountTicketsCount === undefined
+                ) {
+                    return 0
+                }
+
                 const importedTicketsPercentage = ~~(
                     (ticketsCount * 100) /
                     accountTicketsCount
@@ -102,10 +102,8 @@ export const ImportZendeskDataList = (
         return (
             <span className="float-right">
                 <i className="material-icons red">error</i>{' '}
-                {integrationMeta.get(
-                    'error',
-                    'Import failed. Please contact our support.'
-                )}{' '}
+                {integrationMeta.error ||
+                    'Import failed. Please contact our support.'}{' '}
                 <i className="material-icons">chevron_right</i>
             </span>
         )
@@ -114,53 +112,45 @@ export const ImportZendeskDataList = (
     return (
         <Table hover cursor="pointer">
             <tbody>
-                {zendeskImports.map(
-                    (integration: Map<any, any>, idx: number | undefined) => {
-                        return (
-                            <tr
-                                className="cursor-pointer"
-                                key={idx}
-                                onClick={() => {
-                                    history.push(
-                                        `/app/settings/import-data/zendesk/${
-                                            integration.get('id') as string
-                                        }`
-                                    )
-                                }}
-                            >
-                                <td className="smallest align-middle">
-                                    <img
-                                        alt={`Zendesk logo`}
-                                        style={{
-                                            maxWidth: '35px',
-                                            overflow: 'hidden',
-                                        }}
-                                        className="rounded"
-                                        src={img}
-                                    />
-                                </td>
-                                <td className="align-middle link-full-td">
-                                    <div className="cell-content">
-                                        <b className="mr-2">
-                                            {integration.get('name')}
-                                        </b>
-                                        <span className="text-muted">
-                                            {getImportCompletionDate(
-                                                integration,
-                                                timezone
-                                            )}
-                                        </span>
-                                    </div>
-                                </td>
-                                <td className="link-full-td align-middle text-muted">
-                                    {renderImportStatus(
-                                        integration.get('meta')
-                                    )}
-                                </td>
-                            </tr>
-                        )
-                    }
-                )}
+                {zendeskImports.map((integration, idx: number | undefined) => {
+                    return (
+                        <tr
+                            className="cursor-pointer"
+                            key={idx}
+                            onClick={() => {
+                                history.push(
+                                    `/app/settings/import-data/zendesk/${integration.id}`
+                                )
+                            }}
+                        >
+                            <td className="smallest align-middle">
+                                <img
+                                    alt={`Zendesk logo`}
+                                    style={{
+                                        maxWidth: '35px',
+                                        overflow: 'hidden',
+                                    }}
+                                    className="rounded"
+                                    src={img}
+                                />
+                            </td>
+                            <td className="align-middle link-full-td">
+                                <div className="cell-content">
+                                    <b className="mr-2">{integration.name}</b>
+                                    <span className="text-muted">
+                                        {getImportCompletionDate(
+                                            integration,
+                                            timezone
+                                        )}
+                                    </span>
+                                </div>
+                            </td>
+                            <td className="link-full-td align-middle text-muted">
+                                {renderImportStatus(integration.meta)}
+                            </td>
+                        </tr>
+                    )
+                })}
             </tbody>
         </Table>
     )
@@ -170,7 +160,9 @@ const mapStateToProps = (state: RootState) => ({
     img: `${
         window.GORGIAS_ASSETS_URL || ''
     }/static/private/js/assets/img/integrations/zendesk.png`,
-    zendeskImports: getIntegrationsByTypes(IntegrationType.Zendesk)(state),
+    zendeskImports: getIntegrationsByType<ZendeskIntegration>(
+        IntegrationType.Zendesk
+    )(state),
     timezone: getTimezone(state),
 })
 

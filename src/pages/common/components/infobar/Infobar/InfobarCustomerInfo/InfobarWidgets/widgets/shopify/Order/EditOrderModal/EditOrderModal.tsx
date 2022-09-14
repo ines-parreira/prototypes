@@ -19,9 +19,13 @@ import {
     onReset,
 } from 'state/infobarActions/shopify/editOrder/actions'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import {getIntegrationsByType} from 'state/integrations/selectors'
 import {RootState} from 'state/types'
-import {IntegrationType, IntegrationDataItem} from 'models/integration/types'
+import {
+    IntegrationType,
+    IntegrationDataItem,
+    ShopifyIntegration,
+} from 'models/integration/types'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -75,28 +79,19 @@ export function EditOrderModalContainer({
     const currentIntegration = useMemo(
         () =>
             integrations.find(
-                (integration: Map<any, any>) =>
-                    integration.get('id') === integrationId
-            ) as Map<any, any> | null,
+                (integration) => integration.id === integrationId
+            ),
         [integrations, integrationId]
     )
     const hasScope = useMemo(
         () =>
             ['write_order_edits', 'read_order_edits'].every(function (scope) {
-                return (
-                    currentIntegration?.getIn([
-                        'meta',
-                        'oauth',
-                        'scope',
-                    ]) as string
-                ).includes(scope)
+                return currentIntegration?.meta.oauth.scope?.includes(scope)
             }),
         [currentIntegration]
     )
     const currencyCode = useMemo(
-        () =>
-            (currentIntegration?.getIn(['meta', 'currency']) as string) ||
-            defaultCurrency,
+        () => currentIntegration?.meta.currency || defaultCurrency,
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [currentIntegration]
     )
@@ -252,10 +247,7 @@ export function EditOrderModalContainer({
             {payload ? (
                 <div>
                     <DraftOrderTable
-                        shopName={currentIntegration!.getIn([
-                            'meta',
-                            'shop_name',
-                        ])}
+                        shopName={currentIntegration!.meta.shop_name}
                         actionName={data.actionName!}
                         isShownInEditOrder={true}
                         currencyCode={currencyCode}
@@ -324,7 +316,9 @@ export function EditOrderModalContainer({
 
 const connector = connect(
     (state: RootState) => ({
-        integrations: getIntegrationsByTypes([IntegrationType.Shopify])(state),
+        integrations: getIntegrationsByType<ShopifyIntegration>(
+            IntegrationType.Shopify
+        )(state),
         loading: getEditOrderState(state).get('loading'),
         loadingMessage: getEditOrderState(state).get('loadingMessage'),
         payload: getEditOrderState(state).get('payload') as Map<

@@ -8,8 +8,8 @@ import {AutoReplyWismoSettings, ManagedRulesSlugs} from 'state/rules/types'
 import SetResponseTextAction from 'pages/tickets/common/macros/components/actions/SetResponseTextAction'
 import RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'
 import useAppSelector from 'hooks/useAppSelector'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
-import {IntegrationType} from 'models/integration/types'
+import {getIntegrationsByType} from 'state/integrations/selectors'
+import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import shopify from 'assets/img/integrations/shopify.png'
 
@@ -24,22 +24,15 @@ export const AutoReplyWismoEditor = ({
     onChange,
 }: ManagedRuleDetailProps<AutoReplyWismoSettings>) => {
     const integrations = useAppSelector(
-        getIntegrationsByTypes(IntegrationType.Shopify)
+        getIntegrationsByType<ShopifyIntegration>(IntegrationType.Shopify)
     )
 
-    const handleChange = onChange()
     const handleBlocklist = (block_list: string[]) => {
-        if (!handleChange) {
-            return
-        }
-        void handleChange({...settings, block_list: block_list})
+        void onChange()?.({...settings, block_list: block_list})
     }
 
     const handleBodyChange = (index: number, args: Map<string, any>) => {
-        if (!handleChange) {
-            return
-        }
-        void handleChange({
+        void onChange()?.({
             ...settings,
             body_html: args.get('body_html'),
             body_text: args.get('body_text'),
@@ -47,10 +40,7 @@ export const AutoReplyWismoEditor = ({
     }
 
     const handleSignatureChange = (index: number, args: Map<string, any>) => {
-        if (!handleChange) {
-            return
-        }
-        void handleChange({
+        void onChange()?.({
             ...settings,
             signature_html: args.get('body_html'),
             signature_text: args.get('body_text'),
@@ -59,7 +49,7 @@ export const AutoReplyWismoEditor = ({
 
     return (
         <>
-            {integrations.size === 0 && (
+            {integrations.length === 0 && (
                 <Alert type={AlertType.Warning} icon={true} className="mb-3">
                     This rule requires at least one Shopify integration to run.
                 </Alert>

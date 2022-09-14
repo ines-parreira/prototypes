@@ -30,11 +30,11 @@ import {
 import {getShippingAddressState} from 'state/infobarActions/shopify/editShippingAddress/selectors'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {RootState} from 'state/types'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import {getIntegrationsByType} from 'state/integrations/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
-import {IntegrationType} from 'models/integration/types'
+import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
 import {states} from 'fixtures/states'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
@@ -175,16 +175,14 @@ export function EditOrderShippingAddressModal({
     const currentIntegration = useMemo(
         () =>
             integrations.find(
-                (integration: Map<any, any>) =>
-                    integration.get('id') === integrationId
-            ) as Map<any, any> | null,
+                (integration) => integration.id === integrationId
+            ),
         [integrations, integrationId]
     )
+
     const hasScope = useMemo(
         () =>
-            (
-                currentIntegration?.getIn(['meta', 'oauth', 'scope']) as string
-            ).includes('write_order_edits'),
+            currentIntegration?.meta.oauth.scope?.includes('write_order_edits'),
         [currentIntegration]
     )
 
@@ -573,7 +571,9 @@ export function EditOrderShippingAddressModal({
 const connector = connect(
     (state: RootState) => ({
         currentAccount: getCurrentAccountState(state),
-        integrations: getIntegrationsByTypes([IntegrationType.Shopify])(state),
+        integrations: getIntegrationsByType<ShopifyIntegration>(
+            IntegrationType.Shopify
+        )(state),
         shippingAddresses: getShippingAddressState(state).get(
             'addresses'
         ) as List<Map<any, any>>,

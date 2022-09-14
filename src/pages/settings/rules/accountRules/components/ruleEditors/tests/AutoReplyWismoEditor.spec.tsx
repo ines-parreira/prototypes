@@ -50,9 +50,7 @@ describe('<AutoReplyWismoEditor/>', () => {
         const store = mockStore({
             entities: entities,
             integrations: fromJS({
-                integrations: fromJS([
-                    {type: IntegrationType.Shopify, meta: {}},
-                ]),
+                integrations: [{type: IntegrationType.Shopify, meta: {}}],
             }),
         } as RootState)
         const {container} = render(
@@ -65,6 +63,9 @@ describe('<AutoReplyWismoEditor/>', () => {
     it('should display an alert if no shopify integration', () => {
         const store = mockStore({
             entities: entities,
+            integrations: fromJS({
+                integrations: [],
+            }),
         } as RootState)
         const {container} = render(
             <Provider store={store}>

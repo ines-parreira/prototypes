@@ -61,9 +61,9 @@ describe('<CancelOrderContainer />', () => {
             order,
         },
         header: 'Cancel order',
-        integrations: integrationsStateWithShopify.get(
-            'integrations'
-        ) as List<any>,
+        integrations: (
+            integrationsStateWithShopify.get('integrations') as List<any>
+        ).toJS(),
         isOpen: true,
         lineItems: fromJS([]),
         loading: false,

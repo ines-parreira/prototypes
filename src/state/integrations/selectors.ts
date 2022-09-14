@@ -130,7 +130,29 @@ export const getIntegrationById = (id: number) =>
         }
     )
 
+export const getIntegrationsByType = <T extends Integration>(type: T['type']) =>
+    createSelector<RootState, T[], IntegrationsState>(
+        getIntegrationsState,
+        (state) => {
+            return state.integrations.filter(
+                (integration): integration is T => integration.type === type
+            )
+        }
+    )
+
 export const getIntegrationsByTypes = (
+    types: readonly IntegrationType[] | IntegrationType[]
+) =>
+    createSelector<RootState, Integration[], IntegrationsState>(
+        getIntegrationsState,
+        (state) => {
+            return state.integrations.filter((integration) =>
+                types.includes(integration.type)
+            )
+        }
+    )
+
+export const DEPRECATED_getIntegrationsByTypes = (
     types: readonly IntegrationType[] | IntegrationType[] | IntegrationType
 ) =>
     createSelector<RootState, List<any>, List<any>>(
@@ -148,14 +170,15 @@ export const getIntegrationsByTypes = (
 
 export const makeGetIntegrationsByTypes =
     (state: RootState) => (types: IntegrationType[] | IntegrationType) =>
-        getIntegrationsByTypes(types)(state)
+        DEPRECATED_getIntegrationsByTypes(types)(state)
 
 export const getEligibleShopifyIntegrationsFor =
     (state: RootState) => (type: IntegrationType) => {
-        const shopifyIntegrations = getIntegrationsByTypes(
+        const shopifyIntegrations = DEPRECATED_getIntegrationsByTypes(
             IntegrationType.Shopify
         )(state)
-        const currentIntegrationOfType = getIntegrationsByTypes(type)(state)
+        const currentIntegrationOfType =
+            DEPRECATED_getIntegrationsByTypes(type)(state)
 
         return shopifyIntegrations.filter(
             (integration: Map<any, any>) =>
@@ -341,7 +364,7 @@ export const makeGetPhoneChannels = (
         Record<number, PhoneNumber>
     >(
         (state: RootState) => state.ticket || fromJS({}),
-        getIntegrationsByTypes([type]),
+        DEPRECATED_getIntegrationsByTypes([type]),
         getPhoneNumbersState,
         (currentTicket, integrations, phoneNumbers) => {
             return integrations.map((integration: Map<any, any>) => {
@@ -448,23 +471,26 @@ export const getMessagingIntegrations = createSelector<
     RootState,
     List<Map<any, any>>,
     List<Map<any, any>>
->(getIntegrationsByTypes(MESSAGING_INTEGRATION_TYPES), (integrations) => {
-    return integrations.map((integration) => {
-        if (integration!.get('type') === IntegrationType.Facebook) {
-            return integration!.set(
-                'name',
-                integration!.getIn(['meta', 'name'])
-            )
-        }
-        return integration
-    }) as List<Map<any, any>>
-})
+>(
+    DEPRECATED_getIntegrationsByTypes(MESSAGING_INTEGRATION_TYPES),
+    (integrations) => {
+        return integrations.map((integration) => {
+            if (integration!.get('type') === IntegrationType.Facebook) {
+                return integration!.set(
+                    'name',
+                    integration!.getIn(['meta', 'name'])
+                )
+            }
+            return integration
+        }) as List<Map<any, any>>
+    }
+)
 
 export const hasIntegrationOfTypes = (
     types: IntegrationType[] | IntegrationType
 ) =>
     createSelector<RootState, boolean, List<any>>(
-        getIntegrationsByTypes(types),
+        DEPRECATED_getIntegrationsByTypes(types),
         (integrations) => !integrations.isEmpty()
     )
 
@@ -473,10 +499,10 @@ export const makeHasIntegrationOfTypes =
         hasIntegrationOfTypes(types)(state)
 
 export const getShopifyIntegrationsWithoutChat = (state: RootState) => {
-    const shopifyIntegrations = getIntegrationsByTypes(IntegrationType.Shopify)(
-        state
-    )
-    const chatIntegrations = getIntegrationsByTypes(
+    const shopifyIntegrations = DEPRECATED_getIntegrationsByTypes(
+        IntegrationType.Shopify
+    )(state)
+    const chatIntegrations = DEPRECATED_getIntegrationsByTypes(
         IntegrationType.SmoochInside
     )(state)
 
@@ -495,10 +521,10 @@ export const getShopifyIntegrationsWithoutChat = (state: RootState) => {
 }
 
 export const getShopifyIntegrationsWithoutFacebook = (state: RootState) => {
-    const shopifyIntegrations = getIntegrationsByTypes(IntegrationType.Shopify)(
-        state
-    )
-    const facebookIntegrations = getIntegrationsByTypes(
+    const shopifyIntegrations = DEPRECATED_getIntegrationsByTypes(
+        IntegrationType.Shopify
+    )(state)
+    const facebookIntegrations = DEPRECATED_getIntegrationsByTypes(
         IntegrationType.Facebook
     )(state)
 
@@ -520,7 +546,7 @@ export const getShopifyIntegrationsWithoutFacebook = (state: RootState) => {
 
 export const getShopifyIntegrationByShopName = (shopName: string) =>
     createSelector<RootState, Map<any, any>, List<any>>(
-        getIntegrationsByTypes([IntegrationType.Shopify]),
+        DEPRECATED_getIntegrationsByTypes([IntegrationType.Shopify]),
         (state) =>
             (state.find(
                 (integration: Map<any, any>) =>
@@ -530,7 +556,7 @@ export const getShopifyIntegrationByShopName = (shopName: string) =>
 
 export const getMagento2IntegrationByStoreUrl = (storeUrl: string) =>
     createSelector<RootState, Map<any, any>, List<any>>(
-        getIntegrationsByTypes([IntegrationType.Magento2]),
+        DEPRECATED_getIntegrationsByTypes([IntegrationType.Magento2]),
         (state) =>
             (state.find(
                 (integration: Map<any, any>) =>

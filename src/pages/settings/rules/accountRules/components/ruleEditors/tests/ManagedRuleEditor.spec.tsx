@@ -46,11 +46,23 @@ describe('<ManagedRuleEditor/>', () => {
             ruleRecipes: {
                 [ManagedRulesSlugs.AutoCloseSpam as string]:
                     emptyRuleRecipeFixture,
+                [ManagedRulesSlugs.AutoReplyWismo as string]:
+                    emptyRuleRecipeFixture,
             },
             helpCenter: helpCenterInitialState,
         },
         billing: fromJS(billingState),
         currentAccount: fromJS(account),
+        integrations: fromJS({
+            integrations: [
+                {
+                    type: 'shopify',
+                    meta: {
+                        shop_name: `my-shop`,
+                    },
+                },
+            ],
+        }),
     } as RootState)
 
     beforeEach(() => {

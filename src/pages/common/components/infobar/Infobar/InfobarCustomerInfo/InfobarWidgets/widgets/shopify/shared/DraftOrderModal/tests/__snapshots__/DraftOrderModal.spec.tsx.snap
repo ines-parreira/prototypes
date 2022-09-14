@@ -538,7 +538,7 @@ exports[`<DraftOrderModal/> should render with a default currency if missing fro
                     >
                       <strong>
                         <span>
-                          $9.99
+                          YEN 9.99
                         </span>
                       </strong>
                     </button>
@@ -571,7 +571,7 @@ exports[`<DraftOrderModal/> should render with a default currency if missing fro
                   class="mt-auto mb-auto mr-auto"
                 >
                   <span>
-                    $9.99
+                    YEN 9.99
                   </span>
                 </strong>
                 <button
@@ -653,7 +653,7 @@ exports[`<DraftOrderModal/> should render with a default currency if missing fro
                     >
                       <strong>
                         <span>
-                          $9.99
+                          YEN 9.99
                         </span>
                       </strong>
                     </button>
@@ -686,7 +686,7 @@ exports[`<DraftOrderModal/> should render with a default currency if missing fro
                   class="mt-auto mb-auto mr-auto"
                 >
                   <span>
-                    $39.96
+                    YEN 39.96
                   </span>
                 </strong>
                 <button
@@ -710,7 +710,7 @@ exports[`<DraftOrderModal/> should render with a default currency if missing fro
       >
         editable: true
         actionName: shopifyDuplicateOrder
-        currencyCode: USD
+        currencyCode: YEN
       </div>
       <div
         class="emailInvoiceContainer"

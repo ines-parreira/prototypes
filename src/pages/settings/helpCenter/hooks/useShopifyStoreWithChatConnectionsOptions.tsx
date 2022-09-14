@@ -4,7 +4,7 @@ import {Map} from 'immutable'
 import shopify from 'assets/img/integrations/shopify.png'
 
 import {IntegrationType} from 'models/integration/types'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import {DEPRECATED_getIntegrationsByTypes} from 'state/integrations/selectors'
 import {Option} from 'pages/common/forms/SelectField/types'
 import useAppSelector from 'hooks/useAppSelector'
 
@@ -36,11 +36,11 @@ const optionLabel = (
 
 export function useShopifyStoreWithChatConnectionsOptions(css: CssClasses) {
     const shopifyIntegrations = useAppSelector(
-        getIntegrationsByTypes(IntegrationType.Shopify)
+        DEPRECATED_getIntegrationsByTypes(IntegrationType.Shopify)
     )
 
     const chatIntegrations = useAppSelector(
-        getIntegrationsByTypes(IntegrationType.GorgiasChat)
+        DEPRECATED_getIntegrationsByTypes(IntegrationType.GorgiasChat)
     )
 
     const shopsOptions: Option[] = useMemo(() => {

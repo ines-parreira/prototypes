@@ -1,10 +1,9 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
-import {isEmpty} from 'lodash'
 
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
-import {IntegrationType} from 'models/integration/types'
+import {getIntegrationsByType} from 'state/integrations/selectors'
+import {IntegrationType, PhoneIntegration} from 'models/integration/types'
 import PageHeader from 'pages/common/components/PageHeader'
 import Button from 'pages/common/components/button/Button'
 import history from 'pages/history'
@@ -15,8 +14,8 @@ import css from 'pages/settings/settings.less'
 
 export function PhoneIntegrationsListContainer(): JSX.Element {
     const integrations = useAppSelector(
-        getIntegrationsByTypes([IntegrationType.Phone])
-    )?.toJS()
+        getIntegrationsByType<PhoneIntegration>(IntegrationType.Phone)
+    )
 
     return (
         <div className="full-width">
@@ -48,7 +47,7 @@ export function PhoneIntegrationsListContainer(): JSX.Element {
                 fluid
                 className={css.pageContainer}
             >
-                {!isEmpty(integrations) &&
+                {integrations.length > 0 &&
                     'Make and receive phone calls from Gorgias with easy access to customer data and conversation history.'}
             </Container>
             <PhoneIntegrationsList type={IntegrationType.Phone} />

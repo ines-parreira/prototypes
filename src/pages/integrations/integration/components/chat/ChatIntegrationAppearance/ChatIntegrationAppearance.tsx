@@ -22,7 +22,11 @@ import {
     SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
     SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_DEFAULT,
 } from 'config/integrations/smooch_inside'
-import {IntegrationType, IntegrationDecoration} from 'models/integration/types'
+import {
+    IntegrationType,
+    IntegrationDecoration,
+    ShopifyIntegration,
+} from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import Group from 'pages/common/components/layout/Group'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
@@ -38,7 +42,7 @@ import {
     deleteIntegration,
     updateOrCreateIntegration,
 } from 'state/integrations/actions'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import {getIntegrationsByType} from 'state/integrations/selectors'
 import {RootState} from 'state/types'
 import ChatIntegrationNavigation from 'pages/integrations/integration/components/chat/ChatIntegrationNavigation'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/chat/ChatIntegrationPreview/ChatIntegrationPreview'
@@ -519,7 +523,7 @@ export class ChatIntegrationAppearance extends Component<Props, State> {
 const connector = connect(
     (state: RootState) => {
         return {
-            shopifyIntegrations: getIntegrationsByTypes(
+            shopifyIntegrations: getIntegrationsByType<ShopifyIntegration>(
                 IntegrationType.Shopify
             )(state),
         }

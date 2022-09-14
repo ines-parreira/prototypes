@@ -1,16 +1,15 @@
 import React from 'react'
 import {fireEvent, render, RenderResult} from '@testing-library/react'
 
-import {fromJS, List, Map} from 'immutable'
-
 import history from '../../../../history'
 import {ImportZendeskDataList} from '../ImportZendeskDataList'
 
+import {ZendeskIntegration} from '../../../../../models/integration/types'
 import {failedImport, pendingImport, successImport} from './fixtures'
 
 interface DefaultProps {
     img: string
-    zendeskImports: List<Map<any, any>>
+    zendeskImports: ZendeskIntegration[]
     timezone: string | null
 }
 
@@ -27,11 +26,7 @@ describe('<ImportZendeskDataList/>', () => {
         it('should render the list of imports', () => {
             const {getAllByRole} = renderComponent({
                 ...defaultProps,
-                zendeskImports: fromJS([
-                    successImport,
-                    pendingImport,
-                    failedImport,
-                ]),
+                zendeskImports: [successImport, pendingImport, failedImport],
             })
             expect(getAllByRole('row').length).toEqual(3)
         })
@@ -39,7 +34,7 @@ describe('<ImportZendeskDataList/>', () => {
         it('should render a paused import', () => {
             const {getByText} = renderComponent({
                 ...defaultProps,
-                zendeskImports: fromJS([successImport]),
+                zendeskImports: [successImport],
             })
             expect(getByText('Paused')).toBeDefined()
             expect(getByText(successImport.name)).toBeDefined()
@@ -47,7 +42,7 @@ describe('<ImportZendeskDataList/>', () => {
         it('should render a synchronizing import', () => {
             const {getByText} = renderComponent({
                 ...defaultProps,
-                zendeskImports: fromJS([
+                zendeskImports: [
                     {
                         ...successImport,
                         meta: {
@@ -55,7 +50,7 @@ describe('<ImportZendeskDataList/>', () => {
                             continuous_import_enabled: true,
                         },
                     },
-                ]),
+                ],
             })
             expect(getByText('Synchronizing')).toBeDefined()
             expect(getByText(successImport.name)).toBeDefined()
@@ -64,7 +59,7 @@ describe('<ImportZendeskDataList/>', () => {
         it('should render a pending import', () => {
             const {getByText, getByRole} = renderComponent({
                 ...defaultProps,
-                zendeskImports: fromJS([pendingImport]),
+                zendeskImports: [pendingImport],
             })
             expect(getByText('Progress 10%')).toBeDefined()
             expect(getByText(pendingImport.name)).toBeDefined()
@@ -76,9 +71,9 @@ describe('<ImportZendeskDataList/>', () => {
         it('should render a failed import', () => {
             const {getByText} = renderComponent({
                 ...defaultProps,
-                zendeskImports: fromJS([failedImport]),
+                zendeskImports: [failedImport],
             })
-            expect(getByText(failedImport.meta.error)).toBeDefined()
+            expect(getByText(failedImport.meta.error!)).toBeDefined()
             expect(getByText(failedImport.name)).toBeDefined()
         })
 
@@ -91,7 +86,7 @@ describe('<ImportZendeskDataList/>', () => {
             }))
             const {getByRole} = renderComponent({
                 ...defaultProps,
-                zendeskImports: fromJS([successImport]),
+                zendeskImports: [successImport],
             })
             const row = getByRole('row')
             fireEvent.click(row)

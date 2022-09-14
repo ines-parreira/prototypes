@@ -6,7 +6,7 @@ import {Popover, PopoverBody} from 'reactstrap'
 
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {EditionContext} from 'providers/infobar/EditionContext'
-import {IntegrationType} from 'models/integration/types'
+import {Integration, IntegrationType} from 'models/integration/types'
 import useId from 'hooks/useId'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -47,7 +47,7 @@ export default function Wrapper({widget, template, source, editing}: Props) {
     const absolutePath = template.get('absolutePath', []) as string[]
     const templatePath = template.get('templatePath', '') as string
 
-    const widgetType = widget.get('type') as IntegrationType
+    const widgetType = widget.get('type') as Integration['type']
 
     const integration = useIntegration(absolutePath, widgetType)
 
@@ -180,20 +180,23 @@ export default function Wrapper({widget, template, source, editing}: Props) {
     )
 }
 
-function useIntegration(absolutePath: string[], widgetType: IntegrationType) {
-    const integrations = useAppSelector(
-        integrationsSelectors.getIntegrationsByTypes(widgetType)
-    )
-
+function useIntegration(
+    absolutePath: string[],
+    widgetType: Integration['type']
+) {
     const integrationId = parseInt(_last(absolutePath) || '')
 
     const integration = useAppSelector(
         integrationsSelectors.getIntegrationById(integrationId)
     )
 
+    const integrations = useAppSelector(
+        integrationsSelectors.getIntegrationsByType<Integration>(widgetType)
+    )
+
     if (isNaN(integrationId)) {
         return (
-            integrations.isEmpty() ? fromJS({}) : integrations.first()
+            integrations.length === 0 ? fromJS({}) : fromJS(integrations[0])
         ) as Map<any, any>
     }
 

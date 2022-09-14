@@ -1,3 +1,4 @@
+import {IntegrationType, ZendeskIntegration} from 'models/integration/types'
 import {ImportStatus} from '../types'
 
 export const successImport = {
@@ -15,7 +16,8 @@ export const successImport = {
         },
         display_import_stats: true,
     },
-}
+    type: IntegrationType.Zendesk,
+} as unknown as ZendeskIntegration
 
 export const pendingImport = {
     id: 2,
@@ -32,7 +34,8 @@ export const pendingImport = {
         },
         display_import_stats: true,
     },
-}
+    type: IntegrationType.Zendesk,
+} as unknown as ZendeskIntegration
 
 export const failedImport = {
     id: 3,
@@ -50,7 +53,8 @@ export const failedImport = {
         error: 'Import failed because of permissions issues.',
         display_import_stats: true,
     },
-}
+    type: IntegrationType.Zendesk,
+} as unknown as ZendeskIntegration
 
 export const timezoneUtc = 'UTC'
 export const timezoneParis = 'Europe/Paris'

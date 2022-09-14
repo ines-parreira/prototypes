@@ -37,6 +37,7 @@ import css from 'pages/settings/settings.less'
 import {updateOrCreateIntegration} from 'state/integrations/actions'
 import {getIntegrationsByTypes} from 'state/integrations/selectors'
 import {RootState} from 'state/types'
+import {EmailIntegration, isEmailIntegration} from 'models/integration/types'
 import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
 import ChatIntegrationPreview from '../ChatIntegrationPreview/ChatIntegrationPreview'
 import AutoResponderPreview from '../ChatIntegrationPreview/AutoResponder'
@@ -81,7 +82,7 @@ type State = {
 
 export class ChatIntegrationPreferences extends Component<Props, State> {
     static defaultProps = {
-        emailIntegrations: fromJS([]),
+        emailIntegrations: [],
     }
 
     state = {
@@ -206,7 +207,11 @@ export class ChatIntegrationPreferences extends Component<Props, State> {
             preview,
             linkedEmailIntegration,
         } = this.state
-        const {integration, emailIntegrations} = this.props
+        const {integration, emailIntegrations: integrations} = this.props
+        const emailIntegrations = integrations.filter(
+            (integration): integration is EmailIntegration =>
+                isEmailIntegration(integration)
+        )
 
         const conversationColor = integration.getIn(
             ['decoration', 'conversation_color'],
@@ -415,27 +420,12 @@ export class ChatIntegrationPreferences extends Component<Props, State> {
                                     <SelectField
                                         placeholder="Select an email integration"
                                         value={linkedEmailIntegration}
-                                        options={emailIntegrations
-                                            .map(
-                                                (
-                                                    integration: Map<any, any>
-                                                ) => ({
-                                                    label: `${
-                                                        integration.get(
-                                                            'name'
-                                                        ) as string
-                                                    } <${
-                                                        integration.getIn([
-                                                            'meta',
-                                                            'address',
-                                                        ]) as string
-                                                    }>`,
-                                                    value: integration.get(
-                                                        'id'
-                                                    ),
-                                                })
-                                            )
-                                            .toJS()}
+                                        options={emailIntegrations.map(
+                                            (integration) => ({
+                                                label: `${integration.name} <${integration.meta.address}>`,
+                                                value: integration.id,
+                                            })
+                                        )}
                                         fullWidth
                                         onChange={(integrationId) => {
                                             this._setLinkedEmailIntegration(

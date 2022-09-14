@@ -20,9 +20,9 @@ import {
     setPayload,
 } from 'state/infobarActions/shopify/cancelOrder/actions'
 import {getCancelOrderState} from 'state/infobarActions/shopify/cancelOrder/selectors'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import {getIntegrationsByType} from 'state/integrations/selectors'
 import {RootState} from 'state/types'
-import {IntegrationType} from 'models/integration/types'
+import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {getFinalCancelOrderPayload} from 'business/shopify/order'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
@@ -69,16 +69,14 @@ export const CancelOrderModalContainer = ({
     const integration = useMemo(
         () =>
             integrations.find(
-                (integration: Map<any, any>) =>
-                    integration.get('id') === integrationId
-            ) as Map<any, any>,
+                (integration) => integration.id === integrationId
+            ),
         [integrationId, integrations]
     )
 
-    const shopName = useMemo(
-        () => integration.getIn(['meta', 'shop_name']) as string,
-        [integration]
-    )
+    const shopName = useMemo(() => {
+        return integration?.meta.shop_name || ''
+    }, [integration])
 
     useUpdateEffect(() => {
         if (!previousIsOpen && isOpen) {
@@ -218,7 +216,9 @@ export const CancelOrderModalContainer = ({
 
 const connector = connect(
     (state: RootState) => ({
-        integrations: getIntegrationsByTypes([IntegrationType.Shopify])(state),
+        integrations: getIntegrationsByType<ShopifyIntegration>(
+            IntegrationType.Shopify
+        )(state),
         loading: getCancelOrderState(state).get('loading') as boolean,
         loadingMessage: getCancelOrderState(state).get(
             'loadingMessage'

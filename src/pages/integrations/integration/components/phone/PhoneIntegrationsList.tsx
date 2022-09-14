@@ -3,7 +3,11 @@ import {sortBy, reverse} from 'lodash'
 import {useDeepCompareEffect} from 'react-use'
 
 import {OrderDirection} from 'models/api/types'
-import {PhoneIntegration, IntegrationType} from 'models/integration/types'
+import {
+    PhoneIntegration,
+    IntegrationType,
+    isPhoneIntegration,
+} from 'models/integration/types'
 import {PhoneNumber} from 'models/phoneNumber/types'
 import {getIntegrationsByTypes} from 'state/integrations/selectors'
 import {getPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
@@ -31,14 +35,16 @@ type Props = {
 }
 
 export function PhoneIntegrationsList({type}: Props): JSX.Element | null {
-    const integrations: PhoneIntegration[] = useAppSelector(
-        getIntegrationsByTypes([type])
-    )?.toJS()
+    const integrations = useAppSelector(getIntegrationsByTypes([type]))
+    const phoneIntegrations = integrations.filter(
+        (integration): integration is PhoneIntegration =>
+            isPhoneIntegration(integration)
+    )
     const phoneNumbers = useAppSelector(getPhoneNumbers)
 
     const rows: Row[] = useMemo(
         () =>
-            integrations.reduce(
+            phoneIntegrations.reduce(
                 (rows: Row[], integration: PhoneIntegration) => {
                     const phoneNumber =
                         phoneNumbers[integration.meta.twilio_phone_number_id]
@@ -52,7 +58,7 @@ export function PhoneIntegrationsList({type}: Props): JSX.Element | null {
                 },
                 []
             ),
-        [integrations, phoneNumbers]
+        [phoneIntegrations, phoneNumbers]
     )
 
     const [orderBy, setOrderBy] = useState<string>('integration.id')

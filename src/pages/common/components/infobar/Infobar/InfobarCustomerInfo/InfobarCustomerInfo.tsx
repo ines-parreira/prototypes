@@ -10,7 +10,6 @@ import Button from 'pages/common/components/button/Button'
 import {RootState} from 'state/types'
 import {itemsWithContext} from 'state/widgets/utils'
 import {getDisplayName} from 'state/customers/helpers'
-import * as integrationsSelectors from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/types'
 import {CustomerContext} from 'providers/infobar/CustomerContext'
 
@@ -22,6 +21,7 @@ import {
     jsonToWidgets,
 } from 'pages/common/components/infobar/utils'
 
+import {getIntegrationsByTypes} from 'state/integrations/selectors'
 import CustomerChannels from './CustomerChannels'
 import CustomerNote from './CustomerNote/CustomerNote'
 import InfobarWidgets from './InfobarWidgets/InfobarWidgets.js'
@@ -313,16 +313,15 @@ export const InfobarCustomerInfoContainer = ({
 }
 
 const connector = connect((state: RootState) => ({
-    hasIntegrations: !integrationsSelectors
-        .getIntegrationsByTypes([
+    hasIntegrations:
+        getIntegrationsByTypes([
             IntegrationType.Http,
             IntegrationType.Magento2,
             IntegrationType.Recharge,
             IntegrationType.Shopify,
             IntegrationType.Smile,
             IntegrationType.BigCommerce,
-        ])(state)
-        .isEmpty(),
+        ])(state).length > 0,
 }))
 
 export default connector(InfobarCustomerInfoContainer)

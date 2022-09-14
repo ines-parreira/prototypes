@@ -62,9 +62,9 @@ describe('<RefundOrderModal />', () => {
             order,
         },
         header: 'Refund order',
-        integrations: integrationsStateWithShopify.get(
-            'integrations'
-        ) as List<any>,
+        integrations: (
+            integrationsStateWithShopify.get('integrations') as List<any>
+        ).toJS(),
         isOpen: true,
         lineItems: fromJS([]),
         loading: false,

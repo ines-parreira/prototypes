@@ -1,4 +1,10 @@
-import {IntegrationType} from '../models/integration/types'
+import {
+    EmailIntegration,
+    GmailIntegration,
+    Integration,
+    IntegrationType,
+    OutlookIntegration,
+} from '../models/integration/types'
 
 //$TsFixMe fallback values for js, use IntegrationType enum instead
 export const AIRCALL_INTEGRATION_TYPE = 'aircall'
@@ -81,3 +87,11 @@ export const INTEGRATION_DATA_ITEM_TYPES = Object.freeze(
 )
 
 export const PRODUCTS_PER_PAGE = 30
+
+export const isGenericEmailIntegration = (
+    integration: Integration
+): integration is EmailIntegration | GmailIntegration | OutlookIntegration => {
+    return (EMAIL_INTEGRATION_TYPES as IntegrationType[]).includes(
+        integration.type
+    )
+}

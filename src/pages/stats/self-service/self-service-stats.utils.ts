@@ -1,22 +1,23 @@
-import {Map} from 'immutable'
 import {useEffect, useState} from 'react'
 import useAppSelector from 'hooks/useAppSelector'
 
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import {getIntegrationsByType} from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/constants'
-import {GorgiasChatIntegration} from 'models/integration/types'
+import {
+    GorgiasChatIntegration,
+    ShopifyIntegration,
+} from 'models/integration/types'
 import {fetchChatHelpCenterConfiguration} from 'models/selfServiceConfiguration/resources'
 import {SelfServiceConfiguration} from '../../../models/selfServiceConfiguration/types'
 
 export const hasShopifyIntegrationSSPEnabled = (
-    shopifyIntegration: Map<any, any>,
+    shopifyIntegration: ShopifyIntegration,
     selfServiceConfigurations: SelfServiceConfiguration[]
 ): boolean => {
     const shopifyIntegrationHasSSP = selfServiceConfigurations.find(
         (configuration) => {
             return (
-                configuration.shop_name ===
-                    shopifyIntegration.getIn(['meta', 'shop_name']) &&
+                configuration.shop_name === shopifyIntegration.meta.shop_name &&
                 configuration.deactivated_datetime === null
             )
         }
@@ -27,8 +28,11 @@ export const hasShopifyIntegrationSSPEnabled = (
 
 export const useIsArticleRecommendationDisabled = (shouldFetch: boolean) => {
     const chatIntegrations = useAppSelector(
-        getIntegrationsByTypes([IntegrationType.GorgiasChat])
-    ).toJS() as GorgiasChatIntegration[]
+        getIntegrationsByType<GorgiasChatIntegration>(
+            IntegrationType.GorgiasChat
+        )
+    )
+
     const [
         isArticleRecommendationDisabled,
         setIsArticleRecommendationDisabled,

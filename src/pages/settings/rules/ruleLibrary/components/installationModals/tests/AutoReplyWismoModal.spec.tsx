@@ -26,7 +26,7 @@ describe('<AutoReplyWismoModal/>', () => {
     ])
     const store = mockStore({
         integrations: fromJS({
-            integrations: fromJS([{type: IntegrationType.Shopify}]),
+            integrations: [{type: IntegrationType.Shopify}],
         }),
         entities: {
             helpCenter: {articles: {}, categories: {}, helpCenters: {}},
@@ -42,7 +42,9 @@ describe('<AutoReplyWismoModal/>', () => {
     })
     it('should render an alert when there are no shopify integrations', () => {
         const {container} = render(
-            <Provider store={mockStore({})}>
+            <Provider
+                store={mockStore({integrations: fromJS({integrations: []})})}
+            >
                 <AutoReplyWismoModal {...minProps} />
             </Provider>
         )

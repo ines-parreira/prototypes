@@ -9,6 +9,10 @@ import classnames from 'classnames'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import {
+    EMAIL_INTEGRATION_TYPES,
+    isGenericEmailIntegration,
+} from 'constants/integration'
+import {
     CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
     CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
     getAutoResponderReplyOptions,
@@ -27,7 +31,6 @@ import ToggleInput from '../../../../../common/forms/ToggleInput'
 import Tooltip from '../../../../../common/components/Tooltip'
 import RadioFieldSet from '../../../../../common/forms/RadioFieldSet'
 import SelectField from '../../../../../common/forms/SelectField/SelectField'
-import {EMAIL_INTEGRATION_TYPES} from '../../../../../../constants/integration'
 import {RootState} from '../../../../../../state/types'
 import GorgiasChatIntegrationPreviewContainer from '../GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
 
@@ -84,7 +87,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
     State
 > {
     static defaultProps = {
-        emailIntegrations: fromJS([]),
+        emailIntegrations: [],
     }
 
     state: State = {
@@ -269,7 +272,8 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             enableContactForm,
             offlineModeEnabledDatetime,
         } = this.state
-        const {integration, emailIntegrations} = this.props
+        const {integration, emailIntegrations: integrations} = this.props
+        const emailIntegrations = integrations.filter(isGenericEmailIntegration)
 
         const conversationColor = integration.getIn(
             ['decoration', 'conversation_color'],
@@ -687,23 +691,14 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                 <SelectField
                                     placeholder="Select an email integration"
                                     value={linkedEmailIntegration}
-                                    options={emailIntegrations
-                                        .map((integration: Map<any, any>) => ({
+                                    options={emailIntegrations.map(
+                                        (integration) => ({
                                             label:
-                                                `${
-                                                    integration.get(
-                                                        'name'
-                                                    ) as string
-                                                } ` +
-                                                `<${
-                                                    integration.getIn([
-                                                        'meta',
-                                                        'address',
-                                                    ]) as string
-                                                }>`,
-                                            value: integration.get('id'),
-                                        }))
-                                        .toJS()}
+                                                `${integration.name} ` +
+                                                `<${integration.meta.address}>`,
+                                            value: integration.id,
+                                        })
+                                    )}
                                     fullWidth
                                     onChange={(integrationId) => {
                                         this._setLinkedEmailIntegration(

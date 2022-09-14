@@ -2,7 +2,7 @@ import {Map} from 'immutable'
 import {createSelector, Selector} from 'reselect'
 
 import {StatsFilters} from 'models/stat/types'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import {DEPRECATED_getIntegrationsByTypes} from 'state/integrations/selectors'
 import {Integration} from 'models/integration/types'
 import {makeGetPlainJS} from 'utils'
 
@@ -40,14 +40,14 @@ const makeIntegrationsStatsFilterSelector = (
 }
 
 export const getStatsMessagingIntegrations = makeGetPlainJS<Integration[]>(
-    getIntegrationsByTypes(STATS_MESSAGING_INTEGRATIONS_TYPES)
+    DEPRECATED_getIntegrationsByTypes(STATS_MESSAGING_INTEGRATIONS_TYPES)
 )
 
 export const getMessagingIntegrationsStatsFilter =
     makeIntegrationsStatsFilterSelector(getStatsMessagingIntegrations)
 
 export const getStatsStoreIntegrations = makeGetPlainJS<Integration[]>(
-    getIntegrationsByTypes(STATS_STORE_INTEGRATION_TYPES)
+    DEPRECATED_getIntegrationsByTypes(STATS_STORE_INTEGRATION_TYPES)
 )
 
 export const getStoreIntegrationsStatsFilter =

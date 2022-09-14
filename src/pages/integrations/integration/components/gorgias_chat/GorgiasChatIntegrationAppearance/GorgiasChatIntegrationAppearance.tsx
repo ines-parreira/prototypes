@@ -911,12 +911,14 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
 
 const mapStateToProps = (state: RootState) => {
     return {
-        shopifyIntegrations: integrationSelectors.getIntegrationsByTypes(
-            IntegrationType.Shopify
-        )(state),
-        gorgiasChatIntegrations: integrationSelectors.getIntegrationsByTypes(
-            IntegrationType.GorgiasChat
-        )(state),
+        shopifyIntegrations:
+            integrationSelectors.DEPRECATED_getIntegrationsByTypes(
+                IntegrationType.Shopify
+            )(state),
+        gorgiasChatIntegrations:
+            integrationSelectors.DEPRECATED_getIntegrationsByTypes(
+                IntegrationType.GorgiasChat
+            )(state),
         currentAccount: getCurrentAccountState(state),
     }
 }

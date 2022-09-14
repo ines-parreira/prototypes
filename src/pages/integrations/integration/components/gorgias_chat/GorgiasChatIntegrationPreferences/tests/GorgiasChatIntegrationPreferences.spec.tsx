@@ -26,7 +26,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
         typeof GorgiasChatIntegrationPreferencesComponent
     > = {
         integration: fromJS({}),
-        emailIntegrations: fromJS([]),
+        emailIntegrations: [],
         updateOrCreateIntegration: jest.fn(),
     }
 

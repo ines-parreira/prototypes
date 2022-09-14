@@ -203,7 +203,9 @@ const minProps = {
     },
     integrations: (
         integrationsStateWithShopify.get('integrations') as List<any>
-    ).setIn([0, 'meta', 'currency'], 'EUR'),
+    )
+        .setIn([0, 'meta', 'currency'], 'EUR')
+        .toJS(),
     loading: false,
     loadingMessage: undefined,
     payload: null,
@@ -291,16 +293,21 @@ describe('<DraftOrderModal/>', () => {
     })
 
     it('should render with a default currency if missing from integrations', () => {
+        const integrations = integrationsStateWithShopify.get(
+            'integrations'
+        ) as List<Map<any, any>>
+
+        const integration = integrations
+            .setIn([0, 'meta', 'currency'], undefined)
+            .first()
+
         const {container} = render(
             <CustomerContext.Provider value={{customerId: 2}}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <DraftOrderModalContainer
                         {...minProps}
-                        integrations={minProps.integrations.removeIn([
-                            0,
-                            'meta',
-                            'currency',
-                        ])}
+                        integrations={[integration.toJS()]}
+                        defaultCurrency="YEN"
                         products={products}
                         payload={payload}
                     />
@@ -555,16 +562,17 @@ describe('<DraftOrderModal/>', () => {
     it('should cancel when closing the missing scope modal', () => {
         const draftOrder = initDraftOrderPayload(customer, order, products)
         const payload = getDuplicateOrderPayload(draftOrder)
+        const integrations = (
+            integrationsStateWithShopify.get('integrations') as List<any>
+        )
+            .setIn([0, 'meta', 'oauth', 'scope'], 'foo')
+            .toJS()
         const {getByTestId} = render(
             <CustomerContext.Provider value={{customerId: 2}}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <DraftOrderModalContainer
                         {...minProps}
-                        integrations={(
-                            integrationsStateWithShopify.get(
-                                'integrations'
-                            ) as List<any>
-                        ).setIn([0, 'meta', 'oauth', 'scope'], 'foo')}
+                        integrations={integrations}
                         products={products}
                         payload={payload}
                     />

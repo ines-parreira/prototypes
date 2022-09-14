@@ -3,12 +3,13 @@ import classnames from 'classnames'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import useAppSelector from 'hooks/useAppSelector'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import {getIntegrationsByType} from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/constants'
 import {FakeOrderTracking} from 'pages/settings/rules/components/FakeOrderTracking'
 import {ManagedRuleModalProps} from '../InstallRuleModalBody'
 import defaultModalCss from '../RuleRecipeModal.less'
 
+import {ShopifyIntegration} from '../../../../../../models/integration/types'
 import css from './ManagedRuleModal.less'
 
 export const AutoReplyWismoModal = ({
@@ -23,7 +24,7 @@ export const AutoReplyWismoModal = ({
     }/static/private/js/assets/img/icons/logo.png`
 
     const integrations = useAppSelector(
-        getIntegrationsByTypes(IntegrationType.Shopify)
+        getIntegrationsByType<ShopifyIntegration>(IntegrationType.Shopify)
     )
 
     return (
@@ -38,7 +39,7 @@ export const AutoReplyWismoModal = ({
                     {renderTags()}
                 </div>
             )}
-            {integrations.size === 0 && (
+            {integrations.length === 0 && (
                 <Alert icon={true} type={AlertType.Warning} className="mb-2">
                     This rule requires a Shopify integration to run.
                 </Alert>

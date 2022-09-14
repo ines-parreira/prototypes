@@ -5,7 +5,7 @@ import {connect, ConnectedProps} from 'react-redux'
 
 import Button from 'pages/common/components/button/Button'
 import {RootState} from '../../../../../state/types'
-import {getIntegrationsByTypes} from '../../../../../state/integrations/selectors'
+import {DEPRECATED_getIntegrationsByTypes} from '../../../../../state/integrations/selectors'
 import {IntegrationType} from '../../../../../models/integration/types'
 
 import {
@@ -161,6 +161,8 @@ export class Toolbar extends Component<Props, State> {
 }
 
 const connector = connect((state: RootState) => ({
-    integrations: getIntegrationsByTypes([IntegrationType.Shopify])(state),
+    integrations: DEPRECATED_getIntegrationsByTypes([IntegrationType.Shopify])(
+        state
+    ),
 }))
 export default connector(Toolbar)

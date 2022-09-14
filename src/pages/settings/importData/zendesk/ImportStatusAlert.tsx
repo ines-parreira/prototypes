@@ -1,16 +1,16 @@
-import {Map} from 'immutable'
 import React from 'react'
 
 import Alert, {AlertType} from '../../../common/components/Alert/Alert'
 
+import {ZendeskIntegrationMeta} from '../../../../models/integration/types'
 import {ImportStatus} from './types'
 
 interface ImportStatusAlertProps {
-    integrationMeta: Map<any, any>
+    integrationMeta: ZendeskIntegrationMeta
 }
 
 const ImportStatusAlert = ({integrationMeta}: ImportStatusAlertProps) => {
-    const importStatus = integrationMeta.get('status')
+    const importStatus = integrationMeta.status
     if (importStatus === ImportStatus.Pending) {
         return (
             <Alert icon={<i className="material-icons md-spin">refresh</i>}>
@@ -18,10 +18,8 @@ const ImportStatusAlert = ({integrationMeta}: ImportStatusAlertProps) => {
             </Alert>
         )
     } else if (importStatus === ImportStatus.Success) {
-        const synchronizationEnabled = integrationMeta.get(
-            'continuous_import_enabled',
-            false
-        )
+        const synchronizationEnabled =
+            integrationMeta.continuous_import_enabled || false
         if (synchronizationEnabled) {
             return (
                 <Alert type={AlertType.Success} icon>
@@ -38,10 +36,8 @@ const ImportStatusAlert = ({integrationMeta}: ImportStatusAlertProps) => {
     }
     return (
         <Alert type={AlertType.Error} icon>
-            {integrationMeta.get(
-                'error',
-                'Import failed. Please contact our support.'
-            )}
+            {integrationMeta.error ||
+                'Import failed. Please contact our support.'}
         </Alert>
     )
 }

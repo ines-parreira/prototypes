@@ -5,7 +5,7 @@ import classnames from 'classnames'
 import moment from 'moment-timezone'
 
 import PageHeader from 'pages/common/components/PageHeader'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import {DEPRECATED_getIntegrationsByTypes} from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -52,10 +52,10 @@ export const SelfServiceView = () => {
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
 
     const shopifyIntegrations = useAppSelector(
-        getIntegrationsByTypes(IntegrationType.Shopify)
+        DEPRECATED_getIntegrationsByTypes(IntegrationType.Shopify)
     )
     const selfServiceIntegrations = useAppSelector(
-        getIntegrationsByTypes(IntegrationType.SelfService)
+        DEPRECATED_getIntegrationsByTypes(IntegrationType.SelfService)
     )
     const {helpCenters} = useHelpCenterList({per_page: 900})
     const standaloneHelpCenters = useStandaloneHelpCenterAfterDismiss(

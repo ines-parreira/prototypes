@@ -6,7 +6,7 @@ import {
     IntegrationType,
     IvrForwardCall,
 } from 'models/integration/types'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import {getIntegrationsByType} from 'state/integrations/selectors'
 import {getPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import useAppSelector from 'hooks/useAppSelector'
@@ -17,13 +17,13 @@ type Props = {
 }
 
 const IvrPhoneNumberSelectField = ({value, onChange}: Props): JSX.Element => {
-    const integrations: PhoneIntegration[] = useAppSelector(
-        getIntegrationsByTypes([IntegrationType.Phone])
-    ).toJS()
+    const phoneIntegrations = useAppSelector(
+        getIntegrationsByType<PhoneIntegration>(IntegrationType.Phone)
+    )
     const phoneNumbers = useAppSelector(getPhoneNumbers)
     const params = useParams<{integrationId: string}>()
     const currentIntegrationId = parseInt(params.integrationId)
-    const availableIntegrations = integrations.filter(
+    const availableIntegrations = phoneIntegrations.filter(
         (integration) =>
             integration.id !== currentIntegrationId &&
             integration.meta.twilio_phone_number_id &&

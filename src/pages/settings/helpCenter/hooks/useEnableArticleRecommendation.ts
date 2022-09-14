@@ -1,4 +1,3 @@
-import {Map} from 'immutable'
 import axios from 'axios'
 import {HelpCenter} from 'models/helpCenter/types'
 
@@ -8,10 +7,10 @@ import {
 } from 'models/selfServiceConfiguration/resources'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/types'
+import {GorgiasChatIntegration, IntegrationType} from 'models/integration/types'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 import {getHelpCenterList} from 'state/entities/helpCenter/helpCenters/selectors'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import {getIntegrationsByType} from 'state/integrations/selectors'
 import {NotificationStatus, Notification} from 'state/notifications/types'
 
 export const useEnableArticleRecommendation = (
@@ -21,7 +20,9 @@ export const useEnableArticleRecommendation = (
         (helpCenter) => !helpCenter.deactivated_datetime
     )
     const chatIntegrations = useAppSelector(
-        getIntegrationsByTypes(IntegrationType.GorgiasChat)
+        getIntegrationsByType<GorgiasChatIntegration>(
+            IntegrationType.GorgiasChat
+        )
     )
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
 
@@ -39,19 +40,21 @@ export const useEnableArticleRecommendation = (
         }
 
         const chatHelpCenterConfigurationsPromises = chatIntegrations.map(
-            async (chatIntegration: Map<any, any>) => {
+            async (chatIntegration) => {
                 const areNotRelatedToSameShop =
-                    newHelpCenter.shop_name !==
-                    (chatIntegration.getIn(['meta', 'shop_name']) as string)
+                    newHelpCenter.shop_name !== chatIntegration.meta.shop_name
 
                 if (areNotRelatedToSameShop) return
 
-                const chatApplicationId: number = parseInt(
-                    chatIntegration.getIn(['meta', 'app_id']) as string,
-                    10
-                )
+                const chatApplicationId = chatIntegration.meta.app_id
+                    ? parseInt(chatIntegration.meta.app_id, 10)
+                    : null
 
                 try {
+                    if (!chatApplicationId) {
+                        throw Error('Chat Application ID is not defined')
+                    }
+
                     const chatHelpCenterConfiguration =
                         await fetchChatHelpCenterConfiguration(
                             chatApplicationId
@@ -70,6 +73,10 @@ export const useEnableArticleRecommendation = (
                 }
 
                 try {
+                    if (!chatApplicationId) {
+                        throw Error('Chat Application ID is not defined')
+                    }
+
                     return await createChatHelpCenterConfiguration({
                         helpCenterId: newHelpCenter.id,
                         chatApplicationId: chatApplicationId,
@@ -82,7 +89,7 @@ export const useEnableArticleRecommendation = (
 
         try {
             const chatHelpCenterConfigurations = await Promise.all(
-                chatHelpCenterConfigurationsPromises.toJS()
+                chatHelpCenterConfigurationsPromises
             )
             const chatHelpCenterConfigurationsCount =
                 chatHelpCenterConfigurations.filter((e) => e).length

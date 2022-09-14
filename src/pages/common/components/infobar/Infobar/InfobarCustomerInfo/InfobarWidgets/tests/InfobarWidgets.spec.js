@@ -26,6 +26,7 @@ describe('InfobarWidgets component', () => {
         },
         isEditing: false,
         isDragging: false,
+        state: fromJS({}),
         canDrop: () => true,
     }
 

@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
 import {bindActionCreators} from 'redux'
-import {fromJS, Map} from 'immutable'
+import {fromJS} from 'immutable'
 import {useEffectOnce} from 'react-use'
 import {
     Breadcrumb,
@@ -28,6 +28,9 @@ import settingsCss from 'pages/settings/settings.less'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
+import {getIntegrationsByType} from 'state/integrations/selectors'
+import {IntegrationType} from 'models/integration/constants'
+import {ZendeskIntegration} from 'models/integration/types'
 import {ImportStatus} from './types'
 import {getImportCompletionDate} from './utils'
 import ImportStatusAlert from './ImportStatusAlert'
@@ -43,7 +46,7 @@ export const ImportZendeskDetail = (
         match: {
             params: {integrationId},
         },
-        integration,
+        integrations,
         loading,
         timezone,
     } = props
@@ -53,25 +56,21 @@ export const ImportZendeskDetail = (
         fetchIntegration(integrationId, ZENDESK_INTEGRATION_TYPE)
     })
 
-    if (loading) {
+    const integration = integrations.find(
+        (integration) => integration.id === parseInt(integrationId, 10)
+    )
+
+    if (loading || integration === undefined) {
         return <Loader />
     }
-    const integrationMeta = integration.get('meta', fromJS({})) as Map<any, any>
-    const importStatus = integrationMeta.get('status')
+    const integrationMeta = integration.meta
+    const importStatus = integrationMeta.status
 
-    const displayImportStats = integrationMeta.get(
-        'display_import_stats',
-        false
-    )
-    const accountTicketsCount = integrationMeta.getIn([
-        'account_stats',
-        'tickets_count',
-    ])
-    const ticketsCount = integrationMeta.getIn(['sync_tickets', 'count'], 0)
-    const synchronizationEnabled = integrationMeta.get(
-        'continuous_import_enabled',
-        false
-    )
+    const displayImportStats = integrationMeta.display_import_stats || false
+    const accountTicketsCount = integrationMeta.account_stats.tickets_count
+    const ticketsCount = integrationMeta.sync_tickets.count || 0
+    const synchronizationEnabled =
+        integrationMeta.continuous_import_enabled || false
     const shouldDisplayPercentage =
         !synchronizationEnabled || importStatus !== ImportStatus.Success
     const importedTicketsPercentage =
@@ -90,7 +89,7 @@ export const ImportZendeskDetail = (
     }
     const handleSyncClick = () => {
         const integrationData = fromJS({
-            id: integration.get('id'),
+            id: integration.id,
             meta: {continuous_import_enabled: !synchronizationEnabled},
         })
 
@@ -107,7 +106,7 @@ export const ImportZendeskDetail = (
                             </Link>
                         </BreadcrumbItem>
                         <BreadcrumbItem active>
-                            {integration.get('name')}{' '}
+                            {integration.name}{' '}
                         </BreadcrumbItem>
                     </Breadcrumb>
                 }
@@ -125,7 +124,7 @@ export const ImportZendeskDetail = (
                                 readOnly
                                 type="text"
                                 name="domain"
-                                value={integration.get('name')}
+                                value={integration.name}
                                 label="Account name"
                                 rightAddon=".zendesk.com"
                                 disabled
@@ -247,32 +246,20 @@ export const ImportZendeskDetail = (
                                         </td>
                                         <td>
                                             {displayStatisticsValue(
-                                                integrationMeta.getIn(
-                                                    ['sync_macros', 'count'],
-                                                    0
-                                                ) as number
+                                                integrationMeta?.sync_macros
+                                                    ?.count || 0
                                             )}
                                         </td>
                                         <td>
                                             {displayStatisticsValue(
-                                                integrationMeta.getIn(
-                                                    [
-                                                        'sync_users',
-                                                        'customers_count',
-                                                    ],
-                                                    0
-                                                ) as number
+                                                integrationMeta?.sync_users
+                                                    ?.customers_count || 0
                                             )}
                                         </td>
                                         <td>
                                             {displayStatisticsValue(
-                                                integrationMeta.getIn(
-                                                    [
-                                                        'sync_users',
-                                                        'users_count',
-                                                    ],
-                                                    0
-                                                ) as number
+                                                integrationMeta?.sync_users
+                                                    ?.users_count || 0
                                             )}
                                         </td>
                                     </tr>
@@ -304,10 +291,9 @@ export const ImportZendeskDetail = (
 }
 
 const mapStateToProps = (state: RootState) => ({
-    integration: state.integrations.get('integration', fromJS({})) as Map<
-        any,
-        any
-    >,
+    integrations: getIntegrationsByType<ZendeskIntegration>(
+        IntegrationType.Zendesk
+    )(state),
     loading: state.integrations.getIn(['state', 'loading', 'integration']),
     timezone: getTimezone(state),
 })

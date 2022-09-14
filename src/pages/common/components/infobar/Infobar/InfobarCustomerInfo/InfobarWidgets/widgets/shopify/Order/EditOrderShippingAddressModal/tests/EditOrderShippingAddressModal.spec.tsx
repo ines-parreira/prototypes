@@ -66,7 +66,9 @@ const minProps = {
     }),
     onSubmit: jest.fn(),
     onClose: jest.fn(),
-    integrations: integrationsStateWithShopify.get('integrations') as List<any>,
+    integrations: (
+        integrationsStateWithShopify.get('integrations') as List<any>
+    ).toJS(),
     loading: false,
     loadingMessage: undefined,
     payload: null,

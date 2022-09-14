@@ -1,15 +1,19 @@
 import React from 'react'
 import {fireEvent, render, RenderResult} from '@testing-library/react'
 
-import {fromJS, List, Map} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
 import {ImportZendeskCreate} from '../ImportZendeskCreate'
 import {StoreDispatch} from '../../../../../state/types'
-import {IntegrationType} from '../../../../../models/integration/types'
+import {
+    IntegrationType,
+    ZendeskIntegration,
+} from '../../../../../models/integration/types'
 import {ZENDESK_CONNECTION_TYPE} from '../types'
+import {failedImport, pendingImport, successImport} from './fixtures'
 
 interface ImportZendeskCreateProps {
-    integrations: List<Map<any, any>>
+    integrations: ZendeskIntegration[]
     createIntegration(
         integration: Map<any, any>
     ): (dispatch: StoreDispatch) => Promise<unknown>
@@ -20,8 +24,10 @@ const renderComponent = (props: ImportZendeskCreateProps): RenderResult => {
 
 describe('<ImportZendeskCreate/>', () => {
     const mockedCreateIntegration = jest.fn()
+    const integrations = [successImport, pendingImport, failedImport]
+    integrations[0].name = 'acme'
     const defaultProps = {
-        integrations: fromJS([{name: 'acme'}]),
+        integrations,
         createIntegration: mockedCreateIntegration,
     }
 

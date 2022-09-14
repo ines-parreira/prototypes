@@ -8,7 +8,7 @@ import classnames from 'classnames'
 
 import PageHeader from 'pages/common/components/PageHeader'
 import {RootState, StoreDispatch} from 'state/types'
-import {IntegrationType} from 'models/integration/types'
+import {IntegrationType, ZendeskIntegration} from 'models/integration/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import LinkAlert from 'pages/common/components/Alert/LinkAlert'
 import * as integrationSelectors from 'state/integrations/selectors'
@@ -59,7 +59,7 @@ export const ImportDataContainer = (
                         be loaded from Zendesk at first, then continuous syncing
                         will be enabled automatically.{' '}
                     </LinkAlert>
-                    {zendeskIntegrations.isEmpty() ? (
+                    {zendeskIntegrations.length === 0 ? (
                         <span>You don't have any imports at the moment</span>
                     ) : (
                         <ImportZendeskDataList />
@@ -73,9 +73,10 @@ export const ImportDataContainer = (
 const mapStateToProps = (state: RootState) => {
     return {
         loading: state.integrations.getIn(['state', 'loading', 'integrations']),
-        zendeskIntegrations: integrationSelectors.getIntegrationsByTypes(
-            IntegrationType.Zendesk
-        )(state),
+        zendeskIntegrations:
+            integrationSelectors.getIntegrationsByType<ZendeskIntegration>(
+                IntegrationType.Zendesk
+            )(state),
     }
 }
 

@@ -22,9 +22,13 @@ import {
     onReset,
 } from 'state/infobarActions/shopify/createOrder/actions'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import {getIntegrationsByType} from 'state/integrations/selectors'
 import {RootState} from 'state/types'
-import {IntegrationType, IntegrationDataItem} from 'models/integration/types'
+import {
+    IntegrationType,
+    IntegrationDataItem,
+    ShopifyIntegration,
+} from 'models/integration/types'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
 import {DatetimeLabel} from 'pages/common/utils/labels'
@@ -84,22 +88,19 @@ export function DraftOrderModalContainer({
     const currentIntegration = useMemo(
         () =>
             integrations.find(
-                (integration: Map<any, any>) =>
-                    integration.get('id') === integrationId
-            ) as Map<any, any> | null,
+                (integration) => integration.id === integrationId
+            ),
         [integrations, integrationId]
     )
     const hasScope = useMemo(
         () =>
-            !!(
-                currentIntegration?.getIn(['meta', 'oauth', 'scope']) as string
-            )?.includes('write_draft_orders'),
+            !!currentIntegration?.meta.oauth.scope?.includes(
+                'write_draft_orders'
+            ),
         [currentIntegration]
     )
     const currencyCode = useMemo(
-        () =>
-            (currentIntegration?.getIn(['meta', 'currency']) as string) ||
-            defaultCurrency,
+        () => currentIntegration?.meta.currency || defaultCurrency,
         [currentIntegration, defaultCurrency]
     )
     const previousIsOpen = usePrevious(isOpen)
@@ -286,10 +287,7 @@ export function DraftOrderModalContainer({
             {payload ? (
                 <div>
                     <DraftOrderTable
-                        shopName={currentIntegration!.getIn([
-                            'meta',
-                            'shop_name',
-                        ])}
+                        shopName={currentIntegration!.meta.shop_name}
                         actionName={data.actionName!}
                         isShownInEditOrder={false}
                         currencyCode={currencyCode}
@@ -400,7 +398,9 @@ export function DraftOrderModalContainer({
 
 const connector = connect(
     (state: RootState) => ({
-        integrations: getIntegrationsByTypes([IntegrationType.Shopify])(state),
+        integrations: getIntegrationsByType<ShopifyIntegration>(
+            IntegrationType.Shopify
+        )(state),
         loading: getCreateOrderState(state).get('loading'),
         loadingMessage: getCreateOrderState(state).get('loadingMessage'),
         payload: getCreateOrderState(state).get('payload') as Map<

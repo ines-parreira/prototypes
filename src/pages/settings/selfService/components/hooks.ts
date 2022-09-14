@@ -6,7 +6,7 @@ import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import {fetchSelfServiceConfiguration} from 'models/selfServiceConfiguration/resources'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import {DEPRECATED_getIntegrationsByTypes} from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/types'
 import {getSelfServiceConfigurations} from 'state/entities/selfServiceConfigurations/selectors'
 import {selfServiceConfigurationFetched} from 'state/entities/selfServiceConfigurations/actions'
@@ -20,10 +20,10 @@ export const useConfigurationData = () => {
         integrationType: string
     }>()
     const shopifyIntegrations = useAppSelector(
-        getIntegrationsByTypes(IntegrationType.Shopify)
+        DEPRECATED_getIntegrationsByTypes(IntegrationType.Shopify)
     )
     const selfServiceIntegrations = useAppSelector(
-        getIntegrationsByTypes(IntegrationType.SelfService)
+        DEPRECATED_getIntegrationsByTypes(IntegrationType.SelfService)
     )
     const selfServiceConfigurations = useAppSelector(
         getSelfServiceConfigurations

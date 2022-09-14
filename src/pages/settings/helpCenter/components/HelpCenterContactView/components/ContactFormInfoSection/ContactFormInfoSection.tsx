@@ -7,10 +7,12 @@ import {EmailContactInfoDto} from 'models/helpCenter/types'
 import {useHelpCenterTranslation} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
 import TextArea from 'pages/common/forms/TextArea'
 
-import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
+import {
+    EMAIL_INTEGRATION_TYPES,
+    isGenericEmailIntegration,
+} from 'constants/integration'
 
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {EmailIntegration} from 'models/integration/types'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {CONTACT_FORM_ALERT_ACKNOWLEDGED_LOCAL_STORAGE_KEY} from 'pages/settings/helpCenter/constants'
 import ContactCard from '../ContactCard'
@@ -28,9 +30,11 @@ const ContactFormInfoSection: React.FC = () => {
         contactForm,
     } = useHelpCenterTranslation()
 
-    const emailIntegrations = useAppSelector(
+    const integrations = useAppSelector(
         integrationsSelectors.getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES)
     )
+
+    const emailIntegrations = integrations.filter(isGenericEmailIntegration)
 
     const {description} = contactInfo.email
 
@@ -47,10 +51,6 @@ const ContactFormInfoSection: React.FC = () => {
                 },
             })
         }
-
-    const emailIntegrationsList = emailIntegrations.isEmpty()
-        ? []
-        : (emailIntegrations.toJS() as EmailIntegration[])
 
     const [isAlertAcknowledged, setIsAlertAcknowledged] = useLocalStorage(
         CONTACT_FORM_ALERT_ACKNOWLEDGED_LOCAL_STORAGE_KEY,
@@ -104,7 +104,7 @@ const ContactFormInfoSection: React.FC = () => {
                     id="contactForm"
                     placeholder="Select an email integration"
                     value={contactForm.helpdesk_integration_id}
-                    options={emailIntegrationsList.map((integration) => ({
+                    options={emailIntegrations.map((integration) => ({
                         label:
                             `${integration.name} ` +
                             `<${integration.meta.address}>`,
@@ -112,7 +112,7 @@ const ContactFormInfoSection: React.FC = () => {
                     }))}
                     fullWidth
                     onChange={(integrationId) => {
-                        const selectedIntegration = emailIntegrationsList.find(
+                        const selectedIntegration = emailIntegrations.find(
                             (integration) => integration.id === integrationId
                         )
 

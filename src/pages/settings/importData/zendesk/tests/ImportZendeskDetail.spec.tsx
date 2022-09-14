@@ -4,7 +4,10 @@ import {fromJS} from 'immutable'
 
 import {ImportZendeskDetail} from '../ImportZendeskDetail'
 
-import {IntegrationType} from '../../../../../models/integration/types'
+import {
+    IntegrationType,
+    ZendeskIntegration,
+} from '../../../../../models/integration/types'
 
 import {failedImport, pendingImport, successImport} from './fixtures'
 
@@ -18,21 +21,21 @@ describe('<ImportZendeskDetail/>', () => {
     describe('rendering', () => {
         it.each([successImport, failedImport, pendingImport])(
             'should assert snapshot rendered with different statuses',
-            (zendeskImport: Record<string, unknown>) => {
+            (zendeskImport: ZendeskIntegration) => {
                 const fetchIntegrationMock = jest.fn()
                 const {container} = renderComponent({
                     fetchIntegration: fetchIntegrationMock,
                     match: {
                         params: {
-                            integrationId: zendeskImport.id as string,
+                            integrationId: zendeskImport.id.toString(10),
                         },
                     },
                     updateOrCreateIntegration: jest.fn(),
-                    integration: fromJS(zendeskImport),
+                    integrations: [zendeskImport],
                     loading: false,
                 } as any)
                 expect(fetchIntegrationMock).toBeCalledWith(
-                    zendeskImport.id,
+                    zendeskImport.id.toString(10),
                     IntegrationType.Zendesk
                 )
                 expect(container).toMatchSnapshot()
@@ -48,7 +51,7 @@ describe('<ImportZendeskDetail/>', () => {
                         integrationId: '1',
                     },
                 },
-                integration: fromJS(successImport),
+                integrations: [successImport],
                 loading: false,
             } as any)
 
@@ -67,7 +70,7 @@ describe('<ImportZendeskDetail/>', () => {
                         integrationId: '1',
                     },
                 },
-                integration: fromJS(successImport),
+                integrations: [successImport],
                 loading: false,
             } as any
 
@@ -83,13 +86,15 @@ describe('<ImportZendeskDetail/>', () => {
                 <ImportZendeskDetail
                     {...{
                         ...props,
-                        integration: fromJS({
-                            ...successImport,
-                            meta: {
-                                ...successImport.meta,
-                                continuous_import_enabled: true,
+                        integrations: [
+                            {
+                                ...successImport,
+                                meta: {
+                                    ...successImport.meta,
+                                    continuous_import_enabled: true,
+                                },
                             },
-                        }),
+                        ],
                     }}
                 />
             )

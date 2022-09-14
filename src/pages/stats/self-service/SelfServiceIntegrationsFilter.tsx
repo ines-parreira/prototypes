@@ -1,9 +1,8 @@
 import React from 'react'
-import {Map} from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
 import shopify from 'assets/img/integrations/shopify.png'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import {getIntegrationsByType} from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/constants'
 import {getSelfServiceConfigurations} from 'state/entities/selfServiceConfigurations/selectors'
 import {Value} from 'pages/common/forms/SelectField/types'
@@ -11,6 +10,7 @@ import {StatsFilters} from 'models/stat/types'
 
 import SelectFilter from '../common/SelectFilter'
 
+import {ShopifyIntegration} from '../../../models/integration/types'
 import css from './SelfServiceIntegrationsFilter.less'
 import {hasShopifyIntegrationSSPEnabled} from './self-service-stats.utils'
 
@@ -21,7 +21,7 @@ type Props = {
 
 const SelfServiceIntegrationsFilter = ({value = [], onChange}: Props) => {
     const shopifyIntegrations = useAppSelector(
-        getIntegrationsByTypes(IntegrationType.Shopify)
+        getIntegrationsByType<ShopifyIntegration>(IntegrationType.Shopify)
     )
     const selfServiceConfigurations = useAppSelector(
         getSelfServiceConfigurations
@@ -34,22 +34,20 @@ const SelfServiceIntegrationsFilter = ({value = [], onChange}: Props) => {
             onChange={onChange as (value: Value[]) => void}
             value={value}
         >
-            {shopifyIntegrations.map((shopifyIntegration: Map<any, any>) => {
+            {shopifyIntegrations.map((shopifyIntegration) => {
                 const selfServiceDeactivated = !hasShopifyIntegrationSSPEnabled(
                     shopifyIntegration,
                     selfServiceConfigurations
                 )
                 return (
                     <SelectFilter.Item
-                        key={shopifyIntegration.get('id')}
+                        key={shopifyIntegration.id}
                         label={
                             selfServiceDeactivated
-                                ? `${
-                                      shopifyIntegration.get('name') as string
-                                  } (deactivated)`
-                                : shopifyIntegration.get('name')
+                                ? `${shopifyIntegration.name} (deactivated)`
+                                : shopifyIntegration.name
                         }
-                        value={shopifyIntegration.get('id')}
+                        value={shopifyIntegration.id}
                         icon={
                             <img
                                 src={shopify}

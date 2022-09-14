@@ -25,6 +25,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
         "canDrop": [Function],
         "isDragging": false,
         "isEditing": false,
+        "state": Immutable.Map {},
       }
     }
     source={
@@ -154,6 +155,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
           "canDrop": [Function],
           "isDragging": false,
           "isEditing": false,
+          "state": Immutable.Map {},
         }
       }
       integrations={
@@ -495,6 +497,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                 "canDrop": [Function],
                 "isDragging": false,
                 "isEditing": false,
+                "state": Immutable.Map {},
               }
             }
             isEditing={false}
@@ -580,6 +583,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                   "canDrop": [Function],
                   "isDragging": false,
                   "isEditing": false,
+                  "state": Immutable.Map {},
                 }
               }
               isEditing={false}
@@ -678,6 +682,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                         "canDrop": [Function],
                         "isDragging": false,
                         "isEditing": false,
+                        "state": Immutable.Map {},
                       }
                     }
                     isEditing={false}
@@ -778,6 +783,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                           "canDrop": [Function],
                           "isDragging": false,
                           "isEditing": false,
+                          "state": Immutable.Map {},
                         }
                       }
                       isEditing={false}
@@ -906,6 +912,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                   "canDrop": [Function],
                                   "isDragging": false,
                                   "isEditing": false,
+                                  "state": Immutable.Map {},
                                 }
                               }
                               isEditing={false}
@@ -1052,7 +1059,72 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                               target="card-widget-2"
                               toggle={[Function]}
                               trigger="legacy"
-                            />
+                            >
+                              <PopperContent
+                                boundariesElement="scrollParent"
+                                container="body"
+                                fade={true}
+                                fallbackPlacement="flip"
+                                flip={true}
+                                hideArrow={false}
+                                isOpen={false}
+                                modifiers={Object {}}
+                                offset={0}
+                                onClosed={[Function]}
+                                placement="left"
+                                placementPrefix="bs-popover"
+                                popperClassName="popover show"
+                                target={
+                                  <div
+                                    class="widgetCardHeader"
+                                    id="card-widget-2"
+                                  >
+                                    <span
+                                      class="dropdownIcon clickable text-faded"
+                                      title="Fold this card"
+                                    >
+                                      <i
+                                        class="material-icons"
+                                      >
+                                        expand_less
+                                      </i>
+                                    </span>
+                                    <span
+                                      class="container"
+                                    >
+                                      <img
+                                        alt="HTTP"
+                                        class="container"
+                                        src="test-file-stub"
+                                      />
+                                      <span>
+                                        Foo container
+                                      </span>
+                                    </span>
+                                  </div>
+                                }
+                                transition={
+                                  Object {
+                                    "appear": true,
+                                    "baseClass": "fade",
+                                    "baseClassActive": "show",
+                                    "enter": true,
+                                    "exit": true,
+                                    "in": true,
+                                    "mountOnEnter": false,
+                                    "onEnter": [Function],
+                                    "onEntered": [Function],
+                                    "onEntering": [Function],
+                                    "onExit": [Function],
+                                    "onExited": [Function],
+                                    "onExiting": [Function],
+                                    "tag": "div",
+                                    "timeout": 150,
+                                    "unmountOnExit": false,
+                                  }
+                                }
+                              />
+                            </TooltipPopoverWrapper>
                           </Popover>
                           <Memo(CustomActions)
                             isEditing={false}
@@ -1110,6 +1182,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                     "canDrop": [Function],
                                     "isDragging": false,
                                     "isEditing": false,
+                                    "state": Immutable.Map {},
                                   }
                                 }
                                 isEditing={false}
@@ -1189,6 +1262,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                       "canDrop": [Function],
                                       "isDragging": false,
                                       "isEditing": false,
+                                      "state": Immutable.Map {},
                                     }
                                   }
                                   isEditing={false}
@@ -1281,7 +1355,61 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                         target="field-widget-3"
                                         toggle={[Function]}
                                         trigger="legacy"
-                                      />
+                                      >
+                                        <PopperContent
+                                          boundariesElement="scrollParent"
+                                          container="body"
+                                          fade={true}
+                                          fallbackPlacement="flip"
+                                          flip={true}
+                                          hideArrow={false}
+                                          isOpen={false}
+                                          modifiers={Object {}}
+                                          offset={0}
+                                          onClosed={[Function]}
+                                          placement="left"
+                                          placementPrefix="bs-popover"
+                                          popperClassName="popover show"
+                                          target={
+                                            <div
+                                              class="widgetField widget-field draggable widgetFieldEditing"
+                                              id="field-widget-3"
+                                            >
+                                              <span
+                                                class="widgetFieldLabel"
+                                              >
+                                                Foo
+                                                :
+                                              </span>
+                                              <span
+                                                class="widgetFieldValue"
+                                              >
+                                                1
+                                              </span>
+                                            </div>
+                                          }
+                                          transition={
+                                            Object {
+                                              "appear": true,
+                                              "baseClass": "fade",
+                                              "baseClassActive": "show",
+                                              "enter": true,
+                                              "exit": true,
+                                              "in": true,
+                                              "mountOnEnter": false,
+                                              "onEnter": [Function],
+                                              "onEntered": [Function],
+                                              "onEntering": [Function],
+                                              "onExit": [Function],
+                                              "onExited": [Function],
+                                              "onExiting": [Function],
+                                              "tag": "div",
+                                              "timeout": 150,
+                                              "unmountOnExit": false,
+                                            }
+                                          }
+                                        />
+                                      </TooltipPopoverWrapper>
                                     </Popover>
                                   </div>
                                 </Field>
@@ -1306,6 +1434,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                 "canDrop": [Function],
                 "isDragging": false,
                 "isEditing": false,
+                "state": Immutable.Map {},
               }
             }
             isEditing={false}
@@ -1390,6 +1519,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                   "canDrop": [Function],
                   "isDragging": false,
                   "isEditing": false,
+                  "state": Immutable.Map {},
                 }
               }
               isEditing={false}
@@ -1487,6 +1617,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                         "canDrop": [Function],
                         "isDragging": false,
                         "isEditing": false,
+                        "state": Immutable.Map {},
                       }
                     }
                     isEditing={false}
@@ -1586,6 +1717,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                           "canDrop": [Function],
                           "isDragging": false,
                           "isEditing": false,
+                          "state": Immutable.Map {},
                         }
                       }
                       isEditing={false}
@@ -1729,7 +1861,63 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                               target="card-widget-5"
                               toggle={[Function]}
                               trigger="legacy"
-                            />
+                            >
+                              <PopperContent
+                                boundariesElement="scrollParent"
+                                container="body"
+                                fade={true}
+                                fallbackPlacement="flip"
+                                flip={true}
+                                hideArrow={false}
+                                isOpen={false}
+                                modifiers={Object {}}
+                                offset={0}
+                                onClosed={[Function]}
+                                placement="left"
+                                placementPrefix="bs-popover"
+                                popperClassName="popover show"
+                                target={
+                                  <div
+                                    class="widgetCardHeader"
+                                    id="card-widget-5"
+                                  >
+                                    <span
+                                      class="dropdownIcon clickable text-faded"
+                                      title="Fold this card"
+                                    >
+                                      <i
+                                        class="material-icons"
+                                      >
+                                        expand_less
+                                      </i>
+                                    </span>
+                                    <span>
+                                      Bar container
+                                    </span>
+                                  </div>
+                                }
+                                transition={
+                                  Object {
+                                    "appear": true,
+                                    "baseClass": "fade",
+                                    "baseClassActive": "show",
+                                    "enter": true,
+                                    "exit": true,
+                                    "in": true,
+                                    "mountOnEnter": false,
+                                    "onEnter": [Function],
+                                    "onEntered": [Function],
+                                    "onEntering": [Function],
+                                    "onExit": [Function],
+                                    "onExited": [Function],
+                                    "onExiting": [Function],
+                                    "tag": "div",
+                                    "timeout": 150,
+                                    "unmountOnExit": false,
+                                  }
+                                }
+                              />
+                            </TooltipPopoverWrapper>
                           </Popover>
                           <Memo(CustomActions)
                             isEditing={false}
@@ -1787,6 +1975,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                     "canDrop": [Function],
                                     "isDragging": false,
                                     "isEditing": false,
+                                    "state": Immutable.Map {},
                                   }
                                 }
                                 isEditing={false}
@@ -1865,6 +2054,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                       "canDrop": [Function],
                                       "isDragging": false,
                                       "isEditing": false,
+                                      "state": Immutable.Map {},
                                     }
                                   }
                                   isEditing={false}
@@ -1956,7 +2146,61 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                         target="field-widget-6"
                                         toggle={[Function]}
                                         trigger="legacy"
-                                      />
+                                      >
+                                        <PopperContent
+                                          boundariesElement="scrollParent"
+                                          container="body"
+                                          fade={true}
+                                          fallbackPlacement="flip"
+                                          flip={true}
+                                          hideArrow={false}
+                                          isOpen={false}
+                                          modifiers={Object {}}
+                                          offset={0}
+                                          onClosed={[Function]}
+                                          placement="left"
+                                          placementPrefix="bs-popover"
+                                          popperClassName="popover show"
+                                          target={
+                                            <div
+                                              class="widgetField widget-field draggable widgetFieldEditing"
+                                              id="field-widget-6"
+                                            >
+                                              <span
+                                                class="widgetFieldLabel"
+                                              >
+                                                Bar
+                                                :
+                                              </span>
+                                              <span
+                                                class="widgetFieldValue"
+                                              >
+                                                2
+                                              </span>
+                                            </div>
+                                          }
+                                          transition={
+                                            Object {
+                                              "appear": true,
+                                              "baseClass": "fade",
+                                              "baseClassActive": "show",
+                                              "enter": true,
+                                              "exit": true,
+                                              "in": true,
+                                              "mountOnEnter": false,
+                                              "onEnter": [Function],
+                                              "onEntered": [Function],
+                                              "onEntering": [Function],
+                                              "onExit": [Function],
+                                              "onExited": [Function],
+                                              "onExiting": [Function],
+                                              "tag": "div",
+                                              "timeout": 150,
+                                              "unmountOnExit": false,
+                                            }
+                                          }
+                                        />
+                                      </TooltipPopoverWrapper>
                                     </Popover>
                                   </div>
                                 </Field>
@@ -2002,6 +2246,7 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
         "canDrop": [Function],
         "isDragging": false,
         "isEditing": true,
+        "state": Immutable.Map {},
       }
     }
     source={
@@ -2130,6 +2375,7 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
           "canDrop": [Function],
           "isDragging": false,
           "isEditing": true,
+          "state": Immutable.Map {},
         }
       }
       integrations={
@@ -2320,6 +2566,7 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
                   "canDrop": [Function],
                   "isDragging": false,
                   "isEditing": true,
+                  "state": Immutable.Map {},
                 }
               }
               isEditing={true}
@@ -2405,6 +2652,7 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
                     "canDrop": [Function],
                     "isDragging": false,
                     "isEditing": true,
+                    "state": Immutable.Map {},
                   }
                 }
                 isEditing={true}
@@ -2503,6 +2751,7 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
                           "canDrop": [Function],
                           "isDragging": false,
                           "isEditing": true,
+                          "state": Immutable.Map {},
                         }
                       }
                       isEditing={false}
@@ -2603,6 +2852,7 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
                             "canDrop": [Function],
                             "isDragging": false,
                             "isEditing": true,
+                            "state": Immutable.Map {},
                           }
                         }
                         isEditing={false}
@@ -2731,6 +2981,7 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
                                     "canDrop": [Function],
                                     "isDragging": false,
                                     "isEditing": true,
+                                    "state": Immutable.Map {},
                                   }
                                 }
                                 isEditing={false}
@@ -2877,7 +3128,72 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
                                 target="card-widget-8"
                                 toggle={[Function]}
                                 trigger="legacy"
-                              />
+                              >
+                                <PopperContent
+                                  boundariesElement="scrollParent"
+                                  container="body"
+                                  fade={true}
+                                  fallbackPlacement="flip"
+                                  flip={true}
+                                  hideArrow={false}
+                                  isOpen={false}
+                                  modifiers={Object {}}
+                                  offset={0}
+                                  onClosed={[Function]}
+                                  placement="left"
+                                  placementPrefix="bs-popover"
+                                  popperClassName="popover show"
+                                  target={
+                                    <div
+                                      class="widgetCardHeader"
+                                      id="card-widget-8"
+                                    >
+                                      <span
+                                        class="dropdownIcon clickable text-faded"
+                                        title="Fold this card"
+                                      >
+                                        <i
+                                          class="material-icons"
+                                        >
+                                          expand_less
+                                        </i>
+                                      </span>
+                                      <span
+                                        class="container"
+                                      >
+                                        <img
+                                          alt="HTTP"
+                                          class="container"
+                                          src="test-file-stub"
+                                        />
+                                        <span>
+                                          Foo container
+                                        </span>
+                                      </span>
+                                    </div>
+                                  }
+                                  transition={
+                                    Object {
+                                      "appear": true,
+                                      "baseClass": "fade",
+                                      "baseClassActive": "show",
+                                      "enter": true,
+                                      "exit": true,
+                                      "in": true,
+                                      "mountOnEnter": false,
+                                      "onEnter": [Function],
+                                      "onEntered": [Function],
+                                      "onEntering": [Function],
+                                      "onExit": [Function],
+                                      "onExited": [Function],
+                                      "onExiting": [Function],
+                                      "tag": "div",
+                                      "timeout": 150,
+                                      "unmountOnExit": false,
+                                    }
+                                  }
+                                />
+                              </TooltipPopoverWrapper>
                             </Popover>
                             <Memo(CustomActions)
                               isEditing={false}
@@ -2935,6 +3251,7 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
                                       "canDrop": [Function],
                                       "isDragging": false,
                                       "isEditing": true,
+                                      "state": Immutable.Map {},
                                     }
                                   }
                                   isEditing={false}
@@ -3014,6 +3331,7 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
                                         "canDrop": [Function],
                                         "isDragging": false,
                                         "isEditing": true,
+                                        "state": Immutable.Map {},
                                       }
                                     }
                                     isEditing={false}
@@ -3106,7 +3424,61 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
                                           target="field-widget-9"
                                           toggle={[Function]}
                                           trigger="legacy"
-                                        />
+                                        >
+                                          <PopperContent
+                                            boundariesElement="scrollParent"
+                                            container="body"
+                                            fade={true}
+                                            fallbackPlacement="flip"
+                                            flip={true}
+                                            hideArrow={false}
+                                            isOpen={false}
+                                            modifiers={Object {}}
+                                            offset={0}
+                                            onClosed={[Function]}
+                                            placement="left"
+                                            placementPrefix="bs-popover"
+                                            popperClassName="popover show"
+                                            target={
+                                              <div
+                                                class="widgetField widget-field draggable widgetFieldEditing"
+                                                id="field-widget-9"
+                                              >
+                                                <span
+                                                  class="widgetFieldLabel"
+                                                >
+                                                  Foo
+                                                  :
+                                                </span>
+                                                <span
+                                                  class="widgetFieldValue"
+                                                >
+                                                  1
+                                                </span>
+                                              </div>
+                                            }
+                                            transition={
+                                              Object {
+                                                "appear": true,
+                                                "baseClass": "fade",
+                                                "baseClassActive": "show",
+                                                "enter": true,
+                                                "exit": true,
+                                                "in": true,
+                                                "mountOnEnter": false,
+                                                "onEnter": [Function],
+                                                "onEntered": [Function],
+                                                "onEntering": [Function],
+                                                "onExit": [Function],
+                                                "onExited": [Function],
+                                                "onExiting": [Function],
+                                                "tag": "div",
+                                                "timeout": 150,
+                                                "unmountOnExit": false,
+                                              }
+                                            }
+                                          />
+                                        </TooltipPopoverWrapper>
                                       </Popover>
                                     </div>
                                   </Field>
@@ -3131,6 +3503,7 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
                   "canDrop": [Function],
                   "isDragging": false,
                   "isEditing": true,
+                  "state": Immutable.Map {},
                 }
               }
               isEditing={true}
@@ -3215,6 +3588,7 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
                     "canDrop": [Function],
                     "isDragging": false,
                     "isEditing": true,
+                    "state": Immutable.Map {},
                   }
                 }
                 isEditing={true}
@@ -3312,6 +3686,7 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
                           "canDrop": [Function],
                           "isDragging": false,
                           "isEditing": true,
+                          "state": Immutable.Map {},
                         }
                       }
                       isEditing={false}
@@ -3411,6 +3786,7 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
                             "canDrop": [Function],
                             "isDragging": false,
                             "isEditing": true,
+                            "state": Immutable.Map {},
                           }
                         }
                         isEditing={false}
@@ -3554,7 +3930,63 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
                                 target="card-widget-11"
                                 toggle={[Function]}
                                 trigger="legacy"
-                              />
+                              >
+                                <PopperContent
+                                  boundariesElement="scrollParent"
+                                  container="body"
+                                  fade={true}
+                                  fallbackPlacement="flip"
+                                  flip={true}
+                                  hideArrow={false}
+                                  isOpen={false}
+                                  modifiers={Object {}}
+                                  offset={0}
+                                  onClosed={[Function]}
+                                  placement="left"
+                                  placementPrefix="bs-popover"
+                                  popperClassName="popover show"
+                                  target={
+                                    <div
+                                      class="widgetCardHeader"
+                                      id="card-widget-11"
+                                    >
+                                      <span
+                                        class="dropdownIcon clickable text-faded"
+                                        title="Fold this card"
+                                      >
+                                        <i
+                                          class="material-icons"
+                                        >
+                                          expand_less
+                                        </i>
+                                      </span>
+                                      <span>
+                                        Bar container
+                                      </span>
+                                    </div>
+                                  }
+                                  transition={
+                                    Object {
+                                      "appear": true,
+                                      "baseClass": "fade",
+                                      "baseClassActive": "show",
+                                      "enter": true,
+                                      "exit": true,
+                                      "in": true,
+                                      "mountOnEnter": false,
+                                      "onEnter": [Function],
+                                      "onEntered": [Function],
+                                      "onEntering": [Function],
+                                      "onExit": [Function],
+                                      "onExited": [Function],
+                                      "onExiting": [Function],
+                                      "tag": "div",
+                                      "timeout": 150,
+                                      "unmountOnExit": false,
+                                    }
+                                  }
+                                />
+                              </TooltipPopoverWrapper>
                             </Popover>
                             <Memo(CustomActions)
                               isEditing={false}
@@ -3612,6 +4044,7 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
                                       "canDrop": [Function],
                                       "isDragging": false,
                                       "isEditing": true,
+                                      "state": Immutable.Map {},
                                     }
                                   }
                                   isEditing={false}
@@ -3690,6 +4123,7 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
                                         "canDrop": [Function],
                                         "isDragging": false,
                                         "isEditing": true,
+                                        "state": Immutable.Map {},
                                       }
                                     }
                                     isEditing={false}
@@ -3781,7 +4215,61 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
                                           target="field-widget-12"
                                           toggle={[Function]}
                                           trigger="legacy"
-                                        />
+                                        >
+                                          <PopperContent
+                                            boundariesElement="scrollParent"
+                                            container="body"
+                                            fade={true}
+                                            fallbackPlacement="flip"
+                                            flip={true}
+                                            hideArrow={false}
+                                            isOpen={false}
+                                            modifiers={Object {}}
+                                            offset={0}
+                                            onClosed={[Function]}
+                                            placement="left"
+                                            placementPrefix="bs-popover"
+                                            popperClassName="popover show"
+                                            target={
+                                              <div
+                                                class="widgetField widget-field draggable widgetFieldEditing"
+                                                id="field-widget-12"
+                                              >
+                                                <span
+                                                  class="widgetFieldLabel"
+                                                >
+                                                  Bar
+                                                  :
+                                                </span>
+                                                <span
+                                                  class="widgetFieldValue"
+                                                >
+                                                  2
+                                                </span>
+                                              </div>
+                                            }
+                                            transition={
+                                              Object {
+                                                "appear": true,
+                                                "baseClass": "fade",
+                                                "baseClassActive": "show",
+                                                "enter": true,
+                                                "exit": true,
+                                                "in": true,
+                                                "mountOnEnter": false,
+                                                "onEnter": [Function],
+                                                "onEntered": [Function],
+                                                "onEntering": [Function],
+                                                "onExit": [Function],
+                                                "onExited": [Function],
+                                                "onExiting": [Function],
+                                                "tag": "div",
+                                                "timeout": 150,
+                                                "unmountOnExit": false,
+                                              }
+                                            }
+                                          />
+                                        </TooltipPopoverWrapper>
                                       </Popover>
                                     </div>
                                   </Field>
@@ -3806,6 +4294,7 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
                   "canDrop": [Function],
                   "isDragging": false,
                   "isEditing": true,
+                  "state": Immutable.Map {},
                 }
               }
               isEditing={true}
@@ -3890,6 +4379,7 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
                     "canDrop": [Function],
                     "isDragging": false,
                     "isEditing": true,
+                    "state": Immutable.Map {},
                   }
                 }
                 integration={null}
@@ -3994,6 +4484,7 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
                   "canDrop": [Function],
                   "isDragging": false,
                   "isEditing": true,
+                  "state": Immutable.Map {},
                 }
               }
               isEditing={true}
@@ -4078,6 +4569,7 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
                     "canDrop": [Function],
                     "isDragging": false,
                     "isEditing": true,
+                    "state": Immutable.Map {},
                   }
                 }
                 integration={null}
@@ -4192,6 +4684,7 @@ exports[`InfobarWidgets component should not display anything if there's no widg
       "canDrop": [Function],
       "isDragging": false,
       "isEditing": false,
+      "state": Immutable.Map {},
     }
   }
   source={
@@ -4234,6 +4727,7 @@ exports[`InfobarWidgets component should not display anything if there's no widg
         "canDrop": [Function],
         "isDragging": false,
         "isEditing": false,
+        "state": Immutable.Map {},
       }
     }
     integrations={

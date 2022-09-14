@@ -9,7 +9,7 @@ import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import * as integrationsSelectors from 'state/integrations/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {IntegrationType} from 'models/integration/types'
+import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {CardHeaderSubtitle} from '../CardHeaderSubtitle'
 import ActionButtonsGroup from '../ActionButtonsGroup'
@@ -101,7 +101,7 @@ class AfterTitleContainer extends Component<
                 <StaticField label="Orders">
                     {source.get('orders_count')}
                 </StaticField>
-                {integrations.size > 1 && (
+                {integrations.length > 1 && (
                     <StaticField label="Store">{shopName}</StaticField>
                 )}
             </>
@@ -110,9 +110,10 @@ class AfterTitleContainer extends Component<
 }
 
 const connector = connect((state: RootState) => ({
-    integrations: integrationsSelectors.getIntegrationsByTypes([
-        IntegrationType.Shopify,
-    ])(state),
+    integrations:
+        integrationsSelectors.getIntegrationsByType<ShopifyIntegration>(
+            IntegrationType.Shopify
+        )(state),
 }))
 
 const AfterTitle = connector(AfterTitleContainer)

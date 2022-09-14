@@ -3,6 +3,7 @@ import React, {FC} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {fromJS} from 'immutable'
 import {RootState, StoreDispatch} from 'state/types'
 import {renderWithRouter} from 'utils/testing'
 import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
@@ -31,6 +32,9 @@ const defaultState: Partial<RootState> = {
             categories: categoriesState,
         },
     } as any,
+    integrations: fromJS({
+        integrations: [],
+    }),
     ui: {helpCenter: {...uiState, currentId: 1}} as any,
 }
 

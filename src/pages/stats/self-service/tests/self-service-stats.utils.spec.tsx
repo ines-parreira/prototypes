@@ -15,17 +15,18 @@ import {
     useIsArticleRecommendationDisabled,
 } from '../self-service-stats.utils'
 import {ShopType} from '../../../../models/selfServiceConfiguration/types'
+import {ShopifyIntegration} from '../../../../models/integration/types'
 
 describe('hasShopifyIntegrationSSPEnabled', () => {
     it('should return true if for the shopifyIntegration passed theres a corresponding SSP configuration enabled', () => {
-        const shopifyIntegration = fromJS({
+        const shopifyIntegration = {
             id: 1,
-            type: 'shopify',
+            type: IntegrationType.Shopify,
             meta: {
                 shop_name: `mystore1`,
             },
             uri: `/api/integrations/1/`,
-        })
+        } as ShopifyIntegration
         const sspConfigurations = [
             {
                 id: 1,
@@ -63,14 +64,14 @@ describe('hasShopifyIntegrationSSPEnabled', () => {
     })
 
     it('should return false if', () => {
-        const shopifyIntegration = fromJS({
+        const shopifyIntegration = {
             id: 1,
-            type: 'shopify',
+            type: IntegrationType.Shopify,
             meta: {
                 shop_name: `mystore1`,
             },
             uri: `/api/integrations/1/`,
-        })
+        } as ShopifyIntegration
         const sspConfigurations = [
             {
                 id: 1,

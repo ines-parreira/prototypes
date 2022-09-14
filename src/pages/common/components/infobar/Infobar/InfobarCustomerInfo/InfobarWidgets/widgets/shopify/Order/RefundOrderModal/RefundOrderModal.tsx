@@ -14,11 +14,11 @@ import {
     setPayload,
 } from 'state/infobarActions/shopify/refundOrder/actions'
 import {getRefundOrderState} from 'state/infobarActions/shopify/refundOrder/selectors'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import {getIntegrationsByType} from 'state/integrations/selectors'
 import {RootState} from 'state/types'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {getFinalRefundOrderPayload} from 'business/shopify/order'
-import {IntegrationType} from 'models/integration/types'
+import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import Loader from 'pages/common/components/Loader/Loader'
 import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
@@ -72,14 +72,13 @@ export const RefundOrderModalContainer = ({
     const integration = useMemo(
         () =>
             integrations.find(
-                (integration: Map<any, any>) =>
-                    integration.get('id') === integrationId
-            ) as Map<any, any>,
-        [integrationId, integrations]
+                (integration) => integration.id === integrationId
+            ),
+        [integrations, integrationId]
     )
 
     const shopName = useMemo(
-        () => integration.getIn(['meta', 'shop_name']) as string,
+        () => integration?.meta.shop_name || '',
         [integration]
     )
 
@@ -197,7 +196,9 @@ export const RefundOrderModalContainer = ({
 
 const connector = connect(
     (state: RootState) => ({
-        integrations: getIntegrationsByTypes([IntegrationType.Shopify])(state),
+        integrations: getIntegrationsByType<ShopifyIntegration>(
+            IntegrationType.Shopify
+        )(state),
         loading: getRefundOrderState(state).get('loading') as boolean,
         loadingMessage: getRefundOrderState(state).get(
             'loadingMessage'

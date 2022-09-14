@@ -97,7 +97,7 @@ describe('<SelfServiceStatsPage />', () => {
             phoneNumbers: {},
             auditLogEvents: {},
         } as RootState['entities'],
-        integrations: fromJS({}),
+        integrations: fromJS({integrations: []}),
         billing: fromJS(billingState),
     } as RootState
 

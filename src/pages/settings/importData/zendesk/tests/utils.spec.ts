@@ -1,5 +1,3 @@
-import {fromJS} from 'immutable'
-
 import {getImportCompletionDate} from '../utils'
 
 import {
@@ -20,9 +18,9 @@ describe('utils', () => {
         ])(
             'should return proper string depending on the status',
             (integration, timezone, expectedString) => {
-                expect(
-                    getImportCompletionDate(fromJS(integration), timezone)
-                ).toEqual(expectedString)
+                expect(getImportCompletionDate(integration, timezone)).toEqual(
+                    expectedString
+                )
             }
         )
     })

@@ -9,7 +9,7 @@ import warningIcon from 'assets/img/icons/warning2.svg'
 import {GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS} from 'config/integrations/gorgias_chat'
 import {ChatContactInfoDto} from 'models/helpCenter/types'
 import {IntegrationType} from 'models/integration/types'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import {DEPRECATED_getIntegrationsByTypes} from 'state/integrations/selectors'
 import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
 import {getViewLanguage} from 'state/ui/helpCenter'
 import useAppSelector from 'hooks/useAppSelector'
@@ -44,7 +44,7 @@ const ChatApplication: React.FC<Props> = ({helpCenterId}) => {
         updateTranslation,
     } = useHelpCenterTranslation()
     const chatIntegrations = useAppSelector(
-        getIntegrationsByTypes(IntegrationType.GorgiasChat)
+        DEPRECATED_getIntegrationsByTypes(IntegrationType.GorgiasChat)
     )
     const {chatHelpCenterConfiguration} =
         useChatHelpCenterConfiguration(chatApplicationId)

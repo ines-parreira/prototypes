@@ -11,8 +11,8 @@ import {ZENDESK_IMPORTED_TICKETS_FOR_YEARS} from 'config'
 import {createImportIntegration} from 'state/integrations/actions'
 import * as utils from 'utils'
 import {RootState, StoreDispatch} from 'state/types'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
-import {IntegrationType} from 'models/integration/types'
+import {getIntegrationsByType} from 'state/integrations/selectors'
+import {IntegrationType, ZendeskIntegration} from 'models/integration/types'
 import Tooltip from 'pages/common/components/Tooltip'
 import css from 'pages/settings/settings.less'
 import Button from 'pages/common/components/button/Button'
@@ -55,9 +55,8 @@ export const ImportZendeskCreate = (
     }
 
     const isExistingDomain =
-        integrations.filter(
-            (integration: Map<any, any>) => domain === integration.get('name')
-        ).size > 0
+        integrations.filter((integration) => domain === integration.name)
+            .length > 0
 
     return (
         <div className="full-width">
@@ -149,7 +148,9 @@ export const ImportZendeskCreate = (
 
 const mapStateToProps = (state: RootState) => {
     return {
-        integrations: getIntegrationsByTypes(IntegrationType.Zendesk)(state),
+        integrations: getIntegrationsByType<ZendeskIntegration>(
+            IntegrationType.Zendesk
+        )(state),
     }
 }
 const mapDispatchToProps = (dispatch: StoreDispatch) => {
