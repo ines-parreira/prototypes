@@ -36,6 +36,8 @@ jest.mock('pages/common/forms/FileField', () => {
 type Props = ComponentProps<typeof GorgiasChatIntegrationAppearanceComponent>
 
 describe('<GorgiasChatIntegrationAppearance/>', () => {
+    const realCSS = global.CSS
+
     const minProps = {
         gorgiasChatIntegrations: fromJS([]),
         shopifyIntegrations: fromJS([
@@ -72,6 +74,15 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
 
         const fixedDate = new Date('2019-06-24')
         jest.spyOn(Date, 'now').mockImplementation(() => fixedDate.getTime())
+
+        global.CSS = {
+            supports: (): boolean => true,
+            escape: realCSS?.escape,
+        }
+    })
+
+    afterEach(() => {
+        global.CSS = realCSS
     })
 
     describe('render()', () => {

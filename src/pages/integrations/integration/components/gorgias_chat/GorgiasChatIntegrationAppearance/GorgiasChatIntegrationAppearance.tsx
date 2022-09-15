@@ -255,12 +255,21 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
 
     const handleSubmit = (event: SyntheticEvent<any>) => {
         event.preventDefault()
+
+        const mainColor = CSS.supports('color', state.mainColor)
+            ? state.mainColor.trim()
+            : GORGIAS_CHAT_DEFAULT_COLOR
+
+        const conversationColor = CSS.supports('color', state.conversationColor)
+            ? state.conversationColor.trim()
+            : GORGIAS_CHAT_DEFAULT_COLOR
+
         const form: SubmitForm = {
             type: state.type,
             name: state.name,
             decoration: {
-                conversation_color: state.conversationColor,
-                main_color: state.mainColor,
+                conversation_color: conversationColor,
+                main_color: mainColor,
                 introduction_text: state.introductionText,
                 offline_introduction_text: state.offlineIntroductionText,
                 avatar_type: state.avatarType,
