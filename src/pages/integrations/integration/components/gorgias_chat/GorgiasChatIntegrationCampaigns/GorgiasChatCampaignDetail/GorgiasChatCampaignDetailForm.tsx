@@ -586,6 +586,7 @@ export const GorgiasChatCampaignDetailForm = ({
                                     value={{
                                         html: message.get('html'),
                                     }}
+                                    allowExternalChanges={true}
                                     onChange={(value: EditorState) => {
                                         const content =
                                             value.getCurrentContent()
