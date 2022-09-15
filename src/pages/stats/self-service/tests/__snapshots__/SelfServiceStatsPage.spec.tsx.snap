@@ -1855,32 +1855,21 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
               </i>
             </span>
           </h5>
-          <button
-            class="csvButton btn btn-secondary"
-            type="button"
-          >
-            <i
-              class="material-icons mr-1 csvButtonIcon"
-            >
-              file_download
-            </i>
-            CSV
-          </button>
         </div>
         <div
-          class="align-items-center row"
+          class="preview"
         >
           <div
-            class="float-right"
+            class="previewImageContainer"
           >
             <img
               alt="Quick response feature preview"
-              class="img-fluid float-right"
               src="/static/private/js/assets/img/presentationals/quick-response-preview.png"
+              width="246"
             />
           </div>
           <div
-            class="col"
+            class="previewTextContainer"
           >
             <div
               class="title"
@@ -1920,32 +1909,21 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
               </i>
             </span>
           </h5>
-          <button
-            class="csvButton btn btn-secondary"
-            type="button"
-          >
-            <i
-              class="material-icons mr-1 csvButtonIcon"
-            >
-              file_download
-            </i>
-            CSV
-          </button>
         </div>
         <div
-          class="align-items-center row"
+          class="preview"
         >
           <div
-            class="float-right"
+            class="previewImageContainer"
           >
             <img
               alt="Article Recommendation feature preview"
-              class="img-fluid float-right"
               src="/static/private/js/assets/img/presentationals/article-recommendation-preview.png"
+              width="246"
             />
           </div>
           <div
-            class="col"
+            class="previewTextContainer"
           >
             <div
               class="title"
@@ -1985,32 +1963,21 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
               </i>
             </span>
           </h5>
-          <button
-            class="csvButton btn btn-secondary"
-            type="button"
-          >
-            <i
-              class="material-icons mr-1 csvButtonIcon"
-            >
-              file_download
-            </i>
-            CSV
-          </button>
         </div>
         <div
-          class="align-items-center row"
+          class="preview"
         >
           <div
-            class="float-right"
+            class="previewImageContainer"
           >
             <img
               alt="Report Issue feature preview"
-              class="img-fluid float-right"
               src="/static/private/js/assets/img/presentationals/report-issue-preview.png"
+              width="246"
             />
           </div>
           <div
-            class="col"
+            class="previewTextContainer"
           >
             <div
               class="title"
@@ -2042,32 +2009,21 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
           >
             Products with most issues and return requests
           </h5>
-          <button
-            class="csvButton btn btn-secondary"
-            type="button"
-          >
-            <i
-              class="material-icons mr-1 csvButtonIcon"
-            >
-              file_download
-            </i>
-            CSV
-          </button>
         </div>
         <div
-          class="align-items-center row"
+          class="preview"
         >
           <div
-            class="float-right"
+            class="previewImageContainer"
           >
             <img
               alt="Return Order feature preview"
-              class="img-fluid float-right"
               src="/static/private/js/assets/img/presentationals/return-order-preview.png"
+              width="246"
             />
           </div>
           <div
-            class="col"
+            class="previewTextContainer"
           >
             <div
               class="title"

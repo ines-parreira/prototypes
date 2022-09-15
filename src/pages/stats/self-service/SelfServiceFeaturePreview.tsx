@@ -1,5 +1,4 @@
 import React from 'react'
-import {Col, Row} from 'reactstrap'
 import Button from '../../common/components/button/Button'
 import history from '../../history'
 import css from './SelfServiceStatsPage.less'
@@ -23,22 +22,18 @@ export const SelfServiceFeaturePreview = ({
 }: Props): JSX.Element => {
     return (
         <>
-            <Row className="align-items-center">
-                <div className="float-right">
-                    <img
-                        src={imageUrl}
-                        alt={imageAltText}
-                        className="img-fluid float-right"
-                    />
+            <div className={css.preview}>
+                <div className={css.previewImageContainer}>
+                    <img width={246} src={imageUrl} alt={imageAltText} />
                 </div>
-                <Col>
+                <div className={css.previewTextContainer}>
                     <div className={css.title}>{title}</div>
                     <div className={css.description}>{description}</div>
                     <Button onClick={() => history.push(buttonRedirectUrl)}>
                         {buttonText}
                     </Button>
-                </Col>
-            </Row>
+                </div>
+            </div>
         </>
     )
 }

@@ -1,4 +1,5 @@
 @import '~css/new/colors';
+@import '~css/new/mixins';
 @import '~css/typography';
 
 :local {
@@ -24,5 +25,40 @@
 
         color: @classic-neutral-grey-5;
         margin-bottom: 38px;
+    }
+
+    .preview {
+        display: flex;
+        align-items: center;
+        background: @classic-neutral-grey-1;
+        border-radius: 4px;
+
+        @media @mobiles, @tablets {
+            flex-direction: column;
+            text-align: center;
+        }
+    }
+
+    .previewImageContainer {
+        flex-shrink: 0;
+        overflow: hidden;
+
+        img {
+            margin: 40px 60px 0 60px;
+            box-shadow: 0px 4px 16px rgba(22, 22, 22, 0.24);
+            border-radius: 4px 4px 0 0;
+        }
+    }
+
+    .previewTextContainer {
+        padding-right: 20px;
+
+        @media @mobiles, @tablets {
+            padding: 40px 60px;
+
+            .description {
+                margin-bottom: 25px;
+            }
+        }
     }
 }

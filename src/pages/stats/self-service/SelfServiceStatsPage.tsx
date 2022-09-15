@@ -356,7 +356,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                             </span>
                         }
                         helpAutoHide={false}
-                        isDownloadable
+                        isDownloadable={!quickResponsePerformanceNoData}
                     >
                         {(stat) => (
                             <>
@@ -420,7 +420,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                             </span>
                         }
                         helpAutoHide={false}
-                        isDownloadable
+                        isDownloadable={!articleRecommendationPerformanceNoData}
                     >
                         {(stat) => (
                             <>
@@ -470,7 +470,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                             </span>
                         }
                         helpAutoHide={false}
-                        isDownloadable
+                        isDownloadable={!topReportedIssuesNoData}
                     >
                         {(stat) => (
                             <>
@@ -506,7 +506,9 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                             SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES_AND_RETURN_REQUESTS
                         }
                         statsFilters={pageStatsFilters}
-                        isDownloadable
+                        isDownloadable={
+                            !productsWithMostIssuesAndReturnRequestsNoData
+                        }
                     >
                         {(stat) => (
                             <>
