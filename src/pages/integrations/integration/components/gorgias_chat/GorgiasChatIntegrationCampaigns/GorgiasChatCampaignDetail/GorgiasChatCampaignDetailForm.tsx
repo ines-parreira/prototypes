@@ -276,6 +276,25 @@ export const GorgiasChatCampaignDetailForm = ({
         setState((state) => ({...state, loading: false}))
     }
 
+    const indexIfBusinessHours = (index: number) => {
+        const {triggers} = campaign.toJS()
+
+        if (isRevenueAlphaTester) {
+            return index + 1
+        }
+
+        if (Array.isArray(triggers)) {
+            const triggerKeys = triggers.map(
+                (trigger: Record<string, string>) => trigger.key
+            )
+
+            if (triggerKeys.includes('business_hours')) {
+                return index + 1
+            }
+        }
+        return index
+    }
+
     const setAgent = (email: Value) => {
         const author: Map<any, any> = email
             ? agents.find(
@@ -462,7 +481,9 @@ export const GorgiasChatCampaignDetailForm = ({
                                                         triggers:
                                                             state.triggers.setIn(
                                                                 [
-                                                                    idx + 1,
+                                                                    indexIfBusinessHours(
+                                                                        idx
+                                                                    ),
                                                                     'operator',
                                                                 ],
                                                                 value
@@ -475,7 +496,9 @@ export const GorgiasChatCampaignDetailForm = ({
                                                         triggers:
                                                             state.triggers.setIn(
                                                                 [
-                                                                    idx + 1,
+                                                                    indexIfBusinessHours(
+                                                                        idx
+                                                                    ),
                                                                     'value',
                                                                 ],
                                                                 value
@@ -487,7 +510,9 @@ export const GorgiasChatCampaignDetailForm = ({
                                                         ...state,
                                                         triggers:
                                                             triggers.delete(
-                                                                idx + 1
+                                                                indexIfBusinessHours(
+                                                                    idx
+                                                                )
                                                             ),
                                                     }))
                                                 }}
