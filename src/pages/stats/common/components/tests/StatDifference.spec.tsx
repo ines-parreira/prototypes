@@ -1,18 +1,16 @@
 import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
 
-import StatPercentageDiff from '../StatPercentageDiff'
+import StatDifference from '../StatDifference'
 
-describe('<StatPercentageDiff />', () => {
-    const minProps: ComponentProps<typeof StatPercentageDiff> = {
-        percentage: 0,
+describe('<StatDifference />', () => {
+    const minProps: ComponentProps<typeof StatDifference> = {
+        value: 0,
         label: 'Foo label',
     }
 
     it('should render null when percentage is not a number', () => {
-        const {container} = render(
-            <StatPercentageDiff {...minProps} percentage="bar" />
-        )
+        const {container} = render(<StatDifference {...minProps} value="bar" />)
         expect(container.firstChild).toBe(null)
     })
 
@@ -60,9 +58,9 @@ describe('<StatPercentageDiff />', () => {
         ],
     ])('should render %s', (testName, percentage, moreIsBetter) => {
         const {container} = render(
-            <StatPercentageDiff
+            <StatDifference
                 {...minProps}
-                percentage={percentage}
+                value={percentage}
                 moreIsBetter={moreIsBetter}
             />
         )

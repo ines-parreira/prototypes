@@ -32,7 +32,7 @@ import {
     formatDuration,
 } from '../../../utils'
 import DistributionVariantStat from '../DistributionVariantStat'
-import StatPercentageDiff from '../../StatPercentageDiff'
+import StatDifference from '../../StatDifference'
 import StatsHelpIcon from '../../StatsHelpIcon'
 
 import ProductCell from './cells/ProductCell'
@@ -260,14 +260,18 @@ export class TableStat extends Component<
                 return (
                     <span>
                         <span id={id}>
-                            <StatPercentageDiff
+                            <StatDifference
                                 label={(
                                     callback as StatConfigCallbacks<ReactText>['cell']
                                 )(callbackData, callbackContext)}
-                                percentage={metric.get('value')}
+                                value={metric.get('value')}
                                 moreIsBetter={config.getIn([
                                     'tableOptions',
                                     'moreIsBetter',
+                                ])}
+                                isPercentage={config.getIn([
+                                    'tableOptions',
+                                    'isDeltaPercentage',
                                 ])}
                             />
                         </span>

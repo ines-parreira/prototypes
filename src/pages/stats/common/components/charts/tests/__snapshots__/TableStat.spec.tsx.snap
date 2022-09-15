@@ -293,9 +293,9 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
               <span
                 id="difference-0"
               >
-                <StatPercentageDiff
+                <StatDifference
                   label={-1}
-                  percentage={-1}
+                  value={-1}
                 />
               </span>
               <Tooltip
@@ -614,9 +614,9 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
               <span
                 id="difference-1"
               >
-                <StatPercentageDiff
+                <StatDifference
                   label={-1}
-                  percentage={-1}
+                  value={-1}
                 />
               </span>
               <Tooltip
@@ -1156,9 +1156,9 @@ exports[`TableStat should render a table chart 1`] = `
               <span
                 id="difference-0"
               >
-                <StatPercentageDiff
+                <StatDifference
                   label={-1}
-                  percentage={-1}
+                  value={-1}
                 />
               </span>
               <Tooltip
@@ -1693,9 +1693,9 @@ exports[`TableStat should render a table with the expand button and one line vis
               <span
                 id="difference-0"
               >
-                <StatPercentageDiff
+                <StatDifference
                   label={-1}
-                  percentage={-1}
+                  value={-1}
                 />
               </span>
               <Tooltip

@@ -16,7 +16,7 @@ import {
     formatDuration,
     formatPercent,
 } from '../../../utils'
-import StatPercentageDiff from '../../StatPercentageDiff'
+import StatDifference from '../../StatDifference'
 
 import DistributionKeyMetricStat from './DistributionKeyMetricStat'
 import DonutKeyMetricStat from './DonutKeyMetricStat'
@@ -48,9 +48,9 @@ export const KeyMetricCell = ({
     ) => {
         return (
             <span id={valueTooltipId} className={css.diff}>
-                <StatPercentageDiff
+                <StatDifference
                     label={metric.get('delta')}
-                    percentage={metric.get('delta')}
+                    value={metric.get('delta')}
                     moreIsBetter={metric.get('more_is_better')}
                 />
                 <Tooltip placement="top" target={valueTooltipId}>

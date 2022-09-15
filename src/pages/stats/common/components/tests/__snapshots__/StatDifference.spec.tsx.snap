@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<StatPercentageDiff /> should render downward arrow and negative color when percentage is negative and more is better 1`] = `
+exports[`<StatDifference /> should render downward arrow and negative color when percentage is negative and more is better 1`] = `
 <span>
   <i
     class="material-icons mr-1 statsDifference negative"
@@ -12,7 +12,7 @@ exports[`<StatPercentageDiff /> should render downward arrow and negative color 
 </span>
 `;
 
-exports[`<StatPercentageDiff /> should render downward arrow and no color when percentage is negative 1`] = `
+exports[`<StatDifference /> should render downward arrow and no color when percentage is negative 1`] = `
 <span>
   <i
     class="material-icons mr-1 statsDifference"
@@ -24,7 +24,7 @@ exports[`<StatPercentageDiff /> should render downward arrow and no color when p
 </span>
 `;
 
-exports[`<StatPercentageDiff /> should render downward arrow and positive color when percentage is negative and more is not better 1`] = `
+exports[`<StatDifference /> should render downward arrow and positive color when percentage is negative and more is not better 1`] = `
 <span>
   <i
     class="material-icons mr-1 statsDifference positive"
@@ -36,7 +36,7 @@ exports[`<StatPercentageDiff /> should render downward arrow and positive color 
 </span>
 `;
 
-exports[`<StatPercentageDiff /> should render forward arrow and neutral color when percentage is 0 and more is better 1`] = `
+exports[`<StatDifference /> should render forward arrow and neutral color when percentage is 0 and more is better 1`] = `
 <span>
   <i
     class="material-icons mr-1 statsDifference neutral"
@@ -48,7 +48,7 @@ exports[`<StatPercentageDiff /> should render forward arrow and neutral color wh
 </span>
 `;
 
-exports[`<StatPercentageDiff /> should render forward arrow and neutral color when percentage is 0 and more is not better 1`] = `
+exports[`<StatDifference /> should render forward arrow and neutral color when percentage is 0 and more is not better 1`] = `
 <span>
   <i
     class="material-icons mr-1 statsDifference neutral"
@@ -60,7 +60,7 @@ exports[`<StatPercentageDiff /> should render forward arrow and neutral color wh
 </span>
 `;
 
-exports[`<StatPercentageDiff /> should render forward arrow and no color when percentage is 0 1`] = `
+exports[`<StatDifference /> should render forward arrow and no color when percentage is 0 1`] = `
 <span>
   <i
     class="material-icons mr-1 statsDifference"
@@ -72,7 +72,7 @@ exports[`<StatPercentageDiff /> should render forward arrow and no color when pe
 </span>
 `;
 
-exports[`<StatPercentageDiff /> should render upward arrow and negative color when percentage is positive and more is not better 1`] = `
+exports[`<StatDifference /> should render upward arrow and negative color when percentage is positive and more is not better 1`] = `
 <span>
   <i
     class="material-icons mr-1 statsDifference negative"
@@ -84,7 +84,7 @@ exports[`<StatPercentageDiff /> should render upward arrow and negative color wh
 </span>
 `;
 
-exports[`<StatPercentageDiff /> should render upward arrow and no color when percentage is positive 1`] = `
+exports[`<StatDifference /> should render upward arrow and no color when percentage is positive 1`] = `
 <span>
   <i
     class="material-icons mr-1 statsDifference"
@@ -96,7 +96,7 @@ exports[`<StatPercentageDiff /> should render upward arrow and no color when per
 </span>
 `;
 
-exports[`<StatPercentageDiff /> should render upward arrow and positive color when percentage is positive and more is better 1`] = `
+exports[`<StatDifference /> should render upward arrow and positive color when percentage is positive and more is better 1`] = `
 <span>
   <i
     class="material-icons mr-1 statsDifference positive"

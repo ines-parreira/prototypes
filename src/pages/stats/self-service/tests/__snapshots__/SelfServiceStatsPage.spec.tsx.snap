@@ -1117,7 +1117,6 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
                           arrow_upward
                         </i>
                         200
-                        %
                       </span>
                     </span>
                   </span>

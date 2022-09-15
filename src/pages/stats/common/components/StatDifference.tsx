@@ -2,35 +2,36 @@ import React from 'react'
 import _isNumber from 'lodash/isNumber'
 import classNames from 'classnames'
 
-import css from './StatPercentageDiff.less'
+import css from './StatDifference.less'
 
 type Props = {
     label: string | number
-    percentage: unknown
+    value: unknown
     moreIsBetter?: boolean
+    isPercentage?: boolean
 }
 
-export default function StatPercentageDiff({
+export default function StatDifference({
     label,
-    percentage,
+    value,
     moreIsBetter,
+    isPercentage = true,
 }: Props) {
-    if (!_isNumber(percentage)) {
+    if (!_isNumber(value)) {
         return null
     }
     const icon =
-        percentage > 0
+        value > 0
             ? 'arrow_upward'
-            : percentage < 0
+            : value < 0
             ? 'arrow_downward'
             : 'arrow_forward'
     const colorLabel =
         moreIsBetter == null
             ? ''
-            : percentage === 0
+            : value === 0
             ? 'neutral'
-            : (percentage > 0 && moreIsBetter) ||
-              (percentage < 0 && !moreIsBetter)
+            : (value > 0 && moreIsBetter) || (value < 0 && !moreIsBetter)
             ? 'positive'
             : 'negative'
     return (
@@ -44,7 +45,8 @@ export default function StatPercentageDiff({
             >
                 {icon}
             </i>
-            {label}%
+            {label}
+            {isPercentage && '%'}
         </span>
     )
 }

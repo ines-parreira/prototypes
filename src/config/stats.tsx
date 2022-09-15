@@ -318,7 +318,11 @@ export type StatConfig = {
         label: string
         tooltip: string
     }
-    tableOptions?: {showLines: number; moreIsBetter?: boolean}
+    tableOptions?: {
+        showLines: number
+        moreIsBetter?: boolean
+        isDeltaPercentage?: boolean
+    }
 }
 
 export type StatMap = Map<keyof StatConfig, ValueOf<StatConfig>>
@@ -1611,6 +1615,7 @@ export const stats = toImmutable<
         tableOptions: {
             showLines: 6,
             moreIsBetter: true,
+            isDeltaPercentage: false,
         },
         callbacks: {
             cell: ({value, axis}) => {
