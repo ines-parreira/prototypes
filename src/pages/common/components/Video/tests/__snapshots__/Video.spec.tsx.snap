@@ -2,102 +2,64 @@
 
 exports[`Video component should render with default videoPreviewIndex 1`] = `
 <div>
-  <div
-    className="preview"
-    onClick={[Function]}
-  >
+  <div>
     <div
-      className="screenshot"
+      class="preview"
     >
-      <img
-        alt="video preview"
-        src="https://img.youtube.com/vi/8fDF546/0.jpg"
-      />
-      <i
-        className="material-icons playIcon"
-      >
-        play_circle_filled_white
-      </i>
       <div
-        className="iconBackground"
-      />
-    </div>
-    <div
-      className="title"
-    >
-      foo
+        class="screenshot"
+      >
+        <img
+          alt="video preview"
+          src="https://img.youtube.com/vi/8fDF546/0.jpg"
+        />
+        <i
+          class="material-icons playIcon"
+        >
+          play_circle_filled_white
+        </i>
+        <div
+          class="iconBackground"
+        />
+      </div>
+      <div
+        class="title"
+      >
+        foo
+      </div>
     </div>
   </div>
-  <ForwardRef(Modal)
-    isOpen={false}
-    onClose={[Function]}
-    size="huge"
-  >
-    <ModalHeader
-      title="foo"
-    />
-    <ModalBody
-      className="modalBody"
-    >
-      <iframe
-        allowFullScreen={true}
-        className="iframe"
-        frameBorder="0"
-        src="https://www.youtube.com/embed/8fDF546?autoplay=1"
-        title="rule-video"
-      />
-    </ModalBody>
-  </ForwardRef(Modal)>
 </div>
 `;
 
 exports[`Video component should render with passed videoPreviewIndex 1`] = `
 <div>
-  <div
-    className="preview"
-    onClick={[Function]}
-  >
+  <div>
     <div
-      className="screenshot"
+      class="preview"
     >
-      <img
-        alt="video preview"
-        src="https://img.youtube.com/vi/8fDF546/2.jpg"
-      />
-      <i
-        className="material-icons playIcon"
-      >
-        play_circle_filled_white
-      </i>
       <div
-        className="iconBackground"
-      />
-    </div>
-    <div
-      className="title"
-    >
-      foo
+        class="screenshot"
+      >
+        <img
+          alt="video preview"
+          src="https://img.youtube.com/vi/8fDF546/2.jpg"
+        />
+        <i
+          class="material-icons playIcon"
+        >
+          play_circle_filled_white
+        </i>
+        <div
+          class="iconBackground"
+        />
+      </div>
+      <div
+        class="title"
+      >
+        foo
+      </div>
     </div>
   </div>
-  <ForwardRef(Modal)
-    isOpen={false}
-    onClose={[Function]}
-    size="huge"
-  >
-    <ModalHeader
-      title="foo"
-    />
-    <ModalBody
-      className="modalBody"
-    >
-      <iframe
-        allowFullScreen={true}
-        className="iframe"
-        frameBorder="0"
-        src="https://www.youtube.com/embed/8fDF546?autoplay=1"
-        title="rule-video"
-      />
-    </ModalBody>
-  </ForwardRef(Modal)>
 </div>
 `;

@@ -1,20 +1,27 @@
 import React from 'react'
-import {shallow} from 'enzyme'
-
+import {render, screen, fireEvent} from '@testing-library/react'
 import Video from '../Video'
 
 describe('Video component', () => {
     it('should render with default videoPreviewIndex', () => {
-        const component = shallow(<Video videoId="8fDF546" legend="foo" />)
+        const {container} = render(<Video videoId="8fDF546" legend="foo" />)
 
-        expect(component).toMatchSnapshot()
+        expect(container).toMatchSnapshot()
     })
 
     it('should render with passed videoPreviewIndex', () => {
-        const component = shallow(
+        const {container} = render(
             <Video videoId="8fDF546" legend="foo" videoPreviewIndex="2" />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container).toMatchSnapshot()
+    })
+
+    it('should render iframe only when modal opened', () => {
+        render(<Video videoId="8fDF546" legend="foo" videoPreviewIndex="2" />)
+
+        fireEvent.click(screen.getByAltText('video preview'))
+
+        expect(screen.getByTitle('rule-video')).toBeTruthy()
     })
 })

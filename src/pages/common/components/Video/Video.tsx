@@ -1,6 +1,7 @@
 import React from 'react'
 import classnames from 'classnames'
 
+import {useToggle} from 'react-use'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
@@ -13,60 +14,41 @@ type Props = {
     legend: string
 }
 
-type State = {
-    isOpen: boolean
-}
+export default function Video({videoId, videoPreviewIndex, legend}: Props) {
+    const [isOpen, toggleIsOpen] = useToggle(false)
 
-export default class Video extends React.Component<Props, State> {
-    state = {
-        isOpen: false,
-    }
+    const previewIndex = videoPreviewIndex || 0
 
-    _toggleModal = () => {
-        this.setState({
-            isOpen: !this.state.isOpen,
-        })
-    }
-
-    render() {
-        const {videoId, videoPreviewIndex, legend} = this.props
-        const {isOpen} = this.state
-
-        const previewIndex = videoPreviewIndex || 0
-
-        return (
-            <div>
-                <div className={css.preview} onClick={this._toggleModal}>
-                    <div className={css.screenshot}>
-                        <img
-                            alt="video preview"
-                            src={`https://img.youtube.com/vi/${videoId}/${previewIndex}.jpg`}
-                        />
-                        <i
-                            className={classnames(
-                                'material-icons',
-                                css.playIcon
-                            )}
-                        >
-                            play_circle_filled_white
-                        </i>
-                        <div className={css.iconBackground} />
-                    </div>
-                    <div className={css.title}>{legend}</div>
+    return (
+        <div>
+            <div className={css.preview} onClick={toggleIsOpen}>
+                <div className={css.screenshot}>
+                    <img
+                        alt="video preview"
+                        src={`https://img.youtube.com/vi/${videoId}/${previewIndex}.jpg`}
+                    />
+                    <i className={classnames('material-icons', css.playIcon)}>
+                        play_circle_filled_white
+                    </i>
+                    <div className={css.iconBackground} />
                 </div>
-                <Modal isOpen={isOpen} onClose={this._toggleModal} size="huge">
-                    <ModalHeader title={legend} />
-                    <ModalBody className={css.modalBody}>
+                <div className={css.title}>{legend}</div>
+            </div>
+            <Modal isOpen={isOpen} onClose={toggleIsOpen} size="huge">
+                <ModalHeader title={legend} />
+                <ModalBody className={css.modalBody}>
+                    {isOpen && (
                         <iframe
                             className={css.iframe}
                             title="rule-video"
                             src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
                             frameBorder="0"
                             allowFullScreen
+                            allow="autoplay"
                         />
-                    </ModalBody>
-                </Modal>
-            </div>
-        )
-    }
+                    )}
+                </ModalBody>
+            </Modal>
+        </div>
+    )
 }
