@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import {useLocalStorage} from 'react-use'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import * as integrationsSelectors from 'state/integrations/selectors'
 import useAppSelector from 'hooks/useAppSelector'
@@ -15,6 +16,7 @@ import {
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {CONTACT_FORM_ALERT_ACKNOWLEDGED_LOCAL_STORAGE_KEY} from 'pages/settings/helpCenter/constants'
+import {FeatureFlagKey} from 'config/featureFlags'
 import ContactCard from '../ContactCard'
 import helpCenterContactViewCss from '../../HelpCenterContactView.less'
 
@@ -35,6 +37,9 @@ const ContactFormInfoSection: React.FC = () => {
     )
 
     const emailIntegrations = integrations.filter(isGenericEmailIntegration)
+
+    const isEmbeddedContactFormAvailable =
+        useFlags()[FeatureFlagKey.HelpCenterEmbeddedContactForm]
 
     const {description} = contactInfo.email
 
@@ -149,6 +154,15 @@ const ContactFormInfoSection: React.FC = () => {
                             : undefined
                     }
                 />
+                {isEmbeddedContactFormAvailable && (
+                    <div className={css.embedWrapper}>
+                        <h4>Embed contact form</h4>
+                        <p>
+                            Get the code to embed Gorgias contact form as part
+                            of your web site.
+                        </p>
+                    </div>
+                )}
             </div>
             <ContactCard
                 icon="email"

@@ -6,5 +6,6 @@ export enum FeatureFlagKey {
     MacroResponseTextCcBcc = 'macro-response-text-cc-bcc',
     PrefillBestMacro = 'pre-fill-best-macro',
     NewPhoneErrorHandling = 'new-phone-error-handling',
+    HelpCenterEmbeddedContactForm = 'help-center-embedded-contact-form',
     RevenueAlphaTesters = 'revenue-alpha-testers',
 }

@@ -1,14 +1,17 @@
 import React, {FC} from 'react'
-
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
+import {screen} from '@testing-library/react'
+
 import {fromJS} from 'immutable'
 import {RootState, StoreDispatch} from 'state/types'
 import {renderWithRouter} from 'utils/testing'
 import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
 import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
+import {FeatureFlagKey} from 'config/featureFlags'
 import ContactFormInfoSection from '../ContactFormInfoSection'
 import {getSingleHelpCenterResponseFixture} from '../../../../../fixtures/getHelpCentersResponse.fixture'
 import {getHelpCenterTranslationsResponseFixture} from '../../../../../fixtures/getHelpCenterTranslationsResponse.fixture'
@@ -92,6 +95,13 @@ const DefaultProviders: FC = ({children}) => (
 )
 
 describe('<ContactFormInfoSection />', () => {
+    beforeEach(() => {
+        resetLDMocks()
+        mockFlags({
+            [FeatureFlagKey.HelpCenterEmbeddedContactForm]: false,
+        })
+    })
+
     it('should render the component', () => {
         const {container} = renderWithRouter(
             <DefaultProviders>
@@ -100,5 +110,19 @@ describe('<ContactFormInfoSection />', () => {
         )
 
         expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should render the component with the embedded contact form', () => {
+        mockFlags({
+            [FeatureFlagKey.HelpCenterEmbeddedContactForm]: true,
+        })
+
+        renderWithRouter(
+            <DefaultProviders>
+                <ContactFormInfoSection />
+            </DefaultProviders>
+        )
+
+        screen.getByText('Embed contact form')
     })
 })
