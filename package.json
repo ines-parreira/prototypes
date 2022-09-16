@@ -136,7 +136,8 @@
         "slick-carousel": "1.6.0",
         "socket.io-client": "2.3.0",
         "sortablejs": "gorgias/Sortable",
-        "urlsafe-base64": "1.0.0"
+        "urlsafe-base64": "1.0.0",
+        "web-vitals": "3.0.1"
     },
     "devDependencies": {
         "@babel/cli": "7.10.1",

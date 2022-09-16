@@ -1,6 +1,7 @@
 import * as Sentry from '@sentry/react'
 import {BrowserTracing} from '@sentry/tracing'
-import {ScopeContext} from '@sentry/types'
+import {ScopeContext, Transaction, TransactionContext} from '@sentry/types'
+import {Metric, onINP} from 'web-vitals'
 
 import {User} from 'config/types/user'
 import {Account} from 'state/currentAccount/types'
@@ -11,7 +12,7 @@ import {
     isStaging,
 } from 'utils/environment'
 
-const TRACE_SAMPLE_RATE = 0.001
+const TRACE_SAMPLE_RATE = 0.1
 const IGNORED_ERRORS = [
     'fb_xd_fragment', // Facebook borked
     'ResizeObserver loop completed with undelivered notifications',
@@ -45,7 +46,11 @@ export function initErrorReporter({
         enabled: !/^(.+Mobile.+Safari.+|.+MSIE 8\.0;.+)$/.test(
             window.navigator.userAgent
         ),
-        integrations: [new BrowserTracing()],
+        integrations: [
+            withInpMeasurements(
+                new BrowserTracing() as unknown as PatchedBrowserTracing
+            ),
+        ],
         tracesSampleRate: TRACE_SAMPLE_RATE,
         ignoreErrors: IGNORED_ERRORS,
         denyUrls: [
@@ -79,4 +84,45 @@ export function reportError(error: Error, options?: Partial<ScopeContext>) {
     if (isStaging() || isProduction()) {
         Sentry.captureException(error, options)
     }
+}
+
+export interface PatchedBrowserTracing
+    extends Omit<BrowserTracing, '_createRouteTransaction'> {
+    _createRouteTransaction: (
+        context: TransactionContext
+    ) => Transaction | undefined
+}
+
+export function withInpMeasurements<T extends PatchedBrowserTracing>(
+    browserTracing: T
+) {
+    let inpMetric: Metric | undefined
+
+    onINP(
+        (metric) => {
+            inpMetric = metric
+        },
+        {
+            reportAllChanges: true,
+        }
+    )
+
+    const _originalCreateRouteTransaction =
+        browserTracing._createRouteTransaction
+
+    browserTracing._createRouteTransaction = (context) => {
+        const transaction = _originalCreateRouteTransaction.call(
+            browserTracing,
+            context
+        )
+
+        if (transaction && inpMetric) {
+            transaction.setMeasurement('inp', inpMetric.value, 'ms')
+            inpMetric = undefined
+        }
+
+        return transaction
+    }
+
+    return browserTracing
 }

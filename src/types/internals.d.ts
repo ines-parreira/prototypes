@@ -73,4 +73,6 @@ declare global {
             'grammarly-extension': any
         }
     }
+
+    interface PerformancePaintTiming extends PerformanceEntry {}
 }
