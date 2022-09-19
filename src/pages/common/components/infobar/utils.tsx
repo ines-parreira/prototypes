@@ -44,7 +44,7 @@ import {DatetimeLabel} from '../../utils/labels'
 import css from './utils.less'
 import {
     FEDEX_BASE_TRACKING_LINK,
-    UPSREADY_BASE_TRACKING_LINK,
+    UPS_BASE_TRACKING_LINK,
     USPS_BASE_TRACKING_LINK,
 } from './constants'
 
@@ -855,8 +855,9 @@ export function getTrackingLink(
         case 'fedex': {
             return `${FEDEX_BASE_TRACKING_LINK}${trackingNumber}`
         }
+        case 'ups':
         case 'upsready': {
-            return `${UPSREADY_BASE_TRACKING_LINK}${trackingNumber}`
+            return `${UPS_BASE_TRACKING_LINK}${trackingNumber}`
         }
         case 'usps': {
             return `${USPS_BASE_TRACKING_LINK}${trackingNumber}`

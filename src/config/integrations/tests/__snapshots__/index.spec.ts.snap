@@ -312,6 +312,7 @@ Array [
       },
       Object {
         "name": "Tracking url of last order",
+        "replace": [Function],
         "value": "{{ticket.customer.integrations.bigcommerce.orders[0].bc_order_shipments[0].tracking_link}}",
       },
       Object {

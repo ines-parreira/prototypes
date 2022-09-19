@@ -1,4 +1,36 @@
+import {Map} from 'immutable'
 import {IntegrationType} from '../../models/integration/types'
+import {getTrackingLink} from '../../pages/common/components/infobar/utils'
+
+function getLastOrderTrackingURL(
+    context: Map<any, any>,
+    integrationId: number
+) {
+    const lastOrderShipments = context.getIn([
+        'ticket',
+        'customer',
+        'integrations',
+        integrationId,
+        'orders',
+        0,
+        'bc_order_shipments',
+        0,
+    ]) as Map<any, any>
+
+    if (!lastOrderShipments) {
+        return ''
+    }
+
+    const trackingLink: string | null = lastOrderShipments.get('tracking_link')
+    const trackingNumber = lastOrderShipments.get('tracking_number')
+    const shippingProvider = lastOrderShipments.get('shipping_provider')
+
+    if (!trackingLink && trackingNumber && shippingProvider) {
+        return getTrackingLink(trackingNumber, shippingProvider)
+    }
+
+    return trackingLink
+}
 
 export const MACRO_VARIABLES = {
     type: IntegrationType.BigCommerce,
@@ -16,6 +48,7 @@ export const MACRO_VARIABLES = {
         {
             name: 'Tracking url of last order',
             value: '{{ticket.customer.integrations.bigcommerce.orders[0].bc_order_shipments[0].tracking_link}}',
+            replace: getLastOrderTrackingURL,
         },
         {
             name: 'Tracking number of last order',
