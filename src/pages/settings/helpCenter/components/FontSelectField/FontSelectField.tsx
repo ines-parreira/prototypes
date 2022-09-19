@@ -1,10 +1,10 @@
 import React, {useEffect, useMemo, useState} from 'react'
-import classnames from 'classnames'
 import {FormText} from 'reactstrap'
 import uniq from 'lodash/uniq'
 import {defined} from 'utils'
 
 import SelectField from '../../../../common/forms/SelectField/SelectField'
+import SelectFieldDropdownAction from '../../../../common/forms/SelectField/SelectFieldDropdownAction'
 import {Value, Option} from '../../../../common/forms/SelectField/types'
 import {HELP_CENTER_AVAILABLE_FONTS} from '../../constants'
 import css from './FontSelectField.less'
@@ -80,17 +80,11 @@ export const FontSelectField = ({title, help, value, onChange}: Props) => {
             {
                 isAction: true,
                 label: (
-                    <div className={css.moreFontsAction}>
-                        <i
-                            className={classnames(
-                                css.moreFontsIcon,
-                                'material-icons mr-2'
-                            )}
-                        >
-                            add
-                        </i>
-                        <div>More fonts</div>
-                    </div>
+                    <SelectFieldDropdownAction
+                        icon={<i className="material-icons">add</i>}
+                    >
+                        <span>More fonts</span>
+                    </SelectFieldDropdownAction>
                 ),
                 onClick: () => {
                     setIsModalOpen(true)

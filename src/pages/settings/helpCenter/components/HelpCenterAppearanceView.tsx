@@ -444,7 +444,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
             <section style={{marginTop: -20}}>
                 <FontSelectField
                     title="Primary Font"
-                    help="This font will be applied to the website and set by default to new articles. This will override the default font in existing articles."
+                    help="This font will be applied to the website and set by default to new articles."
                     value={currentPrimaryFont}
                     onChange={(value) => {
                         setCurrentPrimaryFont(value)

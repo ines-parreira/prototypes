@@ -63,13 +63,17 @@ exports[`<PhoneNumberSelectField/> render() should hide phone numbers that have 
         >
           <span>
             <div
-              class="createLabel"
+              class="dropdownAction"
             >
-              <i
-                class="material-icons"
+              <div
+                class="dropdownActionIcon"
               >
-                add
-              </i>
+                <i
+                  class="material-icons"
+                >
+                  add
+                </i>
+              </div>
               <span>
                 Create phone number
               </span>
@@ -145,13 +149,17 @@ exports[`<PhoneNumberSelectField/> render() should hide phone numbers that have 
         >
           <span>
             <div
-              class="createLabel"
+              class="dropdownAction"
             >
-              <i
-                class="material-icons"
+              <div
+                class="dropdownActionIcon"
               >
-                add
-              </i>
+                <i
+                  class="material-icons"
+                >
+                  add
+                </i>
+              </div>
               <span>
                 Create phone number
               </span>
@@ -238,13 +246,17 @@ exports[`<PhoneNumberSelectField/> render() should open a modal form when select
           >
             <span>
               <div
-                class="createLabel"
+                class="dropdownAction"
               >
-                <i
-                  class="material-icons"
+                <div
+                  class="dropdownActionIcon"
                 >
-                  add
-                </i>
+                  <i
+                    class="material-icons"
+                  >
+                    add
+                  </i>
+                </div>
                 <span>
                   Create phone number
                 </span>
@@ -584,13 +596,17 @@ exports[`<PhoneNumberSelectField/> render() should render 1`] = `
       >
         <span>
           <div
-            class="createLabel"
+            class="dropdownAction"
           >
-            <i
-              class="material-icons"
+            <div
+              class="dropdownActionIcon"
             >
-              add
-            </i>
+              <i
+                class="material-icons"
+              >
+                add
+              </i>
+            </div>
             <span>
               Create phone number
             </span>

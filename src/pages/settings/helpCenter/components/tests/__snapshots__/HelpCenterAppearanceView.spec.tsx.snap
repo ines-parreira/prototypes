@@ -525,16 +525,20 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                     type="button"
                   >
                     <div
-                      class="moreFontsAction"
+                      class="dropdownAction"
                     >
-                      <i
-                        class="moreFontsIcon material-icons mr-2"
+                      <div
+                        class="dropdownActionIcon"
                       >
-                        add
-                      </i>
-                      <div>
-                        More fonts
+                        <i
+                          class="material-icons"
+                        >
+                          add
+                        </i>
                       </div>
+                      <span>
+                        More fonts
+                      </span>
                     </div>
                   </h6>
                 </div>
@@ -656,7 +660,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
           <small
             class="form-text text-muted"
           >
-            This font will be applied to the website and set by default to new articles. This will override the default font in existing articles.
+            This font will be applied to the website and set by default to new articles.
           </small>
         </section>
         <section>

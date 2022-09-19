@@ -58,16 +58,20 @@ exports[`<FontSelectField /> matches snapshot 1`] = `
             type="button"
           >
             <div
-              class="moreFontsAction"
+              class="dropdownAction"
             >
-              <i
-                class="moreFontsIcon material-icons mr-2"
+              <div
+                class="dropdownActionIcon"
               >
-                add
-              </i>
-              <div>
-                More fonts
+                <i
+                  class="material-icons"
+                >
+                  add
+                </i>
               </div>
+              <span>
+                More fonts
+              </span>
             </div>
           </h6>
         </div>

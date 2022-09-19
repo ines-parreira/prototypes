@@ -1,8 +1,9 @@
 import React, {useEffect, useMemo, useState} from 'react'
-import uniq from 'lodash/uniq'
 import ReactList from 'react-list'
-import _isEqual from 'lodash/isEqual'
 import classNames from 'classnames'
+import uniq from 'lodash/uniq'
+import _isEqual from 'lodash/isEqual'
+import _capitalize from 'lodash/capitalize'
 
 import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import Button from 'pages/common/components/button/Button'
@@ -191,7 +192,7 @@ export const FontCatalogueModal = ({
                                     <SelectFilter.Item
                                         key={category}
                                         value={category}
-                                        label={category}
+                                        label={_capitalize(category)}
                                     />
                                 ))}
                             </SelectFilter>

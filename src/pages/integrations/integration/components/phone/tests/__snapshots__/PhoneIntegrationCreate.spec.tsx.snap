@@ -164,13 +164,17 @@ exports[`<PhoneIntegrationCreate/> render() should prefill the title field using
                   >
                     <span>
                       <div
-                        class="createLabel"
+                        class="dropdownAction"
                       >
-                        <i
-                          class="material-icons"
+                        <div
+                          class="dropdownActionIcon"
                         >
-                          add
-                        </i>
+                          <i
+                            class="material-icons"
+                          >
+                            add
+                          </i>
+                        </div>
                         <span>
                           Create phone number
                         </span>
@@ -496,13 +500,17 @@ exports[`<PhoneIntegrationCreate/> render() should render 1`] = `
                   >
                     <span>
                       <div
-                        class="createLabel"
+                        class="dropdownAction"
                       >
-                        <i
-                          class="material-icons"
+                        <div
+                          class="dropdownActionIcon"
                         >
-                          add
-                        </i>
+                          <i
+                            class="material-icons"
+                          >
+                            add
+                          </i>
+                        </div>
                         <span>
                           Create phone number
                         </span>
@@ -798,13 +806,17 @@ exports[`<PhoneIntegrationCreate/> render() should submit a valid payload with t
                   >
                     <span>
                       <div
-                        class="createLabel"
+                        class="dropdownAction"
                       >
-                        <i
-                          class="material-icons"
+                        <div
+                          class="dropdownActionIcon"
                         >
-                          add
-                        </i>
+                          <i
+                            class="material-icons"
+                          >
+                            add
+                          </i>
+                        </div>
                         <span>
                           Create phone number
                         </span>

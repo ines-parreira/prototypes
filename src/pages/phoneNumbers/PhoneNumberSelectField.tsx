@@ -5,11 +5,10 @@ import {PhoneNumber} from 'models/phoneNumber/types'
 import {getPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
 import {IntegrationType} from 'models/integration/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
+import SelectFieldDropdownAction from 'pages/common/forms/SelectField/SelectFieldDropdownAction'
 import PhoneNumberCreateModalForm from 'pages/phoneNumbers/PhoneNumberCreateModalForm'
 import useAppSelector from 'hooks/useAppSelector'
 import {hasCapability} from 'pages/phoneNumbers/utils'
-
-import css from './PhoneNumberSelectField.less'
 
 type Props = {
     value: Maybe<PhoneNumber> | '_new'
@@ -62,10 +61,11 @@ function PhoneNumberSelectField({
         {
             value: '_new',
             label: (
-                <div className={css.createLabel}>
-                    <i className="material-icons">add</i>
+                <SelectFieldDropdownAction
+                    icon={<i className="material-icons">add</i>}
+                >
                     <span>Create phone number</span>
-                </div>
+                </SelectFieldDropdownAction>
             ),
         },
         ...availableNumbers.map((phoneNumber) => {
