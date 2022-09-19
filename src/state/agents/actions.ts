@@ -1,5 +1,6 @@
 import axios, {CancelToken} from 'axios'
 import {Map, List} from 'immutable'
+import qs from 'qs'
 
 import {UserRole, User, UserDraft} from '../../config/types/user'
 import client from '../../models/api/resources'
@@ -19,7 +20,7 @@ export function fetchUsers(roles: UserRole[]) {
         let rolesParam = ''
 
         if (roles && roles instanceof Array) {
-            rolesParam = `?roles[]=${roles.join('&roles[]=')}`
+            rolesParam = `?roles=${roles.join('&roles=')}`
         }
 
         return client
@@ -133,6 +134,9 @@ export const fetchPagination =
     (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         return client
             .get<User[]>('/api/users/', {
+                paramsSerializer: (params) => {
+                    return qs.stringify(params, {arrayFormat: 'repeat'})
+                },
                 params: {
                     roles: Object.values(UserRole),
                     page: page.toString(),
