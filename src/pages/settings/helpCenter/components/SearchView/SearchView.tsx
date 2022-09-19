@@ -1,13 +1,13 @@
 import React, {FC} from 'react'
 
 import {Article, HelpCenter} from 'models/helpCenter/types'
-import Loader from 'pages/common/components/Loader/Loader'
 
 import {useSearchContext} from '../../providers/SearchContext'
 
 import {SearchBar} from '../SearchBar'
 import {SearchResults} from '../SearchResults'
 import {ArticleRowActionTypes} from '../../constants'
+import {CategoriesTableSkeleton} from '../CategoriesTableSkeleton'
 import {NoResult} from './NoResult'
 
 type Props = {
@@ -39,7 +39,7 @@ export const SearchView: FC<Props> = ({
         return (
             <>
                 <SearchBar />
-                <Loader />
+                <CategoriesTableSkeleton />
             </>
         )
     }

@@ -313,19 +313,311 @@ exports[`SearchView shows search bar and loader if search is ongoing 1`] = `
       </div>
     </div>
   </div>
-  <div
-    class="container"
+  <table
+    class="table"
   >
-    <div
-      class="inner"
-      style="min-height: 500px;"
+    <thead
+      class=""
     >
-      <i
-        class="icon-custom icon-circle-o-notch md-spin"
-        style="font-size: 40px;"
-      />
-    </div>
-  </div>
+      <tr
+        class="headerRow"
+      >
+        <td
+          class="wrapper headerCell normal"
+        />
+        <td
+          class="wrapper headerCell normal"
+        />
+        <td
+          class="wrapper headerCell normal"
+          style="width: 124px;"
+        />
+        <td
+          class="wrapper headerCell normal"
+          style="width: 160px;"
+        />
+      </tr>
+    </thead>
+    <tbody
+      class="tableBody main-table"
+    >
+      <tr
+        class="row row"
+      >
+        <td
+          class="wrapper nesting-level-1 normal"
+        >
+          <div
+            class="cellContent"
+          >
+            <div
+              class="loading-content"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+              >
+                <span
+                  class="react-loading-skeleton"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+          </div>
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+      </tr>
+      <tr
+        class="row row"
+      >
+        <td
+          class="wrapper nesting-level-1 normal"
+        >
+          <div
+            class="cellContent"
+          >
+            <div
+              class="loading-content"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+              >
+                <span
+                  class="react-loading-skeleton"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+          </div>
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+      </tr>
+      <tr
+        class="row row"
+      >
+        <td
+          class="wrapper nesting-level-1 normal"
+        >
+          <div
+            class="cellContent"
+          >
+            <div
+              class="loading-content"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+              >
+                <span
+                  class="react-loading-skeleton"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+          </div>
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+      </tr>
+      <tr
+        class="row row"
+      >
+        <td
+          class="wrapper nesting-level-1 normal"
+        >
+          <div
+            class="cellContent"
+          >
+            <div
+              class="loading-content"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+              >
+                <span
+                  class="react-loading-skeleton"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+          </div>
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+      </tr>
+      <tr
+        class="row row"
+      >
+        <td
+          class="wrapper nesting-level-1 normal"
+        >
+          <div
+            class="cellContent"
+          >
+            <div
+              class="loading-content"
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+              >
+                <span
+                  class="react-loading-skeleton"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
+          </div>
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 `;
 

@@ -5,7 +5,7 @@ import css from './BodyCell.less'
 import BodyCellContent from './BodyCellContent'
 
 type Props = Omit<HTMLProps<HTMLTableDataCellElement>, 'size'> & {
-    children: ReactNode
+    children?: ReactNode
     className?: string
     innerClassName?: string
     width?: number | string

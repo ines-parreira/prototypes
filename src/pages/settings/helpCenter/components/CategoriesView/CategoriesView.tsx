@@ -10,7 +10,6 @@ import {Banner} from 'pages/common/components/Banner'
 import {HelpCenter} from 'models/helpCenter/types'
 import {getUncategorizedArticles} from 'state/entities/helpCenter/articles'
 import {getViewLanguage} from 'state/ui/helpCenter'
-import Loader from 'pages/common/components/Loader/Loader'
 import {
     CategoriesTable,
     CategoriesTableProps,
@@ -23,6 +22,7 @@ import {useHelpCenterCategories} from 'pages/settings/helpCenter/hooks/useHelpCe
 import settingsCss from 'pages/settings/settings.less'
 import useAppSelector from 'hooks/useAppSelector'
 
+import {CategoriesTableSkeleton} from '../CategoriesTableSkeleton'
 import {CategoriesPositionsType} from '../CategoriesTable/CategoriesTable'
 import {useSearchContext} from '../../providers/SearchContext'
 
@@ -88,11 +88,7 @@ export const CategoriesViews = ({
     }, [])
 
     if (isLoading && categories.length === 1) {
-        return (
-            <Container fluid className={settingsCss.pageContainer}>
-                <Loader />
-            </Container>
-        )
+        return <CategoriesTableSkeleton />
     }
 
     return (

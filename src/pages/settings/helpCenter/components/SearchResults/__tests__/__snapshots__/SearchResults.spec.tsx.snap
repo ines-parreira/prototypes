@@ -168,7 +168,19 @@ exports[`SearchResults displays article and category search results 1`] = `
           >
             <div
               class="loading-content"
-            />
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+              >
+                <span
+                  class="react-loading-skeleton"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
           </div>
         </td>
         <td
@@ -247,7 +259,19 @@ exports[`SearchResults displays article and category search results 1`] = `
           >
             <div
               class="loading-content"
-            />
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+              >
+                <span
+                  class="react-loading-skeleton"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
           </div>
         </td>
         <td
@@ -343,7 +367,19 @@ exports[`SearchResults displays article and category search results 1`] = `
           >
             <div
               class="loading-content"
-            />
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+              >
+                <span
+                  class="react-loading-skeleton"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
           </div>
         </td>
         <td
@@ -421,7 +457,19 @@ exports[`SearchResults displays article and category search results 1`] = `
           >
             <div
               class="loading-content"
-            />
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+              >
+                <span
+                  class="react-loading-skeleton"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
           </div>
         </td>
         <td
@@ -499,7 +547,19 @@ exports[`SearchResults displays article and category search results 1`] = `
           >
             <div
               class="loading-content"
-            />
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+              >
+                <span
+                  class="react-loading-skeleton"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
           </div>
         </td>
         <td
@@ -577,7 +637,19 @@ exports[`SearchResults displays article and category search results 1`] = `
           >
             <div
               class="loading-content"
-            />
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+              >
+                <span
+                  class="react-loading-skeleton"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
           </div>
         </td>
         <td
@@ -655,7 +727,19 @@ exports[`SearchResults displays article and category search results 1`] = `
           >
             <div
               class="loading-content"
-            />
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+              >
+                <span
+                  class="react-loading-skeleton"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
           </div>
         </td>
         <td
@@ -733,7 +817,19 @@ exports[`SearchResults displays article and category search results 1`] = `
           >
             <div
               class="loading-content"
-            />
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+              >
+                <span
+                  class="react-loading-skeleton"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
           </div>
         </td>
         <td
@@ -811,7 +907,19 @@ exports[`SearchResults displays article and category search results 1`] = `
           >
             <div
               class="loading-content"
-            />
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+              >
+                <span
+                  class="react-loading-skeleton"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
           </div>
         </td>
         <td
@@ -891,7 +999,19 @@ exports[`SearchResults displays article and category search results 1`] = `
           >
             <div
               class="loading-content"
-            />
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+              >
+                <span
+                  class="react-loading-skeleton"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
           </div>
         </td>
         <td
@@ -988,7 +1108,19 @@ exports[`SearchResults displays article and category search results 1`] = `
           >
             <div
               class="loading-content"
-            />
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+              >
+                <span
+                  class="react-loading-skeleton"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
           </div>
         </td>
         <td
@@ -1085,7 +1217,19 @@ exports[`SearchResults displays article and category search results 1`] = `
           >
             <div
               class="loading-content"
-            />
+            >
+              <span
+                aria-busy="true"
+                aria-live="polite"
+              >
+                <span
+                  class="react-loading-skeleton"
+                >
+                  ‌
+                </span>
+                <br />
+              </span>
+            </div>
           </div>
         </td>
         <td

@@ -1,8 +1,9 @@
 :local {
     .loading-content {
-        height: 20px;
         width: 240px;
 
-        background: linear-gradient(90deg, #d2d7de -30%, #f4f5f7 100%);
+        :global(.react-loading-skeleton) {
+            line-height: inherit;
+        }
     }
 }
