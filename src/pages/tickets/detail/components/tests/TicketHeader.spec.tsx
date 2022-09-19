@@ -33,7 +33,7 @@ jest.mock('state/ticket/actions', () => ({
     setAgent: jest.fn(),
     setSpam: jest.fn(),
     setStatus: jest.fn(),
-    setSubject: jest.fn(),
+    setSubject: jest.fn(() => () => Promise.resolve()),
     setTeam: jest.fn(),
     setTrashed: jest.fn(),
     snoozeTicket: jest.fn(() => () => Promise.resolve()),

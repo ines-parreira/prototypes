@@ -9,25 +9,7 @@ exports[`MergeTicketsContainer component should render a closed modal because is
   <ModalHeader
     title="Merge tickets"
   />
-  <ModalBody>
-    <Connect(SelectTargetTicket)
-      customerId={22}
-      sourceTicket={
-        Immutable.Map {
-          "subject": "foo",
-          "assignee_user": Immutable.Map {
-            "id": 1,
-            "name": "John Smith",
-          },
-          "customer": Immutable.Map {
-            "id": 22,
-            "name": "Maria Curie",
-          },
-        }
-      }
-      updateTargetTicket={[Function]}
-    />
-  </ModalBody>
+  <ModalBody />
 </ForwardRef(Modal)>
 `;
 

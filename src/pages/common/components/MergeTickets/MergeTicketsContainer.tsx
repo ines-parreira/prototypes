@@ -141,7 +141,7 @@ class MergeTicketsContainer extends React.Component<Props, State> {
                 size="huge"
             >
                 <ModalHeader title="Merge tickets" />
-                <ModalBody>{content}</ModalBody>
+                <ModalBody>{isOpen && content}</ModalBody>
                 {targetTicket && (
                     <ModalActionsFooter
                         extra={

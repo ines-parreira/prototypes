@@ -38,7 +38,7 @@ class MultiSelectBinaryChoiceField extends Component<Props> {
     }
     componentWillReceiveProps(nextProps: Props) {
         const {requiredValues} = nextProps
-        const activeIds = this.props.value.map(
+        const activeIds = nextProps.value.map(
             (channel: CustomerChannel) => channel.id
         )
 
