@@ -26,7 +26,7 @@ type Props = {
     autoRowHeight?: boolean
 } & Omit<
     TextareaHTMLAttributes<HTMLTextAreaElement>,
-    'disabled' | 'onChange' | 'required'
+    'disabled' | 'onChange' | 'required' | 'children'
 >
 
 function TextArea(

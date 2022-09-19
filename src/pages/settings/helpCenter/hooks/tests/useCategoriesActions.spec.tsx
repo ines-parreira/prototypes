@@ -18,6 +18,7 @@ import {
     updateCategoryTranslation,
     savePositions,
 } from 'state/entities/helpCenter/categories'
+import {getHelpCenterClient} from 'rest_api/help_center_api/index'
 
 import {useCategoriesActions} from '../useCategoriesActions'
 import {useHelpCenterApi} from '../useHelpCenterApi'
@@ -27,71 +28,86 @@ jest.mock('react-router')
     helpCenterId: '1',
 })
 
+function mockHelpCenterApiClient() {
+    return {
+        createCategory: jest.fn().mockResolvedValue({
+            data: {
+                translation: {},
+            },
+        }),
+        getCategory: jest.fn().mockResolvedValue({
+            data: {
+                translation: {},
+            },
+        }),
+        getCategoryTree: () =>
+            Promise.resolve({
+                data: {
+                    created_datetime: '2022-03-07T14:46:47.212Z',
+                    updated_datetime: '2022-03-07T14:46:47.212Z',
+                    deleted_datetime: null,
+                    id: 0,
+                    help_center_id: 3,
+                    available_locales: [],
+                    children: [],
+                    articles: [],
+                    translation: null,
+                },
+            }),
+        createCategoryTranslation: jest
+            .fn()
+            .mockResolvedValueOnce({
+                data: {
+                    category_id: 1,
+                    locale: 'fr-FR',
+                    title: '',
+                    description: '',
+                    slug: '',
+                },
+            })
+            .mockResolvedValue({
+                data: {
+                    category_id: 1,
+                    locale: 'en-US',
+                    title: '',
+                    description: '',
+                    slug: '',
+                },
+            }),
+        updateCategoryTranslation: jest.fn().mockResolvedValue({
+            data: {},
+        }),
+        setCategoriesPositions: jest.fn().mockResolvedValue({
+            data: [],
+        }),
+        getCategoriesPositions: jest.fn().mockResolvedValue({
+            data: [],
+        }),
+        deleteCategoryTranslation: jest.fn().mockResolvedValue({}),
+        listArticles: jest.fn().mockResolvedValue({
+            data: {data: []},
+        }),
+        deleteCategory: jest.fn().mockResolvedValue({}),
+        deleteCategoryArticles: jest.fn().mockResolvedValue({}),
+        setSubCategoriesPositions: jest.fn().mockReturnValue({
+            data: [],
+        }),
+    }
+}
+
+jest.mock('rest_api/help_center_api/index', () => {
+    const mockedClient = mockHelpCenterApiClient()
+    return {
+        getHelpCenterClient: jest.fn().mockResolvedValue(mockedClient),
+    }
+})
+
 jest.mock('../useHelpCenterApi', () => {
+    const mockedClient = mockHelpCenterApiClient()
     return {
         useHelpCenterApi: jest.fn().mockReturnValue({
             isReady: true,
-            client: {
-                createCategory: jest.fn().mockResolvedValue({
-                    data: {
-                        translation: {},
-                    },
-                }),
-                getCategory: jest.fn().mockResolvedValue({
-                    data: {
-                        translation: {},
-                    },
-                }),
-                getCategoryTree: () =>
-                    Promise.resolve({
-                        data: {
-                            created_datetime: '2022-03-07T14:46:47.212Z',
-                            updated_datetime: '2022-03-07T14:46:47.212Z',
-                            deleted_datetime: null,
-                            id: 0,
-                            help_center_id: 3,
-                            available_locales: [],
-                            children: [],
-                            articles: [],
-                            translation: null,
-                        },
-                    }),
-                createCategoryTranslation: jest
-                    .fn()
-                    .mockResolvedValueOnce({
-                        data: {
-                            category_id: 1,
-                            locale: 'fr-FR',
-                            title: '',
-                            description: '',
-                            slug: '',
-                        },
-                    })
-                    .mockResolvedValue({
-                        data: {
-                            category_id: 1,
-                            locale: 'en-US',
-                            title: '',
-                            description: '',
-                            slug: '',
-                        },
-                    }),
-                updateCategoryTranslation: jest.fn().mockResolvedValue({
-                    data: {},
-                }),
-                setCategoriesPositions: jest.fn().mockResolvedValue({
-                    data: [],
-                }),
-                getCategoriesPositions: jest.fn().mockResolvedValue({
-                    data: [],
-                }),
-                deleteCategoryTranslation: jest.fn().mockResolvedValue({}),
-                deleteCategory: jest.fn().mockResolvedValue({}),
-                deleteCategoryArticles: jest.fn().mockResolvedValue({}),
-                setSubCategoriesPositions: jest.fn().mockReturnValue({
-                    data: [],
-                }),
-            },
+            client: mockedClient,
         }),
     }
 })
@@ -320,6 +336,8 @@ describe('useCategoriesActions', () => {
                 categoryId: 1,
                 locale: 'fr-FR',
             })
+            const apiClient = await getHelpCenterClient()
+            expect(apiClient.listArticles).toHaveBeenCalled()
         })
 
         it('dispatches updateCategoryTranslation if locale param is the same as view language', async () => {

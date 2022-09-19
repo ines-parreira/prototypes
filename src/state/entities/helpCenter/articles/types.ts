@@ -11,6 +11,7 @@ export enum ArticleActions {
     PUSH_ARTICLE_LOCALES = 'HELPCENTER/ARTICLES/PUSH_ARTICLE_LOCALES',
     REMOVE_ARTICLE_LOCALE = 'HELPCENTER/ARTICLES/REMOVE_ARTICLE_LOCALE',
     UPDATE_ARTICLES_ORDER = 'HELPCENTER/ARTICLES/UPDATE_ARTICLES_ORDER',
+    CLEAN_ARTICLES_WITH_NO_TRANSLATION = 'HELPCENTER/ARTICLES/CLEAN_ARTICLES_WITH_NO_TRANSLATION',
 }
 
 export type SaveArticleAction = PayloadActionCreator<
@@ -52,6 +53,14 @@ export type PushArticleSupportedLocales = PayloadActionCreator<
 export type ResetArticlesAction = PayloadActionCreator<
     Article,
     ArticleActions.RESET_ARTICLES
+>
+
+export type CleanArticlesNoTranslation = PayloadActionCreator<
+    {
+        categoryId: number
+        localeDeleted: LocaleCode
+    },
+    ArticleActions.CLEAN_ARTICLES_WITH_NO_TRANSLATION
 >
 
 export type ArticlesAction =

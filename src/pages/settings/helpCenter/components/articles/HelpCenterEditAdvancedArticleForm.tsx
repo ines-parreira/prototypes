@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import copy from 'copy-to-clipboard'
+import classNames from 'classnames'
 
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import InputField from 'pages/common/forms/input/InputField'
@@ -148,7 +149,7 @@ export const HelpCenterEditAdvancedArticleForm = ({
                 value={translation.title}
                 onChange={onEditArticle('title')}
                 maxLength={HELP_CENTER_TITLE_MAX_LENGTH}
-                className={settingsCss.mb16}
+                className={classNames(settingsCss.mb16, css.titleInput)}
             />
             <div className={css.split}>
                 <div className={css.categorySelect}>
@@ -201,6 +202,7 @@ export const HelpCenterEditAdvancedArticleForm = ({
                 )}
             </div>
             <TextArea
+                value={translation.excerpt}
                 onChange={onEditArticle('excerpt')}
                 rows={2}
                 name="excerpt"
@@ -208,9 +210,7 @@ export const HelpCenterEditAdvancedArticleForm = ({
                 caption="A short summary displayed below the title of your article."
                 maxLength={HELP_CENTER_TITLE_MAX_LENGTH}
                 className={settingsCss.mb16}
-            >
-                {translation.excerpt}
-            </TextArea>
+            />
             <AutoPopulateInput
                 type="text"
                 name="seoTitle"

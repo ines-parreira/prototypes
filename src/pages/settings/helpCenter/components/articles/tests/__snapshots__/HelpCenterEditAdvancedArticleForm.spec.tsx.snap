@@ -6,7 +6,7 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
     class="wrapper"
   >
     <div
-      class="mb16"
+      class="mb16 titleInput"
     >
       <label
         class="label label"

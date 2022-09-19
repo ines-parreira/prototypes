@@ -18,6 +18,7 @@ import {
     savePositions,
     updateCategoryTranslation,
 } from 'state/entities/helpCenter/categories'
+import * as articleActions from 'state/entities/helpCenter/articles/actions'
 import {getViewLanguage} from 'state/ui/helpCenter'
 import useAppSelector from 'hooks/useAppSelector'
 import {flattenCategories} from 'models/helpCenter/utils'
@@ -344,6 +345,19 @@ export const useCategoriesActions = () => {
                         dispatch(updateCategoryTranslation(data.translation))
                     }
                 }
+
+                // in the case the children articles only had this locale they are deleted by the API but *asynchronously*
+                // so we need to clean those manually from the state
+                dispatch(
+                    articleActions.cleanArticlesWithNoTranslation({
+                        categoryId,
+                        localeDeleted: locale,
+                    })
+                )
+                // When deleting a category locale, the API also removes the locale from children articles,
+                // to avoid logic duplication and state drifts we just trigger a refetch of the articles
+                // (we especially need that because sometimes for an article, its current translation in the state is the one just deleted)
+                await dispatch(articleActions.reloadArticles(helpCenterId))
 
                 setIsLoading(false)
             } catch (error) {
