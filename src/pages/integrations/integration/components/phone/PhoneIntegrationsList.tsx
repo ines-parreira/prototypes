@@ -7,6 +7,8 @@ import {
     PhoneIntegration,
     IntegrationType,
     isPhoneIntegration,
+    isSmsIntegration,
+    SmsIntegration,
 } from 'models/integration/types'
 import {PhoneNumber} from 'models/phoneNumber/types'
 import {getIntegrationsByTypes} from 'state/integrations/selectors'
@@ -26,7 +28,7 @@ import history from 'pages/history'
 import css from './PhoneIntegrationsList.less'
 
 type Row = {
-    integration: PhoneIntegration
+    integration: PhoneIntegration | SmsIntegration
     phoneNumber: Maybe<PhoneNumber>
 }
 
@@ -36,16 +38,20 @@ type Props = {
 
 export function PhoneIntegrationsList({type}: Props): JSX.Element | null {
     const integrations = useAppSelector(getIntegrationsByTypes([type]))
-    const phoneIntegrations = integrations.filter(
-        (integration): integration is PhoneIntegration =>
-            isPhoneIntegration(integration)
-    )
+    const phoneIntegrations: Array<PhoneIntegration | SmsIntegration> =
+        type === IntegrationType.Phone
+            ? integrations.filter(isPhoneIntegration)
+            : integrations.filter(isSmsIntegration)
+
     const phoneNumbers = useAppSelector(getPhoneNumbers)
 
     const rows: Row[] = useMemo(
         () =>
             phoneIntegrations.reduce(
-                (rows: Row[], integration: PhoneIntegration) => {
+                (
+                    rows: Row[],
+                    integration: PhoneIntegration | SmsIntegration
+                ) => {
                     const phoneNumber =
                         phoneNumbers[integration.meta.twilio_phone_number_id]
                     return [
