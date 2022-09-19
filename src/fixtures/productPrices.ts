@@ -542,7 +542,7 @@ export const legacyBasicAutomationPrice: AutomationPrice = {
     features: automationPriceFeatures,
     interval: PlanInterval.Month,
     legacy_id: 'basic-automation-usd-1',
-    name: 'BasicPlan',
+    name: 'Basic Plan',
     product_id: 'prod_LsHD5xmSqoFBBs',
     price_id: 'price_1LJBlbI9qXomtXqSvvtgyZ1z',
 }

@@ -139,16 +139,35 @@ export const getPlans = createSelector(getProducts, (products) => {
             )
         }
     )
-    const automationPlans = automationProductPrices.map((product) => {
-        const equivalentHelpdeskProduct = helpdeskProductPrices.find(
-            (price) => price.price_id === product.base_price_id
-        )!
+    const automationPlans = automationProductPrices.map(
+        (automationProductPrice) => {
+            const equivalentHelpdeskProductPrice = helpdeskProductPrices.find(
+                (helpdeskProductPrice) =>
+                    helpdeskProductPrice.price_id ===
+                    automationProductPrice.base_price_id
+            )
 
-        return createAutomationPlanFromProducts(
-            product,
-            equivalentHelpdeskProduct
-        )
-    })
+            if (!equivalentHelpdeskProductPrice) {
+                const fallbackHelpdeskProductPrice = helpdeskProductPrices.find(
+                    (helpdeskProductPrice) =>
+                        helpdeskProductPrice.name ===
+                            automationProductPrice.name &&
+                        helpdeskProductPrice.interval ===
+                            automationProductPrice.interval
+                )!
+
+                return createAutomationPlanFromProducts(
+                    automationProductPrice,
+                    fallbackHelpdeskProductPrice
+                )
+            }
+
+            return createAutomationPlanFromProducts(
+                automationProductPrice,
+                equivalentHelpdeskProductPrice
+            )
+        }
+    )
     return [...basePlans, ...automationPlans].sort(
         ({order: orderA}, {order: orderB}) =>
             (orderA || Infinity) - (orderB || Infinity)

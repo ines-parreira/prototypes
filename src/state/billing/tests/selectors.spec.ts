@@ -2,7 +2,7 @@ import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS, List, Map} from 'immutable'
 import _cloneDeep from 'lodash/cloneDeep'
 
-import {Plan} from 'models/billing/types'
+import {AutomationPrice, Plan, Product} from 'models/billing/types'
 import {
     AUTOMATION_PRODUCT_ID,
     automationProduct,
@@ -84,21 +84,63 @@ describe('billing selectors', () => {
         })
     })
 
-    it('getPlans', () => {
-        const plans = selectors.getPlans(state)
+    describe('getPlans', () => {
+        it('should return plans', () => {
+            const plans = selectors.getPlans(state)
 
-        expect(
-            (state.billing.get('products') as List<any>)
-                .map(
-                    (product: Map<any, any>) =>
-                        product.get('prices') as List<any>
-                )
-                .flatten(1).size
-        ).toBe(plans.length)
+            expect(
+                (state.billing.get('products') as List<any>)
+                    .map(
+                        (product: Map<any, any>) =>
+                            product.get('prices') as List<any>
+                    )
+                    .flatten(1).size
+            ).toBe(plans.length)
 
-        plans.forEach((plan: Plan) => {
-            expect(plan).toHaveProperty('amount')
-            expect(plan).toHaveProperty('currencySign')
+            plans.forEach((plan: Plan) => {
+                expect(plan).toHaveProperty('amount')
+                expect(plan).toHaveProperty('currencySign')
+            })
+        })
+
+        it('should not fail in case of mismatched automation product', () => {
+            const mismatchedAutomationProduct: Product<AutomationPrice> = {
+                ...automationProduct,
+                prices: [
+                    ...automationProduct.prices,
+                    {...legacyBasicAutomationPrice, name: 'Basic'},
+                ],
+            }
+
+            const products = [helpdeskProduct, mismatchedAutomationProduct]
+            state = {
+                ...state,
+                currentAccount: fromJS({
+                    current_subscription: {
+                        products: {
+                            [HELPDESK_PRODUCT_ID]:
+                                basicMonthlyHelpdeskPrice.price_id,
+                            [AUTOMATION_PRODUCT_ID]:
+                                legacyBasicAutomationPrice.price_id,
+                        },
+                    },
+                }),
+                billing: initialState.mergeDeep({
+                    ...billingFixtures.billingState,
+                    products,
+                }),
+            }
+
+            const plans = selectors.getPlans(state)
+
+            expect(
+                (state.billing.get('products') as List<any>)
+                    .map(
+                        (product: Map<any, any>) =>
+                            product.get('prices') as List<any>
+                    )
+                    .flatten(1).size
+            ).toBe(plans.length)
         })
     })
 
