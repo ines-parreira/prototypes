@@ -1,4 +1,5 @@
 import React from 'react'
+import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import moment from 'moment'
 import momentTimezone from 'moment-timezone'
@@ -359,11 +360,25 @@ describe('widgets infobar utils', () => {
         })
 
         it('should return a success badge because passed data is a `true` value', () => {
-            expect(utils.displayValue(true)).toMatchSnapshot()
+            const {container} = render(utils.displayValue(true))
+            expect(container).toMatchSnapshot()
         })
 
         it('should return a danger badge because passed data is a `false` value', () => {
-            expect(utils.displayValue(false)).toMatchSnapshot()
+            const {container} = render(utils.displayValue(false))
+            expect(container).toMatchSnapshot()
+        })
+
+        it('should return a comma-separated list of rendered values because passed data is an array', () => {
+            const {container} = render(utils.displayValue([123, 'test', true]))
+            expect(container).toMatchSnapshot()
+        })
+
+        it('should work when passed an immutable object', () => {
+            const {container} = render(
+                utils.displayValue(fromJS({key: 'value'}))
+            )
+            expect(container).toMatchSnapshot()
         })
     })
 

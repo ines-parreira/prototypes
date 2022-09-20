@@ -675,8 +675,8 @@ export function guessFieldValueFromRawData(
             break
         }
         case 'array': {
-            if (_isArray(data)) {
-                fieldValue = data.join(', ')
+            if (_isArray(data) || List.isList(data)) {
+                fieldValue = data
             }
             break
         }
@@ -765,7 +765,7 @@ export function guessFieldValueFromRawData(
 /**
  * Display a widget field label (before the value)
  */
-export const displayValue = (label: any) => {
+export const displayValue = (label: any): ReactNode => {
     const defaultValue = '-'
 
     if (_isUndefined(label)) {
@@ -786,6 +786,15 @@ export const displayValue = (label: any) => {
                 {label ? 'True' : 'False'}
             </Badge>
         )
+    }
+
+    if (_isArray(label) || List.isList(label)) {
+        return (label as any[]).map((val: any, index: number) => (
+            <span key={index}>
+                {index > 0 && ', '}
+                {displayValue(val)}
+            </span>
+        ))
     }
 
     return label as ReactNode
