@@ -55,7 +55,7 @@ describe('Event predicates', () => {
             fromJS({
                 id: 1,
                 account_id: 1,
-                user_id: null,
+                user_id: 1,
                 object_type: 'Ticket',
                 object_id: 1,
                 data: null,
@@ -131,11 +131,11 @@ describe('Event predicates', () => {
                 expect(isViaRuleEvent(event, events)).toBeFalsy()
             })
 
-            it('because the event has a user_id', () => {
+            it('because the created datetime is not older', () => {
                 const ruleExecutedEvent = getEvent(
                     TICKET_EVENT_TYPES.RuleExecuted
-                )
-                const event = getValidEvent().set('user_id', '1')
+                ).set('created_datetime', '2019-11-15 20:00:00.000000')
+                const event = getValidEvent()
                 const events = fromJS([ruleExecutedEvent, event])
                 expect(isViaRuleEvent(event, events)).toBeFalsy()
             })
