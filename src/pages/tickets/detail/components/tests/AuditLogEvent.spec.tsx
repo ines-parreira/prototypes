@@ -219,6 +219,7 @@ describe('<AuditLogEvent/>', () => {
                     {
                         id: 2,
                         created_datetime: '2019-11-15 19:00:00.500000',
+                        user_id: null,
                     }
                 )
                 const component = shallow(

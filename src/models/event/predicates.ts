@@ -19,6 +19,5 @@ export const isViaRuleEvent = (
                 isRuleExecutedType(otherEvent) &&
                 otherEvent.get('id') !== event.get('id') &&
                 otherEvent.get('context') === event.get('context') &&
-                otherEvent.get('created_datetime') <
-                    event.get('created_datetime')
+                event.get('user_id') === null
         ) as Maybe<Map<any, any>>)) as unknown as boolean
