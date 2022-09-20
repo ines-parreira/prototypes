@@ -1,5 +1,5 @@
 import React from 'react'
-import {fireEvent} from '@testing-library/react'
+import {fireEvent, screen} from '@testing-library/react'
 import {createBrowserHistory} from 'history'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -11,6 +11,29 @@ import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/
 import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import HelpCenterStartView from '../HelpCenterStartView'
+
+jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
+    return {
+        useHelpCenterApi: () => ({
+            isReady: true,
+            client: {
+                listArticles: jest.fn().mockResolvedValue({
+                    data: {data: [], meta: {item_count: 0}},
+                }),
+                listArticleTranslations: jest.fn().mockResolvedValue({
+                    data: {data: [], meta: {item_count: 0}},
+                }),
+            },
+            agentAbility: [
+                {
+                    action: 'manage',
+                    subject: 'all',
+                },
+            ],
+        }),
+        useAbilityChecker: () => ({isPassingRulesCheck: () => true}),
+    }
+})
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
@@ -49,14 +72,14 @@ describe('<HelpCenterStartView />', () => {
         expect(container).toMatchSnapshot()
     })
 
-    it('should navigate to the creation page when clicking on the new button', async () => {
-        const {findByText} = renderWithRouter(
+    it('should navigate to the creation page when clicking on the new button', () => {
+        renderWithRouter(
             <Provider store={mockedStore(defaultState)}>
                 <HelpCenterStartView {...props} />
             </Provider>,
             {history: mockedHistory}
         )
-        const newBtn = await findByText(/add new/i)
+        const newBtn = screen.getByText(/add new/i)
         fireEvent.click(newBtn)
 
         expect(mockedHistory.push).toHaveBeenLastCalledWith(

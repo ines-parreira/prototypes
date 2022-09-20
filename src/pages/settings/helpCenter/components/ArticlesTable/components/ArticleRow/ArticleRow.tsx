@@ -3,16 +3,12 @@ import classNames from 'classnames'
 import _keyBy from 'lodash/keyBy'
 import Tooltip from 'pages/common/components/Tooltip'
 
-import {useLimitations} from 'hooks/helpCenter/useLimitations'
 import {useRatingScore} from 'pages/settings/helpCenter/hooks/useRatingScore'
 import {Article} from 'models/helpCenter/types'
 import {LanguageList} from 'pages/common/components/LanguageBulletList'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import {
-    ARTICLE_ROW_ACTIONS,
-    ArticleRowActionTypes,
-} from 'pages/settings/helpCenter/constants'
+import {ArticleRowActionTypes} from 'pages/settings/helpCenter/constants'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {
     Callbacks,
@@ -26,6 +22,7 @@ import up from '../../../../../../../../img/icons/rating-up-white.svg'
 import down from '../../../../../../../../img/icons/rating-down-white.svg'
 import star from '../../../../../../../../img/icons/rating-star.svg'
 
+import {useArticleRowActions} from '../../../../hooks/useArticleRowActions'
 import css from './ArticleRow.less'
 
 export type RowEventListeners = {
@@ -62,7 +59,7 @@ export const ArticleRow = ({
     onClickSettings,
 }: Props): JSX.Element => {
     const locales = useSupportedLocales()
-    const limitations = useLimitations()
+
     const {dragRef, dropRef, handlerId, isDragging} = useReorderDnD(
         {
             position,
@@ -72,6 +69,8 @@ export const ArticleRow = ({
         [`ARTICLE-${categoryId ?? 'UNCATEGORIZED'}`],
         {onHover: onMoveEntity, onDrop: onDropEntity}
     )
+
+    const articleRowActions = useArticleRowActions(article.id)
 
     const opacity = isDragging ? 0 : 1
 
@@ -190,17 +189,7 @@ export const ArticleRow = ({
             </BodyCell>
             <BodyCell style={{width: 120}} innerClassName={css.actions}>
                 <TableActions
-                    actions={ARTICLE_ROW_ACTIONS.map(
-                        ({icon, name, tooltip}) => ({
-                            icon,
-                            name,
-                            tooltip: {
-                                content: tooltip,
-                                target: `${name}-${article.id}`,
-                            },
-                            disabled: limitations[name]?.disabled,
-                        })
-                    )}
+                    actions={articleRowActions}
                     onClick={handleOnActionsClick}
                 />
             </BodyCell>

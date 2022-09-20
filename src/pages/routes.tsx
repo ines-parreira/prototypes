@@ -785,13 +785,7 @@ export function HelpCenterSettingsRoutes({match: {path}}: RouteComponentProps) {
                             content: withFeaturePaywall(
                                 AccountFeature.HelpCenter,
                                 HelpCenterPaywall
-                            )(
-                                memoizedWithUserRoleRequired(
-                                    HelpCenterStartView,
-                                    ADMIN_ROLE,
-                                    PageSection.HelpCenter
-                                )
-                            ),
+                            )(HelpCenterStartView),
                             navbar: SettingsNavbarContainer,
                         })}
                     />
@@ -802,13 +796,7 @@ export function HelpCenterSettingsRoutes({match: {path}}: RouteComponentProps) {
                             content: withFeaturePaywall(
                                 AccountFeature.HelpCenter,
                                 HelpCenterPaywall
-                            )(
-                                memoizedWithUserRoleRequired(
-                                    HelpCenterNewView,
-                                    ADMIN_ROLE,
-                                    PageSection.HelpCenter
-                                )
-                            ),
+                            )(HelpCenterNewView),
                             navbar: SettingsNavbarContainer,
                         })}
                     />
@@ -818,13 +806,7 @@ export function HelpCenterSettingsRoutes({match: {path}}: RouteComponentProps) {
                             content: withFeaturePaywall(
                                 AccountFeature.HelpCenter,
                                 HelpCenterPaywall
-                            )(
-                                memoizedWithUserRoleRequired(
-                                    CurrentHelpCenter,
-                                    ADMIN_ROLE,
-                                    PageSection.HelpCenter
-                                )
-                            ),
+                            )(CurrentHelpCenter),
                             navbar: SettingsNavbarContainer,
                         })}
                     />

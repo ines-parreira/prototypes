@@ -16,12 +16,14 @@ interface ArticleCategorySelectProps {
     locale: LocaleCode
     categoryId: number | null
     onChange?: (value: number | null) => void
+    isDisabled?: boolean
 }
 
 const ArticleCategorySelect = ({
     locale,
     categoryId,
     onChange,
+    isDisabled = false,
 }: ArticleCategorySelectProps): JSX.Element => {
     const options = useCategoriesOptions({locale})
     const categoriesById = useAppSelector(getCategoriesById)
@@ -37,6 +39,7 @@ const ArticleCategorySelect = ({
         <SelectField
             allowCustomValue
             fullWidth
+            disabled={isDisabled}
             value={
                 selectOption && categoriesById[selectOption]
                     ? categoriesById[selectOption].translation?.title

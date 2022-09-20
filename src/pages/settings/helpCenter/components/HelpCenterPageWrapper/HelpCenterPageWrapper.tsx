@@ -21,6 +21,7 @@ import {getLocaleSelectOptions} from '../../utils/localeSelectOptions'
 import {HelpCenterDetailsBreadcrumb} from '../HelpCenterDetailsBreadcrumb'
 import {HelpCenterNavigation} from '../HelpCenterNavigation'
 
+import {useAbilityChecker} from '../../hooks/useHelpCenterApi'
 import css from './HelpCenterPageWrapper.less'
 
 type Props = {
@@ -62,6 +63,11 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
         dispatch(changeViewLanguage(validLocaleCode(value)))
     }
 
+    const {isPassingRulesCheck} = useAbilityChecker()
+    const cannotUpdateHelpCenter = !isPassingRulesCheck(({can}) =>
+        can('update', 'HelpCenterEntity')
+    )
+
     return (
         <div className="full-width" style={{position: 'relative'}}>
             <PageHeader
@@ -94,7 +100,10 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
                     {actions}
                 </div>
             </PageHeader>
-            <HelpCenterNavigation helpCenterId={helpCenter.id} />
+            <HelpCenterNavigation
+                cannotUpdateHelpCenter={cannotUpdateHelpCenter}
+                helpCenterId={helpCenter.id}
+            />
             {fluidContainer ? (
                 <Container
                     fluid

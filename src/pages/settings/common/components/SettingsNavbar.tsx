@@ -83,7 +83,6 @@ export default class SettingsNavbar extends Component<Props> {
                         className: 'd-none d-md-block',
                     },
                     {
-                        requiredRole: ADMIN_ROLE,
                         to: 'help-center',
                         text: 'Help Center',
                         className: 'd-none d-md-block',

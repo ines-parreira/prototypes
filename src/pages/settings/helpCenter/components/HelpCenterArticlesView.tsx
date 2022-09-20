@@ -32,7 +32,7 @@ import {
 } from '../constants'
 import {useArticlesActions} from '../hooks/useArticlesActions'
 import {useHelpCenterActions} from '../hooks/useHelpCenterActions'
-import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
+import {useHelpCenterApi, useAbilityChecker} from '../hooks/useHelpCenterApi'
 import {useCurrentHelpCenter} from '../providers/CurrentHelpCenter'
 import {
     articleRequiredFields,
@@ -88,6 +88,8 @@ export const HelpCenterArticlesView: React.FC = () => {
     } = useEditionManager()
 
     const {searchResults} = useSearchContext()
+
+    const {isPassingRulesCheck} = useAbilityChecker()
 
     /**
      * States
@@ -728,6 +730,10 @@ export const HelpCenterArticlesView: React.FC = () => {
         }
     }
 
+    const canUpdateArticle = isPassingRulesCheck(({can}) =>
+        can('update', 'ArticleEntity')
+    )
+
     /**
      * Derived values
      */
@@ -740,6 +746,14 @@ export const HelpCenterArticlesView: React.FC = () => {
         articleModified: boolean
         requiredFieldsArticle: typeof articleRequiredFields
     } = useMemo(() => {
+        if (!canUpdateArticle) {
+            return {
+                canSaveArticle: false,
+                articleModified: false,
+                requiredFieldsArticle: [],
+            }
+        }
+
         const currentTranslation = selectedArticle?.translation
         const requiredFieldsArticle: typeof articleRequiredFields = []
 
@@ -787,7 +801,7 @@ export const HelpCenterArticlesView: React.FC = () => {
 
         return {
             canSaveArticle: filledRequired && articleModified,
-            articleModified,
+            articleModified: articleModified,
             requiredFieldsArticle,
         }
     }, [
@@ -796,6 +810,7 @@ export const HelpCenterArticlesView: React.FC = () => {
         selectedExistingArticleTranslation,
         selectedCategoryId,
         isEditorCodeViewActive,
+        canUpdateArticle,
     ])
 
     const isSearching =
@@ -823,11 +838,25 @@ export const HelpCenterArticlesView: React.FC = () => {
             helpCenter={helpCenter}
             actions={
                 <>
-                    <Button intent="secondary" onClick={onCategoryCreate}>
+                    <Button
+                        intent="secondary"
+                        onClick={onCategoryCreate}
+                        isDisabled={
+                            !isPassingRulesCheck(({can}) =>
+                                can('create', 'CategoryEntity')
+                            )
+                        }
+                    >
                         Create Category
                     </Button>
                     <Button
-                        isDisabled={limitations.createArticle.disabled}
+                        isDisabled={
+                            isPassingRulesCheck(({can}) =>
+                                can('create', 'ArticleEntity')
+                            )
+                                ? limitations.createArticle.disabled
+                                : true
+                        }
                         onClick={onArticleCreate}
                     >
                         Create Article

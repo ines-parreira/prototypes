@@ -23,6 +23,10 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterIdParam')
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 ;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
 
+jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
+    useAbilityChecker: () => ({isPassingRulesCheck: () => true}),
+}))
+
 const mockFetchArticlesByIds = jest.fn().mockResolvedValue(null)
 
 jest.mock('../../../hooks/useArticlesActions', () => {

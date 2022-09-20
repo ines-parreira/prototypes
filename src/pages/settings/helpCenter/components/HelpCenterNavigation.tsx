@@ -5,12 +5,18 @@ import SecondaryNavbar from '../../../common/components/SecondaryNavbar/Secondar
 
 type Props = {
     helpCenterId: string | number
+    cannotUpdateHelpCenter?: boolean
 }
 
 export const HelpCenterNavigation: React.FC<Props> = ({
+    cannotUpdateHelpCenter = false,
     helpCenterId,
 }: Props) => {
     const baseURL = `/app/settings/help-center/${helpCenterId}`
+
+    if (cannotUpdateHelpCenter) {
+        return null
+    }
 
     return (
         <SecondaryNavbar>

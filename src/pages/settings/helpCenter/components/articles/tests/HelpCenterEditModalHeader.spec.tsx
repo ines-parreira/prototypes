@@ -72,6 +72,10 @@ jest.mock('../ArticleCategorySelect/hooks/useCategoriesOptions')
     {label: 'Pricing', value: 2},
 ])
 
+jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
+    useAbilityChecker: () => ({isPassingRulesCheck: () => true}),
+}))
+
 describe('<HelpCenterEditModalHeader />', () => {
     const domain = 'acme.gorgias.help'
 

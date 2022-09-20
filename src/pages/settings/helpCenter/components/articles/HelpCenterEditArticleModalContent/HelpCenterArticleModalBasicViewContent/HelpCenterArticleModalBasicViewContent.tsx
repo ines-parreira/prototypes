@@ -21,6 +21,7 @@ import HelpCenterEditor from '../../HelpCenterEditor/HelpCenterEditor'
 import {HelpCenterArticleModalView} from '../types'
 
 import css from '../HelpCenterEditArticleModalContent.less'
+import {useAbilityChecker} from '../../../../hooks/useHelpCenterApi'
 
 type Props = {
     onArticleLanguageSelect: (localeCode: LocaleCode) => void
@@ -80,6 +81,7 @@ const HelpCenterArticleModalBasicViewContent = ({
     articleMode,
 }: Props) => {
     const screenSize = useScreenSize()
+    const {isPassingRulesCheck} = useAbilityChecker()
     const {
         setEditModal,
         selectedArticle,
@@ -109,6 +111,10 @@ const HelpCenterArticleModalBasicViewContent = ({
             ? selectedArticle.translation.article_id
             : undefined
     const helpCenterDomain = getHelpCenterDomain(helpCenter)
+
+    const canUpdateArticle = isPassingRulesCheck(({can}) =>
+        can('update', 'ArticleEntity')
+    )
 
     return (
         <span className={css.modalForm} id={EDITOR_MODAL_CONTAINER_ID}>
@@ -154,6 +160,7 @@ const HelpCenterArticleModalBasicViewContent = ({
                                 view: HelpCenterArticleModalView.ADVANCED,
                             })
                         }
+                        isDisabled={!canUpdateArticle}
                         fillStyle="ghost"
                         intent="secondary"
                         size="medium"

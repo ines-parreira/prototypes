@@ -17,6 +17,16 @@ import {SearchView} from './SearchView'
 
 jest.mock('../../providers/SearchContext')
 
+jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
+    const dep: Record<string, unknown> = jest.requireActual(
+        'pages/settings/helpCenter/hooks/useHelpCenterApi'
+    )
+    return {
+        ...dep,
+        useAbilityChecker: () => ({isPassingRulesCheck: () => true}),
+    }
+})
+
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterIdParam')

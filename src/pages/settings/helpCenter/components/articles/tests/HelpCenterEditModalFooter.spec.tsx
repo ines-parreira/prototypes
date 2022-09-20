@@ -3,6 +3,10 @@ import {render, fireEvent, waitFor, within} from '@testing-library/react'
 
 import HelpCenterEditModalFooter from '../HelpCenterEditModalFooter'
 
+jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
+    useAbilityChecker: () => ({isPassingRulesCheck: () => true}),
+}))
+
 const mockedOnSave = jest.fn()
 const mockedOnDelete = jest.fn()
 const mockedOnDiscard = jest.fn()

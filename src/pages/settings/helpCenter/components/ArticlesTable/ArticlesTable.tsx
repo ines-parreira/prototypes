@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import {chain as _chain} from 'lodash'
 import _sortBy from 'lodash/sortBy'
 
+import _noop from 'lodash/noop'
 import {Article} from 'models/helpCenter/types'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import TableBody from 'pages/common/components/table/TableBody'
@@ -10,6 +11,7 @@ import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import {ArticleRowActionTypes} from '../../constants'
 
+import {useAbilityChecker} from '../../hooks/useHelpCenterApi'
 import {ArticleRow} from './components/ArticleRow'
 
 import css from './ArticlesTable.less'
@@ -42,6 +44,7 @@ export const ArticlesTable = ({
     const [records, setRecords] = useState(() =>
         _sortBy(articles, ['position'])
     )
+    const {isPassingRulesCheck} = useAbilityChecker()
 
     useEffect(() => {
         setRecords(_sortBy(articles, ['position']))
@@ -85,6 +88,10 @@ export const ArticlesTable = ({
         onReorderFinish?.(categoryId, records)
     }
 
+    const canUpdateArticle = isPassingRulesCheck(({can}) =>
+        can('update', 'ArticleEntity')
+    )
+
     return (
         <TableWrapper
             className={classNames({
@@ -107,8 +114,12 @@ export const ArticlesTable = ({
                         categoryId={categoryId}
                         article={article}
                         position={index}
-                        onMoveEntity={handleOnMoveArticle}
-                        onDropEntity={handleOnReorderFinish}
+                        onMoveEntity={
+                            canUpdateArticle ? handleOnMoveArticle : _noop
+                        }
+                        onDropEntity={
+                            canUpdateArticle ? handleOnReorderFinish : _noop
+                        }
                         onClickRow={handleOnClickRow}
                         onClickSettings={handleOnClickSettings}
                     />

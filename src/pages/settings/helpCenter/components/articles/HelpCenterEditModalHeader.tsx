@@ -31,9 +31,11 @@ import {
 } from '../articles/ArticleLanguageSelect'
 import {isOneOfParentsUnlisted} from '../HelpCenterCategoryEdit/utils'
 
+import {useAbilityChecker} from '../../hooks/useHelpCenterApi'
 import ArticleCategorySelect from './ArticleCategorySelect'
 
 import css from './HelpCenterEditModalHeader.less'
+
 export type Props = {
     title: string
     isFullscreen?: boolean
@@ -134,12 +136,6 @@ export const HelpCenterEditModalHeader = ({
             </IconButton>
         )
 
-    useEffect(() => {
-        setIsParentUnlisted(
-            isOneOfParentsUnlisted(categories, selectedCategoryId)
-        )
-    }, [selectedCategoryId, categories])
-
     const localeOptions = useMemo(
         () =>
             getLocaleSelectOptions(locales, supportedLocales).map((option) => {
@@ -170,6 +166,14 @@ export const HelpCenterEditModalHeader = ({
         return EditingStateEnum.PUBLISHED
     }, [articleMode.mode])
 
+    const {isPassingRulesCheck} = useAbilityChecker()
+
+    useEffect(() => {
+        setIsParentUnlisted(
+            isOneOfParentsUnlisted(categories, selectedCategoryId)
+        )
+    }, [selectedCategoryId, categories])
+
     useEffect(() => {
         if (autoFocus) {
             // Only set the auto-focus after the drawer animation is finished,
@@ -180,6 +184,10 @@ export const HelpCenterEditModalHeader = ({
             )
         }
     }, [autoFocus])
+
+    const canUpdateArticle = isPassingRulesCheck(({can}) =>
+        can('update', 'ArticleEntity')
+    )
 
     return (
         <header className={css.header}>
@@ -195,6 +203,7 @@ export const HelpCenterEditModalHeader = ({
                         className={css.titleInput}
                         maxLength={HELP_CENTER_TITLE_MAX_LENGTH}
                         ref={titleInputRef}
+                        disabled={!canUpdateArticle}
                     />
                 ) : (
                     <span className={css.titleInput}>{title}</span>
@@ -203,6 +212,7 @@ export const HelpCenterEditModalHeader = ({
                     <EditingState state={editingState} />
                     {!showInlineLanguageSelect && (
                         <ArticleLanguageSelect
+                            isDisabled={!canUpdateArticle}
                             selected={selectedArticleLanguage}
                             list={localeOptions}
                             onSelect={onLanguageSelect}
@@ -258,6 +268,7 @@ export const HelpCenterEditModalHeader = ({
                         <ArticleCategorySelect
                             locale={selectedArticleLanguage}
                             categoryId={selectedCategoryId}
+                            isDisabled={!canUpdateArticle}
                             onChange={(value: number | null) => {
                                 setSelectedArticle((prevSelectedArticle) =>
                                     prevSelectedArticle?.translation
@@ -306,12 +317,14 @@ export const HelpCenterEditModalHeader = ({
                             setShowNotification={setShowNotification}
                             isParentUnlisted={isParentUnlisted}
                             type="article"
+                            isDisabled={!canUpdateArticle}
                         />
                     </div>
                 )}
                 {showInlineLanguageSelect && (
                     <div className={css.articleLanguageSelect}>
                         <ArticleLanguageSelect
+                            isDisabled={!canUpdateArticle}
                             selected={selectedArticleLanguage}
                             list={localeOptions}
                             onSelect={onLanguageSelect}

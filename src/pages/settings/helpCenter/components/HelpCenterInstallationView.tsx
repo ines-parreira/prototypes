@@ -40,7 +40,7 @@ export const HelpCenterInstallationView: React.FC = () => {
     const history = useHistory()
     const location = useLocation()
     const helpCenter = useCurrentHelpCenter()
-    const {isReady, client} = useHelpCenterApi()
+    const {client} = useHelpCenterApi()
     const [subdomainValue, setSubdomainValue] = useState<string>()
     const [gaid, setGaid] = useState<string | null>(null)
     const [isSubdomainAvailable, setIsSubdomainAvailable] = useState(true)
@@ -77,7 +77,7 @@ export const HelpCenterInstallationView: React.FC = () => {
     )
 
     const handleOnDeleteHelpCenter = () => {
-        if (isReady && client) {
+        if (client) {
             void client
                 .deleteHelpCenter({
                     help_center_id: helpCenterId,

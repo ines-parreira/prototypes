@@ -45,6 +45,7 @@ jest.mock('../../hooks/useHelpCenterApi', () => {
                 }),
             },
         }),
+        useAbilityChecker: () => ({isPassingRulesCheck: () => true}),
     }
 })
 

@@ -8,6 +8,7 @@ import {
 
 import OpenAPIDoc from './help-center.openapi.json'
 import {Client} from './client.generated'
+import {AppAbility, AbilityRules, createAbility} from './ability'
 
 export function getHelpCenterApiBaseUrl(): string {
     // Use helpdesk's host
@@ -32,6 +33,8 @@ const api = new OpenAPIClientAxios({
         : {}),
 })
 
+let agentAbility: AppAbility | undefined
+
 function isValidAccessToken(token: string | null): boolean {
     if (!token) {
         return false
@@ -42,7 +45,26 @@ function isValidAccessToken(token: string | null): boolean {
     return new Date() < expirationDate
 }
 
-async function buildHelpCenterClient(): Promise<Client> {
+function createAgentAbility(token: string | null) {
+    if (!token) return undefined
+    // update the ability of the user based on the rules defined in the JWT token
+    const rawPayload: string | undefined = token.split('.')[1]
+    if (!rawPayload) {
+        return undefined
+    }
+    const parsedToken: {rules?: AbilityRules} = JSON.parse(
+        window.atob(rawPayload)
+    )
+    if (parsedToken?.rules && Array.isArray(parsedToken.rules)) {
+        return createAbility(parsedToken.rules)
+    }
+
+    return undefined
+}
+
+async function buildHelpCenterClient(
+    setAgentAbility?: (ability: AppAbility | undefined) => void
+): Promise<Client> {
     let accessToken: string | null
     let createAccessTokenPendingRequest: ReturnType<
         Client['createAccessToken']
@@ -82,6 +104,8 @@ async function buildHelpCenterClient(): Promise<Client> {
             await renewAccessToken(client)
         }
 
+        setAgentAbility?.(createAgentAbility(accessToken))
+
         return {
             ...config,
             headers: {
@@ -96,4 +120,8 @@ async function buildHelpCenterClient(): Promise<Client> {
 
 export const getHelpCenterClient = memoize(buildHelpCenterClient)
 
-export type {Client as HelpCenterClient}
+export function getAgentAbility(): AppAbility | undefined {
+    return agentAbility
+}
+
+export type HelpCenterClient = Client & {ability?: AppAbility}

@@ -66,7 +66,7 @@ export const HelpCenterImportCsvColumnMatchingView: React.FC = () => {
     const location = useLocation()
     const helpCenter = useCurrentHelpCenter()
     const [fileUrl, setFileUrl] = useState<string | null>(null)
-    const {isReady, client} = useHelpCenterApi()
+    const {client} = useHelpCenterApi()
     const [csvColumns, setCsvColumns] = useState<CsvColumnPreview[] | null>(
         null
     )
@@ -95,7 +95,7 @@ export const HelpCenterImportCsvColumnMatchingView: React.FC = () => {
     }, [dispatch, location.search])
 
     useEffect(() => {
-        if (client && isReady && fileUrl && helpCenter && csvColumns === null) {
+        if (client && fileUrl && helpCenter && csvColumns === null) {
             void client
                 .analyseCsv(
                     {
@@ -167,7 +167,6 @@ export const HelpCenterImportCsvColumnMatchingView: React.FC = () => {
         dispatch,
         history,
         location.pathname,
-        isReady,
         fileUrl,
         helpCenter,
     ])
@@ -176,8 +175,7 @@ export const HelpCenterImportCsvColumnMatchingView: React.FC = () => {
     if (
         locales.length === 0 ||
         csvColumns === null ||
-        client === undefined ||
-        !isReady ||
+        !client ||
         fileUrl === null
     ) {
         return <Loader />

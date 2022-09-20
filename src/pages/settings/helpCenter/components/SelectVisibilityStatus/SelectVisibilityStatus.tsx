@@ -23,6 +23,7 @@ export type SelectVisibilityStatusProps = {
     setShowNotification: (showNotification: boolean) => void
     type: 'article' | 'category'
     className?: string
+    isDisabled?: boolean
 }
 
 const SelectVisibilityStatus = ({
@@ -33,6 +34,7 @@ const SelectVisibilityStatus = ({
     showNotification,
     setShowNotification,
     type,
+    isDisabled = false,
 }: SelectVisibilityStatusProps) => {
     const [isToggleOpen, setIsToggleOpen] = useState(false)
 
@@ -69,6 +71,7 @@ const SelectVisibilityStatus = ({
             <UncontrolledDropdown
                 toggle={() => setIsToggleOpen(!isToggleOpen)}
                 isOpen={isToggleOpen}
+                disabled={isDisabled}
             >
                 <DropdownToggle tag="div" data-toggle="dropdown">
                     <div className={classnames(css.select, 'dropdown-toggle')}>

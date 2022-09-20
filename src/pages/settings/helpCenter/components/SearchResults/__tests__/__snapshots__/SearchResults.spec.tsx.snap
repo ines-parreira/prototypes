@@ -964,7 +964,6 @@ exports[`SearchResults displays article and category search results 1`] = `
               <button
                 class="action material-icons"
                 data-testid="createNestedCategory"
-                disabled=""
                 id="createNestedCategory-31"
               >
                 playlist_add

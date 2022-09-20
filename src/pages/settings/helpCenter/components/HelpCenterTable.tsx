@@ -16,6 +16,7 @@ import TableWrapper from 'pages/common/components/table/TableWrapper'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import settingsCss from '../../settings.less'
 
+import {useAbilityChecker} from '../hooks/useHelpCenterApi'
 import css from './HelpCenterTable.less'
 
 type Props = {
@@ -41,6 +42,8 @@ export const HelpCenterTable: React.FC<Props> = ({
             event?.stopPropagation()
             onToggle(helpCenterId, isToggled)
         }
+
+    const {isPassingRulesCheck} = useAbilityChecker()
 
     if (isLoading) {
         return <Loader />
@@ -87,6 +90,14 @@ export const HelpCenterTable: React.FC<Props> = ({
                                     <ToggleInput
                                         isToggled={activated}
                                         onClick={handleToggle(id)}
+                                        isDisabled={
+                                            !isPassingRulesCheck(({can}) =>
+                                                can(
+                                                    'update',
+                                                    'HelpCenterEntity'
+                                                )
+                                            )
+                                        }
                                     />
                                 </BodyCell>
                                 <BodyCell className={css.helpCenterName}>

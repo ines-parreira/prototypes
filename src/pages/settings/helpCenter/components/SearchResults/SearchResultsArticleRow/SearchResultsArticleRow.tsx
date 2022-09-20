@@ -6,11 +6,7 @@ import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import Tooltip from 'pages/common/components/Tooltip'
 import {LanguageList} from 'pages/common/components/LanguageBulletList'
-import {
-    ArticleRowActionTypes,
-    ARTICLE_ROW_ACTIONS,
-} from 'pages/settings/helpCenter/constants'
-import {useLimitations} from 'hooks/helpCenter/useLimitations'
+import {ArticleRowActionTypes} from 'pages/settings/helpCenter/constants'
 import {sanitizeHtmlDefault} from 'utils/html'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {changeViewLanguage} from 'state/ui/helpCenter/actions'
@@ -29,6 +25,7 @@ import VisibilityCell from '../../VisibilityCell/VisibilityCell'
 
 import nestingCss from '../nesting.less'
 
+import {useArticleRowActions} from '../../../hooks/useArticleRowActions'
 import css from './SearchResultsArticleRow.less'
 
 const Highlight: FC<{
@@ -83,7 +80,7 @@ export const SearchResultsArticleRow: FC<Props> = ({
     const entity = isLoading(article.article) ? null : article.article
     const ratingScore = useRatingScore(entity?.rating)
     const localesByCode = useMemo(() => _keyBy(locales, 'code'), [locales])
-    const limitations = useLimitations()
+    const articleRowActions = useArticleRowActions(article.id)
 
     const languageList = useMemo(() => {
         if (!entity) {
@@ -206,17 +203,7 @@ export const SearchResultsArticleRow: FC<Props> = ({
             </BodyCell>
             <BodyCell style={{width: 120}} innerClassName={css.actions}>
                 <TableActions
-                    actions={ARTICLE_ROW_ACTIONS.map(
-                        ({icon, name, tooltip}) => ({
-                            icon,
-                            name,
-                            tooltip: {
-                                content: tooltip,
-                                target: `${name}-${article.id}`,
-                            },
-                            disabled: limitations[name]?.disabled,
-                        })
-                    )}
+                    actions={articleRowActions}
                     onClick={(
                         ev: React.MouseEvent,
                         name: ArticleRowActionTypes

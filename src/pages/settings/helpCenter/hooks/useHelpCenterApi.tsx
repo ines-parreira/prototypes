@@ -4,7 +4,10 @@ import React, {
     useState,
     useEffect,
     ReactNode,
+    useCallback,
+    useMemo,
 } from 'react'
+import {AppAbility} from 'rest_api/help_center_api/ability'
 
 import {
     getHelpCenterClient,
@@ -14,6 +17,7 @@ import {
 type UseHelpCenterApiInterface = {
     isReady: boolean
     client: HelpCenterClient | undefined
+    agentAbility?: AppAbility
 }
 
 interface HelpCenterApiClientState {
@@ -21,9 +25,12 @@ interface HelpCenterApiClientState {
     client: HelpCenterClient | undefined
 }
 
-const HelpCenterApiClientContext = createContext<HelpCenterApiClientState>({
+const HelpCenterApiClientContext = createContext<
+    HelpCenterApiClientState & {agentAbility?: AppAbility}
+>({
     isReady: false,
     client: undefined,
+    agentAbility: undefined,
 })
 
 interface HelpCenterApiClientProviderProps {
@@ -38,8 +45,12 @@ export const HelpCenterApiClientProvider = ({
         client: undefined,
     })
 
+    const [agentAbility, setAgentAbility] = useState<AppAbility | undefined>(
+        undefined
+    )
+
     const initClient = async () => {
-        const client = await getHelpCenterClient()
+        const client = await getHelpCenterClient(setAgentAbility)
 
         setState({
             client,
@@ -51,8 +62,16 @@ export const HelpCenterApiClientProvider = ({
         void initClient()
     }, [])
 
+    const value = useMemo(
+        () => ({
+            ...state,
+            agentAbility,
+        }),
+        [state, agentAbility]
+    )
+
     return (
-        <HelpCenterApiClientContext.Provider value={state}>
+        <HelpCenterApiClientContext.Provider value={value}>
             {children}
         </HelpCenterApiClientContext.Provider>
     )
@@ -65,4 +84,18 @@ export const useHelpCenterApi = (): UseHelpCenterApiInterface => {
         isReady,
         client,
     }
+}
+
+export const useAbilityChecker = () => {
+    const {agentAbility} = useContext(HelpCenterApiClientContext)
+
+    const isPassingRulesCheck = useCallback(
+        (permissionChecker: (ab: AppAbility) => boolean) => {
+            if (!agentAbility) return false
+            return permissionChecker(agentAbility)
+        },
+        [agentAbility]
+    )
+
+    return {isPassingRulesCheck}
 }

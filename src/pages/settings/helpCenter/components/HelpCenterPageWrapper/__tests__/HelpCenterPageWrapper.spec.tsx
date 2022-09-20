@@ -14,6 +14,16 @@ import {
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import HelpCenterPageWrapper from '../HelpCenterPageWrapper'
 
+jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
+    const dep: Record<string, unknown> = jest.requireActual(
+        'pages/settings/helpCenter/hooks/useHelpCenterApi'
+    )
+    return {
+        ...dep,
+        useAbilityChecker: () => ({isPassingRulesCheck: () => true}),
+    }
+})
+
 const windowOpenMock = jest.fn().mockReturnValue({
     focus: jest.fn(),
 })

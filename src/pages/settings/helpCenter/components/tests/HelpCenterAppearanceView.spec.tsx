@@ -68,6 +68,7 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
                 listGoogleFonts: mockedListGoogleFonts,
             },
         }),
+        useAbilityChecker: () => ({isPassingRulesCheck: () => true}),
     }
 })
 

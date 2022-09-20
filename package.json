@@ -39,6 +39,8 @@
     "author": "Alex Plugaru <alex@gorgias.com>",
     "license": "UNLICENSED",
     "dependencies": {
+        "@casl/ability": "6.0.0",
+        "@casl/react": "3.0.1",
         "@datadog/browser-logs": "2.0.3",
         "@floating-ui/react-dom-interactions": "0.4.0",
         "@formatjs/intl-displaynames": "5.4.3",

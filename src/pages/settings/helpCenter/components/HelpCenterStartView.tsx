@@ -24,7 +24,7 @@ import {
     useProductBannerStorage,
 } from 'hooks/useProductBannerStorage'
 
-import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
+import {useHelpCenterApi, useAbilityChecker} from '../hooks/useHelpCenterApi'
 import {useSupportedLocales} from '../providers/SupportedLocales'
 import {
     HELP_CENTER_MAX_CREATION,
@@ -62,6 +62,8 @@ export const HelpCenterStartView: React.FC = () => {
     const {isLoading, hasMore, fetchMore} = useHelpCenterList({
         per_page: HELP_CENTERS_PER_PAGE,
     })
+
+    const {isPassingRulesCheck} = useAbilityChecker()
 
     useEffect(() => {
         dispatch(changeHelpCenterId(null))
@@ -148,7 +150,7 @@ export const HelpCenterStartView: React.FC = () => {
         setShouldShowProductBanner(false)
     }, [updateProductBanner])
 
-    const addNewButtonDisabled =
+    const isHelpCenterLimitReached =
         helpCenterList.length >= HELP_CENTER_MAX_CREATION
 
     return (
@@ -161,7 +163,13 @@ export const HelpCenterStartView: React.FC = () => {
             <PageHeader title="Help Center">
                 <div id="add-new-help-center-button-wrapper">
                     <Button
-                        isDisabled={addNewButtonDisabled}
+                        isDisabled={
+                            isPassingRulesCheck(({can}) =>
+                                can('create', 'HelpCenterEntity')
+                            )
+                                ? isHelpCenterLimitReached
+                                : true
+                        }
                         onClick={() =>
                             history.push(`${HELP_CENTER_BASE_PATH}/new`)
                         }
@@ -172,7 +180,7 @@ export const HelpCenterStartView: React.FC = () => {
                     </Button>
                 </div>
                 <Tooltip
-                    disabled={!addNewButtonDisabled}
+                    disabled={!isHelpCenterLimitReached}
                     placement="bottom-end"
                     target="add-new-help-center-button-wrapper"
                     style={{

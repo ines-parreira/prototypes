@@ -32,7 +32,7 @@ import {
     HELP_CENTER_DEFAULT_LOCALE,
     HELP_CENTER_DEFAULT_THEME,
 } from '../constants'
-import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
+import {useAbilityChecker, useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useSupportedLocales} from '../providers/SupportedLocales'
 import {HelpCenterTheme} from '../types'
 import {slugify} from '../utils/helpCenter.utils'
@@ -89,6 +89,7 @@ export const HelpCenterNewView = ({
     const [isSubdomainAvailable, setIsSubdomainAvailable] = useState(true)
     const disconnectButtonRef = useRef<HTMLSpanElement>(null)
     const enableArticleRecommendation = useEnableArticleRecommendation(notify)
+    const {isPassingRulesCheck} = useAbilityChecker()
 
     const localeOptions = useMemo(
         () => locales.map(localeToSelectOption),
@@ -245,10 +246,11 @@ export const HelpCenterNewView = ({
         }
     }
 
-    const canSubmit = useMemo(
-        () => newHelpCenter.name && !subdomainError && !nameError,
-        [newHelpCenter, subdomainError, nameError]
-    )
+    const canSubmit =
+        isPassingRulesCheck(({can}) => can('create', 'HelpCenterEntity')) &&
+        newHelpCenter.name &&
+        !subdomainError &&
+        !nameError
 
     useEffect(() => {
         setIsSubdomainAvailable(true)

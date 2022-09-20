@@ -7,6 +7,10 @@ import HelpCenterTable from '../HelpCenterTable'
 import {getHelpCentersResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
 import {getLocalesResponseFixture} from '../../fixtures/getLocalesResponse.fixtures'
 
+jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
+    useAbilityChecker: () => ({isPassingRulesCheck: () => true}),
+}))
+
 describe('<HelpCenterTable />', () => {
     const mockedOnClick = jest.fn()
     const mockedOnToggle = jest.fn()

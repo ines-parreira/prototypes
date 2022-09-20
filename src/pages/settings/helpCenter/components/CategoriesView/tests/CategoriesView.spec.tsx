@@ -30,7 +30,11 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterIdParam', () => {
     }
 })
 
-jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi')
+jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
+    useHelpCenterApi: jest.fn(),
+    useAbilityChecker: () => ({isPassingRulesCheck: () => true}),
+}))
+
 const useHelpCenterApiMock = useHelpCenterApi as jest.Mock
 
 const mockedListArticles = jest.fn().mockResolvedValue({

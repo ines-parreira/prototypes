@@ -9,7 +9,6 @@ import {LanguageList} from 'pages/common/components/LanguageBulletList'
 import {sanitizeHtmlDefault} from 'utils/html'
 import {
     ArticleRowActionTypes,
-    CATEGORY_ROW_ACTIONS,
     MODALS,
 } from 'pages/settings/helpCenter/constants'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
@@ -27,6 +26,7 @@ import nestingCss from '../nesting.less'
 import VisibilityCell from '../../VisibilityCell/VisibilityCell'
 import {isResultOrAncestorUnlisted} from '../utils'
 
+import {useCategoryRowActions} from '../../../hooks/useCategoryRowActions'
 import css from './SearchResultsCategoryRow.less'
 
 const Highlight: FC<{
@@ -88,6 +88,7 @@ export const SearchResultsCategoryRow: FC<Props> = ({
     const articleModal = useModalManager(MODALS.ARTICLE, {autoDestroy: false})
     const categoryModal = useModalManager(MODALS.CATEGORY, {autoDestroy: false})
     const localesByCode = useMemo(() => _keyBy(locales, 'code'), [locales])
+    const categoryRowActions = useCategoryRowActions(category.id, level)
 
     const languageList = useMemo(() => {
         if (isLoading(category.category)) {
@@ -225,19 +226,7 @@ export const SearchResultsCategoryRow: FC<Props> = ({
 
                 <BodyCell innerClassName={css.actions}>
                     <TableActions
-                        actions={CATEGORY_ROW_ACTIONS.map(
-                            ({name, icon, tooltip}) => ({
-                                name,
-                                icon,
-                                disabled:
-                                    level >= 3 &&
-                                    name === 'createNestedCategory',
-                                tooltip: {
-                                    content: tooltip,
-                                    target: `${name}-${category.id}`,
-                                },
-                            })
-                        )}
+                        actions={categoryRowActions}
                         onClick={handleOnActionClick}
                     />
                 </BodyCell>

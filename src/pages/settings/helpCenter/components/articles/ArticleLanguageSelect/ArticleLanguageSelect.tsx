@@ -24,6 +24,7 @@ type Props = {
     onSelect: (localeCode: LocaleCode) => void
     onActionClick: (action: ActionType, currentOption: OptionItem) => void
     className?: string
+    isDisabled?: boolean
 }
 
 export const ArticleLanguageSelect = ({
@@ -32,6 +33,7 @@ export const ArticleLanguageSelect = ({
     onSelect,
     onActionClick,
     className,
+    isDisabled = false,
 }: Props): JSX.Element => {
     const $ref = createRef<HTMLDivElement>()
     const {isOpen, onOpen, onClose} = useOpenToggle($ref, false)
@@ -58,6 +60,7 @@ export const ArticleLanguageSelect = ({
                 <div className={css.actions}>
                     {option.canBeDeleted && (
                         <ActionButton
+                            isDisabled={isDisabled}
                             className="mr-4"
                             variant="danger"
                             help="Delete language version"
@@ -78,6 +81,7 @@ export const ArticleLanguageSelect = ({
         return (
             <div className={css.actions}>
                 <ActionButton
+                    isDisabled={isDisabled}
                     help="Add language version"
                     onClick={() => handleOnSelect(option)}
                 >

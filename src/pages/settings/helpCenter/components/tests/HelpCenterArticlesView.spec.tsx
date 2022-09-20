@@ -31,7 +31,14 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
                     data: {data: [], meta: {item_count: 0}},
                 }),
             },
+            agentAbility: [
+                {
+                    action: 'manage',
+                    subject: 'all',
+                },
+            ],
         }),
+        useAbilityChecker: () => ({isPassingRulesCheck: () => true}),
     }
 })
 

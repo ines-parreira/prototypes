@@ -36,7 +36,7 @@ import {LanguageSelect} from './LanguageSelect'
 export const HelpCenterCustomizationView = () => {
     const dispatch = useAppDispatch()
     const helpCenterId = useHelpCenterIdParam()
-    const {isReady, client} = useHelpCenterApi()
+    const {client} = useHelpCenterApi()
     const helpCenter = useCurrentHelpCenter()
     const selectedLocale =
         useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
@@ -45,7 +45,7 @@ export const HelpCenterCustomizationView = () => {
 
     useEffect(() => {
         async function init() {
-            if (isReady && client && selectedLocale) {
+            if (client && selectedLocale) {
                 await client
                     .getExtraHTML({
                         help_center_id: helpCenterId,
@@ -78,7 +78,7 @@ export const HelpCenterCustomizationView = () => {
         }
 
         void init()
-    }, [isReady, helpCenterId, selectedLocale, client])
+    }, [helpCenterId, selectedLocale, client])
 
     const linksWithoutSocial = useMemo(
         () =>

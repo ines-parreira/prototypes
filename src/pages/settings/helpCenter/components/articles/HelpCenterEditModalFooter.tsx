@@ -26,6 +26,7 @@ import {
     ArticleModeUnchangedNotPublished,
     canDelete,
 } from '../../types/articleMode'
+import {useAbilityChecker} from '../../hooks/useHelpCenterApi'
 import css from './HelpCenterEditModalFooter.less'
 
 type Props = {
@@ -46,6 +47,11 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
     articleMode,
 }: Props) => {
     const [pendingDeleteArticle, setPendingDeleteArticle] = useState(false)
+    const {isPassingRulesCheck} = useAbilityChecker()
+
+    const canManageArticle = isPassingRulesCheck(({can}) =>
+        can('manage', 'ArticleEntity')
+    )
 
     const handleOnDeleteConfirm = () => {
         if (canDelete(articleMode)) {
@@ -60,14 +66,14 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
         <UncontrolledDropdown id="article-save-button-wrapper">
             <Group>
                 <Button
-                    isDisabled={!canSave}
+                    isDisabled={canManageArticle ? !canSave : true}
                     onClick={() => mode.onSave(true)}
                     color="primary"
                 >
                     Save &amp; Publish
                 </Button>
 
-                {canSave && (
+                {canManageArticle && canSave && (
                     <DropdownToggle tag="span">
                         <IconButton>arrow_drop_down</IconButton>
                     </DropdownToggle>
@@ -75,7 +81,7 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
             </Group>
             {requiredFields.length >= 1 && (
                 <Tooltip
-                    disabled={canSave}
+                    disabled={canManageArticle ? canSave : true}
                     placement="top-start"
                     target="article-save-button-wrapper"
                 >
@@ -99,12 +105,12 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
             <Group>
                 <Button
                     onClick={() => mode.onCreate(true)}
-                    isDisabled={!canSave}
+                    isDisabled={canManageArticle ? !canSave : true}
                     color="primary"
                 >
                     Create &amp; Publish
                 </Button>
-                {canSave && (
+                {canManageArticle && canSave && (
                     <DropdownToggle tag="span">
                         <IconButton>arrow_drop_down</IconButton>
                     </DropdownToggle>
@@ -113,7 +119,7 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
 
             {requiredFields.length >= 1 && (
                 <Tooltip
-                    disabled={canSave}
+                    disabled={canManageArticle ? canSave : true}
                     placement="top-start"
                     target="article-save-button-wrapper"
                 >
@@ -210,6 +216,7 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
                         className={css.deleteButton}
                         intent="secondary"
                         onClick={() => setPendingDeleteArticle(true)}
+                        isDisabled={!canManageArticle}
                     >
                         <i className="material-icons">delete</i>
                         Delete Article

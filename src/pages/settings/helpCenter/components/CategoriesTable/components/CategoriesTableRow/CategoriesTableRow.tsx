@@ -10,6 +10,7 @@ import classNames from 'classnames'
 import _keyBy from 'lodash/keyBy'
 import {usePrevious} from 'react-use'
 import {Badge, Spinner} from 'reactstrap'
+import _noop from 'lodash/noop'
 
 import {useModalManager} from 'hooks/useModalManager'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -26,9 +27,7 @@ import Tooltip from 'pages/common/components/Tooltip'
 import {
     ARTICLES_PER_PAGE,
     CategoryRowActionTypes,
-    CATEGORY_ROW_ACTIONS,
     MODALS,
-    CATEGORY_TREE_MAX_LEVEL,
 } from 'pages/settings/helpCenter/constants'
 import {useArticlesActions} from 'pages/settings/helpCenter/hooks/useArticlesActions'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
@@ -47,8 +46,10 @@ import {
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import TableBody from 'pages/common/components/table/TableBody'
 import {getCategoryDndType} from 'pages/settings/helpCenter/utils/getCategoryDndType'
+import {useAbilityChecker} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import VisibilityCell from '../../../VisibilityCell/VisibilityCell'
 
+import {useCategoryRowActions} from '../../../../hooks/useCategoryRowActions'
 import css from './CategoriesTableRow.less'
 
 export type CategoriesTableRowProps = {
@@ -116,6 +117,9 @@ const DroppableCategoriesTableRow = ({
     const categoryModal = useModalManager(MODALS.CATEGORY, {autoDestroy: false})
     const articleModal = useModalManager(MODALS.ARTICLE, {autoDestroy: false})
     const viewLanguage = useAppSelector(getViewLanguage)
+    const {isPassingRulesCheck} = useAbilityChecker()
+
+    const categoryRowActions = useCategoryRowActions(category.id, level)
 
     const localesByCode = useMemo(() => _keyBy(locales, 'code'), [locales])
 
@@ -162,6 +166,10 @@ const DroppableCategoriesTableRow = ({
         [articleModal, category, categoryModal, dispatch, viewLanguage]
     )
 
+    const canUpdateCategory = isPassingRulesCheck(({can}) =>
+        can('update', 'CategoryEntity')
+    )
+
     return (
         <DroppableTableBodyRow
             className={css['droppable-row']}
@@ -172,10 +180,10 @@ const DroppableCategoriesTableRow = ({
                     category.translation.parent_category_id
                 ),
             }}
-            onDragStart={onDragStart}
-            onMoveEntity={onMoveEntity}
-            onDropEntity={onDropEntity}
-            onCancelDnD={onCancelDnD}
+            onDragStart={canUpdateCategory ? onDragStart : _noop}
+            onMoveEntity={canUpdateCategory ? onMoveEntity : _noop}
+            onDropEntity={canUpdateCategory ? onDropEntity : _noop}
+            onCancelDnD={canUpdateCategory ? onCancelDnD : _noop}
             category={category}
         >
             {headerCell}
@@ -203,19 +211,7 @@ const DroppableCategoriesTableRow = ({
                 innerClassName={classNames(css.actions, bodyInnerClass)}
             >
                 <TableActions
-                    actions={CATEGORY_ROW_ACTIONS.map(
-                        ({name, icon, tooltip}) => ({
-                            name,
-                            icon,
-                            disabled:
-                                level >= CATEGORY_TREE_MAX_LEVEL &&
-                                name === 'createNestedCategory',
-                            tooltip: {
-                                content: tooltip,
-                                target: `${name}-${category.id}`,
-                            },
-                        })
-                    )}
+                    actions={categoryRowActions}
                     onClick={handleOnActionClick}
                 />
             </BodyCell>
