@@ -3,6 +3,8 @@ import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, List} from 'immutable'
 import {Link, useParams} from 'react-router-dom'
 
+import {TicketChannel} from 'business/types/ticket'
+import useAppSelector from 'hooks/useAppSelector'
 import {fetchCustomer, fetchCustomerHistory} from 'state/customers/actions'
 import Loader from 'pages/common/components/Loader/Loader'
 import CustomerForm from 'pages/customers/common/components/CustomerForm.js'
@@ -11,6 +13,7 @@ import {Customer} from 'state/customers/types'
 import {
     DEPRECATED_getActiveCustomer,
     getCustomerHistory,
+    makeGetActiveCustomerChannelsByType,
     makeIsLoading,
 } from 'state/customers/selectors'
 import * as customersHelpers from 'state/customers/helpers'
@@ -21,6 +24,11 @@ import ModalHeader from 'pages/common/components/modal/ModalHeader'
 
 import css from './CustomerDetailContainer.less'
 
+const getActiveCustomerTicketChannels = makeGetActiveCustomerChannelsByType([
+    TicketChannel.Email,
+    TicketChannel.Phone,
+])
+
 export const CustomerDetailContainer = ({
     activeCustomer,
     customerHistory,
@@ -28,6 +36,7 @@ export const CustomerDetailContainer = ({
     fetchCustomer,
     fetchCustomerHistory,
 }: ConnectedProps<typeof connector>) => {
+    const filteredChannels = useAppSelector(getActiveCustomerTicketChannels)
     const [isCustomerFormOpen, setIsCustomerFormOpen] = useState(false)
     const historyLength = useMemo(
         () => (customerHistory.get('tickets', fromJS([])) as List<any>).size,
@@ -54,6 +63,19 @@ export const CustomerDetailContainer = ({
     }, [customerId])
 
     const shouldDisplayLoader = customersIsLoading('active')
+    const createTicketOptions = useMemo(
+        () => ({
+            pathname: `/app/ticket/new`,
+            search: `?customer=${activeCustomer.get('id') as number}`,
+            state: {
+                receiver: {
+                    name: activeCustomer.get('name'),
+                    address: filteredChannels[0]?.address,
+                },
+            },
+        }),
+        [activeCustomer, filteredChannels]
+    )
 
     return shouldDisplayLoader ? (
         <Loader message="Loading customer..." />
@@ -63,12 +85,7 @@ export const CustomerDetailContainer = ({
                 <h1>{customersHelpers.getDisplayName(activeCustomer)}</h1>
 
                 <div>
-                    <Link
-                        className="mr-2"
-                        to={`/app/ticket/new?customer=${
-                            activeCustomer.get('id') as number
-                        }`}
-                    >
+                    <Link className="mr-2" to={createTicketOptions}>
                         <Button intent="secondary">Create ticket</Button>
                     </Link>
                     <Button onClick={() => setIsCustomerFormOpen(true)}>

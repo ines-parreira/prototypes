@@ -2727,6 +2727,23 @@ Array [
 ]
 `;
 
+exports[`actions setActiveCustomerAsReceiver should set email receiver based on active customer 1`] = `
+Array [
+  Object {
+    "receivers": Object {
+      "to": Array [
+        Object {
+          "address": "marc.wall@gmail.com",
+          "name": "Marc",
+        },
+      ],
+    },
+    "replaceAll": false,
+    "type": "NEW_MESSAGE_SET_RECEIVERS",
+  },
+]
+`;
+
 exports[`actions updatePotentialCustomers should resolve when cancelled 1`] = `undefined`;
 
 exports[`actions updatePotentialCustomers should return a list of potential customer on success 1`] = `

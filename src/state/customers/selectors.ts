@@ -1,6 +1,7 @@
 import {fromJS, Map, List} from 'immutable'
 import {createSelector} from 'reselect'
 
+import {TicketChannel} from 'business/types/ticket'
 import {RootState} from '../types'
 
 import {Customer, CustomersState} from './types'
@@ -100,4 +101,20 @@ export const getActiveCustomerIntegrationDataByIntegrationId = (
         getActiveCustomerIntegrationData,
         (data: Map<any, any>) =>
             (data.get(integrationId.toString()) as Map<any, any>) || fromJS({})
+    )
+
+const getActiveCustomerChannels = createSelector(
+    getActiveCustomer,
+    (activeCustomer) =>
+        activeCustomer.channels
+            ?.sort((a, b) => a.address.localeCompare(b.address))
+            .sort((a, b) => Number(b.preferred) - Number(a.preferred))
+            .sort((a, b) => a.type.localeCompare(b.type)) || []
+)
+
+export const makeGetActiveCustomerChannelsByType = (
+    channelTypes: TicketChannel[]
+) =>
+    createSelector(getActiveCustomerChannels, (channels) =>
+        channels.filter((channel) => channelTypes.includes(channel.type))
     )

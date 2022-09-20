@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`customers selectors makeGetActiveCustomerChannelsByType should return a filtered list of channels 1`] = `
+Array [
+  Object {
+    "address": "jeanbon@gorgias.io",
+    "created_datetime": "2017-07-31T21:45:03.399819+00:00",
+    "deleted_datetime": null,
+    "id": 55,
+    "preferred": true,
+    "type": "email",
+    "updated_datetime": "2017-07-31T21:45:03.399828+00:00",
+  },
+]
+`;

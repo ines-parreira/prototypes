@@ -32,7 +32,7 @@ import socketManager from 'services/socketManager/socketManager'
 import {Attachment} from 'types'
 import type {CurrentUser, RootState, StoreDispatch} from 'state/types'
 import {getMomentNow} from 'utils/date'
-import {TicketMessageSourceType} from 'business/types/ticket'
+import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 import {IntegrationType, ProductCardDetails} from 'models/integration/types'
 import client from 'models/api/resources'
 import {Ticket as TicketResponse} from 'models/ticket/types'
@@ -43,6 +43,7 @@ import history from 'pages/history'
 import {ShopifyProductCardContentType} from 'constants/integrations/shopify'
 import {SearchType, UserSearchResult} from 'models/search/types'
 import {search} from 'models/search/resources'
+import {CustomerChannel} from 'models/customerChannel/types'
 
 import {EMPTY_SENDER} from 'state/ticket/constants'
 import {MacroActionName} from 'models/macroAction/types'
@@ -276,6 +277,32 @@ export const setReceivers = (
     receivers,
     replaceAll,
 })
+
+export const setActiveCustomerAsReceiver =
+    () => (dispatch: StoreDispatch, getState: () => RootState) => {
+        const state = getState()
+        const ticket = state.ticket
+        const newMessageSource = selectors.getNewMessageSource(state)
+        const customerChannels: CustomerChannel[] =
+            (
+                ticket.getIn(['customer', 'channels']) as List<CustomerChannel>
+            )?.toJS() || []
+        const sourceType: TicketChannel =
+            newMessageSource.get('type') ?? TicketChannel.Email
+        const sourceTypeToSearch =
+            sourceType === TicketChannel.Sms ? TicketChannel.Phone : sourceType
+        const customerChannel = customerChannels.find(
+            (channel: CustomerChannel) => channel.type === sourceTypeToSearch
+        )
+        const address = customerChannel
+            ? customerChannel.address
+            : ticket.getIn(['customer', 'email'])
+        const name = ticket.getIn(['customer', 'name'])
+
+        if (address && name) {
+            dispatch(setReceivers({to: [{name, address}]}, false))
+        }
+    }
 
 /**
  * Set new message sender. A sender is represented by an integration (email or gmail)

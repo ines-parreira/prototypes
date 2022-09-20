@@ -1,6 +1,8 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {Map, fromJS} from 'immutable'
 
+import {TicketChannel} from 'business/types/ticket'
+import {customer} from 'fixtures/customer'
 import * as selectors from '../selectors'
 import {initialState} from '../reducers'
 import {RootState} from '../../types'
@@ -13,7 +15,7 @@ describe('customers selectors', () => {
     beforeEach(() => {
         state = {
             customers: initialState.mergeDeep({
-                active: {id: 1},
+                active: customer,
                 items: [{id: 1}, {id: 2}],
                 _internal: {
                     loading: {
@@ -88,5 +90,16 @@ describe('customers selectors', () => {
             selectors.getCustomersState(state).getIn(['active', 'id'])
         )
         expect(selectors.getActiveCustomerId({} as RootState)).toBe(undefined)
+    })
+
+    describe('makeGetActiveCustomerChannelsByType', () => {
+        it('should return a filtered list of channels', () => {
+            const getActiveCustomerEmailChannels =
+                selectors.makeGetActiveCustomerChannelsByType([
+                    TicketChannel.Email,
+                ])
+
+            expect(getActiveCustomerEmailChannels(state)).toMatchSnapshot()
+        })
     })
 })

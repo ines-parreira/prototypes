@@ -267,98 +267,29 @@ describe('TicketDetailContainer component', () => {
         await waitFor(() => expect(minProps.goToNextTicket).toHaveBeenCalled())
     })
 
-    it('should set activeCustomer as receiver', () => {
-        const activeCustomer = fromJS({
-            id: 1,
-            name: 'Pizza Pepperoni',
-            channels: [{type: 'email', address: 'pizza@pepperoni.com'}],
-        }) as Map<any, any>
-
-        const expectedReceiver = {
-            name: 'Pizza Pepperoni',
-            address: 'pizza@pepperoni.com',
-        }
-
-        const props = {
-            ...minProps,
-            activeCustomer,
-        }
-
-        const {rerender} = renderWithRouter(
-            <TicketDetailContainer {...props} />,
-            {
-                path: '/foo/:ticketId',
-                route: '/foo/new?customer=1',
-            }
-        )
-
-        rerender(
-            <TicketDetailContainer
-                {...props}
-                ticket={minProps.ticket.set(
-                    'customer',
-                    activeCustomer.set('address', activeCustomer.get('email'))
-                )}
-            />
-        )
-
-        expect(minProps.setCustomer).toBeCalledWith(
-            activeCustomer.set('address', activeCustomer.get('email'))
-        )
-        expect(minProps.setReceivers).toBeCalledWith({
-            to: [expectedReceiver],
-        })
-    })
-
-    it('should set activeCustomer as receiver using the phone number as address', () => {
-        const activeCustomer = fromJS({
-            id: 1,
-            name: 'Pizza Pepperoni',
-            channels: [
-                {
-                    type: 'phone',
-                    address: '+12345',
-                },
-            ],
-        }) as Map<any, any>
-
+    it('should set activeCustomer as receiver when receiver is in the location state', () => {
         const expectedReceiver = {
             name: 'Pizza Pepperoni',
             address: '+12345',
         }
 
-        const props = {
-            ...minProps,
-            newMessageSource: fromJS({
-                type: 'sms',
-            }),
-            activeCustomer,
+        const route = '/foo/new?customer=1'
+        const history = createMemoryHistory({initialEntries: [route]})
+        history.location.state = {
+            receiver: expectedReceiver,
         }
-
-        const {rerender} = renderWithRouter(
-            <TicketDetailContainer {...props} />,
-            {
-                path: '/foo/:ticketId',
-                route: '/foo/new?customer=1',
-            }
-        )
-
-        rerender(
-            <TicketDetailContainer
-                {...props}
-                ticket={minProps.ticket.set(
-                    'customer',
-                    activeCustomer.set('address', activeCustomer.get('email'))
-                )}
-            />
-        )
-
-        expect(minProps.setCustomer).toBeCalledWith(
-            activeCustomer.set('address', activeCustomer.get('email'))
-        )
-        expect(minProps.setReceivers).toBeCalledWith({
-            to: [expectedReceiver],
+        renderWithRouter(<TicketDetailContainer {...minProps} />, {
+            path: '/foo/:ticketId',
+            route,
+            history,
         })
+
+        expect(minProps.setReceivers).toBeCalledWith(
+            {
+                to: [expectedReceiver],
+            },
+            false
+        )
     })
 
     it('should update cursor of the view when the id of the ticket changes', () => {
@@ -722,71 +653,6 @@ describe('TicketDetailContainer component', () => {
         )
 
         expect(minProps.setCustomer).not.toBeCalled()
-    })
-
-    it('should set the customer as first recipient because the ticket is new and the customer has changed', () => {
-        const props = {
-            ...minProps,
-            ticket: fromJS({
-                messages: [],
-            }),
-            newMessage: newMessageState,
-            newMessageSource: fromJS({
-                cc: [
-                    {
-                        name: 'cc',
-                        address: 'cc@gorgias.io',
-                    },
-                ],
-                bcc: [
-                    {
-                        name: 'bcc',
-                        address: 'bcc@gorgias.io',
-                    },
-                ],
-            }),
-        }
-        const {rerender} = renderWithRouter(
-            <TicketDetailContainer {...props} />,
-            {
-                path: '/foo/:ticketId',
-                route: '/foo/new',
-            }
-        )
-
-        rerender(
-            <TicketDetailContainer
-                {...props}
-                ticket={fromJS({
-                    customer: {
-                        id: 1,
-                        name: 'foo',
-                        email: 'foo@gorgias.io',
-                    },
-                })}
-            />
-        )
-
-        expect(minProps.setReceivers).toBeCalledWith({
-            to: [
-                {
-                    name: 'foo',
-                    address: 'foo@gorgias.io',
-                },
-            ],
-            cc: [
-                {
-                    name: 'cc',
-                    address: 'cc@gorgias.io',
-                },
-            ],
-            bcc: [
-                {
-                    name: 'bcc',
-                    address: 'bcc@gorgias.io',
-                },
-            ],
-        })
     })
 
     it('should defer sending new message when new message is of type email', async () => {

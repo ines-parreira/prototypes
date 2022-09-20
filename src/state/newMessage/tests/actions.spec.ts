@@ -1537,4 +1537,34 @@ describe('actions', () => {
                 .then((res) => expect(res).toMatchSnapshot())
         })
     })
+
+    describe('setActiveCustomerAsReceiver', () => {
+        it('should set email receiver based on active customer', () => {
+            store = mockStore({
+                ticket: emailTicket.setIn(['customer', 'name'], 'Marc').setIn(
+                    ['customer', 'channels'],
+                    fromJS([
+                        {
+                            address: 'marc.wall@gmail.com',
+                            type: 'email',
+                        },
+                    ])
+                ),
+                newMessage: initialState,
+            })
+            store.dispatch(actions.setActiveCustomerAsReceiver())
+
+            expect(store.getActions()).toMatchSnapshot()
+        })
+
+        it('should not set receiver when customer has no channel', () => {
+            store = mockStore({
+                ticket: emailTicket,
+                newMessage: initialState,
+            })
+            store.dispatch(actions.setActiveCustomerAsReceiver())
+
+            expect(store.getActions()).toEqual([])
+        })
+    })
 })

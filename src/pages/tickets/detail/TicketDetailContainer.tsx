@@ -2,11 +2,9 @@ import React, {useEffect, useMemo, useRef, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {useParams, useLocation} from 'react-router-dom'
 import {fromJS, List, Map} from 'immutable'
-import _merge from 'lodash/merge'
-import _pick from 'lodash/pick'
-import {useAsyncFn, usePrevious} from 'react-use'
+import {useAsyncFn, useEffectOnce, usePrevious} from 'react-use'
 import DocumentTitle from 'react-document-title'
-import {TicketMessageSourceType, TicketChannel} from 'business/types/ticket'
+import {TicketMessageSourceType} from 'business/types/ticket'
 import useSearch from 'hooks/useSearch'
 import {RootState} from 'state/types'
 import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
@@ -33,11 +31,7 @@ import {
     TicketMessageActionValidationError,
     TicketMessageInvalidSendDataError,
 } from 'state/newMessage/errors'
-import {
-    isReady,
-    getNewMessageSource,
-    getReceiversProperties,
-} from 'state/newMessage/selectors'
+import {isReady, getNewMessageSource} from 'state/newMessage/selectors'
 import {fetchTags} from 'state/tags/actions'
 import {
     clearTicket,
@@ -50,7 +44,6 @@ import {
 } from 'state/ticket/actions'
 import {updateCursor} from 'state/tickets/actions'
 import {getActiveView} from 'state/views/selectors'
-import {CustomerChannel} from 'models/customerChannel/types'
 
 import Loader from '../../common/components/Loader/Loader'
 
@@ -424,67 +417,16 @@ export const TicketDetailContainer = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [recipients])
 
-    // When we're on a new ticket and the agent set a customer, set this customer's default email address
-    // as recipient of the new message
-    useEffect(() => {
-        if (ticketIdParam === 'new' && !customer.isEmpty()) {
-            const newMessageReceivers = _pick(
-                newMessageSource.toJS(),
-                getReceiversProperties()
-            )
-
-            if (receiver) {
-                const newReceivers = _merge(newMessageReceivers, {
+    useEffectOnce(() => {
+        if (ticketIdParam === 'new' && receiver) {
+            setReceivers(
+                {
                     to: [receiver],
-                })
-                setReceivers(newReceivers)
-            } else {
-                const customerChannels: CustomerChannel[] =
-                    (
-                        ticket.getIn([
-                            'customer',
-                            'channels',
-                        ]) as List<CustomerChannel>
-                    )?.toJS() || []
-                const sourceType: TicketChannel =
-                    newMessageSource.get('type') ?? TicketChannel.Email
-                const sourceTypeToSearch =
-                    sourceType === TicketChannel.Sms
-                        ? TicketChannel.Phone
-                        : sourceType
-                const customerChannel = customerChannels.find(
-                    (channel: CustomerChannel) =>
-                        channel.type === sourceTypeToSearch
-                )
-
-                const address = customerChannel
-                    ? customerChannel.address
-                    : ticket.getIn(['customer', 'email'])
-
-                const name = ticket.getIn(['customer', 'name'])
-
-                if (name && address) {
-                    const newReceivers = _merge(newMessageReceivers, {
-                        to: [
-                            {
-                                name,
-                                address,
-                            },
-                        ],
-                    })
-                    setReceivers(newReceivers)
-                }
-            }
+                },
+                false
+            )
         }
-    }, [
-        customer,
-        source,
-        receiver,
-        newMessageSource,
-        setReceivers,
-        ticket,
-        ticketIdParam,
-    ])
+    })
 
     const showTicket = () => {
         setIsTicketHidden(false)

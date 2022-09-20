@@ -33,6 +33,7 @@ import useSearchRankScenario, {
     SearchRankSource,
 } from 'hooks/useSearchRankScenario'
 import {SearchResponse} from 'models/search/types'
+import {setActiveCustomerAsReceiver} from 'state/newMessage/actions'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import InfobarSearchResultsList from './InfobarSearchResultsList'
@@ -104,6 +105,7 @@ export const Infobar = ({
     isRouteEditingWidgets,
     searchCustomers,
     searchSimilarCustomer,
+    setActiveCustomerAsReceiver,
     setCustomer,
     sources,
     widgets,
@@ -326,7 +328,9 @@ export const Infobar = ({
     }
 
     const handleSetCustomer = () => {
-        void setCustomer(selectedCustomer).then(returnToCurrentCustomerProfile)
+        void setCustomer(selectedCustomer)
+            .then(returnToCurrentCustomerProfile)
+            .then(setActiveCustomerAsReceiver)
     }
 
     const hasFetchedWidgets = widgets.getIn(['_internal', 'hasFetchedWidgets'])
@@ -635,6 +639,7 @@ const connector = connect(
         fetchCustomerHistory: customersActions.fetchCustomerHistory,
         searchCustomers: infobarActions.search,
         searchSimilarCustomer: infobarActions.similarCustomer,
+        setActiveCustomerAsReceiver,
         setCustomer,
     }
 )

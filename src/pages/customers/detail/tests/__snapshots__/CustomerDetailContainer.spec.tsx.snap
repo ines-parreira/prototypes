@@ -13,7 +13,7 @@ exports[`<CustomerDetailContainer /> should display the customer and its history
     <div>
       <a
         class="mr-2"
-        to="/app/ticket/new?customer=1"
+        to="[object Object]"
       >
         <button
           class="wrapper fill secondary medium"

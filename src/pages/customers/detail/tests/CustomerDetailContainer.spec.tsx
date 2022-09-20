@@ -3,7 +3,12 @@ import {waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {fromJS, Map} from 'immutable'
 import {createBrowserHistory} from 'history'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import {Provider} from 'react-redux'
 
+import {customer} from 'fixtures/customer'
+import {RootState, StoreDispatch} from 'state/types'
 import {renderWithRouter} from '../../../../utils/testing'
 import {ticket} from '../../../../fixtures/ticket'
 import * as labels from '../../../common/utils/labels'
@@ -29,6 +34,10 @@ jest.mock(
 )
 
 describe('<CustomerDetailContainer />', () => {
+    const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
+        thunk,
+    ])
+    let store: ReturnType<typeof mockStore>
     const minProps = {
         activeCustomer: fromJS({}),
         customerHistory: fromJS({}),
@@ -36,25 +45,33 @@ describe('<CustomerDetailContainer />', () => {
         fetchCustomer: jest.fn().mockResolvedValue({resp: {id: 1}}),
         fetchCustomerHistory: jest.fn(),
     } as unknown as ComponentProps<typeof CustomerDetailContainer>
+    const defaultStore = {
+        customers: fromJS({
+            active: customer,
+        }),
+    }
 
     beforeEach(() => {
         jest.clearAllMocks()
+        store = mockStore(defaultStore)
     })
 
     it('should display the customer and its history of messages', () => {
         const {container} = renderWithRouter(
-            <CustomerDetailContainer
-                {...minProps}
-                activeCustomer={fromJS({
-                    id: 1,
-                    name: 'Rachel Greene',
-                })}
-                customerHistory={fromJS({
-                    hasHistory: true,
-                    triedLoading: true,
-                    tickets: fromJS([ticket]),
-                })}
-            />,
+            <Provider store={store}>
+                <CustomerDetailContainer
+                    {...minProps}
+                    activeCustomer={fromJS({
+                        id: 1,
+                        name: 'Rachel Greene',
+                    })}
+                    customerHistory={fromJS({
+                        hasHistory: true,
+                        triedLoading: true,
+                        tickets: fromJS([ticket]),
+                    })}
+                />
+            </Provider>,
             {
                 path: '/foo/:customerId?',
                 route: '/foo/1',
@@ -69,19 +86,27 @@ describe('<CustomerDetailContainer />', () => {
         history.push('/foo/1')
 
         const {rerender} = renderWithRouter(
-            <CustomerDetailContainer {...minProps} />,
+            <Provider store={store}>
+                <CustomerDetailContainer {...minProps} />
+            </Provider>,
             {history, path: '/foo/:customerId?'}
         )
 
         expect(minProps.fetchCustomer).toHaveBeenCalledWith('1')
         history.push('/foo/2')
-        rerender(<CustomerDetailContainer {...minProps} />)
+        rerender(
+            <Provider store={store}>
+                <CustomerDetailContainer {...minProps} />
+            </Provider>
+        )
         expect(minProps.fetchCustomer).toHaveBeenLastCalledWith('2')
     })
 
     it('should display an unknown state when no active customer is provided', () => {
         const {getByText} = renderWithRouter(
-            <CustomerDetailContainer {...minProps} />,
+            <Provider store={store}>
+                <CustomerDetailContainer {...minProps} />
+            </Provider>,
             {
                 path: '/foo/:customerId?',
                 route: '/foo/1',
@@ -94,10 +119,12 @@ describe('<CustomerDetailContainer />', () => {
         const customersIsLoading = (type: string) => type === 'active'
 
         const {getByText} = renderWithRouter(
-            <CustomerDetailContainer
-                {...minProps}
-                customersIsLoading={customersIsLoading}
-            />,
+            <Provider store={store}>
+                <CustomerDetailContainer
+                    {...minProps}
+                    customersIsLoading={customersIsLoading}
+                />
+            </Provider>,
             {
                 path: '/foo/:customerId?',
                 route: '/foo/1',
@@ -112,10 +139,12 @@ describe('<CustomerDetailContainer />', () => {
             id: 1,
         }) as Map<any, any>
         renderWithRouter(
-            <CustomerDetailContainer
-                {...minProps}
-                activeCustomer={activeCustomer}
-            />,
+            <Provider store={store}>
+                <CustomerDetailContainer
+                    {...minProps}
+                    activeCustomer={activeCustomer}
+                />
+            </Provider>,
             {
                 path: '/foo/:customerId?',
                 route: '/foo/1',
@@ -137,10 +166,12 @@ describe('<CustomerDetailContainer />', () => {
             id: 1,
         })
         const {getByText} = renderWithRouter(
-            <CustomerDetailContainer
-                {...minProps}
-                activeCustomer={activeCustomer}
-            />,
+            <Provider store={store}>
+                <CustomerDetailContainer
+                    {...minProps}
+                    activeCustomer={activeCustomer}
+                />
+            </Provider>,
             {
                 path: '/foo/:customerId?',
                 route: '/foo/1',
@@ -155,11 +186,13 @@ describe('<CustomerDetailContainer />', () => {
         const customersIsLoading = (type: string) => type === 'history'
 
         const {getByText} = renderWithRouter(
-            <CustomerDetailContainer
-                {...minProps}
-                activeCustomer={fromJS({id: 1})}
-                customersIsLoading={customersIsLoading}
-            />,
+            <Provider store={store}>
+                <CustomerDetailContainer
+                    {...minProps}
+                    activeCustomer={fromJS({id: 1})}
+                    customersIsLoading={customersIsLoading}
+                />
+            </Provider>,
             {
                 path: '/foo/:customerId?',
                 route: '/foo/1',
@@ -171,18 +204,20 @@ describe('<CustomerDetailContainer />', () => {
 
     it('should display message when no history is present', () => {
         const {getByText} = renderWithRouter(
-            <CustomerDetailContainer
-                {...minProps}
-                activeCustomer={fromJS({
-                    id: 1,
-                    name: 'Rachel Greene',
-                })}
-                customerHistory={fromJS({
-                    hasHistory: true,
-                    triedLoading: true,
-                    tickets: fromJS([]),
-                })}
-            />,
+            <Provider store={store}>
+                <CustomerDetailContainer
+                    {...minProps}
+                    activeCustomer={fromJS({
+                        id: 1,
+                        name: 'Rachel Greene',
+                    })}
+                    customerHistory={fromJS({
+                        hasHistory: true,
+                        triedLoading: true,
+                        tickets: fromJS([]),
+                    })}
+                />
+            </Provider>,
             {
                 path: '/foo/:customerId?',
                 route: '/foo/1',
