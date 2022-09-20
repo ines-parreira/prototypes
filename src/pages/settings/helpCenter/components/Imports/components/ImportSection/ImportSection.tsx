@@ -51,9 +51,13 @@ type ModalState =
 
 type Props = {
     className?: string
+    isDisabled?: boolean
 }
 
-export const ImportSection: React.FC<Props> = ({className}: Props) => {
+export const ImportSection: React.FC<Props> = ({
+    className,
+    isDisabled,
+}: Props) => {
     const dispatch = useAppDispatch()
     const history = useHistory()
     const helpCenter = useCurrentHelpCenter()
@@ -257,7 +261,9 @@ export const ImportSection: React.FC<Props> = ({className}: Props) => {
 
             {!isHotswapImportInProgress && (
                 <Button
-                    isDisabled={isHotswapImportProgressRequestLoading}
+                    isDisabled={
+                        isHotswapImportProgressRequestLoading || isDisabled
+                    }
                     intent="secondary"
                     onClick={() => setModalState({state: 'NO_FILE_SELECTED'})}
                 >

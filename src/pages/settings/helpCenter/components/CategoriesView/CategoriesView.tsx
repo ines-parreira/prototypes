@@ -25,6 +25,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {CategoriesTableSkeleton} from '../CategoriesTableSkeleton'
 import {CategoriesPositionsType} from '../CategoriesTable/CategoriesTable'
 import {useSearchContext} from '../../providers/SearchContext'
+import {useAbilityChecker} from '../../hooks/useHelpCenterApi'
 
 import css from './CategoriesView.less'
 
@@ -49,6 +50,7 @@ export const CategoriesViews = ({
         per_page: CATEGORIES_PER_PAGE,
         locale: viewLanguage,
     })
+    const {isPassingRulesCheck} = useAbilityChecker()
     const [uncategorizedArticleCount, setUncategorizedArticleCount] =
         useState(0)
     const {setSearchInput} = useSearchContext()
@@ -75,6 +77,14 @@ export const CategoriesViews = ({
         categories.length === 1 &&
         uncategorizedArticles.length === 0 &&
         uncategorizedArticleCount === 0
+
+    const canUpdateArticle = isPassingRulesCheck(({can}) =>
+        can('update', 'ArticleEntity')
+    )
+
+    const canUpdateCategory = isPassingRulesCheck(({can}) =>
+        can('update', 'CategoryEntity')
+    )
 
     useEffect(() => {
         async function init() {
@@ -105,17 +115,28 @@ export const CategoriesViews = ({
                         Write your first article and create article categories
                         to be displayed in your Help Center.
                     </p>
-                    <Button className="mr-2" onClick={onCreateArticle}>
+                    <Button
+                        className="mr-2"
+                        onClick={onCreateArticle}
+                        isDisabled={!canUpdateArticle}
+                    >
                         <i className="material-icons-outlined mr-1">article</i>
                         Create Article
                     </Button>
 
-                    <Button intent="secondary" onClick={onCreateCategory}>
+                    <Button
+                        intent="secondary"
+                        onClick={onCreateCategory}
+                        isDisabled={!canUpdateCategory}
+                    >
                         <i className="material-icons mr-1">list</i>
                         Create Category
                     </Button>
 
-                    <ImportSection className={css.importSection} />
+                    <ImportSection
+                        className={css.importSection}
+                        isDisabled={!(canUpdateArticle && canUpdateCategory)}
+                    />
 
                     {helpCenter.source === 'automation' && (
                         <div className={css.bannerContainer}>
