@@ -43,7 +43,7 @@ Array [
         },
       ],
       "release": "foo",
-      "tracesSampleRate": 0.1,
+      "tracesSampleRate": 0.003,
     },
   ],
 ]
