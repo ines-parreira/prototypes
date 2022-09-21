@@ -189,7 +189,7 @@ export default class Actions extends Component<Props, State> {
         return (
             <div className={classnames(css.component, 'mt-3')}>
                 <div className={classnames(css.title, 'mb-2 text-muted')}>
-                    Macro actions performed:
+                    Actions performed:
                 </div>
                 {backActions.map((action, index) => {
                     const getIcon = (icon: string) => (
