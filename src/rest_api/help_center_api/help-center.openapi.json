@@ -1251,87 +1251,6 @@
                 "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
             }
         },
-        "/api/help-center/help-centers/{help_center_id}/categories/{parent_category_id}/positions": {
-            "get": {
-                "operationId": "getSubCategoriesPositions",
-                "summary": "Retrieve sub-categories' positions",
-                "description": "The category id that will be used as the root node of the tree. If `0` is provided, the children ids of the top level categories of the help center will be returned",
-                "parameters": [
-                    {
-                        "name": "help_center_id",
-                        "required": true,
-                        "in": "path",
-                        "schema": {"type": "number"}
-                    },
-                    {
-                        "name": "parent_category_id",
-                        "required": true,
-                        "in": "path",
-                        "schema": {"type": "number"}
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {"type": "number"}
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["categories"],
-                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
-            },
-            "put": {
-                "operationId": "setSubCategoriesPositions",
-                "summary": "Set sub-categories' positions",
-                "description": "The category id that will be used as the root node of the tree. If `0` is provided, the children ids of the top level categories of the help center will be returned",
-                "parameters": [
-                    {
-                        "name": "help_center_id",
-                        "required": true,
-                        "in": "path",
-                        "schema": {"type": "number"}
-                    },
-                    {
-                        "name": "parent_category_id",
-                        "required": true,
-                        "in": "path",
-                        "schema": {"type": "number"}
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "array",
-                                "items": {"type": "number"}
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {"type": "number"}
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["categories"],
-                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
-            }
-        },
         "/api/help-center/help-centers/{help_center_id}/categories/{id}": {
             "get": {
                 "operationId": "getCategory",
@@ -1659,6 +1578,87 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/CategoryTreeDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["categories"],
+                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/categories/{parent_category_id}/positions": {
+            "get": {
+                "operationId": "getSubCategoriesPositions",
+                "summary": "Retrieve sub-categories' positions",
+                "description": "The category id that will be used as the root node of the tree. If `0` is provided, the children ids of the top level categories of the help center will be returned",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "parent_category_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {"type": "number"}
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["categories"],
+                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+            },
+            "put": {
+                "operationId": "setSubCategoriesPositions",
+                "summary": "Set sub-categories' positions",
+                "description": "The category id that will be used as the root node of the tree. If `0` is provided, the children ids of the top level categories of the help center will be returned",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "parent_category_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {"type": "number"}
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {"type": "number"}
                                 }
                             }
                         }
@@ -3182,9 +3182,14 @@
                 },
                 "required": ["progress"]
             },
-            "ContactFormDto": {
+            "UpdateContactFormDto": {
                 "type": "object",
                 "properties": {
+                    "card_deactivated_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
                     "helpdesk_integration_email": {
                         "type": "string",
                         "nullable": true
@@ -3263,7 +3268,9 @@
                     "contact_form": {
                         "description": "Contains the integration email and id which will be used to create tickets from the contact form.",
                         "allOf": [
-                            {"$ref": "#/components/schemas/ContactFormDto"}
+                            {
+                                "$ref": "#/components/schemas/UpdateContactFormDto"
+                            }
                         ]
                     },
                     "source": {
@@ -3274,6 +3281,29 @@
                     "account_id": {"type": "number"}
                 },
                 "required": ["name", "default_locale"]
+            },
+            "ContactFormDto": {
+                "type": "object",
+                "properties": {
+                    "card_deactivated_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "helpdesk_integration_email": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "helpdesk_integration_id": {
+                        "type": "number",
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "card_deactivated_datetime",
+                    "helpdesk_integration_email",
+                    "helpdesk_integration_id"
+                ]
             },
             "HelpCenterDto": {
                 "type": "object",
@@ -3906,7 +3936,9 @@
                     "contact_form": {
                         "description": "Contains the integration email and id which will be used to create tickets from the contact form.",
                         "allOf": [
-                            {"$ref": "#/components/schemas/ContactFormDto"}
+                            {
+                                "$ref": "#/components/schemas/UpdateContactFormDto"
+                            }
                         ]
                     },
                     "gaid": {"type": "string", "nullable": true},

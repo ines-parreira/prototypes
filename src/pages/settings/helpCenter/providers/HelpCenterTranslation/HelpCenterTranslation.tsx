@@ -11,7 +11,11 @@ import React, {
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {ContactForm, ContactInfoDto, HelpCenter} from 'models/helpCenter/types'
+import {
+    UpdateContactForm,
+    ContactInfoDto,
+    HelpCenter,
+} from 'models/helpCenter/types'
 import {getViewLanguage} from 'state/ui/helpCenter'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -31,9 +35,9 @@ type Props = {
 
 type HelpCenterTranslationContext = {
     translation: HelpCenterTranslationState
-    contactForm: ContactForm
+    contactForm: UpdateContactForm
     updateTranslation: (payload: Partial<HelpCenterTranslationState>) => void
-    updateContactForm: (payload: ContactForm) => void
+    updateContactForm: (payload: UpdateContactForm) => void
     updateHelpCenter: () => Promise<void>
     resetTranslation: () => void
 }
@@ -58,7 +62,7 @@ const defaultTranslation: HelpCenterTranslationState = {
     },
 }
 
-const defaultEmailIntegration: ContactForm = {
+const defaultEmailIntegration: UpdateContactForm = {
     helpdesk_integration_email: null,
     helpdesk_integration_id: null,
 }
@@ -78,7 +82,7 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
         useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
     const [translation, updateTranslation] =
         useState<HelpCenterTranslationState>(defaultTranslation)
-    const [contactForm, updateContactForm] = useState<ContactForm>(
+    const [contactForm, updateContactForm] = useState<UpdateContactForm>(
         defaultEmailIntegration
     )
 
@@ -155,7 +159,7 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
     )
 
     const handleOnUpdateContactForm = useCallback(
-        (payload: ContactForm) => {
+        (payload: UpdateContactForm) => {
             updateContactForm(payload)
         },
         [updateContactForm]
@@ -194,7 +198,9 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
             }
         }
 
-        const updateContactFormFn = (draftSettings: Draft<ContactForm>) => {
+        const updateContactFormFn = (
+            draftSettings: Draft<UpdateContactForm>
+        ) => {
             draftSettings.helpdesk_integration_email = helpCenter.contact_form
                 ? helpCenter.contact_form.helpdesk_integration_email
                 : null
