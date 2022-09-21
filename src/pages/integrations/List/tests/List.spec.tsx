@@ -10,7 +10,6 @@ import {AccountFeature} from 'state/currentAccount/types'
 import {Plan} from 'models/billing/types'
 import {Integration, IntegrationType} from 'models/integration/types'
 import client from 'models/api/resources'
-import {SubscriptionPlan} from 'state/billing/types'
 import {List} from '../List'
 
 const mockedServer = new MockAdapter(client)
@@ -47,9 +46,7 @@ describe('<IntegrationsList />', () => {
                 count: 1,
             },
         ],
-        plans: {} as {
-            [plan in SubscriptionPlan]: Plan
-        },
+        plans: fromJS({}),
         accountDomain: 'acme',
     }
 

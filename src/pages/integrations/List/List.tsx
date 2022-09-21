@@ -11,9 +11,9 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
-    getBillingState,
     planIntegrations,
     getCurrentPlan,
+    DEPRECATED_getPlans,
 } from 'state/billing/selectors'
 import {
     getActiveIntegrations,
@@ -204,8 +204,10 @@ export const List = ({
                     !isFeatureEnabled(currentPlan.features[requiredFeature]))
             ) {
                 let requiredPlanName =
-                    getCheapestPlanNameForFeature(requiredFeature, plans) ||
-                    undefined
+                    getCheapestPlanNameForFeature(
+                        requiredFeature,
+                        plans.toJS()
+                    ) || undefined
                 // Kind of a hacky way because `plans` variable doesn't
                 // contain the custom plans (Enterprise plans == Custom plans)
                 if (
@@ -271,7 +273,7 @@ const connector = connect((state: RootState) => ({
     currentPlan: getCurrentPlan(state),
     integrations: getIntegrations(state),
     integrationsList: getIntegrationsList(state),
-    plans: getBillingState(state).plans,
+    plans: DEPRECATED_getPlans(state),
 }))
 
 export default connector(List)
