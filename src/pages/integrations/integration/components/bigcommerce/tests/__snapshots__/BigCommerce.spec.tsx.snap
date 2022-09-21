@@ -183,9 +183,28 @@ exports[`<BigCommerce/> Detail should render a detail view 1`] = `
         >
           Pricing
         </h2>
-        <div>
-          Contact BigCommerce for pricing details.
-        </div>
+        <ul
+          class="cardList"
+        >
+          <li>
+            Contact BigCommerce for pricing details.
+          </li>
+          <li>
+            <a
+              class="actionLink"
+              href="https://www.bigcommerce.com/essentials/pricing/"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <i
+                class="material-icons-outlined actionIcon actionIconBigger"
+              >
+                attach_money
+              </i>
+              See pricing details
+            </a>
+          </li>
+        </ul>
         <h2
           class="categoryTitle cardTitle"
         >

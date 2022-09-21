@@ -8,4 +8,5 @@ export enum FeatureFlagKey {
     NewPhoneErrorHandling = 'new-phone-error-handling',
     HelpCenterEmbeddedContactForm = 'help-center-embedded-contact-form',
     RevenueAlphaTesters = 'revenue-alpha-testers',
+    NewVoiceSmsLayout = 'new-voice-sms-layout',
 }

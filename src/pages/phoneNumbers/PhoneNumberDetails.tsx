@@ -90,7 +90,7 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
         }
     }, [phoneNumber])
 
-    const voiceApp = phoneNumber.integrations.find(
+    const VoiceIntegration = phoneNumber.integrations.find(
         (integration) => integration.type === IntegrationType.Phone
     )
     const smsApp = phoneNumber.integrations.find(
@@ -224,7 +224,7 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
                             'mr-1',
                             {
                                 [css.disabledApp]:
-                                    !voiceApp ||
+                                    !VoiceIntegration ||
                                     !hasCapability(
                                         phoneNumber,
                                         IntegrationType.Phone
@@ -239,14 +239,14 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
                             <strong>Voice</strong>
                         </Col>
                         <Col lg={4} className={css.appLink}>
-                            {voiceApp && (
+                            {VoiceIntegration && (
                                 <Link
-                                    to={`/app/settings/integrations/phone/${voiceApp.id}/preferences`}
+                                    to={`/app/settings/integrations/phone/${VoiceIntegration.id}/preferences`}
                                 >
                                     Manage Integration
                                 </Link>
                             )}
-                            {!voiceApp &&
+                            {!VoiceIntegration &&
                                 hasCapability(
                                     phoneNumber,
                                     IntegrationType.Phone

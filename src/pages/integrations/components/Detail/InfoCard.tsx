@@ -28,6 +28,7 @@ export default function InfoCard(
         | AppDetail
         | (IntegrationConfig & {
               connectUrl: string
+              connectTitle?: string
               isExternalConnectUrl: boolean
               notification?: BannerProps
               isConnectionDisabled?: boolean
@@ -37,6 +38,7 @@ export default function InfoCard(
         title,
         company,
         privacyPolicy,
+        pricingLink,
         pricingPlan,
         pricingDetails,
         setupGuide,
@@ -141,9 +143,14 @@ export default function InfoCard(
                                 className={css.actionButton}
                                 isDisabled={isDisabled}
                             >
-                                {isAppDetail(props) && props.isUnapproved
-                                    ? 'Connect Unapproved App'
-                                    : 'Connect App'}
+                                {isAppDetail(props) &&
+                                    (props.isUnapproved
+                                        ? 'Connect Unapproved App'
+                                        : 'Connect App')}
+                                {!isAppDetail(props) &&
+                                    (props.connectTitle
+                                        ? props.connectTitle
+                                        : 'Connect App')}
                             </Button>
                         </ConnectLink>
                     )}
@@ -151,7 +158,34 @@ export default function InfoCard(
                 <h2 className={classNames(css.categoryTitle, css.cardTitle)}>
                     Pricing
                 </h2>
-                <div dangerouslySetInnerHTML={{__html: pricing}} />
+                {(pricing || pricingDetails) && (
+                    <ul className={css.cardList}>
+                        {pricing && (
+                            <li dangerouslySetInnerHTML={{__html: pricing}} />
+                        )}
+                        {pricingLink && (
+                            <li>
+                                <a
+                                    href={pricingLink}
+                                    className={css.actionLink}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    <i
+                                        className={classNames(
+                                            'material-icons-outlined',
+                                            css.actionIcon,
+                                            css.actionIconBigger
+                                        )}
+                                    >
+                                        attach_money
+                                    </i>
+                                    See pricing details
+                                </a>
+                            </li>
+                        )}
+                    </ul>
+                )}
                 {(setupGuide || privacyPolicy) && (
                     <>
                         <h2
@@ -208,61 +242,60 @@ export default function InfoCard(
                         </ul>
                     </>
                 )}
-                {isAppDetail(props) &&
-                    (props.supportEmail || props.supportPhone) && (
-                        <>
-                            <h2
-                                className={classNames(
-                                    css.categoryTitle,
-                                    css.cardTitle
-                                )}
-                            >
-                                Support
-                            </h2>
-                            <ul className={css.cardList}>
-                                {props.supportEmail && (
-                                    <li>
-                                        <a
-                                            href={`mailto:${props.supportEmail}`}
-                                            className={css.actionLink}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
+                {(props.supportEmail || props.supportPhone) && (
+                    <>
+                        <h2
+                            className={classNames(
+                                css.categoryTitle,
+                                css.cardTitle
+                            )}
+                        >
+                            Support
+                        </h2>
+                        <ul className={css.cardList}>
+                            {props.supportEmail && (
+                                <li>
+                                    <a
+                                        href={`mailto:${props.supportEmail}`}
+                                        className={css.actionLink}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        <i
+                                            className={classNames(
+                                                'material-icons',
+                                                css.actionIcon
+                                            )}
                                         >
-                                            <i
-                                                className={classNames(
-                                                    'material-icons',
-                                                    css.actionIcon
-                                                )}
-                                            >
-                                                mail
-                                            </i>
-                                            {props.supportEmail}
-                                        </a>
-                                    </li>
-                                )}
-                                {props.supportPhone && (
-                                    <li>
-                                        <a
-                                            href={`tel:${props.supportPhone}`}
-                                            className={css.actionLink}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
+                                            mail
+                                        </i>
+                                        {props.supportEmail}
+                                    </a>
+                                </li>
+                            )}
+                            {props.supportPhone && (
+                                <li>
+                                    <a
+                                        href={`tel:${props.supportPhone}`}
+                                        className={css.actionLink}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        <i
+                                            className={classNames(
+                                                'material-icons',
+                                                css.actionIcon
+                                            )}
                                         >
-                                            <i
-                                                className={classNames(
-                                                    'material-icons',
-                                                    css.actionIcon
-                                                )}
-                                            >
-                                                phone
-                                            </i>
-                                            {props.supportPhone}
-                                        </a>
-                                    </li>
-                                )}
-                            </ul>
-                        </>
-                    )}
+                                            phone
+                                        </i>
+                                        {props.supportPhone}
+                                    </a>
+                                </li>
+                            )}
+                        </ul>
+                    </>
+                )}
             </CardBody>
             <Modal
                 onClose={() => setModalOpen(false)}

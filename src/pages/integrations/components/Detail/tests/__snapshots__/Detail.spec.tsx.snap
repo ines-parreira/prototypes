@@ -171,27 +171,46 @@ exports[`Detail should render 1`] = `
         >
           Pricing
         </h2>
-        <div>
-          <p>
-            They are several options: 
-          </p>
-          
-
-          <ul>
+        <ul
+          class="cardList"
+        >
+          <li>
+            <p>
+              They are several options: 
+            </p>
             
 
-            <li>
-              Pay once
-            </li>
-            
+            <ul>
+              
 
-            <li>
-              Pay on ticket
-            </li>
-            
+              <li>
+                Pay once
+              </li>
+              
 
-          </ul>
-        </div>
+              <li>
+                Pay on ticket
+              </li>
+              
+
+            </ul>
+          </li>
+          <li>
+            <a
+              class="actionLink"
+              href="https://google.com"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <i
+                class="material-icons-outlined actionIcon actionIconBigger"
+              >
+                attach_money
+              </i>
+              See pricing details
+            </a>
+          </li>
+        </ul>
         <h2
           class="categoryTitle cardTitle"
         >

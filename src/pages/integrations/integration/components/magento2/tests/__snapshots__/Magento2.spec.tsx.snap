@@ -214,9 +214,28 @@ exports[`<Magento2/> Detail should render a detail view 1`] = `
         >
           Pricing
         </h2>
-        <div>
-          Free
-        </div>
+        <ul
+          class="cardList"
+        >
+          <li>
+            Free
+          </li>
+          <li>
+            <a
+              class="actionLink"
+              href="https://business.adobe.com/products/magento/pricing.html"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <i
+                class="material-icons-outlined actionIcon actionIconBigger"
+              >
+                attach_money
+              </i>
+              See pricing details
+            </a>
+          </li>
+        </ul>
         <h2
           class="categoryTitle cardTitle"
         >

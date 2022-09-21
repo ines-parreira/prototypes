@@ -185,9 +185,28 @@ exports[`<Recharge/> Detail should render a detail view 1`] = `
         >
           Pricing
         </h2>
-        <div>
-          Starting at 1% + 10¢ per transaction. Get started for free
-        </div>
+        <ul
+          class="cardList"
+        >
+          <li>
+            Starting at 1% + 10¢ per transaction. Get started for free
+          </li>
+          <li>
+            <a
+              class="actionLink"
+              href="https://rechargepayments.com/products/"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <i
+                class="material-icons-outlined actionIcon actionIconBigger"
+              >
+                attach_money
+              </i>
+              See pricing details
+            </a>
+          </li>
+        </ul>
         <h2
           class="categoryTitle cardTitle"
         >

@@ -4,6 +4,7 @@ import {connect, ConnectedProps} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {fromJS, List, Map} from 'immutable'
 import {useUpdateEffect, useAsyncFn} from 'react-use'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {Container} from 'reactstrap'
 import classNames from 'classnames'
@@ -15,6 +16,8 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {IntegrationType} from 'models/integration/types'
 import {RootState} from 'state/types'
+import {FeatureFlagKey} from 'config/featureFlags'
+
 import {
     getEligibleShopifyIntegrationsFor,
     makeGetRedirectUri,
@@ -95,6 +98,7 @@ import HTTPIntegrationEvents from './components/http/HTTPIntegrationEvents/HTTPI
 import HTTPIntegrationEvent from './components/http/HTTPIntegrationEvent/HTTPIntegrationEvent'
 import HTTPIntegrationLayout from './components/http/HTTPIntegrationLayout/HTTPIntegrationLayout'
 
+import VoiceIntegration from './components/voice/VoiceIntegration'
 import PhoneIntegrationsListContainer from './components/phone/PhoneIntegrationsListContainer'
 import PhoneIntegrationCreate from './components/phone/PhoneIntegrationCreate'
 import VoiceAppPreferences from './components/phone/VoiceAppPreferences'
@@ -143,9 +147,12 @@ export const IntegrationDetail = ({
         subId: string
     }>()
 
-    const isIntegrationId = !['new', 'connections', 'setup'].includes(
-        integrationId
-    )
+    const isIntegrationId = ![
+        'new',
+        'connections',
+        'integrations',
+        'setup',
+    ].includes(integrationId)
 
     const {phoneNumberId} = useSearch<{
         phoneNumberId: string
@@ -242,6 +249,8 @@ export const IntegrationDetail = ({
             actions.fetchIntegration(integrationId, integrationType)
         }
     }, [integrationId, isIntegrationId])
+
+    const showNewVoiceSmsLayout = useFlags()[FeatureFlagKey.NewVoiceSmsLayout]
 
     switch (integrationType) {
         case IntegrationType.Aircall:
@@ -487,6 +496,10 @@ export const IntegrationDetail = ({
             )
 
         case IntegrationType.Phone:
+            if (showNewVoiceSmsLayout) {
+                return <VoiceIntegration />
+            }
+
             if (!!integrationId) {
                 if (!isUpdate) {
                     return (

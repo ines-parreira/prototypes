@@ -162,7 +162,7 @@ export type IntegrationConfig = {
     type: IntegrationType
     subTypes?: IntegrationType[]
     requiredFeature?: AccountFeature
-    image: string
+    image?: string
     longDescription: string
     company: string
     companyUrl: string
@@ -170,9 +170,11 @@ export type IntegrationConfig = {
     screenshots: string[]
     privacyPolicy: string
     setupGuide: string
+    supportEmail?: string
+    supportPhone?: string
     pricingPlan: PricingPlan | null
-    pricingLink: string
-    pricingDetails: string
+    pricingLink?: string
+    pricingDetails?: string
     hasFreeTrial: boolean
     freeTrialPeriod: TrialPeriod | null
 }
@@ -201,10 +203,24 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
     {
         type: IntegrationType.Phone,
         title: 'Voice',
-        description: 'Chat with your customers over the phone from Gorgias.',
+        description:
+            'Make and receive phone calls from Gorgias with easy access to customer data and conversation history.',
         requiredFeature: AccountFeature.PhoneNumber,
-        longDescription: '',
-    } as IntegrationConfig,
+        categories: [Category.PHONE],
+        privacyPolicy: 'https://www.gorgias.com/privacy/privacy',
+        longDescription:
+            '<p>Gorgias Voice is our built-in phone support solution that allows agents to manage customer calls directly from the helpdesk.</p><p>Voice is available in the US, Canada, Australia, UK, and France. <a href="https://gorgias.typeform.com/to/vzztySKh" target="_blank" rel="noopener noreferrer">Submit a request</a> for other countries.</p><strong>With voice, you’ll be able to:</strong><ul><li>Customize your greeting, voicemail, and IVR settings</li><li>Forward incoming calls to your mobile device so you can answer customers on the go</li><li>Automatically generate tickets to store details from inbound and outbound calls, including missed calls, voicemails, and call recordings</li></ul>',
+        screenshots: ['voice-1.png', 'voice-2.png', 'voice-3.png'],
+        pricingPlan: PricingPlan.RECURRING,
+        pricingDetails: 'Try without commitment',
+        pricingLink: 'https://www.gorgias.com/pricing',
+        company: 'Gorgias',
+        companyUrl: 'https://www.gorgias.com/',
+        setupGuide: 'https://docs.gorgias.com/en-US/phone-integration-81798',
+        supportEmail: 'support@gorgias.com',
+        hasFreeTrial: false,
+        freeTrialPeriod: null,
+    },
     {
         type: IntegrationType.Sms,
         title: 'SMS',

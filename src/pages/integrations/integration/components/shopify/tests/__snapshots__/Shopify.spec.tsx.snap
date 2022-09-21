@@ -270,9 +270,28 @@ exports[`<Shopify/> Detail should render a detail view 1`] = `
         >
           Pricing
         </h2>
-        <div>
-          Contact Gorgias for pricing details.
-        </div>
+        <ul
+          class="cardList"
+        >
+          <li>
+            Contact Gorgias for pricing details.
+          </li>
+          <li>
+            <a
+              class="actionLink"
+              href="https://www.shopify.com/pricing"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <i
+                class="material-icons-outlined actionIcon actionIconBigger"
+              >
+                attach_money
+              </i>
+              See pricing details
+            </a>
+          </li>
+        </ul>
         <h2
           class="categoryTitle cardTitle"
         >

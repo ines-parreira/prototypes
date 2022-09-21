@@ -558,7 +558,7 @@ exports[`<IntegrationDetail /> should render the preferences tab of a specific i
 
 exports[`<IntegrationDetail /> should render the preferences tab of a specific integrations for phone 1`] = `
 <div>
-  VoiceAppPreferences
+  VoiceIntegrationPreferences
 </div>
 `;
 

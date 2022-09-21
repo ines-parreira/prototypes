@@ -16,6 +16,7 @@ export default function Detail(
         | AppDetail
         | (IntegrationConfig & {
               connectUrl: string
+              connectTitle?: string
               isExternalConnectUrl: boolean
               notification?: BannerProps
               isConnectionDisabled?: boolean

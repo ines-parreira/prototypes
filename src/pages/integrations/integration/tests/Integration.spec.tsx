@@ -127,7 +127,7 @@ jest.mock('../components/phone/PhoneIntegrationCreate', () => () => (
     <div>PhoneIntegrationCreate</div>
 ))
 jest.mock('../components/phone/VoiceAppPreferences', () => () => (
-    <div>VoiceAppPreferences</div>
+    <div>VoiceIntegrationPreferences</div>
 ))
 jest.mock('../components/phone/PhoneIntegrationVoicemail', () => () => (
     <div>PhoneIntegrationVoicemail</div>

@@ -108,29 +108,6 @@ describe(`InfoCard`, () => {
         expect(screen.getByText(/for pricing details/))
     })
 
-    it('should not display supportEmail and supportPhone if not an App', () => {
-        render(
-            <Provider store={store}>
-                <InfoCard
-                    {...{
-                        ...dummyAppDetail,
-                        type: IntegrationType.Shopify,
-                        isExternalConnectUrl: false,
-                    }}
-                />
-            </Provider>
-        )
-
-        expect(
-            screen.queryByText(new RegExp(dummyAppDetail.supportEmail))
-        ).toBeNull()
-        expect(
-            screen.queryByText(
-                new RegExp(dummyAppDetail.supportPhone.replace('+', '\\+'))
-            )
-        ).toBeNull()
-    })
-
     it('should have its connect button disabled', () => {
         render(
             <Provider store={store}>

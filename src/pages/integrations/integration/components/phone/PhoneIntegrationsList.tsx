@@ -1,7 +1,10 @@
 import React, {useState, useCallback, useMemo} from 'react'
 import {sortBy, reverse} from 'lodash'
 import {useDeepCompareEffect} from 'react-use'
+import {Container} from 'reactstrap'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {OrderDirection} from 'models/api/types'
 import {
     PhoneIntegration,
@@ -22,9 +25,11 @@ import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
 import PhoneNumberTitle from 'pages/phoneNumbers/PhoneNumberTitle'
+import Button from 'pages/common/components/button/Button'
 import useAppSelector from 'hooks/useAppSelector'
 import history from 'pages/history'
 
+import settingsCss from 'pages/settings/settings.less'
 import css from './PhoneIntegrationsList.less'
 
 type Row = {
@@ -44,7 +49,6 @@ export function PhoneIntegrationsList({type}: Props): JSX.Element | null {
             : integrations.filter(isSmsIntegration)
 
     const phoneNumbers = useAppSelector(getPhoneNumbers)
-
     const rows: Row[] = useMemo(
         () =>
             phoneIntegrations.reduce(
@@ -97,65 +101,107 @@ export function PhoneIntegrationsList({type}: Props): JSX.Element | null {
         [setOrderBy, setOrderDirection, orderBy, orderDirection]
     )
 
+    const showNewVoiceSmsLayout = useFlags()[FeatureFlagKey.NewVoiceSmsLayout]
+
     if (!sortedRows.length) {
+        if (showNewVoiceSmsLayout) {
+            return (
+                <Container fluid className={settingsCss.pageContainer}>
+                    <p>You have no integration of this type at the moment.</p>
+                    <Button
+                        onClick={() =>
+                            history.push('/app/settings/integrations/phone/new')
+                        }
+                    >
+                        Add {type === IntegrationType.Phone ? 'Voice' : 'SMS'}
+                    </Button>
+                </Container>
+            )
+        }
+
         return null
     }
 
     return (
-        <TableWrapper className={css.table}>
-            <TableHead className={css.header}>
-                <HeaderCellProperty
-                    title="Title"
-                    direction={orderDirection}
-                    isOrderedBy={orderBy === 'integration.name'}
-                    onClick={() => setSortOptions('integration.name')}
-                />
-                <HeaderCellProperty
-                    title="Phone Number"
-                    direction={orderDirection}
-                    isOrderedBy={orderBy === 'phoneNumber.meta.friendly_name'}
-                    onClick={() =>
-                        setSortOptions('phoneNumber.meta.friendly_name')
-                    }
-                />
-                <HeaderCell />
-            </TableHead>
-            <TableBody>
-                {sortedRows.map((row) => {
-                    const {
-                        integration: {id, name, meta},
-                        phoneNumber,
-                    } = row
-                    const detailsLink = `/app/settings/integrations/${type}/${id}/preferences`
-                    return (
-                        <TableBodyRow
-                            key={id}
-                            onClick={() => {
-                                history.push(detailsLink)
-                            }}
-                        >
-                            <BodyCell>
-                                {meta.emoji && (
-                                    <span className="mr-2">{meta.emoji}</span>
-                                )}
-                                <strong>{name}</strong>
-                            </BodyCell>
-                            <BodyCell className={css.phoneCell} size="small">
-                                {phoneNumber && (
-                                    <PhoneNumberTitle
-                                        phoneNumber={phoneNumber}
-                                        withRoundFlag
-                                    />
-                                )}
-                            </BodyCell>
-                            <BodyCell>
-                                <ForwardIcon href={detailsLink} />
-                            </BodyCell>
-                        </TableBodyRow>
-                    )
-                })}
-            </TableBody>
-        </TableWrapper>
+        <>
+            <TableWrapper className={css.table}>
+                <TableHead className={css.header}>
+                    <HeaderCellProperty
+                        title="Title"
+                        direction={orderDirection}
+                        isOrderedBy={orderBy === 'integration.name'}
+                        onClick={() => setSortOptions('integration.name')}
+                    />
+                    <HeaderCellProperty
+                        title="Phone Number"
+                        direction={orderDirection}
+                        isOrderedBy={
+                            orderBy === 'phoneNumber.meta.friendly_name'
+                        }
+                        onClick={() =>
+                            setSortOptions('phoneNumber.meta.friendly_name')
+                        }
+                    />
+                    <HeaderCell />
+                </TableHead>
+                <TableBody>
+                    {sortedRows.map((row) => {
+                        const {
+                            integration: {id, name, meta},
+                            phoneNumber,
+                        } = row
+                        const detailsLink = `/app/settings/integrations/${type}/${id}/preferences`
+                        return (
+                            <TableBodyRow
+                                key={id}
+                                onClick={() => {
+                                    history.push(detailsLink)
+                                }}
+                            >
+                                <BodyCell>
+                                    {meta.emoji && (
+                                        <span className="mr-2">
+                                            {meta.emoji}
+                                        </span>
+                                    )}
+                                    <strong>{name}</strong>
+                                </BodyCell>
+                                <BodyCell
+                                    className={css.phoneCell}
+                                    size="small"
+                                >
+                                    {phoneNumber && (
+                                        <PhoneNumberTitle
+                                            phoneNumber={phoneNumber}
+                                            withRoundFlag
+                                        />
+                                    )}
+                                </BodyCell>
+                                <BodyCell>
+                                    <ForwardIcon href={detailsLink} />
+                                </BodyCell>
+                            </TableBodyRow>
+                        )
+                    })}
+                </TableBody>
+            </TableWrapper>
+            {showNewVoiceSmsLayout && (
+                <Container fluid className={css.footer}>
+                    <p>
+                        Send and receive text messages in Gorgias for seamless
+                        conversations with customers on the go.{' '}
+                        <a href="#">Additional charges apply.</a>
+                    </p>
+                    <Button
+                        onClick={() =>
+                            history.push('/app/settings/integrations/phone/new')
+                        }
+                    >
+                        Add {type === IntegrationType.Phone ? 'Voice' : 'SMS'}
+                    </Button>
+                </Container>
+            )}
+        </>
     )
 }
 
