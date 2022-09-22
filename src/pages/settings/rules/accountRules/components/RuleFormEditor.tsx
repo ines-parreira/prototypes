@@ -103,7 +103,7 @@ export const RuleFormEditor = ({rule}: Props) => {
                 }
             }
         },
-        []
+        [rule]
     )
     const [isFormDirty, setIsFormDirty] = useState(false)
 
