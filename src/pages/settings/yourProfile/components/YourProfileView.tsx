@@ -408,9 +408,9 @@ export class YourProfileView extends Component<Props, State> {
                                             target="autofill-tooltip"
                                             placement="top-start"
                                         >
-                                            Whenever a macro responds a question
-                                            accurately, it’s going to be
-                                            pre-filled.
+                                            Whenever a macro responds to a
+                                            question accurately, it’s going to
+                                            be pre-filled.
                                         </Tooltip>
                                     </Group>
                                 )}
