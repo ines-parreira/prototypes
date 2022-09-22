@@ -6,6 +6,10 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
+import star from 'assets/img/icons/rating-star.svg'
+import up from 'assets/img/icons/rating-up.svg'
+import down from 'assets/img/icons/rating-down.svg'
+
 import Button from 'pages/common/components/button/Button'
 import Group from 'pages/common/components/layout/Group'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -16,9 +20,6 @@ import {articleRequiredFields} from '../../utils/helpCenter.utils'
 import {ConfirmationModal} from '../ConfirmationModal'
 import {useRatingScore} from '../../hooks/useRatingScore'
 
-import star from '../../../../../../img/icons/rating-star.svg'
-import up from '../../../../../../img/icons/rating-up.svg'
-import down from '../../../../../../img/icons/rating-down.svg'
 import {
     ArticleMode,
     ArticleModeModified,

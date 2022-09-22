@@ -1,7 +1,5 @@
 import {fromJS, List} from 'immutable'
 
-import gorgiasChatWidgetTexts from '../../../../../integrations/common/texts/widget_texts.json'
-import gorgiasChatSSPTexts from '../../../../../integrations/gorgias_chat/texts/ssp_texts.json'
 import {
     DANISH_LANGUAGE,
     DUTCH_LANGUAGE,
@@ -19,6 +17,9 @@ import {
     GorgiasChatPosition,
     GorgiasChatPositionAlignmentEnum,
 } from '../../models/integration/types'
+
+import gorgiasChatSSPTexts from './ssp_texts.json'
+import {widgetTexts} from './widget'
 
 export const GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH = 50
 
@@ -40,7 +41,7 @@ export const GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS: List<Map<string, string>> =
 
 export const GORGIAS_CHAT_WIDGET_TEXTS: {
     [locale: string]: {[key: string]: string}
-} = gorgiasChatWidgetTexts
+} = widgetTexts
 export const GORGIAS_CHAT_SSP_TEXTS: {
     [locale: string]: {[key: string]: string}
 } = gorgiasChatSSPTexts

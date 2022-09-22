@@ -1,6 +1,10 @@
 import React, {FC, useCallback, useMemo} from 'react'
 import _keyBy from 'lodash/keyBy'
 
+import up from 'assets/img/icons/rating-up-white.svg'
+import down from 'assets/img/icons/rating-down-white.svg'
+import star from 'assets/img/icons/rating-star.svg'
+
 import {Article, LocaleCode} from 'models/helpCenter/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
@@ -10,10 +14,6 @@ import {ArticleRowActionTypes} from 'pages/settings/helpCenter/constants'
 import {sanitizeHtmlDefault} from 'utils/html'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {changeViewLanguage} from 'state/ui/helpCenter/actions'
-
-import up from '../../../../../../../img/icons/rating-up-white.svg'
-import down from '../../../../../../../img/icons/rating-down-white.svg'
-import star from '../../../../../../../img/icons/rating-star.svg'
 
 import {useRatingScore} from '../../../hooks/useRatingScore'
 import {useSupportedLocales} from '../../../providers/SupportedLocales'
