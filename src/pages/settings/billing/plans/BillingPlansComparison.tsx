@@ -155,14 +155,48 @@ export default function BillingPlansComparison({
                     </Group>
                 </div>
                 <CardDeck className={css.cardDeck}>
-                    <>
-                        {accountHasLegacyPlan && (
+                    {accountHasLegacyPlan && (
+                        <BillingComparisonPlanCard
+                            className={classNames(css.planCard, 'mt-4', {
+                                [css.isPublicPlan]: !isCustomPlan,
+                            })}
+                            plan={displayedCurrentPlan.toJS()}
+                            isCurrentPlan
+                            isUpdating={isSubscriptionUpdating}
+                            renderBody={(features) => (
+                                <SynchronizedScrollTopContainer
+                                    height={PLAN_FEATURES_HEIGHT}
+                                >
+                                    {features}
+                                </SynchronizedScrollTopContainer>
+                            )}
+                            isAutomationChecked={isAutomationChecked}
+                            onAutomationChange={onAutomationChange}
+                            onPlanChange={(isAutomationChecked) =>
+                                onPlanChange(
+                                    displayedCurrentPlan.get('id'),
+                                    displayedCurrentPlan.get(
+                                        'automation_addon_equivalent_plan'
+                                    ),
+                                    isAutomationChecked
+                                )
+                            }
+                        />
+                    )}
+                    {availablePlans
+                        .map((plan: Map<any, any>) => (
                             <BillingComparisonPlanCard
+                                key={plan.get('id')}
                                 className={classNames(css.planCard, 'mt-4', {
-                                    [css.isPublicPlan]: !isCustomPlan,
+                                    [css.isPublicPlan]:
+                                        accountHasLegacyPlan && !isCustomPlan,
                                 })}
-                                plan={displayedCurrentPlan.toJS()}
-                                isCurrentPlan
+                                plan={plan.toJS()}
+                                isCurrentPlan={
+                                    !accountHasLegacyPlan &&
+                                    plan.get('id') ===
+                                        displayedCurrentPlan.get('id')
+                                }
                                 isUpdating={isSubscriptionUpdating}
                                 renderBody={(features) => (
                                     <SynchronizedScrollTopContainer
@@ -171,73 +205,23 @@ export default function BillingPlansComparison({
                                         {features}
                                     </SynchronizedScrollTopContainer>
                                 )}
-                                isAutomationChecked={isAutomationChecked}
-                                onAutomationChange={onAutomationChange}
                                 onPlanChange={(isAutomationChecked) =>
                                     onPlanChange(
-                                        displayedCurrentPlan.get('id'),
-                                        displayedCurrentPlan.get(
+                                        plan.get('id'),
+                                        plan.get(
                                             'automation_addon_equivalent_plan'
                                         ),
                                         isAutomationChecked
                                     )
                                 }
+                                defaultIsPlanChangeModalOpen={
+                                    openedPlanModal === plan.get('name')
+                                }
+                                isAutomationChecked={isAutomationChecked}
+                                onAutomationChange={onAutomationChange}
                             />
-                        )}
-                        {availablePlans
-                            .mapEntries((entry) => {
-                                const [planId, plan] = entry as [
-                                    string,
-                                    Map<any, any>
-                                ]
-                                const isCurrentPlan =
-                                    !accountHasLegacyPlan &&
-                                    plan.get('id') ===
-                                        displayedCurrentPlan.get('id')
-                                return [
-                                    planId,
-                                    <BillingComparisonPlanCard
-                                        key={planId.split('-')[0]}
-                                        className={classNames(
-                                            css.planCard,
-                                            'mt-4',
-                                            {
-                                                [css.isPublicPlan]:
-                                                    accountHasLegacyPlan &&
-                                                    !isCustomPlan,
-                                            }
-                                        )}
-                                        plan={plan.toJS()}
-                                        isCurrentPlan={isCurrentPlan}
-                                        isUpdating={isSubscriptionUpdating}
-                                        renderBody={(features) => (
-                                            <SynchronizedScrollTopContainer
-                                                height={PLAN_FEATURES_HEIGHT}
-                                            >
-                                                {features}
-                                            </SynchronizedScrollTopContainer>
-                                        )}
-                                        onPlanChange={(isAutomationChecked) =>
-                                            onPlanChange(
-                                                planId,
-                                                plan.get(
-                                                    'automation_addon_equivalent_plan'
-                                                ),
-                                                isAutomationChecked
-                                            )
-                                        }
-                                        defaultIsPlanChangeModalOpen={
-                                            openedPlanModal === plan.get('name')
-                                        }
-                                        isAutomationChecked={
-                                            isAutomationChecked
-                                        }
-                                        onAutomationChange={onAutomationChange}
-                                    />,
-                                ]
-                            })
-                            .toList()}
-                    </>
+                        ))
+                        .toList()}
                     {!isCustomPlan && (
                         <EnterpriseComparisonPlanCard
                             className={classNames(css.planCard, 'mt-4', {
