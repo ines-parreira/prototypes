@@ -7,10 +7,12 @@ import {getIntegrationById} from 'state/integrations/selectors'
 import {RootState} from 'state/types'
 import {WIDGET_COLOR_SUPPORTED_TYPES} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/constants.js'
 
+import {getWidgetName} from 'state/widgets/predicates'
 import cssWrapper from './Wrapper.less'
 import css from './Placeholder.less'
 
 type OwnProps = {
+    source: Map<any, any>
     widget: Map<any, any>
     template: Map<any, any>
     editing: {
@@ -26,14 +28,6 @@ type OwnProps = {
 export class Placeholder extends Component<
     OwnProps & ConnectedProps<typeof connector>
 > {
-    _renderWidgetType = (widgetType: string): string => {
-        if (widgetType === 'smooch_inside') {
-            return 'chat'
-        }
-
-        return widgetType
-    }
-
     _deleteWidget = (evt: MouseEvent) => {
         const {template, editing} = this.props
 
@@ -47,8 +41,26 @@ export class Placeholder extends Component<
         }
     }
 
+    _renderWidgetFor() {
+        const {source, template, widget, integration} = this.props
+        const widgetName = getWidgetName({
+            source,
+            widgetType: widget.get('type'),
+            widgetAppId: widget.get('app_id'),
+            templatePath: template.get('path'),
+            integration: integration?.toJS(),
+        })
+
+        let widgetFor = `Widget for ${widgetName}`
+        if (!widgetName.includes('data')) {
+            widgetFor = `${widgetFor} data`
+        }
+
+        return widgetFor
+    }
+
     render() {
-        const {widget, integration} = this.props
+        const {widget} = this.props
 
         const widgetType = widget.get('type') as string
         const colorClassNames = []
@@ -67,15 +79,7 @@ export class Placeholder extends Component<
                 )}
             >
                 <div className={css.card}>
-                    <h5 className={css.title}>
-                        {integration
-                            ? `Widget for ${
-                                  integration.get('name') as string
-                              } data`
-                            : `Widget for ${this._renderWidgetType(
-                                  widget.get('type')
-                              )} data`}
-                    </h5>
+                    <h5 className={css.title}>{this._renderWidgetFor()}</h5>
                     <i
                         className={classnames(
                             css.delete,

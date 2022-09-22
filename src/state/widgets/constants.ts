@@ -38,3 +38,6 @@ export const SMOOCH_INSIDE_WIDGET_TYPE = 'smooch_inside'
 export const YOTPO_WIDGET_TYPE = 'yotpo'
 export const KLAVIYO_WIDGET_TYPE = 'klaviyo'
 export const BIGCOMMERCE_WIDGET_TYPE = 'bigcommerce'
+export const CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE = 'customer_external_data'
+
+export const THIRD_PARTY_APP_NAME_KEY = '__app_name__'

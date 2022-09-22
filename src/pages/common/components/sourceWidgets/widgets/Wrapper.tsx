@@ -3,13 +3,14 @@ import classnames from 'classnames'
 import {fromJS, List, Map} from 'immutable'
 import _last from 'lodash/last'
 
-import {humanizeString} from 'utils'
 import useAppSelector from 'hooks/useAppSelector'
 import {getIntegrationById} from 'state/integrations/selectors'
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 import {WIDGET_COLOR_SUPPORTED_TYPES} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/constants.js'
 import infobarWidgetCss from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/Wrapper.less'
 
+import {getWidgetName} from 'state/widgets/predicates'
+import {Integration} from 'models/integration/types'
 import SourceWidget from '../Widget'
 import css from './Wrapper.less'
 
@@ -34,22 +35,13 @@ export default function Wrapper({widget, template, source, parent}: Props) {
         return null
     }
 
-    let displayName = null
-
-    // If the last item of the path is an `int`, it's the id of an integration; therefore we display the
-    // integration name or type depending on its type.
-    // If it's not an `int`, we just display the last item, humanized.
-    if (!isNaN(integrationId)) {
-        if (integration.get('type') === 'http') {
-            displayName = integration.get('name')
-        } else if (integration.get('type') === 'smooch_inside') {
-            displayName = 'Chat'
-        } else {
-            displayName = humanizeString(integration.get('type'))
-        }
-    } else {
-        displayName = humanizeString(_last(absolutePath) || '')
-    }
+    const displayName = getWidgetName({
+        source,
+        widgetType: widget.get('type') as Integration['type'],
+        widgetAppId: widget.get('app_id') as Maybe<string>,
+        templatePath: template.get('path') as string[],
+        integration: integration?.toJS(),
+    })
 
     const type = parent.get('type') as string
     const colorClassNames = []

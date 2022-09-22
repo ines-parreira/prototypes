@@ -7,6 +7,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {IntegrationType} from 'models/integration/types/'
 import {DEPRECATED_getIntegrations} from 'state/integrations/selectors'
 import history from 'pages/history'
+import {CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE} from 'state/widgets/constants'
 import {
     areSourcesReady,
     jsonToWidgets,
@@ -139,6 +140,20 @@ export const WIDGET_DATA_TYPES = [
             </div>
         ),
     },
+    {
+        type: CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+        title: 'Customer third party data',
+        description: (
+            <div>
+                The following data comes from pushing it using{' '}
+                {/*TODO: add the proper link for this one when available*/}
+                <Link to="https://docs.gorgias.com" target="_blank">
+                    <b>the customer data endpoint</b>
+                </Link>
+                .
+            </div>
+        ),
+    },
 ]
 
 type Props = {
@@ -223,6 +238,14 @@ export default function SourceWrapper({
 
                     typesAlreadyDisplayed.push(integration.get('type'))
                     ret = widgetsTemplate.set('type', integration.get('type'))
+                } else if (
+                    (widgetsTemplate.get('sourcePath') as List<any>).includes(
+                        'external_data'
+                    )
+                ) {
+                    typesAlreadyDisplayed.push(
+                        CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE
+                    )
                 } else {
                     typesAlreadyDisplayed.push('custom')
                 }

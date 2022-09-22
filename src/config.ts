@@ -4,21 +4,22 @@ import _get from 'lodash/get'
 import {
     RECHARGE_CANCELLATION_REASONS,
     RECHARGE_DEFAULT_CANCELLATION_REASON,
-} from './config/integrations/recharge'
-import {Order} from './constants/integrations/types/shopify'
+} from 'config/integrations/recharge'
+import {Order} from 'constants/integrations/types/shopify'
 
+import {Category, PricingPlan, TrialPeriod} from 'models/integration/types/app'
+import {IntegrationType} from 'models/integration/types'
+import {MacroActionName} from 'models/macroAction/types'
+import {Customer} from 'state/customers/types'
+
+import {daysToHours, hoursToSeconds} from 'utils'
+import {AccountFeature} from 'state/currentAccount/types'
+import {TicketMessageSourceType} from 'business/types/ticket'
 import {
-    Category,
-    PricingPlan,
-    TrialPeriod,
-} from './models/integration/types/app'
-import {IntegrationType} from './models/integration/types'
-import {MacroActionName} from './models/macroAction/types'
-import {Customer} from './state/customers/types'
-
-import {daysToHours, hoursToSeconds} from './utils'
-import {AccountFeature} from './state/currentAccount/types'
-import {TicketMessageSourceType} from './business/types/ticket'
+    CUSTOM_WIDGET_TYPE,
+    CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+} from 'state/widgets/constants'
+import {WidgetContextType} from 'state/widgets/types'
 
 // TODO @LouisBarranqueiro switch all configuration to modular version
 
@@ -137,18 +138,25 @@ export const TICKET_STATUSES = ['open', 'closed']
  * Widget related
  */
 export const DEFAULT_SOURCE_PATHS = {
-    ticket: {
-        custom: ['ticket', 'customer', 'data'],
+    [WidgetContextType.Ticket]: {
+        [CUSTOM_WIDGET_TYPE]: ['ticket', 'customer', 'data'],
         integrations: ['ticket', 'customer', 'integrations'],
+        [CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE]: [
+            'ticket',
+            'customer',
+            'external_data',
+        ],
     },
-    customer: {
-        custom: ['customer', 'data'],
+    [WidgetContextType.Customer]: {
+        [CUSTOM_WIDGET_TYPE]: ['customer', 'data'],
         integrations: ['customer', 'integrations'],
+        [CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE]: ['customer', 'external_data'],
     },
     //TODO(customers-migration): remove this property when we migrated widgets.
-    user: {
-        custom: ['customer', 'data'],
+    [WidgetContextType.User]: {
+        [CUSTOM_WIDGET_TYPE]: ['customer', 'data'],
         integrations: ['customer', 'integrations'],
+        [CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE]: ['customer', 'external_data'],
     },
 }
 

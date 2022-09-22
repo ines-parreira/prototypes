@@ -17,7 +17,7 @@ import type {KlaviyoIntegration} from './klaviyo'
 import type {PhoneIntegration} from './phone'
 import type {SmsIntegration} from './sms'
 import type {TwitterIntegration} from './twitter'
-import {SelfServiceIntegration} from './selfService'
+import type {SelfServiceIntegration} from './selfService'
 
 export type {IntegrationDecoration} from './base'
 

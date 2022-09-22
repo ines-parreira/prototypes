@@ -4,9 +4,6 @@ import _last from 'lodash/last'
 import classnames from 'classnames'
 import {Popover, PopoverBody} from 'reactstrap'
 
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {EditionContext} from 'providers/infobar/EditionContext'
-import {Integration, IntegrationType} from 'models/integration/types'
 import useId from 'hooks/useId'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -21,8 +18,19 @@ import {WIDGET_COLOR_SUPPORTED_TYPES} from 'pages/common/components/infobar/Info
 import {Editing} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
 import InfobarWidget from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/InfobarWidget.js'
 
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import {EditionContext} from 'providers/infobar/EditionContext'
+import {getWidgetId, getWidgetName} from 'state/widgets/predicates'
+import {
+    CUSTOM_WIDGET_TYPE,
+    CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+    HTTP_WIDGET_TYPE,
+} from 'state/widgets/constants'
+
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+
+import {Integration} from 'models/integration/types'
 import css from './Wrapper.less'
 import WrapperEdit from './forms/WrapperEdit'
 
@@ -47,9 +55,19 @@ export default function Wrapper({widget, template, source, editing}: Props) {
     const absolutePath = template.get('absolutePath', []) as string[]
     const templatePath = template.get('templatePath', '') as string
 
+    const widgetTitle = template.getIn(['widgets', 0, 'title'])
     const widgetType = widget.get('type') as Integration['type']
-
     const integration = useIntegration(absolutePath, widgetType)
+
+    const widgetName = getWidgetName({
+        source,
+        widgetTitle,
+        widgetType,
+        widgetAppId: widget.get('app_id') as string,
+        templatePath: template.get('path') as string[],
+        integration: integration?.toJS(),
+    })
+    const widgetId = getWidgetId(widgetName)
 
     const customColor = template.getIn(['meta', 'color'], '') as string
     const borderColor = customColor
@@ -61,6 +79,9 @@ export default function Wrapper({widget, template, source, editing}: Props) {
     const colorClassNames = []
     if (WIDGET_COLOR_SUPPORTED_TYPES.includes(widgetType))
         colorClassNames.push(css[widgetType])
+
+    if (borderColor || colorClassNames.length)
+        colorClassNames.push(css.adjustedPadding)
 
     return (
         <IntegrationContext.Provider
@@ -80,10 +101,14 @@ export default function Wrapper({widget, template, source, editing}: Props) {
                 )}
                 style={borderColor}
             >
-                {!isEditing && <div id={widgetType} className={css.anchor} />}
+                {!isEditing && <div id={widgetId} className={css.anchor} />}
                 {isEditing && (
                     <div className={css.widgetWrapperTools} id={uniqueId}>
-                        {widgetType === IntegrationType.Http && (
+                        {[
+                            HTTP_WIDGET_TYPE,
+                            CUSTOM_WIDGET_TYPE,
+                            CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+                        ].includes(widgetType) && (
                             <Button
                                 type="button"
                                 intent="primary"

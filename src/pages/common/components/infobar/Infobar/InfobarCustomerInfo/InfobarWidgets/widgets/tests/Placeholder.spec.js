@@ -7,6 +7,7 @@ import {Placeholder} from '../Placeholder.tsx'
 describe('PlaceholderWidget component', () => {
     const integrationId = 1
     const minProps = {
+        source: fromJS({}),
         template: fromJS({
             path: ['ticket', 'customer', 'integrations', integrationId],
             templatePath: '0.template',

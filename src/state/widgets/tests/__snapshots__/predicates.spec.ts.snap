@@ -1,5 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`getWidgetLabel() should render custom label 1`] = `"Chat"`;
+exports[`predicates tests getWidgetId() should render snake cased name 1`] = `"some_random_ass_name_1234"`;
 
-exports[`getWidgetLabel() should render default label 1`] = `"Shopify"`;
+exports[`predicates tests getWidgetLabel() should render custom label 1`] = `"Chat"`;
+
+exports[`predicates tests getWidgetLabel() should render default label 1`] = `"shopify"`;
+
+exports[`predicates tests getWidgetName() should render default name defined for smooch_inside integration 1`] = `"Chat"`;
+
+exports[`predicates tests getWidgetName() should render default names defined for widgetType 1`] = `"HTTP"`;
+
+exports[`predicates tests getWidgetName() should render default names defined for widgetType 2`] = `"Magento"`;
+
+exports[`predicates tests getWidgetName() should render default names defined for widgetType 3`] = `"Chat"`;
+
+exports[`predicates tests getWidgetName() should render default names defined for widgetType 4`] = `"Customer third party data"`;

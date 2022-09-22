@@ -34,7 +34,7 @@ exports[`PlaceholderWidget component should display the integration type if the 
       <h5
         class="title"
       >
-        Widget for shopify data
+        Widget for Shopify data
       </h5>
       <i
         class="delete material-icons text-danger"

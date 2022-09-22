@@ -5,19 +5,27 @@ import classnames from 'classnames'
 import {fromJS} from 'immutable'
 import _isEqual from 'lodash/isEqual'
 
-import DragWrapper from '../../../../dragging/WidgetsDragWrapper.tsx'
-
-import {canDisplayWidget} from '../../../utils.tsx'
-
 import InfobarWidget from './InfobarWidget'
+
 import Placeholder from './widgets/Placeholder.tsx'
+
 import {infobarWidgetShouldRender} from './predicates.ts'
+
 import css from './InfobarWidgets.less'
+
 import {InfobarTabs} from './InfobarTabs.tsx'
 
-import * as integrationsSelectors from 'state/integrations/selectors.ts'
-import {getSourcePathFromContext} from 'state/widgets/utils.ts'
+import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper.tsx'
 import {compare} from 'utils.ts'
+import {canDisplayWidget} from 'pages/common/components/infobar/utils'
+import {getSourcePathFromContext} from 'state/widgets/utils'
+import * as integrationsSelectors from 'state/integrations/selectors.ts'
+
+import {
+    CUSTOM_WIDGET_TYPE,
+    CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+} from 'state/widgets/constants'
+import {getWidgetName} from 'state/widgets/predicates'
 
 class InfobarWidgets extends React.Component {
     shouldComponentUpdate(nextProps) {
@@ -40,17 +48,38 @@ class InfobarWidgets extends React.Component {
 
         // Create a list `prepareDisplayList` of item containing enough data to generate widget components.
         // For each widget OR customerIntegrationData found in displayList, prepare the widget OR retrieve the
-        // associated widget, set it's template `path`, `templatePath` when needed
+        // associated widget, set its template `path`, `templatePath` when needed
         displayList.forEach((item, idx) => {
             let widget = null
+            let integration = null
             let sourcePath = genericSourcePath.slice()
 
             if (item.get('type') === 'widget') {
                 widget = item.get('widget', fromJS({}))
 
-                if (widget.get('type') !== 'custom') {
-                    let selectedIntegrations = null
-                    let integration = null
+                if (widget.get('type') === CUSTOM_WIDGET_TYPE) {
+                    sourcePath = getSourcePathFromContext(
+                        widget.get('context'),
+                        widget.get('type')
+                    )
+                } else if (
+                    widget.get('type') === CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE
+                ) {
+                    sourcePath = getSourcePathFromContext(
+                        widget.get('context'),
+                        widget.get('type')
+                    )
+
+                    let appId = widget.get('app_id')
+                    if (!appId) {
+                        return
+                    }
+
+                    if (source.getIn([...sourcePath, appId])) {
+                        sourcePath.push(appId)
+                    }
+                } else {
+                    let selectedIntegrations
 
                     if (widget.get('type') !== 'http') {
                         selectedIntegrations = integrations.filter(
@@ -90,16 +119,11 @@ class InfobarWidgets extends React.Component {
                     }
 
                     sourcePath.push(integration.get('id').toString())
-                } else {
-                    sourcePath = getSourcePathFromContext(
-                        widget.get('context'),
-                        widget.get('type')
-                    )
                 }
             } else if (item.get('type') === 'data') {
                 const integrationId = item.get('integrationId')
 
-                const integration = integrations.find(
+                integration = integrations.find(
                     (i) => i.get('id').toString() === integrationId
                 )
 
@@ -138,6 +162,7 @@ class InfobarWidgets extends React.Component {
 
             preparedDisplayList = preparedDisplayList.push(
                 fromJS({
+                    integration,
                     widget,
                     template,
                     open: idx === 0,
@@ -246,8 +271,10 @@ class InfobarWidgets extends React.Component {
         )
         const integrationDatas = source.getIn(genericSourcePath, fromJS({}))
 
-        const customerWidgets = widgets.filter(
-            (widget) => widget.get('type') === 'custom'
+        const customerWidgets = widgets.filter((widget) =>
+            [CUSTOM_WIDGET_TYPE, CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE].includes(
+                widget.get('type')
+            )
         )
 
         // We build a single list of all elements we want to display
@@ -279,10 +306,27 @@ class InfobarWidgets extends React.Component {
             genericSourcePath
         )
 
+        const widgetNames = preparedDisplayList.map((item) => {
+            const widget = item.get('widget')
+            const integration = item.get('integration')
+            const templatePath = item.getIn(['template', 'path'])
+
+            const widgetTitle = item.getIn(['template', 'widgets', 0, 'title'])
+
+            return getWidgetName({
+                source,
+                widgetTitle,
+                widgetType: widget.get('type'),
+                widgetAppId: widget.get('app_id'),
+                templatePath,
+                integration: integration?.toJS(),
+            })
+        })
+
         return (
             <>
                 {displayTabs && !isEditing && (
-                    <InfobarTabs preparedDisplayList={preparedDisplayList} />
+                    <InfobarTabs widgetNames={widgetNames} />
                 )}
                 <DragWrapper
                     sort

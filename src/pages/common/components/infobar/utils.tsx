@@ -3,7 +3,6 @@ import {fromJS, Map, List} from 'immutable'
 import _compact from 'lodash/compact'
 import _concat from 'lodash/concat'
 import _get from 'lodash/get'
-import _includes from 'lodash/includes'
 import _initial from 'lodash/initial'
 import _isArray from 'lodash/isArray'
 import _isBoolean from 'lodash/isBoolean'
@@ -40,7 +39,11 @@ import {
     CardTemplate,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/types'
 import EditableListWidget from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/EditableListWidget'
-import {DatetimeLabel} from '../../utils/labels'
+import {
+    CUSTOM_WIDGET_TYPE,
+    CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+} from 'state/widgets/constants'
+import {DatetimeLabel} from 'pages/common/utils/labels'
 import css from './utils.less'
 import {
     FEDEX_BASE_TRACKING_LINK,
@@ -277,6 +280,7 @@ export function makeWrapper({
     sourcePath,
     widgetType,
     integrationId,
+    appId,
 }: {
     order: number
     context: string
@@ -284,6 +288,7 @@ export function makeWrapper({
     sourcePath: string[] | string
     widgetType: string | null
     integrationId: number | null
+    appId: string | null
 }) {
     let type = getContextFromSourcePath(sourcePath).type
 
@@ -316,6 +321,7 @@ export function makeWrapper({
         template: wrapperWidget,
         sourcePath,
         integration_id: integrationId,
+        app_id: appId,
     }) as Map<any, any>
 }
 
@@ -440,42 +446,61 @@ export function jsonToWidgets(
     const defaultResponse: Map<any, any>[] = []
 
     try {
-        const sourcePaths = getSourcePathFromContext(context) as string[][]
-        const integrationsPath = sourcePaths.find((path) => {
-            return _includes(path, 'integrations')
-        })
+        const dataSourcePaths = [
+            getSourcePathFromContext(context, CUSTOM_WIDGET_TYPE) as string[],
+        ]
 
-        const integrationsData = _get(json, integrationsPath!, {}) as Record<
-            string,
-            unknown
-        >
+        const mutableDataSourcePaths = [
+            getSourcePathFromContext(context, 'integrations') as string[],
+            getSourcePathFromContext(
+                context,
+                CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE
+            ) as string[],
+        ]
 
         let typeByPath = fromJS({}) as Map<any, any>
 
-        // Add all `sourcePaths` matching integrations data
-        // Transform:
-        //  [['customer', 'data'], ['customer', 'integrations']]
-        // To:
-        //  [['customer', 'data'], ['customer', 'integrations', '1'], ['customer', 'integrations', '2']]
-        _forEach(integrationsData, (integrationData, integrationId) => {
-            const newPath = integrationsPath!.slice()
-            newPath.push(integrationId.toString())
-            typeByPath = typeByPath.set(
-                newPath,
-                fromJS({
-                    type: (integrationData as Record<string, unknown>)[
+        mutableDataSourcePaths.forEach((mutableDataSourcePath) => {
+            const data = _get(json, mutableDataSourcePath, {}) as Record<
+                string,
+                unknown
+            >
+            // Transform:
+            //  [['customer', 'data'], ['customer', 'integrations'], ['customer', 'external_data']]
+            // To:
+            //  [['customer', 'data'], ['customer', 'integrations', '1'], ['customer', 'integrations', '2'], ['customer', 'external_data', '1'], ['customer', 'external_data', '2']]
+            _forEach(data, (datum, datumId) => {
+                // datum = integrations or external_data
+                // datumId = integrationId or appId
+
+                const newPath = mutableDataSourcePath.slice()
+                newPath.push(datumId.toString())
+
+                let type = null
+
+                if (mutableDataSourcePath.includes('integrations')) {
+                    type = (datum as Record<string, unknown>)[
                         '__integration_type__'
-                    ],
-                    integrationId,
-                })
-            )
-            sourcePaths.push(newPath)
+                    ]
+                }
+
+                if (mutableDataSourcePath.includes('external_data')) {
+                    type = CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE
+                }
+
+                typeByPath = typeByPath.set(
+                    newPath,
+                    fromJS({
+                        type: type,
+                        datumId,
+                    })
+                )
+
+                dataSourcePaths.push(newPath)
+            })
         })
 
-        const idx = sourcePaths.indexOf(integrationsPath!)
-        sourcePaths.splice(idx, 1)
-
-        const response = sourcePaths.map((sourcePath, i) => {
+        const response = dataSourcePaths.map((sourcePath, i) => {
             let source = _get(json, sourcePath, {}) as Record<string, unknown>
 
             // remove private keys from source before we transform it into a template
@@ -499,6 +524,7 @@ export function jsonToWidgets(
                 widgetType: typeByPath.getIn([sourcePath, 'type']) || null,
                 integrationId:
                     typeByPath.getIn([sourcePath, 'integrationId']) || null,
+                appId: typeByPath.getIn([sourcePath, 'appId']) || null,
             })
         })
 

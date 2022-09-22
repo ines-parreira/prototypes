@@ -8,6 +8,10 @@ import {Provider} from 'react-redux'
 import {EditionContext} from 'providers/infobar/EditionContext'
 import {IntegrationType} from 'models/integration/types'
 import * as actions from 'state/widgets/actions'
+import {
+    CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+    THIRD_PARTY_APP_NAME_KEY,
+} from 'state/widgets/constants'
 import Wrapper from '../Wrapper'
 
 jest.spyOn(actions, 'removeEditedWidget')
@@ -58,6 +62,22 @@ const httpWidget = {
 }
 
 const httpSource = fromJS({bar: 'bar value'})
+
+const customerExternalDataWidget = {
+    id: 6,
+    type: CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+    app_id: '5dfgsadsasad',
+    template: {
+        type: 'wrapper',
+        widgets: [],
+    },
+    order: 3,
+}
+
+const customerExternalDataSource = fromJS({
+    bar: 'bar value',
+    [THIRD_PARTY_APP_NAME_KEY]: 'my-wonderful-app-name',
+})
 
 describe('InfobarWidgets component', () => {
     beforeEach(() => {
@@ -149,6 +169,27 @@ describe('InfobarWidgets component', () => {
                         })}
                         widget={fromJS(httpWidget)}
                         source={shopifySource}
+                        editing={undefined}
+                    />
+                </EditionContext.Provider>
+            </Provider>
+        )
+
+        expect(container).toMatchSnapshot()
+    })
+
+    it('should render customer external data widget with a the proper id', () => {
+        const {container} = render(
+            <Provider store={store}>
+                <EditionContext.Provider value={{isEditing: false}}>
+                    <Wrapper
+                        template={fromJS({
+                            ...customerExternalDataWidget.template,
+                            templatePath: 'templatePath',
+                            absolutePath: ['absolute', 'path'],
+                        })}
+                        widget={fromJS(customerExternalDataWidget)}
+                        source={customerExternalDataSource}
                         editing={undefined}
                     />
                 </EditionContext.Provider>

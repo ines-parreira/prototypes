@@ -17,6 +17,14 @@ import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper.tsx
 import {renderTemplate} from 'pages/common/utils/template.ts'
 import {renderInfobarTemplate} from 'pages/common/utils/infobar.tsx'
 
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import {
+    CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+    HTTP_WIDGET_TYPE,
+} from 'state/widgets/constants'
+import {getWidgetName} from 'state/widgets/predicates'
+import {CardHeaderIcon} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/CardHeaderIcon'
+
 export default class Card extends React.Component {
     static propTypes = {
         AfterTitle: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
@@ -46,6 +54,8 @@ export default class Card extends React.Component {
         isParentList: false,
         open: false,
     }
+
+    static contextType = IntegrationContext
 
     constructor(props) {
         super(props)
@@ -143,6 +153,7 @@ export default class Card extends React.Component {
                 <PopoverBody>
                     <WidgetEdit
                         {...this.props}
+                        widgetType={this.props.widget.get('type')}
                         isRootWidget={isRootWidget(
                             template.get('templatePath')
                         )}
@@ -152,42 +163,89 @@ export default class Card extends React.Component {
         )
     }
 
+    getWidgetTitle() {
+        const {source, widget, template} = this.props
+
+        const widgetType = widget.get('type')
+        const widgetAppId = widget.get('app_id')
+
+        let title = template.get('title', '')
+
+        if (
+            !title &&
+            [CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE, HTTP_WIDGET_TYPE].includes(
+                widgetType
+            )
+        ) {
+            title = getWidgetName({
+                source: fromJS(source),
+                widgetType,
+                widgetAppId,
+                templatePath: template.get('absolutePath'),
+                integration: this.context.integration.toJS(),
+            })
+        }
+
+        return title
+    }
+
     renderTitle = (template, source, isEditing) => {
-        const title = template.get('title', '')
+        const title = this.getWidgetTitle()
         const link = template.getIn(['meta', 'link'])
+        const pictureUrl = template.getIn(['meta', 'pictureUrl'], '')
+        const color = template.getIn(['meta', 'color'], '')
         const {TitleWrapper} = this.props
 
-        let content = null
-
-        if (template.get('title')) {
-            if (link && !TitleWrapper) {
-                content = (
-                    <a
-                        href={renderTemplate(link, source)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        {renderInfobarTemplate(title, source)}
-                    </a>
-                )
-            } else {
-                content = <span>{renderInfobarTemplate(title, source)}</span>
-            }
-        } else if (isEditing) {
-            content = (
+        let content = title && renderInfobarTemplate(title, source)
+        if (isEditing) {
+            content = content || (
                 <span className={css.widgetCardHeaderPlaceholder}>Title</span>
+            )
+        }
+
+        if (link && !TitleWrapper) {
+            content = (
+                <a
+                    href={renderTemplate(link, source)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    {content}
+                </a>
             )
         }
 
         if (TitleWrapper) {
             content = <TitleWrapper {...this.props}>{content}</TitleWrapper>
+        } else {
+            content = (
+                <>
+                    {color && !pictureUrl ? (
+                        <div
+                            className={css.colorTile}
+                            style={{
+                                backgroundColor: color,
+                            }}
+                        />
+                    ) : (
+                        pictureUrl && (
+                            <CardHeaderIcon
+                                src={pictureUrl}
+                                alt={'Widget Icon'}
+                                color={color}
+                            />
+                        )
+                    )}
+                    {content}
+                </>
+            )
         }
 
         return content
     }
 
     shouldDisplayCardWidgetHeader(template, isEditing) {
-        const templateTitle = template.get('title')
+        const templateTitle = this.getWidgetTitle()
         const onlyContent = !template.getIn(['meta', 'displayCard'], true)
         const hasColor = template.getIn(['meta', 'color'], '')
         const hasPicture = template.getIn(['meta', 'pictureUrl'], '')

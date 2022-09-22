@@ -1,0 +1,103 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getSourcePathFromContext() should render defaultSourcePath for ticket context because unknown context type 1`] = `
+Array [
+  "ticket",
+  "customer",
+  "data",
+]
+`;
+
+exports[`getSourcePathFromContext() should render the correct sourcePath: getSourcePathFromContext() should render the correct sourcePath DEFAULT_SOURCE_PATHS[customer][custom] 1`] = `
+Array [
+  "customer",
+  "data",
+]
+`;
+
+exports[`getSourcePathFromContext() should render the correct sourcePath: getSourcePathFromContext() should render the correct sourcePath DEFAULT_SOURCE_PATHS[customer][customer_external_data] 1`] = `
+Array [
+  "customer",
+  "external_data",
+]
+`;
+
+exports[`getSourcePathFromContext() should render the correct sourcePath: getSourcePathFromContext() should render the correct sourcePath DEFAULT_SOURCE_PATHS[customer][integrations] 1`] = `
+Array [
+  "customer",
+  "integrations",
+]
+`;
+
+exports[`getSourcePathFromContext() should render the correct sourcePath: getSourcePathFromContext() should render the correct sourcePath DEFAULT_SOURCE_PATHS[ticket][custom] 1`] = `
+Array [
+  "ticket",
+  "customer",
+  "data",
+]
+`;
+
+exports[`getSourcePathFromContext() should render the correct sourcePath: getSourcePathFromContext() should render the correct sourcePath DEFAULT_SOURCE_PATHS[ticket][customer_external_data] 1`] = `
+Array [
+  "ticket",
+  "customer",
+  "external_data",
+]
+`;
+
+exports[`getSourcePathFromContext() should render the correct sourcePath: getSourcePathFromContext() should render the correct sourcePath DEFAULT_SOURCE_PATHS[ticket][integrations] 1`] = `
+Array [
+  "ticket",
+  "customer",
+  "integrations",
+]
+`;
+
+exports[`getSourcePathFromContext() should render the correct sourcePath: getSourcePathFromContext() should render the correct sourcePath DEFAULT_SOURCE_PATHS[user][custom] 1`] = `
+Array [
+  "customer",
+  "data",
+]
+`;
+
+exports[`getSourcePathFromContext() should render the correct sourcePath: getSourcePathFromContext() should render the correct sourcePath DEFAULT_SOURCE_PATHS[user][customer_external_data] 1`] = `
+Array [
+  "customer",
+  "external_data",
+]
+`;
+
+exports[`getSourcePathFromContext() should render the correct sourcePath: getSourcePathFromContext() should render the correct sourcePath DEFAULT_SOURCE_PATHS[user][integrations] 1`] = `
+Array [
+  "customer",
+  "integrations",
+]
+`;
+
+exports[`getSourcePathFromContext() should render the sourcePath for custom widget because of wrong widget type 1`] = `
+Array [
+  "ticket",
+  "customer",
+  "data",
+]
+`;
+
+exports[`getSourcePathFromContext() should render values of config because unknown widget type 1`] = `
+Array [
+  Array [
+    "ticket",
+    "customer",
+    "data",
+  ],
+  Array [
+    "ticket",
+    "customer",
+    "integrations",
+  ],
+  Array [
+    "ticket",
+    "customer",
+    "external_data",
+  ],
+]
+`;

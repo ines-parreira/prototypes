@@ -8,7 +8,8 @@ import {
     YOTPO_WIDGET_TYPE,
     KLAVIYO_WIDGET_TYPE,
     BIGCOMMERCE_WIDGET_TYPE,
-} from '../../../../../../../state/widgets/constants.ts'
+    CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+} from 'state/widgets/constants'
 
 export const WIDGET_COLOR_SUPPORTED_TYPES = [
     HTTP_WIDGET_TYPE,
@@ -20,4 +21,5 @@ export const WIDGET_COLOR_SUPPORTED_TYPES = [
     YOTPO_WIDGET_TYPE,
     KLAVIYO_WIDGET_TYPE,
     BIGCOMMERCE_WIDGET_TYPE,
+    CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
 ]

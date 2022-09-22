@@ -17,7 +17,7 @@ exports[`<InfobarTabs/> render() should render 1`] = `
     vertical={false}
   >
     <NavItem
-      key="http"
+      key="0"
       tag="li"
     >
       <NavLink
@@ -29,7 +29,7 @@ exports[`<InfobarTabs/> render() should render 1`] = `
       </NavLink>
     </NavItem>
     <NavItem
-      key="shopify"
+      key="1"
       tag="li"
     >
       <NavLink
@@ -41,31 +41,31 @@ exports[`<InfobarTabs/> render() should render 1`] = `
       </NavLink>
     </NavItem>
     <NavItem
-      key="magento2"
+      key="2"
       tag="li"
     >
       <NavLink
         className="tab"
-        href="#magento2"
+        href="#magento"
         tag="a"
       >
         Magento
       </NavLink>
     </NavItem>
     <NavItem
-      key="smooch_inside"
+      key="3"
       tag="li"
     >
       <NavLink
         className="tab"
-        href="#smooch_inside"
+        href="#chat"
         tag="a"
       >
         Chat
       </NavLink>
     </NavItem>
     <NavItem
-      key="custom"
+      key="4"
       tag="li"
     >
       <NavLink
@@ -93,7 +93,7 @@ exports[`<InfobarTabs/> render() should render without duplicates 1`] = `
     vertical={false}
   >
     <NavItem
-      key="http"
+      key="0"
       tag="li"
     >
       <NavLink
@@ -105,7 +105,7 @@ exports[`<InfobarTabs/> render() should render without duplicates 1`] = `
       </NavLink>
     </NavItem>
     <NavItem
-      key="shopify"
+      key="1"
       tag="li"
     >
       <NavLink

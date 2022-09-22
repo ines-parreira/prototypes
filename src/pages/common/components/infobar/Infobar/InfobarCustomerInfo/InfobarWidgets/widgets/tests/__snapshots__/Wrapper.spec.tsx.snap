@@ -15,7 +15,7 @@ Array [
 exports[`InfobarWidgets component should display (without an edit or a remove icon) 1`] = `
 <div>
   <div
-    class="draggable widgetWrapper shopify"
+    class="draggable widgetWrapper shopify adjustedPadding"
   >
     <div
       class="anchor"
@@ -28,7 +28,7 @@ exports[`InfobarWidgets component should display (without an edit or a remove ic
 exports[`InfobarWidgets component should have the proper color set 1`] = `
 <div>
   <div
-    class="draggable widgetWrapper http widgetWrapperEditing"
+    class="draggable widgetWrapper http adjustedPadding widgetWrapperEditing"
     style="box-shadow: inset 3px 0 0 #fff;"
   >
     <div
@@ -67,6 +67,19 @@ exports[`InfobarWidgets component should have the proper color set 1`] = `
       </button>
     </div>
     <div />
+  </div>
+</div>
+`;
+
+exports[`InfobarWidgets component should render customer external data widget with a the proper id 1`] = `
+<div>
+  <div
+    class="draggable widgetWrapper customer_external_data adjustedPadding"
+  >
+    <div
+      class="anchor"
+      id="my_wonderful_app_name"
+    />
   </div>
 </div>
 `;

@@ -105,6 +105,7 @@ export type GorgiasAction = {
     emailDomain?: EmailDomain | Map<any, any>
     response?: Record<string, any>
     integrationId?: number
+    appId?: string
     integrationType?: IntegrationType
     forceOverride?: boolean
     panelName?: string

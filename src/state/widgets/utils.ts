@@ -2,8 +2,9 @@ import {fromJS, List, Map} from 'immutable'
 import _difference from 'lodash/difference'
 import _values from 'lodash/values'
 import _forEach from 'lodash/forEach'
+import _cloneDeep from 'lodash/cloneDeep'
 
-import {DEFAULT_SOURCE_PATHS} from '../../config'
+import {DEFAULT_SOURCE_PATHS} from 'config'
 
 import {WidgetContextType} from './types'
 
@@ -37,25 +38,33 @@ export function itemsWithoutContext(
 }
 
 /**
- * Return source paths for widgets
+ * Return source paths for widgets.
  */
 export function getSourcePathFromContext(
     context: WidgetContextType,
     type = ''
 ) {
-    const config = DEFAULT_SOURCE_PATHS[context]
+    // Using _cloneDeep so that we don't mess with the `DEFAULT_SOURCE_PATHS`
+    // object. We only want that object to act as a CONSTANT and have
+    // a new copy of it each time that we use.
+    const config = _cloneDeep(DEFAULT_SOURCE_PATHS[context])
 
-    const defaultSourcePath = config.custom
-
+    // if we can't find a source for the context type
+    // return the ticket context type
     if (!config) {
-        return defaultSourcePath
+        return _cloneDeep(DEFAULT_SOURCE_PATHS[WidgetContextType.Ticket].custom)
     }
 
     if (!type) {
         return _values(config)
     }
 
-    return config[type as keyof typeof config] || defaultSourcePath
+    let sourcePath = config[type as keyof typeof config]
+    if (!sourcePath) {
+        sourcePath = config.custom
+    }
+
+    return sourcePath
 }
 
 /**

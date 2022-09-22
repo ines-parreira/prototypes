@@ -133,7 +133,7 @@ export const executeAction =
     }: {
         actionName: string
         actionLabel?: string
-        integrationId: string | number
+        integrationId: string | number | null
         customerId?: string
         payload?: utils.ActionDataPayload
         callback?: (response?: AxiosResponse) => void
@@ -147,7 +147,7 @@ export const executeAction =
         const actionId = utils.actionButtonHashForData({
             action_name: actionName,
             user_id: customerId,
-            integration_id: integrationId.toString(),
+            integration_id: integrationId?.toString(),
             payload,
         })
 
@@ -157,7 +157,7 @@ export const executeAction =
             action_id: actionId,
             user_id: customerId,
             ticket_id: ticketId?.toString(),
-            integration_id: integrationId.toString(),
+            integration_id: integrationId?.toString(),
             payload,
         }
 
@@ -185,10 +185,11 @@ export const executeAction =
                     data,
                     error,
                     id: actionId,
-                    reason:
-                        `Failed to execute action ${actionName} on customer #${
-                            customerId || ''
-                        } ` + `for integration ${integrationId}`,
+                    reason: `Failed to execute action ${actionName} on customer #${
+                        customerId || ''
+                    }${
+                        integrationId ? ` for integration ${integrationId}` : ''
+                    }`,
                 })
             })
 

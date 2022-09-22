@@ -1,5 +1,4 @@
 import React, {
-    useContext,
     useCallback,
     useRef,
     useState,
@@ -10,7 +9,6 @@ import React, {
 import {Iterable, List, Map, fromJS} from 'immutable'
 import {Form, FormGroup} from 'reactstrap'
 
-import {IntegrationType} from 'models/integration/constants'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {updateEditedWidget, stopWidgetEdition} from 'state/widgets/actions'
 import Button from 'pages/common/components/button/Button'
@@ -19,8 +17,13 @@ import {isSimpleTemplateWidget} from 'pages/common/components/infobar/utils'
 import CheckBox from 'pages/common/forms/CheckBox'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import FileField, {UploadType} from 'pages/common/forms/FileField'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {PartialTemplate} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/types'
+import {
+    CUSTOM_WIDGET_TYPE,
+    CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+    HTTP_WIDGET_TYPE,
+} from 'state/widgets/constants'
+import {Integration} from 'models/integration/types'
 
 type EditionHiddenField = 'link' | 'displayCard'
 
@@ -30,6 +33,7 @@ type Props = {
     editionHiddenFields: EditionHiddenField[]
     isParentList: boolean
     isRootWidget: boolean
+    widgetType: Integration['type']
 }
 
 type FormState = {
@@ -48,10 +52,10 @@ const WidgetEdit = ({
     editionHiddenFields = [],
     isParentList = false,
     isRootWidget = false,
+    widgetType,
 }: Props) => {
     const dispatch = useAppDispatch()
     const wrapperRef = useRef<HTMLDivElement>(null)
-    const {integration} = useContext(IntegrationContext)
     const [formState, setFormState] = useState<FormState>({
         title: template.get('title', '') as string,
         link: template.getIn(['meta', 'link'], ''),
@@ -149,7 +153,11 @@ const WidgetEdit = ({
                     />
                 )}
                 {isRootWidget &&
-                    integration.get('type') === IntegrationType.Http && (
+                    [
+                        HTTP_WIDGET_TYPE,
+                        CUSTOM_WIDGET_TYPE,
+                        CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+                    ].includes(widgetType) && (
                         <>
                             <FileField
                                 name="card.meta.pictureUrl"

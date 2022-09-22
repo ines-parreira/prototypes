@@ -26,6 +26,7 @@ import {getSources, getSourcesWithCustomer} from 'state/widgets/selectors'
 
 import * as types from './constants'
 import {FetchWidgetsOptions, Widget, WidgetContextType} from './types'
+import {CUSTOM_WIDGET_TYPE} from './constants'
 
 export function fetchWidgets(options: FetchWidgetsOptions = {}) {
     return async (dispatch: StoreDispatch) => {
@@ -147,6 +148,7 @@ export function drop(
         const splitKey = key.split('.')
         let type = null
         let integrationId = null
+        let appId = null
 
         // If there's an integration matching the `sourcePath` of the object we just dropped, then we want to
         // include its id in the call to the reducer; this way we can set the `integration_id` correctly in the new
@@ -165,6 +167,11 @@ export function drop(
                     integrationId = currentIntegrationId
                 }
             }
+        }
+
+        if (splitKey.includes('external_data')) {
+            type = types.CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE
+            appId = _last(splitKey) || ''
         }
 
         let source = getSources(state)
@@ -186,6 +193,7 @@ export function drop(
             source,
             widgetType: type,
             integrationId,
+            appId,
         })
     }
 }
@@ -238,7 +246,7 @@ export function submitWidgets(data: Maybe<Widget[]>) {
             items = [
                 {
                     order: 0,
-                    type: 'custom',
+                    type: CUSTOM_WIDGET_TYPE,
                     context,
                     template: {},
                 },
@@ -256,6 +264,7 @@ export function submitWidgets(data: Maybe<Widget[]>) {
                 'context',
                 'type',
                 'integration_id',
+                'app_id',
             ]) as Widget
         })
 

@@ -8,7 +8,7 @@ import {
     stripLastListsFromPath,
     jsonToWidget,
     makeWrapper,
-} from '../../pages/common/components/infobar/utils'
+} from 'pages/common/components/infobar/utils'
 import {GorgiasAction} from '../types'
 
 import {
@@ -141,6 +141,7 @@ export default function reducer(
                 source,
                 widgetType,
                 integrationId,
+                appId,
             } = action
 
             const currentGroup: string =
@@ -215,6 +216,10 @@ export default function reducer(
                 if (integrationId) {
                     widget = widget.set('integration_id', integrationId)
                 }
+
+                if (appId) {
+                    widget = widget.set('app_id', appId)
+                }
             }
 
             // get first child widget, may be useful later
@@ -242,15 +247,25 @@ export default function reducer(
                         const type = element.get('type')
                         const integrationId = element.get('integration_id')
                         const typeIsAlreadyPresent =
-                            type !== 'http' && widget.get('type') === type
+                            // not includes
+                            ![
+                                types.HTTP_WIDGET_TYPE,
+                                types.CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+                            ].includes(type) && widget.get('type') === type
                         const integrationIdIsAlreadyPresent =
-                            type === 'http' &&
+                            type === types.HTTP_WIDGET_TYPE &&
                             widget.get('type') === type &&
                             widget.get('integration_id') === integrationId
 
+                        const appIdIsAlreadyPresent =
+                            type === types.CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE &&
+                            widget.get('type') === type &&
+                            widget.get('app_id') === appId
+
                         if (
                             typeIsAlreadyPresent ||
-                            integrationIdIsAlreadyPresent
+                            integrationIdIsAlreadyPresent ||
+                            appIdIsAlreadyPresent
                         ) {
                             shouldAddWidget = false
                         }

@@ -10,6 +10,11 @@ const mockStore = configureMockStore(middlewares)
 
 import InfobarWidgets from '../InfobarWidgets'
 
+import {
+    CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+    THIRD_PARTY_APP_NAME_KEY,
+} from 'state/widgets/constants'
+
 describe('InfobarWidgets component', () => {
     let store
     let container
@@ -18,6 +23,7 @@ describe('InfobarWidgets component', () => {
     const shopifyIntegrationId = 2
     const rechargeIntegrationId = 3
     const bigcommerceIntegrationId = 4
+    const appId = '5dfgsadsasad'
 
     const baseEditing = {
         actions: {
@@ -45,6 +51,13 @@ describe('InfobarWidgets component', () => {
     baseSource = baseSource.setIn(
         ['ticket', 'customer', 'integrations', shopifyIntegrationId.toString()],
         fromJS({bar: shopifyIntegrationId.toString()})
+    )
+    baseSource = baseSource.setIn(
+        ['ticket', 'customer', 'external_data', appId],
+        fromJS({
+            bar: appId,
+            [THIRD_PARTY_APP_NAME_KEY]: 'My 3rd party awesome app',
+        })
     )
 
     const baseWidgets = fromJS([
@@ -141,6 +154,30 @@ describe('InfobarWidgets component', () => {
             },
             order: 4,
         },
+        {
+            id: 8,
+            type: CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+            app_id: appId,
+            template: {
+                type: 'wrapper',
+                widgets: [
+                    {
+                        path: '',
+                        type: 'card',
+                        title: 'Foo container',
+                        widgets: [
+                            {
+                                path: 'foo',
+                                type: 'text',
+                                title: 'Foo',
+                                order: 1,
+                            },
+                        ],
+                    },
+                ],
+            },
+            order: 5,
+        },
     ])
 
     beforeEach(() => {
@@ -208,7 +245,7 @@ describe('InfobarWidgets component', () => {
         expect(component).toMatchSnapshot()
     })
 
-    it('should display http and shopify data, recharge, bigcommerce placeholder, in editing mode', () => {
+    it('should display widgets in editing mode', () => {
         const editing = Object.assign({}, baseEditing, {isEditing: true})
         const component = mount(
             <Provider store={store}>

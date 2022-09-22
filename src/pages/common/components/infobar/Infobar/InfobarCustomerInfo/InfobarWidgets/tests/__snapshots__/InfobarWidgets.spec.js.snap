@@ -40,6 +40,12 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                 "bar": "2",
               },
             },
+            "external_data": Immutable.Map {
+              "5dfgsadsasad": Immutable.Map {
+                "bar": "5dfgsadsasad",
+                "__app_name__": "My 3rd party awesome app",
+              },
+            },
           },
         },
       }
@@ -139,6 +145,30 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
           },
           "order": 4,
         },
+        Immutable.Map {
+          "id": 8,
+          "type": "customer_external_data",
+          "app_id": "5dfgsadsasad",
+          "template": Immutable.Map {
+            "type": "wrapper",
+            "widgets": Immutable.List [
+              Immutable.Map {
+                "path": "",
+                "type": "card",
+                "title": "Foo container",
+                "widgets": Immutable.List [
+                  Immutable.Map {
+                    "path": "foo",
+                    "type": "text",
+                    "title": "Foo",
+                    "order": 1,
+                  },
+                ],
+              },
+            ],
+          },
+          "order": 5,
+        },
       ]
     }
   >
@@ -192,6 +222,12 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                 },
                 "2": Immutable.Map {
                   "bar": "2",
+                },
+              },
+              "external_data": Immutable.Map {
+                "5dfgsadsasad": Immutable.Map {
+                  "bar": "5dfgsadsasad",
+                  "__app_name__": "My 3rd party awesome app",
                 },
               },
             },
@@ -293,115 +329,38 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
             },
             "order": 4,
           },
+          Immutable.Map {
+            "id": 8,
+            "type": "customer_external_data",
+            "app_id": "5dfgsadsasad",
+            "template": Immutable.Map {
+              "type": "wrapper",
+              "widgets": Immutable.List [
+                Immutable.Map {
+                  "path": "",
+                  "type": "card",
+                  "title": "Foo container",
+                  "widgets": Immutable.List [
+                    Immutable.Map {
+                      "path": "foo",
+                      "type": "text",
+                      "title": "Foo",
+                      "order": 1,
+                    },
+                  ],
+                },
+              ],
+            },
+            "order": 5,
+          },
         ]
       }
     >
       <InfobarTabs
-        preparedDisplayList={
+        widgetNames={
           Immutable.List [
-            Immutable.Map {
-              "widget": Immutable.Map {
-                "id": 4,
-                "type": "http",
-                "integration_id": 1,
-                "template": Immutable.Map {
-                  "type": "wrapper",
-                  "widgets": Immutable.List [
-                    Immutable.Map {
-                      "path": "",
-                      "type": "card",
-                      "title": "Foo container",
-                      "widgets": Immutable.List [
-                        Immutable.Map {
-                          "path": "foo",
-                          "type": "text",
-                          "title": "Foo",
-                          "order": 1,
-                        },
-                      ],
-                    },
-                  ],
-                },
-                "order": 1,
-              },
-              "template": Immutable.Map {
-                "type": "wrapper",
-                "widgets": Immutable.List [
-                  Immutable.Map {
-                    "path": "",
-                    "type": "card",
-                    "title": "Foo container",
-                    "widgets": Immutable.List [
-                      Immutable.Map {
-                        "path": "foo",
-                        "type": "text",
-                        "title": "Foo",
-                        "order": 1,
-                      },
-                    ],
-                  },
-                ],
-                "path": Array [
-                  "ticket",
-                  "customer",
-                  "integrations",
-                  "1",
-                ],
-                "templatePath": "1.template",
-              },
-              "open": true,
-            },
-            Immutable.Map {
-              "widget": Immutable.Map {
-                "id": 5,
-                "type": "shopify",
-                "template": Immutable.Map {
-                  "type": "wrapper",
-                  "widgets": Immutable.List [
-                    Immutable.Map {
-                      "path": "",
-                      "type": "card",
-                      "title": "Bar container",
-                      "widgets": Immutable.List [
-                        Immutable.Map {
-                          "path": "bar",
-                          "type": "text",
-                          "title": "Bar",
-                          "order": 1,
-                        },
-                      ],
-                    },
-                  ],
-                },
-                "order": 2,
-              },
-              "template": Immutable.Map {
-                "type": "wrapper",
-                "widgets": Immutable.List [
-                  Immutable.Map {
-                    "path": "",
-                    "type": "card",
-                    "title": "Bar container",
-                    "widgets": Immutable.List [
-                      Immutable.Map {
-                        "path": "bar",
-                        "type": "text",
-                        "title": "Bar",
-                        "order": 1,
-                      },
-                    ],
-                  },
-                ],
-                "path": Array [
-                  "ticket",
-                  "customer",
-                  "integrations",
-                  "2",
-                ],
-                "templatePath": "2.template",
-              },
-              "open": false,
-            },
+            "Foo container",
+            "Shopify",
           ]
         }
       >
@@ -423,7 +382,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                 className="nav nav-pills"
               >
                 <NavItem
-                  key="http"
+                  key="0"
                   tag="li"
                 >
                   <li
@@ -431,21 +390,21 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                   >
                     <NavLink
                       className="tab"
-                      href="#http"
+                      href="#foo_container"
                       tag="a"
                     >
                       <a
                         className="tab nav-link"
-                        href="#http"
+                        href="#foo_container"
                         onClick={[Function]}
                       >
-                        HTTP
+                        Foo container
                       </a>
                     </NavLink>
                   </li>
                 </NavItem>
                 <NavItem
-                  key="shopify"
+                  key="1"
                   tag="li"
                 >
                   <li
@@ -513,6 +472,12 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                       },
                       "2": Immutable.Map {
                         "bar": "2",
+                      },
+                    },
+                    "external_data": Immutable.Map {
+                      "5dfgsadsasad": Immutable.Map {
+                        "bar": "5dfgsadsasad",
+                        "__app_name__": "My 3rd party awesome app",
                       },
                     },
                   },
@@ -653,11 +618,11 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
               }
             >
               <div
-                className="draggable widgetWrapper http"
+                className="draggable widgetWrapper http adjustedPadding"
               >
                 <div
                   className="anchor"
-                  id="http"
+                  id="foo_container"
                 />
                 <DragWrapper
                   group={
@@ -1026,9 +991,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                       }
                                     />
                                   </CardHeaderIcon>
-                                  <span>
-                                    Foo container
-                                  </span>
+                                  Foo container
                                 </span>
                               </CardHeaderTitle>
                             </TitleWrapper>
@@ -1097,9 +1060,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                         class="container"
                                         src="test-file-stub"
                                       />
-                                      <span>
-                                        Foo container
-                                      </span>
+                                      Foo container
                                     </span>
                                   </div>
                                 }
@@ -1452,6 +1413,12 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                         "bar": "2",
                       },
                     },
+                    "external_data": Immutable.Map {
+                      "5dfgsadsasad": Immutable.Map {
+                        "bar": "5dfgsadsasad",
+                        "__app_name__": "My 3rd party awesome app",
+                      },
+                    },
                   },
                 },
               }
@@ -1588,7 +1555,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
               }
             >
               <div
-                className="draggable widgetWrapper shopify"
+                className="draggable widgetWrapper shopify adjustedPadding"
               >
                 <div
                   className="anchor"
@@ -1831,9 +1798,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                 expand_less
                               </i>
                             </span>
-                            <span>
-                              Bar container
-                            </span>
+                            Bar container
                           </div>
                           <Popover
                             isOpen={false}
@@ -1891,9 +1856,8 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                         expand_less
                                       </i>
                                     </span>
-                                    <span>
-                                      Bar container
-                                    </span>
+                                    
+                                    Bar container
                                   </div>
                                 }
                                 transition={
@@ -2222,7 +2186,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
 </Provider>
 `;
 
-exports[`InfobarWidgets component should display http and shopify data, recharge, bigcommerce placeholder, in editing mode 1`] = `
+exports[`InfobarWidgets component should display widgets in editing mode 1`] = `
 <Provider
   store={
     Object {
@@ -2259,6 +2223,12 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
               },
               "2": Immutable.Map {
                 "bar": "2",
+              },
+            },
+            "external_data": Immutable.Map {
+              "5dfgsadsasad": Immutable.Map {
+                "bar": "5dfgsadsasad",
+                "__app_name__": "My 3rd party awesome app",
               },
             },
           },
@@ -2360,6 +2330,30 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
           },
           "order": 4,
         },
+        Immutable.Map {
+          "id": 8,
+          "type": "customer_external_data",
+          "app_id": "5dfgsadsasad",
+          "template": Immutable.Map {
+            "type": "wrapper",
+            "widgets": Immutable.List [
+              Immutable.Map {
+                "path": "",
+                "type": "card",
+                "title": "Foo container",
+                "widgets": Immutable.List [
+                  Immutable.Map {
+                    "path": "foo",
+                    "type": "text",
+                    "title": "Foo",
+                    "order": 1,
+                  },
+                ],
+              },
+            ],
+          },
+          "order": 5,
+        },
       ]
     }
   >
@@ -2412,6 +2406,12 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
                 },
                 "2": Immutable.Map {
                   "bar": "2",
+                },
+              },
+              "external_data": Immutable.Map {
+                "5dfgsadsasad": Immutable.Map {
+                  "bar": "5dfgsadsasad",
+                  "__app_name__": "My 3rd party awesome app",
                 },
               },
             },
@@ -2513,6 +2513,30 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
             },
             "order": 4,
           },
+          Immutable.Map {
+            "id": 8,
+            "type": "customer_external_data",
+            "app_id": "5dfgsadsasad",
+            "template": Immutable.Map {
+              "type": "wrapper",
+              "widgets": Immutable.List [
+                Immutable.Map {
+                  "path": "",
+                  "type": "card",
+                  "title": "Foo container",
+                  "widgets": Immutable.List [
+                    Immutable.Map {
+                      "path": "foo",
+                      "type": "text",
+                      "title": "Foo",
+                      "order": 1,
+                    },
+                  ],
+                },
+              ],
+            },
+            "order": 5,
+          },
         ]
       }
     >
@@ -2582,6 +2606,12 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
                         },
                         "2": Immutable.Map {
                           "bar": "2",
+                        },
+                      },
+                      "external_data": Immutable.Map {
+                        "5dfgsadsasad": Immutable.Map {
+                          "bar": "5dfgsadsasad",
+                          "__app_name__": "My 3rd party awesome app",
                         },
                       },
                     },
@@ -2722,11 +2752,11 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
                 }
               >
                 <div
-                  className="draggable widgetWrapper http"
+                  className="draggable widgetWrapper http adjustedPadding"
                 >
                   <div
                     className="anchor"
-                    id="http"
+                    id="foo_container"
                   />
                   <DragWrapper
                     group={
@@ -3095,9 +3125,7 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
                                         }
                                       />
                                     </CardHeaderIcon>
-                                    <span>
-                                      Foo container
-                                    </span>
+                                    Foo container
                                   </span>
                                 </CardHeaderTitle>
                               </TitleWrapper>
@@ -3166,9 +3194,7 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
                                           class="container"
                                           src="test-file-stub"
                                         />
-                                        <span>
-                                          Foo container
-                                        </span>
+                                        Foo container
                                       </span>
                                     </div>
                                   }
@@ -3521,6 +3547,12 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
                           "bar": "2",
                         },
                       },
+                      "external_data": Immutable.Map {
+                        "5dfgsadsasad": Immutable.Map {
+                          "bar": "5dfgsadsasad",
+                          "__app_name__": "My 3rd party awesome app",
+                        },
+                      },
                     },
                   },
                 }
@@ -3657,7 +3689,7 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
                 }
               >
                 <div
-                  className="draggable widgetWrapper shopify"
+                  className="draggable widgetWrapper shopify adjustedPadding"
                 >
                   <div
                     className="anchor"
@@ -3900,9 +3932,7 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
                                   expand_less
                                 </i>
                               </span>
-                              <span>
-                                Bar container
-                              </span>
+                              Bar container
                             </div>
                             <Popover
                               isOpen={false}
@@ -3960,9 +3990,8 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
                                           expand_less
                                         </i>
                                       </span>
-                                      <span>
-                                        Bar container
-                                      </span>
+                                      
+                                      Bar container
                                     </div>
                                   }
                                   transition={
@@ -4312,6 +4341,12 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
                           "bar": "2",
                         },
                       },
+                      "external_data": Immutable.Map {
+                        "5dfgsadsasad": Immutable.Map {
+                          "bar": "5dfgsadsasad",
+                          "__app_name__": "My 3rd party awesome app",
+                        },
+                      },
                     },
                   },
                 }
@@ -4397,6 +4432,12 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
                             "bar": "2",
                           },
                         },
+                        "external_data": Immutable.Map {
+                          "5dfgsadsasad": Immutable.Map {
+                            "bar": "5dfgsadsasad",
+                            "__app_name__": "My 3rd party awesome app",
+                          },
+                        },
                       },
                     },
                   }
@@ -4462,7 +4503,7 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
                     <h5
                       className="title"
                     >
-                      Widget for recharge data
+                      Widget for Recharge data
                     </h5>
                     <i
                       className="delete material-icons text-danger"
@@ -4500,6 +4541,12 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
                         },
                         "2": Immutable.Map {
                           "bar": "2",
+                        },
+                      },
+                      "external_data": Immutable.Map {
+                        "5dfgsadsasad": Immutable.Map {
+                          "bar": "5dfgsadsasad",
+                          "__app_name__": "My 3rd party awesome app",
                         },
                       },
                     },
@@ -4587,6 +4634,12 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
                             "bar": "2",
                           },
                         },
+                        "external_data": Immutable.Map {
+                          "5dfgsadsasad": Immutable.Map {
+                            "bar": "5dfgsadsasad",
+                            "__app_name__": "My 3rd party awesome app",
+                          },
+                        },
                       },
                     },
                   }
@@ -4652,7 +4705,7 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
                     <h5
                       className="title"
                     >
-                      Widget for bigcommerce data
+                      Widget for Bigcommerce data
                     </h5>
                     <i
                       className="delete material-icons text-danger"
@@ -4664,6 +4717,285 @@ exports[`InfobarWidgets component should display http and shopify data, recharge
                 </div>
               </Placeholder>
             </Connect(Placeholder)>
+            <InfobarWidget
+              editing={
+                Object {
+                  "actions": Object {
+                    "foo": [Function],
+                    "removeEditedWidget": [Function],
+                  },
+                  "canDrop": [Function],
+                  "isDragging": false,
+                  "isEditing": true,
+                  "state": Immutable.Map {},
+                }
+              }
+              isEditing={true}
+              key="ticket,customer,data-4"
+              open={false}
+              source={
+                Immutable.Map {
+                  "ticket": Immutable.Map {
+                    "customer": Immutable.Map {
+                      "integrations": Immutable.Map {
+                        "1": Immutable.Map {
+                          "foo": "1",
+                        },
+                        "2": Immutable.Map {
+                          "bar": "2",
+                        },
+                      },
+                      "external_data": Immutable.Map {
+                        "5dfgsadsasad": Immutable.Map {
+                          "bar": "5dfgsadsasad",
+                          "__app_name__": "My 3rd party awesome app",
+                        },
+                      },
+                    },
+                  },
+                }
+              }
+              template={
+                Immutable.Map {
+                  "type": "wrapper",
+                  "widgets": Immutable.List [
+                    Immutable.Map {
+                      "path": "",
+                      "type": "card",
+                      "title": "Foo container",
+                      "widgets": Immutable.List [
+                        Immutable.Map {
+                          "path": "foo",
+                          "type": "text",
+                          "title": "Foo",
+                          "order": 1,
+                        },
+                      ],
+                    },
+                  ],
+                  "path": Array [
+                    "ticket",
+                    "customer",
+                    "data",
+                  ],
+                  "templatePath": "5.template",
+                }
+              }
+              widget={
+                Immutable.Map {
+                  "id": 8,
+                  "type": "customer_external_data",
+                  "app_id": "5dfgsadsasad",
+                  "template": Immutable.Map {
+                    "type": "wrapper",
+                    "widgets": Immutable.List [
+                      Immutable.Map {
+                        "path": "",
+                        "type": "card",
+                        "title": "Foo container",
+                        "widgets": Immutable.List [
+                          Immutable.Map {
+                            "path": "foo",
+                            "type": "text",
+                            "title": "Foo",
+                            "order": 1,
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  "order": 5,
+                }
+              }
+            >
+              <Wrapper
+                editing={
+                  Object {
+                    "actions": Object {
+                      "foo": [Function],
+                      "removeEditedWidget": [Function],
+                    },
+                    "canDrop": [Function],
+                    "isDragging": false,
+                    "isEditing": true,
+                    "state": Immutable.Map {},
+                  }
+                }
+                isEditing={true}
+                source={Immutable.Map {}}
+                template={
+                  Immutable.Map {
+                    "type": "wrapper",
+                    "widgets": Immutable.List [
+                      Immutable.Map {
+                        "path": "",
+                        "type": "card",
+                        "title": "Foo container",
+                        "widgets": Immutable.List [
+                          Immutable.Map {
+                            "path": "foo",
+                            "type": "text",
+                            "title": "Foo",
+                            "order": 1,
+                          },
+                        ],
+                      },
+                    ],
+                    "path": Array [
+                      "ticket",
+                      "customer",
+                      "data",
+                    ],
+                    "templatePath": "5.template",
+                    "absolutePath": Array [
+                      "ticket",
+                      "customer",
+                      "data",
+                    ],
+                  }
+                }
+                widget={
+                  Immutable.Map {
+                    "id": 8,
+                    "type": "customer_external_data",
+                    "app_id": "5dfgsadsasad",
+                    "template": Immutable.Map {
+                      "type": "wrapper",
+                      "widgets": Immutable.List [
+                        Immutable.Map {
+                          "path": "",
+                          "type": "card",
+                          "title": "Foo container",
+                          "widgets": Immutable.List [
+                            Immutable.Map {
+                              "path": "foo",
+                              "type": "text",
+                              "title": "Foo",
+                              "order": 1,
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    "order": 5,
+                  }
+                }
+              >
+                <div
+                  className="draggable widgetWrapper customer_external_data adjustedPadding"
+                >
+                  <div
+                    className="anchor"
+                    id="foo_container"
+                  />
+                  <DragWrapper
+                    group={
+                      Object {
+                        "name": "ticket.customer.data",
+                        "pull": false,
+                        "put": true,
+                      }
+                    }
+                    isEditing={false}
+                    sort={true}
+                    templatePath="5.template"
+                    watchDrop={true}
+                  >
+                    <InfobarWidget
+                      editing={
+                        Object {
+                          "actions": Object {
+                            "foo": [Function],
+                            "removeEditedWidget": [Function],
+                          },
+                          "canDrop": [Function],
+                          "isDragging": false,
+                          "isEditing": true,
+                          "state": Immutable.Map {},
+                        }
+                      }
+                      isEditing={false}
+                      key="-0"
+                      open={false}
+                      parent={
+                        Immutable.Map {
+                          "type": "wrapper",
+                          "widgets": Immutable.List [
+                            Immutable.Map {
+                              "path": "",
+                              "type": "card",
+                              "title": "Foo container",
+                              "widgets": Immutable.List [
+                                Immutable.Map {
+                                  "path": "foo",
+                                  "type": "text",
+                                  "title": "Foo",
+                                  "order": 1,
+                                },
+                              ],
+                            },
+                          ],
+                          "path": Array [
+                            "ticket",
+                            "customer",
+                            "data",
+                          ],
+                          "templatePath": "5.template",
+                          "absolutePath": Array [
+                            "ticket",
+                            "customer",
+                            "data",
+                          ],
+                        }
+                      }
+                      source={Immutable.Map {}}
+                      template={
+                        Immutable.Map {
+                          "path": "",
+                          "type": "card",
+                          "title": "Foo container",
+                          "widgets": Immutable.List [
+                            Immutable.Map {
+                              "path": "foo",
+                              "type": "text",
+                              "title": "Foo",
+                              "order": 1,
+                            },
+                          ],
+                          "templatePath": "5.template.widgets.0",
+                        }
+                      }
+                      widget={
+                        Immutable.Map {
+                          "id": 8,
+                          "type": "customer_external_data",
+                          "app_id": "5dfgsadsasad",
+                          "template": Immutable.Map {
+                            "type": "wrapper",
+                            "widgets": Immutable.List [
+                              Immutable.Map {
+                                "path": "",
+                                "type": "card",
+                                "title": "Foo container",
+                                "widgets": Immutable.List [
+                                  Immutable.Map {
+                                    "path": "foo",
+                                    "type": "text",
+                                    "title": "Foo",
+                                    "order": 1,
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                          "order": 5,
+                        }
+                      }
+                    />
+                  </DragWrapper>
+                </div>
+              </Wrapper>
+            </InfobarWidget>
           </div>
         </ReactSortable>
       </DragWrapper>
@@ -4697,6 +5029,12 @@ exports[`InfobarWidgets component should not display anything if there's no widg
             },
             "2": Immutable.Map {
               "bar": "2",
+            },
+          },
+          "external_data": Immutable.Map {
+            "5dfgsadsasad": Immutable.Map {
+              "bar": "5dfgsadsasad",
+              "__app_name__": "My 3rd party awesome app",
             },
           },
         },
@@ -4764,6 +5102,12 @@ exports[`InfobarWidgets component should not display anything if there's no widg
               },
               "2": Immutable.Map {
                 "bar": "2",
+              },
+            },
+            "external_data": Immutable.Map {
+              "5dfgsadsasad": Immutable.Map {
+                "bar": "5dfgsadsasad",
+                "__app_name__": "My 3rd party awesome app",
               },
             },
           },
