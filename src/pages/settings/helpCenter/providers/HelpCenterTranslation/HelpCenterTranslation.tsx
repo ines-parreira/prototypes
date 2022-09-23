@@ -65,6 +65,7 @@ const defaultTranslation: HelpCenterTranslationState = {
 const defaultEmailIntegration: UpdateContactForm = {
     helpdesk_integration_email: null,
     helpdesk_integration_id: null,
+    card_enabled: true,
 }
 
 const TranslationContext = createContext<HelpCenterTranslationContext | null>(
@@ -106,12 +107,7 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
             await client.updateHelpCenter(
                 {help_center_id: helpCenter.id},
                 {
-                    contact_form: {
-                        helpdesk_integration_email:
-                            contactForm.helpdesk_integration_email,
-                        helpdesk_integration_id:
-                            contactForm.helpdesk_integration_id,
-                    },
+                    contact_form: contactForm,
                 }
             )
 
@@ -208,6 +204,9 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
             draftSettings.helpdesk_integration_id = helpCenter.contact_form
                 ? helpCenter.contact_form.helpdesk_integration_id
                 : null
+
+            draftSettings.card_enabled =
+                helpCenter.contact_form?.card_enabled !== false
         }
 
         updateTranslation(produce(translation, updateFn))

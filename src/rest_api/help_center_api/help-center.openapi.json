@@ -3185,11 +3185,7 @@
             "UpdateContactFormDto": {
                 "type": "object",
                 "properties": {
-                    "card_deactivated_datetime": {
-                        "format": "date-time",
-                        "type": "string",
-                        "nullable": true
-                    },
+                    "card_enabled": {"type": "boolean"},
                     "helpdesk_integration_email": {
                         "type": "string",
                         "nullable": true
@@ -3285,11 +3281,7 @@
             "ContactFormDto": {
                 "type": "object",
                 "properties": {
-                    "card_deactivated_datetime": {
-                        "format": "date-time",
-                        "type": "string",
-                        "nullable": true
-                    },
+                    "card_enabled": {"type": "boolean"},
                     "helpdesk_integration_email": {
                         "type": "string",
                         "nullable": true
@@ -3300,7 +3292,7 @@
                     }
                 },
                 "required": [
-                    "card_deactivated_datetime",
+                    "card_enabled",
                     "helpdesk_integration_email",
                     "helpdesk_integration_id"
                 ]

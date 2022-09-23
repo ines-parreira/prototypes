@@ -104,17 +104,41 @@ exports[`<ContactFormInfoSection /> should render the component 1`] = `
         </div>
       </div>
     </div>
+    <div
+      class="contactCardToggle"
+    >
+      <label
+        aria-checked="true"
+        class="label isDisabled label disabledLabel"
+        for="toggle-button-1"
+        role="switch"
+      >
+        <input
+          checked=""
+          class="input"
+          disabled=""
+          id="toggle-button-1"
+          name="toggle-button-1"
+          type="checkbox"
+        />
+        <div
+          class="slider"
+        />
+        Contact form card
+      </label>
+    </div>
     <div>
       <label
-        class="label label"
-        for="textarea-1"
+        class="label isDisabled label"
+        for="textarea-2"
       >
         Card description
       </label>
       <textarea
         class="textarea"
-        id="textarea-1"
-        name="textarea-1"
+        disabled=""
+        id="textarea-2"
+        name="textarea-2"
         rows="1"
       />
     </div>
@@ -123,10 +147,10 @@ exports[`<ContactFormInfoSection /> should render the component 1`] = `
     class="container card"
   >
     <div
-      class="card"
+      class="card disabled"
     >
       <div
-        class="header clickable"
+        class="header"
       >
         <i
           class="material-icons icon"

@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useCallback, useState} from 'react'
 import {useLocalStorage} from 'react-use'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
@@ -21,6 +21,7 @@ import ContactCard from '../ContactCard'
 import helpCenterContactViewCss from '../../HelpCenterContactView.less'
 
 import {MAX_DESCRIPTION_LENGTH} from '../../constants'
+import ToggleInput from '../../../../../../common/forms/ToggleInput'
 import css from './ContactFormInfoSection.less'
 
 const ContactFormInfoSection: React.FC = () => {
@@ -66,6 +67,31 @@ const ContactFormInfoSection: React.FC = () => {
         !!contactForm.helpdesk_integration_email?.endsWith(
             window.EMAIL_FORWARDING_DOMAIN
         )
+
+    const onChangeContactFormIntegration = useCallback(
+        (integrationId: number | string) => {
+            const selectedIntegration = emailIntegrations.find(
+                (integration) => integration.id === integrationId
+            )
+
+            if (selectedIntegration) {
+                updateContactForm({
+                    ...contactForm,
+                    helpdesk_integration_email:
+                        selectedIntegration.meta.address,
+                    helpdesk_integration_id: selectedIntegration.id,
+                })
+
+                setIsAlertAcknowledged(false)
+            }
+        },
+        [
+            emailIntegrations,
+            updateContactForm,
+            setIsAlertAcknowledged,
+            contactForm,
+        ]
+    )
 
     const handleInfoClose = () => {
         setIsAlertAcknowledged(true)
@@ -116,27 +142,34 @@ const ContactFormInfoSection: React.FC = () => {
                         value: integration.id,
                     }))}
                     fullWidth
-                    onChange={(integrationId) => {
-                        const selectedIntegration = emailIntegrations.find(
-                            (integration) => integration.id === integrationId
-                        )
-
-                        if (selectedIntegration) {
-                            updateContactForm({
-                                helpdesk_integration_email:
-                                    selectedIntegration.meta.address,
-                                helpdesk_integration_id: selectedIntegration.id,
-                            })
-
-                            setIsAlertAcknowledged(false)
-                        }
-                    }}
+                    onChange={onChangeContactFormIntegration}
                     className={css.selectEmailIntegration}
                     icon="email"
                 />
+
+                <ToggleInput
+                    isToggled={!!contactForm.card_enabled}
+                    onClick={(value) => {
+                        updateContactForm({
+                            ...contactForm,
+                            card_enabled: value,
+                        })
+                    }}
+                    isDisabled={!contactForm.helpdesk_integration_email}
+                    className={css.contactCardToggle}
+                >
+                    Contact form card
+                </ToggleInput>
+
                 <TextArea
                     label="Card description"
                     value={description}
+                    isDisabled={
+                        !(
+                            contactForm.card_enabled &&
+                            contactForm.helpdesk_integration_email
+                        )
+                    }
                     onChange={(value: string) => {
                         if (value.length > MAX_DESCRIPTION_LENGTH) {
                             setIsDescriptionTooLong(true)
@@ -154,6 +187,7 @@ const ContactFormInfoSection: React.FC = () => {
                             : undefined
                     }
                 />
+
                 {isEmbeddedContactFormAvailable && (
                     <div className={css.embedWrapper}>
                         <h4>Embed contact form</h4>
@@ -169,6 +203,12 @@ const ContactFormInfoSection: React.FC = () => {
                 title="Contact us"
                 helpText="Contact us card preview"
                 className={css.card}
+                disabled={
+                    !(
+                        contactForm.card_enabled &&
+                        contactForm.helpdesk_integration_email
+                    )
+                }
             >
                 <div>{description}</div>
             </ContactCard>

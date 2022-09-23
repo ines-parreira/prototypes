@@ -27,6 +27,7 @@ export type HelpCenter = Components.Schemas.HelpCenterDto & {
     translations?: HelpCenterTranslation[]
 }
 
+export type ContactForm = Components.Schemas.ContactFormDto
 export type UpdateContactForm = Components.Schemas.UpdateContactFormDto
 
 // CONTACT INFO
