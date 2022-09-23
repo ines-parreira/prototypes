@@ -11,6 +11,7 @@ import {
     PhoneIntegrationPreferences,
     PhoneRingingBehaviour,
     isPhoneIntegration,
+    IntegrationType,
 } from 'models/integration/types'
 import {getPhoneNumber} from 'state/entities/phoneNumbers/selectors'
 import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
@@ -99,7 +100,10 @@ export default function VoiceAppPreferences({integration}: Props): JSX.Element {
         <div className="full-width">
             <PageHeader
                 title={
-                    <PhoneIntegrationBreadcrumbs integration={integration} />
+                    <PhoneIntegrationBreadcrumbs
+                        type={IntegrationType.Phone}
+                        integration={integration}
+                    />
                 }
             />
 

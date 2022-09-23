@@ -60,7 +60,7 @@ describe('<SmsIntegrationCreate/>', () => {
                 target: {value: 'My SMS integration'},
             })
 
-            fireEvent.click(getByText('Add SMS'))
+            fireEvent.click(getByText('Add SMS integration'))
 
             expect(updateOrCreateIntegration).toHaveBeenCalledWith(payload)
             expect(store.dispatch).toHaveBeenCalledTimes(1)
@@ -83,7 +83,7 @@ describe('<SmsIntegrationCreate/>', () => {
                 },
             })
 
-            fireEvent.click(getByText('Add SMS'))
+            fireEvent.click(getByText('Add SMS integration'))
 
             expect(updateOrCreateIntegration).toHaveBeenCalledWith(payload)
             expect(store.dispatch).toHaveBeenCalledTimes(1)

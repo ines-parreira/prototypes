@@ -1,23 +1,12 @@
 import React, {useEffect, useCallback, useState} from 'react'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    Col,
-    Container,
-    Form,
-    FormGroup,
-    Label,
-    Row,
-} from 'reactstrap'
-import {Link} from 'react-router-dom'
+import {Col, Container, Form, FormGroup, Label, Row} from 'reactstrap'
 import {getPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
 import {IntegrationType} from 'models/integration/types'
 import {updateOrCreateIntegration} from 'state/integrations/actions'
 import {PhoneNumber} from 'models/phoneNumber/types'
 import useAppDispatch from 'hooks/useAppDispatch'
-import PageHeader from 'pages/common/components/PageHeader'
 import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
 import Button from 'pages/common/components/button/Button'
 import PhoneNumberSelectField from 'pages/phoneNumbers/PhoneNumberSelectField'
@@ -77,76 +66,49 @@ function SmsIntegrationCreate({selectedPhoneNumberId}: Props): JSX.Element {
     )
 
     return (
-        <div className="full-width">
-            <PageHeader
-                title={
-                    <Breadcrumb>
-                        <BreadcrumbItem>
-                            <Link to="/app/settings/integrations">
-                                Integrations
-                            </Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
-                            <Link
-                                to={`/app/settings/integrations/${IntegrationType.Sms}`}
+        <Container fluid className={css.pageContainer}>
+            <Row>
+                <Col lg={6}>
+                    <Form onSubmit={onSubmit}>
+                        <FormGroup>
+                            <Label htmlFor="title" className="control-label">
+                                Integration title
+                            </Label>
+                            <EmojiTextInput
+                                id="title"
+                                value={title}
+                                emoji={emoji}
+                                placeholder="Ex: Company Support Line"
+                                required
+                                onChange={setTitle}
+                                onEmojiChange={setEmoji}
+                            />
+                        </FormGroup>
+                        <FormGroup>
+                            <Label
+                                htmlFor="phoneNumber"
+                                className="control-label"
                             >
-                                SMS
-                            </Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem active>
-                            Add SMS Integration
-                        </BreadcrumbItem>
-                    </Breadcrumb>
-                }
-            />
-
-            <Container fluid className={css.pageContainer}>
-                <Row>
-                    <Col lg={6}>
-                        <Form onSubmit={onSubmit}>
-                            <FormGroup>
-                                <Label
-                                    htmlFor="title"
-                                    className="control-label"
-                                >
-                                    Integration title
-                                </Label>
-                                <EmojiTextInput
-                                    id="title"
-                                    value={title}
-                                    emoji={emoji}
-                                    placeholder="Ex: Company Support Line"
-                                    required
-                                    onChange={setTitle}
-                                    onEmojiChange={setEmoji}
-                                />
-                            </FormGroup>
-                            <FormGroup>
-                                <Label
-                                    htmlFor="phoneNumber"
-                                    className="control-label"
-                                >
-                                    Phone Number
-                                </Label>
-                                <PhoneNumberSelectField
-                                    value={phoneNumber}
-                                    onChange={setPhoneNumber}
-                                    onCreate={setPhoneNumber}
-                                    integrationType={IntegrationType.Sms}
-                                />
-                            </FormGroup>
-                            <Button
-                                type="submit"
-                                isLoading={isLoading}
-                                className={classnames('mt-4', 'mb-4')}
-                            >
-                                Add SMS integration
-                            </Button>
-                        </Form>
-                    </Col>
-                </Row>
-            </Container>
-        </div>
+                                Phone Number
+                            </Label>
+                            <PhoneNumberSelectField
+                                value={phoneNumber}
+                                onChange={setPhoneNumber}
+                                onCreate={setPhoneNumber}
+                                integrationType={IntegrationType.Sms}
+                            />
+                        </FormGroup>
+                        <Button
+                            type="submit"
+                            isLoading={isLoading}
+                            className={classnames('mt-4', 'mb-4')}
+                        >
+                            Add SMS
+                        </Button>
+                    </Form>
+                </Col>
+            </Row>
+        </Container>
     )
 }
 

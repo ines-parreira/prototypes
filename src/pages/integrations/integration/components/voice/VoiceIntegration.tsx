@@ -1,12 +1,8 @@
 import React from 'react'
 import {useParams, Switch, Route} from 'react-router-dom'
 
-import {getIntegrationConfig} from 'state/integrations/helpers'
-import {getIntegrationById} from 'state/integrations/selectors'
-
 import PageHeader from 'pages/common/components/PageHeader'
 import AppDetails from 'pages/integrations/components/Detail'
-import VoiceIntegrationBreadcrumbs from 'pages/integrations/integration/components/voice/VoiceIntegrationBreadcrumbs'
 import VoiceIntegrationSecondaryNavigation from 'pages/integrations/integration/components/voice/VoiceIntegrationSecondaryNavigation'
 import VoiceIntegrationPreferences from 'pages/integrations/integration/components/voice/VoiceIntegrationPreferences'
 import VoiceIntegrationVoicemail from 'pages/integrations/integration/components/voice/VoiceIntegrationVoicemail'
@@ -14,10 +10,14 @@ import VoiceIntegrationGreetingMessage from 'pages/integrations/integration/comp
 import VoiceIntegrationIvr from 'pages/integrations/integration/components/voice/VoiceIntegrationIvr'
 import VoiceIntegrationCreate from 'pages/integrations/integration/components/voice/VoiceIntegrationCreate'
 import PhoneIntegrationsList from 'pages/integrations/integration/components/phone/PhoneIntegrationsList'
+import PhoneIntegrationBreadcrumbs from 'pages/integrations/integration/components/phone/PhoneIntegrationBreadcrumbs'
 
 import {IntegrationType, isPhoneIntegration} from 'models/integration/types'
 import useAppSelector from 'hooks/useAppSelector'
 import useSearch from 'hooks/useSearch'
+
+import {getIntegrationConfig} from 'state/integrations/helpers'
+import {getIntegrationById} from 'state/integrations/selectors'
 
 export default function VoiceIntegration() {
     const config = getIntegrationConfig(IntegrationType.Phone)
@@ -43,7 +43,8 @@ export default function VoiceIntegration() {
         <div className="full-width">
             <PageHeader
                 title={
-                    <VoiceIntegrationBreadcrumbs
+                    <PhoneIntegrationBreadcrumbs
+                        type={IntegrationType.Phone}
                         integration={currentIntegration}
                     />
                 }

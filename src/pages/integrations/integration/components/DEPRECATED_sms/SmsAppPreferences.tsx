@@ -13,7 +13,7 @@ import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import PhoneNumberTitle from 'pages/phoneNumbers/PhoneNumberTitle'
-import SmsIntegrationBreadcrumbs from 'pages/integrations/integration/components/sms/SmsIntegrationBreadcrumbs'
+import SmsIntegrationBreadcrumbs from 'pages/integrations/integration/components/DEPRECATED_sms/SmsIntegrationBreadcrumbs'
 import {
     deleteIntegration,
     updateOrCreateIntegration,

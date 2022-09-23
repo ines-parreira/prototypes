@@ -10,7 +10,10 @@ import {
 import useAppDispatch from 'hooks/useAppDispatch'
 import PageHeader from 'pages/common/components/PageHeader'
 import Button from 'pages/common/components/button/Button'
-import {DEFAULT_VOICE_MESSAGE} from 'models/integration/constants'
+import {
+    DEFAULT_VOICE_MESSAGE,
+    IntegrationType,
+} from 'models/integration/constants'
 import {updatePhoneIvrConfiguration} from 'pages/integrations/integration/components/phone/actions'
 import PhoneIntegrationNavigation from 'pages/integrations/integration/components/phone/PhoneIntegrationNavigation'
 import PhoneIntegrationBreadcrumbs from 'pages/integrations/integration/components/phone/PhoneIntegrationBreadcrumbs'
@@ -64,7 +67,10 @@ const PhoneIntegrationIvr = (props: Props): JSX.Element | null => {
         <div className="full-width">
             <PageHeader
                 title={
-                    <PhoneIntegrationBreadcrumbs integration={integration} />
+                    <PhoneIntegrationBreadcrumbs
+                        type={IntegrationType.Phone}
+                        integration={integration}
+                    />
                 }
             />
 

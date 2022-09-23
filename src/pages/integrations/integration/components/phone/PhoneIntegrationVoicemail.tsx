@@ -7,7 +7,10 @@ import {
     PhoneIntegrationVoicemailSettings,
     isPhoneIntegration,
 } from 'models/integration/types'
-import {DEFAULT_VOICE_MESSAGE} from 'models/integration/constants'
+import {
+    DEFAULT_VOICE_MESSAGE,
+    IntegrationType,
+} from 'models/integration/constants'
 import useAppDispatch from 'hooks/useAppDispatch'
 import PageHeader from 'pages/common/components/PageHeader'
 import Button from 'pages/common/components/button/Button'
@@ -61,7 +64,10 @@ export function PhoneIntegrationVoicemail({
         <div className="full-width">
             <PageHeader
                 title={
-                    <PhoneIntegrationBreadcrumbs integration={integration} />
+                    <PhoneIntegrationBreadcrumbs
+                        type={IntegrationType.Phone}
+                        integration={integration}
+                    />
                 }
             />
 

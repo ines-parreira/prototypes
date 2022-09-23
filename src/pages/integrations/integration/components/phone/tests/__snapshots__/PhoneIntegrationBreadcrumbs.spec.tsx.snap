@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<PhoneIntegrationBreadcrumbs/> render() should render 1`] = `
+exports[`<PhoneIntegrationBreadcrumbs/> render() should render for SMS integrations 1`] = `
 <nav
   aria-label="breadcrumb"
   class=""
@@ -21,7 +21,49 @@ exports[`<PhoneIntegrationBreadcrumbs/> render() should render 1`] = `
       class="breadcrumb-item"
     >
       <a
-        to="/app/settings/integrations/phone"
+        to="/app/settings/integrations/sms/integrations"
+      >
+        SMS
+      </a>
+    </li>
+    <li
+      class="breadcrumb-item"
+    >
+      ☎️
+       
+      My Phone Integration
+      <small
+        class="text-muted ml-2"
+      >
+        +1 415 111 2222
+      </small>
+    </li>
+  </ol>
+</nav>
+`;
+
+exports[`<PhoneIntegrationBreadcrumbs/> render() should render for voice integrations 1`] = `
+<nav
+  aria-label="breadcrumb"
+  class=""
+>
+  <ol
+    class="breadcrumb"
+  >
+    <li
+      class="breadcrumb-item"
+    >
+      <a
+        to="/app/settings/integrations"
+      >
+        Integrations
+      </a>
+    </li>
+    <li
+      class="breadcrumb-item"
+    >
+      <a
+        to="/app/settings/integrations/phone/integrations"
       >
         Voice
       </a>

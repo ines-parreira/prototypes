@@ -99,6 +99,7 @@ import HTTPIntegrationEvent from './components/http/HTTPIntegrationEvent/HTTPInt
 import HTTPIntegrationLayout from './components/http/HTTPIntegrationLayout/HTTPIntegrationLayout'
 
 import VoiceIntegration from './components/voice/VoiceIntegration'
+import SmsIntegration from './components/sms/SmsIntegration'
 import PhoneIntegrationsListContainer from './components/phone/PhoneIntegrationsListContainer'
 import PhoneIntegrationCreate from './components/phone/PhoneIntegrationCreate'
 import VoiceAppPreferences from './components/phone/VoiceAppPreferences'
@@ -106,9 +107,9 @@ import PhoneIntegrationVoicemail from './components/phone/PhoneIntegrationVoicem
 import PhoneIntegrationGreetingMessage from './components/phone/PhoneIntegrationGreetingMessage'
 import PhoneIntegrationIvr from './components/phone/PhoneIntegrationIvr'
 
-import SmsIntegrationsListContainer from './components/sms/SmsIntegrationsListContainer'
-import SmsIntegrationCreate from './components/sms/SmsIntegrationCreate'
-import SmsAppPreferences from './components/sms/SmsAppPreferences'
+import SmsIntegrationsListContainer from './components/DEPRECATED_sms/SmsIntegrationsListContainer'
+import SmsIntegrationCreate from './components/DEPRECATED_sms/SmsIntegrationCreate'
+import SmsAppPreferences from './components/DEPRECATED_sms/SmsAppPreferences'
 
 import TwitterIntegrationDetail from './components/twitter/TwitterIntegrationDetail'
 import TwitterIntegrationList from './components/twitter/TwitterIntegrationList'
@@ -545,6 +546,10 @@ export const IntegrationDetail = ({
             return <PhoneIntegrationsListContainer />
 
         case IntegrationType.Sms: {
+            if (showNewVoiceSmsLayout) {
+                return <SmsIntegration />
+            }
+
             if (!!integrationId) {
                 if (extra === Tab.Preferences) {
                     return (

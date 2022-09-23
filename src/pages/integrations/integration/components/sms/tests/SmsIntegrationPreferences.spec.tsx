@@ -6,9 +6,10 @@ import configureMockStore from 'redux-mock-store'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {updateOrCreateIntegration} from 'state/integrations/actions'
+import {SmsIntegration, IntegrationType} from 'models/integration/types'
 import {phoneNumbers} from 'fixtures/phoneNumber'
 
-import SmsIntegrationCreate from '../SmsIntegrationCreate'
+import SmsIntegrationPreferences from '../SmsIntegrationPreferences'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({
@@ -20,20 +21,27 @@ const store = mockStore({
     },
 } as RootState)
 
+const integration = {
+    id: 1,
+    type: IntegrationType.Sms,
+    name: 'My new SMS Integration',
+    meta: {
+        emoji: '',
+        twilio_phone_number_id: 1,
+    },
+} as SmsIntegration
+
 store.dispatch = jest.fn()
 jest.mock('state/integrations/actions', () => ({
     updateOrCreateIntegration: jest.fn(),
 }))
-afterEach(() => {
-    jest.clearAllMocks()
-})
 
-describe('<SmsIntegrationCreate/>', () => {
+describe('<SmsIntegrationPreferences/>', () => {
     describe('render()', () => {
         it('should render', () => {
             const {container} = render(
                 <Provider store={store}>
-                    <SmsIntegrationCreate selectedPhoneNumberId={1} />
+                    <SmsIntegrationPreferences integration={integration} />
                 </Provider>
             )
 
@@ -43,47 +51,24 @@ describe('<SmsIntegrationCreate/>', () => {
         it('should submit a valid payload with the selected phone_number_id', () => {
             const {container, getByText, getByLabelText} = render(
                 <Provider store={store}>
-                    <SmsIntegrationCreate selectedPhoneNumberId={1} />
+                    <SmsIntegrationPreferences integration={integration} />
                 </Provider>
             )
 
             const payload = fromJS({
-                type: 'sms',
-                name: 'My SMS integration',
+                id: 1,
+                name: 'My updated SMS integration',
                 meta: {
-                    emoji: null,
+                    emoji: '',
                     twilio_phone_number_id: 1,
                 },
             })
 
             fireEvent.change(getByLabelText('Integration title'), {
-                target: {value: 'My SMS integration'},
+                target: {value: 'My updated SMS integration'},
             })
 
-            fireEvent.click(getByText('Add SMS'))
-
-            expect(updateOrCreateIntegration).toHaveBeenCalledWith(payload)
-            expect(store.dispatch).toHaveBeenCalledTimes(1)
-            expect(container.firstChild).toMatchSnapshot()
-        })
-
-        it("should prefill the title field using the phone number's name", () => {
-            const {container, getByText} = render(
-                <Provider store={store}>
-                    <SmsIntegrationCreate selectedPhoneNumberId={1} />
-                </Provider>
-            )
-
-            const payload = fromJS({
-                type: 'sms',
-                name: 'A Phone Number - SMS',
-                meta: {
-                    emoji: null,
-                    twilio_phone_number_id: 1,
-                },
-            })
-
-            fireEvent.click(getByText('Add SMS'))
+            fireEvent.click(getByText('Save changes'))
 
             expect(updateOrCreateIntegration).toHaveBeenCalledWith(payload)
             expect(store.dispatch).toHaveBeenCalledTimes(1)

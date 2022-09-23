@@ -136,13 +136,14 @@ jest.mock('../components/phone/PhoneIntegrationCreate', () => () => (
     <div>PhoneIntegrationCreate</div>
 ))
 
-jest.mock('../components/sms/SmsIntegrationsListContainer', () => () => (
-    <div>SmsIntegrationsList</div>
-))
-jest.mock('../components/sms/SmsIntegrationCreate', () => () => (
+jest.mock(
+    '../components/DEPRECATED_sms/SmsIntegrationsListContainer',
+    () => () => <div>SmsIntegrationsList</div>
+)
+jest.mock('../components/DEPRECATED_sms/SmsIntegrationCreate', () => () => (
     <div>SmsIntegrationCreate</div>
 ))
-jest.mock('../components/sms/SmsAppPreferences', () => () => (
+jest.mock('../components/DEPRECATED_sms/SmsAppPreferences', () => () => (
     <div>SmsAppPreferences</div>
 ))
 

@@ -1,5 +1,4 @@
 import React from 'react'
-import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
@@ -12,6 +11,7 @@ import {
     PhoneRingingBehaviour,
 } from 'models/integration/types'
 import {phoneNumbers} from 'fixtures/phoneNumber'
+import {renderWithRouter} from 'utils/testing'
 
 import PhoneIntegrationBreadcrumbs from '../PhoneIntegrationBreadcrumbs'
 
@@ -67,10 +67,26 @@ describe('<PhoneIntegrationBreadcrumbs/>', () => {
     }
 
     describe('render()', () => {
-        it('should render', () => {
-            const {container} = render(
+        it('should render for voice integrations', () => {
+            const {container} = renderWithRouter(
                 <Provider store={store}>
-                    <PhoneIntegrationBreadcrumbs integration={integration} />
+                    <PhoneIntegrationBreadcrumbs
+                        type={IntegrationType.Phone}
+                        integration={integration}
+                    />
+                </Provider>
+            )
+
+            expect(container.firstChild).toMatchSnapshot()
+        })
+
+        it('should render for SMS integrations', () => {
+            const {container} = renderWithRouter(
+                <Provider store={store}>
+                    <PhoneIntegrationBreadcrumbs
+                        type={IntegrationType.Sms}
+                        integration={integration}
+                    />
                 </Provider>
             )
 

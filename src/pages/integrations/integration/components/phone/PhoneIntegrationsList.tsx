@@ -14,6 +14,7 @@ import {
     SmsIntegration,
 } from 'models/integration/types'
 import {PhoneNumber} from 'models/phoneNumber/types'
+import {getIntegrationConfig} from 'state/integrations/helpers'
 import {getIntegrationsByTypes} from 'state/integrations/selectors'
 import {getPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
@@ -42,6 +43,7 @@ type Props = {
 }
 
 export function PhoneIntegrationsList({type}: Props): JSX.Element | null {
+    const config = getIntegrationConfig(type)
     const integrations = useAppSelector(getIntegrationsByTypes([type]))
     const phoneIntegrations: Array<PhoneIntegration | SmsIntegration> =
         type === IntegrationType.Phone
@@ -187,18 +189,55 @@ export function PhoneIntegrationsList({type}: Props): JSX.Element | null {
             </TableWrapper>
             {showNewVoiceSmsLayout && (
                 <Container fluid className={css.footer}>
-                    <p>
-                        Send and receive text messages in Gorgias for seamless
-                        conversations with customers on the go.{' '}
-                        <a href="#">Additional charges apply.</a>
-                    </p>
-                    <Button
-                        onClick={() =>
-                            history.push('/app/settings/integrations/phone/new')
-                        }
-                    >
-                        Add {type === IntegrationType.Phone ? 'Voice' : 'SMS'}
-                    </Button>
+                    {type === IntegrationType.Phone && (
+                        <>
+                            <p>
+                                Make and receive phone calls from Gorgias with
+                                easy access to customer data and conversation
+                                history.{' '}
+                                <a
+                                    href={config?.pricingLink}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    Additional charges apply.
+                                </a>
+                            </p>
+                            <Button
+                                onClick={() =>
+                                    history.push(
+                                        `/app/settings/integrations/phone/new`
+                                    )
+                                }
+                            >
+                                Add Voice
+                            </Button>
+                        </>
+                    )}
+                    {type === IntegrationType.Sms && (
+                        <>
+                            <p>
+                                Send and receive text messages in Gorgias for
+                                seamless conversations with customers on the go.{' '}
+                                <a
+                                    href={config?.pricingLink}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    Additional charges apply.
+                                </a>
+                            </p>
+                            <Button
+                                onClick={() =>
+                                    history.push(
+                                        `/app/settings/integrations/sms/new`
+                                    )
+                                }
+                            >
+                                Add SMS
+                            </Button>
+                        </>
+                    )}
                 </Container>
             )}
         </>

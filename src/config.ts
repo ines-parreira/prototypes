@@ -220,8 +220,8 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
             '<p>Gorgias Voice is our built-in phone support solution that allows agents to manage customer calls directly from the helpdesk.</p><p>Voice is available in the US, Canada, Australia, UK, and France. <a href="https://gorgias.typeform.com/to/vzztySKh" target="_blank" rel="noopener noreferrer">Submit a request</a> for other countries.</p><strong>With voice, you’ll be able to:</strong><ul><li>Customize your greeting, voicemail, and IVR settings</li><li>Forward incoming calls to your mobile device so you can answer customers on the go</li><li>Automatically generate tickets to store details from inbound and outbound calls, including missed calls, voicemails, and call recordings</li></ul>',
         screenshots: ['voice-1.png', 'voice-2.png', 'voice-3.png'],
         pricingPlan: PricingPlan.RECURRING,
-        pricingDetails: 'Try without commitment',
         pricingLink: 'https://www.gorgias.com/pricing',
+        pricingDetails: 'Try without commitment',
         company: 'Gorgias',
         companyUrl: 'https://www.gorgias.com/',
         setupGuide: 'https://docs.gorgias.com/en-US/phone-integration-81798',
@@ -232,10 +232,25 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
     {
         type: IntegrationType.Sms,
         title: 'SMS',
-        description: 'Chat with your customers via SMS from Gorgias.',
+        description:
+            'Send and receive text messages in Gorgias for seamless conversations with customers on the go.',
         requiredFeature: AccountFeature.PhoneNumber,
-        longDescription: '',
-    } as IntegrationConfig,
+        categories: [Category.PHONE],
+        privacyPolicy: 'https://www.gorgias.com/privacy/privacy',
+        longDescription:
+            '<p>Gorgias SMS is the easiest way for customers to communicate with your store on the go and receive fast, conversational support.</p><p></p>SMS and MMS are available for phone numbers in the US and Canada. SMS is available for UK mobile numbers. View the <a href="https://support.twilio.com/hc/en-us/articles/223183068-Twilio-international-phone-number-availability-and-their-capabilities" target="_blank" rel="noopener noreferrer">full list</a> of SMS capabilities.</p><strong>With SMS, you’ll be able to:</strong><ul><li>Add text messaging to your customer support number</li><li>Send photos back and forth with MMS</li><li>Easily switch from SMS to a phone call or email to continue the conversation</li></ul>',
+        screenshots: ['sms-1.png', 'sms-2.png', 'sms-3.png'],
+        pricingPlan: PricingPlan.RECURRING,
+        pricingLink: 'https://www.gorgias.com/pricing',
+        pricingDetails: 'Try without commitment',
+        company: 'Gorgias',
+        companyUrl: 'https://www.gorgias.com/',
+        setupGuide:
+            'https://docs.gorgias.com/en-US/gorgias-sms-integration-81919',
+        supportEmail: 'support@gorgias.com',
+        hasFreeTrial: false,
+        freeTrialPeriod: null,
+    },
     {
         type: IntegrationType.GorgiasChat,
         title: 'Chat',
