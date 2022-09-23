@@ -4,6 +4,13 @@ import {Link} from 'react-router-dom'
 import moment from 'moment'
 import ReactStars from 'react-rating-stars-component'
 
+import {useAsync} from 'react-use'
+import {fetchRule} from 'models/rule/resources'
+import Spinner from 'pages/common/components/Spinner'
+import {ruleFetched} from 'state/entities/rules/actions'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {rulesSelector} from 'state/entities/rules/selectors'
+import useAppSelector from 'hooks/useAppSelector'
 import {TicketVias} from '../../../../../business/ticket'
 import {Meta as MetaType, Source} from '../../../../../models/ticket/types'
 import {TicketMessageSourceType} from '../../../../../business/types/ticket'
@@ -41,6 +48,20 @@ export default function Meta(props: Props) {
         messageCreatedDatetime,
     } = props
     const widgets = []
+
+    const dispatch = useAppDispatch()
+    const rules = useAppSelector(rulesSelector)
+
+    const {loading: isFetchingRule, value: rule} = useAsync(async () => {
+        if (props.via === 'rule' && props.ruleId) {
+            if (rules[props.ruleId]) {
+                return rules[props.ruleId]
+            }
+            const rule = await fetchRule(parseInt(props.ruleId))
+            dispatch(ruleFetched(rule))
+            return rule
+        }
+    })
 
     if (source && source.type === TicketMessageSourceType.ChatContactForm) {
         widgets.push(
@@ -292,29 +313,38 @@ export default function Meta(props: Props) {
         )
     }
 
-    let sentViaLabel
-    let sentViaLink
-
     if (props.via === 'rule' && props.ruleId) {
-        sentViaLabel = 'Rule'
-        sentViaLink = `/app/settings/rules/${props.ruleId}`
+        widgets.push(
+            <From key="via-widget" label="send via:">
+                <b>
+                    {isFetchingRule ? (
+                        <Spinner className={css.spinner} color="dark" />
+                    ) : (
+                        <Link
+                            to={`/app/settings/rules/${props.ruleId}`}
+                            title="Rule"
+                        >
+                            {rule?.name ?? 'Rule'}
+                        </Link>
+                    )}
+                </b>
+            </From>
+        )
     } else if (meta && meta.campaign_id && props.integrationId) {
-        sentViaLabel = 'Campaign'
+        let sentViaLink
 
         if (via === TicketVias.GORGIAS_CHAT) {
             sentViaLink = `/app/settings/integrations/gorgias_chat/${props.integrationId}/campaigns/${meta.campaign_id}`
         } else {
             sentViaLink = `/app/settings/integrations/smooch_inside/${props.integrationId}/campaigns/${meta.campaign_id}`
         }
-    }
 
-    if (sentViaLabel && sentViaLink) {
         widgets.push(
             <From key="via-widget" label="sent via a">
                 <b>
-                    <Link to={sentViaLink} title={sentViaLabel}>
+                    <Link to={sentViaLink} title="Campaign">
                         <i className="material-icons mr-1">settings</i>
-                        {sentViaLabel}
+                        "Campaign"
                     </Link>
                 </b>
             </From>

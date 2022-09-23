@@ -46,7 +46,9 @@ const defaultProps = {
 }
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
-const store = mockStore({})
+const store = mockStore({
+    entities: {rules: {}},
+} as RootState)
 
 describe('<PrivateReplyModal/>', () => {
     describe('render', () => {

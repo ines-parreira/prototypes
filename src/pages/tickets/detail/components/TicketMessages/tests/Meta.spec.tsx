@@ -1,6 +1,11 @@
-import {shallow} from 'enzyme'
 import React from 'react'
 
+import {render, screen} from '@testing-library/react'
+import configureMockStore from 'redux-mock-store'
+import {Provider} from 'react-redux'
+
+import {RootState, StoreDispatch} from 'state/types'
+import {fetchRule} from 'models/rule/resources'
 import {TicketVias} from '../../../../../../business/ticket'
 import {
     TicketChannel,
@@ -8,34 +13,92 @@ import {
 } from '../../../../../../business/types/ticket'
 import Meta from '../Meta'
 
-describe('ticket message meta', () => {
-    it('should add a -sent via rule- label because the message was sent by a rule', () => {
-        const component = shallow(
-            <Meta messageId="some-id" via="rule" ruleId="4" />
-        )
-        const fromVia = component.find('From')
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
-        const html = fromVia.render()
-        html.find('.material-icons').remove()
-        expect(html.text()).toBe('sent via a Rule')
+const store = mockStore({
+    entities: {
+        rules: {4: {id: '4', name: 'rule 4'}} as unknown,
+    },
+} as RootState)
+
+jest.mock('models/rule/resources')
+
+describe('ticket message meta', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
+
+    it('should add a -sent via rule- label because the message was sent by a rule', async () => {
+        render(
+            <Provider store={store}>
+                <Meta messageId="some-id" via="rule" ruleId="4" />
+            </Provider>
+        )
+
+        await screen.findByText('send via:')
+        await screen.findByText('rule 4')
+    })
+
+    it('should fetch rule and display its name', async () => {
+        const mockFetchRule = fetchRule as jest.MockedFunction<typeof fetchRule>
+        const rule = {id: '5', name: 'rule 5'}
+        mockFetchRule.mockImplementation(() => {
+            return Promise.resolve(rule as any)
+        })
+
+        render(
+            <Provider store={store}>
+                <Meta messageId="some-id" via="rule" ruleId={rule.id} />
+            </Provider>
+        )
+
+        expect(mockFetchRule).toHaveBeenCalled()
+
+        await screen.findByText('send via:')
+        await screen.findByText(rule.name)
+    })
+
+    it('should persist fetched rule in redux store', async () => {
+        const mockFetchRule = fetchRule as jest.MockedFunction<typeof fetchRule>
+        const rule = {id: '5', name: 'rule 5'}
+        mockFetchRule.mockImplementation(() => {
+            return Promise.resolve(rule as any)
+        })
+
+        const {rerender} = render(
+            <Provider store={store}>
+                <Meta messageId="some-id" via="rule" ruleId={rule.id} />
+            </Provider>
+        )
+
+        rerender(
+            <Provider store={store}>
+                <Meta messageId="some-id" via="rule" ruleId={rule.id} />
+            </Provider>
+        )
+
+        expect(mockFetchRule).toHaveBeenCalledTimes(1)
+        await screen.findByText('send via:')
+        await screen.findByText(rule.name)
     })
 
     it(
         'should add a -sent via campaign- label because the message was sent by a campaign on a ' +
             'smooch_inside integration',
         () => {
-            const component = shallow(
-                <Meta
-                    messageId="some-id"
-                    via="something"
-                    integrationId={118}
-                    meta={{
-                        campaign_id: '123',
-                    }}
-                />
+            const {container} = render(
+                <Provider store={store}>
+                    <Meta
+                        messageId="some-id"
+                        via="something"
+                        integrationId={118}
+                        meta={{
+                            campaign_id: '123',
+                        }}
+                    />
+                </Provider>
             )
-            const fromVia = component.find('From')
-            expect(fromVia).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         }
     )
 
@@ -43,18 +106,19 @@ describe('ticket message meta', () => {
         'should add a -sent via campaign- label because the message was sent by a campaign on a ' +
             'gorgias-chat integration',
         () => {
-            const component = shallow(
-                <Meta
-                    messageId="some-id"
-                    via={TicketVias.GORGIAS_CHAT}
-                    integrationId={118}
-                    meta={{
-                        campaign_id: '123',
-                    }}
-                />
+            const {container} = render(
+                <Provider store={store}>
+                    <Meta
+                        messageId="some-id"
+                        via={TicketVias.GORGIAS_CHAT}
+                        integrationId={118}
+                        meta={{
+                            campaign_id: '123',
+                        }}
+                    />
+                </Provider>
             )
-            const fromVia = component.find('From')
-            expect(fromVia).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         }
     )
 
@@ -69,13 +133,14 @@ describe('ticket message meta', () => {
                 to: [{address: `${pageId}-${pageId}`, name: 'Nulastin'}],
             }
 
-            const component = shallow(
-                <Meta via="facebook" integrationId={118} source={source} />
+            const {container} = render(
+                <Provider store={store}>
+                    <Meta via="facebook" integrationId={118} source={source} />
+                </Provider>
             )
 
-            const from = component.find('From').dive()
-            expect(from.text()).toBe('go to post')
-            expect(from.find('a').prop('href')).toEqual(
+            expect(container.textContent).toBe('go to post')
+            expect(container.querySelector('a')?.href).toBe(
                 `https://facebook.com/${pageId}/posts/${postId}`
             )
         })
@@ -96,18 +161,19 @@ describe('ticket message meta', () => {
                 to: [{address: `${pageId}-${pageId}`, name: 'Nulastin'}],
             }
 
-            const component = shallow(
-                <Meta
-                    messageId={`${postId}_${commentId}`}
-                    via="facebook"
-                    integrationId={118}
-                    source={source}
-                />
+            const {container} = render(
+                <Provider store={store}>
+                    <Meta
+                        messageId={`${postId}_${commentId}`}
+                        via="facebook"
+                        integrationId={118}
+                        source={source}
+                    />
+                </Provider>
             )
 
-            const from = component.find('From').dive()
-            expect(from.text()).toBe('go to comment')
-            expect(from.find('a').prop('href')).toEqual(
+            expect(container.textContent).toBe('go to comment')
+            expect(container.querySelector('a')?.href).toBe(
                 `https://facebook.com/${pageId}/posts/${postId}?comment_id=${commentId}`
             )
         })
@@ -129,18 +195,19 @@ describe('ticket message meta', () => {
                 to: [{address: `${pageId}-${userId}`, name: 'Foo Bar'}],
             }
 
-            const component = shallow(
-                <Meta
-                    messageId={`${postId}_${replyId}`}
-                    via="facebook"
-                    integrationId={118}
-                    source={source}
-                />
+            const {container} = render(
+                <Provider store={store}>
+                    <Meta
+                        messageId={`${postId}_${replyId}`}
+                        via="facebook"
+                        integrationId={118}
+                        source={source}
+                    />
+                </Provider>
             )
 
-            const from = component.find('From').dive()
-            expect(from.text()).toBe('go to reply')
-            expect(from.find('a').prop('href')).toEqual(
+            expect(container.textContent).toBe('go to reply')
+            expect(container.querySelector('a')?.href).toBe(
                 `https://facebook.com/${pageId}/posts/${postId}?comment_id=${commentId}&reply_comment_id=${replyId}`
             )
         })
@@ -155,11 +222,13 @@ describe('ticket message meta', () => {
                 to: [{address: `${pageId}-${pageId}-${pageId}`, name: 'IQ²'}],
             }
 
-            const component = shallow(
-                <Meta via="facebook" integrationId={118} source={source} />
+            const {container} = render(
+                <Provider store={store}>
+                    <Meta via="facebook" integrationId={118} source={source} />
+                </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should display "go to post" link for mention posts', () => {
@@ -176,13 +245,14 @@ describe('ticket message meta', () => {
                 to: [{address: `${pageId}-${pageId}`, name: 'Nulastin'}],
             }
 
-            const component = shallow(
-                <Meta via="facebook" integrationId={118} source={source} />
+            const {container} = render(
+                <Provider store={store}>
+                    <Meta via="facebook" integrationId={118} source={source} />
+                </Provider>
             )
 
-            const from = component.find('From').dive()
-            expect(from.text()).toBe('go to post')
-            expect(from.find('a').prop('href')).toEqual(
+            expect(container.textContent).toBe('go to post')
+            expect(container.querySelector('a')?.href).toBe(
                 'https://facebook.com/permalink'
             )
         })
@@ -205,18 +275,19 @@ describe('ticket message meta', () => {
                 to: [{address: `${pageId}-${pageId}`, name: 'Nulastin'}],
             }
 
-            const component = shallow(
-                <Meta
-                    via="facebook"
-                    integrationId={118}
-                    source={source}
-                    messageId={`${postId}_${commentId}`}
-                />
+            const {container} = render(
+                <Provider store={store}>
+                    <Meta
+                        via="facebook"
+                        integrationId={118}
+                        source={source}
+                        messageId={`${postId}_${commentId}`}
+                    />
+                </Provider>
             )
 
-            const from = component.find('From').dive()
-            expect(from.text()).toBe('go to comment')
-            expect(from.find('a').prop('href')).toEqual(permalink)
+            expect(container.textContent).toBe('go to comment')
+            expect(container.querySelector('a')?.href).toBe(permalink)
         })
 
         it('should display "go to comment" link for mention comments with no permalink', () => {
@@ -235,18 +306,19 @@ describe('ticket message meta', () => {
                 to: [{address: `${pageId}-${pageId}`, name: 'Nulastin'}],
             }
 
-            const component = shallow(
-                <Meta
-                    via="facebook"
-                    integrationId={118}
-                    source={source}
-                    messageId={`${postId}_${commentId}`}
-                />
+            const {container} = render(
+                <Provider store={store}>
+                    <Meta
+                        via="facebook"
+                        integrationId={118}
+                        source={source}
+                        messageId={`${postId}_${commentId}`}
+                    />
+                </Provider>
             )
 
-            const from = component.find('From').dive()
-            expect(from.text()).toBe('go to comment')
-            expect(from.find('a').prop('href')).toEqual(
+            expect(container.textContent).toBe('go to comment')
+            expect(container.querySelector('a')?.href).toBe(
                 `https://facebook.com/${feedId}/posts/${postId}?comment_id=${commentId}`
             )
         })
@@ -269,18 +341,19 @@ describe('ticket message meta', () => {
                 to: [{address: `${pageId}-${pageId}`, name: 'Nulastin'}],
             }
 
-            const component = shallow(
-                <Meta
-                    via="facebook"
-                    integrationId={118}
-                    source={source}
-                    messageId={`${commentId}_${replyId}`}
-                />
+            const {container} = render(
+                <Provider store={store}>
+                    <Meta
+                        via="facebook"
+                        integrationId={118}
+                        source={source}
+                        messageId={`${commentId}_${replyId}`}
+                    />
+                </Provider>
             )
 
-            const from = component.find('From').dive()
-            expect(from.text()).toBe('go to reply')
-            expect(from.find('a').prop('href')).toEqual(
+            expect(container.textContent).toBe('go to reply')
+            expect(container.querySelector('a')?.href).toBe(
                 `https://facebook.com/${feedId}/posts/${postId}?comment_id=${commentId}&reply_comment_id=${replyId}`
             )
         })
@@ -296,13 +369,14 @@ describe('ticket message meta', () => {
                 type: TicketMessageSourceType.InstagramMedia,
             }
 
-            const component = shallow(
-                <Meta via="instagram" integrationId={118} source={source} />
+            const {container} = render(
+                <Provider store={store}>
+                    <Meta via="instagram" integrationId={118} source={source} />
+                </Provider>
             )
 
-            const from = component.find('From').dive()
-            expect(from.text()).toBe('go to media')
-            expect(from.find('a').prop('href')).toEqual(permalink)
+            expect(container.textContent).toBe('go to media')
+            expect(container.querySelector('a')?.href).toBe(permalink)
         })
     })
 
@@ -325,17 +399,18 @@ describe('ticket message meta', () => {
                     type: type,
                 }
 
-                const component = shallow(
-                    <Meta
-                        via={TicketChannel.Twitter}
-                        integrationId={118}
-                        source={source}
-                    />
+                const {container} = render(
+                    <Provider store={store}>
+                        <Meta
+                            via={TicketChannel.Twitter}
+                            integrationId={118}
+                            source={source}
+                        />
+                    </Provider>
                 )
 
-                const from = component.find('From').dive()
-                expect(from.text()).toBe('go to tweet')
-                expect(from.find('a').prop('href')).toEqual(tweetPermalink)
+                expect(container.textContent).toBe('go to tweet')
+                expect(container.querySelector('a')?.href).toBe(tweetPermalink)
             }
         )
 
@@ -355,20 +430,25 @@ describe('ticket message meta', () => {
                 type: TicketMessageSourceType.TwitterTweet,
             }
 
-            const component = shallow(
-                <Meta
-                    externalId={tweetId}
-                    via={TicketChannel.Twitter}
-                    integrationId={118}
-                    source={source}
-                />
+            const {container} = render(
+                <Provider store={store}>
+                    <Meta
+                        externalId={tweetId}
+                        via={TicketChannel.Twitter}
+                        integrationId={118}
+                        source={source}
+                    />
+                </Provider>
             )
 
-            const from = component.find('From').dive()
+            expect(container.textContent).toBe(
+                `replying to @${toUsername} - go to tweet`
+            )
 
-            expect(from.text()).toBe(`replying to @${toUsername} - go to tweet`)
-            expect(from.find('a').at(0).prop('href')).toEqual(toProfileLink)
-            expect(from.find('a').at(1).prop('href')).toEqual(tweetPermalink)
+            const links = Array.from(container.querySelectorAll('a'))
+
+            expect(links[0].href).toEqual(toProfileLink)
+            expect(links[1].href).toEqual(tweetPermalink)
         })
 
         it('should display "retweeting @twitter_handle - go to tweet" link', () => {
@@ -399,78 +479,88 @@ describe('ticket message meta', () => {
                 },
             }
 
-            const component = shallow(
-                <Meta
-                    externalId={tweetId}
-                    via={TicketChannel.Twitter}
-                    integrationId={118}
-                    source={source}
-                    meta={meta}
-                />
+            const {container} = render(
+                <Provider store={store}>
+                    <Meta
+                        externalId={tweetId}
+                        via={TicketChannel.Twitter}
+                        integrationId={118}
+                        source={source}
+                        meta={meta}
+                    />
+                </Provider>
             )
 
-            const from = component.find('From').dive()
+            expect(container.textContent).toBe(
+                `retweeting @${toUsername} - go to tweet`
+            )
 
-            expect(from.text()).toBe(`retweeting @${toUsername} - go to tweet`)
-            expect(from.find('a').at(0).prop('href')).toEqual(toProfileLink)
-            expect(from.find('a').at(1).prop('href')).toEqual(tweetPermalink)
+            const links = Array.from(container.querySelectorAll('a'))
+
+            expect(links[0].href).toEqual(toProfileLink)
+            expect(links[1].href).toEqual(tweetPermalink)
         })
     })
 
     describe('live-chat-message', () => {
         it('should add a `from https://...` with because the message was sent via live chat', () => {
-            const component = shallow(
-                <Meta
-                    messageId="some-id"
-                    via="something"
-                    integrationId={118}
-                    meta={{
-                        current_page: 'https://gorgias.com/best-helpdesk-ever/',
-                    }}
-                />
+            const {container} = render(
+                <Provider store={store}>
+                    <Meta
+                        messageId="some-id"
+                        via="something"
+                        integrationId={118}
+                        meta={{
+                            current_page:
+                                'https://gorgias.com/best-helpdesk-ever/',
+                        }}
+                    />
+                </Provider>
             )
-            const fromVia = component.find('From')
-            expect(fromVia).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 
     describe('chat-contact-form', () => {
         it('should add a `via contact form from https://...` because the message was sent via chat contact form', () => {
-            const component = shallow(
-                <Meta
-                    messageId="some-id"
-                    via="something"
-                    integrationId={118}
-                    source={{
-                        type: TicketMessageSourceType.ChatContactForm,
-                        to: [{address: 'someAddress', name: 'someName'}],
-                    }}
-                    meta={{
-                        current_page: 'https://gorgias.com/best-helpdesk-ever/',
-                    }}
-                />
+            const {container} = render(
+                <Provider store={store}>
+                    <Meta
+                        messageId="some-id"
+                        via="something"
+                        integrationId={118}
+                        source={{
+                            type: TicketMessageSourceType.ChatContactForm,
+                            to: [{address: 'someAddress', name: 'someName'}],
+                        }}
+                        meta={{
+                            current_page:
+                                'https://gorgias.com/best-helpdesk-ever/',
+                        }}
+                    />
+                </Provider>
             )
-            const fromVia = component.find('From')
-            expect(fromVia).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should add a `via contact form` because the message was sent via chat contact form (but no current_url metadata)', () => {
-            const component = shallow(
-                <Meta
-                    messageId="some-id"
-                    via="something"
-                    integrationId={118}
-                    source={{
-                        type: TicketMessageSourceType.ChatContactForm,
-                        to: [{address: 'someAddress', name: 'someName'}],
-                    }}
-                    meta={{
-                        current_page: undefined,
-                    }}
-                />
+            const {container} = render(
+                <Provider store={store}>
+                    <Meta
+                        messageId="some-id"
+                        via="something"
+                        integrationId={118}
+                        source={{
+                            type: TicketMessageSourceType.ChatContactForm,
+                            to: [{address: 'someAddress', name: 'someName'}],
+                        }}
+                        meta={{
+                            current_page: undefined,
+                        }}
+                    />
+                </Provider>
             )
-            const fromVia = component.find('From')
-            expect(fromVia).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 })

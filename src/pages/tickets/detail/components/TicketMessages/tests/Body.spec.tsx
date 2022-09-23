@@ -1,6 +1,7 @@
 import React from 'react'
-import {mount, shallow} from 'enzyme'
-
+import {render} from '@testing-library/react'
+import configureMockStore from 'redux-mock-store'
+import {Provider} from 'react-redux'
 import {message as defaultMessage} from 'models/ticket/tests/mocks'
 import {TicketMessage} from 'models/ticket/types'
 import {
@@ -8,8 +9,16 @@ import {
     TicketMessageSourceType,
     TicketVia,
 } from 'business/types/ticket'
-
+import {RootState, StoreDispatch} from 'state/types'
 import Body from '../Body'
+
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
+
+const store = mockStore({
+    entities: {
+        rules: {},
+    },
+} as RootState)
 
 describe('Body', () => {
     it("should display the Facebook carousel if there's matching metadata", () => {
@@ -56,8 +65,12 @@ describe('Body', () => {
                 ],
             },
         }
-        const component = mount(<Body message={facebookCarouselMessage} />)
-        expect(component).toMatchSnapshot()
+        const {container} = render(
+            <Provider store={store}>
+                <Body message={facebookCarouselMessage} />
+            </Provider>
+        )
+        expect(container.firstChild).toMatchSnapshot()
     })
     it("should display the Twitter quoted tweet card if there's matching metadata", () => {
         window.IMAGE_PROXY_URL = 'http://proxy-url/'
@@ -178,11 +191,17 @@ describe('Body', () => {
             isMessage: true,
             rule_id: null,
         }
-        const component = mount(<Body message={quotedTweetTicketMessage} />)
-        expect(component).toMatchSnapshot()
+        const {container} = render(
+            <Provider store={store}>
+                <Body message={quotedTweetTicketMessage} />
+            </Provider>
+        )
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it("should display the Yotpo product card if there's matching metadata", () => {
+        jest.spyOn(global.Math, 'random').mockReturnValue(0.123456789)
+
         const productCardTicketMessage = {
             ...defaultMessage,
             sent_datetime: '2021-09-07T01:51:41+00:00',
@@ -280,7 +299,11 @@ describe('Body', () => {
             isMessage: true,
             rule_id: null,
         }
-        const component = shallow(<Body message={productCardTicketMessage} />)
-        expect(component).toMatchSnapshot()
+        const {container} = render(
+            <Provider store={store}>
+                <Body message={productCardTicketMessage} />
+            </Provider>
+        )
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

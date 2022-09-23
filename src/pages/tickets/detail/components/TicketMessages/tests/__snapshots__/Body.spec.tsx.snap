@@ -1,1161 +1,564 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Body should display the Facebook carousel if there's matching metadata 1`] = `
-<Body
-  message={
-    Object {
-      "actions": null,
-      "attachments": Array [],
-      "body_html": "",
-      "body_text": "text http://gorgias.io/",
-      "channel": "email",
-      "created_datetime": "",
-      "external_id": null,
-      "failed_datetime": null,
-      "from_agent": false,
-      "id": 1,
-      "integration_id": null,
-      "isMessage": true,
-      "is_retriable": false,
-      "meta": Object {
-        "facebook_carousel": Array [
-          Object {
-            "payload": Object {
-              "elements": Array [
-                Object {
-                  "buttons": Array [
-                    Object {
-                      "title": "View details",
-                      "type": "web_url",
-                      "url": "https://sfbicycles.myshopify.com/products/fixie-bike",
-                      "webview_height_ratio": "tall",
-                    },
-                    Object {
-                      "title": "Share",
-                      "type": "element_share",
-                      "url": "https://sfbicycles.myshopify.com/products/fixie-bike/share",
-                    },
-                    Object {
-                      "title": "Buy now",
-                      "type": "web_url",
-                      "url": "https://messenger-commerce.shopifyapps.com/redirect_to_cart",
-                      "webview_height_ratio": "tall",
-                    },
-                  ],
-                  "image_url": "https://cdn.shopify.com/s/files/1/1632/0429/products",
-                  "subtitle": "$200.00",
-                  "title": "Fixie bike",
-                },
-              ],
-              "sharable": true,
-              "template_type": "generic",
-            },
-            "type": "template",
-          },
-        ],
-      },
-      "opened_datetime": null,
-      "public": true,
-      "receiver": Object {
-        "email": "mary.poppins@example.com",
-        "firstname": "Mary",
-        "id": 2,
-        "lastname": "Poppins",
-        "name": "Mary Poppins",
-      },
-      "rule_id": null,
-      "sender": Object {
-        "email": "john.doe@example.com",
-        "firstname": "John",
-        "id": 1,
-        "lastname": "Doe",
-        "name": "John Doe",
-      },
-      "stripped_html": null,
-      "stripped_signature": null,
-      "stripped_text": null,
-      "subject": "Some subject",
-      "uri": "http://example.com/messages/1",
-      "via": "email",
-    }
-  }
+<div
+  class="component"
 >
-  <div
-    className="component"
-  >
-    <Content
-      html=""
-      strippedHtml={null}
-      strippedText={null}
-      text="text http://gorgias.io/"
+  <div>
+    <div
+      class="content white-space"
     >
-      <div>
-        <div
-          className="content white-space"
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "text <a href=\\"http://gorgias.io/\\" class=\\"linkified\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">http://gorgias.io/</a>",
-            }
-          }
-        />
-      </div>
-    </Content>
-    <FacebookCarousel
-      data={
-        Array [
-          Object {
-            "payload": Object {
-              "elements": Array [
-                Object {
-                  "buttons": Array [
-                    Object {
-                      "title": "View details",
-                      "type": "web_url",
-                      "url": "https://sfbicycles.myshopify.com/products/fixie-bike",
-                      "webview_height_ratio": "tall",
-                    },
-                    Object {
-                      "title": "Share",
-                      "type": "element_share",
-                      "url": "https://sfbicycles.myshopify.com/products/fixie-bike/share",
-                    },
-                    Object {
-                      "title": "Buy now",
-                      "type": "web_url",
-                      "url": "https://messenger-commerce.shopifyapps.com/redirect_to_cart",
-                      "webview_height_ratio": "tall",
-                    },
-                  ],
-                  "image_url": "https://cdn.shopify.com/s/files/1/1632/0429/products",
-                  "subtitle": "$200.00",
-                  "title": "Fixie bike",
-                },
-              ],
-              "sharable": true,
-              "template_type": "generic",
-            },
-            "type": "template",
-          },
-        ]
-      }
-    >
-      <div
-        className="carousel"
+      text 
+      <a
+        class="linkified"
+        href="http://gorgias.io/"
+        rel="noreferrer noopener"
+        target="_blank"
       >
-        <Slider
-          arrows={true}
-          infinite={false}
-          key="0"
-          responsive={
-            Array [
-              Object {
-                "breakpoint": 769,
-                "settings": Object {
-                  "slidesToShow": 1,
-                },
-              },
-              Object {
-                "breakpoint": 1441,
-                "settings": Object {
-                  "slidesToShow": 2,
-                },
-              },
-            ]
-          }
-          slidesToShow={3}
+        http://gorgias.io/
+      </a>
+    </div>
+    
+  </div>
+  <div
+    class="carousel"
+  >
+    <div
+      class="slick-slider slick-initialized"
+    >
+      
+      <div
+        class="slick-list"
+      >
+        <div
+          class="slick-track"
+          style="opacity: 1; transform: translate3d(0px, 0px, 0px);"
         >
-          <InnerSlider
-            accessibility={true}
-            adaptiveHeight={false}
-            afterChange={null}
-            appendDots={[Function]}
-            arrows={true}
-            autoplay={false}
-            autoplaySpeed={3000}
-            beforeChange={null}
-            centerMode={false}
-            centerPadding="50px"
-            className=""
-            cssEase="ease"
-            customPaging={[Function]}
-            dots={false}
-            dotsClass="slick-dots"
-            draggable={true}
-            easing="linear"
-            edgeFriction={0.35}
-            fade={false}
-            focusOnSelect={false}
-            infinite={false}
-            initialSlide={0}
-            lazyLoad={null}
-            nextArrow={null}
-            onEdge={null}
-            onInit={null}
-            onLazyLoadError={null}
-            onReInit={null}
-            pauseOnDotsHover={false}
-            pauseOnFocus={false}
-            pauseOnHover={true}
-            prevArrow={null}
-            responsive={
-              Array [
-                Object {
-                  "breakpoint": 769,
-                  "settings": Object {
-                    "slidesToShow": 1,
-                  },
-                },
-                Object {
-                  "breakpoint": 1441,
-                  "settings": Object {
-                    "slidesToShow": 2,
-                  },
-                },
-              ]
-            }
-            rows={1}
-            rtl={false}
-            slide="div"
-            slidesPerRow={1}
-            slidesToScroll={1}
-            slidesToShow={3}
-            speed={500}
-            swipe={true}
-            swipeEvent={null}
-            swipeToSlide={false}
-            touchMove={true}
-            touchThreshold={5}
-            unslick={true}
-            useCSS={true}
-            useTransform={true}
-            variableWidth={false}
-            vertical={false}
-            waitForAnimate={true}
+          <div
+            aria-hidden="false"
+            class="slick-slide slick-active slick-current"
+            data-index="0"
+            style="outline: none; width: 0px;"
+            tabindex="-1"
           >
-            <div
-              className="slick-slider slick-initialized"
-            >
+            <div>
               <div
-                className="slick-list"
+                class="carouselCardContainer"
+                style="width: 100%; display: inline-block;"
+                tabindex="-1"
               >
-                <Track
-                  centerMode={false}
-                  centerPadding="50px"
-                  cssEase="ease"
-                  currentSlide={0}
-                  fade={false}
-                  focusOnSelect={null}
-                  infinite={false}
-                  lazyLoad={null}
-                  lazyLoadedList={
-                    Array [
-                      0,
-                      1,
-                      2,
-                    ]
-                  }
-                  listHeight={0}
-                  onMouseEnter={[Function]}
-                  onMouseLeave={[Function]}
-                  onMouseOver={[Function]}
-                  rtl={false}
-                  slideCount={1}
-                  slideHeight={0}
-                  slideWidth={0}
-                  slidesToScroll={1}
-                  slidesToShow={3}
-                  speed={500}
-                  targetSlide={0}
-                  trackStyle={
-                    Object {
-                      "WebkitTransform": "translate3d(0px, 0px, 0px)",
-                      "WebkitTransition": "",
-                      "msTransform": "translateX(0px)",
-                      "opacity": 1,
-                      "transform": "translate3d(0px, 0px, 0px)",
-                      "transition": "",
-                    }
-                  }
-                  unslick={true}
-                  useCSS={true}
-                  variableWidth={false}
-                  vertical={false}
+                <div
+                  class="carouselCard card"
                 >
+                  <img
+                    class="carouselImage card-img-top"
+                    src="https://cdn.shopify.com/s/files/1/1632/0429/products"
+                    width="100%"
+                  />
                   <div
-                    className="slick-track"
-                    onMouseEnter={[Function]}
-                    onMouseLeave={[Function]}
-                    onMouseOver={[Function]}
-                    style={
-                      Object {
-                        "WebkitTransform": "translate3d(0px, 0px, 0px)",
-                        "WebkitTransition": "",
-                        "msTransform": "translateX(0px)",
-                        "opacity": 1,
-                        "transform": "translate3d(0px, 0px, 0px)",
-                        "transition": "",
-                      }
-                    }
+                    class="card-body"
                   >
                     <div
-                      aria-hidden={false}
-                      className="slick-slide slick-active slick-current"
-                      data-index={0}
-                      key="original0"
-                      onClick={[Function]}
-                      style={
-                        Object {
-                          "outline": "none",
-                          "width": 0,
-                        }
-                      }
-                      tabIndex="-1"
+                      class="card-title"
                     >
-                      <div
-                        key="0"
-                      >
-                        <div
-                          className="carouselCardContainer"
-                          key="0"
-                          style={
-                            Object {
-                              "display": "inline-block",
-                              "width": "100%",
-                            }
-                          }
-                          tabIndex={-1}
-                        >
-                          <Card
-                            className="carouselCard"
-                            tag="div"
-                          >
-                            <div
-                              className="carouselCard card"
-                            >
-                              <CardImg
-                                className="carouselImage"
-                                src="https://cdn.shopify.com/s/files/1/1632/0429/products"
-                                tag="img"
-                                top={true}
-                                width="100%"
-                              >
-                                <img
-                                  className="carouselImage card-img-top"
-                                  src="https://cdn.shopify.com/s/files/1/1632/0429/products"
-                                  width="100%"
-                                />
-                              </CardImg>
-                              <CardBody
-                                tag="div"
-                              >
-                                <div
-                                  className="card-body"
-                                >
-                                  <CardTitle
-                                    tag="div"
-                                  >
-                                    <div
-                                      className="card-title"
-                                    >
-                                      Fixie bike
-                                    </div>
-                                  </CardTitle>
-                                  <CardSubtitle
-                                    tag="div"
-                                  >
-                                    <div
-                                      className="card-subtitle"
-                                    >
-                                      $200.00
-                                    </div>
-                                  </CardSubtitle>
-                                </div>
-                              </CardBody>
-                              <Group
-                                className="buttons"
-                                orientation="vertical"
-                              >
-                                <span
-                                  className="buttons group vertical"
-                                >
-                                  <ForwardRef
-                                    intent="secondary"
-                                    key=".$0"
-                                    onClick={[Function]}
-                                    role="link"
-                                  >
-                                    <button
-                                      className="wrapper fill secondary medium top"
-                                      onClick={[Function]}
-                                      role="link"
-                                      type="button"
-                                    >
-                                      View details
-                                    </button>
-                                  </ForwardRef>
-                                  <ForwardRef
-                                    isDisabled={true}
-                                    key=".$1"
-                                  >
-                                    <button
-                                      className="wrapper fill primary medium middle isDisabled"
-                                      disabled={true}
-                                      type="button"
-                                    >
-                                      Share
-                                    </button>
-                                  </ForwardRef>
-                                  <ForwardRef
-                                    intent="secondary"
-                                    key=".$2"
-                                    onClick={[Function]}
-                                    role="link"
-                                  >
-                                    <button
-                                      className="wrapper fill secondary medium bottom"
-                                      onClick={[Function]}
-                                      role="link"
-                                      type="button"
-                                    >
-                                      Buy now
-                                    </button>
-                                  </ForwardRef>
-                                </span>
-                              </Group>
-                            </div>
-                          </Card>
-                        </div>
-                      </div>
+                      Fixie bike
+                    </div>
+                    <div
+                      class="card-subtitle"
+                    >
+                      $200.00
                     </div>
                   </div>
-                </Track>
+                  <span
+                    class="buttons group vertical"
+                  >
+                    <button
+                      class="wrapper fill secondary medium top"
+                      role="link"
+                      type="button"
+                    >
+                      View details
+                    </button>
+                    <button
+                      class="wrapper fill primary medium middle isDisabled"
+                      disabled=""
+                      type="button"
+                    >
+                      Share
+                    </button>
+                    <button
+                      class="wrapper fill secondary medium bottom"
+                      role="link"
+                      type="button"
+                    >
+                      Buy now
+                    </button>
+                  </span>
+                </div>
               </div>
             </div>
-          </InnerSlider>
-        </Slider>
+          </div>
+        </div>
       </div>
-    </FacebookCarousel>
+      
+      
+    </div>
   </div>
-</Body>
+</div>
 `;
 
 exports[`Body should display the Twitter quoted tweet card if there's matching metadata 1`] = `
-<Body
-  message={
-    Object {
-      "actions": null,
-      "attachments": Array [
-        Object {
-          "content_type": "image/jpeg",
-          "name": "E-pZxm5XoAAmsSo.jpg",
-          "public": true,
-          "size": 106372,
-          "url": "https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-pZxm5XoAAmsSo-7586849a-2cb8-470e-b941-00065b5d79fc.jpg",
-        },
-        Object {
-          "content_type": "image/jpeg",
-          "name": "E-pZxm8WUAAixnh.jpg",
-          "public": true,
-          "size": 99954,
-          "url": "https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-pZxm8WUAAixnh-bce2000a-0440-4388-afa1-5e087ceede0c.jpg",
-        },
-      ],
-      "body_html": "si! more! https://t.co/PcepQOiI6X https://t.co/F62lVxUXgG",
-      "body_text": "si! more! https://t.co/PcepQOiI6X https://t.co/F62lVxUXgG",
-      "channel": "twitter",
-      "created_datetime": "2021-09-07T01:51:41+00:00",
-      "external_id": "1435058157764685824",
-      "failed_datetime": null,
-      "from_agent": false,
-      "id": 1231,
-      "integration_id": 18,
-      "intents": Array [],
-      "isMessage": true,
-      "is_retriable": false,
-      "last_sending_error": undefined,
-      "message_id": undefined,
-      "meta": Object {
-        "quoted_tweet": Object {
-          "attachments": Array [
-            Object {
-              "content_type": "image/jpeg",
-              "name": "E-osiPxWYAEyISV.jpg",
-              "public": true,
-              "size": 86337,
-              "url": "https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiPxWYAEyISV-ff64f0b7-0f0d-4a24-97a2-949c6b8713fd.jpg",
-            },
-            Object {
-              "content_type": "image/jpeg",
-              "name": "E-osiP0X0AAKVWI.jpg",
-              "public": true,
-              "size": 157366,
-              "url": "https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiP0X0AAKVWI-9b1d7db5-e19e-43f5-b4f9-362a87bfc888.jpg",
-            },
-            Object {
-              "content_type": "image/jpeg",
-              "name": "E-osiPxXIAI2cwW.jpg",
-              "public": true,
-              "size": 277127,
-              "url": "https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiPxXIAI2cwW-cdfe3cb3-24b7-4fbe-907e-762126c76e45.jpg",
-            },
-          ],
-          "id": "1435008444520615940",
-          "text": "pictures &lt;3 https://t.co/FcqJwG9tbn",
-          "user": Object {
-            "id": "1377919371503415307",
-            "name": "Ionut Gorgias",
-            "username": "GorgiasIonut",
-          },
-        },
-      },
-      "opened_datetime": null,
-      "public": true,
-      "receiver": Object {
-        "email": "support@acme.gorgias.io",
-        "firstname": "Gorgias",
-        "id": 5,
-        "lastname": "Bot",
-        "meta": null,
-        "name": "Gorgias Bot",
-      },
-      "rule_id": null,
-      "sender": Object {
-        "email": "",
-        "firstname": "DexterIonut",
-        "id": 67,
-        "lastname": "",
-        "meta": Object {
-          "name_set_via": "twitter",
-        },
-        "name": "DexterIonut",
-      },
-      "sent_datetime": "2021-09-07T01:51:41+00:00",
-      "source": Object {
-        "extra": Object {
-          "conversation_id": "1435058157764685824",
-          "parent_id": undefined,
-        },
-        "from": Object {
-          "address": "2721310995",
-          "name": "DexterIonut",
-        },
-        "to": Array [
-          Object {
-            "address": "1377919371503415307",
-            "name": "GorgiasIonut",
-          },
-        ],
-        "type": "twitter-quoted-tweet",
-      },
-      "stripped_html": null,
-      "stripped_signature": null,
-      "stripped_text": null,
-      "subject": "bla",
-      "ticket_id": 377,
-      "uri": "/api/tickets/377/messages/1231/",
-      "via": "twitter",
-    }
-  }
+<div
+  class="component"
 >
-  <div
-    className="component"
-  >
-    <Content
-      html="si! more! https://t.co/PcepQOiI6X https://t.co/F62lVxUXgG"
-      strippedHtml={null}
-      strippedText={null}
-      text="si! more! https://t.co/PcepQOiI6X https://t.co/F62lVxUXgG"
+  <div>
+    <div
+      class="content"
     >
-      <div>
-        <div
-          className="content"
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "si! more! <a href=\\"https://t.co/PcepQOiI6X\\" class=\\"linkified\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">https://t.co/PcepQOiI6X</a> <a href=\\"https://t.co/F62lVxUXgG\\" class=\\"linkified\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">https://t.co/F62lVxUXgG</a>",
-            }
-          }
-        />
-      </div>
-    </Content>
-    <Container
-      className=" px-0 ml-n2"
-      tag="div"
+      si! more! 
+      <a
+        class="linkified"
+        href="https://t.co/PcepQOiI6X"
+        rel="noreferrer noopener"
+        target="_blank"
+      >
+        https://t.co/PcepQOiI6X
+      </a>
+       
+      <a
+        class="linkified"
+        href="https://t.co/F62lVxUXgG"
+        rel="noreferrer noopener"
+        target="_blank"
+      >
+        https://t.co/F62lVxUXgG
+      </a>
+    </div>
+    
+  </div>
+  <div
+    class=" px-0 ml-n2 container"
+  >
+    <div
+      class="m-0 row"
     >
       <div
-        className=" px-0 ml-n2 container"
+        class="p-0 col-md-9"
       >
-        <Row
-          className="m-0"
-          tag="div"
-          widths={
-            Array [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
+        <div
+          class="genericCard card"
         >
           <div
-            className="m-0 row"
+            class="card-body"
           >
-            <Col
-              className="p-0"
-              md="9"
-              tag="div"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
+            <div
+              class="row"
             >
               <div
-                className="p-0 col-md-9"
+                class="verticalCenter col-md-12"
               >
-                <TicketMessageEmbeddedCard
-                  attachments={
-                    Immutable.List [
-                      Immutable.Map {
-                        "url": "https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiPxWYAEyISV-ff64f0b7-0f0d-4a24-97a2-949c6b8713fd.jpg",
-                        "name": "E-osiPxWYAEyISV.jpg",
-                        "size": 86337,
-                        "content_type": "image/jpeg",
-                        "public": true,
-                      },
-                      Immutable.Map {
-                        "url": "https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiP0X0AAKVWI-9b1d7db5-e19e-43f5-b4f9-362a87bfc888.jpg",
-                        "name": "E-osiP0X0AAKVWI.jpg",
-                        "size": 157366,
-                        "content_type": "image/jpeg",
-                        "public": true,
-                      },
-                      Immutable.Map {
-                        "url": "https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiPxXIAI2cwW-cdfe3cb3-24b7-4fbe-907e-762126c76e45.jpg",
-                        "name": "E-osiPxXIAI2cwW.jpg",
-                        "size": 277127,
-                        "content_type": "image/jpeg",
-                        "public": true,
-                      },
-                    ]
-                  }
-                  externalId="1435008444520615940"
-                  integrationId={18}
-                  messageText="pictures &lt;3 https://t.co/FcqJwG9tbn"
-                  sender={
-                    Object {
-                      "email": "",
-                      "firstname": "Ionut Gorgias",
-                      "id": 1377919371503415300,
-                      "lastname": "",
-                      "meta": Object {
-                        "profile_picture_url": "",
-                      },
-                      "name": "Ionut Gorgias",
-                    }
-                  }
-                  source={
-                    Object {
-                      "extra": Object {
-                        "conversation_id": "1435058157764685824",
-                      },
-                      "from": Object {
-                        "address": "1377919371503415307",
-                        "name": "GorgiasIonut",
-                      },
-                      "to": Array [
-                        Object {
-                          "address": "",
-                          "name": "",
-                        },
-                      ],
-                      "type": "twitter-tweet",
-                    }
-                  }
-                  textBelowAvatar={true}
+                <div
+                  class="mr-2"
                 >
-                  <GenericCard>
-                    <Card
-                      className="genericCard"
-                      tag="div"
+                  <div
+                    class="component"
+                    style="width: 36px; height: 36px;"
+                  >
+                    <div
+                      class="initials"
+                      style="width: 36px; height: 36px; font-size: 15px;"
+                    >
+                      <span
+                        style="line-height: 38px;"
+                      >
+                        IG
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="verticalCenter"
+                >
+                  <div
+                    class="customerNameBody"
+                  >
+                    Ionut Gorgias
+                     
+                    
+                  </div>
+                  <div>
+                    <span
+                      class="source"
+                    >
+                      <i
+                        class="icon d-inline-block icon-custom icon-twitter uncolored"
+                      />
+                    </span>
+                  </div>
+                  <div>
+                    <span
+                      class="from"
+                    >
+                      <span
+                        class="fromLabel"
+                      >
+                        go to
+                      </span>
+                       
+                      <span
+                        class="fromValue"
+                      >
+                        <a
+                          href="https://twitter.com/GorgiasIonut/status/1435008444520615940"
+                          rel="noopener noreferrer"
+                          target="_blank"
+                          title="https://twitter.com/GorgiasIonut/status/1435008444520615940"
+                        >
+                          tweet
+                        </a>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="mt-2 row"
+            >
+              <div
+                class="col-md-12"
+              >
+                <span
+                  class="textBlock"
+                >
+                  pictures &lt;3 https://t.co/FcqJwG9tbn
+                </span>
+              </div>
+            </div>
+            <div
+              class="mt-2 row"
+            >
+              <div
+                class="col-md-12"
+              >
+                <div
+                  class="component"
+                >
+                  <div
+                    class="attachmentContainer"
+                  >
+                    <a
+                      class="item hasPreview"
+                      href="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiPxWYAEyISV-ff64f0b7-0f0d-4a24-97a2-949c6b8713fd.jpg"
+                      rel="noopener noreferrer"
+                      style="background-image: url(http://proxy-url/120x80,sisQ1TYXiEuesmKyzxm_NxTF-hBFa4m1OYsmGuHn6xnI/https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiPxWYAEyISV-ff64f0b7-0f0d-4a24-97a2-949c6b8713fd.jpg);"
+                      target="_blank"
                     >
                       <div
-                        className="genericCard card"
+                        class="itemMeta"
                       >
-                        <CardBody
-                          tag="div"
+                        <div
+                          class="metaName"
                         >
-                          <div
-                            className="card-body"
+                          E-osiPxWYAEyISV.jpg
+                        </div>
+                        <div
+                          class="metaType"
+                        >
+                          <i
+                            class="material-icons md-2"
                           >
-                            <Row
-                              tag="div"
-                              widths={
-                                Array [
-                                  "xs",
-                                  "sm",
-                                  "md",
-                                  "lg",
-                                  "xl",
-                                ]
-                              }
-                            >
-                              <div
-                                className="row"
-                              >
-                                <Col
-                                  className="verticalCenter"
-                                  md="12"
-                                  tag="div"
-                                  widths={
-                                    Array [
-                                      "xs",
-                                      "sm",
-                                      "md",
-                                      "lg",
-                                      "xl",
-                                    ]
-                                  }
-                                >
-                                  <div
-                                    className="verticalCenter col-md-12"
-                                  >
-                                    <div
-                                      className="mr-2"
-                                    >
-                                      <Avatar
-                                        email=""
-                                        name="Ionut Gorgias"
-                                        size={36}
-                                        style={Object {}}
-                                        url=""
-                                      >
-                                        <div
-                                          className="component"
-                                          style={
-                                            Object {
-                                              "height": "36px",
-                                              "width": "36px",
-                                            }
-                                          }
-                                        >
-                                          <div
-                                            className="initials"
-                                            style={
-                                              Object {
-                                                "fontSize": "15px",
-                                                "height": "36px",
-                                                "width": "36px",
-                                              }
-                                            }
-                                          >
-                                            <span
-                                              style={
-                                                Object {
-                                                  "lineHeight": "38px",
-                                                }
-                                              }
-                                            >
-                                              IG
-                                            </span>
-                                          </div>
-                                        </div>
-                                      </Avatar>
-                                    </div>
-                                    <div
-                                      className="verticalCenter"
-                                    >
-                                      <div
-                                        className="customerNameBody"
-                                      >
-                                        Ionut Gorgias
-                                         
-                                      </div>
-                                      <div>
-                                        <span
-                                          className="source"
-                                        >
-                                          <SourceIcon
-                                            className="uncolored"
-                                            type="twitter-tweet"
-                                          >
-                                            <i
-                                              className="icon d-inline-block icon-custom icon-twitter uncolored"
-                                            />
-                                          </SourceIcon>
-                                        </span>
-                                      </div>
-                                      <div>
-                                        <Meta
-                                          externalId="1435008444520615940"
-                                          integrationId={18}
-                                          source={
-                                            Object {
-                                              "extra": Object {
-                                                "conversation_id": "1435058157764685824",
-                                              },
-                                              "from": Object {
-                                                "address": "1377919371503415307",
-                                                "name": "GorgiasIonut",
-                                              },
-                                              "to": Array [
-                                                Object {
-                                                  "address": "",
-                                                  "name": "",
-                                                },
-                                              ],
-                                              "type": "twitter-tweet",
-                                            }
-                                          }
-                                          via=""
-                                        >
-                                          <From
-                                            key="ref-widget"
-                                            label="go to"
-                                          >
-                                            <span
-                                              className="from"
-                                            >
-                                              <span
-                                                className="fromLabel"
-                                              >
-                                                go to
-                                              </span>
-                                               
-                                              <span
-                                                className="fromValue"
-                                              >
-                                                <a
-                                                  href="https://twitter.com/GorgiasIonut/status/1435008444520615940"
-                                                  rel="noopener noreferrer"
-                                                  target="_blank"
-                                                  title="https://twitter.com/GorgiasIonut/status/1435008444520615940"
-                                                >
-                                                  tweet
-                                                </a>
-                                              </span>
-                                            </span>
-                                          </From>
-                                        </Meta>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </Col>
-                              </div>
-                            </Row>
-                            <Row
-                              className="mt-2"
-                              tag="div"
-                              widths={
-                                Array [
-                                  "xs",
-                                  "sm",
-                                  "md",
-                                  "lg",
-                                  "xl",
-                                ]
-                              }
-                            >
-                              <div
-                                className="mt-2 row"
-                              >
-                                <Col
-                                  md="12"
-                                  tag="div"
-                                  widths={
-                                    Array [
-                                      "xs",
-                                      "sm",
-                                      "md",
-                                      "lg",
-                                      "xl",
-                                    ]
-                                  }
-                                >
-                                  <div
-                                    className="col-md-12"
-                                  >
-                                    <span
-                                      className="textBlock"
-                                    >
-                                      pictures &lt;3 https://t.co/FcqJwG9tbn
-                                    </span>
-                                  </div>
-                                </Col>
-                              </div>
-                            </Row>
-                            <Row
-                              className="mt-2"
-                              tag="div"
-                              widths={
-                                Array [
-                                  "xs",
-                                  "sm",
-                                  "md",
-                                  "lg",
-                                  "xl",
-                                ]
-                              }
-                            >
-                              <div
-                                className="mt-2 row"
-                              >
-                                <Col
-                                  md="12"
-                                  tag="div"
-                                  widths={
-                                    Array [
-                                      "xs",
-                                      "sm",
-                                      "md",
-                                      "lg",
-                                      "xl",
-                                    ]
-                                  }
-                                >
-                                  <div
-                                    className="col-md-12"
-                                  >
-                                    <TicketAttachments
-                                      attachments={
-                                        Immutable.List [
-                                          Immutable.Map {
-                                            "url": "https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiPxWYAEyISV-ff64f0b7-0f0d-4a24-97a2-949c6b8713fd.jpg",
-                                            "name": "E-osiPxWYAEyISV.jpg",
-                                            "size": 86337,
-                                            "content_type": "image/jpeg",
-                                            "public": true,
-                                          },
-                                          Immutable.Map {
-                                            "url": "https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiP0X0AAKVWI-9b1d7db5-e19e-43f5-b4f9-362a87bfc888.jpg",
-                                            "name": "E-osiP0X0AAKVWI.jpg",
-                                            "size": 157366,
-                                            "content_type": "image/jpeg",
-                                            "public": true,
-                                          },
-                                          Immutable.Map {
-                                            "url": "https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiPxXIAI2cwW-cdfe3cb3-24b7-4fbe-907e-762126c76e45.jpg",
-                                            "name": "E-osiPxXIAI2cwW.jpg",
-                                            "size": 277127,
-                                            "content_type": "image/jpeg",
-                                            "public": true,
-                                          },
-                                        ]
-                                      }
-                                      removable={false}
-                                    >
-                                      <div
-                                        className="component"
-                                      >
-                                        <div
-                                          className="attachmentContainer"
-                                          key="0"
-                                        >
-                                          <a
-                                            className="item hasPreview"
-                                            href="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiPxWYAEyISV-ff64f0b7-0f0d-4a24-97a2-949c6b8713fd.jpg"
-                                            onClick={[Function]}
-                                            rel="noopener noreferrer"
-                                            style={
-                                              Object {
-                                                "backgroundImage": "url(http://proxy-url/120x80,sisQ1TYXiEuesmKyzxm_NxTF-hBFa4m1OYsmGuHn6xnI/https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiPxWYAEyISV-ff64f0b7-0f0d-4a24-97a2-949c6b8713fd.jpg)",
-                                              }
-                                            }
-                                            target="_blank"
-                                          >
-                                            <div
-                                              className="itemMeta"
-                                            >
-                                              <div
-                                                className="metaName"
-                                              >
-                                                E-osiPxWYAEyISV.jpg
-                                              </div>
-                                              <div
-                                                className="metaType"
-                                              >
-                                                <i
-                                                  className="material-icons md-2"
-                                                >
-                                                  photo_library
-                                                </i>
-                                              </div>
-                                            </div>
-                                          </a>
-                                        </div>
-                                        <div
-                                          className="attachmentContainer"
-                                          key="1"
-                                        >
-                                          <a
-                                            className="item hasPreview"
-                                            href="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiP0X0AAKVWI-9b1d7db5-e19e-43f5-b4f9-362a87bfc888.jpg"
-                                            onClick={[Function]}
-                                            rel="noopener noreferrer"
-                                            style={
-                                              Object {
-                                                "backgroundImage": "url(http://proxy-url/120x80,soD7kyDj2DYGaIcDy15jTwj9oqeml6NzizfOsrRJX488/https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiP0X0AAKVWI-9b1d7db5-e19e-43f5-b4f9-362a87bfc888.jpg)",
-                                              }
-                                            }
-                                            target="_blank"
-                                          >
-                                            <div
-                                              className="itemMeta"
-                                            >
-                                              <div
-                                                className="metaName"
-                                              >
-                                                E-osiP0X0AAKVWI.jpg
-                                              </div>
-                                              <div
-                                                className="metaType"
-                                              >
-                                                <i
-                                                  className="material-icons md-2"
-                                                >
-                                                  photo_library
-                                                </i>
-                                              </div>
-                                            </div>
-                                          </a>
-                                        </div>
-                                        <div
-                                          className="attachmentContainer"
-                                          key="2"
-                                        >
-                                          <a
-                                            className="item hasPreview"
-                                            href="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiPxXIAI2cwW-cdfe3cb3-24b7-4fbe-907e-762126c76e45.jpg"
-                                            onClick={[Function]}
-                                            rel="noopener noreferrer"
-                                            style={
-                                              Object {
-                                                "backgroundImage": "url(http://proxy-url/120x80,s5-JxKytmGJgTzK7SPhpvrt6AGC36zH3P-Fg1F2o_gtc/https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiPxXIAI2cwW-cdfe3cb3-24b7-4fbe-907e-762126c76e45.jpg)",
-                                              }
-                                            }
-                                            target="_blank"
-                                          >
-                                            <div
-                                              className="itemMeta"
-                                            >
-                                              <div
-                                                className="metaName"
-                                              >
-                                                E-osiPxXIAI2cwW.jpg
-                                              </div>
-                                              <div
-                                                className="metaType"
-                                              >
-                                                <i
-                                                  className="material-icons md-2"
-                                                >
-                                                  photo_library
-                                                </i>
-                                              </div>
-                                            </div>
-                                          </a>
-                                        </div>
-                                        <Lightbox
-                                          backdropClosesModal={true}
-                                          closeButtonTitle="Close (Esc)"
-                                          currentImage={0}
-                                          enableKeyboardInput={true}
-                                          imageCountSeparator=" of "
-                                          images={
-                                            Array [
-                                              Object {
-                                                "caption": "E-osiPxWYAEyISV.jpg",
-                                                "src": "http://proxy-url/cw-1,sisQ1TYXiEuesmKyzxm_NxTF-hBFa4m1OYsmGuHn6xnI/https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiPxWYAEyISV-ff64f0b7-0f0d-4a24-97a2-949c6b8713fd.jpg",
-                                              },
-                                              Object {
-                                                "caption": "E-osiP0X0AAKVWI.jpg",
-                                                "src": "http://proxy-url/cw-1,soD7kyDj2DYGaIcDy15jTwj9oqeml6NzizfOsrRJX488/https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiP0X0AAKVWI-9b1d7db5-e19e-43f5-b4f9-362a87bfc888.jpg",
-                                              },
-                                              Object {
-                                                "caption": "E-osiPxXIAI2cwW.jpg",
-                                                "src": "http://proxy-url/cw-1,s5-JxKytmGJgTzK7SPhpvrt6AGC36zH3P-Fg1F2o_gtc/https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiPxXIAI2cwW-cdfe3cb3-24b7-4fbe-907e-762126c76e45.jpg",
-                                              },
-                                            ]
-                                          }
-                                          isOpen={false}
-                                          leftArrowTitle="Previous (Left arrow key)"
-                                          onClickNext={[Function]}
-                                          onClickPrev={[Function]}
-                                          onClickShowNextImage={true}
-                                          onClickThumbnail={[Function]}
-                                          onClose={[Function]}
-                                          preloadNextImage={true}
-                                          rightArrowTitle="Next (Right arrow key)"
-                                          showCloseButton={true}
-                                          showImageCount={true}
-                                          showThumbnails={true}
-                                          theme={Object {}}
-                                          thumbnailOffset={2}
-                                          width={1024}
-                                        >
-                                          <Portal />
-                                        </Lightbox>
-                                      </div>
-                                    </TicketAttachments>
-                                  </div>
-                                </Col>
-                              </div>
-                            </Row>
-                          </div>
-                        </CardBody>
+                            photo_library
+                          </i>
+                        </div>
                       </div>
-                    </Card>
-                  </GenericCard>
-                </TicketMessageEmbeddedCard>
+                    </a>
+                  </div>
+                  <div
+                    class="attachmentContainer"
+                  >
+                    <a
+                      class="item hasPreview"
+                      href="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiP0X0AAKVWI-9b1d7db5-e19e-43f5-b4f9-362a87bfc888.jpg"
+                      rel="noopener noreferrer"
+                      style="background-image: url(http://proxy-url/120x80,soD7kyDj2DYGaIcDy15jTwj9oqeml6NzizfOsrRJX488/https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiP0X0AAKVWI-9b1d7db5-e19e-43f5-b4f9-362a87bfc888.jpg);"
+                      target="_blank"
+                    >
+                      <div
+                        class="itemMeta"
+                      >
+                        <div
+                          class="metaName"
+                        >
+                          E-osiP0X0AAKVWI.jpg
+                        </div>
+                        <div
+                          class="metaType"
+                        >
+                          <i
+                            class="material-icons md-2"
+                          >
+                            photo_library
+                          </i>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <div
+                    class="attachmentContainer"
+                  >
+                    <a
+                      class="item hasPreview"
+                      href="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiPxXIAI2cwW-cdfe3cb3-24b7-4fbe-907e-762126c76e45.jpg"
+                      rel="noopener noreferrer"
+                      style="background-image: url(http://proxy-url/120x80,s5-JxKytmGJgTzK7SPhpvrt6AGC36zH3P-Fg1F2o_gtc/https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiPxXIAI2cwW-cdfe3cb3-24b7-4fbe-907e-762126c76e45.jpg);"
+                      target="_blank"
+                    >
+                      <div
+                        class="itemMeta"
+                      >
+                        <div
+                          class="metaName"
+                        >
+                          E-osiPxXIAI2cwW.jpg
+                        </div>
+                        <div
+                          class="metaType"
+                        >
+                          <i
+                            class="material-icons md-2"
+                          >
+                            photo_library
+                          </i>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                </div>
               </div>
-            </Col>
+            </div>
           </div>
-        </Row>
+        </div>
       </div>
-    </Container>
+    </div>
   </div>
-</Body>
+</div>
 `;
 
 exports[`Body should display the Yotpo product card if there's matching metadata 1`] = `
 <div
-  className="component"
+  class="component"
 >
-  <Content
-    html="<div>This is a really good product!</div>"
-    strippedHtml={null}
-    strippedText={null}
-    text="This is a really good product!"
-  />
-  <ProductEmbeddedCard
-    product={
-      Object {
-        "average_score": 4.3,
-        "category": Object {
-          "id": 1,
-          "name": "electronics",
-        },
-        "created_at": "2017-10-10 09:01:43",
-        "description": "economic washing machine",
-        "external_product_id": "09876427",
-        "id": 11111111,
-        "images": Array [
-          Object {
-            "original": "https://cdn.yotpo.com/Product//original.jpg?",
-            "square": "https://cdn.yotpo.com/Product//original.jpg?",
-          },
-        ],
-        "name": "Tandem washing machine",
-        "specs": Array [],
-        "total_reviews": 100,
-        "updated_at": "2021-09-08 23:21:23",
-        "url": "www.yotpo.com/product/GGGGG",
+  <div>
+    <div
+      class="content"
+    >
+      <div>
+        This is a really good product!
+      </div>
+    </div>
+    
+  </div>
+  <div
+    class="genericCard card"
+  >
+    <div
+      class="card-body"
+    >
+      <div
+        class="cardContainer container"
+      >
+        <div
+          class="row"
+        >
+          <div
+            class="col"
+          >
+            <img
+              alt="product"
+              class="productImage"
+              src="https://cdn.yotpo.com/Product//original.jpg?"
+            />
+          </div>
+          <div
+            class="col"
+          >
+            <div
+              class="row"
+            >
+              <strong>
+                Tandem washing machine
+              </strong>
+            </div>
+            <div
+              class="row"
+            >
+              <div>
+                <span
+                  class="starRatingWrapper"
+                >
+                  <div
+                    class="react-stars-wrapper-0123456789"
+                    style="display: flex;"
+                  >
+                    <div
+                      aria-label="add rating by typing an integer from 0 to 5 or pressing arrow keys"
+                      class="undefined react-stars"
+                      style="overflow: hidden; position: relative;"
+                    >
+                      <style>
+                        
+          span.react-stars-half &gt; * {
+          color: #FDAB40;
       }
-    }
-  />
+                      </style>
+                      <span
+                        class=""
+                        data-forhalf="0"
+                        data-index="0"
+                        style="position: relative; overflow: hidden; cursor: default; display: block; float: left; color: rgb(253, 171, 64); font-size: 15px;"
+                      >
+                        <span
+                          class="material-icons"
+                        >
+                          star
+                        </span>
+                      </span>
+                      <span
+                        class=""
+                        data-forhalf="1"
+                        data-index="1"
+                        style="position: relative; overflow: hidden; cursor: default; display: block; float: left; color: rgb(253, 171, 64); font-size: 15px;"
+                      >
+                        <span
+                          class="material-icons"
+                        >
+                          star
+                        </span>
+                      </span>
+                      <span
+                        class=""
+                        data-forhalf="2"
+                        data-index="2"
+                        style="position: relative; overflow: hidden; cursor: default; display: block; float: left; color: rgb(253, 171, 64); font-size: 15px;"
+                      >
+                        <span
+                          class="material-icons"
+                        >
+                          star
+                        </span>
+                      </span>
+                      <span
+                        class=""
+                        data-forhalf="3"
+                        data-index="3"
+                        style="position: relative; overflow: hidden; cursor: default; display: block; float: left; color: rgb(253, 171, 64); font-size: 15px;"
+                      >
+                        <span
+                          class="material-icons"
+                        >
+                          star
+                        </span>
+                      </span>
+                      <span
+                        class=""
+                        data-forhalf="4"
+                        data-index="4"
+                        style="position: relative; overflow: hidden; cursor: default; display: block; float: left; color: rgb(232, 235, 239); font-size: 15px;"
+                      >
+                        <span
+                          class="material-icons"
+                        >
+                          star
+                        </span>
+                      </span>
+                      <p
+                        role="status"
+                        style="position: absolute; left: -200rem;"
+                      >
+                        4.3
+                      </p>
+                    </div>
+                  </div>
+                </span>
+                <span
+                  class="totalReviews"
+                >
+                  (
+                  100
+                  )
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="chevronButton col"
+          >
+            <i
+              class="material-icons"
+            >
+              unfold_more
+            </i>
+          </div>
+        </div>
+        <div
+          class="row"
+        >
+          <div
+            class="col"
+          >
+            <div
+              class="collapse"
+            >
+              <table>
+                <tbody>
+                  <tr>
+                    <td
+                      class="cardDetail"
+                    >
+                      Description:
+                    </td>
+                    <th>
+                      economic washing machine
+                    </th>
+                  </tr>
+                  <tr>
+                    <td
+                      class="cardDetail"
+                    >
+                      Product page:
+                    </td>
+                    <th>
+                      <a
+                        href="www.yotpo.com/product/GGGGG"
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        www.yotpo.com/product/GGGGG
+                      </a>
+                    </th>
+                  </tr>
+                  <tr>
+                    <td
+                      class="cardDetail"
+                    >
+                      Category:
+                    </td>
+                    <th>
+                      <div
+                        class="badge"
+                      >
+                        electronics
+                      </div>
+                    </th>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 `;
