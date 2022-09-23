@@ -233,7 +233,7 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
                         )}
                     >
                         <Col lg={8}>
-                            <i className="material-icons md-2 align-middle mr-2">
+                            <i className="material-icons md-2 align-middle mr-3">
                                 phone
                             </i>
                             <strong>Voice</strong>
@@ -281,7 +281,7 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
                             )}
                         >
                             <Col lg={8}>
-                                <i className="material-icons md-2 align-middle mr-2">
+                                <i className="material-icons md-2 align-middle mr-3">
                                     sms
                                 </i>
                                 <strong>SMS</strong>
