@@ -11,6 +11,8 @@ import {
 import {Map} from 'immutable'
 
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+import MergeTicketsContainer from 'pages/common/components/MergeTickets/MergeTicketsContainer'
+import EditableTitle from 'pages/common/components/EditableTitle'
 import {
     addTags,
     clearTicket,
@@ -27,16 +29,15 @@ import {
     snoozeTicket,
     ticketPartialUpdate,
 } from 'state/ticket/actions'
-import shortcutManager from '../../../../services/shortcutManager'
-import EditableTitle from '../../../common/components/EditableTitle'
-import MergeTicketsContainer from '../../../common/components/MergeTickets/MergeTicketsContainer'
-import {notify} from '../../../../state/notifications/actions'
-import {shouldDisplayAuditLogEvents} from '../../../../state/ticket/selectors'
-import {getTimezone} from '../../../../state/currentUser/selectors'
-import {RootState} from '../../../../state/types'
-import {NotificationStatus} from '../../../../state/notifications/types'
-import {UserRole} from '../../../../config/types/user'
-import {hasRole} from '../../../../utils'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {notify} from 'state/notifications/actions'
+import {shouldDisplayAuditLogEvents} from 'state/ticket/selectors'
+import {getTimezone} from 'state/currentUser/selectors'
+import {RootState} from 'state/types'
+import {NotificationStatus} from 'state/notifications/types'
+import {UserRole} from 'config/types/user'
+import shortcutManager from 'services/shortcutManager'
+import {hasRole} from 'utils'
 
 import TicketTags from './TicketDetails/TicketTags'
 import TicketStatus from './TicketDetails/TicketStatus'
@@ -372,6 +373,9 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
                                         <DropdownItem
                                             type="button"
                                             onClick={() => {
+                                                logEvent(
+                                                    SegmentEvent.PrintTicketClicked
+                                                )
                                                 // setTimeout allows React to complete the current JS click event triggers
                                                 // before printing the page
                                                 setTimeout(() => {

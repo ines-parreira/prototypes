@@ -196,6 +196,7 @@ export enum SegmentEvent {
     TeamWizardCreatedRule = 'team-wizard-created-rule',
     ChatPreferencesUpdated = 'chat-preferences-updated',
     SelfServiceActivatedViaBanner = 'self-service-activated-via-banner',
+    PrintTicketClicked = 'print-ticket-clicked',
 }
 
 export enum StatViewLinkClickedStat {

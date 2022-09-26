@@ -10,12 +10,13 @@ import {ticket} from 'fixtures/ticket'
 import * as notificationsActions from 'state/notifications/actions'
 import * as ticketActions from 'state/ticket/actions'
 import {RootState} from 'state/types'
-import {UserRole} from '../../../../../config/types/user'
-import {user} from '../../../../../fixtures/users'
-import {NotificationStatus} from '../../../../../state/notifications/types'
+import {UserRole} from 'config/types/user'
+import {user} from 'fixtures/users'
+import {NotificationStatus} from 'state/notifications/types'
+import {makeExecuteKeyboardAction} from 'utils/testing'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import shortcutManager from 'services/shortcutManager'
 import TicketHeader from '../TicketHeader'
-import shortcutManager from '../../../../../services/shortcutManager'
-import {makeExecuteKeyboardAction} from '../../../../../utils/testing'
 
 jest.mock('../../../../../services/shortcutManager')
 
@@ -50,6 +51,8 @@ jest.mock('reactstrap', () => {
         },
     }
 })
+
+jest.mock('store/middlewares/segmentTracker')
 
 const shortcutManagerMock = shortcutManager as jest.Mocked<
     typeof shortcutManager
@@ -276,5 +279,25 @@ describe('<TicketHeader />', () => {
         )('DELETE_TICKET')
 
         expect(queryByText(/You are about to /)).toBeFalsy()
+    })
+
+    it('should print ticket and log segment event', () => {
+        jest.useFakeTimers()
+        window.print = jest.fn()
+
+        const {getByText} = render(
+            <Provider
+                store={mockStore({...defaultStore, ticket: fromJS(ticket)})}
+            >
+                <TicketHeader {...minProps} ticket={fromJS(ticket)} />
+            </Provider>
+        )
+        fireEvent.click(getByText(/more_vert/))
+        fireEvent.click(getByText(/Print ticket/))
+
+        expect(logEvent).toHaveBeenCalledWith(SegmentEvent.PrintTicketClicked)
+
+        jest.runAllTimers()
+        expect(window.print).toHaveBeenCalled()
     })
 })
