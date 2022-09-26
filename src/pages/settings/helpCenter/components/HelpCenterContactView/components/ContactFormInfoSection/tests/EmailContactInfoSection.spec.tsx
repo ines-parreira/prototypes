@@ -105,10 +105,13 @@ describe('<ContactFormInfoSection />', () => {
     it('should render the component', () => {
         const {container} = renderWithRouter(
             <DefaultProviders>
-                <ContactFormInfoSection />
+                <ContactFormInfoSection
+                    helpCenter={getSingleHelpCenterResponseFixture}
+                />
             </DefaultProviders>
         )
 
+        expect(screen.getAllByText('Embed contact form').length).toBe(1)
         expect(container.firstChild).toMatchSnapshot()
     })
 
@@ -119,10 +122,12 @@ describe('<ContactFormInfoSection />', () => {
 
         renderWithRouter(
             <DefaultProviders>
-                <ContactFormInfoSection />
+                <ContactFormInfoSection
+                    helpCenter={getSingleHelpCenterResponseFixture}
+                />
             </DefaultProviders>
         )
 
-        screen.getByText('Embed contact form')
+        expect(screen.getAllByText('Embed contact form').length).toBe(2)
     })
 })

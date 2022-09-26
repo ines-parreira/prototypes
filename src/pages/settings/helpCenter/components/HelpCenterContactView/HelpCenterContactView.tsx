@@ -20,7 +20,7 @@ const HelpCenterContactView: React.FC = () => {
             wrapperClassName={css.contentWrapper}
         >
             <HelpCenterTranslationProvider helpCenter={helpCenter}>
-                <ContactFormInfoSection />
+                <ContactFormInfoSection helpCenter={helpCenter} />
                 <ChatApplication helpCenterId={helpCenter.id} />
                 <PhoneContactInfoSection />
                 <FooterActions />

@@ -23,6 +23,7 @@ type Props = {
     animation?: 'default' | 'none'
     children: ReactNode
     className?: string
+    classNameContent?: string
     container?: Element
     id?: string
     isClosable?: boolean
@@ -48,6 +49,7 @@ const Modal = (
         animation = 'default',
         children,
         className,
+        classNameContent,
         container = document.body,
         id,
         isClosable = true,
@@ -121,11 +123,15 @@ const Modal = (
                 >
                     <div
                         ref={ref}
-                        className={classnames(css.modalContent, {
-                            [css.scrollableContent]: isScrollable,
-                            [css.bounceModal]: bounceModal,
-                            [css[animation]]: animation !== 'none',
-                        })}
+                        className={classnames(
+                            css.modalContent,
+                            {
+                                [css.scrollableContent]: isScrollable,
+                                [css.bounceModal]: bounceModal,
+                                [css[animation]]: animation !== 'none',
+                            },
+                            classNameContent
+                        )}
                         onTransitionEnd={() => setBounceModal(false)}
                     >
                         {children}

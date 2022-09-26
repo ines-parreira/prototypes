@@ -1,3 +1,5 @@
+@import '~css/new/colorTokens';
+
 :local {
     .container {
         display: flex;
@@ -41,5 +43,77 @@
 
     .embedWrapper {
         margin-top: 32px;
+    }
+
+    .embedButtons {
+        display: flex;
+        column-gap: 16px;
+        align-items: center;
+    }
+
+    .embedButton {
+        font-weight: 500;
+        padding-top: 6px;
+        padding-bottom: 6px;
+
+        i {
+            display: inline-block;
+            font-size: 20px;
+            padding-right: 4px;
+        }
+    }
+
+    .embedPreview {
+        padding: 8px;
+        font-weight: 500;
+        display: flex;
+        color: @classic-neutral-grey-5;
+        cursor: pointer;
+
+        i {
+            display: inline-block;
+            font-size: 20px;
+            padding-right: 4px;
+        }
+    }
+
+    .modalContent {
+        max-width: 400px;
+    }
+
+    .modalBody {
+        display: flex;
+        flex-direction: column;
+        row-gap: 16px;
+    }
+
+    .modalFooter {
+        padding: 16px;
+        display: flex;
+        justify-content: flex-end;
+        column-gap: 8px;
+    }
+
+    .embedTooltip {
+        left: 40px !important;
+        position: relative;
+        max-width: 180px;
+    }
+
+    .embedTooltipArrow {
+        left: 16px !important;
+    }
+
+    .embedPreviewDisabled {
+        pointer-events: none;
+        color: @classic-neutral-grey-3 !important;
+    }
+
+    .copied {
+        i {
+            display: inline-block;
+            font-size: 18px;
+            padding-right: 4px;
+        }
     }
 }
