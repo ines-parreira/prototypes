@@ -84,7 +84,7 @@ export const oauthPermissions: Record<string, OAuthPermission> = {
     self_service: {
         icon: 'auto_awesome',
         name: 'Self Service',
-        description: 'Configure your self service settings.',
+        description: 'Self-Service related settings.',
     },
 
     // Legacy scope
