@@ -5,7 +5,10 @@ import _debounce from 'lodash/debounce'
 import _noop from 'lodash/noop'
 import {connect, ConnectedProps} from 'react-redux'
 
+import {withLDConsumer} from 'launchdarkly-react-client-sdk'
+import {LDFlagSet} from 'launchdarkly-js-client-sdk'
 import Tooltip from 'pages/common/components/Tooltip'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {RootState} from '../../../../../state/types'
 import {canLeaveInternalNote, isRichType} from '../../../../../config/ticket'
 import {humanize} from '../../../../../business/format'
@@ -42,6 +45,7 @@ type Props = {
     richAreaRef: (ref: DEPRECATED_RichField | null) => void
     shouldDisplayQuickReply: boolean
     ticket: Map<any, any>
+    flags?: LDFlagSet
 } & ConnectedProps<typeof connector>
 
 // debounce the updating of the redux because it's slow otherwise when we type
@@ -337,6 +341,13 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
         ]
     }
 
+    _isLDFlagActivated = (flag: string) => {
+        if (this.props.flags && Object.keys(this.props.flags).includes(flag)) {
+            return Boolean(this.props.flags[flag])
+        }
+        return false
+    }
+
     render() {
         const {
             newMessage,
@@ -364,16 +375,25 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
             mentionSuggestions: agents,
         }
 
-        let displayedActions
+        let displayedActions = [
+            ActionName.Bold,
+            ActionName.Italic,
+            ActionName.Underline,
+            ActionName.Link,
+            ActionName.Image,
+            ActionName.Emoji,
+            ActionName.ProductPicker,
+        ]
 
         if (!isNewMessageRichType) {
             displayedActions = [ActionName.Emoji, ActionName.ProductPicker]
         }
 
+        if (this._isLDFlagActivated(FeatureFlagKey.RevenueDiscountCodesV0)) {
+            displayedActions.push(ActionName.DiscountCodePicker)
+        }
+
         if (isNewMessageFacebookMessengerType) {
-            if (!displayedActions) {
-                displayedActions = []
-            }
             displayedActions.push(ActionName.Image)
         }
 
@@ -462,4 +482,4 @@ const connector = connect(
     }
 )
 
-export default connector(TicketReplyEditorContainer)
+export default connector(withLDConsumer()(TicketReplyEditorContainer))

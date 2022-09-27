@@ -14,17 +14,19 @@ import {
     Italic,
     Underline,
     AddProductLink,
+    AddDiscountCode,
 } from './components/index'
 import {ActionName, ActionInjectedProps} from './types'
 
 import css from './Toolbar.less'
+import {isDisplayedAction} from './index'
 
 type State = {
     isHovered: boolean
 }
 
 type Props = {
-    buttons: ReactNode[]
+    buttons?: ReactNode[]
     attachFiles: (T: Array<Blob>) => void
     canDropFiles: boolean
     productCardsEnabled: boolean
@@ -38,17 +40,6 @@ type Props = {
 export class Toolbar extends Component<Props, State> {
     static defaultProps = {
         buttons: [],
-    }
-
-    static isDisplayedAction = (
-        name: ActionName,
-        displayedActions?: ActionName[] | null
-    ) => {
-        if (!displayedActions) {
-            return true
-        }
-
-        return displayedActions.indexOf(name) !== -1
     }
 
     state: State = {
@@ -96,7 +87,7 @@ export class Toolbar extends Component<Props, State> {
     }
 
     _isDisplayedAction = (name: ActionName): boolean =>
-        Toolbar.isDisplayedAction(name, this.props.displayedActions)
+        isDisplayedAction(name, this.props.displayedActions)
 
     render() {
         const {
@@ -107,6 +98,7 @@ export class Toolbar extends Component<Props, State> {
             integrations,
             productCardsEnabled,
         } = this.props
+
         const actionsProps = {getEditorState, setEditorState}
 
         return (
@@ -148,8 +140,19 @@ export class Toolbar extends Component<Props, State> {
                                     productCardsEnabled={productCardsEnabled}
                                 />
                             )}
+                        {this._isDisplayedAction(
+                            ActionName.DiscountCodePicker
+                        ) &&
+                            this.props.displayedActions &&
+                            integrations.size > 0 && (
+                                <AddDiscountCode
+                                    getEditorState={actionsProps.getEditorState}
+                                    setEditorState={actionsProps.setEditorState}
+                                    integrations={integrations}
+                                />
+                            )}
                     </div>
-                    {buttons.map(this._renderButton)}
+                    {buttons?.map(this._renderButton)}
 
                     <div className={css.hoverOverlay}>
                         Add files as attachments

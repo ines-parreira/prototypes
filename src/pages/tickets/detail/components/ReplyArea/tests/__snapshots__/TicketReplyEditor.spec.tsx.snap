@@ -92,6 +92,7 @@ exports[`TicketReplyEditor component should allow inline image 1`] = `
       Array [
         "EMOJI",
         "PRODUCTPICKER",
+        "DISCOUNTCODE",
         "IMAGE",
       ]
     }
@@ -172,6 +173,7 @@ exports[`TicketReplyEditor component should not allow attachments for instagram 
       Array [
         "EMOJI",
         "PRODUCTPICKER",
+        "DISCOUNTCODE",
       ]
     }
     emailExtraEnabled={true}
@@ -285,6 +287,7 @@ exports[`TicketReplyEditor component should not allow attachments for instagram 
       Array [
         "EMOJI",
         "PRODUCTPICKER",
+        "DISCOUNTCODE",
       ]
     }
     emailExtraEnabled={true}
@@ -393,6 +396,18 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
           "hasFocus": false,
         },
       }
+    }
+    displayedActions={
+      Array [
+        "BOLD",
+        "ITALIC",
+        "UNDERLINE",
+        "LINK",
+        "IMAGE",
+        "EMOJI",
+        "PRODUCTPICKER",
+        "DISCOUNTCODE",
+      ]
     }
     emailExtraEnabled={true}
     mentionSuggestions={Immutable.List []}

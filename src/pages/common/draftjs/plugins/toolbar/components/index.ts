@@ -7,6 +7,7 @@ export {default as AddLink} from './AddLink'
 export {default as AddImage} from './AddImage'
 export {default as AddEmoji} from './AddEmoji'
 export {default as AddProductLink} from './AddProductLink'
+export {default as AddDiscountCode} from './AddDiscountCode'
 
 export const Bold = decorateComponentWithProps(InlineStyle, {
     icon: 'format_bold',

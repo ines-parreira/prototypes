@@ -11,16 +11,26 @@ import {
 
 import foundUrl from './decorators/foundUrl'
 import link from './decorators/link'
-import Toolbar from './Toolbar'
 import Image from './components/Image'
 import {Config, ActionName} from './types'
 
 // documentation:
 // https://github.com/draft-js-plugins/draft-js-plugins/blob/master/HOW_TO_CREATE_A_PLUGIN.md
 
+export const isDisplayedAction = (
+    name: ActionName,
+    displayedActions?: ActionName[] | null
+) => {
+    if (!displayedActions) {
+        return true
+    }
+
+    return displayedActions.indexOf(name) !== -1
+}
+
 export default function toolbarPlugin(config: Config): Plugin {
     const isLinkDisplayed = () =>
-        Toolbar.isDisplayedAction(ActionName.Link, config.getDisplayedActions())
+        isDisplayedAction(ActionName.Link, config.getDisplayedActions())
 
     return {
         decorators: [

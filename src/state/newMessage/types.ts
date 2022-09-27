@@ -59,6 +59,7 @@ export type Ticket = {
     state: Record<string, unknown>
     _internal: Record<string, unknown>
     newMessage: NewMessage
+    id: number
     status: string
     assignee_user: User
     channel: string

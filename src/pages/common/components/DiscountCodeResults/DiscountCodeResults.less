@@ -1,0 +1,66 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .discountLineContainer {
+        width: 400px;
+    }
+
+    .listGroupContainer {
+        height: 245px;
+        overflow-y: auto;
+        width: 100%;
+        margin-bottom: 1px;
+    }
+
+    .noResultContainer {
+        text-align: center;
+        height: 280px;
+        vertical-align: middle;
+        .noResultText {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+        }
+    }
+
+    .itemCount {
+        min-width: 90px;
+        text-align: right;
+    }
+
+    .resultTotal {
+        color: @classic-main-primary;
+        font-weight: 600;
+        font-size: 11px;
+        letter-spacing: 1.1px;
+    }
+
+    .backContainer {
+        min-width: 80px;
+    }
+
+    .searchInput {
+        margin: 8px;
+    }
+
+    .shopifyLogo {
+        float: left;
+        width: 20px;
+        height: 21px;
+        pointer-events: none;
+        margin-right: 5px;
+    }
+
+    .headerResult {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        min-height: 40px;
+        padding: 4px 8px 4px 8px;
+        .headerText {
+            margin-top: 5px;
+            font-weight: 500;
+            color: @classic-neutral-grey-6;
+        }
+    }
+}

@@ -1,0 +1,325 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DiscountCodeResults /> should render no results 1`] = `
+<div>
+  <div
+    class="discountLineContainer"
+  >
+    <div
+      class="input-icon input-icon-left searchInput"
+    >
+      <i
+        class="icon material-icons md-2"
+      >
+        search
+      </i>
+      <input
+        class="form-control"
+        placeholder="Search discount codes"
+        type="text"
+        value=""
+      />
+    </div>
+    <div
+      class="headerResult"
+    >
+      <div
+        class="backContainer"
+      >
+        <button
+          class="wrapper mr-2 fill primary small"
+          tabindex="-1"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            <i
+              class="material-icons icon isLeft small"
+            >
+              arrow_back
+            </i>
+            Back
+          </span>
+        </button>
+        <button
+          class="wrapper mr-2 fill primary small"
+          tabindex="-1"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            <i
+              class="material-icons icon isLeft small"
+            >
+              add
+            </i>
+            Add
+          </span>
+        </button>
+      </div>
+      <div>
+        <span
+          class="headerText"
+        >
+          Acme Billing
+        </span>
+      </div>
+      <div
+        class="itemCount"
+      >
+        <span
+          class="resultTotal"
+        >
+          0
+          
+           Discounts
+        </span>
+      </div>
+    </div>
+    <div
+      class="listGroupContainer"
+    >
+      <div
+        class="noResultContainer"
+      >
+        <p
+          class="noResultText"
+        >
+          No results found
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<DiscountCodeResults /> should render the component 1`] = `
+<div
+  class="discountLineContainer"
+>
+  <div
+    class="input-icon input-icon-left searchInput"
+  >
+    <i
+      class="icon material-icons md-2"
+    >
+      search
+    </i>
+    <input
+      class="form-control"
+      placeholder="Search discount codes"
+      type="text"
+      value=""
+    />
+  </div>
+  <div
+    class="headerResult"
+  >
+    <div
+      class="backContainer"
+    >
+      <button
+        class="wrapper mr-2 fill primary small"
+        tabindex="-1"
+        type="button"
+      >
+        <span
+          class="wrapper"
+        >
+          <i
+            class="material-icons icon isLeft small"
+          >
+            arrow_back
+          </i>
+          Back
+        </span>
+      </button>
+      <button
+        class="wrapper mr-2 fill primary small"
+        tabindex="-1"
+        type="button"
+      >
+        <span
+          class="wrapper"
+        >
+          <i
+            class="material-icons icon isLeft small"
+          >
+            add
+          </i>
+          Add
+        </span>
+      </button>
+    </div>
+    <div>
+      <span
+        class="headerText"
+      >
+        Acme Billing
+      </span>
+    </div>
+    <div
+      class="itemCount"
+    >
+      <span
+        class="resultTotal"
+      >
+        0
+        
+         Discounts
+      </span>
+    </div>
+  </div>
+  <div
+    class="listGroupContainer"
+  >
+    <div
+      class="noResultContainer"
+    >
+      <p
+        class="noResultText"
+      >
+        No results found
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<DiscountCodeResults /> should render the discount codes 1`] = `
+<div>
+  <div
+    class="discountLineContainer"
+  >
+    <div
+      class="input-icon input-icon-left searchInput"
+    >
+      <i
+        class="icon material-icons md-2"
+      >
+        search
+      </i>
+      <input
+        class="form-control"
+        placeholder="Search discount codes"
+        type="text"
+        value=""
+      />
+    </div>
+    <div
+      class="headerResult"
+    >
+      <div
+        class="backContainer"
+      >
+        <button
+          class="wrapper mr-2 fill primary small"
+          tabindex="-1"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            <i
+              class="material-icons icon isLeft small"
+            >
+              arrow_back
+            </i>
+            Back
+          </span>
+        </button>
+        <button
+          class="wrapper mr-2 fill primary small"
+          tabindex="-1"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            <i
+              class="material-icons icon isLeft small"
+            >
+              add
+            </i>
+            Add
+          </span>
+        </button>
+      </div>
+      <div>
+        <span
+          class="headerText"
+        >
+          Acme Billing
+        </span>
+      </div>
+      <div
+        class="itemCount"
+      >
+        <span
+          class="resultTotal"
+        >
+          2
+          
+           Discounts
+        </span>
+      </div>
+    </div>
+    <div
+      class="listGroupContainer"
+    >
+      <ul
+        class="list-group list-group-flush"
+      >
+        <button
+          class="list-group-item-action list-group-item"
+          id="resultRow0"
+        >
+          <div
+            class="container"
+          >
+            <div
+              class="legend"
+            >
+              <div
+                class="title"
+              >
+                CODE1
+              </div>
+              <div
+                class="subtitle"
+              >
+                $0.00 off entire order
+              </div>
+            </div>
+          </div>
+        </button>
+        <button
+          class="list-group-item-action list-group-item"
+          id="resultRow1"
+        >
+          <div
+            class="container"
+          >
+            <div
+              class="legend"
+            >
+              <div
+                class="title"
+              >
+                CODE2
+              </div>
+              <div
+                class="subtitle"
+              >
+                $0.00 off entire order
+              </div>
+            </div>
+          </div>
+        </button>
+      </ul>
+    </div>
+  </div>
+</div>
+`;

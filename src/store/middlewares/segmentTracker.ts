@@ -80,6 +80,8 @@ export enum SegmentEvent {
     RuleLibraryItemShown = 'rule-library/item-shown',
     RuleLibraryItemInstalled = 'rule-library/item-installed',
     RecentActivityClicked = 'recent-activity-clicked',
+    InsertDiscountCodeOpen = 'insert-discount-code/open',
+    InsertDiscountCodeAdded = 'insert-discount-code/added',
     ShopifyCancelOrderCancel = 'shopify/cancel-order/cancel',
     ShopifyCancelOrderOpen = 'shopify/cancel-order/open',
     ShopifyCreateOrderCancel = 'shopify/create-order/cancel',

@@ -9,6 +9,7 @@ export enum ActionName {
     Image = 'IMAGE',
     Emoji = 'EMOJI',
     ProductPicker = 'PRODUCTPICKER',
+    DiscountCodePicker = 'DISCOUNTCODE',
 }
 
 export type EditorStateSetter = (editorState: EditorState) => any
