@@ -114,7 +114,10 @@ const ContactFormInfoSection = ({helpCenter}: ContactFormInfoSectionProps) => {
         return `<script defer type="text/javascript" src="${absoluteUrl}api/contact-form-loader.js?source=${encodeURI(
             embeddedContactFormUrl
         )}"></script>
-<div id="gorgias-contact-form-wrapper"></div>`
+<link rel="stylesheet" href="${absoluteUrl}api/contact-form-loader.css" />
+<div id="gorgias-contact-form-wrapper">
+    <div id="gorgias-contact-form-loader"></div>
+</div>`
     }
 
     const onChangeContactFormIntegration = useCallback(
