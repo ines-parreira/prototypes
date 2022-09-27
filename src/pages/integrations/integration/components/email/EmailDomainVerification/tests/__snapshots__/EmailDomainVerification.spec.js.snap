@@ -187,7 +187,7 @@ exports[`<EmailDomainVerificationContainer/> render() should render the page whe
 </div>
 `;
 
-exports[`<EmailDomainVerificationContainer/> render() should render the page when there is no domain 1`] = `
+exports[`<EmailDomainVerificationContainer/> render() should render the page when there is no domain - mailgun 1`] = `
 <div>
   <div
     class="pageContainer container-fluid"
@@ -257,6 +257,25 @@ exports[`<EmailDomainVerificationContainer/> render() should render the page whe
         </div>
       </div>
     </div>
+    <button
+      class="wrapper fill primary medium"
+      color="primary"
+      type="submit"
+    >
+      Add Domain
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<EmailDomainVerificationContainer/> render() should render the page when there is no domain - sendgrid 1`] = `
+<div>
+  <div
+    class="pageContainer container-fluid"
+  >
+    <p>
+      No domain and DKIM configuration has been created yet.
+    </p>
     <button
       class="wrapper fill primary medium"
       color="primary"

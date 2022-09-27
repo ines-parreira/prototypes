@@ -14,6 +14,7 @@ import * as currentUserSelectors from 'state/currentUser/selectors'
 import {
     IntegrationType,
     DEFAULT_EMAIL_DKIM_KEY_SIZE,
+    EmailProvider,
 } from 'models/integration/constants'
 import {hasRole} from 'utils'
 import {UserRole} from 'config/types/user'
@@ -44,6 +45,7 @@ export const EmailDomainVerificationContainer = (props: Props) => {
     const [dkimKeySize, setDkimKeySize] = useState(DEFAULT_EMAIL_DKIM_KEY_SIZE)
 
     const address = integration.getIn(['meta', 'address'], '') as string
+    const provider = integration.getIn(['meta', 'provider'], '') as string
     const domain = address.substr(address.lastIndexOf('@') + 1)
 
     useLayoutEffect(() => {
@@ -145,26 +147,29 @@ export const EmailDomainVerificationContainer = (props: Props) => {
                                 No domain and DKIM configuration has been
                                 created yet.
                             </p>
-                            <FormGroup className={css['form-group']}>
-                                <Label className="control-label">
-                                    DKIM key size
-                                </Label>
-                                <SelectField
-                                    value={dkimKeySize}
-                                    onChange={setDkimKeySize as any}
-                                    options={[
-                                        {
-                                            value: 1024,
-                                            label: '1024 (Default)',
-                                        },
-                                        {
-                                            value: 2048,
-                                            label: '2048',
-                                        },
-                                    ]}
-                                    fullWidth
-                                />
-                            </FormGroup>
+                            {provider !== EmailProvider.Sendgrid && (
+                                <FormGroup className={css['form-group']}>
+                                    <Label className="control-label">
+                                        DKIM key size
+                                    </Label>
+                                    <SelectField
+                                        value={dkimKeySize}
+                                        onChange={setDkimKeySize as any}
+                                        options={[
+                                            {
+                                                value: 1024,
+                                                label: '1024 (Default)',
+                                            },
+                                            {
+                                                value: 2048,
+                                                label: '2048',
+                                            },
+                                        ]}
+                                        fullWidth
+                                    />
+                                </FormGroup>
+                            )}
+
                             <Button
                                 type="submit"
                                 color="primary"

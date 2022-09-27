@@ -5,6 +5,8 @@ import {render, waitFor} from '@testing-library/react'
 
 import {EmailDomainVerificationContainer} from '../EmailDomainVerification'
 
+import {EmailProvider} from '../../../../../../../models/integration/constants'
+
 import {IntegrationType} from 'models/integration/constants'
 import {UserRole} from 'config/types/user'
 
@@ -67,11 +69,35 @@ describe('<EmailDomainVerificationContainer/>', () => {
 
             expect(container).toMatchSnapshot()
         })
-        it('should render the page when there is no domain', () => {
+        it('should render the page when there is no domain - mailgun', () => {
             const {container} = render(
                 <EmailDomainVerificationContainer
                     emailDomain={null}
                     {...commonProps}
+                    integration={fromJS({
+                        ...commonProps.integration,
+                        meta: {
+                            address: 'test@gorgias.com',
+                            provider: EmailProvider.Mailgun,
+                        },
+                    })}
+                />
+            )
+
+            expect(container).toMatchSnapshot()
+        })
+        it('should render the page when there is no domain - sendgrid', () => {
+            const {container} = render(
+                <EmailDomainVerificationContainer
+                    emailDomain={null}
+                    {...commonProps}
+                    integration={fromJS({
+                        ...commonProps.integration,
+                        meta: {
+                            address: 'test@gorgias.com',
+                            provider: EmailProvider.Sendgrid,
+                        },
+                    })}
                 />
             )
 
