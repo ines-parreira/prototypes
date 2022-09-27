@@ -6,8 +6,11 @@ import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {BIGCOMMERCE_INTEGRATION_TYPE} from 'constants/integration'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {DatetimeLabel} from 'pages/common/utils/labels'
-import {StaticField} from '../StaticField'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import useAppSelector from 'hooks/useAppSelector'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import MoneyAmount from '../MoneyAmount'
+import {StaticField} from '../StaticField'
 
 export default function Order() {
     return {
@@ -71,6 +74,7 @@ type TitleWrapperProps = {
 }
 
 export function TitleWrapper({children, source}: TitleWrapperProps) {
+    const currentAccount = useAppSelector(getCurrentAccountState)
     const {integration} = useContext(IntegrationContext)
     const storeHash = integration.getIn(['meta', 'store_hash']) as string
 
@@ -85,7 +89,16 @@ export function TitleWrapper({children, source}: TitleWrapperProps) {
 
     return (
         <>
-            <a href={link} target="_blank" rel="noopener noreferrer">
+            <a
+                href={link}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => {
+                    logEvent(SegmentEvent.BigCommerceOrderClicked, {
+                        account_domain: currentAccount.get('domain'),
+                    })
+                }}
+            >
                 {children}
             </a>
             <div>

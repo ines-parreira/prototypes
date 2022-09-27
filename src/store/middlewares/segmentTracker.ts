@@ -178,6 +178,8 @@ export enum SegmentEvent {
     RechargeProfileClicked = 'widget/recharge-profile-link/link-clicked',
     RechargeSubscriptionClicked = 'widget/recharge-subscription-link/link-clicked',
     RechargeOrderClicked = 'widget/recharge-order-link/link-clicked',
+    BigCommerceProfileClicked = 'widget/bigcommerce-profile-link/link-clicked',
+    BigCommerceOrderClicked = 'widget/bigcommerce-order-link/link-clicked',
     MenuUserLinkClicked = 'menu-user-link-clicked',
     MenuMainLinkClicked = 'menu-main-link-clicked',
     TicketFailedReview = 'ticket-failed-review',

@@ -5,6 +5,9 @@ import logo from 'assets/img/infobar/bigcommerce.svg'
 
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import useAppSelector from 'hooks/useAppSelector'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {StaticField} from '../StaticField'
 import {CardHeaderTitle} from '../CardHeaderTitle'
 import {CardHeaderIcon} from '../CardHeaderIcon'
@@ -35,6 +38,7 @@ type TitleWrapperProps = {
 }
 
 export function TitleWrapper({children, source}: TitleWrapperProps) {
+    const currentAccount = useAppSelector(getCurrentAccountState)
     const {integration} = useContext(IntegrationContext)
     const storeHash = integration.getIn(['meta', 'store_hash']) as string
     const customerId = (source.get('id') || '') as string
@@ -54,6 +58,11 @@ export function TitleWrapper({children, source}: TitleWrapperProps) {
                         href={customerLink}
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={() => {
+                            logEvent(SegmentEvent.BigCommerceProfileClicked, {
+                                account_domain: currentAccount.get('domain'),
+                            })
+                        }}
                     >
                         {children}
                     </a>
