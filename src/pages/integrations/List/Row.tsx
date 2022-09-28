@@ -1,9 +1,11 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
+import {isString} from 'lodash'
 
 import {getIconFromUrl} from 'utils'
 import useAppSelector from 'hooks/useAppSelector'
+import {IntegrationType} from 'models/integration/constants'
 import {AppListItem, isAppListItem} from 'models/integration/types/app'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {IntegrationListItem} from 'state/integrations/types'
@@ -76,6 +78,33 @@ const Row = ({integration}: Props) => {
         </>
     )
 
+    const tabName = (integration: IntegrationListItem | AppListItem) => {
+        if (!isAppListItem(integration) && integration.count > 0) {
+            switch (integration.type) {
+                case IntegrationType.Phone:
+                case IntegrationType.Sms: {
+                    return 'integrations'
+                }
+
+                case IntegrationType.Recharge:
+                case IntegrationType.Shopify:
+                case IntegrationType.BigCommerce: {
+                    return 'connections'
+                }
+
+                default:
+                    return null
+            }
+        }
+        return null
+    }
+
+    const url = isAppListItem(integration)
+        ? `/app/settings/integrations/app/${integration.appId}`
+        : ['/app/settings/integrations', integration.type, tabName(integration)]
+              .filter(isString)
+              .join('/')
+
     return integration.requiredPlanName ? (
         <div
             className={classnames(
@@ -99,11 +128,7 @@ const Row = ({integration}: Props) => {
                     account_domain: account.get('domain'),
                 })
             }}
-            to={
-                isAppListItem(integration)
-                    ? `/app/settings/integrations/app/${integration.appId}`
-                    : `/app/settings/integrations/${integration.type}`
-            }
+            to={url}
         >
             {content}
         </Link>

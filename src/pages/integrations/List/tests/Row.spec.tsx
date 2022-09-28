@@ -84,4 +84,46 @@ describe('IntegrationsListRow', () => {
         )
         expect(container.firstChild).toMatchSnapshot()
     })
+
+    it('should open the list of connections for Shopify and BigCommerce when connections exist', () => {
+        const integration = {
+            type: IntegrationType.Shopify,
+            title: 'Shopify',
+            description: '',
+            image: 'ok.png',
+            count: 2,
+        }
+
+        const {container} = render(
+            <Provider store={store}>
+                <Row integration={integration} />
+            </Provider>
+        )
+
+        expect(container.querySelector('a')?.getAttribute('to')).toBe(
+            '/app/settings/integrations/shopify/connections'
+        )
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should open the list of integrations for Voice and SMS when integrations exist', () => {
+        const integration = {
+            type: IntegrationType.Phone,
+            title: 'Shopify',
+            description: '',
+            image: 'ok.png',
+            count: 2,
+        }
+
+        const {container} = render(
+            <Provider store={store}>
+                <Row integration={integration} />
+            </Provider>
+        )
+
+        expect(container.querySelector('a')?.getAttribute('to')).toBe(
+            '/app/settings/integrations/phone/integrations'
+        )
+        expect(container.firstChild).toMatchSnapshot()
+    })
 })
