@@ -323,6 +323,8 @@ export default function Meta(props: Props) {
                         <Link
                             to={`/app/settings/rules/${props.ruleId}`}
                             title="Rule"
+                            target="_blank"
+                            rel="noreferrer"
                         >
                             {rule?.name ?? 'Rule'}
                         </Link>

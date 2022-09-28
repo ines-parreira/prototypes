@@ -169,6 +169,8 @@ export class AuditLogEventContainer extends Component<Props> {
                             href={`/app/settings/rules/${
                                 data.get('id') as number
                             }`}
+                            target="_blank"
+                            rel="noreferrer"
                         >
                             {data.get('name')}
                         </a>

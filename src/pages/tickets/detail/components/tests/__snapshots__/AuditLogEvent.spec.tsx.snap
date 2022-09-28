@@ -292,6 +292,8 @@ exports[`<AuditLogEvent/> render() should render when the rule has a triggering 
           Rule "
           <a
             href="/app/settings/rules/1"
+            rel="noreferrer"
+            target="_blank"
           >
             Rule 1
           </a>
@@ -345,6 +347,8 @@ exports[`<AuditLogEvent/> render() should render when the rule has failed action
           Rule "
           <a
             href="/app/settings/rules/1"
+            rel="noreferrer"
+            target="_blank"
           >
             Rule 1
           </a>
@@ -489,6 +493,8 @@ exports[`<AuditLogEvent/> render() should render with event type rule-executed 1
           Rule "
           <a
             href="/app/settings/rules/1"
+            rel="noreferrer"
+            target="_blank"
           >
             Rule 1
           </a>
