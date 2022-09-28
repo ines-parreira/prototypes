@@ -2,8 +2,9 @@ import React, {useEffect, useMemo, useRef, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {useParams, useLocation} from 'react-router-dom'
 import {fromJS, List, Map} from 'immutable'
-import {useAsyncFn, useEffectOnce, usePrevious} from 'react-use'
+import {useAsyncFn, useEffectOnce, usePrevious, useKey} from 'react-use'
 import DocumentTitle from 'react-document-title'
+
 import {TicketMessageSourceType} from 'business/types/ticket'
 import useSearch from 'hooks/useSearch'
 import {RootState} from 'state/types'
@@ -45,6 +46,7 @@ import {
 import {updateCursor} from 'state/tickets/actions'
 import {getActiveView} from 'state/views/selectors'
 
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import Loader from '../../common/components/Loader/Loader'
 
 import TicketView from './components/TicketView'
@@ -427,6 +429,21 @@ export const TicketDetailContainer = ({
             )
         }
     })
+
+    const trackCtrlFKeyCombo = () => {
+        logEvent(SegmentEvent.TicketMessageSearchKeyPressed)
+    }
+
+    const ctrlFPredicate = (event: KeyboardEvent) => {
+        return (
+            ticketIdParam !== 'new' &&
+            (navigator.platform.includes('Mac')
+                ? event.metaKey && event.key === 'f'
+                : event.ctrlKey && event.key === 'f')
+        )
+    }
+
+    useKey(ctrlFPredicate, trackCtrlFKeyCombo, {event: 'keydown'})
 
     const showTicket = () => {
         setIsTicketHidden(false)

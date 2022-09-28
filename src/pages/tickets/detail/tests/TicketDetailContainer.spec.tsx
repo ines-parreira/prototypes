@@ -1,5 +1,5 @@
 import React, {ComponentProps} from 'react'
-import {act, waitFor} from '@testing-library/react'
+import {act, waitFor, fireEvent} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {fromJS, Map} from 'immutable'
 import moment from 'moment'
@@ -10,14 +10,16 @@ import {
     flushPromises,
     makeExecuteKeyboardAction,
     renderWithRouter,
-} from '../../../../utils/testing'
-import {initialState as currentUser} from '../../../../state/currentUser/reducers'
-import pendingMessageManager from '../../../../services/pendingMessageManager/pendingMessageManager'
+} from 'utils/testing'
+import {initialState as currentUser} from 'state/currentUser/reducers'
+import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
 import {
     TicketMessageActionValidationError,
     TicketMessageInvalidSendDataError,
-} from '../../../../state/newMessage/errors'
-import shortcutManager from '../../../../services/shortcutManager/shortcutManager'
+} from 'state/newMessage/errors'
+import shortcutManager from 'services/shortcutManager/shortcutManager'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+
 import {TicketDetailContainer} from '../TicketDetailContainer'
 import TicketView from '../components/TicketView'
 
@@ -45,6 +47,8 @@ jest.mock(
         skipExistingTimer: jest.fn(),
     })
 )
+
+jest.mock('store/middlewares/segmentTracker')
 
 const shortcutManagerMock = shortcutManager as jest.Mocked<
     typeof shortcutManager
@@ -900,4 +904,32 @@ describe('TicketDetailContainer component', () => {
             expect(callMock).toHaveBeenCalledTimes(1)
         }
     )
+
+    it('should track the control / cmd + f combo', () => {
+        const {container} = renderWithRouter(
+            <TicketDetailContainer {...minProps} />,
+            {
+                path: '/foo/:ticketId',
+                route: '/foo/1',
+            }
+        )
+
+        fireEvent.keyDown(container.firstChild!, {key: 'f', ctrlKey: true})
+        expect(logEvent).toHaveBeenCalledWith(
+            SegmentEvent.TicketMessageSearchKeyPressed
+        )
+    })
+
+    it('should not track the control / cmd + f combo if on a new ticket', () => {
+        const {container} = renderWithRouter(
+            <TicketDetailContainer {...minProps} />,
+            {
+                path: '/foo/:ticketId',
+                route: '/foo/new',
+            }
+        )
+
+        fireEvent.keyDown(container.firstChild!, {key: 'f', ctrlKey: true})
+        expect(logEvent).not.toHaveBeenCalled()
+    })
 })

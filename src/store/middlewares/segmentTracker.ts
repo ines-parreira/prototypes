@@ -155,6 +155,7 @@ export enum SegmentEvent {
     TicketMergeClicked = 'ticket-merge-clicked',
     TicketMessageCreated = 'ticket-message-created',
     TicketMacrosSearch = 'ticket-macros-search',
+    TicketMessageSearchKeyPressed = 'ticket-message-search-key-pressed',
     UserHistoryToggled = 'user-history-toggled',
     UserMergeClicked = 'user-merge-clicked',
     ViewFilterAddClicked = 'view-filter-add-clicked',
