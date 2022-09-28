@@ -465,5 +465,26 @@ describe('Config: ticket', () => {
                 expect(channel).toBe(TicketChannel.Twitter)
             }
         )
+
+        it.each([
+            TicketMessageSourceType.ChatContactForm,
+            TicketMessageSourceType.HelpCenterContactForm,
+        ])(
+            'should return Email channel if the last non system message is from a contact form source type',
+            (sourceType) => {
+                const channel =
+                    sourceType === TicketMessageSourceType.ChatContactForm
+                        ? TicketChannel.Chat
+                        : TicketChannel.HelpCenter
+
+                const via = TicketVia.ContactForm
+
+                const calculatedChannel = ticketConfig.sourceTypeToChannel(
+                    sourceType,
+                    [{channel, via} as TicketMessage]
+                )
+                expect(calculatedChannel).toBe(TicketChannel.Email)
+            }
+        )
     })
 })
