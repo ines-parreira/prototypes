@@ -328,7 +328,7 @@ exports[`<RulesView/> should render the rule views 1`] = `
         >
           <img
             alt="video preview"
-            src="https://img.youtube.com/vi/zo2Ui0RPscU/0.jpg"
+            src="https://img.youtube.com/vi/HFylY2x3T_Y/0.jpg"
           />
           <i
             class="material-icons playIcon"
