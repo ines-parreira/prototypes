@@ -10,4 +10,5 @@ export enum FeatureFlagKey {
     RevenueAlphaTesters = 'revenue-alpha-testers',
     NewVoiceSmsLayout = 'new-voice-sms-layout',
     RevenueDiscountCodesV0 = 'revenue-discount-codes-v0',
+    ElasticsearchSearchLoadTest = 'elasticsearch-search-load-test',
 }

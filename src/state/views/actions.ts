@@ -5,6 +5,7 @@ import _max from 'lodash/max'
 import {Moment} from 'moment'
 import {notify as updateNotification} from 'reapop'
 import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actions'
+import _noop from 'lodash/noop'
 
 import {search, SEARCH_ENGINE_HEADER} from 'models/search/resources'
 import * as viewsConfig from 'config/views'
@@ -32,6 +33,8 @@ import {fetchViewsPaginated} from 'models/view/resources'
 import {SearchEngine, SearchType} from 'models/search/types'
 import {SearchRank} from 'hooks/useSearchRankScenario'
 import GorgiasApi from 'services/gorgiasApi'
+import {getLDClient} from 'utils/launchDarkly'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import {activeViewUrl} from './utils'
 import * as viewsSelectors from './selectors'
@@ -447,6 +450,27 @@ export function fetchViewItems(
                 url,
                 options
             )
+        }
+
+        if (
+            getLDClient().allFlags()[
+                FeatureFlagKey.ElasticsearchSearchLoadTest
+            ] &&
+            activeView.get('search') !== null &&
+            activeView.get('type') === ViewType.TicketList &&
+            !direction &&
+            !cursor
+        ) {
+            void client
+                .post(
+                    '/api/tickets/search',
+                    {
+                        search: activeView.get('search'),
+                        filters: activeView.get('filters'),
+                    },
+                    options
+                )
+                .catch(_noop)
         }
 
         searchRank?.endScenario()

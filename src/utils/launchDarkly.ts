@@ -20,6 +20,7 @@ export function initLaunchDarkly(
             custom: {
                 plan: account?.current_subscription?.plan,
                 domain: account.domain,
+                cluster: window.GORGIAS_CLUSTER,
             },
         }
     }
