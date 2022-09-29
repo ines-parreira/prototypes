@@ -25,6 +25,7 @@ describe('Customer', () => {
                     <IntegrationContext.Provider value={integrationContextData}>
                         <TitleWrapper
                             source={fromJS({
+                                id: '92837589347',
                                 hash: 'a8s4d86as54d',
                             })}
                             template={fromJS({})}
@@ -42,6 +43,7 @@ describe('Customer', () => {
                     <IntegrationContext.Provider value={integrationContextData}>
                         <TitleWrapper
                             source={fromJS({
+                                id: '92837589347',
                                 hash: 'a8s4d86as54d',
                             })}
                             template={fromJS({

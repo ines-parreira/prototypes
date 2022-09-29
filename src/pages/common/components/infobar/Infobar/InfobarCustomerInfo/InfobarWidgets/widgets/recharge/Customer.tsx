@@ -45,7 +45,8 @@ export function TitleWrapper({children, source, template}: TitleWrapperProps) {
     const {integration} = useContext(IntegrationContext)
     const storeName = integration.getIn(['meta', 'store_name']) as string
     const customerHash = source.get('hash') as string
-    const defaultLink = `https://${storeName}-sp.admin.rechargeapps.com/admin/customers/${customerHash}/subscriptions/`
+    const customerId = source.get('id') as string
+    const defaultLink = `https://${storeName}-sp.admin.rechargeapps.com/merchant/customers/${customerId}`
     let customLink = template.getIn(['meta', 'link']) as string | null
 
     if (customLink) {

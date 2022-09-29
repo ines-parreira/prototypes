@@ -173,7 +173,7 @@ export function TitleWrapperContainer({
     const subscriptionId = source.get('id') as string
     let link = undefined
     if (customerHash) {
-        link = `https://${storeName}-sp.admin.rechargeapps.com/admin/customers/${customerHash}/subscriptions/${subscriptionId}`
+        link = `https://${storeName}-sp.admin.rechargeapps.com/merchant/subscriptions/${subscriptionId}/details`
 
         const customLink = template.getIn(['meta', 'link'])
 

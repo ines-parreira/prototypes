@@ -102,7 +102,7 @@ exports[`Subscription TitleWrapper customer context should render custom link be
 exports[`Subscription TitleWrapper customer context should render default link because no custom link is set 1`] = `
 <div>
   <a
-    href="https://mystore-sp.admin.rechargeapps.com/admin/customers/asd1as2d3/subscriptions/789"
+    href="https://mystore-sp.admin.rechargeapps.com/merchant/subscriptions/789/details"
     rel="noopener noreferrer"
     target="_blank"
   />
@@ -160,7 +160,7 @@ exports[`Subscription TitleWrapper ticket context should render custom link beca
 exports[`Subscription TitleWrapper ticket context should render default link because no custom link is set 1`] = `
 <div>
   <a
-    href="https://mystore-sp.admin.rechargeapps.com/admin/customers/asd1as2d3/subscriptions/789"
+    href="https://mystore-sp.admin.rechargeapps.com/merchant/subscriptions/789/details"
     rel="noopener noreferrer"
     target="_blank"
   />

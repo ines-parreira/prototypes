@@ -62,7 +62,7 @@ exports[`Customer TitleWrapper should render default link because no custom link
       class="container"
     >
       <a
-        href="https://mystore-sp.admin.rechargeapps.com/admin/customers/a8s4d86as54d/subscriptions/"
+        href="https://mystore-sp.admin.rechargeapps.com/merchant/customers/92837589347"
         rel="noopener noreferrer"
         target="_blank"
       />

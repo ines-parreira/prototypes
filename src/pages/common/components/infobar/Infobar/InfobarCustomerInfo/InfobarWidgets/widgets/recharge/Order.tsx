@@ -266,13 +266,12 @@ export function TitleWrapper({
         integrationId!,
         source.get('customer_id')
     ).getIn(['customer', 'hash']) as string
-    const customerId = source.get('customer_id') as string
     const orderId = source.get('id') as string
 
     let link = undefined
 
     if (customerHash) {
-        link = `https://${storeName}-sp.admin.rechargeapps.com/admin/customers/${customerId}/orders/history/${orderId}`
+        link = `https://${storeName}-sp.admin.rechargeapps.com/merchant/orders/${orderId}`
         const customLink = template.getIn(['meta', 'link']) as string
 
         if (customLink) {
