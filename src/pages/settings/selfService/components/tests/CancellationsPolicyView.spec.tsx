@@ -1,11 +1,12 @@
 import React from 'react'
-import {fireEvent, render, screen} from '@testing-library/react'
+import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {useParams} from 'react-router-dom'
 
+import LD from 'launchdarkly-react-client-sdk'
 import {
     SelfServiceConfiguration,
     ShopType,
@@ -16,6 +17,7 @@ import {RootState, StoreDispatch} from 'state/types'
 import {updateSelfServiceConfiguration} from 'models/selfServiceConfiguration/resources'
 import {billingState} from 'fixtures/billing'
 import {account} from 'fixtures/account'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {CancellationsPolicyView} from '../CancellationsPolicyView'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -147,10 +149,55 @@ describe('<CancellationsPolicyView/>', () => {
             )
             expect(container).toMatchSnapshot()
         })
+
+        it('should render the eligibility window option as unfulfilled with SelfServiceAutomatedResponseOrderManagement flag', () => {
+            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+                [FeatureFlagKey.SelfServiceAutomatedResponseOrderManagement]:
+                    true,
+            }))
+
+            useParamsMock.mockReturnValue({
+                shopName: 'myStore1',
+                integrationType: 'shopify',
+            })
+
+            const {container} = render(
+                <Provider
+                    store={mockStore({
+                        ...defaultState,
+                        integrations: fromJS({
+                            integrations: shopifyIntegrations,
+                        }),
+                        entities: {
+                            ...defaultState.entities,
+                            selfServiceConfigurations:
+                                selfServiceConfigurations.reduce(
+                                    (
+                                        configurations: SelfServiceConfigurationsState,
+                                        configuration: SelfServiceConfiguration
+                                    ) => ({
+                                        ...configurations,
+                                        [configuration.id]: configuration,
+                                    }),
+                                    {} as Partial<SelfServiceConfiguration>
+                                ),
+                        },
+                    })}
+                >
+                    <CancellationsPolicyView />
+                </Provider>
+            )
+            expect(container).toMatchSnapshot()
+        })
     })
 
     describe('onSubmit()', () => {
-        it('should set the eligibility option to processing fulfillment and make the update request', () => {
+        it('should set the eligibility option to processing fulfillment and make the update request', async () => {
+            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+                [FeatureFlagKey.SelfServiceAutomatedResponseOrderManagement]:
+                    false,
+            }))
+
             useParamsMock.mockReturnValue({
                 shopName: 'myStore1',
                 integrationType: 'shopify',
@@ -193,8 +240,9 @@ describe('<CancellationsPolicyView/>', () => {
             fireEvent.click(newlySelectedOption)
             fireEvent.click(submitButton)
 
-            expect(updateSelfServiceConfigurationMock.mock.calls[0])
-                .toMatchInlineSnapshot(`
+            await waitFor(() => {
+                expect(updateSelfServiceConfigurationMock.mock.calls[0])
+                    .toMatchInlineSnapshot(`
                 Array [
                   Object {
                     "cancel_order_policy": Object {
@@ -233,6 +281,7 @@ describe('<CancellationsPolicyView/>', () => {
                   },
                 ]
             `)
+            })
         })
     })
 })

@@ -3,6 +3,7 @@ import {Link, useParams} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Col, Container, Form, Row} from 'reactstrap'
 import classNames from 'classnames'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import Button from 'pages/common/components/button/Button'
 
 import PageHeader from 'pages/common/components/PageHeader'
@@ -31,6 +32,7 @@ import {getHasAutomationAddOn} from 'state/billing/selectors'
 import {GorgiasChatIntegrationSelfServicePaywall} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
 import settingsCss from 'pages/settings/settings.less'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {useConfigurationData} from './hooks'
 import css from './CancellationPolicyView.less'
 
@@ -45,6 +47,8 @@ export const CancellationsPolicyView = () => {
 
     const hasSelfServiceV1Features = useAppSelector(hasAutomationLegacyFeatures)
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const hasAutomatedResponseOrderManagementFlag =
+        useFlags()[FeatureFlagKey.SelfServiceAutomatedResponseOrderManagement]
 
     const [showDeleteButton, setShowDeleteButton] = useState(true)
 
@@ -263,6 +267,17 @@ export const CancellationsPolicyView = () => {
                                                 </div>
                                             ) : null}
                                         </div>
+                                        {hasAutomatedResponseOrderManagementFlag && (
+                                            <p>
+                                                This is hidden behind{' '}
+                                                <i>
+                                                    {
+                                                        FeatureFlagKey.SelfServiceAutomatedResponseOrderManagement
+                                                    }
+                                                </i>{' '}
+                                                flag
+                                            </p>
+                                        )}
                                         <Button
                                             className={classNames('mr-2', {
                                                 'btn-loading': loading,

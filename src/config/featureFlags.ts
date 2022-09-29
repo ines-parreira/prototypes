@@ -1,5 +1,6 @@
 export enum FeatureFlagKey {
     SelfServiceArticleRecommendation = 'self-service-article-recommendation',
+    SelfServiceAutomatedResponseOrderManagement = 'self-service-automated-response-order-management',
     EarlyAdopter = 'early-adopter',
     DefaultMacroToSearch = 'default-macro-to-search',
     MacroResponseTextCcBcc = 'macro-response-text-cc-bcc',

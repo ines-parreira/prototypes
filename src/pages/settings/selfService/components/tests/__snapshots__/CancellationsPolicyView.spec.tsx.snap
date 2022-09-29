@@ -367,3 +367,196 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
   </div>
 </div>
 `;
+
+exports[`<CancellationsPolicyView/> render() should render the eligibility window option as unfulfilled with SelfServiceAutomatedResponseOrderManagement flag 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="page-header pageHeader"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/self-service"
+            >
+              Self-service
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/self-service/shopify/myStore1/preferences/order-management"
+            >
+              myStore1
+            </a>
+          </li>
+          <li
+            aria-current="page"
+            class="active breadcrumb-item"
+          >
+            Cancel
+          </li>
+        </ol>
+      </nav>
+    </div>
+    <div
+      class="pageContainer container-fluid"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <div
+            class="mb-3"
+          >
+            <h4
+              class="cancellationsPolicyTitle"
+            >
+              Cancel
+            </h4>
+            <p
+              class="cancellationsPolicyDescription"
+            >
+              Let customers request order cancellations directly from the Self-service Portal in Chat and Help Center.
+            </p>
+            <br />
+            <h5
+              class="eligibilityWindowTitle"
+            >
+              Eligibility window
+            </h5>
+            <p
+              class="eligibilityWindowDescription"
+            >
+              Customers will be able to cancel an order up to the following status:
+            </p>
+            <form
+              class=""
+            >
+              <div
+                class="eligibilityWindowContainer"
+              >
+                <div
+                  class="orderStatus"
+                  id="order-status"
+                >
+                  Order status is
+                </div>
+                <div>
+                  <div
+                    class="dropdown"
+                  >
+                    <div
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      class="orderStatusSelectField"
+                      data-toggle="dropdown"
+                    >
+                      <div
+                        class="select dropdown-toggle"
+                      >
+                        <span
+                          class="label"
+                          style="min-width: 10px; opacity: 1;"
+                        >
+                          Unfulfilled
+                        </span>
+                        <input
+                          autocomplete="chrome-off"
+                          class="input"
+                          style="min-width: 10px;"
+                          type="text"
+                          value=""
+                        />
+                        <i
+                          class="material-icons dropdownIcon"
+                        >
+                          arrow_drop_down
+                        </i>
+                      </div>
+                    </div>
+                    <div
+                      aria-hidden="true"
+                      class="options dropdown-menu"
+                      role="menu"
+                      tabindex="-1"
+                    >
+                      
+                      <button
+                        class="option option--focused dropdown-item"
+                        role="menuitem"
+                        tabindex="0"
+                        type="button"
+                      >
+                        <span>
+                          Processing Fulfillment
+                        </span>
+                      </button>
+                      <button
+                        class="option dropdown-item"
+                        role="menuitem"
+                        tabindex="0"
+                        type="button"
+                      >
+                        <span>
+                          Pending Delivery
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="deleteButton"
+                >
+                  <i
+                    class="material-icons red mr-1"
+                  >
+                    clear
+                  </i>
+                </div>
+              </div>
+              <p>
+                This is hidden behind
+                 
+                <i>
+                  self-service-automated-response-order-management
+                </i>
+                 
+                flag
+              </p>
+              <button
+                class="wrapper mr-2 fill primary medium isDisabled"
+                disabled=""
+                type="submit"
+              >
+                Save changes
+              </button>
+              <button
+                class="wrapper fill secondary medium isDisabled"
+                disabled=""
+                type="button"
+              >
+                Cancel
+              </button>
+            </form>
+            <br />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
