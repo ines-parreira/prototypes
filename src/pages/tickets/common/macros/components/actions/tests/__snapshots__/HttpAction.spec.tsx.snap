@@ -51,7 +51,7 @@ exports[`HTTP action component should render the HTTP action component 1`] = `
           Method
         </label>
         <div
-          class=""
+          class="select dropdown-toggle"
         >
           <select
             class="field form-control"

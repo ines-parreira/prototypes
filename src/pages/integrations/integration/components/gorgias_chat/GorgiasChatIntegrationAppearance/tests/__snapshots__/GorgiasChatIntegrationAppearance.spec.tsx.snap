@@ -254,7 +254,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     Language
                   </label>
                   <div
-                    class=""
+                    class="select dropdown-toggle"
                   >
                     <select
                       class="field form-control"
@@ -439,7 +439,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       Chat position
                     </label>
                     <div
-                      class=""
+                      class="select dropdown-toggle"
                     >
                       <select
                         class="field form-control"
@@ -936,7 +936,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     Language
                   </label>
                   <div
-                    class=""
+                    class="select dropdown-toggle"
                   >
                     <select
                       class="field form-control"
@@ -1169,7 +1169,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       Chat position
                     </label>
                     <div
-                      class=""
+                      class="select dropdown-toggle"
                     >
                       <select
                         class="field form-control"
@@ -1695,7 +1695,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     Language
                   </label>
                   <div
-                    class=""
+                    class="select dropdown-toggle"
                   >
                     <select
                       class="field form-control"
@@ -1928,7 +1928,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       Chat position
                     </label>
                     <div
-                      class=""
+                      class="select dropdown-toggle"
                     >
                       <select
                         class="field form-control"
@@ -2424,7 +2424,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                     Language
                   </label>
                   <div
-                    class=""
+                    class="select dropdown-toggle"
                   >
                     <select
                       class="field form-control"
@@ -2665,7 +2665,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                       Chat position
                     </label>
                     <div
-                      class=""
+                      class="select dropdown-toggle"
                     >
                       <select
                         class="field form-control"
@@ -3161,7 +3161,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     Language
                   </label>
                   <div
-                    class=""
+                    class="select dropdown-toggle"
                   >
                     <select
                       class="field form-control"
@@ -3394,7 +3394,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       Chat position
                     </label>
                     <div
-                      class=""
+                      class="select dropdown-toggle"
                     >
                       <select
                         class="field form-control"
@@ -3890,7 +3890,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     Language
                   </label>
                   <div
-                    class=""
+                    class="select dropdown-toggle"
                   >
                     <select
                       class="field form-control"
@@ -4137,7 +4137,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       Chat position
                     </label>
                     <div
-                      class=""
+                      class="select dropdown-toggle"
                     >
                       <select
                         class="field form-control"
@@ -4712,7 +4712,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                     Language
                   </label>
                   <div
-                    class=""
+                    class="select dropdown-toggle"
                   >
                     <select
                       class="field form-control"
@@ -4897,7 +4897,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                       Chat position
                     </label>
                     <div
-                      class=""
+                      class="select dropdown-toggle"
                     >
                       <select
                         class="field form-control"
@@ -5552,7 +5552,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     Language
                   </label>
                   <div
-                    class=""
+                    class="select dropdown-toggle"
                   >
                     <select
                       class="field form-control"
@@ -5737,7 +5737,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       Chat position
                     </label>
                     <div
-                      class=""
+                      class="select dropdown-toggle"
                     >
                       <select
                         class="field form-control"
@@ -6241,7 +6241,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     Language
                   </label>
                   <div
-                    class=""
+                    class="select dropdown-toggle"
                   >
                     <select
                       class="field form-control"
@@ -6474,7 +6474,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       Chat position
                     </label>
                     <div
-                      class=""
+                      class="select dropdown-toggle"
                     >
                       <select
                         class="field form-control"

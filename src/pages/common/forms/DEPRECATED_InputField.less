@@ -49,4 +49,26 @@
     .field {
         height: 32px;
     }
+
+    .select {
+        position: relative;
+
+        select {
+            padding-right: 25px;
+            appearance: none;
+            -moz-appearance: none;
+            -webkit-appearance: none;
+        }
+        select,
+        select:focus {
+            background: transparent;
+        }
+
+        &::after {
+            top: 50%;
+            right: 10px;
+            position: absolute;
+            z-index: -1;
+        }
+    }
 }

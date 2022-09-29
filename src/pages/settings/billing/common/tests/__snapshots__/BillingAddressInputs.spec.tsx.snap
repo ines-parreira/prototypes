@@ -153,7 +153,7 @@ exports[`<BillingAddressInputs /> should render the billing address inputs 1`] =
         Country
       </label>
       <div
-        class=""
+        class="select dropdown-toggle"
       >
         <select
           class="field form-control"

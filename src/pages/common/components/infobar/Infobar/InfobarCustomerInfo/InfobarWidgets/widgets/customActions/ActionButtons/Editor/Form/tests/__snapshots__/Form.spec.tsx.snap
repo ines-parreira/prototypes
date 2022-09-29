@@ -68,7 +68,7 @@ exports[`<Form/> should render with preloaded data 1`] = `
                 Method
               </label>
               <div
-                class=""
+                class="select dropdown-toggle"
               >
                 <select
                   class="field form-control"
@@ -259,7 +259,7 @@ exports[`<Form/> should render without any data 1`] = `
                 Method
               </label>
               <div
-                class=""
+                class="select dropdown-toggle"
               >
                 <select
                   class="field form-control"

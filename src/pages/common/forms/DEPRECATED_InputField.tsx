@@ -158,6 +158,8 @@ export default class InputField<
                     className={classnames({
                         'input-group': !!rightAddon || !!leftAddon,
                         [css['with-suffix']]: !!suffix,
+                        [css.select]: type === 'select',
+                        'dropdown-toggle': type === 'select',
                     })}
                 >
                     {leftAddon && (

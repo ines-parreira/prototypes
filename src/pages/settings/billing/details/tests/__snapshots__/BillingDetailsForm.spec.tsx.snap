@@ -681,7 +681,7 @@ exports[`BillingDetailsForm component should display not display the form 1`] = 
                                   </label>
                                 </Label>
                                 <div
-                                  className=""
+                                  className="select dropdown-toggle"
                                 >
                                   <Input
                                     className="field"
@@ -1394,7 +1394,7 @@ exports[`BillingDetailsForm component should display the form with billing conta
                                   </label>
                                 </Label>
                                 <div
-                                  className=""
+                                  className="select dropdown-toggle"
                                 >
                                   <Input
                                     className="field"

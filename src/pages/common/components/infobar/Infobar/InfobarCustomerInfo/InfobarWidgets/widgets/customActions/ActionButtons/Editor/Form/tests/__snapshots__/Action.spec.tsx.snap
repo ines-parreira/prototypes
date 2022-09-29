@@ -19,7 +19,7 @@ exports[`<Action/> should render with a Body component 1`] = `
           Method
         </label>
         <div
-          class=""
+          class="select dropdown-toggle"
         >
           <select
             class="field form-control"
@@ -216,7 +216,7 @@ exports[`<Action/> should render without a Body component 1`] = `
           Method
         </label>
         <div
-          class=""
+          class="select dropdown-toggle"
         >
           <select
             class="field form-control"

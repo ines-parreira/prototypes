@@ -1248,7 +1248,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                                   </label>
                                 </Label>
                                 <div
-                                  className=""
+                                  className="select dropdown-toggle"
                                 >
                                   <Input
                                     className="field"
