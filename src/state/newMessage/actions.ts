@@ -32,7 +32,11 @@ import socketManager from 'services/socketManager/socketManager'
 import {Attachment} from 'types'
 import type {CurrentUser, RootState, StoreDispatch} from 'state/types'
 import {getMomentNow} from 'utils/date'
-import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
+import {
+    TicketChannel,
+    TicketVia,
+    TicketMessageSourceType,
+} from 'business/types/ticket'
 import {IntegrationType, ProductCardDetails} from 'models/integration/types'
 import client from 'models/api/resources'
 import {Ticket as TicketResponse} from 'models/ticket/types'
@@ -282,6 +286,16 @@ export const setActiveCustomerAsReceiver =
     () => (dispatch: StoreDispatch, getState: () => RootState) => {
         const state = getState()
         const ticket = state.ticket
+
+        // We don't want to change address for gorgias_chat tickets
+        // Because different conversation_id might be assigned, so shopper won't receive replies from agent in the same chat
+        if (
+            ticket.getIn(['channel']) === TicketChannel.Chat &&
+            ticket.getIn(['via']) === TicketVia.GorgiasChat
+        ) {
+            return
+        }
+
         const newMessageSource = selectors.getNewMessageSource(state)
         const customerChannels: CustomerChannel[] =
             (

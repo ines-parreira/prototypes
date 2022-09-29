@@ -5,7 +5,11 @@ import {fromJS, Map} from 'immutable'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
-import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
+import {
+    TicketChannel,
+    TicketVia,
+    TicketMessageSourceType,
+} from 'business/types/ticket'
 import * as utils from 'utils'
 import * as actions from 'state/newMessage/actions'
 import * as types from 'state/newMessage/constants'
@@ -1564,6 +1568,17 @@ describe('actions', () => {
             })
             store.dispatch(actions.setActiveCustomerAsReceiver())
 
+            expect(store.getActions()).toEqual([])
+        })
+
+        it('should not set receiver for gorgias chat tickets', () => {
+            store = mockStore({
+                ticket: emailTicket
+                    .setIn(['channel'], TicketChannel.Chat)
+                    .setIn(['via'], TicketVia.GorgiasChat),
+                newMessage: initialState,
+            })
+            store.dispatch(actions.setActiveCustomerAsReceiver())
             expect(store.getActions()).toEqual([])
         })
     })
