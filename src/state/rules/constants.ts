@@ -1,3 +1,5 @@
+import {ManagedRulesSlugs} from './types'
+
 export const ADD_RULE_START = 'ADD_RULE_START'
 export const ADD_RULE_END = 'ADD_RULE_END'
 export const DEACTIVATE_RULE = 'DEACTIVATE_RULE'
@@ -110,3 +112,18 @@ export const DEFAULT_STATEMENT = {
     sourceType: 'script',
     body: [],
 }
+
+export const ManagedRuleDisplayName = new Map<ManagedRulesSlugs, string>([
+    [
+        ManagedRulesSlugs.AutoReplyWismo,
+        '[Auto Reply] Send tracking information email',
+    ],
+    [
+        ManagedRulesSlugs.AutoReplyFAQ,
+        '[Auto Reply] Article recommendation (Email)',
+    ],
+    [
+        ManagedRulesSlugs.AutoCloseSpam,
+        '[Auto Close] Auto-close non-support emails',
+    ],
+])

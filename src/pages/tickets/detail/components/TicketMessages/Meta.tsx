@@ -1,5 +1,5 @@
 import classnames from 'classnames'
-import React, {ReactNode} from 'react'
+import React, {ReactNode, useMemo} from 'react'
 import {Link} from 'react-router-dom'
 import moment from 'moment'
 import ReactStars from 'react-rating-stars-component'
@@ -11,6 +11,8 @@ import {ruleFetched} from 'state/entities/rules/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {rulesSelector} from 'state/entities/rules/selectors'
 import useAppSelector from 'hooks/useAppSelector'
+import {ManagedRuleDisplayName} from 'state/rules/constants'
+import {ManagedRule, RuleType} from 'state/rules/types'
 import {TicketVias} from '../../../../../business/ticket'
 import {Meta as MetaType, Source} from '../../../../../models/ticket/types'
 import {TicketMessageSourceType} from '../../../../../business/types/ticket'
@@ -313,6 +315,18 @@ export default function Meta(props: Props) {
         )
     }
 
+    const ruleName = useMemo(() => {
+        if (!rule) {
+            return 'Rule'
+        }
+        if (rule.type === RuleType.Managed) {
+            const slug = (rule as ManagedRule).settings.slug
+            const ruleDisplayName = ManagedRuleDisplayName.get(slug)
+            if (ruleDisplayName) return ruleDisplayName
+        }
+        return rule.name
+    }, [rule])
+
     if (props.via === 'rule' && props.ruleId) {
         widgets.push(
             <From key="via-widget" label="send via:">
@@ -326,7 +340,7 @@ export default function Meta(props: Props) {
                             target="_blank"
                             rel="noreferrer"
                         >
-                            {rule?.name ?? 'Rule'}
+                            {ruleName}
                         </Link>
                     )}
                 </b>

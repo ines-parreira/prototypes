@@ -6,6 +6,8 @@ import {Provider} from 'react-redux'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {fetchRule} from 'models/rule/resources'
+import {ManagedRule, ManagedRulesSlugs, RuleType} from 'state/rules/types'
+import {ManagedRuleDisplayName} from 'state/rules/constants'
 import {TicketVias} from '../../../../../../business/ticket'
 import {
     TicketChannel,
@@ -56,6 +58,41 @@ describe('ticket message meta', () => {
 
         await screen.findByText('send via:')
         await screen.findByText(rule.name)
+    })
+
+    it('should display managed rule recipe name', async () => {
+        const mockFetchRule = fetchRule as jest.MockedFunction<typeof fetchRule>
+
+        const ruleName = 'rule 5'
+        const rule: Pick<ManagedRule, 'id' | 'type' | 'name' | 'settings'> = {
+            id: 1,
+            name: ruleName,
+            type: RuleType.Managed,
+            settings: {slug: ManagedRulesSlugs.AutoReplyWismo},
+        }
+
+        mockFetchRule.mockImplementation(() => {
+            return Promise.resolve(rule as any)
+        })
+
+        render(
+            <Provider store={store}>
+                <Meta
+                    messageId="some-id"
+                    via="rule"
+                    ruleId={rule.id.toString()}
+                />
+            </Provider>
+        )
+
+        expect(await screen.findByText('send via:')).toBeTruthy()
+        expect(
+            await screen.findByText(
+                ManagedRuleDisplayName.get(rule.settings.slug)!
+            )
+        ).toBeTruthy()
+
+        expect(mockFetchRule).toHaveBeenCalled()
     })
 
     it('should persist fetched rule in redux store', async () => {

@@ -24,10 +24,7 @@ import {createRule, deleteRule, updateRule} from 'models/rule/resources'
 import history from 'pages/history'
 import {NotificationStatus} from 'state/notifications/types'
 
-import useAppSelector from 'hooks/useAppSelector'
-import {ruleRecipes as getRuleRecipes} from 'state/entities/ruleRecipes/selectors'
-import {fetchRuleRecipes} from 'models/ruleRecipe/resources'
-import {ruleRecipesFetched} from 'state/entities/ruleRecipes/actions'
+import {ManagedRuleDisplayName} from 'state/rules/constants'
 import {RuleTicketList} from './RuleTicketList'
 import ManagedRuleEditor from './ruleEditors/ManagedRuleEditor'
 import DefaultRuleEditor from './ruleEditors/DefaultRuleEditor'
@@ -55,7 +52,6 @@ export type ManagedRuleEditorProps<T = ManagedRuleEmptySettings> =
 
 export const RuleFormEditor = ({rule}: Props) => {
     const dispatch = useAppDispatch()
-    const ruleRecipes = useAppSelector(getRuleRecipes)
 
     const [{loading: isSubmitting}, handleSubmit] = useAsyncFn(
         async (ruleDraft: Partial<RuleDraft>) => {
@@ -142,28 +138,17 @@ export const RuleFormEditor = ({rule}: Props) => {
         }
     }, [rule])
 
-    const findRecipe = async (slug: string) => {
-        const recipes = (await fetchRuleRecipes()).data
-        const recipe = recipes.find((recipe) => recipe.slug === slug)
-        if (recipe) {
-            dispatch(ruleRecipesFetched(recipes))
-        }
-    }
-
     const title = useMemo(() => {
         if (!rule) {
             return 'Add rule'
-        } else if (rule.type === RuleType.Managed) {
+        }
+        if (rule.type === RuleType.Managed) {
             const slug = (rule as ManagedRule).settings.slug
-            if (!ruleRecipes[slug]) {
-                void findRecipe(slug)
-            } else {
-                return `[${ruleRecipes[slug].recipe_tag}] ${ruleRecipes[slug].rule.name}`
-            }
+            const ruleDisplayName = ManagedRuleDisplayName.get(slug)
+            if (ruleDisplayName) return ruleDisplayName
         }
         return rule.name
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [rule, ruleRecipes])
+    }, [rule])
 
     useEffect(() => {
         const unblock = history.block((loc, action) => {
