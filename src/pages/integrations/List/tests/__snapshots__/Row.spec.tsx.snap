@@ -196,7 +196,7 @@ exports[`IntegrationsListRow should open the list of connections for Shopify and
 exports[`IntegrationsListRow should open the list of integrations for Voice and SMS when integrations exist 1`] = `
 <a
   class="component link card d-flex flex-row align-items-center"
-  to="/app/settings/integrations/phone/integrations"
+  to="/app/settings/integrations/phone"
 >
   <div
     class="icon d-flex align-items-center justify-content-center"

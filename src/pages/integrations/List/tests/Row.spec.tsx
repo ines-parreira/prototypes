@@ -122,7 +122,7 @@ describe('IntegrationsListRow', () => {
         )
 
         expect(container.querySelector('a')?.getAttribute('to')).toBe(
-            '/app/settings/integrations/phone/integrations'
+            '/app/settings/integrations/phone'
         )
         expect(container.firstChild).toMatchSnapshot()
     })

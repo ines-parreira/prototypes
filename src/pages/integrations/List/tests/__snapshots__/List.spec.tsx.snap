@@ -35,7 +35,7 @@ exports[`<IntegrationsList /> SMS integrations feature flag should include SMS t
       >
         <a
           class="component link card d-flex flex-row align-items-center"
-          to="/app/settings/integrations/sms/integrations"
+          to="/app/settings/integrations/sms"
         >
           <div
             class="icon d-flex align-items-center justify-content-center"
