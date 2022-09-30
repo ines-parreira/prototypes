@@ -1,5 +1,7 @@
 import React from 'react'
 
+import {EmailProvider} from 'models/integration/constants'
+
 import TableWrapper from '../../../../../../common/components/table/TableWrapper'
 import TableHead from '../../../../../../common/components/table/TableHead'
 import HeaderCell from '../../../../../../common/components/table/cells/HeaderCell'
@@ -7,14 +9,14 @@ import TableBody from '../../../../../../common/components/table/TableBody'
 import {DomainDNSRecord} from '../../../../../../../models/integration/types'
 
 import css from '../EmailDomainVerification.less'
-
 import RecordItem from './RecordItem'
 
 type Props = {
     records: Array<DomainDNSRecord>
+    provider: string
 }
 
-const RecordsTable = ({records}: Props) => {
+const RecordsTable = ({records, provider}: Props) => {
     return (
         <TableWrapper className={css['records-table']}>
             <TableHead>
@@ -22,11 +24,17 @@ const RecordsTable = ({records}: Props) => {
                 <HeaderCell>Record Type</HeaderCell>
                 <HeaderCell>Host</HeaderCell>
                 <HeaderCell>Value</HeaderCell>
-                <HeaderCell>Current Values</HeaderCell>
+                {provider !== EmailProvider.Sendgrid && (
+                    <HeaderCell>Current Values</HeaderCell>
+                )}
             </TableHead>
             <TableBody>
                 {records.map((record: DomainDNSRecord, index: number) => (
-                    <RecordItem key={index} record={record} />
+                    <RecordItem
+                        key={index}
+                        record={record}
+                        provider={provider}
+                    />
                 ))}
             </TableBody>
         </TableWrapper>

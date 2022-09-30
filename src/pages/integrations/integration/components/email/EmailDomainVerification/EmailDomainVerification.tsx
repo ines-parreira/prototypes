@@ -98,6 +98,7 @@ export const EmailDomainVerificationContainer = (props: Props) => {
                             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
                             emailDomain.toJS().data.sending_dns_records
                         }
+                        provider={provider}
                     />
 
                     {hasRole(currentUser, UserRole.Admin) && (

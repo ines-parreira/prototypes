@@ -5,9 +5,7 @@ import {render, waitFor} from '@testing-library/react'
 
 import {EmailDomainVerificationContainer} from '../EmailDomainVerification'
 
-import {EmailProvider} from '../../../../../../../models/integration/constants'
-
-import {IntegrationType} from 'models/integration/constants'
+import {IntegrationType, EmailProvider} from 'models/integration/constants'
 import {UserRole} from 'config/types/user'
 
 describe('<EmailDomainVerificationContainer/>', () => {
