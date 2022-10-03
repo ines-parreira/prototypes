@@ -4,6 +4,13 @@ import {
     formatBusinessHoursByLocale,
 } from '../formatting.utils'
 
+jest.mock('moment', () => (date?: string, params?: string) => {
+    const moment: (date: string, params?: string) => Record<string, unknown> =
+        jest.requireActual('moment')
+
+    return moment(date || '2019-09-03', params)
+})
+
 describe('getTimezoneAbbreviation', () => {
     it('returns the timezone abbreviation', () => {
         expect(getTimezoneAbbreviation('America/Los_Angeles')).toEqual('PDT')
