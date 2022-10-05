@@ -11,4 +11,5 @@ export enum FeatureFlagKey {
     NewVoiceSmsLayout = 'new-voice-sms-layout',
     RevenueDiscountCodesV0 = 'revenue-discount-codes-v0',
     ElasticsearchSearchLoadTest = 'elasticsearch-search-load-test',
+    SelfServiceLoopReturnsFlow = 'self-service-loop-returns-flow',
 }

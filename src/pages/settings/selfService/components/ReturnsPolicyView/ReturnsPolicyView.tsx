@@ -1,4 +1,10 @@
-import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react'
+import React, {
+    ChangeEvent,
+    FormEvent,
+    useEffect,
+    useMemo,
+    useState,
+} from 'react'
 import {Link, useParams} from 'react-router-dom'
 import {
     Breadcrumb,
@@ -10,7 +16,8 @@ import {
     Row,
 } from 'reactstrap'
 import classNames from 'classnames'
-
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import _isEqual from 'lodash/isEqual'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
@@ -18,6 +25,8 @@ import Loader from 'pages/common/components/Loader/Loader'
 import {
     FilterKeyEnum,
     FilterOperatorEnum,
+    ReturnAction,
+    ReturnActionType,
     ReturnsDropdownOptionsList,
     SelfServiceConfigurationFilter,
 } from 'models/selfServiceConfiguration/types'
@@ -31,9 +40,18 @@ import {GorgiasChatIntegrationSelfServicePaywall} from 'pages/integrations/integ
 import {hasAutomationLegacyFeatures} from 'state/currentAccount/selectors'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 import settingsCss from 'pages/settings/settings.less'
-
+import {FeatureFlagKey} from 'config/featureFlags'
+import {Integration, IntegrationType} from 'models/integration/types'
+import {getIntegrationsByType} from 'state/integrations/selectors'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import {useConfigurationData} from '../hooks'
+import {ReturnActionSelectField} from './components/ReturnActionSelectField'
+import {LOOP_RETURNS_API_URL} from './constants'
 import css from './ReturnsPolicyView.less'
-import {useConfigurationData} from './hooks'
+
+const isLoopReturnsIntegration = (integration: Integration) => {
+    return integration.http?.url?.startsWith(LOOP_RETURNS_API_URL)
+}
 
 export const ReturnsPolicyView = () => {
     const dispatch = useAppDispatch()
@@ -44,8 +62,22 @@ export const ReturnsPolicyView = () => {
 
     const {isLoadingConfig, configuration} = useConfigurationData()
 
+    const isSelfServiceLoopReturnsFlowEnabled: boolean =
+        useFlags()[FeatureFlagKey.SelfServiceLoopReturnsFlow] ?? false
+
+    const getHttpIntegrations = useMemo(
+        () => getIntegrationsByType(IntegrationType.Http),
+        []
+    )
+
     const hasSelfServiceV1Features = useAppSelector(hasAutomationLegacyFeatures)
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const httpIntegrations = useAppSelector(getHttpIntegrations)
+
+    const loopReturnsIntegrations = useMemo(
+        () => httpIntegrations.filter(isLoopReturnsIntegration),
+        [httpIntegrations]
+    )
 
     const [eligibilityWindowCondition, setEligibilityWindowCondition] =
         useState('')
@@ -58,9 +90,13 @@ export const ReturnsPolicyView = () => {
         value: '1',
         condition: '',
     })
+    const [returnAction, setReturnAction] = useState<ReturnAction | null>(null)
+    const [storedReturnAction, setStoredReturnAction] =
+        useState<ReturnAction | null>(null)
 
     const [showDeleteButton, setShowDeleteButton] = useState(true)
     const [showLessThan, setShowLessThan] = useState(false)
+
     useEffect(() => {
         const eligibilityFilter: SelfServiceConfigurationFilter | undefined =
             configuration?.return_order_policy?.eligibilities?.find(
@@ -70,6 +106,7 @@ export const ReturnsPolicyView = () => {
                         FilterKeyEnum.ORDER_DELIVERED_AT,
                     ].includes(_eligibilityFilter.key as FilterKeyEnum)
             )
+        const returnAction = configuration?.return_order_policy.action || null
 
         setEligibilityWindowCondition(eligibilityFilter?.key || '')
         setEligibilityWindowConditionValue(
@@ -80,7 +117,13 @@ export const ReturnsPolicyView = () => {
             condition: eligibilityFilter?.key || '',
         })
         setShowDeleteButton(Boolean(eligibilityFilter?.key || ''))
-    }, [configuration, configuration?.return_order_policy.eligibilities])
+        setReturnAction(returnAction)
+        setStoredReturnAction(returnAction)
+    }, [
+        configuration,
+        configuration?.return_order_policy.eligibilities,
+        configuration?.return_order_policy.action,
+    ])
 
     useEffect(() => {
         setShowLessThan(
@@ -94,15 +137,29 @@ export const ReturnsPolicyView = () => {
         setLoading(isLoadingConfig)
     }, [isLoadingConfig])
 
+    const isLoopReturnsIntegrationMissing = useMemo(() => {
+        if (storedReturnAction?.type !== ReturnActionType.LoopReturns) {
+            return false
+        }
+
+        return !loopReturnsIntegrations.some(
+            (loopReturnsIntegration) =>
+                loopReturnsIntegration.id === storedReturnAction.integration_id
+        )
+    }, [loopReturnsIntegrations, storedReturnAction])
+
     const [loading, setLoading] = useState(true)
 
     const formHasChanged =
         storedEligibility.value !== eligibilityWindowConditionValue ||
-        storedEligibility.condition !== eligibilityWindowCondition
+        storedEligibility.condition !== eligibilityWindowCondition ||
+        (isSelfServiceLoopReturnsFlowEnabled &&
+            !_isEqual(storedReturnAction, returnAction))
 
     const onCancel = () => {
         setEligibilityWindowConditionValue(storedEligibility.value)
         setEligibilityWindowCondition(storedEligibility.condition)
+        setReturnAction(storedReturnAction)
     }
 
     const onDelete = () => {
@@ -112,22 +169,25 @@ export const ReturnsPolicyView = () => {
 
     const onSubmit = async (event: FormEvent) => {
         event.preventDefault()
+
         if (configuration === undefined) {
             return
         }
+
         setLoading(true)
 
-        const updatedEligibilityWindowCondition = {
-            key: eligibilityWindowCondition,
-            value: eligibilityWindowConditionValue || '',
-            operator: FilterOperatorEnum.LESS_THAN,
-        } as SelfServiceConfigurationFilter
+        const updatedEligibilityWindowCondition: SelfServiceConfigurationFilter =
+            {
+                key: eligibilityWindowCondition,
+                value: eligibilityWindowConditionValue || '',
+                operator: FilterOperatorEnum.LESS_THAN,
+            }
 
         const updatedEligibilities: SelfServiceConfigurationFilter[] = []
         let hasUpdatedEligibility = false
 
         configuration.return_order_policy.eligibilities?.forEach(
-            (eligibility: SelfServiceConfigurationFilter) => {
+            (eligibility) => {
                 if (
                     eligibility.key === FilterKeyEnum.ORDER_CREATED_AT ||
                     eligibility.key === FilterKeyEnum.ORDER_DELIVERED_AT
@@ -153,6 +213,9 @@ export const ReturnsPolicyView = () => {
                 return_order_policy: {
                     ...configuration.return_order_policy,
                     eligibilities: updatedEligibilities,
+                    ...(isSelfServiceLoopReturnsFlowEnabled
+                        ? {action: returnAction}
+                        : {}),
                 },
             })
             void dispatch(selfServiceConfigurationUpdated(res))
@@ -214,7 +277,7 @@ export const ReturnsPolicyView = () => {
                             {loading || !configuration ? (
                                 <Loader />
                             ) : (
-                                <>
+                                <Form onSubmit={onSubmit}>
                                     <h5 className={css.eligibilityWindowTitle}>
                                         Eligibility window
                                     </h5>
@@ -226,79 +289,120 @@ export const ReturnsPolicyView = () => {
                                         Timeframe through which customers will
                                         be able to initiate a return.
                                     </p>
-                                    <Form onSubmit={onSubmit}>
-                                        <div
+
+                                    <div
+                                        className={
+                                            css.eligibilityWindowContainer
+                                        }
+                                    >
+                                        <SelectField
+                                            placeholder="Select Condition"
                                             className={
-                                                css.eligibilityWindowContainer
+                                                css.returnConditionSelectField
                                             }
-                                        >
-                                            <SelectField
-                                                placeholder="Select Condition"
-                                                className={
-                                                    css.returnConditionSelectField
-                                                }
-                                                value={
-                                                    eligibilityWindowCondition
-                                                }
-                                                options={
-                                                    ReturnsDropdownOptionsList
-                                                }
-                                                onChange={(condition) => {
-                                                    setEligibilityWindowCondition(
-                                                        condition as string
-                                                    )
-                                                    setShowLessThan(true)
-                                                }}
-                                            />
-                                            {showLessThan ? (
-                                                <>
+                                            value={eligibilityWindowCondition}
+                                            options={ReturnsDropdownOptionsList}
+                                            onChange={(condition) => {
+                                                setEligibilityWindowCondition(
+                                                    condition as string
+                                                )
+                                                setShowLessThan(true)
+                                            }}
+                                        />
+                                        {showLessThan ? (
+                                            <>
+                                                <div
+                                                    style={{
+                                                        fontWeight: 600,
+                                                    }}
+                                                >
+                                                    less than
+                                                </div>
+                                                <Input
+                                                    className={
+                                                        css.returnConditionInput
+                                                    }
+                                                    type="number"
+                                                    min={1}
+                                                    value={
+                                                        eligibilityWindowConditionValue
+                                                    }
+                                                    onChange={(
+                                                        event: ChangeEvent<HTMLInputElement>
+                                                    ) => {
+                                                        setEligibilityWindowConditionValue(
+                                                            event.target.value
+                                                        )
+                                                    }}
+                                                />
+                                                <div
+                                                    style={{
+                                                        fontWeight: 600,
+                                                    }}
+                                                >
+                                                    day(s) ago
+                                                </div>
+                                                {showDeleteButton ? (
                                                     <div
-                                                        style={{
-                                                            fontWeight: 600,
-                                                        }}
-                                                    >
-                                                        less than
-                                                    </div>
-                                                    <Input
+                                                        onClick={onDelete}
                                                         className={
-                                                            css.returnConditionInput
+                                                            css.deleteButton
                                                         }
-                                                        type="number"
-                                                        min={1}
-                                                        value={
-                                                            eligibilityWindowConditionValue
-                                                        }
-                                                        onChange={(
-                                                            event: ChangeEvent<HTMLInputElement>
-                                                        ) => {
-                                                            setEligibilityWindowConditionValue(
-                                                                event.target
-                                                                    .value
-                                                            )
-                                                        }}
-                                                    />
-                                                    <div
-                                                        style={{
-                                                            fontWeight: 600,
-                                                        }}
                                                     >
-                                                        day(s) ago
+                                                        <i className="material-icons red mr-1">
+                                                            clear
+                                                        </i>
                                                     </div>
-                                                    {showDeleteButton ? (
-                                                        <div
-                                                            onClick={onDelete}
-                                                            className={
-                                                                css.deleteButton
-                                                            }
-                                                        >
-                                                            <i className="material-icons red mr-1">
-                                                                clear
-                                                            </i>
-                                                        </div>
-                                                    ) : null}
-                                                </>
-                                            ) : null}
-                                        </div>
+                                                ) : null}
+                                            </>
+                                        ) : null}
+                                    </div>
+
+                                    {isSelfServiceLoopReturnsFlowEnabled && (
+                                        <>
+                                            <h5
+                                                className={
+                                                    css.returnMethodTitle
+                                                }
+                                            >
+                                                Return method
+                                            </h5>
+
+                                            <ReturnActionSelectField
+                                                loopReturnsIntegrations={
+                                                    loopReturnsIntegrations
+                                                }
+                                                value={returnAction}
+                                                onChange={setReturnAction}
+                                            />
+
+                                            {isLoopReturnsIntegrationMissing && (
+                                                <Alert
+                                                    icon
+                                                    className={
+                                                        css.missingLoopReturnsIntegrationAlert
+                                                    }
+                                                    type={AlertType.Error}
+                                                >
+                                                    You must have a
+                                                    <a
+                                                        href="https://www.loopreturns.com/"
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                    >
+                                                        &nbsp;Loop Returns&nbsp;
+                                                    </a>
+                                                    account and
+                                                    <Link to="/app/settings/integrations/app/6193aad6661a2903d5fb9bff">
+                                                        &nbsp;HTTP
+                                                        integration&nbsp;
+                                                    </Link>
+                                                    to use this feature
+                                                </Alert>
+                                            )}
+                                        </>
+                                    )}
+                                    <div className={css.formButtonsContainer}>
                                         <Button
                                             className={classNames('mr-2', {
                                                 'btn-loading': loading,
@@ -322,9 +426,8 @@ export const ReturnsPolicyView = () => {
                                         >
                                             Cancel
                                         </Button>
-                                    </Form>
-                                    <br />
-                                </>
+                                    </div>
+                                </Form>
                             )}
                         </div>
                     </Col>

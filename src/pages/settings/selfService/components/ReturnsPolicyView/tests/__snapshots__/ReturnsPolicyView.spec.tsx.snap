@@ -63,19 +63,19 @@ exports[`<ReturnsPolicyView /> render() should render the select field 1`] = `
               Let customers request returns directly from the Self-service Portal in Chat and Help Center. Returns can only be initiated if the order has been delivered.
             </p>
             <br />
-            <h5
-              class="eligibilityWindowTitle"
-            >
-              Eligibility window
-            </h5>
-            <p
-              class="eligibilityWindowDescription"
-            >
-              Timeframe through which customers will be able to initiate a return.
-            </p>
             <form
               class=""
             >
+              <h5
+                class="eligibilityWindowTitle"
+              >
+                Eligibility window
+              </h5>
+              <p
+                class="eligibilityWindowDescription"
+              >
+                Timeframe through which customers will be able to initiate a return.
+              </p>
               <div
                 class="eligibilityWindowContainer"
               >
@@ -158,22 +158,25 @@ exports[`<ReturnsPolicyView /> render() should render the select field 1`] = `
                   </i>
                 </div>
               </div>
-              <button
-                class="wrapper mr-2 fill primary medium isDisabled"
-                disabled=""
-                type="submit"
+              <div
+                class="formButtonsContainer"
               >
-                Save changes
-              </button>
-              <button
-                class="wrapper fill secondary medium isDisabled"
-                disabled=""
-                type="button"
-              >
-                Cancel
-              </button>
+                <button
+                  class="wrapper mr-2 fill primary medium isDisabled"
+                  disabled=""
+                  type="submit"
+                >
+                  Save changes
+                </button>
+                <button
+                  class="wrapper fill secondary medium isDisabled"
+                  disabled=""
+                  type="button"
+                >
+                  Cancel
+                </button>
+              </div>
             </form>
-            <br />
           </div>
         </div>
       </div>

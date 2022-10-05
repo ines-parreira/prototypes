@@ -16,6 +16,29 @@ export type SelfServiceConfigurationFilterPolicy = {
     exceptions: SelfServiceConfigurationFilter[]
 }
 
+export enum ReturnActionType {
+    LoopReturns = 'loop_returns',
+    AutomatedResponse = 'automated_response',
+}
+
+export type LoopReturnsReturnAction = {
+    type: ReturnActionType.LoopReturns
+    integration_id: number
+}
+
+export type AutomatedResponseReturnAction = {
+    type: ReturnActionType.AutomatedResponse
+}
+
+export type ReturnAction =
+    | LoopReturnsReturnAction
+    | AutomatedResponseReturnAction
+
+export type SelfServiceConfigurationReturnOrderPolicy =
+    SelfServiceConfigurationFilterPolicy & {
+        action?: ReturnAction | null
+    }
+
 export enum ReportIssueVariable {
     FULFILLMENT_STATUS = 'fulfillment_status',
     SHIPMENT_STATUS = 'shipment_status',
@@ -77,7 +100,7 @@ export type SelfServiceConfiguration = {
     report_issue_policy: SelfServiceConfigurationReportIssuePolicy
     track_order_policy: SelfServiceConfigurationPolicy
     cancel_order_policy: SelfServiceConfigurationFilterPolicy
-    return_order_policy: SelfServiceConfigurationFilterPolicy
+    return_order_policy: SelfServiceConfigurationReturnOrderPolicy
     quick_response_policies: QuickReplyPolicy[]
 }
 
