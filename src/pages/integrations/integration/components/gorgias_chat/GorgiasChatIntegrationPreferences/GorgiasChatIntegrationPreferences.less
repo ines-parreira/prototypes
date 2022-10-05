@@ -24,4 +24,26 @@
     .mb16 {
         margin-bottom: 16px;
     }
+
+    .radioFieldSet {
+        input[type='radio'] {
+            align-self: flex-start;
+            margin-top: 2px;
+        }
+
+        .dynamicDescription {
+            font-size: 12px;
+            font-weight: 400;
+            color: @classic-neutral-grey-4;
+            margin-bottom: 0;
+        }
+
+        .dynamicTimeTooltip {
+            color: @classic-neutral-grey-4;
+
+            &:hover {
+                color: @classic-neutral-grey-5;
+            }
+        }
+    }
 }

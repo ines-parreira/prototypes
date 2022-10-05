@@ -850,6 +850,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                                     "usualReplyTimeDay": "Typically replies within a day",
                                     "usualReplyTimeHours": "Typically replies in a few hours",
                                     "usualReplyTimeMinutes": "Typically replies in a few minutes",
+                                    "waitTimeMediumReply": "Thanks for reaching out! An agent will get back to you in about {waitTime} minutes.",
                                   }
                                 }
                               >
@@ -1789,6 +1790,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                                     "usualReplyTimeDay": "Typically replies within a day",
                                     "usualReplyTimeHours": "Typically replies in a few hours",
                                     "usualReplyTimeMinutes": "Typically replies in a few minutes",
+                                    "waitTimeMediumReply": "Thanks for reaching out! An agent will get back to you in about {waitTime} minutes.",
                                   }
                                 }
                               >

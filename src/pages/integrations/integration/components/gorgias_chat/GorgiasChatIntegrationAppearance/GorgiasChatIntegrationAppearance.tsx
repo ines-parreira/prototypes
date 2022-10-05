@@ -29,8 +29,8 @@ import {
     GORGIAS_CHAT_WIDGET_POSITION_OPTIONS,
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
     GORGIAS_CHAT_OFFLINE_MODE_ENABLED_DATETIME_DEFAULT,
+    GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
 } from 'config/integrations/gorgias_chat'
-import {CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from 'config/integrations'
 import {Language} from 'constants/languages'
 import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
 import * as integrationSelectors from 'state/integrations/selectors'
@@ -290,7 +290,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                         GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
                     auto_responder: {
                         enabled: GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
-                        reply: CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
+                        reply: GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
                     },
                     enable_contact_form:
                         GORGIAS_CHAT_CONTACT_FORM_ENABLED_DEFAULT,

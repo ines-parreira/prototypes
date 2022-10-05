@@ -91,6 +91,7 @@ exports[`<ChatIntegrationPreview/> render() should display auto responder 1`] = 
           "usualReplyTimeDay": "Typically replies within a day",
           "usualReplyTimeHours": "Typically replies in a few hours",
           "usualReplyTimeMinutes": "Typically replies in a few minutes",
+          "waitTimeMediumReply": "Thanks for reaching out! An agent will get back to you in about {waitTime} minutes.",
         }
       }
     />
@@ -225,6 +226,7 @@ exports[`<ChatIntegrationPreview/> render() should display display the offsets w
           "usualReplyTimeDay": "Typically replies within a day",
           "usualReplyTimeHours": "Typically replies in a few hours",
           "usualReplyTimeMinutes": "Typically replies in a few minutes",
+          "waitTimeMediumReply": "Thanks for reaching out! An agent will get back to you in about {waitTime} minutes.",
         }
       }
     />
@@ -372,6 +374,7 @@ exports[`<ChatIntegrationPreview/> render() should display display the offsets w
           "usualReplyTimeDay": "Typically replies within a day",
           "usualReplyTimeHours": "Typically replies in a few hours",
           "usualReplyTimeMinutes": "Typically replies in a few minutes",
+          "waitTimeMediumReply": "Thanks for reaching out! An agent will get back to you in about {waitTime} minutes.",
         }
       }
     />
@@ -500,6 +503,7 @@ exports[`<ChatIntegrationPreview/> render() should display optional email captur
           "usualReplyTimeDay": "Typically replies within a day",
           "usualReplyTimeHours": "Typically replies in a few hours",
           "usualReplyTimeMinutes": "Typically replies in a few minutes",
+          "waitTimeMediumReply": "Thanks for reaching out! An agent will get back to you in about {waitTime} minutes.",
         }
       }
     />
@@ -628,6 +632,7 @@ exports[`<ChatIntegrationPreview/> render() should display required email captur
           "usualReplyTimeDay": "Typically replies within a day",
           "usualReplyTimeHours": "Typically replies in a few hours",
           "usualReplyTimeMinutes": "Typically replies in a few minutes",
+          "waitTimeMediumReply": "Thanks for reaching out! An agent will get back to you in about {waitTime} minutes.",
         }
       }
     />
@@ -759,6 +764,7 @@ exports[`<ChatIntegrationPreview/> render() should display the avatar team pictu
           "usualReplyTimeDay": "Typically replies within a day",
           "usualReplyTimeHours": "Typically replies in a few hours",
           "usualReplyTimeMinutes": "Typically replies in a few minutes",
+          "waitTimeMediumReply": "Thanks for reaching out! An agent will get back to you in about {waitTime} minutes.",
         }
       }
     />
@@ -909,6 +915,7 @@ exports[`<ChatIntegrationPreview/> render() should display the offline status be
           "usualReplyTimeDay": "Typically replies within a day",
           "usualReplyTimeHours": "Typically replies in a few hours",
           "usualReplyTimeMinutes": "Typically replies in a few minutes",
+          "waitTimeMediumReply": "Thanks for reaching out! An agent will get back to you in about {waitTime} minutes.",
         }
       }
     />
@@ -1050,6 +1057,7 @@ exports[`<ChatIntegrationPreview/> render() should display the online status bec
           "usualReplyTimeDay": "Typically replies within a day",
           "usualReplyTimeHours": "Typically replies in a few hours",
           "usualReplyTimeMinutes": "Typically replies in a few minutes",
+          "waitTimeMediumReply": "Thanks for reaching out! An agent will get back to you in about {waitTime} minutes.",
         }
       }
     />
@@ -1191,6 +1199,7 @@ exports[`<ChatIntegrationPreview/> render() should display the sliders when edit
           "usualReplyTimeDay": "Typically replies within a day",
           "usualReplyTimeHours": "Typically replies in a few hours",
           "usualReplyTimeMinutes": "Typically replies in a few minutes",
+          "waitTimeMediumReply": "Thanks for reaching out! An agent will get back to you in about {waitTime} minutes.",
         }
       }
     />
@@ -1341,6 +1350,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
           "usualReplyTimeDay": "Typically replies within a day",
           "usualReplyTimeHours": "Typically replies in a few hours",
           "usualReplyTimeMinutes": "Typically replies in a few minutes",
+          "waitTimeMediumReply": "Thanks for reaching out! An agent will get back to you in about {waitTime} minutes.",
         }
       }
     />
@@ -1491,6 +1501,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
           "usualReplyTimeDay": "Typically replies within a day",
           "usualReplyTimeHours": "Typically replies in a few hours",
           "usualReplyTimeMinutes": "Typically replies in a few minutes",
+          "waitTimeMediumReply": "Thanks for reaching out! An agent will get back to you in about {waitTime} minutes.",
         }
       }
     />
@@ -1641,6 +1652,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
           "usualReplyTimeDay": "Typically replies within a day",
           "usualReplyTimeHours": "Typically replies in a few hours",
           "usualReplyTimeMinutes": "Typically replies in a few minutes",
+          "waitTimeMediumReply": "Thanks for reaching out! An agent will get back to you in about {waitTime} minutes.",
         }
       }
     />
@@ -1791,6 +1803,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
           "usualReplyTimeDay": "Typically replies within a day",
           "usualReplyTimeHours": "Typically replies in a few hours",
           "usualReplyTimeMinutes": "Typically replies in a few minutes",
+          "waitTimeMediumReply": "Thanks for reaching out! An agent will get back to you in about {waitTime} minutes.",
         }
       }
     />
@@ -1932,6 +1945,7 @@ exports[`<ChatIntegrationPreview/> render() should not display button if hideBut
           "usualReplyTimeDay": "Typically replies within a day",
           "usualReplyTimeHours": "Typically replies in a few hours",
           "usualReplyTimeMinutes": "Typically replies in a few minutes",
+          "waitTimeMediumReply": "Thanks for reaching out! An agent will get back to you in about {waitTime} minutes.",
         }
       }
     />

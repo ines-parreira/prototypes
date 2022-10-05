@@ -356,7 +356,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                         "email_capture_enforcement": "optional",
                         "auto_responder": Immutable.Map {
                           "enabled": true,
-                          "reply": "reply-shortly",
+                          "reply": "reply-dynamic",
                         },
                         "enable_contact_form": true,
                         "offline_mode_enabled_datetime": null,

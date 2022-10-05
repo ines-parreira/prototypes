@@ -2,8 +2,8 @@
 
 exports[`<GorgiasChatIntegrationPreferences/> _setLinkedEmailIntegration() should update the linked email integration in the state. 1`] = `
 Object {
-  "autoResponderEnabled": false,
-  "autoResponderReply": "reply-shortly",
+  "autoResponderEnabled": true,
+  "autoResponderReply": "reply-dynamic",
   "emailCaptureEnforcement": "optional",
   "enableContactForm": true,
   "hideOnMobile": false,
@@ -18,8 +18,8 @@ Object {
 
 exports[`<GorgiasChatIntegrationPreferences/> _setLinkedEmailIntegration() should update the linked email integration in the state. 2`] = `
 Object {
-  "autoResponderEnabled": false,
-  "autoResponderReply": "reply-shortly",
+  "autoResponderEnabled": true,
+  "autoResponderReply": "reply-dynamic",
   "emailCaptureEnforcement": "optional",
   "enableContactForm": true,
   "hideOnMobile": false,
@@ -42,8 +42,8 @@ exports[`<GorgiasChatIntegrationPreferences/> _submitPreferences() should submit
           "language": "en-US",
           "preferences": Immutable.Map {
             "auto_responder": Immutable.Map {
-              "enabled": false,
-              "reply": "reply-shortly",
+              "enabled": true,
+              "reply": "reply-dynamic",
             },
             "email_capture_enforcement": "optional",
             "linked_email_integration": null,
@@ -183,8 +183,8 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
   <GorgiasChatIntegrationPreviewContainer
     preview={
       <ChatIntegrationPreview
-        autoResponderEnabled={false}
-        autoResponderReply="reply-shortly"
+        autoResponderEnabled={true}
+        autoResponderReply="reply-dynamic"
         isOnline={true}
         language="en-US"
         mainColor="#789c5d"
@@ -399,7 +399,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
             className="mb-3 d-flex align-items-center"
           >
             <ToggleInput
-              isToggled={false}
+              isToggled={true}
               onClick={[Function]}
             />
             <div
@@ -414,62 +414,82 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
             className="mb-3"
           >
             <p
-              className="text-faded"
+              className=""
             >
-              <b>
-                During
-                 
-                <Link
-                  to="/app/settings/business-hours"
-                >
-                  Business hours
-                </Link>
-              </b>
-              , tell customers how fast they can expect a response with an auto-responder:
+              During
+               
+              <Link
+                to="/app/settings/business-hours"
+              >
+                Business hours
+              </Link>
+              , tell customers how fast they can expect a response with an automated message:
             </p>
             <RadioFieldSet
-              className="mb-2"
-              isDisabled={true}
+              className="mb-2 radioFieldSet"
+              isDisabled={false}
               onChange={[Function]}
               options={
                 Array [
                   Object {
-                    "label": "\\"Thanks for reaching out! Our team will get back to you shortly.\\"",
-                    "value": "reply-shortly",
+                    "label": <div>
+                      Dynamic wait time (recommended)
+                       
+                      <span
+                        className="dynamicTimeTooltip"
+                        id="dynamic-wait-time-option"
+                      >
+                        <i
+                          className="material-icons"
+                        >
+                          info_outline
+                        </i>
+                      </span>
+                      <Tooltip
+                        autohide={false}
+                        placement="top"
+                        target="dynamic-wait-time-option"
+                      >
+                        Calculated based on your team's first response time of last 10 live chat tickets.
+                         
+                        <a
+                          href="https://docs.gorgias.com/en-US/109858-dc67e62b040a4649aed68bdce7ffa4f5"
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          Learn more
+                        </a>
+                      </Tooltip>
+                      <p
+                        className="dynamicDescription"
+                      >
+                        If the wait time is long, customers can choose to wait in the chat or leave a message through contact form
+                      </p>
+                    </div>,
+                    "value": "reply-dynamic",
                   },
                   Object {
-                    "label": "\\"Thanks for reaching out! We typically reply in a few minutes.\\"",
+                    "label": "Thanks for reaching out! We typically reply in a few minutes",
                     "value": "reply-in-minutes",
                   },
                   Object {
-                    "label": "\\"Thanks for reaching out! We typically reply in a few hours.\\"",
+                    "label": "Thanks for reaching out! We typically reply in a few hours",
                     "value": "reply-in-hours",
-                  },
-                  Object {
-                    "label": "\\"Thanks for reaching out! We typically reply in a day.\\"",
-                    "value": "reply-in-day",
                   },
                 ]
               }
-              selectedValue="reply-shortly"
+              selectedValue="reply-dynamic"
             />
             <p
-              className="text-faded tinyText"
+              className=""
             >
-              This message will be sent in new chat tickets after 30 seconds without replies from an agent.
-            </p>
-            <p
-              className="text-faded"
-            >
-              <b>
-                Outside
-                 
-                <Link
-                  to="/app/settings/business-hours"
-                >
-                  Business hours
-                </Link>
-              </b>
+              Outside
+               
+              <Link
+                to="/app/settings/business-hours"
+              >
+                Business hours
+              </Link>
               , Gorgias will automatically tell customers when they can expect a response.
             </p>
           </div>
@@ -588,8 +608,8 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
   <GorgiasChatIntegrationPreviewContainer
     preview={
       <ChatIntegrationPreview
-        autoResponderEnabled={false}
-        autoResponderReply="reply-shortly"
+        autoResponderEnabled={true}
+        autoResponderReply="reply-dynamic"
         isOnline={true}
         language="en-US"
         mainColor="#789c5d"
@@ -804,7 +824,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
             className="mb-3 d-flex align-items-center"
           >
             <ToggleInput
-              isToggled={false}
+              isToggled={true}
               onClick={[Function]}
             />
             <div
@@ -819,62 +839,82 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
             className="mb-3"
           >
             <p
-              className="text-faded"
+              className=""
             >
-              <b>
-                During
-                 
-                <Link
-                  to="/app/settings/business-hours"
-                >
-                  Business hours
-                </Link>
-              </b>
-              , tell customers how fast they can expect a response with an auto-responder:
+              During
+               
+              <Link
+                to="/app/settings/business-hours"
+              >
+                Business hours
+              </Link>
+              , tell customers how fast they can expect a response with an automated message:
             </p>
             <RadioFieldSet
-              className="mb-2"
-              isDisabled={true}
+              className="mb-2 radioFieldSet"
+              isDisabled={false}
               onChange={[Function]}
               options={
                 Array [
                   Object {
-                    "label": "\\"Thanks for reaching out! Our team will get back to you shortly.\\"",
-                    "value": "reply-shortly",
+                    "label": <div>
+                      Dynamic wait time (recommended)
+                       
+                      <span
+                        className="dynamicTimeTooltip"
+                        id="dynamic-wait-time-option"
+                      >
+                        <i
+                          className="material-icons"
+                        >
+                          info_outline
+                        </i>
+                      </span>
+                      <Tooltip
+                        autohide={false}
+                        placement="top"
+                        target="dynamic-wait-time-option"
+                      >
+                        Calculated based on your team's first response time of last 10 live chat tickets.
+                         
+                        <a
+                          href="https://docs.gorgias.com/en-US/109858-dc67e62b040a4649aed68bdce7ffa4f5"
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          Learn more
+                        </a>
+                      </Tooltip>
+                      <p
+                        className="dynamicDescription"
+                      >
+                        If the wait time is long, customers can choose to wait in the chat or leave a message through contact form
+                      </p>
+                    </div>,
+                    "value": "reply-dynamic",
                   },
                   Object {
-                    "label": "\\"Thanks for reaching out! We typically reply in a few minutes.\\"",
+                    "label": "Thanks for reaching out! We typically reply in a few minutes",
                     "value": "reply-in-minutes",
                   },
                   Object {
-                    "label": "\\"Thanks for reaching out! We typically reply in a few hours.\\"",
+                    "label": "Thanks for reaching out! We typically reply in a few hours",
                     "value": "reply-in-hours",
-                  },
-                  Object {
-                    "label": "\\"Thanks for reaching out! We typically reply in a day.\\"",
-                    "value": "reply-in-day",
                   },
                 ]
               }
-              selectedValue="reply-shortly"
+              selectedValue="reply-dynamic"
             />
             <p
-              className="text-faded tinyText"
+              className=""
             >
-              This message will be sent in new chat tickets after 30 seconds without replies from an agent.
-            </p>
-            <p
-              className="text-faded"
-            >
-              <b>
-                Outside
-                 
-                <Link
-                  to="/app/settings/business-hours"
-                >
-                  Business hours
-                </Link>
-              </b>
+              Outside
+               
+              <Link
+                to="/app/settings/business-hours"
+              >
+                Business hours
+              </Link>
               , Gorgias will automatically tell customers when they can expect a response.
             </p>
           </div>

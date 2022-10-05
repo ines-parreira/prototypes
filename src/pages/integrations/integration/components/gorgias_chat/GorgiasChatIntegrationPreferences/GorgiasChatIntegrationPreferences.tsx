@@ -13,9 +13,8 @@ import {
     isGenericEmailIntegration,
 } from 'constants/integration'
 import {
-    CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
-    CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
-    getAutoResponderReplyOptions,
+    CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
+    CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
 } from '../../../../../../config/integrations'
 import {
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
@@ -23,6 +22,8 @@ import {
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_OPTIONAL,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_REQUIRED_OUTSIDE_BUSINESS_HOURS,
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
+    GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
+    GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
 } from '../../../../../../config/integrations/gorgias_chat'
 import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
 import {getIntegrationsByTypes} from '../../../../../../state/integrations/selectors'
@@ -91,8 +92,8 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
     }
 
     state: State = {
-        autoResponderEnabled: CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
-        autoResponderReply: CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
+        autoResponderEnabled: GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
+        autoResponderReply: GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
         emailCaptureEnforcement: GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
         linkedEmailIntegration: null,
         hideOnMobile: false,
@@ -121,7 +122,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                             'preferences',
                             'auto_responder',
                             'reply',
-                        ]) || CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
+                        ]) || GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
                     emailCaptureEnforcement: integration.getIn([
                         'meta',
                         'preferences',
@@ -359,6 +360,58 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                 {previewChildren}
             </ChatIntegrationPreview>
         )
+
+        const autoResponderOptions = [
+            {
+                value: GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
+                label: (
+                    <div>
+                        Dynamic wait time (recommended){' '}
+                        <span
+                            className={css.dynamicTimeTooltip}
+                            id="dynamic-wait-time-option"
+                        >
+                            <i className="material-icons">info_outline</i>
+                        </span>
+                        <Tooltip
+                            placement="top"
+                            target={'dynamic-wait-time-option'}
+                            autohide={false}
+                        >
+                            Calculated based on your team's first response time
+                            of last 10 live chat tickets.{' '}
+                            <a
+                                href="https://docs.gorgias.com/en-US/109858-dc67e62b040a4649aed68bdce7ffa4f5"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Learn more
+                            </a>
+                        </Tooltip>
+                        <p
+                            className={classnames(
+                                {
+                                    'text-faded': !autoResponderEnabled,
+                                },
+                                css.dynamicDescription
+                            )}
+                        >
+                            If the wait time is long, customers can choose to
+                            wait in the chat or leave a message through contact
+                            form
+                        </p>
+                    </div>
+                ),
+            },
+            {
+                value: CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
+                label: 'Thanks for reaching out! We typically reply in a few minutes',
+            },
+            {
+                value: CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
+                label: 'Thanks for reaching out! We typically reply in a few hours',
+            },
+        ]
 
         return (
             <div className="full-width">
@@ -618,49 +671,33 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                             'text-faded': !autoResponderEnabled,
                                         })}
                                     >
-                                        <b>
-                                            During{' '}
-                                            <Link to="/app/settings/business-hours">
-                                                Business hours
-                                            </Link>
-                                        </b>
+                                        During{' '}
+                                        <Link to="/app/settings/business-hours">
+                                            Business hours
+                                        </Link>
                                         , tell customers how fast they can
-                                        expect a response with an
-                                        auto-responder:
+                                        expect a response with an automated
+                                        message:
                                     </p>
                                     <RadioFieldSet
-                                        className="mb-2"
-                                        options={getAutoResponderReplyOptions(
-                                            language
+                                        className={classnames(
+                                            'mb-2',
+                                            css.radioFieldSet
                                         )}
+                                        options={autoResponderOptions}
                                         selectedValue={autoResponderReply}
                                         onChange={this._setAutoResponderReply}
                                         isDisabled={!autoResponderEnabled}
                                     />
                                     <p
-                                        className={classnames(
-                                            {
-                                                'text-faded':
-                                                    !autoResponderEnabled,
-                                            },
-                                            css.tinyText
-                                        )}
-                                    >
-                                        This message will be sent in new chat
-                                        tickets after 30 seconds without replies
-                                        from an agent.
-                                    </p>
-                                    <p
                                         className={classnames({
                                             'text-faded': !autoResponderEnabled,
                                         })}
                                     >
-                                        <b>
-                                            Outside{' '}
-                                            <Link to="/app/settings/business-hours">
-                                                Business hours
-                                            </Link>
-                                        </b>
+                                        Outside{' '}
+                                        <Link to="/app/settings/business-hours">
+                                            Business hours
+                                        </Link>
                                         , Gorgias will automatically tell
                                         customers when they can expect a
                                         response.

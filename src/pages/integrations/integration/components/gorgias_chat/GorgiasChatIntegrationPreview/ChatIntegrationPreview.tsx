@@ -7,6 +7,7 @@ import clockIcon from 'assets/img/icons/clock.svg'
 import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
+    GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
 } from '../../../../../../config/integrations/gorgias_chat'
 import {
     CHAT_AUTO_RESPONDER_REPLY_IN_DAY,
@@ -208,7 +209,9 @@ const ChatIntegrationPreview = (props: Props) => {
                         )}
                         {isOnline &&
                             autoResponderEnabled &&
-                            autoResponderReply && (
+                            autoResponderReply &&
+                            autoResponderReply !==
+                                GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC && (
                                 <div className={css.replyTime}>
                                     <img
                                         src={clockIcon}

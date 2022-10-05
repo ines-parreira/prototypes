@@ -62,6 +62,7 @@ export const GORGIAS_CHAT_OFFLINE_MODE_ENABLED_DATETIME_DEFAULT = null
 
 // Auto responder
 export const GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT = true
+export const GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC = 'reply-dynamic'
 
 // Company picture types
 export const GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_MEMBERS = 'team-members'
