@@ -14,6 +14,7 @@ import {
 import {
     isTicketEvent,
     isTicketMessage,
+    isTicketRuleSuggestion,
     isTicketSatisfactionSurvey,
 } from 'models/ticket/predicates'
 import {TicketChannel} from 'business/types/ticket'
@@ -32,6 +33,7 @@ import PrivateReplyEvent from './PrivateReplyEvent/PrivateReplyEvent'
 import {PRIVATE_REPLY_ACTIONS} from './PrivateReplyEvent/constants'
 
 import css from './TicketBody.less'
+import RuleSuggestion from './RuleSuggestion'
 
 // $TSFixMe replace with importing HighlightedElements from AuditLogEvent.tsx on migration
 type HighlightedElements = {
@@ -249,6 +251,9 @@ export class TicketBody extends React.Component<Props, State> {
                             />
                         )
                     }
+
+                    if (isTicketRuleSuggestion(element))
+                        return <RuleSuggestion />
 
                     if (isTicketEvent(element)) {
                         if (TICKET_EVENT_TYPES_VALUES.includes(elementType)) {

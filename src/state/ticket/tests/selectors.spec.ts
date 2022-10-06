@@ -76,6 +76,11 @@ describe('ticket selectors', () => {
                     appliedMacro: {},
                 },
                 via: TicketVia.Email,
+                meta: {
+                    rule_suggestion: {
+                        id: 1,
+                    },
+                },
             }),
         } as RootState
     })
@@ -229,23 +234,32 @@ describe('ticket selectors', () => {
         )
     })
 
+    it('getRuleSuggestion', () => {
+        expect(selectors.getRuleSuggestion(state)).toEqualImmutable(
+            state.ticket.getIn(['meta', 'rule_suggestion'])
+        )
+    })
+
     it('getBody', () => {
         expect(selectors.getBody({} as RootState)).toEqualImmutable(fromJS([]))
 
         const body = selectors.getBody(state)
         expect(body).toBeInstanceOf(List)
-        expect(body.size).toBe(7)
+        expect(body.size).toBe(8)
 
         body.take(2).forEach((element: Map<any, any>) => {
             expect(element.get('isEvent')).toBe(true)
         })
 
-        body.slice(2).forEach((element: Map<any, any>) => {
+        body.slice(2, 6).forEach((element: Map<any, any>) => {
             expect(element.get('isMessage')).toBe(true)
         })
 
         expect((body.get(5) as Map<any, any>).get('isPending')).toBe(false)
         expect((body.get(6) as Map<any, any>).get('isPending')).toBe(true)
+        expect((body.get(7) as Map<any, any>).get('isRuleSuggestion')).toBe(
+            true
+        )
         expect(body).toMatchSnapshot()
     })
 

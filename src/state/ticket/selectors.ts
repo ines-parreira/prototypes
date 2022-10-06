@@ -215,6 +215,15 @@ export const getSatisfactionSurveys = createImmutableSelector<
         ) as List<any>
 )
 
+export const getRuleSuggestion = createImmutableSelector<
+    RootState,
+    Map<any, any>,
+    TicketState
+>(
+    getTicketState,
+    (state) => fromJS(state.getIn(['meta', 'rule_suggestion'])) as Map<any, any>
+)
+
 // return elements we display in the body of a ticket (messages, events, etc.)
 export const getBody = createImmutableSelector<
     RootState,
@@ -222,13 +231,21 @@ export const getBody = createImmutableSelector<
     List<any>,
     List<any>,
     List<any>,
-    List<any>
+    List<any>,
+    Map<any, any>
 >(
     getMessages,
     getPendingMessages,
     getEvents,
     getSatisfactionSurveys,
-    (messages, pendingMessages, events, satisfactionSurveys) => {
+    getRuleSuggestion,
+    (
+        messages,
+        pendingMessages,
+        events,
+        satisfactionSurveys,
+        ruleSuggestion
+    ) => {
         const nextMessages = messages.map((message: Map<any, any>) => {
             return message.set('isMessage', true)
         }) as List<any>
@@ -261,7 +278,7 @@ export const getBody = createImmutableSelector<
             }
         ) as List<any>
 
-        return nextMessages
+        let body = nextMessages
             .concat(failedPendingMessages)
             .concat(nextEvents)
             .concat(nextSatisfactionSurveys)
@@ -272,6 +289,11 @@ export const getBody = createImmutableSelector<
                         : element.get('created_datetime')) as string
             )
             .concat(activePendingMessages) as List<any>
+
+        if (ruleSuggestion)
+            body = body.push(ruleSuggestion.set('isRuleSuggestion', true))
+
+        return body
     }
 )
 

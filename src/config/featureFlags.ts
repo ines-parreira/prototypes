@@ -12,4 +12,5 @@ export enum FeatureFlagKey {
     RevenueDiscountCodesV0 = 'revenue-discount-codes-v0',
     ElasticsearchSearchLoadTest = 'elasticsearch-search-load-test',
     SelfServiceLoopReturnsFlow = 'self-service-loop-returns-flow',
+    RuleSuggestion = 'rule-suggestion',
 }
