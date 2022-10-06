@@ -28,9 +28,13 @@ const phoneFunctionOptions: SelectableOption[] = rawPhoneFunctionOptions
 
 type Props = {
     selectedPhoneNumberId?: number
+    pricingLink?: string
 }
 
-function VoiceIntegrationCreate({selectedPhoneNumberId}: Props): JSX.Element {
+function VoiceIntegrationCreate({
+    selectedPhoneNumberId,
+    pricingLink,
+}: Props): JSX.Element {
     const phoneNumbers = useAppSelector(getPhoneNumbers)
     const [title, setTitle] = useState('')
     const [phoneNumber, setPhoneNumber] = useState<Maybe<PhoneNumber>>(null)
@@ -103,13 +107,15 @@ function VoiceIntegrationCreate({selectedPhoneNumberId}: Props): JSX.Element {
                     <Alert icon className="mb-4">
                         With the Voice Add-on, you can seamlessly integrate
                         phone support into your existing Gorgias workflow.{' '}
-                        <a
-                            href="https://www.gorgias.com/pricing"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            Learn more about pricing
-                        </a>
+                        {pricingLink && (
+                            <a
+                                href={pricingLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Learn more about pricing
+                            </a>
+                        )}
                     </Alert>
                     <Form onSubmit={onSubmit}>
                         <FormGroup>

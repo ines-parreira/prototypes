@@ -98,6 +98,7 @@ export default function VoiceIntegration() {
                                 ? Number.parseInt(phoneNumberId, 10)
                                 : undefined
                         }
+                        pricingLink={config?.pricingLink}
                     />
                 </Route>
                 <Route path={baseURL} exact>

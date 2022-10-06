@@ -11,14 +11,19 @@ import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
 import Button from 'pages/common/components/button/Button'
 import PhoneNumberSelectField from 'pages/phoneNumbers/PhoneNumberSelectField'
 import useAppSelector from 'hooks/useAppSelector'
+import Alert from 'pages/common/components/Alert/Alert'
 
 import css from 'pages/settings/settings.less'
 
 type Props = {
     selectedPhoneNumberId?: number
+    pricingLink?: string
 }
 
-function SmsIntegrationCreate({selectedPhoneNumberId}: Props): JSX.Element {
+function SmsIntegrationCreate({
+    selectedPhoneNumberId,
+    pricingLink,
+}: Props): JSX.Element {
     const phoneNumbers = useAppSelector(getPhoneNumbers)
     const [title, setTitle] = useState('')
     const [phoneNumber, setPhoneNumber] = useState<Maybe<PhoneNumber>>(null)
@@ -69,6 +74,19 @@ function SmsIntegrationCreate({selectedPhoneNumberId}: Props): JSX.Element {
         <Container fluid className={css.pageContainer}>
             <Row>
                 <Col lg={6}>
+                    <Alert icon className="mb-4">
+                        With the SMS Add-on, you can easily add text message
+                        capabilities to an existing phone number in Gorgias.{' '}
+                        {pricingLink && (
+                            <a
+                                href={pricingLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Learn more about pricing
+                            </a>
+                        )}
+                    </Alert>
                     <Form onSubmit={onSubmit}>
                         <FormGroup>
                             <Label htmlFor="title" className="control-label">

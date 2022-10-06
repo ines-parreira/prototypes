@@ -10,6 +10,28 @@ exports[`<SmsIntegrationCreate/> render() should prefill the title field using t
     <div
       class="col-lg-6"
     >
+      <div
+        class="alert info mb-4"
+      >
+        <div
+          class="iconContainer"
+        >
+          <img
+            alt="icon"
+            src="test-file-stub"
+          />
+        </div>
+        <div
+          class="content"
+        >
+          <span
+            class="label"
+          >
+            With the SMS Add-on, you can easily add text message capabilities to an existing phone number in Gorgias.
+             
+          </span>
+        </div>
+      </div>
       <form
         class=""
       >
@@ -219,6 +241,28 @@ exports[`<SmsIntegrationCreate/> render() should render 1`] = `
     <div
       class="col-lg-6"
     >
+      <div
+        class="alert info mb-4"
+      >
+        <div
+          class="iconContainer"
+        >
+          <img
+            alt="icon"
+            src="test-file-stub"
+          />
+        </div>
+        <div
+          class="content"
+        >
+          <span
+            class="label"
+          >
+            With the SMS Add-on, you can easily add text message capabilities to an existing phone number in Gorgias.
+             
+          </span>
+        </div>
+      </div>
       <form
         class=""
       >
@@ -398,6 +442,28 @@ exports[`<SmsIntegrationCreate/> render() should submit a valid payload with the
     <div
       class="col-lg-6"
     >
+      <div
+        class="alert info mb-4"
+      >
+        <div
+          class="iconContainer"
+        >
+          <img
+            alt="icon"
+            src="test-file-stub"
+          />
+        </div>
+        <div
+          class="content"
+        >
+          <span
+            class="label"
+          >
+            With the SMS Add-on, you can easily add text message capabilities to an existing phone number in Gorgias.
+             
+          </span>
+        </div>
+      </div>
       <form
         class=""
       >

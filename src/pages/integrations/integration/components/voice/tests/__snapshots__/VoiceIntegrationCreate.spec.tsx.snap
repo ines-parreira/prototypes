@@ -29,13 +29,6 @@ exports[`<VoiceIntegrationCreate/> render() should prefill the title field using
           >
             With the Voice Add-on, you can seamlessly integrate phone support into your existing Gorgias workflow.
              
-            <a
-              href="https://www.gorgias.com/pricing"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              Learn more about pricing
-            </a>
           </span>
         </div>
       </div>
@@ -353,13 +346,6 @@ exports[`<VoiceIntegrationCreate/> render() should render 1`] = `
           >
             With the Voice Add-on, you can seamlessly integrate phone support into your existing Gorgias workflow.
              
-            <a
-              href="https://www.gorgias.com/pricing"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              Learn more about pricing
-            </a>
           </span>
         </div>
       </div>
@@ -647,13 +633,6 @@ exports[`<VoiceIntegrationCreate/> render() should submit a valid payload with t
           >
             With the Voice Add-on, you can seamlessly integrate phone support into your existing Gorgias workflow.
              
-            <a
-              href="https://www.gorgias.com/pricing"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              Learn more about pricing
-            </a>
           </span>
         </div>
       </div>

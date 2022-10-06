@@ -76,6 +76,7 @@ export default function SmsIntegration() {
                                 ? Number.parseInt(phoneNumberId, 10)
                                 : undefined
                         }
+                        pricingLink={config?.pricingLink}
                     />
                 </Route>
                 <Route path={baseURL} exact>
