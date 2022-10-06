@@ -606,3 +606,8 @@ export const getEmailForwardingActivated = (id: number) =>
                 false
             ) as boolean
     )
+
+export const getAreIntegrationsLoading = createSelector(
+    getIntegrationsState,
+    (state) => state?.state?.loading?.integrations === true
+)

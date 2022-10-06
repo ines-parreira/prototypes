@@ -6,17 +6,20 @@ import {
 import {Integration} from 'models/integration/types'
 import loopReturns from 'assets/img/integrations/loop-returns.png'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
+import SelectFieldDropdownAction from 'pages/common/forms/SelectField/SelectFieldDropdownAction'
 
 type Props = {
     loopReturnsIntegrations: Integration[]
     value: ReturnAction | null
     onChange: (value: ReturnAction) => void
+    onCreateNewLoopReturnsIntegrationClick: () => void
 }
 
 export const ReturnActionSelectField = ({
     loopReturnsIntegrations,
     value,
     onChange,
+    onCreateNewLoopReturnsIntegrationClick,
 }: Props) => {
     const options = useMemo<ComponentProps<typeof SelectField>['options']>(
         () => [
@@ -47,8 +50,26 @@ export const ReturnActionSelectField = ({
                     </>
                 ),
             })),
+            {
+                label: (
+                    <SelectFieldDropdownAction
+                        icon={
+                            <i
+                                className="material-icons md-2"
+                                style={{marginLeft: -3}}
+                            >
+                                add
+                            </i>
+                        }
+                    >
+                        <span>Create new Loop Returns integration</span>
+                    </SelectFieldDropdownAction>
+                ),
+                isAction: true,
+                onClick: onCreateNewLoopReturnsIntegrationClick,
+            },
         ],
-        [loopReturnsIntegrations]
+        [loopReturnsIntegrations, onCreateNewLoopReturnsIntegrationClick]
     )
 
     const handleChange: ComponentProps<typeof SelectField>['onChange'] =

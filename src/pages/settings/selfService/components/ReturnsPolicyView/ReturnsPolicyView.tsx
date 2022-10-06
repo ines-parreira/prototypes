@@ -1,6 +1,7 @@
 import React, {
     ChangeEvent,
     FormEvent,
+    useCallback,
     useEffect,
     useMemo,
     useState,
@@ -46,6 +47,7 @@ import {getIntegrationsByType} from 'state/integrations/selectors'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {useConfigurationData} from '../hooks'
 import {ReturnActionSelectField} from './components/ReturnActionSelectField'
+import {NewReturnIntegrationModal} from './components/NewReturnIntegrationModal'
 import {LOOP_RETURNS_API_URL} from './constants'
 import css from './ReturnsPolicyView.less'
 
@@ -96,6 +98,10 @@ export const ReturnsPolicyView = () => {
 
     const [showDeleteButton, setShowDeleteButton] = useState(true)
     const [showLessThan, setShowLessThan] = useState(false)
+    const [
+        isNewReturnIntegrationModalOpen,
+        setIsNewReturnIntegrationModalOpen,
+    ] = useState(false)
 
     useEffect(() => {
         const eligibilityFilter: SelfServiceConfigurationFilter | undefined =
@@ -237,6 +243,24 @@ export const ReturnsPolicyView = () => {
         }
     }
 
+    const handleCreateNewLoopReturnsIntegrationClick = useCallback(() => {
+        setIsNewReturnIntegrationModalOpen(true)
+    }, [])
+    const handleNewReturnIntegrationModalClose = useCallback(() => {
+        setIsNewReturnIntegrationModalOpen(false)
+    }, [])
+    const handleNewReturnIntegration = useCallback(() => {
+        const loopReturnsIntegration = [...loopReturnsIntegrations]
+            .sort((a, b) => a.id - b.id)
+            .pop() as Integration
+
+        setReturnAction({
+            type: ReturnActionType.LoopReturns,
+            integration_id: loopReturnsIntegration.id,
+        })
+        handleNewReturnIntegrationModalClose()
+    }, [loopReturnsIntegrations, handleNewReturnIntegrationModalClose])
+
     if (!(hasSelfServiceV1Features || hasAutomationAddOn)) {
         return <GorgiasChatIntegrationSelfServicePaywall />
     }
@@ -374,6 +398,9 @@ export const ReturnsPolicyView = () => {
                                                 }
                                                 value={returnAction}
                                                 onChange={setReturnAction}
+                                                onCreateNewLoopReturnsIntegrationClick={
+                                                    handleCreateNewLoopReturnsIntegrationClick
+                                                }
                                             />
 
                                             {isLoopReturnsIntegrationMissing && (
@@ -400,6 +427,18 @@ export const ReturnsPolicyView = () => {
                                                     to use this feature
                                                 </Alert>
                                             )}
+
+                                            <NewReturnIntegrationModal
+                                                isOpen={
+                                                    isNewReturnIntegrationModalOpen
+                                                }
+                                                onClose={
+                                                    handleNewReturnIntegrationModalClose
+                                                }
+                                                onCreate={
+                                                    handleNewReturnIntegration
+                                                }
+                                            />
                                         </>
                                     )}
                                     <div className={css.formButtonsContainer}>

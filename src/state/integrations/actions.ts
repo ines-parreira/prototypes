@@ -176,7 +176,11 @@ export function activateOnboardingIntegrations(
 /**
  * Helper to execute all actions that should be executed when an Integration is successfully created.
  */
-export function onCreateSuccess(dispatch: StoreDispatch, resp: Integration) {
+export function onCreateSuccess(
+    dispatch: StoreDispatch,
+    resp: Integration,
+    disableRedirect = false
+) {
     dispatch({
         type: constants.CREATE_INTEGRATION_SUCCESS,
         resp,
@@ -204,9 +208,13 @@ export function onCreateSuccess(dispatch: StoreDispatch, resp: Integration) {
         return
     }
 
-    history.push(
-        `/app/settings/integrations/${resp.type}/${resp.id || ''}${nextStep}`
-    )
+    if (!disableRedirect) {
+        history.push(
+            `/app/settings/integrations/${resp.type}/${
+                resp.id || ''
+            }${nextStep}`
+        )
+    }
 
     void dispatch(
         notify({
@@ -363,7 +371,8 @@ export function deleteIntegration(integration: Map<any, any>) {
 export function updateOrCreateIntegrationRequest(
     integration: Map<any, any>,
     action?: Record<string, unknown>,
-    notificationId: Maybe<string> = null
+    notificationId: Maybe<string> = null,
+    disableRedirectOnCreateSuccess = false
 ) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         const isUpdate = integration.get('id') as number
@@ -411,7 +420,11 @@ export function updateOrCreateIntegrationRequest(
                         )
                     }
 
-                    return onCreateSuccess(dispatch, resp)
+                    return onCreateSuccess(
+                        dispatch,
+                        resp,
+                        disableRedirectOnCreateSuccess
+                    )
                 },
                 (error: AxiosError) => {
                     return dispatch({
@@ -607,10 +620,18 @@ export function activateIntegration(id: number) {
  */
 export function updateOrCreateIntegration(
     integration: Map<any, any>,
-    action?: Record<string, unknown>
+    action?: Record<string, unknown>,
+    disableRedirectOnCreateSuccess?: boolean
 ) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
-        return dispatch(updateOrCreateIntegrationRequest(integration, action))
+        return dispatch(
+            updateOrCreateIntegrationRequest(
+                integration,
+                action,
+                null,
+                disableRedirectOnCreateSuccess
+            )
+        )
     }
 }
 

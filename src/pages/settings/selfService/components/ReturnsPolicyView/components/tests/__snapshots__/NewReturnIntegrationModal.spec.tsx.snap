@@ -1,0 +1,159 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<NewReturnIntegrationModal /> should create new Loop Returns integration and call onCreate() handler 1`] = `
+Array [
+  Object {
+    "integration": Immutable.Map {
+      "type": "http",
+      "name": "mystore returns",
+      "http": Immutable.Map {
+        "headers": Immutable.Map {
+          "X-Authorization": "api_key",
+        },
+        "url": "https://api.loopreturns.com/api/v2/returns?from=2010-01-01&to=2050-01-01&customer_email={{ticket.customer.email}}",
+        "method": "GET",
+        "request_content_type": "application/json",
+        "response_content_type": "application/json",
+        "triggers": Immutable.Map {
+          "ticket-created": true,
+          "ticket-updated": true,
+          "ticket-message-created": true,
+        },
+      },
+    },
+    "type": "CREATE_INTEGRATION_START",
+  },
+]
+`;
+
+exports[`<NewReturnIntegrationModal /> should render new return integration modal 1`] = `
+<body>
+  <div />
+  <div
+    aria-describedby="modal-1-desc"
+    aria-labelledby="modal-1-title"
+    aria-modal="true"
+    class="modal default open"
+    role="dialog"
+  >
+    <div
+      class="dialog"
+    >
+      <div
+        class="modalContent default"
+      >
+        <div
+          class="wrapper"
+        >
+          <div>
+            <div
+              class="title"
+              id="modal-1-title"
+            >
+              Create new return integration
+            </div>
+            <div
+              class="subtitle"
+            />
+          </div>
+          <i
+            class="material-icons icon"
+          >
+            close
+          </i>
+        </div>
+        <form
+          class=""
+        >
+          <div
+            class="wrapper"
+            id="modal-1-desc"
+          >
+            <div
+              class="form-group"
+            >
+              <h4>
+                API Key
+              </h4>
+              <label
+                class=""
+              >
+                Enter the API Key from your return portal to create a new integration.
+              </label>
+              <div>
+                <div
+                  class="wrapper"
+                >
+                  <input
+                    class="input"
+                    id="input-text-2"
+                    name="input-text-2"
+                    placeholder="API Key"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <small
+                class="form-text text-inherit"
+              >
+                Currently only available to Loop Returns customers.
+                <a
+                  href="https://docs.gorgias.com/en-US/loop-returns-81908"
+                  rel="noreferrer noopener"
+                  target="_blank"
+                >
+                   Find your API Key in Loop Returns.
+                </a>
+              </small>
+            </div>
+            <div
+              class="mt-4"
+            >
+              You can manage your integration settings later from the
+               
+              <a
+                target="_blank"
+                to="/app/settings/integrations/http"
+              >
+                HTTP integrations page
+              </a>
+              .
+            </div>
+          </div>
+          <div
+            class="wrapper wrapper"
+          >
+            <div
+              class="actions"
+            >
+              <div
+                class="childWrapper"
+              >
+                <button
+                  class="wrapper fill secondary medium"
+                  type="button"
+                >
+                  Cancel
+                </button>
+              </div>
+              <div
+                class="childWrapper"
+              >
+                <button
+                  class="wrapper fill primary medium isDisabled"
+                  color="primary"
+                  disabled=""
+                  type="submit"
+                >
+                  Create
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+`;
