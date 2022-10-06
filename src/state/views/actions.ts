@@ -456,7 +456,7 @@ export function fetchViewItems(
             getLDClient().allFlags()[
                 FeatureFlagKey.ElasticsearchSearchLoadTest
             ] &&
-            activeView.get('search') !== null &&
+            activeView.get('search') != null &&
             activeView.get('type') === ViewType.TicketList &&
             !direction &&
             !cursor

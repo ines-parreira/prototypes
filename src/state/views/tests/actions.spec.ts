@@ -691,13 +691,20 @@ describe('actions', () => {
             })
 
             it.each([
-                ['not a search view', {...ticketSearchView, search: null}],
                 [
-                    'not a ticket list view',
+                    'search property equals null',
+                    {...ticketSearchView, search: null},
+                ],
+                [
+                    'search property is not defined',
+                    {...ticketSearchView, search: undefined},
+                ],
+                [
+                    'is not a ticket list view',
                     {...ticketSearchView, type: ViewType.CustomerList},
                 ],
             ])(
-                'should not call the /api/tickets/search endpoint when view is %s',
+                'should not call the /api/tickets/search endpoint when view %s',
                 async (testName, view) => {
                     allFlagsMock.mockReturnValue({
                         [FeatureFlagKey.ElasticsearchSearchLoadTest]: true,
