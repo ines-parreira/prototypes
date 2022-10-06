@@ -1,4 +1,4 @@
-import {fromJS, List} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 
 import {
     DANISH_LANGUAGE,
@@ -97,7 +97,7 @@ export const QUICK_REPLIES_MAX_ITEMS = 3
 export const QUICK_REPLIES_MAX_ITEM_LENGTH = 20
 
 // Campaigns
-export const CAMPAIGNS_TRIGGER_KEYS = fromJS([
+export const CAMPAIGNS_TRIGGER_KEYS: List<any> = fromJS([
     {
         label: 'Business hours',
         name: 'business_hours',

@@ -175,7 +175,7 @@ jest.mock(
     () => () => <div>ChatIntegrationInstall</div>
 )
 jest.mock(
-    '../components/chat/ChatIntegrationCampaigns/CampaignDetail.js',
+    '../components/chat/ChatIntegrationCampaigns/CampaignDetail',
     () => () => <div>CampaignDetail</div>
 )
 

@@ -1,17 +1,18 @@
-import React from 'react'
+import React, {FormEvent} from 'react'
 import {mount, shallow} from 'enzyme'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {Provider} from 'react-redux'
 
 import ChatIntegrationQuickReplies, {
     ChatIntegrationQuickRepliesComponent,
-} from '../ChatIntegrationQuickReplies.tsx'
+} from '../ChatIntegrationQuickReplies'
 
 const mockStore = configureMockStore([thunk])
 
 describe('<ChatIntegrationQuickReplies/>', () => {
-    let integration = fromJS({
+    const integration: Map<any, any> = fromJS({
         id: 7,
         name: 'my chat integration',
         meta: {},
@@ -25,31 +26,29 @@ describe('<ChatIntegrationQuickReplies/>', () => {
     describe('render()', () => {
         it('should render defaults because there is no quick replies in the integration', () => {
             const component = mount(
-                <ChatIntegrationQuickReplies
-                    store={mockStore({})}
-                    integration={integration}
-                    updateOrCreateIntegration={() => {}}
-                />
+                <Provider store={mockStore({})}>
+                    <ChatIntegrationQuickReplies integration={integration} />
+                </Provider>
             )
 
             expect(component).toMatchSnapshot()
         })
 
         it('should render quick replies from the integration', () => {
-            const quickRepliesState = fromJS({
+            const quickRepliesState: Map<any, any> = fromJS({
                 enabled: true,
                 replies: ['foo', 'bar'],
             })
 
             const component = mount(
-                <ChatIntegrationQuickReplies
-                    store={mockStore({})}
-                    integration={integration.setIn(
-                        ['meta', 'quick_replies'],
-                        quickRepliesState
-                    )}
-                    updateOrCreateIntegration={() => {}}
-                />
+                <Provider store={mockStore({})}>
+                    <ChatIntegrationQuickReplies
+                        integration={integration.setIn(
+                            ['meta', 'quick_replies'],
+                            quickRepliesState
+                        )}
+                    />
+                </Provider>
             )
 
             expect(component).toMatchSnapshot()
@@ -61,7 +60,7 @@ describe('<ChatIntegrationQuickReplies/>', () => {
             const updateOrCreateIntegrationSpy = jest.fn(() =>
                 Promise.resolve()
             )
-            const expectedPayload = fromJS({
+            const expectedPayload: Map<any, any> = fromJS({
                 id: 7,
                 meta: {
                     quick_replies: {
@@ -76,7 +75,7 @@ describe('<ChatIntegrationQuickReplies/>', () => {
                 replies: [' foo ', 'bar  '],
             })
 
-            const component = shallow(
+            const component = shallow<ChatIntegrationQuickRepliesComponent>(
                 <ChatIntegrationQuickRepliesComponent
                     integration={integration.setIn(
                         ['meta', 'quick_replies'],
@@ -86,8 +85,10 @@ describe('<ChatIntegrationQuickReplies/>', () => {
                 />
             )
 
-            const fakeEvent = {preventDefault: jest.fn()}
-            component.instance()._submit(fakeEvent)
+            const fakeEvent = {
+                preventDefault: jest.fn(),
+            } as unknown as FormEvent
+            void component.instance()._submit(fakeEvent)
 
             expect(updateOrCreateIntegrationSpy).toHaveBeenCalledWith(
                 expectedPayload

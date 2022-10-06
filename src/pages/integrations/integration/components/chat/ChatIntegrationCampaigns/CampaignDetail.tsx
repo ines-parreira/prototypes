@@ -1,8 +1,7 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import {fromJS} from 'immutable'
+import React, {FocusEvent, Component, FormEvent} from 'react'
+import {fromJS, Map, List} from 'immutable'
 import {Link} from 'react-router-dom'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import classnames from 'classnames'
 import {
     Breadcrumb,
@@ -18,53 +17,61 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
-import CampaignPreview from './CampaignPreview.tsx'
-import css from './CampaignDetail.less'
-
-import ChatIntegrationNavigation from 'pages/integrations/integration/components/chat/ChatIntegrationNavigation.tsx'
+import {RootState} from 'state/types'
+import ChatIntegrationNavigation from 'pages/integrations/integration/components/chat/ChatIntegrationNavigation'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import SelectField from 'pages/common/forms/SelectField/SelectField.tsx'
-import DEPRECATED_RichField from 'pages/common/forms/RichField/DEPRECATED_RichField.tsx'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import {Option, Value} from 'pages/common/forms/SelectField/types'
+import DEPRECATED_RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import PageHeader from 'pages/common/components/PageHeader.tsx'
-import {AgentLabel} from 'pages/common/utils/labels.tsx'
+import PageHeader from 'pages/common/components/PageHeader'
+import {AgentLabel} from 'pages/common/utils/labels'
+import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
 
-import {sanitizeHtmlDefault} from 'utils/html.ts'
-import {convertToHTML} from 'utils/editor.tsx'
+import {sanitizeHtmlDefault} from 'utils/html'
+import {convertToHTML} from 'utils/editor'
 
-import {notify} from 'state/notifications/actions.ts'
-import * as campaignActions from 'state/campaigns/actions.ts'
-import * as integrationsSelectors from 'state/integrations/selectors.ts'
-import * as agentSelectors from 'state/agents/selectors.ts'
+import {notify} from 'state/notifications/actions'
+import * as campaignActions from 'state/campaigns/actions'
+import * as integrationsSelectors from 'state/integrations/selectors'
+import * as agentSelectors from 'state/agents/selectors'
 
 import {
     CAMPAIGNS_TRIGGER_KEYS,
     SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
     SMOOCH_INSIDE_WIDGET_TEXTS,
-} from 'config/integrations/smooch_inside.ts'
-import history from 'pages/history.ts'
+} from 'config/integrations/smooch_inside'
+import history from 'pages/history'
+
+import CampaignPreview from './CampaignPreview'
+import css from './CampaignDetail.less'
 
 /**
  * Generate and return a default empty trigger associated with a trigger configuration.
  * @param idx: the index of the trigger configuration, in CAMPAIGN_TRIGGER_KEYS
  */
-const DEFAULT_TRIGGER = (idx) =>
-    fromJS({
+const DEFAULT_TRIGGER = (idx: number) => {
+    const operators: Map<any, any> = CAMPAIGNS_TRIGGER_KEYS.getIn([
+        idx,
+        'operators',
+    ])
+    const defaultTrigger: Map<any, any> = fromJS({
         key: CAMPAIGNS_TRIGGER_KEYS.getIn([idx, 'name']),
-        operator: CAMPAIGNS_TRIGGER_KEYS.getIn([idx, 'operators'])
-            .keySeq()
-            .get(0),
+        operator: operators.keySeq().get(0),
         value: CAMPAIGNS_TRIGGER_KEYS.getIn([idx, 'value', 'default']),
     })
 
-class ValueInput extends React.Component {
-    static propTypes = {
-        keyConfig: PropTypes.object.isRequired,
-        trigger: PropTypes.object.isRequired,
-        onChange: PropTypes.func.isRequired,
-    }
+    return defaultTrigger
+}
 
+type ValueInputProps = {
+    keyConfig: Map<any, any>
+    trigger: Map<any, any>
+    onChange: (value: any) => void
+}
+
+class ValueInput extends Component<ValueInputProps> {
     render() {
         const {keyConfig, trigger, onChange} = this.props
 
@@ -90,7 +97,7 @@ class ValueInput extends React.Component {
                         onChange={(value) => {
                             onChange(value < 0 ? 0 : value)
                         }}
-                        onBlur={(event) => {
+                        onBlur={(event: FocusEvent<HTMLInputElement>) => {
                             if (event.target.value === '') {
                                 onChange(0)
                             }
@@ -105,17 +112,16 @@ class ValueInput extends React.Component {
     }
 }
 
-class TriggerRow extends React.Component {
-    static propTypes = {
-        trigger: PropTypes.object.isRequired,
-        nbOfTriggers: PropTypes.number.isRequired,
-        idx: PropTypes.number.isRequired,
+type TriggerRowProps = {
+    trigger: Map<any, any>
+    nbOfTriggers: number
+    idx: number
+    onOperatorChange: (value: Value) => void
+    onValueChange: (value: Value) => void
+    onDelete: () => void
+}
 
-        onOperatorChange: PropTypes.func.isRequired,
-        onValueChange: PropTypes.func.isRequired,
-        onDelete: PropTypes.func.isRequired,
-    }
-
+class TriggerRow extends Component<TriggerRowProps> {
     render() {
         const {
             trigger,
@@ -126,12 +132,14 @@ class TriggerRow extends React.Component {
             onDelete,
         } = this.props
 
-        const keyConfig = CAMPAIGNS_TRIGGER_KEYS.find(
-            (config) => config.get('name') === trigger.get('key')
+        const keyConfig: Map<any, any> = CAMPAIGNS_TRIGGER_KEYS.find(
+            (config: Map<any, any>) => config.get('name') === trigger.get('key')
         )
 
         const currentOperator = trigger.get('operator')
-        const defaultOperator = keyConfig.get('operators').keySeq().get(0)
+        const defaultOperator = (keyConfig.get('operators') as Map<any, any>)
+            .keySeq()
+            .get(0)
         const isLastCondition = idx + 1 >= nbOfTriggers
 
         return (
@@ -142,16 +150,14 @@ class TriggerRow extends React.Component {
                 <SelectField
                     onChange={onOperatorChange}
                     value={
-                        keyConfig
-                            .get('operators')
+                        (keyConfig.get('operators') as Map<any, any>)
                             .keySeq()
                             .includes(currentOperator)
                             ? currentOperator
                             : defaultOperator
                     }
-                    options={keyConfig
-                        .get('operators')
-                        .map((operatorData, operator) => {
+                    options={(keyConfig.get('operators') as Map<any, any>)
+                        .map((operatorData: Map<any, any>, operator) => {
                             return {
                                 value: operator,
                                 text: operator,
@@ -184,13 +190,15 @@ class TriggerRow extends React.Component {
     }
 }
 
-export class CampaignDetail extends React.Component {
-    static propTypes = {
-        id: PropTypes.string.isRequired,
-        integration: PropTypes.object.isRequired,
-        campaign: PropTypes.object.isRequired,
-    }
+type CampainDetailOwnProps = {
+    id: string
+    integration: Map<any, any>
+}
 
+type CampaignDetailProps = CampainDetailOwnProps &
+    ConnectedProps<typeof connector>
+
+export class CampaignDetail extends Component<CampaignDetailProps> {
     render() {
         const {integration, campaign, id} = this.props
 
@@ -208,9 +216,9 @@ export class CampaignDetail extends React.Component {
                             </BreadcrumbItem>
                             <BreadcrumbItem>
                                 <Link
-                                    to={`/app/settings/integrations/smooch_inside/${integration.get(
-                                        'id'
-                                    )}`}
+                                    to={`/app/settings/integrations/smooch_inside/${
+                                        integration.get('id') as number
+                                    }`}
                                 >
                                     Chat (Deprecated)
                                 </Link>
@@ -220,9 +228,9 @@ export class CampaignDetail extends React.Component {
                             </BreadcrumbItem>
                             <BreadcrumbItem>
                                 <Link
-                                    to={`/app/settings/integrations/smooch_inside/${integration.get(
-                                        'id'
-                                    )}/campaigns`}
+                                    to={`/app/settings/integrations/smooch_inside/${
+                                        integration.get('id') as number
+                                    }/campaigns`}
                                 >
                                     Campaigns
                                 </Link>
@@ -243,27 +251,28 @@ export class CampaignDetail extends React.Component {
     }
 }
 
-export class CampaignForm extends React.Component {
-    static propTypes = {
-        id: PropTypes.string.isRequired,
-        integration: PropTypes.object.isRequired,
-        campaign: PropTypes.object.isRequired,
+type CampaignFormProps = CampaignDetailProps
 
-        agents: PropTypes.object.isRequired,
+type CampaignFormState = {
+    name: string
+    triggers: List<Map<any, any>>
+    message: Map<any, any>
+    loading: boolean
+}
 
-        createCampaign: PropTypes.func.isRequired,
-        updateCampaign: PropTypes.func.isRequired,
-        deleteCampaign: PropTypes.func.isRequired,
-        notify: PropTypes.func.isRequired,
-    }
-
-    state = {
+export class CampaignForm extends Component<
+    CampaignFormProps,
+    CampaignFormState
+> {
+    isInitialized = false
+    state: CampaignFormState = {
         name: '',
-        triggers: fromJS({}),
+        triggers: fromJS([]),
         message: fromJS({}),
+        loading: false,
     }
 
-    _initState = (campaign) => {
+    _initState = (campaign: Map<any, any>) => {
         this.isInitialized = true
         this.setState({
             name: campaign.get('name'),
@@ -290,13 +299,13 @@ export class CampaignForm extends React.Component {
         }
     }
 
-    _addNewTrigger = (keyConfigIdx) => {
+    _addNewTrigger = (keyConfigIdx: number) => {
         this.setState({
             triggers: this.state.triggers.push(DEFAULT_TRIGGER(keyConfigIdx)),
         })
     }
 
-    _handleSubmit = (e) => {
+    _handleSubmit = (e: FormEvent) => {
         e.preventDefault()
 
         const {id, campaign, integration, agents} = this.props
@@ -306,8 +315,10 @@ export class CampaignForm extends React.Component {
 
         // In case an agent has no email address, we don't want to find him
         // todo(@louisbarranqueiro): remove that when the no-email agent issue is fixed
-        const author = authorEmail
-            ? agents.find((agent) => agent.get('email') === authorEmail)
+        const author: Map<any, any> = authorEmail
+            ? agents.find(
+                  (agent: Map<any, any>) => agent.get('email') === authorEmail
+              )
             : null
 
         // If there's no author, it means we want to display a random agent as author.
@@ -338,7 +349,7 @@ export class CampaignForm extends React.Component {
             message = this.state.message.delete('author')
         }
 
-        const form = fromJS({
+        const form: Map<any, any> = fromJS({
             name: this.state.name,
             id: campaign.get('id'),
             triggers: this.state.triggers,
@@ -348,20 +359,22 @@ export class CampaignForm extends React.Component {
         this.setState({loading: true})
 
         if (isUpdate) {
-            this.props
+            void this.props
                 .updateCampaign(form, integration)
                 .then(() => this.setState({loading: false}))
         } else {
-            this.props
+            void this.props
                 .createCampaign(form, integration)
                 .then(() => this.setState({loading: false}))
         }
     }
 
-    _setAgent = (email) => {
+    _setAgent = (email: string) => {
         const {agents} = this.props
-        const author = email
-            ? agents.find((agent) => agent.get('email') === email)
+        const author: Map<any, any> | null = email
+            ? agents.find(
+                  (agent: Map<any, any>) => agent.get('email') === email
+              )
             : null
 
         const message = author
@@ -380,11 +393,11 @@ export class CampaignForm extends React.Component {
 
     _deleteCampaign = () => {
         const {deleteCampaign, campaign, integration} = this.props
-        deleteCampaign(campaign, integration).then(() => {
+        void deleteCampaign(campaign, integration).then(() => {
             history.push(
-                `/app/settings/integrations/${integration.get(
-                    'type'
-                )}/${integration.get('id')}/campaigns`
+                `/app/settings/integrations/${
+                    integration.get('type') as string
+                }/${integration.get('id') as number}/campaigns`
             )
         })
     }
@@ -395,8 +408,8 @@ export class CampaignForm extends React.Component {
 
         const isUpdate = id !== 'new'
 
-        const authorOptions = agents
-            .map((agent) => {
+        const authorOptions: Option[] = agents
+            .map((agent: Map<any, any>) => {
                 const label = (
                     <AgentLabel name={agent.get('name')} maxWidth="100" />
                 )
@@ -412,7 +425,7 @@ export class CampaignForm extends React.Component {
         // This is the default value; if no author is specified, any agent displayed in the widget when the customer sees
         // the campaign can be displayed as author of the campaign
         authorOptions.push({
-            value: null,
+            value: null as unknown as Value,
             text: 'randomagent',
             label: 'Random agent',
         })
@@ -445,10 +458,12 @@ export class CampaignForm extends React.Component {
                                         return (
                                             <TriggerRow
                                                 key={idx}
-                                                trigger={trigger}
+                                                trigger={trigger!}
                                                 nbOfTriggers={triggers.size}
-                                                idx={idx}
-                                                onOperatorChange={(value) => {
+                                                idx={idx!}
+                                                onOperatorChange={(
+                                                    value: Value
+                                                ) => {
                                                     this.setState({
                                                         triggers:
                                                             triggers.setIn(
@@ -460,7 +475,9 @@ export class CampaignForm extends React.Component {
                                                             ),
                                                     })
                                                 }}
-                                                onValueChange={(value) => {
+                                                onValueChange={(
+                                                    value: Value
+                                                ) => {
                                                     this.setState({
                                                         triggers:
                                                             this.state.triggers.setIn(
@@ -473,7 +490,7 @@ export class CampaignForm extends React.Component {
                                                     this.setState({
                                                         triggers:
                                                             triggers.delete(
-                                                                idx
+                                                                idx!
                                                             ),
                                                     })
                                                 }}
@@ -496,7 +513,7 @@ export class CampaignForm extends React.Component {
                                     </DropdownToggle>
                                     <DropdownMenu>
                                         {CAMPAIGNS_TRIGGER_KEYS.map(
-                                            (keyConfig, idx) => {
+                                            (keyConfig: Map<any, any>, idx) => {
                                                 return (
                                                     <DropdownItem
                                                         key={keyConfig.get(
@@ -505,7 +522,7 @@ export class CampaignForm extends React.Component {
                                                         type="button"
                                                         onClick={() =>
                                                             this._addNewTrigger(
-                                                                idx
+                                                                idx!
                                                             )
                                                         }
                                                     >
@@ -536,7 +553,11 @@ export class CampaignForm extends React.Component {
                                             null
                                         )}
                                         options={authorOptions}
-                                        onChange={this._setAgent}
+                                        onChange={
+                                            this._setAgent as (
+                                                email: Value
+                                            ) => void
+                                        }
                                     />
                                 </div>
                                 {this.isInitialized && (
@@ -559,11 +580,11 @@ export class CampaignForm extends React.Component {
                                             })
                                         }}
                                         displayedActions={[
-                                            'BOLD',
-                                            'ITALIC',
-                                            'UNDERLINE',
-                                            'IMAGE',
-                                            'EMOJI',
+                                            ActionName.Bold,
+                                            ActionName.Italic,
+                                            ActionName.Underline,
+                                            ActionName.Image,
+                                            ActionName.Emoji,
                                         ]}
                                         placeholder={'Write your message'}
                                         isRequired
@@ -614,9 +635,15 @@ export class CampaignForm extends React.Component {
                             ])}
                             translatedTexts={
                                 SMOOCH_INSIDE_WIDGET_TEXTS[
-                                    integration.getIn(['meta', 'language']) ||
+                                    (integration.getIn([
+                                        'meta',
+                                        'language',
+                                    ]) as string) ||
                                         SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
-                                ]
+                                ] as {
+                                    poweredByGorgias: string
+                                    campaignClickToReply: string
+                                }
                             }
                         />
                     </Col>
@@ -626,8 +653,8 @@ export class CampaignForm extends React.Component {
     }
 }
 
-export default connect(
-    (state, props) => {
+const connector = connect(
+    (state: RootState, props: CampainDetailOwnProps) => {
         return {
             campaign: integrationsSelectors.getChatIntegrationCampaignById(
                 props.integration.get('id'),
@@ -642,4 +669,6 @@ export default connect(
         deleteCampaign: campaignActions.deleteCampaign,
         notify,
     }
-)(CampaignDetail)
+)
+
+export default connector(CampaignDetail)

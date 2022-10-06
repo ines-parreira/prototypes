@@ -1,18 +1,16 @@
 import React, {Component, ReactNode} from 'react'
-import {Map} from 'immutable'
 import classnames from 'classnames'
 
 import {
     SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
     SMOOCH_INSIDE_WIDGET_TEXTS,
-} from '../../../../../../config/integrations/smooch_inside'
+} from 'config/integrations/smooch_inside'
 
 import ChatIntegrationAvatar from './ChatIntegrationAvatar'
 import css from './ChatIntegrationPreview.less'
 
 type Props = {
     name: string
-    currentUser?: Map<any, any>
     introductionText?: string
     offlineIntroductionText?: string
     headerText?: string

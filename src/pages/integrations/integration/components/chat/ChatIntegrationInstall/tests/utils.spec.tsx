@@ -1,11 +1,11 @@
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
 import {renderChatCodeSnippet} from '../utils'
 
 describe('chat install utils', () => {
     describe('renderChatCodeSnippet', () => {
         it('should render correctly with new format', () => {
-            const integration = fromJS({
+            const integration: Map<any, any> = fromJS({
                 decoration: {
                     icon: 'http://iconurl.com/',
                     header_color: '#789456',

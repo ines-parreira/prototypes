@@ -75,7 +75,7 @@ const ChatApplication: React.FC<Props> = ({helpCenterId}) => {
                         )
                     const chatLanguageName =
                         chatLanguage !== undefined
-                            ? `(${chatLanguage.get('label') as string})`
+                            ? `(${chatLanguage.get('label')})`
                             : ''
 
                     return {

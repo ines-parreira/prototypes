@@ -91,7 +91,7 @@ import ChatIntegrationQuickReplies from './components/chat/ChatIntegrationQuickR
 import ChatIntegrationMigration from './components/chat/ChatIntegrationMigration/ChatIntegrationMigration'
 import ChatIntegrationPreferences from './components/chat/ChatIntegrationPreferences/ChatIntegrationPreferences'
 import ChatIntegrationInstall from './components/chat/ChatIntegrationInstall/ChatIntegrationInstall'
-import CampaignDetail from './components/chat/ChatIntegrationCampaigns/CampaignDetail.js'
+import CampaignDetail from './components/chat/ChatIntegrationCampaigns/CampaignDetail'
 
 import HTTPIntegrationOverview from './components/http/HTTPIntegrationOverview/HTTPIntegrationOverview'
 import HTTPIntegrationEvents from './components/http/HTTPIntegrationEvents/HTTPIntegrationEvents'
@@ -617,7 +617,6 @@ export const IntegrationDetail = ({
                         integration={integration}
                         isUpdate={isUpdate}
                         loading={loading}
-                        currentUser={currentUser}
                     />
                 )
             }

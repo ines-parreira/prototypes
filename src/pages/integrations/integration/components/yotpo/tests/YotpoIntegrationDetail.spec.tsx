@@ -1,6 +1,8 @@
 import React, {ComponentProps, MouseEvent} from 'react'
 import {fromJS, Map} from 'immutable'
 import {shallow} from 'enzyme'
+import {History, Location} from 'history'
+import {match} from 'react-router-dom'
 
 import {
     PENDING_AUTHENTICATION_STATUS,
@@ -27,14 +29,9 @@ const minProps: ComponentProps<typeof YotpoIntegrationDetailComponent> = {
         updateOrCreateIntegration: jest.fn(),
     },
     redirectUri: '',
-    location: {
-        search: '',
-        hash: fromJS({}),
-        pathname: fromJS({}),
-        state: fromJS({}),
-    },
-    history: fromJS({}),
-    match: fromJS({}),
+    location: {} as Location,
+    history: {} as History,
+    match: {} as match,
 }
 
 describe('<YotpoIntegrationDetailComponent/>', () => {

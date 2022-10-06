@@ -1,6 +1,6 @@
 import {fromJS, List} from 'immutable'
 
-import {Language} from '../../constants/languages'
+import {Language} from 'constants/languages'
 
 import {widgetTexts} from './widget'
 
@@ -34,7 +34,7 @@ export const SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT =
     SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_OPTIONAL
 
 // Campaigns
-export const CAMPAIGNS_TRIGGER_KEYS = fromJS([
+export const CAMPAIGNS_TRIGGER_KEYS: List<any> = fromJS([
     {
         label: 'Business Hours',
         name: 'business_hours',

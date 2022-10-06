@@ -1,2 +1,0 @@
-import ChatIntegrationQuickReplies from './ChatIntegrationQuickReplies.tsx'
-export default ChatIntegrationQuickReplies

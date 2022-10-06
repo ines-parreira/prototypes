@@ -1,6 +1,8 @@
 import React, {ComponentProps, SyntheticEvent} from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
+import {History, Location} from 'history'
+import {match} from 'react-router-dom'
 
 import {SMOOCH_LANGUAGE_DEFAULT} from 'config/integrations/smooch'
 import {
@@ -18,14 +20,9 @@ const minProps: ComponentProps<typeof SmoochIntegrationDetail> = {
         integration: null,
         updateIntegration: null,
     }),
-    location: {
-        search: '',
-        hash: fromJS({}),
-        pathname: fromJS({}),
-        state: fromJS({}),
-    },
-    history: fromJS({}),
-    match: fromJS({}),
+    location: {} as Location,
+    history: {} as History,
+    match: {} as match,
     activateIntegration: jest.fn(),
     deactivateIntegration: jest.fn(),
     deleteIntegration: jest.fn(),

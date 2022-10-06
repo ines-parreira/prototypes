@@ -1,24 +1,19 @@
 import React from 'react'
 import {render} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
-
-import {CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES} from '../../../../../../../config/integrations/index.ts'
+import {fromJS, Map} from 'immutable'
 
 import {
     SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
     SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
-} from '../../../../../../../config/integrations/smooch_inside.ts'
+} from 'config/integrations/smooch_inside'
+import {CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES} from 'config/integrations/index'
+import {SMOOCH_INSIDE_INTEGRATION_TYPE} from 'constants/integration'
+import {FRENCH_LANGUAGE, SPANISH_LANGUAGE} from 'constants/languages'
 
-import {SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../../../../constants/integration.ts'
-import {
-    FRENCH_LANGUAGE,
-    SPANISH_LANGUAGE,
-} from '../../../../../../../constants/languages.ts'
+import {ChatIntegrationMigration} from '../ChatIntegrationMigration'
 
-import {ChatIntegrationMigration} from '../ChatIntegrationMigration.tsx'
-
-const integration = fromJS({
+const integration: Map<any, any> = fromJS({
     id: 1,
     type: SMOOCH_INSIDE_INTEGRATION_TYPE,
     decoration: {
@@ -78,14 +73,10 @@ const integration = fromJS({
 
 describe('ChatIntegrationMigration component', () => {
     it('should display the migration page', () => {
-        const actions = {
-            updateOrCreateIntegration: jest.fn(),
-        }
-
         const {container} = render(
             <ChatIntegrationMigration
-                actions={actions}
                 integration={integration}
+                updateOrCreateIntegration={jest.fn()}
             />
         )
 
@@ -101,10 +92,13 @@ describe('ChatIntegrationMigration component', () => {
                 integration={integration}
             />
         )
-        const btn = container.querySelector('button.btn-success')
+        const btn = container.querySelector('button.btn-success')!
+
         userEvent.click(btn)
 
-        const parameters = updateOrCreateIntegration.mock.calls[0][0]
+        const parameters: Map<any, any> = (
+            updateOrCreateIntegration.mock.calls[0] as any[]
+        )[0]
         expect(parameters).not.toHaveProperty('meta.webhook')
         expect(parameters).not.toHaveProperty('meta.script_url')
         expect(parameters).not.toHaveProperty('meta.need_scope_update')
@@ -140,7 +134,7 @@ describe('ChatIntegrationMigration component', () => {
     it('should create a new gorgias_chat integration with the default french locale', () => {
         const updateOrCreateIntegration = jest.fn()
 
-        const frenchIntegration = integration.setIn(
+        const frenchIntegration: Map<any, any> = integration.setIn(
             ['meta', 'language'],
             FRENCH_LANGUAGE
         )
@@ -151,10 +145,13 @@ describe('ChatIntegrationMigration component', () => {
                 integration={frenchIntegration}
             />
         )
-        const btn = container.querySelector('button.btn-success')
+        const btn = container.querySelector('button.btn-success')!
+
         userEvent.click(btn)
 
-        const parameters = updateOrCreateIntegration.mock.calls[0][0]
+        const parameters: Map<any, any> = (
+            updateOrCreateIntegration.mock.calls[0] as any[]
+        )[0]
         expect(parameters.getIn(['meta', 'language'])).toEqual('fr-FR')
     })
 })

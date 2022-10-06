@@ -6,9 +6,9 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import LD from 'launchdarkly-react-client-sdk'
 
-import {CampaignDetail} from '../CampaignDetail'
-
 import {FeatureFlagKey} from 'config/featureFlags'
+
+import {CampaignDetail} from '../CampaignDetail'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

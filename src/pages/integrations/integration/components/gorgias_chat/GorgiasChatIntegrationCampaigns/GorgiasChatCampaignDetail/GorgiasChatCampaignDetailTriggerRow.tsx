@@ -2,12 +2,9 @@ import React from 'react'
 import {Map} from 'immutable'
 import {Button} from 'reactstrap'
 
-import {CAMPAIGNS_TRIGGER_KEYS} from '../../../../../../../config/integrations/gorgias_chat'
-import SelectField from '../../../../../../common/forms/SelectField/SelectField'
-import {
-    SelectableOption,
-    Value,
-} from '../../../../../../common/forms/SelectField/types'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import {CAMPAIGNS_TRIGGER_KEYS} from 'config/integrations/gorgias_chat'
+import {SelectableOption, Value} from 'pages/common/forms/SelectField/types'
 
 import {GorgiasChatCampaignDetailValueInput} from './GorgiasChatCampaignDetailValueInput'
 import css from './GorgiasChatCampaignDetailTriggerRow.less'
@@ -27,9 +24,7 @@ export const GorgiasChatCampaignDetailTriggerRow = ({
     onValueChange,
     onDelete,
 }: Props) => {
-    const keyConfig: Map<any, any> = (
-        CAMPAIGNS_TRIGGER_KEYS as Map<any, any>
-    ).find(
+    const keyConfig: Map<any, any> = CAMPAIGNS_TRIGGER_KEYS.find(
         (config) => (config as Map<any, any>).get('name') === trigger.get('key')
     )
 

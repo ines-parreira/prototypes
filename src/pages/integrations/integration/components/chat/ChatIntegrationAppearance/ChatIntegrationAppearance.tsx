@@ -82,7 +82,6 @@ type Props = {
     integration: Map<any, any>
     isUpdate: boolean
     loading: Map<any, any>
-    currentUser: Map<any, any>
 } & ConnectedProps<typeof connector>
 
 type State = {
@@ -241,8 +240,7 @@ export class ChatIntegrationAppearance extends Component<Props, State> {
     }
 
     render() {
-        const {deleteIntegration, integration, isUpdate, loading, currentUser} =
-            this.props
+        const {deleteIntegration, integration, isUpdate, loading} = this.props
         const {
             name,
             introductionText,
@@ -496,7 +494,6 @@ export class ChatIntegrationAppearance extends Component<Props, State> {
                                 </Group>
                             </div>
                             <ChatIntegrationPreview
-                                currentUser={currentUser}
                                 name={name}
                                 avatarType={avatarType}
                                 avatarTeamPictureUrl={avatarTeamPictureUrl}

@@ -93,7 +93,7 @@ export class ChatIntegrationQuickRepliesComponent extends Component<
             (quickReplies) => quickReplies!.trim()
         ) as List<string>
 
-        const payload = fromJS({
+        const payload: Map<any, any> = fromJS({
             id: integration.get('id'),
             meta: existingMeta.set(
                 'quick_replies',

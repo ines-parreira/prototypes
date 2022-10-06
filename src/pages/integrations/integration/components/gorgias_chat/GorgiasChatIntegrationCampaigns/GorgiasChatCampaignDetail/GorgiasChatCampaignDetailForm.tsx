@@ -49,17 +49,14 @@ import {GorgiasChatCampaignDetailTriggerRow} from './GorgiasChatCampaignDetailTr
  * @param idx: the index of the trigger configuration, in CAMPAIGN_TRIGGER_KEYS
  */
 const DEFAULT_TRIGGER = (idx: number) => {
-    const operators: Map<any, any> = (
-        CAMPAIGNS_TRIGGER_KEYS as Map<any, any>
-    ).getIn([idx, 'operators'])
+    const operators: Map<any, any> = CAMPAIGNS_TRIGGER_KEYS.getIn([
+        idx,
+        'operators',
+    ])
     const defaultTrigger: Map<any, any> = fromJS({
-        key: (CAMPAIGNS_TRIGGER_KEYS as Map<any, any>).getIn([idx, 'name']),
+        key: CAMPAIGNS_TRIGGER_KEYS.getIn([idx, 'name']),
         operator: operators.keySeq().get(0),
-        value: (CAMPAIGNS_TRIGGER_KEYS as Map<any, any>).getIn([
-            idx,
-            'value',
-            'default',
-        ]),
+        value: CAMPAIGNS_TRIGGER_KEYS.getIn([idx, 'value', 'default']),
     })
 
     return defaultTrigger
@@ -136,7 +133,7 @@ export const GorgiasChatCampaignDetailForm = ({
     // We do not allow a second "business_hours" trigger so we should
     // not allow the user to add this kind of condition
     const triggerOptions = useMemo(() => {
-        return (CAMPAIGNS_TRIGGER_KEYS as List<any>).filter(
+        return CAMPAIGNS_TRIGGER_KEYS.filter(
             // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
             (trigger) => trigger.get('name') !== 'business_hours'
         )

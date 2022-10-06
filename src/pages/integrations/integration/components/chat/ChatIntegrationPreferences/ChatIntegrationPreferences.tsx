@@ -74,10 +74,10 @@ type State = {
     autoResponderEnabled: boolean
     autoResponderReply: string
     emailCaptureEnforcement: string
+    linkedEmailIntegration: number | null
     isInitialized: boolean
     isUpdating: boolean
     preview: string
-    linkedEmailIntegration: number | null
 }
 
 export class ChatIntegrationPreferences extends Component<Props, State> {
@@ -85,12 +85,11 @@ export class ChatIntegrationPreferences extends Component<Props, State> {
         emailIntegrations: [],
     }
 
-    state = {
+    state: State = {
         autoResponderEnabled: CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
         autoResponderReply: CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
         emailCaptureEnforcement: SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT,
         linkedEmailIntegration: null,
-
         isInitialized: false,
         isUpdating: false,
         preview: PREVIEW_EMAIL_CAPTURE,

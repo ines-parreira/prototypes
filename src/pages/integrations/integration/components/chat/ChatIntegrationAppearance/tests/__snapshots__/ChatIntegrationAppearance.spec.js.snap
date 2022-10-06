@@ -274,7 +274,6 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when cre
         <ChatIntegrationPreview
           avatarTeamPictureUrl={null}
           avatarType="team-members"
-          currentUser={Immutable.Map {}}
           introductionText="How can we help?"
           isOnline={true}
           language="en-US"
@@ -611,7 +610,6 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when int
         <ChatIntegrationPreview
           avatarTeamPictureUrl={null}
           avatarType="team-members"
-          currentUser={Immutable.Map {}}
           introductionText="How can we help?"
           isOnline={true}
           language="en-US"
@@ -948,7 +946,6 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when upd
         <ChatIntegrationPreview
           avatarTeamPictureUrl={null}
           avatarType="team-members"
-          currentUser={Immutable.Map {}}
           introductionText="How can we help?"
           isOnline={true}
           language="en-US"
@@ -1306,7 +1303,6 @@ exports[`<ChatIntegrationAppearance/> render() should mark the file field for te
         <ChatIntegrationPreview
           avatarTeamPictureUrl={null}
           avatarType="team-picture"
-          currentUser={Immutable.Map {}}
           introductionText="How can we help?"
           isOnline={true}
           language="en-US"
@@ -1647,7 +1643,6 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
         <ChatIntegrationPreview
           avatarTeamPictureUrl={null}
           avatarType="team-members"
-          currentUser={Immutable.Map {}}
           introductionText="How can we help?"
           isOnline={true}
           language="en-US"
@@ -2015,7 +2010,6 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
         <ChatIntegrationPreview
           avatarTeamPictureUrl="https://gorgias.io/teampicture.png"
           avatarType="team-picture"
-          currentUser={Immutable.Map {}}
           introductionText="How can we help?"
           isOnline={true}
           language="en-US"

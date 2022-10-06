@@ -1,34 +1,36 @@
-import React from 'react'
+import React, {ComponentProps, SyntheticEvent} from 'react'
 import {mount, shallow} from 'enzyme'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
 import {
     CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
     CHAT_AUTO_RESPONDER_REPLY_SHORTLY,
-} from '../../../../../../../config/integrations/index.ts'
+} from 'config/integrations/index'
 
 import {
     SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT,
     SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
     SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
-} from '../../../../../../../config/integrations/smooch_inside.ts'
+} from 'config/integrations/smooch_inside'
 
-import {SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../../../../constants/integration.ts'
-import {SPANISH_LANGUAGE} from '../../../../../../../constants/languages.ts'
+import {SMOOCH_INSIDE_INTEGRATION_TYPE} from 'constants/integration'
+import {SPANISH_LANGUAGE} from 'constants/languages'
 import {
     ChatIntegrationPreferences,
     PREVIEW_AUTO_RESPONDER,
     PREVIEW_EMAIL_CAPTURE,
-} from '../ChatIntegrationPreferences.tsx'
+} from '../ChatIntegrationPreferences'
 
 describe('<ChatIntegrationPreferences/>', () => {
+    const minProps: ComponentProps<typeof ChatIntegrationPreferences> = {
+        updateOrCreateIntegration: jest.fn(),
+        integration: fromJS({}),
+        emailIntegrations: [],
+    }
     describe('componentDidMount()', () => {
         it('should not initialize the state because the passed integration is empty', () => {
-            const component = shallow(
-                <ChatIntegrationPreferences
-                    updateOrCreateIntegration={jest.fn()}
-                    integration={fromJS({})}
-                />,
+            const component = shallow<ChatIntegrationPreferences>(
+                <ChatIntegrationPreferences {...minProps} />,
                 {disableLifecycleMethods: true}
             )
 
@@ -38,7 +40,7 @@ describe('<ChatIntegrationPreferences/>', () => {
         })
 
         it('should initialize the state using the integration passed', () => {
-            const integration = fromJS({
+            const integration: Map<any, any> = fromJS({
                 id: 1,
                 type: SMOOCH_INSIDE_INTEGRATION_TYPE,
                 meta: {
@@ -56,7 +58,7 @@ describe('<ChatIntegrationPreferences/>', () => {
 
             const component = shallow(
                 <ChatIntegrationPreferences
-                    updateOrCreateIntegration={jest.fn()}
+                    {...minProps}
                     integration={integration}
                 />
             )
@@ -70,7 +72,7 @@ describe('<ChatIntegrationPreferences/>', () => {
             'should initialize the state using the integration passed because the state was not initialized yet and ' +
                 'the integration passed is not empty',
             () => {
-                const integration = fromJS({
+                const integration: Map<any, any> = fromJS({
                     id: 1,
                     type: SMOOCH_INSIDE_INTEGRATION_TYPE,
                     meta: {
@@ -87,10 +89,7 @@ describe('<ChatIntegrationPreferences/>', () => {
                 })
 
                 const component = shallow(
-                    <ChatIntegrationPreferences
-                        updateOrCreateIntegration={jest.fn()}
-                        integration={fromJS({})}
-                    />
+                    <ChatIntegrationPreferences {...minProps} />
                 )
 
                 component.setProps({integration})
@@ -100,7 +99,7 @@ describe('<ChatIntegrationPreferences/>', () => {
         )
 
         it('should not initialize the state because it was already initialized', () => {
-            const integration = fromJS({
+            const integration: Map<any, any> = fromJS({
                 id: 1,
                 type: SMOOCH_INSIDE_INTEGRATION_TYPE,
                 meta: {
@@ -117,10 +116,7 @@ describe('<ChatIntegrationPreferences/>', () => {
             })
 
             const component = shallow(
-                <ChatIntegrationPreferences
-                    updateOrCreateIntegration={jest.fn()}
-                    integration={fromJS({})}
-                />
+                <ChatIntegrationPreferences {...minProps} />
             )
 
             component.setState({isInitialized: true})
@@ -133,10 +129,7 @@ describe('<ChatIntegrationPreferences/>', () => {
 
         it('should not initialize the state because the passed integration is empty', () => {
             const component = shallow(
-                <ChatIntegrationPreferences
-                    updateOrCreateIntegration={jest.fn()}
-                    integration={fromJS({})}
-                />
+                <ChatIntegrationPreferences {...minProps} />
             )
 
             const prevState = component.state()
@@ -149,7 +142,7 @@ describe('<ChatIntegrationPreferences/>', () => {
 
     describe('_setEmailCaptureEnforcement()', () => {
         it('should set passed value in the state and set the preview to "email capture"', () => {
-            const integration = fromJS({
+            const integration: Map<any, any> = fromJS({
                 id: 1,
                 type: SMOOCH_INSIDE_INTEGRATION_TYPE,
                 meta: {
@@ -165,9 +158,9 @@ describe('<ChatIntegrationPreferences/>', () => {
                 },
             })
 
-            const component = shallow(
+            const component = shallow<ChatIntegrationPreferences>(
                 <ChatIntegrationPreferences
-                    updateOrCreateIntegration={jest.fn()}
+                    {...minProps}
                     integration={integration}
                 />
             )
@@ -180,7 +173,7 @@ describe('<ChatIntegrationPreferences/>', () => {
             )
             expect(prevState.preview).toEqual(PREVIEW_AUTO_RESPONDER)
 
-            const expectedState = fromJS(prevState)
+            const expectedState = (fromJS(prevState) as Map<any, any>)
                 .set(
                     'emailCaptureEnforcement',
                     SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED
@@ -204,7 +197,7 @@ describe('<ChatIntegrationPreferences/>', () => {
                 'was enabled',
             () => {
                 const autoResponderEnabled = false
-                const integration = fromJS({
+                const integration: Map<any, any> = fromJS({
                     id: 1,
                     type: SMOOCH_INSIDE_INTEGRATION_TYPE,
                     meta: {
@@ -220,9 +213,9 @@ describe('<ChatIntegrationPreferences/>', () => {
                     },
                 })
 
-                const component = shallow(
+                const component = shallow<ChatIntegrationPreferences>(
                     <ChatIntegrationPreferences
-                        updateOrCreateIntegration={jest.fn()}
+                        {...minProps}
                         integration={integration}
                     />
                 )
@@ -233,7 +226,7 @@ describe('<ChatIntegrationPreferences/>', () => {
                 )
                 expect(prevState.preview).toEqual(PREVIEW_EMAIL_CAPTURE)
 
-                const expectedState = fromJS(prevState)
+                const expectedState = (fromJS(prevState) as Map<any, any>)
                     .set('autoResponderEnabled', !autoResponderEnabled)
                     .set('preview', PREVIEW_AUTO_RESPONDER)
                     .toJS()
@@ -251,7 +244,7 @@ describe('<ChatIntegrationPreferences/>', () => {
                 'was disabled',
             () => {
                 const autoResponderEnabled = true
-                const integration = fromJS({
+                const integration: Map<any, any> = fromJS({
                     id: 1,
                     type: SMOOCH_INSIDE_INTEGRATION_TYPE,
                     meta: {
@@ -267,9 +260,9 @@ describe('<ChatIntegrationPreferences/>', () => {
                     },
                 })
 
-                const component = shallow(
+                const component = shallow<ChatIntegrationPreferences>(
                     <ChatIntegrationPreferences
-                        updateOrCreateIntegration={jest.fn()}
+                        {...minProps}
                         integration={integration}
                     />
                 )
@@ -282,7 +275,7 @@ describe('<ChatIntegrationPreferences/>', () => {
                 )
                 expect(prevState.preview).toEqual(PREVIEW_AUTO_RESPONDER)
 
-                const expectedState = fromJS(prevState)
+                const expectedState = (fromJS(prevState) as Map<any, any>)
                     .set('autoResponderEnabled', !autoResponderEnabled)
                     .set('preview', PREVIEW_EMAIL_CAPTURE)
                     .toJS()
@@ -298,7 +291,7 @@ describe('<ChatIntegrationPreferences/>', () => {
 
     describe('_setAutoResponderReply()', () => {
         it('should set passed value in the state and set the preview to "auto responder"', () => {
-            const integration = fromJS({
+            const integration: Map<any, any> = fromJS({
                 id: 1,
                 type: SMOOCH_INSIDE_INTEGRATION_TYPE,
                 meta: {
@@ -314,9 +307,9 @@ describe('<ChatIntegrationPreferences/>', () => {
                 },
             })
 
-            const component = shallow(
+            const component = shallow<ChatIntegrationPreferences>(
                 <ChatIntegrationPreferences
-                    updateOrCreateIntegration={jest.fn()}
+                    {...minProps}
                     integration={integration}
                 />
             )
@@ -327,7 +320,7 @@ describe('<ChatIntegrationPreferences/>', () => {
             )
             expect(prevState.preview).toEqual(PREVIEW_EMAIL_CAPTURE)
 
-            const expectedState = fromJS(prevState)
+            const expectedState = (fromJS(prevState) as Map<any, any>)
                 .set('autoResponderReply', CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES)
                 .set('preview', PREVIEW_AUTO_RESPONDER)
                 .toJS()
@@ -342,11 +335,8 @@ describe('<ChatIntegrationPreferences/>', () => {
 
     describe('_setLinkedEmailIntegration()', () => {
         it('should update the linked email integration in the state.', () => {
-            const component = shallow(
-                <ChatIntegrationPreferences
-                    updateOrCreateIntegration={() => {}}
-                    integration={fromJS({})}
-                />
+            const component = shallow<ChatIntegrationPreferences>(
+                <ChatIntegrationPreferences {...minProps} />
             )
 
             expect(component.state()).toMatchSnapshot()
@@ -360,11 +350,8 @@ describe('<ChatIntegrationPreferences/>', () => {
             const mockedTooltip = document.createElement('div')
             mockedTooltip.setAttribute('id', 'email-capture-help')
             document.body.appendChild(mockedTooltip)
-            const component = mount(
-                <ChatIntegrationPreferences
-                    updateOrCreateIntegration={() => {}}
-                    integration={fromJS({})}
-                />
+            const component = mount<ChatIntegrationPreferences>(
+                <ChatIntegrationPreferences {...minProps} />
             )
 
             const submitPreferencesSpy = jest.spyOn(
@@ -380,8 +367,9 @@ describe('<ChatIntegrationPreferences/>', () => {
         it('should submit the form with defaults', async () => {
             const updateOrCreateIntegration = jest.fn()
 
-            const component = shallow(
+            const component = shallow<ChatIntegrationPreferences>(
                 <ChatIntegrationPreferences
+                    {...minProps}
                     updateOrCreateIntegration={updateOrCreateIntegration}
                     integration={fromJS({
                         type: SMOOCH_INSIDE_INTEGRATION_TYPE,
@@ -392,9 +380,9 @@ describe('<ChatIntegrationPreferences/>', () => {
                 />
             )
 
-            await component
-                .instance()
-                ._submitPreferences({preventDefault: jest.fn()})
+            await component.instance()._submitPreferences({
+                preventDefault: jest.fn(),
+            } as unknown as SyntheticEvent)
 
             expect(updateOrCreateIntegration).toMatchSnapshot()
         })
@@ -402,7 +390,7 @@ describe('<ChatIntegrationPreferences/>', () => {
         it('should submit the form with loaded values', async () => {
             const updateOrCreateIntegration = jest.fn()
 
-            const integration = fromJS({
+            const integration: Map<any, any> = fromJS({
                 id: 1,
                 type: SMOOCH_INSIDE_INTEGRATION_TYPE,
                 meta: {
@@ -418,8 +406,9 @@ describe('<ChatIntegrationPreferences/>', () => {
                 },
             })
 
-            const component = shallow(
+            const component = shallow<ChatIntegrationPreferences>(
                 <ChatIntegrationPreferences
+                    {...minProps}
                     updateOrCreateIntegration={updateOrCreateIntegration}
                     integration={integration}
                 />
@@ -435,9 +424,9 @@ describe('<ChatIntegrationPreferences/>', () => {
                 autoResponderReply: newAutoResponder.reply,
             })
 
-            await component
-                .instance()
-                ._submitPreferences({preventDefault: jest.fn()})
+            await component.instance()._submitPreferences({
+                preventDefault: jest.fn(),
+            } as unknown as SyntheticEvent)
 
             expect(updateOrCreateIntegration).toMatchSnapshot()
         })
@@ -447,7 +436,7 @@ describe('<ChatIntegrationPreferences/>', () => {
         it('should render the Chat preferences', () => {
             const component = shallow(
                 <ChatIntegrationPreferences
-                    updateOrCreateIntegration={jest.fn()}
+                    {...minProps}
                     integration={fromJS({
                         id: 2,
                         type: SMOOCH_INSIDE_INTEGRATION_TYPE,
@@ -467,7 +456,7 @@ describe('<ChatIntegrationPreferences/>', () => {
         it('should render buttons in loading state because preferences are being submitted', () => {
             const component = shallow(
                 <ChatIntegrationPreferences
-                    updateOrCreateIntegration={jest.fn()}
+                    {...minProps}
                     integration={fromJS({
                         id: 2,
                         type: SMOOCH_INSIDE_INTEGRATION_TYPE,

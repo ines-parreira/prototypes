@@ -15,7 +15,7 @@ import {RootState} from 'state/types'
 import {updateOrCreateIntegration} from 'state/integrations/actions'
 import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
 
-import {renderChatCodeSnippet} from './utils.js'
+import {renderChatCodeSnippet} from './utils'
 
 const targetIntegrationsType = fromJS([IntegrationType.Shopify]) as List<any>
 

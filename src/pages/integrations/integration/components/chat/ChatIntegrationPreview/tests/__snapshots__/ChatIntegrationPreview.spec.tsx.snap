@@ -352,14 +352,22 @@ exports[`<ChatIntegrationPreview/> render() should display the avatar team pictu
         </div>
       </div>
     </div>
-    <Connect(MessageContentContainer)
-      conversationColor="#456789"
-      currentUser={
-        Immutable.Map {
-          "name": "Charles",
+    <Provider
+      store={
+        Object {
+          "clearActions": [Function],
+          "dispatch": [Function],
+          "getActions": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
         }
       }
-    />
+    >
+      <Connect(MessageContentContainer)
+        conversationColor="#456789"
+      />
+    </Provider>
     <div
       className="poweredby"
     >
@@ -445,11 +453,6 @@ exports[`<ChatIntegrationPreview/> render() should display the offline status be
     </div>
     <Connect(MessageContentContainer)
       conversationColor="#456789"
-      currentUser={
-        Immutable.Map {
-          "name": "Charles",
-        }
-      }
     />
     <div
       className="poweredby"
@@ -529,14 +532,22 @@ exports[`<ChatIntegrationPreview/> render() should display the online status bec
         </div>
       </div>
     </div>
-    <Connect(MessageContentContainer)
-      conversationColor="#456789"
-      currentUser={
-        Immutable.Map {
-          "name": "Charles",
+    <Provider
+      store={
+        Object {
+          "clearActions": [Function],
+          "dispatch": [Function],
+          "getActions": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
         }
       }
-    />
+    >
+      <Connect(MessageContentContainer)
+        conversationColor="#456789"
+      />
+    </Provider>
     <div
       className="poweredby"
     >

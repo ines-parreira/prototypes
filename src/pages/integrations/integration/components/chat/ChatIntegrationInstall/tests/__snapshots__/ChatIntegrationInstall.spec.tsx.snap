@@ -1,0 +1,536 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChatIntegrationInstall component should display the list of Shopify stores with the toggle checked or not depending on the installation status 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <Connect(ChatIntegrationInstallContainer)
+    integration={
+      Immutable.Map {
+        "id": 2,
+        "name": "mychat",
+        "type": "smooch_inside",
+        "meta": Immutable.Map {
+          "shopify_integration_ids": Immutable.List [
+            3,
+          ],
+          "script_url": "config.gorgias.io/foo/chat/bar",
+        },
+      }
+    }
+  >
+    <ChatIntegrationInstallContainer
+      domain="acme"
+      getIntegrationsByTypes={[Function]}
+      integration={
+        Immutable.Map {
+          "id": 2,
+          "name": "mychat",
+          "type": "smooch_inside",
+          "meta": Immutable.Map {
+            "shopify_integration_ids": Immutable.List [
+              3,
+            ],
+            "script_url": "config.gorgias.io/foo/chat/bar",
+          },
+        }
+      }
+      notify={[Function]}
+      updateOrCreateIntegration={[Function]}
+    >
+      <div
+        className="full-width"
+      >
+        <PageHeader
+          title={
+            <Breadcrumb
+              aria-label="breadcrumb"
+              listTag="ol"
+              tag="nav"
+            >
+              <BreadcrumbItem
+                tag="li"
+              >
+                <Link
+                  to="/app/settings/integrations"
+                >
+                  Integrations
+                </Link>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                tag="li"
+              >
+                <Link
+                  to="/app/settings/integrations/smooch_inside"
+                >
+                  Chat (Deprecated)
+                </Link>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                tag="li"
+              >
+                mychat
+              </BreadcrumbItem>
+            </Breadcrumb>
+          }
+        >
+          <div
+            className="page-header pageHeader"
+          >
+            <Breadcrumb
+              aria-label="breadcrumb"
+              listTag="ol"
+              tag="nav"
+            >
+              <nav
+                aria-label="breadcrumb"
+                className=""
+              >
+                <ol
+                  className="breadcrumb"
+                >
+                  <BreadcrumbItem
+                    tag="li"
+                  >
+                    <li
+                      className="breadcrumb-item"
+                    >
+                      <Link
+                        to="/app/settings/integrations"
+                      >
+                        <a
+                          to="/app/settings/integrations"
+                        >
+                          Integrations
+                        </a>
+                      </Link>
+                    </li>
+                  </BreadcrumbItem>
+                  <BreadcrumbItem
+                    tag="li"
+                  >
+                    <li
+                      className="breadcrumb-item"
+                    >
+                      <Link
+                        to="/app/settings/integrations/smooch_inside"
+                      >
+                        <a
+                          to="/app/settings/integrations/smooch_inside"
+                        >
+                          Chat (Deprecated)
+                        </a>
+                      </Link>
+                    </li>
+                  </BreadcrumbItem>
+                  <BreadcrumbItem
+                    tag="li"
+                  >
+                    <li
+                      className="breadcrumb-item"
+                    >
+                      mychat
+                    </li>
+                  </BreadcrumbItem>
+                </ol>
+              </nav>
+            </Breadcrumb>
+          </div>
+        </PageHeader>
+        <ChatIntegrationNavigation
+          integration={
+            Immutable.Map {
+              "id": 2,
+              "name": "mychat",
+              "type": "smooch_inside",
+              "meta": Immutable.Map {
+                "shopify_integration_ids": Immutable.List [
+                  3,
+                ],
+                "script_url": "config.gorgias.io/foo/chat/bar",
+              },
+            }
+          }
+        >
+          <SecondaryNavbar>
+            <Navbar
+              className="navbar"
+              expand={false}
+              tag="nav"
+            >
+              <nav
+                className="navbar navbar"
+              >
+                <NavLink
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
+                  key=".0"
+                  to="/app/settings/integrations/smooch_inside/2/migration"
+                >
+                  <a
+                    activeClassName="active"
+                    className="link"
+                    exact={true}
+                    to="/app/settings/integrations/smooch_inside/2/migration"
+                  >
+                    Migration
+                  </a>
+                </NavLink>
+                <NavLink
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
+                  key=".1"
+                  to="/app/settings/integrations/smooch_inside/2/appearance"
+                >
+                  <a
+                    activeClassName="active"
+                    className="link"
+                    exact={true}
+                    to="/app/settings/integrations/smooch_inside/2/appearance"
+                  >
+                    Appearance
+                  </a>
+                </NavLink>
+                <NavLink
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
+                  key=".2"
+                  to="/app/settings/integrations/smooch_inside/2/installation"
+                >
+                  <a
+                    activeClassName="active"
+                    className="link"
+                    exact={true}
+                    to="/app/settings/integrations/smooch_inside/2/installation"
+                  >
+                    Installation
+                  </a>
+                </NavLink>
+                <NavLink
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
+                  key=".3"
+                  to="/app/settings/integrations/smooch_inside/2/preferences"
+                >
+                  <a
+                    activeClassName="active"
+                    className="link"
+                    exact={true}
+                    to="/app/settings/integrations/smooch_inside/2/preferences"
+                  >
+                    Preferences
+                  </a>
+                </NavLink>
+                <NavLink
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
+                  key=".4"
+                  to="/app/settings/integrations/smooch_inside/2/campaigns"
+                >
+                  <a
+                    activeClassName="active"
+                    className="link"
+                    exact={true}
+                    to="/app/settings/integrations/smooch_inside/2/campaigns"
+                  >
+                    Campaigns
+                  </a>
+                </NavLink>
+                <NavLink
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
+                  key=".5"
+                  to="/app/settings/integrations/smooch_inside/2/quick_replies"
+                >
+                  <a
+                    activeClassName="active"
+                    className="link"
+                    exact={true}
+                    to="/app/settings/integrations/smooch_inside/2/quick_replies"
+                  >
+                    Quick replies
+                  </a>
+                </NavLink>
+              </nav>
+            </Navbar>
+          </SecondaryNavbar>
+        </ChatIntegrationNavigation>
+        <Container
+          className="pageContainer"
+          fluid={true}
+          tag="div"
+        >
+          <div
+            className="pageContainer container-fluid"
+          >
+            <Row
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              <div
+                className="row"
+              >
+                <Col
+                  md="8"
+                  tag="div"
+                  widths={
+                    Array [
+                      "xs",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl",
+                    ]
+                  }
+                >
+                  <div
+                    className="col-md-8"
+                  >
+                    <Component
+                      integration={
+                        Immutable.Map {
+                          "id": 2,
+                          "name": "mychat",
+                          "type": "smooch_inside",
+                          "meta": Immutable.Map {
+                            "shopify_integration_ids": Immutable.List [
+                              3,
+                            ],
+                            "script_url": "config.gorgias.io/foo/chat/bar",
+                          },
+                        }
+                      }
+                      integrationType="shopify"
+                      key="shopify"
+                      targetIntegrations={
+                        Immutable.List [
+                          Immutable.Map {
+                            "id": 1,
+                            "name": "mylittleintegration",
+                            "type": "shopify",
+                            "created_datetime": "2018-01-01 00:00:00",
+                          },
+                          Immutable.Map {
+                            "id": 3,
+                            "name": "mylittleintegration2",
+                            "type": "shopify",
+                            "created_datetime": "2019-01-01 00:00:00",
+                          },
+                        ]
+                      }
+                      updateOrCreateIntegration={[Function]}
+                    >
+                      <div>
+                        InstallOnIntegrationsCard
+                      </div>
+                    </Component>
+                    <CustomInstallationCard
+                      code="<!-- Gorgias Chat Widget Start -->
+<div id=\\"gorgias-chat\\">
+<script>window.gorgiasChatParameters = {}</script>
+<script src=\\"config.gorgias.io/foo/chat/bar\\" defer></script>
+</div>
+<!-- Gorgias Chat Widget End -->"
+                      description={
+                        <p>
+                          Copy the code below and paste it on your website above the 
+                          <b>
+                            &lt;/body&gt;
+                          </b>
+                           
+                          tag:
+                        </p>
+                      }
+                      integrationType="smooch_inside"
+                    >
+                      <Card
+                        className="integration-card"
+                        tag="div"
+                      >
+                        <div
+                          className="integration-card card"
+                        >
+                          <CardBody
+                            tag="div"
+                          >
+                            <div
+                              className="card-body"
+                            >
+                              <div
+                                className="javascript-card-header"
+                              >
+                                <div
+                                  className="logo-wrapper"
+                                >
+                                  <img
+                                    alt="javascript-logo"
+                                    src="/static/private/js/assets/img/integrations/javascript.png"
+                                  />
+                                </div>
+                                <div>
+                                  <h3>
+                                    Javascript
+                                  </h3>
+                                  <p>
+                                    Copy the code below and paste it on your website above the 
+                                    <b>
+                                      &lt;/body&gt;
+                                    </b>
+                                     
+                                    tag:
+                                  </p>
+                                </div>
+                              </div>
+                              <Alert
+                                className="code-wrapper"
+                                closeAriaLabel="Close"
+                                color="success"
+                                fade={true}
+                                isOpen={true}
+                                tag="div"
+                                transition={
+                                  Object {
+                                    "appear": true,
+                                    "baseClass": "fade",
+                                    "baseClassActive": "show",
+                                    "enter": true,
+                                    "exit": true,
+                                    "in": true,
+                                    "mountOnEnter": false,
+                                    "onEnter": [Function],
+                                    "onEntered": [Function],
+                                    "onEntering": [Function],
+                                    "onExit": [Function],
+                                    "onExited": [Function],
+                                    "onExiting": [Function],
+                                    "tag": "div",
+                                    "timeout": 150,
+                                    "unmountOnExit": true,
+                                  }
+                                }
+                              >
+                                <Fade
+                                  appear={true}
+                                  baseClass="fade"
+                                  baseClassActive="show"
+                                  className="code-wrapper alert alert-success"
+                                  enter={true}
+                                  exit={true}
+                                  in={true}
+                                  mountOnEnter={false}
+                                  onEnter={[Function]}
+                                  onEntered={[Function]}
+                                  onEntering={[Function]}
+                                  onExit={[Function]}
+                                  onExited={[Function]}
+                                  onExiting={[Function]}
+                                  role="alert"
+                                  tag="div"
+                                  timeout={150}
+                                  unmountOnExit={true}
+                                >
+                                  <Transition
+                                    appear={true}
+                                    enter={true}
+                                    exit={true}
+                                    in={true}
+                                    mountOnEnter={false}
+                                    onEnter={[Function]}
+                                    onEntered={[Function]}
+                                    onEntering={[Function]}
+                                    onExit={[Function]}
+                                    onExited={[Function]}
+                                    onExiting={[Function]}
+                                    timeout={150}
+                                    unmountOnExit={true}
+                                  >
+                                    <div
+                                      className="code-wrapper alert alert-success fade"
+                                      role="alert"
+                                    >
+                                      <pre
+                                        className="code"
+                                        id="code-snippet"
+                                      >
+                                        &lt;!-- Gorgias Chat Widget Start --&gt;
+&lt;div id="gorgias-chat"&gt;
+&lt;script&gt;window.gorgiasChatParameters = {}&lt;/script&gt;
+&lt;script src="config.gorgias.io/foo/chat/bar" defer&gt;&lt;/script&gt;
+&lt;/div&gt;
+&lt;!-- Gorgias Chat Widget End --&gt;
+                                      </pre>
+                                    </div>
+                                  </Transition>
+                                </Fade>
+                              </Alert>
+                            </div>
+                          </CardBody>
+                          <ForwardRef
+                            className="copy"
+                            data-clipboard-target="#code-snippet"
+                            id="copy-code-snippet"
+                            type="button"
+                          >
+                            <button
+                              className="wrapper copy fill primary medium"
+                              data-clipboard-target="#code-snippet"
+                              id="copy-code-snippet"
+                              type="button"
+                            >
+                              <ButtonIconLabel
+                                icon="file_copy"
+                              >
+                                <span
+                                  className="wrapper"
+                                >
+                                  <Icon
+                                    className="icon isLeft"
+                                  >
+                                    <i
+                                      className="material-icons icon isLeft medium"
+                                    >
+                                      file_copy
+                                    </i>
+                                  </Icon>
+                                </span>
+                              </ButtonIconLabel>
+                              Copy
+                            </button>
+                          </ForwardRef>
+                        </div>
+                      </Card>
+                    </CustomInstallationCard>
+                  </div>
+                </Col>
+              </div>
+            </Row>
+          </div>
+        </Container>
+      </div>
+    </ChatIntegrationInstallContainer>
+  </Connect(ChatIntegrationInstallContainer)>
+</Provider>
+`;

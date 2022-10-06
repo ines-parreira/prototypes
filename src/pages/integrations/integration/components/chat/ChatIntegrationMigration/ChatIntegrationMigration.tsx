@@ -6,11 +6,12 @@ import classnames from 'classnames'
 import _omit from 'lodash/omit'
 import {fromJS, Map} from 'immutable'
 
+import PageHeader from 'pages/common/components/PageHeader'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+
 import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
-import PageHeader from '../../../../../common/components/PageHeader'
 import css from '../../../../../settings/settings.less'
 import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
-import Alert, {AlertType} from '../../../../../common/components/Alert/Alert'
 
 type Props = {
     integration: Map<any, any>
@@ -23,10 +24,10 @@ type State = {
 }
 
 export class ChatIntegrationMigration extends Component<Props, State> {
-    state = {
-        isUpdating: false,
-        isInitialized: false,
+    state: State = {
         integrationName: '',
+        isInitialized: false,
+        isUpdating: false,
     }
 
     _initState = (integration: Map<any, any>) => {

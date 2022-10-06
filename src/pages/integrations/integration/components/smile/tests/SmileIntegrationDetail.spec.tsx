@@ -1,6 +1,8 @@
 import React, {ComponentProps, SyntheticEvent} from 'react'
 import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
+import {match} from 'react-router-dom'
+import {History, Location} from 'history'
 
 import {
     PENDING_AUTHENTICATION_STATUS,
@@ -28,9 +30,9 @@ describe('<SmileIntegrationDetail/>', () => {
             integration: fromJS({}),
             redirectUri: fromJS({}),
             loading: fromJS({}),
-            location: fromJS({}),
-            history: fromJS({}),
-            match: fromJS({}),
+            history: {} as History,
+            location: {} as Location,
+            match: {} as match,
             deleteIntegration: jest.fn(),
         }
 
