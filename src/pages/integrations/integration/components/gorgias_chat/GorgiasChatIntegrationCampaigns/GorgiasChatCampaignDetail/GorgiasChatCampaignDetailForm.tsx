@@ -440,7 +440,7 @@ export const GorgiasChatCampaignDetailForm = ({
                                         options={[
                                             {
                                                 value: 'during',
-                                                label: 'Inside business hours',
+                                                label: 'During business hours',
                                             },
                                             {
                                                 value: 'outside',
