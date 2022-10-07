@@ -230,13 +230,13 @@ export default function VoiceIntegrationPreferences({
                                                     label: 'Round-robin ringing',
                                                     value: PhoneRingingBehaviour.RoundRobin,
                                                     caption:
-                                                        'Calls assigned to a team will ring available agents one-by-one, ordered by the time since an agent last received a call',
+                                                        'Calls assigned to a team will ring available agents one-by-one, ordered by the time since an agent last received a call.',
                                                 },
                                                 {
                                                     label: 'Broadcast ringing',
                                                     value: PhoneRingingBehaviour.Broadcast,
                                                     caption:
-                                                        'Calls assigned to a team will ring all available agents simultaneously',
+                                                        'Calls assigned to a team will ring all available agents simultaneously.',
                                                 },
                                             ]}
                                             onChange={(value) =>
