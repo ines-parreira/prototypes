@@ -1,0 +1,39 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .container {
+        background: @modern-neutral-neutral-1;
+        overflow: hidden;
+        border-radius: 5px;
+        width: 384px;
+        min-height: 680px;
+        pointer-events: none;
+        box-shadow: 0 4px 1em fade(black, 12%);
+    }
+
+    .topBar {
+        background: #edeeee;
+        height: 27px;
+        display: flex;
+        align-items: center;
+        padding-left: 3px;
+
+        span {
+            display: block;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: linear-gradient(0deg, #e5e5e5, #dddddd);
+            margin: 4px;
+        }
+    }
+
+    .titleBar {
+        color: @modern-neutral-neutral-6;
+        padding: 22px 0;
+        font-weight: 600;
+        font-size: 20px;
+        text-align: center;
+        background: white;
+    }
+}

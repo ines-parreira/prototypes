@@ -4,7 +4,7 @@ import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
-import {useParams} from 'react-router-dom'
+import {useParams, useRouteMatch} from 'react-router-dom'
 
 import {
     SelfServiceConfiguration,
@@ -25,6 +25,9 @@ const updateSelfServiceConfigurationMock =
         typeof updateSelfServiceConfiguration
     >
 const useParamsMock = useParams as jest.MockedFunction<typeof useParams>
+const useRouteMatchMock = useRouteMatch as jest.MockedFunction<
+    typeof useRouteMatch
+>
 
 jest.mock('react-router')
 jest.mock('models/selfServiceConfiguration/resources')
@@ -128,6 +131,15 @@ describe('<OrderManagementFlowsPreferences/>', () => {
                 shopName: shopifyIntegrations[0]['meta']['shop_name'],
                 integrationType: 'shopify',
             })
+            useRouteMatchMock.mockReturnValue({
+                params: {
+                    shopName: shopifyIntegrations[0]['meta']['shop_name'],
+                    integrationType: 'shopify',
+                },
+                isExact: true,
+                path: '',
+                url: '',
+            })
 
             const {container} = render(
                 <Provider
@@ -169,6 +181,15 @@ describe('<OrderManagementFlowsPreferences/>', () => {
             useParamsMock.mockReturnValue({
                 shopName: shopifyIntegrations[2]['meta']['shop_name'],
                 integrationType: 'shopify',
+            })
+            useRouteMatchMock.mockReturnValue({
+                params: {
+                    shopName: shopifyIntegrations[2]['meta']['shop_name'],
+                    integrationType: 'shopify',
+                },
+                isExact: true,
+                path: '',
+                url: '',
             })
 
             const {container} = render(

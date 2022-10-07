@@ -360,6 +360,152 @@ exports[`<OrderManagementFlowsPreferences/> ToggleInput.onChange() should deacti
             </table>
           </div>
         </div>
+        <div
+          class="col"
+          data-testid="previewColumn"
+        >
+          <div
+            class="preview"
+          >
+            <div
+              class="container"
+            >
+              <span
+                class="mb-3 group horizontal"
+              >
+                <button
+                  class="wrapper fill primary medium left"
+                  type="button"
+                >
+                  Chat
+                </button>
+                <button
+                  class="wrapper fill secondary medium right"
+                  type="button"
+                >
+                  Help Center
+                </button>
+              </span>
+              <div
+                class="preview"
+              >
+                <div
+                  class="dialog"
+                >
+                  <div
+                    class="header"
+                    style="background-color: rgb(13, 135, 221);"
+                  >
+                    <div
+                      class="agents"
+                    >
+                      <div
+                        class="agent first"
+                        style="border-color: #0d87dd;"
+                      >
+                        <i
+                          class="material-icons"
+                        >
+                          person
+                        </i>
+                      </div>
+                      <div
+                        class="agent middle"
+                        style="border-color: #0d87dd;"
+                      >
+                        <i
+                          class="material-icons"
+                        >
+                          person
+                        </i>
+                        <div
+                          class="onlineMarker"
+                        />
+                      </div>
+                      <div
+                        class="agent last"
+                        style="border-color: #0d87dd;"
+                      >
+                        <i
+                          class="material-icons"
+                        >
+                          person
+                        </i>
+                      </div>
+                    </div>
+                    <div
+                      class="details"
+                    >
+                      <div
+                        class="appName"
+                      >
+                        Chat
+                      </div>
+                      <div
+                        class="introductionText"
+                      >
+                        How can we help?
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="content"
+                  >
+                    <ul
+                      class="buttons list-group"
+                    >
+                      <li
+                        class="button header list-group-item"
+                      >
+                        Manage your orders
+                      </li>
+                      <li
+                        class="button list-group-item"
+                      >
+                        Track an order
+                        <span
+                          class="material-icons-outlined chevronIcon"
+                        >
+                          chevron_right
+                        </span>
+                      </li>
+                      <li
+                        class="button list-group-item"
+                      >
+                        Return an order
+                        <span
+                          class="material-icons-outlined chevronIcon"
+                        >
+                          chevron_right
+                        </span>
+                      </li>
+                    </ul>
+                  </div>
+                  <div
+                    class="footer"
+                  >
+                    <span
+                      class="needHelpText"
+                    >
+                      Need more help?
+                    </span>
+                    <button
+                      class="btn btn-primary"
+                      style="background-color: rgb(13, 135, 221); border-color: #0d87dd;"
+                    >
+                      <img
+                        alt="send message icon"
+                        class="sendMessageIcon"
+                        src="test-file-stub"
+                      />
+                      Send us a message
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -724,6 +870,152 @@ exports[`<OrderManagementFlowsPreferences/> render() should render the 4 policy 
                 </tr>
               </tbody>
             </table>
+          </div>
+        </div>
+        <div
+          class="col"
+          data-testid="previewColumn"
+        >
+          <div
+            class="preview"
+          >
+            <div
+              class="container"
+            >
+              <span
+                class="mb-3 group horizontal"
+              >
+                <button
+                  class="wrapper fill primary medium left"
+                  type="button"
+                >
+                  Chat
+                </button>
+                <button
+                  class="wrapper fill secondary medium right"
+                  type="button"
+                >
+                  Help Center
+                </button>
+              </span>
+              <div
+                class="preview"
+              >
+                <div
+                  class="dialog"
+                >
+                  <div
+                    class="header"
+                    style="background-color: rgb(13, 135, 221);"
+                  >
+                    <div
+                      class="agents"
+                    >
+                      <div
+                        class="agent first"
+                        style="border-color: #0d87dd;"
+                      >
+                        <i
+                          class="material-icons"
+                        >
+                          person
+                        </i>
+                      </div>
+                      <div
+                        class="agent middle"
+                        style="border-color: #0d87dd;"
+                      >
+                        <i
+                          class="material-icons"
+                        >
+                          person
+                        </i>
+                        <div
+                          class="onlineMarker"
+                        />
+                      </div>
+                      <div
+                        class="agent last"
+                        style="border-color: #0d87dd;"
+                      >
+                        <i
+                          class="material-icons"
+                        >
+                          person
+                        </i>
+                      </div>
+                    </div>
+                    <div
+                      class="details"
+                    >
+                      <div
+                        class="appName"
+                      >
+                        Chat
+                      </div>
+                      <div
+                        class="introductionText"
+                      >
+                        How can we help?
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="content"
+                  >
+                    <ul
+                      class="buttons list-group"
+                    >
+                      <li
+                        class="button header list-group-item"
+                      >
+                        Manage your orders
+                      </li>
+                      <li
+                        class="button list-group-item"
+                      >
+                        Track an order
+                        <span
+                          class="material-icons-outlined chevronIcon"
+                        >
+                          chevron_right
+                        </span>
+                      </li>
+                      <li
+                        class="button list-group-item"
+                      >
+                        Return an order
+                        <span
+                          class="material-icons-outlined chevronIcon"
+                        >
+                          chevron_right
+                        </span>
+                      </li>
+                    </ul>
+                  </div>
+                  <div
+                    class="footer"
+                  >
+                    <span
+                      class="needHelpText"
+                    >
+                      Need more help?
+                    </span>
+                    <button
+                      class="btn btn-primary"
+                      style="background-color: rgb(13, 135, 221); border-color: #0d87dd;"
+                    >
+                      <img
+                        alt="send message icon"
+                        class="sendMessageIcon"
+                        src="test-file-stub"
+                      />
+                      Send us a message
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

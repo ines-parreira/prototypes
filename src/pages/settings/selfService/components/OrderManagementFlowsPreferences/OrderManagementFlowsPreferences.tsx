@@ -40,6 +40,7 @@ import {
     SegmentEvent,
 } from '../../../../../store/middlewares/segmentTracker'
 import {CurrentAccountState} from '../../../../../state/currentAccount/types'
+import SelfServicePreview from '../QuickResponseFlowsPreferences/components/SelfServicePreview'
 import {PolicyRow} from './components/PolicyRow'
 import css from './OrderManagementFlowsPreferences.less'
 
@@ -250,6 +251,11 @@ export const OrderManagementFlowsPreferences = () => {
                                     </Table>
                                 </>
                             )}
+                        </div>
+                    </Col>
+                    <Col data-testid="previewColumn">
+                        <div className={css.preview}>
+                            <SelfServicePreview showHelpCenterPreview />
                         </div>
                     </Col>
                 </Row>
