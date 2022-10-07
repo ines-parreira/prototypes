@@ -13,7 +13,6 @@ import classnames from 'classnames'
 import warningIcon from 'assets/img/icons/warning2.svg'
 import upgradeIcon from 'assets/img/icons/upgrade-icon.svg'
 import useAppSelector from 'hooks/useAppSelector'
-import Tooltip from 'pages/common/components/Tooltip'
 import PageHeader from 'pages/common/components/PageHeader'
 import Loader from 'pages/common/components/Loader/Loader'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
@@ -135,40 +134,18 @@ export const OrderManagementFlowsPreferences = () => {
                 <Row>
                     <Col>
                         <div className="mb-3">
-                            <h4 className={css.preferencesTitle}>
-                                Preferences
-                            </h4>
-                            <p
-                                id="email-capture-help"
-                                className={css.preferencesDescription}
-                            >
-                                Choose preferences of the actions your customers
-                                will be able to take to manage their orders.
-                                Note that actions available for each
-                                <span id="orders-shipments">
-                                    <b> order’s shipments</b>
-                                </span>{' '}
-                                <Tooltip
-                                    autohide={false}
-                                    delay={100}
-                                    placement="top"
-                                    target="orders-shipments"
-                                >
-                                    Gorgias breaks down orders into shipments
-                                    (one or more) allowing shoppers to track or
-                                    take actions related to individual
-                                    shipments.
-                                </Tooltip>
-                                depend on their statuses.{' '}
+                            <p className={css.preferencesDescription}>
+                                Allow customers to manage their orders directly
+                                from chat and help center. Shoppers can click
+                                the actions below depending on the status of
+                                their order.{' '}
                                 <a
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     href="https://docs.gorgias.com/self-service/self-service-portal-statuses"
                                 >
                                     Read more
-                                </a>{' '}
-                                about all existing order shipment statuses &
-                                corresponding available actions.
+                                </a>
                             </p>
                             {loading ? (
                                 <Loader />
@@ -238,21 +215,8 @@ export const OrderManagementFlowsPreferences = () => {
                                                 policyKey={
                                                     PolicyEnum.TRACK_ORDER_POLICY
                                                 }
-                                                policyName="Track"
-                                                policyDescription="Let customers track
-                                                        orders directly from the
-                                                        Self-service Portal in Chat
-                                                        and Help Center"
-                                                configuration={configuration}
-                                            />
-                                            <PolicyRow
-                                                policyKey={
-                                                    PolicyEnum.REPORT_ISSUE_POLICY
-                                                }
-                                                integration={integration}
-                                                policyName="Report issue"
-                                                policyDescription="Let customers report an
-                                                        issue with an order"
+                                                policyName="Track order"
+                                                policyDescription="Allow customers to view order tracking information."
                                                 configuration={configuration}
                                             />
                                             <PolicyRow
@@ -260,10 +224,8 @@ export const OrderManagementFlowsPreferences = () => {
                                                     PolicyEnum.RETURN_ORDER_POLICY
                                                 }
                                                 integration={integration}
-                                                policyName="Return"
-                                                policyDescription="Let customers request returns directly
-                                                        from the Self-service Portal in Chat
-                                                        and Help Center"
+                                                policyName="Return order"
+                                                policyDescription="Allow customers to request returns and customize criteria for requests."
                                                 configuration={configuration}
                                             />
                                             <PolicyRow
@@ -271,10 +233,17 @@ export const OrderManagementFlowsPreferences = () => {
                                                     PolicyEnum.CANCEL_ORDER_POLICY
                                                 }
                                                 integration={integration}
-                                                policyName="Cancel"
-                                                policyDescription="Let customers request order cancellations
-                                                        directly from the Self-service Portal in Chat
-                                                        and Help Center"
+                                                policyName="Cancel order"
+                                                policyDescription="Allow customers to request order cancellations and customize criteria for requests."
+                                                configuration={configuration}
+                                            />
+                                            <PolicyRow
+                                                policyKey={
+                                                    PolicyEnum.REPORT_ISSUE_POLICY
+                                                }
+                                                integration={integration}
+                                                policyName="Report order issue"
+                                                policyDescription="Allow customers to report order issues and set conditions based on custom scenarios."
                                                 configuration={configuration}
                                             />
                                         </tbody>

@@ -119,7 +119,7 @@ describe('<QuickResponseFlowNewItem />', () => {
             </Provider>
         )
 
-        getByText('New Flow')
+        getByText('Back to quick response flows')
         const createFlowButton = getByText('Create Flow') as HTMLInputElement
         expect(createFlowButton.disabled).toBe(true)
 
@@ -128,7 +128,7 @@ describe('<QuickResponseFlowNewItem />', () => {
         expect(history.push).toHaveBeenLastCalledWith(
             '/app/settings/self-service/shopify/mystore1/preferences/quick-response'
         )
-        fireEvent.change(getByLabelText('Button label'), {
+        fireEvent.change(getByLabelText('Quick response prompt'), {
             target: {value: 'label'},
         })
 
@@ -212,14 +212,14 @@ describe('<QuickResponseFlowNewItem />', () => {
 
         const saveChangesButton = getByText('Create Flow') as HTMLInputElement
 
-        fireEvent.change(getByLabelText('Button label'), {
+        fireEvent.change(getByLabelText('Quick response prompt'), {
             target: {value: 'title'},
         })
 
         fireEvent.click(saveChangesButton)
         expect(updateQuickReplyPoliciesSpy).not.toHaveBeenCalled()
 
-        fireEvent.change(getByLabelText('Button label'), {
+        fireEvent.change(getByLabelText('Quick response prompt'), {
             target: {value: 'another title'},
         })
 

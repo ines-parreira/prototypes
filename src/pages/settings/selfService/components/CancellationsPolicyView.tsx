@@ -35,6 +35,8 @@ import settingsCss from 'pages/settings/settings.less'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {useConfigurationData} from './hooks'
 import css from './CancellationPolicyView.less'
+import SelfServicePreferencesNavbar from './SelfServicePreferencesNavbar'
+import BackButton from './BackButton'
 
 export const CancellationsPolicyView = () => {
     const dispatch = useAppDispatch()
@@ -171,28 +173,35 @@ export const CancellationsPolicyView = () => {
                                 Self-service
                             </Link>
                         </BreadcrumbItem>
-                        <BreadcrumbItem>
-                            <Link
-                                to={`/app/settings/self-service/${integrationType}/${shopName}/preferences/order-management`}
-                            >
-                                {shopName}
-                            </Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem active>Cancel</BreadcrumbItem>
+                        <BreadcrumbItem>{shopName}</BreadcrumbItem>
                     </Breadcrumb>
                 }
             />
+            <SelfServicePreferencesNavbar />
             <Container fluid className={settingsCss.pageContainer}>
                 <Row>
                     <Col>
+                        <BackButton
+                            path={`/app/settings/self-service/${integrationType}/${shopName}/preferences/order-management`}
+                        >
+                            Back to Order management flows
+                        </BackButton>
                         <div className="mb-3">
                             <h4 className={css.cancellationsPolicyTitle}>
-                                Cancel
+                                Cancel order
                             </h4>
                             <p className={css.cancellationsPolicyDescription}>
-                                Let customers request order cancellations
-                                directly from the Self-service Portal in Chat
-                                and Help Center.
+                                Allow customers to request order cancellations
+                                directly from chat and your help center. A
+                                cancellation can only be requested if the order
+                                hasn't been processed or shipped.{' '}
+                                <a
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    href="https://docs.gorgias.com/en-US/self-service-portal-statuses-81862#actions-availability"
+                                >
+                                    Read more
+                                </a>
                             </p>
                             <br></br>
                             {loading || !configuration ? (
@@ -207,8 +216,9 @@ export const CancellationsPolicyView = () => {
                                             css.eligibilityWindowDescription
                                         }
                                     >
-                                        Customers will be able to cancel an
-                                        order up to the following status:
+                                        Customers can request a cancellation
+                                        when an order meets the following
+                                        criteria:
                                     </p>
                                     <Form onSubmit={onSubmit}>
                                         <div

@@ -44,10 +44,11 @@ const QuickResponseFlowsPreferences = () => {
             <Container fluid className={settingsCss.pageContainer}>
                 <Row>
                     <Col data-testid="configurationColumn">
-                        <h4>Quick Response Flows</h4>
                         <p>
-                            Display up to 4 quick response flows sending a
-                            prefilled chat message when shoppers click on it.
+                            Deflect tickets and allow shoppers to find answers
+                            to common questions by displaying up to 4 quick
+                            response flows that send automated responses when
+                            shoppers click on them.
                         </p>
 
                         <QuickResponseList />

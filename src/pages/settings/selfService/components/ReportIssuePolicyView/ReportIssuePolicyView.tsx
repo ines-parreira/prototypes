@@ -11,6 +11,8 @@ import {getLoading} from 'state/ui/selfServiceConfigurations/selectors'
 import Loader from 'pages/common/components/Loader/Loader'
 import settingsCss from 'pages/settings/settings.less'
 
+import SelfServicePreferencesNavbar from '../SelfServicePreferencesNavbar'
+import BackButton from '../BackButton'
 import ReportIssueCasesList from './components/ReportIssueCasesList'
 import css from './ReportIssuePolicyView.less'
 
@@ -47,14 +49,7 @@ const ReportIssuePolicyView: ComponentType = () => {
                                 Self-service
                             </Link>
                         </BreadcrumbItem>
-                        <BreadcrumbItem>
-                            <Link
-                                to={`/app/settings/self-service/${integrationType}/${shopName}/preferences/order-management`}
-                            >
-                                {shopName}
-                            </Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem active>Report Issue</BreadcrumbItem>
+                        <BreadcrumbItem>{shopName}</BreadcrumbItem>
                     </Breadcrumb>
                 }
             >
@@ -62,25 +57,31 @@ const ReportIssuePolicyView: ComponentType = () => {
                     <span className="icon material-icons">add</span> New Case
                 </Button>
             </PageHeader>
-
+            <SelfServicePreferencesNavbar />
             <Container fluid className={settingsCss.pageContainer}>
                 <Row>
                     <Col>
+                        <BackButton
+                            path={`/app/settings/self-service/${integrationType}/${shopName}/preferences/order-management`}
+                        >
+                            Back to Order management flows
+                        </BackButton>
                         <div className="mb-3">
                             <h4 className={css.reportIssuePolicyTitle}>
-                                Report issue
+                                Report order issue
                             </h4>
                             <p>
-                                Update reasons for customers to report an issue
-                                depending on order status.
+                                Allow customers to report order issues directly
+                                from <b>chat</b> and your <b>help center</b>.
                             </p>
                         </div>
 
-                        <h5 className={css.casesTitle}>Cases</h5>
+                        <h5 className={css.casesTitle}>Order scenarios</h5>
                         <p>
-                            Customize reasons based on Shopify order and
-                            fulfillment statuses. Cases are checked in the order
-                            listed below.
+                            Customize order scenarios and the corresponding
+                            options to display to shoppers when reporting order
+                            issues. Order scenarios apply in the sequence listed
+                            below.
                         </p>
                     </Col>
                 </Row>

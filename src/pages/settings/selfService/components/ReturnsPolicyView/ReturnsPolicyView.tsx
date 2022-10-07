@@ -46,6 +46,8 @@ import {Integration, IntegrationType} from 'models/integration/types'
 import {getIntegrationsByType} from 'state/integrations/selectors'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {useConfigurationData} from '../hooks'
+import SelfServicePreferencesNavbar from '../SelfServicePreferencesNavbar'
+import BackButton from '../BackButton'
 import {ReturnActionSelectField} from './components/ReturnActionSelectField'
 import {NewReturnIntegrationModal} from './components/NewReturnIntegrationModal'
 import {LOOP_RETURNS_API_URL} from './constants'
@@ -275,27 +277,34 @@ export const ReturnsPolicyView = () => {
                                 Self-service
                             </Link>
                         </BreadcrumbItem>
-                        <BreadcrumbItem>
-                            <Link
-                                to={`/app/settings/self-service/${integrationType}/${shopName}/preferences/order-management`}
-                            >
-                                {shopName}
-                            </Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem active>Return</BreadcrumbItem>
+                        <BreadcrumbItem>{shopName}</BreadcrumbItem>
                     </Breadcrumb>
                 }
             />
+            <SelfServicePreferencesNavbar />
             <Container fluid className={settingsCss.pageContainer}>
                 <Row>
                     <Col>
+                        <BackButton
+                            path={`/app/settings/self-service/${integrationType}/${shopName}/preferences/order-management`}
+                        >
+                            Back to Order management flows
+                        </BackButton>
                         <div className="mb-3">
-                            <h4 className={css.returnsPolicyTitle}>Return</h4>
+                            <h4 className={css.returnsPolicyTitle}>
+                                Return order
+                            </h4>
                             <p>
-                                Let customers request returns directly from the
-                                Self-service Portal in Chat and Help Center.
-                                Returns can only be initiated if the order has
-                                been delivered.
+                                Allow customers to request returns directly from
+                                chat and your help center. Returns can only be
+                                requested if the order has been delivered.{' '}
+                                <a
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    href="https://docs.gorgias.com/en-US/self-service-portal-statuses-81862#actions-availability"
+                                >
+                                    Read more
+                                </a>
                             </p>
                             <br></br>
                             {loading || !configuration ? (
@@ -310,8 +319,8 @@ export const ReturnsPolicyView = () => {
                                             css.eligibilityWindowDescription
                                         }
                                     >
-                                        Timeframe through which customers will
-                                        be able to initiate a return.
+                                        Customers can request a return when an
+                                        order meets the following criteria:
                                     </p>
 
                                     <div

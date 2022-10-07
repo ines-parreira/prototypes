@@ -36,6 +36,8 @@ import settingsCss from 'pages/settings/settings.less'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
+import SelfServicePreferencesNavbar from '../SelfServicePreferencesNavbar'
+import BackButton from '../BackButton'
 import {SELECTABLE_REASONS_DROPDOWN_OPTIONS} from './constants'
 import Reasons from './components/Reasons'
 import Conditions from './components/Conditions'
@@ -264,34 +266,23 @@ const ReportIssueCaseEditor: ComponentType = () => {
                                 Self-service
                             </Link>
                         </BreadcrumbItem>
-                        <BreadcrumbItem>
-                            <Link
-                                to={`/app/settings/self-service/${integrationType}/${shopName}/preferences/order-management`}
-                            >
-                                {shopName}
-                            </Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
-                            <Link
-                                to={`/app/settings/self-service/${integrationType}/${shopName}/preferences/report-issue`}
-                            >
-                                Report Issue
-                            </Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem active>
-                            {caseIndex === 'new' ? 'New case' : 'Edit case'}
-                        </BreadcrumbItem>
+                        <BreadcrumbItem>{shopName}</BreadcrumbItem>
                     </Breadcrumb>
                 }
             />
-
+            <SelfServicePreferencesNavbar />
             <Container fluid className={settingsCss.pageContainer}>
                 <Row>
                     <Col>
+                        <BackButton
+                            path={`/app/settings/self-service/${integrationType}/${shopName}/preferences/report-issue`}
+                        >
+                            Back to all scenarios
+                        </BackButton>
                         <Form onSubmit={handleSubmit} className={css.form}>
                             <DEPRECATED_InputField
                                 name="title"
-                                label="Title"
+                                label="Order scenario"
                                 placeholder="Condition title"
                                 required
                                 value={title}
@@ -315,7 +306,8 @@ const ReportIssueCaseEditor: ComponentType = () => {
 
                             <fieldset className={css.fieldset}>
                                 <legend className={css.legend}>
-                                    What reasons should be displayed?
+                                    What options should be displayed to
+                                    shoppers?
                                 </legend>
 
                                 <Reasons
@@ -327,7 +319,7 @@ const ReportIssueCaseEditor: ComponentType = () => {
                             {!isFallbackCase && (
                                 <fieldset className={css.fieldset}>
                                     <legend className={css.legend}>
-                                        Conditions to display these errors
+                                        Conditions to display these options
                                         <span
                                             className={classNames(
                                                 'icon',

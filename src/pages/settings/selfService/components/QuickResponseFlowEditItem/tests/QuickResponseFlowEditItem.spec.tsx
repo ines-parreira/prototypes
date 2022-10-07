@@ -133,10 +133,10 @@ describe('<QuickResponseFlowEditItem />', () => {
             </Provider>
         )
 
-        getByText('Edit Flow')
+        getByText('Back to quick response flows')
         const saveChangesButton = getByText('Save Changes') as HTMLInputElement
 
-        fireEvent.change(getByLabelText('Button label'), {
+        fireEvent.change(getByLabelText('Quick response prompt'), {
             target: {value: 'label'},
         })
 
@@ -204,7 +204,7 @@ describe('<QuickResponseFlowEditItem />', () => {
 
         const saveChangesButton = getByText('Save Changes') as HTMLInputElement
 
-        fireEvent.change(getByLabelText('Button label'), {
+        fireEvent.change(getByLabelText('Quick response prompt'), {
             target: {value: 'another title'},
         })
 

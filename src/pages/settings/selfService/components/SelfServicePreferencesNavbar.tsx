@@ -28,7 +28,13 @@ const SelfServicePreferencesNavbar = () => {
                     Quick Response Flows
                 </NavLink>
             )}
-            <NavLink to={`${baseURL}/order-management`} exact>
+            <NavLink
+                to={`${baseURL}/order-management`}
+                exact
+                isActive={(_, {pathname}: {pathname: string}) =>
+                    !pathname.includes(`${baseURL}/quick-response`)
+                }
+            >
                 Order Management Flows
             </NavLink>
         </SecondaryNavbar>

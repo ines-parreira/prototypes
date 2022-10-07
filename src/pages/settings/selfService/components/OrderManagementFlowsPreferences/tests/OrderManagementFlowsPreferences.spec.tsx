@@ -207,7 +207,7 @@ describe('<OrderManagementFlowsPreferences/>', () => {
                   Object {
                     "cancel_order_policy": Object {
                       "eligibilities": Array [],
-                      "enabled": false,
+                      "enabled": true,
                       "exceptions": Array [],
                     },
                     "created_datetime": "2021-01-26T00:29:00Z",
@@ -220,7 +220,7 @@ describe('<OrderManagementFlowsPreferences/>', () => {
                     },
                     "return_order_policy": Object {
                       "eligibilities": Array [],
-                      "enabled": false,
+                      "enabled": true,
                       "exceptions": Array [],
                     },
                     "shop_name": "mystore3",

@@ -27,21 +27,29 @@ exports[`<ReturnsPolicyView /> render() should render the select field 1`] = `
           <li
             class="breadcrumb-item"
           >
-            <a
-              to="/app/settings/self-service/shopify/myStore1/preferences/order-management"
-            >
-              myStore1
-            </a>
-          </li>
-          <li
-            aria-current="page"
-            class="active breadcrumb-item"
-          >
-            Return
+            myStore1
           </li>
         </ol>
       </nav>
     </div>
+    <nav
+      class="navbar navbar"
+    >
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/self-service/shopify/myStore1/preferences/quick-response"
+      >
+        Quick Response Flows
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/self-service/shopify/myStore1/preferences/order-management"
+      >
+        Order Management Flows
+      </a>
+    </nav>
     <div
       class="pageContainer container-fluid"
     >
@@ -51,16 +59,39 @@ exports[`<ReturnsPolicyView /> render() should render the select field 1`] = `
         <div
           class="col"
         >
+          <button
+            class="wrapper backButton ghost secondary medium"
+            type="button"
+          >
+            <span
+              class="wrapper"
+            >
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                arrow_back
+              </i>
+              Back to Order management flows
+            </span>
+          </button>
           <div
             class="mb-3"
           >
             <h4
               class="returnsPolicyTitle"
             >
-              Return
+              Return order
             </h4>
             <p>
-              Let customers request returns directly from the Self-service Portal in Chat and Help Center. Returns can only be initiated if the order has been delivered.
+              Allow customers to request returns directly from chat and your help center. Returns can only be requested if the order has been delivered.
+               
+              <a
+                href="https://docs.gorgias.com/en-US/self-service-portal-statuses-81862#actions-availability"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Read more
+              </a>
             </p>
             <br />
             <form
@@ -74,7 +105,7 @@ exports[`<ReturnsPolicyView /> render() should render the select field 1`] = `
               <p
                 class="eligibilityWindowDescription"
               >
-                Timeframe through which customers will be able to initiate a return.
+                Customers can request a return when an order meets the following criteria:
               </p>
               <div
                 class="eligibilityWindowContainer"

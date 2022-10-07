@@ -12,7 +12,6 @@ import {
 } from 'reactstrap'
 import {Link, useParams} from 'react-router-dom'
 import {EditorState} from 'draft-js'
-import classNames from 'classnames'
 import {fromJS, List, Map} from 'immutable'
 
 import {useDispatch} from 'react-redux'
@@ -25,11 +24,9 @@ import SelfServicePreferencesNavbar from 'pages/settings/selfService/components/
 import {GorgiasChatIntegrationSelfServicePaywall} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
 import {useConfigurationData} from 'pages/settings/selfService/components/hooks'
 import history from 'pages/history'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Button from 'pages/common/components/button/Button'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import DEPRECATED_RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'
-import Tooltip from 'pages/common/components/Tooltip'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 
 import {convertToHTML} from 'utils/editor'
@@ -40,6 +37,7 @@ import {QuickReplyPolicy} from 'models/selfServiceConfiguration/types'
 import {NotificationStatus} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
 import {getNewMessageAttachments} from '../../../../../state/newMessage/selectors'
+import BackButton from '../BackButton'
 import QuickResponseSelfServicePreview from './components/QuickResponseSelfServicePreview'
 import css from './QuickResponseFlowItem.less'
 
@@ -150,22 +148,12 @@ const QuickResponseFlowItem = ({
                 }
             />
             <SelfServicePreferencesNavbar />
-
             <Container fluid className={settingsCss.pageContainer}>
                 <Row>
                     <Col data-testid="configurationColumn">
-                        <Button
-                            onClick={() => history.push(baseURL)}
-                            className={css.backButton}
-                            fillStyle="ghost"
-                            intent="secondary"
-                        >
-                            <ButtonIconLabel icon="arrow_back">
-                                {quickResponseBeingEdited !== undefined
-                                    ? 'Edit Flow'
-                                    : 'New Flow'}
-                            </ButtonIconLabel>
-                        </Button>
+                        <BackButton path={baseURL}>
+                            Back to quick response flows
+                        </BackButton>
 
                         <Form
                             id="quickResponseForm"
@@ -173,7 +161,7 @@ const QuickResponseFlowItem = ({
                         >
                             <DEPRECATED_InputField
                                 name="buttonLabel"
-                                label="Button label"
+                                label="Quick response prompt"
                                 placeholder="Ex: Do you offer free shipping and returns?"
                                 required
                                 value={buttonLabel}
@@ -194,29 +182,12 @@ const QuickResponseFlowItem = ({
                                     for="responseText"
                                     className="control-label"
                                 >
-                                    What response should be sent?
-                                    <i
-                                        id="response-text-toggle-info"
-                                        className={classNames(
-                                            'material-icons',
-                                            css.tooltipIcon
-                                        )}
-                                    >
-                                        info_outline
-                                    </i>
-                                    <Tooltip
-                                        placement="top-start"
-                                        target="response-text-toggle-info"
-                                        style={{
-                                            textAlign: 'start',
-                                            width: 164,
-                                        }}
-                                    >
-                                        This response will be automatically
-                                        provided to shoppers when they select
-                                        this option in the quick answers section
-                                    </Tooltip>
+                                    Response text
                                 </Label>
+                                <p>
+                                    After customers click the quick response
+                                    prompt, reply with an automated message.
+                                </p>
                                 <DEPRECATED_RichField
                                     value={{
                                         html: responseText.message.get('html'),

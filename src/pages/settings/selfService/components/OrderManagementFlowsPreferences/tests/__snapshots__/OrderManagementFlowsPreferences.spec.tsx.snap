@@ -56,25 +56,10 @@ exports[`<OrderManagementFlowsPreferences/> ToggleInput.onChange() should deacti
           <div
             class="mb-3"
           >
-            <h4
-              class="preferencesTitle"
-            >
-              Preferences
-            </h4>
             <p
               class="preferencesDescription"
-              id="email-capture-help"
             >
-              Choose preferences of the actions your customers will be able to take to manage their orders. Note that actions available for each
-              <span
-                id="orders-shipments"
-              >
-                <b>
-                   order’s shipments
-                </b>
-              </span>
-               
-              depend on their statuses.
+              Allow customers to manage their orders directly from chat and help center. Shoppers can click the actions below depending on the status of their order.
                
               <a
                 href="https://docs.gorgias.com/self-service/self-service-portal-statuses"
@@ -83,8 +68,6 @@ exports[`<OrderManagementFlowsPreferences/> ToggleInput.onChange() should deacti
               >
                 Read more
               </a>
-               
-              about all existing order shipment statuses & corresponding available actions.
             </p>
             <div
               class="alert warning mb16"
@@ -159,84 +142,13 @@ exports[`<OrderManagementFlowsPreferences/> ToggleInput.onChange() should deacti
                         <span
                           class="policyName"
                         >
-                          Track
+                          Track order
                         </span>
                         <span
                           class="policyDescription"
                         >
-                          Let customers track orders directly from the Self-service Portal in Chat and Help Center
+                          Allow customers to view order tracking information.
                         </span>
-                      </div>
-                    </div>
-                  </td>
-                  <td
-                    class="smallest align-middle"
-                  />
-                </tr>
-                <tr>
-                  <td
-                    class="smallest align-middle"
-                  >
-                    <div>
-                      <label
-                        aria-checked="false"
-                        class="label label"
-                        for="toggle-button-42"
-                        role="switch"
-                      >
-                        <input
-                          class="input"
-                          disabled=""
-                          id="toggle-button-42"
-                          name="toggle-button-42"
-                          type="checkbox"
-                        />
-                        <div
-                          class="slider"
-                        />
-                      </label>
-                    </div>
-                  </td>
-                  <td
-                    class="policyTd"
-                  >
-                    <div
-                      class="policyRowInfo"
-                    >
-                      <div
-                        class="content"
-                      >
-                        <span
-                          class="policyName"
-                        >
-                          Report issue
-                        </span>
-                        <span
-                          class="policyDescription"
-                        >
-                          Let customers report an issue with an order
-                        </span>
-                      </div>
-                      <div>
-                        <div
-                          class="d-flex align-items-center upgradeLink"
-                        >
-                          <button
-                            class="wrapper fill primary medium"
-                            type="button"
-                          >
-                            <span
-                              class="wrapper"
-                            >
-                              Get Automation Features
-                              <i
-                                class="material-icons icon isRight medium"
-                              >
-                                auto_awesome
-                              </i>
-                            </span>
-                          </button>
-                        </div>
                       </div>
                     </div>
                   </td>
@@ -284,12 +196,12 @@ exports[`<OrderManagementFlowsPreferences/> ToggleInput.onChange() should deacti
                           <span
                             class="policyName"
                           >
-                            Return
+                            Return order
                           </span>
                           <span
                             class="policyDescription"
                           >
-                            Let customers request returns directly from the Self-service Portal in Chat and Help Center
+                            Allow customers to request returns and customize criteria for requests.
                           </span>
                         </div>
                       </div>
@@ -348,12 +260,12 @@ exports[`<OrderManagementFlowsPreferences/> ToggleInput.onChange() should deacti
                           <span
                             class="policyName"
                           >
-                            Cancel
+                            Cancel order
                           </span>
                           <span
                             class="policyDescription"
                           >
-                            Let customers request order cancellations directly from the Self-service Portal in Chat and Help Center
+                            Allow customers to request order cancellations and customize criteria for requests.
                           </span>
                         </div>
                       </div>
@@ -372,6 +284,77 @@ exports[`<OrderManagementFlowsPreferences/> ToggleInput.onChange() should deacti
                       </i>
                     </a>
                   </td>
+                </tr>
+                <tr>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <div>
+                      <label
+                        aria-checked="false"
+                        class="label label"
+                        for="toggle-button-42"
+                        role="switch"
+                      >
+                        <input
+                          class="input"
+                          disabled=""
+                          id="toggle-button-42"
+                          name="toggle-button-42"
+                          type="checkbox"
+                        />
+                        <div
+                          class="slider"
+                        />
+                      </label>
+                    </div>
+                  </td>
+                  <td
+                    class="policyTd"
+                  >
+                    <div
+                      class="policyRowInfo"
+                    >
+                      <div
+                        class="content"
+                      >
+                        <span
+                          class="policyName"
+                        >
+                          Report order issue
+                        </span>
+                        <span
+                          class="policyDescription"
+                        >
+                          Allow customers to report order issues and set conditions based on custom scenarios.
+                        </span>
+                      </div>
+                      <div>
+                        <div
+                          class="d-flex align-items-center upgradeLink"
+                        >
+                          <button
+                            class="wrapper fill primary medium"
+                            type="button"
+                          >
+                            <span
+                              class="wrapper"
+                            >
+                              Get Automation Features
+                              <i
+                                class="material-icons icon isRight medium"
+                              >
+                                auto_awesome
+                              </i>
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td
+                    class="smallest align-middle"
+                  />
                 </tr>
               </tbody>
             </table>
@@ -439,25 +422,10 @@ exports[`<OrderManagementFlowsPreferences/> render() should render the 4 policy 
           <div
             class="mb-3"
           >
-            <h4
-              class="preferencesTitle"
-            >
-              Preferences
-            </h4>
             <p
               class="preferencesDescription"
-              id="email-capture-help"
             >
-              Choose preferences of the actions your customers will be able to take to manage their orders. Note that actions available for each
-              <span
-                id="orders-shipments"
-              >
-                <b>
-                   order’s shipments
-                </b>
-              </span>
-               
-              depend on their statuses.
+              Allow customers to manage their orders directly from chat and help center. Shoppers can click the actions below depending on the status of their order.
                
               <a
                 href="https://docs.gorgias.com/self-service/self-service-portal-statuses"
@@ -466,8 +434,6 @@ exports[`<OrderManagementFlowsPreferences/> render() should render the 4 policy 
               >
                 Read more
               </a>
-               
-              about all existing order shipment statuses & corresponding available actions.
             </p>
             <div
               class="alert warning mb16"
@@ -542,84 +508,13 @@ exports[`<OrderManagementFlowsPreferences/> render() should render the 4 policy 
                         <span
                           class="policyName"
                         >
-                          Track
+                          Track order
                         </span>
                         <span
                           class="policyDescription"
                         >
-                          Let customers track orders directly from the Self-service Portal in Chat and Help Center
+                          Allow customers to view order tracking information.
                         </span>
-                      </div>
-                    </div>
-                  </td>
-                  <td
-                    class="smallest align-middle"
-                  />
-                </tr>
-                <tr>
-                  <td
-                    class="smallest align-middle"
-                  >
-                    <div>
-                      <label
-                        aria-checked="false"
-                        class="label label"
-                        for="toggle-button-42"
-                        role="switch"
-                      >
-                        <input
-                          class="input"
-                          disabled=""
-                          id="toggle-button-42"
-                          name="toggle-button-42"
-                          type="checkbox"
-                        />
-                        <div
-                          class="slider"
-                        />
-                      </label>
-                    </div>
-                  </td>
-                  <td
-                    class="policyTd"
-                  >
-                    <div
-                      class="policyRowInfo"
-                    >
-                      <div
-                        class="content"
-                      >
-                        <span
-                          class="policyName"
-                        >
-                          Report issue
-                        </span>
-                        <span
-                          class="policyDescription"
-                        >
-                          Let customers report an issue with an order
-                        </span>
-                      </div>
-                      <div>
-                        <div
-                          class="d-flex align-items-center upgradeLink"
-                        >
-                          <button
-                            class="wrapper fill primary medium"
-                            type="button"
-                          >
-                            <span
-                              class="wrapper"
-                            >
-                              Get Automation Features
-                              <i
-                                class="material-icons icon isRight medium"
-                              >
-                                auto_awesome
-                              </i>
-                            </span>
-                          </button>
-                        </div>
                       </div>
                     </div>
                   </td>
@@ -667,12 +562,12 @@ exports[`<OrderManagementFlowsPreferences/> render() should render the 4 policy 
                           <span
                             class="policyName"
                           >
-                            Return
+                            Return order
                           </span>
                           <span
                             class="policyDescription"
                           >
-                            Let customers request returns directly from the Self-service Portal in Chat and Help Center
+                            Allow customers to request returns and customize criteria for requests.
                           </span>
                         </div>
                       </div>
@@ -731,12 +626,12 @@ exports[`<OrderManagementFlowsPreferences/> render() should render the 4 policy 
                           <span
                             class="policyName"
                           >
-                            Cancel
+                            Cancel order
                           </span>
                           <span
                             class="policyDescription"
                           >
-                            Let customers request order cancellations directly from the Self-service Portal in Chat and Help Center
+                            Allow customers to request order cancellations and customize criteria for requests.
                           </span>
                         </div>
                       </div>
@@ -755,6 +650,77 @@ exports[`<OrderManagementFlowsPreferences/> render() should render the 4 policy 
                       </i>
                     </a>
                   </td>
+                </tr>
+                <tr>
+                  <td
+                    class="smallest align-middle"
+                  >
+                    <div>
+                      <label
+                        aria-checked="false"
+                        class="label label"
+                        for="toggle-button-42"
+                        role="switch"
+                      >
+                        <input
+                          class="input"
+                          disabled=""
+                          id="toggle-button-42"
+                          name="toggle-button-42"
+                          type="checkbox"
+                        />
+                        <div
+                          class="slider"
+                        />
+                      </label>
+                    </div>
+                  </td>
+                  <td
+                    class="policyTd"
+                  >
+                    <div
+                      class="policyRowInfo"
+                    >
+                      <div
+                        class="content"
+                      >
+                        <span
+                          class="policyName"
+                        >
+                          Report order issue
+                        </span>
+                        <span
+                          class="policyDescription"
+                        >
+                          Allow customers to report order issues and set conditions based on custom scenarios.
+                        </span>
+                      </div>
+                      <div>
+                        <div
+                          class="d-flex align-items-center upgradeLink"
+                        >
+                          <button
+                            class="wrapper fill primary medium"
+                            type="button"
+                          >
+                            <span
+                              class="wrapper"
+                            >
+                              Get Automation Features
+                              <i
+                                class="material-icons icon isRight medium"
+                              >
+                                auto_awesome
+                              </i>
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td
+                    class="smallest align-middle"
+                  />
                 </tr>
               </tbody>
             </table>

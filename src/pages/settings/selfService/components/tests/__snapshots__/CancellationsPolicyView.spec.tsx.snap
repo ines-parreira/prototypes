@@ -27,21 +27,22 @@ exports[`<CancellationsPolicyView/> onSubmit() should set the eligibility option
           <li
             class="breadcrumb-item"
           >
-            <a
-              to="/app/settings/self-service/shopify/myStore1/preferences/order-management"
-            >
-              myStore1
-            </a>
-          </li>
-          <li
-            aria-current="page"
-            class="active breadcrumb-item"
-          >
-            Cancel
+            myStore1
           </li>
         </ol>
       </nav>
     </div>
+    <nav
+      class="navbar navbar"
+    >
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/self-service/shopify/myStore1/preferences/order-management"
+      >
+        Order Management Flows
+      </a>
+    </nav>
     <div
       class="pageContainer container-fluid"
     >
@@ -51,18 +52,41 @@ exports[`<CancellationsPolicyView/> onSubmit() should set the eligibility option
         <div
           class="col"
         >
+          <button
+            class="wrapper backButton ghost secondary medium"
+            type="button"
+          >
+            <span
+              class="wrapper"
+            >
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                arrow_back
+              </i>
+              Back to Order management flows
+            </span>
+          </button>
           <div
             class="mb-3"
           >
             <h4
               class="cancellationsPolicyTitle"
             >
-              Cancel
+              Cancel order
             </h4>
             <p
               class="cancellationsPolicyDescription"
             >
-              Let customers request order cancellations directly from the Self-service Portal in Chat and Help Center.
+              Allow customers to request order cancellations directly from chat and your help center. A cancellation can only be requested if the order hasn't been processed or shipped.
+               
+              <a
+                href="https://docs.gorgias.com/en-US/self-service-portal-statuses-81862#actions-availability"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Read more
+              </a>
             </p>
             <br />
             <h5
@@ -73,7 +97,7 @@ exports[`<CancellationsPolicyView/> onSubmit() should set the eligibility option
             <p
               class="eligibilityWindowDescription"
             >
-              Customers will be able to cancel an order up to the following status:
+              Customers can request a cancellation when an order meets the following criteria:
             </p>
             <form
               class=""
@@ -211,21 +235,22 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
           <li
             class="breadcrumb-item"
           >
-            <a
-              to="/app/settings/self-service/shopify/myStore1/preferences/order-management"
-            >
-              myStore1
-            </a>
-          </li>
-          <li
-            aria-current="page"
-            class="active breadcrumb-item"
-          >
-            Cancel
+            myStore1
           </li>
         </ol>
       </nav>
     </div>
+    <nav
+      class="navbar navbar"
+    >
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/self-service/shopify/myStore1/preferences/order-management"
+      >
+        Order Management Flows
+      </a>
+    </nav>
     <div
       class="pageContainer container-fluid"
     >
@@ -235,18 +260,41 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
         <div
           class="col"
         >
+          <button
+            class="wrapper backButton ghost secondary medium"
+            type="button"
+          >
+            <span
+              class="wrapper"
+            >
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                arrow_back
+              </i>
+              Back to Order management flows
+            </span>
+          </button>
           <div
             class="mb-3"
           >
             <h4
               class="cancellationsPolicyTitle"
             >
-              Cancel
+              Cancel order
             </h4>
             <p
               class="cancellationsPolicyDescription"
             >
-              Let customers request order cancellations directly from the Self-service Portal in Chat and Help Center.
+              Allow customers to request order cancellations directly from chat and your help center. A cancellation can only be requested if the order hasn't been processed or shipped.
+               
+              <a
+                href="https://docs.gorgias.com/en-US/self-service-portal-statuses-81862#actions-availability"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Read more
+              </a>
             </p>
             <br />
             <h5
@@ -257,7 +305,7 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
             <p
               class="eligibilityWindowDescription"
             >
-              Customers will be able to cancel an order up to the following status:
+              Customers can request a cancellation when an order meets the following criteria:
             </p>
             <form
               class=""
@@ -395,21 +443,22 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
           <li
             class="breadcrumb-item"
           >
-            <a
-              to="/app/settings/self-service/shopify/myStore1/preferences/order-management"
-            >
-              myStore1
-            </a>
-          </li>
-          <li
-            aria-current="page"
-            class="active breadcrumb-item"
-          >
-            Cancel
+            myStore1
           </li>
         </ol>
       </nav>
     </div>
+    <nav
+      class="navbar navbar"
+    >
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/self-service/shopify/myStore1/preferences/order-management"
+      >
+        Order Management Flows
+      </a>
+    </nav>
     <div
       class="pageContainer container-fluid"
     >
@@ -419,18 +468,41 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
         <div
           class="col"
         >
+          <button
+            class="wrapper backButton ghost secondary medium"
+            type="button"
+          >
+            <span
+              class="wrapper"
+            >
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                arrow_back
+              </i>
+              Back to Order management flows
+            </span>
+          </button>
           <div
             class="mb-3"
           >
             <h4
               class="cancellationsPolicyTitle"
             >
-              Cancel
+              Cancel order
             </h4>
             <p
               class="cancellationsPolicyDescription"
             >
-              Let customers request order cancellations directly from the Self-service Portal in Chat and Help Center.
+              Allow customers to request order cancellations directly from chat and your help center. A cancellation can only be requested if the order hasn't been processed or shipped.
+               
+              <a
+                href="https://docs.gorgias.com/en-US/self-service-portal-statuses-81862#actions-availability"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Read more
+              </a>
             </p>
             <br />
             <h5
@@ -441,7 +513,7 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
             <p
               class="eligibilityWindowDescription"
             >
-              Customers will be able to cancel an order up to the following status:
+              Customers can request a cancellation when an order meets the following criteria:
             </p>
             <form
               class=""
