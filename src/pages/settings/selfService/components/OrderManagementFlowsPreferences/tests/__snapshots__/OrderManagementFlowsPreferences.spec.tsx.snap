@@ -370,22 +370,23 @@ exports[`<OrderManagementFlowsPreferences/> ToggleInput.onChange() should deacti
             <div
               class="container"
             >
-              <span
-                class="mb-3 group horizontal"
+              <div
+                class="mb-4 btn-group"
+                role="group"
               >
                 <button
-                  class="wrapper fill primary medium left"
+                  class="btn btn-info"
                   type="button"
                 >
                   Chat
                 </button>
                 <button
-                  class="wrapper fill secondary medium right"
+                  class="btn btn-secondary"
                   type="button"
                 >
                   Help Center
                 </button>
-              </span>
+              </div>
               <div
                 class="preview"
               >
@@ -882,22 +883,23 @@ exports[`<OrderManagementFlowsPreferences/> render() should render the 4 policy 
             <div
               class="container"
             >
-              <span
-                class="mb-3 group horizontal"
+              <div
+                class="mb-4 btn-group"
+                role="group"
               >
                 <button
-                  class="wrapper fill primary medium left"
+                  class="btn btn-info"
                   type="button"
                 >
                   Chat
                 </button>
                 <button
-                  class="wrapper fill secondary medium right"
+                  class="btn btn-secondary"
                   type="button"
                 >
                   Help Center
                 </button>
-              </span>
+              </div>
               <div
                 class="preview"
               >

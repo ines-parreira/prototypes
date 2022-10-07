@@ -1,6 +1,6 @@
 import React, {useMemo, useState, useEffect} from 'react'
 import {useRouteMatch} from 'react-router'
-import {ListGroup} from 'reactstrap'
+import {ButtonGroup, ListGroup, Button} from 'reactstrap'
 
 import {GORGIAS_CHAT_SSP_TEXTS} from 'config/integrations/gorgias_chat'
 
@@ -9,8 +9,6 @@ import {getIntegrations} from 'state/integrations/selectors'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import useAppSelector from 'hooks/useAppSelector'
 
-import Group from 'pages/common/components/layout/Group'
-import Button from 'pages/common/components/button/Button'
 import HelpCenterPreview from 'pages/settings/helpCenter/components/HelpCenterPreview/HelpCenterPreview'
 import css from './SelfServicePreview.less'
 import HomePageListGroupItem from './components/HomePageListGroupItem'
@@ -69,26 +67,26 @@ const SelfServicePreview = ({showHelpCenterPreview = false}: Props) => {
     return (
         <div className={css.container}>
             {showHelpCenterPreview && (
-                <Group className="mb-3">
+                <ButtonGroup className="mb-4">
                     <Button
-                        intent={
-                            currentPreview === 'chat' ? 'primary' : 'secondary'
-                        }
+                        type="button"
+                        color={currentPreview === 'chat' ? 'info' : 'secondary'}
                         onClick={() => setCurrentPreview('chat')}
                     >
                         Chat
                     </Button>
                     <Button
-                        intent={
+                        type="button"
+                        color={
                             currentPreview === 'help-center'
-                                ? 'primary'
+                                ? 'info'
                                 : 'secondary'
                         }
                         onClick={() => setCurrentPreview('help-center')}
                     >
                         Help Center
                     </Button>
-                </Group>
+                </ButtonGroup>
             )}
             {currentPreview === 'chat' && (
                 <ChatIntegrationPreview
