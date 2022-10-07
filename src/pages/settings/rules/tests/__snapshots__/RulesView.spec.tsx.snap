@@ -188,29 +188,33 @@ exports[`<RulesView/> should render the rule library view 1`] = `
     </nav>
   </div>
   <div
-    class="description pageContainer container-fluid"
+    class="info pageContainer container-fluid"
   >
     <div
-      class="header"
-      data-candu-id="rules-list-description"
+      class="infoContainer"
     >
       <div
-        class="libraryHeader"
+        class="description"
+        data-candu-id="rules-list-description"
       >
-        <h1>
-          Rule Library
-        </h1>
-        <p>
-          Below are some rule examples that you can install in your account. Once installed you can visit your rule setting page to adapt it to your need.
-           
-          <a
-            href="https://docs.gorgias.com/rules/rule-library-new"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Learn more
-          </a>
-        </p>
+        <div
+          class="libraryHeader"
+        >
+          <h1>
+            Rule Library
+          </h1>
+          <p>
+            Below are some rule examples that you can install in your account. Once installed you can visit your rule setting page to adapt it to your need.
+             
+            <a
+              href="https://docs.gorgias.com/rules/rule-library-new"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Learn more
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -278,71 +282,75 @@ exports[`<RulesView/> should render the rule views 1`] = `
     </nav>
   </div>
   <div
-    class="description pageContainer container-fluid"
+    class="info pageContainer container-fluid"
   >
     <div
-      class="header"
-      data-candu-id="rules-list-description"
+      class="infoContainer"
     >
-      <p>
-        Rules provide a way to automatically perform actions on tickets, like tagging, assigning or even responding. Hover a row to show the rule description. Learn more about how to setup rules
-         
-        <a
-          href="https://docs.gorgias.com/en-US/articles/rules-18380"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          in our docs
-        </a>
-        .
-      </p>
-      <p>
-        Rules are executed depending on triggering events and in the order they are listed on this page.
-         
-        <a
-          href="https://docs.gorgias.com/en-US/rules-faq-82011"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          Learn more about rules execution
-        </a>
-        .
-      </p>
-      <p>
-        If you need inspiration to automate your workflows don't hesitate to visit our
-         
-        <a
-          href="#"
-        >
-          rule library
-        </a>
-        !
-      </p>
-    </div>
-    <div>
       <div
-        class="preview"
+        class="description"
+        data-candu-id="rules-list-description"
       >
-        <div
-          class="screenshot"
-        >
-          <img
-            alt="video preview"
-            src="https://img.youtube.com/vi/HFylY2x3T_Y/0.jpg"
-          />
-          <i
-            class="material-icons playIcon"
+        <p>
+          Rules provide a way to automatically perform actions on tickets, like tagging, assigning or even responding. Hover a row to show the rule description. Learn more about how to setup rules
+           
+          <a
+            href="https://docs.gorgias.com/en-US/articles/rules-18380"
+            rel="noopener noreferrer"
+            target="_blank"
           >
-            play_circle_filled_white
-          </i>
-          <div
-            class="iconBackground"
-          />
-        </div>
+            in our docs
+          </a>
+          .
+        </p>
+        <p>
+          Rules are executed depending on triggering events and in the order they are listed on this page.
+           
+          <a
+            href="https://docs.gorgias.com/en-US/rules-faq-82011"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Learn more about rules execution
+          </a>
+          .
+        </p>
+        <p>
+          If you need inspiration to automate your workflows don't hesitate to visit our
+           
+          <a
+            href="#"
+          >
+            rule library
+          </a>
+          !
+        </p>
+      </div>
+      <div>
         <div
-          class="title"
+          class="preview"
         >
-          Working with rules
+          <div
+            class="screenshot"
+          >
+            <img
+              alt="video preview"
+              src="https://img.youtube.com/vi/HFylY2x3T_Y/0.jpg"
+            />
+            <i
+              class="material-icons playIcon"
+            >
+              play_circle_filled_white
+            </i>
+            <div
+              class="iconBackground"
+            />
+          </div>
+          <div
+            class="title"
+          >
+            Working with rules
+          </div>
         </div>
       </div>
     </div>

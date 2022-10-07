@@ -187,123 +187,117 @@ export function RulesViewContainer({
             </div>
             <Container
                 fluid
-                className={classnames(
-                    css.description,
-                    settingsCss.pageContainer
-                )}
+                className={classnames(css.info, settingsCss.pageContainer)}
             >
-                <div
-                    className={css.header}
-                    data-candu-id="rules-list-description"
-                >
-                    {activeTab === RuleTabs.AccountRules && (
-                        <>
-                            <p>
-                                Rules provide a way to automatically perform
-                                actions on tickets, like tagging, assigning or
-                                even responding. Hover a row to show the rule
-                                description. Learn more about how to setup rules{' '}
-                                <a
-                                    href="https://docs.gorgias.com/en-US/articles/rules-18380"
-                                    rel="noopener noreferrer"
-                                    target="_blank"
-                                >
-                                    in our docs
-                                </a>
-                                .
-                            </p>
+                <div className={css.infoContainer}>
+                    <div
+                        className={css.description}
+                        data-candu-id="rules-list-description"
+                    >
+                        {activeTab === RuleTabs.AccountRules && (
+                            <>
+                                <p>
+                                    Rules provide a way to automatically perform
+                                    actions on tickets, like tagging, assigning
+                                    or even responding. Hover a row to show the
+                                    rule description. Learn more about how to
+                                    setup rules{' '}
+                                    <a
+                                        href="https://docs.gorgias.com/en-US/articles/rules-18380"
+                                        rel="noopener noreferrer"
+                                        target="_blank"
+                                    >
+                                        in our docs
+                                    </a>
+                                    .
+                                </p>
 
-                            <p>
-                                Rules are executed depending on triggering
-                                events and in the order they are listed on this
-                                page.{' '}
-                                <a
-                                    href="https://docs.gorgias.com/en-US/rules-faq-82011"
-                                    rel="noopener noreferrer"
-                                    target="_blank"
-                                >
-                                    Learn more about rules execution
-                                </a>
-                                .
-                            </p>
-                            <p>
-                                If you need inspiration to automate your
-                                workflows don't hesitate to visit our{' '}
-                                <a
-                                    href="#"
-                                    onClick={(e) => {
-                                        e.preventDefault()
-                                        goToLibrary()
-                                    }}
-                                >
-                                    rule library
-                                </a>
-                                !
-                            </p>
-                        </>
-                    )}
-                    {activeTab === RuleTabs.RuleLibrary && (
-                        <div
-                            className={classnames(css.libraryHeader, {
-                                [css.hasWarning]:
-                                    limitStatus !== RuleLimitStatus.NonReaching,
-                            })}
-                        >
-                            {isSearching ? (
-                                <>
-                                    <p className={css.searchHeader}>
-                                        Results for "
-                                        <span className={css.searchTerm}>
-                                            {searchTerm}
-                                        </span>
-                                        "
-                                    </p>
-                                </>
-                            ) : (
-                                <>
-                                    <h1>Rule Library</h1>
-                                    <p>
-                                        Below are some rule examples that you
-                                        can install in your account. Once
-                                        installed you can visit your rule
-                                        setting page to adapt it to your need.{' '}
-                                        <a
-                                            href="https://docs.gorgias.com/rules/rule-library-new"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            Learn more
-                                        </a>
-                                    </p>
-                                </>
-                            )}
-                        </div>
-                    )}
-                    {limitStatus === RuleLimitStatus.Reaching && (
-                        <Alert
-                            type={AlertType.Warning}
-                            icon
-                            className={settingsCss.mb16}
-                        >
-                            You are using
-                            <b> {rules.length} rules of 70 </b>
-                            allowed on Gorgias. To add more rules, please delete
-                            any inactive rules.
-                        </Alert>
-                    )}
-                    {limitStatus === RuleLimitStatus.Reached && (
-                        <Alert
-                            type={AlertType.Error}
-                            icon
-                            className={settingsCss.mb16}
-                        >
-                            <b>Your account has reached the rule limit.</b> To
-                            add more rules, please delete any inactive rules.
-                        </Alert>
+                                <p>
+                                    Rules are executed depending on triggering
+                                    events and in the order they are listed on
+                                    this page.{' '}
+                                    <a
+                                        href="https://docs.gorgias.com/en-US/rules-faq-82011"
+                                        rel="noopener noreferrer"
+                                        target="_blank"
+                                    >
+                                        Learn more about rules execution
+                                    </a>
+                                    .
+                                </p>
+                                <p>
+                                    If you need inspiration to automate your
+                                    workflows don't hesitate to visit our{' '}
+                                    <a
+                                        href="#"
+                                        onClick={(e) => {
+                                            e.preventDefault()
+                                            goToLibrary()
+                                        }}
+                                    >
+                                        rule library
+                                    </a>
+                                    !
+                                </p>
+                            </>
+                        )}
+                        {activeTab === RuleTabs.RuleLibrary && (
+                            <div
+                                className={classnames(css.libraryHeader, {
+                                    [css.hasWarning]:
+                                        limitStatus !==
+                                        RuleLimitStatus.NonReaching,
+                                })}
+                            >
+                                {isSearching ? (
+                                    <>
+                                        <p className={css.searchHeader}>
+                                            Results for "
+                                            <span className={css.searchTerm}>
+                                                {searchTerm}
+                                            </span>
+                                            "
+                                        </p>
+                                    </>
+                                ) : (
+                                    <>
+                                        <h1>Rule Library</h1>
+                                        <p>
+                                            Below are some rule examples that
+                                            you can install in your account.
+                                            Once installed you can visit your
+                                            rule setting page to adapt it to
+                                            your need.{' '}
+                                            <a
+                                                href="https://docs.gorgias.com/rules/rule-library-new"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                Learn more
+                                            </a>
+                                        </p>
+                                    </>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                    {activeTab === RuleTabs.AccountRules && (
+                        <Video
+                            videoId="HFylY2x3T_Y"
+                            legend="Working with rules"
+                        />
                     )}
                 </div>
-                {activeTab === RuleTabs.AccountRules && (
-                    <Video videoId="HFylY2x3T_Y" legend="Working with rules" />
+                {limitStatus === RuleLimitStatus.Reaching && (
+                    <Alert type={AlertType.Warning} icon>
+                        You have {rules.length} out of 70 rules installed.
+                    </Alert>
+                )}
+                {limitStatus === RuleLimitStatus.Reached && (
+                    <Alert type={AlertType.Error} icon>
+                        You have reached the 70 rule limit. Delete existing
+                        rules to add more.
+                    </Alert>
                 )}
             </Container>
             {activeTab === RuleTabs.AccountRules ? (

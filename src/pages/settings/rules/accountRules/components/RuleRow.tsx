@@ -130,7 +130,7 @@ export function RuleRow({
             void dispatch(
                 notify({
                     message:
-                        'Your account has reached the rule limit. To add more rules, please delete any inactive rules.',
+                        'You have reached the 70 rule limit. Delete existing rules to add more.',
                     status: NotificationStatus.Error,
                 })
             )

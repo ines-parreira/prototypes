@@ -109,7 +109,7 @@ describe('<RulesView/>', () => {
                 <RulesViewContainer {...minProps} />
             </Provider>
         )
-        expect(getByText('65 rules of 70')).not.toBe(null)
+        expect(getByText(/65 out of 70/)).not.toBe(null)
     })
 
     it('should render an error when reached the rule limit', () => {
@@ -118,8 +118,6 @@ describe('<RulesView/>', () => {
                 <RulesViewContainer {...minProps} />
             </Provider>
         )
-        expect(getByText(/your account has reached the rule limit/i)).not.toBe(
-            null
-        )
+        expect(getByText(/you have reached the 70 rule limit/i)).not.toBe(null)
     })
 })
