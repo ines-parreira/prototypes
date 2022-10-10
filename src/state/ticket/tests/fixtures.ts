@@ -477,6 +477,29 @@ export const chatTicket = fromJS({
     ],
 }) as Map<any, any>
 
+export const chatContactFormTicket = fromJS({
+    messages: [
+        {
+            source: {
+                from: {
+                    address: '1232353100194770',
+                    name: 'Paul Atréides',
+                },
+                type: 'chat-contact-form',
+                to: [
+                    {
+                        address: '8765645678',
+                        name: 'Chani',
+                    },
+                ],
+            },
+            id: 153,
+            from_agent: false,
+            integration_id: 8,
+        },
+    ],
+}) as Map<any, any>
+
 export const helpCenterContactFormTicket = fromJS({
     channel: 'help-center',
     messages: [

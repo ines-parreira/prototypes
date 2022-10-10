@@ -611,6 +611,7 @@ export function getNewMessageSender(
             return [
                 newMessageSourceType,
                 TicketMessageSourceType.Chat,
+                TicketMessageSourceType.ChatContactForm,
             ].includes(type)
         }
 
@@ -649,7 +650,10 @@ export function getNewMessageSender(
 
     // for chat integration, retrieve a preferred email if any
     if (
-        lastMessage.getIn(['source', 'type']) === TicketMessageSourceType.Chat
+        [
+            TicketMessageSourceType.Chat,
+            TicketMessageSourceType.ChatContactForm,
+        ].includes(lastMessage.getIn(['source', 'type']))
     ) {
         const integration =
             ((integrations.get('integrations') as List<any>).find(

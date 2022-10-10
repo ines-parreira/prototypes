@@ -43,6 +43,7 @@ import {
     twitterQuotedTweet,
     twitterTweet,
     chatTicket,
+    chatContactFormTicket,
     helpCenterContactFormTicket,
 } from './fixtures'
 
@@ -592,6 +593,33 @@ describe('ticket utils', () => {
             expect(
                 getNewMessageSender(
                     chatTicket,
+                    TicketMessageSourceType.Email,
+                    channels,
+                    fromJS(integrationsState)
+                )
+            ).toEqualImmutable(expected)
+        })
+
+        it('should return `from` field from associated email of integration (chat-contact-form ticket)', () => {
+            const emailIntegrationId = integrationsState.integrations.find(
+                (integration) =>
+                    integration.id ===
+                    chatContactFormTicket.getIn([
+                        'messages',
+                        0,
+                        'integration_id',
+                    ])
+            )?.meta?.preferences?.linked_email_integration
+
+            const expected = fromJS(
+                channels.find(
+                    (channel: Map<any, any>) =>
+                        emailIntegrationId === channel.get('id')
+                )
+            )
+            expect(
+                getNewMessageSender(
+                    chatContactFormTicket,
                     TicketMessageSourceType.Email,
                     channels,
                     fromJS(integrationsState)
