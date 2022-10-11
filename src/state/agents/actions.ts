@@ -74,6 +74,7 @@ export const createAgent =
                         type: constants.CREATE_AGENT_ERROR,
                         error,
                         reason: 'Failed to create team member',
+                        verbose: true,
                     })
                 }
             )
@@ -207,6 +208,7 @@ export const updateAgent =
                         type: constants.UPDATE_AGENT_ERROR,
                         error,
                         reason: 'Failed to update team member',
+                        verbose: true,
                     })
                 }
             )
