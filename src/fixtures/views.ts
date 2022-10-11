@@ -10,7 +10,6 @@ export const view: View = {
     slug: 'new-&-open-tickets',
     uri: '/api/views/7/',
     decoration: null,
-    display_order: 1,
     created_datetime: '2017-07-31T21:43:10.610368+00:00',
     group_by: null,
     fields: [

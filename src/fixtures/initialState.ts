@@ -152,7 +152,6 @@ export const initialState: GorgiasInitialState = {
                 created_datetime: '2020-10-20T14:57:27.612323+00:00',
                 deactivated_datetime: null,
                 decoration: null,
-                display_order: 1,
                 fields: [
                     ViewField.Name,
                     ViewField.Email,

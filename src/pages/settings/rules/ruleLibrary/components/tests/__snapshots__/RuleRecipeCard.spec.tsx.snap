@@ -40,7 +40,6 @@ Array [
       "created_datetime": "2017-07-31T21:43:10.610368+00:00",
       "deactivated_datetime": null,
       "decoration": null,
-      "display_order": 1,
       "fields": Array [
         "details",
         "tags",
@@ -261,7 +260,6 @@ Array [
       "created_datetime": "2017-07-31T21:43:10.610368+00:00",
       "deactivated_datetime": null,
       "decoration": null,
-      "display_order": 1,
       "fields": Array [
         "details",
         "tags",

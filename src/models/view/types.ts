@@ -46,7 +46,6 @@ export type ViewDraft = {
     created_datetime: string
     deactivated_datetime: Maybe<string>
     decoration: Maybe<ViewDecoration>
-    display_order: number
     fields: ViewField[]
     filters: string
     filters_ast: Record<string, unknown>

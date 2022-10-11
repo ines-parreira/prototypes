@@ -1,7 +1,6 @@
 import axios, {CancelToken, AxiosError} from 'axios'
 import {fromJS, List, Map} from 'immutable'
 import _chunk from 'lodash/chunk'
-import _max from 'lodash/max'
 import {Moment} from 'moment'
 import {notify as updateNotification} from 'reapop'
 import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actions'
@@ -209,11 +208,7 @@ export function setPage(page: number) {
 }
 
 export function submitView(view: ViewImmutable) {
-    return (
-        dispatch: StoreDispatch,
-        getState: () => RootState
-    ): Promise<ReturnType<StoreDispatch>> => {
-        const {views} = getState()
+    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         const isUpdate = !!view.get('id')
         const objectName = getPluralObjectName(view.get('type', ''))
         const viewToSend = view
@@ -239,22 +234,9 @@ export function submitView(view: ViewImmutable) {
                     .toJS()
             )
         } else {
-            const orders = ((views.get('items', fromJS([])) as List<any>)
-                .filter(
-                    (item: Map<any, any>) =>
-                        item.get('type') === view.get('type')
-                )
-                .map(
-                    (item: Map<any, any>) =>
-                        item.get('display_order', 0) as number
-                )
-                .toJS() as number[]) || [0]
             promise = client.post<View>(
                 '/api/views/',
-                viewToSend
-                    .set('display_order', (_max(orders) as number) + 1)
-                    .delete('id')
-                    .toJS()
+                viewToSend.delete('id').toJS()
             )
         }
 

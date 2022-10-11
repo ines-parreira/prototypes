@@ -714,7 +714,7 @@ Object {
   "patch": Array [],
   "post": Array [
     Object {
-      "data": "{\\"display_order\\":null,\\"type\\":\\"ticket-list\\",\\"name\\":\\"My Tickets\\",\\"shared_with_users\\":[1],\\"visibility\\":\\"private\\",\\"filters\\":\\"eq(ticket.channel, \\\\\\"chat\\\\\\")\\"}",
+      "data": "{\\"filters\\":\\"eq(ticket.channel, \\\\\\"chat\\\\\\")\\",\\"type\\":\\"ticket-list\\",\\"name\\":\\"My Tickets\\",\\"shared_with_users\\":[1],\\"visibility\\":\\"private\\"}",
       "headers": Object {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",

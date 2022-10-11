@@ -6,7 +6,6 @@ Object {
   "created_datetime": "2017-07-31T21:43:10.610368+00:00",
   "deactivated_datetime": null,
   "decoration": null,
-  "display_order": 1,
   "fields": Array [
     "details",
     "tags",
@@ -153,7 +152,7 @@ Object {
   "patch": Array [],
   "post": Array [
     Object {
-      "data": "{\\"category\\":null,\\"order_by\\":\\"updated\\",\\"deactivated_datetime\\":null,\\"name\\":\\"New & Open Tickets\\",\\"slug\\":\\"new-&-open-tickets\\",\\"uri\\":\\"/api/views/7/\\",\\"decoration\\":null,\\"display_order\\":1,\\"created_datetime\\":\\"2017-07-31T21:43:10.610368+00:00\\",\\"group_by\\":null,\\"fields\\":[\\"details\\",\\"tags\\",\\"customer\\",\\"created\\"],\\"section_id\\":null,\\"type\\":\\"ticket-list\\",\\"filters\\":\\"neq(ticket.status, \\\\\\"closed\\\\\\")\\",\\"order_dir\\":\\"desc\\",\\"visibility\\":\\"public\\",\\"filters_ast\\":{\\"sourceType\\":\\"script\\",\\"loc\\":{\\"start\\":{\\"column\\":0,\\"line\\":1},\\"end\\":{\\"column\\":28,\\"line\\":1}},\\"type\\":\\"Program\\",\\"body\\":[{\\"loc\\":{\\"start\\":{\\"column\\":0,\\"line\\":1},\\"end\\":{\\"column\\":28,\\"line\\":1}},\\"type\\":\\"ExpressionStatement\\",\\"expression\\":{\\"arguments\\":[{\\"object\\":{\\"type\\":\\"Identifier\\",\\"loc\\":{\\"start\\":{\\"column\\":4,\\"line\\":1},\\"end\\":{\\"column\\":10,\\"line\\":1}},\\"name\\":\\"ticket\\"},\\"property\\":{\\"type\\":\\"Identifier\\",\\"loc\\":{\\"start\\":{\\"column\\":11,\\"line\\":1},\\"end\\":{\\"column\\":17,\\"line\\":1}},\\"name\\":\\"status\\"},\\"loc\\":{\\"start\\":{\\"column\\":4,\\"line\\":1},\\"end\\":{\\"column\\":17,\\"line\\":1}},\\"type\\":\\"MemberExpression\\",\\"computed\\":false},{\\"value\\":\\"closed\\",\\"loc\\":{\\"start\\":{\\"column\\":19,\\"line\\":1},\\"end\\":{\\"column\\":27,\\"line\\":1}},\\"type\\":\\"Literal\\",\\"raw\\":\\"\\\\\\"closed\\\\\\"\\"}],\\"callee\\":{\\"type\\":\\"Identifier\\",\\"loc\\":{\\"start\\":{\\"column\\":0,\\"line\\":1},\\"end\\":{\\"column\\":3,\\"line\\":1}},\\"name\\":\\"neq\\"},\\"loc\\":{\\"start\\":{\\"column\\":0,\\"line\\":1},\\"end\\":{\\"column\\":28,\\"line\\":1}},\\"type\\":\\"CallExpression\\"}}]}}",
+      "data": "{\\"category\\":null,\\"order_by\\":\\"updated\\",\\"deactivated_datetime\\":null,\\"name\\":\\"New & Open Tickets\\",\\"slug\\":\\"new-&-open-tickets\\",\\"uri\\":\\"/api/views/7/\\",\\"decoration\\":null,\\"created_datetime\\":\\"2017-07-31T21:43:10.610368+00:00\\",\\"group_by\\":null,\\"fields\\":[\\"details\\",\\"tags\\",\\"customer\\",\\"created\\"],\\"section_id\\":null,\\"type\\":\\"ticket-list\\",\\"filters\\":\\"neq(ticket.status, \\\\\\"closed\\\\\\")\\",\\"order_dir\\":\\"desc\\",\\"visibility\\":\\"public\\",\\"filters_ast\\":{\\"sourceType\\":\\"script\\",\\"loc\\":{\\"start\\":{\\"column\\":0,\\"line\\":1},\\"end\\":{\\"column\\":28,\\"line\\":1}},\\"type\\":\\"Program\\",\\"body\\":[{\\"loc\\":{\\"start\\":{\\"column\\":0,\\"line\\":1},\\"end\\":{\\"column\\":28,\\"line\\":1}},\\"type\\":\\"ExpressionStatement\\",\\"expression\\":{\\"arguments\\":[{\\"object\\":{\\"type\\":\\"Identifier\\",\\"loc\\":{\\"start\\":{\\"column\\":4,\\"line\\":1},\\"end\\":{\\"column\\":10,\\"line\\":1}},\\"name\\":\\"ticket\\"},\\"property\\":{\\"type\\":\\"Identifier\\",\\"loc\\":{\\"start\\":{\\"column\\":11,\\"line\\":1},\\"end\\":{\\"column\\":17,\\"line\\":1}},\\"name\\":\\"status\\"},\\"loc\\":{\\"start\\":{\\"column\\":4,\\"line\\":1},\\"end\\":{\\"column\\":17,\\"line\\":1}},\\"type\\":\\"MemberExpression\\",\\"computed\\":false},{\\"value\\":\\"closed\\",\\"loc\\":{\\"start\\":{\\"column\\":19,\\"line\\":1},\\"end\\":{\\"column\\":27,\\"line\\":1}},\\"type\\":\\"Literal\\",\\"raw\\":\\"\\\\\\"closed\\\\\\"\\"}],\\"callee\\":{\\"type\\":\\"Identifier\\",\\"loc\\":{\\"start\\":{\\"column\\":0,\\"line\\":1},\\"end\\":{\\"column\\":3,\\"line\\":1}},\\"name\\":\\"neq\\"},\\"loc\\":{\\"start\\":{\\"column\\":0,\\"line\\":1},\\"end\\":{\\"column\\":28,\\"line\\":1}},\\"type\\":\\"CallExpression\\"}}]}}",
       "headers": Object {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
@@ -217,7 +216,6 @@ Object {
         "created_datetime": "2017-07-31T21:43:10.610368+00:00",
         "deactivated_datetime": null,
         "decoration": null,
-        "display_order": 1,
         "fields": Array [
           "details",
           "tags",
@@ -357,7 +355,6 @@ Object {
         "created_datetime": "2017-07-31T21:43:10.610368+00:00",
         "deactivated_datetime": null,
         "decoration": null,
-        "display_order": 1,
         "fields": Array [
           "details",
           "tags",
@@ -497,7 +494,6 @@ Object {
         "created_datetime": "2017-07-31T21:43:10.610368+00:00",
         "deactivated_datetime": null,
         "decoration": null,
-        "display_order": 1,
         "fields": Array [
           "details",
           "tags",
@@ -648,7 +644,6 @@ Object {
   "created_datetime": "2017-07-31T21:43:10.610368+00:00",
   "deactivated_datetime": null,
   "decoration": null,
-  "display_order": 1,
   "fields": Array [
     "details",
     "tags",
@@ -796,7 +791,7 @@ Object {
   "post": Array [],
   "put": Array [
     Object {
-      "data": "{\\"category\\":null,\\"order_by\\":\\"updated\\",\\"deactivated_datetime\\":null,\\"name\\":\\"foo\\",\\"slug\\":\\"new-&-open-tickets\\",\\"uri\\":\\"/api/views/7/\\",\\"decoration\\":null,\\"display_order\\":1,\\"created_datetime\\":\\"2017-07-31T21:43:10.610368+00:00\\",\\"group_by\\":null,\\"fields\\":[\\"details\\",\\"tags\\",\\"customer\\",\\"created\\"],\\"section_id\\":null,\\"type\\":\\"ticket-list\\",\\"filters\\":\\"neq(ticket.status, \\\\\\"closed\\\\\\")\\",\\"order_dir\\":\\"desc\\",\\"visibility\\":\\"public\\",\\"id\\":7,\\"shared_with_teams\\":[1],\\"shared_with_users\\":[1]}",
+      "data": "{\\"category\\":null,\\"order_by\\":\\"updated\\",\\"deactivated_datetime\\":null,\\"name\\":\\"foo\\",\\"slug\\":\\"new-&-open-tickets\\",\\"uri\\":\\"/api/views/7/\\",\\"decoration\\":null,\\"created_datetime\\":\\"2017-07-31T21:43:10.610368+00:00\\",\\"group_by\\":null,\\"fields\\":[\\"details\\",\\"tags\\",\\"customer\\",\\"created\\"],\\"section_id\\":null,\\"type\\":\\"ticket-list\\",\\"filters\\":\\"neq(ticket.status, \\\\\\"closed\\\\\\")\\",\\"order_dir\\":\\"desc\\",\\"visibility\\":\\"public\\",\\"id\\":7,\\"shared_with_teams\\":[1],\\"shared_with_users\\":[1]}",
       "headers": Object {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",

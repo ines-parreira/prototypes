@@ -1351,7 +1351,6 @@ Object {
         "created_datetime": "2020-10-20T14:57:27.612323+00:00",
         "deactivated_datetime": null,
         "decoration": null,
-        "display_order": 1,
         "fields": Array [
           "name",
           "email",
@@ -1468,7 +1467,6 @@ Object {
         "slug": "all-customers",
         "uri": "/api/views/9/",
         "decoration": null,
-        "display_order": 1,
         "created_datetime": "2020-10-20T14:57:27.612323+00:00",
         "visibility": "public",
         "section_id": null,

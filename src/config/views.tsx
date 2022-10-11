@@ -37,7 +37,6 @@ export const baseView = () =>
         name: 'New view',
         slug: 'new-view',
         order_by: 'updated_datetime',
-        display_order: 1,
         created_datetime: getMomentUtcISOString(),
         order_dir: OrderDirection.Desc,
         filters: '',
