@@ -4,6 +4,9 @@ import {Map, List} from 'immutable'
 
 import {render, screen, fireEvent} from '@testing-library/react'
 
+import {mockFlags} from 'jest-launchdarkly-mock'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 import {MacroActionName} from 'models/macroAction/types'
 
 import MacroMessageActionsHeader from '../MacroMessageActionsHeader'
@@ -14,6 +17,10 @@ const minProps = {
     actions: List(),
     onSelect,
 }
+
+mockFlags({
+    [FeatureFlagKey.MacroForwardByEmail]: true,
+})
 
 describe('MacroMessageActionsHeader', () => {
     beforeEach(() => {

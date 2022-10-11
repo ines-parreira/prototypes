@@ -1,112 +1,116 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MacroReplyActionControls should render "Current client" placeholder 1`] = `
-<div
-  class="wrapper"
->
+<div>
   <div
-    class="optionalFields"
+    class="wrapper"
   >
-    <span>
-      Cc
-    </span>
-     / 
-    <span>
-      Bcc
-    </span>
-  </div>
-  <div
-    class="recipient"
-  >
-    <span
-      class="fieldLabel"
+    <div
+      class="optionalFields"
     >
-      To
-      :
-    </span>
-    <span
-      class="currentClient"
+      <span>
+        Cc
+      </span>
+       / 
+      <span>
+        Bcc
+      </span>
+    </div>
+    <div
+      class="recipient"
     >
-      Current client
-    </span>
+      <span
+        class="fieldLabel"
+      >
+        To
+        :
+      </span>
+      <span
+        class="currentClient"
+      >
+        Current client
+      </span>
+    </div>
   </div>
 </div>
 `;
 
 exports[`MacroReplyActionControls should render Bcc but not Cc 1`] = `
-<div
-  class="wrapper"
->
+<div>
   <div
-    class="optionalFields"
+    class="wrapper"
   >
-    <span>
-      Cc
-    </span>
-  </div>
-  <div
-    class="recipient"
-  >
-    <span
-      class="fieldLabel"
-    >
-      To
-      :
-    </span>
-    <span
-      class="currentClient"
-    >
-      Current client
-    </span>
-  </div>
-  <div
-    class="recipient"
-  >
-    <span
-      class="fieldLabel"
-    >
-      Bcc
-      :
-    </span>
     <div
-      class="field"
+      class="optionalFields"
     >
+      <span>
+        Cc
+      </span>
+    </div>
+    <div
+      class="recipient"
+    >
+      <span
+        class="fieldLabel"
+      >
+        To
+        :
+      </span>
+      <span
+        class="currentClient"
+      >
+        Current client
+      </span>
+    </div>
+    <div
+      class="recipient"
+    >
+      <span
+        class="fieldLabel"
+      >
+        Bcc
+        :
+      </span>
       <div
-        class="values"
+        class="field"
       >
         <div
-          class="item"
-          tabindex="999999"
+          class="values"
         >
-          <span>
-            test@gorgias.com
-          </span>
-          <span
-            class="item-remove-button"
+          <div
+            class="item"
+            tabindex="999999"
           >
-            <i
-              class="material-icons"
+            <span>
+              test@gorgias.com
+            </span>
+            <span
+              class="item-remove-button"
             >
-              close
-            </i>
-          </span>
+              <i
+                class="material-icons"
+              >
+                close
+              </i>
+            </span>
+          </div>
+          <input
+            class="input"
+            placeholder=""
+            tabindex="2"
+            type="text"
+            value=""
+          />
         </div>
-        <input
-          class="input"
-          placeholder=""
-          tabindex="2"
-          type="text"
-          value=""
-        />
-      </div>
-      <div
-        class="suggestions suggestions--hidden"
-        tabindex="-1"
-      >
         <div
-          class="emptySuggestions"
+          class="suggestions suggestions--hidden"
+          tabindex="-1"
         >
-          Type to search
+          <div
+            class="emptySuggestions"
+          >
+            Type to search
+          </div>
         </div>
       </div>
     </div>
@@ -115,79 +119,81 @@ exports[`MacroReplyActionControls should render Bcc but not Cc 1`] = `
 `;
 
 exports[`MacroReplyActionControls should render Cc but not Bcc 1`] = `
-<div
-  class="wrapper"
->
+<div>
   <div
-    class="optionalFields"
+    class="wrapper"
   >
-    <span>
-      Bcc
-    </span>
-  </div>
-  <div
-    class="recipient"
-  >
-    <span
-      class="fieldLabel"
-    >
-      To
-      :
-    </span>
-    <span
-      class="currentClient"
-    >
-      Current client
-    </span>
-  </div>
-  <div
-    class="recipient"
-  >
-    <span
-      class="fieldLabel"
-    >
-      Cc
-      :
-    </span>
     <div
-      class="field"
+      class="optionalFields"
     >
+      <span>
+        Bcc
+      </span>
+    </div>
+    <div
+      class="recipient"
+    >
+      <span
+        class="fieldLabel"
+      >
+        To
+        :
+      </span>
+      <span
+        class="currentClient"
+      >
+        Current client
+      </span>
+    </div>
+    <div
+      class="recipient"
+    >
+      <span
+        class="fieldLabel"
+      >
+        Cc
+        :
+      </span>
       <div
-        class="values"
+        class="field"
       >
         <div
-          class="item"
-          tabindex="999999"
+          class="values"
         >
-          <span>
-            test@gorgias.com
-          </span>
-          <span
-            class="item-remove-button"
+          <div
+            class="item"
+            tabindex="999999"
           >
-            <i
-              class="material-icons"
+            <span>
+              test@gorgias.com
+            </span>
+            <span
+              class="item-remove-button"
             >
-              close
-            </i>
-          </span>
+              <i
+                class="material-icons"
+              >
+                close
+              </i>
+            </span>
+          </div>
+          <input
+            class="input"
+            placeholder=""
+            tabindex="2"
+            type="text"
+            value=""
+          />
         </div>
-        <input
-          class="input"
-          placeholder=""
-          tabindex="2"
-          type="text"
-          value=""
-        />
-      </div>
-      <div
-        class="suggestions suggestions--hidden"
-        tabindex="-1"
-      >
         <div
-          class="emptySuggestions"
+          class="suggestions suggestions--hidden"
+          tabindex="-1"
         >
-          Type to search
+          <div
+            class="emptySuggestions"
+          >
+            Type to search
+          </div>
         </div>
       </div>
     </div>
@@ -196,85 +202,87 @@ exports[`MacroReplyActionControls should render Cc but not Bcc 1`] = `
 `;
 
 exports[`MacroReplyActionControls should render To field 1`] = `
-<div
-  class="wrapper"
->
+<div>
   <div
-    class="optionalFields"
+    class="wrapper"
   >
-    <span>
-      Cc
-    </span>
-     / 
-    <span>
-      Bcc
-    </span>
-  </div>
-  <div
-    class="recipient"
-  >
-    <span
-      class="fieldLabel"
-    >
-      To
-      :
-    </span>
     <div
-      class="field"
+      class="optionalFields"
     >
+      <span>
+        Cc
+      </span>
+       / 
+      <span>
+        Bcc
+      </span>
+    </div>
+    <div
+      class="recipient"
+    >
+      <span
+        class="fieldLabel"
+      >
+        To
+        :
+      </span>
       <div
-        class="values"
+        class="field"
       >
         <div
-          class="item"
-          tabindex="999999"
+          class="values"
         >
-          <span>
-            test@gorgias.com
-          </span>
-          <span
-            class="item-remove-button"
+          <div
+            class="item"
+            tabindex="999999"
           >
-            <i
-              class="material-icons"
+            <span>
+              test@gorgias.com
+            </span>
+            <span
+              class="item-remove-button"
             >
-              close
-            </i>
-          </span>
+              <i
+                class="material-icons"
+              >
+                close
+              </i>
+            </span>
+          </div>
+          <div
+            class="item"
+            tabindex="999999"
+          >
+            <span>
+              test@gorgias.com
+            </span>
+            <span
+              class="item-remove-button"
+            >
+              <i
+                class="material-icons"
+              >
+                close
+              </i>
+            </span>
+          </div>
+          <input
+            class="input"
+            placeholder=""
+            tabindex="2"
+            type="text"
+            value=""
+          />
         </div>
         <div
-          class="item"
-          tabindex="999999"
+          class="suggestions suggestions--hidden"
+          tabindex="-1"
         >
-          <span>
-            test@gorgias.com
-          </span>
-          <span
-            class="item-remove-button"
+          <div
+            class="emptySuggestions"
           >
-            <i
-              class="material-icons"
-            >
-              close
-            </i>
-          </span>
-        </div>
-        <input
-          class="input"
-          placeholder=""
-          tabindex="2"
-          type="text"
-          value=""
-        />
-      </div>
-      <div
-        class="suggestions suggestions--hidden"
-        tabindex="-1"
-      >
-        <div
-          class="emptySuggestions"
-        >
-          Type to search
+            Type to search
+          </div>
         </div>
       </div>
     </div>

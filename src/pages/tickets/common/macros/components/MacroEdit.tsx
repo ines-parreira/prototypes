@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component, ComponentClass} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map, List} from 'immutable'
 import classnames from 'classnames'
@@ -8,6 +8,8 @@ import {
     DropdownMenu,
     DropdownItem,
 } from 'reactstrap'
+import {LDFlagSet} from 'launchdarkly-js-client-sdk'
+import {withLDConsumer} from 'launchdarkly-react-client-sdk'
 
 import {ACTION_TEMPLATES, ActionTemplateExecution} from 'config'
 import {IntegrationType} from 'models/integration/types'
@@ -17,6 +19,7 @@ import {generateDefaultAction} from 'state/macro/utils'
 import {RootState} from 'state/types'
 import {getActionTemplate, humanizeString} from 'utils'
 import {getSortedIntegrationActionsNames} from 'pages/tickets/common/utils'
+import {FeatureFlagKey} from 'config/featureFlags'
 import * as integrationsSelectors from 'state/integrations/selectors'
 import * as newMessageTypes from 'state/newMessage/constants'
 import * as ticketTypes from 'state/ticket/constants'
@@ -24,7 +27,7 @@ import * as ticketTypes from 'state/ticket/constants'
 import InputField from 'pages/common/forms/input/InputField'
 import SetStatusAction from './actions/SetStatusAction'
 import SetSubjectAction from './actions/SetSubjectAction'
-import SetResponseTextAction from './actions/SetResponseTextAction'
+import ResponseAction from './actions/ResponseAction'
 import SetAssigneeAction from './actions/SetAssigneeAction'
 import AddTagsAction from './actions/AddTagsAction'
 import HttpAction from './actions/HttpAction'
@@ -46,6 +49,7 @@ type Props = {
     setActions: (actions: List<any>) => void
     setName: (name: string) => void
     setLanguage: (language: string | null) => void
+    flags: LDFlagSet
 } & ConnectedProps<typeof connector>
 
 export class MacroEdit extends Component<Props> {
@@ -92,6 +96,7 @@ export class MacroEdit extends Component<Props> {
     _replaceAction = (index: number, actionName: MacroActionName) => {
         const replyActions = [
             MacroActionName.SetResponseText,
+            MacroActionName.ForwardByEmail,
             MacroActionName.AddInternalNote,
         ]
 
@@ -137,11 +142,20 @@ export class MacroEdit extends Component<Props> {
         this.props.setActions(actions)
     }
 
-    renderNewActionMenu = () => {
+    renderNewActionMenu = ({
+        isMacroForwardByEmailEnabled,
+    }: {
+        isMacroForwardByEmailEnabled: boolean
+    }) => {
         const ticketActions = ACTION_TEMPLATES.filter(
             (template) =>
                 template.execution !== ActionTemplateExecution.External
         )
+            .filter(
+                ({name}) =>
+                    isMacroForwardByEmailEnabled ||
+                    name !== MacroActionName.ForwardByEmail
+            )
             // remove actions that have already been used
             .filter(
                 (action) =>
@@ -230,7 +244,25 @@ export class MacroEdit extends Component<Props> {
                 config = {
                     title: 'Response text',
                     content: (
-                        <SetResponseTextAction
+                        <ResponseAction
+                            type={MacroActionName.SetResponseText}
+                            index={index}
+                            action={action}
+                            actions={this.props.actions}
+                            updateActionArgs={this._updateActionArguments}
+                            convertAction={(type) =>
+                                this._replaceAction(index, type)
+                            }
+                        />
+                    ),
+                }
+                break
+            case MacroActionName.ForwardByEmail:
+                config = {
+                    title: 'Forward by email',
+                    content: (
+                        <ResponseAction
+                            type={MacroActionName.ForwardByEmail}
                             index={index}
                             action={action}
                             actions={this.props.actions}
@@ -374,7 +406,11 @@ export class MacroEdit extends Component<Props> {
     }
 
     render() {
-        const {className, currentMacro, hasIntegrationOfTypes} = this.props
+        const {className, currentMacro, flags, hasIntegrationOfTypes} =
+            this.props
+
+        const isMacroForwardByEmailEnabled =
+            !!flags[FeatureFlagKey.MacroForwardByEmail]
 
         if (!currentMacro || currentMacro.isEmpty()) return null
 
@@ -424,6 +460,12 @@ export class MacroEdit extends Component<Props> {
                         </div>
                     </div>
                     {this.props.actions
+                        .filter(
+                            (action: Map<any, any>) =>
+                                isMacroForwardByEmailEnabled ||
+                                action.get('name') !==
+                                    MacroActionName.ForwardByEmail
+                        )
                         .map(
                             (action: Map<any, any>, index) =>
                                 action.set('idx', index) // Store the initial index for action updates
@@ -441,7 +483,9 @@ export class MacroEdit extends Component<Props> {
                             >
                                 Add action
                             </DropdownToggle>
-                            {this.renderNewActionMenu()}
+                            {this.renderNewActionMenu({
+                                isMacroForwardByEmailEnabled,
+                            })}
                         </UncontrolledButtonDropdown>
 
                         {integrationMenus
@@ -521,4 +565,8 @@ const connector = connect((state: RootState) => ({
         integrationsSelectors.makeHasIntegrationOfTypes(state),
 }))
 
-export default connector(MacroEdit)
+export default connector(
+    withLDConsumer()(
+        MacroEdit as unknown as ComponentClass<Omit<Props, 'flags'>>
+    )
+)

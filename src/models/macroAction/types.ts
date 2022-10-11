@@ -11,6 +11,7 @@ export enum MacroActionName {
     RechargeCancelLastSubscription = 'rechargeCancelLastSubscription',
     RechargeRefundLastCharge = 'rechargeRefundLastCharge',
     RechargeRefundLastOrder = 'rechargeRefundLastOrder',
+    ForwardByEmail = 'forwardByEmail',
     SetAssignee = 'setAssignee',
     SetResponseText = 'setResponseText',
     SetStatus = 'setStatus',
@@ -27,6 +28,11 @@ export enum MacroActionName {
     SnoozeTicket = 'snoozeTicket',
     SnoozeTicketDuration = 'snoozeTicketDuration',
 }
+
+export type MacroResponseActionName =
+    | MacroActionName.AddInternalNote
+    | MacroActionName.SetResponseText
+    | MacroActionName.ForwardByEmail
 
 export enum MacroActionType {
     User = 'user',

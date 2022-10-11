@@ -255,10 +255,30 @@ class Preview extends Component<Props> {
                 <span
                     className={classnames(
                         'material-icons mr-2',
+                        css.icon,
                         css.internalNoteIcon
                     )}
                 >
                     note
+                </span>
+                <span className={css.internalNote}>{action.get('title')}</span>
+            </div>
+        )
+    }
+
+    renderForwardByEmail(
+        isMacroForwardByEmailEnabled: boolean,
+        action?: Map<string, any>
+    ) {
+        if (!action || !isMacroForwardByEmailEnabled) return null
+
+        return (
+            <div className={css.macroData}>
+                <strong className="text-muted mr-2 align-middle">
+                    {action.get('title')}:
+                </strong>
+                <span className={classnames('material-icons mr-2', css.icon)}>
+                    forward
                 </span>
                 <span className={css.internalNote}>{action.get('title')}</span>
             </div>
@@ -317,8 +337,11 @@ class Preview extends Component<Props> {
     }
 
     render() {
-        const {actions, className} = this.props
+        const {actions, className, flags} = this.props
         if (!actions?.size) return null
+
+        const isMacroForwardByEmailEnabled =
+            flags[FeatureFlagKey.MacroForwardByEmail]
 
         const findAction = (actionName: string) =>
             actions.find((action) => action?.get('name') === actionName)
@@ -339,6 +362,10 @@ class Preview extends Component<Props> {
                 {this.renderSetSubject(findAction(MacroActionName.SetSubject))}
                 {this.renderInternalNote(
                     findAction(MacroActionName.AddInternalNote)
+                )}
+                {this.renderForwardByEmail(
+                    isMacroForwardByEmailEnabled,
+                    findAction(MacroActionName.ForwardByEmail)
                 )}
                 {this.renderIntegrations(actions)}
                 {this.renderAddAttachments(

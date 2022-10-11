@@ -5,11 +5,12 @@ import {fromJS, Map} from 'immutable'
 import classnames from 'classnames'
 import MultiSelectField from 'pages/common/forms/MultiSelectField'
 import {AutoReplyWismoSettings, ManagedRulesSlugs} from 'state/rules/types'
-import SetResponseTextAction from 'pages/tickets/common/macros/components/actions/SetResponseTextAction'
+import ResponseAction from 'pages/tickets/common/macros/components/actions/ResponseAction'
 import RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'
 import useAppSelector from 'hooks/useAppSelector'
 import {getIntegrationsByType} from 'state/integrations/selectors'
 import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
+import {MacroActionName} from 'models/macroAction/types'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import shopify from 'assets/img/integrations/shopify.png'
 
@@ -87,7 +88,8 @@ export const AutoReplyWismoEditor = ({
                     </div>
                     <div className={css.listWrapper}>
                         <h4>Message body</h4>
-                        <SetResponseTextAction
+                        <ResponseAction
+                            type={MacroActionName.SetResponseText}
                             action={fromJS({
                                 arguments: {
                                     body_text: settings.body_text,
@@ -123,7 +125,8 @@ export const AutoReplyWismoEditor = ({
                     </div>
                     <div className={css.listWrapper}>
                         <h4>Signature</h4>
-                        <SetResponseTextAction
+                        <ResponseAction
+                            type={MacroActionName.SetResponseText}
                             action={fromJS({
                                 arguments: {
                                     body_text: settings.signature_text,

@@ -30,6 +30,7 @@ type AvailableActions =
     | MacroActionName.SetSubject
     | MacroActionName.AddAttachments
     | MacroActionName.AddInternalNote
+    | MacroActionName.ForwardByEmail
 
 const ACTION_COMPONENT_MAPPER: Record<
     AvailableActions,
@@ -43,6 +44,7 @@ const ACTION_COMPONENT_MAPPER: Record<
     [MacroActionName.SetSubject]: SimpleActionPreview,
     [MacroActionName.AddAttachments]: SimpleActionPreview,
     [MacroActionName.AddInternalNote]: SimpleActionPreview,
+    [MacroActionName.ForwardByEmail]: SimpleActionPreview,
 }
 
 export const ActionPreviews = ({actions, textPreviewMinWidth}: Props) => {

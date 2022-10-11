@@ -52,6 +52,10 @@ describe('<TicketReplyActions/>', () => {
                 actions: [
                     ACTION_TEMPLATES.find(
                         (action) =>
+                            action.name === MacroActionName.ForwardByEmail
+                    ),
+                    ACTION_TEMPLATES.find(
+                        (action) =>
                             action.name === MacroActionName.AddInternalNote
                     ),
                     ACTION_TEMPLATES.find(

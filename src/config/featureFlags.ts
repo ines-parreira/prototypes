@@ -3,6 +3,7 @@ export enum FeatureFlagKey {
     SelfServiceAutomatedResponseOrderManagement = 'self-service-automated-response-order-management',
     EarlyAdopter = 'early-adopter',
     DefaultMacroToSearch = 'default-macro-to-search',
+    MacroForwardByEmail = 'macro-forward-by-email',
     MacroResponseTextCcBcc = 'macro-response-text-cc-bcc',
     PrefillBestMacro = 'pre-fill-best-macro',
     NewPhoneErrorHandling = 'new-phone-error-handling',

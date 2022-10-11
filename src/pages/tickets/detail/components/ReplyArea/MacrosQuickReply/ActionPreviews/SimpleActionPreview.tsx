@@ -60,7 +60,7 @@ export const SimpleActionPreview = ({action}: Props) => {
                 ))
             case MacroActionName.AddInternalNote:
                 return (
-                    <Badge className={css.internalNote}>
+                    <Badge className={css.badge}>
                         <span
                             className={classnames(
                                 'material-icons mr-2',
@@ -69,6 +69,13 @@ export const SimpleActionPreview = ({action}: Props) => {
                         >
                             note
                         </span>
+                        <span>{action.title}</span>
+                    </Badge>
+                )
+            case MacroActionName.ForwardByEmail:
+                return (
+                    <Badge className={css.badge}>
+                        <span className="material-icons mr-2">forward</span>
                         <span>{action.title}</span>
                     </Badge>
                 )

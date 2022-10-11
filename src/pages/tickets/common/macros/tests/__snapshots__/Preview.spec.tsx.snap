@@ -40,7 +40,7 @@ exports[`<Preview /> should multiple actions preview 1`] = `
       Send internal note:
     </strong>
     <span
-      class="material-icons mr-2 internalNoteIcon"
+      class="material-icons mr-2 icon internalNoteIcon"
     >
       note
     </span>
@@ -66,7 +66,7 @@ exports[`<Preview /> should render backend action preview 1`] = `
       Send internal note:
     </strong>
     <span
-      class="material-icons mr-2 internalNoteIcon"
+      class="material-icons mr-2 icon internalNoteIcon"
     >
       note
     </span>

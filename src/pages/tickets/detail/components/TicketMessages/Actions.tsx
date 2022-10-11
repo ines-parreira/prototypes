@@ -242,7 +242,10 @@ export default class Actions extends Component<Props, State> {
                                 >
                                     {icon}
                                     {action.title}
-                                    {!isHTTPOrShopify && ': ' + arg}
+                                    {!isHTTPOrShopify &&
+                                        action.name !==
+                                            MacroActionName.ForwardByEmail &&
+                                        ': ' + arg}
                                 </Badge>
                             }
                             {isHTTPOrShopify &&

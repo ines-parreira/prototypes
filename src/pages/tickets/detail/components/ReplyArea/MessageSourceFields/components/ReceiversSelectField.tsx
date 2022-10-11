@@ -24,6 +24,7 @@ import {SearchResponse, SearchType} from 'models/search/types'
 import MultiSelectAsyncField from './MultiSelectAsyncField/MultiSelectAsyncField'
 
 type Props = {
+    tabIndex?: number
     disabled?: boolean // whether the dropdown should allow user interactions or not
     onChange: (state: any) => void
     sourceType: TicketMessageSourceType
@@ -36,6 +37,7 @@ type Props = {
 const ReceiversSelectField = forwardRef<MultiSelectAsyncField, Props>(
     function ReceiversSelectField(
         {
+            tabIndex,
             disabled = false,
             onChange,
             required = false,
@@ -147,6 +149,7 @@ const ReceiversSelectField = forwardRef<MultiSelectAsyncField, Props>(
         return (
             <MultiSelectAsyncField
                 ref={ref}
+                tabIndex={tabIndex}
                 value={valueFromState(value)}
                 onChange={handleOnChange}
                 loadOptions={disableSearch ? undefined : search}

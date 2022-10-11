@@ -26,6 +26,7 @@ import css from './MultiSelectAsyncField.less'
 const addressesSeperator = ','
 
 type Props = {
+    tabIndex?: number
     value: ReceiverValue[]
     onChange: (value: any) => void
     placeholder: string
@@ -406,7 +407,8 @@ class MultiSelectAsyncField extends React.Component<Props, State> {
     }
 
     render() {
-        const {value, disabled, placeholder, required, loadOptions} = this.props
+        const {tabIndex, value, disabled, placeholder, required, loadOptions} =
+            this.props
         const {inputValue, isInputFocused, isLoading, options} = this.state
 
         const placeholderOnEmpty = value.length ? '' : placeholder
@@ -454,7 +456,7 @@ class MultiSelectAsyncField extends React.Component<Props, State> {
                         disabled={disabled}
                         required={isInputRequired}
                         placeholder={placeholderOnEmpty}
-                        tabIndex={2}
+                        tabIndex={tabIndex || 2}
                     />
                 </div>
                 <div

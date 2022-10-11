@@ -18,6 +18,7 @@ import SnoozeTicketAction from 'pages/tickets/common/macros/components/actions/S
 import SetAssigneeAction from 'pages/tickets/common/macros/components/actions/SetAssigneeAction'
 import SetStatusAction from 'pages/tickets/common/macros/components/actions/SetStatusAction'
 import AddTagsAction from 'pages/tickets/common/macros/components/actions/AddTagsAction'
+import ResponseAction from 'pages/tickets/common/macros/components/actions/ResponseAction'
 import {updateActionArgsOnApplied} from 'state/ticket/actions'
 import {getActionTemplate} from 'utils'
 
@@ -93,8 +94,9 @@ export class TicketReplyActionContainer extends Component<Props, State> {
         {leading: true, trailing: false}
     )
 
-    setValue = (key: string, value: number | string | boolean) => {
+    setValue(key: string, value: number | string | boolean) {
         const action = this.getAction()
+
         const newValue = (
             action.get('arguments', fromJS({})) as Map<any, any>
         ).set(key, value)
@@ -334,6 +336,7 @@ export class TicketReplyActionContainer extends Component<Props, State> {
         const isInline =
             action.get('name') !== MacroActionName.AddInternalNote &&
             action.get('name') !== MacroActionName.Http &&
+            action.get('name') !== MacroActionName.ForwardByEmail &&
             action.get('name') !==
                 MacroActionName.ShopifyEditShippingAddressLastOrder
 
@@ -394,6 +397,34 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                         action={action}
                         updateActionArgs={this.setArguments}
                         renderVariables={false}
+                    />
+                </div>
+            )
+        } else if (type === MacroActionName.ForwardByEmail) {
+            argsComponent = (
+                <div className={classnames(css.argsWrapper)}>
+                    <ResponseAction
+                        type={type}
+                        index={0}
+                        tabIndex={4}
+                        action={action}
+                        hideToolbar={true}
+                        showReplyControls={true}
+                        className={css.responseAction}
+                        replyControlsClassName={css.replyControls}
+                        updateActionArgs={(_, value: Map<any, any>) => {
+                            const oldBodyHtml = this.props.action.getIn(
+                                ['arguments', 'body_html'],
+                                ''
+                            )
+                            const bodyHtml = value.get('body_html', '')
+
+                            if (oldBodyHtml !== bodyHtml) {
+                                this.setArguments(this.props.index, value)
+                            } else {
+                                this.setState({currentArguments: value})
+                            }
+                        }}
                     />
                 </div>
             )

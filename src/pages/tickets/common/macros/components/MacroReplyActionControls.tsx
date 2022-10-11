@@ -35,12 +35,14 @@ const MacroReplyActionField: React.FC<MacroReplyActionFieldProps> = ({
 )
 
 type MacroReplyActionRecipientProps = {
+    tabIndex?: number
     field: Fields
     value?: string
     onChange: onFieldChange
 }
 
 const MacroReplyActionRecipient: React.FC<MacroReplyActionRecipientProps> = ({
+    tabIndex,
     field,
     value = '',
     onChange,
@@ -76,17 +78,19 @@ const MacroReplyActionRecipient: React.FC<MacroReplyActionRecipientProps> = ({
     return (
         <MacroReplyActionField field={field}>
             <ReceiversSelectField
+                tabIndex={tabIndex}
                 sourceType={TicketMessageSourceType.Email}
                 value={receivers}
                 onChange={onReceiversChange}
-                placeholder=""
-                disableSearch={true}
+                placeholder={field === Fields.To ? undefined : ''}
+                disableSearch={field !== Fields.To}
             />
         </MacroReplyActionField>
     )
 }
 
 type MacroReplyActionControlsProps = {
+    tabIndex?: number
     fields: {
         [Fields.To]?: string
         [Fields.Cc]?: string
@@ -95,13 +99,16 @@ type MacroReplyActionControlsProps = {
     onShowCcBcc?: () => void
     onChange: onFieldChange
     showCcBccTooltip?: boolean
+    className?: string
 }
 
 const MacroReplyActionControls: React.FC<MacroReplyActionControlsProps> = ({
+    tabIndex,
     fields: {to, cc, bcc},
     onShowCcBcc,
     onChange,
     showCcBccTooltip,
+    className,
 }) => {
     const [showCc, setShowCc] = useState(!!cc?.length)
     const [showBcc, setShowBcc] = useState(!!bcc?.length)
@@ -110,72 +117,77 @@ const MacroReplyActionControls: React.FC<MacroReplyActionControlsProps> = ({
     const currentClient = useRef<HTMLSpanElement>(null)
 
     return (
-        <div className={css.wrapper}>
-            <div ref={optionalFields} className={css.optionalFields}>
-                {!showCc && (
-                    <>
+        <div className={className}>
+            <div className={css.wrapper}>
+                <div ref={optionalFields} className={css.optionalFields}>
+                    {!showCc && (
+                        <>
+                            <span
+                                onClick={() => {
+                                    setShowCc(true)
+                                    onShowCcBcc && onShowCcBcc()
+                                }}
+                            >
+                                Cc
+                            </span>
+                            {!showBcc && ' / '}
+                        </>
+                    )}
+                    {!showBcc && (
                         <span
                             onClick={() => {
-                                setShowCc(true)
+                                setShowBcc(true)
                                 onShowCcBcc && onShowCcBcc()
                             }}
                         >
-                            Cc
+                            Bcc
                         </span>
-                        {!showBcc && ' / '}
-                    </>
-                )}
-                {!showBcc && (
-                    <span
-                        onClick={() => {
-                            setShowBcc(true)
-                            onShowCcBcc && onShowCcBcc()
-                        }}
+                    )}
+                </div>
+                {showCcBccTooltip && (
+                    <UncontrolledTooltip
+                        key={String(showCc === showBcc)}
+                        target={optionalFields}
                     >
-                        Bcc
-                    </span>
+                        Addresses added to Cc/Bcc fields will be automatically
+                        applied every time this macro is used.
+                    </UncontrolledTooltip>
+                )}
+                {to === undefined ? (
+                    <MacroReplyActionField field={Fields.To}>
+                        <span ref={currentClient} className={css.currentClient}>
+                            Current client
+                        </span>
+                        <UncontrolledTooltip target={currentClient}>
+                            This is going to be pre-populated depending on the
+                            ticket information.
+                        </UncontrolledTooltip>
+                    </MacroReplyActionField>
+                ) : (
+                    <MacroReplyActionRecipient
+                        tabIndex={tabIndex}
+                        field={Fields.To}
+                        value={to}
+                        onChange={onChange}
+                    />
+                )}
+                {showCc && (
+                    <MacroReplyActionRecipient
+                        tabIndex={tabIndex}
+                        field={Fields.Cc}
+                        value={cc}
+                        onChange={onChange}
+                    />
+                )}
+                {showBcc && (
+                    <MacroReplyActionRecipient
+                        tabIndex={tabIndex}
+                        field={Fields.Bcc}
+                        value={bcc}
+                        onChange={onChange}
+                    />
                 )}
             </div>
-            {showCcBccTooltip && (
-                <UncontrolledTooltip
-                    key={String(showCc === showBcc)}
-                    target={optionalFields}
-                >
-                    Addresses added to Cc/Bcc fields will be automatically
-                    applied every time this macro is used.
-                </UncontrolledTooltip>
-            )}
-            {to === undefined ? (
-                <MacroReplyActionField field={Fields.To}>
-                    <span ref={currentClient} className={css.currentClient}>
-                        Current client
-                    </span>
-                    <UncontrolledTooltip target={currentClient}>
-                        This is going to be pre-populated depending on the
-                        ticket information.
-                    </UncontrolledTooltip>
-                </MacroReplyActionField>
-            ) : (
-                <MacroReplyActionRecipient
-                    field={Fields.To}
-                    value={to}
-                    onChange={onChange}
-                />
-            )}
-            {showCc && (
-                <MacroReplyActionRecipient
-                    field={Fields.Cc}
-                    value={cc}
-                    onChange={onChange}
-                />
-            )}
-            {showBcc && (
-                <MacroReplyActionRecipient
-                    field={Fields.Bcc}
-                    value={bcc}
-                    onChange={onChange}
-                />
-            )}
         </div>
     )
 }

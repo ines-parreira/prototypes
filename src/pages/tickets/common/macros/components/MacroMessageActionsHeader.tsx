@@ -11,24 +11,31 @@ import {
 } from 'reactstrap'
 
 import {List, Map} from 'immutable'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
-import {MacroActionName} from 'models/macroAction/types'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {
+    MacroActionName,
+    MacroResponseActionName,
+} from 'models/macroAction/types'
 
 import css from './MacroMessageActionsHeader.less'
-
-type MessageOptions =
-    | typeof MacroActionName.AddInternalNote
-    | typeof MacroActionName.SetResponseText
 
 type MessageOptionConfig = {
     title: string
     icon: string
+    featureFlagKey?: FeatureFlagKey
 }
 
-const optionsConfig: Record<MessageOptions, MessageOptionConfig> = {
+const optionsConfig: Record<MacroResponseActionName, MessageOptionConfig> = {
     [MacroActionName.SetResponseText]: {
         title: 'Response text',
         icon: 'reply',
+    },
+    [MacroActionName.ForwardByEmail]: {
+        title: 'Forward by email',
+        icon: 'forward',
+        featureFlagKey: FeatureFlagKey.MacroForwardByEmail,
     },
     [MacroActionName.AddInternalNote]: {
         title: 'Internal note',
@@ -37,10 +44,10 @@ const optionsConfig: Record<MessageOptions, MessageOptionConfig> = {
 }
 
 type MacroMessageActionsHeaderDropdownItemProps = {
-    type: MessageOptions
+    type: MacroResponseActionName
     current: boolean
     used: boolean
-    onSelect: (type: MessageOptions) => void
+    onSelect: (type: MacroResponseActionName) => void
 }
 
 const MacroMessageActionsHeaderDropdownItem: React.FC<MacroMessageActionsHeaderDropdownItemProps> =
@@ -48,8 +55,13 @@ const MacroMessageActionsHeaderDropdownItem: React.FC<MacroMessageActionsHeaderD
         const id = `macro-action-header-item-${type}`
         const disabled = !current && used
         const onClick = useCallback(() => onSelect(type), [onSelect, type])
+        const flags = useFlags()
 
-        const {title, icon} = optionsConfig[type]
+        const {title, icon, featureFlagKey} = optionsConfig[type]
+
+        if (featureFlagKey && !flags[featureFlagKey]) {
+            return null
+        }
 
         return (
             <>
@@ -95,7 +107,7 @@ const MacroMessageActionsHeaderDropdown: typeof MacroMessageActionsHeader = ({
                 {Object.keys(optionsConfig).map((key) => (
                     <MacroMessageActionsHeaderDropdownItem
                         key={key}
-                        type={key as MessageOptions}
+                        type={key as MacroResponseActionName}
                         used={actions.some(
                             (action: Map<any, any>) =>
                                 action.get('name') === key
@@ -111,8 +123,8 @@ const MacroMessageActionsHeaderDropdown: typeof MacroMessageActionsHeader = ({
 
 export type MacroMessageActionsHeaderProps = {
     actions: List<any>
-    type: MessageOptions
-    onSelect: (type: MessageOptions) => void
+    type: MacroResponseActionName
+    onSelect: (type: MacroResponseActionName) => void
 }
 
 const MacroMessageActionsHeader: React.FC<MacroMessageActionsHeaderProps> = ({

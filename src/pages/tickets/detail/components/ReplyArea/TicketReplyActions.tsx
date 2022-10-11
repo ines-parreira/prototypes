@@ -41,12 +41,16 @@ export default function TicketReplyActions({
         return null
     }
 
+    const showFirst = [
+        MacroActionName.AddInternalNote,
+        MacroActionName.ForwardByEmail,
+    ]
+
     const sortedBackendActions = backendActions.sort(
         (a: Map<any, any>, b: Map<any, any>) =>
-            a.get('name') === MacroActionName.AddInternalNote ||
-            a.get('name') < b.get('name')
+            showFirst.includes(a.get('name')) || a.get('name') < b.get('name')
                 ? -1
-                : b.get('name') === MacroActionName.AddInternalNote ||
+                : showFirst.includes(b.get('name')) ||
                   a.get('name') > b.get('name')
                 ? 1
                 : 0

@@ -50,6 +50,22 @@ exports[`MacroMessageActionsHeader should not fire onSelect on used option 1`] =
           </i>
         </button>
         <button
+          class="dropdownItem dropdown-item"
+          id="macro-action-header-item-forwardByEmail"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <i
+            class="material-icons"
+          >
+            forward
+          </i>
+          <span>
+            Forward by email
+          </span>
+        </button>
+        <button
           class="dropdownItem dropdownItemDisabled dropdown-item"
           id="macro-action-header-item-addInternalNote"
           role="menuitem"

@@ -15,7 +15,9 @@ import {
 } from 'business/types/ticket'
 import {DEFAULT_ACTIONS} from 'config'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {getLDClient} from 'utils/launchDarkly'
 import {ViewType} from 'models/view/constants'
+import {MacroActionName} from 'models/macroAction/types'
 import {search} from 'models/search/resources'
 import {SearchType, UserSearchResult} from 'models/search/types'
 import browserNotification from 'services/browserNotification'
@@ -30,7 +32,6 @@ import * as ticketsSelectors from 'state/tickets/selectors'
 import * as viewsSelectors from 'state/views/selectors'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {isCurrentlyOnTicket, isTabActive} from 'utils'
-import {getLDClient} from 'utils/launchDarkly'
 import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'
 
 import {
@@ -42,7 +43,6 @@ import {
 } from 'models/ticket/types'
 import {View} from 'models/view/types'
 
-import {MacroActionName} from 'models/macroAction/types'
 import {getChannelsByType} from 'state/integrations/selectors'
 
 import {
@@ -643,19 +643,32 @@ export const applyMacro =
             })
         }
 
-        const renderedMacro = macro.update('actions', (actions: List<any>) => {
-            return actions.map((action: Map<any, any>) => {
-                return action.update(
-                    'arguments',
-                    (args: List<any>) =>
-                        nestedReplace(args, state.ticket, state.currentUser, ((
-                            args: Notification
-                        ) => {
-                            return dispatch(notify(args))
-                        }) as any) as List<any>
+        const flags = getLDClient()?.allFlags()
+        const isMacroForwardByEmailEnabled =
+            !!flags?.[FeatureFlagKey.MacroForwardByEmail]
+
+        const renderedMacro = macro.update('actions', (actions: List<any>) =>
+            actions
+                .filter(
+                    (action: Map<any, any>) =>
+                        isMacroForwardByEmailEnabled ||
+                        action.get('name') !== MacroActionName.ForwardByEmail
                 )
-            })
-        })
+                .map((action: Map<any, any>) =>
+                    action.update(
+                        'arguments',
+                        (args: List<any>) =>
+                            nestedReplace(
+                                args,
+                                state.ticket,
+                                state.currentUser,
+                                ((args: Notification) => {
+                                    return dispatch(notify(args))
+                                }) as any
+                            ) as List<any>
+                    )
+                )
+        )
 
         dispatch({
             type: types.APPLY_MACRO,

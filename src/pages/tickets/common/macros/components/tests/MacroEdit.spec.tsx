@@ -4,8 +4,10 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
 import _noop from 'lodash/noop'
-import {render} from '@testing-library/react'
+import {fireEvent, render, screen} from '@testing-library/react'
+import {mockFlags} from 'jest-launchdarkly-mock'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {MacroActionName} from 'models/macroAction/types'
 
 import {MacroEdit} from '../MacroEdit'
@@ -26,15 +28,10 @@ jest.mock('constants/languages', () => {
     }
 })
 
-jest.mock(
-    'pages/tickets/common/macros/components/actions/SetResponseTextAction',
-    () => () => <>SetResponseTextAction</>
-)
-
-const setResponseTextAction = {
+const forwardByEmailAction = {
     type: 'user',
     execution: 'front',
-    name: MacroActionName.SetResponseText,
+    name: MacroActionName.ForwardByEmail,
     title: 'Add forward by email',
     arguments: {
         body_text: '',
@@ -45,6 +42,13 @@ const setResponseTextAction = {
     },
 }
 
+const flags = {
+    [FeatureFlagKey.MacroResponseTextCcBcc]: true,
+    [FeatureFlagKey.MacroForwardByEmail]: true,
+}
+
+mockFlags(flags)
+
 describe('MacroEdit component', () => {
     const defaultProps = {
         actions: fromJS([]),
@@ -54,6 +58,7 @@ describe('MacroEdit component', () => {
         name: 'Pizza Pepperoni',
         setActions: _noop,
         setName: _noop,
+        flags,
     } as any as ComponentProps<typeof MacroEdit>
 
     it('should render the macro edit form', () => {
@@ -69,7 +74,41 @@ describe('MacroEdit component', () => {
         expect(getByDisplayValue('Pizza Capricciosa'))
     })
 
-    it('should convert setResponseText to addInternalNote', () => {
+    it('should convert forwardByEmail to setResponseText', () => {
+        const setActions = jest.fn()
+
+        render(
+            <Provider store={mockStore({})}>
+                <MacroEdit
+                    {...defaultProps}
+                    actions={fromJS([
+                        {
+                            ...forwardByEmailAction,
+                            arguments: {
+                                ...forwardByEmailAction.arguments,
+                                to: 'test@gorgias.com',
+                            },
+                        },
+                    ])}
+                    setActions={setActions}
+                />
+            </Provider>
+        )
+
+        fireEvent.click(screen.getByText('Response text'))
+
+        expect(setActions).toHaveBeenLastCalledWith(
+            fromJS([
+                {
+                    ...forwardByEmailAction,
+                    name: MacroActionName.SetResponseText,
+                    title: 'Add response text',
+                },
+            ])
+        )
+    })
+
+    it('should convert forwardByEmail to addInternalNote', () => {
         const setActions = jest.fn()
 
         const {queryByText} = render(
@@ -78,9 +117,9 @@ describe('MacroEdit component', () => {
                     {...defaultProps}
                     actions={fromJS([
                         {
-                            ...setResponseTextAction,
+                            ...forwardByEmailAction,
                             arguments: {
-                                ...setResponseTextAction.arguments,
+                                ...forwardByEmailAction.arguments,
                                 body_text: 'test body',
                                 body_html: 'test body',
                             },
@@ -91,6 +130,6 @@ describe('MacroEdit component', () => {
             </Provider>
         )
 
-        expect(queryByText('SetResponseTextAction')).toBeTruthy()
+        expect(queryByText('test body')).toBeTruthy()
     })
 })

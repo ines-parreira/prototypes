@@ -44,8 +44,10 @@ export default function AddInternalNoteAction({
     renderVariables = true,
     convertAction,
 }: Props) {
-    const isMacroResponseCcBccEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.MacroResponseTextCcBcc]
+    const {
+        [FeatureFlagKey.MacroResponseTextCcBcc]: isMacroResponseCcBccEnabled,
+        [FeatureFlagKey.MacroForwardByEmail]: isMacroForwardByEmailEnabled,
+    } = useFlags()
 
     const hasIntegrationOfTypes = useAppSelector(makeHasIntegrationOfTypes)
     const richArea = useRef<DEPRECATED_RichField>(null)
@@ -127,15 +129,19 @@ export default function AddInternalNoteAction({
 
     return (
         <div className={css.field}>
-            {isMacroResponseCcBccEnabled && actions && convertAction && (
-                <MacroMessageActionsHeader
-                    actions={actions}
-                    type={MacroActionName.AddInternalNote}
-                    onSelect={convertAction}
-                >
-                    <span className="font-weight-medium">Internal note</span>
-                </MacroMessageActionsHeader>
-            )}
+            {(isMacroResponseCcBccEnabled || isMacroForwardByEmailEnabled) &&
+                actions &&
+                convertAction && (
+                    <MacroMessageActionsHeader
+                        actions={actions}
+                        type={MacroActionName.AddInternalNote}
+                        onSelect={convertAction}
+                    >
+                        <span className="font-weight-medium">
+                            Internal note
+                        </span>
+                    </MacroMessageActionsHeader>
+                )}
             <DEPRECATED_RichField
                 ref={richArea}
                 value={{

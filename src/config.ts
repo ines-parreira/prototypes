@@ -595,6 +595,23 @@ export const ACTION_TEMPLATES: ActionTemplate[] = [
         },
     },
     {
+        execution: ActionTemplateExecution.Back,
+        name: MacroActionName.ForwardByEmail,
+        title: 'Forward email',
+        icon: 'forward',
+        arguments: {
+            body_text: {
+                type: 'string',
+                default: '',
+            },
+            body_html: {
+                type: 'string',
+                format: 'html',
+                default: '',
+            },
+        },
+    },
+    {
         execution: ActionTemplateExecution.Front,
         name: MacroActionName.AddAttachments,
         title: 'Add attachments',

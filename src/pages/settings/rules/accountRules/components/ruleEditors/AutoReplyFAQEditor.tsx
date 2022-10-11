@@ -6,8 +6,9 @@ import MultiSelectField from 'pages/common/forms/MultiSelectField'
 import {AutoReplyFAQSettings, ManagedRulesSlugs} from 'state/rules/types'
 import FakeFAQArticlePreview from 'pages/settings/rules/components/FakeFAQArticlePreview'
 import RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'
-import SetResponseTextAction from 'pages/tickets/common/macros/components/actions/SetResponseTextAction'
+import ResponseAction from 'pages/tickets/common/macros/components/actions/ResponseAction'
 import {HelpCenter} from 'models/helpCenter/types'
+import {MacroActionName} from 'models/macroAction/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {Option, Value} from 'pages/common/forms/SelectField/types'
 import useAppSelector from 'hooks/useAppSelector'
@@ -177,7 +178,8 @@ export const AutoReplyFAQEditor = ({
                 </div>
                 <div className={css.listWrapper}>
                     <h4>Message above article preview</h4>
-                    <SetResponseTextAction
+                    <ResponseAction
+                        type={MacroActionName.SetResponseText}
                         action={fromJS({
                             arguments: {
                                 body_text: settings.body_text,
@@ -192,7 +194,8 @@ export const AutoReplyFAQEditor = ({
                 </div>
                 <div className={css.listWrapper}>
                     <h4>Message below article preview</h4>
-                    <SetResponseTextAction
+                    <ResponseAction
+                        type={MacroActionName.SetResponseText}
                         action={fromJS({
                             arguments: {
                                 body_text: settings.signature_text,
