@@ -31,6 +31,7 @@ describe('TicketReplyEditor component', () => {
 
     const minProps: ComponentProps<typeof TicketReplyEditorContainer> = {
         applyMacro: jest.fn(),
+        isNewMessagePublic: true,
         macros: fromJS([]),
         richAreaRef: jest.fn(),
         shouldDisplayQuickReply: false,

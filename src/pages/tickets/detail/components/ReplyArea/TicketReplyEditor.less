@@ -1,3 +1,5 @@
+@import '~css/new/colors';
+
 :local .component {
     &:not(.isAlert) {
         min-height: 127px;
@@ -19,6 +21,14 @@
 
     :global(.form-group) {
         margin-bottom: 0;
+    }
+}
+
+:local {
+    .richField {
+        &.isInternal {
+            background: @internalYellow;
+        }
     }
 }
 

@@ -35,7 +35,6 @@ describe('<TicketReply/>', () => {
                 },
             },
         }),
-        isNewMessagePublic: true,
         newMessageAttachments: fromJS([]),
         newMessageType: answerableSourceType,
         deleteActionOnApplied: jest.fn(),

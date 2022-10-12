@@ -54,6 +54,7 @@ type suggestionsType = List<any>
 type canAddMentionType = boolean
 
 export type Props = {
+    className?: string
     footer?: ReactNode
     quickReply?: ReactNode
     editorState: EditorState
@@ -340,6 +341,7 @@ export class RichFieldEditor extends Component<Props, State> {
 
     render() {
         const {
+            className,
             isRequired,
             displayOnly,
             onFocus,
@@ -358,7 +360,7 @@ export class RichFieldEditor extends Component<Props, State> {
         }
         return (
             <div
-                className={classnames('rich-textarea-wrapper', {
+                className={classnames(className, 'rich-textarea-wrapper', {
                     'display-only': displayOnly,
                 })}
             >

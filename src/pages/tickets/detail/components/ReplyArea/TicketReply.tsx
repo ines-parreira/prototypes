@@ -45,7 +45,6 @@ export class TicketReplyContainer extends Component<Props> {
         const {
             ticket,
             appliedMacro,
-            isNewMessagePublic,
             richAreaRef,
             className: passedClassName,
             newMessageType,
@@ -64,7 +63,6 @@ export class TicketReplyContainer extends Component<Props> {
         )
 
         const className = classNames(css.component, passedClassName, {
-            [css.internal]: !isNewMessagePublic,
             'alert-warning': !!canReplyResult,
         })
 
@@ -98,7 +96,6 @@ export class TicketReplyContainer extends Component<Props> {
 const connector = connect(
     (state: RootState) => {
         return {
-            isNewMessagePublic: newMessageSelectors.isNewMessagePublic(state),
             newMessageAttachments:
                 newMessageSelectors.getNewMessageAttachments(state),
             newMessageType: newMessageSelectors.getNewMessageType(state),

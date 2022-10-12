@@ -44,6 +44,7 @@ exports[`TicketReplyEditor component should allow inline image 1`] = `
     canAddMention={false}
     canDropFiles={true}
     canInsertInlineImages={true}
+    className="richField"
     defaultContentState={
       Immutable.Record {
         "entityMap": Object {
@@ -125,6 +126,7 @@ exports[`TicketReplyEditor component should not allow attachments for instagram 
     canAddMention={false}
     canDropFiles={true}
     canInsertInlineImages={false}
+    className="richField"
     defaultContentState={
       Immutable.Record {
         "entityMap": Object {
@@ -239,6 +241,7 @@ exports[`TicketReplyEditor component should not allow attachments for instagram 
     canAddMention={false}
     canDropFiles={true}
     canInsertInlineImages={false}
+    className="richField"
     defaultContentState={
       Immutable.Record {
         "entityMap": Object {
@@ -353,6 +356,7 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
     canAddMention={false}
     canDropFiles={true}
     canInsertInlineImages={true}
+    className="richField"
     defaultContentState={
       Immutable.Record {
         "entityMap": Object {

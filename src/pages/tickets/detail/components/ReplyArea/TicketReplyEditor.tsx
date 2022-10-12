@@ -1,3 +1,4 @@
+import classnames from 'classnames'
 import React, {Component, ReactNode} from 'react'
 import {ContentState, EditorState} from 'draft-js'
 import {fromJS, Map, List} from 'immutable'
@@ -20,6 +21,7 @@ import {
 import {
     getNewMessageType,
     getNewMessageAttachments,
+    isNewMessagePublic,
 } from '../../../../../state/newMessage/selectors'
 import {notify} from '../../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../../state/notifications/types'
@@ -350,6 +352,7 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
 
     render() {
         const {
+            isNewMessagePublic,
             newMessage,
             newMessageType,
             agents,
@@ -419,6 +422,9 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
         return (
             <div className={css.component}>
                 <DEPRECATED_RichField
+                    className={classnames(css.richField, {
+                        [css.isInternal]: !isNewMessagePublic,
+                    })}
                     footer={replyAreaFooter}
                     ref={(richArea) => {
                         this.richArea = richArea
@@ -471,6 +477,7 @@ const connector = connect(
     (state: RootState) => ({
         agents: getOtherAgents(state),
         attachments: getNewMessageAttachments(state),
+        isNewMessagePublic: isNewMessagePublic(state),
         newMessage: state.newMessage,
         newMessageType: getNewMessageType(state),
         predictionContext: getContext(state),
