@@ -50,26 +50,35 @@ exports[`<ErrorBoundary/> should render an error message because an error occurr
       className="mr-2 mb-2 float-left"
       onClick={[Function]}
     >
-      <button
-        className="wrapper mr-2 mb-2 float-left fill primary medium"
-        onClick={[Function]}
-        type="button"
+      <BaseButton
+        className="mr-2 mb-2 float-left"
       >
-        Reload page
-      </button>
+        <button
+          className="wrapper mr-2 mb-2 float-left fill primary medium"
+          onClick={[Function]}
+          type="button"
+        >
+          Reload page
+        </button>
+      </BaseButton>
     </ForwardRef>
     <ForwardRef
       className="mr-2 mb-2"
       intent="secondary"
       onClick={[Function]}
     >
-      <button
-        className="wrapper mr-2 mb-2 fill secondary medium"
-        onClick={[Function]}
-        type="button"
+      <BaseButton
+        className="mr-2 mb-2"
+        intent="secondary"
       >
-        Show details
-      </button>
+        <button
+          className="wrapper mr-2 mb-2 fill secondary medium"
+          onClick={[Function]}
+          type="button"
+        >
+          Show details
+        </button>
+      </BaseButton>
     </ForwardRef>
     <Collapse
       appear={false}

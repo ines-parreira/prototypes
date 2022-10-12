@@ -494,31 +494,35 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                             id="copy-code-snippet"
                             type="button"
                           >
-                            <button
-                              className="wrapper copy fill primary medium"
-                              data-clipboard-target="#code-snippet"
-                              id="copy-code-snippet"
-                              type="button"
+                            <BaseButton
+                              className="copy"
                             >
-                              <ButtonIconLabel
-                                icon="file_copy"
+                              <button
+                                className="wrapper copy fill primary medium"
+                                data-clipboard-target="#code-snippet"
+                                id="copy-code-snippet"
+                                type="button"
                               >
-                                <span
-                                  className="wrapper"
+                                <ButtonIconLabel
+                                  icon="file_copy"
                                 >
-                                  <Icon
-                                    className="icon isLeft"
+                                  <span
+                                    className="wrapper"
                                   >
-                                    <i
-                                      className="material-icons icon isLeft medium"
+                                    <Icon
+                                      className="icon isLeft"
                                     >
-                                      file_copy
-                                    </i>
-                                  </Icon>
-                                </span>
-                              </ButtonIconLabel>
-                              Copy
-                            </button>
+                                      <i
+                                        className="material-icons icon isLeft medium"
+                                      >
+                                        file_copy
+                                      </i>
+                                    </Icon>
+                                  </span>
+                                </ButtonIconLabel>
+                                Copy
+                              </button>
+                            </BaseButton>
                           </ForwardRef>
                         </div>
                       </Card>

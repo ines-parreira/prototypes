@@ -2585,19 +2585,25 @@ exports[`DEPRECATED_RichField should render default content state 1`] = `
                                     onMouseDown={[Function]}
                                     size="small"
                                   >
-                                    <button
-                                      className="wrapper button wrapper small fill secondary small"
-                                      id="format_bold"
-                                      onClick={[Function]}
-                                      onMouseDown={[Function]}
-                                      type="button"
+                                    <BaseButton
+                                      className="button wrapper small"
+                                      intent="secondary"
+                                      size="small"
                                     >
-                                      <i
-                                        className="material-icons icon"
+                                      <button
+                                        className="wrapper button wrapper small fill secondary small"
+                                        id="format_bold"
+                                        onClick={[Function]}
+                                        onMouseDown={[Function]}
+                                        type="button"
                                       >
-                                        format_bold
-                                      </i>
-                                    </button>
+                                        <i
+                                          className="material-icons icon"
+                                        >
+                                          format_bold
+                                        </i>
+                                      </button>
+                                    </BaseButton>
                                   </ForwardRef>
                                 </ForwardRef>
                                 <Tooltip
@@ -2681,19 +2687,25 @@ exports[`DEPRECATED_RichField should render default content state 1`] = `
                                     onMouseDown={[Function]}
                                     size="small"
                                   >
-                                    <button
-                                      className="wrapper button wrapper small fill secondary small"
-                                      id="format_italic"
-                                      onClick={[Function]}
-                                      onMouseDown={[Function]}
-                                      type="button"
+                                    <BaseButton
+                                      className="button wrapper small"
+                                      intent="secondary"
+                                      size="small"
                                     >
-                                      <i
-                                        className="material-icons icon"
+                                      <button
+                                        className="wrapper button wrapper small fill secondary small"
+                                        id="format_italic"
+                                        onClick={[Function]}
+                                        onMouseDown={[Function]}
+                                        type="button"
                                       >
-                                        format_italic
-                                      </i>
-                                    </button>
+                                        <i
+                                          className="material-icons icon"
+                                        >
+                                          format_italic
+                                        </i>
+                                      </button>
+                                    </BaseButton>
                                   </ForwardRef>
                                 </ForwardRef>
                                 <Tooltip
@@ -2777,19 +2789,25 @@ exports[`DEPRECATED_RichField should render default content state 1`] = `
                                     onMouseDown={[Function]}
                                     size="small"
                                   >
-                                    <button
-                                      className="wrapper button wrapper small fill secondary small"
-                                      id="format_underline"
-                                      onClick={[Function]}
-                                      onMouseDown={[Function]}
-                                      type="button"
+                                    <BaseButton
+                                      className="button wrapper small"
+                                      intent="secondary"
+                                      size="small"
                                     >
-                                      <i
-                                        className="material-icons icon"
+                                      <button
+                                        className="wrapper button wrapper small fill secondary small"
+                                        id="format_underline"
+                                        onClick={[Function]}
+                                        onMouseDown={[Function]}
+                                        type="button"
                                       >
-                                        format_underline
-                                      </i>
-                                    </button>
+                                        <i
+                                          className="material-icons icon"
+                                        >
+                                          format_underline
+                                        </i>
+                                      </button>
+                                    </BaseButton>
                                   </ForwardRef>
                                 </ForwardRef>
                                 <Tooltip
@@ -2920,19 +2938,25 @@ exports[`DEPRECATED_RichField should render default content state 1`] = `
                                           onMouseDown={[Function]}
                                           size="small"
                                         >
-                                          <button
-                                            className="wrapper button wrapper small fill secondary small"
-                                            id="insert_link"
-                                            onClick={[Function]}
-                                            onMouseDown={[Function]}
-                                            type="button"
+                                          <BaseButton
+                                            className="button wrapper small"
+                                            intent="secondary"
+                                            size="small"
                                           >
-                                            <i
-                                              className="material-icons icon"
+                                            <button
+                                              className="wrapper button wrapper small fill secondary small"
+                                              id="insert_link"
+                                              onClick={[Function]}
+                                              onMouseDown={[Function]}
+                                              type="button"
                                             >
-                                              link
-                                            </i>
-                                          </button>
+                                              <i
+                                                className="material-icons icon"
+                                              >
+                                                link
+                                              </i>
+                                            </button>
+                                          </BaseButton>
                                         </ForwardRef>
                                       </ForwardRef>
                                       <Tooltip
@@ -3043,19 +3067,25 @@ exports[`DEPRECATED_RichField should render default content state 1`] = `
                                         onMouseDown={[Function]}
                                         size="small"
                                       >
-                                        <button
-                                          className="wrapper button wrapper small fill secondary small"
-                                          id="insert_photo"
-                                          onClick={[Function]}
-                                          onMouseDown={[Function]}
-                                          type="button"
+                                        <BaseButton
+                                          className="button wrapper small"
+                                          intent="secondary"
+                                          size="small"
                                         >
-                                          <i
-                                            className="material-icons icon"
+                                          <button
+                                            className="wrapper button wrapper small fill secondary small"
+                                            id="insert_photo"
+                                            onClick={[Function]}
+                                            onMouseDown={[Function]}
+                                            type="button"
                                           >
-                                            insert_photo
-                                          </i>
-                                        </button>
+                                            <i
+                                              className="material-icons icon"
+                                            >
+                                              insert_photo
+                                            </i>
+                                          </button>
+                                        </BaseButton>
                                       </ForwardRef>
                                     </ForwardRef>
                                     <Tooltip
@@ -3162,19 +3192,25 @@ exports[`DEPRECATED_RichField should render default content state 1`] = `
                                         onMouseDown={[Function]}
                                         size="small"
                                       >
-                                        <button
-                                          className="wrapper button wrapper small fill secondary small"
-                                          id="insert_emoticon"
-                                          onClick={[Function]}
-                                          onMouseDown={[Function]}
-                                          type="button"
+                                        <BaseButton
+                                          className="button wrapper small"
+                                          intent="secondary"
+                                          size="small"
                                         >
-                                          <i
-                                            className="material-icons icon"
+                                          <button
+                                            className="wrapper button wrapper small fill secondary small"
+                                            id="insert_emoticon"
+                                            onClick={[Function]}
+                                            onMouseDown={[Function]}
+                                            type="button"
                                           >
-                                            insert_emoticon
-                                          </i>
-                                        </button>
+                                            <i
+                                              className="material-icons icon"
+                                            >
+                                              insert_emoticon
+                                            </i>
+                                          </button>
+                                        </BaseButton>
                                       </ForwardRef>
                                     </ForwardRef>
                                     <Tooltip
@@ -8537,19 +8573,25 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                                     onMouseDown={[Function]}
                                     size="small"
                                   >
-                                    <button
-                                      className="wrapper button wrapper small fill secondary small"
-                                      id="format_bold"
-                                      onClick={[Function]}
-                                      onMouseDown={[Function]}
-                                      type="button"
+                                    <BaseButton
+                                      className="button wrapper small"
+                                      intent="secondary"
+                                      size="small"
                                     >
-                                      <i
-                                        className="material-icons icon"
+                                      <button
+                                        className="wrapper button wrapper small fill secondary small"
+                                        id="format_bold"
+                                        onClick={[Function]}
+                                        onMouseDown={[Function]}
+                                        type="button"
                                       >
-                                        format_bold
-                                      </i>
-                                    </button>
+                                        <i
+                                          className="material-icons icon"
+                                        >
+                                          format_bold
+                                        </i>
+                                      </button>
+                                    </BaseButton>
                                   </ForwardRef>
                                 </ForwardRef>
                                 <Tooltip
@@ -8633,19 +8675,25 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                                     onMouseDown={[Function]}
                                     size="small"
                                   >
-                                    <button
-                                      className="wrapper button wrapper small fill secondary small"
-                                      id="format_italic"
-                                      onClick={[Function]}
-                                      onMouseDown={[Function]}
-                                      type="button"
+                                    <BaseButton
+                                      className="button wrapper small"
+                                      intent="secondary"
+                                      size="small"
                                     >
-                                      <i
-                                        className="material-icons icon"
+                                      <button
+                                        className="wrapper button wrapper small fill secondary small"
+                                        id="format_italic"
+                                        onClick={[Function]}
+                                        onMouseDown={[Function]}
+                                        type="button"
                                       >
-                                        format_italic
-                                      </i>
-                                    </button>
+                                        <i
+                                          className="material-icons icon"
+                                        >
+                                          format_italic
+                                        </i>
+                                      </button>
+                                    </BaseButton>
                                   </ForwardRef>
                                 </ForwardRef>
                                 <Tooltip
@@ -8729,19 +8777,25 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                                     onMouseDown={[Function]}
                                     size="small"
                                   >
-                                    <button
-                                      className="wrapper button wrapper small fill secondary small"
-                                      id="format_underline"
-                                      onClick={[Function]}
-                                      onMouseDown={[Function]}
-                                      type="button"
+                                    <BaseButton
+                                      className="button wrapper small"
+                                      intent="secondary"
+                                      size="small"
                                     >
-                                      <i
-                                        className="material-icons icon"
+                                      <button
+                                        className="wrapper button wrapper small fill secondary small"
+                                        id="format_underline"
+                                        onClick={[Function]}
+                                        onMouseDown={[Function]}
+                                        type="button"
                                       >
-                                        format_underline
-                                      </i>
-                                    </button>
+                                        <i
+                                          className="material-icons icon"
+                                        >
+                                          format_underline
+                                        </i>
+                                      </button>
+                                    </BaseButton>
                                   </ForwardRef>
                                 </ForwardRef>
                                 <Tooltip
@@ -8872,19 +8926,25 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                                           onMouseDown={[Function]}
                                           size="small"
                                         >
-                                          <button
-                                            className="wrapper button wrapper small fill secondary small"
-                                            id="insert_link"
-                                            onClick={[Function]}
-                                            onMouseDown={[Function]}
-                                            type="button"
+                                          <BaseButton
+                                            className="button wrapper small"
+                                            intent="secondary"
+                                            size="small"
                                           >
-                                            <i
-                                              className="material-icons icon"
+                                            <button
+                                              className="wrapper button wrapper small fill secondary small"
+                                              id="insert_link"
+                                              onClick={[Function]}
+                                              onMouseDown={[Function]}
+                                              type="button"
                                             >
-                                              link
-                                            </i>
-                                          </button>
+                                              <i
+                                                className="material-icons icon"
+                                              >
+                                                link
+                                              </i>
+                                            </button>
+                                          </BaseButton>
                                         </ForwardRef>
                                       </ForwardRef>
                                       <Tooltip
@@ -8995,19 +9055,25 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                                         onMouseDown={[Function]}
                                         size="small"
                                       >
-                                        <button
-                                          className="wrapper button wrapper small fill secondary small"
-                                          id="insert_photo"
-                                          onClick={[Function]}
-                                          onMouseDown={[Function]}
-                                          type="button"
+                                        <BaseButton
+                                          className="button wrapper small"
+                                          intent="secondary"
+                                          size="small"
                                         >
-                                          <i
-                                            className="material-icons icon"
+                                          <button
+                                            className="wrapper button wrapper small fill secondary small"
+                                            id="insert_photo"
+                                            onClick={[Function]}
+                                            onMouseDown={[Function]}
+                                            type="button"
                                           >
-                                            insert_photo
-                                          </i>
-                                        </button>
+                                            <i
+                                              className="material-icons icon"
+                                            >
+                                              insert_photo
+                                            </i>
+                                          </button>
+                                        </BaseButton>
                                       </ForwardRef>
                                     </ForwardRef>
                                     <Tooltip
@@ -9114,19 +9180,25 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                                         onMouseDown={[Function]}
                                         size="small"
                                       >
-                                        <button
-                                          className="wrapper button wrapper small fill secondary small"
-                                          id="insert_emoticon"
-                                          onClick={[Function]}
-                                          onMouseDown={[Function]}
-                                          type="button"
+                                        <BaseButton
+                                          className="button wrapper small"
+                                          intent="secondary"
+                                          size="small"
                                         >
-                                          <i
-                                            className="material-icons icon"
+                                          <button
+                                            className="wrapper button wrapper small fill secondary small"
+                                            id="insert_emoticon"
+                                            onClick={[Function]}
+                                            onMouseDown={[Function]}
+                                            type="button"
                                           >
-                                            insert_emoticon
-                                          </i>
-                                        </button>
+                                            <i
+                                              className="material-icons icon"
+                                            >
+                                              insert_emoticon
+                                            </i>
+                                          </button>
+                                        </BaseButton>
                                       </ForwardRef>
                                     </ForwardRef>
                                     <Tooltip
@@ -11727,19 +11799,25 @@ exports[`DEPRECATED_RichField should render mutable variable 1`] = `
                                     onMouseDown={[Function]}
                                     size="small"
                                   >
-                                    <button
-                                      className="wrapper button wrapper small fill secondary small"
-                                      id="format_bold"
-                                      onClick={[Function]}
-                                      onMouseDown={[Function]}
-                                      type="button"
+                                    <BaseButton
+                                      className="button wrapper small"
+                                      intent="secondary"
+                                      size="small"
                                     >
-                                      <i
-                                        className="material-icons icon"
+                                      <button
+                                        className="wrapper button wrapper small fill secondary small"
+                                        id="format_bold"
+                                        onClick={[Function]}
+                                        onMouseDown={[Function]}
+                                        type="button"
                                       >
-                                        format_bold
-                                      </i>
-                                    </button>
+                                        <i
+                                          className="material-icons icon"
+                                        >
+                                          format_bold
+                                        </i>
+                                      </button>
+                                    </BaseButton>
                                   </ForwardRef>
                                 </ForwardRef>
                                 <Tooltip
@@ -11823,19 +11901,25 @@ exports[`DEPRECATED_RichField should render mutable variable 1`] = `
                                     onMouseDown={[Function]}
                                     size="small"
                                   >
-                                    <button
-                                      className="wrapper button wrapper small fill secondary small"
-                                      id="format_italic"
-                                      onClick={[Function]}
-                                      onMouseDown={[Function]}
-                                      type="button"
+                                    <BaseButton
+                                      className="button wrapper small"
+                                      intent="secondary"
+                                      size="small"
                                     >
-                                      <i
-                                        className="material-icons icon"
+                                      <button
+                                        className="wrapper button wrapper small fill secondary small"
+                                        id="format_italic"
+                                        onClick={[Function]}
+                                        onMouseDown={[Function]}
+                                        type="button"
                                       >
-                                        format_italic
-                                      </i>
-                                    </button>
+                                        <i
+                                          className="material-icons icon"
+                                        >
+                                          format_italic
+                                        </i>
+                                      </button>
+                                    </BaseButton>
                                   </ForwardRef>
                                 </ForwardRef>
                                 <Tooltip
@@ -11919,19 +12003,25 @@ exports[`DEPRECATED_RichField should render mutable variable 1`] = `
                                     onMouseDown={[Function]}
                                     size="small"
                                   >
-                                    <button
-                                      className="wrapper button wrapper small fill secondary small"
-                                      id="format_underline"
-                                      onClick={[Function]}
-                                      onMouseDown={[Function]}
-                                      type="button"
+                                    <BaseButton
+                                      className="button wrapper small"
+                                      intent="secondary"
+                                      size="small"
                                     >
-                                      <i
-                                        className="material-icons icon"
+                                      <button
+                                        className="wrapper button wrapper small fill secondary small"
+                                        id="format_underline"
+                                        onClick={[Function]}
+                                        onMouseDown={[Function]}
+                                        type="button"
                                       >
-                                        format_underline
-                                      </i>
-                                    </button>
+                                        <i
+                                          className="material-icons icon"
+                                        >
+                                          format_underline
+                                        </i>
+                                      </button>
+                                    </BaseButton>
                                   </ForwardRef>
                                 </ForwardRef>
                                 <Tooltip
@@ -12062,19 +12152,25 @@ exports[`DEPRECATED_RichField should render mutable variable 1`] = `
                                           onMouseDown={[Function]}
                                           size="small"
                                         >
-                                          <button
-                                            className="wrapper button wrapper small fill secondary small"
-                                            id="insert_link"
-                                            onClick={[Function]}
-                                            onMouseDown={[Function]}
-                                            type="button"
+                                          <BaseButton
+                                            className="button wrapper small"
+                                            intent="secondary"
+                                            size="small"
                                           >
-                                            <i
-                                              className="material-icons icon"
+                                            <button
+                                              className="wrapper button wrapper small fill secondary small"
+                                              id="insert_link"
+                                              onClick={[Function]}
+                                              onMouseDown={[Function]}
+                                              type="button"
                                             >
-                                              link
-                                            </i>
-                                          </button>
+                                              <i
+                                                className="material-icons icon"
+                                              >
+                                                link
+                                              </i>
+                                            </button>
+                                          </BaseButton>
                                         </ForwardRef>
                                       </ForwardRef>
                                       <Tooltip
@@ -12185,19 +12281,25 @@ exports[`DEPRECATED_RichField should render mutable variable 1`] = `
                                         onMouseDown={[Function]}
                                         size="small"
                                       >
-                                        <button
-                                          className="wrapper button wrapper small fill secondary small"
-                                          id="insert_photo"
-                                          onClick={[Function]}
-                                          onMouseDown={[Function]}
-                                          type="button"
+                                        <BaseButton
+                                          className="button wrapper small"
+                                          intent="secondary"
+                                          size="small"
                                         >
-                                          <i
-                                            className="material-icons icon"
+                                          <button
+                                            className="wrapper button wrapper small fill secondary small"
+                                            id="insert_photo"
+                                            onClick={[Function]}
+                                            onMouseDown={[Function]}
+                                            type="button"
                                           >
-                                            insert_photo
-                                          </i>
-                                        </button>
+                                            <i
+                                              className="material-icons icon"
+                                            >
+                                              insert_photo
+                                            </i>
+                                          </button>
+                                        </BaseButton>
                                       </ForwardRef>
                                     </ForwardRef>
                                     <Tooltip
@@ -12304,19 +12406,25 @@ exports[`DEPRECATED_RichField should render mutable variable 1`] = `
                                         onMouseDown={[Function]}
                                         size="small"
                                       >
-                                        <button
-                                          className="wrapper button wrapper small fill secondary small"
-                                          id="insert_emoticon"
-                                          onClick={[Function]}
-                                          onMouseDown={[Function]}
-                                          type="button"
+                                        <BaseButton
+                                          className="button wrapper small"
+                                          intent="secondary"
+                                          size="small"
                                         >
-                                          <i
-                                            className="material-icons icon"
+                                          <button
+                                            className="wrapper button wrapper small fill secondary small"
+                                            id="insert_emoticon"
+                                            onClick={[Function]}
+                                            onMouseDown={[Function]}
+                                            type="button"
                                           >
-                                            insert_emoticon
-                                          </i>
-                                        </button>
+                                            <i
+                                              className="material-icons icon"
+                                            >
+                                              insert_emoticon
+                                            </i>
+                                          </button>
+                                        </BaseButton>
                                       </ForwardRef>
                                     </ForwardRef>
                                     <Tooltip

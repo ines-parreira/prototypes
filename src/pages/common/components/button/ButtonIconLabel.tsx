@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import React, {ReactNode, useContext} from 'react'
 
-import {ButtonContext} from './Button'
+import {BaseButtonContext} from './BaseButton'
 import css from './ButtonIconLabel.less'
 
 export type ButtonIconPosition = 'left' | 'right'
@@ -48,7 +48,7 @@ type IconProps = {
 }
 
 function Icon({children, className}: IconProps) {
-    const {size} = useContext(ButtonContext)
+    const {size} = useContext(BaseButtonContext)
 
     return (
         <i className={classnames('material-icons', className, css[size])}>

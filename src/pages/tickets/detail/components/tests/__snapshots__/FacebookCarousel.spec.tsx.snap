@@ -291,26 +291,34 @@ exports[`FacebookCarousel component render generic template 1`] = `
                                 onClick={[Function]}
                                 role="link"
                               >
-                                <button
-                                  className="wrapper fill secondary medium top"
-                                  onClick={[Function]}
-                                  role="link"
-                                  type="button"
+                                <BaseButton
+                                  intent="secondary"
                                 >
-                                  View details
-                                </button>
+                                  <button
+                                    className="wrapper fill secondary medium top"
+                                    onClick={[Function]}
+                                    role="link"
+                                    type="button"
+                                  >
+                                    View details
+                                  </button>
+                                </BaseButton>
                               </ForwardRef>
                               <ForwardRef
                                 isDisabled={true}
                                 key=".$1"
                               >
-                                <button
-                                  className="wrapper fill primary medium middle isDisabled"
-                                  disabled={true}
-                                  type="button"
+                                <BaseButton
+                                  isDisabled={true}
                                 >
-                                  Share
-                                </button>
+                                  <button
+                                    className="wrapper fill primary medium middle isDisabled"
+                                    disabled={true}
+                                    type="button"
+                                  >
+                                    Share
+                                  </button>
+                                </BaseButton>
                               </ForwardRef>
                               <ForwardRef
                                 intent="secondary"
@@ -318,14 +326,18 @@ exports[`FacebookCarousel component render generic template 1`] = `
                                 onClick={[Function]}
                                 role="link"
                               >
-                                <button
-                                  className="wrapper fill secondary medium bottom"
-                                  onClick={[Function]}
-                                  role="link"
-                                  type="button"
+                                <BaseButton
+                                  intent="secondary"
                                 >
-                                  Buy now
-                                </button>
+                                  <button
+                                    className="wrapper fill secondary medium bottom"
+                                    onClick={[Function]}
+                                    role="link"
+                                    type="button"
+                                  >
+                                    Buy now
+                                  </button>
+                                </BaseButton>
                               </ForwardRef>
                             </span>
                           </Group>

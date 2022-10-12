@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ButtonSpinner /> should render a small loader 1`] = `
+<svg
+  class="spinner gloom spinner small"
+  preserveAspectRatio="xMidYMid meet"
+  role="status"
+  viewBox="0 0 20 20"
+  width="100%"
+>
+  <circle
+    class="dot"
+    cx="10"
+    cy="10"
+    fill="none"
+    r="6"
+    stroke-width="2"
+  />
+  <circle
+    class="circle"
+    cx="10"
+    cy="10"
+    fill="none"
+    r="6"
+    stroke-width="2"
+  />
+  <span
+    class="sr-only"
+  >
+    Loading...
+  </span>
+</svg>
+`;
+
+exports[`<ButtonSpinner /> should render a spinner 1`] = `
+<svg
+  class="spinner gloom spinner medium"
+  preserveAspectRatio="xMidYMid meet"
+  role="status"
+  viewBox="0 0 20 20"
+  width="100%"
+>
+  <circle
+    class="dot"
+    cx="10"
+    cy="10"
+    fill="none"
+    r="6"
+    stroke-width="2"
+  />
+  <circle
+    class="circle"
+    cx="10"
+    cy="10"
+    fill="none"
+    r="6"
+    stroke-width="2"
+  />
+  <span
+    class="sr-only"
+  >
+    Loading...
+  </span>
+</svg>
+`;

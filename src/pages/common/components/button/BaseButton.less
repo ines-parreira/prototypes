@@ -78,6 +78,7 @@
 
         &.isDisabled {
             cursor: not-allowed;
+            pointer-events: none;
         }
     }
 
@@ -93,6 +94,7 @@
         &.primary {
             background-color: @classic-main-primary;
             border-color: @classic-main-primary-3;
+            color: @classic-neutral-grey-0;
 
             &:hover {
                 background-color: @classic-main-primary-2;
@@ -122,6 +124,7 @@
         &.destructive {
             background-color: @classic-feedback-error;
             border-color: @classic-feedback-error-3;
+            color: @classic-neutral-grey-0;
 
             &:hover {
                 background-color: @classic-feedback-error-2;
@@ -185,14 +188,5 @@
         &.isDisabled:hover {
             color: @classic-neutral-grey-3;
         }
-    }
-
-    .spinner {
-        width: 22px;
-        margin: 0 6px 0 2px;
-    }
-
-    .wrapper.small .spinner {
-        width: 15px;
     }
 }

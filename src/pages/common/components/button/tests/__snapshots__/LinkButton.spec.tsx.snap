@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<LinkButton /> should render a link button 1`] = `
+<a
+  class="wrapper fill primary medium"
+  rel="noopener noreferrer"
+  target="_blank"
+>
+  foo
+</a>
+`;

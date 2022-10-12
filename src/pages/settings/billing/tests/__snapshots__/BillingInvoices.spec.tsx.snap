@@ -202,29 +202,33 @@ exports[`BillingInvoices component should display invoices, without PDF download
                 <ForwardRef
                   intent="secondary"
                 >
-                  <button
-                    className="wrapper fill secondary medium"
-                    type="button"
+                  <BaseButton
+                    intent="secondary"
                   >
-                    <ButtonIconLabel
-                      icon="file_copy"
+                    <button
+                      className="wrapper fill secondary medium"
+                      type="button"
                     >
-                      <span
-                        className="wrapper"
+                      <ButtonIconLabel
+                        icon="file_copy"
                       >
-                        <Icon
-                          className="icon isLeft"
+                        <span
+                          className="wrapper"
                         >
-                          <i
-                            className="material-icons icon isLeft medium"
+                          <Icon
+                            className="icon isLeft"
                           >
-                            file_copy
-                          </i>
-                        </Icon>
-                        Download PDF
-                      </span>
-                    </ButtonIconLabel>
-                  </button>
+                            <i
+                              className="material-icons icon isLeft medium"
+                            >
+                              file_copy
+                            </i>
+                          </Icon>
+                          Download PDF
+                        </span>
+                      </ButtonIconLabel>
+                    </button>
+                  </BaseButton>
                 </ForwardRef>
               </a>
             </td>

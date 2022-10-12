@@ -1,82 +1,57 @@
 import React, {
     ButtonHTMLAttributes,
-    createContext,
+    ComponentProps,
     forwardRef,
-    Ref,
     useContext,
 } from 'react'
-import classnames from 'classnames'
 
-import Spinner from 'pages/common/components/Spinner'
-import {
-    GroupPositionContext,
-    GroupContext,
-} from 'pages/common/components/layout/Group'
-import {InputGroupContext} from 'pages/common/forms/input/InputGroup'
+import {GroupContext} from 'pages/common/components/layout/Group'
 
-import css from './Button.less'
+import BaseButton from './BaseButton'
+import ButtonSpinner from './ButtonSpinner'
 
-type ButtonSize = 'medium' | 'small'
+type Props = ButtonHTMLAttributes<HTMLButtonElement> &
+    Omit<ComponentProps<typeof BaseButton>, 'children'>
 
-type Props = {
-    fillStyle?: 'fill' | 'ghost'
-    intent?: 'primary' | 'secondary' | 'destructive'
-    isDisabled?: boolean
-    isLoading?: boolean
-    size?: ButtonSize
-} & Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'disabled'>
-
-type ButtonContextState = {
-    size: ButtonSize
-}
-
-export const ButtonContext = createContext<ButtonContextState>({
-    size: 'medium',
-})
-
-const Button = forwardRef(function (
+const Button = forwardRef<HTMLButtonElement, Props>(function (
     {
         children,
         className,
-        fillStyle = 'fill',
-        intent = 'primary',
+        fillStyle,
+        intent,
         isDisabled,
         isLoading,
-        size = 'medium',
+        size,
         type = 'button',
-        ...otherProps
-    }: Props,
-    ref: Ref<HTMLButtonElement> | null | undefined
+        ...other
+    },
+    ref
 ) {
     const context = useContext(GroupContext)
-    const appendPosition = useContext(GroupPositionContext) || ''
-    const isInsideInputGroup = !!useContext(InputGroupContext)
+    const safeIsDisabled = context?.isDisabled || isDisabled || isLoading
 
     return (
-        <ButtonContext.Provider value={{size}}>
-            <button
-                {...otherProps}
-                className={classnames(
-                    css.wrapper,
-                    className,
-                    css[fillStyle],
-                    css[intent],
-                    css[size],
-                    css[appendPosition],
-                    {
-                        [css.isDisabled]:
-                            context?.isDisabled || isDisabled || isLoading,
-                        [css.isAuxiliaryButton]: isInsideInputGroup,
-                    }
-                )}
-                disabled={context?.isDisabled || isDisabled || isLoading}
-                type={type}
-                ref={ref}
-            >
-                {isLoading && <Spinner color="gloom" className={css.spinner} />}
-                {children}
-            </button>
-        </ButtonContext.Provider>
+        <BaseButton
+            className={className}
+            fillStyle={fillStyle}
+            intent={intent}
+            isDisabled={safeIsDisabled}
+            isLoading={isLoading}
+            size={size}
+        >
+            {(elementAttributes) => (
+                <button
+                    {...other}
+                    {...elementAttributes}
+                    disabled={safeIsDisabled || isLoading}
+                    ref={ref}
+                    type={type}
+                >
+                    {isLoading && <ButtonSpinner />}
+                    {children}
+                </button>
+            )}
+        </BaseButton>
     )
 })
 

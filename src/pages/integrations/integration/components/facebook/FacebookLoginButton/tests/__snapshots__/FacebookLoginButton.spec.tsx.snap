@@ -59,13 +59,17 @@ exports[`FacebookLoginButton component should render a reconnect button 1`] = `
         onClick={[Function]}
         type="submit"
       >
-        <button
-          className="wrapper fill primary medium"
-          onClick={[Function]}
-          type="submit"
+        <BaseButton
+          intent="primary"
         >
-          Reconnect
-        </button>
+          <button
+            className="wrapper fill primary medium"
+            onClick={[Function]}
+            type="submit"
+          >
+            Reconnect
+          </button>
+        </BaseButton>
       </ForwardRef>
     </FacebookLoginButtonContainer>
   </Connect(FacebookLoginButtonContainer)>

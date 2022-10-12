@@ -547,19 +547,26 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                         isLoading={false}
                                         onClick={[Function]}
                                       >
-                                        <button
-                                          className="wrapper disconnect-button fill destructive medium"
-                                          disabled={false}
-                                          id="disconnect-button-undefined"
-                                          onClick={[Function]}
-                                          type="button"
+                                        <BaseButton
+                                          className="disconnect-button"
+                                          intent="destructive"
+                                          isDisabled={false}
+                                          isLoading={false}
                                         >
-                                          <i
-                                            className="material-icons"
+                                          <button
+                                            className="wrapper disconnect-button fill destructive medium"
+                                            disabled={false}
+                                            id="disconnect-button-undefined"
+                                            onClick={[Function]}
+                                            type="button"
                                           >
-                                            delete
-                                          </i>
-                                        </button>
+                                            <i
+                                              className="material-icons"
+                                            >
+                                              delete
+                                            </i>
+                                          </button>
+                                        </BaseButton>
                                       </ForwardRef>
                                     </ConfirmationPopover>
                                   </ConfirmButton>
@@ -741,19 +748,26 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                         isLoading={false}
                                         onClick={[Function]}
                                       >
-                                        <button
-                                          className="wrapper disconnect-button fill destructive medium"
-                                          disabled={false}
-                                          id="disconnect-button-2"
-                                          onClick={[Function]}
-                                          type="button"
+                                        <BaseButton
+                                          className="disconnect-button"
+                                          intent="destructive"
+                                          isDisabled={false}
+                                          isLoading={false}
                                         >
-                                          <i
-                                            className="material-icons"
+                                          <button
+                                            className="wrapper disconnect-button fill destructive medium"
+                                            disabled={false}
+                                            id="disconnect-button-2"
+                                            onClick={[Function]}
+                                            type="button"
                                           >
-                                            delete
-                                          </i>
-                                        </button>
+                                            <i
+                                              className="material-icons"
+                                            >
+                                              delete
+                                            </i>
+                                          </button>
+                                        </BaseButton>
                                       </ForwardRef>
                                     </ConfirmationPopover>
                                   </ConfirmButton>
@@ -935,19 +949,26 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                         isLoading={false}
                                         onClick={[Function]}
                                       >
-                                        <button
-                                          className="wrapper disconnect-button fill destructive medium"
-                                          disabled={false}
-                                          id="disconnect-button-3"
-                                          onClick={[Function]}
-                                          type="button"
+                                        <BaseButton
+                                          className="disconnect-button"
+                                          intent="destructive"
+                                          isDisabled={false}
+                                          isLoading={false}
                                         >
-                                          <i
-                                            className="material-icons"
+                                          <button
+                                            className="wrapper disconnect-button fill destructive medium"
+                                            disabled={false}
+                                            id="disconnect-button-3"
+                                            onClick={[Function]}
+                                            type="button"
                                           >
-                                            delete
-                                          </i>
-                                        </button>
+                                            <i
+                                              className="material-icons"
+                                            >
+                                              delete
+                                            </i>
+                                          </button>
+                                        </BaseButton>
                                       </ForwardRef>
                                     </ConfirmationPopover>
                                   </ConfirmButton>
@@ -1129,19 +1150,26 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                         isLoading={false}
                                         onClick={[Function]}
                                       >
-                                        <button
-                                          className="wrapper disconnect-button fill destructive medium"
-                                          disabled={false}
-                                          id="disconnect-button-1"
-                                          onClick={[Function]}
-                                          type="button"
+                                        <BaseButton
+                                          className="disconnect-button"
+                                          intent="destructive"
+                                          isDisabled={false}
+                                          isLoading={false}
                                         >
-                                          <i
-                                            className="material-icons"
+                                          <button
+                                            className="wrapper disconnect-button fill destructive medium"
+                                            disabled={false}
+                                            id="disconnect-button-1"
+                                            onClick={[Function]}
+                                            type="button"
                                           >
-                                            delete
-                                          </i>
-                                        </button>
+                                            <i
+                                              className="material-icons"
+                                            >
+                                              delete
+                                            </i>
+                                          </button>
+                                        </BaseButton>
                                       </ForwardRef>
                                     </ConfirmationPopover>
                                   </ConfirmButton>
@@ -3612,19 +3640,26 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                         isLoading={false}
                                         onClick={[Function]}
                                       >
-                                        <button
-                                          className="wrapper disconnect-button fill destructive medium"
-                                          disabled={false}
-                                          id="disconnect-button-3"
-                                          onClick={[Function]}
-                                          type="button"
+                                        <BaseButton
+                                          className="disconnect-button"
+                                          intent="destructive"
+                                          isDisabled={false}
+                                          isLoading={false}
                                         >
-                                          <i
-                                            className="material-icons"
+                                          <button
+                                            className="wrapper disconnect-button fill destructive medium"
+                                            disabled={false}
+                                            id="disconnect-button-3"
+                                            onClick={[Function]}
+                                            type="button"
                                           >
-                                            delete
-                                          </i>
-                                        </button>
+                                            <i
+                                              className="material-icons"
+                                            >
+                                              delete
+                                            </i>
+                                          </button>
+                                        </BaseButton>
                                       </ForwardRef>
                                     </ConfirmationPopover>
                                   </ConfirmButton>

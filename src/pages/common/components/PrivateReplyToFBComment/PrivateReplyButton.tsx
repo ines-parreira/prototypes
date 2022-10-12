@@ -23,6 +23,7 @@ type ComponentProps = {
 type Component =
     | React.FunctionComponent<ComponentProps>
     | React.ComponentClass<ComponentProps>
+    | React.ForwardRefExoticComponent<any>
 
 type Props = {
     buttonComponent: Component

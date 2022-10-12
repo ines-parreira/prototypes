@@ -851,13 +851,19 @@ exports[`BillingDetailsForm component should display not display the form 1`] = 
                           isLoading={false}
                           type="submit"
                         >
-                          <button
-                            className="wrapper submitButton fill primary medium"
-                            disabled={false}
-                            type="submit"
+                          <BaseButton
+                            className="submitButton"
+                            isDisabled={false}
+                            isLoading={false}
                           >
-                            Update Address
-                          </button>
+                            <button
+                              className="wrapper submitButton fill primary medium"
+                              disabled={false}
+                              type="submit"
+                            >
+                              Update Address
+                            </button>
+                          </BaseButton>
                         </ForwardRef>
                       </div>
                     </form>
@@ -1564,13 +1570,19 @@ exports[`BillingDetailsForm component should display the form with billing conta
                           isLoading={false}
                           type="submit"
                         >
-                          <button
-                            className="wrapper submitButton fill primary medium"
-                            disabled={false}
-                            type="submit"
+                          <BaseButton
+                            className="submitButton"
+                            isDisabled={false}
+                            isLoading={false}
                           >
-                            Update Address
-                          </button>
+                            <button
+                              className="wrapper submitButton fill primary medium"
+                              disabled={false}
+                              type="submit"
+                            >
+                              Update Address
+                            </button>
+                          </BaseButton>
                         </ForwardRef>
                       </div>
                     </form>

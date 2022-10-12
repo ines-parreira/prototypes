@@ -5358,7 +5358,7 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
           type="button"
         >
           <svg
-            class="spinner gloom spinner"
+            class="spinner gloom spinner medium"
             preserveAspectRatio="xMidYMid meet"
             role="status"
             viewBox="0 0 20 20"
@@ -5739,7 +5739,7 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
           type="button"
         >
           <svg
-            class="spinner gloom spinner"
+            class="spinner gloom spinner medium"
             preserveAspectRatio="xMidYMid meet"
             role="status"
             viewBox="0 0 20 20"
@@ -6120,7 +6120,7 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
           type="button"
         >
           <svg
-            class="spinner gloom spinner"
+            class="spinner gloom spinner medium"
             preserveAspectRatio="xMidYMid meet"
             role="status"
             viewBox="0 0 20 20"
@@ -6438,7 +6438,7 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
           type="button"
         >
           <svg
-            class="spinner gloom spinner"
+            class="spinner gloom spinner medium"
             preserveAspectRatio="xMidYMid meet"
             role="status"
             viewBox="0 0 20 20"

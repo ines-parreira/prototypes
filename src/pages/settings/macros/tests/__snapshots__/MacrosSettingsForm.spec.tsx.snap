@@ -663,13 +663,19 @@ Sincerely,
                   isLoading={false}
                   type="submit"
                 >
-                  <button
-                    className="wrapper mr-2 fill primary medium"
-                    disabled={false}
-                    type="submit"
+                  <BaseButton
+                    className="mr-2"
+                    isDisabled={false}
+                    isLoading={false}
                   >
-                    Update macro
-                  </button>
+                    <button
+                      className="wrapper mr-2 fill primary medium"
+                      disabled={false}
+                      type="submit"
+                    >
+                      Update macro
+                    </button>
+                  </BaseButton>
                 </ForwardRef>
                 <ForwardRef
                   intent="secondary"
@@ -677,14 +683,20 @@ Sincerely,
                   isLoading={false}
                   onClick={[Function]}
                 >
-                  <button
-                    className="wrapper fill secondary medium"
-                    disabled={false}
-                    onClick={[Function]}
-                    type="button"
+                  <BaseButton
+                    intent="secondary"
+                    isDisabled={false}
+                    isLoading={false}
                   >
-                    Duplicate macro
-                  </button>
+                    <button
+                      className="wrapper fill secondary medium"
+                      disabled={false}
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      Duplicate macro
+                    </button>
+                  </BaseButton>
                 </ForwardRef>
                 <Component
                   className="float-right"

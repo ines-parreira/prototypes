@@ -192,30 +192,35 @@ exports[`CustomerChannels component should display all passed channels (includin
       intent="secondary"
       onClick={[Function]}
     >
-      <button
-        className="wrapper container fill secondary medium"
-        onClick={[Function]}
-        type="button"
+      <BaseButton
+        className="container"
+        intent="secondary"
       >
-        <ButtonIconLabel
-          icon="keyboard_double_arrow_down"
+        <button
+          className="wrapper container fill secondary medium"
+          onClick={[Function]}
+          type="button"
         >
-          <span
-            className="wrapper"
+          <ButtonIconLabel
+            icon="keyboard_double_arrow_down"
           >
-            <Icon
-              className="icon isLeft"
+            <span
+              className="wrapper"
             >
-              <i
-                className="material-icons icon isLeft medium"
+              <Icon
+                className="icon isLeft"
               >
-                keyboard_double_arrow_down
-              </i>
-            </Icon>
-            More info
-          </span>
-        </ButtonIconLabel>
-      </button>
+                <i
+                  className="material-icons icon isLeft medium"
+                >
+                  keyboard_double_arrow_down
+                </i>
+              </Icon>
+              More info
+            </span>
+          </ButtonIconLabel>
+        </button>
+      </BaseButton>
     </ForwardRef>
   </div>
 </CustomerInfoWrapper>
@@ -829,30 +834,35 @@ exports[`CustomerChannels component should display all passed channels (includin
       intent="secondary"
       onClick={[Function]}
     >
-      <button
-        className="wrapper container fill secondary medium"
-        onClick={[Function]}
-        type="button"
+      <BaseButton
+        className="container"
+        intent="secondary"
       >
-        <ButtonIconLabel
-          icon="keyboard_double_arrow_up"
+        <button
+          className="wrapper container fill secondary medium"
+          onClick={[Function]}
+          type="button"
         >
-          <span
-            className="wrapper"
+          <ButtonIconLabel
+            icon="keyboard_double_arrow_up"
           >
-            <Icon
-              className="icon isLeft"
+            <span
+              className="wrapper"
             >
-              <i
-                className="material-icons icon isLeft medium"
+              <Icon
+                className="icon isLeft"
               >
-                keyboard_double_arrow_up
-              </i>
-            </Icon>
-            Less info
-          </span>
-        </ButtonIconLabel>
-      </button>
+                <i
+                  className="material-icons icon isLeft medium"
+                >
+                  keyboard_double_arrow_up
+                </i>
+              </Icon>
+              Less info
+            </span>
+          </ButtonIconLabel>
+        </button>
+      </BaseButton>
     </ForwardRef>
   </div>
 </CustomerInfoWrapper>

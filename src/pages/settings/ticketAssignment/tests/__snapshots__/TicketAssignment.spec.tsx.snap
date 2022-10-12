@@ -382,7 +382,7 @@ exports[`<TicketAssignment/> should render the "Save changes" button loading and
         type="submit"
       >
         <svg
-          class="spinner gloom spinner"
+          class="spinner gloom spinner medium"
           preserveAspectRatio="xMidYMid meet"
           role="status"
           viewBox="0 0 20 20"

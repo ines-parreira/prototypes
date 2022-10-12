@@ -156,14 +156,19 @@ exports[`BillingPaymentMethod Shopify should render a button 1`] = `
                   isLoading={false}
                   onClick={[Function]}
                 >
-                  <button
-                    className="wrapper fill primary medium"
-                    disabled={false}
-                    onClick={[Function]}
-                    type="button"
+                  <BaseButton
+                    isDisabled={false}
+                    isLoading={false}
                   >
-                    Activate billing with Shopify and pay $12
-                  </button>
+                    <button
+                      className="wrapper fill primary medium"
+                      disabled={false}
+                      onClick={[Function]}
+                      type="button"
+                    >
+                      Activate billing with Shopify and pay $12
+                    </button>
+                  </BaseButton>
                 </ForwardRef>
               </a>
             </div>
@@ -533,12 +538,14 @@ exports[`BillingPaymentMethod Stripe should render a button 1`] = `
                           <ForwardRef
                             isDisabled={false}
                           >
-                            <button
-                              className="wrapper fill primary medium"
-                              type="button"
-                            >
-                              Add payment method
-                            </button>
+                            <BaseButton>
+                              <button
+                                className="wrapper fill primary medium"
+                                type="button"
+                              >
+                                Add payment method
+                              </button>
+                            </BaseButton>
                           </ForwardRef>
                         </a>
                       </Link>
@@ -726,12 +733,16 @@ exports[`BillingPaymentMethod Stripe should render a button to update a credit c
                         <ForwardRef
                           intent="secondary"
                         >
-                          <button
-                            className="wrapper fill secondary medium"
-                            type="button"
+                          <BaseButton
+                            intent="secondary"
                           >
-                            Change card
-                          </button>
+                            <button
+                              className="wrapper fill secondary medium"
+                              type="button"
+                            >
+                              Change card
+                            </button>
+                          </BaseButton>
                         </ForwardRef>
                       </a>
                     </Link>

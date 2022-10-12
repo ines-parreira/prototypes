@@ -1183,30 +1183,34 @@ exports[`BusinessHours component should render values from state 1`] = `
                               intent="secondary"
                               onClick={[Function]}
                             >
-                              <button
-                                className="wrapper fill secondary medium"
-                                onClick={[Function]}
-                                type="button"
+                              <BaseButton
+                                intent="secondary"
                               >
-                                <ButtonIconLabel
-                                  icon="add"
+                                <button
+                                  className="wrapper fill secondary medium"
+                                  onClick={[Function]}
+                                  type="button"
                                 >
-                                  <span
-                                    className="wrapper"
+                                  <ButtonIconLabel
+                                    icon="add"
                                   >
-                                    <Icon
-                                      className="icon isLeft"
+                                    <span
+                                      className="wrapper"
                                     >
-                                      <i
-                                        className="material-icons icon isLeft medium"
+                                      <Icon
+                                        className="icon isLeft"
                                       >
-                                        add
-                                      </i>
-                                    </Icon>
-                                    Add business hours
-                                  </span>
-                                </ButtonIconLabel>
-                              </button>
+                                        <i
+                                          className="material-icons icon isLeft medium"
+                                        >
+                                          add
+                                        </i>
+                                      </Icon>
+                                      Add business hours
+                                    </span>
+                                  </ButtonIconLabel>
+                                </button>
+                              </BaseButton>
                             </ForwardRef>
                           </div>
                           <InputField
@@ -1296,13 +1300,18 @@ exports[`BusinessHours component should render values from state 1`] = `
                     isLoading={false}
                     type="submit"
                   >
-                    <button
-                      className="wrapper fill primary medium"
-                      disabled={false}
-                      type="submit"
+                    <BaseButton
+                      isDisabled={false}
+                      isLoading={false}
                     >
-                      Save changes
-                    </button>
+                      <button
+                        className="wrapper fill primary medium"
+                        disabled={false}
+                        type="submit"
+                      >
+                        Save changes
+                      </button>
+                    </BaseButton>
                   </ForwardRef>
                 </form>
               </Form>
