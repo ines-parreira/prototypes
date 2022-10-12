@@ -183,6 +183,15 @@ body,
     position: absolute;
     top: 0;
     width: 100vw;
+
+    // Browser-hack to target only Chrome/Opera browsers
+    // Source: http://browserhacks.com/#hack-ac2480b5c83038f2d838e2a62e28a307
+    @media all and (-webkit-min-device-pixel-ratio: 0) and (min-resolution: 0.001dpcm) {
+        // It's a quick-fix for the Chrome 106 bug.
+        // Please remove it after the browser adoption falls close to 0 (estimated Q2 2023).
+        // https://linear.app/gorgias/issue/PLTCO-2554/draggable-elements-make-the-rest-of-the-page-disappear-on-the-newest
+        transform: translate(0, 0);
+    }
 }
 
 .app-content {
