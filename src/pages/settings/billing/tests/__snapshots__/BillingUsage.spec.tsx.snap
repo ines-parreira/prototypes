@@ -126,32 +126,6 @@ exports[`<BillingUsage/> should display price 1`] = `
           </div>
         </div>
         <div
-          class="integration-numbers"
-        >
-          0
-          /
-          150
-           
-          <b>
-            <a
-              class="link"
-              to="/app/settings/integrations"
-            >
-              integrations
-            </a>
-          </b>
-           
-          <a
-            id="integrations-consumed"
-          >
-            <i
-              class="material-icons text-muted"
-            >
-              info_outline
-            </i>
-          </a>
-        </div>
-        <div
           class="description"
         >
           <div>
@@ -379,32 +353,6 @@ exports[`<BillingUsage/> should load with empty props 1`] = `
               Oct 11
             </div>
           </div>
-        </div>
-        <div
-          class="integration-numbers"
-        >
-          0
-          /
-          150
-           
-          <b>
-            <a
-              class="link"
-              to="/app/settings/integrations"
-            >
-              integrations
-            </a>
-          </b>
-           
-          <a
-            id="integrations-consumed"
-          >
-            <i
-              class="material-icons text-muted"
-            >
-              info_outline
-            </i>
-          </a>
         </div>
         <div
           class="description"

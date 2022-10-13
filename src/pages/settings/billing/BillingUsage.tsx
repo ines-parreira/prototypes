@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useMemo} from 'react'
 import classnames from 'classnames'
 import moment from 'moment'
-import {Link} from 'react-router-dom'
 import {
     Card,
     CardBody,
@@ -22,7 +21,6 @@ import {
     getCurrentPlan,
 } from 'state/billing/selectors'
 import {getCurrentSubscription} from 'state/currentAccount/selectors'
-import {getActiveIntegrations} from 'state/integrations/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import LegacyPlanBadge from 'pages/common/components/LegacyPlanBadge'
@@ -42,7 +40,6 @@ const BillingUsage = () => {
     const dispatch = useAppDispatch()
 
     const accountHasLegacyPlan = useAppSelector(hasLegacyPlan)
-    const activeIntegrations = useAppSelector(getActiveIntegrations)
     const currentSubscription = useAppSelector(getCurrentSubscription)
     const currentPlan = useAppSelector(getCurrentPlan)
     const immutableCurrentPlan = useMemo(
@@ -155,32 +152,6 @@ const BillingUsage = () => {
         )
     }, [immutableCurrentPlan, currentUsage])
 
-    const renderIntegrationUsage = useCallback(() => {
-        // integrations included/used
-        const includedIntegrations = immutableCurrentPlan.get('integrations')
-        const usedIntegrations = activeIntegrations
-            ? activeIntegrations.size
-            : 0
-
-        return (
-            <div className={css['integration-numbers']}>
-                {usedIntegrations}/{includedIntegrations}{' '}
-                <b>
-                    <Link className={css.link} to="/app/settings/integrations">
-                        integrations
-                    </Link>
-                </b>{' '}
-                <a id="integrations-consumed">
-                    <i className="material-icons text-muted">info_outline</i>
-                </a>
-                <UncontrolledTooltip target="integrations-consumed">
-                    Number of integrations used VS total number of integrations
-                    available for your current plan.
-                </UncontrolledTooltip>
-            </div>
-        )
-    }, [activeIntegrations, immutableCurrentPlan])
-
     const renderNoSubscription = () => (
         <CardGroup className={css['card-group']}>
             <Card>
@@ -255,7 +226,6 @@ const BillingUsage = () => {
                         className={css['card-body']}
                     >
                         {renderTicketUsage()}
-                        {renderIntegrationUsage()}
                         <div className={css.description}>
                             {isTrialing ? (
                                 <div>

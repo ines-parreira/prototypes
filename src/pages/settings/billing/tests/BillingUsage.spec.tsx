@@ -46,9 +46,6 @@ describe('<BillingUsage/>', () => {
                 },
             }),
         }),
-        integrations: fromJS({
-            integrations: fromJS([]),
-        }),
     }
 
     window.GORGIAS_SUPPORT_EMAIL = 'support@gorgias.com'
