@@ -1,53 +1,55 @@
-import React from 'react'
-import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
+import {fromJS, Map} from 'immutable'
 import {shallow} from 'enzyme'
 
-import {InstallOnIntegrationsCardContainer} from '../InstallOnIntegrationsCard.tsx'
-
-import history from 'pages/history.ts'
-
+import history from 'pages/history'
 import {
     SHOPIFY_INTEGRATION_TYPE,
     GORGIAS_CHAT_INTEGRATION_TYPE,
-} from 'constants/integration.ts'
+} from 'constants/integration'
+import {IntegrationType} from 'models/integration/constants'
+
+import {InstallOnIntegrationsCardContainer} from '../InstallOnIntegrationsCard'
 
 jest.mock('pages/history.ts')
 
-const defaultProps = {
-    integrationType: SHOPIFY_INTEGRATION_TYPE,
-    targetIntegrations: fromJS([
-        {
-            id: 1,
-            type: SHOPIFY_INTEGRATION_TYPE,
-            name: 'my store 1',
-            created_datetime: '2018-01-01 00:00:00',
-        },
-        {
-            id: 2,
-            type: SHOPIFY_INTEGRATION_TYPE,
-            name: 'my store 2',
-            created_datetime: '2018-01-02 00:00:00',
-        },
-        {
-            id: 3,
-            type: SHOPIFY_INTEGRATION_TYPE,
-            name: 'my store 3',
-            created_datetime: '2018-01-03 00:00:00',
-        },
-        {
-            id: 4,
-            type: SHOPIFY_INTEGRATION_TYPE,
-            name: 'my store 4',
-            created_datetime: '2018-01-04 00:00:00',
-        },
-    ]),
-    integration: fromJS({
-        id: 5,
-        type: GORGIAS_CHAT_INTEGRATION_TYPE,
-        name: 'my chat',
-    }),
-    updateOrCreateIntegration: () => {},
-}
+const defaultProps: ComponentProps<typeof InstallOnIntegrationsCardContainer> =
+    {
+        integrationType: IntegrationType.Shopify,
+        targetIntegrations: fromJS([
+            {
+                id: 1,
+                type: SHOPIFY_INTEGRATION_TYPE,
+                name: 'my store 1',
+                created_datetime: '2018-01-01 00:00:00',
+            },
+            {
+                id: 2,
+                type: SHOPIFY_INTEGRATION_TYPE,
+                name: 'my store 2',
+                created_datetime: '2018-01-02 00:00:00',
+            },
+            {
+                id: 3,
+                type: SHOPIFY_INTEGRATION_TYPE,
+                name: 'my store 3',
+                created_datetime: '2018-01-03 00:00:00',
+            },
+            {
+                id: 4,
+                type: SHOPIFY_INTEGRATION_TYPE,
+                name: 'my store 4',
+                created_datetime: '2018-01-04 00:00:00',
+            },
+        ]),
+        integration: fromJS({
+            id: 5,
+            type: GORGIAS_CHAT_INTEGRATION_TYPE,
+            name: 'my chat',
+        }),
+        updateOrCreateIntegration: jest.fn(),
+        notify: jest.fn(),
+    }
 
 describe('<InstallOnIntegrationsCard/>', () => {
     describe('_installOnStore()', () => {
@@ -55,7 +57,7 @@ describe('<InstallOnIntegrationsCard/>', () => {
             "should redirect to the correct target integration's detail page " +
                 'because it needs a scope update',
             async () => {
-                const targetIntegration = fromJS({
+                const targetIntegration: Map<any, any> = fromJS({
                     id: 1,
                     type: SHOPIFY_INTEGRATION_TYPE,
                     name: 'my store 1',
@@ -63,19 +65,19 @@ describe('<InstallOnIntegrationsCard/>', () => {
                     meta: {need_scope_update: true},
                 })
 
-                const component = shallow(
+                const component = shallow<InstallOnIntegrationsCardContainer>(
                     <InstallOnIntegrationsCardContainer {...defaultProps} />
                 )
 
                 await component.instance()._installOnStore(targetIntegration)
 
                 expect(history.push).toHaveBeenCalledWith(
-                    `/app/settings/integrations/${targetIntegration.get(
-                        'type'
-                    )}/` +
-                        `${targetIntegration.get(
-                            'id'
-                        )}/?error=need_scope_update`
+                    `/app/settings/integrations/${
+                        targetIntegration.get('type') as string
+                    }/` +
+                        `${
+                            targetIntegration.get('id') as number
+                        }/?error=need_scope_update`
                 )
             }
         )
@@ -84,14 +86,14 @@ describe('<InstallOnIntegrationsCard/>', () => {
             'should add the target integration to the list of integration to which the chat integration is ' +
                 'installed, and submit the update',
             async () => {
-                const targetIntegration = fromJS({
+                const targetIntegration: Map<any, any> = fromJS({
                     id: 1,
                     type: SHOPIFY_INTEGRATION_TYPE,
                     name: 'my store 1',
                     created_datetime: '2018-01-01 00:00:00',
                 })
 
-                const chatIntegration = fromJS({
+                const chatIntegration: Map<any, any> = fromJS({
                     id: 5,
                     type: GORGIAS_CHAT_INTEGRATION_TYPE,
                     name: 'my chat',
@@ -100,7 +102,7 @@ describe('<InstallOnIntegrationsCard/>', () => {
 
                 const updateOrCreateIntegration = jest.fn()
 
-                const component = shallow(
+                const component = shallow<InstallOnIntegrationsCardContainer>(
                     <InstallOnIntegrationsCardContainer
                         {...defaultProps}
                         integration={chatIntegration}
@@ -128,25 +130,27 @@ describe('<InstallOnIntegrationsCard/>', () => {
             'should not add the target integration to the list of integration to which the chat integration is ' +
                 'installed because it is already there, and submit the update',
             async () => {
-                const targetIntegration = fromJS({
+                const targetIntegration: Map<any, any> = fromJS({
                     id: 1,
                     type: SHOPIFY_INTEGRATION_TYPE,
                     name: 'my store 1',
                     created_datetime: '2018-01-01 00:00:00',
                 })
 
-                const chatIntegration = fromJS({
+                const chatIntegration: Map<any, any> = fromJS({
                     id: 5,
                     type: GORGIAS_CHAT_INTEGRATION_TYPE,
                     name: 'my chat',
                     meta: {
-                        shopify_integration_ids: [targetIntegration.get('id')],
+                        shopify_integration_ids: [
+                            targetIntegration.get('id') as number,
+                        ],
                     },
                 })
 
                 const updateOrCreateIntegration = jest.fn()
 
-                const component = shallow(
+                const component = shallow<InstallOnIntegrationsCardContainer>(
                     <InstallOnIntegrationsCardContainer
                         {...defaultProps}
                         integration={chatIntegration}
@@ -176,14 +180,14 @@ describe('<InstallOnIntegrationsCard/>', () => {
             'should remove the id of the target integration from the list of integrations to which the chat ' +
                 'integration is installed, and submit the update',
             async () => {
-                const targetIntegration = fromJS({
+                const targetIntegration: Map<any, any> = fromJS({
                     id: 1,
                     type: SHOPIFY_INTEGRATION_TYPE,
                     name: 'my store 1',
                     created_datetime: '2018-01-01 00:00:00',
                 })
 
-                const chatIntegration = fromJS({
+                const chatIntegration: Map<any, any> = fromJS({
                     id: 5,
                     type: GORGIAS_CHAT_INTEGRATION_TYPE,
                     name: 'my chat',
@@ -194,7 +198,7 @@ describe('<InstallOnIntegrationsCard/>', () => {
 
                 const updateOrCreateIntegration = jest.fn()
 
-                const component = shallow(
+                const component = shallow<InstallOnIntegrationsCardContainer>(
                     <InstallOnIntegrationsCardContainer
                         {...defaultProps}
                         integration={chatIntegration}
