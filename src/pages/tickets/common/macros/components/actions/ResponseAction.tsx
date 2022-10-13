@@ -230,8 +230,15 @@ const ResponseAction: React.FC<Props> = ({
                                 storageKey="forward-by-email"
                                 className="mb-2"
                             >
-                                In some cases, forwarded messages may be
-                                visibile to the original sender.
+                                In some cases, forwarded messages may be visible
+                                to the original sender.{' '}
+                                <a
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    href="https://docs.gorgias.com/en-US/macro-actions-81913"
+                                >
+                                    Learn more
+                                </a>
                             </Tip>
                         )}
                         {type === MacroActionName.SetResponseText &&
