@@ -178,6 +178,7 @@ export type GorgiasAction = {
     absolutePath?: string[]
     item?: Map<any, any>
     attachments?: List<any>
+    cartId?: string
 }
 
 export type CurrentUser = Map<any, any>

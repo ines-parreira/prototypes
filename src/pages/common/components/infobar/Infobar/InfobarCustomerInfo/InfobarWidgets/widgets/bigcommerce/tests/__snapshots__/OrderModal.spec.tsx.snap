@@ -1,0 +1,151 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OrderModal should not render when the modal is closed 1`] = `<div />`;
+
+exports[`OrderModal should render when the modal is opened 1`] = `
+<body>
+  <div />
+  <div
+    aria-describedby="modal-2-desc"
+    aria-labelledby="modal-2-title"
+    aria-modal="true"
+    class="modal default open"
+    role="dialog"
+  >
+    <div
+      class="dialog medium"
+    >
+      <div
+        class="modalContent default"
+      >
+        <div
+          class="wrapper"
+        >
+          <div>
+            <div
+              class="title"
+              id="modal-2-title"
+            >
+              Add order
+            </div>
+            <div
+              class="subtitle"
+            />
+          </div>
+          <i
+            class="material-icons icon"
+          >
+            close
+          </i>
+        </div>
+        <div
+          class="formBody"
+        >
+          <div
+            class="alert info paddedVertical"
+          >
+            <div
+              class="content"
+            >
+              <span
+                class="label"
+              >
+                <i
+                  class="infoIcon material-icons"
+                >
+                  info
+                </i>
+                <span>
+                  Add an order with status 
+                  <strong>
+                    Paid
+                  </strong>
+                   and
+                   
+                  <strong>
+                    Awaiting Fulfillment
+                  </strong>
+                  .
+                </span>
+              </span>
+            </div>
+          </div>
+          <p
+            class="paddedVertical subsection"
+          >
+            Products
+          </p>
+          <p
+            class="subsection"
+          >
+            Fulfillment
+          </p>
+          <div>
+            <h5
+              class="subsectionSmall"
+            >
+              Shipping address
+            </h5>
+          </div>
+          <p
+            class="subsection"
+          >
+            Comments & Notes
+          </p>
+          <div>
+            <h5
+              class="subsectionSmall"
+            >
+              Comment
+            </h5>
+            <textarea
+              class="form-control"
+              placeholder="Add comment..."
+              rows="1"
+            />
+            <p
+              class="infoText"
+            >
+              Visible to customer
+            </p>
+          </div>
+          <div>
+            <h5
+              class="subsectionSmall"
+            >
+              Staff note
+            </h5>
+            <textarea
+              class="form-control"
+              placeholder="Add note..."
+              rows="1"
+            />
+            <p
+              class="infoText"
+            >
+              Not visible to customer
+            </p>
+          </div>
+        </div>
+        <div
+          class="formFooter modal-footer"
+        >
+          <button
+            class="focusable btn btn-primary"
+            tabindex="0"
+          >
+            Add order
+          </button>
+          <button
+            class="focusable ml-auto btn btn-secondary"
+            tabindex="0"
+            type="button"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;

@@ -18,6 +18,7 @@ import type {PhoneIntegration} from './phone'
 import type {SmsIntegration} from './sms'
 import type {TwitterIntegration} from './twitter'
 import type {SelfServiceIntegration} from './selfService'
+import type {BigCommerceIntegration} from './bigcommerce'
 
 export type {IntegrationDecoration} from './base'
 
@@ -49,6 +50,7 @@ export * from './phone'
 export * from './sms'
 export * from './twitter'
 export * from './selfService'
+export * from './bigcommerce'
 
 export type Integration =
     | EmailIntegration
@@ -71,3 +73,4 @@ export type Integration =
     | SmsIntegration
     | TwitterIntegration
     | SelfServiceIntegration
+    | BigCommerceIntegration

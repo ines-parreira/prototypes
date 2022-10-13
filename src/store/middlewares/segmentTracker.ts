@@ -49,6 +49,8 @@ export const logPageChange = () => {
 }
 
 export enum SegmentEvent {
+    BigCommerceCreateOrderCancel = 'bigcommerce/create-order/cancel',
+    BigCommerceCreateOrderOpen = 'bigcommerce/create-order/open',
     BookCallClicked = 'book-call-clicked',
     CustomerNoteEdited = 'customer-note-edited',
     DisplayAllEventsClicked = 'display-all-events-clicked',

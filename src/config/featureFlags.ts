@@ -14,4 +14,5 @@ export enum FeatureFlagKey {
     ElasticsearchSearchLoadTest = 'elasticsearch-search-load-test',
     SelfServiceLoopReturnsFlow = 'self-service-loop-returns-flow',
     RuleSuggestion = 'rule-suggestion',
+    BigCommerceCreateOrder = 'bigcommerce-create-order',
 }

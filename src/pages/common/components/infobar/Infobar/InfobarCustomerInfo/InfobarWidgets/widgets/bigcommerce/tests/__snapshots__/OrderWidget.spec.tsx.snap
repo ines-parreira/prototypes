@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Order <AfterTitle/> should match snapshot 1`] = `
+exports[`OrderWidget <AfterTitle/> should match snapshot 1`] = `
 <div>
   <div
     class="widgetField staticWidgetField"
@@ -35,11 +35,11 @@ exports[`Order <AfterTitle/> should match snapshot 1`] = `
 </div>
 `;
 
-exports[`Order <AfterTitle/> should not render because no integration id was provided 1`] = `<div />`;
+exports[`OrderWidget <AfterTitle/> should not render because no integration id was provided 1`] = `<div />`;
 
-exports[`Order <AfterTitle/> should not render because widgets are being edited 1`] = `<div />`;
+exports[`OrderWidget <AfterTitle/> should not render because widgets are being edited 1`] = `<div />`;
 
-exports[`Order <TitleWrapper/> should render default link 1`] = `
+exports[`OrderWidget <TitleWrapper/> should render default link 1`] = `
 <a
   href="https://store-pk360c6roo.mybigcommerce.com/manage/orders/2345"
   rel="noopener noreferrer"

@@ -20,6 +20,10 @@ import type {
     Edit_to_perform,
 } from 'constants/integrations/types/shopify'
 import {fetchEvents} from 'models/event/resources'
+import {
+    BigCommercePayload,
+    BigCommerceResponse,
+} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/types'
 
 type GorgiasApiOptions = {
     requestsCancellation?: boolean
@@ -289,6 +293,35 @@ export default class GorgiasApi {
             responseData?.data?.draftOrderCalculate?.calculatedDraftOrder
 
         return fromJS(calculatedDraftOrder) as Map<any, any>
+    }
+
+    async createBigCommerceCart(
+        integrationId: number,
+        payload: BigCommercePayload
+    ): Promise<BigCommerceResponse> {
+        const url = '/integrations/bigcommerce/order/cart/'
+        const response = await this._api.post<BigCommerceResponse>(
+            url,
+            payload,
+            {
+                params: {
+                    integration_id: integrationId,
+                },
+            }
+        )
+        return response.data
+    }
+
+    async deleteBigCommerceCart(integrationId: number, cartId: Maybe<string>) {
+        const url = '/integrations/bigcommerce/order/cart/'
+        if (!!cartId) {
+            await this._api.delete(url, {
+                params: {
+                    integration_id: integrationId,
+                    cart_id: cartId,
+                },
+            })
+        }
     }
 
     async calculateEditOrder(

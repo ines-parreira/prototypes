@@ -1,10 +1,12 @@
 import React, {ReactNode, useContext} from 'react'
 import {Map} from 'immutable'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import logo from 'assets/img/infobar/bigcommerce.svg'
 
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
@@ -13,6 +15,11 @@ import {CardHeaderTitle} from '../CardHeaderTitle'
 import {CardHeaderIcon} from '../CardHeaderIcon'
 import ExpandAllButton from '../ExpandAllButton'
 import {CardHeaderSubtitle} from '../CardHeaderSubtitle'
+import ButtonIconLabel from '../../../../../../button/ButtonIconLabel'
+import ActionButtonsGroup from '../ActionButtonsGroup'
+import {InfobarAction} from '../types'
+import {BigCommerceActionType, Customer as BigCommerceCustomer} from './types'
+import OrderModal from './OrderModal'
 
 export default function Customer() {
     return {
@@ -47,6 +54,43 @@ export function TitleWrapper({children, source}: TitleWrapperProps) {
         customerLink = `https://store-${storeHash}.mybigcommerce.com/manage/customers/${customerId}/edit`
     }
 
+    const bigCommerceCustomer: BigCommerceCustomer = {
+        id: source.get('id'),
+        email: source.get('email'),
+    }
+
+    let actions: Array<InfobarAction> = []
+    const bigcommerceCreateOrderAccessFlags =
+        useFlags()[FeatureFlagKey.BigCommerceCreateOrder]
+    if (bigcommerceCreateOrderAccessFlags) {
+        actions = [
+            {
+                key: 'createOrder',
+                options: [
+                    {
+                        value: BigCommerceActionType.CreateOrder,
+                        label: 'Add order',
+                        parameters: [{name: 'cart_id', type: 'hidden'}],
+                    },
+                ],
+                title: 'Add order',
+                child: (
+                    <>
+                        <ButtonIconLabel icon="add" /> Create order
+                    </>
+                ),
+                modal: OrderModal,
+                modalData: {
+                    actionName: BigCommerceActionType.CreateOrder,
+                    customer: bigCommerceCustomer,
+                },
+            },
+        ]
+    }
+    const payload = {
+        customer_id: source.get('id'),
+    }
+
     return (
         <>
             <ExpandAllButton />
@@ -68,6 +112,9 @@ export function TitleWrapper({children, source}: TitleWrapperProps) {
                     </a>
                 </CardHeaderSubtitle>
             </CardHeaderTitle>
+            {actions && (
+                <ActionButtonsGroup actions={actions} payload={payload} />
+            )}
         </>
     )
 }

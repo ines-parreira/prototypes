@@ -9,10 +9,10 @@ import {DatetimeLabel} from 'pages/common/utils/labels'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import MoneyAmount from '../MoneyAmount'
-import {StaticField} from '../StaticField'
+import {StaticField} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/StaticField'
+import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 
-export default function Order() {
+export default function OrderWidget() {
     return {
         AfterTitle,
         TitleWrapper,

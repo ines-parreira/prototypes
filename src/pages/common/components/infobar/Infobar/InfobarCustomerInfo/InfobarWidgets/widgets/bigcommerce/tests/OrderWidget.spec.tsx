@@ -7,12 +7,12 @@ import configureMockStore from 'redux-mock-store'
 
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
-import {AfterTitle, TitleWrapper} from '../Order'
+import {AfterTitle, TitleWrapper} from '../OrderWidget'
 
 const mockStore = configureMockStore([thunk])
 const integrationContextData = {integration: fromJS({}), integrationId: 1}
 
-describe('Order', () => {
+describe('OrderWidget', () => {
     describe('<AfterTitle/>', () => {
         const minProps = {
             source: fromJS({}),
