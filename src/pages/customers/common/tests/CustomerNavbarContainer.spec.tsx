@@ -18,7 +18,7 @@ jest.mock(
 )
 
 jest.mock(
-    '../../../common/components/ViewNavbarView/ViewNavbarView',
+    '../../../common/components/ViewNavbarView',
     () =>
         ({settingType, isLoading}: ComponentProps<typeof ViewNavbarView>) =>
             (

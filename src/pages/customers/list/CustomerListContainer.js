@@ -1,42 +1,33 @@
-import React, {Component} from 'react'
-import {RouteComponentProps, withRouter} from 'react-router-dom'
-import {connect, ConnectedProps} from 'react-redux'
+import React from 'react'
+import {withRouter} from 'react-router-dom'
+import PropTypes from 'prop-types'
+import ImmutablePropTypes from 'react-immutable-proptypes'
+import {connect} from 'react-redux'
 import DocumentTitle from 'react-document-title'
 
-import {RootState} from 'state/types'
-import {compactInteger} from 'utils'
-import {isCreationUrl, isSearchUrl} from 'pages/common/utils/url'
-import {getCustomers} from 'state/customers/selectors'
+import {compactInteger} from '../../../utils.ts'
+import {isCreationUrl, isSearchUrl} from '../../common/utils/url.ts'
+import {getCustomers} from '../../../state/customers/selectors.ts'
 
-import * as viewsActions from 'state/views/actions'
-import * as viewsSelectors from 'state/views/selectors'
+import * as viewsActions from '../../../state/views/actions.ts'
+import * as viewsSelectors from '../../../state/views/selectors.ts'
 
-import ViewTable from 'pages/common/components/ViewTable/ViewTable'
-import Button from 'pages/common/components/button/Button'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import ViewTable from '../../common/components/ViewTable/ViewTable.tsx'
 import CustomerForm from '../common/components/CustomerForm'
+import Button from '../../common/components/button/Button.tsx'
+import Modal from '../../common/components/modal/Modal'
+import ModalHeader from '../../common/components/modal/ModalHeader'
 
-import CustomerListActions from './components/CustomerListActions'
+import CustomerListActions from './components/CustomerListActions.tsx'
 
-type OwnProps = RouteComponentProps<{viewId: string}>
-
-type Props = OwnProps & ConnectedProps<typeof connector>
-
-type State = {
-    isSearch: boolean
-    isUpdate: boolean
-    isCustomerFormOpen: boolean
-}
-
-class CustomerListContainer extends Component<Props, State> {
-    state: State = {
+class CustomerListContainer extends React.Component {
+    state = {
         isSearch: false,
         isUpdate: true,
         isCustomerFormOpen: false,
     }
 
-    _setInitialState = (props: Props) => {
+    _setInitialState = (props) => {
         this.setState({
             // TODO(customers-migration): remove statements with `users` when we updated all links in our email templates.
             isSearch:
@@ -52,7 +43,7 @@ class CustomerListContainer extends Component<Props, State> {
         this._setInitialState(this.props)
     }
 
-    componentWillReceiveProps(nextProps: Props) {
+    componentWillReceiveProps(nextProps) {
         this._setInitialState(nextProps)
     }
 
@@ -132,7 +123,18 @@ class CustomerListContainer extends Component<Props, State> {
     }
 }
 
-const mapStateToProps = (state: RootState, ownProps: OwnProps) => {
+CustomerListContainer.propTypes = {
+    activeView: ImmutablePropTypes.map.isRequired,
+    hasActiveView: PropTypes.bool.isRequired,
+    location: PropTypes.object,
+    params: PropTypes.object,
+    urlViewId: PropTypes.string,
+    customers: PropTypes.object.isRequired,
+    views: PropTypes.object.isRequired,
+    fetchViewItems: PropTypes.func.isRequired,
+}
+
+const mapStateToProps = (state, ownProps) => {
     const urlViewId = ownProps.match.params.viewId
 
     return {
@@ -148,6 +150,6 @@ const mapDispatchToProps = {
     fetchViewItems: viewsActions.fetchViewItems,
 }
 
-const connector = connect(mapStateToProps, mapDispatchToProps)
-
-export default withRouter(connector(CustomerListContainer))
+export default withRouter(
+    connect(mapStateToProps, mapDispatchToProps)(CustomerListContainer)
+)

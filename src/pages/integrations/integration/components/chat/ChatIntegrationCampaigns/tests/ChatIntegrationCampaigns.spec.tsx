@@ -1,24 +1,17 @@
-import React, {ComponentProps} from 'react'
+import React from 'react'
 import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
-import ChatIntegrationCampaigns, {
-    ChatIntegrationCampaignsContainer,
-} from '../ChatIntegrationCampaigns'
+import ChatIntegrationCampaigns from '../ChatIntegrationCampaigns'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
 describe('ChatIntegrationCampaigns component', () => {
     let store = mockStore({})
-
-    const minProps: ComponentProps<typeof ChatIntegrationCampaignsContainer> = {
-        integration: fromJS({}),
-        updateCampaign: jest.fn(),
-    }
 
     beforeEach(() => {
         store = mockStore({})
@@ -28,7 +21,6 @@ describe('ChatIntegrationCampaigns component', () => {
         const {container} = render(
             <Provider store={store}>
                 <ChatIntegrationCampaigns
-                    {...minProps}
                     integration={fromJS({
                         id: 118,
                         type: 'smooch_inside',
@@ -48,7 +40,6 @@ describe('ChatIntegrationCampaigns component', () => {
         const {container} = render(
             <Provider store={store}>
                 <ChatIntegrationCampaigns
-                    {...minProps}
                     integration={fromJS({
                         id: 118,
                         type: 'smooch_inside',

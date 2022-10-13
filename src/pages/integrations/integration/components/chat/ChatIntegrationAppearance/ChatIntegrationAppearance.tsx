@@ -1,5 +1,5 @@
 import {AxiosError} from 'axios'
-import React, {Component, SyntheticEvent} from 'react'
+import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map} from 'immutable'
@@ -101,7 +101,7 @@ type State = {
 }
 
 export class ChatIntegrationAppearance extends Component<Props, State> {
-    state: State = _merge(
+    state = _merge(
         {
             isCopied: false,
             isShopifyInstructions: true,
@@ -168,7 +168,7 @@ export class ChatIntegrationAppearance extends Component<Props, State> {
         return loading.get('updateIntegration') === integration.get('id', true)
     }
 
-    _handleSubmit = (event: SyntheticEvent) => {
+    _handleSubmit = (event: React.SyntheticEvent) => {
         event.preventDefault()
         const form: {
             name: string

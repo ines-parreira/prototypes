@@ -1,24 +1,36 @@
-import React, {ComponentProps} from 'react'
+import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
+import {ChatIntegrationAppearance} from '../ChatIntegrationAppearance.tsx'
+
+import configureStore from 'store/configureStore.ts'
 import {
     SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_MEMBERS,
     SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
     SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
-} from 'config/integrations/smooch_inside'
-import {SMOOCH_INSIDE_INTEGRATION_TYPE} from 'constants/integration'
-
-import {ChatIntegrationAppearance} from '../ChatIntegrationAppearance'
+} from 'config/integrations/smooch_inside.ts'
+import {
+    SHOPIFY_INTEGRATION_TYPE,
+    SMOOCH_INSIDE_INTEGRATION_TYPE,
+} from 'constants/integration.ts'
 
 describe('<ChatIntegrationAppearance/>', () => {
-    const minProps: ComponentProps<typeof ChatIntegrationAppearance> = {
-        integration: fromJS({}),
-        isUpdate: false,
-        loading: fromJS({}),
-        shopifyIntegrations: fromJS([]),
-        deleteIntegration: jest.fn(),
-        updateOrCreateIntegration: jest.fn(),
+    const minStore = {
+        integrations: fromJS({
+            integrations: [
+                {
+                    id: 1,
+                    name: 'mylittleintegration',
+                    type: SHOPIFY_INTEGRATION_TYPE,
+                },
+            ],
+        }),
+    }
+
+    const minProps = {
+        store: configureStore(minStore),
+        actions: {},
     }
 
     beforeEach(() => {
@@ -31,6 +43,9 @@ describe('<ChatIntegrationAppearance/>', () => {
                 <ChatIntegrationAppearance
                     {...minProps}
                     loading={fromJS({updateIntegration: false})}
+                    integration={fromJS({})}
+                    currentUser={fromJS({})}
+                    isUpdate={false}
                 />
             )
 
@@ -50,6 +65,7 @@ describe('<ChatIntegrationAppearance/>', () => {
                             language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
                         },
                     })}
+                    currentUser={fromJS({})}
                     isUpdate={true}
                 />
             )
@@ -70,6 +86,7 @@ describe('<ChatIntegrationAppearance/>', () => {
                             language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
                         },
                     })}
+                    currentUser={fromJS({})}
                     isUpdate={true}
                 />
             )
@@ -98,6 +115,7 @@ describe('<ChatIntegrationAppearance/>', () => {
                                 language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
                             },
                         })}
+                        currentUser={fromJS({})}
                         isUpdate={true}
                     />
                 )
@@ -128,6 +146,7 @@ describe('<ChatIntegrationAppearance/>', () => {
                                 language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
                             },
                         })}
+                        currentUser={fromJS({})}
                         isUpdate={true}
                     />
                 )
@@ -157,6 +176,7 @@ describe('<ChatIntegrationAppearance/>', () => {
                                 language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
                             },
                         })}
+                        currentUser={fromJS({})}
                         isUpdate={true}
                     />
                 )

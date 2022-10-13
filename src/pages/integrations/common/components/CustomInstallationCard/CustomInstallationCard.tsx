@@ -20,7 +20,7 @@ type State = {
 }
 
 export default class CustomInstallationCard extends Component<Props, State> {
-    state: State = {
+    state = {
         isCopied: false,
     }
 

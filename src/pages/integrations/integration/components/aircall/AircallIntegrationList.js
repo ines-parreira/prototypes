@@ -1,18 +1,17 @@
-import React, {Component} from 'react'
-import {Map, List} from 'immutable'
+import React from 'react'
+import PropTypes from 'prop-types'
 
-import {IntegrationType} from 'models/integration/constants'
-import history from 'pages/history'
+import IntegrationList from '../IntegrationList.tsx'
+import history from '../../../../history.ts'
 
-import IntegrationList from '../IntegrationList'
+import AircallIntegrationListItem from './AircallIntegrationListItem.tsx'
 
-import AircallIntegrationListItem from './AircallIntegrationListItem'
+export default class AircallIntegrationList extends React.Component {
+    static propTypes = {
+        integrations: PropTypes.object.isRequired,
+        loading: PropTypes.object.isRequired,
+    }
 
-type Props = {
-    integrations: List<Map<any, any>>
-    loading: Map<any, any>
-}
-export default class AircallIntegrationList extends Component<Props> {
     render() {
         const {integrations, loading} = this.props
 
@@ -24,7 +23,7 @@ export default class AircallIntegrationList extends Component<Props> {
             </span>
         )
 
-        const integrationToItemDisplay = (integration: Map<any, any>) => {
+        const integrationToItemDisplay = (integration) => {
             return (
                 <AircallIntegrationListItem
                     key={integration.get('id')}
@@ -35,14 +34,11 @@ export default class AircallIntegrationList extends Component<Props> {
 
         return (
             <IntegrationList
-                integrationType={IntegrationType.Aircall}
+                integrationType="aircall"
                 longTypeDescription={longTypeDescription}
-                integrations={
-                    integrations.filter(
-                        (integration) =>
-                            integration!.get('type') === IntegrationType.Aircall
-                    ) as List<Map<any, any>>
-                }
+                integrations={integrations.filter(
+                    (v) => v.get('type') === 'aircall'
+                )}
                 createIntegration={() =>
                     history.push('/app/settings/integrations/aircall/new')
                 }

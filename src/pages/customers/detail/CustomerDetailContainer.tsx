@@ -7,7 +7,7 @@ import {TicketChannel} from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
 import {fetchCustomer, fetchCustomerHistory} from 'state/customers/actions'
 import Loader from 'pages/common/components/Loader/Loader'
-import CustomerForm from 'pages/customers/common/components/CustomerForm'
+import CustomerForm from 'pages/customers/common/components/CustomerForm.js'
 import Timeline from 'pages/common/components/timeline/Timeline'
 import {Customer} from 'state/customers/types'
 import {

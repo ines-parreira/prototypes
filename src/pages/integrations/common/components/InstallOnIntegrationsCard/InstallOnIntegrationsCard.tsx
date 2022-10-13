@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React from 'react'
 import {Card, CardBody} from 'reactstrap'
 import {fromJS, List, Map} from 'immutable'
 import moment from 'moment'
@@ -34,11 +34,11 @@ type State = {
     showAll: boolean
 }
 
-export class InstallOnIntegrationsCardContainer extends Component<
+export class InstallOnIntegrationsCardContainer extends React.Component<
     Props,
     State
 > {
-    state: State = {
+    state = {
         integrationLoading: null,
         showAll: false,
     }

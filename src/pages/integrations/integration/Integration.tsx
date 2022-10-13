@@ -31,8 +31,8 @@ import useAppDispatch from 'hooks/useAppDispatch'
 
 import history from '../../history'
 
-import AircallIntegrationList from './components/aircall/AircallIntegrationList'
-import AircallIntegrationCreate from './components/aircall/AircallIntegrationCreate'
+import AircallIntegrationList from './components/aircall/AircallIntegrationList.js'
+import AircallIntegrationCreate from './components/aircall/AircallIntegrationCreate.js'
 
 import OutlookIntegrationSetup from './components/email/outlook/OutlookIntegrationSetup/OutlookIntegrationSetup'
 

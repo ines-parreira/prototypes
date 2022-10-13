@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import {Link} from 'react-router-dom'
-import {connect, ConnectedProps} from 'react-redux'
+import {connect} from 'react-redux'
 import {
     Button,
     Breadcrumb,
@@ -15,21 +16,27 @@ import {
 } from 'reactstrap'
 import Clipboard from 'clipboard'
 
-import {RootState} from 'state/types'
-import {IntegrationType} from 'models/integration/constants'
-import PageHeader from 'pages/common/components/PageHeader'
-
-import * as integrationsSelectors from '../../../../../state/integrations/selectors'
+import * as integrationsSelectors from '../../../../../state/integrations/selectors.ts'
+import PageHeader from '../../../../common/components/PageHeader.tsx'
 import css from '../../../../settings/settings.less'
 
-type Props = ConnectedProps<typeof connector>
+@connect((state) => {
+    const aircallAuthData = integrationsSelectors.getAuthData('aircall')(state)
 
-type State = {
-    isCopied: boolean
-    isCopiedNew: boolean
-}
-export class AircallIntegrationCreate extends Component<Props, State> {
-    state: State = {
+    return {
+        webhookUrl: aircallAuthData.get('webhook_url'),
+        webhookUrlNew: aircallAuthData.get('webhook_url_new'),
+        showOldUrl: aircallAuthData.get('show_old_url'),
+    }
+})
+export default class AircallIntegrationCreate extends Component {
+    static propTypes = {
+        webhookUrl: PropTypes.string.isRequired,
+        webhookUrlNew: PropTypes.string.isRequired,
+        showOldUrl: PropTypes.bool.isRequired,
+    }
+
+    state = {
         isCopied: false,
         isCopiedNew: false,
     }
@@ -205,17 +212,3 @@ export class AircallIntegrationCreate extends Component<Props, State> {
         )
     }
 }
-
-const connector = connect((state: RootState) => {
-    const aircallAuthData = integrationsSelectors.getAuthData(
-        IntegrationType.Aircall
-    )(state)
-
-    return {
-        webhookUrl: aircallAuthData.get('webhook_url'),
-        webhookUrlNew: aircallAuthData.get('webhook_url_new'),
-        showOldUrl: aircallAuthData.get('show_old_url'),
-    }
-})
-
-export default connector(AircallIntegrationCreate)
