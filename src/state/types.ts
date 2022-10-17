@@ -22,7 +22,7 @@ import rootReducer from './reducers'
 import {HTTPIntegrationEvent} from './HTTPIntegrationEvents/types'
 import {Rule, RulePriority, RuleOperation} from './rules/types'
 import {Tag} from './tags/types'
-import {Customer} from './customers/types'
+import {Customer, CustomerExternalData} from './customers/types'
 import {UIState} from './ui/reducers'
 import {Widget, WidgetContextType} from './widgets/types'
 import {TwilioState} from './twilio/types'
@@ -179,6 +179,7 @@ export type GorgiasAction = {
     item?: Map<any, any>
     attachments?: List<any>
     cartId?: string
+    externalData?: CustomerExternalData
 }
 
 export type CurrentUser = Map<any, any>

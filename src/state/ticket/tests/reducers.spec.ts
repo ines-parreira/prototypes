@@ -855,7 +855,7 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('should handle MERGE_TICKET', () => {
+    describe('handle MERGE_TICKET', () => {
         const ticket = fromJS({
             id: 1,
             subject: 'title',
@@ -882,94 +882,253 @@ describe('ticket reducers', () => {
             },
         }) as Map<any, any>
 
-        // merge ticket and order messages
-        expect(
-            reducer(initialState, {
-                type: types.MERGE_TICKET,
-                ticket,
-            }).toJS()
-        ).toMatchSnapshot()
+        it('should merge ticket and order messages', () => {
+            expect(
+                reducer(initialState, {
+                    type: types.MERGE_TICKET,
+                    ticket,
+                }).toJS()
+            ).toMatchSnapshot()
+        })
 
-        // remove pending message
-        expect(
-            reducer(
-                initialState.mergeDeep(ticket).mergeDeep({
-                    _internal: {
-                        pendingMessages: [
+        it('should remove pending message', () => {
+            expect(
+                reducer(
+                    initialState.mergeDeep(ticket).mergeDeep({
+                        _internal: {
+                            pendingMessages: [
+                                {
+                                    body_text: 'hello',
+                                    body_html: '<div>hello</div>',
+                                    channel: 'email',
+                                },
+                            ],
+                        },
+                    }),
+                    {
+                        type: types.MERGE_TICKET,
+                        ticket,
+                        messagesDifference: 1,
+                    } as unknown as GorgiasAction
+                ).toJS()
+            ).toMatchSnapshot()
+        })
+
+        it('should keep audit log events', () => {
+            expect(
+                reducer(
+                    initialState.set(
+                        'events',
+                        fromJS([
                             {
-                                body_text: 'hello',
-                                body_html: '<div>hello</div>',
-                                channel: 'email',
+                                object_id: ticket.get('id'),
+                                type: TICKET_EVENT_TYPES.TicketCreated,
                             },
-                        ],
-                    },
-                }),
-                {
-                    type: types.MERGE_TICKET,
-                    ticket,
-                    messagesDifference: 1,
-                } as unknown as GorgiasAction
-            ).toJS()
-        ).toMatchSnapshot()
+                            {
+                                object_id: ticket.get('id'),
+                                type: TICKET_EVENT_TYPES.TicketClosed,
+                            },
+                            {
+                                object_id: ticket.get('id'),
+                                type: TICKET_EVENT_TYPES.TicketReopened,
+                            },
+                        ])
+                    ),
+                    {
+                        type: types.MERGE_TICKET,
+                        ticket,
+                    }
+                ).toJS()
+            ).toMatchSnapshot()
+        })
 
-        // keep audit log events
-        expect(
-            reducer(
-                initialState.set(
-                    'events',
-                    fromJS([
-                        {
-                            object_id: ticket.get('id'),
-                            type: TICKET_EVENT_TYPES.TicketCreated,
+        it('should keep old ticket.customer.external_data', () => {
+            expect(
+                reducer(
+                    initialState.mergeDeep(ticket).mergeDeep({
+                        customer: {
+                            external_data: {
+                                'my-awesome-app-id-1': {
+                                    badge: 'Best customer',
+                                },
+                            },
                         },
-                        {
-                            object_id: ticket.get('id'),
-                            type: TICKET_EVENT_TYPES.TicketClosed,
+                    }),
+                    {
+                        type: types.MERGE_TICKET,
+                        ticket,
+                        messagesDifference: 1,
+                    } as unknown as GorgiasAction
+                ).toJS()
+            ).toMatchSnapshot()
+        })
+
+        it('should update ticket.customer.external_data', () => {
+            expect(
+                reducer(
+                    initialState.mergeDeep(ticket).mergeDeep({
+                        customer: {
+                            external_data: {
+                                'my-awesome-app-id-1': {
+                                    badge: 'Best customer',
+                                },
+                            },
                         },
-                        {
-                            object_id: ticket.get('id'),
-                            type: TICKET_EVENT_TYPES.TicketReopened,
-                        },
-                    ])
-                ),
-                {
-                    type: types.MERGE_TICKET,
-                    ticket,
-                }
-            ).toJS()
-        ).toMatchSnapshot()
+                    }),
+                    {
+                        type: types.MERGE_TICKET,
+                        ticket: ticket.mergeDeep({
+                            customer: {
+                                external_data: {
+                                    'my-awesome-app-id-1': {
+                                        badge: 'WORST customer',
+                                    },
+                                    'my-awesome-app-id-2': {
+                                        points: 500,
+                                    },
+                                },
+                            },
+                        }),
+                        messagesDifference: 1,
+                    } as unknown as GorgiasAction
+                ).toJS()
+            ).toMatchSnapshot()
+        })
     })
 
-    it('should handle MERGE_CUSTOMER', () => {
-        // should do nothing since there is no customer in state for now
-        expect(
-            reducer(initialState, {
-                type: types.MERGE_CUSTOMER,
-                customer: {
-                    id: 1,
-                    name: 'Alex',
-                },
-            } as unknown as GorgiasAction).toJS()
-        ).toMatchSnapshot()
-
-        // should replace customer
-        expect(
-            reducer(
-                initialState.mergeDeep({
-                    customer: {
-                        id: 1,
-                        name: 'Romain',
-                    },
-                }),
-                {
+    describe('handle MERGE_CUSTOMER', () => {
+        it('should do nothing since there is no customer in state for now', () => {
+            expect(
+                reducer(initialState, {
                     type: types.MERGE_CUSTOMER,
                     customer: {
                         id: 1,
                         name: 'Alex',
                     },
-                } as unknown as GorgiasAction
-            ).toJS()
-        ).toMatchSnapshot()
+                } as unknown as GorgiasAction).toJS()
+            ).toMatchSnapshot()
+        })
+        it('should update customer and no change to the external_data as there is no old external_data', () => {
+            expect(
+                reducer(
+                    initialState.mergeDeep({
+                        customer: {
+                            id: 1,
+                            name: 'Romain',
+                        },
+                    }),
+                    {
+                        type: types.MERGE_CUSTOMER,
+                        customer: {
+                            id: 1,
+                            name: 'Alex',
+                        },
+                    } as unknown as GorgiasAction
+                ).toJS()
+            ).toMatchSnapshot()
+        })
+
+        it('should update customer keeping the old external_data', () => {
+            expect(
+                reducer(
+                    initialState.mergeDeep({
+                        customer: {
+                            id: 1,
+                            name: 'Romain',
+                            external_data: {
+                                'my-awesome-app-id-1': {
+                                    badge: 'Best customer',
+                                },
+                            },
+                        },
+                    }),
+                    {
+                        type: types.MERGE_CUSTOMER,
+                        customer: {
+                            id: 1,
+                            name: 'Alex',
+                        },
+                    } as unknown as GorgiasAction
+                ).toJS()
+            ).toMatchSnapshot()
+        })
+
+        it('should update customer and the external_data', () => {
+            expect(
+                reducer(
+                    initialState.mergeDeep({
+                        customer: {
+                            id: 1,
+                            name: 'Romain',
+                            external_data: {
+                                'my-awesome-app-id-1': {
+                                    badge: 'Best customer',
+                                },
+                            },
+                        },
+                    }),
+                    {
+                        type: types.MERGE_CUSTOMER,
+                        customer: {
+                            id: 1,
+                            name: 'Alex',
+                            external_data: {
+                                'my-awesome-app-id-1': {
+                                    badge: 'WORST customer',
+                                },
+                                'my-awesome-app-id-2': {
+                                    points: 500,
+                                },
+                            },
+                        },
+                    } as unknown as GorgiasAction
+                ).toJS()
+            ).toMatchSnapshot()
+        })
+    })
+
+    describe('handle MERGE_CUSTOMER_EXTERNAL_DATA', () => {
+        it('should do nothing since there is no customer in state', () => {
+            expect(
+                reducer(initialState, {
+                    type: types.MERGE_CUSTOMER_EXTERNAL_DATA,
+                    customer: {
+                        id: 1,
+                        name: 'Alex',
+                    },
+                } as unknown as GorgiasAction).toJS()
+            ).toMatchSnapshot()
+        })
+
+        it('should update the external_data of the customer', () => {
+            expect(
+                reducer(
+                    initialState.mergeDeep({
+                        customer: {
+                            id: 1,
+                            name: 'Romain',
+                            external_data: {
+                                'my-awesome-app-id-1': {
+                                    badge: 'Best customer',
+                                },
+                            },
+                        },
+                    }),
+                    {
+                        type: types.MERGE_CUSTOMER_EXTERNAL_DATA,
+                        customerId: 1,
+                        externalData: {
+                            'my-awesome-app-id-1': {
+                                badge: 'WORST customer',
+                            },
+                            'my-awesome-app-id-2': {
+                                points: 500,
+                            },
+                        },
+                    } as unknown as GorgiasAction
+                ).toJS()
+            ).toMatchSnapshot()
+        })
     })
 
     it('should handle DELETE_TICKET_PENDING_MESSAGE', () => {

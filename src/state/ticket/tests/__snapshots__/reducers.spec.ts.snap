@@ -392,6 +392,654 @@ Object {
 }
 `;
 
+exports[`ticket reducers handle MERGE_CUSTOMER should do nothing since there is no customer in state for now 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "setSpam": false,
+      "setTrash": false,
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayAuditLogEvents": false,
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_team": null,
+  "assignee_user": null,
+  "channel": "email",
+  "customer": null,
+  "events": Array [],
+  "is_unread": false,
+  "messages": Array [],
+  "priority": "normal",
+  "reply_options": Object {
+    "email": Object {
+      "answerable": true,
+    },
+    "internal-note": Object {
+      "answerable": true,
+    },
+  },
+  "spam": false,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "open",
+  "subject": "",
+  "tags": Array [],
+  "trashed_datetime": null,
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducers handle MERGE_CUSTOMER should update customer and no change to the external_data as there is no old external_data 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "setSpam": false,
+      "setTrash": false,
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayAuditLogEvents": false,
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_team": null,
+  "assignee_user": null,
+  "channel": "email",
+  "customer": Object {
+    "id": 1,
+    "name": "Alex",
+  },
+  "events": Array [],
+  "is_unread": false,
+  "messages": Array [],
+  "priority": "normal",
+  "reply_options": Object {
+    "email": Object {
+      "answerable": true,
+    },
+    "internal-note": Object {
+      "answerable": true,
+    },
+  },
+  "spam": false,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "open",
+  "subject": "",
+  "tags": Array [],
+  "trashed_datetime": null,
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducers handle MERGE_CUSTOMER should update customer and the external_data 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "setSpam": false,
+      "setTrash": false,
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayAuditLogEvents": false,
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_team": null,
+  "assignee_user": null,
+  "channel": "email",
+  "customer": Object {
+    "external_data": Object {
+      "my-awesome-app-id-1": Object {
+        "badge": "WORST customer",
+      },
+      "my-awesome-app-id-2": Object {
+        "points": 500,
+      },
+    },
+    "id": 1,
+    "name": "Alex",
+  },
+  "events": Array [],
+  "is_unread": false,
+  "messages": Array [],
+  "priority": "normal",
+  "reply_options": Object {
+    "email": Object {
+      "answerable": true,
+    },
+    "internal-note": Object {
+      "answerable": true,
+    },
+  },
+  "spam": false,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "open",
+  "subject": "",
+  "tags": Array [],
+  "trashed_datetime": null,
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducers handle MERGE_CUSTOMER should update customer keeping the old external_data 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "setSpam": false,
+      "setTrash": false,
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayAuditLogEvents": false,
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_team": null,
+  "assignee_user": null,
+  "channel": "email",
+  "customer": Object {
+    "external_data": Object {
+      "my-awesome-app-id-1": Object {
+        "badge": "Best customer",
+      },
+    },
+    "id": 1,
+    "name": "Alex",
+  },
+  "events": Array [],
+  "is_unread": false,
+  "messages": Array [],
+  "priority": "normal",
+  "reply_options": Object {
+    "email": Object {
+      "answerable": true,
+    },
+    "internal-note": Object {
+      "answerable": true,
+    },
+  },
+  "spam": false,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "open",
+  "subject": "",
+  "tags": Array [],
+  "trashed_datetime": null,
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducers handle MERGE_CUSTOMER_EXTERNAL_DATA should do nothing since there is no customer in state 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "setSpam": false,
+      "setTrash": false,
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayAuditLogEvents": false,
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_team": null,
+  "assignee_user": null,
+  "channel": "email",
+  "customer": null,
+  "events": Array [],
+  "is_unread": false,
+  "messages": Array [],
+  "priority": "normal",
+  "reply_options": Object {
+    "email": Object {
+      "answerable": true,
+    },
+    "internal-note": Object {
+      "answerable": true,
+    },
+  },
+  "spam": false,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "open",
+  "subject": "",
+  "tags": Array [],
+  "trashed_datetime": null,
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducers handle MERGE_CUSTOMER_EXTERNAL_DATA should update the external_data of the customer 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "setSpam": false,
+      "setTrash": false,
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayAuditLogEvents": false,
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_team": null,
+  "assignee_user": null,
+  "channel": "email",
+  "customer": Object {
+    "external_data": Object {
+      "my-awesome-app-id-1": Object {
+        "badge": "WORST customer",
+      },
+      "my-awesome-app-id-2": Object {
+        "points": 500,
+      },
+    },
+    "id": 1,
+    "name": "Romain",
+  },
+  "events": Array [],
+  "is_unread": false,
+  "messages": Array [],
+  "priority": "normal",
+  "reply_options": Object {
+    "email": Object {
+      "answerable": true,
+    },
+    "internal-note": Object {
+      "answerable": true,
+    },
+  },
+  "spam": false,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "open",
+  "subject": "",
+  "tags": Array [],
+  "trashed_datetime": null,
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducers handle MERGE_TICKET should keep audit log events 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "setSpam": false,
+      "setTrash": false,
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayAuditLogEvents": false,
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_team": null,
+  "assignee_user": null,
+  "channel": "email",
+  "customer": Object {
+    "data": Object {
+      "hello": "world!",
+    },
+    "id": 1,
+  },
+  "events": Array [
+    Object {
+      "object_id": 1,
+      "type": "ticket-created",
+    },
+    Object {
+      "object_id": 1,
+      "type": "ticket-closed",
+    },
+    Object {
+      "object_id": 1,
+      "type": "ticket-reopened",
+    },
+  ],
+  "id": 1,
+  "is_unread": false,
+  "messages": Array [
+    Object {
+      "body_html": "<div>hi</div>",
+      "body_text": "hi",
+      "channel": "email",
+      "created_datetime": "2017-07-28T22:00:00",
+      "id": 1,
+    },
+    Object {
+      "body_html": "<div>hello</div>",
+      "body_text": "hello",
+      "channel": "email",
+      "created_datetime": "2017-07-29T22:00:00",
+      "id": 2,
+    },
+  ],
+  "priority": "normal",
+  "reply_options": Object {
+    "email": Object {
+      "answerable": true,
+    },
+    "internal-note": Object {
+      "answerable": true,
+    },
+  },
+  "spam": false,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "open",
+  "subject": "title",
+  "tags": Array [],
+  "trashed_datetime": null,
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducers handle MERGE_TICKET should keep old ticket.customer.external_data 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "setSpam": false,
+      "setTrash": false,
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayAuditLogEvents": false,
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_team": null,
+  "assignee_user": null,
+  "channel": "email",
+  "customer": Object {
+    "data": Object {
+      "hello": "world!",
+    },
+    "external_data": Object {
+      "my-awesome-app-id-1": Object {
+        "badge": "Best customer",
+      },
+    },
+    "id": 1,
+  },
+  "events": Array [],
+  "id": 1,
+  "is_unread": false,
+  "messages": Array [
+    Object {
+      "body_html": "<div>hi</div>",
+      "body_text": "hi",
+      "channel": "email",
+      "created_datetime": "2017-07-28T22:00:00",
+      "id": 1,
+    },
+    Object {
+      "body_html": "<div>hello</div>",
+      "body_text": "hello",
+      "channel": "email",
+      "created_datetime": "2017-07-29T22:00:00",
+      "id": 2,
+    },
+  ],
+  "priority": "normal",
+  "reply_options": Object {
+    "email": Object {
+      "answerable": true,
+    },
+    "internal-note": Object {
+      "answerable": true,
+    },
+  },
+  "spam": false,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "open",
+  "subject": "title",
+  "tags": Array [],
+  "trashed_datetime": null,
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducers handle MERGE_TICKET should merge ticket and order messages 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "setSpam": false,
+      "setTrash": false,
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayAuditLogEvents": false,
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_team": null,
+  "assignee_user": null,
+  "channel": "email",
+  "customer": Object {
+    "data": Object {
+      "hello": "world!",
+    },
+    "id": 1,
+  },
+  "events": Array [],
+  "id": 1,
+  "is_unread": false,
+  "messages": Array [
+    Object {
+      "body_html": "<div>hi</div>",
+      "body_text": "hi",
+      "channel": "email",
+      "created_datetime": "2017-07-28T22:00:00",
+      "id": 1,
+    },
+    Object {
+      "body_html": "<div>hello</div>",
+      "body_text": "hello",
+      "channel": "email",
+      "created_datetime": "2017-07-29T22:00:00",
+      "id": 2,
+    },
+  ],
+  "priority": "normal",
+  "reply_options": Object {
+    "email": Object {
+      "answerable": true,
+    },
+    "internal-note": Object {
+      "answerable": true,
+    },
+  },
+  "spam": false,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "open",
+  "subject": "title",
+  "tags": Array [],
+  "trashed_datetime": null,
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducers handle MERGE_TICKET should remove pending message 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "setSpam": false,
+      "setTrash": false,
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayAuditLogEvents": false,
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_team": null,
+  "assignee_user": null,
+  "channel": "email",
+  "customer": Object {
+    "data": Object {
+      "hello": "world!",
+    },
+    "id": 1,
+  },
+  "events": Array [],
+  "id": 1,
+  "is_unread": false,
+  "messages": Array [
+    Object {
+      "body_html": "<div>hi</div>",
+      "body_text": "hi",
+      "channel": "email",
+      "created_datetime": "2017-07-28T22:00:00",
+      "id": 1,
+    },
+    Object {
+      "body_html": "<div>hello</div>",
+      "body_text": "hello",
+      "channel": "email",
+      "created_datetime": "2017-07-29T22:00:00",
+      "id": 2,
+    },
+  ],
+  "priority": "normal",
+  "reply_options": Object {
+    "email": Object {
+      "answerable": true,
+    },
+    "internal-note": Object {
+      "answerable": true,
+    },
+  },
+  "spam": false,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "open",
+  "subject": "title",
+  "tags": Array [],
+  "trashed_datetime": null,
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducers handle MERGE_TICKET should update ticket.customer.external_data 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "setSpam": false,
+      "setTrash": false,
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayAuditLogEvents": false,
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_team": null,
+  "assignee_user": null,
+  "channel": "email",
+  "customer": Object {
+    "data": Object {
+      "hello": "world!",
+    },
+    "external_data": Object {
+      "my-awesome-app-id-1": Object {
+        "badge": "WORST customer",
+      },
+      "my-awesome-app-id-2": Object {
+        "points": 500,
+      },
+    },
+    "id": 1,
+  },
+  "events": Array [],
+  "id": 1,
+  "is_unread": false,
+  "messages": Array [
+    Object {
+      "body_html": "<div>hi</div>",
+      "body_text": "hi",
+      "channel": "email",
+      "created_datetime": "2017-07-28T22:00:00",
+      "id": 1,
+    },
+    Object {
+      "body_html": "<div>hello</div>",
+      "body_text": "hello",
+      "channel": "email",
+      "created_datetime": "2017-07-29T22:00:00",
+      "id": 2,
+    },
+  ],
+  "priority": "normal",
+  "reply_options": Object {
+    "email": Object {
+      "answerable": true,
+    },
+    "internal-note": Object {
+      "answerable": true,
+    },
+  },
+  "spam": false,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "open",
+  "subject": "title",
+  "tags": Array [],
+  "trashed_datetime": null,
+  "via": "helpdesk",
+}
+`;
+
 exports[`ticket reducers should handle ADD_TICKET_TAGS 1`] = `
 Object {
   "_internal": Object {
@@ -1197,97 +1845,6 @@ Object {
 }
 `;
 
-exports[`ticket reducers should handle MERGE_CUSTOMER 1`] = `
-Object {
-  "_internal": Object {
-    "displayHistory": false,
-    "loading": Object {
-      "deleteMessage": false,
-      "fetchTicket": false,
-      "setSpam": false,
-      "setTrash": false,
-    },
-    "pendingMessages": Array [],
-    "shouldDisplayAuditLogEvents": false,
-    "shouldDisplayHistoryOnNextPage": false,
-  },
-  "assignee_team": null,
-  "assignee_user": null,
-  "channel": "email",
-  "customer": null,
-  "events": Array [],
-  "is_unread": false,
-  "messages": Array [],
-  "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
-      "answerable": true,
-    },
-    "internal-note": Object {
-      "answerable": true,
-    },
-  },
-  "spam": false,
-  "state": Object {
-    "appliedMacro": null,
-    "dirty": false,
-    "latestEventDatetime": null,
-  },
-  "status": "open",
-  "subject": "",
-  "tags": Array [],
-  "trashed_datetime": null,
-  "via": "helpdesk",
-}
-`;
-
-exports[`ticket reducers should handle MERGE_CUSTOMER 2`] = `
-Object {
-  "_internal": Object {
-    "displayHistory": false,
-    "loading": Object {
-      "deleteMessage": false,
-      "fetchTicket": false,
-      "setSpam": false,
-      "setTrash": false,
-    },
-    "pendingMessages": Array [],
-    "shouldDisplayAuditLogEvents": false,
-    "shouldDisplayHistoryOnNextPage": false,
-  },
-  "assignee_team": null,
-  "assignee_user": null,
-  "channel": "email",
-  "customer": Object {
-    "id": 1,
-    "name": "Alex",
-  },
-  "events": Array [],
-  "is_unread": false,
-  "messages": Array [],
-  "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
-      "answerable": true,
-    },
-    "internal-note": Object {
-      "answerable": true,
-    },
-  },
-  "spam": false,
-  "state": Object {
-    "appliedMacro": null,
-    "dirty": false,
-    "latestEventDatetime": null,
-  },
-  "status": "open",
-  "subject": "",
-  "tags": Array [],
-  "trashed_datetime": null,
-  "via": "helpdesk",
-}
-`;
-
 exports[`ticket reducers should handle MERGE_CUSTOMERS_SUCCESS 1`] = `
 Object {
   "_internal": Object {
@@ -1373,214 +1930,6 @@ Object {
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
-  "trashed_datetime": null,
-  "via": "helpdesk",
-}
-`;
-
-exports[`ticket reducers should handle MERGE_TICKET 1`] = `
-Object {
-  "_internal": Object {
-    "displayHistory": false,
-    "loading": Object {
-      "deleteMessage": false,
-      "fetchTicket": false,
-      "setSpam": false,
-      "setTrash": false,
-    },
-    "pendingMessages": Array [],
-    "shouldDisplayAuditLogEvents": false,
-    "shouldDisplayHistoryOnNextPage": false,
-  },
-  "assignee_team": null,
-  "assignee_user": null,
-  "channel": "email",
-  "customer": Object {
-    "data": Object {
-      "hello": "world!",
-    },
-    "id": 1,
-  },
-  "events": Array [],
-  "id": 1,
-  "is_unread": false,
-  "messages": Array [
-    Object {
-      "body_html": "<div>hi</div>",
-      "body_text": "hi",
-      "channel": "email",
-      "created_datetime": "2017-07-28T22:00:00",
-      "id": 1,
-    },
-    Object {
-      "body_html": "<div>hello</div>",
-      "body_text": "hello",
-      "channel": "email",
-      "created_datetime": "2017-07-29T22:00:00",
-      "id": 2,
-    },
-  ],
-  "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
-      "answerable": true,
-    },
-    "internal-note": Object {
-      "answerable": true,
-    },
-  },
-  "spam": false,
-  "state": Object {
-    "appliedMacro": null,
-    "dirty": false,
-    "latestEventDatetime": null,
-  },
-  "status": "open",
-  "subject": "title",
-  "tags": Array [],
-  "trashed_datetime": null,
-  "via": "helpdesk",
-}
-`;
-
-exports[`ticket reducers should handle MERGE_TICKET 2`] = `
-Object {
-  "_internal": Object {
-    "displayHistory": false,
-    "loading": Object {
-      "deleteMessage": false,
-      "fetchTicket": false,
-      "setSpam": false,
-      "setTrash": false,
-    },
-    "pendingMessages": Array [],
-    "shouldDisplayAuditLogEvents": false,
-    "shouldDisplayHistoryOnNextPage": false,
-  },
-  "assignee_team": null,
-  "assignee_user": null,
-  "channel": "email",
-  "customer": Object {
-    "data": Object {
-      "hello": "world!",
-    },
-    "id": 1,
-  },
-  "events": Array [],
-  "id": 1,
-  "is_unread": false,
-  "messages": Array [
-    Object {
-      "body_html": "<div>hi</div>",
-      "body_text": "hi",
-      "channel": "email",
-      "created_datetime": "2017-07-28T22:00:00",
-      "id": 1,
-    },
-    Object {
-      "body_html": "<div>hello</div>",
-      "body_text": "hello",
-      "channel": "email",
-      "created_datetime": "2017-07-29T22:00:00",
-      "id": 2,
-    },
-  ],
-  "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
-      "answerable": true,
-    },
-    "internal-note": Object {
-      "answerable": true,
-    },
-  },
-  "spam": false,
-  "state": Object {
-    "appliedMacro": null,
-    "dirty": false,
-    "latestEventDatetime": null,
-  },
-  "status": "open",
-  "subject": "title",
-  "tags": Array [],
-  "trashed_datetime": null,
-  "via": "helpdesk",
-}
-`;
-
-exports[`ticket reducers should handle MERGE_TICKET 3`] = `
-Object {
-  "_internal": Object {
-    "displayHistory": false,
-    "loading": Object {
-      "deleteMessage": false,
-      "fetchTicket": false,
-      "setSpam": false,
-      "setTrash": false,
-    },
-    "pendingMessages": Array [],
-    "shouldDisplayAuditLogEvents": false,
-    "shouldDisplayHistoryOnNextPage": false,
-  },
-  "assignee_team": null,
-  "assignee_user": null,
-  "channel": "email",
-  "customer": Object {
-    "data": Object {
-      "hello": "world!",
-    },
-    "id": 1,
-  },
-  "events": Array [
-    Object {
-      "object_id": 1,
-      "type": "ticket-created",
-    },
-    Object {
-      "object_id": 1,
-      "type": "ticket-closed",
-    },
-    Object {
-      "object_id": 1,
-      "type": "ticket-reopened",
-    },
-  ],
-  "id": 1,
-  "is_unread": false,
-  "messages": Array [
-    Object {
-      "body_html": "<div>hi</div>",
-      "body_text": "hi",
-      "channel": "email",
-      "created_datetime": "2017-07-28T22:00:00",
-      "id": 1,
-    },
-    Object {
-      "body_html": "<div>hello</div>",
-      "body_text": "hello",
-      "channel": "email",
-      "created_datetime": "2017-07-29T22:00:00",
-      "id": 2,
-    },
-  ],
-  "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
-      "answerable": true,
-    },
-    "internal-note": Object {
-      "answerable": true,
-    },
-  },
-  "spam": false,
-  "state": Object {
-    "appliedMacro": null,
-    "dirty": false,
-    "latestEventDatetime": null,
-  },
-  "status": "open",
-  "subject": "title",
   "tags": Array [],
   "trashed_datetime": null,
   "via": "helpdesk",

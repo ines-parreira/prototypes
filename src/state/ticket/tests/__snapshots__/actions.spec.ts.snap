@@ -1682,6 +1682,20 @@ Array [
 ]
 `;
 
+exports[`ticket actions mergeCustomerExternalData() 1`] = `
+Array [
+  Object {
+    "customerId": 1,
+    "externalData": Object {
+      "my-awesome-app-id-1": Object {
+        "badge": "Best customer",
+      },
+    },
+    "type": "MERGE_CUSTOMER_EXTERNAL_DATA",
+  },
+]
+`;
+
 exports[`ticket actions mergeTicket() fails because not current ticket 1`] = `Array []`;
 
 exports[`ticket actions mergeTicket() success 1`] = `

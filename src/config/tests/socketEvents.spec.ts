@@ -21,6 +21,7 @@ import * as integrationActions from '../../state/integrations/actions'
 import * as notificationActions from '../../state/notifications/actions'
 import {handleViewsCount} from '../../state/views/actions'
 import {
+    CustomerExternalDataUpdatedEvent,
     OutboundPhoneCallInitiated,
     SocketEventType,
 } from '../../services/socketManager/types'
@@ -48,6 +49,7 @@ import {
 } from '../../state/entities/sections/actions'
 import * as ticketActions from '../../state/ticket/actions'
 import history from '../../pages/history'
+import {mergeCustomerExternalData} from '../../state/ticket/actions'
 
 //$TsFixMe remove once init.js is migrated
 const typeSafeReduxStore = reduxStore as EnhancedStore
@@ -914,6 +916,30 @@ describe('Config: socketEvents', () => {
                     currentUserActions.setIsAvailable
                 ).toHaveBeenNthCalledWith(1, true)
                 expect(chatActions.fetchChatsThrottled).toHaveBeenCalled()
+            })
+        })
+
+        describe(SocketEventType.CustomerExternalDataUpdated, () => {
+            const handler = _find(receivedEvents, {
+                name: SocketEventType.CustomerExternalDataUpdated,
+            }) as socketEvents.ReceivedEvent
+
+            it('should dispatch the updated external data for customer id', () => {
+                const customerExternalDataUpdatedEvent = {
+                    event: {type: SocketEventType.CustomerExternalDataUpdated},
+                    customer_id: 123,
+                    external_data: {
+                        'my-awesome-app-id-1': {
+                            badge: 'Best customer',
+                        },
+                    },
+                } as CustomerExternalDataUpdatedEvent
+                handler.onReceive(customerExternalDataUpdatedEvent)
+                expect(mergeCustomerExternalData).toHaveBeenNthCalledWith(
+                    1,
+                    customerExternalDataUpdatedEvent.customer_id,
+                    customerExternalDataUpdatedEvent.external_data
+                )
             })
         })
     })

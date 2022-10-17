@@ -55,3 +55,5 @@ export type Customer = CustomerDraft & {
 }
 
 export type CustomersState = Map<any, any>
+
+export type CustomerExternalData = {[key: string]: Record<string, any>}

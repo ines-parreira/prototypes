@@ -445,6 +445,29 @@ export default function reducer(
             // merge received ticket with current ticket
             let newState = state.merge(ticket as Map<any, any>)
 
+            // keep the old ticket.customer.external_data
+            // if the new ticket.customer doesn't have an external_data key
+            // for example, this could happen when we receive
+            // `ticket-updated` event having attached a ticket.customer object
+            // that did not have loaded the external_data to it
+            if (!ticket?.getIn(['customer', 'external_data'])) {
+                const newCustomerId = ticket?.getIn(['customer', 'id'])
+                const oldCustomerId = state.getIn(['customer', 'id'])
+
+                if (newCustomerId === oldCustomerId) {
+                    const oldExternalData = state.getIn([
+                        'customer',
+                        'external_data',
+                    ])
+                    if (oldExternalData) {
+                        newState = newState.setIn(
+                            ['customer', 'external_data'],
+                            oldExternalData
+                        )
+                    }
+                }
+            }
+
             // keep audit log events
             const auditLogEvents = (state.get('events') as List<any>).filter(
                 (event: Map<any, any>) =>
@@ -472,7 +495,7 @@ export default function reducer(
                 )
             })
 
-            // sockets are faster then the success callback,
+            // sockets are faster than the success callback,
             // so we need to remove pending messages here to avoid `jumping` messages
             if (messagesDifference) {
                 // search for matching pending message from last messages to first ones
@@ -508,14 +531,51 @@ export default function reducer(
 
         case types.MERGE_CUSTOMER: {
             const {customer} = action
-            const customerData = fromJS(customer) as Map<any, any>
+            let customerData = fromJS(customer) as Map<any, any>
 
             // if received customer data does not concern current customer of ticket, do nothing
             if (customerData.get('id') !== state.getIn(['customer', 'id'])) {
                 return state
             }
 
+            // keep the old customer.external_data
+            // if the new customer doesn't have an external_data key
+            // for example, this could happen when we receive
+            // `customer-updated` event having attached a Customer object
+            // that did not have loaded the external_data to it
+            if (!customerData.get('external_data')) {
+                const oldExternalData = state.getIn([
+                    'customer',
+                    'external_data',
+                ])
+                if (oldExternalData) {
+                    customerData = customerData.set(
+                        'external_data',
+                        oldExternalData
+                    )
+                }
+            }
+
             return state.set('customer', customerData)
+        }
+
+        case types.MERGE_CUSTOMER_EXTERNAL_DATA: {
+            const {customerId, externalData} = action
+
+            // if received customer data does not concern current customer of ticket, do nothing
+            if (customerId !== state.getIn(['customer', 'id'])) {
+                return state
+            }
+
+            let nextState = state
+            for (const clientId in externalData) {
+                nextState = nextState.setIn(
+                    ['customer', 'external_data', clientId],
+                    fromJS(externalData[clientId])
+                )
+            }
+
+            return nextState
         }
 
         case types.DELETE_TICKET_PENDING_MESSAGE: {

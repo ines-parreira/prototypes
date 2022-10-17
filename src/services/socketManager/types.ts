@@ -2,6 +2,7 @@ import {Map} from 'immutable'
 
 import {TicketChannel} from 'business/types/ticket'
 import {MacrosProperties} from 'models/macro/types'
+import {CustomerExternalData} from 'state/customers/types'
 import {RecentChatTicket} from '../../business/types/recentChats'
 import {Ticket} from '../../models/ticket/types'
 import {View} from '../../models/view/types'
@@ -43,6 +44,7 @@ export enum SocketEventType {
     MacroParamsUpdated = 'macro-params-updated',
     TwilioEventTriggered = 'twilio-event-triggered',
     AgentAvailabilityUpdated = 'agent-availability-updated',
+    CustomerExternalDataUpdated = 'customer-external-data-updated',
 }
 
 export enum JoinEventType {
@@ -57,6 +59,14 @@ export type CustomerUpdatedEvent = {
         type: 'customer-updated'
     }
     customer: Map<any, any>
+}
+
+export type CustomerExternalDataUpdatedEvent = {
+    event: {
+        type: SocketEventType.CustomerExternalDataUpdated
+    }
+    external_data: CustomerExternalData
+    customer_id: number
 }
 
 export type SelfServiceConfigurationsUpdatedEvent = {
@@ -265,6 +275,7 @@ export type AgentAvailabilityUpdatedEvent = {
 
 export type ServerMessage =
     | CustomerUpdatedEvent
+    | CustomerExternalDataUpdatedEvent
     | SelfServiceConfigurationsUpdatedEvent
     | SelfServiceConfigurationsUpdateStartedEvent
     | UserLocationUpdatedEvent

@@ -33,6 +33,7 @@ import {
     AccountUpdatedEvent,
     ActionExecutedEvent,
     AgentAvailabilityUpdatedEvent,
+    CustomerExternalDataUpdatedEvent,
     CustomerUpdatedEvent,
     EmailIntegrationVerifiedEvent,
     FacebookIntegrationsReconnected,
@@ -251,6 +252,19 @@ export const receivedEvents: ReceivedEvent[] = [
             reduxStore.dispatch(
                 ticketActions.mergeCustomer(
                     (json as CustomerUpdatedEvent).customer
+                )
+            )
+        },
+    },
+    {
+        name: SocketEventType.CustomerExternalDataUpdated,
+        onReceive: function (json) {
+            const customerExternalDataUpdatedEvent =
+                json as CustomerExternalDataUpdatedEvent
+            reduxStore.dispatch(
+                ticketActions.mergeCustomerExternalData(
+                    customerExternalDataUpdatedEvent.customer_id,
+                    customerExternalDataUpdatedEvent.external_data
                 )
             )
         },

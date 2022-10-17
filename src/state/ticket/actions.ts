@@ -50,7 +50,7 @@ import {
     SocketEventType,
     TicketMessageFailedEvent,
 } from 'services/socketManager/types'
-import {Customer} from 'state/customers/types'
+import {Customer, CustomerExternalData} from 'state/customers/types'
 import {
     Notification,
     NotificationButton,
@@ -135,6 +135,17 @@ export const mergeCustomer = (customer: Map<any, any>) => {
     return {
         type: types.MERGE_CUSTOMER,
         customer,
+    }
+}
+
+export const mergeCustomerExternalData = (
+    customerId: number,
+    externalData: CustomerExternalData
+) => {
+    return {
+        type: types.MERGE_CUSTOMER_EXTERNAL_DATA,
+        customerId,
+        externalData,
     }
 }
 

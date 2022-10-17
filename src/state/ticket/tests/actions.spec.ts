@@ -141,6 +141,17 @@ describe('ticket actions', () => {
         return expect(store.getActions()).toMatchSnapshot()
     })
 
+    it('mergeCustomerExternalData()', () => {
+        store.dispatch(
+            actions.mergeCustomerExternalData(1, {
+                'my-awesome-app-id-1': {
+                    badge: 'Best customer',
+                },
+            })
+        )
+        return expect(store.getActions()).toMatchSnapshot()
+    })
+
     it('fetchTicketReplyMacro()', () => {
         store.dispatch(actions.fetchTicketReplyMacro())
         return expect(store.getActions()).toMatchSnapshot()

@@ -78,6 +78,7 @@ export const DISPLAY_HISTORY_ON_NEXT_PAGE = 'DISPLAY_HISTORY_ON_NEXT_PAGE'
 // Merge events from sockets updates coming from server
 export const MERGE_TICKET = 'MERGE_TICKET'
 export const MERGE_CUSTOMER = 'MERGE_CUSTOMER'
+export const MERGE_CUSTOMER_EXTERNAL_DATA = 'MERGE_CUSTOMER_EXTERNAL_DATA'
 
 export const TICKET_CHANNEL_NAMES: Record<TicketChannel, string> =
     Object.freeze({
