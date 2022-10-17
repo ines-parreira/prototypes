@@ -26,46 +26,45 @@ exports[`<Access/> should render properly 1`] = `
           <h4
             class="mb-2"
           >
-            <i
-              class="material-icons mr-1"
-            >
-              vpn_key
-            </i>
             Single Sign-On (SSO)
           </h4>
           <p>
-            SSO allows team members to access Gorgias using their Google or Microsoft 365 accounts. Once you enable SSO, a Google or Microsoft login button will be added to the login page.
+            SSO allows agents to access Gorgias using their Google or Microsoft accounts. Once you enable a SSO method, a respective button will appear on the log-in page.
           </p>
           <div
-            class="mb-2"
+            class="mb-4"
           >
-            <label
-              aria-checked="false"
-              class="label label"
-              for="toggle-button-42"
-              role="switch"
+            <div
+              class="mb-2"
             >
-              <input
-                class="input"
-                disabled=""
-                id="toggle-button-42"
-                name="toggle-button-42"
-                type="checkbox"
-              />
-              <div
-                class="slider"
-              />
-              <img
-                alt="Google logo"
-                class="ml-3 mr-2"
-                src="test-file-stub"
-                style="height: 1.4em;"
-              />
-              <b>
-                Google
-                 SSO
-              </b>
-            </label>
+              <label
+                aria-checked="false"
+                class="label label"
+                for="toggle-button-42"
+                role="switch"
+              >
+                <input
+                  class="input"
+                  disabled=""
+                  id="toggle-button-42"
+                  name="toggle-button-42"
+                  type="checkbox"
+                />
+                <div
+                  class="slider"
+                />
+                <img
+                  alt="Google logo"
+                  class="ml-3 mr-2"
+                  src="test-file-stub"
+                  style="height: 1.4em;"
+                />
+                <b>
+                  Google
+                   SSO
+                </b>
+              </label>
+            </div>
           </div>
           <div
             class="mb-2"
@@ -101,60 +100,82 @@ exports[`<Access/> should render properly 1`] = `
           <h4
             class="mt-5 mb-2"
           >
-            <i
-              class="material-icons mr-1"
-            >
-              mail
-            </i>
-            Joining the helpdesk
+            Auto-join helpdesk
           </h4>
+          <p
+            class="mb-1"
+          >
+            Allows people with email addresses in the approved email domains to use the link below to sign up.
+          </p>
           <p>
-            If you allow people to join automatically, anyone with an approved email address can use this link to confirm their email and sign up:
-             
             <a
               href="https://acme.gorgias.com/signup"
             >
               https://acme.gorgias.com/signup
             </a>
           </p>
-          <fieldset
+          <div
             class="mb-3"
-            name="radio-field-42"
           >
-            <div
-              class="option"
-            >
+            <div>
               <label
+                aria-checked="false"
                 class="label label"
-                for="invite"
-              >
-                <input
-                  checked=""
-                  class="input"
-                  id="invite"
-                  name="radio-field-42"
-                  type="radio"
-                />
-                Invite people manually
-              </label>
-            </div>
-            <div
-              class="option"
-            >
-              <label
-                class="label label"
-                for="allowed-domains"
+                for="toggle-button-42"
+                role="switch"
               >
                 <input
                   class="input"
-                  id="allowed-domains"
-                  name="radio-field-42"
-                  type="radio"
+                  disabled=""
+                  id="toggle-button-42"
+                  name="toggle-button-42"
+                  type="checkbox"
                 />
-                Let people sign up automatically, and only accept email addresses from specific domains
+                <div
+                  class="slider"
+                />
+                Auto-join for approved email domains
               </label>
             </div>
-          </fieldset>
+          </div>
+          <div
+            class="mb-10"
+          >
+            <label
+              class="label mb-2"
+              for="approved-email-domains"
+            >
+              Approved email domains
+              <abbr
+                aria-label="required"
+                class="abbr"
+                title="required"
+              >
+                *
+              </abbr>
+            </label>
+            <div
+              class="InputField form-group"
+              color=""
+            >
+              <div
+                class=""
+              >
+                <textarea
+                  class="field form-control"
+                  id="approved-email-domains"
+                  placeholder="domain.com, mydomain.com"
+                  readonly=""
+                  rows="1"
+                />
+              </div>
+              <small
+                class="form-text text-muted"
+              >
+                Wildcards allowed (e.g. *domain.com)
+              </small>
+            </div>
+          </div>
           <div
             class="mt-5 mb-5"
           >
@@ -231,46 +252,45 @@ exports[`<Access/> should render with the previously saved settings 1`] = `
           <h4
             class="mb-2"
           >
-            <i
-              class="material-icons mr-1"
-            >
-              vpn_key
-            </i>
             Single Sign-On (SSO)
           </h4>
           <p>
-            SSO allows team members to access Gorgias using their Google or Microsoft 365 accounts. Once you enable SSO, a Google or Microsoft login button will be added to the login page.
+            SSO allows agents to access Gorgias using their Google or Microsoft accounts. Once you enable a SSO method, a respective button will appear on the log-in page.
           </p>
           <div
-            class="mb-2"
+            class="mb-4"
           >
-            <label
-              aria-checked="false"
-              class="label label"
-              for="toggle-button-42"
-              role="switch"
+            <div
+              class="mb-2"
             >
-              <input
-                class="input"
-                disabled=""
-                id="toggle-button-42"
-                name="toggle-button-42"
-                type="checkbox"
-              />
-              <div
-                class="slider"
-              />
-              <img
-                alt="Google logo"
-                class="ml-3 mr-2"
-                src="test-file-stub"
-                style="height: 1.4em;"
-              />
-              <b>
-                Google
-                 SSO
-              </b>
-            </label>
+              <label
+                aria-checked="false"
+                class="label label"
+                for="toggle-button-42"
+                role="switch"
+              >
+                <input
+                  class="input"
+                  disabled=""
+                  id="toggle-button-42"
+                  name="toggle-button-42"
+                  type="checkbox"
+                />
+                <div
+                  class="slider"
+                />
+                <img
+                  alt="Google logo"
+                  class="ml-3 mr-2"
+                  src="test-file-stub"
+                  style="height: 1.4em;"
+                />
+                <b>
+                  Google
+                   SSO
+                </b>
+              </label>
+            </div>
           </div>
           <div
             class="mb-2"
@@ -306,81 +326,84 @@ exports[`<Access/> should render with the previously saved settings 1`] = `
           <h4
             class="mt-5 mb-2"
           >
-            <i
-              class="material-icons mr-1"
-            >
-              mail
-            </i>
-            Joining the helpdesk
+            Auto-join helpdesk
           </h4>
+          <p
+            class="mb-1"
+          >
+            Allows people with email addresses in the approved email domains to use the link below to sign up.
+          </p>
           <p>
-            If you allow people to join automatically, anyone with an approved email address can use this link to confirm their email and sign up:
-             
             <a
               href="https://acme.gorgias.com/signup"
             >
               https://acme.gorgias.com/signup
             </a>
           </p>
-          <fieldset
+          <div
             class="mb-3"
-            name="radio-field-42"
           >
-            <div
-              class="option"
-            >
+            <div>
               <label
+                aria-checked="true"
                 class="label label"
-                for="invite"
-              >
-                <input
-                  class="input"
-                  id="invite"
-                  name="radio-field-42"
-                  type="radio"
-                />
-                Invite people manually
-              </label>
-            </div>
-            <div
-              class="option"
-            >
-              <label
-                class="label label"
-                for="allowed-domains"
+                for="toggle-button-42"
+                role="switch"
               >
                 <input
                   checked=""
                   class="input"
-                  id="allowed-domains"
-                  name="radio-field-42"
-                  type="radio"
+                  disabled=""
+                  id="toggle-button-42"
+                  name="toggle-button-42"
+                  type="checkbox"
                 />
-                Let people sign up automatically, and only accept email addresses from specific domains
+                <div
+                  class="slider"
+                />
+                Auto-join for approved email domains
               </label>
             </div>
-          </fieldset>
+          </div>
           <div
-            class="InputField form-group"
-            color=""
+            class="mb-10"
           >
-            <div
-              class=""
+            <label
+              class="label mb-2"
+              for="approved-email-domains"
             >
-              <textarea
-                class="field form-control"
-                id="id-input-42"
+              Approved email domains
+              <abbr
+                aria-label="required"
+                class="abbr"
+                title="required"
               >
-                gorgias.com
-gorgias.io
-              </textarea>
-              
-            </div>
-            <small
-              class="form-text text-muted"
+                *
+              </abbr>
+            </label>
+            <div
+              class="InputField form-group"
+              color=""
             >
-              Ex: domain.com, *.domain.com. Wildcards allowed. Use separate lines for multiple entries.
-            </small>
+              <div
+                class=""
+              >
+                <textarea
+                  class="field form-control"
+                  id="approved-email-domains"
+                  placeholder="domain.com, mydomain.com"
+                  rows="3"
+                >
+                  gorgias.com
+gorgias.io
+                </textarea>
+              </div>
+              <small
+                class="form-text text-muted"
+              >
+                Wildcards allowed (e.g. *domain.com)
+              </small>
+            </div>
           </div>
           <div
             class="mt-5 mb-5"
@@ -458,46 +481,45 @@ exports[`<Access/> should show an error and block submit when using a generic do
           <h4
             class="mb-2"
           >
-            <i
-              class="material-icons mr-1"
-            >
-              vpn_key
-            </i>
             Single Sign-On (SSO)
           </h4>
           <p>
-            SSO allows team members to access Gorgias using their Google or Microsoft 365 accounts. Once you enable SSO, a Google or Microsoft login button will be added to the login page.
+            SSO allows agents to access Gorgias using their Google or Microsoft accounts. Once you enable a SSO method, a respective button will appear on the log-in page.
           </p>
           <div
-            class="mb-2"
+            class="mb-4"
           >
-            <label
-              aria-checked="false"
-              class="label label"
-              for="toggle-button-42"
-              role="switch"
+            <div
+              class="mb-2"
             >
-              <input
-                class="input"
-                disabled=""
-                id="toggle-button-42"
-                name="toggle-button-42"
-                type="checkbox"
-              />
-              <div
-                class="slider"
-              />
-              <img
-                alt="Google logo"
-                class="ml-3 mr-2"
-                src="test-file-stub"
-                style="height: 1.4em;"
-              />
-              <b>
-                Google
-                 SSO
-              </b>
-            </label>
+              <label
+                aria-checked="false"
+                class="label label"
+                for="toggle-button-42"
+                role="switch"
+              >
+                <input
+                  class="input"
+                  disabled=""
+                  id="toggle-button-42"
+                  name="toggle-button-42"
+                  type="checkbox"
+                />
+                <div
+                  class="slider"
+                />
+                <img
+                  alt="Google logo"
+                  class="ml-3 mr-2"
+                  src="test-file-stub"
+                  style="height: 1.4em;"
+                />
+                <b>
+                  Google
+                   SSO
+                </b>
+              </label>
+            </div>
           </div>
           <div
             class="mb-2"
@@ -533,84 +555,83 @@ exports[`<Access/> should show an error and block submit when using a generic do
           <h4
             class="mt-5 mb-2"
           >
-            <i
-              class="material-icons mr-1"
-            >
-              mail
-            </i>
-            Joining the helpdesk
+            Auto-join helpdesk
           </h4>
+          <p
+            class="mb-1"
+          >
+            Allows people with email addresses in the approved email domains to use the link below to sign up.
+          </p>
           <p>
-            If you allow people to join automatically, anyone with an approved email address can use this link to confirm their email and sign up:
-             
             <a
               href="https://acme.gorgias.com/signup"
             >
               https://acme.gorgias.com/signup
             </a>
           </p>
-          <fieldset
+          <div
             class="mb-3"
-            name="radio-field-42"
           >
-            <div
-              class="option"
-            >
+            <div>
               <label
+                aria-checked="true"
                 class="label label"
-                for="invite"
-              >
-                <input
-                  class="input"
-                  id="invite"
-                  name="radio-field-42"
-                  type="radio"
-                />
-                Invite people manually
-              </label>
-            </div>
-            <div
-              class="option"
-            >
-              <label
-                class="label label"
-                for="allowed-domains"
+                for="toggle-button-42"
+                role="switch"
               >
                 <input
                   checked=""
                   class="input"
-                  id="allowed-domains"
-                  name="radio-field-42"
-                  type="radio"
+                  disabled=""
+                  id="toggle-button-42"
+                  name="toggle-button-42"
+                  type="checkbox"
                 />
-                Let people sign up automatically, and only accept email addresses from specific domains
+                <div
+                  class="slider"
+                />
+                Auto-join for approved email domains
               </label>
             </div>
-          </fieldset>
+          </div>
           <div
-            class="InputField form-group"
-            color="danger"
+            class="mb-10"
           >
-            <div
-              class=""
+            <label
+              class="label mb-2"
+              for="approved-email-domains"
             >
-              <textarea
-                class="field form-control-danger is-invalid form-control"
-                id="id-input-42"
+              Approved email domains
+              <abbr
+                aria-label="required"
+                class="abbr"
+                title="required"
               >
-                gmail.com
-              </textarea>
+                *
+              </abbr>
+            </label>
+            <div
+              class="InputField form-group"
+              color="danger"
+            >
               <div
-                class="invalid-feedback"
+                class=""
               >
-                Generic domain: gmail.com
+                <textarea
+                  class="field form-control-danger is-invalid form-control"
+                  id="approved-email-domains"
+                  placeholder="domain.com, mydomain.com"
+                  rows="2"
+                >
+                  gmail.com
+                </textarea>
+                <div
+                  class="invalid-feedback"
+                >
+                  Generic domain: gmail.com
+                </div>
               </div>
             </div>
-            <small
-              class="form-text text-muted"
-            >
-              Ex: domain.com, *.domain.com. Wildcards allowed. Use separate lines for multiple entries.
-            </small>
           </div>
           <div
             class="mt-5 mb-5"
