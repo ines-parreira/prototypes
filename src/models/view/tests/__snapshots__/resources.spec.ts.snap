@@ -193,9 +193,7 @@ Object {
     "maxBodyLength": -1,
     "maxContentLength": -1,
     "method": "get",
-    "params": Object {
-      "limit": 100,
-    },
+    "params": Object {},
     "paramsSerializer": [Function],
     "timeout": 0,
     "transformRequest": Array [

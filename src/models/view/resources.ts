@@ -18,7 +18,7 @@ export const fetchViewsPaginated = async (params: ApiPaginationParams = {}) => {
     return await client.get<ApiListResponseCursorPagination<View[]>>(
         `/api/views/`,
         {
-            params: {limit: 100, ...params},
+            params,
             paramsSerializer: stringify,
         }
     )

@@ -44,9 +44,9 @@ describe('Campaign actions', () => {
             mockServer.onGet('/api/integrations/1').reply(200, {
                 data: {},
             })
-            mockServer.onGet('/api/integrations/').reply(200, {
-                data: {},
-            })
+            mockServer
+                .onGet('/api/integrations')
+                .reply(200, {data: [integration.toJS()], meta: {}})
             return store
                 .dispatch(actions.createCampaign(fromJS({}), integration))
                 .then(() => {
@@ -100,9 +100,10 @@ describe('Campaign actions', () => {
             mockServer.onGet('/api/integrations/1').reply(200, {
                 data: {},
             })
-            mockServer.onGet('/api/integrations/').reply(200, {
-                data: {},
-            })
+            mockServer
+                .onGet('/api/integrations')
+                .reply(200, {data: [integration.toJS()], meta: {}})
+
             return store
                 .dispatch(actions.updateCampaign(campaign, integration))
                 .then(() => {

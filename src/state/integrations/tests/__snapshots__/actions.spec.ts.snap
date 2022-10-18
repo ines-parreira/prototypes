@@ -72,14 +72,12 @@ Array [
     "type": "FETCH_INTEGRATIONS_START",
   },
   Object {
-    "resp": Object {
-      "data": Array [
-        Object {
-          "id": 1,
-          "name": "http",
-        },
-      ],
-    },
+    "resp": Array [
+      Object {
+        "id": 1,
+        "name": "http",
+      },
+    ],
     "type": "FETCH_INTEGRATIONS_SUCCESS",
   },
 ]

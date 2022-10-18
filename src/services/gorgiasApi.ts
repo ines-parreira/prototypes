@@ -120,7 +120,7 @@ export default class GorgiasApi {
         let nextCursor: string | null
 
         do {
-            const response = await asyncMethod(params)
+            const response = await asyncMethod({limit: 100, ...params})
             const {
                 data: {data, meta},
             } = response

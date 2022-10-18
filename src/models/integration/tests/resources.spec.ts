@@ -1,14 +1,16 @@
 import MockAdapter from 'axios-mock-adapter'
 
 import {dummyAppListData, dummyAppData} from 'fixtures/apps'
+import {dummyErrorLogList} from 'fixtures/appErrors'
+import {integrationsState} from 'fixtures/integrations'
 import client from 'models/api/resources'
 import {
     disconnectApp,
     fetchApp,
     fetchApps,
     fetchAppErrorLogs,
+    fetchIntegrations,
 } from '../resources'
-import {dummyErrorLogList} from '../../../fixtures/appErrors'
 
 const mockedServer = new MockAdapter(client)
 
@@ -83,6 +85,25 @@ describe('integration resource', () => {
                 .onGet(`/api/async/errors`)
                 .reply(503, {message: 'error'})
             return expect(fetchAppErrorLogs(appId)).rejects.toEqual(
+                new Error('Request failed with status code 503')
+            )
+        })
+    })
+
+    describe('fetchIntegrations', () => {
+        it('should return the integrations', async () => {
+            mockedServer
+                .onGet('/api/integrations')
+                .reply(200, [integrationsState.integrations])
+            const res = await fetchIntegrations()
+            expect(res).toMatchSnapshot()
+        })
+
+        it('should reject an error on fail', () => {
+            mockedServer
+                .onGet('/api/integrations')
+                .reply(503, {message: 'error'})
+            return expect(fetchIntegrations()).rejects.toEqual(
                 new Error('Request failed with status code 503')
             )
         })

@@ -17,7 +17,9 @@ Object {
       "maxBodyLength": -1,
       "maxContentLength": -1,
       "method": "get",
-      "params": Object {},
+      "params": Object {
+        "limit": 100,
+      },
       "timeout": 0,
       "transformRequest": Array [
         [Function],
@@ -45,6 +47,7 @@ Object {
       "method": "get",
       "params": Object {
         "cursor": "cursored_page_2",
+        "limit": 100,
       },
       "timeout": 0,
       "transformRequest": Array [
@@ -73,6 +76,7 @@ Object {
       "method": "get",
       "params": Object {
         "cursor": "cursored_page_3",
+        "limit": 100,
       },
       "timeout": 0,
       "transformRequest": Array [

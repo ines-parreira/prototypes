@@ -32,12 +32,6 @@ Array [
     "type": "FETCH_INTEGRATION_START",
   },
   Object {
-    "resp": Object {
-      "data": Array [],
-    },
-    "type": "FETCH_INTEGRATIONS_SUCCESS",
-  },
-  Object {
     "integration": Object {
       "data": Object {},
     },
@@ -106,12 +100,6 @@ Array [
   Object {
     "id": 1,
     "type": "FETCH_INTEGRATION_START",
-  },
-  Object {
-    "resp": Object {
-      "data": Array [],
-    },
-    "type": "FETCH_INTEGRATIONS_SUCCESS",
   },
   Object {
     "integration": Object {

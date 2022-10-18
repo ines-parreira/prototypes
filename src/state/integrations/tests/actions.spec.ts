@@ -35,8 +35,8 @@ describe('integrations actions', () => {
 
     it('fetch integrations', () => {
         mockServer
-            .onGet('/api/integrations/')
-            .reply(200, {data: [{id: 1, name: 'http'}]})
+            .onGet('/api/integrations')
+            .reply(200, {data: [{id: 1, name: 'http'}], meta: {}})
 
         return store
             .dispatch(actions.fetchIntegrations())

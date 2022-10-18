@@ -11,45 +11,47 @@ import {
     Integration,
     IntegrationType,
 } from 'models/integration/types'
-import type {StoreDispatch, RootState} from 'state/types'
+import history from 'pages/history'
 import * as constants from 'state/integrations/constants'
 import * as integrationSelectors from 'state/integrations/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import history from 'pages/history'
+import type {StoreDispatch, RootState} from 'state/types'
+import GorgiasApi from 'services/gorgiasApi'
+import {fetchIntegrations as fetchIntegrationsResources} from 'models/integration/resources'
 
 export function fetchIntegrations() {
-    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
+    return async (
+        dispatch: StoreDispatch
+    ): Promise<ReturnType<StoreDispatch>> => {
         dispatch({
             type: constants.FETCH_INTEGRATIONS_START,
         })
 
-        return client
-            .get<ApiListResponsePagination<Integration[]>>('/api/integrations/')
-            .then((json) => json?.data)
-            .then(
-                (resp) => {
-                    const newResp = resp
+        const client = new GorgiasApi()
+        const generator = client.cursorPaginate(fetchIntegrationsResources)
 
-                    if (newResp) {
-                        newResp.data = _sortBy(newResp.data, (integration) =>
-                            integration.name.toLowerCase()
-                        )
-                    }
+        let result: Integration[] = []
+        try {
+            for await (const page of generator) {
+                result = result.concat(page)
+            }
 
-                    return dispatch({
-                        type: constants.FETCH_INTEGRATIONS_SUCCESS,
-                        resp: newResp,
-                    })
-                },
-                (error: AxiosError) => {
-                    return dispatch({
-                        type: constants.FETCH_INTEGRATIONS_ERROR,
-                        error,
-                        reason: 'Failed to fetch integrations',
-                    })
-                }
+            result = _sortBy(result, (integration) =>
+                integration.name.toLowerCase()
             )
+
+            return dispatch({
+                type: constants.FETCH_INTEGRATIONS_SUCCESS,
+                resp: result,
+            })
+        } catch (error) {
+            dispatch({
+                type: constants.FETCH_INTEGRATIONS_ERROR,
+                error,
+                reason: 'Failed to fetch integrations',
+            })
+        }
     }
 }
 

@@ -1,9 +1,8 @@
 import {fromJS, Map, List} from 'immutable'
 import moment from 'moment'
 
-import {IntegrationType} from '../../models/integration/types'
-
-import {GorgiasAction} from '../types'
+import {Integration, IntegrationType} from 'models/integration/types'
+import {GorgiasAction} from 'state/types'
 
 import * as constants from './constants'
 import {IntegrationsImmutableState} from './types'
@@ -92,7 +91,7 @@ export default function reducer(
 
         case constants.FETCH_INTEGRATIONS_SUCCESS: {
             const integrations = (
-                fromJS((action.resp as {data: unknown[]}).data) as List<any>
+                fromJS(action.resp as Integration[]) as List<any>
             )
                 .sortBy(
                     (integration: Map<any, any>) =>

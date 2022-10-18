@@ -1,4 +1,8 @@
-import {ApiListResponse} from 'models/api/types'
+import {
+    ApiListResponse,
+    ApiListResponseCursorPagination,
+    ApiPaginationParams,
+} from 'models/api/types'
 import client from 'models/api/resources'
 
 import {
@@ -9,7 +13,7 @@ import {
     AppListItem,
     DisconnectResponse,
 } from './types/app'
-import {IntegrationType} from './types'
+import {Integration, IntegrationType} from './types'
 
 export const appDataToAppDetailMapper = (data: AppData): AppDetail => ({
     type: IntegrationType.App,
@@ -79,3 +83,11 @@ export const fetchAppErrorLogs = async (
     )
     return data.data
 }
+
+export const fetchIntegrations = async (params: ApiPaginationParams = {}) =>
+    await client.get<ApiListResponseCursorPagination<Integration[]>>(
+        '/api/integrations',
+        {
+            params,
+        }
+    )

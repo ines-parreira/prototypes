@@ -11,6 +11,6 @@ export const fetchWidgets = async (params: APIFetchWidgetsOptions = {}) =>
     await client.get<ApiListResponseCursorPagination<Widget[]>>(
         '/api/widgets/',
         {
-            params: {limit: 100, ...params},
+            params,
         }
     )
