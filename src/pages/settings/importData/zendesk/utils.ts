@@ -1,8 +1,8 @@
 import React from 'react'
 
-import {formatDatetime} from '../../../../../js/utils'
+import {formatDatetime} from 'utils'
 
-import {ZendeskIntegration} from '../../../../models/integration/types'
+import {ZendeskIntegration} from 'models/integration/types'
 import {ImportStatus} from './types'
 
 export const getImportCompletionDate = (

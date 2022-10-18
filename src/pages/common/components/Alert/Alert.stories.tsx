@@ -2,7 +2,7 @@ import {Meta, Story} from '@storybook/react'
 import React, {ComponentProps} from 'react'
 import {Button} from 'reactstrap'
 
-import gorgiasLogo from '../../../../../../public/img/gorgias-light-icon-48.png'
+import gorgiasLogo from 'assets/img/gorgias-light-icon-48.png'
 
 import Alert from './Alert'
 

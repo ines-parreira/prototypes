@@ -1,0 +1,235 @@
+include:
+  - project: 'gorgias/gorgias-ops'
+    ref: 79ddbc6a027dd9bfbccfa88afb229af30c1ee0f4
+    file: /.gitlab/ci/common.gitlab-ci.yml
+
+stages:
+  - bootstrap
+  - test
+  - build
+  - deploy
+  - docs
+  - force deploy
+
+default:
+  image: node:14-stretch-slim
+  tags:
+    - non-gpu
+  timeout: 30m
+  retry:
+    max: 2
+    when:
+    - runner_system_failure
+
+variables:
+  BUILD_DIR: "build"
+  ASSETS_DIR: "src/assets"
+  WEBAPP_PATH: "web-app"
+
+.yarn cache:
+  cache:
+   key: node-14-yarn-1.22 # Change this key when Node or Yarn versions change, to invalidate cache
+   paths: # Paths are relative to the project directory ($CI_PROJECT_DIR) and can’t directly link outside it.
+    - .yarn-cache/
+
+.staging_env:
+  variables:
+    GCLOUD_PROJECT: gorgias-helpdesk-staging
+    STORAGE_BUCKET: gs://gorgias-assets-staging
+    DEPLOY_ENV: staging
+  rules:
+    - if: $CI_COMMIT_REF_NAME == "staging" || $CI_COMMIT_REF_NAME == "anddon/appch-2036-prepare-helpdesk-web-appmain-fix"
+
+.production_env:
+  variables:
+    GCLOUD_PROJECT: gorgias-helpdesk-production
+    STORAGE_BUCKET: gs://gorgias-assets-production
+    DEPLOY_ENV: production
+  rules:
+    - if: $CI_COMMIT_REF_NAME == "main"
+
+# This keyword only works on a job, cannot be extended
+.gitlab_environment: &gitlab_environment
+  environment:
+    name: ${DEPLOY_ENV}/${CONTEXT}
+
+Install dependencies:
+  extends: .yarn cache
+  stage: bootstrap
+  script:
+    # Update npm config to enable yarn to access private GitHub packages.
+    - npm set @gorgias:registry https://npm.pkg.github.com/
+    - npm set //npm.pkg.github.com/:_authToken $GITHUB_READ_PACKAGES_TOKEN
+    - yarn install --frozen-lockfile --cache-folder ${CI_PROJECT_DIR}/.yarn-cache
+  artifacts:
+    paths:
+      - node_modules/
+
+Lint:
+  stage: test
+  script:
+    - yarn lint
+
+Typecheck:
+  stage: test
+  script:
+    - yarn types
+
+Jest:
+  stage: test
+  variables:
+    COVERAGE_DIR: ${CI_PROJECT_DIR}/coverage/
+  artifacts:
+    paths:
+      - coverage/
+  script:
+    - yarn test:ci:cover
+
+Build:
+  extends: .yarn cache
+  stage: build
+  variables:
+    GORGIAS_WEBAPP_BUILD_PATH: ${WEBAPP_PATH}
+  script:
+    - yarn build
+  artifacts:
+    paths:
+      - build/
+
+.deploy:
+  stage: deploy
+  extends: [.deploy common]
+  dependencies: [Build]
+  needs: [Build]
+  before_script:
+    - gcloud auth activate-service-account $GCLOUD_SERVICE_ACCOUNT --key-file=${GCLOUD_SERVICE_KEY_FILE} --project=${GCLOUD_PROJECT}
+    - export GOOGLE_APPLICATION_CREDENTIALS=${GCLOUD_SERVICE_KEY_FILE}
+  script:
+    - . deployment/bin/deploy-utils.sh
+    - . deploy-argo-utils.sh
+    - find_and_publish_to_gcs $BUILD_DIR ${STORAGE_BUCKET}/${WEBAPP_PATH}/build
+    - find_and_publish_to_gcs $ASSETS_DIR ${STORAGE_BUCKET}/${WEBAPP_PATH}/assets
+    - setup_helpdesk_kubecontext $CONTEXT
+    - publish_manifest_configmap $CONTEXT default $BUILD_DIR /${WEBAPP_PATH}/build
+
+.deploy staging:
+  extends:
+    - .deploy
+    - .staging_env
+
+Deploy STG us-east1-86cc:
+  extends: .deploy staging
+  variables:
+    CONTEXT: gorgias-helpdesk-staging-us-east1-86cc
+  <<: *gitlab_environment
+
+Deploy STG us-east4-a5a0:
+  extends: .deploy staging
+  variables:
+    CONTEXT: gorgias-helpdesk-staging-us-east4-a5a0
+  <<: *gitlab_environment
+
+.deploy production:
+  extends:
+    - .deploy
+    - .production_env
+
+Deploy PRD us-east1-2607:
+  extends: .deploy production
+  variables:
+    CONTEXT: gorgias-helpdesk-production-us-east1-2607
+  <<: *gitlab_environment
+
+Deploy PRD us-east4-65cd:
+  extends: .deploy production
+  variables:
+    CONTEXT: gorgias-helpdesk-production-us-east4-65cd
+  <<: *gitlab_environment
+
+Deploy PRD us-east4-5f09:
+  extends: .deploy production
+  variables:
+    CONTEXT: gorgias-helpdesk-production-us-east4-5f09
+  <<: *gitlab_environment
+
+Deploy PRD us-central1-d8ff:
+  extends: .deploy production
+  variables:
+    CONTEXT: gorgias-helpdesk-production-us-central1-d8ff
+  <<: *gitlab_environment
+
+Deploy PRD europe-west1-c511:
+  extends: .deploy production
+  variables:
+    CONTEXT: gorgias-helpdesk-production-europe-west1-c511
+  <<: *gitlab_environment
+
+Deploy PRD europe-west3-86c1:
+  extends: .deploy production
+  variables:
+    CONTEXT: gorgias-helpdesk-production-europe-west3-86c1
+  <<: *gitlab_environment
+
+Deploy PRD aus-southeast1-fcb9:
+  extends: .deploy production
+  variables:
+    CONTEXT: gorgias-helpdesk-production-aus-southeast1-fcb9
+  <<: *gitlab_environment
+
+Deploy PRD us-east1-635c:
+  extends: .deploy production
+  variables:
+    CONTEXT: gorgias-main-us-east1-635c
+  <<: *gitlab_environment
+
+Deploy preview:
+  extends: .deploy
+  dependencies: [Build]
+  needs: [Build]
+  when: manual
+  allow_failure: true
+  variables:
+    BACKEND_REF: main
+  script:
+    - deployment/bin/deploy-preview.sh $CI_COMMIT_SHA
+
+Publish Chromatic:
+  extends: [.yarn cache]
+  stage: docs
+  dependencies: [Install dependencies]
+  needs: [Install dependencies]
+  when: manual
+  rules:
+    - if: $CI_COMMIT_REF_NAME == "main" || $CI_COMMIT_REF_NAME == "staging" || $CI_COMMIT_REF_NAME == "anddon/appch-2036-prepare-helpdesk-web-appmain-fix"
+  variables:
+    # See: https://github.com/webpack/webpack/issues/14532
+    NODE_OPTIONS: --openssl-legacy-provider
+  script:
+    - yarn chromatic --project-token=${CHROMATIC_PROJECT_TOKEN}
+
+Force deploy production:
+  extends: .deploy production
+  stage: force deploy
+  when: manual
+  variables:
+    CONTEXTS: >-
+      gorgias-helpdesk-production-us-east1-2607
+      gorgias-helpdesk-production-us-east4-65cd
+      gorgias-helpdesk-production-us-east4-5f09
+      gorgias-helpdesk-production-us-central1-d8ff
+      gorgias-helpdesk-production-europe-west1-c511
+      gorgias-helpdesk-production-europe-west3-86c1
+      gorgias-helpdesk-production-aus-southeast1-fcb9
+      gorgias-main-us-east1-635c
+  rules:
+    - if: $CI_COMMIT_REF_NAME == "main" || $CI_COMMIT_REF_NAME == "staging" || $CI_COMMIT_REF_NAME == "anddon/appch-2036-prepare-helpdesk-web-appmain-fix"
+  script:
+    - . deployment/bin/deploy-utils.sh
+    - . deploy-argo-utils.sh
+    - find_and_publish_to_gcs $BUILD_DIR ${STORAGE_BUCKET}/${WEBAPP_PATH}/build
+    - find_and_publish_to_gcs $ASSETS_DIR ${STORAGE_BUCKET}/${WEBAPP_PATH}/assets
+    - |
+      for CONTEXT in $CONTEXTS; do
+        setup_helpdesk_kubecontext $CONTEXT
+        publish_manifest_configmap $CONTEXT default $BUILD_DIR /${WEBAPP_PATH}/build
+      done

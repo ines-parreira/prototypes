@@ -43,15 +43,12 @@ module.exports = {
         amplitude: false,
     },
     plugins: ['prettier'],
-    ignorePatterns: [
-        'g/static/private/js/types/**',
-        'g/static/private/js/rest_api/help_center_api/**',
-    ],
+    ignorePatterns: ['src/types/**', 'src/rest_api/help_center_api/**'],
     settings: {
         'import/resolver': {
             node: {
                 extensions: ['.js', '.jsx', '.ts', '.tsx', '.d.ts'],
-                paths: ['g/static/private/js'],
+                paths: ['src'],
             },
         },
     },

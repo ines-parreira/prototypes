@@ -6,8 +6,8 @@ const ManifestPlugin = require('webpack-manifest-plugin')
 const __PRODUCTION__ = process.env.NODE_ENV === 'production'
 const HASH = process.env.RELEASE ? process.env.RELEASE : '[hash]'
 
-const srcDir = path.join(__dirname, 'g/static/private')
-const buildDir = path.join(__dirname, 'g/static/public/web-app')
+const srcDir = path.join(__dirname, 'src')
+const buildDir = path.join(__dirname, 'build')
 
 const optimization = {
     minimizer: [
@@ -25,11 +25,13 @@ module.exports = () => {
         optimization,
         devtool: 'source-map',
         entry: {
-            sharedWorker: `${srcDir}/js/services/socketManager/sharedWorker.js`,
+            sharedWorker: `${srcDir}/services/socketManager/sharedWorker.js`,
         },
         output: {
             path: buildDir,
-            filename: __PRODUCTION__ ? `helpdesk.shared-worker.${HASH}.js` : 'helpdesk.shared-worker.js',
+            filename: __PRODUCTION__
+                ? `helpdesk.shared-worker.${HASH}.js`
+                : 'helpdesk.shared-worker.js',
         },
         module: {
             rules: [

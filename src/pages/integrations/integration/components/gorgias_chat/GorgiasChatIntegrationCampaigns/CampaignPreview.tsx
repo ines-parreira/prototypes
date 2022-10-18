@@ -1,13 +1,15 @@
 import React, {Component} from 'react'
 import classnames from 'classnames'
 
-import Avatar from '../../../../../common/components/Avatar/Avatar'
 import {
     GorgiasChatPosition,
     GorgiasChatPositionAlignmentEnum,
-} from '../../../../../../models/integration/types'
-import CloseIcon from '../../../../../../../js/assets/img/icons/DefaultCloseIcon.svg'
+} from 'models/integration/types'
+import CloseIcon from 'assets/img/icons/DefaultCloseIcon.svg'
+
 import GorgiasChatPoweredBy from '../GorgiasChatIntegrationPreview/GorgiasChatPoweredBy'
+
+import Avatar from '../../../../../common/components/Avatar/Avatar'
 
 import css from './CampaignPreview.less'
 

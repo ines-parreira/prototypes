@@ -107,7 +107,7 @@ export function canAddAttachments(
     return null
 }
 
-//$TsFixMe legacy constant for flow usage, use enum at g/static/private/js/business/types/ticket.ts instead
+//$TsFixMe legacy constant for flow usage, use enum at src/business/types/ticket.ts instead
 export const TicketMessageSourceTypes = Object.freeze({
     AIRCALL: 'aircall',
     API: 'api',
@@ -138,13 +138,13 @@ export const TicketMessageSourceTypes = Object.freeze({
     TWITTER_MENTION_TWEET: 'twitter-mention-tweet',
 })
 
-//$TsFixMe legacy constant for flow usage, use enum at g/static/private/js/business/types/ticket.ts instead
+//$TsFixMe legacy constant for flow usage, use enum at src/business/types/ticket.ts instead
 export const TicketStatuses = Object.freeze({
     OPEN: 'open',
     CLOSED: 'closed',
 })
 
-//$TsFixMe legacy constant for flow usage, use enum at g/static/private/js/business/types/ticket.ts instead
+//$TsFixMe legacy constant for flow usage, use enum at src/business/types/ticket.ts instead
 export const TicketChannels = Object.freeze({
     AIRCALL: 'aircall',
     API: 'api',
@@ -163,7 +163,7 @@ export const TicketChannels = Object.freeze({
     TWITTER: 'twitter',
 })
 
-//$TsFixMe legacy constant for flow usage, use enum at g/static/private/js/business/types/ticket.ts instead
+//$TsFixMe legacy constant for flow usage, use enum at src/business/types/ticket.ts instead
 export const TicketVias = Object.freeze({
     GORGIAS_CHAT: 'gorgias_chat',
 })

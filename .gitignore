@@ -1,47 +1,8 @@
-# Celery Beat
-celerybeat-schedule.db
-celerybeat-schedule
-
 .DS_Store
 .bash_history
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-
-# C extensions
-*.so
-
-# Distribution / packaging
-.Python
-./env/
-./build/
-./develop-eggs/
-./dist/
-./downloads/
-./eggs/
-.eggs/
-./lib/
-./lib64/
-./parts/
-./sdist/
-./var/
-*.egg-info/
-.installed.cfg
-*.egg
-.virtualenvs
-.venv
-.local
-
-# PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
-*.spec
 
 # Installer logs
 .npm/**/*
-pip-log.txt
-pip-delete-this-directory.txt
 yarn-error.log
 
 # Unit test / coverage reports
@@ -63,21 +24,13 @@ node_modules
 *.mo
 *.pot
 
-# Sphinx documentation
-docs/_build/
-
-# PyBuilder
-target/
+# Editors
+.kateconfig
+.vscode/
 .idea
 
-# Kate editor
-.kateconfig
-
-# Vscode
-.vscode/
-
-# js build files
-g/static/public/web-app/*
+# build files
+build/*
 
 # docker-compose env_file
 .env
@@ -86,19 +39,11 @@ g/static/public/web-app/*
 docker-compose.override.yml
 docker-compose.dev.yml
 
-# linters and other code inspection tools
-.mypy_cache/
-
-db_fixtures
-
 # gcloud tmp files
 transaction.yaml
 
 # V8 compile cache
 v8-compile-cache-*
-
-# local eggs
-src/
 
 # Storybook
 build-storybook.log

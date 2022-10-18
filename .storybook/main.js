@@ -1,7 +1,7 @@
 const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
-const srcDir = path.join(__dirname, '../g/static/private/js')
+const srcDir = path.join(__dirname, '../src')
 
 const HASH = process.env.RELEASE ? process.env.RELEASE : '[hash]'
 const __PRODUCTION__ = process.env.NODE_ENV === 'production'

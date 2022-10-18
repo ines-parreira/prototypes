@@ -168,10 +168,9 @@ function createTargetPr(metadata) {
 function repoUrl(repoName, opts = {}) {
     const username = opts?.username
     const password = opts?.password
-    const repoBaseUrl = `github.com/${repoName}`
     return username && password
-        ? `https://${username}:${password}@${repoBaseUrl}`
-        : `https://${repoBaseUrl}`
+        ? `https://${username}:${password}@github.com/${repoName}`
+        : `git@github.com:${repoName}`
 }
 
 //

@@ -9,13 +9,17 @@ const pkg = require('./package.json')
 
 const __PRODUCTION__ = process.env.NODE_ENV === 'production'
 const HASH = process.env.RELEASE ? process.env.RELEASE : '[hash]'
-const GORGIAS_ASSETS_URL = __PRODUCTION__
-    ? 'https://gorgias-assets.gorgias.io'
-    : ''
+
+const ASSETS_URL =
+    process.env.GORGIAS_ASSETS_URL ?? __PRODUCTION__
+        ? 'https://gorgias-assets.gorgias.io'
+        : ''
+const WEBAPP_BUILD_PATH = process.env.GORGIAS_WEBAPP_BUILD_PATH ?? 'web-app'
+
 const BUNDLE_PUBLIC_PATH = 'http://acme.gorgias.docker:8080/'
 
-const srcDir = path.join(__dirname, 'g/static/private/js')
-const buildDir = path.join(__dirname, 'g/static/public/web-app')
+const srcDir = path.join(__dirname, 'src')
+const buildDir = path.join(__dirname, 'build')
 const jsBundleFile = __PRODUCTION__
     ? `helpdesk.app.${HASH}.js`
     : 'helpdesk.app.js'
@@ -67,8 +71,8 @@ const urlLoader = {
         limit: 5000,
         fallback: 'file-loader',
         emitFile: false,
-        name: `${GORGIAS_ASSETS_URL}/[path][name].[ext]`,
-        context: 'g/',
+        name: `${ASSETS_URL}/${WEBAPP_BUILD_PATH}/[path][name].[ext]`,
+        context: 'src/',
     },
 }
 const imageExtRegex = /\.(jpe?g|png|gif)$/i
