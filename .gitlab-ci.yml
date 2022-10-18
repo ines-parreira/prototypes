@@ -38,7 +38,7 @@ variables:
     STORAGE_BUCKET: gs://gorgias-assets-staging
     DEPLOY_ENV: staging
   rules:
-    - if: $CI_COMMIT_REF_NAME == "staging" || $CI_COMMIT_REF_NAME == "anddon/appch-2036-prepare-helpdesk-web-appmain-fix"
+    - if: $CI_COMMIT_REF_NAME == "staging"
 
 .production_env:
   variables:
@@ -200,7 +200,7 @@ Publish Chromatic:
   needs: [Install dependencies]
   when: manual
   rules:
-    - if: $CI_COMMIT_REF_NAME == "main" || $CI_COMMIT_REF_NAME == "staging" || $CI_COMMIT_REF_NAME == "anddon/appch-2036-prepare-helpdesk-web-appmain-fix"
+    - if: $CI_COMMIT_REF_NAME == "main" || $CI_COMMIT_REF_NAME == "staging"
   variables:
     # See: https://github.com/webpack/webpack/issues/14532
     NODE_OPTIONS: --openssl-legacy-provider
@@ -222,7 +222,7 @@ Force deploy production:
       gorgias-helpdesk-production-aus-southeast1-fcb9
       gorgias-main-us-east1-635c
   rules:
-    - if: $CI_COMMIT_REF_NAME == "main" || $CI_COMMIT_REF_NAME == "staging" || $CI_COMMIT_REF_NAME == "anddon/appch-2036-prepare-helpdesk-web-appmain-fix"
+    - if: $CI_COMMIT_REF_NAME == "main" || $CI_COMMIT_REF_NAME == "staging"
   script:
     - . deployment/bin/deploy-utils.sh
     - . deploy-argo-utils.sh
