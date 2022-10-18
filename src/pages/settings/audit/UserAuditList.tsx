@@ -215,7 +215,7 @@ const UserAuditList = () => {
                 <div className="manage-requests-description">
                     <p>
                         User audit logs display recent actions performed by
-                        users in Gorgias
+                        users in Gorgias.
                     </p>
                 </div>
                 {isLoading ? (

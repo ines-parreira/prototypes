@@ -223,7 +223,7 @@ exports[`<UserAuditList/> should fetch events on mount and render a loading spin
       class="manage-requests-description"
     >
       <p>
-        User audit logs display recent actions performed by users in Gorgias
+        User audit logs display recent actions performed by users in Gorgias.
       </p>
     </div>
     <div>
@@ -456,7 +456,7 @@ exports[`<UserAuditList/> should render a message to inform the user no events a
       class="manage-requests-description"
     >
       <p>
-        User audit logs display recent actions performed by users in Gorgias
+        User audit logs display recent actions performed by users in Gorgias.
       </p>
     </div>
     <div>
@@ -689,7 +689,7 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
       class="manage-requests-description"
     >
       <p>
-        User audit logs display recent actions performed by users in Gorgias
+        User audit logs display recent actions performed by users in Gorgias.
       </p>
     </div>
     <div>
