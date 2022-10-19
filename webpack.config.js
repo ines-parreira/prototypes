@@ -14,7 +14,8 @@ const ASSETS_URL =
     process.env.GORGIAS_ASSETS_URL ?? __PRODUCTION__
         ? 'https://gorgias-assets.gorgias.io'
         : ''
-const WEBAPP_BUILD_PATH = process.env.GORGIAS_WEBAPP_BUILD_PATH ?? 'web-app'
+const WEBAPP_BUILD_PATH =
+    process.env.GORGIAS_WEBAPP_BUILD_PATH ?? __PRODUCTION__ ? 'web-app' : ''
 
 const BUNDLE_PUBLIC_PATH = 'http://acme.gorgias.docker:8080/'
 
@@ -33,7 +34,7 @@ const vendorsBundleFile = __PRODUCTION__
 const mode = __PRODUCTION__ ? 'production' : 'development'
 const devtool = __PRODUCTION__ ? 'source-map' : 'cheap-module-source-map'
 const devServer = {
-    contentBase: [buildDir, path.join(__dirname, 'g')],
+    contentBase: [buildDir, path.join(__dirname, 'src')],
     clientLogLevel: 'error',
     host: '0.0.0.0',
     // disable host check for dev env (if using proxy)
