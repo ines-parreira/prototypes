@@ -13,8 +13,8 @@ It's built using ReactJS + Redux + many other smaller tools.
 ## Installation
 
 ```sh
-git clone https://github.com/gorgias/gorgias
-cd gorgias
+git clone git@github.com:gorgias/helpdesk-web-app.git
+cd helpdesk-web-app
 yarn install
 ```
 
