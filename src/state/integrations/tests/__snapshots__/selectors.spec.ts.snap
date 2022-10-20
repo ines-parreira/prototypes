@@ -12,6 +12,7 @@ Immutable.Map {
     "html": "cheers, <strong>Steve</strong>",
   },
   "verified": true,
+  "isDeactivated": false,
 }
 `;
 
@@ -28,6 +29,20 @@ Immutable.List [
       "html": "cheers, <strong>Steve</strong>",
     },
     "verified": true,
+    "isDeactivated": false,
+  },
+  Immutable.Map {
+    "id": 7,
+    "type": "email",
+    "name": "Deactivated gmail",
+    "address": "billing+1@acme.gorgias.io",
+    "preferred": false,
+    "signature": Immutable.Map {
+      "text": "cheers, Steve",
+      "html": "cheers, <strong>Steve</strong>",
+    },
+    "verified": true,
+    "isDeactivated": true,
   },
   Immutable.Map {
     "id": 1,
@@ -40,6 +55,7 @@ Immutable.List [
       "html": "cheers, <strong>Steve</strong>",
     },
     "verified": true,
+    "isDeactivated": false,
   },
   Immutable.Map {
     "id": 15,
@@ -49,6 +65,7 @@ Immutable.List [
     "preferred": true,
     "signature": undefined,
     "verified": true,
+    "isDeactivated": false,
   },
   Immutable.Map {
     "id": 12,
@@ -58,6 +75,7 @@ Immutable.List [
     "preferred": true,
     "signature": undefined,
     "verified": false,
+    "isDeactivated": false,
   },
 ]
 `;

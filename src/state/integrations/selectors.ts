@@ -347,9 +347,20 @@ export const getEmailChannels = createSelector<
                 verified:
                     integration.get('type') !== IntegrationType.Email ||
                     integration.getIn(['meta', 'verified'], false),
+                isDeactivated: !!integration.get('deactivated_datetime'),
             }) as Map<any, any>
         }) as List<any>
     }
+)
+
+export const getActiveEmailChannels = createSelector<
+    RootState,
+    List<any>,
+    List<any>
+>(getEmailChannels, (channels) =>
+    channels
+        .filter((channel: Map<any, any>) => !channel.get('isDeactivated'))
+        .toList()
 )
 
 // return phone integrations formatted as channel

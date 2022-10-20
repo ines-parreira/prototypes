@@ -7,6 +7,7 @@ import {
     getBaseEmailIntegration,
     getChannelByTypeAndAddress,
     getEmailChannels,
+    getActiveEmailChannels,
     getChannelSignature,
     getChatIntegrationCampaignById,
     getChatIntegrationCampaigns,
@@ -168,6 +169,16 @@ describe('integrations selectors', () => {
 
     it('should get channels', () => {
         expect(getEmailChannels(state)).toMatchSnapshot()
+    })
+
+    it('should get active channels', () => {
+        const activeEmailChannels = getActiveEmailChannels(state).toJS() as {
+            isDeactivated: boolean
+        }[]
+        const inactiveEmailChannels = activeEmailChannels.filter(
+            (channel: {isDeactivated: boolean}) => channel.isDeactivated
+        )
+        expect(inactiveEmailChannels).toHaveLength(0)
     })
 
     it('should get channel by type and address', () => {

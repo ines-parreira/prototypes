@@ -21,7 +21,7 @@ import {
     areNewMessageContactPropertiesFulfilled as getAreNewMessageContactPropertiesFulfilled,
 } from 'state/newMessage/selectors'
 import {
-    getEmailChannels,
+    getActiveEmailChannels,
     getPhoneChannelsForPhoneSource,
     getPhoneChannelsForSmsSource,
 } from 'state/integrations/selectors'
@@ -80,7 +80,7 @@ const MessageSourceFields = forwardRef<MultiSelectAsyncField, Props>(
                 ? getPhoneChannelsForSmsSource
                 : getPhoneChannelsForPhoneSource
 
-        const emailChannels = useAppSelector(getEmailChannels)
+        const emailChannels = useAppSelector(getActiveEmailChannels)
         const phoneChannels = useAppSelector(getPhoneChannelsForSource)
 
         const accountChannels =

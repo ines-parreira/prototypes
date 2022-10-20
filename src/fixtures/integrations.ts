@@ -91,6 +91,38 @@ export const integrationsState = {
         },
         {
             deleted_datetime: null,
+            mappings: [],
+            meta: {
+                address: 'billing+1@acme.gorgias.io',
+                preferred: false,
+                oauth: {
+                    status: 'success',
+                },
+                signature: {
+                    text: 'cheers, {{current_user.first_name}}',
+                    html: 'cheers, <strong>{{current_user.first_name}}</strong>',
+                },
+                verified: true,
+            },
+            facebook: null,
+            http: null,
+            deactivated_datetime: '2017-02-07T06:21:05.655015+00:00',
+            name: 'Deactivated gmail',
+            user: {
+                id: 1,
+            },
+            uri: '/api/integrations/7/',
+            decoration: null,
+            locked_datetime: null,
+            created_datetime: '2017-02-07T06:21:05.654940+00:00',
+            type: 'gmail',
+            id: 7,
+            description: null,
+            updated_datetime: '2017-02-07T06:21:05.655015+00:00',
+            smooch: null,
+        },
+        {
+            deleted_datetime: null,
             mappings: [
                 {
                     source_key: 'args.bayaname',

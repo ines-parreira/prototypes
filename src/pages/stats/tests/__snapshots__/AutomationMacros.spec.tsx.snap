@@ -89,7 +89,7 @@ exports[`AutomationMacros should render the filters and stats when stats filters
                     <div
                       class="badge"
                     >
-                      5
+                      6
                     </div>
                   </label>
                 </div>
@@ -135,12 +135,12 @@ exports[`AutomationMacros should render the filters and stats when stats filters
                       name="checkbox-3"
                       type="checkbox"
                     />
-                    <i
-                      class="icon material-icons icon"
-                    >
-                      email
-                    </i>
-                     Acme Support
+                    <img
+                      alt="logo-gmail"
+                      class="integrationIcon"
+                      src="test-file-stub"
+                    />
+                     Deactivated gmail
                   </label>
                 </div>
                 <div
@@ -161,7 +161,7 @@ exports[`AutomationMacros should render the filters and stats when stats filters
                     >
                       email
                     </i>
-                     Acme Contact
+                     Acme Support
                   </label>
                 </div>
                 <div
@@ -182,7 +182,7 @@ exports[`AutomationMacros should render the filters and stats when stats filters
                     >
                       email
                     </i>
-                     Acme Unverified
+                     Acme Contact
                   </label>
                 </div>
                 <div
@@ -196,6 +196,27 @@ exports[`AutomationMacros should render the filters and stats when stats filters
                       class="input"
                       id="checkbox-6"
                       name="checkbox-6"
+                      type="checkbox"
+                    />
+                    <i
+                      class="icon material-icons icon"
+                    >
+                      email
+                    </i>
+                     Acme Unverified
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-7"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-7"
+                      name="checkbox-7"
                       type="checkbox"
                     />
                     <i
@@ -249,13 +270,13 @@ exports[`AutomationMacros should render the filters and stats when stats filters
                 >
                   <label
                     class="label label quickSelectionOption"
-                    for="checkbox-7"
+                    for="checkbox-8"
                   >
                     <input
                       checked=""
                       class="input"
-                      id="checkbox-7"
-                      name="checkbox-7"
+                      id="checkbox-8"
+                      name="checkbox-8"
                       type="checkbox"
                     />
                     Deselect
@@ -279,12 +300,12 @@ exports[`AutomationMacros should render the filters and stats when stats filters
                 >
                   <label
                     class="label label labelItem"
-                    for="checkbox-8"
+                    for="checkbox-9"
                   >
                     <input
                       class="input"
-                      id="checkbox-8"
-                      name="checkbox-8"
+                      id="checkbox-9"
+                      name="checkbox-9"
                       type="checkbox"
                     />
                      Aircall
@@ -295,12 +316,12 @@ exports[`AutomationMacros should render the filters and stats when stats filters
                 >
                   <label
                     class="label label labelItem"
-                    for="checkbox-9"
+                    for="checkbox-10"
                   >
                     <input
                       class="input"
-                      id="checkbox-9"
-                      name="checkbox-9"
+                      id="checkbox-10"
+                      name="checkbox-10"
                       type="checkbox"
                     />
                      Api
@@ -311,32 +332,16 @@ exports[`AutomationMacros should render the filters and stats when stats filters
                 >
                   <label
                     class="label label labelItem"
-                    for="checkbox-10"
-                  >
-                    <input
-                      checked=""
-                      class="input"
-                      id="checkbox-10"
-                      name="checkbox-10"
-                      type="checkbox"
-                    />
-                     Chat
-                  </label>
-                </div>
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="label label labelItem"
                     for="checkbox-11"
                   >
                     <input
+                      checked=""
                       class="input"
                       id="checkbox-11"
                       name="checkbox-11"
                       type="checkbox"
                     />
-                     Email
+                     Chat
                   </label>
                 </div>
                 <div
@@ -352,7 +357,7 @@ exports[`AutomationMacros should render the filters and stats when stats filters
                       name="checkbox-12"
                       type="checkbox"
                     />
-                     Facebook
+                     Email
                   </label>
                 </div>
                 <div
@@ -368,7 +373,7 @@ exports[`AutomationMacros should render the filters and stats when stats filters
                       name="checkbox-13"
                       type="checkbox"
                     />
-                     Facebook mention
+                     Facebook
                   </label>
                 </div>
                 <div
@@ -384,7 +389,7 @@ exports[`AutomationMacros should render the filters and stats when stats filters
                       name="checkbox-14"
                       type="checkbox"
                     />
-                     Facebook messenger
+                     Facebook mention
                   </label>
                 </div>
                 <div
@@ -400,7 +405,7 @@ exports[`AutomationMacros should render the filters and stats when stats filters
                       name="checkbox-15"
                       type="checkbox"
                     />
-                     Facebook recommendations
+                     Facebook messenger
                   </label>
                 </div>
                 <div
@@ -416,7 +421,7 @@ exports[`AutomationMacros should render the filters and stats when stats filters
                       name="checkbox-16"
                       type="checkbox"
                     />
-                     Help center
+                     Facebook recommendations
                   </label>
                 </div>
                 <div
@@ -432,7 +437,7 @@ exports[`AutomationMacros should render the filters and stats when stats filters
                       name="checkbox-17"
                       type="checkbox"
                     />
-                     Instagram ad comment
+                     Help center
                   </label>
                 </div>
                 <div
@@ -448,7 +453,7 @@ exports[`AutomationMacros should render the filters and stats when stats filters
                       name="checkbox-18"
                       type="checkbox"
                     />
-                     Instagram comment
+                     Instagram ad comment
                   </label>
                 </div>
                 <div
@@ -464,7 +469,7 @@ exports[`AutomationMacros should render the filters and stats when stats filters
                       name="checkbox-19"
                       type="checkbox"
                     />
-                     Instagram mention
+                     Instagram comment
                   </label>
                 </div>
                 <div
@@ -480,7 +485,7 @@ exports[`AutomationMacros should render the filters and stats when stats filters
                       name="checkbox-20"
                       type="checkbox"
                     />
-                     Instagram direct message
+                     Instagram mention
                   </label>
                 </div>
                 <div
@@ -496,7 +501,7 @@ exports[`AutomationMacros should render the filters and stats when stats filters
                       name="checkbox-21"
                       type="checkbox"
                     />
-                     Phone
+                     Instagram direct message
                   </label>
                 </div>
                 <div
@@ -512,7 +517,7 @@ exports[`AutomationMacros should render the filters and stats when stats filters
                       name="checkbox-22"
                       type="checkbox"
                     />
-                     Sms
+                     Phone
                   </label>
                 </div>
                 <div
@@ -528,7 +533,7 @@ exports[`AutomationMacros should render the filters and stats when stats filters
                       name="checkbox-23"
                       type="checkbox"
                     />
-                     Twitter
+                     Sms
                   </label>
                 </div>
                 <div
@@ -544,7 +549,7 @@ exports[`AutomationMacros should render the filters and stats when stats filters
                       name="checkbox-24"
                       type="checkbox"
                     />
-                     Twitter direct message
+                     Twitter
                   </label>
                 </div>
                 <div
@@ -558,6 +563,22 @@ exports[`AutomationMacros should render the filters and stats when stats filters
                       class="input"
                       id="checkbox-25"
                       name="checkbox-25"
+                      type="checkbox"
+                    />
+                     Twitter direct message
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-26"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-26"
+                      name="checkbox-26"
                       type="checkbox"
                     />
                      Yotpo review
