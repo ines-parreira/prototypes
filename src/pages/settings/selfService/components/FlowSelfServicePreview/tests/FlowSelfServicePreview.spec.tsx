@@ -9,8 +9,8 @@ import {useParams, useRouteMatch} from 'react-router-dom'
 import {RootState, StoreDispatch} from 'state/types'
 import {user} from 'fixtures/users'
 
-import QuickResponseSelfServicePreview from '../QuickResponseSelfServicePreview'
-import {defaultState} from '../../../../QuickResponseFlowsPreferences/tests/constants'
+import FlowSelfServicePreview from '../FlowSelfServicePreview'
+import {defaultState} from '../../QuickResponseFlowsPreferences/tests/constants'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const useParamsMock = useParams as jest.MockedFunction<typeof useParams>
@@ -56,12 +56,14 @@ describe('<ChatIntegrationPreview/>', () => {
         it('displays landing page', () => {
             const {container, getByText} = render(
                 <Provider store={mockStore(state)}>
-                    <QuickResponseSelfServicePreview
-                        quickResponseMessage={quickResponseMessage}
-                        quickResponseTitle="question"
+                    <FlowSelfServicePreview
+                        message="question"
+                        responseMessage={quickResponseMessage}
                         newMessageAttachments={List()}
                         isLandingPage={true}
                         setIsLandingPage={jest.fn()}
+                        isQuickResponsePreview
+                        showHelpfulPrompt
                     />
                 </Provider>
             )
@@ -75,12 +77,13 @@ describe('<ChatIntegrationPreview/>', () => {
         it('displays thread page with answer', () => {
             const {container, getByText} = render(
                 <Provider store={mockStore(state)}>
-                    <QuickResponseSelfServicePreview
-                        quickResponseMessage={quickResponseMessage}
-                        quickResponseTitle="question"
+                    <FlowSelfServicePreview
+                        message="question"
+                        responseMessage={quickResponseMessage}
                         newMessageAttachments={List()}
                         isLandingPage={false}
                         setIsLandingPage={jest.fn()}
+                        showHelpfulPrompt
                     />
                 </Provider>
             )
@@ -90,17 +93,38 @@ describe('<ChatIntegrationPreview/>', () => {
             expect(container).toMatchSnapshot()
         })
 
-        it('displays thread page without answer', () => {
+        it('displays thread page with answer without prompt', () => {
             const {container, getByText} = render(
                 <Provider store={mockStore(state)}>
-                    <QuickResponseSelfServicePreview
-                        quickResponseMessage={
-                            Map({text: '', html: ''}) as Map<any, any>
-                        }
-                        quickResponseTitle="question"
+                    <FlowSelfServicePreview
+                        message="question"
+                        responseMessage={quickResponseMessage}
                         newMessageAttachments={List()}
                         isLandingPage={false}
                         setIsLandingPage={jest.fn()}
+                    />
+                </Provider>
+            )
+
+            getByText('response')
+            getByText('Type a message...')
+
+            expect(container).toMatchSnapshot()
+        })
+
+        it('displays thread page without answer', () => {
+            const {container, getByText} = render(
+                <Provider store={mockStore(state)}>
+                    <FlowSelfServicePreview
+                        responseMessage={
+                            Map({text: '', html: ''}) as Map<any, any>
+                        }
+                        message="question"
+                        newMessageAttachments={List()}
+                        isLandingPage={false}
+                        setIsLandingPage={jest.fn()}
+                        isQuickResponsePreview
+                        showHelpfulPrompt
                     />
                 </Provider>
             )

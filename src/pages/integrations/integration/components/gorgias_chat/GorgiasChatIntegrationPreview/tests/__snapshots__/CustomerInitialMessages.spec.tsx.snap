@@ -21,7 +21,7 @@ exports[`<CustomerInitialMessages/> should render timestamps and messages 1`] = 
     </ConversationTimestamp>
     <div
       className="bubble primary firstMessageOfAppUser"
-      key="Hey hey-0"
+      key="0"
       style={
         Object {
           "backgroundColor": "red",
@@ -32,7 +32,7 @@ exports[`<CustomerInitialMessages/> should render timestamps and messages 1`] = 
     </div>
     <div
       className="bubble primary"
-      key="Hello-1"
+      key="1"
       style={
         Object {
           "backgroundColor": "red",
@@ -43,7 +43,7 @@ exports[`<CustomerInitialMessages/> should render timestamps and messages 1`] = 
     </div>
     <div
       className="bubble primary lastMessage"
-      key="How are you doing?-2"
+      key="2"
       style={
         Object {
           "backgroundColor": "red",

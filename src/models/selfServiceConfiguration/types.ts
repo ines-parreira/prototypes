@@ -10,11 +10,7 @@ export type SelfServiceConfigurationPolicy = {
     enabled: boolean
 }
 
-export type SelfServiceConfigurationFilterPolicy = {
-    enabled: boolean
-    eligibilities: SelfServiceConfigurationFilter[]
-    exceptions: SelfServiceConfigurationFilter[]
-}
+export const AUTOMATED_RESPONSE = 'automated_response'
 
 export enum ReturnActionType {
     LoopReturns = 'loop_returns',
@@ -34,9 +30,28 @@ export type ReturnAction =
     | LoopReturnsReturnAction
     | AutomatedResponseReturnAction
 
+type ResponseMessageContent = {
+    html: string
+    text: string
+}
+
+export type SelfServiceConfigurationFilterPolicy = {
+    enabled: boolean
+    eligibilities: SelfServiceConfigurationFilter[]
+    exceptions: SelfServiceConfigurationFilter[]
+}
+
 export type SelfServiceConfigurationReturnOrderPolicy =
     SelfServiceConfigurationFilterPolicy & {
         action?: ReturnAction | null
+    }
+
+export type SelfServiceConfigurationCancelOrderPolicy =
+    SelfServiceConfigurationFilterPolicy & {
+        action?: {
+            type: typeof AUTOMATED_RESPONSE
+            response_message_content: ResponseMessageContent
+        }
     }
 
 export enum ReportIssueVariable {
@@ -99,7 +114,7 @@ export type SelfServiceConfiguration = {
     deactivated_datetime: Maybe<string>
     report_issue_policy: SelfServiceConfigurationReportIssuePolicy
     track_order_policy: SelfServiceConfigurationPolicy
-    cancel_order_policy: SelfServiceConfigurationFilterPolicy
+    cancel_order_policy: SelfServiceConfigurationCancelOrderPolicy
     return_order_policy: SelfServiceConfigurationReturnOrderPolicy
     quick_response_policies: QuickReplyPolicy[]
 }

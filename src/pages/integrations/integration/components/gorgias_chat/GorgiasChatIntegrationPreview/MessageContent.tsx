@@ -12,15 +12,17 @@ import ArticleAttachment, {
 } from './ArticleAttachment'
 import css from './ChatIntegrationPreview.less'
 
+export type AgentMessages = {
+    content: string
+    isHtml: boolean
+    attachments: ProductAttachment[] | ArticleAttachmentSchema[]
+}[]
+
 type Props = {
     conversationColor: string
     currentUser?: Map<any, any>
-    customerInitialMessages: string[]
-    agentMessages: {
-        content: string
-        isHtml: boolean
-        attachments: ProductAttachment[] | ArticleAttachmentSchema[]
-    }[]
+    customerInitialMessages: string[] | JSX.Element[]
+    agentMessages: AgentMessages
     hideMessageTimestamp?: boolean
 }
 

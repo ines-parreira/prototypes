@@ -88,7 +88,6 @@ exports[`<CancellationsPolicyView/> onSubmit() should set the eligibility option
                 Read more
               </a>
             </p>
-            <br />
             <h5
               class="eligibilityWindowTitle"
             >
@@ -184,22 +183,23 @@ exports[`<CancellationsPolicyView/> onSubmit() should set the eligibility option
                   </i>
                 </div>
               </div>
-              <button
-                class="wrapper mr-2 fill primary medium isDisabled"
-                disabled=""
-                type="submit"
+              <div
+                class="buttonWrapper"
               >
-                Save changes
-              </button>
-              <button
-                class="wrapper fill secondary medium isDisabled"
-                disabled=""
-                type="button"
-              >
-                Cancel
-              </button>
+                <button
+                  class="wrapper mr-2 fill primary medium"
+                  type="submit"
+                >
+                  Save changes
+                </button>
+                <button
+                  class="wrapper fill secondary medium"
+                  type="button"
+                >
+                  Cancel
+                </button>
+              </div>
             </form>
-            <br />
           </div>
         </div>
       </div>
@@ -296,7 +296,6 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
                 Read more
               </a>
             </p>
-            <br />
             <h5
               class="eligibilityWindowTitle"
             >
@@ -392,22 +391,23 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
                   </i>
                 </div>
               </div>
-              <button
-                class="wrapper mr-2 fill primary medium isDisabled"
-                disabled=""
-                type="submit"
+              <div
+                class="buttonWrapper"
               >
-                Save changes
-              </button>
-              <button
-                class="wrapper fill secondary medium isDisabled"
-                disabled=""
-                type="button"
-              >
-                Cancel
-              </button>
+                <button
+                  class="wrapper mr-2 fill primary medium"
+                  type="submit"
+                >
+                  Save changes
+                </button>
+                <button
+                  class="wrapper fill secondary medium"
+                  type="button"
+                >
+                  Cancel
+                </button>
+              </div>
             </form>
-            <br />
           </div>
         </div>
       </div>
@@ -504,7 +504,6 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
                 Read more
               </a>
             </p>
-            <br />
             <h5
               class="eligibilityWindowTitle"
             >
@@ -600,31 +599,343 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
                   </i>
                 </div>
               </div>
-              <p>
-                This is hidden behind
-                 
-                <i>
-                  self-service-automated-response-order-management
-                </i>
-                 
-                flag
-              </p>
-              <button
-                class="wrapper mr-2 fill primary medium isDisabled"
-                disabled=""
-                type="submit"
+              <div
+                class="form-group"
               >
-                Save changes
-              </button>
+                <label
+                  class="control-label"
+                  for="responseText"
+                >
+                  Response text
+                </label>
+                <p>
+                  After customers request a return in chat, reply with an automated message.
+                </p>
+                <div
+                  class="rich-textarea-wrapper"
+                >
+                  <div
+                    class="editor-wrapper"
+                  >
+                    <div
+                      class="withMinHeight"
+                    >
+                      <div
+                        class="DraftEditor-root"
+                      >
+                        <div
+                          class="public-DraftEditorPlaceholder-root"
+                        >
+                          <div
+                            class="public-DraftEditorPlaceholder-inner"
+                            id="placeholder-someRandomKey"
+                            style="white-space: pre-wrap;"
+                          >
+                            Ex: We offer free shipping on all U.S. orders $100+. Shipping rates vary based on weight and delivery destination and is chosen by the customer at checkout. Check out our Shipping & Returns page for more information about shipping rates.
+                          </div>
+                        </div>
+                        <div
+                          class="DraftEditor-editorContainer"
+                        >
+                          <div
+                            aria-autocomplete="list"
+                            aria-describedby="placeholder-someRandomKey"
+                            aria-expanded="true"
+                            class="notranslate public-DraftEditor-content"
+                            contenteditable="true"
+                            role="combobox"
+                            spellcheck="false"
+                            style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
+                          >
+                            <div
+                              data-contents="true"
+                            >
+                              <div
+                                class=""
+                                data-block="true"
+                                data-editor="someRandomKey"
+                                data-offset-key="someRandomKey-0-0"
+                              >
+                                <div
+                                  class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                                  data-offset-key="someRandomKey-0-0"
+                                >
+                                  <span
+                                    data-offset-key="someRandomKey-0-0"
+                                  >
+                                    <br
+                                      data-text="true"
+                                    />
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="editor-toolbar page"
+                  >
+                    <div
+                      class="actionsWrapper"
+                    >
+                      <div
+                        class="actions"
+                      >
+                        <button
+                          class="wrapper button wrapper small fill secondary small"
+                          id="format_bold"
+                          type="button"
+                        >
+                          <i
+                            class="material-icons icon"
+                          >
+                            format_bold
+                          </i>
+                        </button>
+                        <button
+                          class="wrapper button wrapper small fill secondary small"
+                          id="format_italic"
+                          type="button"
+                        >
+                          <i
+                            class="material-icons icon"
+                          >
+                            format_italic
+                          </i>
+                        </button>
+                        <button
+                          class="wrapper button wrapper small fill secondary small"
+                          id="format_underline"
+                          type="button"
+                        >
+                          <i
+                            class="material-icons icon"
+                          >
+                            format_underline
+                          </i>
+                        </button>
+                        <span
+                          class="popoverWrapper"
+                        >
+                          <button
+                            class="wrapper button wrapper small fill secondary small"
+                            id="insert_link"
+                            type="button"
+                          >
+                            <i
+                              class="material-icons icon"
+                            >
+                              link
+                            </i>
+                          </button>
+                          <div
+                            class="popover top-left hidden"
+                          />
+                        </span>
+                        <span
+                          class="popoverWrapper"
+                        >
+                          <button
+                            class="wrapper button wrapper small fill secondary small"
+                            id="insert_photo"
+                            type="button"
+                          >
+                            <i
+                              class="material-icons icon"
+                            >
+                              insert_photo
+                            </i>
+                          </button>
+                          <div
+                            class="popover top-left hidden"
+                          />
+                        </span>
+                        <span
+                          class="popoverWrapper"
+                        >
+                          <button
+                            class="wrapper button wrapper small fill secondary small"
+                            id="insert_emoticon"
+                            type="button"
+                          >
+                            <i
+                              class="material-icons icon"
+                            >
+                              insert_emoticon
+                            </i>
+                          </button>
+                          <div
+                            class="p-0 d-flex popover top-left hidden"
+                          />
+                        </span>
+                        <span
+                          class="popoverWrapper"
+                        >
+                          <button
+                            class="wrapper button wrapper small fill secondary small"
+                            id="insert_shopify_product"
+                            type="button"
+                          >
+                            <i
+                              class="material-icons icon"
+                            >
+                              shopify
+                            </i>
+                          </button>
+                          <div
+                            class="productLinkToolTip p-0 d-flex popover top-left hidden"
+                          />
+                        </span>
+                      </div>
+                      <div
+                        class="hoverOverlay"
+                      >
+                        Add files as attachments
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <small
+                  class="form-text text-muted"
+                >
+                  0/1000 characters
+                </small>
+              </div>
+              <div
+                class="buttonWrapper"
+              >
+                <button
+                  class="wrapper mr-2 fill primary medium"
+                  type="submit"
+                >
+                  Save changes
+                </button>
+                <button
+                  class="wrapper fill secondary medium"
+                  type="button"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div
+          class="col"
+          data-testid="previewColumn"
+        >
+          <div
+            class="container"
+          >
+            <div
+              class="mb-4 btn-group"
+              role="group"
+            >
               <button
-                class="wrapper fill secondary medium isDisabled"
-                disabled=""
+                class="btn btn-secondary"
                 type="button"
               >
-                Cancel
+                Landing Page
               </button>
-            </form>
-            <br />
+              <button
+                class="btn btn-info"
+                type="button"
+              >
+                Message Thread
+              </button>
+            </div>
+            <div
+              class="preview"
+            >
+              <div
+                class="dialog"
+              >
+                <div
+                  class="header"
+                  style="background-color: rgb(13, 135, 221);"
+                >
+                  <div
+                    class="agents"
+                  >
+                    <div
+                      class="agent first"
+                      style="border-color: #0d87dd;"
+                    >
+                      <i
+                        class="material-icons"
+                      >
+                        person
+                      </i>
+                    </div>
+                    <div
+                      class="agent middle"
+                      style="border-color: #0d87dd;"
+                    >
+                      <i
+                        class="material-icons"
+                      >
+                        person
+                      </i>
+                      <div
+                        class="onlineMarker"
+                      />
+                    </div>
+                    <div
+                      class="agent last"
+                      style="border-color: #0d87dd;"
+                    >
+                      <i
+                        class="material-icons"
+                      >
+                        person
+                      </i>
+                    </div>
+                  </div>
+                  <div
+                    class="details"
+                  >
+                    <div
+                      class="appName"
+                    >
+                      Chat
+                    </div>
+                    <div
+                      class="introductionText"
+                    >
+                      How can we help?
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="poweredBy"
+                >
+                  <div>
+                    <span>
+                      Powered by
+                    </span>
+                    <img
+                      alt="powered-by"
+                      src="test-file-stub"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="footer"
+                >
+                  <div
+                    class="placeholder"
+                  >
+                    Type a message...
+                  </div>
+                  <i
+                    class="icon camera"
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

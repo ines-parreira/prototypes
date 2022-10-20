@@ -38,7 +38,7 @@ import {NotificationStatus} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
 import {getNewMessageAttachments} from '../../../../../state/newMessage/selectors'
 import BackButton from '../BackButton'
-import QuickResponseSelfServicePreview from './components/QuickResponseSelfServicePreview'
+import FlowSelfServicePreview from '../FlowSelfServicePreview'
 import css from './QuickResponseFlowItem.less'
 
 const MAX_RESPONSE_LENGTH = 5000
@@ -312,12 +312,15 @@ const QuickResponseFlowItem = ({
 
                     <Col data-testid="previewColumn">
                         <div className={css.preview}>
-                            <QuickResponseSelfServicePreview
-                                quickResponseTitle={buttonLabel || 'Title'}
-                                quickResponseMessage={responseText.message}
+                            <FlowSelfServicePreview
+                                message={buttonLabel || 'Title'}
+                                responseMessage={responseText.message}
                                 newMessageAttachments={newMessageAttachments}
                                 isLandingPage={isLandingPage}
                                 setIsLandingPage={setIsLandingPage}
+                                isQuickResponsePreview
+                                quickResponseId={quickResponseId}
+                                showHelpfulPrompt
                             />
                         </div>
                     </Col>

@@ -7,7 +7,7 @@ import MessageTimestamp from './MessageTimestamp'
 
 type Props = {
     conversationColor: string
-    messages: string[]
+    messages: string[] | JSX.Element[]
     hideMessageTimestamp?: boolean
 }
 
@@ -23,7 +23,7 @@ const CustomerInitialMessages = (props: Props) => (
                     index === 0 ? css.firstMessageOfAppUser : null,
                     index === props.messages.length - 1 ? css.lastMessage : null
                 )}
-                key={`${message}-${index}`}
+                key={index}
                 style={{backgroundColor: props.conversationColor}}
             >
                 {message}

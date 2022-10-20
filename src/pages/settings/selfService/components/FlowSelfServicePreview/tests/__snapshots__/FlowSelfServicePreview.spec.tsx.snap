@@ -87,49 +87,94 @@ exports[`<ChatIntegrationPreview/> render() displays landing page 1`] = `
         <div
           class="content"
         >
-          <div
-            class="listGroup"
+          <ul
+            class="buttons list-group"
           >
-            <ul
-              class="buttons list-group"
+            <li
+              class="button header list-group-item"
             >
-              <li
-                class="button header list-group-item"
+              Quick answers
+            </li>
+            <li
+              class="button list-group-item"
+            >
+              question
+              <span
+                class="material-icons-outlined chevronIcon"
               >
-                Quick answers
-              </li>
-              <li
-                class="button list-group-item"
-              >
-                question
-                <span
-                  class="material-icons-outlined chevronIcon"
-                >
-                  chevron_right
-                </span>
-              </li>
-            </ul>
-          </div>
-          <div
-            class="footer"
+                chevron_right
+              </span>
+            </li>
+          </ul>
+          <ul
+            class="buttons list-group"
           >
-            <span
-              class="needHelpText"
+            <li
+              class="button header list-group-item"
             >
-              Need more help?
-            </span>
-            <button
-              class="btn btn-primary"
-              style="background-color: rgb(13, 135, 221); border-color: #0d87dd;"
+              Manage your orders
+            </li>
+            <li
+              class="button list-group-item"
             >
-              <img
-                alt="send message icon"
-                class="sendMessageIcon"
-                src="test-file-stub"
-              />
-              Send us a message
-            </button>
-          </div>
+              Track an order
+              <span
+                class="material-icons-outlined chevronIcon"
+              >
+                chevron_right
+              </span>
+            </li>
+            <li
+              class="button list-group-item"
+            >
+              Return an order
+              <span
+                class="material-icons-outlined chevronIcon"
+              >
+                chevron_right
+              </span>
+            </li>
+            <li
+              class="button list-group-item"
+            >
+              Cancel an order
+              <span
+                class="material-icons-outlined chevronIcon"
+              >
+                chevron_right
+              </span>
+            </li>
+            <li
+              class="button list-group-item"
+            >
+              Report issue
+              <span
+                class="material-icons-outlined chevronIcon"
+              >
+                chevron_right
+              </span>
+            </li>
+          </ul>
+        </div>
+        <div
+          class="footer"
+        >
+          <span
+            class="needHelpText"
+          >
+            Need more help?
+          </span>
+          <button
+            class="btn btn-primary"
+            style="background-color: rgb(13, 135, 221); border-color: #0d87dd;"
+          >
+            <img
+              alt="send message icon"
+              class="sendMessageIcon"
+              src="test-file-stub"
+            />
+            Send us a message
+          </button>
         </div>
       </div>
     </div>
@@ -308,6 +353,171 @@ exports[`<ChatIntegrationPreview/> render() displays thread page with answer 1`]
               src="test-file-stub"
             />
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ChatIntegrationPreview/> render() displays thread page with answer without prompt 1`] = `
+<div>
+  <div
+    class="container"
+  >
+    <div
+      class="mb-4 btn-group"
+      role="group"
+    >
+      <button
+        class="btn btn-secondary"
+        type="button"
+      >
+        Landing Page
+      </button>
+      <button
+        class="btn btn-info"
+        type="button"
+      >
+        Message Thread
+      </button>
+    </div>
+    <div
+      class="preview"
+    >
+      <div
+        class="dialog"
+      >
+        <div
+          class="header"
+          style="background-color: rgb(13, 135, 221);"
+        >
+          <div
+            class="agents"
+          >
+            <div
+              class="agent first"
+              style="border-color: #0d87dd;"
+            >
+              <i
+                class="material-icons"
+              >
+                person
+              </i>
+            </div>
+            <div
+              class="agent middle"
+              style="border-color: #0d87dd;"
+            >
+              <i
+                class="material-icons"
+              >
+                person
+              </i>
+              <div
+                class="onlineMarker"
+              />
+            </div>
+            <div
+              class="agent last"
+              style="border-color: #0d87dd;"
+            >
+              <i
+                class="material-icons"
+              >
+                person
+              </i>
+            </div>
+          </div>
+          <div
+            class="details"
+          >
+            <div
+              class="appName"
+            >
+              Chat
+            </div>
+            <div
+              class="introductionText"
+            >
+              How can we help?
+            </div>
+          </div>
+        </div>
+        <div
+          class="content"
+        >
+          <div>
+            <div
+              class="conversationTimestamp"
+            >
+              January 24
+            </div>
+            <div
+              class="bubble primary firstMessageOfAppUser lastMessage"
+              style="background-color: rgb(13, 135, 221);"
+            >
+              question
+            </div>
+          </div>
+          <div
+            class="appMakerMessageWrapper"
+          >
+            <div
+              class="component avatar"
+              style="width: 35px; height: 35px;"
+            >
+              <div
+                class="initials"
+                style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
+              >
+                <span
+                  style="line-height: 37px;"
+                >
+                  AP
+                </span>
+              </div>
+            </div>
+            <div>
+              <div
+                class="user"
+              >
+                Alex Plugaru
+              </div>
+              <div
+                class="bubble firstMessageOfAppMaker"
+              >
+                <div>
+                  response
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="poweredBy"
+        >
+          <div>
+            <span>
+              Powered by
+            </span>
+            <img
+              alt="powered-by"
+              src="test-file-stub"
+            />
+          </div>
+        </div>
+        <div
+          class="footer"
+        >
+          <div
+            class="placeholder"
+          >
+            Type a message...
+          </div>
+          <i
+            class="icon camera"
+          />
         </div>
       </div>
     </div>

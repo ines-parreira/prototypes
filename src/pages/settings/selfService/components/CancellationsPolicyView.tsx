@@ -1,9 +1,23 @@
 import React, {FormEvent, useEffect, useState} from 'react'
 import {Link, useParams} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem, Col, Container, Form, Row} from 'reactstrap'
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    Col,
+    Container,
+    Form,
+    FormGroup,
+    FormText,
+    Label,
+    Row,
+} from 'reactstrap'
+
 import classNames from 'classnames'
+import {EditorState} from 'draft-js'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import {fromJS} from 'immutable'
+import DEPRECATED_RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'
 import Button from 'pages/common/components/button/Button'
 
 import PageHeader from 'pages/common/components/PageHeader'
@@ -16,6 +30,7 @@ import {
     CancellationsOptionToEligibilityStatuses,
 } from 'pages/settings/selfService/types'
 import {
+    AUTOMATED_RESPONSE,
     FilterKeyEnum,
     FilterOperatorEnum,
     SelfServiceConfigurationFilter,
@@ -31,12 +46,17 @@ import {hasAutomationLegacyFeatures} from 'state/currentAccount/selectors'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 import {GorgiasChatIntegrationSelfServicePaywall} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
 import settingsCss from 'pages/settings/settings.less'
+import TicketAttachments from 'pages/tickets/detail/components/ReplyArea/TicketAttachments'
+import {deleteAttachment as deleteAttachmentAction} from 'state/newMessage/actions'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import {convertToHTML} from 'utils/editor'
+import {getNewMessageAttachments} from 'state/newMessage/selectors'
 import {useConfigurationData} from './hooks'
-import css from './CancellationPolicyView.less'
+import css from './CancellationsPolicyView.less'
 import SelfServicePreferencesNavbar from './SelfServicePreferencesNavbar'
 import BackButton from './BackButton'
+import FlowSelfServicePreview from './FlowSelfServicePreview'
 
 export const CancellationsPolicyView = () => {
     const dispatch = useAppDispatch()
@@ -51,6 +71,10 @@ export const CancellationsPolicyView = () => {
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
     const hasAutomatedResponseOrderManagementFlag =
         useFlags()[FeatureFlagKey.SelfServiceAutomatedResponseOrderManagement]
+    const newMessageAttachments = useAppSelector(getNewMessageAttachments)
+    const deleteAttachment = (index: number) => {
+        dispatch(deleteAttachmentAction(index))
+    }
 
     const [showDeleteButton, setShowDeleteButton] = useState(true)
 
@@ -61,6 +85,12 @@ export const CancellationsPolicyView = () => {
 
     const [eligibilityWindowOptionValue, setEligibilityWindowOptionValue] =
         useState('')
+
+    const [responseMessageContent, setResponseMessageContent] = useState({
+        html: '',
+        text: '',
+    })
+
     useEffect(() => {
         const currentOrderStatusEligibilityFilter:
             | SelfServiceConfigurationFilter
@@ -81,12 +111,27 @@ export const CancellationsPolicyView = () => {
         setEligibilityWindowOptionValue(optionToSet)
         setConfigCancelOrderStatusEligibility(optionToSet)
         setShowDeleteButton(showDeleteStateToSet)
-    }, [configuration, configuration?.cancel_order_policy.eligibilities])
+
+        const responseMessageContent =
+            configuration?.cancel_order_policy?.action?.response_message_content
+        if (responseMessageContent) {
+            setResponseMessageContent(responseMessageContent)
+        }
+    }, [
+        configuration,
+        configuration?.cancel_order_policy.eligibilities,
+        configuration?.cancel_order_policy?.action?.response_message_content,
+    ])
+
+    const [isResponseTooLong, setIsResponseTooLong] = useState(false)
+    const [isLandingPage, setIsLandingPage] = useState(true)
 
     const [loading, setLoading] = useState(true)
     useEffect(() => {
         setLoading(isLoadingConfig)
     }, [isLoadingConfig])
+
+    const MAX_RESPONSE_LENGTH = 1000
 
     const onCancel = () => {
         setEligibilityWindowOptionValue(configCancelOrderStatusEligibility)
@@ -138,6 +183,10 @@ export const CancellationsPolicyView = () => {
                 cancel_order_policy: {
                     ...configuration.cancel_order_policy,
                     eligibilities: updatedEligibilities,
+                    action: {
+                        type: AUTOMATED_RESPONSE,
+                        response_message_content: responseMessageContent,
+                    },
                 },
             })
             void dispatch(selfServiceConfigurationUpdated(res))
@@ -157,6 +206,45 @@ export const CancellationsPolicyView = () => {
         } finally {
             setLoading(false)
         }
+    }
+
+    const isButtonDisabled =
+        loading ||
+        isResponseTooLong ||
+        (eligibilityWindowOptionValue === configCancelOrderStatusEligibility &&
+            responseMessageContent ===
+                configuration?.cancel_order_policy?.action
+                    ?.response_message_content)
+
+    const handleChange = (value: EditorState) => {
+        if (isLandingPage) {
+            setIsLandingPage(false)
+        }
+
+        const content = value.getCurrentContent()
+
+        setResponseMessageContent((state) => ({
+            ...state,
+            html: convertToHTML(content),
+            text: content.getPlainText(),
+        }))
+
+        if (
+            content.getPlainText().length > MAX_RESPONSE_LENGTH &&
+            !isResponseTooLong
+        ) {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message:
+                        'Maximum number of characters exceeded. Please review your message',
+                })
+            )
+        }
+
+        setIsResponseTooLong(
+            content.getPlainText().length > MAX_RESPONSE_LENGTH ? true : false
+        )
     }
 
     if (!(hasSelfServiceV1Features || hasAutomationAddOn)) {
@@ -203,7 +291,6 @@ export const CancellationsPolicyView = () => {
                                     Read more
                                 </a>
                             </p>
-                            <br></br>
                             {loading || !configuration ? (
                                 <Loader />
                             ) : (
@@ -278,49 +365,102 @@ export const CancellationsPolicyView = () => {
                                             ) : null}
                                         </div>
                                         {hasAutomatedResponseOrderManagementFlag && (
-                                            <p>
-                                                This is hidden behind{' '}
-                                                <i>
-                                                    {
-                                                        FeatureFlagKey.SelfServiceAutomatedResponseOrderManagement
+                                            <FormGroup>
+                                                <Label
+                                                    for="responseText"
+                                                    className="control-label"
+                                                >
+                                                    Response text
+                                                </Label>
+                                                <p>
+                                                    After customers request a
+                                                    return in chat, reply with
+                                                    an automated message.
+                                                </p>
+                                                <DEPRECATED_RichField
+                                                    value={{
+                                                        html: responseMessageContent.html,
+                                                    }}
+                                                    onChange={handleChange}
+                                                    placeholder="Ex: We offer free shipping on all U.S. orders $100+. Shipping rates vary based on weight and delivery destination and is chosen by the customer at checkout. Check out our Shipping & Returns page for more information about shipping rates."
+                                                />
+                                                <FormText
+                                                    color={
+                                                        isResponseTooLong
+                                                            ? 'danger'
+                                                            : 'muted'
                                                     }
-                                                </i>{' '}
-                                                flag
-                                            </p>
+                                                >
+                                                    {`${
+                                                        responseMessageContent
+                                                            .text?.length ?? 0
+                                                    }/${MAX_RESPONSE_LENGTH} characters`}
+                                                </FormText>
+                                                <TicketAttachments
+                                                    removable
+                                                    attachments={
+                                                        newMessageAttachments
+                                                    }
+                                                    deleteAttachment={
+                                                        deleteAttachment
+                                                    }
+                                                    className="p-2 d-flex flex-wrap"
+                                                />
+                                            </FormGroup>
                                         )}
-                                        <Button
-                                            className={classNames('mr-2', {
-                                                'btn-loading': loading,
-                                            })}
-                                            isDisabled={
-                                                loading ||
-                                                eligibilityWindowOptionValue ===
-                                                    configCancelOrderStatusEligibility
-                                            }
-                                            type="submit"
-                                        >
-                                            Save changes
-                                        </Button>
-                                        <Button
-                                            className={classNames({
-                                                'btn-loading': loading,
-                                            })}
-                                            isDisabled={
-                                                loading ||
-                                                eligibilityWindowOptionValue ===
-                                                    configCancelOrderStatusEligibility
-                                            }
-                                            intent="secondary"
-                                            onClick={onCancel}
-                                        >
-                                            Cancel
-                                        </Button>
+                                        <div className={css.buttonWrapper}>
+                                            <Button
+                                                className={classNames('mr-2', {
+                                                    'btn-loading': loading,
+                                                })}
+                                                isDisabled={isButtonDisabled}
+                                                type="submit"
+                                            >
+                                                Save changes
+                                            </Button>
+                                            <Button
+                                                className={classNames({
+                                                    'btn-loading': loading,
+                                                })}
+                                                isDisabled={isButtonDisabled}
+                                                intent="secondary"
+                                                onClick={onCancel}
+                                            >
+                                                Cancel
+                                            </Button>
+                                        </div>
                                     </Form>
-                                    <br />
                                 </>
                             )}
                         </div>
                     </Col>
+                    {hasAutomatedResponseOrderManagementFlag && (
+                        <Col data-testid="previewColumn">
+                            <FlowSelfServicePreview
+                                message={
+                                    <>
+                                        <b>I’d like to cancel the following</b>
+                                        <br />
+                                        <br />
+                                        Fulfillment: <b>#3087-F1</b>
+                                        <br />
+                                        Item names: <b>item name</b>
+                                        <br />
+                                        Tracking URL: <b>jsjsj.tracking.com</b>
+                                        <br />
+                                        Order placed: <b>06/07/2020 17:20</b>
+                                        <br />
+                                        Shipping address:{' '}
+                                        <b>52 Washburn, SF, CA, 94027</b>
+                                    </>
+                                }
+                                responseMessage={fromJS(responseMessageContent)}
+                                newMessageAttachments={newMessageAttachments}
+                                isLandingPage={isLandingPage}
+                                setIsLandingPage={setIsLandingPage}
+                            />
+                        </Col>
+                    )}
                 </Row>
             </Container>
         </div>

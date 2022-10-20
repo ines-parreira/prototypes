@@ -4,7 +4,7 @@ import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {useParams} from 'react-router-dom'
+import {useParams, useRouteMatch} from 'react-router-dom'
 
 import LD from 'launchdarkly-react-client-sdk'
 import {
@@ -26,9 +26,13 @@ const updateSelfServiceConfigurationMock =
         typeof updateSelfServiceConfiguration
     >
 const useParamsMock = useParams as jest.MockedFunction<typeof useParams>
+const useRouteMatchMock = useRouteMatch as jest.MockedFunction<
+    typeof useRouteMatch
+>
 
 jest.mock('models/selfServiceConfiguration/resources')
 jest.mock('react-router')
+jest.mock('draft-js/lib/generateRandomKey', () => () => 'someRandomKey')
 
 const createShopifyIntegrationFixtures = (length: number) => {
     return Array.from({length}, (_, i) => ({
@@ -115,12 +119,22 @@ describe('<CancellationsPolicyView/>', () => {
     }
 
     describe('render()', () => {
-        it('should render the eligibility window option as unfulfilled', () => {
+        beforeEach(() => {
+            useRouteMatchMock.mockReturnValue({
+                params: {
+                    shopName: 'mystore1',
+                    integrationType: 'shopify',
+                },
+                isExact: true,
+                path: '',
+                url: '',
+            })
             useParamsMock.mockReturnValue({
                 shopName: 'myStore1',
                 integrationType: 'shopify',
             })
-
+        })
+        it('should render the eligibility window option as unfulfilled', () => {
             const {container} = render(
                 <Provider
                     store={mockStore({
@@ -155,11 +169,6 @@ describe('<CancellationsPolicyView/>', () => {
                 [FeatureFlagKey.SelfServiceAutomatedResponseOrderManagement]:
                     true,
             }))
-
-            useParamsMock.mockReturnValue({
-                shopName: 'myStore1',
-                integrationType: 'shopify',
-            })
 
             const {container} = render(
                 <Provider
@@ -243,44 +252,51 @@ describe('<CancellationsPolicyView/>', () => {
             await waitFor(() => {
                 expect(updateSelfServiceConfigurationMock.mock.calls[0])
                     .toMatchInlineSnapshot(`
-                Array [
-                  Object {
-                    "cancel_order_policy": Object {
-                      "eligibilities": Array [
-                        Object {
-                          "key": "gorgias_order_status",
-                          "operator": "oneOf",
-                          "value": Array [
-                            "unfulfilled",
-                            "processing_fulfillment",
+                    Array [
+                      Object {
+                        "cancel_order_policy": Object {
+                          "action": Object {
+                            "response_message_content": Object {
+                              "html": "",
+                              "text": "",
+                            },
+                            "type": "automated_response",
+                          },
+                          "eligibilities": Array [
+                            Object {
+                              "key": "gorgias_order_status",
+                              "operator": "oneOf",
+                              "value": Array [
+                                "unfulfilled",
+                                "processing_fulfillment",
+                              ],
+                            },
                           ],
+                          "enabled": false,
+                          "exceptions": Array [],
                         },
-                      ],
-                      "enabled": false,
-                      "exceptions": Array [],
-                    },
-                    "created_datetime": "2021-01-26T00:29:00Z",
-                    "deactivated_datetime": null,
-                    "id": 1,
-                    "quick_response_policies": Array [],
-                    "report_issue_policy": Object {
-                      "cases": Array [],
-                      "enabled": false,
-                    },
-                    "return_order_policy": Object {
-                      "eligibilities": Array [],
-                      "enabled": true,
-                      "exceptions": Array [],
-                    },
-                    "shop_name": "myStore1",
-                    "track_order_policy": Object {
-                      "enabled": true,
-                    },
-                    "type": "shopify",
-                    "updated_datetime": "2021-01-26T00:29:30Z",
-                  },
-                ]
-            `)
+                        "created_datetime": "2021-01-26T00:29:00Z",
+                        "deactivated_datetime": null,
+                        "id": 1,
+                        "quick_response_policies": Array [],
+                        "report_issue_policy": Object {
+                          "cases": Array [],
+                          "enabled": false,
+                        },
+                        "return_order_policy": Object {
+                          "eligibilities": Array [],
+                          "enabled": true,
+                          "exceptions": Array [],
+                        },
+                        "shop_name": "myStore1",
+                        "track_order_policy": Object {
+                          "enabled": true,
+                        },
+                        "type": "shopify",
+                        "updated_datetime": "2021-01-26T00:29:30Z",
+                      },
+                    ]
+                `)
             })
         })
     })
