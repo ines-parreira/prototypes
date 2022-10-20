@@ -1,30 +1,37 @@
 import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {Map} from 'immutable'
+import {List, Map} from 'immutable'
 import classnames from 'classnames'
 
+import {TagSortableProperties} from 'models/tag/types'
 import CheckBox from 'pages/common/forms/CheckBox'
 import {
     getMeta,
     makeGetSelectedTagMeta,
     getSelectAll,
-    getTags,
-} from '../../../state/tags/selectors'
-import {RootState} from '../../../state/types'
+} from 'state/tags/selectors'
+import {RootState} from 'state/types'
 
 import Row from './Row'
 import css from './Table.less'
 import TableActions from './TableActions/TableActions'
 
+const sortableColumns = Object.values(TagSortableProperties)
+
+function isSortable(value: string): value is TagSortableProperties {
+    return sortableColumns.includes(value as TagSortableProperties)
+}
+
 type Props = {
-    columns: Array<{title: string; field: string; isSortable: boolean}>
+    columns: Array<{title: string; field: string}>
     onBulkDelete: () => void
     onMerge: () => void
     onSelectAll: () => void
-    onSort: (sort: string, direction: boolean) => void
-    refresh: () => void
+    onSort: (sort: TagSortableProperties, direction: boolean) => void
+    refresh: ({refreshPreviousPage}: {refreshPreviousPage?: boolean}) => void
     reverse: boolean
     sort: string
+    tags: List<any>
 } & ConnectedProps<typeof connector>
 
 export class TableContainer extends Component<Props> {
@@ -33,17 +40,14 @@ export class TableContainer extends Component<Props> {
             {
                 title: 'Tag',
                 field: 'name',
-                isSortable: true,
             },
             {
                 title: 'Description',
                 field: 'description',
-                isSortable: false,
             },
             {
                 title: 'Tickets',
                 field: 'usage',
-                isSortable: true,
             },
         ],
     }
@@ -70,13 +74,10 @@ export class TableContainer extends Component<Props> {
 
     _onSort = (sort: string) => {
         return () => {
-            const {columns} = this.props
-            if (
-                !(columns.find((column) => column.field === sort) || {})
-                    .isSortable
-            ) {
+            if (!isSortable(sort)) {
                 return
             }
+
             let reverse = false
             // already sorted by this prop
             if (this.props.sort === sort) {
@@ -113,7 +114,7 @@ export class TableContainer extends Component<Props> {
                             className="cell-wrapper cell-short clickable"
                             onClick={onSelectAll}
                         >
-                            <CheckBox isChecked={selectAll} />
+                            <CheckBox name="select-all" isChecked={selectAll} />
                         </td>
                         {columns.map((column, i) => (
                             <td key={i}>
@@ -152,7 +153,15 @@ export class TableContainer extends Component<Props> {
                         <Row
                             key={i}
                             row={tag}
-                            refresh={this.props.refresh}
+                            refresh={() => {
+                                if (tags.size === 1) {
+                                    this.props.refresh({
+                                        refreshPreviousPage: true,
+                                    })
+                                } else {
+                                    this.props.refresh({})
+                                }
+                            }}
                             meta={getSelectedTagMeta(tag.get('id'))}
                         />
                     ))}
@@ -163,7 +172,6 @@ export class TableContainer extends Component<Props> {
 }
 
 const connector = connect((state: RootState) => ({
-    tags: getTags(state),
     selectAll: getSelectAll(state),
     getSelectedTagMeta: makeGetSelectedTagMeta(state),
     meta: getMeta(state),

@@ -1,82 +1,211 @@
-import React, {ComponentProps} from 'react'
-import {shallow, ShallowWrapper} from 'enzyme'
-import {fromJS} from 'immutable'
-import {TagsState} from 'state/tags/types'
+import React from 'react'
+import {Provider} from 'react-redux'
+import {fromJS, Map} from 'immutable'
+import {act, fireEvent, render} from '@testing-library/react'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-import Loader from '../../../common/components/Loader/Loader'
-import Pagination from '../../../common/components/Pagination'
-import {ManageTagsContainer} from '../ManageTags'
+import {tags as tagsFixtures} from 'fixtures/tag'
+import {fetchTags} from 'models/tag/resources'
+import * as tagActions from 'state/tags/actions'
+import {RootState, StoreDispatch} from 'state/types'
+
+import ManageTags from '../ManageTags'
+
+const mockedDispatch = jest.fn()
+jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
+
+jest.mock('models/tag/resources')
+const fetchTagsMock = fetchTags as jest.MockedFunction<typeof fetchTags>
+
+jest.spyOn(tagActions, 'selectAll')
+jest.spyOn(tagActions, 'bulkDelete')
+jest.spyOn(tagActions, 'merge')
 
 describe('ManageTags component', () => {
-    const mockedCancelFetchTagsCancellable = jest.fn()
-    const mockIsCreating = jest.fn()
+    const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
+        thunk,
+    ])
 
-    const tagData: TagsState = fromJS({
-        meta: {
-            1: {
-                selected: true,
-            },
-            2: {
-                selected: true,
-            },
+    const meta = {
+        1: {
+            selected: true,
         },
-    })
-
-    const minProps: ComponentProps<typeof ManageTagsContainer> = {
-        meta: tagData.get('meta'),
-        currentPage: 1,
-        numberPages: 1,
-        isCreating: mockIsCreating(),
-        cancelFetchTagsCancellable: mockedCancelFetchTagsCancellable,
-        fetchTagsCancellable: () =>
-            Promise.resolve() as unknown as Promise<any>,
-        create: jest.fn(),
-        remove: jest.fn(),
-        selectAll: jest.fn(),
-        setPage: jest.fn(),
-        merge: jest.fn(),
-        bulkDelete: jest.fn(),
+        2: {
+            selected: true,
+        },
     }
 
-    let component: ShallowWrapper<
-        ComponentProps<typeof ManageTagsContainer>,
-        any,
-        ManageTagsContainer
-    >
+    const keys = (fromJS(meta) as Map<any, any>).keySeq().toList()
+
+    const defaultState: Partial<RootState> = {
+        tags: fromJS({_internal: {}, meta, items: tagsFixtures}),
+    }
 
     beforeEach(() => {
-        component = shallow(<ManageTagsContainer {...minProps} />)
-        jest.resetAllMocks()
+        jest.clearAllMocks()
+
+        fetchTagsMock.mockResolvedValue({
+            uri: '/api/tags/',
+            data: tagsFixtures,
+            meta: {
+                current_page: '1',
+                item_count: 10,
+                page: 1,
+                per_page: 30,
+                nb_pages: 1,
+            },
+            object: 'list',
+        })
     })
 
-    it('mounts correctly', () => {
-        expect(component).toMatchSnapshot()
+    it('should render a loader while fetching data', async () => {
+        jest.useFakeTimers()
+
+        const {container, findByText} = render(
+            <Provider store={mockStore(defaultState)}>
+                <ManageTags />
+            </Provider>
+        )
+
+        act(() => {
+            jest.runOnlyPendingTimers()
+        })
+        expect(container.firstChild).toMatchSnapshot()
+        await findByText(tagsFixtures[0].name)
     })
 
-    it('should cancel tags fetching when unmounting', () => {
-        component.unmount()
+    it('should render the list of tags', async () => {
+        const {findByText} = render(
+            <Provider store={mockStore(defaultState)}>
+                <ManageTags />
+            </Provider>
+        )
 
-        expect(mockedCancelFetchTagsCancellable).toHaveBeenCalled()
+        await findByText(tagsFixtures[0].name)
+        await findByText(tagsFixtures[3].name)
     })
 
-    it('should display loader when fetching tags', () => {
-        component.setState({isFetching: true})
-        expect(component.matchesElement(<Loader />)).toEqual(true)
+    it('should display create field when create button is toggled', async () => {
+        const {findByText} = render(
+            <Provider store={mockStore(defaultState)}>
+                <ManageTags />
+            </Provider>
+        )
+        await findByText(tagsFixtures[0].name)
+        const button = await findByText(/Create tag/i)
+        fireEvent.click(button)
+
+        await findByText(/Create a new tag/i)
     })
 
-    it('should not display pagination when there is one page of tags', () => {
-        expect(component.find(Pagination).dive().isEmptyRender()).toEqual(true)
+    it('delete all tags when select-all is checked', async () => {
+        const {container, findByText, getByText} = render(
+            <Provider store={mockStore(defaultState)}>
+                <ManageTags />
+            </Provider>
+        )
+
+        await act(async () => {
+            await findByText(tagsFixtures[0].name)
+
+            fireEvent.click(
+                container.querySelector(`input[name="select-all"]`)!
+            )
+
+            fireEvent.click(getByText('Delete'))
+            const confirmButton = await findByText(/Confirm/i)
+            fireEvent.click(confirmButton)
+
+            expect(tagActions.bulkDelete).toHaveBeenCalledTimes(1)
+            expect(tagActions.bulkDelete).toHaveBeenCalledWith(
+                Object.keys(meta)
+            )
+        })
     })
 
-    it('should display pagination when there are more than one page of tags', () => {
-        component.setProps({numberPages: 2})
-        expect(component.find(Pagination).dive().isEmptyRender()).toEqual(false)
+    it('merge all tags when select-all is checked', async () => {
+        const {container, findByText, getByText} = render(
+            <Provider store={mockStore(defaultState)}>
+                <ManageTags />
+            </Provider>
+        )
+
+        await act(async () => {
+            await findByText(tagsFixtures[0].name)
+
+            fireEvent.click(
+                container.querySelector(`input[name="select-all"]`)!
+            )
+
+            fireEvent.click(getByText('Merge'))
+            const confirmButton = await findByText(/Confirm/i)
+            fireEvent.click(confirmButton)
+
+            expect(tagActions.merge).toHaveBeenCalledTimes(1)
+            expect(tagActions.merge).toHaveBeenCalledWith(keys)
+        })
     })
 
-    describe('Create Tags feature', () => {
-        it('should display create field when create button is toggled', () => {
-            component.instance()._toggleCreationPopup()
-            expect(component.instance().state.showCreationPopup).toEqual(true)
+    it('should untoggle select-all checkbox after merge if the checkbox was toggled', async () => {
+        const {container, findByText, getByText} = render(
+            <Provider
+                store={mockStore({
+                    tags: fromJS({
+                        _internal: {},
+                        meta,
+                        items: tagsFixtures,
+                        selectAll: true,
+                    }),
+                })}
+            >
+                <ManageTags />
+            </Provider>
+        )
+
+        await act(async () => {
+            await findByText(tagsFixtures[0].name)
+
+            fireEvent.click(
+                container.querySelector(`input[name="select-all"]`)!
+            )
+
+            fireEvent.click(getByText('Merge'))
+            const confirmButton = await findByText(/Confirm/i)
+            fireEvent.click(confirmButton)
+
+            expect(tagActions.selectAll).toHaveBeenCalledTimes(1)
+        })
+    })
+
+    it('should untoggle select-all checkbox after deletion if the checkbox was toggled', async () => {
+        const {container, findByText, getByText} = render(
+            <Provider
+                store={mockStore({
+                    tags: fromJS({
+                        _internal: {},
+                        meta,
+                        items: tagsFixtures,
+                        selectAll: true,
+                    }),
+                })}
+            >
+                <ManageTags />
+            </Provider>
+        )
+
+        await act(async () => {
+            await findByText(tagsFixtures[0].name)
+
+            fireEvent.click(
+                container.querySelector(`input[name="select-all"]`)!
+            )
+
+            fireEvent.click(getByText('Delete'))
+            const confirmButton = await findByText(/Confirm/i)
+            fireEvent.click(confirmButton)
+
+            expect(tagActions.selectAll).toHaveBeenCalledTimes(1)
         })
     })
 })

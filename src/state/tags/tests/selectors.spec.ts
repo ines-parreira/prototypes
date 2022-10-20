@@ -66,20 +66,6 @@ describe('tags selectors', () => {
         expect(selectors.getInternal({} as RootState)).toBe(fromJS({}))
     })
 
-    it('getNumberPages', () => {
-        expect(selectors.getNumberPages(state)).toBe(
-            state.tags.getIn(['_internal', 'pagination', 'nb_pages'])
-        )
-        expect(selectors.getNumberPages({} as RootState)).toBe(1)
-    })
-
-    it('getCurrentPage', () => {
-        expect(selectors.getCurrentPage(state)).toBe(
-            state.tags.getIn(['_internal', 'pagination', 'page'])
-        )
-        expect(selectors.getCurrentPage({} as RootState)).toBe(1)
-    })
-
     it('getSelectAll', () => {
         expect(selectors.getSelectAll(state)).toBe(
             state.tags.getIn(['_internal', 'selectAll'])

@@ -1,7 +1,6 @@
 export const FETCH_TAG_LIST_START = 'FETCH_TAG_LIST_START'
 export const FETCH_TAG_LIST_SUCCESS = 'FETCH_TAG_LIST_SUCCESS'
 export const FETCH_TAG_LIST_ERROR = 'FETCH_TAG_LIST_ERROR'
-export const SET_TAG_LIST_PAGE = 'SET_TAG_LIST_PAGE'
 
 export const ADD_TAGS = 'ADD_TAGS'
 
@@ -22,3 +21,5 @@ export const REMOVE_TAG = 'REMOVE_TAG'
 export const REMOVE_TAG_ERROR = 'REMOVE_TAG_ERROR'
 
 export const MERGE_TAGS = 'MERGE_TAGS'
+
+export const RESET_META = 'RESET_META'

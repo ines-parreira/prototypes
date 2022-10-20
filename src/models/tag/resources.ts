@@ -1,9 +1,9 @@
 import {CancelToken} from 'axios'
 import _snakeCase from 'lodash/snakeCase'
 
-import {deepMapKeysToSnakeCase} from '../api/utils'
-import client from '../api/resources'
-import {ApiListResponsePagination} from '../api/types'
+import client from 'models/api/resources'
+import {deepMapKeysToSnakeCase} from 'models/api/utils'
+import {ApiListResponsePagination} from 'models/api/types'
 
 import {Tag, TagDraft, FetchTagsOptions} from './types'
 

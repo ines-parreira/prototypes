@@ -1,328 +1,281 @@
-import React, {Component, ComponentProps, FormEvent} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+import React, {FormEvent, useEffect, useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 import {Container, Form, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
-import {Map} from 'immutable'
+import {CancelToken} from 'axios'
+import {useAsyncFn, useDebounce, useEffectOnce} from 'react-use'
+import {fromJS, List, Map} from 'immutable'
 
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import useCancellableRequest from 'hooks/useCancellableRequest'
+import {OrderDirection, PaginationMeta} from 'models/api/types'
+import {fetchTags} from 'models/tag/resources'
+import {TagSortableProperties} from 'models/tag/types'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
-import Pagination from 'pages/common/components/Pagination'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
+import Pagination from 'pages/common/components/Pagination'
 import Video from 'pages/common/components/Video/Video'
 import Search from 'pages/common/components/Search'
-import withCancellableRequest, {
-    CancellableRequestInjectedProps,
-} from 'pages/common/utils/withCancellableRequest'
 import TextInput from 'pages/common/forms/input/TextInput'
 import settingsCss from 'pages/settings/settings.less'
 import {
-    fetchTags,
-    create,
-    remove,
-    selectAll,
-    setPage,
-    merge,
     bulkDelete,
+    create,
+    merge,
+    resetMeta,
+    selectAll,
 } from 'state/tags/actions'
-import {
-    getMeta,
-    getCurrentPage,
-    getNumberPages,
-    getIsCreating,
-} from 'state/tags/selectors'
-import {TagSortableProperty} from 'state/tags/types'
-import {RootState} from 'state/types'
+import {FETCH_TAG_LIST_ERROR, REMOVE_TAG_ERROR} from 'state/tags/constants'
+import {getMeta, getIsCreating, getSelectAll} from 'state/tags/selectors'
+import {ServerErrorAction} from 'store/middlewares/serverErrorHandler'
 
-import Table from './Table'
 import css from './ManageTags.less'
+import Table from './Table'
 
-type Props = CancellableRequestInjectedProps<
-    'fetchTagsCancellable',
-    'cancelFetchTagsCancellable',
-    typeof fetchTags
-> &
-    ConnectedProps<typeof connector>
+const ManageTags = () => {
+    const dispatch = useAppDispatch()
+    const isCreating = useAppSelector(getIsCreating)
+    const areAllTagsSelected = useAppSelector(getSelectAll)
 
-type State = {
-    sort: TagSortableProperty
-    search: string
-    reverse: boolean
-    newTag: string
-    showCreationPopup: boolean
-    isFetching: boolean
-}
+    const [sort, setSort] = useState(TagSortableProperties.Usage)
+    const [reverse, setReverse] = useState(true)
+    const [search, setSearch] = useState('')
+    const [newTag, setNewTag] = useState('')
+    const [showCreationPopup, setShowCreationPopup] = useState(false)
+    const [tags, setTags] = useState<List<any>>(fromJS([]))
+    const [pagination, setPagination] = useState<PaginationMeta>()
+    const currentPage = useMemo(() => pagination?.page || 1, [pagination])
+    const numberPages = useMemo(() => pagination?.nb_pages || 1, [pagination])
 
-export class ManageTagsContainer extends Component<Props, State> {
-    state = {
-        sort: TagSortableProperty.Usage,
-        reverse: true,
-        search: '',
-        newTag: '',
-        showCreationPopup: false,
-        isFetching: false,
-    }
+    const toggledTags = useAppSelector(getMeta)
+    const selectedTags = useMemo(
+        () =>
+            toggledTags
+                .filter(
+                    (meta: Map<any, any>) => meta.get('selected') as boolean
+                )
+                .keySeq(),
+        [toggledTags]
+    )
 
-    componentDidMount() {
-        this.setState({isFetching: true})
+    const createFetchTags =
+        (cancelToken: CancelToken) =>
+        async ({
+            page = currentPage,
+            sortArg = sort,
+            reverseArg = reverse,
+            searchArg = search,
+            refreshPreviousPage = false,
+        }: {
+            page?: number
+            sortArg?: TagSortableProperties
+            reverseArg?: boolean
+            searchArg?: string
+            refreshPreviousPage?: boolean
+        } = {}) => {
+            try {
+                const params = {
+                    page: refreshPreviousPage && page > 1 ? page - 1 : page,
+                    orderBy: sortArg,
+                    orderDir: reverseArg
+                        ? OrderDirection.Desc
+                        : OrderDirection.Asc,
+                    search: searchArg,
+                }
 
-        void this.props
-            .fetchTagsCancellable(undefined, undefined, undefined, undefined)
-            .then(() => {
-                this.setState({isFetching: false})
-            })
-    }
-
-    componentWillReceiveProps(nextProps: Props) {
-        const {currentPage} = this.props
-        const nextPage = nextProps.currentPage
-        const nextNumPages = nextProps.numberPages
-
-        if (nextPage > nextNumPages) {
-            // needed in case user deletes all tags on the last page. We want to now fetch tags for previous page
-            this.props.setPage(nextNumPages)
-        } else if (currentPage !== nextPage) {
-            void this.props.fetchTagsCancellable(
-                nextPage,
-                this.state.sort,
-                this.state.reverse,
-                this.state.search
-            )
-        }
-    }
-
-    componentWillUnmount() {
-        const {cancelFetchTagsCancellable} = this.props
-
-        cancelFetchTagsCancellable()
-    }
-
-    _fetchPage = () => {
-        void this.props.fetchTagsCancellable(
-            this.props.currentPage,
-            this.state.sort,
-            this.state.reverse,
-            this.state.search
-        )
-    }
-
-    _onSearch = (search: string) => {
-        this.setState({search}, () => {
-            void this.props.fetchTagsCancellable(
-                1,
-                this.state.sort,
-                this.state.reverse,
-                search
-            )
-        })
-    }
-
-    _onSort = (sort: TagSortableProperty, reverse: boolean) => {
-        void this.props
-            .fetchTagsCancellable(
-                this.props.currentPage,
-                sort,
-                reverse,
-                this.state.search
-            )
-            .then(() => {
-                this.setState({
-                    sort,
-                    reverse,
+                const {data, meta} = await fetchTags(params, cancelToken)
+                setTags(fromJS(data))
+                setPagination(meta)
+                dispatch(resetMeta())
+            } catch (error) {
+                dispatch({
+                    type: FETCH_TAG_LIST_ERROR,
+                    error,
+                    reason: 'Failed to fetch tags',
                 })
-            })
+            }
+        }
+
+    const [cancellableFetchTags, cancelFetchTags] =
+        useCancellableRequest(createFetchTags)
+
+    const [{loading: isLoading}, fetchPage] = useAsyncFn(
+        cancellableFetchTags,
+        [currentPage, reverse, search, sort],
+        {loading: true}
+    )
+
+    const onSort = (sort: TagSortableProperties, reverse: boolean) => {
+        setSort(sort)
+        setReverse(reverse)
+        void fetchPage({sortArg: sort, reverseArg: reverse})
     }
 
-    _onCreate = (event: FormEvent) => {
+    const onCreate = async (event: FormEvent) => {
         event.preventDefault()
 
-        void this.props
-            .create({
-                name: this.state.newTag,
+        await dispatch(
+            create({
+                name: newTag,
             })
-            .then(() => {
-                this._fetchPage()
-            })
-            .then(() =>
-                this.setState({
-                    newTag: '',
-                    showCreationPopup: false,
-                })
-            )
-    }
-
-    _bulkDelete = () => {
-        const {meta, bulkDelete} = this.props
-
-        const tagIDs: string[] = []
-        meta.forEach((meta: Map<any, any>, key) => {
-            if (meta.get('selected')) {
-                tagIDs.push(key)
-            }
-        })
-        void bulkDelete(tagIDs).then(() => {
-            this._fetchPage()
-        })
-    }
-
-    _merge = () => {
-        const {meta, merge} = this.props
-
-        const selectedTagMeta = meta.filter(
-            (meta: Map<any, any>) => meta.get('selected') as boolean
         )
-
-        return merge(selectedTagMeta.keySeq().toList()).then(() => {
-            this._fetchPage()
-        })
+        await fetchPage()
+        setNewTag('')
+        setShowCreationPopup(false)
     }
 
-    _toggleCreationPopup = () => {
-        this.setState({showCreationPopup: !this.state.showCreationPopup})
-    }
+    const handleBulkDelete = async () => {
+        const res = await dispatch(bulkDelete(selectedTags.toJS()))
 
-    render() {
-        const {currentPage, numberPages, selectAll, meta, isCreating} =
-            this.props
-        const {sort, reverse, isFetching} = this.state
-
-        if (isFetching) {
-            return <Loader />
+        if (
+            numberPages > 1 &&
+            currentPage === numberPages &&
+            selectedTags.size === tags.size &&
+            (res as ServerErrorAction)?.type !== REMOVE_TAG_ERROR
+        ) {
+            await fetchPage({page: currentPage - 1})
+        } else {
+            await fetchPage()
         }
-
-        // check if any items are selected
-        const selected = meta.filter(
-            (meta: Map<any, any>) => meta.get('selected') as boolean
-        ).size
-
-        return (
-            <div
-                className={classnames('full-width overflow-auto', {
-                    manageTagsClassName: selected > 0,
-                })}
-            >
-                <PageHeader title="Manage tags">
-                    <div className="manage-tags-bulk-actions">
-                        <div className="d-flex">
-                            <Search
-                                bindKey
-                                forcedQuery={this.state.search}
-                                onChange={this._onSearch}
-                                placeholder="Search tags by name..."
-                                searchDebounceTime={300}
-                                className="mr-2"
-                            />
-                            <Button
-                                id="create-tag-button"
-                                onClick={this._toggleCreationPopup}
-                            >
-                                Create tag
-                            </Button>
-                            <Popover
-                                placement="bottom"
-                                isOpen={this.state.showCreationPopup}
-                                target="create-tag-button"
-                                toggle={this._toggleCreationPopup}
-                                trigger="legacy"
-                                fade={false}
-                            >
-                                <PopoverHeader>Create a new tag</PopoverHeader>
-                                <PopoverBody>
-                                    <Form onSubmit={this._onCreate}>
-                                        <div className="d-flex align-items-center">
-                                            <div className="mr-2">
-                                                <TextInput
-                                                    placeholder="New tag name"
-                                                    value={this.state.newTag}
-                                                    autoFocus
-                                                    onChange={(value) =>
-                                                        this.setState({
-                                                            newTag: value,
-                                                        })
-                                                    }
-                                                    isRequired
-                                                />
-                                            </div>
-                                            <IconButton
-                                                type="submit"
-                                                isDisabled={isCreating}
-                                            >
-                                                check
-                                            </IconButton>
-                                        </div>
-                                    </Form>
-                                </PopoverBody>
-                            </Popover>
-                        </div>
-                    </div>
-                </PageHeader>
-
-                <Container fluid className={settingsCss.pageContainer}>
-                    <div className={css.description}>
-                        <div>
-                            <p>
-                                You can tag tickets to keep track of topics
-                                customers are contacting you about.
-                            </p>
-                            <p>
-                                Check your tag statistics{' '}
-                                <Link to="/app/stats/tags">here</Link>.
-                            </p>
-                        </div>
-                        <Video
-                            videoId="MHwrVTk6SNQ"
-                            legend="Working with tags"
-                        />
-                    </div>
-                </Container>
-
-                <Table
-                    sort={sort}
-                    reverse={reverse}
-                    onSort={
-                        this._onSort as ComponentProps<typeof Table>['onSort']
-                    }
-                    onSelectAll={selectAll}
-                    refresh={this._fetchPage}
-                    onMerge={this._merge}
-                    onBulkDelete={this._bulkDelete}
-                />
-
-                <Pagination
-                    className={classnames(
-                        'pagination-transparent',
-                        css.pagination
-                    )}
-                    pageCount={numberPages}
-                    currentPage={currentPage}
-                    onChange={(page) => this.props.setPage(page)}
-                />
-            </div>
-        )
+        areAllTagsSelected && handleSelectAll()
     }
+
+    const handleMerge = async () => {
+        await dispatch(merge(selectedTags.toList()))
+        await fetchPage()
+        areAllTagsSelected && handleSelectAll()
+    }
+
+    const handleSelectAll = () => dispatch(selectAll(tags.toJS()))
+
+    const toggleCreationPopup = () => setShowCreationPopup(!showCreationPopup)
+
+    const handlePageChange = (page: number) => {
+        void fetchPage({page})
+        areAllTagsSelected && handleSelectAll()
+    }
+
+    const [, cancel] = useDebounce(
+        () => {
+            void fetchPage({searchArg: search, page: 1})
+        },
+        1000,
+        [search]
+    )
+
+    useEffectOnce(() => {
+        cancel()
+        void fetchPage()
+    })
+
+    useEffect(() => () => cancelFetchTags(), [cancelFetchTags])
+
+    return (
+        <div
+            className={classnames('full-width overflow-auto', {
+                manageTagsClassName: selectedTags.size > 0,
+            })}
+        >
+            <PageHeader title="Manage tags">
+                <div className="manage-tags-bulk-actions">
+                    <div className="d-flex">
+                        <Search
+                            bindKey
+                            forcedQuery={search}
+                            onChange={setSearch}
+                            placeholder="Search tags by name..."
+                            searchDebounceTime={300}
+                            className="mr-2"
+                        />
+                        <Button
+                            id="create-tag-button"
+                            onClick={toggleCreationPopup}
+                        >
+                            Create tag
+                        </Button>
+                        <Popover
+                            placement="bottom"
+                            isOpen={showCreationPopup}
+                            target="create-tag-button"
+                            toggle={toggleCreationPopup}
+                            trigger="legacy"
+                            fade={false}
+                        >
+                            <PopoverHeader>Create a new tag</PopoverHeader>
+                            <PopoverBody>
+                                <Form onSubmit={onCreate}>
+                                    <div className="d-flex align-items-center">
+                                        <div className="mr-2">
+                                            <TextInput
+                                                placeholder="New tag name"
+                                                value={newTag}
+                                                autoFocus
+                                                onChange={(value) =>
+                                                    setNewTag(value)
+                                                }
+                                                isRequired
+                                            />
+                                        </div>
+                                        <IconButton
+                                            type="submit"
+                                            isDisabled={isCreating}
+                                        >
+                                            check
+                                        </IconButton>
+                                    </div>
+                                </Form>
+                            </PopoverBody>
+                        </Popover>
+                    </div>
+                </div>
+            </PageHeader>
+
+            <Container fluid className={settingsCss.pageContainer}>
+                <div className={css.description}>
+                    <div>
+                        <p>
+                            You can tag tickets to keep track of topics
+                            customers are contacting you about.
+                        </p>
+                        <p>
+                            Check your tag statistics{' '}
+                            <Link to="/app/stats/tags">here</Link>.
+                        </p>
+                    </div>
+                    <Video videoId="MHwrVTk6SNQ" legend="Working with tags" />
+                </div>
+            </Container>
+
+            {isLoading ? (
+                <Loader className={css.loader} />
+            ) : (
+                <>
+                    <Table
+                        sort={sort}
+                        reverse={reverse}
+                        onSort={onSort}
+                        onSelectAll={handleSelectAll}
+                        refresh={fetchPage}
+                        onMerge={handleMerge}
+                        onBulkDelete={handleBulkDelete}
+                        tags={tags}
+                    />
+                    <Pagination
+                        className={classnames(
+                            'pagination-transparent',
+                            css.pagination
+                        )}
+                        pageCount={numberPages}
+                        currentPage={currentPage}
+                        onChange={handlePageChange}
+                    />
+                </>
+            )}
+        </div>
+    )
 }
 
-const connector = connect(
-    (state: RootState) => {
-        return {
-            isCreating: getIsCreating(state),
-            meta: getMeta(state),
-            currentPage: getCurrentPage(state),
-            numberPages: getNumberPages(state),
-        }
-    },
-    {
-        create,
-        remove,
-        selectAll,
-        setPage,
-        merge,
-        bulkDelete,
-    }
-)
-
-export default withCancellableRequest(
-    'fetchTagsCancellable',
-    fetchTags
-)(connector(ManageTagsContainer))
+export default ManageTags

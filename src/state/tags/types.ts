@@ -1,12 +1,5 @@
 import {Map} from 'immutable'
 
-export enum TagSortableProperty {
-    CreatedDatetime = 'createdDatetime',
-    Name = 'name',
-    UpdatedDatetime = 'updatedDatetime',
-    Usage = 'usage',
-}
-
 export type TagDecoration = {
     color?: string
 }

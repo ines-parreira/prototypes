@@ -13,7 +13,7 @@ import {RootState, StoreDispatch} from '../../state/types'
 
 const IGNORED_PREFIXES = ['SUBMIT_ACTIVITY_ERROR']
 
-type ServerErrorAction = {
+export type ServerErrorAction = {
     type: string
     reason?: string
     error?: GorgiasApiError

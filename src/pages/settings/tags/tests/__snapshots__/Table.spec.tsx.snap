@@ -12,12 +12,12 @@ exports[`ManageTags Table component should display the same number of rows as th
         <div>
           <label
             class="label label"
-            for="checkbox-1"
+            for="select-all"
           >
             <input
               class="input"
-              id="checkbox-1"
-              name="checkbox-1"
+              id="select-all"
+              name="select-all"
               type="checkbox"
             />
           </label>

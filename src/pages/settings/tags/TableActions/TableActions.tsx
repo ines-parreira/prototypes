@@ -13,22 +13,28 @@ type Props = {
     onBulkDelete: () => void
 }
 
-const TableActions = (props: Props) => {
-    const {selectedNum} = props
-    return (
-        <div className={css.actions}>
-            <MergeButton
-                key="merge-button"
-                disabled={selectedNum < 2}
-                {...props}
-            />
-            <BulkDeleteButton
-                key="delete-button"
-                disabled={!selectedNum}
-                {...props}
-            />
-        </div>
-    )
-}
+const TableActions = ({
+    onBulkDelete,
+    onMerge,
+    meta,
+    selectedNum,
+    tags,
+}: Props) => (
+    <div className={css.actions}>
+        <MergeButton
+            key="merge-button"
+            disabled={selectedNum < 2}
+            onMerge={onMerge}
+            meta={meta}
+            tags={tags}
+            selectedNum={selectedNum}
+        />
+        <BulkDeleteButton
+            key="delete-button"
+            disabled={!selectedNum}
+            onBulkDelete={onBulkDelete}
+        />
+    </div>
+)
 
 export default TableActions

@@ -5,19 +5,20 @@ import MockAdapter from 'axios-mock-adapter'
 import _isEqual from 'lodash/isEqual'
 import axios from 'axios'
 
-import client from '../../../models/api/resources'
-import {StoreDispatch} from '../../types'
-import * as actions from '../actions'
-import * as types from '../constants'
-import {initialState} from '../reducers'
-import {Tag, TagDraft, TagSortableProperty} from '../types'
+import client from 'models/api/resources'
+import {TagSortableProperties} from 'models/tag/types'
+import {StoreDispatch} from 'state/types'
+import * as actions from 'state/tags/actions'
+import * as types from 'state/tags/constants'
+import {initialState} from 'state/tags/reducers'
+import {Tag, TagDraft} from 'state/tags/types'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
     middlewares
 )
 
-jest.mock('../../notifications/actions', () => {
+jest.mock('state/notifications/actions', () => {
     return {
         notify: jest.fn(() => (args: Record<string, unknown>) => args),
     }
@@ -63,7 +64,7 @@ describe('tags actions', () => {
                 return [200]
             })
             return store.dispatch(
-                actions.fetchTags(1, TagSortableProperty.Usage, false)
+                actions.fetchTags(1, TagSortableProperties.Usage, false)
             )
         })
 
@@ -75,7 +76,7 @@ describe('tags actions', () => {
             return store.dispatch(
                 actions.fetchTags(
                     1,
-                    TagSortableProperty.Name,
+                    TagSortableProperties.Name,
                     false,
                     'something'
                 )
@@ -116,7 +117,9 @@ describe('tags actions', () => {
             ]
 
             return store
-                .dispatch(actions.fetchTags(1, TagSortableProperty.Name, true))
+                .dispatch(
+                    actions.fetchTags(1, TagSortableProperties.Name, true)
+                )
                 .then(() => {
                     expect(store.getActions()).toEqual(expectedActions)
                 })
@@ -147,7 +150,7 @@ describe('tags actions', () => {
     })
 
     it('selectAll', () => {
-        store.dispatch(actions.selectAll())
+        store.dispatch(actions.selectAll([{id: 1} as Tag]))
         return expect(store.getActions()).toMatchSnapshot()
     })
 
@@ -250,8 +253,8 @@ describe('tags actions', () => {
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
-    it('setPage', () => {
-        store.dispatch(actions.setPage(1))
+    it('reset meta of tags', () => {
+        store.dispatch(actions.resetMeta())
         return expect(store.getActions()).toMatchSnapshot()
     })
 })

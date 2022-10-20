@@ -203,15 +203,3 @@ Object {
   },
 }
 `;
-
-exports[`tags reducers set tags list page 1`] = `
-Object {
-  "_internal": Object {
-    "pagination": Object {
-      "page": 2,
-    },
-  },
-  "items": Array [],
-  "meta": Object {},
-}
-`;

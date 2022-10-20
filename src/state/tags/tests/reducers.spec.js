@@ -61,6 +61,7 @@ describe('tags reducers', () => {
         expect(
             reducer(initialState.mergeDeep({items: currentFakeTags}), {
                 type: types.SELECT_TAG_ALL,
+                tags: [{id: 1}, {id: 2}],
             }).toJS()
         ).toMatchSnapshot()
     })
@@ -126,12 +127,27 @@ describe('tags reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('set tags list page', () => {
+    it('reset meta of tags', () => {
         expect(
-            reducer(initialState, {
-                type: types.SET_TAG_LIST_PAGE,
-                page: 2,
-            }).toJS()
-        ).toMatchSnapshot()
+            reducer(
+                initialState.mergeDeep({
+                    items: currentFakeTags,
+                    meta: fromJS({
+                        2: {
+                            selected: true,
+                        },
+                        5: {
+                            selected: true,
+                        },
+                        15: {
+                            selected: false,
+                        },
+                    }),
+                }),
+                {
+                    type: types.RESET_META,
+                }
+            ).toJS().meta
+        ).toEqual({})
     })
 })

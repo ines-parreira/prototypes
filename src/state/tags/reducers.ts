@@ -56,9 +56,9 @@ export default function reducer(
             ).set('selectAll', selected)
 
             let selectAllState = state.set('_internal', _internal)
-            ;(state.get('items') as List<any>).forEach((tag: Map<any, any>) => {
+            action.tags?.forEach((tag) => {
                 selectAllState = selectAllState.setIn(
-                    ['meta', tag.get('id'), 'selected'],
+                    ['meta', tag.id, 'selected'],
                     selected
                 )
             })
@@ -116,9 +116,8 @@ export default function reducer(
             return state.removeIn(['items', itemIndex])
         }
 
-        case constants.SET_TAG_LIST_PAGE: {
-            return state.setIn(['_internal', 'pagination', 'page'], action.page)
-        }
+        case constants.RESET_META:
+            return state.set('meta', fromJS({}))
 
         default:
             return state

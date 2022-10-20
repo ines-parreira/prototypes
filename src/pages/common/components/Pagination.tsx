@@ -4,8 +4,8 @@ import _omit from 'lodash/omit'
 
 type Props = {
     onChange: (nextPage: number) => void
-    pageCount: string | number
-    currentPage: string | number
+    pageCount: number | string
+    currentPage: number | string
     className?: string
 }
 

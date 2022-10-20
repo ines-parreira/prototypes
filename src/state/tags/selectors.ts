@@ -18,16 +18,6 @@ export const getInternal = createSelector<RootState, Map<any, any>, TagsState>(
     (state) => (state.get('_internal') || fromJS({})) as Map<any, any>
 )
 
-export const getNumberPages = createSelector<RootState, number, Map<any, any>>(
-    getInternal,
-    (state) => (state.getIn(['pagination', 'nb_pages']) as number) || 1
-)
-
-export const getCurrentPage = createSelector<RootState, number, Map<any, any>>(
-    getInternal,
-    (state) => (state.getIn(['pagination', 'page']) as number) || 1
-)
-
 export const getSelectAll = createSelector<RootState, boolean, Map<any, any>>(
     getInternal,
     (state) => (state.get('selectAll') as boolean) || false

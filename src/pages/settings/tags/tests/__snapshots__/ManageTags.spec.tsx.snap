@@ -1,88 +1,65 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ManageTags component mounts correctly 1`] = `
+exports[`ManageTags component should render a loader while fetching data 1`] = `
 <div
-  className="full-width overflow-auto manageTagsClassName"
+  class="full-width overflow-auto manageTagsClassName"
 >
-  <PageHeader
-    title="Manage tags"
+  <div
+    class="page-header pageHeader"
   >
-    <div
-      className="manage-tags-bulk-actions"
+    <h1
+      class="d-flex align-items-center"
     >
+      Manage tags
+    </h1>
+    <div>
       <div
-        className="d-flex"
+        class="manage-tags-bulk-actions"
       >
-        <Search
-          bindKey={true}
-          className="mr-2"
-          disabled={false}
-          forcedQuery=""
-          onChange={[Function]}
-          placeholder="Search tags by name..."
-          searchDebounceTime={300}
-          style={Object {}}
-        />
-        <ForwardRef
-          id="create-tag-button"
-          onClick={[Function]}
+        <div
+          class="d-flex"
         >
-          Create tag
-        </ForwardRef>
-        <Popover
-          fade={false}
-          isOpen={false}
-          placement="bottom"
-          placementPrefix="bs-popover"
-          target="create-tag-button"
-          toggle={[Function]}
-          trigger="legacy"
-        >
-          <PopoverHeader
-            tag="h3"
+          <div
+            class="component mr-2"
           >
-            Create a new tag
-          </PopoverHeader>
-          <PopoverBody
-            tag="div"
-          >
-            <Form
-              onSubmit={[Function]}
-              tag="form"
+            <div
+              class="wrapper input"
             >
-              <div
-                className="d-flex align-items-center"
+              <span
+                class="prefix"
               >
-                <div
-                  className="mr-2"
+                <i
+                  class="material-icons icon"
                 >
-                  <ForwardRef(TextInput)
-                    autoFocus={true}
-                    isRequired={true}
-                    onChange={[Function]}
-                    placeholder="New tag name"
-                    value=""
-                  />
-                </div>
-                <ForwardRef
-                  type="submit"
-                >
-                  check
-                </ForwardRef>
-              </div>
-            </Form>
-          </PopoverBody>
-        </Popover>
+                  search
+                </i>
+              </span>
+              <input
+                class="input"
+                id="input-text-1"
+                name="input-text-1"
+                placeholder="Search tags by name..."
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <button
+            class="wrapper fill primary medium"
+            id="create-tag-button"
+            type="button"
+          >
+            Create tag
+          </button>
+        </div>
       </div>
     </div>
-  </PageHeader>
-  <Container
-    className="pageContainer"
-    fluid={true}
-    tag="div"
+  </div>
+  <div
+    class="pageContainer container-fluid"
   >
     <div
-      className="description"
+      class="description"
     >
       <div>
         <p>
@@ -91,34 +68,55 @@ exports[`ManageTags component mounts correctly 1`] = `
         <p>
           Check your tag statistics
            
-          <Link
+          <a
             to="/app/stats/tags"
           >
             here
-          </Link>
+          </a>
           .
         </p>
       </div>
-      <Video
-        legend="Working with tags"
-        videoId="MHwrVTk6SNQ"
+      <div>
+        <div
+          class="preview"
+        >
+          <div
+            class="screenshot"
+          >
+            <img
+              alt="video preview"
+              src="https://img.youtube.com/vi/MHwrVTk6SNQ/0.jpg"
+            />
+            <i
+              class="material-icons playIcon"
+            >
+              play_circle_filled_white
+            </i>
+            <div
+              class="iconBackground"
+            />
+          </div>
+          <div
+            class="title"
+          >
+            Working with tags
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="container loader"
+  >
+    <div
+      class="inner"
+      style="min-height: 500px;"
+    >
+      <i
+        class="icon-custom icon-circle-o-notch md-spin"
+        style="font-size: 40px;"
       />
     </div>
-  </Container>
-  <Connect(TableContainer)
-    onBulkDelete={[Function]}
-    onMerge={[Function]}
-    onSelectAll={[MockFunction]}
-    onSort={[Function]}
-    refresh={[Function]}
-    reverse={true}
-    sort="usage"
-  />
-  <Pagination
-    className="pagination-transparent pagination"
-    currentPage={1}
-    onChange={[Function]}
-    pageCount={1}
-  />
+  </div>
 </div>
 `;

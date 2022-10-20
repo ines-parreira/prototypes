@@ -161,6 +161,14 @@ Array [
 ]
 `;
 
+exports[`tags actions reset meta of tags 1`] = `
+Array [
+  Object {
+    "type": "RESET_META",
+  },
+]
+`;
+
 exports[`tags actions save 1`] = `
 Array [
   Object {
@@ -186,16 +194,12 @@ Array [
 exports[`tags actions selectAll 1`] = `
 Array [
   Object {
+    "tags": Array [
+      Object {
+        "id": 1,
+      },
+    ],
     "type": "SELECT_TAG_ALL",
-  },
-]
-`;
-
-exports[`tags actions setPage 1`] = `
-Array [
-  Object {
-    "page": 1,
-    "type": "SET_TAG_LIST_PAGE",
   },
 ]
 `;

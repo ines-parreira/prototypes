@@ -1,19 +1,17 @@
 import axios, {AxiosError, CancelToken} from 'axios'
 import {List} from 'immutable'
 
-import {ApiListResponsePagination} from '../../models/api/types'
-import {notify} from '../notifications/actions'
-import {NotificationStatus} from '../notifications/types'
-import {createErrorNotification} from '../utils'
-import type {RootState, StoreDispatch} from '../types'
-import client from '../../models/api/resources'
+import client from 'models/api/resources'
+import {ApiListResponsePagination} from 'models/api/types'
+import {TagSortableProperties} from 'models/tag/types'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import type {RootState, StoreDispatch} from 'state/types'
+import {createErrorNotification} from 'state/utils'
 
 import * as constants from './constants'
-import {TagSortableProperty, Tag, TagDraft} from './types'
+import {Tag, TagDraft} from './types'
 
-/**types
- * Add tags to ticket.
- */
 export function addTags(tags: Array<string> | string) {
     return {
         type: constants.ADD_TAGS,
@@ -23,7 +21,7 @@ export function addTags(tags: Array<string> | string) {
 
 export function fetchTags(
     page?: Maybe<number>,
-    sort: TagSortableProperty = TagSortableProperty.Usage,
+    sort = TagSortableProperties.Usage,
     reverse = true,
     search = '',
     cancelToken?: CancelToken
@@ -69,9 +67,6 @@ export function fetchTags(
     }
 }
 
-/**
- * Select tag
- */
 export function select(tag: Tag) {
     return {
         type: constants.SELECT_TAG,
@@ -79,18 +74,13 @@ export function select(tag: Tag) {
     }
 }
 
-/**
- * Select all tags
- */
-export function selectAll() {
+export function selectAll(tags: Tag[]) {
     return {
         type: constants.SELECT_TAG_ALL,
+        tags,
     }
 }
 
-/**
- * Edit tag
- */
 export function edit(tag: Tag) {
     return {
         type: constants.EDIT_TAG,
@@ -98,9 +88,6 @@ export function edit(tag: Tag) {
     }
 }
 
-/**
- * Cancel edit tag
- */
 export function cancel(tag: Tag) {
     return {
         type: constants.EDIT_TAG_CANCEL,
@@ -108,9 +95,6 @@ export function cancel(tag: Tag) {
     }
 }
 
-/**
- * Save tag details
- */
 export const save = (tag: Tag) => {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         return client
@@ -137,9 +121,6 @@ export const save = (tag: Tag) => {
     }
 }
 
-/**
- * Create a tag
- */
 export const create = (tag: TagDraft) => {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         dispatch({
@@ -171,9 +152,6 @@ export const create = (tag: TagDraft) => {
     }
 }
 
-/**
- * Delete a tag
- */
 export const remove = (id: string) => {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         return client.delete(`/api/tags/${id}/`).then(
@@ -196,9 +174,6 @@ export const remove = (id: string) => {
     }
 }
 
-/**
- * Delete multiple tags
- */
 export const bulkDelete = (ids: Array<string>) => {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         return client.delete('/api/tags/', {data: {ids}}).then(
@@ -206,7 +181,9 @@ export const bulkDelete = (ids: Array<string>) => {
                 void dispatch(
                     notify({
                         status: NotificationStatus.Success,
-                        message: `${ids.length} tags deleted successfully`,
+                        message: `${ids.length} tag${
+                            ids.length > 1 ? 's' : ''
+                        } deleted successfully`,
                     })
                 )
             },
@@ -221,9 +198,6 @@ export const bulkDelete = (ids: Array<string>) => {
     }
 }
 
-/**
- * Merge tags
- */
 export const merge = (ids: List<any>) => {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         dispatch({
@@ -258,12 +232,8 @@ export const merge = (ids: List<any>) => {
     }
 }
 
-/**
- * Set a page in pagination
- */
-export function setPage(page: number) {
+export function resetMeta() {
     return {
-        type: constants.SET_TAG_LIST_PAGE,
-        page,
+        type: constants.RESET_META,
     }
 }

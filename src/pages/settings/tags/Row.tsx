@@ -14,6 +14,8 @@ import {TagLabel} from 'pages/common/utils/labels'
 import CheckBox from 'pages/common/forms/CheckBox'
 import TextInput from 'pages/common/forms/input/TextInput'
 import {cancel, edit, remove, save, select} from 'state/tags/actions'
+import {REMOVE_TAG_ERROR} from 'state/tags/constants'
+import {ServerErrorAction} from 'store/middlewares/serverErrorHandler'
 import {toJS} from 'utils'
 
 import css from './Row.style.less'
@@ -93,8 +95,10 @@ export class Row extends Component<Props, State> {
     }
 
     _onRemove = () => {
-        return this.props.remove(this.props.row.get('id')).then(() => {
-            this.props.refresh()
+        return this.props.remove(this.props.row.get('id')).then((error) => {
+            if ((error as ServerErrorAction)?.type !== REMOVE_TAG_ERROR) {
+                this.props.refresh()
+            }
         })
     }
 
