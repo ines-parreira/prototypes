@@ -177,6 +177,7 @@
         "@types/escodegen": "0.0.6",
         "@types/esprima": "2.1.36",
         "@types/estree": "0.0.45",
+        "@types/facebook-js-sdk": "3.3.6",
         "@types/htmlparser2": "3.10.2",
         "@types/indefinite": "2.3.1",
         "@types/jest": "26.0.0",

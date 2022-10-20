@@ -33,7 +33,8 @@
         "types": [
             "stripe-v2",
             "webpack-env",
-            "@types/resize-observer-browser"
+            "@types/resize-observer-browser",
+            "facebook-js-sdk"
         ]
     },
     "include": [

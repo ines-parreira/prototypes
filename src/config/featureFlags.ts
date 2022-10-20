@@ -15,4 +15,5 @@ export enum FeatureFlagKey {
     SelfServiceLoopReturnsFlow = 'self-service-loop-returns-flow',
     RuleSuggestion = 'rule-suggestion',
     BigCommerceCreateOrder = 'bigcommerce-create-order',
+    EnableWhatsApp = 'enable-whatsapp',
 }

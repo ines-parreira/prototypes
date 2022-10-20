@@ -113,6 +113,7 @@ import SmsAppPreferences from './components/DEPRECATED_sms/SmsAppPreferences'
 
 import TwitterIntegrationDetail from './components/twitter/TwitterIntegrationDetail'
 import TwitterIntegrationList from './components/twitter/TwitterIntegrationList'
+import WhatsAppSpike from './components/voice/WhatsAppSpike'
 
 export enum Tab {
     EmailForwarding = 'forwarding',
@@ -134,6 +135,8 @@ export enum Tab {
     SmoochInsideMigration = 'migration',
 }
 
+const WHATSAPP_SPIKE_PATH = 'whatsapp-spike'
+
 export const IntegrationDetail = ({
     actions,
     currentUser,
@@ -153,6 +156,7 @@ export const IntegrationDetail = ({
         'connections',
         'integrations',
         'setup',
+        WHATSAPP_SPIKE_PATH,
     ].includes(integrationId)
 
     const {phoneNumberId} = useSearch<{
@@ -252,6 +256,7 @@ export const IntegrationDetail = ({
     }, [integrationId, isIntegrationId])
 
     const showNewVoiceSmsLayout = useFlags()[FeatureFlagKey.NewVoiceSmsLayout]
+    const enableWhatsApp = useFlags()[FeatureFlagKey.EnableWhatsApp]
 
     switch (integrationType) {
         case IntegrationType.Aircall:
@@ -497,6 +502,9 @@ export const IntegrationDetail = ({
             )
 
         case IntegrationType.Phone:
+            if (enableWhatsApp && integrationId === WHATSAPP_SPIKE_PATH) {
+                return <WhatsAppSpike />
+            }
             if (showNewVoiceSmsLayout) {
                 return <VoiceIntegration />
             }
