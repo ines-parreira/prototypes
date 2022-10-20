@@ -1,20 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TicketBody last read message should not pass \`isLastReadMessage\` for a new message 1`] = `
-<div
-  className="wrapper"
-/>
+<Fragment>
+  <TicketHeaderWrapper />
+</Fragment>
 `;
 
 exports[`TicketBody last read message should pass \`isLastReadMessage\` only for the last read message 1`] = `
-<div
-  className="wrapper"
->
+<Fragment>
+  <TicketHeaderWrapper />
   <TicketMessages
     hasCursor={false}
     highlightedElements={null}
-    id="message-0"
-    key="message-0"
+    id="message-1"
+    key="message-1"
     lastMessageDatetimeAfterMount={"2017-07-02T03:00:00.000Z"}
     lastReadMessageId={1}
     messages={
@@ -63,10 +62,10 @@ exports[`TicketBody last read message should pass \`isLastReadMessage\` only for
     timezone="UTC"
   />
   <TicketMessages
-    hasCursor={false}
+    hasCursor={true}
     highlightedElements={null}
-    id="message-1"
-    key="message-1"
+    id="message-2"
+    key="message-2"
     lastMessageDatetimeAfterMount={"2017-07-02T03:00:00.000Z"}
     lastReadMessageId={1}
     messages={
@@ -115,10 +114,10 @@ exports[`TicketBody last read message should pass \`isLastReadMessage\` only for
     timezone="UTC"
   />
   <TicketMessages
-    hasCursor={true}
+    hasCursor={false}
     highlightedElements={null}
-    id="message-2"
-    key="message-2"
+    id="message-3"
+    key="message-3"
     lastMessageDatetimeAfterMount={"2017-07-02T03:00:00.000Z"}
     lastReadMessageId={1}
     messages={
@@ -166,22 +165,21 @@ exports[`TicketBody last read message should pass \`isLastReadMessage\` only for
     ticketId={1}
     timezone="UTC"
   />
-</div>
+</Fragment>
 `;
 
 exports[`TicketBody should display and highlight the messages 1`] = `
-<div
-  className="wrapper"
->
+<Fragment>
+  <TicketHeaderWrapper />
   <TicketMessages
-    hasCursor={true}
+    hasCursor={false}
     highlightedElements={
       Object {
         "first": 1,
       }
     }
-    id="message-0"
-    key="message-0"
+    id="message-1"
+    key="message-1"
     lastMessageDatetimeAfterMount={"2017-07-02T01:00:00.000Z"}
     lastReadMessageId={1}
     messages={
@@ -229,22 +227,21 @@ exports[`TicketBody should display and highlight the messages 1`] = `
     ticketId={1}
     timezone="UTC"
   />
-</div>
+</Fragment>
 `;
 
 exports[`TicketBody should display and not highlight the messages 1`] = `
-<div
-  className="wrapper"
->
+<Fragment>
+  <TicketHeaderWrapper />
   <TicketMessages
-    hasCursor={true}
+    hasCursor={false}
     highlightedElements={
       Object {
         "first": 2,
       }
     }
-    id="message-0"
-    key="message-0"
+    id="message-1"
+    key="message-1"
     lastMessageDatetimeAfterMount={"2017-07-02T01:00:00.000Z"}
     lastReadMessageId={1}
     messages={
@@ -292,18 +289,17 @@ exports[`TicketBody should display and not highlight the messages 1`] = `
     ticketId={1}
     timezone="UTC"
   />
-</div>
+</Fragment>
 `;
 
 exports[`TicketBody should display audit log events with messages 1`] = `
-<div
-  className="wrapper"
->
+<Fragment>
+  <TicketHeaderWrapper />
   <TicketMessages
-    hasCursor={false}
+    hasCursor={true}
     highlightedElements={null}
-    id="message-0"
-    key="message-0"
+    id="message-1"
+    key="message-1"
     lastMessageDatetimeAfterMount={"2019-11-16T02:00:00.000Z"}
     lastReadMessageId={1}
     messages={
@@ -370,18 +366,17 @@ exports[`TicketBody should display audit log events with messages 1`] = `
     key="event-1"
     setHighlightedElements={[Function]}
   />
-</div>
+</Fragment>
 `;
 
 exports[`TicketBody should display events with messages 1`] = `
-<div
-  className="wrapper"
->
+<Fragment>
+  <TicketHeaderWrapper />
   <TicketMessages
-    hasCursor={false}
+    hasCursor={true}
     highlightedElements={null}
-    id="message-0"
-    key="message-0"
+    id="message-1"
+    key="message-1"
     lastMessageDatetimeAfterMount={"2017-07-02T02:00:00.000Z"}
     lastReadMessageId={1}
     messages={
@@ -436,6 +431,9 @@ exports[`TicketBody should display events with messages 1`] = `
         "meta": null,
         "integration_id": null,
         "public": true,
+        "data": Immutable.Map {
+          "action_name": "shopifyRefundOrder",
+        },
         "subject": "Some subject",
         "uri": "http://example.com/messages/1",
         "via": "email",
@@ -473,18 +471,17 @@ exports[`TicketBody should display events with messages 1`] = `
     isLast={true}
     key="event-1"
   />
-</div>
+</Fragment>
 `;
 
 exports[`TicketBody should display messages 1`] = `
-<div
-  className="wrapper"
->
+<Fragment>
+  <TicketHeaderWrapper />
   <TicketMessages
-    hasCursor={true}
+    hasCursor={false}
     highlightedElements={null}
-    id="message-0"
-    key="message-0"
+    id="message-1"
+    key="message-1"
     lastMessageDatetimeAfterMount={"2017-07-02T01:00:00.000Z"}
     lastReadMessageId={1}
     messages={
@@ -532,13 +529,12 @@ exports[`TicketBody should display messages 1`] = `
     ticketId={1}
     timezone="UTC"
   />
-</div>
+</Fragment>
 `;
 
 exports[`TicketBody should display phone events 1`] = `
-<div
-  className="wrapper"
->
+<Fragment>
+  <TicketHeaderWrapper />
   <PhoneEvent
     event={
       Immutable.Map {
@@ -565,5 +561,5 @@ exports[`TicketBody should display phone events 1`] = `
     isLast={true}
     key="event-2"
   />
-</div>
+</Fragment>
 `;

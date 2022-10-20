@@ -2,7 +2,7 @@
 
 exports[`SatisfactionSurvey should display satisfaction survey 1`] = `
 <div
-  className="component last"
+  className="component isVirtualized last"
   id="satisfactionSurvey"
 >
   <div

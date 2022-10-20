@@ -1,5 +1,3 @@
-import {TICKET_EVENT_TYPES} from 'models/event/types'
-
 export const INCOMING_PHONE_CALL = 'incoming-phone-call'
 export const OUTGOING_PHONE_CALL = 'outgoing-phone-call'
 export const COMPLETED_PHONE_CALL = 'completed-phone-call'
@@ -19,10 +17,6 @@ export const PHONE_CALL_TRANSFER_TO_AGENT_FAILED =
     'phone-call-transfer-to-agent-failed'
 export const PHONE_CALL_TRANSFER_TO_AGENT_MISSED =
     'phone-call-transfer-to-agent-missed'
-
-export const TICKET_EVENT_TYPES_VALUES = Object.freeze(
-    Object.values(TICKET_EVENT_TYPES)
-)
 
 //$TsFixMe fallback value for js, use PhoneIntegrationEvent enum instead
 export const PHONE_EVENTS_MAP = Object.freeze({

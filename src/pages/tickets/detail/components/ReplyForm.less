@@ -1,0 +1,47 @@
+@import '~css/new/colorTokens';
+@import '~css/new/mixins';
+
+:local {
+    .newMessageForm {
+        ///* extra bottom padding on touchscreen devices,
+        //* for the onscreen keyboard
+        //*/
+        @media (pointer: coarse) {
+            padding-bottom: 14rem;
+        }
+
+        form {
+            border: 1px solid @classic-neutral-grey-3;
+            border-radius: 2px;
+            margin-left: -10px;
+            margin-right: -10px;
+            margin-bottom: 18px;
+
+            @media @mobiles {
+                margin: 0 -16px;
+            }
+        }
+
+        // TODO: refactor after Virtualization is rolled out
+        &.isVirtualized {
+            padding-bottom: 18px;
+
+            ///* extra bottom padding on touchscreen devices,
+            //* for the onscreen keyboard
+            //*/
+            @media (pointer: coarse) {
+                padding-bottom: 14rem;
+            }
+
+            form {
+                margin-left: 20px;
+                margin-right: 20px;
+                margin-bottom: 0px;
+
+                @media @mobiles {
+                    margin: 0 -20px;
+                }
+            }
+        }
+    }
+}

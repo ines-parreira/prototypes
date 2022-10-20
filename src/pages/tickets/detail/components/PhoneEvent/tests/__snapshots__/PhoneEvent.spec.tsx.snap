@@ -2,7 +2,7 @@
 
 exports[`<PhoneEvent/> render() should render with "View ticket" link" 1`] = `
 <div
-  class="component"
+  class="component isVirtualized"
 >
   <div
     class="event"
@@ -42,7 +42,7 @@ exports[`<PhoneEvent/> render() should render with "View ticket" link" 1`] = `
 
 exports[`<PhoneEvent/> render() should render with closed details 1`] = `
 <div
-  class="component"
+  class="component isVirtualized"
 >
   <div
     class="event"
@@ -77,7 +77,7 @@ exports[`<PhoneEvent/> render() should render with closed details 1`] = `
 
 exports[`<PhoneEvent/> render() should render with closed details 2`] = `
 <div
-  class="component"
+  class="component isVirtualized"
 >
   <div
     class="event"
@@ -112,7 +112,7 @@ exports[`<PhoneEvent/> render() should render with closed details 2`] = `
 
 exports[`<PhoneEvent/> render() should render with closed details 3`] = `
 <div
-  class="component"
+  class="component isVirtualized"
 >
   <div
     class="event"
@@ -147,7 +147,7 @@ exports[`<PhoneEvent/> render() should render with closed details 3`] = `
 
 exports[`<PhoneEvent/> render() should render with closed details 4`] = `
 <div
-  class="component"
+  class="component isVirtualized"
 >
   <div
     class="event"
@@ -175,7 +175,7 @@ exports[`<PhoneEvent/> render() should render with closed details 4`] = `
 
 exports[`<PhoneEvent/> render() should render with closed details 5`] = `
 <div
-  class="component"
+  class="component isVirtualized"
 >
   <div
     class="event"
@@ -217,7 +217,7 @@ exports[`<PhoneEvent/> render() should render with closed details 5`] = `
 
 exports[`<PhoneEvent/> render() should render with closed details 6`] = `
 <div
-  class="component"
+  class="component isVirtualized"
 >
   <div
     class="event"
@@ -252,7 +252,7 @@ exports[`<PhoneEvent/> render() should render with closed details 6`] = `
 
 exports[`<PhoneEvent/> render() should render with closed details 7`] = `
 <div
-  class="component"
+  class="component isVirtualized"
 >
   <div
     class="event"
@@ -287,7 +287,7 @@ exports[`<PhoneEvent/> render() should render with closed details 7`] = `
 
 exports[`<PhoneEvent/> render() should render with closed details 8`] = `
 <div
-  class="component"
+  class="component isVirtualized"
 >
   <div
     class="event"
@@ -322,7 +322,7 @@ exports[`<PhoneEvent/> render() should render with closed details 8`] = `
 
 exports[`<PhoneEvent/> render() should render with closed details 9`] = `
 <div
-  class="component"
+  class="component isVirtualized"
 >
   <div
     class="event"
@@ -350,7 +350,7 @@ exports[`<PhoneEvent/> render() should render with closed details 9`] = `
 
 exports[`<PhoneEvent/> render() should render with closed details 10`] = `
 <div
-  class="component"
+  class="component isVirtualized"
 >
   <div
     class="event"
@@ -385,7 +385,7 @@ exports[`<PhoneEvent/> render() should render with closed details 10`] = `
 
 exports[`<PhoneEvent/> render() should render with opened details 1`] = `
 <div
-  class="component"
+  class="component isVirtualized"
 >
   <div
     class="event"
@@ -427,7 +427,7 @@ exports[`<PhoneEvent/> render() should render with opened details 1`] = `
 
 exports[`<PhoneEvent/> render() should render with opened details 2`] = `
 <div
-  class="component"
+  class="component isVirtualized"
 >
   <div
     class="event"

@@ -7,6 +7,11 @@
     margin: 0 -30px;
     word-break: break-word;
 
+    // TODO: refactor after Virtualization is rolled out
+    &.isVirtualized {
+        margin: 0;
+    }
+
     &.last::before {
         height: 30px;
     }

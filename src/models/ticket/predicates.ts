@@ -2,13 +2,15 @@ import memoizeOne from 'memoize-one'
 
 import {TicketMessageSourceType} from '../../business/types/ticket'
 
-import type {TicketMessage} from './types'
+import type {TicketEvent, TicketMessage} from './types'
 
-export const isTicketMessage = (obj: Record<string, unknown>) =>
-    obj.isMessage as boolean
+export const isTicketMessage = (
+    obj: Record<string, unknown>
+): obj is TicketMessage => obj.isMessage as boolean
 
-export const isTicketEvent = (obj: Record<string, unknown>) =>
-    obj.isEvent as boolean
+export const isTicketEvent = (
+    obj: Record<string, unknown>
+): obj is TicketEvent => obj.isEvent as boolean
 
 export const isTicketSatisfactionSurvey = (obj: Record<string, unknown>) =>
     obj.isSatisfactionSurvey as boolean

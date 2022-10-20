@@ -2,7 +2,16 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
+import {getLDClient} from 'utils/launchDarkly'
+import {FeatureFlagKey} from 'config/featureFlags'
+
 import SatisfactionSurvey from '../SatisfactionSurvey'
+
+jest.mock('utils/launchDarkly')
+const allFlagsMock = getLDClient().allFlags as jest.Mock
+allFlagsMock.mockReturnValue({
+    [FeatureFlagKey.TicketMessagesVirtualization]: true,
+})
 
 describe('SatisfactionSurvey', () => {
     it('should display satisfaction survey', () => {

@@ -3,10 +3,12 @@ import classNamesBind from 'classnames/bind'
 import moment, {Moment} from 'moment'
 import {fromJS, Map} from 'immutable'
 
-import {scrollToReactNode} from '../../../../common/utils/keyboard'
-import Avatar from '../../../../common/components/Avatar/Avatar'
-import {isFailed, isPending} from '../../../../../models/ticket/predicates'
-import {TicketMessage} from '../../../../../models/ticket/types'
+import Avatar from 'pages/common/components/Avatar/Avatar'
+import {scrollToReactNode} from 'pages/common/utils/keyboard'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {isFailed, isPending} from 'models/ticket/predicates'
+import {TicketMessage} from 'models/ticket/types'
+import {getLDClient} from 'utils/launchDarkly'
 
 import css from './Container.less'
 import Header from './Header'
@@ -41,6 +43,12 @@ export default class Container extends Component<Props> {
     }
 
     render() {
+        // TODO: refactor after Virtualization is rolled out
+        const isVirtualizationEnabled =
+            getLDClient().allFlags()[
+                FeatureFlagKey.TicketMessagesVirtualization
+            ]
+
         const {children, message, isMessageHidden, isMessageDeleted} =
             this.props
         const sender = fromJS(message.sender || {}) as Map<any, any>
@@ -85,6 +93,7 @@ export default class Container extends Component<Props> {
                         hasError: isFailed(message),
                         'ticket-message-loading': isPending(message),
                         ticketMessagesHighlighted: this.props.isBodyHighlighted,
+                        isVirtualized: isVirtualizationEnabled,
                     }
                 )}
             >

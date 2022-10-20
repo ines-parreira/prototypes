@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ReplyForm /> phone submit buttons should render on existing ticket page 1`] = `
+<div
+  class="d-print-none newMessageForm mt-3 isVirtualized"
+>
+  <form
+    id="ticket-reply-editor"
+  >
+    <div>
+      ReplyMessageChannel
+    </div>
+    <div>
+      PhoneTicketSubmitButtons
+    </div>
+  </form>
+</div>
+`;
+
+exports[`<ReplyForm /> phone submit buttons should render on new ticket page 1`] = `
+<div
+  class="d-print-none newMessageForm mt-3 isVirtualized"
+>
+  <form
+    id="ticket-reply-editor"
+  >
+    <div>
+      ReplyMessageChannel
+    </div>
+    <div>
+      PhoneTicketSubmitButtons
+    </div>
+  </form>
+</div>
+`;
+
+exports[`<ReplyForm /> ticket reply area and submit buttons should render on existing ticket page 1`] = `
+<div
+  class="d-print-none newMessageForm mt-3 isVirtualized"
+>
+  <form
+    id="ticket-reply-editor"
+  >
+    <div>
+      ReplyMessageChannel
+    </div>
+    <div>
+      TicketReplyArea
+    </div>
+    <button
+      data-testid="TicketSubmitButtons"
+      type="submit"
+    >
+      TicketSubmitButtons
+    </button>
+  </form>
+</div>
+`;
+
+exports[`<ReplyForm /> ticket reply area and submit buttons should render on new ticket page 1`] = `
+<div
+  class="d-print-none newMessageForm mt-3 isVirtualized"
+>
+  <form
+    id="ticket-reply-editor"
+  >
+    <div>
+      ReplyMessageChannel
+    </div>
+    <div>
+      TicketReplyArea
+    </div>
+    <button
+      data-testid="TicketSubmitButtons"
+      type="submit"
+    >
+      TicketSubmitButtons
+    </button>
+  </form>
+</div>
+`;

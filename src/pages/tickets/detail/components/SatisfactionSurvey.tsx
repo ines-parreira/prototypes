@@ -5,7 +5,9 @@ import {Map} from 'immutable'
 
 import fullStar from 'assets/img/satisfaction-survey/full-star.svg'
 
-import {DatetimeLabel} from '../../../common/utils/labels'
+import {DatetimeLabel} from 'pages/common/utils/labels'
+import {getLDClient} from 'utils/launchDarkly'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import css from './SatisfactionSurvey.less'
 
@@ -46,12 +48,19 @@ export default class SatisfactionSurvey extends Component<Props> {
     }
 
     render() {
+        // TODO: refactor after Virtualization is rolled out
+        const isVirtualizationEnabled =
+            getLDClient().allFlags()[
+                FeatureFlagKey.TicketMessagesVirtualization
+            ]
+
         const {satisfactionSurvey, isLast, customer} = this.props
         const score = satisfactionSurvey.get('score') as number
 
         return (
             <div
                 className={classnames(css.component, {
+                    [css.isVirtualized]: isVirtualizationEnabled,
                     [css.last]: isLast,
                 })}
                 id="satisfactionSurvey"

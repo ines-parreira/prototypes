@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TicketHeaderWrapper/> should hide history button when on a new ticket and not render separator 1`] = `
+<div>
+  <div
+    class="headerContainer isVirtualized"
+  >
+    <div
+      class="d-flex"
+    >
+      <div>
+        TicketHeader
+      </div>
+    </div>
+    <div
+      class="viewersBanner hidden"
+    />
+  </div>
+</div>
+`;
+
+exports[`<TicketHeaderWrapper/> should render history button, ticket header and separator 1`] = `
+<div>
+  <div
+    class="headerContainer isVirtualized"
+  >
+    <div
+      class="d-flex"
+    >
+      <div
+        class="historyButtonContainer d-none d-md-flex align-items-top mt-4"
+      >
+        <div>
+          HistoryButton
+        </div>
+      </div>
+      <div>
+        TicketHeader
+      </div>
+    </div>
+    <div
+      class="viewersBanner hidden"
+    />
+  </div>
+  <div
+    style="height: 16px;"
+  />
+</div>
+`;

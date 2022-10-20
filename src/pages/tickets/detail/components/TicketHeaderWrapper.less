@@ -1,0 +1,77 @@
+@import '~css/new/colorTokens';
+@import '~css/new/mixins';
+
+:local {
+    .viewersBanner {
+        @padding-sides: 38px;
+
+        overflow: hidden;
+        background-color: @classic-feedback-warning-1;
+        box-shadow: inset 0 3px 2px darken(@classic-feedback-warning-1, 8%);
+        padding: 6px @padding-sides;
+        transition: all 0.1s linear;
+
+        color: @classic-neutral-grey-6;
+        font-size: 14px;
+
+        &.hidden {
+            height: 0;
+            padding: 0 @padding-sides;
+
+            color: transparent;
+        }
+
+        .icon {
+            width: 1.2em;
+            margin-right: 2.2em;
+
+            text-align: center;
+        }
+
+        .collisionLabel {
+            display: inline-block;
+            width: 4.4em;
+
+            line-height: normal;
+        }
+
+        .collisionCategory {
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .collisionAgent {
+            margin-left: 1em;
+        }
+    }
+
+    .bothCollisions .collisionCategory {
+        margin-right: 2.4em;
+
+        .icon {
+            margin-right: 0.8em;
+        }
+
+        .collisionAgent {
+            margin-left: 0.4em;
+        }
+    }
+
+    .historyButtonContainer {
+        padding-left: 2em;
+    }
+
+    .headerContainer {
+        position: relative;
+        z-index: 2;
+        padding-top: 0.5em;
+        background-color: @classic-neutral-grey-0;
+        box-shadow: 0 2px 6px fade(@classic-neutral-grey-6, 7%);
+
+        &.isVirtualized {
+            @media @mobiles {
+                margin: 0 -16px;
+            }
+        }
+    }
+}

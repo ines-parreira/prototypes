@@ -2,7 +2,7 @@
 
 exports[`Container should render container 1`] = `
 <div
-  className="ticket-message component"
+  className="ticket-message component isVirtualized"
 >
   <div
     className="avatar"
@@ -114,7 +114,7 @@ exports[`Container should render container 1`] = `
 
 exports[`Container should render container with an avatar because the hidden message is duplicated 1`] = `
 <div
-  className="ticket-message component"
+  className="ticket-message component isVirtualized"
 >
   <div
     className="avatar"
@@ -242,7 +242,7 @@ exports[`Container should render container with an avatar because the hidden mes
 
 exports[`Container should render container with isBodyHiglighted because it should be highlighted 1`] = `
 <div
-  className="ticket-message component ticketMessagesHighlighted"
+  className="ticket-message component ticketMessagesHighlighted isVirtualized"
 >
   <div
     className="bodyWrapper bodyWrapperForHiddenOrDeletedMessage"
@@ -344,7 +344,7 @@ exports[`Container should render container with isBodyHiglighted because it shou
 
 exports[`Container should render container without an avatar because the message is deleted 1`] = `
 <div
-  className="ticket-message component"
+  className="ticket-message component isVirtualized"
 >
   <div
     className="bodyWrapper bodyWrapperForHiddenOrDeletedMessage"
@@ -446,7 +446,7 @@ exports[`Container should render container without an avatar because the message
 
 exports[`Container should render container without an avatar because the message is hidden 1`] = `
 <div
-  className="ticket-message component"
+  className="ticket-message component isVirtualized"
 >
   <div
     className="bodyWrapper bodyWrapperForHiddenOrDeletedMessage"

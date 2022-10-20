@@ -3,6 +3,7 @@ import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, List, Map} from 'immutable'
 import _truncate from 'lodash/truncate'
+import _omit from 'lodash/omit'
 
 import {
     AgentLabel,
@@ -28,6 +29,8 @@ import {getTeams} from 'state/teams/selectors'
 import {getEvents} from 'state/ticket/selectors'
 import {RootState} from 'state/types'
 import {eventNameToLabel} from 'config/rules'
+import {getLDClient} from 'utils/launchDarkly'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import css from './Event.less'
 
@@ -42,86 +45,94 @@ export type HighlightedElements = {
     last: number
 }
 
+const CONTENTFUL_EVENT_TYPES = Object.freeze({
+    ..._omit(TICKET_EVENT_TYPES, ['TicketMessageCreated', 'TicketUpdated']),
+})
+
+export const contentfulEventTypesValues = Object.freeze(
+    Object.values(CONTENTFUL_EVENT_TYPES)
+)
+
 export class AuditLogEventContainer extends Component<Props> {
     static defaultProps = {
         isLast: false,
     }
 
     static _ICONS = {
-        [TICKET_EVENT_TYPES.RuleExecuted]: ['settings'],
-        [TICKET_EVENT_TYPES.TicketAssigned]: ['person_add'],
-        [TICKET_EVENT_TYPES.TicketClosed]: ['done', css.success],
-        [TICKET_EVENT_TYPES.TicketCreated]: ['add'],
-        [TICKET_EVENT_TYPES.TicketCustomerUpdated]: ['people'],
-        [TICKET_EVENT_TYPES.TicketMarkedSpam]: ['flag', css.warning],
-        [TICKET_EVENT_TYPES.TicketMerged]: ['call_merge'],
-        [TICKET_EVENT_TYPES.TicketReopened]: ['loop'],
-        [TICKET_EVENT_TYPES.TicketSnoozed]: ['timer'],
-        [TICKET_EVENT_TYPES.TicketSelfUnsnoozed]: ['timer_off'],
-        [TICKET_EVENT_TYPES.TicketTagsAdded]: ['local_offer'],
-        [TICKET_EVENT_TYPES.TicketTagsRemoved]: ['local_offer'],
-        [TICKET_EVENT_TYPES.TicketTeamAssigned]: ['group_add'],
-        [TICKET_EVENT_TYPES.TicketTeamUnassigned]: ['person_add_disabled'],
-        [TICKET_EVENT_TYPES.TicketTrashed]: ['delete', css.danger],
-        [TICKET_EVENT_TYPES.TicketUnassigned]: ['person_add_disabled'],
-        [TICKET_EVENT_TYPES.TicketUnmarkedSpam]: ['undo'],
-        [TICKET_EVENT_TYPES.TicketUntrashed]: ['undo'],
-        [TICKET_EVENT_TYPES.TicketMessageSummaryCreated]: ['email'],
-        [TICKET_EVENT_TYPES.TicketSubjectUpdated]: ['mode'],
+        [CONTENTFUL_EVENT_TYPES.RuleExecuted]: ['settings'],
+        [CONTENTFUL_EVENT_TYPES.TicketAssigned]: ['person_add'],
+        [CONTENTFUL_EVENT_TYPES.TicketClosed]: ['done', css.success],
+        [CONTENTFUL_EVENT_TYPES.TicketCreated]: ['add'],
+        [CONTENTFUL_EVENT_TYPES.TicketCustomerUpdated]: ['people'],
+        [CONTENTFUL_EVENT_TYPES.TicketMarkedSpam]: ['flag', css.warning],
+        [CONTENTFUL_EVENT_TYPES.TicketMerged]: ['call_merge'],
+        [CONTENTFUL_EVENT_TYPES.TicketReopened]: ['loop'],
+        [CONTENTFUL_EVENT_TYPES.TicketSnoozed]: ['timer'],
+        [CONTENTFUL_EVENT_TYPES.TicketSelfUnsnoozed]: ['timer_off'],
+        [CONTENTFUL_EVENT_TYPES.TicketTagsAdded]: ['local_offer'],
+        [CONTENTFUL_EVENT_TYPES.TicketTagsRemoved]: ['local_offer'],
+        [CONTENTFUL_EVENT_TYPES.TicketTeamAssigned]: ['group_add'],
+        [CONTENTFUL_EVENT_TYPES.TicketTeamUnassigned]: ['person_add_disabled'],
+        [CONTENTFUL_EVENT_TYPES.TicketTrashed]: ['delete', css.danger],
+        [CONTENTFUL_EVENT_TYPES.TicketUnassigned]: ['person_add_disabled'],
+        [CONTENTFUL_EVENT_TYPES.TicketUnmarkedSpam]: ['undo'],
+        [CONTENTFUL_EVENT_TYPES.TicketUntrashed]: ['undo'],
+        [CONTENTFUL_EVENT_TYPES.TicketMessageSummaryCreated]: ['email'],
+        [CONTENTFUL_EVENT_TYPES.TicketSubjectUpdated]: ['mode'],
     }
 
     _CONTENT_RENDERERS: Partial<Record<TicketEventType, () => ReactNode>> = {
-        [TICKET_EVENT_TYPES.RuleExecuted]: () =>
+        [CONTENTFUL_EVENT_TYPES.RuleExecuted]: () =>
             this._renderRuleExecutedEvent(),
-        [TICKET_EVENT_TYPES.TicketAssigned]: () =>
+        [CONTENTFUL_EVENT_TYPES.TicketAssigned]: () =>
             this._renderTicketAssignedEvent(),
-        [TICKET_EVENT_TYPES.TicketClosed]: () => (
+        [CONTENTFUL_EVENT_TYPES.TicketClosed]: () => (
             <ActionName>Closed</ActionName>
         ),
-        [TICKET_EVENT_TYPES.TicketCreated]: () => (
+        [CONTENTFUL_EVENT_TYPES.TicketCreated]: () => (
             <ActionName>Created</ActionName>
         ),
-        [TICKET_EVENT_TYPES.TicketCustomerUpdated]: () =>
+        [CONTENTFUL_EVENT_TYPES.TicketCustomerUpdated]: () =>
             this._renderCustomerUpdated(),
-        [TICKET_EVENT_TYPES.TicketMarkedSpam]: () => (
+        [CONTENTFUL_EVENT_TYPES.TicketMarkedSpam]: () => (
             <ActionName>Marked as spam</ActionName>
         ),
-        [TICKET_EVENT_TYPES.TicketMerged]: () => (
+        [CONTENTFUL_EVENT_TYPES.TicketMerged]: () => (
             <ActionName>Merged</ActionName>
         ),
-        [TICKET_EVENT_TYPES.TicketReopened]: () => (
+        [CONTENTFUL_EVENT_TYPES.TicketReopened]: () => (
             <ActionName>Reopened</ActionName>
         ),
-        [TICKET_EVENT_TYPES.TicketSnoozed]: () => (
+        [CONTENTFUL_EVENT_TYPES.TicketSnoozed]: () => (
             <ActionName>Snoozed</ActionName>
         ),
-        [TICKET_EVENT_TYPES.TicketSelfUnsnoozed]: () => (
+        [CONTENTFUL_EVENT_TYPES.TicketSelfUnsnoozed]: () => (
             <ActionName>Snooze delay ended</ActionName>
         ),
-        [TICKET_EVENT_TYPES.TicketTagsAdded]: () =>
+        [CONTENTFUL_EVENT_TYPES.TicketTagsAdded]: () =>
             this._renderTagsEvent(TAGS_ADDED_KEY),
-        [TICKET_EVENT_TYPES.TicketTagsRemoved]: () =>
+        [CONTENTFUL_EVENT_TYPES.TicketTagsRemoved]: () =>
             this._renderTagsEvent(TAGS_REMOVED_KEY),
-        [TICKET_EVENT_TYPES.TicketTeamAssigned]: () =>
+        [CONTENTFUL_EVENT_TYPES.TicketTeamAssigned]: () =>
             this._renderTicketTeamAssignedEvent(),
-        [TICKET_EVENT_TYPES.TicketTeamUnassigned]: () => (
+        [CONTENTFUL_EVENT_TYPES.TicketTeamUnassigned]: () => (
             <ActionName>Unassigned from team</ActionName>
         ),
-        [TICKET_EVENT_TYPES.TicketTrashed]: () => (
+        [CONTENTFUL_EVENT_TYPES.TicketTrashed]: () => (
             <ActionName>Deleted</ActionName>
         ),
-        [TICKET_EVENT_TYPES.TicketUnassigned]: () => (
+        [CONTENTFUL_EVENT_TYPES.TicketUnassigned]: () => (
             <ActionName>Unassigned from user</ActionName>
         ),
-        [TICKET_EVENT_TYPES.TicketUnmarkedSpam]: () => (
+        [CONTENTFUL_EVENT_TYPES.TicketUnmarkedSpam]: () => (
             <ActionName>Unmarked as spam</ActionName>
         ),
-        [TICKET_EVENT_TYPES.TicketUntrashed]: () => (
+        [CONTENTFUL_EVENT_TYPES.TicketUntrashed]: () => (
             <ActionName>Undeleted</ActionName>
         ),
-        [TICKET_EVENT_TYPES.TicketMessageSummaryCreated]: () =>
+        [CONTENTFUL_EVENT_TYPES.TicketMessageSummaryCreated]: () =>
             this._renderTicketMessageSummaryCreatedEvent(),
-        [TICKET_EVENT_TYPES.TicketSubjectUpdated]: () =>
+        [CONTENTFUL_EVENT_TYPES.TicketSubjectUpdated]: () =>
             this._renderTicketSubjectUpdated(),
     }
 
@@ -419,6 +430,12 @@ export class AuditLogEventContainer extends Component<Props> {
     }
 
     render() {
+        // TODO: refactor after Virtualization is rolled out
+        const isVirtualizationEnabled =
+            getLDClient().allFlags()[
+                FeatureFlagKey.TicketMessagesVirtualization
+            ]
+
         const {event, isLast, users, events} = this.props
         const isRuleExecuted = isRuleExecutedType(event)
         const icon = this._getIcon()
@@ -435,6 +452,7 @@ export class AuditLogEventContainer extends Component<Props> {
         return (
             <div
                 className={classnames(css.component, {
+                    [css.isVirtualized]: isVirtualizationEnabled,
                     [css.last]: isLast,
                 })}
             >

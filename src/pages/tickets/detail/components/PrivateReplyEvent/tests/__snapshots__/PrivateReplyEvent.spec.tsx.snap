@@ -2,7 +2,7 @@
 
 exports[`<PrivateReplyEvent/> render should render a \`Responded via Facebook Messenger\` event 1`] = `
 <div
-  className="component last"
+  className="component isVirtualized last"
 >
   <div
     className="event"
@@ -64,7 +64,7 @@ exports[`<PrivateReplyEvent/> render should render a \`Responded via Facebook Me
 
 exports[`<PrivateReplyEvent/> render should render a \`Responded via Facebook Messenger\` event even if the payload is missing source, sender and meta data 1`] = `
 <div
-  className="component last"
+  className="component isVirtualized last"
 >
   <div
     className="event"
@@ -126,7 +126,7 @@ exports[`<PrivateReplyEvent/> render should render a \`Responded via Facebook Me
 
 exports[`<PrivateReplyEvent/> render should render a \`Responded via Instagram Direct Message\` event 1`] = `
 <div
-  className="component last"
+  className="component isVirtualized last"
 >
   <div
     className="event"
@@ -170,7 +170,7 @@ exports[`<PrivateReplyEvent/> render should render a \`Responded via Instagram D
 
 exports[`<PrivateReplyEvent/> render should render a \`Responding to a Facebook comment\` event 1`] = `
 <div
-  className="component last"
+  className="component isVirtualized last"
 >
   <div
     className="event"
@@ -258,7 +258,7 @@ exports[`<PrivateReplyEvent/> render should render a \`Responding to a Facebook 
 
 exports[`<PrivateReplyEvent/> render should render a \`Responding to a Facebook comment\` event even if the payload is missing source, sender and meta data 1`] = `
 <div
-  className="component last"
+  className="component isVirtualized last"
 >
   <div
     className="event"
@@ -314,7 +314,7 @@ exports[`<PrivateReplyEvent/> render should render a \`Responding to a Facebook 
 
 exports[`<PrivateReplyEvent/> render should render a \`Responding to an Instagram comment\` event 1`] = `
 <div
-  className="component last"
+  className="component isVirtualized last"
 >
   <div
     className="event"

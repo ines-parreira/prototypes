@@ -1,8 +1,9 @@
 import {shallow} from 'enzyme'
-
 import React from 'react'
-
 import {fromJS, Map} from 'immutable'
+import LD from 'launchdarkly-react-client-sdk'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import PrivateReplyEvent from '../PrivateReplyEvent'
 import {
@@ -73,6 +74,12 @@ const defaultProps = {
 }
 
 describe('<PrivateReplyEvent/>', () => {
+    beforeAll(() => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.TicketMessagesVirtualization]: true,
+        }))
+    })
+
     describe('render', () => {
         it('should render a `Responded via Facebook Messenger` event', () => {
             defaultProps.event = defaultProps.event.setIn(

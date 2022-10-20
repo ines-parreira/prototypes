@@ -275,11 +275,6 @@ Array [
         "id": 3,
         "object_id": 1,
       },
-    ],
-    "type": "ADD_TICKET_AUDIT_LOG_EVENTS",
-  },
-  Object {
-    "payload": Immutable.List [
       Immutable.Map {
         "data": null,
         "uri": "/api/events/3265847/",
@@ -313,11 +308,6 @@ Array [
         "id": 6,
         "object_id": 1,
       },
-    ],
-    "type": "ADD_TICKET_AUDIT_LOG_EVENTS",
-  },
-  Object {
-    "payload": Immutable.List [
       Immutable.Map {
         "data": null,
         "uri": "/api/events/3265847/",

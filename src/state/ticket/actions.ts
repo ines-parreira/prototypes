@@ -1021,24 +1021,25 @@ export const displayAuditLogEvents =
 
         const client = new GorgiasApi()
         const generator = client.getTicketEvents(ticketId)
-        let total = 0
 
         dispatch({
             type: types.DISPLAY_TICKET_AUDIT_LOG_EVENTS,
         })
 
-        for await (const events of generator as any) {
-            total += (events as List<any>).size
+        let allEvents: List<any> = fromJS([])
 
-            if ((events as List<any>).size) {
-                dispatch({
-                    type: types.ADD_TICKET_AUDIT_LOG_EVENTS,
-                    payload: events,
-                })
-            }
+        for await (const events of generator as any) {
+            allEvents = allEvents.concat(events) as List<any>
         }
 
-        if (!total) {
+        if (allEvents.size) {
+            dispatch({
+                type: types.ADD_TICKET_AUDIT_LOG_EVENTS,
+                payload: allEvents,
+            })
+        }
+
+        if (!allEvents.size) {
             void dispatch(
                 notify({
                     status: NotificationStatus.Info,

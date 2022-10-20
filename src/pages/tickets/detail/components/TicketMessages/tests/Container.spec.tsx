@@ -2,12 +2,20 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import moment from 'moment'
 
-import Container from '../Container'
+import {getLDClient} from 'utils/launchDarkly'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     message,
     duplicatedHiddenFacebookMessage,
-} from '../../../../../../models/ticket/tests/mocks'
+} from 'models/ticket/tests/mocks'
+import Container from '../Container'
 import css from '../Container.less'
+
+jest.mock('utils/launchDarkly')
+const allFlagsMock = getLDClient().allFlags as jest.Mock
+allFlagsMock.mockReturnValue({
+    [FeatureFlagKey.TicketMessagesVirtualization]: true,
+})
 
 describe('Container', () => {
     it('should render container', () => {

@@ -8,14 +8,15 @@ import _isObject from 'lodash/isObject'
 import JSONPretty from 'react-json-pretty'
 
 import IconButton from 'pages/common/components/button/IconButton'
-import {IntegrationType} from '../../../../models/integration/types'
-import {RootState} from '../../../../state/types'
-import {getActionByName} from '../../../../config/actions'
-import {AgentLabel, DatetimeLabel} from '../../../common/utils/labels'
-import {humanizeString, stripErrorMessage} from '../../../../utils'
-
-import {getIntegrationById} from '../../../../state/integrations/selectors'
-import {getIntegrationDataByIntegrationId} from '../../../../state/ticket/selectors'
+import {getLDClient} from 'utils/launchDarkly'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {IntegrationType} from 'models/integration/constants'
+import {RootState} from 'state/types'
+import {getActionByName} from 'config/actions'
+import {AgentLabel, DatetimeLabel} from 'pages/common/utils/labels'
+import {getIntegrationById} from 'state/integrations/selectors'
+import {getIntegrationDataByIntegrationId} from 'state/ticket/selectors'
+import {humanizeString, stripErrorMessage} from 'utils'
 
 import css from './Event.less'
 
@@ -132,6 +133,12 @@ export class EventContainer extends React.Component<Props, State> {
     }
 
     render() {
+        // TODO: refactor after Virtualization is rolled out
+        const isVirtualizationEnabled =
+            getLDClient().allFlags()[
+                FeatureFlagKey.TicketMessagesVirtualization
+            ]
+
         const {event, isLast, integration, integrationData} = this.props
         const user = (event.get('user') || fromJS({})) as Map<any, any>
         const status = event.getIn(['data', 'status'])
@@ -237,6 +244,7 @@ export class EventContainer extends React.Component<Props, State> {
         return (
             <div
                 className={classnames(css.component, {
+                    [css.isVirtualized]: isVirtualizationEnabled,
                     [css.last]: isLast,
                 })}
             >

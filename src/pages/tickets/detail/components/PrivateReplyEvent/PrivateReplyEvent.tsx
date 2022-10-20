@@ -2,18 +2,20 @@ import React, {useState} from 'react'
 import {fromJS, Map} from 'immutable'
 import classnames from 'classnames'
 import {Card, CardBody} from 'reactstrap'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import facebookIcon from 'assets/img/integrations/facebook-dark-icon.svg'
 import facebookMessengerIcon from 'assets/img/integrations/facebook-messenger-dark-event-icon.svg'
 import InstagramDirectMessageIcon from 'assets/img/integrations/Instagram-direct-message-blue.svg'
 import InstagramIcon from 'assets/img/integrations/instagram-icon-blue.svg'
+
+import TicketMessageEmbeddedCard from 'pages/common/components/TicketMessageEmbeddedCard/TicketMessageEmbeddedCard'
 import IconButton from 'pages/common/components/button/IconButton'
+import {Actor, Meta, Source} from 'models/ticket/types'
+import {AgentLabel, DatetimeLabel} from 'pages/common/utils/labels'
+import {FeatureFlagKey} from 'config/featureFlags'
 
-import {Actor, Meta, Source} from '../../../../../models/ticket/types'
-import TicketMessageEmbeddedCard from '../../../../common/components/TicketMessageEmbeddedCard/TicketMessageEmbeddedCard'
-import {AgentLabel, DatetimeLabel} from '../../../../common/utils/labels'
 import {renderDetails} from '../Event'
-
 import css from './PrivateReplyEvent.less'
 import {
     COMMENT_TICKET_PRIVATE_REPLY_EVENT,
@@ -147,6 +149,10 @@ class PrivateReplyEventManager {
 }
 
 export default function PrivateReplyEvent({event, isLast}: Props): JSX.Element {
+    // TODO: refactor after Virtualization is rolled out
+    const isVirtualizationEnabled =
+        useFlags()[FeatureFlagKey.TicketMessagesVirtualization]
+
     const [displayErrorDetails, setDisplayErrorDetails] = useState(false)
     const privateReplyEventManager = new PrivateReplyEventManager(event)
     const user = (event.get('user') || fromJS({})) as Map<any, any>
@@ -272,6 +278,7 @@ export default function PrivateReplyEvent({event, isLast}: Props): JSX.Element {
     return (
         <div
             className={classnames(css.component, {
+                [css.isVirtualized]: isVirtualizationEnabled,
                 [css.last]: isLast,
             })}
         >

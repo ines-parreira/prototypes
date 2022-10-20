@@ -1,17 +1,40 @@
 import React, {ComponentProps} from 'react'
-import {shallow} from 'enzyme'
+import {shallow, ShallowWrapper} from 'enzyme'
 import {fromJS} from 'immutable'
 import _noop from 'lodash/noop'
 import _omit from 'lodash/omit'
+import {VirtuosoProps} from 'react-virtuoso'
 
+import {ShopifyActionType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
 import {message} from 'models/ticket/tests/mocks'
 import {TicketMessage} from 'models/ticket/types'
 import {TICKET_EVENT_TYPES} from 'models/event/types'
-import {TicketBody} from 'pages/tickets/detail/components/TicketBody'
+import {TicketBodyVirtualized} from 'pages/tickets/detail/components/TicketBodyVirtualized'
 import TicketMessages from 'pages/tickets/detail/components/TicketMessages/TicketMessages'
-import Event from 'pages/tickets/detail/components/Event'
 import {TicketChannel} from 'business/types/ticket'
 import {INCOMING_PHONE_CALL, OUTGOING_PHONE_CALL} from 'constants/event'
+import AuditLogEvent from 'pages/tickets/detail/components/AuditLogEvent'
+import * as ticketPredicates from 'models/ticket/predicates'
+import {reportError} from 'utils/errors'
+
+jest.mock('react-virtuoso', () => {
+    function Virtuoso(props: VirtuosoProps<unknown, unknown>) {
+        return (
+            <>
+                {props.data?.map((value, index) =>
+                    props.itemContent?.(index, value, undefined)
+                )}
+            </>
+        )
+    }
+
+    return {Virtuoso}
+})
+
+jest.spyOn(ticketPredicates, 'isTicketSatisfactionSurvey')
+
+jest.mock('utils/errors')
+const mockReport = reportError as jest.Mock<typeof reportError>
 
 describe('TicketBody', () => {
     const commonProps = {
@@ -23,11 +46,11 @@ describe('TicketBody', () => {
         currentUser: fromJS({
             timezone: 'UTC',
         }),
-    } as ComponentProps<typeof TicketBody>
+    } as ComponentProps<typeof TicketBodyVirtualized>
 
     it('should display messages', () => {
         const component = shallow(
-            <TicketBody
+            <TicketBodyVirtualized
                 {...commonProps}
                 elements={fromJS([
                     {
@@ -39,12 +62,12 @@ describe('TicketBody', () => {
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(component.dive().dive()).toMatchSnapshot()
     })
 
     it('should display events with messages', () => {
         const component = shallow(
-            <TicketBody
+            <TicketBodyVirtualized
                 {...commonProps}
                 elements={fromJS([
                     {
@@ -57,17 +80,20 @@ describe('TicketBody', () => {
                         isMessage: false,
                         isEvent: true,
                         created_datetime: '2017-07-01T19:00:00',
+                        data: {
+                            action_name: ShopifyActionType.RefundOrder,
+                        },
                     },
                 ])}
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(component.dive().dive()).toMatchSnapshot()
     })
 
     it('should display phone events', () => {
         const component = shallow(
-            <TicketBody
+            <TicketBodyVirtualized
                 {...commonProps}
                 elements={fromJS([
                     {
@@ -88,12 +114,12 @@ describe('TicketBody', () => {
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(component.dive().dive()).toMatchSnapshot()
     })
 
     it('should display and highlight the messages', () => {
         const component = shallow(
-            <TicketBody
+            <TicketBodyVirtualized
                 {...commonProps}
                 elements={fromJS([
                     {
@@ -106,12 +132,12 @@ describe('TicketBody', () => {
         )
         component.setState({highlightedElements: {first: 1}})
 
-        expect(component).toMatchSnapshot()
+        expect(component.dive().dive()).toMatchSnapshot()
     })
 
     it('should display and not highlight the messages', () => {
         const component = shallow(
-            <TicketBody
+            <TicketBodyVirtualized
                 {...commonProps}
                 elements={fromJS([
                     {
@@ -124,12 +150,12 @@ describe('TicketBody', () => {
         )
         component.setState({highlightedElements: {first: 2}})
 
-        expect(component).toMatchSnapshot()
+        expect(component.dive().dive()).toMatchSnapshot()
     })
 
     it('should display audit log events with messages', () => {
         const component = shallow(
-            <TicketBody
+            <TicketBodyVirtualized
                 {...commonProps}
                 elements={fromJS([
                     {
@@ -153,13 +179,13 @@ describe('TicketBody', () => {
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(component.dive().dive()).toMatchSnapshot()
     })
 
     describe('last read message', () => {
         it('should pass `isLastReadMessage` only for the last read message', () => {
             const component = shallow(
-                <TicketBody
+                <TicketBodyVirtualized
                     {...commonProps}
                     elements={fromJS([
                         {
@@ -181,12 +207,12 @@ describe('TicketBody', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(component.dive().dive()).toMatchSnapshot()
         })
 
         it('should not pass `isLastReadMessage` for a new message', () => {
             const component = shallow(
-                <TicketBody
+                <TicketBodyVirtualized
                     {...commonProps}
                     elements={fromJS([
                         {
@@ -200,14 +226,15 @@ describe('TicketBody', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(component.dive().dive()).toMatchSnapshot()
         })
     })
 
     describe('message grouping', () => {
         const minProps = {..._omit(commonProps, ['lastReadMessage'])}
+
         const DefaultTicketBody = (props: ComponentProps<any>) => (
-            <TicketBody
+            <TicketBodyVirtualized
                 lastReadMessage={fromJS({
                     id: undefined,
                 })}
@@ -228,6 +255,16 @@ describe('TicketBody', () => {
             created_datetime: '2018-01-01T12:01:00.000Z',
         }
 
+        const findTicketMessages = (
+            component: ShallowWrapper<typeof DefaultTicketBody>
+        ) =>
+            component
+                .find(TicketBodyVirtualized)
+                .dive()
+                .dive()
+                .dive()
+                .find(TicketMessages)
+
         it('should group messages if they have the same channel and ', () => {
             const component = shallow(
                 <DefaultTicketBody
@@ -235,10 +272,7 @@ describe('TicketBody', () => {
                     elements={fromJS([message1, message2])}
                 />
             )
-            const ticketMessages = component
-                .find(TicketBody)
-                .dive()
-                .find(TicketMessages)
+            const ticketMessages = findTicketMessages(component)
             expect(ticketMessages).toHaveLength(1)
         })
 
@@ -255,10 +289,7 @@ describe('TicketBody', () => {
                     ])}
                 />
             )
-            const ticketMessages = component
-                .find(TicketBody)
-                .dive()
-                .find(TicketMessages)
+            const ticketMessages = findTicketMessages(component)
             expect(ticketMessages).toHaveLength(2)
         })
 
@@ -270,10 +301,7 @@ describe('TicketBody', () => {
                     messageGroupingChannels={[TicketChannel.Email]}
                 />
             )
-            const ticketMessages = component
-                .find(TicketBody)
-                .dive()
-                .find(TicketMessages)
+            const ticketMessages = findTicketMessages(component)
             expect(ticketMessages).toHaveLength(2)
         })
 
@@ -290,10 +318,7 @@ describe('TicketBody', () => {
                     ])}
                 />
             )
-            const ticketMessages = component
-                .find(TicketBody)
-                .dive()
-                .find(TicketMessages)
+            const ticketMessages = findTicketMessages(component)
             expect(ticketMessages).toHaveLength(2)
         })
 
@@ -307,13 +332,22 @@ describe('TicketBody', () => {
                             ...message2,
                             isMessage: false,
                             isEvent: true,
+                            type: TICKET_EVENT_TYPES.TicketAssigned,
                         },
                     ])}
                 />
             )
-            const body = component.find(TicketBody).dive()
-            expect(body.find(TicketMessages)).toHaveLength(1)
-            expect(body.find(Event)).toHaveLength(1)
+            const ticketMessages = findTicketMessages(component)
+
+            expect(ticketMessages).toHaveLength(1)
+            expect(
+                component
+                    .find(TicketBodyVirtualized)
+                    .dive()
+                    .dive()
+                    .dive()
+                    .find(AuditLogEvent)
+            ).toHaveLength(1)
         })
 
         it('should not group messages if they are not from the same sender', () => {
@@ -332,8 +366,8 @@ describe('TicketBody', () => {
                     ])}
                 />
             )
-            const body = component.find(TicketBody).dive()
-            expect(body.find(TicketMessages)).toHaveLength(2)
+            const ticketMessages = findTicketMessages(component)
+            expect(ticketMessages).toHaveLength(2)
         })
 
         it('should not merge the messages if one of them is private', () => {
@@ -349,8 +383,8 @@ describe('TicketBody', () => {
                     ])}
                 />
             )
-            const body = component.find(TicketBody).dive()
-            expect(body.find(TicketMessages)).toHaveLength(2)
+            const ticketMessages = findTicketMessages(component)
+            expect(ticketMessages).toHaveLength(2)
         })
 
         it('should not merge the messages if one is from agent and the second is not', () => {
@@ -369,8 +403,29 @@ describe('TicketBody', () => {
                     ])}
                 />
             )
-            const body = component.find(TicketBody).dive()
-            expect(body.find(TicketMessages)).toHaveLength(2)
+            const ticketMessages = findTicketMessages(component)
+            expect(ticketMessages).toHaveLength(2)
         })
+    })
+
+    it('should alert Sentry if no representation exists for ticket element', () => {
+        jest.spyOn(
+            ticketPredicates,
+            'isTicketSatisfactionSurvey'
+        ).mockReturnValue(false)
+
+        const component = shallow(
+            <TicketBodyVirtualized
+                {...commonProps}
+                elements={fromJS([
+                    {
+                        id: 1,
+                        isSatisfactionSurvey: true,
+                    },
+                ])}
+            />
+        )
+        component.dive().dive()
+        expect(mockReport).toHaveBeenCalled()
     })
 })

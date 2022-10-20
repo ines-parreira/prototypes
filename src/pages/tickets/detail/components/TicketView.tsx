@@ -1,46 +1,24 @@
-import React, {FormEvent, useEffect, useMemo, useRef} from 'react'
+import React, {useEffect, useMemo, useRef} from 'react'
 import {fromJS, List, Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 import classnames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+
 import {usePrevious, useUpdateEffect} from 'react-use'
+import Timeline from 'pages/common/components/timeline/Timeline'
+import {RootState} from 'state/types'
+import {displayHistoryOnNextPage, toggleHistory} from 'state/ticket/actions'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {getCustomersState} from 'state/customers/selectors'
+import {getBody, getDisplayHistory} from 'state/ticket/selectors'
+import TicketBodyVirtualized from 'pages/tickets/detail/components/TicketBodyVirtualized'
+import TicketBodyNonVirtualized from 'pages/tickets/detail/components/TicketBodyNonVirtualized'
+import {FeatureFlagKey} from 'config/featureFlags'
+import TicketHeaderWrapper from 'pages/tickets/detail/components/TicketHeaderWrapper'
+import ReplyForm from 'pages/tickets/detail/components/ReplyForm'
+import appCss from 'pages/App.less'
 
-import {RootState} from '../../../../state/types'
-import {
-    displayHistoryOnNextPage,
-    toggleHistory,
-} from '../../../../state/ticket/actions'
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../store/middlewares/segmentTracker'
-import {getNewMessageType} from '../../../../state/newMessage/selectors'
-import {
-    TicketChannel,
-    TicketMessageSourceType,
-} from '../../../../business/types/ticket'
-import {
-    getOtherAgentsOnTicket,
-    getOtherAgentsTypingOnTicket,
-} from '../../../../state/agents/selectors'
-import {
-    getCustomersState,
-    makeIsLoading,
-} from '../../../../state/customers/selectors'
-import {getBody, getDisplayHistory} from '../../../../state/ticket/selectors'
-import {AgentLabel} from '../../../common/utils/labels'
-import Timeline from '../../../common/components/timeline/Timeline'
-import appCss from '../../../App.less'
-import {hasIntegrationOfTypes} from '../../../../state/integrations/selectors'
-import {IntegrationType} from '../../../../models/integration/types'
 import {SubmitArgs} from '../TicketDetailContainer'
-
-import HistoryButton from './HistoryButton'
-import PhoneTicketSubmitButtons from './ReplyArea/PhoneTicketSubmitButtons'
-import ReplyMessageChannel from './ReplyArea/ReplyMessageChannel'
-import TicketReplyArea from './ReplyArea/TicketReplyArea'
-import TicketSubmitButtons from './ReplyArea/TicketSubmitButtons'
-import TicketBody from './TicketBody'
-import TicketHeader from './TicketHeader'
 import css from './TicketView.less'
 
 type OwnProps = {
@@ -53,50 +31,71 @@ type OwnProps = {
 type Props = OwnProps & ConnectedProps<typeof connector>
 
 export const TicketViewContainer = ({
-    agentsTyping = fromJS([]),
-    agentsViewing = fromJS([]),
-    currentUser,
     customers,
-    customersIsLoading,
     displayHistoryOnNextPage,
-    hasPhoneIntegration,
     hideTicket,
     isHistoryDisplayed,
     isTicketHidden,
     setStatus,
-    sourceType,
     submit,
     ticket,
     ticketBody,
     toggleHistory,
 }: Props) => {
-    const statusParamsRef = useRef<SubmitArgs>({})
+    // TODO: refactor after Virtualization is rolled out
+    const isVirtualizationEnabled =
+        useFlags()[FeatureFlagKey.TicketMessagesVirtualization]
+
     const prevIsHistoryDisplayed = usePrevious(isHistoryDisplayed)
-    const newMessageFormRef = useRef<HTMLFormElement>(null)
+    const isExistingTicket = !!ticket.get('id')
+    const pageRef = useRef<HTMLDivElement>(null)
     const ticketContentRef = useRef<HTMLDivElement>(null)
 
     const customerHistory = useMemo(
         () => (customers.get('customerHistory') as Map<any, any>) || fromJS({}),
         [customers]
     )
-    const hideHistoryButton = useMemo(() => !ticket.get('id'), [ticket])
-    const isExistingTicket = useMemo(() => !!ticket.get('id'), [ticket])
-    const hasPhoneChannel = useMemo(
-        () =>
-            (ticket.getIn(['customer', 'channels'], []) as Map<any, any>).some(
-                (channel: Map<any, any>) =>
-                    channel.get('type') === TicketChannel.Phone
-            ),
-        [ticket]
-    )
-    const shouldRenderPhoneButtons = useMemo(
-        () =>
-            hasPhoneIntegration &&
-            sourceType === TicketMessageSourceType.Phone &&
-            (!isExistingTicket || hasPhoneChannel),
-        [hasPhoneIntegration, hasPhoneChannel, sourceType, isExistingTicket]
-    )
 
+    useEffect(() => {
+        const shouldDisplayHistoryOnNextPage = ticket.getIn([
+            '_internal',
+            'shouldDisplayHistoryOnNextPage',
+        ]) as boolean
+        const displayHistory = ticket.getIn([
+            '_internal',
+            'displayHistory',
+        ]) as boolean
+
+        if (shouldDisplayHistoryOnNextPage !== displayHistory) {
+            toggleHistory(shouldDisplayHistoryOnNextPage)
+        }
+
+        if (shouldDisplayHistoryOnNextPage) {
+            displayHistoryOnNextPage(false)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    const handleHistoryToggle = () => {
+        const shouldOpenHistory =
+            ticket.get('id') &&
+            customers.getIn(['customerHistory', 'hasHistory']) &&
+            !isHistoryDisplayed
+
+        toggleHistory(shouldOpenHistory)
+
+        // TODO(customers-migration): ask confirmation to update this event
+        logEvent(SegmentEvent.UserHistoryToggled, {
+            open: shouldOpenHistory,
+            nbOfTicketsInTimeline: (
+                customers.getIn(['customerHistory', 'tickets']) as List<any>
+            ).size,
+            channel: ticket.get('channel'),
+            nbOfMessagesInTicket: (ticket.get('messages') as List<any>).size,
+        })
+    }
+
+    // TODO: remove following block after Virtualization is rolled out
     const getMainContentElement = (
         isHistoryDisplayed: boolean
     ): HTMLElement => {
@@ -120,29 +119,9 @@ export const TicketViewContainer = ({
             prevMainContentElement.offsetHeight + 40
 
     useEffect(() => {
-        const shouldDisplayHistoryOnNextPage = ticket.getIn([
-            '_internal',
-            'shouldDisplayHistoryOnNextPage',
-        ]) as boolean
-        const displayHistory = ticket.getIn([
-            '_internal',
-            'displayHistory',
-        ]) as boolean
-
-        if (shouldDisplayHistoryOnNextPage !== displayHistory) {
-            toggleHistory(shouldDisplayHistoryOnNextPage)
-        }
-
-        if (shouldDisplayHistoryOnNextPage) {
-            displayHistoryOnNextPage(false)
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
-    useEffect(() => {
         // scroll to the bottom of the ticket content the first time the ticket is viewed.
         // decrease the bottom padding, to avoid scrolling to a white screen on touchscreens.
-        if (ticketContentRef.current) {
+        if (ticketContentRef.current && !isVirtualizationEnabled) {
             const styles = window.getComputedStyle(ticketContentRef.current)
             const maxScrollTop =
                 ticketContentRef.current.scrollHeight -
@@ -158,143 +137,25 @@ export const TicketViewContainer = ({
                 ticketContentRef.current.focus()
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useUpdateEffect(() => {
         // if ticket body (messages, events, etc.) changes but user is at bottom of the page,
         // then keep him at the bottom of the page
-        if (wasAtBottomOfPage) {
+        if (wasAtBottomOfPage && !isVirtualizationEnabled) {
             // if history is displayed we set scroll on `main-content` wrapper
             const mainContentElement = getMainContentElement(isHistoryDisplayed)
             mainContentElement.scrollTop = mainContentElement.scrollHeight
         }
     }, [ticketBody])
 
-    const handlePreSubmit = ({
-        status,
-        next,
-        action,
-        resetMessage,
-    }: SubmitArgs) => {
-        if (newMessageFormRef?.current?.checkValidity()) {
-            statusParamsRef.current = {status, next, action, resetMessage}
-        } else {
-            statusParamsRef.current = {}
-        }
-    }
-
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-
-        // https://github.com/gorgias/gorgias/issues/4074
-        if (e.target !== newMessageFormRef.current) {
-            return
-        }
-
-        Object.values(statusParamsRef.current).length &&
-            submit(statusParamsRef.current)
-    }
-
-    const handleHistoryToggle = () => {
-        const shouldOpenHistory =
-            ticket.get('id') &&
-            customers.getIn(['customerHistory', 'hasHistory']) &&
-            !isHistoryDisplayed
-
-        toggleHistory(shouldOpenHistory)
-
-        // TODO(customers-migration): ask confirmation to update this event
-        logEvent(SegmentEvent.UserHistoryToggled, {
-            open: shouldOpenHistory,
-            nbOfTicketsInTimeline: (
-                customers.getIn(['customerHistory', 'tickets']) as List<any>
-            ).size,
-            channel: ticket.get('channel'),
-            nbOfMessagesInTicket: (ticket.get('messages') as List<any>).size,
-        })
-    }
-
-    const renderCollisionDetection = () => {
-        const agentsViewingNotTyping = agentsViewing.filter(
-            (userId) => !agentsTyping.contains(userId)
-        )
-        const hasBoth = agentsTyping.size > 0 && agentsViewingNotTyping.size > 0
-
-        return (
-            <div
-                className={classnames(css.viewersBanner, {
-                    [css.hidden]:
-                        agentsViewing.size <= 0 && agentsTyping.size <= 0,
-                    [css.bothCollisions]: hasBoth,
-                })}
-            >
-                {
-                    // we want to hide text during animation if there is no agents viewing
-                    agentsTyping.size > 0 && (
-                        <div className={css.collisionCategory}>
-                            <i
-                                className={classnames(
-                                    css.icon,
-                                    'material-icons'
-                                )}
-                            >
-                                mode_edit
-                            </i>
-
-                            <div className={css.collisionLabel}>Typing:</div>
-
-                            {agentsTyping.map((agent, index) => (
-                                <AgentLabel
-                                    key={index}
-                                    name={(agent as Map<any, any>).get('name')}
-                                    profilePictureUrl={(
-                                        agent as Map<any, any>
-                                    ).getIn(['meta', 'profile_picture_url'])}
-                                    className={css.collisionAgent}
-                                    shouldDisplayAvatar
-                                />
-                            ))}
-                        </div>
-                    )
-                }
-                {
-                    // we want to hide text during animation if there is no agents viewing
-                    agentsViewingNotTyping.size > 0 && (
-                        <div className={css.collisionCategory}>
-                            <i
-                                className={classnames(
-                                    css.icon,
-                                    'material-icons'
-                                )}
-                            >
-                                remove_red_eye
-                            </i>
-
-                            <div className={css.collisionLabel}>Viewing:</div>
-
-                            {agentsViewingNotTyping.map((agent, index) => (
-                                <AgentLabel
-                                    key={index}
-                                    name={(agent as Map<any, any>).get('name')}
-                                    profilePictureUrl={(
-                                        agent as Map<any, any>
-                                    ).getIn(['meta', 'profile_picture_url'])}
-                                    className={css.collisionAgent}
-                                    shouldDisplayAvatar
-                                />
-                            ))}
-                        </div>
-                    )
-                }
-            </div>
-        )
-    }
-
     return (
         <div
             className={classnames(css.page, {
                 'transition out fade right': isTicketHidden,
             })}
+            ref={pageRef}
         >
             {isHistoryDisplayed && (
                 <div className={classnames(css.timeline)}>
@@ -321,71 +182,42 @@ export const TicketViewContainer = ({
                     </div>
                 </div>
             )}
-            <div className={css.headerContainer}>
-                <div className="d-flex">
-                    {!hideHistoryButton && (
-                        <div
-                            className={classnames(
-                                css.historyButtonContainer,
-                                'd-none d-md-flex align-items-top mt-4'
-                            )}
-                        >
-                            <HistoryButton
-                                isHistoryDisplayed={isHistoryDisplayed}
-                                customerHistory={customerHistory}
-                                toggleHistory={handleHistoryToggle}
-                                ticket={ticket}
-                                customersIsLoading={customersIsLoading}
-                            />
-                        </div>
-                    )}
 
-                    <TicketHeader
-                        ticket={ticket}
-                        hideTicket={hideTicket}
-                        className="flex-grow"
-                    />
-                </div>
-
-                {renderCollisionDetection()}
-            </div>
+            {!isVirtualizationEnabled && (
+                <TicketHeaderWrapper
+                    hideTicket={hideTicket}
+                    handleHistoryToggle={handleHistoryToggle}
+                />
+            )}
 
             <div
                 className={classnames(css.ticketContent, {
                     [css.historyDisplayed]: isHistoryDisplayed,
-                    'mt-3': !isExistingTicket,
+                    [css.isVirtualized]: isVirtualizationEnabled,
                 })}
                 ref={ticketContentRef}
                 tabIndex={1}
             >
-                {isExistingTicket && (
-                    <TicketBody elements={ticketBody} setStatus={setStatus} />
+                {isVirtualizationEnabled ? (
+                    <TicketBodyVirtualized
+                        elements={ticketBody}
+                        setStatus={setStatus}
+                        customScrollParentRef={pageRef}
+                        submit={submit}
+                        hideTicket={hideTicket}
+                        handleHistoryToggle={handleHistoryToggle}
+                    />
+                ) : (
+                    <>
+                        {isExistingTicket && (
+                            <TicketBodyNonVirtualized
+                                elements={ticketBody}
+                                setStatus={setStatus}
+                            />
+                        )}
+                        <ReplyForm submit={submit} />
+                    </>
                 )}
-
-                <form
-                    className={classnames('d-print-none', css.newMessageForm)}
-                    onSubmit={handleSubmit}
-                    ref={newMessageFormRef}
-                    id="ticket-reply-editor"
-                >
-                    <ReplyMessageChannel />
-
-                    {shouldRenderPhoneButtons ? (
-                        <PhoneTicketSubmitButtons />
-                    ) : (
-                        <>
-                            <TicketReplyArea
-                                currentUser={currentUser}
-                                ticket={ticket}
-                            />
-
-                            <TicketSubmitButtons
-                                ticket={ticket}
-                                submit={handlePreSubmit}
-                            />
-                        </>
-                    )}
-                </form>
             </div>
         </div>
     )
@@ -393,20 +225,10 @@ export const TicketViewContainer = ({
 
 const connector = connect(
     (state: RootState) => ({
-        agentsTyping: getOtherAgentsTypingOnTicket(state.ticket.get('id'))(
-            state
-        ),
-        agentsViewing: getOtherAgentsOnTicket(state.ticket.get('id'))(state),
-        currentUser: state.currentUser,
         customers: getCustomersState(state),
-        customersIsLoading: makeIsLoading(state),
         isHistoryDisplayed: getDisplayHistory(state),
         ticket: state.ticket,
         ticketBody: getBody(state),
-        sourceType: getNewMessageType(state),
-        hasPhoneIntegration: hasIntegrationOfTypes(IntegrationType.Phone)(
-            state
-        ),
     }),
     {
         displayHistoryOnNextPage,

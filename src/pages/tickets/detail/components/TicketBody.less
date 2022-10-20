@@ -1,4 +1,13 @@
-:local .wrapper {
-    margin-top: 16px;
-    margin-bottom: 6px;
+@import '~css/new/colorTokens';
+@import '~css/new/mixins';
+
+:local {
+    .wrapper {
+        margin: 16px 0 6px 0;
+
+        // TODO: refactor after Virtualization is rolled out
+        &.isVirtualized {
+            margin: 0 -30px;
+        }
+    }
 }

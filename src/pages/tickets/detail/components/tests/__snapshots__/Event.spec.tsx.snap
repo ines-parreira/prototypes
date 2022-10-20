@@ -2,7 +2,7 @@
 
 exports[`Event component should display correctly a failed event for a Recharge Charge action 1`] = `
 <div
-  className="component"
+  className="component isVirtualized"
 >
   <div
     className="event"
@@ -123,7 +123,7 @@ exports[`Event component should display correctly a failed event for a Recharge 
 
 exports[`Event component should display correctly a failed event for a Recharge Subscription action 1`] = `
 <div
-  className="component"
+  className="component isVirtualized"
 >
   <div
     className="event"
@@ -234,7 +234,7 @@ exports[`Event component should display correctly a failed event for a Recharge 
 
 exports[`Event component should display correctly a failed event for a Shopify Order action 1`] = `
 <div
-  className="component"
+  className="component isVirtualized"
 >
   <div
     className="event"
@@ -345,7 +345,7 @@ exports[`Event component should display correctly a failed event for a Shopify O
 
 exports[`Event component should display correctly a successful event for a Recharge Charge action 1`] = `
 <div
-  className="component"
+  className="component isVirtualized"
 >
   <div
     className="event"
@@ -455,7 +455,7 @@ exports[`Event component should display correctly a successful event for a Recha
 
 exports[`Event component should display correctly a successful event for a Recharge Subscription action 1`] = `
 <div
-  className="component"
+  className="component isVirtualized"
 >
   <div
     className="event"
@@ -555,7 +555,7 @@ exports[`Event component should display correctly a successful event for a Recha
 
 exports[`Event component should display correctly a successful event for a Shopify Order action 1`] = `
 <div
-  className="component"
+  className="component isVirtualized"
 >
   <div
     className="event"
@@ -655,7 +655,7 @@ exports[`Event component should display correctly a successful event for a Shopi
 
 exports[`Event component should display correctly a successful event for a Shopify Order action with custom payload 1`] = `
 <div
-  className="component"
+  className="component isVirtualized"
 >
   <div
     className="event"
@@ -776,7 +776,7 @@ exports[`Event component should display correctly a successful event for a Shopi
 
 exports[`Event component should display the correct label for an action 1`] = `
 <div
-  className="component"
+  className="component isVirtualized"
 >
   <div
     className="event"
@@ -869,7 +869,7 @@ exports[`Event component should display the correct label for an action 1`] = `
 
 exports[`Event component should fallback to email when user has no name 1`] = `
 <div
-  className="component"
+  className="component isVirtualized"
 >
   <div
     className="event"

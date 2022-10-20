@@ -1,7 +1,7 @@
 import {fromJS, Map, List} from 'immutable'
 import _sortBy from 'lodash/sortBy'
 
-import {Ticket, TicketElement} from '../../models/ticket/types'
+import {Ticket, TicketMessage} from 'models/ticket/types'
 import * as newMessageConstants from '../newMessage/constants'
 import * as ticketConstants from '../ticket/constants'
 import * as viewsConstants from '../views/constants'
@@ -135,7 +135,7 @@ export default function reducer(
         }
 
         case newMessageConstants.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_SUCCESS: {
-            const updated = action.resp as TicketElement
+            const updated = action.resp as TicketMessage
             const ticketIndex = (
                 state.getIn(
                     ['customerHistory', 'tickets'],

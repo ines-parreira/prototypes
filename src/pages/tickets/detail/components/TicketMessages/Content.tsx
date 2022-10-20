@@ -1,29 +1,29 @@
-import React, {Component} from 'react'
+import React, {Component, useContext, useMemo} from 'react'
 import classNames from 'classnames'
 import _trim from 'lodash/trim'
 
-import {proxifyImages} from '../../../../../utils'
-import {
-    linkifyHtml,
-    linkifyString,
-    sanitizeHtmlDefault,
-} from '../../../../../utils/html'
-import Ellipsis from '../../../../common/components/Ellipsis'
+import {MessageQuoteContext} from 'pages/tickets/detail/components/TicketBodyVirtualized'
+import Ellipsis from 'pages/common/components/Ellipsis'
+import {linkifyHtml, linkifyString, sanitizeHtmlDefault} from 'utils/html'
+import {proxifyImages} from 'utils'
 
 import css from './Content.less'
 
 type Props = {
     html?: string
     text?: string
+    messageId: number | undefined
+    toggleQuote: () => void
     strippedHtml?: string | null
     strippedText?: string | null
+    isMessageExpanded: boolean
 }
 
 type State = {
     showFullBody: boolean
 }
 
-export default class Content extends Component<Props, State> {
+export class ContentComponent extends Component<Props, State> {
     constructor(props: Props) {
         super(props)
         this.state = {showFullBody: false}
@@ -49,7 +49,7 @@ export default class Content extends Component<Props, State> {
     }
 
     _onQuoteButtonClick = () => {
-        this.setState({showFullBody: !this.state.showFullBody})
+        this.props.toggleQuote()
     }
 
     render() {
@@ -73,7 +73,7 @@ export default class Content extends Component<Props, State> {
             strippedContent.replace(/\s+/g, '') !== content.replace(/\s+/g, '')
 
         const displayContent = this._getDisplayContent(
-            isStripped && !this.state.showFullBody
+            isStripped && !this.props.isMessageExpanded
                 ? strippedContent || ''
                 : content,
             isHtml
@@ -101,3 +101,23 @@ export default class Content extends Component<Props, State> {
         )
     }
 }
+
+const Content = (props: Omit<Props, 'toggleQuote' | 'isMessageExpanded'>) => {
+    const {messageId} = props
+    const {toggleQuote, expandedQuotes} = useContext(MessageQuoteContext)
+
+    const isMessageExpanded = useMemo(
+        () => expandedQuotes.includes(messageId!),
+        [messageId, expandedQuotes]
+    )
+
+    return (
+        <ContentComponent
+            {...props}
+            toggleQuote={() => toggleQuote(messageId)}
+            isMessageExpanded={isMessageExpanded}
+        />
+    )
+}
+
+export default Content

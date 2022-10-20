@@ -1,9 +1,12 @@
+// TODO: remove component entirely after Virtualization is tested out
+
 import React from 'react'
 import moment, {Moment} from 'moment'
 import {connect, ConnectedProps} from 'react-redux'
 import _debounce from 'lodash/debounce'
 import {fromJS, List, Map} from 'immutable'
 
+import _xor from 'lodash/xor'
 import {
     Channel,
     TicketElement,
@@ -21,12 +24,12 @@ import {TicketChannel} from 'business/types/ticket'
 import * as ticketSelectors from 'state/ticket/selectors'
 import shortcutManager from 'services/shortcutManager/index'
 import {moveIndex, MoveIndexDirection} from 'pages/common/utils/keyboard'
-import {PHONE_EVENTS, TICKET_EVENT_TYPES_VALUES} from 'constants/event'
+import {PHONE_EVENTS} from 'constants/event'
 import {RootState} from 'state/types'
 
 import TicketMessages from './TicketMessages/TicketMessages'
 import SatisfactionSurvey from './SatisfactionSurvey'
-import AuditLogEvent from './AuditLogEvent'
+import AuditLogEvent, {contentfulEventTypesValues} from './AuditLogEvent'
 import Event from './Event'
 import PhoneEvent from './PhoneEvent/PhoneEvent'
 import PrivateReplyEvent from './PrivateReplyEvent/PrivateReplyEvent'
@@ -34,6 +37,7 @@ import {PRIVATE_REPLY_ACTIONS} from './PrivateReplyEvent/constants'
 
 import css from './TicketBody.less'
 import RuleSuggestion from './RuleSuggestion'
+import {MessageQuoteContext} from './TicketBodyVirtualized'
 
 // $TSFixMe replace with importing HighlightedElements from AuditLogEvent.tsx on migration
 type HighlightedElements = {
@@ -54,9 +58,10 @@ type Props = OwnProps & ConnectedProps<typeof connector>
 type State = {
     messageCursor: number
     highlightedElements: HighlightedElements | null
+    expandedMessages: number[]
 }
 
-export class TicketBody extends React.Component<Props, State> {
+export class TicketBodyNonVirtualized extends React.Component<Props, State> {
     static defaultProps: Pick<
         Props,
         'messageGroupingChannels' | 'messageGroupingDuration'
@@ -86,6 +91,7 @@ export class TicketBody extends React.Component<Props, State> {
         this.state = {
             messageCursor: this._messageCursor,
             highlightedElements: null,
+            expandedMessages: [],
         }
     }
 
@@ -196,6 +202,17 @@ export class TicketBody extends React.Component<Props, State> {
         )
     }
 
+    toggleQuote = (messageId: number | undefined) => {
+        if (messageId) {
+            this.setState({
+                expandedMessages: _xor(
+                    [...this.state.expandedMessages],
+                    [messageId]
+                ),
+            })
+        }
+    }
+
     _renderMessages(messages: TicketMessage[], index: number) {
         const {ticket, setStatus, lastReadMessage} = this.props
         const id = `message-${index}`
@@ -225,85 +242,98 @@ export class TicketBody extends React.Component<Props, State> {
         }
 
         return (
-            <div className={css.wrapper}>
-                {this._getGroupedElements().map((element, index: number) => {
-                    if (Array.isArray(element)) {
-                        return this._renderMessages(element, index)
-                    }
+            <MessageQuoteContext.Provider
+                value={{
+                    toggleQuote: this.toggleQuote,
+                    expandedQuotes: this.state.expandedMessages,
+                }}
+            >
+                <div className={css.wrapper}>
+                    {this._getGroupedElements().map(
+                        (element, index: number) => {
+                            if (Array.isArray(element)) {
+                                return this._renderMessages(element, index)
+                            }
 
-                    const elementMap: Map<any, any> = fromJS(element)
-                    const elementType = elementMap.get('type')
-                    const elementId = elementMap.get('id') as number
-                    const isLast = index === elements.size - 1
-                    const key = `event-${elementId}`
-                    const action_name = elementMap.getIn([
-                        'data',
-                        'action_name',
-                    ])
+                            const elementMap: Map<any, any> = fromJS(element)
+                            const elementType = elementMap.get('type')
+                            const elementId = elementMap.get('id') as number
+                            const isLast = index === elements.size - 1
+                            const key = `event-${elementId}`
+                            const action_name = elementMap.getIn([
+                                'data',
+                                'action_name',
+                            ])
 
-                    if (isTicketSatisfactionSurvey(element)) {
-                        return (
-                            <SatisfactionSurvey
-                                key={`survey-${index}`}
-                                satisfactionSurvey={elementMap}
-                                customer={ticket.get('customer')}
-                                isLast={isLast}
-                            />
-                        )
-                    }
+                            if (isTicketSatisfactionSurvey(element)) {
+                                return (
+                                    <SatisfactionSurvey
+                                        key={`survey-${index}`}
+                                        satisfactionSurvey={elementMap}
+                                        customer={ticket.get('customer')}
+                                        isLast={isLast}
+                                    />
+                                )
+                            }
 
-                    if (isTicketRuleSuggestion(element))
-                        return <RuleSuggestion />
+                            if (isTicketRuleSuggestion(element))
+                                return <RuleSuggestion />
 
-                    if (isTicketEvent(element)) {
-                        if (TICKET_EVENT_TYPES_VALUES.includes(elementType)) {
-                            return (
-                                <AuditLogEvent
-                                    key={key}
-                                    event={elementMap}
-                                    isLast={isLast}
-                                    setHighlightedElements={
-                                        this.setHighlightedElements
-                                    }
-                                />
-                            )
+                            if (isTicketEvent(element)) {
+                                if (
+                                    contentfulEventTypesValues.includes(
+                                        elementType
+                                    )
+                                ) {
+                                    return (
+                                        <AuditLogEvent
+                                            key={key}
+                                            event={elementMap}
+                                            isLast={isLast}
+                                            setHighlightedElements={
+                                                this.setHighlightedElements
+                                            }
+                                        />
+                                    )
+                                }
+
+                                if (PHONE_EVENTS.includes(elementType)) {
+                                    return (
+                                        <PhoneEvent
+                                            key={key}
+                                            event={elementMap}
+                                            isLast={isLast}
+                                        />
+                                    )
+                                }
+
+                                if (
+                                    !!action_name &&
+                                    PRIVATE_REPLY_ACTIONS.includes(action_name)
+                                ) {
+                                    return (
+                                        <PrivateReplyEvent
+                                            key={key}
+                                            event={elementMap}
+                                            isLast={isLast}
+                                        />
+                                    )
+                                }
+
+                                return (
+                                    <Event
+                                        key={key}
+                                        event={elementMap}
+                                        isLast={isLast}
+                                    />
+                                )
+                            }
+
+                            return null
                         }
-
-                        if (PHONE_EVENTS.includes(elementType)) {
-                            return (
-                                <PhoneEvent
-                                    key={key}
-                                    event={elementMap}
-                                    isLast={isLast}
-                                />
-                            )
-                        }
-
-                        if (
-                            !!action_name &&
-                            PRIVATE_REPLY_ACTIONS.includes(action_name)
-                        ) {
-                            return (
-                                <PrivateReplyEvent
-                                    key={key}
-                                    event={elementMap}
-                                    isLast={isLast}
-                                />
-                            )
-                        }
-
-                        return (
-                            <Event
-                                key={key}
-                                event={elementMap}
-                                isLast={isLast}
-                            />
-                        )
-                    }
-
-                    return null
-                })}
-            </div>
+                    )}
+                </div>
+            </MessageQuoteContext.Provider>
         )
     }
 }
@@ -314,4 +344,4 @@ const connector = connect((state: RootState) => ({
     lastReadMessage: ticketSelectors.getLastReadMessage(state),
 }))
 
-export default connector(TicketBody)
+export default connector(TicketBodyNonVirtualized)

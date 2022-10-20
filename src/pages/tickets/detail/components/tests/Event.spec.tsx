@@ -3,8 +3,16 @@ import {shallow} from 'enzyme'
 import {fromJS, Map} from 'immutable'
 
 import {INFOBAR_CUSTOM_BUTTON_ACTION_NAME} from 'config/actions'
+import {getLDClient} from 'utils/launchDarkly'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import {EventContainer} from '../Event'
+
+jest.mock('utils/launchDarkly')
+const allFlagsMock = getLDClient().allFlags as jest.Mock
+allFlagsMock.mockReturnValue({
+    [FeatureFlagKey.TicketMessagesVirtualization]: true,
+})
 
 describe('Event component', () => {
     const rechargeIntegrationId = 2

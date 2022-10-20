@@ -127,6 +127,7 @@
         "react-select": "1.0.0-beta14",
         "react-slick": "0.28.0",
         "react-use": "17.2.4",
+        "react-virtuoso": "2.19.0",
         "reactstrap": "8.9.0",
         "reapop": "4.0.3",
         "redux": "4.0.5",

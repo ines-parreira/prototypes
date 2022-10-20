@@ -2,12 +2,13 @@ import React, {useCallback, useEffect, useState} from 'react'
 import classnames from 'classnames'
 import {fromJS, Map} from 'immutable'
 import {Link} from 'react-router-dom'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
-import {DatetimeLabel} from '../../../../common/utils/labels'
-import {PhoneIntegrationEvent} from '../../../../../constants/integrations/types/event'
+import {DatetimeLabel} from 'pages/common/utils/labels'
+import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import css from '../Event.less'
-
 import callAnsweredIcon from './icons/call-answered.svg'
 import callIncomingIcon from './icons/call-incoming.svg'
 import callOutgoingIcon from './icons/call-outgoing.svg'
@@ -113,6 +114,10 @@ type Props = {
 }
 
 export default function PhoneEvent({event, isLast}: Props): JSX.Element {
+    // TODO: refactor after Virtualization is rolled out
+    const isVirtualizationEnabled =
+        useFlags()[FeatureFlagKey.TicketMessagesVirtualization]
+
     const eventType = event.get('type')
     const eventData = event.get('data', fromJS({})) as Map<string, any>
     const callRecording = eventData.get('recording') as Map<string, any>
@@ -207,6 +212,7 @@ export default function PhoneEvent({event, isLast}: Props): JSX.Element {
     return (
         <div
             className={classnames(css.component, {
+                [css.isVirtualized]: isVirtualizationEnabled,
                 [css.last]: isLast,
             })}
         >

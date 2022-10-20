@@ -10,8 +10,16 @@ import {
     TICKET_EVENT_TYPES,
 } from 'models/event/types'
 import {RuleEvent} from 'state/rules/types'
+import {getLDClient} from 'utils/launchDarkly'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import {AuditLogEventContainer} from '../AuditLogEvent'
+
+jest.mock('utils/launchDarkly')
+const allFlagsMock = getLDClient().allFlags as jest.Mock
+allFlagsMock.mockReturnValue({
+    [FeatureFlagKey.TicketMessagesVirtualization]: true,
+})
 
 describe('<AuditLogEvent/>', () => {
     const minProps = {

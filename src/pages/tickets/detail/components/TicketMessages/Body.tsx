@@ -23,6 +23,7 @@ type Props = {
 
 const Body = (props: Props) => {
     const {message, className} = props
+
     return (
         <div
             className={classNames(css.component, className, {
@@ -32,6 +33,7 @@ const Body = (props: Props) => {
             <Content
                 html={message.body_html}
                 text={message.body_text}
+                messageId={message.id}
                 strippedHtml={message.stripped_html}
                 strippedText={message.stripped_text}
             />

@@ -2,16 +2,12 @@ import {fromJS} from 'immutable'
 import {ContentBlock, ContentState, SelectionState} from 'draft-js'
 import _omit from 'lodash/omit'
 
-import {ticket} from '../../../fixtures/ticket'
-import {
-    TicketEvent,
-    TicketMessage,
-    TicketSatisfactionSurvey,
-} from '../../../models/ticket/types'
+import {ticket} from 'fixtures/ticket'
+import {TicketMessage, TicketSatisfactionSurvey} from 'models/ticket/types'
 import {
     getContentStateBlocksSnapshot,
     getContentStateSelectionSnapshot,
-} from '../../../utils/editor'
+} from 'utils/editor'
 import {
     addEmailExtraContent,
     EmailExtraArgs,
@@ -99,7 +95,7 @@ describe('emailExtraUtils', () => {
             const message = {
                 ..._omit(messageFixture, 'isMessage'),
             } as TicketMessage
-            const event: TicketEvent = {
+            const event = {
                 ...message,
                 isEvent: true,
             }

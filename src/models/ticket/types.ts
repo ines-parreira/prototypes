@@ -103,7 +103,7 @@ export type TicketMessageIntent = {
     rejected: boolean | null
 }
 
-export type TicketEvent = Omit<TicketMessage, 'isMessage'> & {
+export type TicketEvent = Event & {
     isEvent: true
 }
 
