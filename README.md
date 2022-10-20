@@ -29,11 +29,21 @@ yarn serve
 The [HMR](https://webpack.js.org/concepts/hot-module-replacement) should
 work out of the box.
 
+### Storybook
+
 Start the Storybook with:
 
 ```sh
 yarn storybook
 ```
+
+### Design tokens
+
+We are using Zeroheight to manage the design tokens, in order to update them:
+
+1. Get the updated tokens urls in the [resources](https://zeroheight.com/13b3ef892/p/09941c-design-tokens)
+2. Update the `get-color-tokens` and `get-typography-tokens` script in `package.json`
+3. Run `yarn generate-design-tokens`
 
 ## Testing
 
@@ -50,4 +60,4 @@ yarn jest   # Only unit tests
 - [Project Kaizen](./KAIZEN.md)
 - [Storybook](./docs/GetStarted.stories.mdx)
 - [FAQ](https://stackoverflow.com/c/gorgias/questions/tagged/30+22?sort=Newest&uqlId=1)
-- [Improvement ideas](https://www.notion.so/gorgias/60a36be52f744bde9bf83ede1d31a06c?v=0442f705b1414194ac281795c4135ff4)
+- [Helpdesk FE Chapter](https://www.notion.so/gorgias/c9bf0c5a9c5d4f9e902f9f5c65eb1f81?v=dfd8ad18869647bb9749752fc48be4b2)
