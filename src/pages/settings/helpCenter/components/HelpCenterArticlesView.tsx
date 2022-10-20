@@ -46,6 +46,12 @@ import {ArticleMode, getArticleMode} from '../types/articleMode'
 import {useEditionManager} from '../providers/EditionManagerContext'
 import {useSearchContext} from '../providers/SearchContext'
 
+import {getCurrentAccountState} from '../../../../state/currentAccount/selectors'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../store/middlewares/segmentTracker'
+import {getCurrentUser} from '../../../../state/currentUser/selectors'
 import {ActionType, OptionItem} from './articles/ArticleLanguageSelect'
 import {CloseModal} from './articles/CloseModal'
 import {DiscardChangesModal} from './articles/DiscardChangesModal'
@@ -71,6 +77,8 @@ export const HelpCenterArticlesView: React.FC = () => {
     const {getHelpCenterCustomDomain} = useHelpCenterActions()
     const [isReady, setIsReady] = useState(false)
     const {setSearchInput} = useSearchContext()
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const currentUser = useAppSelector(getCurrentUser)
 
     /**
      * EditionManagerContext
@@ -303,6 +311,14 @@ export const HelpCenterArticlesView: React.FC = () => {
             isOpened: true,
             view: HelpCenterArticleModalView.BASIC,
         })
+
+        if ('id' in article) {
+            logEvent(SegmentEvent.HelpCenterArticleRowClicked, {
+                user_id: currentUser.get('id'),
+                account_domain: currentAccount.get('domain'),
+                article_id: article.id,
+            })
+        }
     }
 
     const resetSearch = () => {
@@ -466,6 +482,11 @@ export const HelpCenterArticlesView: React.FC = () => {
                 setEditModal({
                     isOpened: true,
                     view: HelpCenterArticleModalView.ADVANCED,
+                })
+                logEvent(SegmentEvent.HelpCenterArticleRowSettingsClicked, {
+                    user_id: currentUser.get('id'),
+                    account_domain: currentAccount.get('domain'),
+                    article_id: article.id,
                 })
 
                 return

@@ -204,6 +204,8 @@ export enum SegmentEvent {
     ChatPreferencesUpdated = 'chat-preferences-updated',
     SelfServiceActivatedViaBanner = 'self-service-activated-via-banner',
     PrintTicketClicked = 'print-ticket-clicked',
+    HelpCenterArticleRowClicked = 'help-center/articles-view/article-row-clicked',
+    HelpCenterArticleRowSettingsClicked = 'help-center/articles-view/article-row-settings-clicked',
 }
 
 export enum StatViewLinkClickedStat {
