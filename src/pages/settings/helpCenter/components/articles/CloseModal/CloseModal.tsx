@@ -41,12 +41,12 @@ export const CloseModal = ({
             footerClassName={css.actions}
             footer={
                 <div className={css.footerWrapper}>
-                    <Button intent="destructive" onClick={onDiscard}>
-                        {discardText}
+                    <Button intent="secondary" onClick={onContinueEditing}>
+                        {editText}
                     </Button>
                     <div>
-                        <Button intent="secondary" onClick={onContinueEditing}>
-                            {editText}
+                        <Button intent="secondary" onClick={onDiscard}>
+                            {discardText}
                         </Button>
                         {onSave && (
                             <Button

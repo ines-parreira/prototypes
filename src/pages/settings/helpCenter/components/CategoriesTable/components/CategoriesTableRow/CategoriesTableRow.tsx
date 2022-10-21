@@ -95,6 +95,7 @@ type DroppableCategoriesTableRowProps = {
     headerCell: ReactElement
     bodyInnerClass: string
     onDragStart: () => void
+    onClick: () => void
     position: number
     level: number
     isUnlisted: boolean
@@ -104,6 +105,7 @@ const DroppableCategoriesTableRow = ({
     category,
     headerCell,
     bodyInnerClass,
+    onClick,
     onDragStart,
     onMoveEntity,
     onDropEntity,
@@ -190,6 +192,7 @@ const DroppableCategoriesTableRow = ({
             <BodyCell
                 style={{minWidth: 110, width: 110}}
                 innerClassName={bodyInnerClass}
+                onClick={onClick}
             >
                 <VisibilityCell
                     status={category.translation.visibility_status}
@@ -199,6 +202,7 @@ const DroppableCategoriesTableRow = ({
             <BodyCell
                 style={{minWidth: 104, width: 104}}
                 innerClassName={bodyInnerClass}
+                onClick={onClick}
             >
                 <LanguageList
                     id={category.id}
@@ -448,15 +452,17 @@ export const CategoriesTableRow = ({
             </Badge>
         )
     const bodyInnerClass = classNames({[css['no-click']]: !hasArticles})
+    const handleOnClick = useCallback(() => {
+        if (hasArticles || hasSubcategories) {
+            setOpen(!isOpen)
+        }
+    }, [hasArticles, hasSubcategories, isOpen])
+
     const headerCell = (
         <BodyCell
             className={css['cell']}
             innerClassName={bodyInnerClass}
-            onClick={() => {
-                if (hasArticles || hasSubcategories) {
-                    setOpen(!isOpen)
-                }
-            }}
+            onClick={handleOnClick}
         >
             {caret}
             <span
@@ -494,6 +500,7 @@ export const CategoriesTableRow = ({
                     headerCell={headerCell}
                     bodyInnerClass={bodyInnerClass}
                     onDragStart={handleOnDragStart}
+                    onClick={handleOnClick}
                     level={level}
                     isUnlisted={isUnlisted}
                     {...props}

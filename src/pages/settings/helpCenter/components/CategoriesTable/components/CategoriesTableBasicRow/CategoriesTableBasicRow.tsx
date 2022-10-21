@@ -48,6 +48,9 @@ const FixedCategoriesTableRow = ({
         <BodyCell width={104} innerClassName={bodyInnerClass}>
             {''}
         </BodyCell>
+        <BodyCell width={146} innerClassName={bodyInnerClass}>
+            {''}
+        </BodyCell>
     </TableBodyRow>
 )
 

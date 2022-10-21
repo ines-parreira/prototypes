@@ -56,17 +56,17 @@ exports[`<CloseModal /> matches snapshot 1`] = `
                 class="footerWrapper"
               >
                 <button
-                  class="wrapper fill destructive medium"
+                  class="wrapper fill secondary medium"
                   type="button"
                 >
-                  Discard label
+                  Edit label
                 </button>
                 <div>
                   <button
                     class="wrapper fill secondary medium"
                     type="button"
                   >
-                    Edit label
+                    Discard label
                   </button>
                   <button
                     class="wrapper ml-3 confirmBtn fill primary medium"

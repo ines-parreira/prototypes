@@ -52,6 +52,14 @@ exports[`<CategoriesTableRow /> should render "Uncategorized articles" row when 
         style="width: 104px;"
       />
     </td>
+    <td
+      class="wrapper normal"
+    >
+      <div
+        class="cellContent"
+        style="width: 146px;"
+      />
+    </td>
   </tr>
 </div>
 `;

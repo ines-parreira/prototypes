@@ -496,7 +496,7 @@ export const HelpCenterCategoryEdit = ({
                             </IconButton>
                         )}
                         <IconButton
-                            onClick={onClose}
+                            onClick={handleCloseModalAttempt}
                             fillStyle="ghost"
                             intent="secondary"
                             size="medium"
@@ -760,18 +760,18 @@ export const HelpCenterCategoryEdit = ({
             )}
             <CloseModal
                 isOpen={hasPendingChanges && isAttemptingToClose}
-                title={<span>Are you sure?</span>}
-                style={{width: '100%', maxWidth: 500}}
-                saveText="Save category"
-                editText="Edit category"
-                discardText="Discard changes"
+                title={<span>Unsaved changes</span>}
+                style={{width: '100%', maxWidth: 400}}
+                saveText="Save"
+                editText="Back to editing"
+                discardText="Don't save"
                 onDiscard={handleDiscard}
                 onContinueEditing={() => setIsAttemptingToClose(false)}
                 onSave={attemptSave}
             >
                 <span>
-                    If you close this category, you'll lose all changes made. Do
-                    you want to save them?
+                    Do you want to save the changes made to this category? All
+                    changes will be lost if you don't save them.
                 </span>
             </CloseModal>
         </Drawer>

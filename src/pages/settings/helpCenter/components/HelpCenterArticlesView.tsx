@@ -943,20 +943,18 @@ export const HelpCenterArticlesView: React.FC = () => {
                         !!isPendingCloseArticle &&
                         (canSaveArticle || isEditorCodeViewActive)
                     }
-                    title={<span>Are you sure?</span>}
-                    style={{width: '100%', maxWidth: 500}}
-                    saveText="Save article"
-                    discardText="Discard changes"
-                    editText="Edit article"
+                    title={<span>Unsaved changes</span>}
+                    style={{width: '100%', maxWidth: 400}}
+                    saveText="Save"
+                    discardText="Don't save"
+                    editText="Back to editing"
                     onDiscard={onConfirmDiscardChanges}
                     onContinueEditing={onConfirmEditing}
                     onSave={onConfirmSaveArticle}
                 >
                     <span>
-                        If you close this article, you'll lose all changes made.{' '}
-                        {canSaveArticle && (
-                            <span>Do you want to save them?</span>
-                        )}
+                        Do you want to save the changes made to this article?
+                        All changes will be lost if you don't save them.
                     </span>
                 </CloseModal>
             )}
