@@ -26,6 +26,7 @@ import {
     useProductBannerStorage,
 } from 'hooks/useProductBannerStorage'
 
+import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
 import {useHelpCenterApi, useAbilityChecker} from '../hooks/useHelpCenterApi'
 import {useSupportedLocales} from '../providers/SupportedLocales'
 import {
@@ -70,6 +71,18 @@ export const HelpCenterStartView: React.FC = () => {
     const {getProductBanner, updateProductBanner} = useProductBannerStorage()
 
     const {isPassingRulesCheck} = useAbilityChecker()
+
+    const [bannerNotificationDismissed, setBannerNotificationDismissed] =
+        useState(false)
+
+    const showBanner = useMemo(
+        () =>
+            !bannerNotificationDismissed &&
+            isPassingRulesCheck(({can}) =>
+                can('create', 'HelpCenterEntity')
+            ) === false,
+        [isPassingRulesCheck, bannerNotificationDismissed]
+    )
 
     useEffect(() => {
         dispatch(changeHelpCenterId(null))
@@ -272,25 +285,42 @@ export const HelpCenterStartView: React.FC = () => {
                     Please contact us to create more Help Centers.
                 </Tooltip>
             </PageHeader>
+            {showBanner && (
+                <BannerNotification
+                    status={NotificationStatus.Warning}
+                    showIcon
+                    closable
+                    onClose={() => {
+                        setBannerNotificationDismissed(true)
+                    }}
+                    message="Limited access. Based on your role permissions you can
+                        access Help Centers in read-only mode. Reach out to your
+                        Admin if you need read & write access."
+                />
+            )}
 
             <Container
                 fluid
                 className={settingsCss.pageContainer}
                 data-candu-id="help-center-description"
             >
-                <p>
-                    Help Center is a tool that makes it easier to answer your
-                    customers’ questions in an organic way. Set up a dedicated
-                    site to sideload your support flow.{' '}
-                    <a
-                        href="https://docs.gorgias.com/help-center/gorgias-help-center"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Read more
-                    </a>{' '}
-                    about how to set it up.
-                </p>
+                {isPassingRulesCheck(({can}) =>
+                    can('create', 'HelpCenterEntity')
+                ) && (
+                    <p>
+                        Help Center is a tool that makes it easier to answer
+                        your customers’ questions in an organic way. Set up a
+                        dedicated site to sideload your support flow.{' '}
+                        <a
+                            href="https://docs.gorgias.com/help-center/gorgias-help-center"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            Read more
+                        </a>{' '}
+                        about how to set it up.
+                    </p>
+                )}
                 {shouldShowProductBanner && (
                     <StandaloneBanner
                         helpCenters={standaloneHelpCenters}

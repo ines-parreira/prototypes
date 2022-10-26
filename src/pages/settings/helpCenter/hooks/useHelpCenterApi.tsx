@@ -90,8 +90,8 @@ export const useAbilityChecker = () => {
     const {agentAbility} = useContext(HelpCenterApiClientContext)
 
     const isPassingRulesCheck = useCallback(
-        (permissionChecker: (ab: AppAbility) => boolean) => {
-            if (!agentAbility) return false
+        (permissionChecker: (ab: AppAbility) => boolean | null) => {
+            if (!agentAbility) return null
             return permissionChecker(agentAbility)
         },
         [agentAbility]
