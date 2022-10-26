@@ -9,16 +9,18 @@ import Button from 'pages/common/components/button/Button'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 
-import {Locale} from 'models/helpCenter/types'
+import {HelpCenter, Locale} from 'models/helpCenter/types'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {helpCentersFetched} from 'state/entities/helpCenter/helpCenters/actions'
-import {getHelpCenterList} from 'state/entities/helpCenter/helpCenters/selectors'
+import {
+    helpCenterCreated,
+    helpCenterDeleted,
+    helpCentersFetched,
+} from 'state/entities/helpCenter/helpCenters/actions'
 import {changeHelpCenterId, changeViewLanguage} from 'state/ui/helpCenter'
 import PageHeader from 'pages/common/components/PageHeader'
 import Tooltip from 'pages/common/components/Tooltip'
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
-import useAppSelector from 'hooks/useAppSelector'
 import {
     PRODUCT_BANNER_KEY,
     useProductBannerStorage,
@@ -45,11 +47,19 @@ export const HelpCenterStartView: React.FC = () => {
     const history = useHistory()
     const {client} = useHelpCenterApi()
     const localeOptions = useSupportedLocales()
-    const helpCenterList = useAppSelector(getHelpCenterList)
     const localesByCode = useMemo(
         () => _keyBy<Locale>(localeOptions, 'code'),
         [localeOptions]
     )
+    const {
+        isLoading,
+        hasMore,
+        fetchMore,
+        helpCenters: helpCenterList,
+    } = useHelpCenterList({
+        per_page: HELP_CENTERS_PER_PAGE,
+    })
+
     const standaloneHelpCenters = useStandaloneHelpCenterAfterDismiss(
         helpCenterList,
         PRODUCT_BANNER_KEY.HELP_CENTER_STANDALONE_SSP
@@ -58,10 +68,6 @@ export const HelpCenterStartView: React.FC = () => {
         standaloneHelpCenters.length > 0
     )
     const {getProductBanner, updateProductBanner} = useProductBannerStorage()
-
-    const {isLoading, hasMore, fetchMore} = useHelpCenterList({
-        per_page: HELP_CENTERS_PER_PAGE,
-    })
 
     const {isPassingRulesCheck} = useAbilityChecker()
 
@@ -82,20 +88,95 @@ export const HelpCenterStartView: React.FC = () => {
     }, [standaloneHelpCenters, setShouldShowProductBanner, getProductBanner])
 
     const navigateToArticles = useCallback(
-        (helpCenterId: number) => {
-            const currentHelpCenter = helpCenterList.find(
-                ({id}) => id === helpCenterId
+        (currentHelpCenter: HelpCenter) => {
+            dispatch(changeHelpCenterId(currentHelpCenter.id))
+            dispatch(changeViewLanguage(currentHelpCenter.default_locale))
+            history.push(
+                `${HELP_CENTER_BASE_PATH}/${currentHelpCenter.id}/articles`
+            )
+        },
+        [history, dispatch]
+    )
+
+    const duplicateHelpCenter = useCallback(
+        (helpCenter: HelpCenter): void => {
+            const errorNotification = notify({
+                status: NotificationStatus.Error,
+                allowHTML: true,
+                message: `Something went wrong. We could not duplicate <b>${helpCenter.name}</b>.`,
+            })
+
+            if (!client) {
+                void dispatch(errorNotification)
+
+                return
+            }
+
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Loading,
+                    allowHTML: true,
+                    message: `Duplicating <b>${helpCenter.name}</b>. It may take up to a minute.`,
+
+                    dismissible: false,
+                    dismissAfter: 0,
+                    closeOnNext: true,
+                })
             )
 
-            if (currentHelpCenter) {
-                dispatch(changeHelpCenterId(currentHelpCenter.id))
-                dispatch(changeViewLanguage(currentHelpCenter.default_locale))
-                history.push(
-                    `${HELP_CENTER_BASE_PATH}/${helpCenterId}/articles`
-                )
-            }
+            void client
+                .duplicateHelpCenter(helpCenter.id)
+                .then(({data: newHelpCenter}) => {
+                    void dispatch(
+                        notify({
+                            status: NotificationStatus.Success,
+                            allowHTML: true,
+                            message: `<b>${newHelpCenter.name}</b> successfully created.`,
+                        })
+                    )
+
+                    dispatch(helpCenterCreated(newHelpCenter))
+
+                    navigateToArticles(newHelpCenter)
+                })
+                .catch(() => {
+                    void dispatch(errorNotification)
+                })
         },
-        [helpCenterList, history, dispatch]
+        [client, dispatch, navigateToArticles]
+    )
+    const deleteHelpCenter = useCallback(
+        (helpCenter: HelpCenter): void => {
+            const errorNotification = notify({
+                status: NotificationStatus.Error,
+                allowHTML: true,
+                message: `Something went wrong. We could not delete <b>${helpCenter.name}</b>.`,
+            })
+
+            if (!client) {
+                void dispatch(errorNotification)
+
+                return
+            }
+
+            void client
+                .deleteHelpCenter(helpCenter.id)
+                .then(() => {
+                    void dispatch(
+                        notify({
+                            status: NotificationStatus.Success,
+                            allowHTML: true,
+                            message: `<b>${helpCenter.name}</b> successfully deleted.`,
+                        })
+                    )
+
+                    dispatch(helpCenterDeleted(helpCenter.id))
+                })
+                .catch(() => {
+                    void dispatch(errorNotification)
+                })
+        },
+        [client, dispatch]
     )
 
     const toggleActivation = useCallback(
@@ -222,6 +303,8 @@ export const HelpCenterStartView: React.FC = () => {
                 isLoading={helpCenterList.length === 0 && isLoading}
                 locales={localesByCode}
                 onClick={navigateToArticles}
+                duplicateHelpCenter={duplicateHelpCenter}
+                deleteHelpCenter={deleteHelpCenter}
                 onToggle={toggleActivation}
             />
         </InfiniteScroll>

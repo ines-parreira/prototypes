@@ -185,16 +185,34 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
           </div>
         </td>
         <td
-          class="wrapper smallest actions normal"
+          class="wrapper lastBodyCell normal"
         >
           <div
             class="cellContent"
           >
-            <i
-              class="material-icons forwardIcon"
+            <button
+              class="wrapper mr-1 wrapper ghost ghost secondary medium"
+              title="Duplicate Help Center"
+              type="button"
             >
-              keyboard_arrow_right
-            </i>
+              <i
+                class="material-icons icon"
+              >
+                file_copy
+              </i>
+            </button>
+            <button
+              class="wrapper mr-1 wrapper ghost ghost destructive medium"
+              id="delete-button-1"
+              title="Delete Help Center"
+              type="button"
+            >
+              <i
+                class="material-icons icon"
+              >
+                delete
+              </i>
+            </button>
           </div>
         </td>
       </tr>
@@ -282,16 +300,34 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
           </div>
         </td>
         <td
-          class="wrapper smallest actions normal"
+          class="wrapper lastBodyCell normal"
         >
           <div
             class="cellContent"
           >
-            <i
-              class="material-icons forwardIcon"
+            <button
+              class="wrapper mr-1 wrapper ghost ghost secondary medium"
+              title="Duplicate Help Center"
+              type="button"
             >
-              keyboard_arrow_right
-            </i>
+              <i
+                class="material-icons icon"
+              >
+                file_copy
+              </i>
+            </button>
+            <button
+              class="wrapper mr-1 wrapper ghost ghost destructive medium"
+              id="delete-button-2"
+              title="Delete Help Center"
+              type="button"
+            >
+              <i
+                class="material-icons icon"
+              >
+                delete
+              </i>
+            </button>
           </div>
         </td>
       </tr>
@@ -379,16 +415,34 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
           </div>
         </td>
         <td
-          class="wrapper smallest actions normal"
+          class="wrapper lastBodyCell normal"
         >
           <div
             class="cellContent"
           >
-            <i
-              class="material-icons forwardIcon"
+            <button
+              class="wrapper mr-1 wrapper ghost ghost secondary medium"
+              title="Duplicate Help Center"
+              type="button"
             >
-              keyboard_arrow_right
-            </i>
+              <i
+                class="material-icons icon"
+              >
+                file_copy
+              </i>
+            </button>
+            <button
+              class="wrapper mr-1 wrapper ghost ghost destructive medium"
+              id="delete-button-3"
+              title="Delete Help Center"
+              type="button"
+            >
+              <i
+                class="material-icons icon"
+              >
+                delete
+              </i>
+            </button>
           </div>
         </td>
       </tr>
@@ -475,16 +529,34 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
           </div>
         </td>
         <td
-          class="wrapper smallest actions normal"
+          class="wrapper lastBodyCell normal"
         >
           <div
             class="cellContent"
           >
-            <i
-              class="material-icons forwardIcon"
+            <button
+              class="wrapper mr-1 wrapper ghost ghost secondary medium"
+              title="Duplicate Help Center"
+              type="button"
             >
-              keyboard_arrow_right
-            </i>
+              <i
+                class="material-icons icon"
+              >
+                file_copy
+              </i>
+            </button>
+            <button
+              class="wrapper mr-1 wrapper ghost ghost destructive medium"
+              id="delete-button-4"
+              title="Delete Help Center"
+              type="button"
+            >
+              <i
+                class="material-icons icon"
+              >
+                delete
+              </i>
+            </button>
           </div>
         </td>
       </tr>

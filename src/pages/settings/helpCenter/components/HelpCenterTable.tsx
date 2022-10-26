@@ -1,5 +1,4 @@
-import React, {MouseEvent} from 'react'
-import classnames from 'classnames'
+import React, {MouseEvent, useCallback} from 'react'
 import moment from 'moment'
 import {Container} from 'reactstrap'
 
@@ -17,6 +16,8 @@ import ToggleInput from 'pages/common/forms/ToggleInput'
 import settingsCss from '../../settings.less'
 
 import {useAbilityChecker} from '../hooks/useHelpCenterApi'
+import IconButton from '../../../common/components/button/IconButton'
+import ConfirmationPopover from '../../../common/components/popover/ConfirmationPopover'
 import css from './HelpCenterTable.less'
 
 type Props = {
@@ -26,7 +27,9 @@ type Props = {
         [key: string]: Locale
     }
     onToggle: (helpCenterId: number, toggle: boolean) => void
-    onClick: (helpCenterId: number) => void
+    onClick: (helpCenter: HelpCenter) => void
+    duplicateHelpCenter: (helpCenter: HelpCenter) => void
+    deleteHelpCenter: (helpCenter: HelpCenter) => void
 }
 
 export const HelpCenterTable: React.FC<Props> = ({
@@ -35,6 +38,8 @@ export const HelpCenterTable: React.FC<Props> = ({
     locales,
     onToggle,
     onClick,
+    duplicateHelpCenter,
+    deleteHelpCenter,
 }) => {
     const handleToggle =
         (helpCenterId: number) =>
@@ -42,6 +47,15 @@ export const HelpCenterTable: React.FC<Props> = ({
             event?.stopPropagation()
             onToggle(helpCenterId, isToggled)
         }
+
+    const handleDuplicate = useCallback(
+        (helpCenter: HelpCenter, event: MouseEvent): void => {
+            event.stopPropagation()
+
+            duplicateHelpCenter(helpCenter)
+        },
+        [duplicateHelpCenter]
+    )
 
     const {isPassingRulesCheck} = useAbilityChecker()
 
@@ -67,75 +81,94 @@ export const HelpCenterTable: React.FC<Props> = ({
                 <HeaderCell />
             </TableHead>
             <TableBody>
-                {list.map(
-                    ({
-                        id,
-                        name,
-                        default_locale,
-                        supported_locales,
-                        deactivated_datetime,
-                        updated_datetime,
-                    }) => {
-                        const activated = !Boolean(deactivated_datetime)
-                        return (
-                            <TableBodyRow
-                                className={css.tableBodyRow}
-                                key={id}
-                                onClick={() => onClick(id)}
-                            >
-                                <BodyCell
-                                    size="smallest"
-                                    className={css.actions}
-                                >
-                                    <ToggleInput
-                                        isToggled={activated}
-                                        onClick={handleToggle(id)}
-                                        isDisabled={
-                                            !isPassingRulesCheck(({can}) =>
-                                                can(
-                                                    'update',
-                                                    'HelpCenterEntity'
-                                                )
-                                            )
-                                        }
-                                    />
-                                </BodyCell>
-                                <BodyCell className={css.helpCenterName}>
-                                    {name}
-                                </BodyCell>
-                                <BodyCell size="small">
-                                    <LanguageList
-                                        id={id}
-                                        defaultLanguage={
-                                            locales[default_locale]
-                                        }
-                                        languageList={supported_locales.map(
-                                            (code) => locales[code]
-                                        )}
-                                    />
-                                </BodyCell>
-                                <BodyCell>
-                                    {moment(updated_datetime).format('L')}
-                                </BodyCell>
-                                <BodyCell
-                                    className={classnames(
-                                        'smallest',
-                                        css.actions
+                {list.map((helpCenter) => {
+                    const {id} = helpCenter
+
+                    const activated = !Boolean(helpCenter.deactivated_datetime)
+
+                    return (
+                        <TableBodyRow
+                            className={css.tableBodyRow}
+                            key={id}
+                            onClick={() => onClick(helpCenter)}
+                        >
+                            <BodyCell size="smallest" className={css.actions}>
+                                <ToggleInput
+                                    isToggled={activated}
+                                    onClick={handleToggle(id)}
+                                    isDisabled={
+                                        !isPassingRulesCheck(({can}) =>
+                                            can('update', 'HelpCenterEntity')
+                                        )
+                                    }
+                                />
+                            </BodyCell>
+                            <BodyCell className={css.helpCenterName}>
+                                {helpCenter.name}
+                            </BodyCell>
+                            <BodyCell size="small">
+                                <LanguageList
+                                    id={id}
+                                    defaultLanguage={
+                                        locales[helpCenter.default_locale]
+                                    }
+                                    languageList={helpCenter.supported_locales.map(
+                                        (code) => locales[code]
                                     )}
+                                />
+                            </BodyCell>
+                            <BodyCell>
+                                {moment(helpCenter.updated_datetime).format(
+                                    'L'
+                                )}
+                            </BodyCell>
+
+                            <BodyCell className={css.lastBodyCell}>
+                                <IconButton
+                                    className="mr-1"
+                                    fillStyle="ghost"
+                                    intent="secondary"
+                                    onClick={(event) =>
+                                        handleDuplicate(helpCenter, event)
+                                    }
+                                    title="Duplicate Help Center"
                                 >
-                                    <i
-                                        className={classnames(
-                                            'material-icons',
-                                            css.forwardIcon
-                                        )}
-                                    >
-                                        keyboard_arrow_right
-                                    </i>
-                                </BodyCell>
-                            </TableBodyRow>
-                        )
-                    }
-                )}
+                                    file_copy
+                                </IconButton>
+
+                                <ConfirmationPopover
+                                    buttonProps={{
+                                        intent: 'destructive',
+                                    }}
+                                    content={
+                                        <>
+                                            You are about to delete{' '}
+                                            <b>{helpCenter.name}</b>.
+                                        </>
+                                    }
+                                    id={`delete-button-${id}`}
+                                    onConfirm={() =>
+                                        deleteHelpCenter(helpCenter)
+                                    }
+                                    placement="left"
+                                >
+                                    {({uid, onDisplayConfirmation}) => (
+                                        <IconButton
+                                            className="mr-1"
+                                            id={uid}
+                                            fillStyle="ghost"
+                                            intent="destructive"
+                                            onClick={onDisplayConfirmation}
+                                            title="Delete Help Center"
+                                        >
+                                            delete
+                                        </IconButton>
+                                    )}
+                                </ConfirmationPopover>
+                            </BodyCell>
+                        </TableBodyRow>
+                    )
+                })}
             </TableBody>
         </TableWrapper>
     )

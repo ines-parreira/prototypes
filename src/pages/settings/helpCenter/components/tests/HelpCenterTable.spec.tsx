@@ -14,6 +14,8 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
 describe('<HelpCenterTable />', () => {
     const mockedOnClick = jest.fn()
     const mockedOnToggle = jest.fn()
+    const mockedDuplicateHelpCenter = jest.fn()
+    const mockedDeleteHelpCenter = jest.fn()
 
     const props: ComponentProps<typeof HelpCenterTable> = {
         isLoading: false,
@@ -21,6 +23,8 @@ describe('<HelpCenterTable />', () => {
         locales: _keyBy<Locale>(getLocalesResponseFixture, 'code'),
         onClick: mockedOnClick,
         onToggle: mockedOnToggle,
+        duplicateHelpCenter: mockedDuplicateHelpCenter,
+        deleteHelpCenter: mockedDeleteHelpCenter,
     }
 
     beforeEach(() => {
@@ -43,7 +47,7 @@ describe('<HelpCenterTable />', () => {
         const {getByRole} = render(<HelpCenterTable {...props} />)
         const tableRow = getByRole('row', {name: /ACME Help Center 2/i})
         fireEvent.click(tableRow)
-        expect(mockedOnClick).toHaveBeenCalledWith(2)
+        expect(mockedOnClick).toHaveBeenCalledWith(props.list[1])
     })
 
     it('should display a message when list is empty', () => {
@@ -51,5 +55,43 @@ describe('<HelpCenterTable />', () => {
             <HelpCenterTable {...props} isLoading={false} list={[]} />
         )
         expect(container).toMatchSnapshot()
+    })
+
+    it('should duplicate a Help Center', () => {
+        const firstHelpCenter = props.list[0]
+
+        const component = render(
+            <HelpCenterTable {...props} list={[firstHelpCenter]} />
+        )
+
+        const duplicateButton = component.getByRole('button', {
+            name: 'Duplicate Help Center',
+        })
+
+        fireEvent.click(duplicateButton)
+
+        expect(mockedDuplicateHelpCenter).toHaveBeenCalledWith(firstHelpCenter)
+    })
+
+    it('should delete a Help Center', () => {
+        const firstHelpCenter = props.list[0]
+
+        const component = render(
+            <HelpCenterTable {...props} list={[firstHelpCenter]} />
+        )
+
+        const deleteButton = component.getByRole('button', {
+            name: 'Delete Help Center',
+        })
+
+        fireEvent.click(deleteButton)
+
+        const deleteConfirmButton = component.getByRole('button', {
+            name: 'Confirm',
+        })
+
+        fireEvent.click(deleteConfirmButton)
+
+        expect(mockedDeleteHelpCenter).toHaveBeenCalledWith(firstHelpCenter)
     })
 })
