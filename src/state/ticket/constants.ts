@@ -103,3 +103,7 @@ export const TICKET_CHANNEL_NAMES: Record<TicketChannel, string> =
     })
 
 export const EMPTY_SENDER = {name: '', address: ''}
+
+// Chat-related
+export const SET_TYPING_ACTIVITY_SHOPPER = 'SET_TYPING_ACTIVITY_SHOPPER'
+export const TYPING_ACTIVITY_SHOPPER_TIMEOUT_MS = 4000

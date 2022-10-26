@@ -45,6 +45,7 @@ export enum SocketEventType {
     TwilioEventTriggered = 'twilio-event-triggered',
     AgentAvailabilityUpdated = 'agent-availability-updated',
     CustomerExternalDataUpdated = 'customer-external-data-updated',
+    TicketTypingActivityShopperStarted = 'ticket-typing-activity-shopper-started',
 }
 
 export enum JoinEventType {
@@ -273,6 +274,15 @@ export type AgentAvailabilityUpdatedEvent = {
     }
 }
 
+export type TicketTypingActivityShopperStartedEvent = {
+    event: {
+        type: SocketEventType.TicketTypingActivityShopperStarted
+    }
+    ticket: {
+        id: number
+    }
+}
+
 export type ServerMessage =
     | CustomerUpdatedEvent
     | CustomerExternalDataUpdatedEvent
@@ -303,3 +313,4 @@ export type ServerMessage =
     | OutboundPhoneCallInitiated
     | MacroParamsUpdatedEvent
     | AgentAvailabilityUpdatedEvent
+    | TicketTypingActivityShopperStartedEvent

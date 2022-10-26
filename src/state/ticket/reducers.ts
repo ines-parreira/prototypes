@@ -35,6 +35,8 @@ export const initialState: TicketState = fromJS({
             setTrash: false,
         },
         pendingMessages: [],
+        isShopperTyping: false,
+        isShopperTypingTimeoutId: undefined,
     },
     events: [],
     messages: [],
@@ -683,6 +685,22 @@ export default function reducer(
                         : message
                 })
             )
+
+        case types.SET_TYPING_ACTIVITY_SHOPPER: {
+            const {isShopperTyping, isShopperTypingTimeoutId = undefined} =
+                action.payload as {
+                    isShopperTyping: boolean
+                    isShopperTypingTimeoutId?: number
+                }
+
+            return state
+                .setIn(['_internal', 'isShopperTyping'], isShopperTyping)
+                .setIn(
+                    ['_internal', 'isShopperTypingTimeoutId'],
+                    isShopperTypingTimeoutId
+                )
+        }
+
         default:
             return state
     }

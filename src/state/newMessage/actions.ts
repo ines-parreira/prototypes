@@ -215,7 +215,7 @@ const _throttledIsTyping = _throttle(
     (ticketId: string) => {
         socketManager.send(SocketEventType.AgentTypingStarted, ticketId)
     },
-    5000,
+    constants.TYPING_ACTIVITY_AGENT_TIMEOUT_MS,
     {trailing: false}
 ) // we don't want to throw event after the ticket has been left
 

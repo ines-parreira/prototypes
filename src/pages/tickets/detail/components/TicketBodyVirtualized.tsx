@@ -58,6 +58,8 @@ export const MessageQuoteContext = createContext<MessageContextState>({
 
 export type TicketVirtuosoContextType = {
     submit: (params: SubmitArgs) => any
+    isShopperTyping: boolean
+    shopperName: string
 }
 
 // $TSFixMe replace with importing HighlightedElements from AuditLogEvent.tsx on migration
@@ -76,6 +78,8 @@ type OwnProps = {
     submit: (params: SubmitArgs) => any
     hideTicket: () => Promise<void>
     handleHistoryToggle: () => void
+    isShopperTyping: boolean
+    shopperName: string
 }
 
 type Props = OwnProps & ConnectedProps<typeof connector>
@@ -292,8 +296,15 @@ export class TicketBodyVirtualized extends React.Component<Props, State> {
     }
 
     render() {
-        const {elements, ticket, submit, hideTicket, handleHistoryToggle} =
-            this.props
+        const {
+            elements,
+            ticket,
+            submit,
+            hideTicket,
+            handleHistoryToggle,
+            isShopperTyping,
+            shopperName,
+        } = this.props
 
         return (
             <MessageQuoteContext.Provider
@@ -409,7 +420,11 @@ export class TicketBodyVirtualized extends React.Component<Props, State> {
 
                         return itemContent
                     }}
-                    context={{submit}}
+                    context={{
+                        submit,
+                        isShopperTyping,
+                        shopperName,
+                    }}
                     components={{
                         Footer: ReplyFormWithVirtuosoContext,
                     }}

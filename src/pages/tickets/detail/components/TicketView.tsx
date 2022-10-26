@@ -19,6 +19,7 @@ import ReplyForm from 'pages/tickets/detail/components/ReplyForm'
 import appCss from 'pages/App.less'
 
 import {SubmitArgs} from '../TicketDetailContainer'
+import TypingActivity from './TypingActivity'
 import css from './TicketView.less'
 
 type OwnProps = {
@@ -118,6 +119,11 @@ export const TicketViewContainer = ({
             prevMainContentElement.scrollTop <=
             prevMainContentElement.offsetHeight + 40
 
+    const isShopperTyping = useMemo(
+        () => ticket.getIn(['_internal', 'isShopperTyping']) as boolean,
+        [ticket]
+    )
+
     useEffect(() => {
         // scroll to the bottom of the ticket content the first time the ticket is viewed.
         // decrease the bottom padding, to avoid scrolling to a white screen on touchscreens.
@@ -206,6 +212,11 @@ export const TicketViewContainer = ({
                         submit={submit}
                         hideTicket={hideTicket}
                         handleHistoryToggle={handleHistoryToggle}
+                        isShopperTyping={isShopperTyping}
+                        shopperName={
+                            (ticket.getIn(['customer', 'name']) as string) ??
+                            'Customer'
+                        }
                     />
                 ) : (
                     <>
@@ -215,6 +226,16 @@ export const TicketViewContainer = ({
                                 setStatus={setStatus}
                             />
                         )}
+                        <TypingActivity
+                            isTyping={isShopperTyping}
+                            name={
+                                (ticket.getIn([
+                                    'customer',
+                                    'name',
+                                ]) as string) ?? 'Customer'
+                            }
+                        />
+
                         <ReplyForm submit={submit} />
                     </>
                 )}

@@ -126,6 +126,12 @@ export const mergeTicket =
 
         if (messagesDifference) {
             dispatch(newMessageActions.resetFromTicket(ticketRecord))
+            dispatch({
+                type: types.SET_TYPING_ACTIVITY_SHOPPER,
+                payload: {
+                    isShopperTyping: false,
+                },
+            })
         }
 
         return Promise.resolve(mergeDispatch)
@@ -1270,3 +1276,40 @@ export const sendIntentFeedbackSuccess = createAction<{
     messageId: number
     intents: TicketMessageIntent[]
 }>(types.SEND_INTENT_FEEDBACK_SUCCESS)
+
+export const setTypingActivityShopper =
+    (ticketId: number) =>
+    (
+        dispatch: StoreDispatch,
+        getState: () => RootState
+    ): Promise<ReturnType<StoreDispatch>> => {
+        if (isCurrentlyOnTicket(ticketId)) {
+            let timeoutId = getState().ticket.getIn([
+                '_internal',
+                'isShopperTypingTimeoutId',
+            ])
+
+            if (timeoutId) {
+                clearTimeout(timeoutId)
+            }
+
+            timeoutId = setTimeout(() => {
+                void dispatch({
+                    type: types.SET_TYPING_ACTIVITY_SHOPPER,
+                    payload: {
+                        isShopperTyping: false,
+                    },
+                })
+            }, types.TYPING_ACTIVITY_SHOPPER_TIMEOUT_MS)
+
+            void dispatch({
+                type: types.SET_TYPING_ACTIVITY_SHOPPER,
+                payload: {
+                    isShopperTyping: true,
+                    isShopperTypingTimeoutId: timeoutId,
+                },
+            })
+        }
+
+        return Promise.resolve()
+    }

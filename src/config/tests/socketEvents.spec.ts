@@ -942,5 +942,24 @@ describe('Config: socketEvents', () => {
                 )
             })
         })
+
+        describe(SocketEventType.TicketTypingActivityShopperStarted, () => {
+            const handler = _find(receivedEvents, {
+                name: SocketEventType.TicketTypingActivityShopperStarted,
+            }) as socketEvents.ReceivedEvent
+
+            it('should dispatch a shopper typing activity update', () => {
+                handler.onReceive({
+                    event: {
+                        type: SocketEventType.TicketTypingActivityShopperStarted,
+                    },
+                    ticket: {id: 100},
+                })
+
+                expect(
+                    ticketActions.setTypingActivityShopper
+                ).toHaveBeenCalledWith(100)
+            })
+        })
     })
 })

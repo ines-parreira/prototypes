@@ -1171,6 +1171,55 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
+    it('should handle SET_TYPING_ACTIVITY_SHOPPER', () => {
+        expect(
+            reducer(initialState, {
+                type: types.SET_TYPING_ACTIVITY_SHOPPER,
+                payload: {
+                    isShopperTyping: false,
+                    isShopperTypingTimeoutId: undefined,
+                },
+            } as unknown as GorgiasAction).toJS()
+        ).toMatchSnapshot()
+
+        // set true
+        expect(
+            reducer(
+                initialState.mergeDeep({
+                    _internal: {
+                        isShopperTyping: true,
+                        isShopperTypingTimeoutId: 100,
+                    },
+                }),
+                {
+                    type: types.SET_TYPING_ACTIVITY_SHOPPER,
+                    payload: {
+                        isShopperTyping: true,
+                        isShopperTypingTimeoutId: 100,
+                    },
+                } as unknown as GorgiasAction
+            ).toJS()
+        ).toMatchSnapshot()
+
+        // set back to false
+        expect(
+            reducer(
+                initialState.mergeDeep({
+                    _internal: {
+                        isShopperTyping: false,
+                        isShopperTypingTimeoutId: undefined,
+                    },
+                }),
+                {
+                    type: types.SET_TYPING_ACTIVITY_SHOPPER,
+                    payload: {
+                        isShopperTyping: false,
+                    },
+                } as unknown as GorgiasAction
+            ).toJS()
+        ).toMatchSnapshot()
+    })
+
     describe('action ADD_TICKET_AUDIT_LOG_EVENTS', () => {
         const getEvent = (id: number) =>
             fromJS({

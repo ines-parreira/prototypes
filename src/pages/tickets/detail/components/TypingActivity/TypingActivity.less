@@ -1,0 +1,40 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .body {
+        color: @classic-neutral-grey-4;
+        font-size: 14px;
+        padding-bottom: 24px;
+        margin-left: 56px;
+    }
+
+    .name {
+        font-weight: 600;
+    }
+
+    .dot1 {
+        :global {
+            animation: 1s visibility infinite 0.3333s;
+        }
+    }
+
+    .dot2 {
+        :global {
+            animation: 1s visibility infinite 0.6666s;
+        }
+    }
+
+    .dot3 {
+        :global {
+            animation: 1s visibility infinite 0.9999s;
+        }
+    }
+
+    :global {
+        @keyframes visibility {
+            50% {
+                opacity: 0.4;
+            }
+        }
+    }
+}

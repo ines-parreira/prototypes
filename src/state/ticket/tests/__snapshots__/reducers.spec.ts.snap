@@ -4,6 +4,8 @@ exports[`ticket reducers action ADD_TICKET_AUDIT_LOG_EVENTS should add new recei
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -73,6 +75,8 @@ exports[`ticket reducers action ADD_TICKET_AUDIT_LOG_EVENTS should add received 
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -129,6 +133,8 @@ exports[`ticket reducers action ADD_TICKET_AUDIT_LOG_EVENTS should not add recei
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -173,6 +179,8 @@ exports[`ticket reducers action ADD_TICKET_AUDIT_LOG_EVENTS should update stored
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -231,6 +239,8 @@ exports[`ticket reducers action REMOVE_TICKET_AUDIT_LOG_EVENTS should remove aud
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -287,6 +297,8 @@ exports[`ticket reducers action SEND_INTENT_FEEDBACK_SUCCESS should update the i
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -352,6 +364,8 @@ exports[`ticket reducers action TICKET_MESSAGE_DELETED should remove message 1`]
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -396,6 +410,8 @@ exports[`ticket reducers handle MERGE_CUSTOMER should do nothing since there is 
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -440,6 +456,8 @@ exports[`ticket reducers handle MERGE_CUSTOMER should update customer and no cha
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -487,6 +505,8 @@ exports[`ticket reducers handle MERGE_CUSTOMER should update customer and the ex
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -542,6 +562,8 @@ exports[`ticket reducers handle MERGE_CUSTOMER should update customer keeping th
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -594,6 +616,8 @@ exports[`ticket reducers handle MERGE_CUSTOMER_EXTERNAL_DATA should do nothing s
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -638,6 +662,8 @@ exports[`ticket reducers handle MERGE_CUSTOMER_EXTERNAL_DATA should update the e
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -693,6 +719,8 @@ exports[`ticket reducers handle MERGE_TICKET should keep audit log events 1`] = 
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -771,6 +799,8 @@ exports[`ticket reducers handle MERGE_TICKET should keep old ticket.customer.ext
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -841,6 +871,8 @@ exports[`ticket reducers handle MERGE_TICKET should merge ticket and order messa
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -906,6 +938,8 @@ exports[`ticket reducers handle MERGE_TICKET should remove pending message 1`] =
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -971,6 +1005,8 @@ exports[`ticket reducers handle MERGE_TICKET should update ticket.customer.exter
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -1044,6 +1080,8 @@ exports[`ticket reducers should handle ADD_TICKET_TAGS 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -1095,6 +1133,8 @@ exports[`ticket reducers should handle ADD_TICKET_TAGS 2`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -1146,6 +1186,8 @@ exports[`ticket reducers should handle ADD_TICKET_TAGS 3`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -1194,6 +1236,8 @@ exports[`ticket reducers should handle APPLY_MACRO 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -1240,6 +1284,8 @@ exports[`ticket reducers should handle APPLY_MACRO 2`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -1286,6 +1332,8 @@ exports[`ticket reducers should handle CLEAR_APPLIED_MACRO 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -1330,6 +1378,8 @@ exports[`ticket reducers should handle CLEAR_TICKET 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -1374,6 +1424,8 @@ exports[`ticket reducers should handle DELETE_ACTION_ON_APPLIED 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -1427,6 +1479,8 @@ exports[`ticket reducers should handle DELETE_TICKET_MESSAGE_SUCCESS 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -1475,6 +1529,8 @@ exports[`ticket reducers should handle DELETE_TICKET_PENDING_MESSAGE 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -1528,6 +1584,8 @@ exports[`ticket reducers should handle DISPLAY_HISTORY_ON_NEXT_PAGE 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -1572,6 +1630,8 @@ exports[`ticket reducers should handle DISPLAY_HISTORY_ON_NEXT_PAGE 2`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -1616,6 +1676,8 @@ exports[`ticket reducers should handle FETCH_TICKET_START 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": true,
@@ -1660,6 +1722,8 @@ exports[`ticket reducers should handle FETCH_TICKET_START 2`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -1717,6 +1781,8 @@ exports[`ticket reducers should handle FETCH_TICKET_START 3`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -1761,6 +1827,8 @@ exports[`ticket reducers should handle MARK_TICKET_DIRTY 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -1805,6 +1873,8 @@ exports[`ticket reducers should handle MARK_TICKET_DIRTY 2`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -1849,6 +1919,8 @@ exports[`ticket reducers should handle MERGE_CUSTOMERS_SUCCESS 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -1893,6 +1965,8 @@ exports[`ticket reducers should handle MERGE_CUSTOMERS_SUCCESS 2`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -1940,6 +2014,8 @@ exports[`ticket reducers should handle NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START a
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -2022,6 +2098,8 @@ exports[`ticket reducers should handle NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START a
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -2105,6 +2183,8 @@ exports[`ticket reducers should handle NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START a
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -2187,6 +2267,8 @@ exports[`ticket reducers should handle NEW_MESSAGE_SUBMIT_TICKET_SUCCESS 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -2232,6 +2314,8 @@ exports[`ticket reducers should handle REMOVE_TICKET_MESSAGE_REQUEST 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -2281,6 +2365,8 @@ exports[`ticket reducers should handle REMOVE_TICKET_TAG 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -2329,6 +2415,8 @@ exports[`ticket reducers should handle REMOVE_TICKET_TAG 2`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -2377,6 +2465,8 @@ exports[`ticket reducers should handle SET_AGENT 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -2423,6 +2513,8 @@ exports[`ticket reducers should handle SET_AGENT 2`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -2467,6 +2559,8 @@ exports[`ticket reducers should handle SET_CUSTOMER 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -2516,6 +2610,8 @@ exports[`ticket reducers should handle SET_SPAM_START 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -2560,6 +2656,8 @@ exports[`ticket reducers should handle SET_SPAM_START 2`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -2604,6 +2702,8 @@ exports[`ticket reducers should handle SET_SPAM_SUCCESS 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -2648,6 +2748,8 @@ exports[`ticket reducers should handle SET_STATUS 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -2692,6 +2794,8 @@ exports[`ticket reducers should handle SET_SUBJECT 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -2736,6 +2840,8 @@ exports[`ticket reducers should handle SET_TEAM 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -2782,6 +2888,8 @@ exports[`ticket reducers should handle SET_TEAM 2`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -2826,6 +2934,8 @@ exports[`ticket reducers should handle SET_TICKET_MESSAGE_REQUEST 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -2871,10 +2981,150 @@ Object {
 }
 `;
 
+exports[`ticket reducers should handle SET_TYPING_ACTIVITY_SHOPPER 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "setSpam": false,
+      "setTrash": false,
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayAuditLogEvents": false,
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_team": null,
+  "assignee_user": null,
+  "channel": "email",
+  "customer": null,
+  "events": Array [],
+  "is_unread": false,
+  "messages": Array [],
+  "priority": "normal",
+  "reply_options": Object {
+    "email": Object {
+      "answerable": true,
+    },
+    "internal-note": Object {
+      "answerable": true,
+    },
+  },
+  "spam": false,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "open",
+  "subject": "",
+  "tags": Array [],
+  "trashed_datetime": null,
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducers should handle SET_TYPING_ACTIVITY_SHOPPER 2`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "isShopperTyping": true,
+    "isShopperTypingTimeoutId": 100,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "setSpam": false,
+      "setTrash": false,
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayAuditLogEvents": false,
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_team": null,
+  "assignee_user": null,
+  "channel": "email",
+  "customer": null,
+  "events": Array [],
+  "is_unread": false,
+  "messages": Array [],
+  "priority": "normal",
+  "reply_options": Object {
+    "email": Object {
+      "answerable": true,
+    },
+    "internal-note": Object {
+      "answerable": true,
+    },
+  },
+  "spam": false,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "open",
+  "subject": "",
+  "tags": Array [],
+  "trashed_datetime": null,
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducers should handle SET_TYPING_ACTIVITY_SHOPPER 3`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "setSpam": false,
+      "setTrash": false,
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayAuditLogEvents": false,
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_team": null,
+  "assignee_user": null,
+  "channel": "email",
+  "customer": null,
+  "events": Array [],
+  "is_unread": false,
+  "messages": Array [],
+  "priority": "normal",
+  "reply_options": Object {
+    "email": Object {
+      "answerable": true,
+    },
+    "internal-note": Object {
+      "answerable": true,
+    },
+  },
+  "spam": false,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "open",
+  "subject": "",
+  "tags": Array [],
+  "trashed_datetime": null,
+  "via": "helpdesk",
+}
+`;
+
 exports[`ticket reducers should handle TOGGLE_HISTORY 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": true,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -2919,6 +3169,8 @@ exports[`ticket reducers should handle TOGGLE_HISTORY 2`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -2963,6 +3215,8 @@ exports[`ticket reducers should handle TOGGLE_HISTORY 3`] = `
 Object {
   "_internal": Object {
     "displayHistory": true,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -3007,6 +3261,8 @@ exports[`ticket reducers should handle UPDATE_ACTION_ARGS_ON_APPLIED 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
@@ -3060,6 +3316,8 @@ exports[`ticket reducers should handle UPDATE_TICKET_MESSAGE_START 1`] = `
 Object {
   "_internal": Object {
     "displayHistory": false,
+    "isShopperTyping": false,
+    "isShopperTypingTimeoutId": undefined,
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,

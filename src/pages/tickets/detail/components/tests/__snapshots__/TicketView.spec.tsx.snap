@@ -44,6 +44,34 @@ exports[`<TicketView /> should render non-virtualized TicketBody and associated 
     <div>
       TicketBodyNonVirtualized
     </div>
+    <div
+      class="body"
+      style="visibility: hidden;"
+    >
+      <span
+        class="name"
+      >
+        Customer
+      </span>
+      <span>
+         is typing
+      </span>
+      <span
+        class="dot1"
+      >
+        .
+      </span>
+      <span
+        class="dot2"
+      >
+        .
+      </span>
+      <span
+        class="dot3"
+      >
+        .
+      </span>
+    </div>
     <div>
       ReplyForm
     </div>

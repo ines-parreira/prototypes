@@ -15,6 +15,7 @@ import ReplyMessageChannel from './ReplyArea/ReplyMessageChannel'
 import PhoneTicketSubmitButtons from './ReplyArea/PhoneTicketSubmitButtons'
 import TicketSubmitButtons from './ReplyArea/TicketSubmitButtons'
 import TicketReplyArea from './ReplyArea/TicketReplyArea'
+import TypingActivity from './TypingActivity'
 
 import css from './ReplyForm.less'
 
@@ -120,8 +121,14 @@ export const ReplyFormWithVirtuosoContext = ({
     // context is assumed possibly undefined per the Virtuoso type definitions
     context?: TicketVirtuosoContextType
 }) => {
-    const {submit} = context!
-    return <ReplyForm submit={submit} />
+    const {submit, isShopperTyping, shopperName} = context!
+
+    return (
+        <>
+            <TypingActivity isTyping={isShopperTyping} name={shopperName} />
+            <ReplyForm submit={submit} />
+        </>
+    )
 }
 
 export default ReplyForm

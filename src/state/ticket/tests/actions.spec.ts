@@ -1129,4 +1129,10 @@ describe('ticket actions', () => {
             expect(store.getActions()).toMatchSnapshot()
         })
     })
+
+    describe('setTypingActivityShopper()', () => {
+        it('should dispatch SET_TYPING_ACTIVITY_SHOPPER action', () => {
+            expect(actions.setTypingActivityShopper(1)).toMatchSnapshot()
+        })
+    })
 })

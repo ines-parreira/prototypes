@@ -47,6 +47,7 @@ import {
     TicketMessageChatCreatedEvent,
     TicketMessageCreatedEvent,
     TicketMessageFailedEvent,
+    TicketTypingActivityShopperStartedEvent,
     TicketUpdatedEvent,
     UserLocationUpdatedEvent,
     UserTypingStatusUpdatedEvent,
@@ -769,6 +770,17 @@ export const receivedEvents: ReceivedEvent[] = [
             )
 
             chatsActions.fetchChatsThrottled(reduxStore.dispatch)
+        },
+    },
+    {
+        name: SocketEventType.TicketTypingActivityShopperStarted,
+        onReceive: function (json) {
+            const {ticket} =
+                json as unknown as TicketTypingActivityShopperStartedEvent
+
+            reduxStore.dispatch(
+                ticketActions.setTypingActivityShopper(ticket.id) as any
+            )
         },
     },
 ]

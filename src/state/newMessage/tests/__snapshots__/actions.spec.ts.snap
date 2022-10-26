@@ -2157,6 +2157,8 @@ Array [
           "setTrash": false,
         },
         "pendingMessages": Immutable.List [],
+        "isShopperTyping": false,
+        "isShopperTypingTimeoutId": undefined,
       },
       "customer": null,
     },
