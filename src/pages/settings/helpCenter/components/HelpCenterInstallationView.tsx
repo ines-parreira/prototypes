@@ -33,6 +33,7 @@ import {SubdomainSection} from './SubdomainSection'
 
 import css from './HelpCenterInstallationView.less'
 import GoogleAnalyticsSection from './GoogleAnalyticSection'
+import CloseTabModal from './CloseTabModal'
 
 export const HelpCenterInstallationView: React.FC = () => {
     const dispatch = useAppDispatch()
@@ -276,6 +277,17 @@ export const HelpCenterInstallationView: React.FC = () => {
                     )}
                 </ConfirmModalAction>
             </div>
+            <CloseTabModal
+                when={isNewSubdomainValid || isUpdatedGaid}
+                onSave={() =>
+                    handleOnUpdateHelpCenter({
+                        ...(isNewSubdomainValid
+                            ? {subdomain: subdomainValue}
+                            : {}),
+                        ...(isUpdatedGaid ? {gaid} : {}),
+                    })
+                }
+            />
         </HelpCenterPageWrapper>
     )
 }

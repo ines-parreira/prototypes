@@ -32,6 +32,7 @@ import HelpCenterPageWrapper from './HelpCenterPageWrapper'
 import {LinkList} from './LinkList'
 import css from './HelpCenterCustomizationView.less'
 import {LanguageSelect} from './LanguageSelect'
+import CloseTabModal from './CloseTabModal'
 
 export const HelpCenterCustomizationView = () => {
     const dispatch = useAppDispatch()
@@ -42,6 +43,7 @@ export const HelpCenterCustomizationView = () => {
         useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
     const [links, setLinks] = useState<NavigationLink[]>([])
     const [extraHTML, setExtraHTML] = useState<ExtraHTMLDto | null>(null)
+    const [isDirty, setIsDirty] = useState(false)
 
     useEffect(() => {
         async function init() {
@@ -129,6 +131,7 @@ export const HelpCenterCustomizationView = () => {
     const handleOnReset = () => {
         headerNavigation.resetFields()
         footerNavigation.resetFields()
+        setIsDirty(false)
     }
     const handleSaveLinks = async () => {
         if (client) {
@@ -205,6 +208,8 @@ export const HelpCenterCustomizationView = () => {
             await handleSaveLinks()
             await handleSaveExtraHTML()
 
+            setIsDirty(false)
+
             void dispatch(
                 notify({
                     message: 'Customizations saved with success',
@@ -272,7 +277,8 @@ export const HelpCenterCustomizationView = () => {
                 <div>
                     <ToggleInput
                         isToggled={isCustomHeaderToggled}
-                        onClick={(value) =>
+                        onClick={(value) => {
+                            setIsDirty(true)
                             setExtraHTML(
                                 (extraHTML) =>
                                     extraHTML && {
@@ -280,7 +286,7 @@ export const HelpCenterCustomizationView = () => {
                                         custom_header_deactivated: !value,
                                     }
                             )
-                        }
+                        }}
                         className={css.toggle}
                     >
                         <div className={css.toggleLabel}>
@@ -320,22 +326,28 @@ export const HelpCenterCustomizationView = () => {
                                 label: item.label,
                             }))}
                             onChange={(ev, key, id) => {
+                                setIsDirty(true)
                                 headerNavigation.update(
                                     ev.target.value,
                                     id,
                                     key
                                 )
                             }}
-                            onDelete={headerNavigation.remove}
-                            onAddNew={() =>
+                            onDelete={(id) => {
+                                setIsDirty(true)
+                                headerNavigation.remove(id)
+                            }}
+                            onAddNew={() => {
+                                setIsDirty(true)
                                 headerNavigation.add(selectedLocale)
-                            }
+                            }}
                         />
                     </>
                 ) : (
                     <CodeEditor
                         value={extraHTML?.custom_header}
-                        onChange={(value) =>
+                        onChange={(value) => {
+                            setIsDirty(true)
                             setExtraHTML(
                                 (extraHTML) =>
                                     extraHTML && {
@@ -343,7 +355,7 @@ export const HelpCenterCustomizationView = () => {
                                         custom_header: value,
                                     }
                             )
-                        }
+                        }}
                         mode="html"
                         highlightActiveLine={true}
                         width="auto"
@@ -364,7 +376,8 @@ export const HelpCenterCustomizationView = () => {
                 <div>
                     <ToggleInput
                         isToggled={isCustomFooterToggled}
-                        onClick={(value) =>
+                        onClick={(value) => {
+                            setIsDirty(true)
                             setExtraHTML(
                                 (extraHTML) =>
                                     extraHTML && {
@@ -372,7 +385,7 @@ export const HelpCenterCustomizationView = () => {
                                         custom_footer_deactivated: !value,
                                     }
                             )
-                        }
+                        }}
                         className={css.toggle}
                     >
                         <div className={css.toggleLabel}>
@@ -412,21 +425,27 @@ export const HelpCenterCustomizationView = () => {
                                 label: item.label,
                             }))}
                             onChange={(ev, key, id) => {
+                                setIsDirty(true)
                                 footerNavigation.update(
                                     ev.target.value,
                                     id,
                                     key
                                 )
                             }}
-                            onDelete={footerNavigation.remove}
-                            onAddNew={() =>
+                            onDelete={(id) => {
+                                setIsDirty(true)
+                                footerNavigation.remove(id)
+                            }}
+                            onAddNew={() => {
+                                setIsDirty(true)
                                 footerNavigation.add(selectedLocale)
-                            }
+                            }}
                         />
                         <SocialNavigationLinks
                             links={socialNavigation.links}
                             locale={selectedLocale}
                             onBlurLink={(ev, key, id) => {
+                                setIsDirty(true)
                                 socialNavigation.update(
                                     ev.target.value,
                                     id,
@@ -438,7 +457,8 @@ export const HelpCenterCustomizationView = () => {
                 ) : (
                     <CodeEditor
                         value={extraHTML?.custom_footer}
-                        onChange={(value) =>
+                        onChange={(value) => {
+                            setIsDirty(true)
                             setExtraHTML(
                                 (extraHTML) =>
                                     extraHTML && {
@@ -446,7 +466,7 @@ export const HelpCenterCustomizationView = () => {
                                         custom_footer: value,
                                     }
                             )
-                        }
+                        }}
                         mode="html"
                         highlightActiveLine={true}
                         width="auto"
@@ -472,7 +492,8 @@ export const HelpCenterCustomizationView = () => {
                 <div>
                     <ToggleInput
                         isToggled={isExtraHtmlToggled}
-                        onClick={(value) =>
+                        onClick={(value) => {
+                            setIsDirty(true)
                             setExtraHTML(
                                 (extraHTML) =>
                                     extraHTML && {
@@ -480,7 +501,7 @@ export const HelpCenterCustomizationView = () => {
                                         extra_head_deactivated: !value,
                                     }
                             )
-                        }
+                        }}
                         className={css.toggle}
                     >
                         Add extra HTML
@@ -489,7 +510,8 @@ export const HelpCenterCustomizationView = () => {
                 {isExtraHtmlToggled && (
                     <CodeEditor
                         value={extraHTML?.extra_head}
-                        onChange={(value) =>
+                        onChange={(value) => {
+                            setIsDirty(true)
                             setExtraHTML(
                                 (extraHTML) =>
                                     extraHTML && {
@@ -497,7 +519,7 @@ export const HelpCenterCustomizationView = () => {
                                         extra_head: value,
                                     }
                             )
-                        }
+                        }}
                         mode="html"
                         highlightActiveLine={true}
                         width="auto"
@@ -521,6 +543,7 @@ export const HelpCenterCustomizationView = () => {
                     Cancel
                 </Button>
             </FormGroup>
+            <CloseTabModal when={isDirty} onSave={handleOnSave} />
         </HelpCenterPageWrapper>
     )
 }

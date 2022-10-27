@@ -50,6 +50,7 @@ import {ImageRepositioningModal} from './ImageRepositioningModal'
 import css from './HelpCenterAppearanceView.less'
 
 import {RepositionableImageUpload} from './RepositionableImageUpload/RepositionableImageUpload'
+import CloseTabModal from './CloseTabModal'
 
 export const HelpCenterAppearanceView: React.FC = () => {
     const dispatch = useAppDispatch()
@@ -612,6 +613,10 @@ export const HelpCenterAppearanceView: React.FC = () => {
                     </Button>
                 </FormGroup>
             </footer>
+            <CloseTabModal
+                when={canSaveCurrentAppearance}
+                onSave={saveCurrentAppearance}
+            />
         </HelpCenterPageWrapper>
     )
 }

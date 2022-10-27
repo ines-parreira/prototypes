@@ -151,3 +151,6 @@ export const MAX_CATEGORY_DEPTH = CATEGORY_TREE_MAX_LEVEL + 1
 
 export const CONTACT_FORM_ALERT_ACKNOWLEDGED_LOCAL_STORAGE_KEY =
     'gorgias-contact-form-alert-acknowledged'
+
+export const HELP_CENTER_CLOSE_TAB_MODAL_MESSAGE =
+    'Do you want to save the changes made in this tab? All changes will be lost if you don’t save them.'

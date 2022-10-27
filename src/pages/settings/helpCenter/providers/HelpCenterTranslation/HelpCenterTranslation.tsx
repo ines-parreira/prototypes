@@ -40,6 +40,7 @@ type HelpCenterTranslationContext = {
     updateContactForm: (payload: UpdateContactForm) => void
     updateHelpCenter: () => Promise<void>
     resetTranslation: () => void
+    isDirty: boolean
 }
 
 const defaultTranslation: HelpCenterTranslationState = {
@@ -86,6 +87,7 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
     const [contactForm, updateContactForm] = useState<UpdateContactForm>(
         defaultEmailIntegration
     )
+    const [isDirty, setIsDirty] = useState(false)
 
     const updateHelpCenter = useCallback(async () => {
         if (!client) return
@@ -150,6 +152,7 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
                 ...translation,
                 ...payload,
             })
+            setIsDirty(true)
         },
         [updateTranslation, translation]
     )
@@ -157,6 +160,7 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
     const handleOnUpdateContactForm = useCallback(
         (payload: UpdateContactForm) => {
             updateContactForm(payload)
+            setIsDirty(true)
         },
         [updateContactForm]
     )
@@ -211,6 +215,7 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
 
         updateTranslation(produce(translation, updateFn))
         updateContactForm(produce(contactForm, updateContactFormFn))
+        setIsDirty(false)
     }, [
         contactForm,
         helpCenter.contact_form,
@@ -239,6 +244,7 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
             updateContactForm: handleOnUpdateContactForm,
             updateHelpCenter,
             resetTranslation: updateTranslationFromData,
+            isDirty,
         }),
         [
             translation,
@@ -247,6 +253,7 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
             handleOnUpdateContactForm,
             updateHelpCenter,
             updateTranslationFromData,
+            isDirty,
         ]
     )
 

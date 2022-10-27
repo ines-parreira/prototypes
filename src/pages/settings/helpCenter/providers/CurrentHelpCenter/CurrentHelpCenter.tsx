@@ -42,6 +42,8 @@ import {
 import './CurrentHelpCenter.less'
 import {EditionManagerContextProvider} from '../EditionManagerContext'
 import {SearchContextProvider} from '../SearchContext'
+import {HelpCenterTranslationProvider} from '../HelpCenterTranslation'
+import {HelpCenterPreferencesSettings} from '../HelpCenterPreferencesSettings'
 
 const CurrentHelpCenterContext = createContext<HelpCenter | null>(null)
 
@@ -132,7 +134,11 @@ export const CurrentHelpCenter: React.FC = () => {
                 <Route
                     path={`${path}/contact`}
                     exact
-                    component={HelpCenterContactView}
+                    render={() => (
+                        <HelpCenterTranslationProvider helpCenter={helpCenter}>
+                            <HelpCenterContactView />
+                        </HelpCenterTranslationProvider>
+                    )}
                 />
                 <Route
                     path={`${path}/customization`}
@@ -142,7 +148,11 @@ export const CurrentHelpCenter: React.FC = () => {
                 <Route
                     path={`${path}/preferences`}
                     exact
-                    component={HelpCenterPreferencesView}
+                    render={() => (
+                        <HelpCenterPreferencesSettings helpCenter={helpCenter}>
+                            <HelpCenterPreferencesView />
+                        </HelpCenterPreferencesSettings>
+                    )}
                 />
                 <Route
                     path={`${path}/installation`}
