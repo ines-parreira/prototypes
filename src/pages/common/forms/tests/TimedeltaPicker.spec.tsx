@@ -1,12 +1,13 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {fireEvent, render} from '@testing-library/react'
-
-import TimedeltaPicker from '../TimedeltaPicker.tsx'
 
 import {TIMEDELTA_OPERATOR_DEFAULT_QUANTITY} from 'config'
 
+import TimedeltaPicker from '../TimedeltaPicker'
+
 describe('TimedeltaPicker component', () => {
-    const props = {
+    const minProps: ComponentProps<typeof TimedeltaPicker> = {
+        value: '',
         onChange: jest.fn(),
     }
 
@@ -15,13 +16,13 @@ describe('TimedeltaPicker component', () => {
     })
 
     it('should render correct passed data', () => {
-        const {container} = render(<TimedeltaPicker {...props} value="2w" />)
+        const {container} = render(<TimedeltaPicker {...minProps} value="2w" />)
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should ignore incorrect passed data and use default values instead', () => {
-        const {container} = render(<TimedeltaPicker {...props} value="d1" />)
+        const {container} = render(<TimedeltaPicker {...minProps} value="d1" />)
 
         expect(container.getElementsByTagName('input')[0].value).toBe(
             `${TIMEDELTA_OPERATOR_DEFAULT_QUANTITY}`
@@ -32,19 +33,21 @@ describe('TimedeltaPicker component', () => {
     })
 
     it('should handle unit change', () => {
-        const {getAllByText, getByText} = render(<TimedeltaPicker {...props} />)
+        const {getAllByText, getByText} = render(
+            <TimedeltaPicker {...minProps} />
+        )
 
         fireEvent.click(getAllByText('arrow_drop_down')[1])
 
         fireEvent.click(getByText(/week/i))
-        expect(props.onChange).toHaveBeenLastCalledWith('1w')
+        expect(minProps.onChange).toHaveBeenLastCalledWith('1w')
 
         fireEvent.click(getByText(/minute/i))
-        expect(props.onChange).toHaveBeenLastCalledWith('1m')
+        expect(minProps.onChange).toHaveBeenLastCalledWith('1m')
     })
 
     it('should handle quantity change', () => {
-        const {container} = render(<TimedeltaPicker {...props} />)
+        const {container} = render(<TimedeltaPicker {...minProps} />)
 
         const firstValue = '5'
         fireEvent.change(container.getElementsByTagName('input')[0], {
@@ -52,7 +55,7 @@ describe('TimedeltaPicker component', () => {
                 value: firstValue,
             },
         })
-        expect(props.onChange).toHaveBeenLastCalledWith(`${firstValue}d`)
+        expect(minProps.onChange).toHaveBeenLastCalledWith(`${firstValue}d`)
 
         const secondValue = '5'
         fireEvent.change(container.getElementsByTagName('input')[0], {
@@ -60,13 +63,13 @@ describe('TimedeltaPicker component', () => {
                 value: secondValue,
             },
         })
-        expect(props.onChange).toHaveBeenLastCalledWith(`${secondValue}d`)
+        expect(minProps.onChange).toHaveBeenLastCalledWith(`${secondValue}d`)
     })
 
     it('should display received value and unit', () => {
         const value = '5'
         const {container} = render(
-            <TimedeltaPicker {...props} value={`${value}w`} />
+            <TimedeltaPicker {...minProps} value={`${value}w`} />
         )
 
         expect(container.getElementsByTagName('input')[0].value).toBe(
@@ -81,7 +84,7 @@ describe('TimedeltaPicker component', () => {
         const min = 5
         const max = 10
         const {container} = render(
-            <TimedeltaPicker {...props} value="5d" min={min} max={max} />
+            <TimedeltaPicker {...minProps} value="5d" min={min} max={max} />
         )
 
         expect(container.getElementsByTagName('input')[0].min).toEqual(`${min}`)

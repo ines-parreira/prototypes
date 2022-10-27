@@ -1,7 +1,6 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import {fromJS} from 'immutable'
-import {connect} from 'react-redux'
+import React, {Component, SyntheticEvent} from 'react'
+import {fromJS, Map, List} from 'immutable'
+import {connect, ConnectedProps} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import _isUndefined from 'lodash/isUndefined'
 import _pick from 'lodash/pick'
@@ -11,17 +10,36 @@ import _clone from 'lodash/clone'
 import _isError from 'lodash/isError'
 import {Form} from 'reactstrap'
 
-import CustomerChannelFieldArray from './CustomerChannelFieldArray'
-import css from './CustomerForm.less'
-
-import Button from 'pages/common/components/button/Button.tsx'
+import {RootState, StoreDispatch} from 'state/types'
+import Button from 'pages/common/components/button/Button'
 import InputField from 'pages/common/forms/input/InputField'
 import TextArea from 'pages/common/forms/TextArea'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import {submitCustomer} from 'state/customers/actions.ts'
+import {submitCustomer} from 'state/customers/actions'
 
-const defaultContent = {
+import CustomerChannelFieldArray, {
+    CustomerChannelContact,
+    CustomerChannelContactType,
+} from './CustomerChannelFieldArray'
+import css from './CustomerForm.less'
+
+const updatableChannels: CustomerChannelContactType[] = ['email', 'phone']
+
+type Channel = {
+    type: CustomerChannelContactType
+    address: CustomerChannelContact[]
+}
+
+type Content = {
+    name?: string
+    note?: string
+    channels?: Channel[]
+} & Partial<
+    Record<CustomerChannelContactType, CustomerChannelContact[] | Channel[]>
+>
+
+const defaultContent: Content = {
     name: '',
     note: '',
     email: [{address: ''}],
@@ -29,10 +47,29 @@ const defaultContent = {
     channels: [],
 }
 
-const updatableChannels = ['email', 'phone']
+type OwnProps = {
+    customer: Map<any, any>
+    closeModal: () => void
+    onSuccess?: () => any
+}
 
-class CustomerForm extends React.Component {
-    constructor(props) {
+type Props = OwnProps & ConnectedProps<typeof connector>
+
+type Errors = {
+    name?: string
+} & Partial<Record<CustomerChannelContactType, {address: string}[]>>
+
+type State = {
+    submitting: boolean
+    errors: Errors
+} & Content
+
+class CustomerForm extends Component<Props> {
+    static defaultProps: Pick<Props, 'customer'> = {
+        customer: fromJS({}),
+    }
+    state: State
+    constructor(props: Props) {
         super(props)
 
         this.state = _merge(
@@ -44,15 +81,21 @@ class CustomerForm extends React.Component {
         )
     }
 
-    _validate = (values) => {
-        let errors = {}
+    _validate = (values: State): Errors => {
+        const errors: Errors = {}
 
         // validate phones
         if (values.phone && values.phone.length) {
             values.phone.forEach((phone, index) => {
-                if (phone.address && !/^\+[\d-\(\) ]+$/.test(phone.address)) {
-                    errors['phone'] = errors['phone'] || {}
-                    errors['phone'][index] = {
+                if (
+                    phone.address &&
+                    !/^\+[\d-\(\) ]+$/.test(phone.address as string)
+                ) {
+                    errors['phone'] = errors['phone'] || ({} as Errors['phone'])
+                    const phoneError = errors['phone'] as {
+                        address: string
+                    }[]
+                    phoneError[index] = {
                         address: 'Please enter an international phone number',
                     }
                 }
@@ -62,8 +105,8 @@ class CustomerForm extends React.Component {
         return errors
     }
 
-    _updateField = (value) => {
-        const newState = Object.assign(_clone(this.state), value)
+    _updateField = (value: Partial<State>) => {
+        const newState: State = Object.assign(_clone(this.state), value)
 
         this.setState(
             Object.assign(value, {
@@ -72,7 +115,7 @@ class CustomerForm extends React.Component {
         )
     }
 
-    _getForm = () => {
+    _getForm: () => Content = () => {
         if (this.props.isUpdate) {
             const customer = this.props.customer.toJS()
             return this._docToForm(_pick(customer, Object.keys(defaultContent)))
@@ -81,7 +124,7 @@ class CustomerForm extends React.Component {
         return _clone(defaultContent)
     }
 
-    _docToForm = (doc = {}) => {
+    _docToForm = (doc: Content = {}): Content => {
         const channels = doc.channels || []
 
         // if the customer has a "email" property which is not in its channels, add it as an email channel
@@ -92,7 +135,7 @@ class CustomerForm extends React.Component {
             if (!hasEmailAsChannel) {
                 channels.push({
                     type: 'email',
-                    address: email,
+                    address: email as CustomerChannelContact[],
                 })
             }
         }
@@ -105,10 +148,9 @@ class CustomerForm extends React.Component {
             )
 
             // if a type of channel has no address, add an empty one
-            if (!doc[updatableChannel].length) {
+            if (!doc[updatableChannel]?.length) {
                 doc[updatableChannel] = [
                     {
-                        channel: updatableChannel,
                         address: '',
                     },
                 ]
@@ -118,27 +160,36 @@ class CustomerForm extends React.Component {
         return doc
     }
 
-    _formToDoc = (form = fromJS({})) => {
+    _formToDoc = (form: Map<any, any> = fromJS({})) => {
         const {customer} = this.props
 
-        let initialChannels = customer.get('channels', fromJS([]))
+        let initialChannels: List<any> = customer.get('channels', fromJS([]))
         // put aside channels of currently edited types
-        initialChannels = initialChannels.filter((initialChannel) => {
-            return !updatableChannels.includes(initialChannel.get('type'))
-        })
+        initialChannels = initialChannels.filter(
+            (initialChannel: Map<any, any>) => {
+                return !updatableChannels.includes(initialChannel.get('type'))
+            }
+        ) as List<any>
 
         // add channels of currently edited types from form
-        const channels = updatableChannels.reduce((previousChannels, type) => {
-            const formValues = form.get(type) || fromJS([])
-            // merging previous channels with new ones
-            const addedChannels = formValues
-                .map((v) => v.set('type', type))
-                .filter((v) => v.get('address', '').length)
-            return previousChannels
-                .toSet()
-                .union(addedChannels.toSet())
-                .toList()
-        }, initialChannels)
+        const channels = updatableChannels.reduce(
+            (previousChannels: List<any>, type: string) => {
+                const formValues: List<any> = form.get(type) || fromJS([])
+                // merging previous channels with new ones
+                const addedChannels = formValues
+                    .map((v: Map<any, any>) => v.set('type', type))
+                    .filter(
+                        (v) =>
+                            (v!.get('address', '') as Record<string, string>[])
+                                .length as unknown as boolean
+                    )
+                return previousChannels
+                    .toSet()
+                    .union(addedChannels.toSet())
+                    .toList()
+            },
+            initialChannels
+        )
 
         // remove channels of currently edited types
         let doc = form
@@ -152,12 +203,13 @@ class CustomerForm extends React.Component {
         return doc
     }
 
-    _handleSubmit = (e) => {
+    _handleSubmit = (e: SyntheticEvent) => {
         e.preventDefault()
-        let doc = fromJS(_pick(this.state, Object.keys(defaultContent)))
+        let doc: Map<any, any> = fromJS(
+            _pick(this.state, Object.keys(defaultContent))
+        )
 
-        let promise
-
+        let promise: Promise<Maybe<{error: unknown}>>
         // if update, set ids for server
         if (this.props.isUpdate) {
             const {customer} = this.props
@@ -165,21 +217,23 @@ class CustomerForm extends React.Component {
             promise = this.props.onSubmit(
                 this._formToDoc(doc).toJS(),
                 customer.get('id')
-            )
+            ) as any as Promise<Maybe<{error: unknown}>>
         } else {
-            promise = this.props.onSubmit(this._formToDoc(doc).toJS())
+            promise = this.props.onSubmit(
+                this._formToDoc(doc).toJS()
+            ) as any as Promise<Maybe<{error: unknown}>>
         }
 
         this.setState({
             submitting: true,
         })
 
-        return promise.then((response = {}) => {
+        return promise.then((response = {error: {}}) => {
             this.setState({
                 submitting: false,
             })
 
-            if (response.error || _isError(response)) {
+            if ((response && response.error) || _isError(response)) {
                 return
             }
 
@@ -208,14 +262,14 @@ class CustomerForm extends React.Component {
                             isRequired
                             value={this.state.name}
                             onChange={(name) => this._updateField({name})}
-                            error={this.state.errors.name}
+                            error={this.state.errors.name as string}
                         />
                         <TextArea
                             className={css.field}
                             id="note"
                             label="Note"
                             placeholder="This customer is nice."
-                            rows="3"
+                            rows={3}
                             value={this.state.note}
                             onChange={(note) => this._updateField({note})}
                         />
@@ -226,24 +280,28 @@ class CustomerForm extends React.Component {
                             </b>
                         </p>
                         <CustomerChannelFieldArray
-                            name="email"
                             type="email"
                             label="Emails"
                             placeholder="john@snow.com"
                             addLabel="Add an email address"
                             meta={{}}
-                            fields={this.state.email}
+                            fields={
+                                this.state.email as CustomerChannelContact[]
+                            }
                             onChange={(email) => this._updateField({email})}
                         />
                         <CustomerChannelFieldArray
-                            name="phone"
                             label="Phone numbers"
                             placeholder="+1 111 111 1111"
                             addLabel="Add a phone number"
                             meta={{}}
-                            fields={this.state.phone}
+                            fields={
+                                this.state.phone as CustomerChannelContact[]
+                            }
                             onChange={(phone) => this._updateField({phone})}
-                            errors={this.state.errors.phone}
+                            errors={
+                                this.state.errors.phone as {address: string}[]
+                            }
                         />
                     </div>
                 </ModalBody>
@@ -261,29 +319,19 @@ class CustomerForm extends React.Component {
     }
 }
 
-CustomerForm.propTypes = {
-    isUpdate: PropTypes.bool.isRequired,
-    closeModal: PropTypes.func.isRequired,
-    customer: PropTypes.object,
-    onSubmit: PropTypes.func.isRequired,
-    onSuccess: PropTypes.func,
-}
-
-CustomerForm.defaultProps = {
-    customer: fromJS({}),
-}
-
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state: RootState, ownProps: OwnProps) => {
     const customer = ownProps.customer || fromJS({})
     return {
         isUpdate: !_isUndefined(customer.get('id')),
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch: StoreDispatch) => {
     return {
         onSubmit: bindActionCreators(submitCustomer, dispatch),
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CustomerForm)
+const connector = connect(mapStateToProps, mapDispatchToProps)
+
+export default connector(CustomerForm)

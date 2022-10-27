@@ -10,10 +10,10 @@ import {Plan} from 'models/billing/types'
 
 import {IntegrationDetail, Tab} from '../Integration'
 
-jest.mock('../components/aircall/AircallIntegrationList.js', () => () => (
+jest.mock('../components/aircall/AircallIntegrationList.tsx', () => () => (
     <div>AircallIntegrationList</div>
 ))
-jest.mock('../components/aircall/AircallIntegrationCreate.js', () => () => (
+jest.mock('../components/aircall/AircallIntegrationCreate.tsx', () => () => (
     <div>AircallIntegrationCreate</div>
 ))
 

@@ -53,6 +53,7 @@ export enum UserSettingType {
     Preferences = 'preferences',
     TicketViews = 'ticket-views',
     ViewsOrdering = 'views-ordering',
+    CutomerViews = 'customer-views',
 }
 
 export type UserSetting =
