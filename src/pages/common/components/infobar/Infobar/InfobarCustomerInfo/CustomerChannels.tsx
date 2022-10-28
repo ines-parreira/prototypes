@@ -6,13 +6,12 @@ import {connect, ConnectedProps} from 'react-redux'
 import SourceIcon from '../../../SourceIcon'
 import Tooltip from '../../../Tooltip'
 import css from '../../Infobar.less'
-import {getDisplayCustomerLastSeenOnChat, getLocalTime} from '../../utils'
+import {getLocalTime} from '../../utils'
 import {
     TicketChannel,
     TicketMessageSourceType,
 } from '../../../../../../business/types/ticket'
-import {RootState} from '../../../../../../state/types'
-import {getCurrentUser} from '../../../../../../state/currentUser/selectors'
+
 import ClickablePhoneNumber from '../../../ClickablePhoneNumber/ClickablePhoneNumber'
 
 import CustomerInfoWrapper from './CustomerInfoWrapper'
@@ -40,13 +39,9 @@ export class CustomerChannels extends Component<Props> {
             channels,
             children,
             customerLocationInfo,
-            customerLastSeenOnChat,
             customerId,
             customerName,
-            currentUser,
         } = this.props
-
-        const userSettingTimezone = currentUser.get('timezone')
 
         const filteredChannels = channels
             .filter((channel: Map<any, any>) => {
@@ -173,31 +168,12 @@ export class CustomerChannels extends Component<Props> {
                             {`Local time: ${getLocalTime(timezoneOffset)}`}
                         </p>
                     )}
-                    {customerLastSeenOnChat && (
-                        <p className={css.customerChannel}>
-                            <i
-                                className={classnames(
-                                    'icon d-inline-block',
-                                    'material-icons',
-                                    'uncolored mr-2'
-                                )}
-                            >
-                                event
-                            </i>
-                            {`Last seen on chat: ${getDisplayCustomerLastSeenOnChat(
-                                customerLastSeenOnChat,
-                                userSettingTimezone
-                            )}`}
-                        </p>
-                    )}
                 </CustomerInfoWrapper>
             </>
         )
     }
 }
 
-const connector = connect((state: RootState) => ({
-    currentUser: getCurrentUser(state),
-}))
+const connector = connect(null)
 
 export default connector(CustomerChannels)

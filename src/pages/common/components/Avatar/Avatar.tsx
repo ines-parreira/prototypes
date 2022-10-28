@@ -2,6 +2,7 @@ import React, {Component, CSSProperties} from 'react'
 import classnames from 'classnames'
 import _isEqual from 'lodash/isEqual'
 
+import Tooltip from '../Tooltip'
 import {getAvatar, getAvatarFromCache} from './utils'
 import css from './Avatar.less'
 
@@ -13,6 +14,9 @@ type Props = {
     className?: string
     style: CSSProperties
     badgeColor?: string
+    badgeBorderColor?: string
+    withTooltip?: boolean
+    tooltipText?: string
 }
 
 type State = {
@@ -107,7 +111,16 @@ export default class Avatar extends Component<Props, State> {
     }
 
     render() {
-        const {name, size, className, style, badgeColor} = this.props
+        const {
+            name,
+            size,
+            className,
+            style,
+            badgeColor,
+            badgeBorderColor,
+            withTooltip = false,
+            tooltipText = '',
+        } = this.props
 
         return (
             <div
@@ -146,10 +159,27 @@ export default class Avatar extends Component<Props, State> {
                     />
                 )}
                 {badgeColor && (
-                    <div
-                        className={css.badge}
-                        style={{backgroundColor: badgeColor}}
-                    ></div>
+                    <>
+                        <div
+                            {...(withTooltip && {id: 'tooltip'})}
+                            className={css.badge}
+                            style={{
+                                backgroundColor: badgeColor,
+                                ...(badgeBorderColor && {
+                                    borderColor: badgeBorderColor,
+                                }),
+                            }}
+                        ></div>
+                        {withTooltip && (
+                            <Tooltip
+                                target={'tooltip'}
+                                placement="bottom"
+                                autohide={false}
+                            >
+                                {tooltipText}
+                            </Tooltip>
+                        )}
+                    </>
                 )}
             </div>
         )

@@ -214,7 +214,14 @@ export class TicketBodyNonVirtualized extends React.Component<Props, State> {
     }
 
     _renderMessages(messages: TicketMessage[], index: number) {
-        const {ticket, setStatus, lastReadMessage} = this.props
+        const {
+            ticket,
+            setStatus,
+            lastReadMessage,
+            lastCustomerMessage = fromJS({}),
+            lastSentMessageFromAgent,
+        } = this.props
+
         const id = `message-${index}`
         return (
             <TicketMessages
@@ -228,8 +235,11 @@ export class TicketBodyNonVirtualized extends React.Component<Props, State> {
                 }
                 setStatus={setStatus}
                 lastReadMessageId={lastReadMessage.get('id')}
+                lastCustomerMessage={lastCustomerMessage}
+                lastSentMessageIdFromAgent={lastSentMessageFromAgent.get('id')}
                 hasCursor={this.state.messageCursor === index}
                 highlightedElements={this.state.highlightedElements}
+                customer={ticket.get('customer')}
             />
         )
     }
@@ -342,6 +352,9 @@ const connector = connect((state: RootState) => ({
     currentUser: state.currentUser,
     ticket: state.ticket,
     lastReadMessage: ticketSelectors.getLastReadMessage(state),
+    lastCustomerMessage: ticketSelectors.getLastCustomerMessage(state),
+    lastSentMessageFromAgent:
+        ticketSelectors.getLastSentMessageFromAgent(state),
 }))
 
 export default connector(TicketBodyNonVirtualized)

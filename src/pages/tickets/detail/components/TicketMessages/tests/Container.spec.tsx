@@ -2,6 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import moment from 'moment'
 
+import {fromJS} from 'immutable'
 import {getLDClient} from 'utils/launchDarkly'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {
@@ -17,6 +18,19 @@ allFlagsMock.mockReturnValue({
     [FeatureFlagKey.TicketMessagesVirtualization]: true,
 })
 
+const ticketCustomer = fromJS({
+    customer: {
+        integrations: {
+            15: {
+                __integration_type__: 'weirdtype',
+                customer: {
+                    foo: 'bar',
+                },
+            },
+        },
+    },
+})
+
 describe('Container', () => {
     it('should render container', () => {
         const component = shallow(
@@ -30,6 +44,8 @@ describe('Container', () => {
                 isMessageHidden={false}
                 isMessageDeleted={false}
                 isBodyHighlighted={false}
+                containsLastCustomerMessage={false}
+                customer={ticketCustomer}
             />
         )
         expect(component).toMatchSnapshot()
@@ -47,6 +63,8 @@ describe('Container', () => {
                 isMessageHidden={true}
                 isMessageDeleted={false}
                 isBodyHighlighted={false}
+                containsLastCustomerMessage={false}
+                customer={ticketCustomer}
             />
         )
         expect(component).toMatchSnapshot()
@@ -64,6 +82,8 @@ describe('Container', () => {
                 isMessageHidden={false}
                 isMessageDeleted={true}
                 isBodyHighlighted={false}
+                containsLastCustomerMessage={false}
+                customer={ticketCustomer}
             />
         )
         expect(component).toMatchSnapshot()
@@ -81,6 +101,8 @@ describe('Container', () => {
                 isMessageHidden={false}
                 isMessageDeleted={true}
                 isBodyHighlighted={true}
+                containsLastCustomerMessage={false}
+                customer={ticketCustomer}
             />
         )
         expect(component).toMatchSnapshot()
@@ -98,6 +120,8 @@ describe('Container', () => {
                 isMessageHidden={true}
                 isMessageDeleted={false}
                 isBodyHighlighted={false}
+                containsLastCustomerMessage={false}
+                customer={ticketCustomer}
             />
         )
         expect(component).toMatchSnapshot()
@@ -119,6 +143,8 @@ describe('Container', () => {
                 isMessageHidden={false}
                 isMessageDeleted={false}
                 isBodyHighlighted={false}
+                containsLastCustomerMessage={false}
+                customer={ticketCustomer}
             />
         )
         expect(component).not.toHaveClassName(css.hasError)

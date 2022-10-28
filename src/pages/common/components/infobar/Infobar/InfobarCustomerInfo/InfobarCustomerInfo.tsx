@@ -247,7 +247,6 @@ export const InfobarCustomerInfoContainer = ({
     if (!customer || customer.isEmpty()) {
         return null
     }
-
     const customerIntegrationsData: Map<any, any> = customer.get('integrations')
     let chatIntegrationData: Map<any, any> | null = null
     if (customerIntegrationsData) {

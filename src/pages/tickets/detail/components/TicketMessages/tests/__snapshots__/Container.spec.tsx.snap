@@ -12,12 +12,14 @@ exports[`Container should render container 1`] = `
       name="John Doe"
       size={36}
       style={Object {}}
+      withTooltip={false}
     />
   </div>
   <div
     className="bodyWrapper"
   >
     <Header
+      displayMessageStatusIndicator={false}
       hasError={false}
       id="some-header"
       isLastRead={false}
@@ -124,12 +126,14 @@ exports[`Container should render container with an avatar because the hidden mes
       name="John Doe"
       size={36}
       style={Object {}}
+      withTooltip={false}
     />
   </div>
   <div
     className="bodyWrapper"
   >
     <Header
+      displayMessageStatusIndicator={false}
       hasError={false}
       id="some-header"
       isLastRead={false}
@@ -248,6 +252,7 @@ exports[`Container should render container with isBodyHiglighted because it shou
     className="bodyWrapper bodyWrapperForHiddenOrDeletedMessage"
   >
     <Header
+      displayMessageStatusIndicator={false}
       hasError={false}
       id="some-header"
       isLastRead={false}
@@ -350,6 +355,7 @@ exports[`Container should render container without an avatar because the message
     className="bodyWrapper bodyWrapperForHiddenOrDeletedMessage"
   >
     <Header
+      displayMessageStatusIndicator={false}
       hasError={false}
       id="some-header"
       isLastRead={false}
@@ -452,6 +458,7 @@ exports[`Container should render container without an avatar because the message
     className="bodyWrapper bodyWrapperForHiddenOrDeletedMessage"
   >
     <Header
+      displayMessageStatusIndicator={false}
       hasError={false}
       id="some-header"
       isLastRead={false}

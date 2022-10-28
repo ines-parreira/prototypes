@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import React from 'react'
+import React, {useState} from 'react'
 
 import {
     hasFailedAction,
@@ -22,17 +22,21 @@ type Props = {
     showSourceDetails: boolean
     isLastRead: boolean
     timezone: string
+    showMessageStatusIndicator?: boolean
 }
 
 export default function Message(props: Props) {
     const {message} = props
     const hasError = isFailed(message)
+    const [isOver, setIsOver] = useState(false)
 
     const contentToRender = (
         <div
             className={classNames(css.wrapper, {
                 [css.hasSourceDetails]: props.showSourceDetails,
             })}
+            onMouseEnter={() => setIsOver(true)}
+            onMouseLeave={() => setIsOver(false)}
         >
             {props.showSourceDetails && (
                 <SourceDetailsHeader
@@ -43,6 +47,10 @@ export default function Message(props: Props) {
                     message={message}
                     timezone={props.timezone}
                     isLastRead={props.isLastRead}
+                    displayMessageStatusIndicator={
+                        isOver || props.showMessageStatusIndicator
+                    }
+                    hideTimestamp={!isOver}
                 />
             )}
             <Body message={message} hasError={hasError} />

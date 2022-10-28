@@ -19,6 +19,8 @@ type Props = {
     contentClassName?: string
     isMessageDeleted?: boolean
     showIntents?: boolean
+    displayMessageStatusIndicator?: boolean
+    hideTimestamp?: boolean
 }
 
 const From = ({label, children}: {label: string; children?: ReactNode}) => (
@@ -38,7 +40,13 @@ export default function SourceDetailsHeader(props: Props) {
 
     useDebounce(() => setDebouncedWidth(width), 300, [width])
 
-    const {message, isLastRead, timezone, isMessageDeleted} = props
+    const {
+        message,
+        timezone,
+        isMessageDeleted,
+        displayMessageStatusIndicator = false,
+        hideTimestamp = false,
+    } = props
 
     const actionHeader = useMemo(() => {
         const collapseActions = debouncedWidth < 400
@@ -73,8 +81,13 @@ export default function SourceDetailsHeader(props: Props) {
                 </From>
             )
         }
-        return <DatetimeLabel dateTime={message.created_datetime} />
-    }, [message?.meta, message.created_datetime])
+        return (
+            <DatetimeLabel
+                dateTime={message.created_datetime}
+                className={classnames({[css.hideTimestamp]: hideTimestamp})}
+            />
+        )
+    }, [message?.meta, message.created_datetime, hideTimestamp])
 
     return (
         <div
@@ -84,8 +97,12 @@ export default function SourceDetailsHeader(props: Props) {
         >
             <div className={classnames(css.content, props.contentClassName)}>
                 {actionHeader}
-                {message.from_agent && isLastRead && (
+                {message.from_agent && message.id && (
                     <SeenIndicator
+                        displayMessageStatusIndicator={
+                            displayMessageStatusIndicator
+                        }
+                        iconElementId={message.id}
                         openedDatetime={message.opened_datetime}
                         timezone={timezone}
                     />

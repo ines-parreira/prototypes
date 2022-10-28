@@ -1,15 +1,18 @@
 import React, {Component, ReactNode} from 'react'
+import _memoize from 'lodash/memoize'
 import classNamesBind from 'classnames/bind'
 import moment, {Moment} from 'moment'
 import {fromJS, Map} from 'immutable'
 
+import colorTokens from 'assets/tokens/colors.json'
 import Avatar from 'pages/common/components/Avatar/Avatar'
+import {getDisplayCustomerLastSeenOnChat} from 'pages/common/components/infobar/utils'
 import {scrollToReactNode} from 'pages/common/utils/keyboard'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {IntegrationType} from 'models/integration/constants'
 import {isFailed, isPending} from 'models/ticket/predicates'
 import {TicketMessage} from 'models/ticket/types'
 import {getLDClient} from 'utils/launchDarkly'
-
 import css from './Container.less'
 import Header from './Header'
 import Footer from './Footer'
@@ -25,9 +28,13 @@ type Props = {
     children?: ReactNode
     timezone: string
     isLastRead: boolean
+    containsLastCustomerMessage: boolean
+    displayMessageStatusIndicator?: boolean
     isMessageHidden: boolean
     isMessageDeleted: boolean
     isBodyHighlighted: boolean
+    customer: Map<any, any>
+    lastCustomerMessageDateTime?: string
 }
 
 export default class Container extends Component<Props> {
@@ -49,8 +56,17 @@ export default class Container extends Component<Props> {
                 FeatureFlagKey.TicketMessagesVirtualization
             ]
 
-        const {children, message, isMessageHidden, isMessageDeleted} =
-            this.props
+        const {
+            children,
+            message,
+            isMessageHidden,
+            isMessageDeleted,
+            customer,
+            timezone,
+            containsLastCustomerMessage,
+            displayMessageStatusIndicator = false,
+        } = this.props
+
         const sender = fromJS(message.sender || {}) as Map<any, any>
         let avatar
 
@@ -60,6 +76,62 @@ export default class Container extends Component<Props> {
             (isMessageHidden && isMessageDuplicated)
 
         if (shouldRenderAvatar) {
+            let badgeColor = undefined,
+                badgeBorderColor,
+                timeReadableValue,
+                lastSeenOnChat = null,
+                tooltipText
+
+            if (
+                customer &&
+                !customer.isEmpty() &&
+                containsLastCustomerMessage
+            ) {
+                badgeBorderColor =
+                    colorTokens['📺 Classic'].Neutral.Grey_0.value
+
+                const memoizedCustomerIntegrationsData = _memoize(
+                    (customer: Map<any, any>): Map<any, any> =>
+                        customer.get('integrations') as Map<any, any>
+                )
+
+                const customerIntegrationsData =
+                    memoizedCustomerIntegrationsData(customer)
+
+                let chatIntegrationData: Map<any, any> | null = null
+                if (customerIntegrationsData) {
+                    chatIntegrationData = customerIntegrationsData.find(
+                        (customerIntegrationData: Map<any, any>) =>
+                            customerIntegrationData.get(
+                                '__integration_type__'
+                            ) === IntegrationType.GorgiasChat
+                    )
+                }
+
+                if (chatIntegrationData) {
+                    lastSeenOnChat = chatIntegrationData.get(
+                        'chat_recent_activity_timestamp'
+                    )
+                }
+
+                if (lastSeenOnChat) {
+                    timeReadableValue = getDisplayCustomerLastSeenOnChat(
+                        lastSeenOnChat,
+                        timezone
+                    )
+
+                    badgeColor =
+                        timeReadableValue === 'now'
+                            ? colorTokens['📺 Classic'].Feedback.Success.value
+                            : colorTokens['📺 Classic'].Neutral.Grey_4.value
+
+                    tooltipText =
+                        timeReadableValue === 'now'
+                            ? `Active ${timeReadableValue}`
+                            : `Last seen: ${timeReadableValue}`
+                }
+            }
+
             avatar = (
                 <div className={css.avatar}>
                     <Avatar
@@ -67,6 +139,10 @@ export default class Container extends Component<Props> {
                         name={sender.get('name')}
                         url={sender.getIn(['meta', 'profile_picture_url'])}
                         size={36}
+                        badgeColor={badgeColor}
+                        badgeBorderColor={badgeBorderColor}
+                        withTooltip={!!timeReadableValue}
+                        tooltipText={tooltipText}
                     />
                 </div>
             )
@@ -109,6 +185,9 @@ export default class Container extends Component<Props> {
                         id={this.props.id}
                         message={message}
                         isLastRead={this.props.isLastRead}
+                        displayMessageStatusIndicator={
+                            displayMessageStatusIndicator
+                        }
                         timezone={this.props.timezone}
                         hasError={isFailed(message)}
                         isMessageHidden={isMessageHidden}

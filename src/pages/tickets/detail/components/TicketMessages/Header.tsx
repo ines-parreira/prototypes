@@ -22,6 +22,7 @@ type Props = {
     hasError?: boolean
     isMessageHidden?: boolean
     isMessageDeleted?: boolean
+    displayMessageStatusIndicator?: boolean
 }
 
 export default function Header(props: Props) {
@@ -32,6 +33,7 @@ export default function Header(props: Props) {
         hasError,
         isMessageHidden,
         isMessageDeleted,
+        displayMessageStatusIndicator = false,
     } = props
     const sender = fromJS(message.sender || {}) as Map<any, any>
     const isForwarded = isForwardedMessage(message)
@@ -107,6 +109,7 @@ export default function Header(props: Props) {
                 className={css.sourceDetails}
                 message={message}
                 isLastRead={isLastRead}
+                displayMessageStatusIndicator={displayMessageStatusIndicator}
                 timezone={timezone}
                 isMessageDeleted={isMessageDeleted}
             />

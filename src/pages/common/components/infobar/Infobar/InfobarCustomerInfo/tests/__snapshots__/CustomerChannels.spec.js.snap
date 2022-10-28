@@ -819,16 +819,6 @@ exports[`CustomerChannels component should display all passed channels (includin
       </i>
       Local time: 14:00
     </p>
-    <p
-      className="customerChannel"
-    >
-      <i
-        className="icon d-inline-block material-icons uncolored mr-2"
-      >
-        event
-      </i>
-      Last seen on chat: 36 minutes ago
-    </p>
     <ForwardRef
       className="container"
       intent="secondary"

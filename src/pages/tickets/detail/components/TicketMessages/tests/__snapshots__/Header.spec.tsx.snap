@@ -33,6 +33,7 @@ exports[`Header should correctly display intents 1`] = `
   </div>
   <SourceDetailsHeader
     className="sourceDetails"
+    displayMessageStatusIndicator={false}
     isLastRead={false}
     isMessageDeleted={false}
     message={
@@ -112,6 +113,7 @@ exports[`Header should display header 1`] = `
   </div>
   <SourceDetailsHeader
     className="sourceDetails"
+    displayMessageStatusIndicator={false}
     isLastRead={false}
     isMessageDeleted={false}
     message={
@@ -189,6 +191,7 @@ exports[`Header should display header with metaContent = "Comment deleted on Fac
   </div>
   <SourceDetailsHeader
     className="sourceDetails"
+    displayMessageStatusIndicator={false}
     isLastRead={false}
     isMessageDeleted={true}
     message={
@@ -266,6 +269,7 @@ exports[`Header should display header with metaContent = "Message hidden" 1`] = 
   </div>
   <SourceDetailsHeader
     className="sourceDetails"
+    displayMessageStatusIndicator={false}
     isLastRead={false}
     isMessageDeleted={false}
     message={
@@ -385,6 +389,7 @@ exports[`Header should not display header with metaContent = "Message hidden" be
   </div>
   <SourceDetailsHeader
     className="sourceDetails"
+    displayMessageStatusIndicator={false}
     isLastRead={false}
     isMessageDeleted={false}
     message={

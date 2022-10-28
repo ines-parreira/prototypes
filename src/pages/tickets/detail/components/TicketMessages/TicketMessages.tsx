@@ -1,5 +1,7 @@
 import React from 'react'
-import {Moment} from 'moment'
+import moment, {Moment} from 'moment'
+
+import {fromJS} from 'immutable'
 
 import {
     isTicketMessageDeleted,
@@ -20,7 +22,10 @@ type Props = {
     lastMessageDatetimeAfterMount: Moment | null
     setStatus?: (status: string) => void
     lastReadMessageId?: number
+    lastSentMessageIdFromAgent?: number
     highlightedElements: HighlightedElements | null
+    customer: Map<any, any>
+    lastCustomerMessage: Map<any, any>
 }
 
 export default class TicketMessages extends React.Component<Props> {
@@ -29,6 +34,26 @@ export default class TicketMessages extends React.Component<Props> {
             message.id &&
             this.props.lastReadMessageId &&
             message.id === this.props.lastReadMessageId
+        )
+    }
+
+    _isLastCustomerMessage = (message: TicketMessage): boolean => {
+        if (!this.props.lastCustomerMessage) {
+            return false
+        }
+
+        return !!(
+            message.id &&
+            this.props.lastCustomerMessage.get('id') &&
+            message.id === this.props.lastCustomerMessage.get('id')
+        )
+    }
+
+    _isLastSentMessageFromAgent = (message: TicketMessage): boolean => {
+        return !!(
+            message.id &&
+            this.props.lastSentMessageIdFromAgent &&
+            message.id === this.props.lastSentMessageIdFromAgent
         )
     }
 
@@ -48,8 +73,20 @@ export default class TicketMessages extends React.Component<Props> {
             .indexOf(true)
     }
 
+    containerContainsLastCustomerMessage(messages: TicketMessage[]) {
+        return messages.some((message) => this._isLastCustomerMessage(message))
+    }
+
+    containerContainsUnreadMessages(messages: TicketMessage[]) {
+        return messages.some((message) => message.opened_datetime === null)
+    }
+
     render() {
-        const {messages} = this.props
+        const {
+            messages,
+            customer = fromJS({}),
+            lastCustomerMessage,
+        } = this.props
 
         if (!messages.length) {
             return null
@@ -58,6 +95,16 @@ export default class TicketMessages extends React.Component<Props> {
         const message = messages[0]
         const isMessageHidden = isTicketMessageHidden(message)
         const isMessageDeleted = isTicketMessageDeleted(message)
+
+        const firstGroupMessageIsRead = !!message.opened_datetime
+
+        const groupAfterLastCustomerMessage = moment(
+            message.sent_datetime
+        ).isAfter(lastCustomerMessage.get('sent_datetime'))
+
+        const showMessageStatusIndicator =
+            firstGroupMessageIsRead &&
+            this.containerContainsUnreadMessages(messages)
 
         return (
             <Container
@@ -69,11 +116,19 @@ export default class TicketMessages extends React.Component<Props> {
                 }
                 timezone={this.props.timezone}
                 isLastRead={this._isLastReadMessage(message)}
+                containsLastCustomerMessage={this.containerContainsLastCustomerMessage(
+                    messages
+                )}
+                displayMessageStatusIndicator={groupAfterLastCustomerMessage}
                 isMessageHidden={isMessageHidden}
                 isMessageDeleted={isMessageDeleted}
                 isBodyHighlighted={
                     this.containerContainsHighlightedMessages(messages) !== -1
                 }
+                customer={customer}
+                lastCustomerMessageDateTime={lastCustomerMessage.get(
+                    'sent_datetime'
+                )}
             >
                 {messages.map((message: TicketMessage, index: number) => (
                     <Message
@@ -84,6 +139,7 @@ export default class TicketMessages extends React.Component<Props> {
                         showSourceDetails={!!index}
                         isLastRead={this._isLastReadMessage(message)}
                         timezone={this.props.timezone}
+                        showMessageStatusIndicator={showMessageStatusIndicator}
                     />
                 ))}
             </Container>
