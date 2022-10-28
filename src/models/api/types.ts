@@ -37,6 +37,11 @@ export type CursorMeta = {
     prev_cursor: string | null
 }
 
+export type OrderParams<T extends string> = {
+    orderBy?: T
+    orderDir?: OrderDirection
+}
+
 export enum OrderDirection {
     Asc = 'asc',
     Desc = 'desc',
@@ -46,11 +51,14 @@ export enum MetaSortOptions {
     Relevance = 'relevance',
 }
 
-export type ApiPaginationParams = {
-    per_page?: number
-    page?: number
+export type ApiCursorPaginationParams = {
     limit?: number
     cursor?: string
+}
+
+export type ApiPaginationParams = ApiCursorPaginationParams & {
+    per_page?: number
+    page?: number
 }
 
 export type GorgiasApiError<T = unknown> = Omit<AxiosError, 'response'> &

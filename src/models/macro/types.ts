@@ -1,5 +1,5 @@
 import {MacroAction} from '../macroAction/types'
-import {MetaSortOptions, OrderDirection} from '../api/types'
+import {MetaSortOptions, OrderParams} from '../api/types'
 
 export type Macro = MacroDraft & {
     category: string | null
@@ -27,11 +27,11 @@ export enum MacroSortableProperties {
     Language = 'language',
 }
 
-export type FetchMacrosOptions = {
+export type FetchMacrosOptions = OrderParams<
+    MacroSortableProperties | MetaSortOptions
+> & {
     fallbackOrderBy?: MacroSortableProperties
     messageId?: number
-    orderBy?: MacroSortableProperties | MetaSortOptions
-    orderDir?: OrderDirection
     page?: number
     search?: string
     ticketId?: number

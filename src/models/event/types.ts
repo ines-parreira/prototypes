@@ -2,7 +2,7 @@ import {List} from 'immutable'
 import _pick from 'lodash/pick'
 
 import {RuleEvent} from 'state/rules/types'
-import {OrderDirection} from 'models/api/types'
+import {OrderParams} from 'models/api/types'
 
 export type TicketTagsAddedEventData = {
     tags_added: number[]
@@ -160,11 +160,9 @@ export enum EventsDatetimeOperator {
     LT = 'lt',
 }
 
-export type FetchEventsOptions = {
+export type FetchEventsOptions = OrderParams<EventSortableProperties> & {
     objectId?: number
     createdDatetime?: Partial<Record<EventsDatetimeOperator, string>>
-    orderDir?: OrderDirection
-    orderBy?: EventSortableProperties
     objectType?: EventObjectType
     types?: Array<EventType>
     userIds?: number[]

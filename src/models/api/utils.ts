@@ -21,6 +21,16 @@ const deepMapKeys = (formatter: (value: string) => string) => {
     return format
 }
 
+export type SnakeCaseString<S extends string> = S extends `${infer T}${infer U}`
+    ? `${T extends Capitalize<T>
+          ? '_'
+          : ''}${Lowercase<T>}${SnakeCaseString<U>}`
+    : S
+
+export type SnakeCaseObject<T extends Record<string, unknown>> = {
+    [K in keyof T as SnakeCaseString<K & string>]: T[K]
+}
+
 export const deepMapKeysToSnakeCase: <T extends Record<string, unknown>>(
     value: T
-) => {[key: string]: T[keyof T]} = deepMapKeys(_snakeCase)
+) => SnakeCaseObject<T> = deepMapKeys(_snakeCase)

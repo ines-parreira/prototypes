@@ -7,18 +7,11 @@ import {ApiListResponsePagination} from 'models/api/types'
 
 import {Tag, TagDraft, FetchTagsOptions} from './types'
 
-type APIFetchTagsOptions = {
-    order_by?: string
-    order_dir?: FetchTagsOptions['orderDir']
-    page?: FetchTagsOptions['page']
-    search?: FetchTagsOptions['search']
-}
-
 export const fetchTags = async (
     options: FetchTagsOptions = {},
     cancelToken?: CancelToken
 ): Promise<ApiListResponsePagination<Tag[]>> => {
-    const params: APIFetchTagsOptions = deepMapKeysToSnakeCase(options)
+    const params: Record<string, unknown> = deepMapKeysToSnakeCase(options)
 
     if (params.order_by) {
         params.order_by = _snakeCase(options.orderBy)

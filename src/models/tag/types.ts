@@ -1,4 +1,4 @@
-import {MetaSortOptions, OrderDirection} from '../api/types'
+import {MetaSortOptions, OrderParams} from '../api/types'
 
 export type TagDecoration = {
     color?: string
@@ -26,9 +26,9 @@ export enum TagSortableProperties {
     Usage = 'usage',
 }
 
-export type FetchTagsOptions = {
-    orderBy?: TagSortableProperties | MetaSortOptions
-    orderDir?: OrderDirection
+export type FetchTagsOptions = OrderParams<
+    TagSortableProperties | MetaSortOptions
+> & {
     page?: number
     search?: string
 }

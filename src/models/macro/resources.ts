@@ -8,24 +8,11 @@ import {ApiListResponsePagination} from '../api/types'
 
 import {Macro, MacroDraft, FetchMacrosOptions} from './types'
 
-type APIFetchMacrosOptions = {
-    fallback_order_by?: FetchMacrosOptions['fallbackOrderBy']
-    _fallback_order_by?: string
-    message_id?: FetchMacrosOptions['messageId']
-    order_by?: string
-    order_dir?: FetchMacrosOptions['orderDir']
-    page?: FetchMacrosOptions['page']
-    search?: FetchMacrosOptions['search']
-    ticket_id?: FetchMacrosOptions['ticketId']
-    languages?: string[]
-    tags?: string[]
-}
-
 export const fetchMacros = async (
     options: FetchMacrosOptions = {},
     cancelToken?: CancelToken
 ): Promise<ApiListResponsePagination<Macro[]>> => {
-    const params: APIFetchMacrosOptions = deepMapKeysToSnakeCase(options)
+    const params: Record<string, unknown> = deepMapKeysToSnakeCase(options)
     if (params.fallback_order_by) {
         delete params.fallback_order_by
         params._fallback_order_by = _snakeCase(options.fallbackOrderBy)

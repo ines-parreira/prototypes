@@ -7,10 +7,7 @@ import {Map} from 'immutable'
 
 import client from 'models/api/resources'
 import {deepMapKeysToSnakeCase} from 'models/api/utils'
-import {
-    fetchWidgets as fetchWidgetsRequest,
-    APIFetchWidgetsOptions,
-} from 'models/widget/resources'
+import {fetchWidgets as fetchWidgetsRequest} from 'models/widget/resources'
 import {PartialTemplate} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/types'
 import {
     Button,
@@ -30,7 +27,7 @@ import {CUSTOM_WIDGET_TYPE} from './constants'
 
 export function fetchWidgets(options: FetchWidgetsOptions = {}) {
     return async (dispatch: StoreDispatch) => {
-        const params: APIFetchWidgetsOptions = deepMapKeysToSnakeCase(options)
+        const params = deepMapKeysToSnakeCase(options)
         if (!options.orderBy) {
             params.order_by = 'order:asc'
         }
