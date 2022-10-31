@@ -6,6 +6,7 @@ import {
     parseHtml,
     sanitizeHtmlDefault,
     sanitizeHtmlForFacebookMessenger,
+    unescapeQuoteEntities,
 } from '../html'
 
 describe('html util', () => {
@@ -321,6 +322,17 @@ describe('html util', () => {
                 expect(focus).toHaveBeenCalled()
                 done()
             }, 0)
+        })
+    })
+
+    describe('unescapeQuoteEntities()', () => {
+        it('should unescape quote characters', () => {
+            const input_html =
+                'bla bla entities &amp;, &lt;, &gt;, &quot;, &#39;, then &#x27;, &apos;, &#x27;, &#39;, &quot;, &#x22;, &#34;'
+            const expected =
+                "bla bla entities &amp;, &lt;, &gt;, \", ', then ', ', ', ', \", \", \""
+
+            expect(unescapeQuoteEntities(input_html)).toBe(expected)
         })
     })
 })

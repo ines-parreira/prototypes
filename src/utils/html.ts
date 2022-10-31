@@ -208,3 +208,29 @@ export function focusElement(getElement: () => HTMLElement) {
         }
     }, 0)
 }
+
+/**
+ * This method converts the single and double quote entities to their string literals.
+ *
+ * Accepted types: html entity, hex code, decimal code
+ */
+export function unescapeQuoteEntities(html: string): string {
+    if (typeof html !== 'string') {
+        return html
+    }
+
+    const quoteEntities: Record<string, string> = {
+        // single quote
+        '&apos;': "'", // html entity
+        '&#x27;': "'", // hex code
+        '&#39;': "'", // decimal code
+        // double quote
+        '&quot;': '"', // html entity
+        '&#x22;': '"', // hex code
+        '&#34;': '"', // decimal code
+    }
+
+    const rex = new RegExp(Object.keys(quoteEntities).join('|'), 'g')
+
+    return html.replace(rex, (matched) => quoteEntities[matched])
+}

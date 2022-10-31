@@ -32,6 +32,7 @@ import {RootState} from 'state/types'
 import {TicketMessage} from 'models/ticket/types'
 
 import {MACRO_ACTION_NAME} from 'models/macroAction/constants'
+import {unescapeQuoteEntities} from 'utils/html'
 import {getProperty} from './selectors'
 import {EMPTY_SENDER} from './constants'
 
@@ -847,8 +848,8 @@ export const replaceVariables = (
 ) => {
     // If there's a var of format `ticket.customer.integrations.XXX`, then it's a dynamic variable.
     // Else, it would be `ticket.customer.integrations[XXX]`.
-    let newArgument = argument
-    const variables = argument.match(
+    let newArgument = unescapeQuoteEntities(argument)
+    const variables = newArgument.match(
         /{{ticket\.customer\.integrations.[\w\d\]\[._-]+\|?([\w_]+\([^(]*\))?}}/g
     )
 
