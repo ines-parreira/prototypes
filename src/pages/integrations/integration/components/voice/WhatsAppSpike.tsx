@@ -5,7 +5,7 @@ import Button from 'pages/common/components/button/Button'
 import client from 'models/api/resources'
 
 const submitAccessToken = async (accessToken: string) => {
-    await client.post('/api/integrations/whatsapp/onboard', {
+    await client.post('/integrations/whatsapp/onboard', {
         access_token: accessToken,
     })
 }
