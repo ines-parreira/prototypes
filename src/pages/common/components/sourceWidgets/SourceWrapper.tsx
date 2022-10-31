@@ -133,9 +133,13 @@ export const WIDGET_DATA_TYPES = [
         description: (
             <div>
                 The following data comes is the one you push yourself using our{' '}
-                <Link to="https://docs.gorgias.com" target="_blank">
+                <a
+                    href="https://developers.gorgias.com/"
+                    target="_blank"
+                    rel="noreferrer"
+                >
                     <b>API</b>
-                </Link>
+                </a>
                 .
             </div>
         ),
@@ -147,9 +151,13 @@ export const WIDGET_DATA_TYPES = [
             <div>
                 The following data comes from pushing it using{' '}
                 {/*TODO: add the proper link for this one when available*/}
-                <Link to="https://docs.gorgias.com" target="_blank">
+                <a
+                    href="https://developers.gorgias.com/"
+                    target="_blank"
+                    rel="noreferrer"
+                >
                     <b>the customer data endpoint</b>
-                </Link>
+                </a>
                 .
             </div>
         ),
