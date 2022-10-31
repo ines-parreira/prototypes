@@ -54,6 +54,8 @@ type Props = {
     isDisabled?: boolean
 }
 
+const SHOW_HOTSWAP_IMPORTS = false
+
 export const ImportSection: React.FC<Props> = ({
     className,
     isDisabled,
@@ -231,6 +233,41 @@ export const ImportSection: React.FC<Props> = ({
             .open()
     }
 
+    const hotswapDropArea = (
+        <div
+            className={css.fileDropArea}
+            onClick={handleAnotherProviderImportClick}
+        >
+            <span className={css.supportedProvidersText}>
+                Currently supported providers:
+            </span>
+
+            <div className={css.providersLogosContainer}>
+                <img
+                    src={helpdocsLogo}
+                    alt="Helpdocs"
+                    className={css.providerLogo}
+                />
+                <img
+                    src={zendeskLogo}
+                    alt="Zendesk"
+                    className={css.providerLogo}
+                />
+                <img
+                    src={reamazeLogo}
+                    alt="Re:amaze"
+                    className={css.providerLogo}
+                />
+                <img
+                    src={intercomLogo}
+                    alt="Intercom"
+                    className={css.providerLogo}
+                />
+            </div>
+            <b className={css.dropAreaText}>Import from another provider</b>
+        </div>
+    )
+
     return (
         <section className={className}>
             <h4>Import articles from another Help Center</h4>
@@ -358,49 +395,8 @@ export const ImportSection: React.FC<Props> = ({
                                             </a>
                                         </b>
                                     </div>
-                                    <div
-                                        className={css.fileDropArea}
-                                        onClick={
-                                            handleAnotherProviderImportClick
-                                        }
-                                    >
-                                        <span
-                                            className={
-                                                css.supportedProvidersText
-                                            }
-                                        >
-                                            Currently supported providers:
-                                        </span>
-                                        <div
-                                            className={
-                                                css.providersLogosContainer
-                                            }
-                                        >
-                                            <img
-                                                src={helpdocsLogo}
-                                                alt="Helpdocs"
-                                                className={css.providerLogo}
-                                            />
-                                            <img
-                                                src={zendeskLogo}
-                                                alt="Zendesk"
-                                                className={css.providerLogo}
-                                            />
-                                            <img
-                                                src={reamazeLogo}
-                                                alt="Re:amaze"
-                                                className={css.providerLogo}
-                                            />
-                                            <img
-                                                src={intercomLogo}
-                                                alt="Intercom"
-                                                className={css.providerLogo}
-                                            />
-                                        </div>
-                                        <b className={css.dropAreaText}>
-                                            Import from another provider
-                                        </b>
-                                    </div>
+
+                                    {SHOW_HOTSWAP_IMPORTS && hotswapDropArea}
                                 </div>
                             )}
 
