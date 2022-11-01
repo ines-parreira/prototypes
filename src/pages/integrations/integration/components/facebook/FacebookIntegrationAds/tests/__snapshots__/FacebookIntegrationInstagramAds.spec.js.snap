@@ -245,23 +245,58 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render a spinner 1`]
           <div
             className="pageContainer container-fluid"
           >
-            <div
-              className="mb-3"
+            <Row
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
             >
-              <p>
-                It can take up to 2 hours to synchronize new Instagram ads on Gorgias. Instagram ads comments are fetched every 20 minutes. Comments sent while an Instagram ad was not active on Gorgias will not be fetched. Learn more about
-                 
-                <a
-                  href="https://docs.gorgias.com/instagram/instagram-ads-comments"
-                  rel="noopener noreferrer"
-                  target="_blank"
+              <div
+                className="row"
+              >
+                <Col
+                  lg={6}
+                  tag="div"
+                  widths={
+                    Array [
+                      "xs",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl",
+                    ]
+                  }
+                  xl={7}
                 >
-                  Instagram ads comments support
-                </a>
-                 
-                in our docs.
-              </p>
-            </div>
+                  <div
+                    className="col-lg-6 col-xl-7"
+                  >
+                    <div
+                      className="mb-3"
+                    >
+                      <p>
+                        It can take up to 2 hours to sync new Instagram ads into Gorgias. Comments on ads active in Gorgias are imported every 20 minutes. Learn more in our
+                         
+                        <a
+                          href="https://docs.gorgias.com/en-US/instagram-ads-comments-81932"
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          help docs
+                        </a>
+                        .
+                      </p>
+                    </div>
+                  </div>
+                </Col>
+              </div>
+            </Row>
           </div>
         </Container>
         <Container
@@ -574,220 +609,255 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
           <div
             className="pageContainer container-fluid"
           >
-            <div
-              className="mb-3"
+            <Row
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
             >
-              <p>
-                It can take up to 2 hours to synchronize new Instagram ads on Gorgias. Instagram ads comments are fetched every 20 minutes. Comments sent while an Instagram ad was not active on Gorgias will not be fetched. Learn more about
-                 
-                <a
-                  href="https://docs.gorgias.com/instagram/instagram-ads-comments"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  Instagram ads comments support
-                </a>
-                 
-                in our docs.
-              </p>
-              <AdsOverviewCard
-                accountTotalAds={2}
-                integrations={
-                  Immutable.List [
-                    Immutable.Map {
-                      "id": 1,
-                      "name": "integration 1",
-                      "type": "facebook",
-                      "created_datetime": "2019-01-01 00:00:00",
-                    },
-                  ]
-                }
-                internals={
-                  Immutable.Map {
-                    "1": Immutable.Map {
-                      "ads": Immutable.Map {
-                        "postid1": Immutable.Map {
-                          "created_datetime": "2019-01-01 10:30:00",
-                          "name": "ad 1",
-                          "is_active": true,
-                          "permalink": "http://fake.link.to/ad1",
-                          "ad_account_id": "act_123",
-                        },
-                        "postid2": Immutable.Map {
-                          "created_datetime": "2019-01-01 10:30:00",
-                          "name": "ad 2",
-                          "is_active": true,
-                          "permalink": "http://fake.link.to/ad2",
-                          "ad_account_id": "act_123",
-                        },
-                        "postid3": Immutable.Map {
-                          "created_datetime": "2019-01-01 10:30:00",
-                          "name": "ad 3",
-                          "is_active": false,
-                          "permalink": "http://fake.link.to/ad3",
-                          "ad_account_id": "act_123",
-                        },
-                      },
-                    },
-                  }
-                }
-                maxAccountAds={2}
+              <div
+                className="row"
               >
-                <Card
-                  body={true}
+                <Col
+                  lg={6}
                   tag="div"
+                  widths={
+                    Array [
+                      "xs",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl",
+                    ]
+                  }
+                  xl={7}
                 >
                   <div
-                    className="card card-body"
+                    className="col-lg-6 col-xl-7"
                   >
-                    <h3>
-                      Active ads per integration
-                    </h3>
-                    <UpgradePlanAlert>
-                      <Alert
-                        className="mb16"
-                        type="success"
-                      >
-                        <div
-                          className="alert success mb16"
-                        >
-                          <div
-                            className="content"
-                          >
-                            <span
-                              className="label"
-                            >
-                              <strong>
-                                Need to synchronize more ads?
-                              </strong>
-                               
-                              <Link
-                                className="alert-link"
-                                to="/app/settings/billing"
-                              >
-                                <a
-                                  className="alert-link"
-                                  to="/app/settings/billing"
-                                >
-                                  Upgrade your plan!
-                                </a>
-                              </Link>
-                            </span>
-                          </div>
-                        </div>
-                      </Alert>
-                    </UpgradePlanAlert>
                     <div
-                      className="text-center"
+                      className="mb-3"
                     >
-                      2/2 ads 
-                      <a
-                        id="active-ads-tooltip"
-                      >
-                        <i
-                          className="material-icons text-muted"
+                      <p>
+                        It can take up to 2 hours to sync new Instagram ads into Gorgias. Comments on ads active in Gorgias are imported every 20 minutes. Learn more in our
+                         
+                        <a
+                          href="https://docs.gorgias.com/en-US/instagram-ads-comments-81932"
+                          rel="noopener noreferrer"
+                          target="_blank"
                         >
-                          info_outline
-                        </i>
-                      </a>
-                      <UncontrolledTooltip
-                        target="active-ads-tooltip"
+                          help docs
+                        </a>
+                        .
+                      </p>
+                      <AdsOverviewCard
+                        accountTotalAds={2}
+                        integrations={
+                          Immutable.List [
+                            Immutable.Map {
+                              "id": 1,
+                              "name": "integration 1",
+                              "type": "facebook",
+                              "created_datetime": "2019-01-01 00:00:00",
+                            },
+                          ]
+                        }
+                        internals={
+                          Immutable.Map {
+                            "1": Immutable.Map {
+                              "ads": Immutable.Map {
+                                "postid1": Immutable.Map {
+                                  "created_datetime": "2019-01-01 10:30:00",
+                                  "name": "ad 1",
+                                  "is_active": true,
+                                  "permalink": "http://fake.link.to/ad1",
+                                  "ad_account_id": "act_123",
+                                },
+                                "postid2": Immutable.Map {
+                                  "created_datetime": "2019-01-01 10:30:00",
+                                  "name": "ad 2",
+                                  "is_active": true,
+                                  "permalink": "http://fake.link.to/ad2",
+                                  "ad_account_id": "act_123",
+                                },
+                                "postid3": Immutable.Map {
+                                  "created_datetime": "2019-01-01 10:30:00",
+                                  "name": "ad 3",
+                                  "is_active": false,
+                                  "permalink": "http://fake.link.to/ad3",
+                                  "ad_account_id": "act_123",
+                                },
+                              },
+                            },
+                          }
+                        }
+                        maxAccountAds={2}
                       >
-                        <Tooltip
-                          autohide={true}
-                          isOpen={false}
-                          placement="top"
-                          placementPrefix="bs-tooltip"
-                          target="active-ads-tooltip"
-                          toggle={[Function]}
-                          trigger="hover focus"
-                        >
-                          <TooltipPopoverWrapper
-                            autohide={true}
-                            delay={
-                              Object {
-                                "hide": 50,
-                                "show": 0,
-                              }
-                            }
-                            fade={true}
-                            hideArrow={false}
-                            innerClassName="tooltip-inner"
-                            isOpen={false}
-                            placement="top"
-                            placementPrefix="bs-tooltip"
-                            popperClassName="tooltip show"
-                            target="active-ads-tooltip"
-                            toggle={[Function]}
-                            trigger="hover focus"
-                          />
-                        </Tooltip>
-                      </UncontrolledTooltip>
-                    </div>
-                    <Progress
-                      barStyle={Object {}}
-                      max={100}
-                      min={0}
-                      multi={true}
-                      style={Object {}}
-                      tag="div"
-                      value={0}
-                    >
-                      <div
-                        className="progress"
-                        style={Object {}}
-                      >
-                        <Progress
-                          bar={true}
-                          barStyle={Object {}}
-                          className="color-NaN"
-                          id="progress-1"
-                          key="progress-1"
-                          max={2}
-                          min={0}
-                          striped={true}
-                          style={Object {}}
+                        <Card
+                          body={true}
                           tag="div"
-                          value={2}
                         >
                           <div
-                            aria-valuemax={2}
-                            aria-valuemin={0}
-                            aria-valuenow={2}
-                            className="progress-bar color-NaN progress-bar-striped"
-                            id="progress-1"
-                            role="progressbar"
-                            style={
-                              Object {
-                                "width": "100%",
-                              }
-                            }
-                          />
-                        </Progress>
-                      </div>
-                    </Progress>
-                    <div
-                      className="legendContainer"
-                    >
-                      <div
-                        className="legend"
-                        key="legend-1"
-                      >
-                        <div
-                          className="color-NaN progress-bar-striped legendColor"
-                        />
-                        integration 1
-                         
-                        (
-                        2
-                         
-                        active ads)
-                      </div>
+                            className="card card-body"
+                          >
+                            <h3>
+                              Active ads per integration
+                            </h3>
+                            <UpgradePlanAlert>
+                              <Alert
+                                className="mb16"
+                                type="success"
+                              >
+                                <div
+                                  className="alert success mb16"
+                                >
+                                  <div
+                                    className="content"
+                                  >
+                                    <span
+                                      className="label"
+                                    >
+                                      <strong>
+                                        Need to synchronize more ads?
+                                      </strong>
+                                       
+                                      <Link
+                                        className="alert-link"
+                                        to="/app/settings/billing"
+                                      >
+                                        <a
+                                          className="alert-link"
+                                          to="/app/settings/billing"
+                                        >
+                                          Upgrade your plan!
+                                        </a>
+                                      </Link>
+                                    </span>
+                                  </div>
+                                </div>
+                              </Alert>
+                            </UpgradePlanAlert>
+                            <div
+                              className="text-center"
+                            >
+                              2/2 ads 
+                              <a
+                                id="active-ads-tooltip"
+                              >
+                                <i
+                                  className="material-icons text-muted"
+                                >
+                                  info_outline
+                                </i>
+                              </a>
+                              <UncontrolledTooltip
+                                target="active-ads-tooltip"
+                              >
+                                <Tooltip
+                                  autohide={true}
+                                  isOpen={false}
+                                  placement="top"
+                                  placementPrefix="bs-tooltip"
+                                  target="active-ads-tooltip"
+                                  toggle={[Function]}
+                                  trigger="hover focus"
+                                >
+                                  <TooltipPopoverWrapper
+                                    autohide={true}
+                                    delay={
+                                      Object {
+                                        "hide": 50,
+                                        "show": 0,
+                                      }
+                                    }
+                                    fade={true}
+                                    hideArrow={false}
+                                    innerClassName="tooltip-inner"
+                                    isOpen={false}
+                                    placement="top"
+                                    placementPrefix="bs-tooltip"
+                                    popperClassName="tooltip show"
+                                    target="active-ads-tooltip"
+                                    toggle={[Function]}
+                                    trigger="hover focus"
+                                  />
+                                </Tooltip>
+                              </UncontrolledTooltip>
+                            </div>
+                            <Progress
+                              barStyle={Object {}}
+                              max={100}
+                              min={0}
+                              multi={true}
+                              style={Object {}}
+                              tag="div"
+                              value={0}
+                            >
+                              <div
+                                className="progress"
+                                style={Object {}}
+                              >
+                                <Progress
+                                  bar={true}
+                                  barStyle={Object {}}
+                                  className="color-NaN"
+                                  id="progress-1"
+                                  key="progress-1"
+                                  max={2}
+                                  min={0}
+                                  striped={true}
+                                  style={Object {}}
+                                  tag="div"
+                                  value={2}
+                                >
+                                  <div
+                                    aria-valuemax={2}
+                                    aria-valuemin={0}
+                                    aria-valuenow={2}
+                                    className="progress-bar color-NaN progress-bar-striped"
+                                    id="progress-1"
+                                    role="progressbar"
+                                    style={
+                                      Object {
+                                        "width": "100%",
+                                      }
+                                    }
+                                  />
+                                </Progress>
+                              </div>
+                            </Progress>
+                            <div
+                              className="legendContainer"
+                            >
+                              <div
+                                className="legend"
+                                key="legend-1"
+                              >
+                                <div
+                                  className="color-NaN progress-bar-striped legendColor"
+                                />
+                                integration 1
+                                 
+                                (
+                                2
+                                 
+                                active ads)
+                              </div>
+                            </div>
+                          </div>
+                        </Card>
+                      </AdsOverviewCard>
                     </div>
                   </div>
-                </Card>
-              </AdsOverviewCard>
-            </div>
+                </Col>
+              </div>
+            </Row>
           </div>
         </Container>
         <AdsTable
@@ -1565,23 +1635,58 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
           <div
             className="pageContainer container-fluid"
           >
-            <div
-              className="mb-3"
+            <Row
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
             >
-              <p>
-                It can take up to 2 hours to synchronize new Instagram ads on Gorgias. Instagram ads comments are fetched every 20 minutes. Comments sent while an Instagram ad was not active on Gorgias will not be fetched. Learn more about
-                 
-                <a
-                  href="https://docs.gorgias.com/instagram/instagram-ads-comments"
-                  rel="noopener noreferrer"
-                  target="_blank"
+              <div
+                className="row"
+              >
+                <Col
+                  lg={6}
+                  tag="div"
+                  widths={
+                    Array [
+                      "xs",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl",
+                    ]
+                  }
+                  xl={7}
                 >
-                  Instagram ads comments support
-                </a>
-                 
-                in our docs.
-              </p>
-            </div>
+                  <div
+                    className="col-lg-6 col-xl-7"
+                  >
+                    <div
+                      className="mb-3"
+                    >
+                      <p>
+                        It can take up to 2 hours to sync new Instagram ads into Gorgias. Comments on ads active in Gorgias are imported every 20 minutes. Learn more in our
+                         
+                        <a
+                          href="https://docs.gorgias.com/en-US/instagram-ads-comments-81932"
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          help docs
+                        </a>
+                        .
+                      </p>
+                    </div>
+                  </div>
+                </Col>
+              </div>
+            </Row>
           </div>
         </Container>
         <AdsTable
@@ -2046,23 +2151,58 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
           <div
             className="pageContainer container-fluid"
           >
-            <div
-              className="mb-3"
+            <Row
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
             >
-              <p>
-                It can take up to 2 hours to synchronize new Instagram ads on Gorgias. Instagram ads comments are fetched every 20 minutes. Comments sent while an Instagram ad was not active on Gorgias will not be fetched. Learn more about
-                 
-                <a
-                  href="https://docs.gorgias.com/instagram/instagram-ads-comments"
-                  rel="noopener noreferrer"
-                  target="_blank"
+              <div
+                className="row"
+              >
+                <Col
+                  lg={6}
+                  tag="div"
+                  widths={
+                    Array [
+                      "xs",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl",
+                    ]
+                  }
+                  xl={7}
                 >
-                  Instagram ads comments support
-                </a>
-                 
-                in our docs.
-              </p>
-            </div>
+                  <div
+                    className="col-lg-6 col-xl-7"
+                  >
+                    <div
+                      className="mb-3"
+                    >
+                      <p>
+                        It can take up to 2 hours to sync new Instagram ads into Gorgias. Comments on ads active in Gorgias are imported every 20 minutes. Learn more in our
+                         
+                        <a
+                          href="https://docs.gorgias.com/en-US/instagram-ads-comments-81932"
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          help docs
+                        </a>
+                        .
+                      </p>
+                    </div>
+                  </div>
+                </Col>
+              </div>
+            </Row>
           </div>
         </Container>
         <AdsTable
@@ -2672,23 +2812,58 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render without ad 1`
           <div
             className="pageContainer container-fluid"
           >
-            <div
-              className="mb-3"
+            <Row
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
             >
-              <p>
-                It can take up to 2 hours to synchronize new Instagram ads on Gorgias. Instagram ads comments are fetched every 20 minutes. Comments sent while an Instagram ad was not active on Gorgias will not be fetched. Learn more about
-                 
-                <a
-                  href="https://docs.gorgias.com/instagram/instagram-ads-comments"
-                  rel="noopener noreferrer"
-                  target="_blank"
+              <div
+                className="row"
+              >
+                <Col
+                  lg={6}
+                  tag="div"
+                  widths={
+                    Array [
+                      "xs",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl",
+                    ]
+                  }
+                  xl={7}
                 >
-                  Instagram ads comments support
-                </a>
-                 
-                in our docs.
-              </p>
-            </div>
+                  <div
+                    className="col-lg-6 col-xl-7"
+                  >
+                    <div
+                      className="mb-3"
+                    >
+                      <p>
+                        It can take up to 2 hours to sync new Instagram ads into Gorgias. Comments on ads active in Gorgias are imported every 20 minutes. Learn more in our
+                         
+                        <a
+                          href="https://docs.gorgias.com/en-US/instagram-ads-comments-81932"
+                          rel="noopener noreferrer"
+                          target="_blank"
+                        >
+                          help docs
+                        </a>
+                        .
+                      </p>
+                    </div>
+                  </div>
+                </Col>
+              </div>
+            </Row>
           </div>
         </Container>
         <AdsTable

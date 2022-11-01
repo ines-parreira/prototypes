@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FacebookIntegrationDetailSummary/> should display the icon, name, description 1`] = `
+<div
+  class="d-flex align-items-center mb-3"
+>
+  <img
+    alt="facebook logo"
+    class="image rounded mr-3"
+    src="test-file-stub"
+    width="30"
+  />
+  <div
+    class="text-truncate text-faded flex-grow-1 mr-2"
+  >
+    <div
+      class="d-flex flex-column justify-content-around"
+    >
+      <div
+        class="d-flex align-items-center flex-wrap"
+      >
+        <h2
+          class="title d-inline mb-0 pr-3 text-info text-truncate"
+        >
+          Facebook Page
+        </h2>
+      </div>
+      <span
+        class="text-truncate"
+      >
+        A page to test Facebook integration
+      </span>
+    </div>
+  </div>
+  <button
+    class="wrapper fill secondary medium"
+    type="submit"
+  >
+    Reconnect
+  </button>
+</div>
+`;

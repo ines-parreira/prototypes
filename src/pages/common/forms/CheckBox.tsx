@@ -15,7 +15,7 @@ import Caption from './Caption/Caption'
 import Label from './Label/Label'
 import css from './CheckBox.less'
 
-type Props = {
+export type Props = {
     caption?: ReactNode
     children?: ReactNode
     className?: string

@@ -3,8 +3,10 @@ import {
     Breadcrumb,
     BreadcrumbItem,
     Card,
+    Col,
     Container,
     Progress,
+    Row,
     Table,
     UncontrolledTooltip,
 } from 'reactstrap'
@@ -13,20 +15,20 @@ import {Map, List} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 import classnames from 'classnames'
 
-import {getFacebookMaxAccountAds} from '../../../../../../state/integrations/selectors'
-import FacebookIntegrationNavigation from '../FacebookIntegrationNavigation'
-import PageHeader from '../../../../../common/components/PageHeader'
-import ToggleInput from '../../../../../common/forms/ToggleInput'
+import PageHeader from 'pages/common/components/PageHeader'
+import ToggleInput from 'pages/common/forms/ToggleInput'
+import Loader from 'pages/common/components/Loader/Loader'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import {DatetimeLabel} from 'pages/common/utils/labels'
+import {RootState, StoreDispatch} from 'state/types'
 import {
     getFacebookIntegrationInternals,
     getFacebookIntegrationLoading,
     getFacebookIntegrationLoadingAds,
-} from '../../../../../../state/facebookAds/selectors'
-import {RootState, StoreDispatch} from '../../../../../../state/types'
-import Loader from '../../../../../common/components/Loader/Loader'
-import Alert, {AlertType} from '../../../../../common/components/Alert/Alert'
-import {DatetimeLabel} from '../../../../../common/utils/labels'
-import settingsCss from '../../../../../settings/settings.less'
+} from 'state/facebookAds/selectors'
+import {getFacebookMaxAccountAds} from 'state/integrations/selectors'
+import settingsCss from 'pages/settings/settings.less'
+import FacebookIntegrationNavigation from '../FacebookIntegrationNavigation'
 
 import {fetchAds, updateAd} from './actions'
 import css from './FacebookIntegrationInstagramAds.less'
@@ -84,32 +86,35 @@ class FacebookIntegrationInstagramAds extends Component<Props> {
                 <FacebookIntegrationNavigation integration={integration} />
 
                 <Container fluid className={settingsCss.pageContainer}>
-                    <div className="mb-3">
-                        <p>
-                            It can take up to 2 hours to synchronize new
-                            Instagram ads on Gorgias. Instagram ads comments are
-                            fetched every 20 minutes. Comments sent while an
-                            Instagram ad was not active on Gorgias will not be
-                            fetched. Learn more about{' '}
-                            <a
-                                href="https://docs.gorgias.com/instagram/instagram-ads-comments"
-                                rel="noopener noreferrer"
-                                target="_blank"
-                            >
-                                Instagram ads comments support
-                            </a>{' '}
-                            in our docs.
-                        </p>
+                    <Row>
+                        <Col lg={6} xl={7}>
+                            <div className="mb-3">
+                                <p>
+                                    It can take up to 2 hours to sync new
+                                    Instagram ads into Gorgias. Comments on ads
+                                    active in Gorgias are imported every 20
+                                    minutes. Learn more in our{' '}
+                                    <a
+                                        href="https://docs.gorgias.com/en-US/instagram-ads-comments-81932"
+                                        rel="noopener noreferrer"
+                                        target="_blank"
+                                    >
+                                        help docs
+                                    </a>
+                                    .
+                                </p>
 
-                        {showUpgradePlan && (
-                            <AdsOverviewCard
-                                integrations={integrations}
-                                internals={internals}
-                                maxAccountAds={maxAccountAds}
-                                accountTotalAds={accountTotalAds}
-                            />
-                        )}
-                    </div>
+                                {showUpgradePlan && (
+                                    <AdsOverviewCard
+                                        integrations={integrations}
+                                        internals={internals}
+                                        maxAccountAds={maxAccountAds}
+                                        accountTotalAds={accountTotalAds}
+                                    />
+                                )}
+                            </div>
+                        </Col>
+                    </Row>
                 </Container>
 
                 {loading ? (

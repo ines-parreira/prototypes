@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CheckBoxFieldSet/> should display the title, subtitle and checkboxes 1`] = `
+<div>
+  <h4>
+    Checkboxes
+  </h4>
+  <p>
+    Toggle checkboxes
+  </p>
+  <div
+    class="d-flex align-items-start"
+  >
+    <div
+      class="mb-2"
+    >
+      <label
+        class="label label"
+        for="comments"
+      >
+        <input
+          class="input"
+          id="comments"
+          name="comments"
+          type="checkbox"
+        />
+        Comments
+      </label>
+    </div>
+  </div>
+  <div
+    class="d-flex align-items-start"
+  >
+    <div
+      class="mb-2"
+    >
+      <label
+        class="label label"
+        for="mentions"
+      >
+        <input
+          class="input"
+          id="mentions"
+          name="mentions"
+          type="checkbox"
+        />
+        Mentions
+      </label>
+    </div>
+  </div>
+</div>
+`;

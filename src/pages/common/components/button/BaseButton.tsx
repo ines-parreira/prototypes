@@ -15,13 +15,14 @@ import {InputGroupContext} from 'pages/common/forms/input/InputGroup'
 
 import css from './BaseButton.less'
 
-type ButtonSize = 'medium' | 'small'
+export type ButtonSize = 'medium' | 'small'
+export type ButtonIntent = 'primary' | 'secondary' | 'destructive'
 
 type Props = {
     children: (elementProps: HTMLAttributes<HTMLElement>) => ReactNode
     className?: string
     fillStyle?: 'fill' | 'ghost'
-    intent?: 'primary' | 'secondary' | 'destructive'
+    intent?: ButtonIntent
     isDisabled?: boolean
     isLoading?: boolean
     size?: ButtonSize

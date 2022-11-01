@@ -364,7 +364,7 @@ export const IntegrationDetail = ({
 
                 return (
                     <FacebookIntegrationDetail
-                        integration={integration}
+                        integration={integration.toJS()}
                         loading={loading}
                     />
                 )

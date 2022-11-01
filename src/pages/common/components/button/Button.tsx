@@ -10,6 +10,8 @@ import {GroupContext} from 'pages/common/components/layout/Group'
 import BaseButton from './BaseButton'
 import ButtonSpinner from './ButtonSpinner'
 
+export {ButtonIntent, ButtonSize} from './BaseButton'
+
 type Props = ButtonHTMLAttributes<HTMLButtonElement> &
     Omit<ComponentProps<typeof BaseButton>, 'children'>
 

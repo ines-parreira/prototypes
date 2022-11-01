@@ -1,23 +1,25 @@
 import React, {Component, ReactNode} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 
-import Button from 'pages/common/components/button/Button'
-import {getFacebookRedirectUri} from '../../../../../../state/integrations/selectors'
-import {RootState} from '../../../../../../state/types'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import {getFacebookRedirectUri} from 'state/integrations/selectors'
+import {RootState} from 'state/types'
 
 type OwnProps = {
     reconnect?: boolean
     link?: boolean
     children?: ReactNode
+    intent?: ButtonIntent
 }
 
 type Props = OwnProps & ConnectedProps<typeof connector>
 
 export class FacebookLoginButtonContainer extends Component<Props> {
-    static defaultProps = {
+    static defaultProps: OwnProps = {
         reconnect: false,
         link: false,
         children: null,
+        intent: 'primary',
     }
 
     _handleSubmit = (e: React.SyntheticEvent, redirectUri: string) => {
@@ -32,12 +34,12 @@ export class FacebookLoginButtonContainer extends Component<Props> {
     }
 
     renderButton() {
-        const {redirectUri, children} = this.props
+        const {redirectUri, children, intent} = this.props
 
         return (
             <Button
                 type="submit"
-                intent="primary"
+                intent={intent}
                 onClick={(e) => this._handleSubmit(e, redirectUri)}
             >
                 {children || 'Reconnect'}
