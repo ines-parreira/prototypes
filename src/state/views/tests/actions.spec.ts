@@ -19,6 +19,8 @@ import {SEARCH_ENDPOINT} from 'models/search/resources'
 import {mockSearchRank} from 'fixtures/searchRank'
 import {getLDClient} from 'utils/launchDarkly'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {searchTickets} from 'models/ticket/resources'
+import {ticket} from 'fixtures/ticket'
 
 import {ViewNavDirection} from '../types'
 import * as viewsSelectors from '../selectors'
@@ -41,6 +43,9 @@ jest.mock('reapop', () => {
     }
 })
 
+jest.mock('models/ticket/resources')
+const searchTicketsMock = searchTickets as jest.Mock
+
 jest.mock('utils/launchDarkly')
 const allFlagsMock = getLDClient().allFlags as jest.Mock
 
@@ -60,7 +65,15 @@ beforeEach(() => {
         .spyOn(Date, 'now')
         .mockImplementation(() => defaultDateNowValue)
     allFlagsMock.mockReturnValue({})
-    mockServer.onPost('/api/tickets/search').reply(201)
+    searchTicketsMock.mockResolvedValue({
+        data: {
+            data: [ticket],
+            meta: {
+                next_cursor: null,
+                prev_cursor: null,
+            },
+        },
+    })
 })
 
 afterEach(() => {
@@ -660,7 +673,7 @@ describe('actions', () => {
                 type: ViewType.TicketList,
             }
 
-            it('should not call the /api/tickets/search endpoint when "elasticsearch-search-load-test" flag is not enabled', async () => {
+            it(`should not shadow-search tickets when "${FeatureFlagKey.ElasticsearchSearchLoadTest}" flag is not enabled`, async () => {
                 const store = mockStore({
                     views: fromJS({
                         active: ticketSearchView,
@@ -669,10 +682,10 @@ describe('actions', () => {
 
                 await store.dispatch(actions.fetchViewItems())
 
-                expect(mockServer.history.post).toHaveLength(0)
+                expect(searchTicketsMock).not.toHaveBeenCalled()
             })
 
-            it('should call the /api/tickets/search endpoint when "elasticsearch-search-load-test" flag is enabled', async () => {
+            it(`should shadow-search tickets when "${FeatureFlagKey.ElasticsearchSearchLoadTest}" flag is enabled`, async () => {
                 allFlagsMock.mockReturnValue({
                     [FeatureFlagKey.ElasticsearchSearchLoadTest]: true,
                 })
@@ -684,7 +697,7 @@ describe('actions', () => {
 
                 await store.dispatch(actions.fetchViewItems())
 
-                expect(JSON.parse(mockServer.history.post[0].data)).toEqual({
+                expect(searchTicketsMock).toHaveBeenLastCalledWith({
                     search: ticketSearchView.search,
                     filters: ticketSearchView.filters,
                 })
@@ -704,7 +717,7 @@ describe('actions', () => {
                     {...ticketSearchView, type: ViewType.CustomerList},
                 ],
             ])(
-                'should not call the /api/tickets/search endpoint when view %s',
+                'should not shadow-search tickets when view %s',
                 async (testName, view) => {
                     allFlagsMock.mockReturnValue({
                         [FeatureFlagKey.ElasticsearchSearchLoadTest]: true,
@@ -717,11 +730,11 @@ describe('actions', () => {
 
                     await store.dispatch(actions.fetchViewItems())
 
-                    expect(mockServer.history.post).toHaveLength(0)
+                    expect(searchTicketsMock).not.toHaveBeenCalled()
                 }
             )
 
-            it('should not call the /api/tickets/search endpoint when a direction is passed', async () => {
+            it('should not shadow-search tickets when a direction is passed', async () => {
                 allFlagsMock.mockReturnValue({
                     [FeatureFlagKey.ElasticsearchSearchLoadTest]: true,
                 })
@@ -735,10 +748,10 @@ describe('actions', () => {
                     actions.fetchViewItems(ViewNavDirection.NextView)
                 )
 
-                expect(mockServer.history.post).toHaveLength(0)
+                expect(searchTicketsMock).not.toHaveBeenCalled()
             })
 
-            it('should not call the /api/tickets/search endpoint when a cursor is passed', async () => {
+            it('should not shadow-search tickets when a cursor is passed', async () => {
                 allFlagsMock.mockReturnValue({
                     [FeatureFlagKey.ElasticsearchSearchLoadTest]: true,
                 })
@@ -750,14 +763,14 @@ describe('actions', () => {
 
                 await store.dispatch(actions.fetchViewItems(null, '12345'))
 
-                expect(mockServer.history.post).toHaveLength(0)
+                expect(searchTicketsMock).not.toHaveBeenCalled()
             })
 
-            it('should ignore the request errors', (done) => {
-                mockServer.onPost('/api/tickets/search').reply(500)
+            it('should ignore the shadow request errors', (done) => {
                 allFlagsMock.mockReturnValue({
                     [FeatureFlagKey.ElasticsearchSearchLoadTest]: true,
                 })
+                searchTicketsMock.mockRejectedValue(new Error('Test error'))
 
                 const store = mockStore({
                     views: fromJS({
@@ -771,6 +784,168 @@ describe('actions', () => {
                 } catch (error) {
                     done(error)
                 }
+            })
+
+            it(`should not shadow-search tickets when "${FeatureFlagKey.ElasticsearchTicketSearch}" flag is enabled`, async () => {
+                allFlagsMock.mockReturnValue({
+                    [FeatureFlagKey.ElasticsearchSearchLoadTest]: true,
+                    [FeatureFlagKey.ElasticsearchTicketSearch]: true,
+                })
+                const store = mockStore({
+                    views: fromJS({
+                        active: ticketSearchView,
+                    }),
+                })
+
+                await store.dispatch(actions.fetchViewItems())
+
+                expect(searchTicketsMock).toHaveBeenCalledTimes(1)
+            })
+        })
+
+        describe('elasticsearch search', () => {
+            const ticketSearchView = {
+                ...view,
+                search: 'foo',
+                type: ViewType.TicketList,
+                dirty: true,
+            }
+
+            beforeEach(() => {
+                mockServer
+                    .onPut(`/api/views/${viewId}/items/`)
+                    .reply(200, baseReply)
+            })
+
+            it('should call /api/views/:viewId/items endpoint when "elasticsearch-ticket-search" flag is not enabled', async () => {
+                const store = mockStore({
+                    views: fromJS({
+                        active: ticketSearchView,
+                    }),
+                })
+
+                await store.dispatch(actions.fetchViewItems())
+
+                expect(searchTicketsMock).not.toHaveBeenCalled()
+                expect(mockServer.history.put).toHaveLength(1)
+            })
+
+            it.each([
+                [
+                    'search property equals null',
+                    {...ticketSearchView, search: null},
+                ],
+                [
+                    'search property is not defined',
+                    {...ticketSearchView, search: undefined},
+                ],
+                [
+                    'is not a ticket list view',
+                    {...ticketSearchView, type: ViewType.CustomerList},
+                ],
+            ])(
+                'should call /api/views/:viewId/items endpoint when when view %s',
+                async (testName, view) => {
+                    allFlagsMock.mockReturnValue({
+                        [FeatureFlagKey.ElasticsearchTicketSearch]: true,
+                    })
+                    const store = mockStore({
+                        views: fromJS({
+                            active: view,
+                        }),
+                    })
+
+                    await store.dispatch(actions.fetchViewItems())
+
+                    expect(searchTicketsMock).not.toHaveBeenCalled()
+                    expect(mockServer.history.put).toHaveLength(1)
+                }
+            )
+
+            it('should search tickets when "elasticsearch-ticket-search" flag is enabled', async () => {
+                allFlagsMock.mockReturnValue({
+                    [FeatureFlagKey.ElasticsearchTicketSearch]: true,
+                })
+                const cursor = 'test_cursor'
+                const cancelToken = axios.CancelToken.source().token
+                const store = mockStore({
+                    views: fromJS({
+                        active: ticketSearchView,
+                    }),
+                })
+
+                await store.dispatch(
+                    actions.fetchViewItems(
+                        null,
+                        cursor,
+                        null,
+                        null,
+                        cancelToken
+                    )
+                )
+
+                expect(searchTicketsMock).toHaveBeenLastCalledWith({
+                    search: ticketSearchView.search,
+                    filters: ticketSearchView.filters,
+                    cursor,
+                    cancelToken,
+                })
+            })
+
+            it('should search tickets with next_cursor when ViewNavDirection is next', async () => {
+                allFlagsMock.mockReturnValue({
+                    [FeatureFlagKey.ElasticsearchTicketSearch]: true,
+                })
+                const cursor = 'next_cursor'
+                const store = mockStore({
+                    views: fromJS({
+                        active: ticketSearchView,
+                        _internal: {
+                            navigation: {
+                                next_cursor: cursor,
+                                prev_cursor: null,
+                            },
+                        },
+                    }),
+                })
+
+                await store.dispatch(
+                    actions.fetchViewItems(ViewNavDirection.NextView)
+                )
+
+                expect(searchTicketsMock).toHaveBeenLastCalledWith({
+                    search: ticketSearchView.search,
+                    filters: ticketSearchView.filters,
+                    cursor,
+                })
+            })
+
+            it('should search tickets with prev_cursor when ViewNavDirection is prev', async () => {
+                allFlagsMock.mockReturnValue({
+                    [FeatureFlagKey.ElasticsearchTicketSearch]: true,
+                })
+                const cursor = 'prev_cursor'
+                const store = mockStore({
+                    views: fromJS({
+                        active: ticketSearchView,
+                        _internal: {
+                            navigation: {
+                                next_cursor: null,
+                                prev_cursor: cursor,
+                            },
+                        },
+                    }),
+                })
+
+                await store.dispatch(
+                    actions.fetchViewItems(ViewNavDirection.PrevView)
+                )
+
+                expect(searchTicketsMock).toHaveBeenLastCalledWith({
+                    search: ticketSearchView.search,
+                    filters: ticketSearchView.filters,
+                    cursor,
+                })
             })
         })
     })

@@ -12,6 +12,7 @@ export enum FeatureFlagKey {
     NewVoiceSmsLayout = 'new-voice-sms-layout',
     RevenueDiscountCodesV0 = 'revenue-discount-codes-v0',
     ElasticsearchSearchLoadTest = 'elasticsearch-search-load-test',
+    ElasticsearchTicketSearch = 'elasticsearch-ticket-search',
     SelfServiceLoopReturnsFlow = 'self-service-loop-returns-flow',
     RuleSuggestion = 'rule-suggestion',
     BigCommerceCreateOrder = 'bigcommerce-create-order',

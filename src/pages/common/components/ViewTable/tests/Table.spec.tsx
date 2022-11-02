@@ -74,7 +74,7 @@ describe('<Table />', () => {
         items: fromJS([ticketFixtures.ticket]),
         isSearch: false,
         isLoading: () => false,
-        navigation: fromJS({hasPrevItems: false, hasNextItems: false}),
+        navigation: fromJS({prev_items: null, next_items: null}),
         fetchViewItems: jest.fn(),
         getItemUrl: jest.fn(),
         onItemClick: () => undefined,
@@ -298,4 +298,38 @@ describe('<Table />', () => {
             )
         }
     )
+
+    it('should render navigation buttons when prev_items and next_items are defined', () => {
+        const store = mockStore(defaultState)
+        const {container} = render(
+            <Provider store={store}>
+                <Table
+                    {...minProps}
+                    navigation={fromJS({
+                        next_items: 'next_items',
+                        prev_items: 'prev_items',
+                    })}
+                />
+            </Provider>
+        )
+
+        expect(container.getElementsByClassName('navigation')).toHaveLength(1)
+    })
+
+    it('should render navigation buttons when prev_cursor and next_cursor are defined', () => {
+        const store = mockStore(defaultState)
+        const {container} = render(
+            <Provider store={store}>
+                <Table
+                    {...minProps}
+                    navigation={fromJS({
+                        next_cursor: 'next_cursor',
+                        prev_cursor: 'prev_cursor',
+                    })}
+                />
+            </Provider>
+        )
+
+        expect(container.getElementsByClassName('navigation')).toHaveLength(1)
+    })
 })

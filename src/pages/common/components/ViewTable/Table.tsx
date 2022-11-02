@@ -72,6 +72,10 @@ const TableContainer = ({
     view,
     viewSelected,
 }: Props) => {
+    const hasNextItems =
+        !!navigation.get('next_items') || !!navigation.get('next_cursor')
+    const hasPrevItems =
+        !!navigation.get('prev_items') || !!navigation.get('prev_cursor')
     const prevItems = usePrevious(items)
     const [rowCursor, setRowCursor] = useState(0)
     const searchRank = useContext(SearchRankScenarioContext)
@@ -237,8 +241,8 @@ const TableContainer = ({
                 <div className="pl-4 mb-4">
                     <Navigation
                         className={css.navigation}
-                        hasNextItems={!!navigation.get('next_items')}
-                        hasPrevItems={!!navigation.get('prev_items')}
+                        hasNextItems={hasNextItems}
+                        hasPrevItems={hasPrevItems}
                         fetchNextItems={() =>
                             fetchViewItems(ViewNavDirection.NextView)
                         }
@@ -328,8 +332,8 @@ const TableContainer = ({
 
             <Navigation
                 className={css.navigation}
-                hasNextItems={!!navigation.get('next_items')}
-                hasPrevItems={!!navigation.get('prev_items')}
+                hasNextItems={hasNextItems}
+                hasPrevItems={hasPrevItems}
                 fetchNextItems={() =>
                     fetchViewItems(
                         ViewNavDirection.NextView,

@@ -34,6 +34,7 @@ import {SearchRank} from 'hooks/useSearchRankScenario'
 import GorgiasApi from 'services/gorgiasApi'
 import {getLDClient} from 'utils/launchDarkly'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {searchTickets} from 'models/ticket/resources'
 
 import {activeViewUrl} from './utils'
 import * as viewsSelectors from './selectors'
@@ -374,6 +375,7 @@ export function fetchViewItems(
         const viewConfig = viewsConfig.getConfigByType(activeViewType)
         const navigation = viewsSelectors.getNavigation(state)
         const shouldRegisterSearchRankRequest = !direction && !cursor
+        const featureFlags = getLDClient().allFlags()
 
         const viewId = activeView.get('id') as number
 
@@ -412,9 +414,26 @@ export function fetchViewItems(
 
         let promise
 
-        // when a view is dirty, just send the whole view data rather than just the id
-        // this will allow us to test a view before submitting it to the DB
-        if (isDirty) {
+        if (
+            featureFlags[FeatureFlagKey.ElasticsearchTicketSearch] &&
+            activeView.get('search') != null &&
+            activeView.get('type') === ViewType.TicketList
+        ) {
+            const nextCursor = navigation.get('next_cursor') as Maybe<string>
+            const prevCursor = navigation.get('prev_cursor') as Maybe<string>
+            promise = searchTickets({
+                search: activeView.get('search') as string,
+                filters: activeView.get('filters') as string,
+                cursor:
+                    cursor ||
+                    (direction === ViewNavDirection.NextView && nextCursor) ||
+                    (direction === ViewNavDirection.PrevView && prevCursor) ||
+                    undefined,
+                cancelToken,
+            })
+        } else if (isDirty) {
+            // when a view is dirty, just send the whole view data rather than just the id
+            // this will allow us to test a view before submitting it to the DB
             promise = client.put<ApiListResponsePagination<Ticket[]>>(
                 url,
                 {
@@ -434,25 +453,22 @@ export function fetchViewItems(
             )
         }
 
+        // This is a "shadow" request to the new ES ticket search endpoint.
+        // It's a "fire and forget" request with a simplified payload to
+        // allow us to measure the performance of the endpoint.
         if (
-            getLDClient().allFlags()[
-                FeatureFlagKey.ElasticsearchSearchLoadTest
-            ] &&
+            featureFlags[FeatureFlagKey.ElasticsearchSearchLoadTest] &&
+            !featureFlags[FeatureFlagKey.ElasticsearchTicketSearch] &&
             activeView.get('search') != null &&
             activeView.get('type') === ViewType.TicketList &&
             !direction &&
             !cursor
         ) {
-            void client
-                .post(
-                    '/api/tickets/search',
-                    {
-                        search: activeView.get('search'),
-                        filters: activeView.get('filters'),
-                    },
-                    options
-                )
-                .catch(_noop)
+            void searchTickets({
+                search: activeView.get('search') as string,
+                filters: activeView.get('filters') as string,
+                cancelToken,
+            }).catch(_noop)
         }
 
         searchRank?.endScenario()

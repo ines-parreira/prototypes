@@ -1,3 +1,5 @@
+import {CancelToken} from 'axios'
+
 import {
     TicketChannel,
     TicketMessageSourceType,
@@ -5,8 +7,25 @@ import {
     TicketVia,
 } from 'business/types/ticket'
 import {FacebookReactionType} from 'constants/integrations/facebook'
+import {ApiCursorPaginationParams, OrderParams} from 'models/api/types'
 
 import {Event} from '../event/types'
+
+export type TicketSearchOptions = ApiCursorPaginationParams &
+    OrderParams<TicketSearchSortableProperties> & {
+        search: string
+        filters?: string
+        cancelToken?: CancelToken
+    }
+
+export enum TicketSearchSortableProperties {
+    UpdatedDatetime = 'updated_datetime',
+    CreatedDatetime = 'created_datetime',
+    LastMessageDatetime = 'last_message_datetime',
+    LastReceivedMessageDatetime = 'last_received_message_datetime',
+    ClosedDatetime = 'closed_datetime',
+    SnoozeDatetime = 'snooze_datetime',
+}
 
 export type Ticket = {
     id: number
