@@ -54,6 +54,70 @@
             .fr-separator {
                 background-color: @classic-neutral-grey-3;
             }
+
+            .gorgias-file-attachment__wrapper {
+                background-color: @classic-neutral-grey-2;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                height: 36px;
+                background: @classic-neutral-grey-2;
+                border-radius: 4px;
+                padding: 8px;
+
+                margin-top: 16px;
+                margin-bottom: 16px;
+
+                + .gorgias-file-attachment__wrapper {
+                    margin-top: -8px;
+                }
+
+                .material-icons {
+                    font-size: 20px;
+
+                    color: @classic-neutral-grey-6;
+                }
+
+                i.gorgias-file-attachment__close-icon {
+                    font-size: 16px;
+
+                    cursor: pointer;
+
+                    color: @classic-neutral-grey-4;
+                }
+
+                a.gorgias-file-attachment__anchor-name {
+                    color: @classic-neutral-grey-6;
+                    font-weight: 600;
+                    font-size: 14px;
+                    line-height: 20px;
+                    height: 20px;
+
+                    text-decoration-line: underline !important;
+
+                    max-width: 500px;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                }
+
+                span.gorgias-file-attachment__span-size {
+                    font-weight: 400;
+                    font-size: 14px;
+                    line-height: 20px;
+                    color: @classic-neutral-grey-3;
+                }
+
+                > div {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    align-items: center;
+
+                    gap: 8px;
+                }
+            }
         }
     }
 }

@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 
-import React, {useEffect, useRef} from 'react'
+import React, {useCallback, useEffect, useRef} from 'react'
 import FroalaEditorComponent from 'react-froala-wysiwyg'
+import bytes from 'bytes'
 
+import {zip} from 'lodash'
 import useAppDispatch from '../../../../../../hooks/useAppDispatch'
 import {LocaleCode} from '../../../../../../models/helpCenter/types'
 import {notify} from '../../../../../../state/notifications/actions'
@@ -13,6 +15,12 @@ import {uploadFiles} from '../../../../../../utils'
 import {useEditionManager} from '../../../providers/EditionManagerContext'
 import {FroalaEditor, config} from './froala-config'
 import {Editor} from './types'
+import {
+    generateEditorAttachmentHTML,
+    HELP_CENTER_EDITOR_CSS_ATTACHMENT_CONSTANTS,
+    createOnCloseEventHandler,
+    validateFileAttachments,
+} from './HelpCenterEditor.utils'
 
 type Props = {
     articleId?: number
@@ -36,6 +44,8 @@ const HelpCenterEditor = ({
     const dispatch = useAppDispatch()
     const editorRef = useRef<FroalaEditorInstance | null>(null)
     const {setIsEditorCodeViewActive} = useEditionManager()
+    const nrOfFileAttachments = useRef(0)
+    const editorOnRemoveAttachmentHandler = useRef<EventListener>()
 
     useEffect(() => {
         setIsEditorCodeViewActive(false)
@@ -55,6 +65,22 @@ const HelpCenterEditor = ({
         onChange(newModel, charCount)
     }
 
+    const resetEditorOnRemoveAttachmentHandlers = useCallback(
+        (editor: Editor, onRemoveAttachmentHandler: EventListener) => {
+            const removeAttachmentElements = editor.el.querySelectorAll(
+                '.' + HELP_CENTER_EDITOR_CSS_ATTACHMENT_CONSTANTS.closeIcon
+            )
+
+            nrOfFileAttachments.current = removeAttachmentElements.length
+
+            removeAttachmentElements.forEach((element) => {
+                element.removeEventListener('click', onRemoveAttachmentHandler)
+                element.addEventListener('click', onRemoveAttachmentHandler)
+            })
+        },
+        []
+    )
+
     return (
         <FroalaEditorComponent
             model={value}
@@ -64,10 +90,81 @@ const HelpCenterEditor = ({
             config={{
                 ...config,
                 events: {
+                    'file.beforeUpload': function (fileList: FileList): false {
+                        const files = Array.from(fileList)
+                        if (files.length === 0) {
+                            return false
+                        }
+
+                        const errorMessage = validateFileAttachments(
+                            nrOfFileAttachments.current,
+                            files
+                        )
+
+                        if (errorMessage !== null) {
+                            void dispatch(
+                                notify({
+                                    status: NotificationStatus.Error,
+                                    message: errorMessage,
+                                })
+                            )
+                            return false
+                        }
+
+                        void uploadFiles(files)
+                            .then((attachments) => {
+                                const editor = editorRef.current?.editor
+
+                                if (
+                                    !editor ||
+                                    !editorOnRemoveAttachmentHandler.current
+                                ) {
+                                    // This should not happen, this is only for typescript to get this is not null
+                                    return false
+                                }
+
+                                zip(files, attachments).forEach(
+                                    ([file, attachment]) => {
+                                        if (!file || !attachment) return
+
+                                        const prettySize = bytes(file.size, {
+                                            decimalPlaces: 1,
+                                        })
+
+                                        const html =
+                                            generateEditorAttachmentHTML({
+                                                fileName: file.name,
+                                                prettySize,
+                                                url: attachment.url,
+                                            })
+
+                                        editor.html.insert(html, false)
+                                    }
+                                )
+
+                                editor.undo.saveStep()
+
+                                resetEditorOnRemoveAttachmentHandlers(
+                                    editor,
+                                    editorOnRemoveAttachmentHandler.current
+                                )
+                            })
+                            .catch((err) => {
+                                void dispatch(
+                                    notify({
+                                        status: NotificationStatus.Error,
+                                        message: err.message,
+                                    })
+                                )
+                            })
+
+                        return false
+                    },
                     'image.beforeUpload': function (images: FileList) {
                         if (images.length === 0) {
                             return false
                         }
+
                         void uploadFiles([images[0]])
                             .then((res) => {
                                 const editor = editorRef.current?.editor
@@ -141,10 +238,21 @@ const HelpCenterEditor = ({
                     },
                     initialized: function () {
                         const editor = editorRef.current?.editor
-
                         if (!editor) return
+
                         const content = editor.html.get(true)
                         onEditorReady(content)
+
+                        const closeClickEventHandler =
+                            createOnCloseEventHandler(editor)
+
+                        editorOnRemoveAttachmentHandler.current =
+                            closeClickEventHandler
+
+                        resetEditorOnRemoveAttachmentHandlers(
+                            editor,
+                            closeClickEventHandler
+                        )
                     },
                 },
             }}

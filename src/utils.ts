@@ -1029,3 +1029,11 @@ export function unreachable(v: never): never {
 export function objKeys<T>(value: T): (keyof T)[] {
     return Object.keys(value) as (keyof T)[]
 }
+
+/**
+ * Type guard that checks if a value is not 'null' or 'undefined'
+ * Very convenient when using the 'filter' function on arrays
+ */
+export function notEmpty<T>(elem: T | null | undefined): elem is T {
+    return elem !== null && elem !== undefined
+}

@@ -11,6 +11,7 @@ import 'froala-editor/js/plugins/colors.min.js'
 import 'froala-editor/js/plugins/draggable.min.js'
 import 'froala-editor/js/plugins/emoticons.min.js'
 import 'froala-editor/js/plugins/entities.min.js'
+import 'froala-editor/js/plugins/file.min.js'
 import 'froala-editor/js/plugins/font_family.min.js'
 import 'froala-editor/js/plugins/font_size.min.js'
 import 'froala-editor/js/plugins/image.min.js'
@@ -170,6 +171,11 @@ const toolbarButtons: (Button | HorizontalSeparator | VerticalSeparator)[] = [
         materialIcon: 'format_list_numbered',
     },
     '|',
+    {
+        command: 'insertFile',
+        icon: 'insertFile',
+        materialIcon: 'attach_file',
+    },
     {
         command: 'insertImage',
         icon: 'insertImage',
