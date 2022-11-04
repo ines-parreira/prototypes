@@ -28,6 +28,8 @@ import {SMOOCH_INSIDE_INTEGRATION_TYPE} from 'constants/integration'
 import {initLaunchDarkly} from 'utils/launchDarkly'
 import {getEnvironment, isProduction, isStaging} from 'utils/environment'
 import {initErrorReporter} from 'utils/errors'
+import {initLogRocket} from 'utils/logRocket'
+import {LOG_ROCKET_APP_ID} from 'config'
 
 const initMoment = (currentUser: EditableUserProfile) => {
     // set default locale and timezone
@@ -106,6 +108,15 @@ if (window.SENTRY_DSN) {
         dsn: window.SENTRY_DSN,
         release: window.GORGIAS_RELEASE,
         environment: getEnvironment(),
+        currentUser: window.GORGIAS_STATE.currentUser,
+        currentAccount: window.GORGIAS_STATE.currentAccount,
+    })
+}
+
+if (isStaging() || isProduction()) {
+    initLogRocket({
+        appId: LOG_ROCKET_APP_ID,
+        release: window.GORGIAS_RELEASE,
         currentUser: window.GORGIAS_STATE.currentUser,
         currentAccount: window.GORGIAS_STATE.currentAccount,
     })

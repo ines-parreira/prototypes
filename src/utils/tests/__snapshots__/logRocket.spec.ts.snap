@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`logRocket initLogRocket should identify the user 1`] = `
+Array [
+  Array [
+    "2",
+    Object {
+      "domain": "acme",
+      "email": "alex@gorgias.io",
+      "name": "Alex Plugaru",
+    },
+  ],
+]
+`;
+
+exports[`logRocket initLogRocket should init logrocket client 1`] = `
+Array [
+  Array [
+    "foo",
+    Object {
+      "dom": Object {
+        "inputSanitizer": true,
+      },
+      "release": "v1",
+    },
+  ],
+]
+`;

@@ -24,6 +24,8 @@ import {WidgetContextType} from 'state/widgets/types'
 // TODO @LouisBarranqueiro switch all configuration to modular version
 
 export const DATADOG_CLIENT_TOKEN = 'pubc9857173f4901f3b10fc39dfcde707c6'
+export const LOG_ROCKET_APP_ID = 'ecfih9/gorgias'
+
 /**
  * Action related
  */
