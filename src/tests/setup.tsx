@@ -191,6 +191,10 @@ Object.defineProperty(window, 'cancelAnimationFrame', {
     value: jest.fn(),
 })
 
+Object.defineProperty(window, 'open', {
+    value: jest.fn(),
+})
+
 // failed expect in timeouts require try/catch and done.fail
 // https://github.com/facebook/jest/issues/3519
 global.jestSetTimeout = (body, timeout, done) => {

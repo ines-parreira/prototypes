@@ -4,12 +4,16 @@ import userEvent from '@testing-library/user-event'
 import {fromJS, Map} from 'immutable'
 import {within} from '@testing-library/dom'
 
-import {DEFAULT_PREFERENCES} from '../../../../config'
-import {proPlan, advancedPlan} from '../../../../fixtures/subscriptionPlan'
-import {user} from '../../../../fixtures/users'
+import {DEFAULT_PREFERENCES} from 'config'
+import {proPlan, advancedPlan} from 'fixtures/subscriptionPlan'
+import {user} from 'fixtures/users'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+
 import {Navbar} from '../Navbar'
 
 jest.mock('lodash/uniqueId', () => (id?: string) => `${id || ''}42`)
+jest.mock('store/middlewares/segmentTracker')
+const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
 describe('<Navbar />', () => {
     const minProps = {
@@ -90,14 +94,32 @@ describe('<Navbar />', () => {
     })
 
     it('should not render item to book office hours for trialing customers', () => {
-        const {queryByText} = render(
+        const {queryByText, getByText} = render(
             <Navbar
                 {...minProps}
                 currentPlan={fromJS(proPlan)}
                 isTrialing={true}
             />
         )
+
+        userEvent.click(getByText(user.name))
         expect(queryByText(/book office hours/i)).toBeFalsy()
+    })
+
+    it(`should log ${SegmentEvent.MenuUserLinkClicked} event on book office hours click`, () => {
+        const {getByText} = render(
+            <Navbar {...minProps} currentPlan={fromJS(proPlan)} />
+        )
+
+        userEvent.click(getByText(user.name))
+        userEvent.click(getByText(/book office hours/i)!)
+
+        expect(logEventMock).toHaveBeenLastCalledWith(
+            SegmentEvent.MenuUserLinkClicked,
+            {
+                link: 'office-hours',
+            }
+        )
     })
 
     it('should toggle the dropdown when clicking on the current logged user', () => {

@@ -442,8 +442,14 @@ export class Navbar extends Component<Props, State> {
                                             css['dropdown-item-user-menu']
                                         )}
                                         onClick={() => {
+                                            logEvent(
+                                                SegmentEvent.MenuUserLinkClicked,
+                                                {
+                                                    link: 'office-hours',
+                                                }
+                                            )
                                             window.open(
-                                                'https://calendly.com/gorgias-office-hours',
+                                                'https://calendly.com/gorgias-office-hours?utm_source=helpdesk&utm_medium=in_product&utm_campaign=user_menu',
                                                 '_blank',
                                                 'noopener'
                                             )
