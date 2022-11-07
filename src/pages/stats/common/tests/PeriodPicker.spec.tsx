@@ -77,12 +77,8 @@ describe('PeriodPicker', () => {
         })
 
         expect(onChange).toBeCalledWith({
-            startDatetime: moment
-                .tz(startDate.format(), 'America/Creston')
-                .format(),
-            endDatetime: moment
-                .tz(endDate.format(), 'America/Creston')
-                .format(),
+            startDatetime: moment.tz(startDate.format(), 'UTC').format(),
+            endDatetime: moment.tz(endDate.format(), 'UTC').format(),
         })
     })
 })

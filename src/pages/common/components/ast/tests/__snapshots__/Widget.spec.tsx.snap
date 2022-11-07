@@ -65,8 +65,8 @@ exports[`ast Widget should render DatetimeSelect field 1`] = `
   <DatePicker
     initialSettings={
       Object {
-        "endDate": "2018-03-29T04:59:32.580Z",
-        "startDate": "2018-03-29T04:59:32.580Z",
+        "endDate": "2018-03-28T21:59:32.580Z",
+        "startDate": "2018-03-28T21:59:32.580Z",
       }
     }
     onSubmit={[Function]}

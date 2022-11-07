@@ -404,7 +404,7 @@ describe('ticket reducers', () => {
         } as unknown as GorgiasAction
         expect(reducer(initialState, action)).toEqualImmutable(
             initialState
-                .set('snooze_datetime', '2017-01-01T17:00:00-07:00')
+                .set('snooze_datetime', '2017-01-02T00:00:00Z')
                 .set('status', 'closed')
         )
     })

@@ -8,7 +8,7 @@ exports[`<StatCurrentDate /> should display the current date with business hours
     class="date"
   >
     Today, 
-    September 3rd
+    September 2nd
   </span>
   <span
     class="businessHours"
@@ -29,7 +29,7 @@ exports[`<StatCurrentDate /> should display the current date without business ho
     class="date"
   >
     Today, 
-    September 3rd
+    September 2nd
   </span>
 </div>
 `;

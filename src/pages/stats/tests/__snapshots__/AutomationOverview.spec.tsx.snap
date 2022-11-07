@@ -476,7 +476,7 @@ exports[`AutomationOverview should render the filters and stats when stats filte
                 <span
                   class="wrapper"
                 >
-                  Feb 02, 2021 - Feb 03, 2021
+                  Feb 03, 2021
                   <i
                     class="material-icons icon isRight medium"
                   >

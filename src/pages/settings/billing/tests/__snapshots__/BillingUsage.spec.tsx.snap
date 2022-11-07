@@ -132,7 +132,7 @@ exports[`<BillingUsage/> should display price 1`] = `
             Your current subscription started on
              
             <strong>
-              Aug 22
+              Aug 23
             </strong>
           </div>
           <button
@@ -361,7 +361,7 @@ exports[`<BillingUsage/> should load with empty props 1`] = `
             Your current subscription started on
              
             <strong>
-              Aug 22
+              Aug 23
             </strong>
           </div>
           <button

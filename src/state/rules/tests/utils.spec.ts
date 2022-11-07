@@ -69,7 +69,7 @@ describe('resolveCallee function', () => {
 })
 
 describe('resolveSecondArg function', () => {
-    const mockDate = '2019-01-26T05:34:56-07:00'
+    const mockDate = '2019-01-26T05:34:56Z'
     beforeAll(() => {
         global.Date.now = jest.fn(() => +new Date(mockDate))
     })

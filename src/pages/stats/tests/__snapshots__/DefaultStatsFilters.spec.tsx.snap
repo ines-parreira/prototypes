@@ -17,8 +17,8 @@ Array [
   Object {
     "filters": Immutable.Map {
       "period": Immutable.Map {
-        "start_datetime": "2019-08-28T00:00:00-07:00",
-        "end_datetime": "2019-09-03T23:59:59-07:00",
+        "start_datetime": "2019-08-27T00:00:00-07:00",
+        "end_datetime": "2019-09-02T23:59:59-07:00",
       },
     },
     "type": "SET_STATS_FILTERS",
@@ -34,8 +34,8 @@ Array [
   Object {
     "filters": Immutable.Map {
       "period": Immutable.Map {
-        "start_datetime": "2019-08-28T00:00:00-07:00",
-        "end_datetime": "2019-09-03T23:59:59-07:00",
+        "start_datetime": "2019-08-27T00:00:00-07:00",
+        "end_datetime": "2019-09-02T23:59:59-07:00",
       },
     },
     "type": "SET_STATS_FILTERS",

@@ -13,7 +13,7 @@ Enzyme.configure({adapter: new Adapter()})
 
 // Set default moment timezone
 const moment = jest.requireActual('moment-timezone')
-;(moment as {tz: MomentTimezone}).tz.setDefault('America/Creston')
+;(moment as {tz: MomentTimezone}).tz.setDefault(process.env.TZ)
 
 Object.defineProperty(window, 'ResizeObserver', {
     value: function () {

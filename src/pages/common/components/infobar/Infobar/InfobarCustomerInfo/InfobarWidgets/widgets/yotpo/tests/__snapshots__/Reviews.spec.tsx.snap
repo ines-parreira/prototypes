@@ -8,7 +8,7 @@ exports[`<AfterTitle/> render() should render with different score values 1`] = 
     label="Created"
   >
     <Connect(DatetimeLabelContainer)
-      dateTime={2021-01-31T19:12:00.000Z}
+      dateTime={2021-01-31T12:12:00.000Z}
       key="created-at"
     />
   </StaticField>
@@ -59,7 +59,7 @@ exports[`<AfterTitle/> render() should render with different score values 2`] = 
     label="Created"
   >
     <Connect(DatetimeLabelContainer)
-      dateTime={2021-01-31T19:12:00.000Z}
+      dateTime={2021-01-31T12:12:00.000Z}
       key="created-at"
     />
   </StaticField>
@@ -110,7 +110,7 @@ exports[`<AfterTitle/> render() should render with different score values 3`] = 
     label="Created"
   >
     <Connect(DatetimeLabelContainer)
-      dateTime={2021-01-31T19:12:00.000Z}
+      dateTime={2021-01-31T12:12:00.000Z}
       key="created-at"
     />
   </StaticField>

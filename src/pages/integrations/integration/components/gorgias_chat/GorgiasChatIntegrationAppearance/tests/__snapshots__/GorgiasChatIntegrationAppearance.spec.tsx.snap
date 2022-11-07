@@ -697,7 +697,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       <div
                         class="conversationTimestamp"
                       >
-                        June 23
+                        June 24
                       </div>
                       <div
                         class="bubble primary firstMessageOfAppUser"
@@ -1456,7 +1456,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       <div
                         class="conversationTimestamp"
                       >
-                        June 23
+                        June 24
                       </div>
                       <div
                         class="bubble primary firstMessageOfAppUser"
@@ -2185,7 +2185,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       <div
                         class="conversationTimestamp"
                       >
-                        June 23
+                        June 24
                       </div>
                       <div
                         class="bubble primary firstMessageOfAppUser"
@@ -2922,7 +2922,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                       <div
                         class="conversationTimestamp"
                       >
-                        June 23
+                        June 24
                       </div>
                       <div
                         class="bubble primary firstMessageOfAppUser"
@@ -3651,7 +3651,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       <div
                         class="conversationTimestamp"
                       >
-                        June 23
+                        June 24
                       </div>
                       <div
                         class="bubble primary firstMessageOfAppUser"
@@ -4373,7 +4373,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       <div
                         class="conversationTimestamp"
                       >
-                        June 23
+                        June 24
                       </div>
                       <div
                         class="bubble primary firstMessageOfAppUser"
@@ -5154,7 +5154,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                       <div
                         class="conversationTimestamp"
                       >
-                        June 23
+                        June 24
                       </div>
                       <div
                         class="bubble primary firstMessageOfAppUser"
@@ -5995,7 +5995,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       <div
                         class="conversationTimestamp"
                       >
-                        June 23
+                        June 24
                       </div>
                       <div
                         class="bubble primary firstMessageOfAppUser"
@@ -6731,7 +6731,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       <div
                         class="conversationTimestamp"
                       >
-                        June 23
+                        June 24
                       </div>
                       <div
                         class="bubble primary firstMessageOfAppUser"

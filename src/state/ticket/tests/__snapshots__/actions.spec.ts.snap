@@ -1924,12 +1924,12 @@ Array [
 exports[`ticket actions setTrashed() should dispatch actions (trash ticket) 1`] = `
 Array [
   Object {
-    "trashed_datetime": "2017-08-11T07:00:00.000Z",
+    "trashed_datetime": "2017-08-11T00:00:00.000Z",
     "type": "setTrashedStart",
   },
   Object {
     "args": Object {
-      "trashed_datetime": "2017-08-11T07:00:00.000Z",
+      "trashed_datetime": "2017-08-11T00:00:00.000Z",
     },
     "type": "TICKET_PARTIAL_UPDATE_START",
   },
@@ -1972,12 +1972,12 @@ Array [
 exports[`ticket actions setTrashed() should undo when clicking on notification button 1`] = `
 Array [
   Object {
-    "trashed_datetime": "2017-08-11T07:00:00.000Z",
+    "trashed_datetime": "2017-08-11T00:00:00.000Z",
     "type": "setTrashedStart",
   },
   Object {
     "args": Object {
-      "trashed_datetime": "2017-08-11T07:00:00.000Z",
+      "trashed_datetime": "2017-08-11T00:00:00.000Z",
     },
     "type": "TICKET_PARTIAL_UPDATE_START",
   },
@@ -2016,7 +2016,7 @@ exports[`ticket actions setTypingActivityShopper() should dispatch SET_TYPING_AC
 exports[`ticket actions snoozeTicket() should snooze ticket 1`] = `
 Array [
   Object {
-    "snooze_datetime": "2017-12-21T07:00:00.000Z",
+    "snooze_datetime": "2017-12-21T00:00:00.000Z",
     "status": "closed",
     "type": "snoozeTicket",
   },
@@ -2026,7 +2026,7 @@ Array [
 exports[`ticket actions snoozeTicket() should snooze ticket and call the callback 1`] = `
 Array [
   Object {
-    "snooze_datetime": "2017-12-21T07:00:00.000Z",
+    "snooze_datetime": "2017-12-21T00:00:00.000Z",
     "status": "closed",
     "type": "snoozeTicket",
   },

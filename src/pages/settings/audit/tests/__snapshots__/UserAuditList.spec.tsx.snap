@@ -203,7 +203,7 @@ exports[`<UserAuditList/> should fetch events on mount and render a loading spin
               <span
                 class="wrapper"
               >
-                September 30, 2018 12:00 AM - September 30, 2018 11:59 PM
+                October 1, 2018 12:00 AM - October 1, 2018 11:59 PM
                 <i
                   class="material-icons icon isRight medium"
                 >
@@ -436,7 +436,7 @@ exports[`<UserAuditList/> should render a message to inform the user no events a
               <span
                 class="wrapper"
               >
-                September 30, 2018 12:00 AM - September 30, 2018 11:59 PM
+                October 1, 2018 12:00 AM - October 1, 2018 11:59 PM
                 <i
                   class="material-icons icon isRight medium"
                 >
@@ -669,7 +669,7 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
               <span
                 class="wrapper"
               >
-                September 30, 2018 12:00 AM - September 30, 2018 11:59 PM
+                October 1, 2018 12:00 AM - October 1, 2018 11:59 PM
                 <i
                   class="material-icons icon isRight medium"
                 >

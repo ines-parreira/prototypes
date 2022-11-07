@@ -253,7 +253,7 @@ exports[`<ChatApplication /> allows to enable chat widget and selects the first 
               - 
               11:00 AM
                
-              PDT
+              PST
             </span>
             <span>
               <b>
@@ -265,7 +265,7 @@ exports[`<ChatApplication /> allows to enable chat widget and selects the first 
               - 
               04:00 PM
                
-              PDT
+              PST
             </span>
             <span>
               <b>
@@ -277,7 +277,7 @@ exports[`<ChatApplication /> allows to enable chat widget and selects the first 
               - 
               12:00 PM
                
-              PDT
+              PST
             </span>
             <span>
               <b>
@@ -289,7 +289,7 @@ exports[`<ChatApplication /> allows to enable chat widget and selects the first 
               - 
               05:30 PM
                
-              PDT
+              PST
             </span>
           </div>
         </pre>
@@ -497,7 +497,7 @@ exports[`<ChatApplication /> is disabled if there are no chat integrations 1`] =
               - 
               11:00 AM
                
-              PDT
+              PST
             </span>
             <span>
               <b>
@@ -509,7 +509,7 @@ exports[`<ChatApplication /> is disabled if there are no chat integrations 1`] =
               - 
               04:00 PM
                
-              PDT
+              PST
             </span>
             <span>
               <b>
@@ -521,7 +521,7 @@ exports[`<ChatApplication /> is disabled if there are no chat integrations 1`] =
               - 
               12:00 PM
                
-              PDT
+              PST
             </span>
             <span>
               <b>
@@ -533,7 +533,7 @@ exports[`<ChatApplication /> is disabled if there are no chat integrations 1`] =
               - 
               05:30 PM
                
-              PDT
+              PST
             </span>
           </div>
         </pre>

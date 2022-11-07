@@ -68,7 +68,7 @@ exports[`<Source /> should render the tooltip on hover 1`] = `
     </span>
     <strong>
       <div>
-        Fri Dec 22 2017 00:00:00 GMT-0700
+        Fri Dec 22 2017 00:00:00 GMT+0000
       </div>
     </strong>
   </li>
