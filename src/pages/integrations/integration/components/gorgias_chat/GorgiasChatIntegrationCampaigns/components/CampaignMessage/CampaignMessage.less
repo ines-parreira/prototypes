@@ -1,0 +1,30 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .authorWrapper {
+        display: flex;
+        align-items: center;
+
+        & > span {
+            margin-right: 6px;
+        }
+
+        :global .dropdown-toggle {
+            color: @classic-main-primary;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 20px;
+            border: none;
+        }
+
+        :global .gravatar {
+            img {
+                margin-top: -5px;
+            }
+        }
+    }
+
+    .authorInput div {
+        align-items: center;
+    }
+}

@@ -93,7 +93,7 @@ jest.mock(
     () => () => <div>GorgiasChatIntegrationAppearance</div>
 )
 jest.mock(
-    '../components/gorgias_chat/GorgiasChatIntegrationCampaigns/GorgiasChatCampaignDetail',
+    '../components/gorgias_chat/GorgiasChatIntegrationCampaigns/containers/CampaignDetailsFactory',
     () => () => <div>GorgiasChatCampaignDetail</div>
 )
 jest.mock(

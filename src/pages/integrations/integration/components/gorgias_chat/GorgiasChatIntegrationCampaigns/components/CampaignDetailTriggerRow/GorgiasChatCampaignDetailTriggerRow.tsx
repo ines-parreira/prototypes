@@ -6,7 +6,8 @@ import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {CAMPAIGNS_TRIGGER_KEYS} from 'config/integrations/gorgias_chat'
 import {SelectableOption, Value} from 'pages/common/forms/SelectField/types'
 
-import {GorgiasChatCampaignDetailValueInput} from './GorgiasChatCampaignDetailValueInput'
+import {GorgiasChatCampaignDetailValueInput} from '../../components/CampaignDetailValueInput'
+
 import css from './GorgiasChatCampaignDetailTriggerRow.less'
 
 type Props = {

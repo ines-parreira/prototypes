@@ -1,0 +1,88 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<BaseCampaignDetails /> matches snapshot 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="page-header pageHeader"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations"
+            >
+              Integrations
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations/gorgias_chat/1"
+            >
+              Chat
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            Unit Test Chat
+          </li>
+        </ol>
+      </nav>
+    </div>
+    <nav
+      class="navbar navbar"
+    >
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/integrations/gorgias_chat/1/campaigns"
+      >
+        Campaigns
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/integrations/gorgias_chat/1/quick_replies"
+      >
+        Quick replies
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/integrations/gorgias_chat/1/appearance"
+      >
+        Appearance
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/integrations/gorgias_chat/1/preferences"
+      >
+        Preferences
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/integrations/gorgias_chat/1/installation"
+      >
+        Installation
+      </a>
+    </nav>
+    <div>
+      content
+    </div>
+  </div>
+</div>
+`;

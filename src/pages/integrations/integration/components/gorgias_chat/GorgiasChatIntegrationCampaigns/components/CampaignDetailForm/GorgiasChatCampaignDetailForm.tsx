@@ -28,7 +28,6 @@ import {
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import DEPRECATED_RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import CampaignPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/CampaignPreview'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {Value} from 'pages/common/forms/SelectField/types'
 import {AgentLabel} from 'pages/common/utils/labels'
@@ -41,8 +40,10 @@ import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {FeatureFlagKey} from 'config/featureFlags'
 
+import CampaignPreview from '../CampaignPreview'
+import {GorgiasChatCampaignDetailTriggerRow} from '../CampaignDetailTriggerRow'
+
 import css from './GorgiasChatCampaignDetailForm.less'
-import {GorgiasChatCampaignDetailTriggerRow} from './GorgiasChatCampaignDetailTriggerRow'
 
 /**
  * Generate and return a default empty trigger associated with a trigger configuration.
@@ -89,7 +90,7 @@ export const GorgiasChatCampaignDetailForm = ({
     deleteCampaign,
 }: Props) => {
     const flags = useFlags()
-    const isRevenueAlphaTester = useMemo(() => {
+    const isRevenueTester = useMemo(() => {
         if (
             flags &&
             Object.keys(flags).includes(FeatureFlagKey.RevenueAlphaTesters)
@@ -110,7 +111,7 @@ export const GorgiasChatCampaignDetailForm = ({
 
     const initState = useCallback(
         (_campaign: Map<any, any>) => {
-            const defaultTriggers = isRevenueAlphaTester
+            const defaultTriggers = isRevenueTester
                 ? [
                       DEFAULT_TRIGGER(0), // default `business_hours` empty trigger in case of new campaign
                       DEFAULT_TRIGGER(1), // default `current_url` empty trigger in case of new campaign
@@ -127,7 +128,7 @@ export const GorgiasChatCampaignDetailForm = ({
                 loading: false,
             })
         },
-        [setStateInitialialized, setState, isRevenueAlphaTester]
+        [setStateInitialialized, setState, isRevenueTester]
     )
 
     // We do not allow a second "business_hours" trigger so we should
@@ -161,7 +162,7 @@ export const GorgiasChatCampaignDetailForm = ({
     }, [state.triggers])
 
     useEffect(() => {
-        if (isRevenueAlphaTester) {
+        if (isRevenueTester) {
             const {triggers} = campaign.toJS()
             let immutableTriggers: List<Map<any, any>> =
                 campaign.get('triggers')
@@ -185,7 +186,7 @@ export const GorgiasChatCampaignDetailForm = ({
         } else {
             initState(campaign)
         }
-    }, [initState, isRevenueAlphaTester, campaign])
+    }, [initState, isRevenueTester, campaign])
 
     const addNewTrigger = (keyConfigIdx: number) => {
         setState((state) => ({
@@ -276,7 +277,7 @@ export const GorgiasChatCampaignDetailForm = ({
     const indexIfBusinessHours = (index: number) => {
         const {triggers} = campaign.toJS()
 
-        if (isRevenueAlphaTester) {
+        if (isRevenueTester) {
             return index + 1
         }
 
@@ -363,7 +364,7 @@ export const GorgiasChatCampaignDetailForm = ({
     const {loading, message, triggers, name} = state
 
     return (
-        <div>
+        <div data-testid="common-campaign-details-page">
             <div className={css.backWrapper}>
                 <Link
                     to={`/app/settings/integrations/${

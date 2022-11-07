@@ -44,7 +44,7 @@ import FacebookIntegrationSetup from './components/facebook/FacebookIntegrationS
 import FacebookIntegrationCustomerChat from './components/facebook/FacebookIntegrationCustomerChat/FacebookIntegrationCustomerChat'
 
 import GorgiasChatIntegrationAppearance from './components/gorgias_chat/GorgiasChatIntegrationAppearance'
-import GorgiasChatCampaignDetail from './components/gorgias_chat/GorgiasChatIntegrationCampaigns/GorgiasChatCampaignDetail'
+import ChatCampaignDetailsFactory from './components/gorgias_chat/GorgiasChatIntegrationCampaigns/containers/CampaignDetailsFactory'
 import GorgiasChatIntegrationCampaigns from './components/gorgias_chat/GorgiasChatIntegrationCampaigns/GorgiasChatIntegrationCampaigns'
 import GorgiasChatIntegrationList from './components/gorgias_chat/GorgiasChatIntegrationList'
 import GorgiasChatIntegrationInstall from './components/gorgias_chat/GorgiasChatIntegrationInstall'
@@ -467,7 +467,7 @@ export const IntegrationDetail = ({
                 if (extra === Tab.Campaigns || !extra) {
                     if (subId) {
                         return (
-                            <GorgiasChatCampaignDetail
+                            <ChatCampaignDetailsFactory
                                 integration={integration}
                                 id={subId}
                             />

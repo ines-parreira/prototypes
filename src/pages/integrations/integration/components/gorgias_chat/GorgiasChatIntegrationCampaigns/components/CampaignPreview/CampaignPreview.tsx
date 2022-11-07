@@ -7,9 +7,9 @@ import {
 } from 'models/integration/types'
 import CloseIcon from 'assets/img/icons/DefaultCloseIcon.svg'
 
-import GorgiasChatPoweredBy from '../GorgiasChatIntegrationPreview/GorgiasChatPoweredBy'
+import GorgiasChatPoweredBy from '../../../GorgiasChatIntegrationPreview/GorgiasChatPoweredBy'
 
-import Avatar from '../../../../../common/components/Avatar/Avatar'
+import Avatar from '../../../../../../../common/components/Avatar/Avatar'
 
 import css from './CampaignPreview.less'
 
