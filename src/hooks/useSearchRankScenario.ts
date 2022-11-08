@@ -39,6 +39,7 @@ export type SearchRank = {
 
 export const DATABASE_TYPE: Record<SearchEngine, string> = {
     [SearchEngine.ES]: 'elasticsearch',
+    [SearchEngine.GCP_ES]: 'elasticsearch-gcp', // fixme(@Illia): deprecate this search engine after migration is done
     [SearchEngine.PG]: 'postgres',
 }
 

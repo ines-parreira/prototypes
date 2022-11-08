@@ -27,6 +27,7 @@ export type SearchParams = {
 export enum SearchEngine {
     PG = 'PG',
     ES = 'ES',
+    GCP_ES = 'GCP_ES',
 }
 
 export type SearchApiResponse<T> = ApiListResponse<T[], Record<string, unknown>>
