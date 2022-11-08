@@ -24,6 +24,7 @@ import {
     getActiveEmailChannels,
     getPhoneChannelsForPhoneSource,
     getPhoneChannelsForSmsSource,
+    getWhatsAppChannels,
 } from 'state/integrations/selectors'
 
 import MultiSelectAsyncField from './components/MultiSelectAsyncField/MultiSelectAsyncField'
@@ -82,12 +83,24 @@ const MessageSourceFields = forwardRef<MultiSelectAsyncField, Props>(
 
         const emailChannels = useAppSelector(getActiveEmailChannels)
         const phoneChannels = useAppSelector(getPhoneChannelsForSource)
+        const whatsAppChannels = useAppSelector(getWhatsAppChannels)
 
-        const accountChannels =
-            sourceType === TicketMessageSourceType.Phone ||
-            sourceType === TicketMessageSourceType.Sms
-                ? phoneChannels
-                : emailChannels
+        const getAccountChannelsForSourceType = (
+            sourceType: TicketMessageSourceType
+        ) => {
+            switch (sourceType) {
+                case TicketMessageSourceType.Phone:
+                case TicketMessageSourceType.Sms:
+                    return phoneChannels
+                case TicketMessageSourceType.WhatsAppMessage:
+                    return whatsAppChannels
+                default:
+                    return emailChannels
+            }
+        }
+
+        const accountChannels = getAccountChannelsForSourceType(sourceType)
+
         const ticket = useAppSelector((state: RootState) => state.ticket)
 
         const [displayedFields, setDisplayedFields] = useState<string[]>([]) // optional fields that are displayed

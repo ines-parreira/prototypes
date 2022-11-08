@@ -103,6 +103,7 @@ export const SOURCE_VALUE_PROP: Partial<
     [TicketMessageSourceType.Email]: 'address',
     [TicketMessageSourceType.Phone]: 'address',
     [TicketMessageSourceType.Sms]: 'address',
+    [TicketMessageSourceType.WhatsAppMessage]: 'address',
     [TicketMessageSourceType.OttspottCall]: 'address',
     [TicketMessageSourceType.Chat]: 'address',
     [TicketMessageSourceType.ChatContactForm]: 'address',

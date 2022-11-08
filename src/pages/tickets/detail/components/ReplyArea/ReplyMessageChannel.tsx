@@ -28,6 +28,7 @@ const changeReceiversAllowedSourceTypes = [
     TicketMessageSourceType.Email,
     TicketMessageSourceType.Phone,
     TicketMessageSourceType.Sms,
+    TicketMessageSourceType.WhatsAppMessage,
 ]
 
 type Props = {
@@ -160,6 +161,7 @@ export class ReplyMessageChannelContainer extends Component<Props> {
             ticket,
             hasPhoneIntegration,
             hasSmsIntegration,
+            hasWhatsAppIntegration,
         } = this.props
 
         const isTicketExisting = !!ticket.get('id')
@@ -202,6 +204,10 @@ export class ReplyMessageChannelContainer extends Component<Props> {
             hasSmsIntegration &&
             (!isTicketExisting ||
                 !!replyOptions.get(TicketMessageSourceType.Sms))
+        const suggestWhatsApp =
+            hasWhatsAppIntegration &&
+            (!isTicketExisting ||
+                !!replyOptions.get(TicketMessageSourceType.WhatsAppMessage))
         const suggestYotpoReview =
             isTicketExisting &&
             !!replyOptions.get(TicketMessageSourceType.YotpoReview)
@@ -531,6 +537,23 @@ export class ReplyMessageChannelContainer extends Component<Props> {
                                     Send SMS
                                 </DropdownItem>
                             )}
+                            {suggestWhatsApp && (
+                                <DropdownItem
+                                    type="button"
+                                    onClick={() => {
+                                        prepareNewMessage(
+                                            TicketMessageSourceType.WhatsAppMessage
+                                        )
+                                    }}
+                                >
+                                    <SourceIcon
+                                        type={
+                                            TicketMessageSourceType.WhatsAppMessage
+                                        }
+                                    />
+                                    Reply via WhatsApp
+                                </DropdownItem>
+                            )}
                         </DropdownMenu>
                     </UncontrolledDropdown>
                 </div>
@@ -561,6 +584,9 @@ const connector = connect(
             hasSmsIntegration: hasIntegrationOfTypes(IntegrationType.Sms)(
                 state
             ),
+            hasWhatsAppIntegration: hasIntegrationOfTypes(
+                IntegrationType.WhatsApp
+            )(state),
         }
     },
     {

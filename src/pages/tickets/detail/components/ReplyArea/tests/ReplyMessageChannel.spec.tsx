@@ -37,6 +37,7 @@ describe('ReplyMessageChannel component', () => {
         ticket: fromJS({}),
         hasPhoneIntegration: false,
         hasSmsIntegration: false,
+        hasWhatsAppIntegration: false,
         prepareNewMessage: jest.fn(),
     }
 

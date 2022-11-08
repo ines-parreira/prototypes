@@ -8,6 +8,8 @@ import {
     IntegrationType,
     isPhoneIntegration,
     isSmsIntegration,
+    isWhatsAppIntegration,
+    WhatsAppIntegration,
 } from 'models/integration/types'
 import {MESSAGING_INTEGRATION_TYPES} from 'models/integration/constants'
 import {PhoneNumber} from 'models/phoneNumber/types'
@@ -294,6 +296,11 @@ export const getSmsIntegrations = createSelector(
     (integrations) => integrations.filter(isSmsIntegration)
 )
 
+export const getWhatsAppIntegrations = createSelector(
+    getIntegrations,
+    (integrations) => integrations.filter(isWhatsAppIntegration)
+)
+
 export const getBaseEmailIntegration = createSelector<
     RootState,
     Map<any, any>,
@@ -403,6 +410,23 @@ export const getPhoneChannelsForPhoneSource = makeGetPhoneChannels(
 export const getPhoneChannelsForSmsSource = makeGetPhoneChannels(
     IntegrationType.Sms
 )
+
+// return email and gmail integrations formatted as channel
+export const getWhatsAppChannels = createSelector<
+    RootState,
+    List<any>,
+    WhatsAppIntegration[]
+>(getWhatsAppIntegrations, (integrations) => {
+    const channels = integrations.map((integration: WhatsAppIntegration) => {
+        return {
+            id: integration.id,
+            type: integration.type,
+            name: integration.name,
+            address: integration.meta.routing.phone_number,
+        }
+    })
+    return fromJS(channels) as List<any>
+})
 
 export const getChannelsByType = (type: string) =>
     createSelector<RootState, List<any>, List<any>, List<any>, List<any>>(

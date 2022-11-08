@@ -338,6 +338,10 @@ export function sourceTypeToChannel(
         return TicketChannel.Phone
     }
 
+    if (sourceType === TicketMessageSourceType.WhatsAppMessage) {
+        return TicketChannel.WhatsApp
+    }
+
     if (
         sourceType === TicketMessageSourceType.TwitterTweet ||
         sourceType === TicketMessageSourceType.TwitterQuotedTweet ||

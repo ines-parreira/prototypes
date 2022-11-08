@@ -75,9 +75,9 @@ const WhatsAppSpike = () => {
         initFacebookSdk(() => setIsInitialized(true))
     })
 
-    if (!isInitialized) {
-        return null
-    }
+    // if (!isInitialized) {
+    //     return null
+    // }
 
     return (
         <>

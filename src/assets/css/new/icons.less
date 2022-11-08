@@ -186,12 +186,24 @@
     font-size: 16px;
 }
 
+@font-face {
+    font-family: 'icon-whatsapp';
+    src: url('../../font/icon-whatsapp.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+.icon-whatsapp:before {
+    font-family: 'icon-whatsapp', serif !important;
+    content: '\f232';
+}
+
 .icon-facebook-feed:before
     .icon-instagram-dm:before
     .icon-yotpo-review:before
     .icon-yotpo-review-public-comment:before
     .icon-yotpo-review-private-comment:before
-    .icon-twitter-dm:before {
+    .icon-twitter-dm:before
+    .icon-whatsapp:before {
     display: inline-block;
     font-style: normal;
     font-weight: normal;

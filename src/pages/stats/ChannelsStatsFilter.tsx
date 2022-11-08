@@ -1,6 +1,9 @@
 import React, {ComponentProps, useCallback} from 'react'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import _upperFirst from 'lodash/upperFirst'
+import _without from 'lodash/without'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {TicketChannel} from 'business/types/ticket'
 import {mergeStatsFilters} from 'state/stats/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -15,6 +18,10 @@ type Props = {
 
 export default function ChannelsStatsFilter({value = [], channels}: Props) {
     const dispatch = useAppDispatch()
+    const isWhatsAppEnabled = useFlags()[FeatureFlagKey.EnableWhatsApp]
+    const channelsToDisplay = isWhatsAppEnabled
+        ? channels
+        : _without(channels, TicketChannel.WhatsApp)
 
     const handleFilterChange: ComponentProps<typeof SelectFilter>['onChange'] =
         useCallback(
@@ -33,7 +40,7 @@ export default function ChannelsStatsFilter({value = [], channels}: Props) {
             onChange={handleFilterChange}
             value={value}
         >
-            {channels.map((channel) => (
+            {channelsToDisplay.map((channel) => (
                 <SelectFilter.Item
                     key={channel}
                     label={_upperFirst(channel.replace(/-/g, ' '))}

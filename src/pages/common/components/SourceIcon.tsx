@@ -117,6 +117,11 @@ const sourceTypeToIcon = (
             break
         case TicketChannel.HelpCenter:
             icon.name = 'help'
+            break
+        case TicketMessageSourceType.WhatsAppMessage:
+            icon.custom = true
+            icon.name = 'whatsapp'
+            break
     }
 
     return icon

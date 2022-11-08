@@ -38,6 +38,7 @@ export enum TicketMessageSourceType {
     TwitterQuotedTweet = 'twitter-quoted-tweet',
     TwitterMentionTweet = 'twitter-mention-tweet',
     TwitterDirectMessage = 'twitter-direct-message',
+    WhatsAppMessage = 'whatsapp-message',
 }
 
 export enum TicketStatus {
@@ -64,6 +65,7 @@ export enum TicketChannel {
     Twitter = 'twitter',
     TwitterDirectMessage = 'twitter-direct-message',
     YotpoReview = 'yotpo-review',
+    WhatsApp = 'whatsapp',
 }
 
 export enum TicketVia {
@@ -76,4 +78,5 @@ export enum TicketVia {
     Yotpo = 'yotpo',
     Twitter = 'twitter',
     SelfService = 'self_service',
+    WhatsApp = 'whatsapp',
 }

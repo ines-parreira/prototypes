@@ -23,6 +23,7 @@ export enum IntegrationType {
     Twitter = 'twitter',
     SelfService = 'self_service',
     App = 'app',
+    WhatsApp = 'whatsapp',
 }
 
 export enum VoiceMessageType {

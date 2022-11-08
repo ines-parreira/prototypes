@@ -52,7 +52,8 @@ const ReceiversSelectField = forwardRef<MultiSelectAsyncField, Props>(
         const valueProp = getValuePropFromSourceType(sourceType) // the property to display from the object
         const searchType =
             sourceType === TicketMessageSourceType.Phone ||
-            sourceType === TicketMessageSourceType.Sms
+            sourceType === TicketMessageSourceType.Sms ||
+            sourceType === TicketMessageSourceType.WhatsAppMessage
                 ? SearchType.UserChannelPhone
                 : SearchType.UserChannelEmail
         const searchRankSource =
@@ -139,10 +140,12 @@ const ReceiversSelectField = forwardRef<MultiSelectAsyncField, Props>(
         const allowCreate =
             sourceType === TicketMessageSourceType.Email ||
             sourceType === TicketMessageSourceType.Phone ||
-            sourceType === TicketMessageSourceType.Sms
+            sourceType === TicketMessageSourceType.Sms ||
+            sourceType === TicketMessageSourceType.WhatsAppMessage
         const allowCreateConstraint =
             sourceType === TicketMessageSourceType.Phone ||
-            sourceType === TicketMessageSourceType.Sms
+            sourceType === TicketMessageSourceType.Sms ||
+            sourceType === TicketMessageSourceType.WhatsAppMessage
                 ? isValidPhoneNumber
                 : isEmail
 

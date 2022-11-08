@@ -302,8 +302,13 @@ export const setActiveCustomerAsReceiver =
             )?.toJS() || []
         const sourceType: TicketChannel =
             newMessageSource.get('type') ?? TicketChannel.Email
-        const sourceTypeToSearch =
-            sourceType === TicketChannel.Sms ? TicketChannel.Phone : sourceType
+        const sourceTypeToSearch = [
+            TicketChannel.Sms,
+            TicketChannel.Phone,
+            TicketChannel.WhatsApp,
+        ].includes(sourceType)
+            ? TicketChannel.Phone
+            : sourceType
         const customerChannel = customerChannels.find(
             (channel: CustomerChannel) => channel.type === sourceTypeToSearch
         )
