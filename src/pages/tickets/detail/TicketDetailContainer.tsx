@@ -3,10 +3,10 @@ import {connect, ConnectedProps} from 'react-redux'
 import {useParams, useLocation} from 'react-router-dom'
 import {fromJS, List, Map} from 'immutable'
 import {useAsyncFn, useEffectOnce, usePrevious, useKey} from 'react-use'
-import DocumentTitle from 'react-document-title'
 
 import {TicketMessageSourceType} from 'business/types/ticket'
 import useSearch from 'hooks/useSearch'
+import {useTitle} from 'hooks/useTitle'
 import {RootState} from 'state/types'
 import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
 import shortcutManager from 'services/shortcutManager'
@@ -115,6 +115,13 @@ export const TicketDetailContainer = ({
         [ticket]
     )
     const prevCustomer = usePrevious(customer)
+    const isLoading =
+        (ticketIdParam !== 'new' && !ticket.get('id')) ||
+        (ticketIdParam === 'new' && ticket.get('id')) ||
+        ticket.getIn(['_internal', 'loading', 'fetchTicket'])
+
+    const title = ticket.get('id') ? ticket.get('subject') : 'New ticket'
+    useTitle(isLoading ? undefined : title)
 
     useEffect(() => {
         void fetchTags()
@@ -470,25 +477,17 @@ export const TicketDetailContainer = ({
         })
     }
 
-    if (
-        (ticketIdParam !== 'new' && !ticket.get('id')) ||
-        (ticketIdParam === 'new' && ticket.get('id')) ||
-        ticket.getIn(['_internal', 'loading', 'fetchTicket'])
-    ) {
+    if (isLoading) {
         return <Loader message="Loading ticket..." />
     }
 
     return (
-        <DocumentTitle
-            title={ticket.get('id') ? ticket.get('subject') : 'New ticket'}
-        >
-            <TicketView
-                hideTicket={hideTicket}
-                isTicketHidden={isTicketHidden}
-                submit={submit}
-                setStatus={handleStatusChange}
-            />
-        </DocumentTitle>
+        <TicketView
+            hideTicket={hideTicket}
+            isTicketHidden={isTicketHidden}
+            submit={submit}
+            setStatus={handleStatusChange}
+        />
     )
 }
 

@@ -1,6 +1,5 @@
 import React, {ComponentProps, useEffect, useMemo, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import DocumentTitle from 'react-document-title'
 import {Link, useLocation, useParams} from 'react-router-dom'
 import decorateComponentWithProps from 'decorate-component-with-props'
 
@@ -19,6 +18,7 @@ import ViewTable from 'pages/common/components/ViewTable/ViewTable'
 import MacroContainer from 'pages/tickets/common/macros/MacroContainer'
 import SearchRankScenarioProvider from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioProvider'
 import {SearchRankSource} from 'hooks/useSearchRankScenario'
+import {useTitle} from 'hooks/useTitle'
 
 import TicketListActions from './components/TicketListActions'
 import css from './TicketListContainer.less'
@@ -70,6 +70,8 @@ export const TicketListContainer = ({
         return title
     }, [activeView, hasActiveView, isSearch, isUpdate])
 
+    useTitle(title)
+
     const viewTable = (
         <ViewTable
             className={css.table}
@@ -97,34 +99,32 @@ export const TicketListContainer = ({
     )
 
     return (
-        <DocumentTitle title={title}>
-            <div
-                className="d-flex flex-column"
-                style={{
-                    width: '100%',
-                }}
-            >
-                {isSearch ? (
-                    <SearchRankScenarioProvider
-                        source={SearchRankSource.TicketsView}
-                    >
-                        {viewTable}
-                    </SearchRankScenarioProvider>
-                ) : (
-                    viewTable
-                )}
+        <div
+            className="d-flex flex-column"
+            style={{
+                width: '100%',
+            }}
+        >
+            {isSearch ? (
+                <SearchRankScenarioProvider
+                    source={SearchRankSource.TicketsView}
+                >
+                    {viewTable}
+                </SearchRankScenarioProvider>
+            ) : (
+                viewTable
+            )}
 
-                {isMacroModalOpen && (
-                    <MacroContainer
-                        activeView={activeView}
-                        disableExternalActions
-                        selectedItemsIds={selectedItemsIds}
-                        closeModal={() => setIsMacroModalOpen(false)}
-                        selectionMode
-                    />
-                )}
-            </div>
-        </DocumentTitle>
+            {isMacroModalOpen && (
+                <MacroContainer
+                    activeView={activeView}
+                    disableExternalActions
+                    selectedItemsIds={selectedItemsIds}
+                    closeModal={() => setIsMacroModalOpen(false)}
+                    selectionMode
+                />
+            )}
+        </div>
     )
 }
 

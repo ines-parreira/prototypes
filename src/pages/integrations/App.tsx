@@ -10,6 +10,7 @@ import Loader from 'pages/common/components/Loader/Loader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import AppAdvanced from 'pages/integrations/Advanced'
 import Detail from 'pages/integrations/components/Detail/Detail'
+import {useTitle} from 'hooks/useTitle'
 
 export enum Tab {
     Details = 'details',
@@ -48,6 +49,8 @@ export default function AppDetail() {
         setLoading(true)
         void loadAppDetails(appId)
     }, [appId, preview])
+
+    useTitle(appItem?.title)
 
     if (!appItem || isLoading) {
         return <Loader minHeight="300px" />
