@@ -49,8 +49,6 @@ import {SearchType, UserSearchResult} from 'models/search/types'
 import {search} from 'models/search/resources'
 import {CustomerChannel} from 'models/customerChannel/types'
 
-import {EMPTY_SENDER} from 'state/ticket/constants'
-import {MacroActionName} from 'models/macroAction/types'
 import * as responseUtils from './responseUtils'
 import * as selectors from './selectors'
 import * as constants from './constants'
@@ -72,6 +70,7 @@ import {
     TicketMessageActionValidationError,
     TicketMessageInvalidSendDataError,
 } from './errors'
+import {transformToInternalNote} from './utils'
 
 export const addAttachments =
     (ticket: Map<any, any>, atts: FileList | Attachment[] | File[]) =>
@@ -688,38 +687,13 @@ export function prepareTicketDataToSend(
 
         //Transform empty message with macro to internal note
         if (!selectors.hasContent(state) && !!ticket.state?.appliedMacro) {
-            ticket.newMessage.source = {
-                ...ticket.newMessage.source,
-                type: TicketMessageSourceType.InternalNote,
-                from: EMPTY_SENDER,
-            }
-            delete ticket.newMessage.source.to
-            const internalNote = actions?.find(
-                (action) =>
-                    action!.get('name') === MacroActionName.AddInternalNote
+            const {newMessage, newActions} = transformToInternalNote(
+                ticket.newMessage,
+                actions,
+                `Applied macro "${(ticket.state.appliedMacro as Macro).name}"`
             )
-            if (internalNote) {
-                ticket.newMessage.body_text = internalNote.getIn(
-                    ['arguments', 'body_text'],
-                    ''
-                )
-                ticket.newMessage.body_html = internalNote.getIn(
-                    ['arguments', 'body_html'],
-                    ''
-                )
-                actions = actions?.filter(
-                    (action) =>
-                        action!.get('name') !== MacroActionName.AddInternalNote
-                ) as Maybe<MacroActions>
-            } else {
-                const text = `Applied macro "${
-                    (ticket.state.appliedMacro as Macro).name
-                }"`
-                ticket.newMessage.body_text = text
-                ticket.newMessage.body_html = `<div>${text}</div>`
-            }
-
-            ticket.newMessage.public = false
+            ticket.newMessage = newMessage
+            actions = newActions
         }
 
         const sourceType = ticket.newMessage.source.type

@@ -1,9 +1,12 @@
 import esprima from 'esprima'
+import {HttpMethod} from 'models/api/types'
+import type {User} from 'config/types/user'
+import type {Team} from 'state/teams/types'
 
 import {
     AnyManagedRuleSettings,
     ObjectExpressionPropertyKey,
-} from '../../state/rules/types'
+} from 'state/rules/types'
 
 export enum IdentifierCategoryKey {
     Message = 'message',
@@ -145,4 +148,39 @@ export enum RuleType {
 export type RulePriority = {
     id: number
     priority: number
+}
+
+export type RuleActionAttachment = {
+    url: string
+    content_type?: string
+    name?: string
+    size?: number
+}
+
+export type RuleAction = {
+    name: RuleActionName
+    args: {
+        attachments?: RuleActionAttachment[]
+        body_html?: string
+        body_text?: string
+        tags?: string
+        method?: HttpMethod
+        headers?: Record<string, unknown>[]
+        url?: string
+        params?: Record<string, unknown>[]
+        status?: string
+        assignee_user?: User
+        assignee_team?: Team
+        subject?: string
+        snooze_timedelta?: string
+        to?: string
+        cc?: string
+        bcc?: string
+        from?: string
+    }
+}
+
+export enum RuleActionName {
+    ReplyToTicket = 'replyToTicket',
+    //...
 }

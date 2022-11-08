@@ -70,6 +70,7 @@ export type MacroActionAttachment = {
     name?: string
     size?: number
 }
+
 export const actionTypeToName: {[key: string]: string} = {
     http: 'Http',
     shopify: 'Shopify',

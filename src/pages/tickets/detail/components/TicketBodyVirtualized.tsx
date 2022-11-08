@@ -373,7 +373,9 @@ export class TicketBodyVirtualized extends React.Component<Props, State> {
                                     />
                                 )
                             } else if (isTicketRuleSuggestion(element))
-                                itemContent = <RuleSuggestion />
+                                itemContent = (
+                                    <RuleSuggestion ticket={ticket.toJS()} />
+                                )
                             else if (isTicketEvent(element)) {
                                 if (
                                     contentfulEventTypesValues.includes(

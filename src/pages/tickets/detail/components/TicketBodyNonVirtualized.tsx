@@ -287,7 +287,7 @@ export class TicketBodyNonVirtualized extends React.Component<Props, State> {
                             }
 
                             if (isTicketRuleSuggestion(element))
-                                return <RuleSuggestion />
+                                return <RuleSuggestion ticket={ticket.toJS()} />
 
                             if (isTicketEvent(element)) {
                                 if (
