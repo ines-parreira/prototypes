@@ -355,8 +355,8 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         companyUrl: 'https://www.gorgias.com/',
         privacyPolicy: 'https://www.shopify.com/legal/privacy',
         setupGuide: 'https://docs.gorgias.com/ecommerce-integrations/shopify',
-        hasFreeTrial: true,
-        freeTrialPeriod: TrialPeriod.FOURTEEN,
+        hasFreeTrial: false,
+        freeTrialPeriod: null,
     },
     {
         type: IntegrationType.BigCommerce,
@@ -379,8 +379,8 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         companyUrl: 'https://www.gorgias.com/',
         privacyPolicy: 'https://www.bigcommerce.com/privacy/',
         setupGuide: 'https://docs.gorgias.com/bigcommerce-105241',
-        hasFreeTrial: true,
-        freeTrialPeriod: TrialPeriod.CUSTOM,
+        hasFreeTrial: false,
+        freeTrialPeriod: null,
     },
     {
         type: IntegrationType.Twitter,

@@ -78,11 +78,6 @@ exports[`<BigCommerce/> Detail should render a detail view 1`] = `
           ECOMMERCE
         </span>
         <span
-          class="badge badge badge-success badge-pill"
-        >
-          FREE TRIAL
-        </span>
-        <span
           class="by"
         >
           by
