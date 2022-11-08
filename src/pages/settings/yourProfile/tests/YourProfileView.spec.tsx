@@ -132,8 +132,10 @@ describe('YourProfileView', () => {
             ).instance()
 
             component.setState({
-                profilePictureUrl:
-                    'https://config.gorgias.io/production/blabla',
+                meta: {
+                    profile_picture_url:
+                        'https://config.gorgias.io/production/blabla',
+                },
             })
             void component._saveProfilePicture()
             expect(updateCurrentUserSpy.mock.calls).toMatchSnapshot()
@@ -156,8 +158,11 @@ describe('YourProfileView', () => {
             ).instance()
 
             component.setState({
-                profilePictureUrl: undefined,
+                meta: {
+                    profile_picture_url: null,
+                },
             })
+
             void component._saveProfilePicture()
             expect(updateCurrentUserSpy.mock.calls).toMatchSnapshot()
         })

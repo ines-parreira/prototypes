@@ -17,7 +17,9 @@ export const user: User = {
             type: UserSettingType.Preferences,
         },
     ],
-    meta: {},
+    meta: {
+        profile_picture_url: 'https://config.gorgias.io/production/picture',
+    },
     active: true,
     deactivated_datetime: null,
     name: 'Alex Plugaru',

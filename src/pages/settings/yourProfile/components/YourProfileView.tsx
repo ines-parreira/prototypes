@@ -2,6 +2,7 @@ import React, {Component, SyntheticEvent, ComponentClass} from 'react'
 import classnames from 'classnames'
 import _merge from 'lodash/merge'
 import _pick from 'lodash/pick'
+import _omit from 'lodash/omit'
 import _sortBy from 'lodash/sortBy'
 import moment from 'moment-timezone'
 import {Container, Form, FormGroup, FormText, Label} from 'reactstrap'
@@ -29,7 +30,13 @@ import settingsCss from 'pages/settings/settings.less'
 
 const defaultContent: Pick<
     State,
-    'name' | 'email' | 'password_confirmation' | 'bio' | 'timezone' | 'language'
+    | 'name'
+    | 'email'
+    | 'password_confirmation'
+    | 'bio'
+    | 'timezone'
+    | 'language'
+    | 'meta'
 > = {
     name: '',
     email: '',
@@ -37,6 +44,7 @@ const defaultContent: Pick<
     bio: '',
     timezone: '',
     language: '',
+    meta: {profile_picture_url: null},
 }
 
 type Props = {
@@ -58,7 +66,9 @@ type State = {
     isLoading: boolean
     name: string
     preferences: Map<unknown, unknown>
-    profilePictureUrl?: string
+    meta: {
+        profile_picture_url: null | string
+    }
     password_confirmation?: string
     timezone: string
 }
@@ -92,32 +102,24 @@ export class YourProfileView extends Component<Props, State> {
         }
     }
 
-    _getForm = (
-        props: Props
-    ): typeof defaultContent & {profilePictureUrl?: string} => {
+    _getForm = (props: Props): typeof defaultContent => {
         if (props.currentUser.isEmpty()) {
             return defaultContent
         }
 
-        return _merge(
-            _pick(
-                props.currentUser.toJS(),
-                Object.keys(defaultContent)
-            ) as typeof defaultContent,
-            {
-                profilePictureUrl: props.currentUser.getIn([
-                    'meta',
-                    'profile_picture_url',
-                ]),
-            }
-        )
+        return _pick(
+            props.currentUser.toJS(),
+            Object.keys(defaultContent)
+        ) as typeof defaultContent
     }
 
     _handleSubmit = async (event: SyntheticEvent) => {
         event.preventDefault()
         const normalizedValues = _pick(
             this.state,
-            Object.keys(defaultContent)
+            // metadata is not editable from this component
+            // so there is no point to send potential outdated data.
+            Object.keys(_omit(defaultContent, 'meta'))
         ) as EditableUserProfile
 
         this.setState({isLoading: true})
@@ -152,9 +154,7 @@ export class YourProfileView extends Component<Props, State> {
 
     _saveProfilePicture = () => {
         return this.props.updateCurrentUser({
-            meta: {
-                profile_picture_url: this.state.profilePictureUrl,
-            },
+            meta: this.state.meta,
         })
     }
 
@@ -309,7 +309,7 @@ export class YourProfileView extends Component<Props, State> {
                                 <Avatar
                                     name={this.state.name}
                                     size={100}
-                                    url={this.state.profilePictureUrl}
+                                    url={this.state.meta.profile_picture_url}
                                     className={settingsCss.mb16}
                                 />
 
@@ -319,7 +319,10 @@ export class YourProfileView extends Component<Props, State> {
                                     onChange={(picture_url: string) =>
                                         this.setState(
                                             {
-                                                profilePictureUrl: picture_url,
+                                                meta: _merge(this.state.meta, {
+                                                    profile_picture_url:
+                                                        picture_url,
+                                                }),
                                             },
                                             () => {
                                                 void this._saveProfilePicture()
@@ -336,7 +339,7 @@ export class YourProfileView extends Component<Props, State> {
                                     than 500kB.
                                 </FormText>
 
-                                {this.state.profilePictureUrl && (
+                                {this.state.meta.profile_picture_url && (
                                     <a
                                         href="#"
                                         className="text-danger"
@@ -344,8 +347,13 @@ export class YourProfileView extends Component<Props, State> {
                                             e.preventDefault()
                                             this.setState(
                                                 {
-                                                    profilePictureUrl:
-                                                        undefined,
+                                                    meta: _merge(
+                                                        this.state.meta,
+                                                        {
+                                                            profile_picture_url:
+                                                                null,
+                                                        }
+                                                    ),
                                                 },
                                                 () => {
                                                     void this._saveProfilePicture()

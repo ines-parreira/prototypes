@@ -5,6 +5,9 @@ Object {
   "bio": "",
   "email": "",
   "language": "",
+  "meta": Object {
+    "profile_picture_url": null,
+  },
   "name": "",
   "password_confirmation": "",
   "timezone": "",
@@ -16,8 +19,10 @@ Object {
   "bio": "CTO",
   "email": "alex@gorgias.io",
   "language": "en",
+  "meta": Object {
+    "profile_picture_url": "https://config.gorgias.io/production/picture",
+  },
   "name": "Alex Plugaru",
-  "profilePictureUrl": undefined,
   "timezone": "EST",
 }
 `;
@@ -56,7 +61,7 @@ Array [
   Array [
     Object {
       "meta": Object {
-        "profile_picture_url": undefined,
+        "profile_picture_url": null,
       },
     },
   ],
@@ -2635,6 +2640,7 @@ exports[`YourProfileView render should render current user profile form 1`] = `
             name="Alex Plugaru"
             size={100}
             style={Object {}}
+            url="https://config.gorgias.io/production/picture"
           />
           <Connect(FileFieldContainer)
             className="mb16"
@@ -2650,6 +2656,13 @@ exports[`YourProfileView render should render current user profile form 1`] = `
           >
             The picture must be square and weight less than 500kB.
           </FormText>
+          <a
+            className="text-danger"
+            href="#"
+            onClick={[Function]}
+          >
+            Remove Picture
+          </a>
         </FormGroup>
       </div>
       <div

@@ -33,7 +33,10 @@ export type User = UserDraft & {
     firstname: string
     id: number
     lastname: string
-    meta: MetaByAgentRole
+    meta: {
+        profile_picture_url: string | null
+        [key: string]: any
+    }
     updated_datetime: string
     settings: UserSetting[]
     timezone: string | null
@@ -46,7 +49,10 @@ export type EditableUserProfile = {
     language: string
     name: string
     timezone: string
-    meta?: {profile_picture_url?: string}
+    meta?: {
+        [key: string]: any
+        profile_picture_url?: string | null
+    }
 }
 
 export enum UserSettingType {

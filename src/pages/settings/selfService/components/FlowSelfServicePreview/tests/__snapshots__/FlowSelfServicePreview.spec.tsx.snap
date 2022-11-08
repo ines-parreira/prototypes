@@ -286,7 +286,7 @@ exports[`<ChatIntegrationPreview/> render() displays thread page with answer 1`]
             class="appMakerMessageWrapper"
           >
             <div
-              class="component avatar"
+              class="component hasImage avatar"
               style="width: 35px; height: 35px;"
             >
               <div
@@ -299,6 +299,11 @@ exports[`<ChatIntegrationPreview/> render() displays thread page with answer 1`]
                   AP
                 </span>
               </div>
+              <img
+                alt="avatar"
+                class="gravatar"
+                src="https://config.gorgias.io/production/picture"
+              />
             </div>
             <div>
               <div
@@ -464,7 +469,7 @@ exports[`<ChatIntegrationPreview/> render() displays thread page with answer wit
             class="appMakerMessageWrapper"
           >
             <div
-              class="component avatar"
+              class="component hasImage avatar"
               style="width: 35px; height: 35px;"
             >
               <div
@@ -477,6 +482,11 @@ exports[`<ChatIntegrationPreview/> render() displays thread page with answer wit
                   AP
                 </span>
               </div>
+              <img
+                alt="avatar"
+                class="gravatar"
+                src="https://config.gorgias.io/production/picture"
+              />
             </div>
             <div>
               <div

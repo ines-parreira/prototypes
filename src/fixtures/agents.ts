@@ -15,7 +15,9 @@ export const agents: User[] = [
         updated_datetime: '2017-07-31T21:43:05.502541+00:00',
         settings: [],
         bio: null,
-        meta: {},
+        meta: {
+            profile_picture_url: null,
+        },
         country: 'US',
         language: 'en-US',
         timezone: 'UTC',
@@ -34,7 +36,9 @@ export const agents: User[] = [
         role: {name: UserRole.Agent},
         updated_datetime: '2017-07-31T21:43:08.033390+00:00',
         bio: null,
-        meta: {},
+        meta: {
+            profile_picture_url: null,
+        },
         settings: [],
         country: 'US',
         language: 'en-US',
