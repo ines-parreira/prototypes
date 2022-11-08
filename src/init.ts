@@ -29,7 +29,7 @@ import {initLaunchDarkly} from 'utils/launchDarkly'
 import {getEnvironment, isProduction, isStaging} from 'utils/environment'
 import {initErrorReporter} from 'utils/errors'
 import {initLogRocket} from 'utils/logRocket'
-import {LOG_ROCKET_APP_ID} from 'config'
+import {LOG_ROCKET_APP_ID, LOG_ROCKET_SAMPLE_RATE} from 'config'
 
 const initMoment = (currentUser: EditableUserProfile) => {
     // set default locale and timezone
@@ -95,52 +95,6 @@ export const toInitialStoreState = (initialState: GorgiasInitialState) => {
     return nextState as InitialRootState
 }
 
-if (isStaging() || isProduction()) {
-    initDatadogLogger(
-        window.GORGIAS_STATE.currentAccount,
-        window.GORGIAS_STATE.currentUser,
-        window.GORGIAS_RELEASE
-    )
-}
-
-if (window.SENTRY_DSN) {
-    initErrorReporter({
-        dsn: window.SENTRY_DSN,
-        release: window.GORGIAS_RELEASE,
-        environment: getEnvironment(),
-        currentUser: window.GORGIAS_STATE.currentUser,
-        currentAccount: window.GORGIAS_STATE.currentAccount,
-    })
-}
-
-if (isStaging() || isProduction()) {
-    initLogRocket({
-        appId: LOG_ROCKET_APP_ID,
-        release: window.GORGIAS_RELEASE,
-        currentUser: window.GORGIAS_STATE.currentUser,
-        currentAccount: window.GORGIAS_STATE.currentAccount,
-    })
-}
-
-// Supply an initial state to redux for faster page loads. See #752
-const initialState = window.GORGIAS_STATE || {}
-
-if (initialState.currentUser) {
-    initMoment(initialState.currentUser as unknown as EditableUserProfile)
-}
-
-const eventsToTrack = window.SEGMENT_EVENTS_TO_TRACK
-if (eventsToTrack) {
-    eventsToTrack.forEach((event) => {
-        logEvent(event.type as SegmentEvent, event.data)
-    })
-    delete window.SEGMENT_EVENTS_TO_TRACK
-}
-
-export const store = configureStore(toInitialStoreState(initialState))
-
-initializeNewReleaseHandler(store)
-
 // todo(@martin): delete this in 2021 if we redirect to .com automatically
 export const notifyDeprecatedTld = (url: string, reduxStore: Store) => {
     const urlObject = new URL(url)
@@ -169,8 +123,6 @@ export const notifyDeprecatedTld = (url: string, reduxStore: Store) => {
     }
 }
 
-notifyDeprecatedTld(window.location.href, store)
-
 export const notifyAccountNotVerified = (reduxStore: Store) => {
     const baseEmailIntegration = getBaseEmailIntegration(reduxStore.getState())
 
@@ -189,8 +141,6 @@ export const notifyAccountNotVerified = (reduxStore: Store) => {
         )
     }
 }
-
-notifyAccountNotVerified(store)
 
 export const notifyChatIntegrationDeprecated = (reduxStore: Store) => {
     const integrations = getActiveIntegrations(reduxStore.getState())
@@ -219,16 +169,91 @@ export const notifyChatIntegrationDeprecated = (reduxStore: Store) => {
     }
 }
 
-notifyChatIntegrationDeprecated(store)
-
-// Dispatch system messages as notifications
-transformSystemMessagesToNotifications(window.SYSTEM_MESSAGES || []).forEach(
-    (notification) => {
-        store.dispatch(notify(notification) as any)
+export type InitAppParams = {
+    datadog: boolean
+    sentry: boolean
+    logRocket?: {
+        appId: string
+        sampleRate: number
     }
-)
+}
 
-initLaunchDarkly(initialState.currentUser, initialState.currentAccount)
+export function initApp({logRocket, datadog, sentry}: InitAppParams) {
+    if (datadog && (isStaging() || isProduction())) {
+        initDatadogLogger(
+            window.GORGIAS_STATE.currentAccount,
+            window.GORGIAS_STATE.currentUser,
+            window.GORGIAS_RELEASE
+        )
+    }
 
-// Register ChartJS Sankey plugin
-Chart.register(SankeyController, Flow)
+    if (sentry && window.SENTRY_DSN) {
+        initErrorReporter({
+            dsn: window.SENTRY_DSN,
+            release: window.GORGIAS_RELEASE,
+            environment: getEnvironment(),
+            currentUser: window.GORGIAS_STATE.currentUser,
+            currentAccount: window.GORGIAS_STATE.currentAccount,
+        })
+    }
+
+    if (
+        logRocket &&
+        Math.random() <= logRocket.sampleRate &&
+        (isStaging() || isProduction())
+    ) {
+        initLogRocket({
+            appId: logRocket.appId,
+            release: window.GORGIAS_RELEASE,
+            currentUser: window.GORGIAS_STATE.currentUser,
+            currentAccount: window.GORGIAS_STATE.currentAccount,
+        })
+    }
+
+    // Supply an initial state to redux for faster page loads. See #752
+    const initialState = window.GORGIAS_STATE || {}
+
+    if (initialState.currentUser) {
+        initMoment(initialState.currentUser as unknown as EditableUserProfile)
+    }
+
+    const eventsToTrack = window.SEGMENT_EVENTS_TO_TRACK
+    if (eventsToTrack) {
+        eventsToTrack.forEach((event) => {
+            logEvent(event.type as SegmentEvent, event.data)
+        })
+        delete window.SEGMENT_EVENTS_TO_TRACK
+    }
+
+    const store = configureStore(toInitialStoreState(initialState))
+
+    initializeNewReleaseHandler(store)
+
+    notifyDeprecatedTld(window.location.href, store)
+    notifyAccountNotVerified(store)
+
+    notifyChatIntegrationDeprecated(store)
+
+    // Dispatch system messages as notifications
+    transformSystemMessagesToNotifications(
+        window.SYSTEM_MESSAGES || []
+    ).forEach((notification) => {
+        store.dispatch(notify(notification) as any)
+    })
+
+    initLaunchDarkly(initialState.currentUser, initialState.currentAccount)
+
+    // Register ChartJS Sankey plugin
+    Chart.register(SankeyController, Flow)
+
+    return store
+}
+
+export const store = initApp({
+    sentry: true,
+    datadog: true,
+    logRocket: {
+        appId: LOG_ROCKET_APP_ID,
+        sampleRate: LOG_ROCKET_SAMPLE_RATE,
+    },
+})
