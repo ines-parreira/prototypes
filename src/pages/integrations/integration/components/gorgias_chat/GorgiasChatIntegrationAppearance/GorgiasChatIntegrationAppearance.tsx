@@ -16,7 +16,6 @@ import * as IntegrationsActions from 'state/integrations/actions'
 import {
     GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH,
     GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
-    GORGIAS_CHAT_CONTACT_FORM_ENABLED_DEFAULT,
     GORGIAS_CHAT_DEFAULT_COLOR,
     GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_MEMBERS,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
@@ -292,8 +291,6 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                         enabled: GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
                         reply: GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
                     },
-                    enable_contact_form:
-                        GORGIAS_CHAT_CONTACT_FORM_ENABLED_DEFAULT,
                     offline_mode_enabled_datetime:
                         GORGIAS_CHAT_OFFLINE_MODE_ENABLED_DATETIME_DEFAULT,
                 },

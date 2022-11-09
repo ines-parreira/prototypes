@@ -358,7 +358,6 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                           "enabled": true,
                           "reply": "reply-dynamic",
                         },
-                        "enable_contact_form": true,
                         "offline_mode_enabled_datetime": null,
                       },
                     },

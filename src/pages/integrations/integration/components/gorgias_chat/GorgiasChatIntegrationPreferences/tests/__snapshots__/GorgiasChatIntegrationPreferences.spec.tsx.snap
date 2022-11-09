@@ -5,7 +5,6 @@ Object {
   "autoResponderEnabled": true,
   "autoResponderReply": "reply-dynamic",
   "emailCaptureEnforcement": "optional",
-  "enableContactForm": true,
   "hideOnMobile": false,
   "hideOutsideBusinessHours": false,
   "isInitialized": false,
@@ -21,7 +20,6 @@ Object {
   "autoResponderEnabled": true,
   "autoResponderReply": "reply-dynamic",
   "emailCaptureEnforcement": "optional",
-  "enableContactForm": true,
   "hideOnMobile": false,
   "hideOutsideBusinessHours": false,
   "isInitialized": false,
@@ -49,7 +47,6 @@ exports[`<GorgiasChatIntegrationPreferences/> _submitPreferences() should submit
             "linked_email_integration": null,
             "hide_on_mobile": false,
             "hide_outside_business_hours": false,
-            "enable_contact_form": true,
             "offline_mode_enabled_datetime": null,
           },
         },
@@ -81,7 +78,6 @@ exports[`<GorgiasChatIntegrationPreferences/> _submitPreferences() should submit
             "linked_email_integration": null,
             "hide_on_mobile": false,
             "hide_outside_business_hours": false,
-            "enable_contact_form": true,
             "offline_mode_enabled_datetime": null,
           },
           "language": "en-US",
@@ -103,7 +99,6 @@ Object {
   "autoResponderEnabled": true,
   "autoResponderReply": "reply-in-minutes",
   "emailCaptureEnforcement": "always-required",
-  "enableContactForm": true,
   "hideOnMobile": false,
   "hideOutsideBusinessHours": false,
   "isInitialized": true,
@@ -119,7 +114,6 @@ Object {
   "autoResponderEnabled": true,
   "autoResponderReply": "reply-in-minutes",
   "emailCaptureEnforcement": "always-required",
-  "enableContactForm": true,
   "hideOnMobile": false,
   "hideOutsideBusinessHours": false,
   "isInitialized": true,
@@ -294,31 +288,6 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
                 className="form-text text-muted"
               >
                 Let customers start live conversations with agents. When disabled, customers can interact with self-service features and fill the contact form.
-              </div>
-            </div>
-          </div>
-          <div
-            className="formGroup d-flex"
-          >
-            <div
-              id="contact-form-toggle-help"
-            >
-              <ToggleInput
-                isDisabled={false}
-                isToggled={true}
-                onClick={[Function]}
-              />
-            </div>
-            <div
-              className="ml-2"
-            >
-              <b>
-                Contact form
-              </b>
-              <div
-                className="form-text text-muted"
-              >
-                Display a contact form when live chat is disabled and while outside business hours and reply to customers via email.
               </div>
             </div>
           </div>
@@ -719,31 +688,6 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                 className="form-text text-muted"
               >
                 Let customers start live conversations with agents. When disabled, customers can interact with self-service features and fill the contact form.
-              </div>
-            </div>
-          </div>
-          <div
-            className="formGroup d-flex"
-          >
-            <div
-              id="contact-form-toggle-help"
-            >
-              <ToggleInput
-                isDisabled={false}
-                isToggled={true}
-                onClick={[Function]}
-              />
-            </div>
-            <div
-              className="ml-2"
-            >
-              <b>
-                Contact form
-              </b>
-              <div
-                className="form-text text-muted"
-              >
-                Display a contact form when live chat is disabled and while outside business hours and reply to customers via email.
               </div>
             </div>
           </div>

@@ -79,7 +79,6 @@ type State = {
     isUpdating: boolean
     preview: string
     linkedEmailIntegration: number | null
-    enableContactForm: boolean
     offlineModeEnabledDatetime: Date | null
 }
 
@@ -101,7 +100,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         isInitialized: false,
         isUpdating: false,
         preview: PREVIEW_EMAIL_CAPTURE,
-        enableContactForm: true,
         offlineModeEnabledDatetime: null,
     }
 
@@ -142,11 +140,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                         'meta',
                         'preferences',
                         'linked_email_integration',
-                    ]),
-                    enableContactForm: integration.getIn([
-                        'meta',
-                        'preferences',
-                        'enable_contact_form',
                     ]),
                     offlineModeEnabledDatetime: integration.getIn([
                         'meta',
@@ -208,12 +201,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         this.setState({linkedEmailIntegration: integrationId})
     }
 
-    _setEnableContactForm = (value: boolean) => {
-        this.setState({
-            enableContactForm: value,
-        })
-    }
-
     _setOfflineModeEnabledDatetime = (value: Date | null) => {
         this.setState({
             offlineModeEnabledDatetime: value,
@@ -238,7 +225,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             linked_email_integration: this.state.linkedEmailIntegration,
             hide_on_mobile: this.state.hideOnMobile,
             hide_outside_business_hours: this.state.hideOutsideBusinessHours,
-            enable_contact_form: this.state.enableContactForm,
             offline_mode_enabled_datetime:
                 this.state.offlineModeEnabledDatetime,
         }
@@ -270,7 +256,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             isUpdating,
             preview,
             linkedEmailIntegration,
-            enableContactForm,
             offlineModeEnabledDatetime,
         } = this.state
         const {integration, emailIntegrations: integrations} = this.props
@@ -516,61 +501,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                             disabled, customers can interact
                                             with self-service features and fill
                                             the contact form.
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div
-                                    className={classnames(
-                                        css.formGroup,
-                                        'd-flex'
-                                    )}
-                                >
-                                    <>
-                                        <div id="contact-form-toggle-help">
-                                            <ToggleInput
-                                                onClick={
-                                                    this._setEnableContactForm
-                                                }
-                                                isToggled={
-                                                    offlineModeEnabledDatetime !==
-                                                    null
-                                                        ? true
-                                                        : enableContactForm
-                                                }
-                                                isDisabled={
-                                                    offlineModeEnabledDatetime !==
-                                                    null
-                                                }
-                                            />
-                                        </div>
-                                        {offlineModeEnabledDatetime !==
-                                            null && (
-                                            <Tooltip
-                                                autohide={false}
-                                                delay={100}
-                                                target="contact-form-toggle-help"
-                                                placement="top-start"
-                                                popperClassName={css.tooltip}
-                                                innerClassName={
-                                                    css['tooltip-inner']
-                                                }
-                                                arrowClassName={
-                                                    css['tooltip-arrow']
-                                                }
-                                            >
-                                                Contact form is enabled when
-                                                Live chat is off.
-                                            </Tooltip>
-                                        )}
-                                    </>
-                                    <div className="ml-2">
-                                        <b>Contact form</b>
-                                        <div className="form-text text-muted">
-                                            Display a contact form when live
-                                            chat is disabled and while outside
-                                            business hours and reply to
-                                            customers via email.
                                         </div>
                                     </div>
                                 </div>
