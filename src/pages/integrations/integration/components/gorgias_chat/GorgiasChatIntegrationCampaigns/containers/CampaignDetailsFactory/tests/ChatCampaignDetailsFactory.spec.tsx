@@ -3,13 +3,11 @@ import {fromJS} from 'immutable'
 
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import LD from 'launchdarkly-react-client-sdk'
-
 import {render} from '@testing-library/react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-
 import {RootState, StoreDispatch} from 'state/types'
+
+import * as revenueBetaHook from '../../../hooks/useIsRevenueBetaTester'
 
 import {ChatCampaignDetailsFactory} from '../ChatCampaignDetailsFactory'
 
@@ -24,9 +22,10 @@ describe('<ChatCampaignDetailsFactory />', () => {
 
     describe('Merchant is an alpha tester', () => {
         beforeAll(() => {
-            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-                [FeatureFlagKey.RevenueAlphaTesters]: true,
-            }))
+            jest.spyOn(
+                revenueBetaHook,
+                'useIsRevenueBetaTester'
+            ).mockImplementation(() => true)
         })
 
         it('renders the "AdvancedCampaignDetails" component', () => {
@@ -45,9 +44,10 @@ describe('<ChatCampaignDetailsFactory />', () => {
 
     describe('Merchant is not an alpha tester', () => {
         beforeAll(() => {
-            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-                [FeatureFlagKey.RevenueAlphaTesters]: false,
-            }))
+            jest.spyOn(
+                revenueBetaHook,
+                'useIsRevenueBetaTester'
+            ).mockImplementation(() => false)
         })
         it('renders the "GorgiasChatCampaignDetailForm" component', () => {
             const {getByTestId} = render(

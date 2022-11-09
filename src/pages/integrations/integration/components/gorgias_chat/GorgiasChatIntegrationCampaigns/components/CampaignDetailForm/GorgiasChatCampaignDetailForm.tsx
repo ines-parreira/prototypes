@@ -90,7 +90,7 @@ export const GorgiasChatCampaignDetailForm = ({
     deleteCampaign,
 }: Props) => {
     const flags = useFlags()
-    const isRevenueTester = useMemo(() => {
+    const isRevenueAlphaTester = useMemo(() => {
         if (
             flags &&
             Object.keys(flags).includes(FeatureFlagKey.RevenueAlphaTesters)
@@ -111,7 +111,7 @@ export const GorgiasChatCampaignDetailForm = ({
 
     const initState = useCallback(
         (_campaign: Map<any, any>) => {
-            const defaultTriggers = isRevenueTester
+            const defaultTriggers = isRevenueAlphaTester
                 ? [
                       DEFAULT_TRIGGER(0), // default `business_hours` empty trigger in case of new campaign
                       DEFAULT_TRIGGER(1), // default `current_url` empty trigger in case of new campaign
@@ -128,7 +128,7 @@ export const GorgiasChatCampaignDetailForm = ({
                 loading: false,
             })
         },
-        [setStateInitialialized, setState, isRevenueTester]
+        [setStateInitialialized, setState, isRevenueAlphaTester]
     )
 
     // We do not allow a second "business_hours" trigger so we should
@@ -162,7 +162,7 @@ export const GorgiasChatCampaignDetailForm = ({
     }, [state.triggers])
 
     useEffect(() => {
-        if (isRevenueTester) {
+        if (isRevenueAlphaTester) {
             const {triggers} = campaign.toJS()
             let immutableTriggers: List<Map<any, any>> =
                 campaign.get('triggers')
@@ -186,7 +186,7 @@ export const GorgiasChatCampaignDetailForm = ({
         } else {
             initState(campaign)
         }
-    }, [initState, isRevenueTester, campaign])
+    }, [initState, isRevenueAlphaTester, campaign])
 
     const addNewTrigger = (keyConfigIdx: number) => {
         setState((state) => ({
@@ -277,7 +277,7 @@ export const GorgiasChatCampaignDetailForm = ({
     const indexIfBusinessHours = (index: number) => {
         const {triggers} = campaign.toJS()
 
-        if (isRevenueTester) {
+        if (isRevenueAlphaTester) {
             return index + 1
         }
 

@@ -3,12 +3,12 @@ import {useMemo} from 'react'
 import {TRIGGER_LIST} from '../constants/triggers'
 
 type FnArguments = {
-    isRevenueTester?: boolean
+    isRevenueBetaTester?: boolean
     isShopifyStore?: boolean
 }
 
 export function useAvailableTriggerList({
-    isRevenueTester = false,
+    isRevenueBetaTester = false,
     isShopifyStore = false,
 }: FnArguments) {
     const options = useMemo(() => {
@@ -25,13 +25,13 @@ export function useAvailableTriggerList({
                 }
 
                 if (req === 'revenue') {
-                    return isRevenueTester === value
+                    return isRevenueBetaTester === value
                 }
 
                 return false
             })
         })
-    }, [isRevenueTester, isShopifyStore])
+    }, [isRevenueBetaTester, isShopifyStore])
 
     return options
 }

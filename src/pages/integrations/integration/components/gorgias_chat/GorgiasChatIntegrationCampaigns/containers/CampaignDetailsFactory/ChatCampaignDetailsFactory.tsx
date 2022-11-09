@@ -1,10 +1,6 @@
 import React, {useMemo} from 'react'
 import {Map} from 'immutable'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
-
-import {FeatureFlagKey} from 'config/featureFlags'
-
 import {User} from 'config/types/user'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -19,12 +15,14 @@ import {
     updateCampaign,
 } from 'state/campaigns/actions'
 
+import {useIsRevenueBetaTester} from '../../hooks/useIsRevenueBetaTester'
+
 import {GorgiasChatCampaignDetailForm} from '../../components/CampaignDetailForm'
+
+import {ChatCampaign} from '../../types/Campaign'
 
 import {BaseCampaignDetails} from '../BaseCampaignDetails'
 import {AdvancedCampaignDetails} from '../AdvancedCampaignDetails'
-
-import {ChatCampaign} from '../../types/Campaign'
 
 type OwnProps = {
     id: string
@@ -36,8 +34,7 @@ export const ChatCampaignDetailsFactory = ({
     id,
 }: OwnProps): JSX.Element => {
     const dispatch = useAppDispatch()
-    const isRevenueTester: boolean =
-        useFlags()[FeatureFlagKey.RevenueAlphaTesters]
+    const isRevenueBetaTester: boolean = useIsRevenueBetaTester()
 
     const campaign = useAppSelector(
         getChatIntegrationCampaignById(integration.get('id'), id)
@@ -78,12 +75,12 @@ export const ChatCampaignDetailsFactory = ({
 
     return (
         <BaseCampaignDetails integration={integration}>
-            {isRevenueTester ? (
+            {isRevenueBetaTester ? (
                 <AdvancedCampaignDetails
                     agents={memoAgents}
                     id={id}
                     integration={integration}
-                    isRevenueTester={isRevenueTester}
+                    isRevenueBetaTester={isRevenueBetaTester}
                     campaign={memoCampaign}
                     createCampaign={handleCreateCampaign}
                     updateCampaign={handleUpdateCampaign}

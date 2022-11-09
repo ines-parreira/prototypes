@@ -87,7 +87,7 @@ describe('<AdvancedCampaignDetails />', () => {
             render(
                 <Provider store={mockStore(defaultState)}>
                     <AdvancedCampaignDetails
-                        isRevenueTester
+                        isRevenueBetaTester
                         id="new"
                         campaign={{} as ChatCampaign}
                         agents={agents as User[]}
@@ -134,7 +134,7 @@ describe('<AdvancedCampaignDetails />', () => {
             render(
                 <Provider store={mockStore(defaultState)}>
                     <AdvancedCampaignDetails
-                        isRevenueTester
+                        isRevenueBetaTester
                         id={campaignWithRandomAgent.id}
                         campaign={campaignWithRandomAgent}
                         agents={agents as User[]}

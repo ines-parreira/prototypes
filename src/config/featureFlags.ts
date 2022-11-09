@@ -8,9 +8,7 @@ export enum FeatureFlagKey {
     PrefillBestMacro = 'pre-fill-best-macro',
     NewPhoneErrorHandling = 'new-phone-error-handling',
     HelpCenterEmbeddedContactForm = 'help-center-embedded-contact-form',
-    RevenueAlphaTesters = 'revenue-alpha-testers',
     NewVoiceSmsLayout = 'new-voice-sms-layout',
-    RevenueDiscountCodesV0 = 'revenue-discount-codes-v0',
     ElasticsearchSearchLoadTest = 'elasticsearch-search-load-test',
     ElasticsearchTicketSearch = 'elasticsearch-ticket-search',
     SelfServiceLoopReturnsFlow = 'self-service-loop-returns-flow',
@@ -18,4 +16,7 @@ export enum FeatureFlagKey {
     BigCommerceCreateOrder = 'bigcommerce-create-order',
     EnableWhatsApp = 'enable-whatsapp',
     TicketMessagesVirtualization = 'ticket-messages-virtualization',
+    RevenueAlphaTesters = 'revenue-alpha-testers',
+    RevenueBetaTesters = 'revenue-beta-testers',
+    RevenueDiscountCodesV0 = 'revenue-discount-codes-v0',
 }

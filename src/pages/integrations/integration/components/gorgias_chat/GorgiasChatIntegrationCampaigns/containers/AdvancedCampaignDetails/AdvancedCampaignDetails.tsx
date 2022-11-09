@@ -45,7 +45,7 @@ type Props = {
     campaign: ChatCampaign
     id: string
     integration: Map<any, any>
-    isRevenueTester: boolean
+    isRevenueBetaTester: boolean
     createCampaign: (form: any, integration: Map<any, any>) => Promise<unknown>
     updateCampaign: (form: any, integration: Map<any, any>) => Promise<unknown>
     deleteCampaign: (form: any, integration: Map<any, any>) => Promise<unknown>
@@ -57,7 +57,7 @@ export const AdvancedCampaignDetails = memo(
         campaign,
         integration,
         id,
-        isRevenueTester = false,
+        isRevenueBetaTester = false,
         createCampaign,
         updateCampaign,
         deleteCampaign,
@@ -253,7 +253,7 @@ export const AdvancedCampaignDetails = memo(
                     setCampaignAgent(campaign.message?.author ?? undefined)
                 }
             }
-        }, [campaign, isRevenueTester])
+        }, [campaign, isRevenueBetaTester])
 
         const isShopifyStore = chatIsShopifyStore(integration)
 
@@ -297,7 +297,7 @@ export const AdvancedCampaignDetails = memo(
                         </TriggersProvider>
                         <AdvancedTriggersSelect
                             isShopifyStore={isShopifyStore}
-                            isRevenueTester={isRevenueTester}
+                            isRevenueBetaTester={isRevenueBetaTester}
                             onClick={handleAddTrigger}
                         />
 

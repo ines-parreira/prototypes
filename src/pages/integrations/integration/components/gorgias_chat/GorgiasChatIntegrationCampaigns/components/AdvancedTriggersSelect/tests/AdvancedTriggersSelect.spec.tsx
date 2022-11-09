@@ -46,7 +46,7 @@ describe('<AdvancedTriggersSelect />', () => {
         const onClickFn = jest.fn()
 
         const {getByText} = render(
-            <AdvancedTriggersSelect isRevenueTester onClick={onClickFn} />
+            <AdvancedTriggersSelect isRevenueBetaTester onClick={onClickFn} />
         )
 
         const buttonEl = getByText('Add condition')
