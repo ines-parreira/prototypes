@@ -21,7 +21,7 @@ exports[`CampaignDetail component should display default value when it's a new c
             <a
               to="/app/settings/integrations"
             >
-              Integrations
+              Apps & integrations
             </a>
           </li>
           <li
@@ -639,7 +639,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
             <a
               to="/app/settings/integrations"
             >
-              Integrations
+              Apps & integrations
             </a>
           </li>
           <li
@@ -1419,7 +1419,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
             <a
               to="/app/settings/integrations"
             >
-              Integrations
+              Apps & integrations
             </a>
           </li>
           <li

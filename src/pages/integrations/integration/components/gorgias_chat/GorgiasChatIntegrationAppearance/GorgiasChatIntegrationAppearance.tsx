@@ -472,13 +472,8 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                 title={
                     <Breadcrumb>
                         <BreadcrumbItem>
-                            <Link to="/app/settings/integrations">
-                                Integrations
-                            </Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
                             <Link
-                                to={`/app/settings/integrations/${IntegrationType.GorgiasChat}`}
+                                to={`/app/settings/channels/${IntegrationType.GorgiasChat}`}
                             >
                                 Chat
                             </Link>

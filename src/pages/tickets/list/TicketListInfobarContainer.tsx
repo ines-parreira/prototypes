@@ -117,7 +117,7 @@ class TicketListInfobarContainer extends Component<Props> {
                                 <div>Connect Shopify</div>
                             </Link>
                             <Link
-                                to="/app/settings/integrations/email"
+                                to="/app/settings/channels/email"
                                 className={css.button}
                                 onClick={() => {
                                     logEvent(
@@ -134,7 +134,7 @@ class TicketListInfobarContainer extends Component<Props> {
                                 <div>Connect email</div>
                             </Link>
                             <Link
-                                to="/app/settings/integrations/gorgias_chat"
+                                to="/app/settings/channels/gorgias_chat"
                                 className={css.button}
                                 onClick={() => {
                                     logEvent(

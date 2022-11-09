@@ -94,7 +94,7 @@ export class ChatIntegrationMigration extends Component<Props, State> {
                         <Breadcrumb>
                             <BreadcrumbItem>
                                 <Link to="/app/settings/integrations">
-                                    Integrations
+                                    Apps & integrations
                                 </Link>
                             </BreadcrumbItem>
                             <BreadcrumbItem>
@@ -112,7 +112,7 @@ export class ChatIntegrationMigration extends Component<Props, State> {
                 <Container fluid className={css.pageContainer}>
                     <Alert type={AlertType.Warning} icon className={css.mb16}>
                         A{' '}
-                        <Link to="/app/settings/integrations/gorgias_chat">
+                        <Link to="/app/settings/channels/gorgias_chat">
                             new version of the chat
                         </Link>{' '}
                         with additional features is available, please migrate to

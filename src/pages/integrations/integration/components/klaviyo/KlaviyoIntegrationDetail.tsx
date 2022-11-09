@@ -216,7 +216,7 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
                         <Breadcrumb>
                             <BreadcrumbItem>
                                 <Link to="/app/settings/integrations">
-                                    Integrations
+                                    Apps & integrations
                                 </Link>
                             </BreadcrumbItem>
                             <BreadcrumbItem>

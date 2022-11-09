@@ -15,13 +15,10 @@ export default function VoiceIntegrationSecondaryNavigation({
     if (!integration) {
         return (
             <SecondaryNavbar>
-                <NavLink to="/app/settings/integrations/phone" exact>
+                <NavLink to="/app/settings/channels/phone" exact>
                     About
                 </NavLink>
-                <NavLink
-                    to="/app/settings/integrations/phone/integrations"
-                    exact
-                >
+                <NavLink to="/app/settings/channels/phone/integrations" exact>
                     Integrations
                 </NavLink>
             </SecondaryNavbar>
@@ -29,7 +26,7 @@ export default function VoiceIntegrationSecondaryNavigation({
     }
 
     const integrationId: number = integration.id
-    const baseURL = `/app/settings/integrations/${IntegrationType.Phone}/${integrationId}`
+    const baseURL = `/app/settings/channels/${IntegrationType.Phone}/${integrationId}`
 
     const isIvr = integration.meta?.function === PhoneFunction.Ivr
 

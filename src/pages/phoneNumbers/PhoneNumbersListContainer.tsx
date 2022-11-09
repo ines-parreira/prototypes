@@ -60,7 +60,7 @@ export function PhoneNumbersListContainer() {
 
     return (
         <div className="full-width">
-            <PageHeader title="Phone Numbers">
+            <PageHeader title="Phone numbers">
                 <Button
                     isDisabled={isLimitReacted}
                     onClick={() =>

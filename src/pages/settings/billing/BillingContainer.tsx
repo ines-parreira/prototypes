@@ -51,7 +51,7 @@ export class BillingContainer extends Component<Props> {
 
         return (
             <div className="full-width">
-                <PageHeader title="Billing & Usage" />
+                <PageHeader title="Billing & usage" />
                 <Container fluid className={css.pageContainer}>
                     <BillingUsage />
                     <BillingPaymentMethod />

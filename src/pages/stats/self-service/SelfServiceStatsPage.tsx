@@ -430,7 +430,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                         title="Leverage your Help Center to automate tickets"
                                         description="Enable article recommendation in Chat settings to automatically recommend relevant Help Center articles to shoppers."
                                         buttonText="Set up article recommendation"
-                                        buttonRedirectUrl="/app/settings/integrations/gorgias_chat"
+                                        buttonRedirectUrl="/app/settings/channels/gorgias_chat"
                                         imageUrl={`${ASSETS_URL}/static/private/js/assets/img/presentationals/article-recommendation-preview.png`}
                                         imageAltText="Article Recommendation feature preview"
                                     />

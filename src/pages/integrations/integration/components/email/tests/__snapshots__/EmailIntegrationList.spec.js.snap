@@ -16,15 +16,6 @@ exports[`<EmailIntegrationList/> render() should render the page when there are 
           class="breadcrumb"
         >
           <li
-            class="breadcrumb-item"
-          >
-            <a
-              to="/app/settings/integrations"
-            >
-              Integrations
-            </a>
-          </li>
-          <li
             aria-current="page"
             class="active breadcrumb-item"
           >
@@ -82,15 +73,6 @@ exports[`<EmailIntegrationList/> render() should render the page with a warning 
           class="breadcrumb"
         >
           <li
-            class="breadcrumb-item"
-          >
-            <a
-              to="/app/settings/integrations"
-            >
-              Integrations
-            </a>
-          </li>
-          <li
             aria-current="page"
             class="active breadcrumb-item"
           >
@@ -137,7 +119,7 @@ exports[`<EmailIntegrationList/> render() should render the page with a warning 
             class="link-full-td"
           >
             <a
-              to="/app/settings/integrations/email/1"
+              to="/app/settings/channels/email/1"
             >
               <div>
                 <b
@@ -172,7 +154,7 @@ exports[`<EmailIntegrationList/> render() should render the page with a warning 
             class="smallest align-middle"
           >
             <a
-              to="/app/settings/integrations/email/1"
+              to="/app/settings/channels/email/1"
             >
               <i
                 class="material-icons md-2 align-middle icon-go-forward"
@@ -208,15 +190,6 @@ exports[`<EmailIntegrationList/> render() should render the page with a warning 
           class="breadcrumb"
         >
           <li
-            class="breadcrumb-item"
-          >
-            <a
-              to="/app/settings/integrations"
-            >
-              Integrations
-            </a>
-          </li>
-          <li
             aria-current="page"
             class="active breadcrumb-item"
           >
@@ -263,7 +236,7 @@ exports[`<EmailIntegrationList/> render() should render the page with a warning 
             class="link-full-td"
           >
             <a
-              to="/app/settings/integrations/email/1"
+              to="/app/settings/channels/email/1"
             >
               <div>
                 <b
@@ -298,7 +271,7 @@ exports[`<EmailIntegrationList/> render() should render the page with a warning 
             class="smallest align-middle"
           >
             <a
-              to="/app/settings/integrations/email/1"
+              to="/app/settings/channels/email/1"
             >
               <i
                 class="material-icons md-2 align-middle icon-go-forward"
@@ -333,15 +306,6 @@ exports[`<EmailIntegrationList/> render() should render the page without warning
         <ol
           class="breadcrumb"
         >
-          <li
-            class="breadcrumb-item"
-          >
-            <a
-              to="/app/settings/integrations"
-            >
-              Integrations
-            </a>
-          </li>
           <li
             aria-current="page"
             class="active breadcrumb-item"
@@ -389,7 +353,7 @@ exports[`<EmailIntegrationList/> render() should render the page without warning
             class="link-full-td"
           >
             <a
-              to="/app/settings/integrations/email/1"
+              to="/app/settings/channels/email/1"
             >
               <div>
                 <b
@@ -414,7 +378,7 @@ exports[`<EmailIntegrationList/> render() should render the page without warning
             class="smallest align-middle"
           >
             <a
-              to="/app/settings/integrations/email/1"
+              to="/app/settings/channels/email/1"
             >
               <i
                 class="material-icons md-2 align-middle icon-go-forward"
@@ -449,15 +413,6 @@ exports[`<EmailIntegrationList/> render() should render the page without warning
         <ol
           class="breadcrumb"
         >
-          <li
-            class="breadcrumb-item"
-          >
-            <a
-              to="/app/settings/integrations"
-            >
-              Integrations
-            </a>
-          </li>
           <li
             aria-current="page"
             class="active breadcrumb-item"
@@ -505,7 +460,7 @@ exports[`<EmailIntegrationList/> render() should render the page without warning
             class="link-full-td"
           >
             <a
-              to="/app/settings/integrations/email/1"
+              to="/app/settings/channels/email/1"
             >
               <div>
                 <b
@@ -530,7 +485,7 @@ exports[`<EmailIntegrationList/> render() should render the page without warning
             class="smallest align-middle"
           >
             <a
-              to="/app/settings/integrations/email/1"
+              to="/app/settings/channels/email/1"
             >
               <i
                 class="material-icons md-2 align-middle icon-go-forward"

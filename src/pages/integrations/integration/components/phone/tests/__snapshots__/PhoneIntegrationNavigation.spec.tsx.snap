@@ -7,21 +7,21 @@ exports[`<PhoneIntegrationNavigation/> render() should render 1`] = `
   <a
     activeclassname="active"
     class="link"
-    to="/app/settings/integrations/phone/1/preferences"
+    to="/app/settings/channels/phone/1/preferences"
   >
     Preferences
   </a>
   <a
     activeclassname="active"
     class="link"
-    to="/app/settings/integrations/phone/1/voicemail"
+    to="/app/settings/channels/phone/1/voicemail"
   >
     Voicemail
   </a>
   <a
     activeclassname="active"
     class="link"
-    to="/app/settings/integrations/phone/1/greeting-message"
+    to="/app/settings/channels/phone/1/greeting-message"
   >
     Greeting Message
   </a>

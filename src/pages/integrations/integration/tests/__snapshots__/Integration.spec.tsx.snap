@@ -54,18 +54,9 @@ exports[`<IntegrationDetail /> http should render the list of events page for a
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
-          >
-            Integrations
-          </a>
-        </li>
-        <li
-          class="breadcrumb-item"
-        >
-          <a
             to="/app/settings/integrations/http"
           >
-            HTTP
+            HTTP integration
           </a>
         </li>
         <li
@@ -116,18 +107,9 @@ exports[`<IntegrationDetail /> http should render the page of an event for a sp
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
-          >
-            Integrations
-          </a>
-        </li>
-        <li
-          class="breadcrumb-item"
-        >
-          <a
             to="/app/settings/integrations/http"
           >
-            HTTP
+            HTTP integration
           </a>
         </li>
         <li
@@ -371,16 +353,7 @@ exports[`<IntegrationDetail /> should render the page of a specific integration 
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
-          >
-            Integrations
-          </a>
-        </li>
-        <li
-          class="breadcrumb-item"
-        >
-          <a
-            to="/app/settings/integrations/email"
+            to="/app/settings/channels/email"
           >
             Email
           </a>
@@ -403,14 +376,14 @@ exports[`<IntegrationDetail /> should render the page of a specific integration 
     <a
       activeclassname="active"
       class="link"
-      to="/app/settings/integrations/email/1"
+      to="/app/settings/channels/email/1"
     >
       Preferences
     </a>
     <a
       activeclassname="active"
       class="link"
-      to="/app/settings/integrations/email/1/dns"
+      to="/app/settings/channels/email/1/dns"
     >
       Domain Verification
     </a>
@@ -451,18 +424,9 @@ exports[`<IntegrationDetail /> should render the page of a specific integration 
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
-          >
-            Integrations
-          </a>
-        </li>
-        <li
-          class="breadcrumb-item"
-        >
-          <a
             to="/app/settings/integrations/http"
           >
-            HTTP
+            HTTP integration
           </a>
         </li>
         <li

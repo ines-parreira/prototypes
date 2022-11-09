@@ -113,13 +113,8 @@ function PhoneIntegrationCreate({selectedPhoneNumberId}: Props): JSX.Element {
                 title={
                     <Breadcrumb>
                         <BreadcrumbItem>
-                            <Link to="/app/settings/integrations">
-                                Integrations
-                            </Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
                             <Link
-                                to={`/app/settings/integrations/${IntegrationType.Phone}`}
+                                to={`/app/settings/channels/${IntegrationType.Phone}`}
                             >
                                 Voice
                             </Link>

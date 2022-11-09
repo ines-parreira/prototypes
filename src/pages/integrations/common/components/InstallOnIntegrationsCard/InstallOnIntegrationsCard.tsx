@@ -5,6 +5,7 @@ import moment from 'moment'
 import _capitalize from 'lodash/capitalize'
 import {connect, ConnectedProps} from 'react-redux'
 
+import {isChannel} from 'config'
 import {getIconFromType} from 'state/integrations/helpers'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import history from 'pages/history'
@@ -64,9 +65,11 @@ export class InstallOnIntegrationsCardContainer extends Component<
         // todo(@martin): see if this is required too for Magento when implementing
         if (targetIntegration.getIn(['meta', 'need_scope_update'])) {
             history.push(
-                `/app/settings/integrations/${
-                    targetIntegration.get('type') as string
-                }/` +
+                `/app/settings/${
+                    isChannel(targetIntegration.get('type'))
+                        ? 'channels'
+                        : 'integrations'
+                }/${targetIntegration.get('type') as string}/` +
                     `${
                         targetIntegration.get('id') as number
                     }/?error=need_scope_update`

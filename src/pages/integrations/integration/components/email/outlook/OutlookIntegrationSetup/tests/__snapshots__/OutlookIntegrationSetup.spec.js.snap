@@ -15,16 +15,7 @@ exports[`<OutlookIntegrationSetup/> render() should render the list of integrati
           tag="li"
         >
           <Link
-            to="/app/settings/integrations"
-          >
-            Integrations
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          tag="li"
-        >
-          <Link
-            to="/app/settings/integrations/email"
+            to="/app/settings/channels/email"
           >
             Email
           </Link>
@@ -98,16 +89,7 @@ exports[`<OutlookIntegrationSetup/> render() should render the list of integrati
           tag="li"
         >
           <Link
-            to="/app/settings/integrations"
-          >
-            Integrations
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          tag="li"
-        >
-          <Link
-            to="/app/settings/integrations/email"
+            to="/app/settings/channels/email"
           >
             Email
           </Link>
@@ -220,16 +202,7 @@ exports[`<OutlookIntegrationSetup/> render() should render the list of integrati
           tag="li"
         >
           <Link
-            to="/app/settings/integrations"
-          >
-            Integrations
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          tag="li"
-        >
-          <Link
-            to="/app/settings/integrations/email"
+            to="/app/settings/channels/email"
           >
             Email
           </Link>

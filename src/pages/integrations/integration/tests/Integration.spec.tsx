@@ -492,8 +492,8 @@ describe('<IntegrationDetail />', () => {
                     <IntegrationDetail {...minProps} />
                 </Provider>,
                 {
-                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/integrations/${IntegrationType.Email}/new/${Tab.EmailCustom}`,
+                    path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
+                    route: `/channels/${IntegrationType.Email}/new/${Tab.EmailCustom}`,
                 }
             )
             expect(container.firstChild).toMatchSnapshot()
@@ -505,8 +505,8 @@ describe('<IntegrationDetail />', () => {
                     <IntegrationDetail {...minProps} />
                 </Provider>,
                 {
-                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/integrations/${IntegrationType.Email}/1/${Tab.EmailForwarding}`,
+                    path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
+                    route: `/channels/${IntegrationType.Email}/1/${Tab.EmailForwarding}`,
                 }
             )
             expect(container.firstChild).toMatchSnapshot()
@@ -518,8 +518,8 @@ describe('<IntegrationDetail />', () => {
                     <IntegrationDetail {...minProps} />
                 </Provider>,
                 {
-                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/integrations/${IntegrationType.Email}/1/${Tab.EmailVerification}`,
+                    path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
+                    route: `/channels/${IntegrationType.Email}/1/${Tab.EmailVerification}`,
                 }
             )
             expect(container.firstChild).toMatchSnapshot()
@@ -595,8 +595,8 @@ describe('<IntegrationDetail />', () => {
                     <IntegrationDetail {...minProps} />
                 </Provider>,
                 {
-                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/integrations/${IntegrationType.GorgiasChat}/1/${Tab.ChatSelfService}`,
+                    path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
+                    route: `/channels/${IntegrationType.GorgiasChat}/1/${Tab.ChatSelfService}`,
                 }
             )
             expect(container.firstChild).toMatchSnapshot()
@@ -610,8 +610,8 @@ describe('<IntegrationDetail />', () => {
                     <IntegrationDetail {...minProps} />
                 </Provider>,
                 {
-                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/integrations/${IntegrationType.Phone}/1/${Tab.PhoneVoicemail}`,
+                    path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
+                    route: `/channels/${IntegrationType.Phone}/1/${Tab.PhoneVoicemail}`,
                 }
             )
             expect(container.firstChild).toMatchSnapshot()

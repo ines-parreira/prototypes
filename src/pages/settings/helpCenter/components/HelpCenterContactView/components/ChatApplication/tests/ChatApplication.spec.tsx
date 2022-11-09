@@ -249,7 +249,7 @@ describe('<ChatApplication />', () => {
             'Go To Chat Settings'
         ) as HTMLAnchorElement
         expect(chatIntegrationLink.getAttribute('to')).toStrictEqual(
-            '/app/settings/integrations/gorgias_chat/10/automation'
+            '/app/settings/channels/gorgias_chat/10/automation'
         )
     })
 

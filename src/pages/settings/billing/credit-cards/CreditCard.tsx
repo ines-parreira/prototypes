@@ -415,7 +415,7 @@ export class CreditCardContainer extends Component<Props, State> {
                                     className="section"
                                     to="/app/settings/billing/"
                                 >
-                                    Billing & Usage
+                                    Billing & usage
                                 </Link>
                             </BreadcrumbItem>
                             <BreadcrumbItem>

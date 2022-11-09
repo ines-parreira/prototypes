@@ -35,7 +35,7 @@ export class ChatIntegrationListContainer extends Component<Props> {
                     {hasActiveSmoochInsideIntegration ? (
                         <Alert type={AlertType.Error} icon className={css.mb16}>
                             A{' '}
-                            <Link to="/app/settings/integrations/gorgias_chat">
+                            <Link to="/app/settings/channels/gorgias_chat">
                                 new version of the chat
                             </Link>{' '}
                             with additional features is available, please

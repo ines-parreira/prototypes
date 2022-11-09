@@ -147,7 +147,7 @@ export default function TwitterIntegrationDetail({
                     <Breadcrumb>
                         <BreadcrumbItem>
                             <Link to="/app/settings/integrations">
-                                Integrations
+                                Apps & integrations
                             </Link>
                         </BreadcrumbItem>
                         <BreadcrumbItem>

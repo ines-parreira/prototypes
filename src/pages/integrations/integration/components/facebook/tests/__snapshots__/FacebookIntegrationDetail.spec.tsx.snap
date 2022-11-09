@@ -180,7 +180,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -565,7 +565,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -963,7 +963,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -1401,7 +1401,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -1799,7 +1799,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -2219,7 +2219,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -2644,7 +2644,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -3069,7 +3069,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -3494,7 +3494,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -3919,7 +3919,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -4339,7 +4339,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -4759,7 +4759,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -5179,7 +5179,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -5604,7 +5604,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -6020,7 +6020,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -6445,7 +6445,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -6870,7 +6870,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -7295,7 +7295,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -7720,7 +7720,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -8145,7 +8145,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -8570,7 +8570,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -8995,7 +8995,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -9420,7 +9420,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -9845,7 +9845,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -10270,7 +10270,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -10695,7 +10695,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -11120,7 +11120,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -11545,7 +11545,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -11970,7 +11970,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -12395,7 +12395,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -12847,7 +12847,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -13272,7 +13272,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -13697,7 +13697,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -14122,7 +14122,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem

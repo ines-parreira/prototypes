@@ -241,7 +241,7 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
                         <Col lg={4} className={css.appLink}>
                             {VoiceIntegration && (
                                 <Link
-                                    to={`/app/settings/integrations/phone/${VoiceIntegration.id}/preferences`}
+                                    to={`/app/settings/channels/phone/${VoiceIntegration.id}/preferences`}
                                 >
                                     Manage Integration
                                 </Link>
@@ -252,7 +252,7 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
                                     IntegrationType.Phone
                                 ) && (
                                     <Link
-                                        to={`/app/settings/integrations/phone/new?phoneNumberId=${phoneNumber.id}`}
+                                        to={`/app/settings/channels/phone/new?phoneNumberId=${phoneNumber.id}`}
                                     >
                                         <i className="material-icons md-2 align-middle mr-2">
                                             add
@@ -289,13 +289,13 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
                             <Col lg={4} className={css.appLink}>
                                 {smsApp ? (
                                     <Link
-                                        to={`/app/settings/integrations/sms/${smsApp.id}/preferences`}
+                                        to={`/app/settings/channels/sms/${smsApp.id}/preferences`}
                                     >
                                         Manage Integration
                                     </Link>
                                 ) : (
                                     <Link
-                                        to={`/app/settings/integrations/sms/new?phoneNumberId=${phoneNumber.id}`}
+                                        to={`/app/settings/channels/sms/new?phoneNumberId=${phoneNumber.id}`}
                                     >
                                         <i className="material-icons md-2 align-middle mr-2">
                                             add

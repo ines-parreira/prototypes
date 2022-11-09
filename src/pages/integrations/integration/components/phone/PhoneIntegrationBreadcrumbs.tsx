@@ -28,13 +28,10 @@ export default function PhoneIntegrationBreadcrumbs({
         }
         return null
     })
-    const baseUrl = `/app/settings/integrations/${type}`
+    const baseUrl = `/app/settings/channels/${type}`
     const name = type === IntegrationType.Sms ? 'SMS' : 'Voice'
     return (
         <Breadcrumb>
-            <BreadcrumbItem>
-                <Link to="/app/settings/integrations">Integrations</Link>
-            </BreadcrumbItem>
             {integration && (
                 <>
                     <BreadcrumbItem>

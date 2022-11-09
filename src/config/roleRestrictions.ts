@@ -17,6 +17,9 @@ export const roleRestrictionConfigs: Record<
     [PageSection.Integrations]: {
         pageHeader: SectionPageHeader.Integrations,
     },
+    [PageSection.Channels]: {
+        pageHeader: SectionPageHeader.Channels,
+    },
     [PageSection.Macros]: {
         pageHeader: SectionPageHeader.Macros,
     },

@@ -18,16 +18,7 @@ exports[`<SmsAppPreferences/> render() should render 1`] = `
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
-          >
-            Integrations
-          </a>
-        </li>
-        <li
-          class="breadcrumb-item"
-        >
-          <a
-            to="/app/settings/integrations/sms"
+            to="/app/settings/channels/sms"
           >
             SMS
           </a>
@@ -210,16 +201,7 @@ exports[`<SmsAppPreferences/> render() should submit a valid payload with the se
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
-          >
-            Integrations
-          </a>
-        </li>
-        <li
-          class="breadcrumb-item"
-        >
-          <a
-            to="/app/settings/integrations/sms"
+            to="/app/settings/channels/sms"
           >
             SMS
           </a>

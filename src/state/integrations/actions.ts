@@ -4,6 +4,7 @@ import {fromJS, Map} from 'immutable'
 import _capitalize from 'lodash/capitalize'
 import _sortBy from 'lodash/sortBy'
 
+import {isChannel} from 'config'
 import client from 'models/api/resources'
 import {ApiListResponsePagination, GorgiasApiError} from 'models/api/types'
 import {
@@ -212,9 +213,9 @@ export function onCreateSuccess(
 
     if (!disableRedirect) {
         history.push(
-            `/app/settings/integrations/${resp.type}/${
-                resp.id || ''
-            }${nextStep}`
+            `/app/settings/${
+                isChannel(resp.type) ? 'channels' : 'integrations'
+            }/${resp.type}/${resp.id || ''}${nextStep}`
         )
     }
 
@@ -313,7 +314,11 @@ export function fetchIntegration(
                 (error: AxiosError) => {
                     // We redirect to the integrations home page if we can't find the wanted integration on the server
                     history.replace(
-                        `/app/settings/integrations/${integrationType}`
+                        `/app/settings/${
+                            isChannel(integrationType as IntegrationType)
+                                ? 'channels'
+                                : 'integrations'
+                        }/${integrationType}`
                     )
                     return dispatch({
                         type: constants.FETCH_INTEGRATION_ERROR,
@@ -552,7 +557,7 @@ export function createGorgiasChatIntegration(integration: Map<any, any>) {
                     resp: savedIntegration,
                 })
                 history.push(
-                    `/app/settings/integrations/gorgias_chat/${
+                    `/app/settings/channels/gorgias_chat/${
                         savedIntegration.id || ''
                     }/installation`
                 )
@@ -561,7 +566,7 @@ export function createGorgiasChatIntegration(integration: Map<any, any>) {
             }
 
             history.push(
-                `/app/settings/integrations/gorgias_chat/${
+                `/app/settings/channels/gorgias_chat/${
                     savedIntegration.id || ''
                 }/preferences`
             )
@@ -569,7 +574,7 @@ export function createGorgiasChatIntegration(integration: Map<any, any>) {
                 'Integration successfully installed on your website'
         } else {
             history.push(
-                `/app/settings/integrations/gorgias_chat/${
+                `/app/settings/channels/gorgias_chat/${
                     savedIntegration.id || ''
                 }/installation`
             )

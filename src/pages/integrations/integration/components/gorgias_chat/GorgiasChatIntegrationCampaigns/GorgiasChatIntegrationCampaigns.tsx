@@ -10,6 +10,7 @@ import {updateCampaign} from 'state/campaigns/actions'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import PageHeader from 'pages/common/components/PageHeader'
 import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
+import {IntegrationType} from 'models/integration/constants'
 import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
 
 import css from './GorgiasChatIntegrationCampaigns.less'
@@ -44,15 +45,8 @@ export class GorgiasChatIntegrationCampaignsComponent extends Component<Props> {
                     title={
                         <Breadcrumb>
                             <BreadcrumbItem>
-                                <Link to="/app/settings/integrations">
-                                    Integrations
-                                </Link>
-                            </BreadcrumbItem>
-                            <BreadcrumbItem>
                                 <Link
-                                    to={`/app/settings/integrations/${
-                                        integration.get('type') as string
-                                    }`}
+                                    to={`/app/settings/channels/${IntegrationType.GorgiasChat}`}
                                 >
                                     Chat
                                 </Link>
@@ -67,9 +61,7 @@ export class GorgiasChatIntegrationCampaignsComponent extends Component<Props> {
                         tag={Link}
                         color="success"
                         to={
-                            `/app/settings/integrations/${
-                                integration.get('type') as string
-                            }/` +
+                            `/app/settings/channels/${IntegrationType.GorgiasChat}/` +
                             `${integration.get('id') as string}/campaigns/new`
                         }
                     >
@@ -103,9 +95,7 @@ export class GorgiasChatIntegrationCampaignsComponent extends Component<Props> {
                         <tbody>
                             {campaigns.map((campaign: Map<any, any>) => {
                                 const editLink =
-                                    `/app/settings/integrations/${
-                                        integration.get('type') as string
-                                    }/` +
+                                    `/app/settings/channels/${IntegrationType.GorgiasChat}/` +
                                     `${
                                         integration.get('id') as number
                                     }/campaigns/${campaign.get('id') as number}`

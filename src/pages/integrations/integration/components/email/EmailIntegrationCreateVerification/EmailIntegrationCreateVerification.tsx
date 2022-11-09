@@ -82,7 +82,7 @@ export class EmailIntegrationCreateVerification extends Component<
             nextProps.integration.getIn(['meta', 'verified'])
         ) {
             history.push(
-                `/app/settings/integrations/email/${
+                `/app/settings/channels/email/${
                     nextProps.integration.get('id') as number
                 }`
             )
@@ -176,7 +176,7 @@ export class EmailIntegrationCreateVerification extends Component<
                     If you haven't set up the forwarding yet, you'll find the
                     instructions{' '}
                     <Link
-                        to={`/app/settings/integrations/email/${
+                        to={`/app/settings/channels/email/${
                             integration.get('id') as number
                         }/forwarding`}
                     >
@@ -250,12 +250,7 @@ export class EmailIntegrationCreateVerification extends Component<
                     title={
                         <Breadcrumb>
                             <BreadcrumbItem>
-                                <Link to="/app/settings/integrations">
-                                    Integrations
-                                </Link>
-                            </BreadcrumbItem>
-                            <BreadcrumbItem>
-                                <Link to="/app/settings/integrations/email">
+                                <Link to="/app/settings/channels/email">
                                     Email
                                 </Link>
                             </BreadcrumbItem>

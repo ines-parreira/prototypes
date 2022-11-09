@@ -27,7 +27,7 @@ exports[`BusinessHours component should render default values 1`] = `
           The appearance of your
            
           <Link
-            to="/app/settings/integrations/gorgias_chat"
+            to="/app/settings/channels/gorgias_chat"
           >
             Chat integrations
           </Link>
@@ -235,10 +235,10 @@ exports[`BusinessHours component should render values from state 1`] = `
                   The appearance of your
                    
                   <Link
-                    to="/app/settings/integrations/gorgias_chat"
+                    to="/app/settings/channels/gorgias_chat"
                   >
                     <a
-                      to="/app/settings/integrations/gorgias_chat"
+                      to="/app/settings/channels/gorgias_chat"
                     >
                       Chat integrations
                     </a>

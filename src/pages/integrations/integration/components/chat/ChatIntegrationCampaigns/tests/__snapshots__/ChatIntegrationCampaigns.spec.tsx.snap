@@ -21,7 +21,7 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
             <a
               to="/app/settings/integrations"
             >
-              Integrations
+              Apps & integrations
             </a>
           </li>
           <li
@@ -43,7 +43,9 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
       <div>
         <a
           class="btn btn-success"
-          to="/app/settings/integrations/smooch_inside/118/campaigns/new"
+          to="/app/settings/integrations/
+                            smooch_inside
+                        /118/campaigns/new"
         >
           Create campaign
         </a>
@@ -130,7 +132,7 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
             <a
               to="/app/settings/integrations"
             >
-              Integrations
+              Apps & integrations
             </a>
           </li>
           <li
@@ -152,7 +154,9 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
       <div>
         <a
           class="btn btn-success"
-          to="/app/settings/integrations/smooch_inside/118/campaigns/new"
+          to="/app/settings/integrations/
+                            smooch_inside
+                        /118/campaigns/new"
         >
           Create campaign
         </a>

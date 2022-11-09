@@ -17,10 +17,10 @@ export default function SmsIntegrationSecondaryNavigation({
 
     return (
         <SecondaryNavbar>
-            <NavLink to="/app/settings/integrations/sms" exact>
+            <NavLink to="/app/settings/channels/sms" exact>
                 About
             </NavLink>
-            <NavLink to="/app/settings/integrations/sms/integrations" exact>
+            <NavLink to="/app/settings/channels/sms/integrations" exact>
                 Integrations
             </NavLink>
         </SecondaryNavbar>

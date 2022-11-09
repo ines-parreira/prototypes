@@ -17,7 +17,7 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when cre
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -309,7 +309,7 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when int
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -645,7 +645,7 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when upd
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -981,7 +981,7 @@ exports[`<ChatIntegrationAppearance/> render() should mark the file field for te
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -1338,7 +1338,7 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -1678,7 +1678,7 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem

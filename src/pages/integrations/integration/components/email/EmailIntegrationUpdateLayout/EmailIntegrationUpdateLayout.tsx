@@ -20,12 +20,7 @@ const EmailIntegrationUpdateLayout = ({integration, children}: Props) => {
                 title={
                     <Breadcrumb>
                         <BreadcrumbItem>
-                            <NavLink to="/app/settings/integrations">
-                                Integrations
-                            </NavLink>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
-                            <NavLink to="/app/settings/integrations/email">
+                            <NavLink to="/app/settings/channels/email">
                                 Email
                             </NavLink>
                         </BreadcrumbItem>
@@ -40,13 +35,13 @@ const EmailIntegrationUpdateLayout = ({integration, children}: Props) => {
             />
             <SecondaryNavbar>
                 <NavLink
-                    to={`/app/settings/integrations/email/${integrationId}`}
+                    to={`/app/settings/channels/email/${integrationId}`}
                     exact
                 >
                     Preferences
                 </NavLink>
                 <NavLink
-                    to={`/app/settings/integrations/email/${integrationId}/dns`}
+                    to={`/app/settings/channels/email/${integrationId}/dns`}
                     exact
                 >
                     Domain Verification

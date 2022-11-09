@@ -3,6 +3,7 @@ import {fromJS, Map} from 'immutable'
 import {shallow} from 'enzyme'
 
 import history from 'pages/history'
+import {isChannel} from 'config'
 import {
     SHOPIFY_INTEGRATION_TYPE,
     GORGIAS_CHAT_INTEGRATION_TYPE,
@@ -72,9 +73,11 @@ describe('<InstallOnIntegrationsCard/>', () => {
                 await component.instance()._installOnStore(targetIntegration)
 
                 expect(history.push).toHaveBeenCalledWith(
-                    `/app/settings/integrations/${
-                        targetIntegration.get('type') as string
-                    }/` +
+                    `/app/settings/${
+                        isChannel(targetIntegration.get('type'))
+                            ? 'channels'
+                            : 'integrations'
+                    }/${targetIntegration.get('type') as string}/` +
                         `${
                             targetIntegration.get('id') as number
                         }/?error=need_scope_update`

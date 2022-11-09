@@ -1,5 +1,4 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 
 import {getIntegrationsByType} from 'state/integrations/selectors'
@@ -23,18 +22,11 @@ export function PhoneIntegrationsListContainer(): JSX.Element {
                 title={
                     <>
                         <Breadcrumb>
-                            <BreadcrumbItem>
-                                <Link to="/app/settings/integrations">
-                                    Integrations
-                                </Link>
-                            </BreadcrumbItem>
                             <BreadcrumbItem active>Voice</BreadcrumbItem>
                         </Breadcrumb>
                         <Button
                             onClick={() =>
-                                history.push(
-                                    '/app/settings/integrations/phone/new'
-                                )
+                                history.push('/app/settings/channels/phone/new')
                             }
                         >
                             Add Voice Integration

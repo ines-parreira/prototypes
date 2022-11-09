@@ -207,7 +207,7 @@ describe('integrations actions', () => {
             await store.dispatch(actions.createGorgiasChatIntegration(data))
 
             expect(history.push).toHaveBeenCalledWith(
-                '/app/settings/integrations/gorgias_chat/123/preferences'
+                '/app/settings/channels/gorgias_chat/123/preferences'
             )
         })
 
@@ -231,7 +231,7 @@ describe('integrations actions', () => {
             await store.dispatch(actions.createGorgiasChatIntegration(data))
 
             expect(history.push).toHaveBeenCalledWith(
-                '/app/settings/integrations/gorgias_chat/123/installation'
+                '/app/settings/channels/gorgias_chat/123/installation'
             )
         })
 
@@ -248,7 +248,7 @@ describe('integrations actions', () => {
             await store.dispatch(actions.createGorgiasChatIntegration(data))
 
             expect(history.push).toHaveBeenCalledWith(
-                '/app/settings/integrations/gorgias_chat/123/installation'
+                '/app/settings/channels/gorgias_chat/123/installation'
             )
         })
     })

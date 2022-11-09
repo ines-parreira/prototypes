@@ -82,13 +82,8 @@ function SmsIntegrationCreate({selectedPhoneNumberId}: Props): JSX.Element {
                 title={
                     <Breadcrumb>
                         <BreadcrumbItem>
-                            <Link to="/app/settings/integrations">
-                                Integrations
-                            </Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
                             <Link
-                                to={`/app/settings/integrations/${IntegrationType.Sms}`}
+                                to={`/app/settings/channels/${IntegrationType.Sms}`}
                             >
                                 SMS
                             </Link>

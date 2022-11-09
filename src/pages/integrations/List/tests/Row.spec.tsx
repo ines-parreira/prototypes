@@ -105,25 +105,4 @@ describe('IntegrationsListRow', () => {
         )
         expect(container.firstChild).toMatchSnapshot()
     })
-
-    it('should open the list of integrations for Voice and SMS when integrations exist', () => {
-        const integration = {
-            type: IntegrationType.Phone,
-            title: 'Shopify',
-            description: '',
-            image: 'ok.png',
-            count: 2,
-        }
-
-        const {container} = render(
-            <Provider store={store}>
-                <Row integration={integration} />
-            </Provider>
-        )
-
-        expect(container.querySelector('a')?.getAttribute('to')).toBe(
-            '/app/settings/integrations/phone'
-        )
-        expect(container.firstChild).toMatchSnapshot()
-    })
 })

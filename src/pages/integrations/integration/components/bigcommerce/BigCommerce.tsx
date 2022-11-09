@@ -48,7 +48,7 @@ function BigCommerce({integration, integrations, loading, redirectUri}: Props) {
                     <Breadcrumb>
                         <BreadcrumbItem>
                             <Link to="/app/settings/integrations">
-                                Integrations
+                                Apps & integrations
                             </Link>
                         </BreadcrumbItem>
                         <BreadcrumbItem active={!isIntegration}>

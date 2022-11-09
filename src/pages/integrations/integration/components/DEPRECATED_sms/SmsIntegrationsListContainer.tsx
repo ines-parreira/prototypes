@@ -1,5 +1,4 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 
 import {getIntegrationsByType} from 'state/integrations/selectors'
@@ -23,18 +22,11 @@ export function SmsIntegrationsListContainer(): JSX.Element {
                 title={
                     <>
                         <Breadcrumb>
-                            <BreadcrumbItem>
-                                <Link to="/app/settings/integrations">
-                                    Integrations
-                                </Link>
-                            </BreadcrumbItem>
                             <BreadcrumbItem active>SMS</BreadcrumbItem>
                         </Breadcrumb>
                         <Button
                             onClick={() =>
-                                history.push(
-                                    '/app/settings/integrations/sms/new'
-                                )
+                                history.push('/app/settings/channels/sms/new')
                             }
                         >
                             Add SMS Integration

@@ -77,7 +77,7 @@ export class OutlookIntegrationSetupContainer extends Component<Props, State> {
         void activateOnboardingIntegrations(data, IntegrationType.Outlook).then(
             () => fetchIntegrations()
         )
-        history.push('/app/settings/integrations/email')
+        history.push('/app/settings/channels/email')
     }
 
     _toggleIntegration = (integration: Map<any, any>, enable: boolean) => {
@@ -160,12 +160,7 @@ export class OutlookIntegrationSetupContainer extends Component<Props, State> {
                     title={
                         <Breadcrumb>
                             <BreadcrumbItem>
-                                <Link to="/app/settings/integrations">
-                                    Integrations
-                                </Link>
-                            </BreadcrumbItem>
-                            <BreadcrumbItem>
-                                <Link to="/app/settings/integrations/email">
+                                <Link to="/app/settings/channels/email">
                                     Email
                                 </Link>
                             </BreadcrumbItem>

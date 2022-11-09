@@ -44,7 +44,7 @@ import YourProfileContainer from './settings/yourProfile/YourProfileContainer'
 import PasswordAnd2FA from './settings/yourProfile/PasswordAnd2FA'
 import APIView from './settings/api/APIView'
 
-import SettingsNavbarContainer from './settings/common/SettingsNavbarContainer'
+import SettingsNavbar from './settings/common/SettingsNavbar'
 import StatsNavbarContainer from './stats/common/StatsNavbarContainer'
 import NoMatch from './common/components/NoMatch'
 import TicketListInfobarContainer from './tickets/list/TicketListInfobarContainer'
@@ -543,10 +543,15 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/`}
                 exact
                 render={appRender({
-                    content: YourProfileContainer,
-                    navbar: SettingsNavbarContainer,
+                    content: memoizedWithUserRoleRequired(
+                        IntegrationDetail,
+                        ADMIN_ROLE,
+                        PageSection.Integrations
+                    ),
+                    navbar: SettingsNavbar,
                 })}
             />
+            <Route path={`${path}/channels`} render={ChannelsSettingsRoutes} />
             <Route
                 path={`${path}/integrations`}
                 render={IntegrationsSettingsRoutes}
@@ -573,7 +578,7 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                 exact
                 render={appRender({
                     content: YourProfileContainer,
-                    navbar: SettingsNavbarContainer,
+                    navbar: SettingsNavbar,
                 })}
             />
             <Route
@@ -581,7 +586,7 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                 exact
                 render={appRender({
                     content: PasswordAnd2FA,
-                    navbar: SettingsNavbarContainer,
+                    navbar: SettingsNavbar,
                 })}
             />
             <Route
@@ -593,7 +598,7 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                         ADMIN_ROLE,
                         PageSection.Api
                     ),
-                    navbar: SettingsNavbarContainer,
+                    navbar: SettingsNavbar,
                 })}
             />
             <Route
@@ -605,7 +610,7 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                         ADMIN_ROLE,
                         PageSection.Audit
                     ),
-                    navbar: SettingsNavbarContainer,
+                    navbar: SettingsNavbar,
                 })}
             />
             <Route path={`${path}/teams`} render={TeamsSettingsRoutes} />
@@ -620,7 +625,7 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                         AGENT_ROLE,
                         PageSection.ManageTags
                     ),
-                    navbar: SettingsNavbarContainer,
+                    navbar: SettingsNavbar,
                 })}
             />
             <Route path={`${path}/import-data`} render={ImportSettingsRoutes} />
@@ -632,7 +637,7 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                         ADMIN_ROLE,
                         PageSection.Access
                     ),
-                    navbar: SettingsNavbarContainer,
+                    navbar: SettingsNavbar,
                 })}
                 exact
             />
@@ -651,7 +656,7 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                             PageSection.SatisfactionSurveys
                         )
                     ),
-                    navbar: SettingsNavbarContainer,
+                    navbar: SettingsNavbar,
                 })}
             />
             <Route
@@ -662,7 +667,7 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                         ADMIN_ROLE,
                         PageSection.BusinessHours
                     ),
-                    navbar: SettingsNavbarContainer,
+                    navbar: SettingsNavbar,
                 })}
                 exact
             />
@@ -675,7 +680,26 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                         ADMIN_ROLE,
                         PageSection.TicketAssignment
                     ),
-                    navbar: SettingsNavbarContainer,
+                    navbar: SettingsNavbar,
+                })}
+            />
+        </Switch>
+    )
+}
+
+export function ChannelsSettingsRoutes({match: {path}}: RouteComponentProps) {
+    return (
+        <Switch>
+            <Route
+                path={`${path}/:integrationType/:integrationId?/:extra?/:subId?`}
+                exact
+                render={appRender({
+                    content: memoizedWithUserRoleRequired(
+                        IntegrationDetail,
+                        ADMIN_ROLE,
+                        PageSection.Channels
+                    ),
+                    navbar: SettingsNavbar,
                 })}
             />
         </Switch>
@@ -697,7 +721,7 @@ export function IntegrationsSettingsRoutes({
                             ADMIN_ROLE,
                             PageSection.Integrations
                         ),
-                        navbar: SettingsNavbarContainer,
+                        navbar: SettingsNavbar,
                     })}
                 />
                 <Route
@@ -708,7 +732,7 @@ export function IntegrationsSettingsRoutes({
                             AppDetail,
                             ADMIN_ROLE
                         ),
-                        navbar: SettingsNavbarContainer,
+                        navbar: SettingsNavbar,
                     })}
                 />
                 <Route
@@ -720,7 +744,7 @@ export function IntegrationsSettingsRoutes({
                             ADMIN_ROLE,
                             PageSection.Integrations
                         ),
-                        navbar: SettingsNavbarContainer,
+                        navbar: SettingsNavbar,
                     })}
                 />
             </Switch>
@@ -742,7 +766,7 @@ export function PhoneNumbersSettingsRoutes({
                         ADMIN_ROLE,
                         PageSection.PhoneNumbers
                     ),
-                    navbar: SettingsNavbarContainer,
+                    navbar: SettingsNavbar,
                 })}
             />
             <Route
@@ -754,7 +778,7 @@ export function PhoneNumbersSettingsRoutes({
                         ADMIN_ROLE,
                         PageSection.PhoneNumbers
                     ),
-                    navbar: SettingsNavbarContainer,
+                    navbar: SettingsNavbar,
                 })}
             />
             <Route
@@ -766,7 +790,7 @@ export function PhoneNumbersSettingsRoutes({
                         ADMIN_ROLE,
                         PageSection.PhoneNumbers
                     ),
-                    navbar: SettingsNavbarContainer,
+                    navbar: SettingsNavbar,
                 })}
             />
         </Switch>
@@ -786,7 +810,7 @@ export function HelpCenterSettingsRoutes({match: {path}}: RouteComponentProps) {
                                 AccountFeature.HelpCenter,
                                 HelpCenterPaywall
                             )(HelpCenterStartView),
-                            navbar: SettingsNavbarContainer,
+                            navbar: SettingsNavbar,
                         })}
                     />
                     <Route
@@ -797,7 +821,7 @@ export function HelpCenterSettingsRoutes({match: {path}}: RouteComponentProps) {
                                 AccountFeature.HelpCenter,
                                 HelpCenterPaywall
                             )(HelpCenterNewView),
-                            navbar: SettingsNavbarContainer,
+                            navbar: SettingsNavbar,
                         })}
                     />
                     <Route
@@ -807,7 +831,7 @@ export function HelpCenterSettingsRoutes({match: {path}}: RouteComponentProps) {
                                 AccountFeature.HelpCenter,
                                 HelpCenterPaywall
                             )(CurrentHelpCenter),
-                            navbar: SettingsNavbarContainer,
+                            navbar: SettingsNavbar,
                         })}
                     />
                 </Switch>
@@ -833,7 +857,7 @@ export function SelfServiceSettingsRoutes({
                             ADMIN_ROLE,
                             PageSection.SelfService
                         ),
-                        navbar: SettingsNavbarContainer,
+                        navbar: SettingsNavbar,
                     })}
                 />
                 <Redirect
@@ -854,7 +878,7 @@ export function SelfServiceSettingsRoutes({
                             ADMIN_ROLE,
                             PageSection.SelfService
                         ),
-                        navbar: SettingsNavbarContainer,
+                        navbar: SettingsNavbar,
                     })}
                 />
                 <Route
@@ -866,7 +890,7 @@ export function SelfServiceSettingsRoutes({
                             ADMIN_ROLE,
                             PageSection.SelfService
                         ),
-                        navbar: SettingsNavbarContainer,
+                        navbar: SettingsNavbar,
                     })}
                 />
                 <Route
@@ -878,7 +902,7 @@ export function SelfServiceSettingsRoutes({
                             ADMIN_ROLE,
                             PageSection.SelfService
                         ),
-                        navbar: SettingsNavbarContainer,
+                        navbar: SettingsNavbar,
                     })}
                 />
                 <Route
@@ -890,7 +914,7 @@ export function SelfServiceSettingsRoutes({
                             ADMIN_ROLE,
                             PageSection.SelfService
                         ),
-                        navbar: SettingsNavbarContainer,
+                        navbar: SettingsNavbar,
                     })}
                 />
                 <Route
@@ -902,7 +926,7 @@ export function SelfServiceSettingsRoutes({
                             ADMIN_ROLE,
                             PageSection.SelfService
                         ),
-                        navbar: SettingsNavbarContainer,
+                        navbar: SettingsNavbar,
                     })}
                 />
                 <Route
@@ -914,7 +938,7 @@ export function SelfServiceSettingsRoutes({
                             ADMIN_ROLE,
                             PageSection.SelfService
                         ),
-                        navbar: SettingsNavbarContainer,
+                        navbar: SettingsNavbar,
                     })}
                 />
                 <Route
@@ -926,7 +950,7 @@ export function SelfServiceSettingsRoutes({
                             ADMIN_ROLE,
                             PageSection.SelfService
                         ),
-                        navbar: SettingsNavbarContainer,
+                        navbar: SettingsNavbar,
                     })}
                 />
                 <Route
@@ -938,7 +962,7 @@ export function SelfServiceSettingsRoutes({
                             ADMIN_ROLE,
                             PageSection.SelfService
                         ),
-                        navbar: SettingsNavbarContainer,
+                        navbar: SettingsNavbar,
                     })}
                 />
             </Switch>
@@ -958,7 +982,7 @@ export function MacrosSettingsRoutes({match: {path}}: RouteComponentProps) {
                         AGENT_ROLE,
                         PageSection.Macros
                     ),
-                    navbar: SettingsNavbarContainer,
+                    navbar: SettingsNavbar,
                 })}
             />
             <Route
@@ -970,7 +994,7 @@ export function MacrosSettingsRoutes({match: {path}}: RouteComponentProps) {
                         AGENT_ROLE,
                         PageSection.Macros
                     ),
-                    navbar: SettingsNavbarContainer,
+                    navbar: SettingsNavbar,
                 })}
             />
             <Route
@@ -982,7 +1006,7 @@ export function MacrosSettingsRoutes({match: {path}}: RouteComponentProps) {
                         AGENT_ROLE,
                         PageSection.Macros
                     ),
-                    navbar: SettingsNavbarContainer,
+                    navbar: SettingsNavbar,
                 })}
             />
         </Switch>
@@ -1002,7 +1026,7 @@ export function RulesSettingsRoute({match: {path}}: RouteComponentProps) {
                             AGENT_ROLE,
                             PageSection.Rules
                         ),
-                        navbar: SettingsNavbarContainer,
+                        navbar: SettingsNavbar,
                     })}
                 />
                 <Route
@@ -1014,7 +1038,7 @@ export function RulesSettingsRoute({match: {path}}: RouteComponentProps) {
                             AGENT_ROLE,
                             PageSection.Rules
                         ),
-                        navbar: SettingsNavbarContainer,
+                        navbar: SettingsNavbar,
                     })}
                 />
                 <Route
@@ -1026,7 +1050,7 @@ export function RulesSettingsRoute({match: {path}}: RouteComponentProps) {
                             AGENT_ROLE,
                             PageSection.Rules
                         ),
-                        navbar: SettingsNavbarContainer,
+                        navbar: SettingsNavbar,
                     })}
                 />
             </Switch>
@@ -1046,7 +1070,7 @@ export function TeamsSettingsRoutes({match: {path}}: RouteComponentProps) {
                         ADMIN_ROLE,
                         PageSection.Teams
                     ),
-                    navbar: SettingsNavbarContainer,
+                    navbar: SettingsNavbar,
                 })}
             />
             <Route
@@ -1058,7 +1082,7 @@ export function TeamsSettingsRoutes({match: {path}}: RouteComponentProps) {
                         ADMIN_ROLE,
                         PageSection.Teams
                     ),
-                    navbar: SettingsNavbarContainer,
+                    navbar: SettingsNavbar,
                 })}
             />
             <Route
@@ -1070,7 +1094,7 @@ export function TeamsSettingsRoutes({match: {path}}: RouteComponentProps) {
                         ADMIN_ROLE,
                         PageSection.Teams
                     ),
-                    navbar: SettingsNavbarContainer,
+                    navbar: SettingsNavbar,
                 })}
             />
         </Switch>
@@ -1089,7 +1113,7 @@ export function UsersSettingsRoutes({match: {path}}: RouteComponentProps) {
                         ADMIN_ROLE,
                         PageSection.Users
                     ),
-                    navbar: SettingsNavbarContainer,
+                    navbar: SettingsNavbar,
                 })}
             />
             <Route
@@ -1101,7 +1125,7 @@ export function UsersSettingsRoutes({match: {path}}: RouteComponentProps) {
                         ADMIN_ROLE,
                         PageSection.Users
                     ),
-                    navbar: SettingsNavbarContainer,
+                    navbar: SettingsNavbar,
                 })}
             />
             <Route
@@ -1113,7 +1137,7 @@ export function UsersSettingsRoutes({match: {path}}: RouteComponentProps) {
                         ADMIN_ROLE,
                         PageSection.Users
                     ),
-                    navbar: SettingsNavbarContainer,
+                    navbar: SettingsNavbar,
                 })}
             />
         </Switch>
@@ -1132,7 +1156,7 @@ export function BillingSettingsRoutes({match: {path}}: RouteComponentProps) {
                         ADMIN_ROLE,
                         PageSection.Billing
                     ),
-                    navbar: SettingsNavbarContainer,
+                    navbar: SettingsNavbar,
                 })}
             />
             <Route
@@ -1144,7 +1168,7 @@ export function BillingSettingsRoutes({match: {path}}: RouteComponentProps) {
                         ADMIN_ROLE,
                         PageSection.Billing
                     ),
-                    navbar: SettingsNavbarContainer,
+                    navbar: SettingsNavbar,
                 })}
             />
             <Route
@@ -1156,7 +1180,7 @@ export function BillingSettingsRoutes({match: {path}}: RouteComponentProps) {
                         ADMIN_ROLE,
                         PageSection.Billing
                     ),
-                    navbar: SettingsNavbarContainer,
+                    navbar: SettingsNavbar,
                 })}
             />
             <Route
@@ -1168,7 +1192,7 @@ export function BillingSettingsRoutes({match: {path}}: RouteComponentProps) {
                         ADMIN_ROLE,
                         PageSection.Billing
                     ),
-                    navbar: SettingsNavbarContainer,
+                    navbar: SettingsNavbar,
                 })}
             />
             <Route
@@ -1180,7 +1204,7 @@ export function BillingSettingsRoutes({match: {path}}: RouteComponentProps) {
                         ADMIN_ROLE,
                         PageSection.Billing
                     ),
-                    navbar: SettingsNavbarContainer,
+                    navbar: SettingsNavbar,
                 })}
             />
         </Switch>
@@ -1199,7 +1223,7 @@ export function ImportSettingsRoutes({match: {path}}: RouteComponentProps) {
                         ADMIN_ROLE,
                         PageSection.ImportData
                     ),
-                    navbar: SettingsNavbarContainer,
+                    navbar: SettingsNavbar,
                 })}
             />
             <Route
@@ -1211,7 +1235,7 @@ export function ImportSettingsRoutes({match: {path}}: RouteComponentProps) {
                         ADMIN_ROLE,
                         PageSection.ImportData
                     ),
-                    navbar: SettingsNavbarContainer,
+                    navbar: SettingsNavbar,
                 })}
             />
             <Route
@@ -1223,7 +1247,7 @@ export function ImportSettingsRoutes({match: {path}}: RouteComponentProps) {
                         ADMIN_ROLE,
                         PageSection.ImportData
                     ),
-                    navbar: SettingsNavbarContainer,
+                    navbar: SettingsNavbar,
                 })}
             />
         </Switch>
@@ -1242,7 +1266,7 @@ export function AdminTasksRoutes({match: {path}}: RouteComponentProps) {
                         ADMIN_ROLE,
                         PageSection.ImportPhoneNumber
                     ),
-                    navbar: SettingsNavbarContainer,
+                    navbar: SettingsNavbar,
                 })}
             />
             <Route
@@ -1254,7 +1278,7 @@ export function AdminTasksRoutes({match: {path}}: RouteComponentProps) {
                         ADMIN_ROLE,
                         PageSection.TwilioSubaccountStatus
                     ),
-                    navbar: SettingsNavbarContainer,
+                    navbar: SettingsNavbar,
                 })}
             />
         </Switch>

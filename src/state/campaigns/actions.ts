@@ -1,11 +1,11 @@
 import {Map} from 'immutable'
 
-import client from '../../models/api/resources'
-import history from '../../pages/history'
+import {Campaign, IntegrationType} from 'models/integration/types'
+import client from 'models/api/resources'
+import history from 'pages/history'
 import {onUpdateSuccess, fetchIntegration} from '../integrations/actions'
 import * as types from '../integrations/constants'
 import {StoreDispatch} from '../types'
-import {Campaign} from '../../models/integration/types'
 
 export function createCampaign(
     campaign: Map<any, any>,
@@ -35,8 +35,8 @@ export function createCampaign(
                         )
                     ).then(() => {
                         history.push(
-                            `/app/settings/integrations/${
-                                integration.get('type') as string
+                            `/app/settings/channels/${
+                                IntegrationType.GorgiasChat
                             }/${integration.get('id') as string}/campaigns/${
                                 data.id
                             }`

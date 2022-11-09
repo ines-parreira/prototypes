@@ -10,7 +10,7 @@ exports[`<RestrictedPage/> should render for a specific page 1`] = `
     <h1
       class="d-flex align-items-center"
     >
-      Billing & Usage
+      Billing & usage
     </h1>
   </div>
   <div
@@ -34,7 +34,7 @@ exports[`<RestrictedPage/> should render for a specific page 1`] = `
       class="description"
     >
       To be able to see 
-      Billing & Usage
+      Billing & usage
        you need to be 
       an
        

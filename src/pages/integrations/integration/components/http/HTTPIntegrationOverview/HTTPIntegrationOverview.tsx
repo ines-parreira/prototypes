@@ -512,7 +512,7 @@ export class HTTPIntegrationOverview extends Component<Props, State> {
                                         )
                                     }
                                 >
-                                    Deactivate integration
+                                    Deactivate HTTP integration
                                 </Button>
                             )}
 
@@ -525,7 +525,7 @@ export class HTTPIntegrationOverview extends Component<Props, State> {
                                         )
                                     }
                                 >
-                                    Re-activate integration
+                                    Re-activate HTTP integration
                                 </Button>
                             )}
                             {isUpdate && (
@@ -538,7 +538,7 @@ export class HTTPIntegrationOverview extends Component<Props, State> {
                                     intent="destructive"
                                 >
                                     <ButtonIconLabel icon="delete">
-                                        Delete integration
+                                        Delete HTTP integration
                                     </ButtonIconLabel>
                                 </ConfirmButton>
                             )}

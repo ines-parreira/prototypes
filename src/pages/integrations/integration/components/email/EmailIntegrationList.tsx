@@ -91,7 +91,7 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
             !(isGmail && enableGmailSending) && // GMail only needs domain verification if email sending is disabled
             (isGmail || isVerified) // Email integrations must be verified before adding a domain configuration
 
-        const editLink = `/app/settings/integrations/email/${
+        const editLink = `/app/settings/channels/email/${
             integration.get('id') as number
         }${isVerified || isGmail ? '' : '/verification'}`
 
@@ -206,7 +206,7 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
             )}
             longTypeDescription={longTypeDescription}
             createIntegration={() =>
-                history.push('/app/settings/integrations/email/new')
+                history.push('/app/settings/channels/email/new')
             }
             createIntegrationButtonLabel="Add email address"
             integrationToItemDisplay={integrationToItemDisplay}

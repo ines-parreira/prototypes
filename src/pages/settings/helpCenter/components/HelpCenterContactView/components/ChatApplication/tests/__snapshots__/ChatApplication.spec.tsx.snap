@@ -361,7 +361,7 @@ exports[`<ChatApplication /> is disabled if there are no chat integrations 1`] =
             class="float-right"
           >
             <a
-              to="/app/settings/integrations/gorgias_chat"
+              to="/app/settings/channels/gorgias_chat"
             >
               Create Chat
             </a>

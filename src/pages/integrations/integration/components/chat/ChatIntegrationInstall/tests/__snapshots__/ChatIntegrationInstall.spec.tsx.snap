@@ -63,7 +63,7 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                 <Link
                   to="/app/settings/integrations"
                 >
-                  Integrations
+                  Apps & integrations
                 </Link>
               </BreadcrumbItem>
               <BreadcrumbItem
@@ -110,7 +110,7 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                         <a
                           to="/app/settings/integrations"
                         >
-                          Integrations
+                          Apps & integrations
                         </a>
                       </Link>
                     </li>

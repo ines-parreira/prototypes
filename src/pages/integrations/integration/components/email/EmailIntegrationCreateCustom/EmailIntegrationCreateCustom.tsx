@@ -101,12 +101,7 @@ export class EmailIntegrationCreateCustom extends Component<Props, State> {
                     title={
                         <Breadcrumb>
                             <BreadcrumbItem>
-                                <Link to="/app/settings/integrations">
-                                    Integrations
-                                </Link>
-                            </BreadcrumbItem>
-                            <BreadcrumbItem>
-                                <Link to="/app/settings/integrations/email">
+                                <Link to="/app/settings/channels/email">
                                     Email
                                 </Link>
                             </BreadcrumbItem>

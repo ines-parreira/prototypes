@@ -14,7 +14,7 @@ export default function PhoneIntegrationNavigation({
     integration,
 }: Props): JSX.Element {
     const integrationId: number = integration.get('id')
-    const baseURL = `/app/settings/integrations/${IntegrationType.Phone}/${integrationId}`
+    const baseURL = `/app/settings/channels/${IntegrationType.Phone}/${integrationId}`
 
     const isIvr = integration.getIn(['meta', 'function']) === PhoneFunction.Ivr
 

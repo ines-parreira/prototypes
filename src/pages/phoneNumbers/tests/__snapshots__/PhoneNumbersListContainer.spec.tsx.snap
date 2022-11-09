@@ -10,7 +10,7 @@ exports[`<PhoneNumberListContainer /> render() should render Candu selector with
     <h1
       class="d-flex align-items-center"
     >
-      Phone Numbers
+      Phone numbers
     </h1>
     <div>
       <button
@@ -49,7 +49,7 @@ exports[`<PhoneNumberListContainer /> render() should render with a number 1`] =
     <h1
       class="d-flex align-items-center"
     >
-      Phone Numbers
+      Phone numbers
     </h1>
     <div>
       <button

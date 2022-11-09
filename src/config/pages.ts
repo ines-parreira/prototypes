@@ -1,6 +1,7 @@
 export enum PageSection {
     Billing = 'billing',
     Integrations = 'integrations',
+    Channels = 'channels',
     Macros = 'macros',
     Rules = 'rules',
     ManageTags = 'manage-tags',
@@ -21,8 +22,9 @@ export enum PageSection {
 }
 
 export enum SectionPageHeader {
-    Billing = 'Billing & Usage',
+    Billing = 'Billing & usage',
     Integrations = 'Integrations',
+    Channels = 'Channels',
     Macros = 'Macros',
     Rules = 'Rules',
     ManageTags = 'Manage tags',
@@ -33,7 +35,7 @@ export enum SectionPageHeader {
     SatisfactionSurveys = 'Satisfaction',
     BusinessHours = 'Business hours',
     TicketAssignment = 'Ticket assignment',
-    PhoneNumbers = 'Phone Numbers',
+    PhoneNumbers = 'Phone numbers',
     HelpCenter = 'Help Center',
     SelfService = 'Self-service',
     Teams = 'Teams',

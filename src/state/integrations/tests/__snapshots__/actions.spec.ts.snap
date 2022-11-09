@@ -113,7 +113,7 @@ Array [
 ]
 `;
 
-exports[`integrations actions should do some action and redirect correctly on create email success 2`] = `"/app/settings/integrations/email/1/forwarding"`;
+exports[`integrations actions should do some action and redirect correctly on create email success 2`] = `"/app/settings/channels/email/1/forwarding"`;
 
 exports[`integrations actions should do some action and redirect correctly on create smooch success 1`] = `
 Array [

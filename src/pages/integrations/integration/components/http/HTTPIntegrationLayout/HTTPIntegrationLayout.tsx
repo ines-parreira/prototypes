@@ -33,13 +33,8 @@ export default function HTTPIntegrationLayout({
                 title={
                     <Breadcrumb>
                         <BreadcrumbItem>
-                            <NavLink to={integrationsUrl} exact>
-                                Integrations
-                            </NavLink>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
                             <NavLink to={HTTPIntegrationUrl} exact>
-                                HTTP
+                                HTTP integration
                             </NavLink>
                         </BreadcrumbItem>
                         <BreadcrumbItem active={!isOnEventsPage}>

@@ -48,7 +48,7 @@ class FacebookIntegrationCustomerChat extends Component<Props, State> {
                         <Breadcrumb>
                             <BreadcrumbItem>
                                 <Link to="/app/settings/integrations">
-                                    Integrations
+                                    Apps & integrations
                                 </Link>
                             </BreadcrumbItem>
                             <BreadcrumbItem>

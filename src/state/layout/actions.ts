@@ -9,7 +9,7 @@ export const openPanel = (panelName: string): ReturnType<StoreDispatch> => {
     }
 }
 
-export const closePanels = (): ReturnType<StoreDispatch> => {
+export const closePanels = () => {
     return {
         type: constants.CLOSE_PANELS,
     }

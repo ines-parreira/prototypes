@@ -12,16 +12,7 @@ exports[`<PhoneIntegrationBreadcrumbs/> render() should render for SMS integrati
       class="breadcrumb-item"
     >
       <a
-        to="/app/settings/integrations"
-      >
-        Integrations
-      </a>
-    </li>
-    <li
-      class="breadcrumb-item"
-    >
-      <a
-        to="/app/settings/integrations/sms/integrations"
+        to="/app/settings/channels/sms/integrations"
       >
         SMS
       </a>
@@ -54,16 +45,7 @@ exports[`<PhoneIntegrationBreadcrumbs/> render() should render for voice integra
       class="breadcrumb-item"
     >
       <a
-        to="/app/settings/integrations"
-      >
-        Integrations
-      </a>
-    </li>
-    <li
-      class="breadcrumb-item"
-    >
-      <a
-        to="/app/settings/integrations/phone/integrations"
+        to="/app/settings/channels/phone/integrations"
       >
         Voice
       </a>

@@ -236,7 +236,7 @@ exports[`HTTPIntegrationOverview should display data about the integration 1`] =
           isLoading={false}
           onClick={[Function]}
         >
-          Deactivate integration
+          Deactivate HTTP integration
         </ForwardRef>
         <ConfirmButton
           className="float-right"
@@ -247,7 +247,7 @@ exports[`HTTPIntegrationOverview should display data about the integration 1`] =
           <ButtonIconLabel
             icon="delete"
           >
-            Delete integration
+            Delete HTTP integration
           </ButtonIconLabel>
         </ConfirmButton>
       </div>
@@ -502,7 +502,7 @@ exports[`HTTPIntegrationOverview should display data with url-encoded format 1`]
           isLoading={false}
           onClick={[Function]}
         >
-          Deactivate integration
+          Deactivate HTTP integration
         </ForwardRef>
         <ConfirmButton
           className="float-right"
@@ -513,7 +513,7 @@ exports[`HTTPIntegrationOverview should display data with url-encoded format 1`]
           <ButtonIconLabel
             icon="delete"
           >
-            Delete integration
+            Delete HTTP integration
           </ButtonIconLabel>
         </ConfirmButton>
       </div>

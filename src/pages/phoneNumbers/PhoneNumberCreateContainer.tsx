@@ -14,7 +14,7 @@ export function PhoneNumberCreateContainer() {
                     <Breadcrumb>
                         <BreadcrumbItem>
                             <Link to="/app/settings/phone-numbers">
-                                Phone Numbers
+                                Phone numbers
                             </Link>
                         </BreadcrumbItem>
                         <BreadcrumbItem active>Add Phone Number</BreadcrumbItem>

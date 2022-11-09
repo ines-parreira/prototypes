@@ -93,7 +93,7 @@ export class EmailIntegrationCreateForwarding extends Component<Props, State> {
         void this.props.sendVerificationEmail().then(() => {
             this.setState({isLoading: false})
             history.push(
-                `/app/settings/integrations/email/${
+                `/app/settings/channels/email/${
                     integration.get('id') as number
                 }/verification`
             )
@@ -157,7 +157,7 @@ export class EmailIntegrationCreateForwarding extends Component<Props, State> {
                     </div>
                     <p>
                         Using GMail or G Suite?{' '}
-                        <Link to="/app/settings/integrations/email/new">
+                        <Link to="/app/settings/channels/email/new">
                             Connect your account in one click.
                         </Link>
                     </p>
@@ -187,12 +187,7 @@ export class EmailIntegrationCreateForwarding extends Component<Props, State> {
                     title={
                         <Breadcrumb>
                             <BreadcrumbItem>
-                                <Link to="/app/settings/integrations">
-                                    Integrations
-                                </Link>
-                            </BreadcrumbItem>
-                            <BreadcrumbItem>
-                                <Link to="/app/settings/integrations/email">
+                                <Link to="/app/settings/channels/email">
                                     Email
                                 </Link>
                             </BreadcrumbItem>

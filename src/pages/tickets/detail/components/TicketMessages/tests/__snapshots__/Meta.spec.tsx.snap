@@ -98,7 +98,7 @@ exports[`ticket message meta should add a -sent via campaign- label because the 
     <b>
       <a
         title="Campaign"
-        to="/app/settings/integrations/gorgias_chat/118/campaigns/123"
+        to="/app/settings/channels/gorgias_chat/118/campaigns/123"
       >
         <i
           class="material-icons mr-1"

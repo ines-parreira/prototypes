@@ -5,12 +5,13 @@ import {connect, ConnectedProps} from 'react-redux'
 import moment from 'moment'
 import {Breadcrumb, BreadcrumbItem, Button, Container, Table} from 'reactstrap'
 
-import * as campaignActions from '../../../../../../state/campaigns/actions'
-import ToggleInput from '../../../../../common/forms/ToggleInput'
-import PageHeader from '../../../../../common/components/PageHeader'
+import ToggleInput from 'pages/common/forms/ToggleInput'
+import PageHeader from 'pages/common/components/PageHeader'
+import css from 'pages/settings/settings.less'
+import {IntegrationType} from 'models/integration/constants'
+import * as campaignActions from 'state/campaigns/actions'
 import ForwardIcon from '../../../../common/components/ForwardIcon'
 import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
-import css from '../../../../../settings/settings.less'
 
 type Props = {
     integration: Map<any, any>
@@ -43,14 +44,12 @@ export class ChatIntegrationCampaignsContainer extends Component<Props> {
                         <Breadcrumb>
                             <BreadcrumbItem>
                                 <Link to="/app/settings/integrations">
-                                    Integrations
+                                    Apps & integrations
                                 </Link>
                             </BreadcrumbItem>
                             <BreadcrumbItem>
                                 <Link
-                                    to={`/app/settings/integrations/${
-                                        integration.get('type') as string
-                                    }`}
+                                    to={`/app/settings/integrations/${IntegrationType.SmoochInside}`}
                                 >
                                     Chat (Deprecated)
                                 </Link>
@@ -64,9 +63,9 @@ export class ChatIntegrationCampaignsContainer extends Component<Props> {
                     <Button
                         tag={Link}
                         color="success"
-                        to={`/app/settings/integrations/${
-                            integration.get('type') as string
-                        }/${integration.get('id') as number}/campaigns/new`}
+                        to={`/app/settings/integrations/
+                            ${IntegrationType.SmoochInside}
+                        /${integration.get('id') as number}/campaigns/new`}
                     >
                         Create campaign
                     </Button>
@@ -90,7 +89,7 @@ export class ChatIntegrationCampaignsContainer extends Component<Props> {
                         <tbody>
                             {campaigns.map((campaign: Map<any, any>) => {
                                 const editLink = `/app/settings/integrations/${
-                                    integration.get('type') as string
+                                    IntegrationType.SmoochInside
                                 }/${
                                     integration.get('id') as number
                                 }/campaigns/${campaign.get('id') as number}`

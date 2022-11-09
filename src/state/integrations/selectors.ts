@@ -2,7 +2,7 @@ import {fromJS, List, Map} from 'immutable'
 import {createSelector} from 'reselect'
 import _isArray from 'lodash/isArray'
 
-import {INTEGRATION_TYPE_CONFIG} from 'config'
+import {INTEGRATION_TYPE_CONFIG, isChannel} from 'config'
 import {
     Integration,
     IntegrationType,
@@ -73,6 +73,11 @@ export const getIntegrationsList = createSelector<
 >(getIntegrationsCountPerType, (counts) => {
     return INTEGRATION_TYPE_CONFIG.reduce(
         (accumulator: IntegrationListItem[], description) => {
+            if (
+                isChannel(description.type) ||
+                description.type === IntegrationType.Http
+            )
+                return accumulator
             let count = 0
 
             if (description.subTypes) {

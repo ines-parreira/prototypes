@@ -20,7 +20,7 @@ exports[`<TwitterIntegrationDetail/> render() should render 1`] = `
           <a
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </a>
         </li>
         <li

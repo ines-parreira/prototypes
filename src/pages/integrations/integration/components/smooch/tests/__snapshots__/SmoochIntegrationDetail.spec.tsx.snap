@@ -17,7 +17,7 @@ exports[`<SmoochIntegrationDetail/> render() should render an active integration
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -256,7 +256,7 @@ exports[`<SmoochIntegrationDetail/> render() should render an inactive integrati
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -494,7 +494,7 @@ exports[`<SmoochIntegrationDetail/> render() should render an integration which 
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem

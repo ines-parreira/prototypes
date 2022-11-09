@@ -19,16 +19,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
             class="breadcrumb-item"
           >
             <a
-              to="/app/settings/integrations"
-            >
-              Integrations
-            </a>
-          </li>
-          <li
-            class="breadcrumb-item"
-          >
-            <a
-              to="/app/settings/integrations/gorgias_chat"
+              to="/app/settings/channels/gorgias_chat"
             >
               Chat
             </a>
@@ -823,16 +814,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
             class="breadcrumb-item"
           >
             <a
-              to="/app/settings/integrations"
-            >
-              Integrations
-            </a>
-          </li>
-          <li
-            class="breadcrumb-item"
-          >
-            <a
-              to="/app/settings/integrations/gorgias_chat"
+              to="/app/settings/channels/gorgias_chat"
             >
               Chat
             </a>
@@ -851,35 +833,35 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/2/campaigns"
+        to="/app/settings/channels/gorgias_chat/2/campaigns"
       >
         Campaigns
       </a>
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/2/quick_replies"
+        to="/app/settings/channels/gorgias_chat/2/quick_replies"
       >
         Quick replies
       </a>
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/2/appearance"
+        to="/app/settings/channels/gorgias_chat/2/appearance"
       >
         Appearance
       </a>
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/2/preferences"
+        to="/app/settings/channels/gorgias_chat/2/preferences"
       >
         Preferences
       </a>
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/2/installation"
+        to="/app/settings/channels/gorgias_chat/2/installation"
       >
         Installation
       </a>
@@ -1582,16 +1564,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
             class="breadcrumb-item"
           >
             <a
-              to="/app/settings/integrations"
-            >
-              Integrations
-            </a>
-          </li>
-          <li
-            class="breadcrumb-item"
-          >
-            <a
-              to="/app/settings/integrations/gorgias_chat"
+              to="/app/settings/channels/gorgias_chat"
             >
               Chat
             </a>
@@ -1610,35 +1583,35 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/2/campaigns"
+        to="/app/settings/channels/gorgias_chat/2/campaigns"
       >
         Campaigns
       </a>
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/2/quick_replies"
+        to="/app/settings/channels/gorgias_chat/2/quick_replies"
       >
         Quick replies
       </a>
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/2/appearance"
+        to="/app/settings/channels/gorgias_chat/2/appearance"
       >
         Appearance
       </a>
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/2/preferences"
+        to="/app/settings/channels/gorgias_chat/2/preferences"
       >
         Preferences
       </a>
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/2/installation"
+        to="/app/settings/channels/gorgias_chat/2/installation"
       >
         Installation
       </a>
@@ -2311,16 +2284,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
             class="breadcrumb-item"
           >
             <a
-              to="/app/settings/integrations"
-            >
-              Integrations
-            </a>
-          </li>
-          <li
-            class="breadcrumb-item"
-          >
-            <a
-              to="/app/settings/integrations/gorgias_chat"
+              to="/app/settings/channels/gorgias_chat"
             >
               Chat
             </a>
@@ -2339,35 +2303,35 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/2/campaigns"
+        to="/app/settings/channels/gorgias_chat/2/campaigns"
       >
         Campaigns
       </a>
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/2/quick_replies"
+        to="/app/settings/channels/gorgias_chat/2/quick_replies"
       >
         Quick replies
       </a>
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/2/appearance"
+        to="/app/settings/channels/gorgias_chat/2/appearance"
       >
         Appearance
       </a>
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/2/preferences"
+        to="/app/settings/channels/gorgias_chat/2/preferences"
       >
         Preferences
       </a>
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/2/installation"
+        to="/app/settings/channels/gorgias_chat/2/installation"
       >
         Installation
       </a>
@@ -3048,16 +3012,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
             class="breadcrumb-item"
           >
             <a
-              to="/app/settings/integrations"
-            >
-              Integrations
-            </a>
-          </li>
-          <li
-            class="breadcrumb-item"
-          >
-            <a
-              to="/app/settings/integrations/gorgias_chat"
+              to="/app/settings/channels/gorgias_chat"
             >
               Chat
             </a>
@@ -3076,35 +3031,35 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/2/campaigns"
+        to="/app/settings/channels/gorgias_chat/2/campaigns"
       >
         Campaigns
       </a>
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/2/quick_replies"
+        to="/app/settings/channels/gorgias_chat/2/quick_replies"
       >
         Quick replies
       </a>
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/2/appearance"
+        to="/app/settings/channels/gorgias_chat/2/appearance"
       >
         Appearance
       </a>
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/2/preferences"
+        to="/app/settings/channels/gorgias_chat/2/preferences"
       >
         Preferences
       </a>
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/2/installation"
+        to="/app/settings/channels/gorgias_chat/2/installation"
       >
         Installation
       </a>
@@ -3777,16 +3732,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
             class="breadcrumb-item"
           >
             <a
-              to="/app/settings/integrations"
-            >
-              Integrations
-            </a>
-          </li>
-          <li
-            class="breadcrumb-item"
-          >
-            <a
-              to="/app/settings/integrations/gorgias_chat"
+              to="/app/settings/channels/gorgias_chat"
             >
               Chat
             </a>
@@ -3805,35 +3751,35 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/2/campaigns"
+        to="/app/settings/channels/gorgias_chat/2/campaigns"
       >
         Campaigns
       </a>
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/2/quick_replies"
+        to="/app/settings/channels/gorgias_chat/2/quick_replies"
       >
         Quick replies
       </a>
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/2/appearance"
+        to="/app/settings/channels/gorgias_chat/2/appearance"
       >
         Appearance
       </a>
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/2/preferences"
+        to="/app/settings/channels/gorgias_chat/2/preferences"
       >
         Preferences
       </a>
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/2/installation"
+        to="/app/settings/channels/gorgias_chat/2/installation"
       >
         Installation
       </a>
@@ -4499,16 +4445,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
             class="breadcrumb-item"
           >
             <a
-              to="/app/settings/integrations"
-            >
-              Integrations
-            </a>
-          </li>
-          <li
-            class="breadcrumb-item"
-          >
-            <a
-              to="/app/settings/integrations/gorgias_chat"
+              to="/app/settings/channels/gorgias_chat"
             >
               Chat
             </a>
@@ -5280,16 +5217,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
             class="breadcrumb-item"
           >
             <a
-              to="/app/settings/integrations"
-            >
-              Integrations
-            </a>
-          </li>
-          <li
-            class="breadcrumb-item"
-          >
-            <a
-              to="/app/settings/integrations/gorgias_chat"
+              to="/app/settings/channels/gorgias_chat"
             >
               Chat
             </a>
@@ -6121,16 +6049,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
             class="breadcrumb-item"
           >
             <a
-              to="/app/settings/integrations"
-            >
-              Integrations
-            </a>
-          </li>
-          <li
-            class="breadcrumb-item"
-          >
-            <a
-              to="/app/settings/integrations/gorgias_chat"
+              to="/app/settings/channels/gorgias_chat"
             >
               Chat
             </a>
@@ -6149,42 +6068,42 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/1/campaigns"
+        to="/app/settings/channels/gorgias_chat/1/campaigns"
       >
         Campaigns
       </a>
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/1/quick_replies"
+        to="/app/settings/channels/gorgias_chat/1/quick_replies"
       >
         Quick replies
       </a>
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/1/appearance"
+        to="/app/settings/channels/gorgias_chat/1/appearance"
       >
         Appearance
       </a>
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/1/preferences"
+        to="/app/settings/channels/gorgias_chat/1/preferences"
       >
         Preferences
       </a>
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/1/automation"
+        to="/app/settings/channels/gorgias_chat/1/automation"
       >
         Automation
       </a>
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/1/installation"
+        to="/app/settings/channels/gorgias_chat/1/installation"
       >
         Installation
       </a>

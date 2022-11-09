@@ -224,7 +224,7 @@ export class YourProfileView extends Component<Props, State> {
                                             Your bio can be used in signatures
                                             as a variable. Admins can set up
                                             signatures{' '}
-                                            <Link to="/app/settings/integrations/email">
+                                            <Link to="/app/settings/channels/email">
                                                 in each email integration
                                             </Link>
                                         </span>

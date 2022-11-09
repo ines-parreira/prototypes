@@ -37,7 +37,7 @@ export default function VoiceIntegration() {
         }
     })
 
-    const baseURL = `/app/settings/integrations/phone`
+    const baseURL = `/app/settings/channels/phone`
 
     return (
         <div className="full-width">

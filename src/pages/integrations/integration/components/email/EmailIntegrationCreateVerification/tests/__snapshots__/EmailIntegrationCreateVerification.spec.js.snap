@@ -15,16 +15,7 @@ exports[`<EmailIntegrationCreateVerification/> render() should render instructio
           tag="li"
         >
           <Link
-            to="/app/settings/integrations"
-          >
-            Integrations
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          tag="li"
-        >
-          <Link
-            to="/app/settings/integrations/email"
+            to="/app/settings/channels/email"
           >
             Email
           </Link>
@@ -96,16 +87,7 @@ exports[`<EmailIntegrationCreateVerification/> render() should render the regula
           tag="li"
         >
           <Link
-            to="/app/settings/integrations"
-          >
-            Integrations
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          tag="li"
-        >
-          <Link
-            to="/app/settings/integrations/email"
+            to="/app/settings/channels/email"
           >
             Email
           </Link>
@@ -158,7 +140,7 @@ exports[`<EmailIntegrationCreateVerification/> render() should render the regula
         If you haven't set up the forwarding yet, you'll find the instructions
          
         <Link
-          to="/app/settings/integrations/email/1/forwarding"
+          to="/app/settings/channels/email/1/forwarding"
         >
           there
         </Link>

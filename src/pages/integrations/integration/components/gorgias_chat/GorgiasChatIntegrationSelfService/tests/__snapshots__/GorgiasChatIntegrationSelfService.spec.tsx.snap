@@ -18,16 +18,7 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the self se
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
-          >
-            Integrations
-          </a>
-        </li>
-        <li
-          class="breadcrumb-item"
-        >
-          <a
-            to="/app/settings/integrations/gorgias_chat"
+            to="/app/settings/channels/gorgias_chat"
           >
             Chat
           </a>
@@ -46,42 +37,42 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the self se
     <a
       activeclassname="active"
       class="link"
-      to="/app/settings/integrations/gorgias_chat/7/campaigns"
+      to="/app/settings/channels/gorgias_chat/7/campaigns"
     >
       Campaigns
     </a>
     <a
       activeclassname="active"
       class="link"
-      to="/app/settings/integrations/gorgias_chat/7/quick_replies"
+      to="/app/settings/channels/gorgias_chat/7/quick_replies"
     >
       Quick replies
     </a>
     <a
       activeclassname="active"
       class="link"
-      to="/app/settings/integrations/gorgias_chat/7/appearance"
+      to="/app/settings/channels/gorgias_chat/7/appearance"
     >
       Appearance
     </a>
     <a
       activeclassname="active"
       class="link"
-      to="/app/settings/integrations/gorgias_chat/7/preferences"
+      to="/app/settings/channels/gorgias_chat/7/preferences"
     >
       Preferences
     </a>
     <a
       activeclassname="active"
       class="link"
-      to="/app/settings/integrations/gorgias_chat/7/automation"
+      to="/app/settings/channels/gorgias_chat/7/automation"
     >
       Automation
     </a>
     <a
       activeclassname="active"
       class="link"
-      to="/app/settings/integrations/gorgias_chat/7/installation"
+      to="/app/settings/channels/gorgias_chat/7/installation"
     >
       Installation
     </a>

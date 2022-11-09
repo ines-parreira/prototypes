@@ -12,6 +12,7 @@ import {
     EMAIL_INTEGRATION_TYPES,
     isGenericEmailIntegration,
 } from 'constants/integration'
+import {IntegrationType} from 'models/integration/constants'
 import {
     CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
     CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
@@ -404,12 +405,9 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                     title={
                         <Breadcrumb>
                             <BreadcrumbItem>
-                                <Link to="/app/settings/integrations">
-                                    Integrations
-                                </Link>
-                            </BreadcrumbItem>
-                            <BreadcrumbItem>
-                                <Link to="/app/settings/integrations/gorgias_chat">
+                                <Link
+                                    to={`/app/settings/channels/${IntegrationType.GorgiasChat}`}
+                                >
                                     Chat
                                 </Link>
                             </BreadcrumbItem>

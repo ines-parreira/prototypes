@@ -17,10 +17,7 @@ const SmsIntegrationBreadcrumbs = ({integration}: Props): JSX.Element => {
     return (
         <Breadcrumb>
             <BreadcrumbItem>
-                <Link to="/app/settings/integrations">Integrations</Link>
-            </BreadcrumbItem>
-            <BreadcrumbItem>
-                <Link to={`/app/settings/integrations/${IntegrationType.Sms}`}>
+                <Link to={`/app/settings/channels/${IntegrationType.Sms}`}>
                     SMS
                 </Link>
             </BreadcrumbItem>

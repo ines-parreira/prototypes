@@ -112,7 +112,7 @@ export function PhoneIntegrationsList({type}: Props): JSX.Element | null {
                     <p>You have no integration of this type at the moment.</p>
                     <Button
                         onClick={() =>
-                            history.push('/app/settings/integrations/phone/new')
+                            history.push('/app/settings/channels/phone/new')
                         }
                     >
                         Add {type === IntegrationType.Phone ? 'Voice' : 'SMS'}
@@ -152,7 +152,7 @@ export function PhoneIntegrationsList({type}: Props): JSX.Element | null {
                             integration: {id, name, meta},
                             phoneNumber,
                         } = row
-                        const detailsLink = `/app/settings/integrations/${type}/${id}/preferences`
+                        const detailsLink = `/app/settings/channels/${type}/${id}/preferences`
                         return (
                             <TableBodyRow
                                 key={id}
@@ -206,7 +206,7 @@ export function PhoneIntegrationsList({type}: Props): JSX.Element | null {
                             <Button
                                 onClick={() =>
                                     history.push(
-                                        `/app/settings/integrations/phone/new`
+                                        `/app/settings/channels/phone/new`
                                     )
                                 }
                             >
@@ -230,7 +230,7 @@ export function PhoneIntegrationsList({type}: Props): JSX.Element | null {
                             <Button
                                 onClick={() =>
                                     history.push(
-                                        `/app/settings/integrations/sms/new`
+                                        `/app/settings/channels/sms/new`
                                     )
                                 }
                             >

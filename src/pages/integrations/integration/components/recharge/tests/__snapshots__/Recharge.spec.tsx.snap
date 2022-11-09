@@ -20,7 +20,7 @@ exports[`<Recharge/> Detail should render a detail view 1`] = `
           <a
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </a>
         </li>
         <li
@@ -272,7 +272,7 @@ exports[`<Recharge/> Integration should render 1`] = `
           <a
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </a>
         </li>
         <li
@@ -371,7 +371,7 @@ exports[`<Recharge/> Integration should render shopify integrations list 1`] = `
           <a
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </a>
         </li>
         <li
@@ -447,7 +447,7 @@ exports[`<Recharge/> List should render 1`] = `
           <a
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </a>
         </li>
         <li

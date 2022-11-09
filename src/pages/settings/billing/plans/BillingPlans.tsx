@@ -51,7 +51,7 @@ class BillingPlans extends React.Component<Props> {
                                     className="section"
                                     to="/app/settings/billing"
                                 >
-                                    Billing & Usage
+                                    Billing & usage
                                 </Link>
                             </BreadcrumbItem>
                             <BreadcrumbItem>Plans</BreadcrumbItem>

@@ -18,16 +18,7 @@ exports[`<EmailIntegrationCreate/> render() should render 1`] = `
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
-          >
-            Integrations
-          </a>
-        </li>
-        <li
-          class="breadcrumb-item"
-        >
-          <a
-            to="/app/settings/integrations/email"
+            to="/app/settings/channels/email"
           >
             Email
           </a>
@@ -96,7 +87,7 @@ exports[`<EmailIntegrationCreate/> render() should render 1`] = `
         OR
       </div>
       <a
-        to="/app/settings/integrations/email/new/custom"
+        to="/app/settings/channels/email/new/custom"
       >
         <button
           class="wrapper mb-2 connectButton fill secondary medium"

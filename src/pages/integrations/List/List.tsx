@@ -54,7 +54,7 @@ export const List = ({
                 void dispatch(
                     notify({
                         status: NotificationStatus.Error,
-                        message: `Something went wrong while trying to fetch additionnal apps.`,
+                        message: `Something went wrong while trying to fetch additional apps.`,
                     })
                 )
             } finally {
@@ -151,7 +151,7 @@ export const List = ({
                         <LinkAlert
                             type={AlertType.Error}
                             actionLabel="Migrate"
-                            actionHref="/app/settings/integrations/gorgias_chat"
+                            actionHref="/app/settings/channels/gorgias_chat"
                         >
                             You are currently using a deprecated version of the
                             chat integration. If applicable, please migrate to
@@ -228,7 +228,7 @@ export const List = ({
 
     return (
         <div className="full-width">
-            <PageHeader title="Integrations" />
+            <PageHeader title="Apps & integrations" />
             <Container fluid className={css.pageContainer}>
                 <Row
                     className="mb-4"

@@ -17,18 +17,9 @@ exports[`HTTPIntegrationLayout should render layout for a new HTTP integration 1
         <li>
           <div>
             <a
-              to="/app/settings/integrations"
-            >
-              Integrations
-            </a>
-          </div>
-        </li>
-        <li>
-          <div>
-            <a
               to="/app/settings/integrations/http"
             >
-              HTTP
+              HTTP integration
             </a>
           </div>
         </li>
@@ -68,18 +59,9 @@ exports[`HTTPIntegrationLayout should render the layout of an event page of a HT
           <li>
             <div>
               <a
-                to="/app/settings/integrations"
-              >
-                Integrations
-              </a>
-            </div>
-          </li>
-          <li>
-            <div>
-              <a
                 to="/app/settings/integrations/http"
               >
-                HTTP
+                HTTP integration
               </a>
             </div>
           </li>
@@ -147,18 +129,9 @@ exports[`HTTPIntegrationLayout should render the layout of the events page of a 
         <li>
           <div>
             <a
-              to="/app/settings/integrations"
-            >
-              Integrations
-            </a>
-          </div>
-        </li>
-        <li>
-          <div>
-            <a
               to="/app/settings/integrations/http"
             >
-              HTTP
+              HTTP integration
             </a>
           </div>
         </li>
@@ -215,18 +188,9 @@ exports[`HTTPIntegrationLayout should render the layout of the settings page of 
         <li>
           <div>
             <a
-              to="/app/settings/integrations"
-            >
-              Integrations
-            </a>
-          </div>
-        </li>
-        <li>
-          <div>
-            <a
               to="/app/settings/integrations/http"
             >
-              HTTP
+              HTTP integration
             </a>
           </div>
         </li>

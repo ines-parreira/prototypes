@@ -183,7 +183,7 @@ const ChatApplication: React.FC<Props> = ({helpCenterId}) => {
                     {chatOptions.length === 0 && (
                         <div className={css['warning-no-chat']}>
                             <span className="float-right">
-                                <Link to="/app/settings/integrations/gorgias_chat">
+                                <Link to="/app/settings/channels/gorgias_chat">
                                     Create Chat
                                 </Link>
                             </span>
@@ -229,7 +229,7 @@ const ChatApplication: React.FC<Props> = ({helpCenterId}) => {
                             actionLabel="Go To Chat Settings"
                             type={AlertType.Warning}
                             className={css.alert}
-                            actionHref={`/app/settings/integrations/gorgias_chat/${chatIntegrationId}/automation`}
+                            actionHref={`/app/settings/channels/gorgias_chat/${chatIntegrationId}/automation`}
                         >
                             <div className={css.alertContent}>
                                 <img src={warningIcon} alt="warning icon" />

@@ -36,7 +36,7 @@ export default function SmsIntegration() {
         }
     })
 
-    const baseURL = `/app/settings/integrations/sms`
+    const baseURL = `/app/settings/channels/sms`
 
     return (
         <div className="full-width">

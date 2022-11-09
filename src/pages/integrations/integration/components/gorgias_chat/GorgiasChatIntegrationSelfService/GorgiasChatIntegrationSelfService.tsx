@@ -52,7 +52,6 @@ export function GorgiasChatIntegrationSelfServiceComponent({
         setChatHelpCenterConfiguration,
         chatHelpCenterConfigurationLoading,
     } = useChatHelpCenterConfiguration(chatApplicationId)
-    const integrationType: string = integration.get('type')
     const dispatch = useAppDispatch()
     const hasSelfServiceArticleRecommendation: boolean | undefined =
         useFlags()[FeatureFlagKey.SelfServiceArticleRecommendation]
@@ -237,13 +236,8 @@ export function GorgiasChatIntegrationSelfServiceComponent({
                 title={
                     <Breadcrumb>
                         <BreadcrumbItem>
-                            <Link to="/app/settings/integrations">
-                                Integrations
-                            </Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
                             <Link
-                                to={`/app/settings/integrations/${integrationType}`}
+                                to={`/app/settings/channels/${IntegrationType.GorgiasChat}`}
                             >
                                 Chat
                             </Link>

@@ -18,16 +18,7 @@ exports[`<EmailIntegrationCreateCustom/> render() should render 1`] = `
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
-          >
-            Integrations
-          </a>
-        </li>
-        <li
-          class="breadcrumb-item"
-        >
-          <a
-            to="/app/settings/integrations/email"
+            to="/app/settings/channels/email"
           >
             Email
           </a>
@@ -137,16 +128,7 @@ exports[`<EmailIntegrationCreateCustom/> render() should render update 1`] = `
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
-          >
-            Integrations
-          </a>
-        </li>
-        <li
-          class="breadcrumb-item"
-        >
-          <a
-            to="/app/settings/integrations/email"
+            to="/app/settings/channels/email"
           >
             Email
           </a>

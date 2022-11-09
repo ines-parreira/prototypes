@@ -17,7 +17,7 @@ exports[`FacebookIntegrationSetup should render a loader because integrations ar
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -112,7 +112,7 @@ exports[`FacebookIntegrationSetup should render an empty list because there is n
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -182,7 +182,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -449,7 +449,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -731,7 +731,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -1053,7 +1053,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -1335,7 +1335,7 @@ exports[`FacebookIntegrationSetup should render integrations because there is av
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -1485,7 +1485,7 @@ exports[`FacebookIntegrationSetup should render the integration as enabled and s
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -1759,7 +1759,7 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -2054,7 +2054,7 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -2197,7 +2197,7 @@ exports[`FacebookIntegrationSetup should render the integration list without sho
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -2347,7 +2347,7 @@ exports[`FacebookIntegrationSetup should render the integration with canModerate
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -2497,7 +2497,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -2806,7 +2806,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -2949,7 +2949,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -3258,7 +3258,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -3567,7 +3567,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -3876,7 +3876,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -4019,7 +4019,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -4328,7 +4328,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -4471,7 +4471,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -4780,7 +4780,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -4923,7 +4923,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -5232,7 +5232,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -5375,7 +5375,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -5656,7 +5656,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -5799,7 +5799,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -6108,7 +6108,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -6251,7 +6251,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -6394,7 +6394,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem

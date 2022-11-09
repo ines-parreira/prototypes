@@ -22,7 +22,7 @@ exports[`<BillingPlans/> it should render the component 1`] = `
               class="section"
               to="/app/settings/billing"
             >
-              Billing & Usage
+              Billing & usage
             </a>
           </li>
           <li

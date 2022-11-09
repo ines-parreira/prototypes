@@ -2,9 +2,7 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 import {isString} from 'lodash'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {getIconFromUrl} from 'utils'
 import useAppSelector from 'hooks/useAppSelector'
 import {IntegrationType} from 'models/integration/constants'
@@ -23,7 +21,6 @@ type Props = {
 
 const Row = ({integration}: Props) => {
     const account = useAppSelector(getCurrentAccountState)
-    const showNewVoiceSmsLayout = useFlags()[FeatureFlagKey.NewVoiceSmsLayout]
     const content = (
         <>
             <div
@@ -81,21 +78,9 @@ const Row = ({integration}: Props) => {
         </>
     )
 
-    const tabName = (
-        integration: IntegrationListItem | AppListItem,
-        showNewVoiceSmsLayout: boolean
-    ) => {
+    const tabName = (integration: IntegrationListItem | AppListItem) => {
         if (!isAppListItem(integration) && integration.count > 0) {
             switch (integration.type) {
-                case IntegrationType.Phone:
-                case IntegrationType.Sms: {
-                    if (showNewVoiceSmsLayout) {
-                        return 'integrations'
-                    }
-
-                    return null
-                }
-
                 case IntegrationType.Recharge:
                 case IntegrationType.Shopify:
                 case IntegrationType.BigCommerce: {
@@ -111,11 +96,7 @@ const Row = ({integration}: Props) => {
 
     const url = isAppListItem(integration)
         ? `/app/settings/integrations/app/${integration.appId}`
-        : [
-              '/app/settings/integrations',
-              integration.type,
-              tabName(integration, showNewVoiceSmsLayout),
-          ]
+        : ['/app/settings/integrations', integration.type, tabName(integration)]
               .filter(isString)
               .join('/')
 

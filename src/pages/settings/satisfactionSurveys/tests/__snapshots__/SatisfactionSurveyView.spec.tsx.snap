@@ -29,7 +29,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
         className="full-width"
       >
         <PageHeader
-          title="Satisfaction"
+          title="Satisfaction survey"
         >
           <div
             className="page-header pageHeader"
@@ -37,7 +37,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
             <h1
               className="d-flex align-items-center"
             >
-              Satisfaction
+              Satisfaction survey
             </h1>
           </div>
         </PageHeader>

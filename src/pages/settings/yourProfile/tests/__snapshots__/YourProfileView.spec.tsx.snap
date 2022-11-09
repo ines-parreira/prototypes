@@ -141,7 +141,7 @@ exports[`YourProfileView render should render current user profile form 1`] = `
                 Your bio can be used in signatures as a variable. Admins can set up signatures
                  
                 <Link
-                  to="/app/settings/integrations/email"
+                  to="/app/settings/channels/email"
                 >
                   in each email integration
                 </Link>

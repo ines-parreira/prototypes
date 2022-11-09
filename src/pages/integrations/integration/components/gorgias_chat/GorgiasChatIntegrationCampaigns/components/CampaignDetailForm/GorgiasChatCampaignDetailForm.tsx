@@ -19,6 +19,7 @@ import {EditorState} from 'draft-js'
 import {Link} from 'react-router-dom'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
+import {IntegrationType} from 'models/integration/constants'
 import {
     CAMPAIGNS_TRIGGER_KEYS,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
@@ -318,7 +319,7 @@ export const GorgiasChatCampaignDetailForm = ({
         await deleteCampaign(campaign, integration)
 
         history.push(
-            `/app/settings/integrations/${integration.get('type') as string}/${
+            `/app/settings/channels/${IntegrationType.GorgiasChat}/${
                 integration.get('id') as string
             }/campaigns`
         )
@@ -367,8 +368,8 @@ export const GorgiasChatCampaignDetailForm = ({
         <div data-testid="common-campaign-details-page">
             <div className={css.backWrapper}>
                 <Link
-                    to={`/app/settings/integrations/${
-                        integration.get('type') as string
+                    to={`/app/settings/channels/${
+                        IntegrationType.GorgiasChat
                     }/${integration.get('id') as string}/campaigns`}
                     className="d-flex"
                 >

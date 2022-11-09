@@ -19,16 +19,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the empty st
             class="breadcrumb-item"
           >
             <a
-              to="/app/settings/integrations"
-            >
-              Integrations
-            </a>
-          </li>
-          <li
-            class="breadcrumb-item"
-          >
-            <a
-              to="/app/settings/integrations/gorgias_chat"
+              to="/app/settings/channels/gorgias_chat"
             >
               Chat
             </a>
@@ -43,7 +34,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the empty st
       <div>
         <a
           class="btn btn-success"
-          to="/app/settings/integrations/gorgias_chat/118/campaigns/new"
+          to="/app/settings/channels/gorgias_chat/118/campaigns/new"
         >
           Create campaign
         </a>
@@ -55,35 +46,35 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the empty st
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/118/campaigns"
+        to="/app/settings/channels/gorgias_chat/118/campaigns"
       >
         Campaigns
       </a>
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/118/quick_replies"
+        to="/app/settings/channels/gorgias_chat/118/quick_replies"
       >
         Quick replies
       </a>
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/118/appearance"
+        to="/app/settings/channels/gorgias_chat/118/appearance"
       >
         Appearance
       </a>
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/118/preferences"
+        to="/app/settings/channels/gorgias_chat/118/preferences"
       >
         Preferences
       </a>
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/118/installation"
+        to="/app/settings/channels/gorgias_chat/118/installation"
       >
         Installation
       </a>
@@ -121,16 +112,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
             class="breadcrumb-item"
           >
             <a
-              to="/app/settings/integrations"
-            >
-              Integrations
-            </a>
-          </li>
-          <li
-            class="breadcrumb-item"
-          >
-            <a
-              to="/app/settings/integrations/gorgias_chat"
+              to="/app/settings/channels/gorgias_chat"
             >
               Chat
             </a>
@@ -145,7 +127,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
       <div>
         <a
           class="btn btn-success"
-          to="/app/settings/integrations/gorgias_chat/118/campaigns/new"
+          to="/app/settings/channels/gorgias_chat/118/campaigns/new"
         >
           Create campaign
         </a>
@@ -157,35 +139,35 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/118/campaigns"
+        to="/app/settings/channels/gorgias_chat/118/campaigns"
       >
         Campaigns
       </a>
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/118/quick_replies"
+        to="/app/settings/channels/gorgias_chat/118/quick_replies"
       >
         Quick replies
       </a>
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/118/appearance"
+        to="/app/settings/channels/gorgias_chat/118/appearance"
       >
         Appearance
       </a>
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/118/preferences"
+        to="/app/settings/channels/gorgias_chat/118/preferences"
       >
         Preferences
       </a>
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/integrations/gorgias_chat/118/installation"
+        to="/app/settings/channels/gorgias_chat/118/installation"
       >
         Installation
       </a>
@@ -232,7 +214,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
             class="link-full-td"
           >
             <a
-              to="/app/settings/integrations/gorgias_chat/118/campaigns/156a4d-fg68h40-sd6f4"
+              to="/app/settings/channels/gorgias_chat/118/campaigns/156a4d-fg68h40-sd6f4"
             >
               <div>
                 <b>
@@ -245,7 +227,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
             class="smallest align-middle"
           >
             <a
-              to="/app/settings/integrations/gorgias_chat/118/campaigns/156a4d-fg68h40-sd6f4"
+              to="/app/settings/channels/gorgias_chat/118/campaigns/156a4d-fg68h40-sd6f4"
             >
               <i
                 class="material-icons md-2 align-middle icon-go-forward"
@@ -285,7 +267,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
             class="link-full-td"
           >
             <a
-              to="/app/settings/integrations/gorgias_chat/118/campaigns/not-so-good-campaign-d8f9-fds486-sf78"
+              to="/app/settings/channels/gorgias_chat/118/campaigns/not-so-good-campaign-d8f9-fds486-sf78"
             >
               <div>
                 <b>
@@ -298,7 +280,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
             class="smallest align-middle"
           >
             <a
-              to="/app/settings/integrations/gorgias_chat/118/campaigns/not-so-good-campaign-d8f9-fds486-sf78"
+              to="/app/settings/channels/gorgias_chat/118/campaigns/not-so-good-campaign-d8f9-fds486-sf78"
             >
               <i
                 class="material-icons md-2 align-middle icon-go-forward"

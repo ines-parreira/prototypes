@@ -12,15 +12,6 @@ exports[`<GorgiasChatIntegrationList/> should display correcty the list of chat 
         tag="nav"
       >
         <BreadcrumbItem
-          tag="li"
-        >
-          <Link
-            to="/app/settings/integrations"
-          >
-            Integrations
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
           active={true}
           tag="li"
         >
@@ -142,7 +133,7 @@ exports[`<GorgiasChatIntegrationList/> should display correcty the list of chat 
           size="smallest"
         >
           <ForwardIcon
-            href="/app/settings/integrations/gorgias_chat/1/campaigns"
+            href="/app/settings/channels/gorgias_chat/1/campaigns"
           />
         </ForwardRef>
       </ForwardRef(TableBodyRow)>

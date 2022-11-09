@@ -53,7 +53,7 @@ exports[`<SmileIntegrationDetail/> render() should not render anything about the
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -166,7 +166,7 @@ exports[`<SmileIntegrationDetail/> render() should render a small paragraph beca
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -274,7 +274,7 @@ exports[`<SmileIntegrationDetail/> render() should render an alert because the i
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -394,7 +394,7 @@ exports[`<SmileIntegrationDetail/> render() should render buttons loading and di
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -516,7 +516,7 @@ exports[`<SmileIntegrationDetail/> render() should render not render deactivate 
           <Link
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem

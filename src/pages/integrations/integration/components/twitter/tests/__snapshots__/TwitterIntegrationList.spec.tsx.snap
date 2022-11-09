@@ -20,7 +20,7 @@ exports[`<TwitterIntegrationList/> render() should render 1`] = `
           <a
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </a>
         </li>
         <li
@@ -121,7 +121,7 @@ exports[`<TwitterIntegrationList/> render() should render with a warning message
           <a
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </a>
         </li>
         <li
@@ -259,7 +259,7 @@ exports[`<TwitterIntegrationList/> render() should render with an error message 
           <a
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </a>
         </li>
         <li
@@ -386,7 +386,7 @@ exports[`<TwitterIntegrationList/> render() should render with empty list 1`] = 
           <a
             to="/app/settings/integrations"
           >
-            Integrations
+            Apps & integrations
           </a>
         </li>
         <li

@@ -304,7 +304,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
     },
     {
         type: IntegrationType.Http,
-        title: 'HTTP',
+        title: 'HTTP integration',
         description: 'Connect any application to Gorgias.',
         image: 'http.png',
         longDescription: '',
@@ -523,6 +523,17 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         longDescription: '',
     } as IntegrationConfig,
 ]
+
+const CHANNELS = [
+    IntegrationType.Email,
+    IntegrationType.Phone,
+    IntegrationType.Sms,
+    IntegrationType.GorgiasChat,
+]
+
+export const isChannel = (type: unknown) => {
+    return CHANNELS.includes(type as IntegrationType)
+}
 
 // Import period for tickets
 export const GMAIL_IMPORTED_EMAILS_FOR_YEARS = 2

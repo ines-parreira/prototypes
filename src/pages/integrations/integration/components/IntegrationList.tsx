@@ -6,6 +6,7 @@ import moment from 'moment'
 import {List, Map} from 'immutable'
 import classnames from 'classnames'
 
+import {isChannel} from 'config'
 import Button from 'pages/common/components/button/Button'
 import {getIntegrationConfig} from 'state/integrations/helpers'
 import {notify} from 'state/notifications/actions'
@@ -93,20 +94,23 @@ class IntegrationList extends React.Component<Props> {
             alert,
         } = this.props
 
-        const integrationTitle = getIntegrationConfig(integrationType)!.title
+        const config = getIntegrationConfig(integrationType)
 
         return (
             <div className="w-100">
                 <PageHeader
                     title={
                         <Breadcrumb>
-                            <BreadcrumbItem>
-                                <Link to="/app/settings/integrations">
-                                    Integrations
-                                </Link>
-                            </BreadcrumbItem>
+                            {isChannel(config?.type) ||
+                            config?.type === IntegrationType.Http ? null : (
+                                <BreadcrumbItem>
+                                    <Link to="/app/settings/integrations">
+                                        Apps & integrations
+                                    </Link>
+                                </BreadcrumbItem>
+                            )}
                             <BreadcrumbItem active>
-                                {integrationTitle}
+                                {config?.title}
                             </BreadcrumbItem>
                         </Breadcrumb>
                     }

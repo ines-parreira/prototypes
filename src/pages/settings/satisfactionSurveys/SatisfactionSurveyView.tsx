@@ -68,7 +68,7 @@ class SatisfactionSurveyView extends Component<Props, State> {
     render() {
         return (
             <div className="full-width">
-                <PageHeader title="Satisfaction" />
+                <PageHeader title="Satisfaction survey" />
                 <Container fluid className={css.pageContainer}>
                     <div
                         className={classnames(

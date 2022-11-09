@@ -21,7 +21,7 @@ exports[`ChatIntegrationMigration component should display the migration page 1`
             <a
               to="/app/settings/integrations"
             >
-              Integrations
+              Apps & integrations
             </a>
           </li>
           <li
@@ -110,7 +110,7 @@ exports[`ChatIntegrationMigration component should display the migration page 1`
             A
              
             <a
-              to="/app/settings/integrations/gorgias_chat"
+              to="/app/settings/channels/gorgias_chat"
             >
               new version of the chat
             </a>

@@ -18,7 +18,7 @@ exports[`CreditCard component should display credit card form 1`] = `
             className="section"
             to="/app/settings/billing/"
           >
-            Billing & Usage
+            Billing & usage
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -152,7 +152,7 @@ exports[`CreditCard component should not render the billing address form when a 
             className="section"
             to="/app/settings/billing/"
           >
-            Billing & Usage
+            Billing & usage
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -263,7 +263,7 @@ exports[`CreditCard component should render billing plan card with automation fo
             className="section"
             to="/app/settings/billing/"
           >
-            Billing & Usage
+            Billing & usage
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -424,7 +424,7 @@ exports[`CreditCard component should render nothing if loaded, but no current su
             className="section"
             to="/app/settings/billing/"
           >
-            Billing & Usage
+            Billing & usage
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -535,7 +535,7 @@ exports[`CreditCard component should render the billing address form when accoun
             className="section"
             to="/app/settings/billing/"
           >
-            Billing & Usage
+            Billing & usage
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem

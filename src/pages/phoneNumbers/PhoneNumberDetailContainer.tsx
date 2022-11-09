@@ -23,7 +23,7 @@ export function PhoneNumberDetailContainer({
                     <Breadcrumb>
                         <BreadcrumbItem>
                             <Link to="/app/settings/phone-numbers">
-                                Phone Numbers
+                                Phone numbers
                             </Link>
                         </BreadcrumbItem>
                         {phoneNumber && (

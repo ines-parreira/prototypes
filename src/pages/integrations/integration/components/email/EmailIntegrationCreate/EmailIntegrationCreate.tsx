@@ -34,12 +34,7 @@ export class EmailIntegrationCreate extends Component<Props> {
                     title={
                         <Breadcrumb>
                             <BreadcrumbItem>
-                                <Link to="/app/settings/integrations">
-                                    Integrations
-                                </Link>
-                            </BreadcrumbItem>
-                            <BreadcrumbItem>
-                                <Link to="/app/settings/integrations/email">
+                                <Link to="/app/settings/channels/email">
                                     Email
                                 </Link>
                             </BreadcrumbItem>
@@ -106,7 +101,7 @@ export class EmailIntegrationCreate extends Component<Props> {
 
                         <div className="divider">OR</div>
 
-                        <Link to="/app/settings/integrations/email/new/custom">
+                        <Link to="/app/settings/channels/email/new/custom">
                             <Button
                                 type="submit"
                                 intent="secondary"

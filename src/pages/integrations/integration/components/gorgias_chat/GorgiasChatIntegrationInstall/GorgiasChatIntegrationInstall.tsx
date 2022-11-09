@@ -116,13 +116,8 @@ function GorgiasChatIntegrationInstall({
                 title={
                     <Breadcrumb>
                         <BreadcrumbItem>
-                            <Link to="/app/settings/integrations">
-                                Integrations
-                            </Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
                             <Link
-                                to={`/app/settings/integrations/${GORGIAS_CHAT_INTEGRATION_TYPE}`}
+                                to={`/app/settings/channels/${IntegrationType.GorgiasChat}`}
                             >
                                 Chat
                             </Link>
@@ -205,7 +200,7 @@ function GorgiasChatIntegrationInstall({
                                         volume, we recommend you disable{' '}
                                         <b>Live Chat</b> in the{' '}
                                         <Link
-                                            to={`/app/settings/integrations/${GORGIAS_CHAT_INTEGRATION_TYPE}/${integrationId}/preferences`}
+                                            to={`/app/settings/channels/${IntegrationType.GorgiasChat}/${integrationId}/preferences`}
                                         >
                                             Preferences
                                         </Link>{' '}

@@ -1,5 +1,4 @@
 import React, {useMemo, useState} from 'react'
-import {Link} from 'react-router-dom'
 import {List, Map} from 'immutable'
 import classnames from 'classnames'
 import {Breadcrumb, BreadcrumbItem, Button, Container} from 'reactstrap'
@@ -69,7 +68,7 @@ function GorgiasChatIntegrationList({integrations, loading}: Props) {
 
     const chatToRow = (chat: Map<any, any>) => {
         const integrationId: number = chat.get('id')
-        const editLink = `/app/settings/integrations/${IntegrationType.GorgiasChat}/${integrationId}/campaigns`
+        const editLink = `/app/settings/channels/${IntegrationType.GorgiasChat}/${integrationId}/campaigns`
         const shopifyStoreName: string | null = chat.getIn(
             ['meta', 'shop_name'],
             null
@@ -138,11 +137,6 @@ function GorgiasChatIntegrationList({integrations, loading}: Props) {
             <PageHeader
                 title={
                     <Breadcrumb>
-                        <BreadcrumbItem>
-                            <Link to="/app/settings/integrations">
-                                Integrations
-                            </Link>
-                        </BreadcrumbItem>
                         <BreadcrumbItem active>
                             {integrationTitle}
                         </BreadcrumbItem>
@@ -154,7 +148,7 @@ function GorgiasChatIntegrationList({integrations, loading}: Props) {
                     color="success"
                     onClick={() =>
                         history.push(
-                            `/app/settings/integrations/${IntegrationType.GorgiasChat}/new/appearance`
+                            `/app/settings/channels/${IntegrationType.GorgiasChat}/new/appearance`
                         )
                     }
                 >

@@ -16,6 +16,7 @@ import {
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
 } from 'config/integrations/gorgias_chat'
 
+import {IntegrationType} from 'models/integration/constants'
 import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
 
 import ChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
@@ -174,15 +175,8 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
                     title={
                         <Breadcrumb>
                             <BreadcrumbItem>
-                                <Link to="/app/settings/integrations">
-                                    Integrations
-                                </Link>
-                            </BreadcrumbItem>
-                            <BreadcrumbItem>
                                 <Link
-                                    to={`/app/settings/integrations/${
-                                        integration.get('type') as string
-                                    }`}
+                                    to={`/app/settings/channels/${IntegrationType.GorgiasChat}`}
                                 >
                                     Chat
                                 </Link>

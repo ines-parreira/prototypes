@@ -107,7 +107,7 @@ export class BusinessHoursContainer extends Component<Props, State> {
                             </p>
                             <p>
                                 The appearance of your{' '}
-                                <Link to="/app/settings/integrations/gorgias_chat">
+                                <Link to="/app/settings/channels/gorgias_chat">
                                     Chat integrations
                                 </Link>{' '}
                                 will change when outside business hours.

@@ -209,7 +209,7 @@ export const IntegrationDetail = ({
         [integrations]
     )
 
-    const editLinkDefaultTab = `/app/settings/integrations/${IntegrationType.GorgiasChat}/${integrationId}/${Tab.Campaigns}`
+    const editLinkDefaultTab = `/app/settings/channels/${IntegrationType.GorgiasChat}/${integrationId}/${Tab.Campaigns}`
 
     const goToDefaultTab = () => history.replace(editLinkDefaultTab)
 
@@ -267,67 +267,6 @@ export const IntegrationDetail = ({
                 <AircallIntegrationList
                     integrations={integrationsProp}
                     loading={loading}
-                />
-            )
-
-        case IntegrationType.Email:
-            if (!!integrationId) {
-                if (integrationId === 'setup') {
-                    return <OutlookIntegrationSetup loading={loading} />
-                }
-
-                if (isUpdate) {
-                    if (extra === Tab.EmailForwarding) {
-                        return (
-                            <EmailIntegrationCreateForwarding
-                                integration={integration}
-                            />
-                        )
-                    }
-
-                    if (extra === Tab.EmailVerification) {
-                        return (
-                            <EmailIntegrationCreateVerification
-                                integration={integration}
-                            />
-                        )
-                    }
-
-                    if (extra === Tab.EmailDomainVerification) {
-                        return (
-                            <EmailIntegrationLayout integration={integration}>
-                                <EmailDomainVerification
-                                    actions={actions}
-                                    integration={integration}
-                                    loading={loading}
-                                />
-                            </EmailIntegrationLayout>
-                        )
-                    }
-
-                    return (
-                        <EmailIntegrationLayout integration={integration}>
-                            <EmailIntegrationUpdate
-                                integration={integration}
-                                loading={loading}
-                            />
-                        </EmailIntegrationLayout>
-                    )
-                }
-
-                if (extra === Tab.EmailCustom) {
-                    return <EmailIntegrationCreateCustom loading={loading} />
-                }
-
-                return <EmailIntegrationCreate />
-            }
-
-            return (
-                <EmailIntegrationList
-                    integrations={integrationsProp}
-                    loading={loading}
-                    gmailRedirectUri={getRedirectUri(IntegrationType.Gmail)}
-                    outlookRedirectUri={getRedirectUri(IntegrationType.Outlook)}
                 />
             )
 
@@ -810,8 +749,67 @@ export const IntegrationDetail = ({
                 />
             )
 
+        case IntegrationType.Email:
         default:
-            return null
+            if (!!integrationId) {
+                if (integrationId === 'setup') {
+                    return <OutlookIntegrationSetup loading={loading} />
+                }
+
+                if (isUpdate) {
+                    if (extra === Tab.EmailForwarding) {
+                        return (
+                            <EmailIntegrationCreateForwarding
+                                integration={integration}
+                            />
+                        )
+                    }
+
+                    if (extra === Tab.EmailVerification) {
+                        return (
+                            <EmailIntegrationCreateVerification
+                                integration={integration}
+                            />
+                        )
+                    }
+
+                    if (extra === Tab.EmailDomainVerification) {
+                        return (
+                            <EmailIntegrationLayout integration={integration}>
+                                <EmailDomainVerification
+                                    actions={actions}
+                                    integration={integration}
+                                    loading={loading}
+                                />
+                            </EmailIntegrationLayout>
+                        )
+                    }
+
+                    return (
+                        <EmailIntegrationLayout integration={integration}>
+                            <EmailIntegrationUpdate
+                                integration={integration}
+                                loading={loading}
+                            />
+                        </EmailIntegrationLayout>
+                    )
+                }
+
+                if (extra === Tab.EmailCustom) {
+                    return <EmailIntegrationCreateCustom loading={loading} />
+                }
+
+                return <EmailIntegrationCreate />
+            }
+
+            return (
+                <EmailIntegrationList
+                    integrations={integrationsProp}
+                    loading={loading}
+                    gmailRedirectUri={getRedirectUri(IntegrationType.Gmail)}
+                    outlookRedirectUri={getRedirectUri(IntegrationType.Outlook)}
+                />
+            )
     }
 }
 

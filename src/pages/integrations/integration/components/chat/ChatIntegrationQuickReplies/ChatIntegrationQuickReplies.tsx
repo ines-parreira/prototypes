@@ -122,7 +122,7 @@ export class ChatIntegrationQuickRepliesComponent extends Component<
                         <Breadcrumb>
                             <BreadcrumbItem>
                                 <Link to="/app/settings/integrations">
-                                    Integrations
+                                    Apps & integrations
                                 </Link>
                             </BreadcrumbItem>
                             <BreadcrumbItem>

@@ -350,7 +350,7 @@ export default function Meta(props: Props) {
         let sentViaLink
 
         if (via === TicketVias.GORGIAS_CHAT) {
-            sentViaLink = `/app/settings/integrations/gorgias_chat/${props.integrationId}/campaigns/${meta.campaign_id}`
+            sentViaLink = `/app/settings/channels/gorgias_chat/${props.integrationId}/campaigns/${meta.campaign_id}`
         } else {
             sentViaLink = `/app/settings/integrations/smooch_inside/${props.integrationId}/campaigns/${meta.campaign_id}`
         }

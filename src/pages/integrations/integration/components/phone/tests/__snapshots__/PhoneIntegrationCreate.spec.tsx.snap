@@ -18,16 +18,7 @@ exports[`<PhoneIntegrationCreate/> render() should prefill the title field using
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
-          >
-            Integrations
-          </a>
-        </li>
-        <li
-          class="breadcrumb-item"
-        >
-          <a
-            to="/app/settings/integrations/phone"
+            to="/app/settings/channels/phone"
           >
             Voice
           </a>
@@ -354,16 +345,7 @@ exports[`<PhoneIntegrationCreate/> render() should render 1`] = `
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
-          >
-            Integrations
-          </a>
-        </li>
-        <li
-          class="breadcrumb-item"
-        >
-          <a
-            to="/app/settings/integrations/phone"
+            to="/app/settings/channels/phone"
           >
             Voice
           </a>
@@ -660,16 +642,7 @@ exports[`<PhoneIntegrationCreate/> render() should submit a valid payload with t
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations"
-          >
-            Integrations
-          </a>
-        </li>
-        <li
-          class="breadcrumb-item"
-        >
-          <a
-            to="/app/settings/integrations/phone"
+            to="/app/settings/channels/phone"
           >
             Voice
           </a>
