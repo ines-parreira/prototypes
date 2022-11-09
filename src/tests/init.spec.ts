@@ -13,7 +13,7 @@ import {
 } from 'init'
 import {RootState} from 'state/types'
 import {initLogRocket} from 'utils/logRocket'
-import {mockStagingEnvironment} from 'utils/testing'
+import {mockProductionEnvironment, mockStagingEnvironment} from 'utils/testing'
 import {account} from 'fixtures/account'
 import {user} from 'fixtures/users'
 import {GorgiasInitialState} from 'types'
@@ -128,7 +128,8 @@ describe('init', () => {
             })
         })
 
-        it('should not initialize log rocket when random() returns a number higher than the sample rate', () => {
+        it('should not initialize log rocket on production when random() returns a number higher than the sample rate', () => {
+            mockProductionEnvironment()
             jest.spyOn(global.Math, 'random').mockReturnValue(0.3)
             initApp({
                 ...defaultParams,
@@ -139,6 +140,24 @@ describe('init', () => {
             })
 
             expect(initLogRocketMock).not.toHaveBeenCalled()
+        })
+
+        it('should initialize log rocket on staging even when random() returns a number higher than the sample rate', () => {
+            jest.spyOn(global.Math, 'random').mockReturnValue(0.3)
+            initApp({
+                ...defaultParams,
+                logRocket: {
+                    ...defaultParams.logRocket!,
+                    sampleRate: 0.1,
+                },
+            })
+
+            expect(initLogRocketMock).toHaveBeenLastCalledWith({
+                appId: defaultParams.logRocket?.appId,
+                currentAccount: account,
+                currentUser: user,
+                release: window.GORGIAS_RELEASE,
+            })
         })
     })
 })

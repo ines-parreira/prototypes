@@ -199,8 +199,8 @@ export function initApp({logRocket, datadog, sentry}: InitAppParams) {
 
     if (
         logRocket &&
-        Math.random() <= logRocket.sampleRate &&
-        (isStaging() || isProduction())
+        (isStaging() ||
+            (isProduction() && Math.random() <= logRocket.sampleRate))
     ) {
         initLogRocket({
             appId: logRocket.appId,

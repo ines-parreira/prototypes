@@ -2,6 +2,12 @@ import LogRocket from 'logrocket'
 
 import {User} from 'config/types/user'
 import {Account} from 'state/currentAccount/types'
+import {measureInp} from 'utils/performance'
+import history from 'pages/history'
+
+export enum LogRocketCustomMetric {
+    Inp = 'inp',
+}
 
 export type InitLogRocketParams = {
     appId: string
@@ -26,5 +32,11 @@ export function initLogRocket({
         name: currentUser.name,
         email: currentUser.email,
         domain: currentAccount.domain,
+    })
+    measureInp(history, (inp, location) => {
+        LogRocket.track(LogRocketCustomMetric.Inp, {
+            value: inp.value,
+            page: location.pathname,
+        })
     })
 }
