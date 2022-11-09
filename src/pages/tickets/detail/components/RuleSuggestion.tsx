@@ -17,6 +17,7 @@ import {getCurrentUser} from 'state/currentUser/selectors'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {ActionStatus, Ticket} from 'models/ticket/types'
 import {actionsConfig} from 'pages/common/components/ast/actions/Action'
+import Avatar from 'pages/common/components/Avatar/Avatar'
 import {NewMessage} from 'state/newMessage/types'
 import {
     MacroAction,
@@ -28,6 +29,8 @@ import {getPreferredChannel, guessReceiversFromTicket} from 'state/ticket/utils'
 import {transformToInternalNote} from 'state/newMessage/utils'
 import {useRuleRecipes} from 'state/entities/ruleRecipes/hooks'
 import {RuleAction, RuleActionName} from 'models/rule/types'
+
+import css from './RuleSuggestion.less'
 
 type Props = {
     ticket: Ticket & {
@@ -83,6 +86,8 @@ const RuleSuggestion = ({ticket}: Props) => {
         emailChannels
     )
 
+    const ruleName = recipes[suggestion.slug]?.rule?.name ?? suggestion.slug
+
     const applySuggestion = async () => {
         let message = {
             source: {
@@ -120,11 +125,61 @@ const RuleSuggestion = ({ticket}: Props) => {
     return hasAutomationAddOn &&
         ruleSuggestionFeatureFlag &&
         (actions?.length || text) ? (
-        <div>
-            <span>Gorgias tips placeholder: </span>
-            <Button size="small" onClick={applySuggestion}>
-                Apply & Send
-            </Button>
+        <div className={css.container}>
+            <div className={css.avatar}>
+                <Avatar
+                    name="Gorgias Tips"
+                    size={36}
+                    url={`${
+                        window.GORGIAS_ASSETS_URL || ''
+                    }/static/private/js/assets/img/icons/gorgias-icon-logo-white.png`}
+                />
+            </div>
+            <header className={css.header}>
+                <div>
+                    <div className={css.headerTitle}>
+                        <span>Gorgias Tips</span>
+                        <span>Only visible to you</span>
+                    </div>
+                    <div className={css.headerInfo}>
+                        <span>
+                            Automate this ticket with the{' '}
+                            <a
+                                target="_blank"
+                                rel="noreferrer"
+                                href={`/app/settings/rules#rule-library?${suggestion.slug}`}
+                            >
+                                {ruleName}
+                            </a>{' '}
+                            rule!{' '}
+                        </span>
+                        <span>Here’s a preview:</span>
+                    </div>
+                </div>
+                <div className={css.buttonsContainer}>
+                    <div className={css.buttons}>
+                        <Button intent="secondary" size="small">
+                            Install
+                        </Button>
+                        <Button size="small" onClick={applySuggestion}>
+                            Apply & Send
+                        </Button>
+                    </div>
+                    <div className={css.chevron}>
+                        <i className="material-icons-round">expand_less</i>
+                    </div>
+                </div>
+            </header>
+            <div className={css.bodyContainer}>
+                {text?.body_html && (
+                    <div className={css.textContainer}>
+                        <div
+                            dangerouslySetInnerHTML={{__html: text.body_html}}
+                        />
+                    </div>
+                )}
+                <div>{/* Actions Placehold  */}</div>
+            </div>
         </div>
     ) : null
 }

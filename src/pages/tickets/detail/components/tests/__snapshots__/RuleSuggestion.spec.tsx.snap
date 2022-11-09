@@ -2,16 +2,113 @@
 
 exports[`RuleSuggestion should display RuleSuggestion 1`] = `
 <div>
-  <div>
-    <span>
-      Gorgias tips placeholder: 
-    </span>
-    <button
-      class="wrapper fill primary small"
-      type="button"
+  <div
+    class="container"
+  >
+    <div
+      class="avatar"
     >
-      Apply & Send
-    </button>
+      <div
+        class="component hasImage"
+        style="width: 36px; height: 36px;"
+      >
+        <div
+          class="initials"
+          style="width: 36px; height: 36px; font-size: 15px;"
+        >
+          <span
+            style="line-height: 38px;"
+          >
+            GT
+          </span>
+        </div>
+        <img
+          alt="avatar"
+          class="gravatar"
+          src="/static/private/js/assets/img/icons/gorgias-icon-logo-white.png"
+        />
+      </div>
+    </div>
+    <header
+      class="header"
+    >
+      <div>
+        <div
+          class="headerTitle"
+        >
+          <span>
+            Gorgias Tips
+          </span>
+          <span>
+            Only visible to you
+          </span>
+        </div>
+        <div
+          class="headerInfo"
+        >
+          <span>
+            Automate this ticket with the
+             
+            <a
+              href="/app/settings/rules#rule-library?rule-recipe-fixture"
+              rel="noreferrer"
+              target="_blank"
+            >
+              my rule
+            </a>
+             
+            rule!
+             
+          </span>
+          <span>
+            Here’s a preview:
+          </span>
+        </div>
+      </div>
+      <div
+        class="buttonsContainer"
+      >
+        <div
+          class="buttons"
+        >
+          <button
+            class="wrapper fill secondary small"
+            type="button"
+          >
+            Install
+          </button>
+          <button
+            class="wrapper fill primary small"
+            type="button"
+          >
+            Apply & Send
+          </button>
+        </div>
+        <div
+          class="chevron"
+        >
+          <i
+            class="material-icons-round"
+          >
+            expand_less
+          </i>
+        </div>
+      </div>
+    </header>
+    <div
+      class="bodyContainer"
+    >
+      <div
+        class="textContainer"
+      >
+        <div>
+          <div>
+            Text coming from rule suggestion
+          </div>
+        </div>
+      </div>
+      <div />
+    </div>
   </div>
 </div>
 `;

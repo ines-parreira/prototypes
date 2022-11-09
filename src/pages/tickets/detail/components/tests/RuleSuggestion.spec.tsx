@@ -128,7 +128,7 @@ describe('RuleSuggestion', () => {
             </Provider>
         )
 
-        fireEvent.click(screen.getByRole('button'))
+        fireEvent.click(screen.getByText('Apply & Send'))
         expect((sendTicketMessage as jest.Mock).mock.calls).toMatchSnapshot()
     })
 
@@ -139,7 +139,7 @@ describe('RuleSuggestion', () => {
             </Provider>
         )
 
-        fireEvent.click(screen.getByRole('button'))
+        fireEvent.click(screen.getByText('Apply & Send'))
         expect((sendTicketMessage as jest.Mock).mock.calls).toMatchSnapshot()
     })
 })
