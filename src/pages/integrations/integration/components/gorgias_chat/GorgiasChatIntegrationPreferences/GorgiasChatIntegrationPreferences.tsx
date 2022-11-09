@@ -21,7 +21,7 @@ import {
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_OPTIONAL,
-    GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_REQUIRED_OUTSIDE_BUSINESS_HOURS,
+    GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_REQUIRED_OUTSIDE_BUSINESS_HOURS_DEPRECATED,
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
     GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
@@ -47,19 +47,12 @@ const emailCaptureOptions = [
     {
         value: GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_OPTIONAL,
         label: 'Optional',
-        caption:
-            'Leaving your email is optional, everyone can start a conversation. Maximise conversation volume',
-    },
-    {
-        value: GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_REQUIRED_OUTSIDE_BUSINESS_HOURS,
-        label: 'Required only outside business hours',
-        caption: `Reduces conversation volume by around 5%. This option is ignored when contact form is enabled`,
+        caption: 'Maximizes conversation volume',
     },
     {
         value: GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
         label: 'Always required',
-        caption:
-            "Recommended if you can't provide instant replies. Reduces conversation volume by around 30%",
+        caption: 'Reduces conversation volume by around 30%',
     },
 ]
 
@@ -105,6 +98,19 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
     }
 
     _initState = (integration: Map<any, any>) => {
+        let emailCaptureEnforcement = integration.getIn([
+            'meta',
+            'preferences',
+            'email_capture_enforcement',
+        ])
+        // Shift emailCaptureEnforcement to `optional` if we fetched the deprecated `required-outside-business-hours` option.
+        if (
+            emailCaptureEnforcement ===
+            GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_REQUIRED_OUTSIDE_BUSINESS_HOURS_DEPRECATED
+        ) {
+            emailCaptureEnforcement = GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_OPTIONAL
+        }
+
         this.setState(
             _omitBy(
                 {
@@ -122,11 +128,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                             'auto_responder',
                             'reply',
                         ]) || GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
-                    emailCaptureEnforcement: integration.getIn([
-                        'meta',
-                        'preferences',
-                        'email_capture_enforcement',
-                    ]),
+                    emailCaptureEnforcement: emailCaptureEnforcement,
                     hideOnMobile: integration.getIn([
                         'meta',
                         'preferences',
@@ -282,11 +284,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             ),
         }
 
-        const isPreviewOnline =
-            preview === PREVIEW_AUTO_RESPONDER ||
-            emailCaptureEnforcement !==
-                GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_REQUIRED_OUTSIDE_BUSINESS_HOURS
-
         const renderPreviewFooter =
             preview === PREVIEW_AUTO_RESPONDER ||
             emailCaptureEnforcement ===
@@ -336,7 +333,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                     'offline_introduction_text',
                 ])}
                 mainColor={integration.getIn(['decoration', 'main_color'])}
-                isOnline={isPreviewOnline}
+                isOnline={true}
                 language={language}
                 position={position}
                 renderFooter={renderPreviewFooter}
@@ -425,7 +422,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                         <div>
                             <div className={classnames(css.formSection)}>
                                 <h4>
-                                    Email capture
+                                    Email prompt
                                     <i
                                         id="email-capture-help"
                                         className={classnames(
@@ -444,7 +441,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                         innerClassName={css['tooltip-inner']}
                                         arrowClassName={css['tooltip-arrow']}
                                     >
-                                        You can change the email capture message
+                                        You can change the email prompt message
                                         by adjusting the chat default text
                                         values.{' '}
                                         <a
