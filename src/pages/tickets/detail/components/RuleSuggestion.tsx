@@ -104,13 +104,12 @@ const RuleSuggestion = ({ticket}: Props) => {
         } as unknown as NewMessage
 
         if (!text) {
-            // TODO: Add deeplink to rule
             const ruleName =
                 recipes[suggestion.slug]?.rule?.name ?? suggestion.slug
             const {newMessage, newActions} = transformToInternalNote(
                 message,
                 fromJS(actions),
-                `Sent via suggested rule: ${ruleName}`
+                `Sent via suggested rule: <a target="_blank" href="/app/settings/rules#rule-library?${suggestion.slug}">${ruleName}</a>`
             )
             message = {...newMessage, actions: newActions ?? fromJS([])}
         }
