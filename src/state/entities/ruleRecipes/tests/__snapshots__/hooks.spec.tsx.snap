@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`useRuleRecipes should load the recipes 1`] = `Object {}`;
+exports[`useRuleRecipes should load the recipes 1`] = `null`;
 
 exports[`useRuleRecipes should return the recipes 1`] = `
 Object {

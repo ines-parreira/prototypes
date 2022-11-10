@@ -141,6 +141,9 @@ Array [
       "channel": "email",
       "from_agent": true,
       "macros": Array [],
+      "meta": Object {
+        "rule_suggestion_slug": "rule-recipe-fixture",
+      },
       "public": false,
       "sender": Object {
         "email": "support@acme.gorgias.io",
@@ -184,6 +187,9 @@ Array [
       "channel": "email",
       "from_agent": true,
       "macros": Array [],
+      "meta": Object {
+        "rule_suggestion_slug": "rule-recipe-fixture",
+      },
       "public": true,
       "sender": Object {
         "email": "support@acme.gorgias.io",

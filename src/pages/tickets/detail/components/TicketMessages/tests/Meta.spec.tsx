@@ -8,6 +8,7 @@ import {RootState, StoreDispatch} from 'state/types'
 import {fetchRule} from 'models/rule/resources'
 import {ManagedRule, ManagedRulesSlugs, RuleType} from 'state/rules/types'
 import {ManagedRuleDisplayName} from 'state/rules/constants'
+import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
 import {TicketVias} from '../../../../../../business/ticket'
 import {
     TicketChannel,
@@ -20,6 +21,7 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({
     entities: {
         rules: {4: {id: '4', name: 'rule 4'}} as unknown,
+        ruleRecipes: {[emptyRuleRecipeFixture.slug]: emptyRuleRecipeFixture},
     },
 } as RootState)
 
@@ -37,7 +39,7 @@ describe('ticket message meta', () => {
             </Provider>
         )
 
-        await screen.findByText('send via:')
+        await screen.findByText('sent via:')
         await screen.findByText('rule 4')
     })
 
@@ -56,7 +58,7 @@ describe('ticket message meta', () => {
 
         expect(mockFetchRule).toHaveBeenCalled()
 
-        await screen.findByText('send via:')
+        await screen.findByText('sent via:')
         await screen.findByText(rule.name)
     })
 
@@ -85,7 +87,7 @@ describe('ticket message meta', () => {
             </Provider>
         )
 
-        expect(await screen.findByText('send via:')).toBeTruthy()
+        expect(await screen.findByText('sent via:')).toBeTruthy()
         expect(
             await screen.findByText(
                 ManagedRuleDisplayName.get(rule.settings.slug)!
@@ -115,8 +117,23 @@ describe('ticket message meta', () => {
         )
 
         expect(mockFetchRule).toHaveBeenCalledTimes(1)
-        await screen.findByText('send via:')
+        await screen.findByText('sent via:')
         await screen.findByText(rule.name)
+    })
+
+    it('should display rule suggestion', async () => {
+        render(
+            <Provider store={store}>
+                <Meta
+                    messageId="some-id"
+                    via="something"
+                    meta={{rule_suggestion_slug: emptyRuleRecipeFixture.slug}}
+                />
+            </Provider>
+        )
+
+        await screen.findByText('sent via suggested rule:')
+        await screen.findByText(emptyRuleRecipeFixture.rule.name)
     })
 
     it(

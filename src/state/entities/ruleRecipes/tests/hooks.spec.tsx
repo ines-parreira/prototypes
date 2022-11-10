@@ -13,9 +13,7 @@ const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 const store = mockStore({
     entities: {
-        ruleRecipes: {
-            [emptyRuleRecipeFixture.slug]: emptyRuleRecipeFixture,
-        },
+        ruleRecipes: {[emptyRuleRecipeFixture.slug]: emptyRuleRecipeFixture},
     },
 })
 
@@ -25,8 +23,7 @@ describe('useRuleRecipes', () => {
             <Provider store={store}>{children}</Provider>
         )
         const {result} = renderHook(() => useRuleRecipes(), {wrapper})
-        const [loading, recipes] = result.current
-        expect(loading).toBeFalsy()
+        const recipes = result.current
         expect(recipes).toMatchSnapshot()
         expect(fetchRuleRecipes).toHaveBeenCalledTimes(0)
     })
@@ -36,8 +33,7 @@ describe('useRuleRecipes', () => {
             <Provider store={mockStore({entities: {}})}>{children}</Provider>
         )
         const {result} = renderHook(() => useRuleRecipes(), {wrapper})
-        const [loading, recipes] = result.current
-        expect(loading).toBeTruthy()
+        const recipes = result.current
         expect(recipes).toMatchSnapshot()
         expect(fetchRuleRecipes).toHaveBeenCalledTimes(1)
     })

@@ -13,6 +13,7 @@ import {rulesSelector} from 'state/entities/rules/selectors'
 import useAppSelector from 'hooks/useAppSelector'
 import {ManagedRuleDisplayName} from 'state/rules/constants'
 import {ManagedRule, RuleType} from 'state/rules/types'
+import {useRuleRecipes} from 'state/entities/ruleRecipes/hooks'
 import {TicketVias} from '../../../../../business/ticket'
 import {Meta as MetaType, Source} from '../../../../../models/ticket/types'
 import {TicketMessageSourceType} from '../../../../../business/types/ticket'
@@ -53,6 +54,7 @@ export default function Meta(props: Props) {
 
     const dispatch = useAppDispatch()
     const rules = useAppSelector(rulesSelector)
+    const recipes = useRuleRecipes()
 
     const {loading: isFetchingRule, value: rule} = useAsync(async () => {
         if (props.via === 'rule' && props.ruleId) {
@@ -329,7 +331,7 @@ export default function Meta(props: Props) {
 
     if (props.via === 'rule' && props.ruleId) {
         widgets.push(
-            <From key="via-widget" label="send via:">
+            <From key="via-widget" label="sent via:">
                 <b>
                     {isFetchingRule ? (
                         <Spinner className={css.spinner} color="dark" />
@@ -362,6 +364,27 @@ export default function Meta(props: Props) {
                         <i className="material-icons mr-1">settings</i>
                         "Campaign"
                     </Link>
+                </b>
+            </From>
+        )
+    } else if (meta && meta.rule_suggestion_slug) {
+        const slug = meta.rule_suggestion_slug
+        const ruleName = recipes?.[slug]?.rule?.name ?? slug
+        widgets.push(
+            <From key="via-widget" label="sent via suggested rule:">
+                <b>
+                    {!recipes ? (
+                        <Spinner className={css.spinner} color="dark" />
+                    ) : (
+                        <Link
+                            to={`/app/settings/rules#rule-library?${meta.rule_suggestion_slug}`}
+                            title="Rule"
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            {ruleName}
+                        </Link>
+                    )}
                 </b>
             </From>
         )

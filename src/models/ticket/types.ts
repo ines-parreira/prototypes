@@ -223,6 +223,7 @@ export type Meta = {
     facebook_reactions?: FacebookReactions
     quoted_tweet?: QuotedTweet
     product?: ProductDetails
+    rule_suggestion_slug?: string
 }
 
 export type FacebookPrivateReply = {

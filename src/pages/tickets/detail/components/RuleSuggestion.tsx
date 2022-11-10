@@ -49,8 +49,8 @@ const RuleSuggestion = ({ticket}: Props) => {
     const ruleSuggestionFeatureFlag = useFlags()[FeatureFlagKey.RuleSuggestion]
     const currentUser = useAppSelector(getCurrentUser)
     const emailChannels = useAppSelector(getEmailChannels)
-    const [loadingRecipes, recipes] = useRuleRecipes()
-    if (loadingRecipes) return null
+    const recipes = useRuleRecipes()
+    if (!recipes) return null
 
     const suggestion = ticket.meta?.['rule_suggestion']
     if (!suggestion) return null
@@ -106,6 +106,7 @@ const RuleSuggestion = ({ticket}: Props) => {
             macros: [],
             via: TicketVia.Helpdesk,
             from_agent: true,
+            meta: {rule_suggestion_slug: suggestion.slug},
         } as unknown as NewMessage
 
         if (!text) {
