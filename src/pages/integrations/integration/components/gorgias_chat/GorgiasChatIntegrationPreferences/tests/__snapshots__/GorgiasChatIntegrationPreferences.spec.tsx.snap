@@ -197,7 +197,9 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
         <div
           className="formSection"
         >
-          <h4>
+          <h4
+            className="title"
+          >
             Email prompt
             <i
               className="material-icons-outlined tooltipIcon"
@@ -225,11 +227,6 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
               </a>
             </Tooltip>
           </h4>
-          <p
-            className="mb16"
-          >
-            Ask your customers to leave their email before starting a chat.
-          </p>
           <RadioFieldSet
             onChange={[Function]}
             options={
@@ -583,7 +580,9 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
         <div
           className="formSection"
         >
-          <h4>
+          <h4
+            className="title"
+          >
             Email prompt
             <i
               className="material-icons-outlined tooltipIcon"
@@ -611,11 +610,6 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
               </a>
             </Tooltip>
           </h4>
-          <p
-            className="mb16"
-          >
-            Ask your customers to leave their email before starting a chat.
-          </p>
           <RadioFieldSet
             onChange={[Function]}
             options={

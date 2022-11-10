@@ -421,7 +421,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                     <Form onSubmit={this._submitPreferences}>
                         <div>
                             <div className={classnames(css.formSection)}>
-                                <h4>
+                                <h4 className={css.title}>
                                     Email prompt
                                     <i
                                         id="email-capture-help"
@@ -453,10 +453,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                         </a>
                                     </Tooltip>
                                 </h4>
-                                <p className={css.mb16}>
-                                    Ask your customers to leave their email
-                                    before starting a chat.
-                                </p>
                                 <RadioFieldSet
                                     options={emailCaptureOptions}
                                     selectedValue={emailCaptureEnforcement}
