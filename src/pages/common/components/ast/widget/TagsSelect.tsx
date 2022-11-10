@@ -77,10 +77,9 @@ export const TagsSelectContainer = ({
             try {
                 const searchResults = await fetchTags(
                     {search: val},
-                    cancelToken
+                    {cancelToken}
                 )
-                if (searchResults.data.length)
-                    dispatch(tagsFetched(searchResults.data))
+                dispatch(tagsFetched(searchResults.data.data))
             } catch (err) {
                 void dispatch(
                     notify({

@@ -6,6 +6,7 @@ import _isEqual from 'lodash/isEqual'
 import axios from 'axios'
 
 import client from 'models/api/resources'
+import {OrderDirection} from 'models/api/types'
 import {TagSortableProperties} from 'models/tag/types'
 import {StoreDispatch} from 'state/types'
 import * as actions from 'state/tags/actions'
@@ -17,6 +18,11 @@ const middlewares = [thunk]
 const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
     middlewares
 )
+
+const meta = {
+    next_cursor: null,
+    prev_cursor: null,
+}
 
 jest.mock('state/notifications/actions', () => {
     return {
@@ -44,42 +50,60 @@ describe('tags actions', () => {
 
     describe('fetchTags', () => {
         it('success actions', () => {
-            mockServer.onGet('/api/tags/').reply(200, {data: ['refund']})
-            return store
-                .dispatch(actions.fetchTags(2))
-                .then(() => expect(store.getActions()).toMatchSnapshot())
-        })
-
-        it('params change page', () => {
-            mockServer.onGet('/api/tags/').reply(({params}) => {
-                expect(params).toMatchSnapshot()
-                return [200]
+            mockServer.onGet('/api/tags/').reply(200, {
+                data: {data: ['refund']},
+                meta: {
+                    prev_cursor: null,
+                    next_cursor: null,
+                },
             })
-            return store.dispatch(actions.fetchTags(2))
+            return store
+                .dispatch(actions.fetchTags())
+                .then(() => expect(store.getActions()).toMatchSnapshot())
         })
 
         it('params change reverse', () => {
             mockServer.onGet('/api/tags/').reply(({params}) => {
                 expect(params).toMatchSnapshot()
-                return [200]
+                return [
+                    200,
+                    {
+                        data: {data: []},
+                        meta: {
+                            prev_cursor: null,
+                            next_cursor: null,
+                        },
+                    },
+                ]
             })
             return store.dispatch(
-                actions.fetchTags(1, TagSortableProperties.Usage, false)
+                actions.fetchTags({
+                    orderBy: TagSortableProperties.Usage,
+                    orderDir: OrderDirection.Asc,
+                })
             )
         })
 
         it('params search', () => {
             mockServer.onGet('/api/tags/').reply(({params}) => {
                 expect(params).toMatchSnapshot()
-                return [200]
+                return [
+                    200,
+                    {
+                        data: {data: []},
+                        meta: {
+                            prev_cursor: null,
+                            next_cursor: null,
+                        },
+                    },
+                ]
             })
             return store.dispatch(
-                actions.fetchTags(
-                    1,
-                    TagSortableProperties.Name,
-                    false,
-                    'something'
-                )
+                actions.fetchTags({
+                    orderBy: TagSortableProperties.Name,
+                    orderDir: OrderDirection.Asc,
+                    search: 'something',
+                })
             )
         })
 
@@ -89,15 +113,13 @@ describe('tags actions', () => {
                     params?: {
                         order_by: string
                         order_dir: string
-                        page: number
                     }
                 }) => {
                     if (
                         config.params?.order_by === 'name' &&
-                        config.params?.order_dir === 'desc' &&
-                        config.params?.page === 1
+                        config.params?.order_dir === 'desc'
                     ) {
-                        return [200, {data: ['rejected', 'refund']}]
+                        return [200, {data: ['rejected', 'refund'], meta}]
                     }
 
                     return [400]
@@ -118,7 +140,10 @@ describe('tags actions', () => {
 
             return store
                 .dispatch(
-                    actions.fetchTags(1, TagSortableProperties.Name, true)
+                    actions.fetchTags({
+                        orderBy: TagSortableProperties.Name,
+                        orderDir: OrderDirection.Desc,
+                    })
                 )
                 .then(() => {
                     expect(store.getActions()).toEqual(expectedActions)
@@ -126,19 +151,16 @@ describe('tags actions', () => {
         })
 
         it('should reject when cancelled', async () => {
-            mockServer.onGet('/api/tags/').reply(200, {})
+            mockServer.onGet('/api/tags/').reply(200, {
+                data: [],
+                meta: {prev_cursor: null, next_cursor: null},
+            })
             const source = axios.CancelToken.source()
-
             source.cancel()
+
             await expect(
                 store.dispatch(
-                    actions.fetchTags(
-                        1,
-                        undefined,
-                        undefined,
-                        undefined,
-                        source.token
-                    )
+                    actions.fetchTags(undefined, {cancelToken: source.token})
                 )
             ).rejects.toEqual(new axios.Cancel())
         })

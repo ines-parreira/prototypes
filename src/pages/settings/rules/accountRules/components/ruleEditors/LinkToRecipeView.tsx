@@ -32,7 +32,7 @@ export const LinkToRecipeView = ({recipeSlug, children}: Props) => {
         new Promise((resolve, reject) => {
             fetchTags({search: tag.name})
                 .then((resp) => {
-                    if (!resp.data.length) {
+                    if (!resp.data.data.length) {
                         resolve(tag)
                     }
                     resolve(null)

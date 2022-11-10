@@ -71,29 +71,19 @@ Array [
 ]
 `;
 
-exports[`tags actions fetchTags params change page 1`] = `
-Object {
-  "order_by": "usage",
-  "order_dir": "desc",
-  "page": 1,
-  "search": "",
-}
-`;
-
 exports[`tags actions fetchTags params change reverse 1`] = `
 Object {
+  "limit": 100,
   "order_by": "usage",
   "order_dir": "asc",
-  "page": 1,
-  "search": "",
 }
 `;
 
 exports[`tags actions fetchTags params search 1`] = `
 Object {
+  "limit": 100,
   "order_by": "name",
   "order_dir": "asc",
-  "page": 1,
   "search": "something",
 }
 `;
@@ -106,7 +96,11 @@ Array [
   Object {
     "resp": Object {
       "data": Array [
-        "refund",
+        Object {
+          "data": Array [
+            "refund",
+          ],
+        },
       ],
     },
     "type": "FETCH_TAG_LIST_SUCCESS",

@@ -26,7 +26,7 @@ jest.mock('models/tag/resources', () => {
     return {
         ...resource,
         createTag: jest.fn(),
-        fetchTags: jest.fn().mockResolvedValue({data: []}),
+        fetchTags: jest.fn().mockResolvedValue({data: {data: []}}),
     } as Record<string, unknown>
 })
 jest.mock('models/rule/resources')

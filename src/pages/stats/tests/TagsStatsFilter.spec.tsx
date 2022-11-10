@@ -47,17 +47,21 @@ describe('TagsStatsFilter', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         tagsFetchedSpy = jest.spyOn(tagsActions, 'tagsFetched')
+
         fetchTagsMock.mockResolvedValue({
-            uri: '/api/tags/',
-            data: tagsFixtures,
-            meta: {
-                current_page: 'url',
-                item_count: 4,
-                nb_pages: 1,
-                page: 1,
-                per_page: 30,
+            config: {},
+            data: {
+                uri: '/api/tags/',
+                data: tagsFixtures,
+                meta: {
+                    next_cursor: null,
+                    prev_cursor: null,
+                },
+                object: 'list',
             },
-            object: 'list',
+            headers: {},
+            status: 200,
+            statusText: '',
         })
     })
 
@@ -136,9 +140,9 @@ describe('TagsStatsFilter', () => {
             expect(fetchTags).toHaveBeenCalledTimes(1)
             expect(fetchTags).toHaveBeenLastCalledWith(
                 {
+                    cursor: null,
                     orderBy: TagSortableProperties.Name,
                     orderDir: OrderDirection.Asc,
-                    page: 1,
                     search: 'bar',
                 },
                 expect.anything()
@@ -164,9 +168,9 @@ describe('TagsStatsFilter', () => {
             await waitFor(() =>
                 expect(fetchTags).toHaveBeenLastCalledWith(
                     {
+                        cursor: null,
                         orderBy: TagSortableProperties.Name,
                         orderDir: OrderDirection.Asc,
-                        page: 1,
                         search: 'foo',
                     },
                     expect.anything()

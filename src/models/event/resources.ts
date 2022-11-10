@@ -1,9 +1,9 @@
 import qs from 'qs'
-
 import {AxiosRequestConfig} from 'axios'
-import client from '../api/resources'
-import {ApiListResponseCursorPagination} from '../api/types'
-import {deepMapKeysToSnakeCase} from '../api/utils'
+
+import client from 'models/api/resources'
+import {ApiListResponseCursorPagination} from 'models/api/types'
+import {deepMapKeysToSnakeCase} from 'models/api/utils'
 
 import {Event, FetchEventsOptions} from './types'
 

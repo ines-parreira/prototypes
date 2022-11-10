@@ -1,5 +1,5 @@
 import React, {ComponentProps, useCallback, useState} from 'react'
-import {useDebounce} from 'react-use'
+import {useAsyncFn, useDebounce} from 'react-use'
 import {CancelToken} from 'axios'
 
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
@@ -39,10 +39,7 @@ export default function TagsStatsFilter({value = []}: Props) {
     const [tagIds, setTagIds] = useState<string[]>([])
     const [tagSearch, setTagSearch] = useState('')
     const [debouncedTagSearch, setDebouncedTagSearch] = useState('')
-    const [pagination, setPagination] = useState({
-        page: 0,
-        nbPages: 1,
-    })
+    const [nextCursor, setNextCursor] = useState<string | null>(null)
 
     const handleFilterChange: ComponentProps<typeof SelectFilter>['onChange'] =
         useCallback(
@@ -54,34 +51,33 @@ export default function TagsStatsFilter({value = []}: Props) {
 
     const [cancellableFetchTags] = useCancellableRequest(
         (cancelToken: CancelToken) => async (options: FetchTagsOptions) =>
-            await fetchTags(options, cancelToken)
+            await fetchTags(options, {cancelToken})
     )
 
-    const handleFetchTags = useCallback(
-        async (search: string) => {
+    const [{loading: isFetchingTags}, handleFetchTags] = useAsyncFn(
+        async (search: string, isFromScroll = false) => {
             try {
-                let previousIds = tagIds
-                let nextPage = pagination.page + 1
+                const previousIds = isFromScroll ? tagIds : []
+                const cursor = isFromScroll ? nextCursor : null
                 if (search !== tagSearch) {
                     setTagSearch(search)
-                    previousIds = []
-                    nextPage = 1
                 }
+
                 const res = await cancellableFetchTags({
                     ...ORDER_OPTIONS,
-                    page: nextPage,
+                    cursor,
                     search,
                 })
                 if (!res) {
                     return
                 }
 
-                dispatch(tagsFetched(res.data))
+                dispatch(tagsFetched(res.data.data))
                 setTagIds([
                     ...previousIds,
-                    ...res.data.map((tag: Tag) => tag.id.toString()),
+                    ...res.data.data.map((tag: Tag) => tag.id.toString()),
                 ])
-                setPagination({page: res.meta.page, nbPages: res.meta.nb_pages})
+                setNextCursor(res.data.meta.next_cursor)
             } catch (error) {
                 void dispatch(
                     notify({
@@ -91,7 +87,7 @@ export default function TagsStatsFilter({value = []}: Props) {
                 )
             }
         },
-        [pagination, dispatch, cancellableFetchTags, tagSearch, tagIds]
+        [dispatch, cancellableFetchTags, nextCursor, tagSearch, tagIds]
     )
 
     const handleTagsSearch = useCallback(
@@ -111,6 +107,10 @@ export default function TagsStatsFilter({value = []}: Props) {
         [debouncedTagSearch]
     )
 
+    const onLoad = useCallback(async () => {
+        await handleFetchTags(tagSearch, true)
+    }, [handleFetchTags, tagSearch])
+
     return (
         <SelectFilter
             plural="tags"
@@ -123,8 +123,8 @@ export default function TagsStatsFilter({value = []}: Props) {
         >
             <InfiniteScroll
                 className={css.infiniteScroll}
-                onLoad={() => handleFetchTags(tagSearch)}
-                shouldLoadMore={pagination.page < pagination.nbPages}
+                onLoad={onLoad}
+                shouldLoadMore={!!nextCursor && !isFetchingTags}
             >
                 {tagIds.map((tagId) => {
                     const tag = tags[tagId.toString()]

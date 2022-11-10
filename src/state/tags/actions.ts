@@ -1,12 +1,13 @@
-import axios, {AxiosError, CancelToken} from 'axios'
+import axios, {AxiosError, AxiosRequestConfig} from 'axios'
 import {List} from 'immutable'
 
 import client from 'models/api/resources'
-import {ApiListResponsePagination} from 'models/api/types'
-import {TagSortableProperties} from 'models/tag/types'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import type {RootState, StoreDispatch} from 'state/types'
+import type {StoreDispatch} from 'state/types'
+import {fetchTags as fetchTagsResources} from 'models/tag/resources'
+import {FetchTagsOptions} from 'models/tag/types'
+import GorgiasApi from 'services/gorgiasApi'
 import {createErrorNotification} from 'state/utils'
 
 import * as constants from './constants'
@@ -20,50 +21,42 @@ export function addTags(tags: Array<string> | string) {
 }
 
 export function fetchTags(
-    page?: Maybe<number>,
-    sort = TagSortableProperties.Usage,
-    reverse = true,
-    search = '',
-    cancelToken?: CancelToken
+    options: FetchTagsOptions = {},
+    config: AxiosRequestConfig = {}
 ) {
-    return (dispatch: StoreDispatch, getState: () => RootState) => {
+    return async (dispatch: StoreDispatch) => {
         dispatch({
             type: constants.FETCH_TAG_LIST_START,
         })
 
-        const {tags} = getState()
+        const client = new GorgiasApi()
+        const generator = client.cursorPaginate(
+            fetchTagsResources,
+            options,
+            config
+        )
 
-        return client
-            .get<ApiListResponsePagination<Tag[]>>('/api/tags/', {
-                cancelToken,
-                params: {
-                    page: tags
-                        ? tags.getIn(['_internal', 'pagination', 'page'], 1)
-                        : page,
-                    order_by: sort,
-                    order_dir: reverse ? 'desc' : 'asc',
-                    search,
-                },
+        let result: Tag[] = []
+
+        try {
+            for await (const page of generator) {
+                result = result.concat(page)
+            }
+            dispatch({
+                type: constants.FETCH_TAG_LIST_SUCCESS,
+                resp: {data: result},
             })
-            .then((json) => json?.data)
-            .then(
-                (resp) => {
-                    return dispatch({
-                        type: constants.FETCH_TAG_LIST_SUCCESS,
-                        resp,
-                    })
-                },
-                (error: AxiosError) => {
-                    if (axios.isCancel(error)) {
-                        return Promise.reject(error)
-                    }
-                    return dispatch({
-                        type: constants.FETCH_TAG_LIST_ERROR,
-                        error,
-                        reason: 'Failed to fetch tags',
-                    })
-                }
-            )
+        } catch (error) {
+            if (!axios.isCancel(error)) {
+                dispatch({
+                    type: constants.FETCH_TAG_LIST_ERROR,
+                    error,
+                    reason: 'Failed to fetch tags',
+                })
+            }
+
+            return Promise.reject(error)
+        }
     }
 }
 

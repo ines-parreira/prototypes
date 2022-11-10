@@ -80,6 +80,7 @@ Object {
       "maxContentLength": -1,
       "method": "get",
       "params": Object {
+        "limit": 30,
         "order_by": "created_datetime",
       },
       "timeout": 0,
@@ -106,51 +107,85 @@ Object {
 
 exports[`tag resources fetchTags should resolve with a Tag list on success 1`] = `
 Object {
-  "data": Array [
-    Object {
-      "created_datetime": "2021-01-21T13:10:46.444928+00:00",
-      "decoration": null,
-      "deleted_datetime": null,
-      "description": null,
-      "id": 2,
-      "name": "billing",
-      "uri": "/api/tags/2/",
-      "usage": 10,
+  "config": Object {
+    "data": undefined,
+    "headers": Object {
+      "Accept": "application/json, text/plain, */*",
+      "X-CSRF-Token": "abcd",
+      "X-Gorgias-User-Client": "web",
     },
-    Object {
-      "created_datetime": "2021-01-21T13:10:46.435364+00:00",
-      "decoration": null,
-      "deleted_datetime": null,
-      "description": null,
-      "id": 1,
-      "name": "refund",
-      "uri": "/api/tags/1/",
-      "usage": 20,
+    "maxBodyLength": -1,
+    "maxContentLength": -1,
+    "method": "get",
+    "params": Object {
+      "limit": 30,
+      "search": "hello",
     },
-    Object {
-      "created_datetime": "2021-01-21T13:10:46.446673+00:00",
-      "decoration": null,
-      "deleted_datetime": null,
-      "description": null,
-      "id": 4,
-      "name": "refund accepted",
-      "uri": "/api/tags/4/",
-      "usage": 0,
-    },
-    Object {
-      "created_datetime": "2021-01-21T13:10:46.445859+00:00",
-      "decoration": null,
-      "deleted_datetime": null,
-      "description": null,
-      "id": 3,
-      "name": "rejected",
-      "uri": "/api/tags/3/",
-      "usage": 0,
-    },
-  ],
-  "meta": Object {
-    "current_page": 2,
+    "timeout": 0,
+    "transformRequest": Array [
+      [Function],
+    ],
+    "transformResponse": Array [
+      [Function],
+    ],
+    "url": "/api/tags/",
+    "validateStatus": [Function],
+    "xsrfCookieName": "XSRF-TOKEN",
+    "xsrfHeaderName": "X-XSRF-TOKEN",
   },
+  "data": Object {
+    "data": Array [
+      Object {
+        "created_datetime": "2021-01-21T13:10:46.444928+00:00",
+        "decoration": null,
+        "deleted_datetime": null,
+        "description": null,
+        "id": 2,
+        "name": "billing",
+        "uri": "/api/tags/2/",
+        "usage": 10,
+      },
+      Object {
+        "created_datetime": "2021-01-21T13:10:46.435364+00:00",
+        "decoration": null,
+        "deleted_datetime": null,
+        "description": null,
+        "id": 1,
+        "name": "refund",
+        "uri": "/api/tags/1/",
+        "usage": 20,
+      },
+      Object {
+        "created_datetime": "2021-01-21T13:10:46.446673+00:00",
+        "decoration": null,
+        "deleted_datetime": null,
+        "description": null,
+        "id": 4,
+        "name": "refund accepted",
+        "uri": "/api/tags/4/",
+        "usage": 0,
+      },
+      Object {
+        "created_datetime": "2021-01-21T13:10:46.445859+00:00",
+        "decoration": null,
+        "deleted_datetime": null,
+        "description": null,
+        "id": 3,
+        "name": "rejected",
+        "uri": "/api/tags/3/",
+        "usage": 0,
+      },
+    ],
+    "meta": Object {
+      "next_cursor": null,
+      "prev_cursor": null,
+    },
+  },
+  "headers": undefined,
+  "request": Object {
+    "responseUrl": "/api/tags/",
+  },
+  "status": 200,
 }
 `;
 

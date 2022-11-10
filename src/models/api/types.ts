@@ -53,7 +53,9 @@ export enum MetaSortOptions {
 
 export type ApiCursorPaginationParams = {
     limit?: number
-    cursor?: string
+    cursor?: string | null
+    orderBy?: string
+    orderDir?: OrderDirection
 }
 
 export type ApiPaginationParams = ApiCursorPaginationParams & {

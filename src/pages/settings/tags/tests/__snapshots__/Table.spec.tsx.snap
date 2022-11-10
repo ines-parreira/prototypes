@@ -131,7 +131,7 @@ exports[`ManageTags Table component should display the same number of rows as th
             class="badge-tag badge badge-secondary"
             style="color: rgb(128, 136, 214);"
           >
-            refund
+            billing
           </span>
         </div>
       </td>
@@ -145,7 +145,9 @@ exports[`ManageTags Table component should display the same number of rows as th
       >
         <div
           class="cell-wrapper justify-content-center"
-        />
+        >
+          10
+        </div>
       </td>
       <td
         class="smallest"
@@ -165,7 +167,7 @@ exports[`ManageTags Table component should display the same number of rows as th
           </button>
           <button
             class="wrapper css.actionButton wrapper ghost ghost destructive medium"
-            id="remove-button-1"
+            id="remove-button-2"
             type="button"
           >
             <i
@@ -207,7 +209,7 @@ exports[`ManageTags Table component should display the same number of rows as th
             class="badge-tag badge badge-secondary"
             style="color: rgb(128, 136, 214);"
           >
-            billing
+            refund
           </span>
         </div>
       </td>
@@ -221,7 +223,9 @@ exports[`ManageTags Table component should display the same number of rows as th
       >
         <div
           class="cell-wrapper justify-content-center"
-        />
+        >
+          20
+        </div>
       </td>
       <td
         class="smallest"
@@ -241,7 +245,7 @@ exports[`ManageTags Table component should display the same number of rows as th
           </button>
           <button
             class="wrapper css.actionButton wrapper ghost ghost destructive medium"
-            id="remove-button-2"
+            id="remove-button-1"
             type="button"
           >
             <i
@@ -283,7 +287,7 @@ exports[`ManageTags Table component should display the same number of rows as th
             class="badge-tag badge badge-secondary"
             style="color: rgb(128, 136, 214);"
           >
-            shipping
+            refund accepted
           </span>
         </div>
       </td>
@@ -297,7 +301,87 @@ exports[`ManageTags Table component should display the same number of rows as th
       >
         <div
           class="cell-wrapper justify-content-center"
+        >
+          0
+        </div>
+      </td>
+      <td
+        class="smallest"
+      >
+        <div
+          class="cell-wrapper actions"
+        >
+          <button
+            class="wrapper actionButton mr-1 wrapper ghost ghost secondary medium"
+            type="button"
+          >
+            <i
+              class="material-icons icon"
+            >
+              edit
+            </i>
+          </button>
+          <button
+            class="wrapper css.actionButton wrapper ghost ghost destructive medium"
+            id="remove-button-4"
+            type="button"
+          >
+            <i
+              class="material-icons icon"
+            >
+              delete
+            </i>
+          </button>
+        </div>
+      </td>
+    </tr>
+    <tr
+      class="row"
+    >
+      <td
+        class="cell-wrapper cell-short clickable"
+      >
+        <div>
+          <label
+            class="label label"
+            for="checkbox-5"
+          >
+            <input
+              class="input"
+              id="checkbox-5"
+              name="checkbox-5"
+              type="checkbox"
+            />
+          </label>
+        </div>
+      </td>
+      <td
+        class="smallest"
+      >
+        <div
+          class="cell-wrapper"
+        >
+          <span
+            class="badge-tag badge badge-secondary"
+            style="color: rgb(128, 136, 214);"
+          >
+            rejected
+          </span>
+        </div>
+      </td>
+      <td>
+        <div
+          class="cell-wrapper"
         />
+      </td>
+      <td
+        class="smallest"
+      >
+        <div
+          class="cell-wrapper justify-content-center"
+        >
+          0
+        </div>
       </td>
       <td
         class="smallest"

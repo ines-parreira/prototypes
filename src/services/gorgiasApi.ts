@@ -10,10 +10,11 @@ import {IntegrationDataItemType} from 'models/integration/types'
 import {
     ApiListResponseCursorPagination,
     ApiListResponsePagination,
+    ApiPaginationParams,
 } from 'models/api/types'
 import {EditOrderAction} from 'constants/integrations/types/shopify'
 import {createClient} from 'models/api/resources'
-import {Event, EventObjectType} from 'models/event/types'
+import {Event, EventObjectType, FetchEventsOptions} from 'models/event/types'
 import type {
     PollingConfig,
     Refund,
@@ -107,26 +108,31 @@ export default class GorgiasApi {
     /**
      * Yield each cursored page of requested items until last page is reached
      */
-    async *cursorPaginate<
-        T extends (params?: any) => any,
-        U extends Parameters<T>[0],
-        V = ReturnType<T>
-    >(
+    async *cursorPaginate<V, T extends ApiPaginationParams>(
         asyncMethod: (
-            params: U
+            params: T,
+            config?: AxiosRequestConfig
         ) => Promise<AxiosResponse<ApiListResponseCursorPagination<Array<V>>>>,
-        params: U = {} as U
-    ): AsyncGenerator<Array<V>, void, void> {
+        params: T = {} as T,
+        config?: AxiosRequestConfig
+    ): AsyncGenerator<V[], void, void> {
         let nextCursor: string | null
+        const options = {...params}
 
         do {
-            const response = await asyncMethod({limit: 100, ...params})
+            const response = await asyncMethod(
+                {
+                    limit: 100,
+                    ...options,
+                },
+                config
+            )
             const {
                 data: {data, meta},
             } = response
             yield data
             nextCursor = meta.next_cursor
-            params.cursor = nextCursor
+            options.cursor = nextCursor || undefined
         } while (nextCursor)
     }
 
@@ -174,11 +180,14 @@ export default class GorgiasApi {
     async *getTicketEvents(
         ticketId: number
     ): AsyncGenerator<List<any>, void, Array<Event>> {
-        const pages = this.cursorPaginate(fetchEvents, {
-            objectId: ticketId,
-            objectType: EventObjectType.Ticket,
-            limit: 30,
-        })
+        const pages = this.cursorPaginate<Event, FetchEventsOptions>(
+            fetchEvents,
+            {
+                objectId: ticketId,
+                objectType: EventObjectType.Ticket,
+                limit: 30,
+            }
+        )
 
         for await (const events of pages) {
             yield fromJS(events)

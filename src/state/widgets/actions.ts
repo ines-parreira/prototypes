@@ -37,7 +37,10 @@ export function fetchWidgets(options: FetchWidgetsOptions = {}) {
         })
 
         const client = new GorgiasApi()
-        const generator = client.cursorPaginate(fetchWidgetsRequest, params)
+        const generator = client.cursorPaginate<Widget, FetchWidgetsOptions>(
+            fetchWidgetsRequest,
+            params
+        )
 
         let result: Widget[] = []
         try {

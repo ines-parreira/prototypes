@@ -16,12 +16,13 @@ import TextInput from 'pages/common/forms/input/TextInput'
 import {cancel, edit, remove, save, select} from 'state/tags/actions'
 import {REMOVE_TAG_ERROR} from 'state/tags/constants'
 import {ServerErrorAction} from 'store/middlewares/serverErrorHandler'
+import {Tag} from 'state/tags/types'
 import {toJS} from 'utils'
 
 import css from './Row.style.less'
 
 type Props = {
-    row: Map<any, any>
+    row: Tag
     meta: Map<any, any>
     refresh: () => void
 } & ConnectedProps<typeof connector>
@@ -29,27 +30,25 @@ type Props = {
 type State = {
     name?: string
     description?: string
-    decoration: Map<any, any>
+    decoration: TagDecoration
 }
 
 export class Row extends Component<Props, State> {
     state: State = {
         name: '',
         description: '',
-        decoration: fromJS({
+        decoration: {
             color: '',
-        }),
+        },
     }
 
-    _setStateFromRow = (row: Map<any, any>) => {
+    _setStateFromRow = (row: Tag) => {
         this.setState({
-            name: row.get('name'),
-            description: row.get('description') || '',
-            decoration:
-                row.get('decoration') ||
-                fromJS({
-                    color: '',
-                }),
+            name: row.name,
+            description: row.description || '',
+            decoration: row.decoration || {
+                color: '',
+            },
         })
     }
 
@@ -65,7 +64,7 @@ export class Row extends Component<Props, State> {
     }
 
     _onEdit = () => {
-        this.props.edit(this.props.row.toJS())
+        this.props.edit(this.props.row)
     }
 
     _onSave = (event: FormEvent) => {
@@ -82,22 +81,24 @@ export class Row extends Component<Props, State> {
             this.setState({decoration})
         }
 
-        const updatedRow = row
-            .set('name', name)
-            .set('description', description)
-            .set('decoration', decoration)
+        const updatedRow = {
+            ...row,
+            name: name!,
+            description,
+            decoration,
+        }
 
-        void save(updatedRow.toJS()).then(() => {
+        void save(updatedRow).then(() => {
             refresh()
         })
     }
 
     _onCancel = () => {
-        this.props.cancel(this.props.row.toJS())
+        this.props.cancel(this.props.row)
     }
 
     _onRemove = () => {
-        return this.props.remove(this.props.row.get('id')).then((error) => {
+        return this.props.remove(this.props.row.id.toString()).then((error) => {
             if ((error as ServerErrorAction)?.type !== REMOVE_TAG_ERROR) {
                 this.props.refresh()
             }
@@ -105,7 +106,7 @@ export class Row extends Component<Props, State> {
     }
 
     _onSelect = () => {
-        this.props.select(this.props.row.toJS())
+        this.props.select(this.props.row)
     }
 
     _changeName = (value: string) => {
@@ -117,7 +118,7 @@ export class Row extends Component<Props, State> {
     }
 
     _changeColor = (value: string) => {
-        this.setState({decoration: this.state.decoration.set('color', value)})
+        this.setState({decoration: {color: value}})
     }
 
     render() {
@@ -157,7 +158,7 @@ export class Row extends Component<Props, State> {
                                 </div>
 
                                 <ColorPicker
-                                    value={this.state.decoration.get('color')}
+                                    value={this.state.decoration.color}
                                     defaultValue={DEFAULT_TAG_COLOR}
                                     onChange={this._changeColor}
                                 />
@@ -190,19 +191,19 @@ export class Row extends Component<Props, State> {
 
                 <td className="smallest">
                     <div className="cell-wrapper">
-                        <TagLabel decoration={row.get('decoration')}>
-                            {row.get('name')}
+                        <TagLabel decoration={fromJS(row.decoration)}>
+                            {row.name}
                         </TagLabel>
                     </div>
                 </td>
 
                 <td>
-                    <div className="cell-wrapper">{row.get('description')}</div>
+                    <div className="cell-wrapper">{row.description}</div>
                 </td>
 
                 <td className="smallest">
                     <div className="cell-wrapper justify-content-center">
-                        {row.get('usage')}
+                        {row.usage}
                     </div>
                 </td>
 
@@ -242,7 +243,7 @@ export class Row extends Component<Props, State> {
                                     </ul>
                                 </>
                             }
-                            id={`remove-button-${row.get('id') as number}`}
+                            id={`remove-button-${row.id}`}
                             onConfirm={this._onRemove}
                             placement="left"
                         >

@@ -108,7 +108,7 @@ function RuleRecipeCard({
         // search returns a case agnostic result, so we have to check
         // for string equality
         if (
-            !existingTags.data.some(
+            !existingTags.data.data.some(
                 (existingTag) => existingTag.name === tag.name
             )
         ) {

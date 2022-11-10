@@ -1,8 +1,8 @@
 import {List} from 'immutable'
 import _pick from 'lodash/pick'
 
+import {ApiCursorPaginationParams, OrderParams} from 'models/api/types'
 import {RuleEvent} from 'state/rules/types'
-import {OrderParams} from 'models/api/types'
 
 export type TicketTagsAddedEventData = {
     tags_added: number[]
@@ -160,15 +160,14 @@ export enum EventsDatetimeOperator {
     LT = 'lt',
 }
 
-export type FetchEventsOptions = OrderParams<EventSortableProperties> & {
-    objectId?: number
-    createdDatetime?: Partial<Record<EventsDatetimeOperator, string>>
-    objectType?: EventObjectType
-    types?: Array<EventType>
-    userIds?: number[]
-    cursor?: string
-    limit?: number
-}
+export type FetchEventsOptions = ApiCursorPaginationParams &
+    OrderParams<EventSortableProperties> & {
+        objectId?: number
+        createdDatetime?: Partial<Record<EventsDatetimeOperator, string>>
+        objectType?: EventObjectType
+        types?: Array<EventType>
+        userIds?: number[]
+    }
 
 export enum EventSortableProperties {
     CreatedDatetime = 'createdDatetime',

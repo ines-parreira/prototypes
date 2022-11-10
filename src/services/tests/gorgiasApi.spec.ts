@@ -171,7 +171,7 @@ describe('services', () => {
                 const gorgiasApi = new GorgiasApi()
                 const pages = []
 
-                const asyncFunction = (params: {cursor?: string}) =>
+                const asyncFunction = (params?: {cursor?: string | null}) =>
                     gorgiasApi._api.get('/foo/bar', {params})
 
                 for await (const events of gorgiasApi.cursorPaginate(

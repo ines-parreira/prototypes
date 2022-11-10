@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {List, Map} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import classnames from 'classnames'
 
-import {TagSortableProperties} from 'models/tag/types'
+import {Tag, TagSortableProperties} from 'models/tag/types'
 import CheckBox from 'pages/common/forms/CheckBox'
 import {
     getMeta,
@@ -23,15 +23,18 @@ function isSortable(value: string): value is TagSortableProperties {
 }
 
 type Props = {
-    columns: Array<{title: string; field: string}>
+    columns: Array<{
+        title: string
+        field: string
+    }>
     onBulkDelete: () => void
     onMerge: () => void
     onSelectAll: () => void
     onSort: (sort: TagSortableProperties, direction: boolean) => void
-    refresh: ({refreshPreviousPage}: {refreshPreviousPage?: boolean}) => void
+    refresh: (args?: {refreshPreviousPage?: boolean}) => void
     reverse: boolean
     sort: string
-    tags: List<any>
+    tags: Tag[]
 } & ConnectedProps<typeof connector>
 
 export class TableContainer extends Component<Props> {
@@ -47,7 +50,7 @@ export class TableContainer extends Component<Props> {
             },
             {
                 title: 'Tickets',
-                field: 'usage',
+                field: TagSortableProperties.Usage,
             },
         ],
     }
@@ -72,20 +75,17 @@ export class TableContainer extends Component<Props> {
         )
     }
 
-    _onSort = (sort: string) => {
-        return () => {
-            if (!isSortable(sort)) {
-                return
-            }
-
-            let reverse = false
-            // already sorted by this prop
-            if (this.props.sort === sort) {
-                reverse = !this.props.reverse
-            }
-
-            this.props.onSort(sort, reverse)
+    _onSort = (sort: string) => () => {
+        if (!isSortable(sort)) {
+            return
         }
+        let reverse = false
+        // already sorted by this prop
+        if (this.props.sort === sort) {
+            reverse = !this.props.reverse
+        }
+
+        this.props.onSort(sort, reverse)
     }
 
     render() {
@@ -127,7 +127,7 @@ export class TableContainer extends Component<Props> {
                                     {i === 0 && (
                                         <TableActions
                                             selectedNum={selectedNum}
-                                            tags={tags}
+                                            tags={fromJS(tags)}
                                             meta={meta}
                                             onMerge={onMerge}
                                             onBulkDelete={onBulkDelete}
@@ -149,20 +149,20 @@ export class TableContainer extends Component<Props> {
                 </thead>
 
                 <tbody>
-                    {tags.map((tag: Map<any, any>, i) => (
+                    {tags.map((tag) => (
                         <Row
-                            key={i}
+                            key={tag.id}
                             row={tag}
                             refresh={() => {
-                                if (tags.size === 1) {
+                                if (Object.keys(tags).length === 1) {
                                     this.props.refresh({
                                         refreshPreviousPage: true,
                                     })
                                 } else {
-                                    this.props.refresh({})
+                                    this.props.refresh()
                                 }
                             }}
-                            meta={getSelectedTagMeta(tag.get('id'))}
+                            meta={getSelectedTagMeta(tag.id)}
                         />
                     ))}
                 </tbody>

@@ -2,6 +2,8 @@ import React, {ComponentProps} from 'react'
 import {render, fireEvent} from '@testing-library/react'
 import {Map, fromJS} from 'immutable'
 
+import {tags} from 'fixtures/tag'
+
 import {Row} from '../Row'
 import {TableContainer} from '../Table'
 
@@ -12,20 +14,7 @@ jest.mock('../Row', () => {
 
 describe('ManageTags Table component', () => {
     const minProps: Omit<ComponentProps<typeof TableContainer>, 'columns'> = {
-        tags: fromJS([
-            {
-                id: 1,
-                name: 'refund',
-            },
-            {
-                id: 2,
-                name: 'billing',
-            },
-            {
-                id: 3,
-                name: 'shipping',
-            },
-        ]),
+        tags,
         meta: fromJS({
             1: {
                 selected: true,

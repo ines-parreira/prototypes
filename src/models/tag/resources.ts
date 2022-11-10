@@ -1,26 +1,32 @@
-import {CancelToken} from 'axios'
+import {AxiosRequestConfig} from 'axios'
 import _snakeCase from 'lodash/snakeCase'
 
 import client from 'models/api/resources'
+import {ApiListResponseCursorPagination} from 'models/api/types'
 import {deepMapKeysToSnakeCase} from 'models/api/utils'
-import {ApiListResponsePagination} from 'models/api/types'
 
 import {Tag, TagDraft, FetchTagsOptions} from './types'
 
 export const fetchTags = async (
     options: FetchTagsOptions = {},
-    cancelToken?: CancelToken
-): Promise<ApiListResponsePagination<Tag[]>> => {
-    const params: Record<string, unknown> = deepMapKeysToSnakeCase(options)
+    config: AxiosRequestConfig = {}
+) => {
+    const params: Record<string, unknown> = deepMapKeysToSnakeCase({
+        ...options,
+        ...(!options.limit ? {limit: 30} : {}),
+    })
 
     if (params.order_by) {
         params.order_by = _snakeCase(options.orderBy)
     }
-    const res = await client.get<ApiListResponsePagination<Tag[]>>(
+
+    return await client.get<ApiListResponseCursorPagination<Tag[]>>(
         '/api/tags/',
-        {params, cancelToken}
+        {
+            params,
+            ...config,
+        }
     )
-    return res.data
 }
 
 export const fetchTag = async (id: number): Promise<Tag> => {

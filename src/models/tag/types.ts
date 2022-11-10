@@ -1,4 +1,8 @@
-import {MetaSortOptions, OrderParams} from '../api/types'
+import {
+    ApiCursorPaginationParams,
+    MetaSortOptions,
+    OrderParams,
+} from 'models/api/types'
 
 export type TagDecoration = {
     color?: string
@@ -26,9 +30,8 @@ export enum TagSortableProperties {
     Usage = 'usage',
 }
 
-export type FetchTagsOptions = OrderParams<
-    TagSortableProperties | MetaSortOptions
-> & {
-    page?: number
-    search?: string
-}
+export type FetchTagsOptions = ApiCursorPaginationParams &
+    OrderParams<TagSortableProperties | MetaSortOptions> & {
+        page?: number
+        search?: string
+    }

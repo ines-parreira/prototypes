@@ -46,16 +46,19 @@ describe('ManageTags component', () => {
         jest.clearAllMocks()
 
         fetchTagsMock.mockResolvedValue({
-            uri: '/api/tags/',
-            data: tagsFixtures,
-            meta: {
-                current_page: '1',
-                item_count: 10,
-                page: 1,
-                per_page: 30,
-                nb_pages: 1,
+            config: {},
+            data: {
+                uri: '/api/tags/',
+                data: tagsFixtures,
+                meta: {
+                    next_cursor: null,
+                    prev_cursor: null,
+                },
+                object: 'list',
             },
-            object: 'list',
+            headers: {},
+            status: 200,
+            statusText: '',
         })
     })
 

@@ -15,6 +15,11 @@ import {TagSortableProperties} from '../types'
 
 const mockedServer = new MockAdapter(client)
 
+const meta = {
+    next_cursor: null,
+    prev_cursor: null,
+}
+
 describe('tag resources', () => {
     beforeEach(() => {
         mockedServer.reset()
@@ -24,9 +29,7 @@ describe('tag resources', () => {
         it('should resolve with a Tag list on success', async () => {
             mockedServer.onGet('/api/tags/').reply(200, {
                 data: tagsFixtures,
-                meta: {
-                    current_page: 2,
-                },
+                meta,
             })
             const res = await fetchTags({search: 'hello'})
             expect(res).toMatchSnapshot()
@@ -42,9 +45,7 @@ describe('tag resources', () => {
         it('should format orderBy value to snake_case', async () => {
             mockedServer.onGet('/api/tags/').reply(200, {
                 data: tagsFixtures,
-                meta: {
-                    current_page: 2,
-                },
+                meta,
             })
             await fetchTags({
                 orderBy: TagSortableProperties.CreatedDatetime,
@@ -55,9 +56,7 @@ describe('tag resources', () => {
         it('should reject when cancelled', async () => {
             mockedServer.onGet('/api/tags/').reply(200, {
                 data: tagsFixtures,
-                meta: {
-                    current_page: 2,
-                },
+                meta,
             })
             const source = axios.CancelToken.source()
             source.cancel()
@@ -65,7 +64,7 @@ describe('tag resources', () => {
             await expect(
                 fetchTags(
                     {orderBy: TagSortableProperties.CreatedDatetime},
-                    source.token
+                    {cancelToken: source.token}
                 )
             ).rejects.toEqual(new axios.Cancel())
         })

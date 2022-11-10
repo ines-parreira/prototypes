@@ -2,33 +2,31 @@ import React, {FormEvent, useEffect, useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 import {Container, Form, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
-import {CancelToken} from 'axios'
+import axios, {AxiosError, CancelToken} from 'axios'
 import {useAsyncFn, useDebounce, useEffectOnce} from 'react-use'
-import {fromJS, List, Map} from 'immutable'
+import {Map} from 'immutable'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useCancellableRequest from 'hooks/useCancellableRequest'
-import {OrderDirection, PaginationMeta} from 'models/api/types'
+import {CursorMeta, OrderDirection} from 'models/api/types'
 import {fetchTags} from 'models/tag/resources'
-import {TagSortableProperties} from 'models/tag/types'
+import {FetchTagsOptions, Tag, TagSortableProperties} from 'models/tag/types'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import Loader from 'pages/common/components/Loader/Loader'
+import Navigation from 'pages/common/components/Navigation/Navigation'
 import PageHeader from 'pages/common/components/PageHeader'
-import Pagination from 'pages/common/components/Pagination'
 import Video from 'pages/common/components/Video/Video'
 import Search from 'pages/common/components/Search'
 import TextInput from 'pages/common/forms/input/TextInput'
+import {EventNavDirection} from 'pages/settings/audit/constants'
 import settingsCss from 'pages/settings/settings.less'
-import {
-    bulkDelete,
-    create,
-    merge,
-    resetMeta,
-    selectAll,
-} from 'state/tags/actions'
-import {FETCH_TAG_LIST_ERROR, REMOVE_TAG_ERROR} from 'state/tags/constants'
+import {REMOVE_TAG_ERROR} from 'state/tags/constants'
+
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {bulkDelete, create, merge, selectAll} from 'state/tags/actions'
 import {getMeta, getIsCreating, getSelectAll} from 'state/tags/selectors'
 import {ServerErrorAction} from 'store/middlewares/serverErrorHandler'
 
@@ -40,15 +38,13 @@ const ManageTags = () => {
     const isCreating = useAppSelector(getIsCreating)
     const areAllTagsSelected = useAppSelector(getSelectAll)
 
+    const [meta, setMeta] = useState<CursorMeta | null>(null)
     const [sort, setSort] = useState(TagSortableProperties.Usage)
     const [reverse, setReverse] = useState(true)
     const [search, setSearch] = useState('')
     const [newTag, setNewTag] = useState('')
     const [showCreationPopup, setShowCreationPopup] = useState(false)
-    const [tags, setTags] = useState<List<any>>(fromJS([]))
-    const [pagination, setPagination] = useState<PaginationMeta>()
-    const currentPage = useMemo(() => pagination?.page || 1, [pagination])
-    const numberPages = useMemo(() => pagination?.nb_pages || 1, [pagination])
+    const [tags, setTags] = useState<Tag[]>([])
 
     const toggledTags = useAppSelector(getMeta)
     const selectedTags = useMemo(
@@ -64,38 +60,59 @@ const ManageTags = () => {
     const createFetchTags =
         (cancelToken: CancelToken) =>
         async ({
-            page = currentPage,
-            sortArg = sort,
-            reverseArg = reverse,
-            searchArg = search,
-            refreshPreviousPage = false,
+            orderBy = sort,
+            orderDir = reverse ? OrderDirection.Desc : OrderDirection.Asc,
+            search,
+            direction,
+            refreshPreviousPage,
         }: {
-            page?: number
-            sortArg?: TagSortableProperties
-            reverseArg?: boolean
-            searchArg?: string
+            orderBy?: TagSortableProperties
+            orderDir?: FetchTagsOptions['orderDir']
+            search?: FetchTagsOptions['search']
+            direction?: EventNavDirection
             refreshPreviousPage?: boolean
         } = {}) => {
-            try {
-                const params = {
-                    page: refreshPreviousPage && page > 1 ? page - 1 : page,
-                    orderBy: sortArg,
-                    orderDir: reverseArg
-                        ? OrderDirection.Desc
-                        : OrderDirection.Asc,
-                    search: searchArg,
-                }
+            const params: FetchTagsOptions = {
+                cursor: null,
+                orderBy,
+                orderDir,
+                search,
+            }
 
-                const {data, meta} = await fetchTags(params, cancelToken)
-                setTags(fromJS(data))
-                setPagination(meta)
-                dispatch(resetMeta())
+            if (
+                (direction === EventNavDirection.PrevCursor ||
+                    refreshPreviousPage) &&
+                meta?.prev_cursor
+            ) {
+                params.cursor = meta?.prev_cursor
+            } else if (
+                direction === EventNavDirection.NextCursor &&
+                meta?.next_cursor
+            ) {
+                params.cursor = meta?.next_cursor
+            }
+
+            try {
+                const res = await fetchTags(params, {cancelToken})
+                setMeta(res.data.meta)
+                setTags(res.data.data)
+                setSort(orderBy || TagSortableProperties.Usage)
+                setReverse(orderDir === OrderDirection.Asc ? false : true)
             } catch (error) {
-                dispatch({
-                    type: FETCH_TAG_LIST_ERROR,
-                    error,
-                    reason: 'Failed to fetch tags',
-                })
+                if (axios.isCancel(error)) {
+                    return
+                }
+                const responseError = error as AxiosError<{
+                    error?: {msg: string}
+                }>
+                await dispatch(
+                    notify({
+                        message:
+                            responseError.response?.data.error?.msg ||
+                            'Failed to fetch tags.',
+                        status: NotificationStatus.Error,
+                    })
+                )
             }
         }
 
@@ -104,14 +121,15 @@ const ManageTags = () => {
 
     const [{loading: isLoading}, fetchPage] = useAsyncFn(
         cancellableFetchTags,
-        [currentPage, reverse, search, sort],
+        [reverse, search, sort, meta],
         {loading: true}
     )
 
     const onSort = (sort: TagSortableProperties, reverse: boolean) => {
-        setSort(sort)
-        setReverse(reverse)
-        void fetchPage({sortArg: sort, reverseArg: reverse})
+        void fetchPage({
+            orderBy: sort,
+            orderDir: reverse ? OrderDirection.Desc : OrderDirection.Asc,
+        })
     }
 
     const onCreate = async (event: FormEvent) => {
@@ -131,12 +149,11 @@ const ManageTags = () => {
         const res = await dispatch(bulkDelete(selectedTags.toJS()))
 
         if (
-            numberPages > 1 &&
-            currentPage === numberPages &&
-            selectedTags.size === tags.size &&
+            !!meta?.prev_cursor &&
+            !meta?.next_cursor &&
             (res as ServerErrorAction)?.type !== REMOVE_TAG_ERROR
         ) {
-            await fetchPage({page: currentPage - 1})
+            await fetchPage({refreshPreviousPage: true})
         } else {
             await fetchPage()
         }
@@ -149,18 +166,18 @@ const ManageTags = () => {
         areAllTagsSelected && handleSelectAll()
     }
 
-    const handleSelectAll = () => dispatch(selectAll(tags.toJS()))
+    const handleSelectAll = () => dispatch(selectAll(tags))
 
     const toggleCreationPopup = () => setShowCreationPopup(!showCreationPopup)
 
-    const handlePageChange = (page: number) => {
-        void fetchPage({page})
+    const handlePageChange = (direction: EventNavDirection) => {
+        void fetchPage({direction})
         areAllTagsSelected && handleSelectAll()
     }
 
     const [, cancel] = useDebounce(
         () => {
-            void fetchPage({searchArg: search, page: 1})
+            void fetchPage({search})
         },
         1000,
         [search]
@@ -263,14 +280,17 @@ const ManageTags = () => {
                         onBulkDelete={handleBulkDelete}
                         tags={tags}
                     />
-                    <Pagination
-                        className={classnames(
-                            'pagination-transparent',
-                            css.pagination
-                        )}
-                        pageCount={numberPages}
-                        currentPage={currentPage}
-                        onChange={handlePageChange}
+
+                    <Navigation
+                        className={css.navigation}
+                        hasNextItems={!!meta?.next_cursor}
+                        hasPrevItems={!!meta?.prev_cursor}
+                        fetchNextItems={() =>
+                            handlePageChange(EventNavDirection.NextCursor)
+                        }
+                        fetchPrevItems={() =>
+                            handlePageChange(EventNavDirection.PrevCursor)
+                        }
                     />
                 </>
             )}

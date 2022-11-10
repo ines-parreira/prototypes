@@ -1,9 +1,15 @@
 import client from 'models/api/resources'
-import {ApiListResponseCursorPagination} from 'models/api/types'
+import {
+    ApiListResponseCursorPagination,
+    ApiPaginationParams,
+} from 'models/api/types'
 
 import {FetchWidgetsOptions, Widget} from 'state/widgets/types'
 
-export type APIFetchWidgetsOptions = {
+export type APIFetchWidgetsOptions = Pick<
+    ApiPaginationParams,
+    'cursor' | 'limit'
+> & {
     order_by?: FetchWidgetsOptions['orderBy']
 }
 
