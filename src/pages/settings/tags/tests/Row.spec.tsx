@@ -18,7 +18,7 @@ describe('Row', () => {
         selected: false,
     }
     const defaultProps: ComponentProps<typeof Row> = {
-        row: fromJS(defaultTag),
+        row: defaultTag,
         meta: fromJS(defaultMeta),
         refresh: _noop,
     }
