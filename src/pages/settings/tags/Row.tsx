@@ -55,7 +55,9 @@ export class Row extends Component<Props, State> {
 
     componentWillReceiveProps(nextProps: Props) {
         // when adding new items, update the form inputs
-        this._setStateFromRow(nextProps.row)
+        if (nextProps.row !== this.props.row) {
+            this._setStateFromRow(nextProps.row)
+        }
     }
 
     componentDidMount() {
