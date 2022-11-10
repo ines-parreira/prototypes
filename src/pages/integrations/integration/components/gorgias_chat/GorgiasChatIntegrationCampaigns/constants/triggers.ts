@@ -1,7 +1,11 @@
 import {BusinessHoursOperators} from '../types/enums/BusinessHoursOperators.enum'
 import {CampaignTriggerKey} from '../types/enums/CampaignTriggerKey.enum'
+import {CartValueOperators} from '../types/enums/CartValueOperators.enum'
 import {CurrentUrlOperators} from '../types/enums/CurrentUrlOperators.enum'
+import {ProductTagsOperators} from '../types/enums/ProductTagsOperators.enum'
+import {SessionTimeOperators} from '../types/enums/SessionTimeOperators.enum'
 import {TimeSpentOnPageOperators} from '../types/enums/TimeSpentOnPageOperators.enum'
+import {VisitCountOperators} from '../types/enums/VisitCountOperators.enum'
 
 export const TRIGGER_LIST = [
     {
@@ -32,5 +36,51 @@ export const TRIGGER_LIST = [
             operator: TimeSpentOnPageOperators.GreaterThan,
         },
         requirements: {},
+    },
+    {
+        key: CampaignTriggerKey.VisitCount,
+        label: 'Number of visits',
+        defaults: {
+            value: 0,
+            operator: VisitCountOperators.GreaterThan,
+        },
+        requirements: {
+            revenue: true,
+        },
+    },
+    {
+        key: CampaignTriggerKey.SessionTime,
+        label: 'Time spent per visit',
+        defaults: {
+            value: 0,
+            operator: SessionTimeOperators.GreaterThan,
+        },
+        requirements: {
+            revenue: true,
+        },
+    },
+    {
+        key: CampaignTriggerKey.CartValue,
+        label: 'Amount added to cart',
+        defaults: {
+            value: 0,
+            operator: CartValueOperators.GreaterThan,
+        },
+        requirements: {
+            revenue: true,
+            shopify: true,
+        },
+    },
+    {
+        key: CampaignTriggerKey.ProductTags,
+        label: 'Product tags added to cart',
+        defaults: {
+            value: '',
+            operator: ProductTagsOperators.Contains,
+        },
+        requirements: {
+            revenue: true,
+            shopify: true,
+        },
     },
 ]

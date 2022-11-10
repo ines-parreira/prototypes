@@ -8,8 +8,12 @@ import {CampaignTriggerKey} from '../../types/enums/CampaignTriggerKey.enum'
 import {BaseTriggerRow} from './BaseTriggerRow'
 
 import {BusinessHoursTrigger} from './BusinessHoursTrigger'
+import {CartValueTrigger} from './CartValueTrigger'
 import {CurrentUrlTrigger} from './CurrentUrlTrigger'
+import {ProductTagsTrigger} from './ProductTagsTrigger'
+import {SessionTimeTrigger} from './SessionTimeTrigger'
 import {TimeSpentOnPageTrigger} from './TimeSpentOnPageTrigger'
+import {VisitCountTrigger} from './VisitCountTrigger'
 
 type Props = {
     trigger: CampaignTrigger
@@ -38,6 +42,14 @@ export const AdvancedTriggerFactory = ({
                 return <BusinessHoursTrigger {...baseProps} />
             case CampaignTriggerKey.TimeSpentOnPage:
                 return <TimeSpentOnPageTrigger {...baseProps} />
+            case CampaignTriggerKey.CartValue:
+                return <CartValueTrigger {...baseProps} />
+            case CampaignTriggerKey.ProductTags:
+                return <ProductTagsTrigger {...baseProps} />
+            case CampaignTriggerKey.VisitCount:
+                return <VisitCountTrigger {...baseProps} />
+            case CampaignTriggerKey.SessionTime:
+                return <SessionTimeTrigger {...baseProps} />
 
             default:
                 return <div />

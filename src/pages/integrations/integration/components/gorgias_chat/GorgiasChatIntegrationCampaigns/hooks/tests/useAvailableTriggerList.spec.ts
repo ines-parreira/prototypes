@@ -1,6 +1,7 @@
 import {renderHook} from 'react-hooks-testing-library'
 
 import {CampaignTriggerKey} from '../../types/enums/CampaignTriggerKey.enum'
+import {SessionTimeOperators} from '../../types/enums/SessionTimeOperators.enum'
 
 import {useAvailableTriggerList} from '../useAvailableTriggerList'
 
@@ -84,6 +85,25 @@ describe('useAvailableTriggerList()', () => {
                     label: 'Time spent on page',
                     defaults: {value: 0, operator: 'gt'},
                     requirements: {},
+                },
+                {
+                    key: CampaignTriggerKey.VisitCount,
+                    label: 'Number of visits',
+                    defaults: {value: 0, operator: 'gt'},
+                    requirements: {
+                        revenue: true,
+                    },
+                },
+                {
+                    key: CampaignTriggerKey.SessionTime,
+                    label: 'Time spent per visit',
+                    defaults: {
+                        value: 0,
+                        operator: SessionTimeOperators.GreaterThan,
+                    },
+                    requirements: {
+                        revenue: true,
+                    },
                 },
             ])
         })
