@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import axios from 'axios'
 import classnames from 'classnames'
@@ -6,14 +7,14 @@ import _debounce from 'lodash/debounce'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link, useHistory, useLocation} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
+import * as integrationsSelectors from 'state/integrations/selectors'
 
 import shopify from 'assets/img/integrations/shopify.png'
 
 import Button from 'pages/common/components/button/Button'
 import useAppSelector from 'hooks/useAppSelector'
 
-import {CreateHelpCenterDto} from 'models/helpCenter/types'
-import {validLocaleCode} from 'models/helpCenter/utils'
+import {CreateHelpCenterDto, LocaleCode} from 'models/helpCenter/types'
 import {helpCenterCreated} from 'state/entities/helpCenter/helpCenters/actions'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 import {notify as notifyAction} from 'state/notifications/actions'
@@ -35,8 +36,8 @@ import {
 import {useAbilityChecker, useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useSupportedLocales} from '../providers/SupportedLocales'
 import {HelpCenterTheme} from '../types'
-import {slugify} from '../utils/helpCenter.utils'
-import {localeToSelectOption} from '../utils/localeSelectOptions'
+import {getNewHelpCenterTranslation, slugify} from '../utils/helpCenter.utils'
+import {getLocaleSelectOptions} from '../utils/localeSelectOptions'
 import {
     getNameValidationError,
     getSubdomainValidationError,
@@ -48,9 +49,14 @@ import {useShopifyStoreWithChatConnectionsOptions} from '../hooks/useShopifyStor
 import settingsCss from '../../settings.less'
 
 import {useEnableArticleRecommendation} from '../hooks/useEnableArticleRecommendation'
-import {ThemeSwitch} from './ThemeSwitch'
+import {
+    EMAIL_INTEGRATION_TYPES,
+    getIsBaseEmailIntegration,
+    isGenericEmailIntegration,
+} from '../../../../constants/integration'
 
 import css from './HelpCenterNewView.less'
+import {LanguageBadgeTags} from './HelpCenterPreferencesView/components/AvailableLanguagesTags/LanguageBadgeTags'
 
 type Props = ConnectedProps<typeof connector>
 
@@ -82,8 +88,6 @@ export const HelpCenterNewView = ({
         connectedChatsCount: css['select-connected-chats'],
     })
     const {client} = useHelpCenterApi()
-    const [newHelpCenter, setNewHelpCenter] =
-        useState<CreateHelpCenterPayload>(initialFormState)
     const [isLoading, setIsLoading] = useState(false)
     const [isPristineSubdomain, setPristineSubdomain] = useState(true)
     const [isSubdomainAvailable, setIsSubdomainAvailable] = useState(true)
@@ -91,9 +95,29 @@ export const HelpCenterNewView = ({
     const enableArticleRecommendation = useEnableArticleRecommendation(notify)
     const {isPassingRulesCheck} = useAbilityChecker()
 
-    const localeOptions = useMemo(
-        () => locales.map(localeToSelectOption),
-        [locales]
+    const [defaultLocale, setDefaultLocale] = useState(
+        HELP_CENTER_DEFAULT_LOCALE
+    )
+    const [availableLocales, setAvailableLocales] = useState([defaultLocale])
+
+    const emailIntegrations = useAppSelector(
+        integrationsSelectors.getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES)
+    ).filter(isGenericEmailIntegration)
+
+    const defaultEmailIntegration =
+        emailIntegrations.find(getIsBaseEmailIntegration) ??
+        emailIntegrations[0]
+
+    const [newHelpCenter, setNewHelpCenter] = useState<CreateHelpCenterPayload>(
+        {
+            ...initialFormState,
+            contact_form: {
+                card_enabled: true,
+                helpdesk_integration_email:
+                    defaultEmailIntegration?.meta.address,
+                helpdesk_integration_id: defaultEmailIntegration?.id,
+            },
+        }
     )
 
     const subdomainError = useMemo(
@@ -144,6 +168,27 @@ export const HelpCenterNewView = ({
         [newHelpCenter.subdomain]
     )
 
+    const onChangeContactFormIntegration = useCallback(
+        (integrationId: number | string) => {
+            const selectedIntegration = emailIntegrations.find(
+                (integration) => integration.id === integrationId
+            )
+
+            if (selectedIntegration) {
+                setNewHelpCenter((prev) => ({
+                    ...prev,
+                    contact_form: {
+                        card_enabled: true,
+                        helpdesk_integration_email:
+                            selectedIntegration.meta.address,
+                        helpdesk_integration_id: selectedIntegration.id,
+                    },
+                }))
+            }
+        },
+        [emailIntegrations]
+    )
+
     const handleChangeShopifyStore = useCallback(
         (value: string) => {
             if (value) {
@@ -183,15 +228,29 @@ export const HelpCenterNewView = ({
                     delete draft.subdomain
                 }
             })
+
+            const otherLocales = availableLocales.filter(
+                (locale) => locale !== defaultLocale
+            )
+
             const {data: createdHelpCenter} = await client.createHelpCenter(
                 null,
-                payload
+                {...payload, default_locale: defaultLocale}
             )
 
             helpCenterCreated(createdHelpCenter)
             if (isNaN(createdHelpCenter.id)) {
                 navigateToStartView()
             } else {
+                for (const locale of otherLocales) {
+                    await client.createHelpCenterTranslation(
+                        {
+                            help_center_id: createdHelpCenter.id,
+                        },
+                        getNewHelpCenterTranslation(locale)
+                    )
+                }
+
                 navigateToHelpCenterArticles(createdHelpCenter.id)
             }
 
@@ -209,13 +268,6 @@ export const HelpCenterNewView = ({
         } finally {
             setIsLoading(false)
         }
-    }
-
-    const handleOnSelect = (value: React.ReactText) => {
-        setNewHelpCenter((prevNewHelpCenter) => ({
-            ...prevNewHelpCenter,
-            default_locale: validLocaleCode(value),
-        }))
     }
 
     const handleChangeName = (name: string) => {
@@ -268,6 +320,10 @@ export const HelpCenterNewView = ({
         )
     }
 
+    const shopifyIcon = (
+        <img src={shopify} className={css['shopify-icon']} alt="shopify logo" />
+    )
+
     return (
         <div className="full-width">
             <PageHeader
@@ -282,10 +338,10 @@ export const HelpCenterNewView = ({
             />
             <Container fluid className={settingsCss.pageContainer}>
                 <div className={settingsCss.contentWrapper}>
-                    <section className={css.form}>
+                    <section className={css['sectionNameSubdomain']}>
                         <div>
-                            <Label className={css.label}>
-                                Help Center name
+                            <Label className={css.label} isRequired>
+                                Help center name
                             </Label>
                             <IconTooltip className={css.iconTooltip}>
                                 This is going to be displayed whenever your logo
@@ -295,8 +351,7 @@ export const HelpCenterNewView = ({
                                 data-testid="name"
                                 type="text"
                                 name="name"
-                                placeholder="Ex. Customer Support"
-                                className={classnames(css.formInput)}
+                                placeholder="e.g. My brand name"
                                 isRequired
                                 value={newHelpCenter.name}
                                 onChange={handleChangeName}
@@ -311,61 +366,72 @@ export const HelpCenterNewView = ({
                         />
                     </section>
 
-                    <section>
-                        <h3>Languages</h3>
-                        <h4>Default language</h4>
-                        <p>
-                            Choose a default language. This will be the default
-                            setting when the selected language isn't available
-                            or cannot be detected.
-                        </p>
-                        <div id="language-select">
-                            <SelectField
-                                options={localeOptions}
-                                value={newHelpCenter.default_locale}
-                                onChange={handleOnSelect}
-                                fullWidth
-                            />
-                        </div>
-                    </section>
-
-                    <section>
-                        <h3 className="mb-3">Appearance</h3>
-                        <ThemeSwitch
-                            selectedTheme={newHelpCenter.theme}
-                            currentColor={newHelpCenter.primary_color}
-                            onThemeChange={(theme) => {
-                                setNewHelpCenter((prevNewHelpCenter) => ({
-                                    ...prevNewHelpCenter,
-                                    theme,
-                                }))
-                            }}
-                            onColorChange={(color) => {
-                                setNewHelpCenter((prevNewHelpCenter) => ({
-                                    ...prevNewHelpCenter,
-                                    primary_color: color,
-                                }))
-                            }}
+                    <section className={css['sectionPart']}>
+                        <label className="control-label">
+                            Available languages
+                        </label>
+                        <LanguageBadgeTags
+                            availableLanguages={availableLocales}
+                            availableLocales={locales}
+                            defaultLanguage={defaultLocale}
+                            updateAvailableLanguages={setAvailableLocales}
+                            showModalQuestion={false}
                         />
                     </section>
 
-                    <section>
-                        <h3 style={{marginBottom: 4}}>
-                            Connect to Shopify store
-                        </h3>
-                        <p>
-                            Connect this Help Center to a Shopify store to
-                            enable Self-service flows.
-                            {hasAutomationAddOn && (
-                                <span>
-                                    {' '}
-                                    Note that this will automatically enable
-                                    Self-service.
-                                </span>
-                            )}
-                        </p>
+                    {availableLocales.length > 1 && (
+                        <section className={css['sectionPart']}>
+                            <label className="control-label">
+                                Default language
+                            </label>
+                            <SelectField
+                                options={getLocaleSelectOptions(
+                                    locales,
+                                    availableLocales
+                                )}
+                                fullWidth
+                                value={defaultLocale}
+                                onChange={(newLocale) => {
+                                    // TODO: SelectField can be made generic so that we can
+                                    // remove the type assertion
+                                    setDefaultLocale(newLocale as LocaleCode)
+                                }}
+                                caption="Used when selected language isn't available or cannot be detected."
+                            />
+                        </section>
+                    )}
 
-                        {newHelpCenter?.shop_name ? (
+                    <section className={css['sectionPart']}>
+                        <label className="control-label" htmlFor="contactForm">
+                            Email integration
+                        </label>
+                        <SelectField
+                            id="contactForm"
+                            placeholder="Select an email integration"
+                            value={
+                                newHelpCenter.contact_form
+                                    ?.helpdesk_integration_id
+                            }
+                            options={emailIntegrations.map((integration) => ({
+                                label:
+                                    `${integration.name} ` +
+                                    `<${integration.meta.address}>`,
+                                value: integration.id,
+                            }))}
+                            fullWidth
+                            onChange={(integrationId) =>
+                                onChangeContactFormIntegration(integrationId)
+                            }
+                            className={css.selectEmailIntegration}
+                            icon="email"
+                            caption="Select the email to receive inquiries from Contact Form."
+                        />
+                    </section>
+
+                    <section className={css['sectionPart']}>
+                        <label className="control-label">Shopify store</label>
+
+                        {newHelpCenter.shop_name ? (
                             <div className={css['connected-store']}>
                                 <img
                                     src={shopify}
@@ -398,19 +464,22 @@ export const HelpCenterNewView = ({
                         ) : (
                             <SelectField
                                 fullWidth
+                                placeholder="Select store"
+                                customIcon={shopifyIcon}
                                 options={shopifyShopsOptions}
                                 value={newHelpCenter?.shop_name}
                                 onChange={(value) => {
                                     // this type cast is safe as all values are string
                                     handleChangeShopifyStore(value as string)
                                 }}
+                                caption="Connect this Help Center to a Shopify store to enable Self-service flows."
                             />
                         )}
                     </section>
 
-                    <div className="d-flex">
+                    <div className={classnames('d-flex', css['bottomButtons'])}>
                         <Button isDisabled={!canSubmit} onClick={handleSubmit}>
-                            Add new Help Center
+                            Add Help Center
                         </Button>
                         <Button
                             className={css.cancelButton}

@@ -22,6 +22,7 @@ import settingsCss from 'pages/settings/settings.less'
 
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {getIsBaseEmailAddress} from 'constants/integration'
 import css from './EmailDomainVerification.less'
 import RecordsTable from './components/RecordsTable'
 
@@ -59,9 +60,8 @@ export const EmailDomainVerificationContainer = (props: Props) => {
         return <Loader />
     }
 
-    const isBaseEmailIntegration = address.endsWith(
-        window.EMAIL_FORWARDING_DOMAIN
-    )
+    const isBaseEmailIntegration = getIsBaseEmailAddress(address)
+
     const isGmail = integration.get('type') === IntegrationType.Gmail
     const isOutlook = integration.get('type') === IntegrationType.Outlook
 

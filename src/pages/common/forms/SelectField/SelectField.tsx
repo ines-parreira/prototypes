@@ -9,6 +9,7 @@ import React, {
     Fragment,
     createRef,
     RefObject,
+    ReactNode,
 } from 'react'
 import {
     DropdownItem,
@@ -25,6 +26,7 @@ import _isEqual from 'lodash/isEqual'
 
 import {GroupPositionContext} from 'pages/common/components/layout/Group'
 
+import Caption from '../Caption/Caption'
 import css from './SelectField.less'
 import {SelectableOption, Option, Value} from './types'
 
@@ -54,7 +56,9 @@ type Props = {
     positionFixed?: boolean
     disabled?: boolean
     icon?: string
+    customIcon?: ReactNode
     container?: ComponentProps<typeof DropdownMenu>['container']
+    caption?: ReactNode
 }
 
 type State = {
@@ -365,7 +369,9 @@ export default class SelectField extends Component<Props, State> {
             positionFixed,
             disabled,
             icon,
+            customIcon,
             container,
+            caption,
         } = this.props
         const {
             filteredOptions,
@@ -451,6 +457,7 @@ export default class SelectField extends Component<Props, State> {
                                             {icon}
                                         </i>
                                     )}
+                                    {customIcon}
                                     <span
                                         style={{
                                             minWidth: selectMinWidth,
@@ -691,6 +698,7 @@ export default class SelectField extends Component<Props, State> {
                         </span>
                     </div>
                 )}
+                {caption && <Caption>{caption}</Caption>}
             </div>
         )
     }

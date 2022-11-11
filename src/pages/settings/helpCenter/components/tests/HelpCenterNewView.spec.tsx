@@ -8,6 +8,7 @@ import {RootState, StoreDispatch} from 'state/types'
 import {renderWithRouter} from 'utils/testing'
 import {billingState} from 'fixtures/billing'
 import {account} from 'fixtures/account'
+import {integrationsState} from 'fixtures/integrations'
 import {getLocalesResponseFixture} from '../../fixtures/getLocalesResponse.fixtures'
 import {useHelpCenterApi} from '../../hooks/useHelpCenterApi'
 import {useSupportedLocales} from '../../providers/SupportedLocales'
@@ -18,6 +19,7 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const defaultState: Partial<RootState> = {
     currentAccount: fromJS(account),
     billing: fromJS(billingState),
+    integrations: fromJS(integrationsState),
 }
 const store = mockStore(defaultState)
 
@@ -78,7 +80,7 @@ describe('<HelpCenterNewView />', () => {
             fireEvent.change(brandInput, {target: {value: 'My brand'}})
             fireEvent.change(brandInput, {target: {value: ''}})
             const submitButton = await findByRole('button', {
-                name: /add new help center/i,
+                name: /add help center/i,
             })
             expect(submitButton.className).toMatch(/disabled/i)
         })
@@ -107,7 +109,7 @@ describe('<HelpCenterNewView />', () => {
             expect(subdomainInput.value).toEqual('custom-subdomain')
 
             const submitButton = await findByRole('button', {
-                name: /add new help center/i,
+                name: /add help center/i,
             })
             expect(submitButton.className).not.toMatch(/disabled/i)
         })
@@ -122,7 +124,7 @@ describe('<HelpCenterNewView />', () => {
             const brandInput = (await findByTestId('name')) as HTMLInputElement
             fireEvent.change(brandInput, {target: {value: 'M'}})
             const submitButton = await findByRole('button', {
-                name: /add new help center/i,
+                name: /add help center/i,
             })
             expect(brandInput.value).toEqual('M')
             screen.getByText(/Name should be at least 2 characters long/i)
@@ -137,7 +139,7 @@ describe('<HelpCenterNewView />', () => {
             )
             const brandInput = await findByTestId('name')
             const submitButton = await findByRole('button', {
-                name: /add new help center/i,
+                name: /add help center/i,
             })
 
             void act(async () => {

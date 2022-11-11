@@ -35,7 +35,10 @@ export const SubdomainSection = ({
                 accessible. You can edit it below to customize according to your
                 preferences.
             </p>
-            <SubdomainInput {...inputProps} />
+            <SubdomainInput
+                {...inputProps}
+                className={css['subdomain-margin']}
+            />
             {children}
         </section>
     )

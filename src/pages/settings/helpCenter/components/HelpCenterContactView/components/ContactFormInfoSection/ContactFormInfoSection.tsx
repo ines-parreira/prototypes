@@ -13,6 +13,7 @@ import TextArea from 'pages/common/forms/TextArea'
 
 import {
     EMAIL_INTEGRATION_TYPES,
+    getIsBaseEmailAddress,
     isGenericEmailIntegration,
 } from 'constants/integration'
 
@@ -83,9 +84,8 @@ const ContactFormInfoSection = ({helpCenter}: ContactFormInfoSectionProps) => {
     )
 
     const isBaseEmailIntegration =
-        !!contactForm.helpdesk_integration_email?.endsWith(
-            window.EMAIL_FORWARDING_DOMAIN
-        )
+        !!contactForm.helpdesk_integration_email &&
+        getIsBaseEmailAddress(contactForm.helpdesk_integration_email)
 
     const isEmailIntegrationSelected =
         !!helpCenter.contact_form?.helpdesk_integration_email

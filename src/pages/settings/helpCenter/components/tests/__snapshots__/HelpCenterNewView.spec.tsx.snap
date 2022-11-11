@@ -40,13 +40,20 @@ exports[`<HelpCenterNewView /> should render the component 1`] = `
         class="contentWrapper"
       >
         <section
-          class="form"
+          class="sectionNameSubdomain"
         >
           <div>
             <label
               class="label label"
             >
-              Help Center name
+              Help center name
+              <abbr
+                aria-label="required"
+                class="abbr"
+                title="required"
+              >
+                *
+              </abbr>
             </label>
             <div
               class="wrapper iconTooltip"
@@ -58,9 +65,7 @@ exports[`<HelpCenterNewView /> should render the component 1`] = `
                 info
               </i>
             </div>
-            <div
-              class="formInput"
-            >
+            <div>
               <div
                 class="wrapper"
               >
@@ -69,7 +74,7 @@ exports[`<HelpCenterNewView /> should render the component 1`] = `
                   data-testid="name"
                   id="input-text-2"
                   name="name"
-                  placeholder="Ex. Customer Support"
+                  placeholder="e.g. My brand name"
                   required=""
                   type="text"
                   value=""
@@ -121,391 +126,370 @@ exports[`<HelpCenterNewView /> should render the component 1`] = `
             </div>
           </div>
         </section>
-        <section>
-          <h3>
-            Languages
-          </h3>
-          <h4>
-            Default language
-          </h4>
-          <p>
-            Choose a default language. This will be the default setting when the selected language isn't available or cannot be detected.
-          </p>
-          <div
-            id="language-select"
+        <section
+          class="sectionPart"
+        >
+          <label
+            class="control-label"
           >
-            <div>
+            Available languages
+          </label>
+          <div
+            class="wrapper"
+          >
+            <span
+              class="badge badge badge-secondary"
+              data-testid="badge-en-US"
+            >
+              <span>
+                <span>
+                  <img
+                    alt="en-US"
+                    class="flag-emoji"
+                    src="test-file-stub"
+                  />
+                  <span>
+                    English - USA
+                  </span>
+                </span>
+              </span>
+              <span
+                class="badge-suffix"
+              >
+                <span
+                  class="badge-icon material-icons-outlined"
+                  data-testid="help-en-US"
+                  id="help-en-US"
+                >
+                  info
+                </span>
+              </span>
+            </span>
+            <div
+              class="dropdown"
+            >
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="add-btn btn btn-secondary"
+                type="button"
+              >
+                <i
+                  class="material-icons"
+                  style="font-size: 16px;"
+                >
+                  add
+                </i>
+              </button>
               <div
-                class="dropdown"
+                aria-hidden="true"
+                class="dropdown-menu"
+                role="menu"
+                style="padding-top: 0px;"
+                tabindex="-1"
               >
                 <div
-                  aria-expanded="false"
-                  aria-haspopup="true"
-                  class=""
-                  data-toggle="dropdown"
+                  class="dropdown-header"
                 >
-                  <div
-                    class="select dropdown-toggle selectFullWidth"
-                  >
-                    <span
-                      class="label"
-                      style="min-width: 10px; opacity: 1;"
-                    >
-                      <span>
-                        <img
-                          alt="en-US"
-                          class="flag-emoji"
-                          src="test-file-stub"
-                        />
-                        <span>
-                          English - USA
-                        </span>
-                      </span>
-                    </span>
+                  <div>
                     <input
-                      autocomplete="chrome-off"
-                      class="input"
-                      style="min-width: 10px;"
+                      class="form-control"
+                      placeholder="Search Languages"
                       type="text"
                       value=""
                     />
-                    <i
-                      class="material-icons dropdownIcon"
-                    >
-                      arrow_drop_down
-                    </i>
+                    <div
+                      class="dropdown-divider"
+                      tabindex="-1"
+                    />
                   </div>
                 </div>
-                <div
-                  aria-hidden="true"
-                  class="options optionsFullWidth dropdown-menu"
-                  role="menu"
-                  tabindex="-1"
-                >
-                  
-                  <button
-                    class="option option--focused dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      <span>
-                        <img
-                          alt="fr-FR"
-                          class="flag-emoji"
-                          src="test-file-stub"
-                        />
-                        <span>
-                          French - France
-                        </span>
-                      </span>
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      <span>
-                        <img
-                          alt="fr-CA"
-                          class="flag-emoji"
-                          src="test-file-stub"
-                        />
-                        <span>
-                          French - Canada
-                        </span>
-                      </span>
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      <span>
-                        <img
-                          alt="cs-CZ"
-                          class="flag-emoji"
-                          src="test-file-stub"
-                        />
-                        <span>
-                          Czech - Czech Republic
-                        </span>
-                      </span>
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      <span>
-                        <img
-                          alt="da-DK"
-                          class="flag-emoji"
-                          src="test-file-stub"
-                        />
-                        <span>
-                          Danish - Denmark
-                        </span>
-                      </span>
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      <span>
-                        <img
-                          alt="nl-NL"
-                          class="flag-emoji"
-                          src="test-file-stub"
-                        />
-                        <span>
-                          Dutch - Netherlands
-                        </span>
-                      </span>
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      <span>
-                        <img
-                          alt="de-DE"
-                          class="flag-emoji"
-                          src="test-file-stub"
-                        />
-                        <span>
-                          German - Germany
-                        </span>
-                      </span>
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      <span>
-                        <img
-                          alt="it-IT"
-                          class="flag-emoji"
-                          src="test-file-stub"
-                        />
-                        <span>
-                          Italian - Italy
-                        </span>
-                      </span>
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      <span>
-                        <img
-                          alt="no-NO"
-                          class="flag-emoji"
-                          src="test-file-stub"
-                        />
-                        <span>
-                          Norwegian - Norway
-                        </span>
-                      </span>
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      <span>
-                        <img
-                          alt="es-ES"
-                          class="flag-emoji"
-                          src="test-file-stub"
-                        />
-                        <span>
-                          Spanish - Spain
-                        </span>
-                      </span>
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      <span>
-                        <img
-                          alt="sv-SE"
-                          class="flag-emoji"
-                          src="test-file-stub"
-                        />
-                        <span>
-                          Swedish - Sweden
-                        </span>
-                      </span>
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section>
-          <h3
-            class="mb-3"
-          >
-            Appearance
-          </h3>
-          <h4>
-            Theme
-          </h4>
-          <p>
-            Select which theme you prefer to use in your Help Center. 
-            <b>
-              This will affect the header & footer.
-            </b>
-          </p>
-          <div
-            class="list"
-          >
-            <div
-              aria-checked="true"
-              aria-label="Light Theme"
-              class="wrapper selected"
-              role="radio"
-              tabindex="0"
-            >
-              <div
-                class="preview"
-                role="img"
-              >
-                <img
-                  alt="preview-light"
-                  src="test-file-stub"
-                />
-              </div>
-              <div>
-                <label
-                  class="label label"
-                  for="light"
-                >
-                  <input
-                    checked=""
-                    class="input"
-                    id="light"
-                    name="theme"
-                    tabindex="-1"
-                    type="radio"
-                  />
-                  Light Theme
-                </label>
-              </div>
-            </div>
-            <div
-              aria-checked="false"
-              aria-label="Dark Theme"
-              class="wrapper"
-              role="radio"
-              tabindex="0"
-            >
-              <div
-                class="preview"
-                role="img"
-              >
-                <img
-                  alt="preview-dark"
-                  src="test-file-stub"
-                />
-              </div>
-              <div>
-                <label
-                  class="label label"
-                  for="dark"
-                >
-                  <input
-                    class="input"
-                    id="dark"
-                    name="theme"
-                    tabindex="-1"
-                    type="radio"
-                  />
-                  Dark Theme
-                </label>
-              </div>
-            </div>
-          </div>
-          <div
-            class="InputField form-group"
-            color=""
-          >
-            <label
-              class="control-label"
-              for="id-input-4"
-            >
-              Primary Color
-            </label>
-            <div
-              class=""
-            >
-              <div
-                class="d-inline-block"
-              >
                 <button
-                  class="wrapper fill secondary medium"
-                  id="color-picker-5"
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
                   type="button"
                 >
-                  <div
-                    class="color"
-                    style="background-color: rgb(74, 141, 249);"
-                  />
+                  <span>
+                    <img
+                      alt="fr-FR"
+                      class="flag-emoji"
+                      src="test-file-stub"
+                    />
+                    <span>
+                      French - France
+                    </span>
+                  </span>
+                </button>
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span>
+                    <img
+                      alt="fr-CA"
+                      class="flag-emoji"
+                      src="test-file-stub"
+                    />
+                    <span>
+                      French - Canada
+                    </span>
+                  </span>
+                </button>
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span>
+                    <img
+                      alt="cs-CZ"
+                      class="flag-emoji"
+                      src="test-file-stub"
+                    />
+                    <span>
+                      Czech - Czech Republic
+                    </span>
+                  </span>
+                </button>
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span>
+                    <img
+                      alt="da-DK"
+                      class="flag-emoji"
+                      src="test-file-stub"
+                    />
+                    <span>
+                      Danish - Denmark
+                    </span>
+                  </span>
+                </button>
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span>
+                    <img
+                      alt="nl-NL"
+                      class="flag-emoji"
+                      src="test-file-stub"
+                    />
+                    <span>
+                      Dutch - Netherlands
+                    </span>
+                  </span>
+                </button>
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span>
+                    <img
+                      alt="de-DE"
+                      class="flag-emoji"
+                      src="test-file-stub"
+                    />
+                    <span>
+                      German - Germany
+                    </span>
+                  </span>
+                </button>
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span>
+                    <img
+                      alt="it-IT"
+                      class="flag-emoji"
+                      src="test-file-stub"
+                    />
+                    <span>
+                      Italian - Italy
+                    </span>
+                  </span>
+                </button>
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span>
+                    <img
+                      alt="no-NO"
+                      class="flag-emoji"
+                      src="test-file-stub"
+                    />
+                    <span>
+                      Norwegian - Norway
+                    </span>
+                  </span>
+                </button>
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span>
+                    <img
+                      alt="es-ES"
+                      class="flag-emoji"
+                      src="test-file-stub"
+                    />
+                    <span>
+                      Spanish - Spain
+                    </span>
+                  </span>
+                </button>
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span>
+                    <img
+                      alt="sv-SE"
+                      class="flag-emoji"
+                      src="test-file-stub"
+                    />
+                    <span>
+                      Swedish - Sweden
+                    </span>
+                  </span>
                 </button>
               </div>
             </div>
-            <small
-              class="form-text text-muted"
-            >
-              This color will be used for hyperlinks, section titles, pagination buttons and icons.
-            </small>
           </div>
         </section>
-        <section>
-          <h3
-            style="margin-bottom: 4px;"
+        <section
+          class="sectionPart"
+        >
+          <label
+            class="control-label"
+            for="contactForm"
           >
-            Connect to Shopify store
-          </h3>
-          <p>
-            Connect this Help Center to a Shopify store to enable Self-service flows.
-          </p>
+            Email integration
+          </label>
+          <div>
+            <div
+              class="dropdown"
+            >
+              <div
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="selectEmailIntegration"
+                data-toggle="dropdown"
+              >
+                <div
+                  class="select dropdown-toggle selectFullWidth"
+                >
+                  <i
+                    class="material-icons icon"
+                  >
+                    email
+                  </i>
+                  <span
+                    class="label"
+                    style="min-width: 10px; opacity: 1;"
+                  >
+                    Acme Billing &lt;billing@acme.gorgias.io&gt;
+                  </span>
+                  <input
+                    autocomplete="chrome-off"
+                    class="input iconPadding"
+                    id="contactForm"
+                    style="min-width: 10px;"
+                    type="text"
+                    value=""
+                  />
+                  <i
+                    class="material-icons dropdownIcon"
+                  >
+                    arrow_drop_down
+                  </i>
+                </div>
+              </div>
+              <div
+                aria-hidden="true"
+                class="options optionsFullWidth dropdown-menu"
+                role="menu"
+                tabindex="-1"
+              >
+                
+                <button
+                  class="option option--focused dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span>
+                    Deactivated gmail &lt;billing+1@acme.gorgias.io&gt;
+                  </span>
+                </button>
+                <button
+                  class="option dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span>
+                    Acme Support &lt;support@acme.gorgias.io&gt;
+                  </span>
+                </button>
+                <button
+                  class="option dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span>
+                    Acme Contact &lt;contact@acme.com&gt;
+                  </span>
+                </button>
+                <button
+                  class="option dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span>
+                    Acme Unverified &lt;unverified@gorgias.io&gt;
+                  </span>
+                </button>
+              </div>
+            </div>
+            <div
+              class="caption"
+            >
+              Select the email to receive inquiries from Contact Form.
+            </div>
+          </div>
+        </section>
+        <section
+          class="sectionPart"
+        >
+          <label
+            class="control-label"
+          >
+            Shopify store
+          </label>
           <div>
             <div
               class="dropdown"
@@ -519,11 +503,16 @@ exports[`<HelpCenterNewView /> should render the component 1`] = `
                 <div
                   class="select dropdown-toggle selectFullWidth"
                 >
+                  <img
+                    alt="shopify logo"
+                    class="shopify-icon"
+                    src="test-file-stub"
+                  />
                   <span
                     class="label placeholder"
                     style="min-width: 10px; opacity: 1;"
                   >
-                    Select an option
+                    Select store
                   </span>
                   <input
                     autocomplete="chrome-off"
@@ -553,17 +542,22 @@ exports[`<HelpCenterNewView /> should render the component 1`] = `
                 </h6>
               </div>
             </div>
+            <div
+              class="caption"
+            >
+              Connect this Help Center to a Shopify store to enable Self-service flows.
+            </div>
           </div>
         </section>
         <div
-          class="d-flex"
+          class="d-flex bottomButtons"
         >
           <button
             class="wrapper fill primary medium isDisabled"
             disabled=""
             type="button"
           >
-            Add new Help Center
+            Add Help Center
           </button>
           <button
             class="wrapper cancelButton fill secondary medium"

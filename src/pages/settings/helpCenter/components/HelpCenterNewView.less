@@ -1,11 +1,12 @@
 @import (reference) '~css/new/colorTokens';
 
 :local {
-    .form {
+    .sectionNameSubdomain {
         display: grid;
         grid-template-columns: 1fr 1fr;
         column-gap: 16px;
-        margin-bottom: 24px;
+
+        margin-bottom: 16px;
 
         .iconTooltip {
             display: inline;
@@ -16,6 +17,14 @@
         }
     }
 
+    .sectionPart {
+        margin-bottom: 16px;
+    }
+
+    .bottomButtons {
+        margin-top: 40px;
+    }
+
     .cancelButton {
         margin-left: 8px;
     }
@@ -23,6 +32,8 @@
     .label {
         display: inline-block;
         padding-bottom: 7px;
+
+        height: 28px;
     }
 
     .select-option {

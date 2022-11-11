@@ -496,5 +496,41 @@ describe('SelectField', () => {
             expect(onChangeSpy.mock.calls.length).toEqual(0)
             expect(onClickSpy.mock.calls.length).toEqual(1)
         })
+
+        it('should show a caption if it was passed through props', () => {
+            const caption = 'Caption'
+            const wrapper = mount<SelectField>(
+                <SelectField
+                    {...minProps}
+                    options={options}
+                    caption={caption}
+                />
+            )
+            expect(wrapper.find('.caption').text()).toEqual(caption)
+
+            wrapper.setProps({caption: undefined})
+            expect(wrapper.find('.caption').exists()).toEqual(false)
+
+            wrapper.setProps({caption})
+            expect(wrapper.find('.caption').text()).toEqual(caption)
+
+            wrapper.setProps({caption: ''})
+            expect(wrapper.find('.caption').exists()).toEqual(false)
+        })
+
+        it('should show a custom icon if it was passed through props', () => {
+            const icon = <span id="test-custom-icon">Icon</span>
+            const wrapper = mount<SelectField>(
+                <SelectField
+                    {...minProps}
+                    options={options}
+                    customIcon={icon}
+                />
+            )
+            expect(wrapper.find('#test-custom-icon').text()).toEqual('Icon')
+
+            wrapper.setProps({customIcon: undefined})
+            expect(wrapper.find('#test-custom-icon').exists()).toEqual(false)
+        })
     })
 })

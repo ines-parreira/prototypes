@@ -7,6 +7,10 @@ import Button from 'pages/common/components/button/Button'
 import gmailImg from 'assets/img/integrations/gmail.png'
 import outlookImg from 'assets/img/integrations/outlook.png'
 
+import {
+    EMAIL_INTEGRATION_TYPES,
+    getIsBaseEmailAddress,
+} from 'constants/integration'
 import ForwardIcon from '../../../common/components/ForwardIcon'
 import IntegrationList from '../IntegrationList'
 import Loader from '../../../../common/components/Loader/Loader'
@@ -17,7 +21,6 @@ import {
     EmailDomain,
     IntegrationType,
 } from '../../../../../models/integration/types'
-import {EMAIL_INTEGRATION_TYPES} from '../../../../../constants/integration'
 
 import css from './EmailIntegrationList.less'
 import {fetchEmailDomains} from './resources'
@@ -70,9 +73,8 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
 
         const address = integration.getIn(['meta', 'address'], '') as string
         const domain = address.substr(address.lastIndexOf('@') + 1)
-        const isBaseEmailIntegration = address.endsWith(
-            window.EMAIL_FORWARDING_DOMAIN
-        )
+        const isBaseEmailIntegration = getIsBaseEmailAddress(address)
+
         const isGmail = integration.get('type') === IntegrationType.Gmail
         const isOutlook = integration.get('type') === IntegrationType.Outlook
         const enableGmailSending = integration.getIn(

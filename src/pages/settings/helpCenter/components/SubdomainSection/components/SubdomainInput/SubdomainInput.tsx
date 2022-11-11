@@ -16,6 +16,7 @@ export type SubdomainInputProps = {
     value?: string
     onChange: (value: string) => void
     error?: string | null
+    className?: string
 }
 
 export const SubdomainInput: React.FC<SubdomainInputProps> = ({
@@ -26,6 +27,7 @@ export const SubdomainInput: React.FC<SubdomainInputProps> = ({
     placeholder,
     onChange,
     error = null,
+    className,
 }: SubdomainInputProps) => {
     const help = useMemo(() => {
         if (!error) return null
@@ -67,9 +69,13 @@ export const SubdomainInput: React.FC<SubdomainInputProps> = ({
 
     return (
         <DEPRECATED_InputField
-            className={classNames(css.input, {
-                [css.error]: !!error,
-            })}
+            className={classNames(
+                css.input,
+                {
+                    [css.error]: !!error,
+                },
+                className
+            )}
             type="text"
             name={name}
             label={label}

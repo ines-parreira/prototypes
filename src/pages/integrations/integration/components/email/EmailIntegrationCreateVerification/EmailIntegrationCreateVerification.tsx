@@ -33,6 +33,7 @@ import css from 'pages/settings/settings.less'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {getIsBaseEmailAddress} from 'constants/integration'
 
 type OwnProps = {
     integration: Map<any, any>
@@ -240,9 +241,7 @@ export class EmailIntegrationCreateVerification extends Component<
         const {integration} = this.props
 
         const address: string = integration.getIn(['meta', 'address'], '')
-        const isBaseEmailIntegration = address.endsWith(
-            window.EMAIL_FORWARDING_DOMAIN
-        )
+        const isBaseEmailIntegration = getIsBaseEmailAddress(address)
 
         return (
             <div className="full-width">

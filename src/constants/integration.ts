@@ -95,3 +95,13 @@ export const isGenericEmailIntegration = (
         integration.type
     )
 }
+
+export const getIsBaseEmailAddress = (emailAddress: string) => {
+    return emailAddress.endsWith(window.EMAIL_FORWARDING_DOMAIN)
+}
+
+export const getIsBaseEmailIntegration = (
+    emailIntegration: EmailIntegration | GmailIntegration | OutlookIntegration
+): emailIntegration is EmailIntegration => {
+    return getIsBaseEmailAddress(emailIntegration.meta.address)
+}

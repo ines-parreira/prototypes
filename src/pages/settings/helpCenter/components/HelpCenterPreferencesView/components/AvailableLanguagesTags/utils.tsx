@@ -6,14 +6,12 @@ import {BadgeItemProps} from '../BadgeList'
 
 export function transformToSelectedLocale(
     locale: Locale,
-    isRemovable: boolean
+    labelForNonRemovable: string | null
 ): BadgeItemProps {
     return {
         id: locale.code,
         label: <FlagLanguageItem code={locale.code} name={locale.name} />,
-        help:
-            !isRemovable &&
-            'Change your default language to select a different language here.',
-        isClosable: isRemovable,
+        help: labelForNonRemovable,
+        isClosable: !labelForNonRemovable,
     }
 }
