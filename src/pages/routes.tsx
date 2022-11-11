@@ -689,20 +689,22 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
 
 export function ChannelsSettingsRoutes({match: {path}}: RouteComponentProps) {
     return (
-        <Switch>
-            <Route
-                path={`${path}/:integrationType/:integrationId?/:extra?/:subId?`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
-                        IntegrationDetail,
-                        ADMIN_ROLE,
-                        PageSection.Channels
-                    ),
-                    navbar: SettingsNavbar,
-                })}
-            />
-        </Switch>
+        <HelpCenterApiClientProvider>
+            <Switch>
+                <Route
+                    path={`${path}/:integrationType/:integrationId?/:extra?/:subId?`}
+                    exact
+                    render={appRender({
+                        content: memoizedWithUserRoleRequired(
+                            IntegrationDetail,
+                            ADMIN_ROLE,
+                            PageSection.Channels
+                        ),
+                        navbar: SettingsNavbar,
+                    })}
+                />
+            </Switch>
+        </HelpCenterApiClientProvider>
     )
 }
 
