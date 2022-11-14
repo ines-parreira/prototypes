@@ -33,6 +33,9 @@ type Props = ConnectedProps<typeof connector>
 
 class TicketListInfobarContainer extends Component<Props> {
     _hideBoarding = () => {
+        logEvent(SegmentEvent.OnboardingWidgetClicked, {
+            name: 'Hide',
+        })
         tryLocalStorage(() =>
             window.localStorage.setItem('hideBoarding', 'true')
         )
