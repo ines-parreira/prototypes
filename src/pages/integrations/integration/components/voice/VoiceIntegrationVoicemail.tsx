@@ -11,7 +11,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'
 import CheckBox from 'pages/common/forms/CheckBox'
 import {updatePhoneVoicemailConfiguration} from 'pages/integrations/integration/components/phone/actions'
-import VoiceMessageField from 'pages/integrations/integration/components/phone/VoiceMessageField'
+import VoiceMessageField from 'pages/integrations/integration/components/voice/VoiceMessageField'
 
 import settingsCss from 'pages/settings/settings.less'
 

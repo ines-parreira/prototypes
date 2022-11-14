@@ -9,7 +9,6 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import {Container} from 'reactstrap'
 import classNames from 'classnames'
 
-import useSearch from 'hooks/useSearch'
 import * as IntegrationsActions from 'state/integrations/actions'
 import {getCurrentPlan} from 'state/billing/selectors'
 import {notify} from 'state/notifications/actions'
@@ -100,16 +99,6 @@ import HTTPIntegrationLayout from './components/http/HTTPIntegrationLayout/HTTPI
 
 import VoiceIntegration from './components/voice/VoiceIntegration'
 import SmsIntegration from './components/sms/SmsIntegration'
-import PhoneIntegrationsListContainer from './components/phone/PhoneIntegrationsListContainer'
-import PhoneIntegrationCreate from './components/phone/PhoneIntegrationCreate'
-import VoiceAppPreferences from './components/phone/VoiceAppPreferences'
-import PhoneIntegrationVoicemail from './components/phone/PhoneIntegrationVoicemail'
-import PhoneIntegrationGreetingMessage from './components/phone/PhoneIntegrationGreetingMessage'
-import PhoneIntegrationIvr from './components/phone/PhoneIntegrationIvr'
-
-import SmsIntegrationsListContainer from './components/DEPRECATED_sms/SmsIntegrationsListContainer'
-import SmsIntegrationCreate from './components/DEPRECATED_sms/SmsIntegrationCreate'
-import SmsAppPreferences from './components/DEPRECATED_sms/SmsAppPreferences'
 
 import TwitterIntegrationDetail from './components/twitter/TwitterIntegrationDetail'
 import TwitterIntegrationList from './components/twitter/TwitterIntegrationList'
@@ -158,10 +147,6 @@ export const IntegrationDetail = ({
         'setup',
         WHATSAPP_SPIKE_PATH,
     ].includes(integrationId)
-
-    const {phoneNumberId} = useSearch<{
-        phoneNumberId: string
-    }>()
 
     const isUpdate = useMemo(
         () => !!integrationId && isIntegrationId,
@@ -255,7 +240,6 @@ export const IntegrationDetail = ({
         }
     }, [integrationId, isIntegrationId])
 
-    const showNewVoiceSmsLayout = useFlags()[FeatureFlagKey.NewVoiceSmsLayout]
     const enableWhatsApp = useFlags()[FeatureFlagKey.EnableWhatsApp]
 
     switch (integrationType) {
@@ -444,78 +428,11 @@ export const IntegrationDetail = ({
             if (enableWhatsApp && integrationId === WHATSAPP_SPIKE_PATH) {
                 return <WhatsAppSpike />
             }
-            if (showNewVoiceSmsLayout) {
-                return <VoiceIntegration />
-            }
 
-            if (!!integrationId) {
-                if (!isUpdate) {
-                    return (
-                        <PhoneIntegrationCreate
-                            selectedPhoneNumberId={
-                                phoneNumberId
-                                    ? Number.parseInt(phoneNumberId, 10)
-                                    : undefined
-                            }
-                        />
-                    )
-                }
-
-                if (extra === Tab.Preferences) {
-                    return (
-                        <VoiceAppPreferences integration={integration.toJS()} />
-                    )
-                }
-
-                if (extra === Tab.PhoneVoicemail) {
-                    return (
-                        <PhoneIntegrationVoicemail
-                            integration={integration.toJS()}
-                        />
-                    )
-                }
-
-                if (extra === Tab.PhoneGreetingMessage) {
-                    return (
-                        <PhoneIntegrationGreetingMessage
-                            integration={integration.toJS()}
-                        />
-                    )
-                }
-
-                if (extra === Tab.PhoneIvr) {
-                    return (
-                        <PhoneIntegrationIvr integration={integration.toJS()} />
-                    )
-                }
-            }
-
-            return <PhoneIntegrationsListContainer />
+            return <VoiceIntegration />
 
         case IntegrationType.Sms: {
-            if (showNewVoiceSmsLayout) {
-                return <SmsIntegration />
-            }
-
-            if (!!integrationId) {
-                if (extra === Tab.Preferences) {
-                    return (
-                        <SmsAppPreferences integration={integration.toJS()} />
-                    )
-                }
-
-                return (
-                    <SmsIntegrationCreate
-                        selectedPhoneNumberId={
-                            phoneNumberId
-                                ? Number.parseInt(phoneNumberId, 10)
-                                : undefined
-                        }
-                    />
-                )
-            }
-
-            return <SmsIntegrationsListContainer />
+            return <SmsIntegration />
         }
 
         case IntegrationType.SmoochInside:

@@ -6,12 +6,10 @@ import {getIntegrationById} from 'state/integrations/selectors'
 import PageHeader from 'pages/common/components/PageHeader'
 
 import AppDetails from 'pages/integrations/components/Detail'
-
 import PhoneIntegrationBreadcrumbs from 'pages/integrations/integration/components/phone/PhoneIntegrationBreadcrumbs'
-
+import PhoneIntegrationsList from 'pages/integrations/integration/components/phone/PhoneIntegrationsList'
 import SmsIntegrationPreferences from 'pages/integrations/integration/components/sms/SmsIntegrationPreferences'
 import SmsIntegrationCreate from 'pages/integrations/integration/components/sms/SmsIntegrationCreate'
-import PhoneIntegrationsList from 'pages/integrations/integration/components/phone/PhoneIntegrationsList'
 import SmsIntegrationSecondaryNavigation from 'pages/integrations/integration/components/sms/SmsIntegrationSecondaryNavigation'
 
 import {IntegrationType, isSmsIntegration} from 'models/integration/types'

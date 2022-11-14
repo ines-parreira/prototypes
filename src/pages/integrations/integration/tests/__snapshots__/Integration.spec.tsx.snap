@@ -151,7 +151,7 @@ exports[`<IntegrationDetail /> http should render the page of an event for a sp
 
 exports[`<IntegrationDetail /> phone should render the voicemail tab of a specific integration 1`] = `
 <div>
-  PhoneIntegrationVoicemail
+  VoiceIntegration
 </div>
 `;
 
@@ -205,13 +205,13 @@ exports[`<IntegrationDetail /> should render the creation page for facebook 1`] 
 
 exports[`<IntegrationDetail /> should render the creation page for phone 1`] = `
 <div>
-  PhoneIntegrationCreate
+  VoiceIntegration
 </div>
 `;
 
 exports[`<IntegrationDetail /> should render the creation page for sms 1`] = `
 <div>
-  SmsIntegrationCreate
+  SmsIntegration
 </div>
 `;
 
@@ -289,7 +289,7 @@ exports[`<IntegrationDetail /> should render the list or detail page of integrat
 
 exports[`<IntegrationDetail /> should render the list or detail page of integrations for phone 1`] = `
 <div>
-  PhoneIntegrationsList
+  VoiceIntegration
 </div>
 `;
 
@@ -325,7 +325,7 @@ exports[`<IntegrationDetail /> should render the list or detail page of integrat
 
 exports[`<IntegrationDetail /> should render the list or detail page of integrations for sms 1`] = `
 <div>
-  SmsIntegrationsList
+  SmsIntegration
 </div>
 `;
 
@@ -522,7 +522,7 @@ exports[`<IntegrationDetail /> should render the preferences tab of a specific i
 
 exports[`<IntegrationDetail /> should render the preferences tab of a specific integrations for phone 1`] = `
 <div>
-  VoiceIntegrationPreferences
+  VoiceIntegration
 </div>
 `;
 
@@ -534,7 +534,7 @@ exports[`<IntegrationDetail /> should render the preferences tab of a specific i
 
 exports[`<IntegrationDetail /> should render the preferences tab of a specific integrations for sms 1`] = `
 <div>
-  SmsAppPreferences
+  SmsIntegration
 </div>
 `;
 

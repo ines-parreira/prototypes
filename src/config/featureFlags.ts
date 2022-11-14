@@ -8,7 +8,6 @@ export enum FeatureFlagKey {
     PrefillBestMacro = 'pre-fill-best-macro',
     NewPhoneErrorHandling = 'new-phone-error-handling',
     HelpCenterEmbeddedContactForm = 'help-center-embedded-contact-form',
-    NewVoiceSmsLayout = 'new-voice-sms-layout',
     ElasticsearchSearchLoadTest = 'elasticsearch-search-load-test',
     ElasticsearchTicketSearch = 'elasticsearch-ticket-search',
     SelfServiceLoopReturnsFlow = 'self-service-loop-returns-flow',

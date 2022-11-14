@@ -2,9 +2,7 @@ import React, {useState, useCallback, useMemo} from 'react'
 import {sortBy, reverse} from 'lodash'
 import {useDeepCompareEffect} from 'react-use'
 import {Container} from 'reactstrap'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {OrderDirection} from 'models/api/types'
 import {
     PhoneIntegration,
@@ -103,23 +101,19 @@ export function PhoneIntegrationsList({type}: Props): JSX.Element | null {
         [setOrderBy, setOrderDirection, orderBy, orderDirection]
     )
 
-    const showNewVoiceSmsLayout = useFlags()[FeatureFlagKey.NewVoiceSmsLayout]
-
     if (!sortedRows.length) {
-        if (showNewVoiceSmsLayout) {
-            return (
-                <Container fluid className={settingsCss.pageContainer}>
-                    <p>You have no integration of this type at the moment.</p>
-                    <Button
-                        onClick={() =>
-                            history.push('/app/settings/channels/phone/new')
-                        }
-                    >
-                        Add {type === IntegrationType.Phone ? 'Voice' : 'SMS'}
-                    </Button>
-                </Container>
-            )
-        }
+        return (
+            <Container fluid className={settingsCss.pageContainer}>
+                <p>You have no integration of this type at the moment.</p>
+                <Button
+                    onClick={() =>
+                        history.push(`/app/settings/channels/${type}/new`)
+                    }
+                >
+                    Add {type === IntegrationType.Phone ? 'Voice' : 'SMS'}
+                </Button>
+            </Container>
+        )
 
         return null
     }
@@ -187,59 +181,52 @@ export function PhoneIntegrationsList({type}: Props): JSX.Element | null {
                     })}
                 </TableBody>
             </TableWrapper>
-            {showNewVoiceSmsLayout && (
-                <Container fluid className={css.footer}>
-                    {type === IntegrationType.Phone && (
-                        <>
-                            <p>
-                                Make and receive phone calls from Gorgias with
-                                easy access to customer data and conversation
-                                history.{' '}
-                                <a
-                                    href={config?.pricingLink}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    Additional charges apply.
-                                </a>
-                            </p>
-                            <Button
-                                onClick={() =>
-                                    history.push(
-                                        `/app/settings/channels/phone/new`
-                                    )
-                                }
+            <Container fluid className={css.footer}>
+                {type === IntegrationType.Phone && (
+                    <>
+                        <p>
+                            Make and receive phone calls from Gorgias with easy
+                            access to customer data and conversation history.{' '}
+                            <a
+                                href={config?.pricingLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
                             >
-                                Add Voice
-                            </Button>
-                        </>
-                    )}
-                    {type === IntegrationType.Sms && (
-                        <>
-                            <p>
-                                Send and receive text messages in Gorgias for
-                                seamless conversations with customers on the go.{' '}
-                                <a
-                                    href={config?.pricingLink}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    Additional charges apply.
-                                </a>
-                            </p>
-                            <Button
-                                onClick={() =>
-                                    history.push(
-                                        `/app/settings/channels/sms/new`
-                                    )
-                                }
+                                Additional charges apply.
+                            </a>
+                        </p>
+                        <Button
+                            onClick={() =>
+                                history.push(`/app/settings/channels/phone/new`)
+                            }
+                        >
+                            Add Voice
+                        </Button>
+                    </>
+                )}
+                {type === IntegrationType.Sms && (
+                    <>
+                        <p>
+                            Send and receive text messages in Gorgias for
+                            seamless conversations with customers on the go.{' '}
+                            <a
+                                href={config?.pricingLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
                             >
-                                Add SMS
-                            </Button>
-                        </>
-                    )}
-                </Container>
-            )}
+                                Additional charges apply.
+                            </a>
+                        </p>
+                        <Button
+                            onClick={() =>
+                                history.push(`/app/settings/channels/sms/new`)
+                            }
+                        >
+                            Add SMS
+                        </Button>
+                    </>
+                )}
+            </Container>
         </>
     )
 }

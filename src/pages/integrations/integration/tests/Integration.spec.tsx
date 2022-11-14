@@ -120,31 +120,11 @@ jest.mock(
     () => () => <div>GorgiasChatIntegrationSelfService</div>
 )
 
-jest.mock('../components/phone/PhoneIntegrationsListContainer', () => () => (
-    <div>PhoneIntegrationsList</div>
+jest.mock('../components/sms/SmsIntegration', () => () => (
+    <div>SmsIntegration</div>
 ))
-jest.mock('../components/phone/PhoneIntegrationCreate', () => () => (
-    <div>PhoneIntegrationCreate</div>
-))
-jest.mock('../components/phone/VoiceAppPreferences', () => () => (
-    <div>VoiceIntegrationPreferences</div>
-))
-jest.mock('../components/phone/PhoneIntegrationVoicemail', () => () => (
-    <div>PhoneIntegrationVoicemail</div>
-))
-jest.mock('../components/phone/PhoneIntegrationCreate', () => () => (
-    <div>PhoneIntegrationCreate</div>
-))
-
-jest.mock(
-    '../components/DEPRECATED_sms/SmsIntegrationsListContainer',
-    () => () => <div>SmsIntegrationsList</div>
-)
-jest.mock('../components/DEPRECATED_sms/SmsIntegrationCreate', () => () => (
-    <div>SmsIntegrationCreate</div>
-))
-jest.mock('../components/DEPRECATED_sms/SmsAppPreferences', () => () => (
-    <div>SmsAppPreferences</div>
+jest.mock('../components/voice/VoiceIntegration', () => () => (
+    <div>VoiceIntegration</div>
 ))
 
 jest.mock('../components/chat/ChatIntegrationList', () => () => (
