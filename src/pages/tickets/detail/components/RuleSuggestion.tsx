@@ -1,7 +1,8 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import _pick from 'lodash/pick'
 import {fromJS} from 'immutable'
+import {Collapse} from 'reactstrap'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -44,6 +45,7 @@ type RuleSuggestionData = {
 }
 
 const RuleSuggestion = ({ticket}: Props) => {
+    const [isOpen, setIsOpen] = useState(true)
     const dispatch = useAppDispatch()
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
     const ruleSuggestionFeatureFlag = useFlags()[FeatureFlagKey.RuleSuggestion]
@@ -166,20 +168,29 @@ const RuleSuggestion = ({ticket}: Props) => {
                             Apply & Send
                         </Button>
                     </div>
-                    <div className={css.chevron}>
-                        <i className="material-icons-round">expand_less</i>
+                    <div
+                        className={css.chevron}
+                        onClick={() => setIsOpen(!isOpen)}
+                    >
+                        <i className="material-icons-round">
+                            {isOpen ? 'expand_less' : 'expand_more'}
+                        </i>
                     </div>
                 </div>
             </header>
             <div className={css.bodyContainer}>
-                {text?.body_html && (
-                    <div className={css.textContainer}>
-                        <div
-                            dangerouslySetInnerHTML={{__html: text.body_html}}
-                        />
-                    </div>
-                )}
-                <div>{/* Actions Placehold  */}</div>
+                <Collapse isOpen={isOpen}>
+                    {text?.body_html && (
+                        <div className={css.textContainer}>
+                            <div
+                                dangerouslySetInnerHTML={{
+                                    __html: text.body_html,
+                                }}
+                            />
+                        </div>
+                    )}
+                    <div>{/* Actions Placehold  */}</div>
+                </Collapse>
             </div>
         </div>
     ) : null

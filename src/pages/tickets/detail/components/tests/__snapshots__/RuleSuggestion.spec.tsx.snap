@@ -99,15 +99,19 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
       class="bodyContainer"
     >
       <div
-        class="textContainer"
+        class="collapse show"
       >
-        <div>
+        <div
+          class="textContainer"
+        >
           <div>
-            Text coming from rule suggestion
+            <div>
+              Text coming from rule suggestion
+            </div>
           </div>
         </div>
+        <div />
       </div>
-      <div />
     </div>
   </div>
 </div>
