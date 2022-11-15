@@ -15,7 +15,10 @@ import Button from 'pages/common/components/button/Button'
 import useAppSelector from 'hooks/useAppSelector'
 
 import {CreateHelpCenterDto, LocaleCode} from 'models/helpCenter/types'
-import {helpCenterCreated} from 'state/entities/helpCenter/helpCenters/actions'
+import {
+    helpCenterCreated,
+    helpCenterUpdated,
+} from 'state/entities/helpCenter/helpCenters/actions'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 import {notify as notifyAction} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -55,6 +58,7 @@ import {
     isGenericEmailIntegration,
 } from '../../../../constants/integration'
 
+import useAppDispatch from '../../../../hooks/useAppDispatch'
 import css from './HelpCenterNewView.less'
 import {LanguageBadgeTags} from './HelpCenterPreferencesView/components/AvailableLanguagesTags/LanguageBadgeTags'
 
@@ -78,6 +82,7 @@ export const HelpCenterNewView = ({
     notify,
     helpCenterCreated,
 }: Props): JSX.Element => {
+    const dispatch = useAppDispatch()
     const history = useHistory()
     const location = useLocation()
     const locales = useSupportedLocales()
@@ -242,14 +247,23 @@ export const HelpCenterNewView = ({
             if (isNaN(createdHelpCenter.id)) {
                 navigateToStartView()
             } else {
-                for (const locale of otherLocales) {
-                    await client.createHelpCenterTranslation(
-                        {
-                            help_center_id: createdHelpCenter.id,
-                        },
-                        getNewHelpCenterTranslation(locale)
+                await Promise.all(
+                    otherLocales.map((locale) =>
+                        client.createHelpCenterTranslation(
+                            {
+                                help_center_id: createdHelpCenter.id,
+                            },
+                            getNewHelpCenterTranslation(locale)
+                        )
                     )
-                }
+                )
+
+                dispatch(
+                    helpCenterUpdated({
+                        ...createdHelpCenter,
+                        supported_locales: [defaultLocale, ...otherLocales],
+                    })
+                )
 
                 navigateToHelpCenterArticles(createdHelpCenter.id)
             }
