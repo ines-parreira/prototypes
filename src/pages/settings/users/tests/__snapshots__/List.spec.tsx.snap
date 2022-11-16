@@ -85,6 +85,11 @@ exports[`<List /> should render 1`] = `
           class="meta"
         />
         <span
+          class="status"
+        >
+          Status
+        </span>
+        <span
           class="role"
         >
           Role
@@ -134,6 +139,16 @@ exports[`<List /> should render 1`] = `
               support@acme.gorgias.io
             </p>
           </span>
+          <div
+            class="status statusLabel d-flex align-items-center flex-wrap"
+          >
+            <div
+              class="statusDot neutral"
+            />
+            <div>
+              Unavailable
+            </div>
+          </div>
           <span
             class="role"
           >

@@ -8,7 +8,7 @@ import {Map} from 'immutable'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import Pagination from 'pages/common/components/Pagination'
-import {fetchPagination} from 'state/agents/actions'
+import {fetchAgents} from 'state/agents/actions'
 import {getPaginatedAgents, getPagination} from 'state/agents/selectors'
 import PageHeader from 'pages/common/components/PageHeader'
 import {RootState} from 'state/types'
@@ -98,6 +98,7 @@ export class UserListContainer extends Component<Props, State> {
                                 User
                             </span>
                             <span className={cssRow.meta} />
+                            <span className={cssRow.status}>Status</span>
                             <span className={cssRow.role}>Role</span>
                             <span className={cssRow.twoFa}>2FA enabled</span>
                             <span className={cssRow.delete} />
@@ -142,7 +143,7 @@ const connector = connect(
         accessSettings: getAccessSettings(state),
     }),
     {
-        fetchAgents: fetchPagination,
+        fetchAgents,
     }
 )
 

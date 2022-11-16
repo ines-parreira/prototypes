@@ -9,10 +9,13 @@ import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import {RoleLabel} from 'pages/common/utils/labels'
 import Avatar from 'pages/common/components/Avatar/Avatar'
-import {fetchPagination, deleteAgent} from 'state/agents/actions'
+import {deleteAgent, fetchAgents} from 'state/agents/actions'
 import {toJS} from 'utils'
 
+import {User} from 'config/types/user'
 import css from './Row.less'
+import Status from './Status/Status'
+import {getAvailabilityStatus} from './utils'
 
 type Props = {
     agent: Map<any, any>
@@ -33,31 +36,44 @@ export class RowContainer extends Component<Props> {
     }
 
     render() {
-        const {agent, isAccountOwner} = this.props
-        const editLink = `/app/settings/users/${agent.get('id') as number}`
-        const has2FaEnabled = agent.get('has_2fa_enabled')
+        const {agent: agentMap, isAccountOwner} = this.props
+        const agent: User = agentMap.toJS()
+
+        const editLink = `/app/settings/users/${agent.id}`
+        const has2FaEnabled = agent.has_2fa_enabled
+
+        const availabilityStatus = agent.availability_status
+            ? getAvailabilityStatus(agent.availability_status)
+            : null
 
         return (
             <Link to={editLink} className={css.component}>
                 <span className="d-flex align-items-center">
                     <Avatar
-                        name={agent.get('name') || agent.get('email')}
-                        url={agent.getIn(['meta', 'profile_picture_url'])}
+                        name={agent.name || agent.email}
+                        url={
+                            (agent.meta?.profile_picture_url ??
+                                '') as unknown as string
+                        }
                         size={36}
                         className={classnames(css.avatar, 'd-none d-md-block')}
                     />
                     <span className={css.meta}>
-                        <p className={css.name}>
-                            {agent.get('name') || agent.get('email')}
-                        </p>
-                        {agent.get('name') != null && (
+                        <p className={css.name}>{agent.name || agent.email}</p>
+                        {agent.name != null && (
                             <p className={classnames(css.email, 'text-faded')}>
-                                {agent.get('email')}
+                                {agent.email}
                             </p>
                         )}
                     </span>
+                    {availabilityStatus && (
+                        <Status
+                            {...availabilityStatus}
+                            className={css.status}
+                        />
+                    )}
                     <span className={css.role}>
-                        <RoleLabel role={toJS(agent.get('role'))} />
+                        <RoleLabel role={toJS(agent.role)} />
                         {isAccountOwner && (
                             <Badge type={ColorType.Dark}>Account Owner</Badge>
                         )}
@@ -78,7 +94,7 @@ export class RowContainer extends Component<Props> {
                             buttonProps={{
                                 intent: 'destructive',
                             }}
-                            id={`delete-agent-${agent.get('id') as number}`}
+                            id={`delete-agent-${agent.id}`}
                             content={
                                 <span>
                                     You are about to <b>delete</b> this user.
@@ -109,7 +125,7 @@ export class RowContainer extends Component<Props> {
 }
 
 const connector = connect(null, {
-    fetchAgents: fetchPagination,
+    fetchAgents,
     deleteAgent,
 })
 
