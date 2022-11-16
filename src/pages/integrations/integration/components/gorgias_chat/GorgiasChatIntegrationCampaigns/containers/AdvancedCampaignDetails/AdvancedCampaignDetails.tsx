@@ -37,6 +37,9 @@ import {CampaignFooter} from '../../components/CampaignFooter'
 import {AdvancedTriggersForm} from '../../components/AdvancedTriggersForm'
 import {CampaignDetailsHeader} from '../../components/CampaignDetailsHeader'
 import {AdvancedTriggersSelect} from '../../components/AdvancedTriggersSelect'
+import {CampaignCollisionForm} from '../../components/CampaignCollisionForm'
+
+import {SingleCampaignInViewOperators} from '../../types/enums/SingleCampaignInViewOperators.enum'
 
 import css from './AdvancedCampaignDetails.less'
 
@@ -159,6 +162,30 @@ export const AdvancedCampaignDetails = memo(
                 }
             },
             [agents, setCampaignAgent]
+        )
+
+        const handleToggleSingleCampaignInView = useCallback(
+            (triggerId: string, value: boolean) => {
+                if (value === true) {
+                    const newKey = _uniqueId()
+                    updateTriggers(
+                        produce(triggers, (draft) => {
+                            draft[newKey] = {
+                                key: CampaignTriggerKey.SingleInView,
+                                value: 'true',
+                                operator: SingleCampaignInViewOperators.Equal,
+                            }
+                        })
+                    )
+                } else {
+                    updateTriggers(
+                        produce(triggers, (draft) => {
+                            delete draft[triggerId]
+                        })
+                    )
+                }
+            },
+            [triggers, updateTriggers]
         )
 
         const handleSaveCampaign = async () => {
@@ -287,19 +314,29 @@ export const AdvancedCampaignDetails = memo(
                                 onChange={setCampaignName}
                             />
                         </div>
+
                         <h5 className={css.section}>Choose your audience</h5>
-                        <TriggersProvider
-                            triggers={triggers}
-                            onUpdateTrigger={handleUpdateTrigger}
-                            onDeleteTrigger={handleDeleteTrigger}
-                        >
-                            <AdvancedTriggersForm triggers={triggers} />
-                        </TriggersProvider>
-                        <AdvancedTriggersSelect
-                            isShopifyStore={isShopifyStore}
-                            isRevenueBetaTester={isRevenueBetaTester}
-                            onClick={handleAddTrigger}
-                        />
+                        <div className="mb-4">
+                            <TriggersProvider
+                                triggers={triggers}
+                                onUpdateTrigger={handleUpdateTrigger}
+                                onDeleteTrigger={handleDeleteTrigger}
+                            >
+                                <AdvancedTriggersForm triggers={triggers} />
+                            </TriggersProvider>
+                            <AdvancedTriggersSelect
+                                isShopifyStore={isShopifyStore}
+                                isRevenueBetaTester={isRevenueBetaTester}
+                                onClick={handleAddTrigger}
+                            />
+                        </div>
+
+                        {isRevenueBetaTester && (
+                            <CampaignCollisionForm
+                                triggers={triggers}
+                                onChange={handleToggleSingleCampaignInView}
+                            />
+                        )}
 
                         <h5 className={css.section}>Write your message</h5>
                         {stateInitialized && (

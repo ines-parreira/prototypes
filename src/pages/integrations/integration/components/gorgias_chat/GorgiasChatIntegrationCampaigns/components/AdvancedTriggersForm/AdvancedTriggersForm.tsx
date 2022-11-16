@@ -1,6 +1,7 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 
 import {CampaignTriggerMap} from '../../types/CampaignTriggerMap'
+import {CampaignTriggerKey} from '../../types/enums/CampaignTriggerKey.enum'
 
 import {AdvancedTriggerFactory} from '../AdvancedTriggerFactory'
 
@@ -9,9 +10,21 @@ type Props = {
 }
 
 export const AdvancedTriggersForm = ({triggers}: Props): JSX.Element => {
+    const formTriggers = useMemo<CampaignTriggerMap>(() => {
+        return Object.entries(triggers).reduce((acc, [id, trigger]) => {
+            if (trigger.key === CampaignTriggerKey.SingleInView) {
+                return acc
+            }
+            return {
+                ...acc,
+                [id]: trigger,
+            }
+        }, {})
+    }, [triggers])
+
     return (
         <div className="mb-4">
-            {Object.entries(triggers).map(([id, trigger], index) => (
+            {Object.entries(formTriggers).map(([id, trigger], index) => (
                 <AdvancedTriggerFactory
                     key={id}
                     id={id}
