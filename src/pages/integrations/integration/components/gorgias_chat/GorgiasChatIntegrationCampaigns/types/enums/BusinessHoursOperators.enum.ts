@@ -1,9 +1,10 @@
 export enum BusinessHoursOperators {
     DuringHours = 'during',
     OutsideHours = 'outside',
+    Anytime = 'anytime',
 }
 
-const BUSINESS_HOURS_OPERATORS = ['during', 'outside']
+const BUSINESS_HOURS_OPERATORS = ['during', 'outside', 'anytime']
 
 export function isBusinessHoursOperator(
     operator: string

@@ -40,6 +40,10 @@ export const BUSINESS_HOURS_OPERATORS = [
         label: 'Outside business hours',
         value: BusinessHoursOperators.OutsideHours,
     },
+    {
+        label: 'Anytime',
+        value: BusinessHoursOperators.Anytime,
+    },
 ]
 
 export const CART_VALUE_OPERATORS = [
