@@ -240,27 +240,94 @@ describe('ticket selectors', () => {
         )
     })
 
-    it('getBody', () => {
-        expect(selectors.getBody({} as RootState)).toEqualImmutable(fromJS([]))
+    describe('getBody', () => {
+        it('should get body', () => {
+            expect(selectors.getBody({} as RootState)).toEqualImmutable(
+                fromJS([])
+            )
 
-        const body = selectors.getBody(state)
-        expect(body).toBeInstanceOf(List)
-        expect(body.size).toBe(8)
+            const body = selectors.getBody(state)
+            expect(body).toBeInstanceOf(List)
+            expect(body.size).toBe(8)
 
-        body.take(2).forEach((element: Map<any, any>) => {
-            expect(element.get('isEvent')).toBe(true)
+            body.take(2).forEach((element: Map<any, any>) => {
+                expect(element.get('isEvent')).toBe(true)
+            })
+
+            body.slice(2, 6).forEach((element: Map<any, any>) => {
+                expect(element.get('isMessage')).toBe(true)
+            })
+
+            expect((body.get(5) as Map<any, any>).get('isPending')).toBe(false)
+            expect((body.get(6) as Map<any, any>).get('isPending')).toBe(true)
+            expect((body.get(7) as Map<any, any>).get('isRuleSuggestion')).toBe(
+                true
+            )
+            expect(body).toMatchSnapshot()
         })
 
-        body.slice(2, 6).forEach((element: Map<any, any>) => {
-            expect(element.get('isMessage')).toBe(true)
-        })
-
-        expect((body.get(5) as Map<any, any>).get('isPending')).toBe(false)
-        expect((body.get(6) as Map<any, any>).get('isPending')).toBe(true)
-        expect((body.get(7) as Map<any, any>).get('isRuleSuggestion')).toBe(
-            true
+        it.each([
+            [
+                [
+                    {
+                        id: 1,
+                        sent_datetime: '2017-07-25T21:01:00',
+                        created_datetime: '2017-07-24T21:00:00',
+                        from_agent: true,
+                    },
+                    {
+                        id: 2,
+                        sent_datetime: '2017-07-29T21:01:00',
+                        created_datetime: '2017-07-29T21:00:00',
+                        from_agent: true,
+                    },
+                    {
+                        id: 3,
+                        sent_datetime: '2017-07-31T21:01:00',
+                        created_datetime: '2017-07-31T21:00:00',
+                        from_agent: false,
+                    },
+                ],
+                2,
+            ],
+            [
+                [
+                    {
+                        id: 1,
+                        sent_datetime: '2017-07-25T21:01:00',
+                        created_datetime: '2017-07-24T21:00:00',
+                        from_agent: false,
+                    },
+                    {
+                        id: 2,
+                        sent_datetime: '2017-07-29T21:01:00',
+                        created_datetime: '2017-07-29T21:00:00',
+                        from_agent: false,
+                    },
+                    {
+                        id: 3,
+                        sent_datetime: '2017-07-31T21:01:00',
+                        created_datetime: '2017-07-31T21:00:00',
+                        from_agent: false,
+                    },
+                ],
+                7,
+            ],
+        ])(
+            'should set rule suggestion above the first message of any agent or at the end of the thread',
+            (messages, expectedIndex) => {
+                const newState = {
+                    ...state,
+                    ticket: state.ticket.setIn(['messages'], fromJS(messages)),
+                }
+                const body = selectors.getBody(newState)
+                const ruleSuggestionIndex = body.findIndex(
+                    (element: Map<any, any>) =>
+                        element.get('isRuleSuggestion') as boolean
+                )
+                expect(ruleSuggestionIndex).toBe(expectedIndex)
+            }
         )
-        expect(body).toMatchSnapshot()
     })
 
     it('getAppliedMacro', () => {

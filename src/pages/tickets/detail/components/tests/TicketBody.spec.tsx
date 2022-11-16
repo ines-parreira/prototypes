@@ -434,4 +434,37 @@ describe('TicketBody', () => {
         component.dive().dive()
         expect(mockReport).toHaveBeenCalled()
     })
+
+    it('should display rule suggestion in correct order', () => {
+        const component = shallow(
+            <TicketBodyVirtualized
+                {...commonProps}
+                elements={fromJS([
+                    {
+                        ...message,
+                        id: 1,
+                        created_datetime: '2017-07-01T18:00:00',
+                    },
+                    {
+                        id: 1,
+                        slug: 'slug',
+                        actions: [
+                            {
+                                args: [{body_text: 'body_text'}],
+                                name: 'replyToTicket',
+                            },
+                        ],
+                        isRuleSuggestion: true,
+                    },
+                    {
+                        ...message,
+                        id: 2,
+                        created_datetime: '2017-07-01T18:30:00',
+                    },
+                ])}
+            />
+        )
+
+        expect(component.dive().dive()).toMatchSnapshot()
+    })
 })

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ticket selectors getBody 1`] = `
+exports[`ticket selectors getBody should get body 1`] = `
 Immutable.List [
   Immutable.Map {
     "id": 2,

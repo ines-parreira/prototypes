@@ -571,3 +571,122 @@ exports[`TicketBody should display phone events 1`] = `
   />
 </Fragment>
 `;
+
+exports[`TicketBody should display rule suggestion in correct order 1`] = `
+<Fragment>
+  <TicketHeaderWrapper />
+  <TicketMessages
+    hasCursor={false}
+    highlightedElements={null}
+    id="message-1"
+    key="message-1"
+    lastCustomerMessage={Immutable.Map {}}
+    lastMessageDatetimeAfterMount={"2017-07-01T18:30:00.000Z"}
+    lastReadMessageId={1}
+    messages={
+      Array [
+        Object {
+          "actions": null,
+          "attachments": Array [],
+          "channel": "email",
+          "created_datetime": "2017-07-01T18:00:00",
+          "external_id": null,
+          "failed_datetime": null,
+          "from_agent": false,
+          "id": 1,
+          "integration_id": null,
+          "isMessage": true,
+          "is_retriable": false,
+          "meta": null,
+          "opened_datetime": null,
+          "public": true,
+          "receiver": Object {
+            "email": "mary.poppins@example.com",
+            "firstname": "Mary",
+            "id": 2,
+            "lastname": "Poppins",
+            "name": "Mary Poppins",
+          },
+          "rule_id": null,
+          "sender": Object {
+            "email": "john.doe@example.com",
+            "firstname": "John",
+            "id": 1,
+            "lastname": "Doe",
+            "name": "John Doe",
+          },
+          "stripped_html": null,
+          "stripped_signature": null,
+          "stripped_text": null,
+          "subject": "Some subject",
+          "uri": "http://example.com/messages/1",
+          "via": "email",
+        },
+      ]
+    }
+    setStatus={[Function]}
+    ticketId={1}
+    timezone="UTC"
+  />
+  <RuleSuggestion
+    ticket={
+      Object {
+        "id": 1,
+      }
+    }
+  />
+  <TicketMessages
+    hasCursor={false}
+    highlightedElements={null}
+    id="message-3"
+    key="message-3"
+    lastCustomerMessage={Immutable.Map {}}
+    lastMessageDatetimeAfterMount={"2017-07-01T18:30:00.000Z"}
+    lastReadMessageId={1}
+    messages={
+      Array [
+        Object {
+          "actions": null,
+          "attachments": Array [],
+          "channel": "email",
+          "created_datetime": "2017-07-01T18:30:00",
+          "external_id": null,
+          "failed_datetime": null,
+          "from_agent": false,
+          "id": 2,
+          "integration_id": null,
+          "isMessage": true,
+          "is_retriable": false,
+          "meta": null,
+          "opened_datetime": null,
+          "public": true,
+          "receiver": Object {
+            "email": "mary.poppins@example.com",
+            "firstname": "Mary",
+            "id": 2,
+            "lastname": "Poppins",
+            "name": "Mary Poppins",
+          },
+          "rule_id": null,
+          "sender": Object {
+            "email": "john.doe@example.com",
+            "firstname": "John",
+            "id": 1,
+            "lastname": "Doe",
+            "name": "John Doe",
+          },
+          "stripped_html": null,
+          "stripped_signature": null,
+          "stripped_text": null,
+          "subject": "Some subject",
+          "uri": "http://example.com/messages/1",
+          "via": "email",
+        },
+      ]
+    }
+    setStatus={[Function]}
+    ticketId={1}
+    timezone="UTC"
+  />
+</Fragment>
+`;

@@ -327,8 +327,16 @@ export const getBody = createImmutableSelector<
             )
             .concat(activePendingMessages) as List<any>
 
-        if (ruleSuggestion)
-            body = body.push(ruleSuggestion.set('isRuleSuggestion', true))
+        if (ruleSuggestion) {
+            const index = body.findIndex(
+                (message: Map<any, any>) =>
+                    !!message.get('isMessage') && !!message.get('from_agent')
+            )
+            body = body.insert(
+                index !== -1 ? index : body.size,
+                ruleSuggestion.set('isRuleSuggestion', true)
+            )
+        }
 
         return body
     }
