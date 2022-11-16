@@ -130,11 +130,11 @@ export const fetchAgent =
             ) as Promise<Map<any, any>>
     }
 
-export const fetchAgents =
+export const fetchPagination =
     (page = 1) =>
     (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         return client
-            .get<User[]>('/api/users?relationships=availability_status', {
+            .get<User[]>('/api/users/', {
                 paramsSerializer: (params) => {
                     return qs.stringify(params, {arrayFormat: 'repeat'})
                 },

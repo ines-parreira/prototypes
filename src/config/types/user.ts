@@ -41,37 +41,6 @@ export type User = UserDraft & {
     settings: UserSetting[]
     timezone: string | null
     has_2fa_enabled: boolean
-    availability_status?: AvailabilityStatus<AvailabilityStatusChannel.Phone>
-}
-
-export enum AvailabilityStatusChannel {
-    Phone = 'phone',
-}
-
-export enum AvailabilityStatusTag {
-    Online = 'online',
-    Offline = 'offline',
-    Busy = 'busy',
-}
-
-export enum AvailabilityStatusDetailCode {
-    NotConnected = 1,
-    AvailabilitySettingTurnedOff = 2,
-    PhoneRinging = 3,
-    InPhoneCall = 4,
-}
-
-export type AvailabilityStatus<Channel extends AvailabilityStatusChannel> = {
-    status: AvailabilityStatusTag
-    status_detail_code: AvailabilityStatusDetailCode | null
-    channel: Channel
-}
-
-export enum PhoneAvailabilityStatus {
-    Unavailable = 'Unavailable',
-    Available = 'Available',
-    InPhoneCall = 'In phone call',
-    Ringing = 'Ringing',
 }
 
 export type EditableUserProfile = {

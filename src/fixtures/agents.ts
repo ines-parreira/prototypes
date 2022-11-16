@@ -1,10 +1,4 @@
-import {
-    UserRole,
-    User,
-    AvailabilityStatusChannel,
-    AvailabilityStatusTag,
-    AvailabilityStatusDetailCode,
-} from '../config/types/user'
+import {UserRole, User} from '../config/types/user'
 
 export const agents: User[] = [
     {
@@ -28,11 +22,6 @@ export const agents: User[] = [
         language: 'en-US',
         timezone: 'UTC',
         has_2fa_enabled: false,
-        availability_status: {
-            channel: AvailabilityStatusChannel.Phone,
-            status_detail_code: AvailabilityStatusDetailCode.NotConnected,
-            status: AvailabilityStatusTag.Offline,
-        },
     },
     {
         lastname: 'Smith',
