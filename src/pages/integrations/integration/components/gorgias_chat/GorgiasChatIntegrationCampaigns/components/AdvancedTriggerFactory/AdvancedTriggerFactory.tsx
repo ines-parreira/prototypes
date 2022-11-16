@@ -10,6 +10,7 @@ import {BaseTriggerRow} from './BaseTriggerRow'
 import {BusinessHoursTrigger} from './BusinessHoursTrigger'
 import {CartValueTrigger} from './CartValueTrigger'
 import {CurrentUrlTrigger} from './CurrentUrlTrigger'
+import {ExitIntentTrigger} from './ExitIntentTrigger'
 import {ProductTagsTrigger} from './ProductTagsTrigger'
 import {SessionTimeTrigger} from './SessionTimeTrigger'
 import {TimeSpentOnPageTrigger} from './TimeSpentOnPageTrigger'
@@ -50,6 +51,8 @@ export const AdvancedTriggerFactory = ({
                 return <VisitCountTrigger {...baseProps} />
             case CampaignTriggerKey.SessionTime:
                 return <SessionTimeTrigger {...baseProps} />
+            case CampaignTriggerKey.ExitIntent:
+                return <ExitIntentTrigger />
 
             default:
                 return <div />

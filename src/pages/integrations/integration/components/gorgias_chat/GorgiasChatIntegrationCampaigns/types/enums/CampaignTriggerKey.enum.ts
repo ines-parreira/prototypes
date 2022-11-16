@@ -7,4 +7,5 @@ export enum CampaignTriggerKey {
     VisitCount = 'visit_count',
     SessionTime = 'session_time',
     SingleInView = 'single_in_view',
+    ExitIntent = 'exit_intent',
 }

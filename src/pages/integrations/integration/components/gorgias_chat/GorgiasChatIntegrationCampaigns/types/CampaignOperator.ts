@@ -1,6 +1,7 @@
 import {BusinessHoursOperators} from './enums/BusinessHoursOperators.enum'
 import {CartValueOperators} from './enums/CartValueOperators.enum'
 import {CurrentUrlOperators} from './enums/CurrentUrlOperators.enum'
+import {ExitIntentOperators} from './enums/ExitIntentOperators.enum'
 import {ProductTagsOperators} from './enums/ProductTagsOperators.enum'
 import {SessionTimeOperators} from './enums/SessionTimeOperators.enum'
 import {SingleCampaignInViewOperators} from './enums/SingleCampaignInViewOperators.enum'
@@ -16,3 +17,4 @@ export type CampaignOperator =
     | VisitCountOperators
     | SessionTimeOperators
     | SingleCampaignInViewOperators
+    | ExitIntentOperators

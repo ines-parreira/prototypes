@@ -1,6 +1,7 @@
 import {renderHook} from 'react-hooks-testing-library'
 
 import {CampaignTriggerKey} from '../../types/enums/CampaignTriggerKey.enum'
+import {ExitIntentOperators} from '../../types/enums/ExitIntentOperators.enum'
 import {SessionTimeOperators} from '../../types/enums/SessionTimeOperators.enum'
 
 import {useAvailableTriggerList} from '../useAvailableTriggerList'
@@ -100,6 +101,17 @@ describe('useAvailableTriggerList()', () => {
                     defaults: {
                         value: 0,
                         operator: SessionTimeOperators.GreaterThan,
+                    },
+                    requirements: {
+                        revenue: true,
+                    },
+                },
+                {
+                    key: CampaignTriggerKey.ExitIntent,
+                    label: 'Exit intent',
+                    defaults: {
+                        value: 'true',
+                        operator: ExitIntentOperators.Equal,
                     },
                     requirements: {
                         revenue: true,

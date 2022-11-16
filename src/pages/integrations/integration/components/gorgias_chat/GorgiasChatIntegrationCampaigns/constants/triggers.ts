@@ -2,6 +2,7 @@ import {BusinessHoursOperators} from '../types/enums/BusinessHoursOperators.enum
 import {CampaignTriggerKey} from '../types/enums/CampaignTriggerKey.enum'
 import {CartValueOperators} from '../types/enums/CartValueOperators.enum'
 import {CurrentUrlOperators} from '../types/enums/CurrentUrlOperators.enum'
+import {ExitIntentOperators} from '../types/enums/ExitIntentOperators.enum'
 import {ProductTagsOperators} from '../types/enums/ProductTagsOperators.enum'
 import {SessionTimeOperators} from '../types/enums/SessionTimeOperators.enum'
 import {TimeSpentOnPageOperators} from '../types/enums/TimeSpentOnPageOperators.enum'
@@ -54,6 +55,17 @@ export const TRIGGER_LIST = [
         defaults: {
             value: 0,
             operator: SessionTimeOperators.GreaterThan,
+        },
+        requirements: {
+            revenue: true,
+        },
+    },
+    {
+        key: CampaignTriggerKey.ExitIntent,
+        label: 'Exit intent',
+        defaults: {
+            value: 'true',
+            operator: ExitIntentOperators.Equal,
         },
         requirements: {
             revenue: true,
