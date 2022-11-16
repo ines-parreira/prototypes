@@ -2,9 +2,12 @@ import React, {useEffect, useMemo, useState} from 'react'
 import {useDebounce, useAsyncFn, useEffectOnce} from 'react-use'
 import classnames from 'classnames'
 import {Container} from 'reactstrap'
-import {Link, withRouter, RouteComponentProps} from 'react-router-dom'
-import history from 'pages/history'
-
+import {
+    Link,
+    withRouter,
+    RouteComponentProps,
+    useHistory,
+} from 'react-router-dom'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import Video from 'pages/common/components/Video/Video'
@@ -97,6 +100,7 @@ export function RulesViewContainer({
     const [selectedTags, setSelectedTags] = useState<string[]>([])
     const [hasUnseenRules, setHasUnseenRules] = useState(false)
     const [slug, setSlug] = useState('')
+    const history = useHistory()
 
     const segmentEventProps = {account_id: currentAccount.get('domain')}
 
@@ -106,9 +110,15 @@ export function RulesViewContainer({
             setActiveTab(tab as RuleTabs)
         }
         if (tab === RuleTabs.RuleLibrary && splitSlug.length) {
+            const rule = rules.find(
+                (rule) => rule.settings?.slug === splitSlug[0]
+            )
+            if (rule) {
+                history.replace(`/app/settings/rules/${rule.id}`)
+            }
             setSlug(splitSlug.join('?'))
         }
-    }, [location])
+    }, [location, history, rules])
 
     const goToLibrary = () => {
         history.push(`#${RuleTabs.RuleLibrary}`)

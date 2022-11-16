@@ -1,15 +1,19 @@
 import React from 'react'
-import {RouteComponentProps} from 'react-router-dom'
+import {RouteComponentProps, Router} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import {render} from '@testing-library/react'
+import {createMemoryHistory} from 'history'
 
 import {RulesState} from '../../../../state/entities/rules/types'
 import {RULE_MAX_NUMBER} from '../../../../state/entities/rules/selectors'
 import {fetchRules} from '../../../../models/rule/resources'
 import {fetchRuleRecipes} from '../../../../models/ruleRecipe/resources'
-import {emptyRule as ruleFixture} from '../../../../fixtures/rule'
+import {
+    emptyRule as ruleFixture,
+    emptyManagedRule,
+} from '../../../../fixtures/rule'
 import {RootState, StoreDispatch} from '../../../../state/types'
 
 import {RulesViewContainer} from '../RulesView'
@@ -119,5 +123,38 @@ describe('<RulesView/>', () => {
             </Provider>
         )
         expect(getByText(/you have reached the 70 rule limit/i)).not.toBe(null)
+    })
+
+    it('it should redirect to rule page if managed rule installed', () => {
+        const rules = {
+            [emptyManagedRule.id]: emptyManagedRule,
+        }
+        const props = {
+            location: {
+                hash: `#rule-library?${emptyManagedRule.settings.slug}`,
+            },
+        } as unknown as RouteComponentProps
+
+        const store: RootState = {
+            entities: {
+                rules: rules,
+                helpCenter: {
+                    helpCenters: {},
+                },
+            },
+        } as any
+
+        const history = createMemoryHistory()
+        const historySpy = jest.spyOn(history, 'replace')
+        render(
+            <Router history={history}>
+                <Provider store={mockStore(store)}>
+                    <RulesViewContainer {...props} />
+                </Provider>
+            </Router>
+        )
+        expect(historySpy).toBeCalledWith(
+            `/app/settings/rules/${emptyManagedRule.id}`
+        )
     })
 })
