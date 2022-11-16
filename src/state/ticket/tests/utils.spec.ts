@@ -5,7 +5,8 @@ import {
     addInternalNoteAction,
     addTagsAction,
     httpAction,
-    setStatusAction,
+    setClosedStatusAction,
+    setOpenStatusAction,
     setSubjectAction,
     shopifyAction,
 } from 'fixtures/macro'
@@ -1257,9 +1258,9 @@ describe('ticket utils', () => {
         })
 
         it('should handle same actions stacking', () => {
-            const oldActions = fromJS([setStatusAction, setSubjectAction])
+            const oldActions = fromJS([setOpenStatusAction, setSubjectAction])
             const newActions = fromJS([
-                {...setStatusAction, arguments: {status: 'closed'}},
+                setClosedStatusAction,
                 {
                     ...setSubjectAction,
                     arguments: {subject: 'Test Verb'},

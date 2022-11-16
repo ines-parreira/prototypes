@@ -7,21 +7,16 @@ import {fromJS, List, Map} from 'immutable'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import {MacroActionName} from 'models/macroAction/types'
-import {RootState} from '../../../../../state/types'
-import shortcutManager from '../../../../../services/shortcutManager'
-import keymap from '../../../../../config/shortcuts'
-import {isAccountActive} from '../../../../../state/currentAccount/selectors'
-import {submitSetting} from '../../../../../state/currentUser/actions'
-import {
-    getPreferences,
-    isHidingTips,
-} from '../../../../../state/currentUser/selectors'
-import {
-    hasContent,
-    hasRecipientsOrPrivate,
-} from '../../../../../state/newMessage/selectors'
-import Tooltip from '../../../../common/components/Tooltip'
-import {SubmitArgs} from '../../TicketDetailContainer'
+import {TicketStatus} from 'business/types/ticket'
+import {RootState} from 'state/types'
+import shortcutManager from 'services/shortcutManager'
+import keymap from 'config/shortcuts'
+import {isAccountActive} from 'state/currentAccount/selectors'
+import {submitSetting} from 'state/currentUser/actions'
+import {getPreferences, isHidingTips} from 'state/currentUser/selectors'
+import {hasContent, hasRecipientsOrPrivate} from 'state/newMessage/selectors'
+import Tooltip from 'pages/common/components/Tooltip'
+import {SubmitArgs} from 'pages/tickets/detail/TicketDetailContainer'
 
 import css from './TicketSubmitButtons.less'
 
@@ -69,7 +64,7 @@ export class TicketSubmitButtonsContainer extends Component<Props> {
         this.tip = _sample(TIPS)
     }
 
-    submit = (status?: string, next?: any) => {
+    submit = (status?: TicketStatus, next?: any) => {
         const isSending = this.props.newMessage.getIn([
             '_internal',
             'loading',
@@ -190,7 +185,9 @@ export class TicketSubmitButtonsContainer extends Component<Props> {
                             type="submit"
                             intent="secondary"
                             isDisabled={disabled}
-                            onClick={() => this.submit('closed', true)}
+                            onClick={() =>
+                                this.submit(TicketStatus.Closed, true)
+                            }
                             isLoading={loading}
                         >
                             {text} &amp; Close
@@ -202,7 +199,9 @@ export class TicketSubmitButtonsContainer extends Component<Props> {
                             confirmationContent={titleConfirmation}
                             intent="secondary"
                             isDisabled={disabled}
-                            onConfirm={() => this.submit('closed', true)}
+                            onConfirm={() =>
+                                this.submit(TicketStatus.Closed, true)
+                            }
                             isLoading={loading}
                         >
                             {text} &amp; Close

@@ -25,16 +25,22 @@ jest.mock('../ReplyArea/PhoneTicketSubmitButtons', () => () => (
 jest.mock(
     '../ReplyArea/TicketSubmitButtons',
     () =>
-        ({submit}: {submit: (props: SubmitArgs) => void}) =>
-            (
+        ({submit}: {submit: (props: SubmitArgs) => void}) => {
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
+            const {TicketStatus} = require('business/types/ticket')
+            return (
                 <button
                     type="submit"
                     data-testid="TicketSubmitButtons"
-                    onClick={() => submit({status: 'closed', next: true})}
+                    onClick={() =>
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                        submit({status: TicketStatus.Closed, next: true})
+                    }
                 >
                     TicketSubmitButtons
                 </button>
             )
+        }
 )
 
 const mockStore = configureMockStore([thunk])

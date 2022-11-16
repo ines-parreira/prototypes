@@ -1,3 +1,4 @@
+import {TicketStatus} from 'business/types/ticket'
 import {HttpMethod} from '../models/api/types'
 import {Macro} from '../models/macro/types'
 import {
@@ -200,12 +201,21 @@ export const setSubjectAction: MacroAction = {
     },
 }
 
-export const setStatusAction: MacroAction = {
+export const setOpenStatusAction: MacroAction = {
     name: MacroActionName.SetStatus,
     type: MacroActionType.User,
     title: 'Set status',
     arguments: {
-        status: 'open',
+        status: TicketStatus.Open,
+    },
+}
+
+export const setClosedStatusAction: MacroAction = {
+    name: MacroActionName.SetStatus,
+    type: MacroActionType.User,
+    title: 'Set status',
+    arguments: {
+        status: TicketStatus.Closed,
     },
 }
 

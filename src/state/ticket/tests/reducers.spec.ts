@@ -13,7 +13,8 @@ import {
     addInternalNoteAction,
     addTagsAction,
     httpAction,
-    setStatusAction,
+    setClosedStatusAction,
+    setOpenStatusAction,
     setSubjectAction,
     shopifyAction,
 } from 'fixtures/macro'
@@ -629,7 +630,7 @@ describe('ticket reducers', () => {
             type: types.APPLY_MACRO,
             macro: fromJS({
                 id: 1,
-                actions: [setStatusAction, setSubjectAction],
+                actions: [setOpenStatusAction, setSubjectAction],
             }),
         })
 
@@ -638,7 +639,7 @@ describe('ticket reducers', () => {
             macro: fromJS({
                 id: 2,
                 actions: [
-                    {...setStatusAction, arguments: {status: 'closed'}},
+                    setClosedStatusAction,
                     {...setSubjectAction, arguments: {subject: 'Test Verb'}},
                 ],
             }),

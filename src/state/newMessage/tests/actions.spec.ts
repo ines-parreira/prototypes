@@ -9,6 +9,7 @@ import {
     TicketChannel,
     TicketVia,
     TicketMessageSourceType,
+    TicketStatus,
 } from 'business/types/ticket'
 import * as utils from 'utils'
 import * as actions from 'state/newMessage/actions'
@@ -46,8 +47,13 @@ import {
 import client from 'models/api/resources'
 import {SearchType} from 'models/search/types'
 import {SEARCH_ENDPOINT} from 'models/search/resources'
+import {
+    addInternalNoteAction,
+    setClosedStatusAction,
+    setOpenStatusAction,
+    setSubjectAction,
+} from 'fixtures/macro'
 
-import {addInternalNoteAction} from 'fixtures/macro'
 import {getReplyAreaStateSnapshot} from './testUtils'
 
 type MockedRootState = {
@@ -1143,8 +1149,28 @@ describe('actions', () => {
         })
 
         describe('prepareTicketMessage', () => {
+            const defaultState = {
+                ticket: emailTicket,
+                newMessage: initialState
+                    .setIn(
+                        ['newMessage', 'channel'],
+                        TicketMessageSourceType.Facebook
+                    )
+                    .setIn(
+                        ['newMessage', 'source', 'type'],
+                        TicketMessageSourceType.FacebookComment
+                    )
+                    .setIn(['newMessage', 'body_text'], 'text'),
+                currentUser: fromJS({
+                    id: 1,
+                    name: 'foo',
+                }),
+                integrations: fromJS(integrationsState),
+            }
+
             it('should prepare next new message after we submitted an instagram comment', () => {
                 store = mockStore({
+                    ...defaultState,
                     ticket: instagramMedia.set('id', 12),
                     newMessage: initialState.setIn(
                         ['newMessage', 'source'],
@@ -1157,11 +1183,6 @@ describe('actions', () => {
                             ],
                         })
                     ),
-                    currentUser: fromJS({
-                        id: 1,
-                        name: 'foo',
-                    }),
-                    integrations: fromJS(integrationsState),
                 })
 
                 return (
@@ -1179,13 +1200,8 @@ describe('actions', () => {
 
             it('should reject with TicketMessageActionValidationError on action validation error', async () => {
                 store = mockStore({
-                    ticket: emailTicket,
+                    ...defaultState,
                     newMessage: initialState,
-                    currentUser: fromJS({
-                        id: 1,
-                        name: 'foo',
-                    }),
-                    integrations: fromJS(integrationsState),
                 })
 
                 const macroAction: MacroAction = {
@@ -1199,38 +1215,110 @@ describe('actions', () => {
 
                 await expect(
                     store.dispatch(
-                        actions.prepareTicketMessage(
-                            null,
-                            fromJS([macroAction])
-                        )
+                        actions.prepareTicketMessage({
+                            macroActions: fromJS([macroAction]),
+                        })
                     )
                 ).rejects.toBeInstanceOf(TicketMessageActionValidationError)
             })
 
             it('should reject with TicketMessageInvalidSendDataError on send data validation error', async () => {
                 store = mockStore({
-                    ticket: emailTicket,
-                    newMessage: initialState
-                        .setIn(
-                            ['newMessage', 'channel'],
-                            TicketMessageSourceType.Facebook
-                        )
-                        .setIn(
-                            ['newMessage', 'source', 'type'],
-                            TicketMessageSourceType.FacebookComment
-                        )
+                    ...defaultState,
+                    newMessage: defaultState.newMessage
                         .setIn(['newMessage', 'body_text'], '')
                         .setIn(['newMessage', 'attachments'], fromJS([{}])),
-                    currentUser: fromJS({
-                        id: 1,
-                        name: 'foo',
-                    }),
-                    integrations: fromJS(integrationsState),
                 })
 
                 await expect(
-                    store.dispatch(actions.prepareTicketMessage(null, null))
+                    store.dispatch(actions.prepareTicketMessage())
                 ).rejects.toBeInstanceOf(TicketMessageInvalidSendDataError)
+            })
+
+            it('should create actions with setStatus=close action when status is closed and no macro actions', async () => {
+                store = mockStore(defaultState)
+
+                const {messageToSend} = await store.dispatch(
+                    actions.prepareTicketMessage({
+                        status: TicketStatus.Closed,
+                    })
+                )
+                const actionsToSend = messageToSend.actions?.toJS()
+
+                expect(actionsToSend).toEqual([
+                    actions
+                        .formatAction(
+                            fromJS(setClosedStatusAction),
+                            fromJS(
+                                utils.getActionTemplate(
+                                    setClosedStatusAction.name
+                                )
+                            ),
+                            {}
+                        )
+                        .toJS(),
+                ])
+            })
+
+            it('should push setStatus=close action to the macro actions when status is closed', async () => {
+                store = mockStore(defaultState)
+
+                const {messageToSend} = await store.dispatch(
+                    actions.prepareTicketMessage({
+                        status: TicketStatus.Closed,
+                        macroActions: fromJS([setSubjectAction]),
+                    })
+                )
+                const actionsToSend = messageToSend.actions?.toJS()
+
+                expect(actionsToSend).toEqual([
+                    actions
+                        .formatAction(
+                            fromJS(setSubjectAction),
+                            fromJS(
+                                utils.getActionTemplate(setSubjectAction.name)
+                            ),
+                            {}
+                        )
+                        .toJS(),
+                    actions
+                        .formatAction(
+                            fromJS(setClosedStatusAction),
+                            fromJS(
+                                utils.getActionTemplate(
+                                    setClosedStatusAction.name
+                                )
+                            ),
+                            {}
+                        )
+                        .toJS(),
+                ])
+            })
+
+            it('should replace setStatus action in the macro actions with close when status is closed', async () => {
+                store = mockStore(defaultState)
+
+                const {messageToSend} = await store.dispatch(
+                    actions.prepareTicketMessage({
+                        status: TicketStatus.Closed,
+                        macroActions: fromJS([setOpenStatusAction]),
+                    })
+                )
+                const actionsToSend = messageToSend.actions?.toJS()
+
+                expect(actionsToSend).toEqual([
+                    actions
+                        .formatAction(
+                            fromJS(setClosedStatusAction),
+                            fromJS(
+                                utils.getActionTemplate(
+                                    setClosedStatusAction.name
+                                )
+                            ),
+                            {}
+                        )
+                        .toJS(),
+                ])
             })
         })
 

@@ -4,7 +4,7 @@ import {render} from '@testing-library/react'
 import {
     snoozeTicketAction,
     setSubjectAction,
-    setStatusAction,
+    setOpenStatusAction,
     addAttachmentsAction,
 } from '../../../../../../../../fixtures/macro'
 import {SimpleActionPreview} from '../SimpleActionPreview'
@@ -14,7 +14,7 @@ describe('<SimpleActionPreview/>', () => {
     it.each([
         ['snooze', snoozeTicketAction],
         ['set subject', setSubjectAction],
-        ['set status', setStatusAction],
+        ['set status', setOpenStatusAction],
         ['add attachmeents', addAttachmentsAction],
     ])('should render %s action', (_, action: MacroAction) => {
         const {container} = render(<SimpleActionPreview action={action} />)

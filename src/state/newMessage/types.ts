@@ -38,7 +38,7 @@ export type NewMessage = {
     stripped_text?: string
     stripped_html?: string
     attachments: Attachment[]
-    actions: List<Map<any, any>>
+    actions?: List<Map<any, any>>
     public?: boolean
     macros: {id: number}[]
 }

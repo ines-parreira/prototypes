@@ -4,7 +4,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
-import {setStatusAction, setTextAction} from 'fixtures/macro'
+import {setOpenStatusAction, setTextAction} from 'fixtures/macro'
 import {RootState, StoreDispatch} from 'state/types'
 import {ActionPreviews} from '../ActionPreviews'
 
@@ -26,10 +26,10 @@ describe('<ActionPreviews />', () => {
     })
     it.each([
         ['set text action', [setTextAction]],
-        ['other type of action', [setStatusAction]],
+        ['other type of action', [setOpenStatusAction]],
         [
             'both set text action and other type of action',
-            [setTextAction, setStatusAction],
+            [setTextAction, setOpenStatusAction],
         ],
     ])('should render %s ', (_, actions) => {
         const {container} = render(

@@ -4,7 +4,7 @@ import {useParams, useLocation} from 'react-router-dom'
 import {fromJS, List, Map} from 'immutable'
 import {useAsyncFn, useEffectOnce, usePrevious, useKey} from 'react-use'
 
-import {TicketMessageSourceType} from 'business/types/ticket'
+import {TicketMessageSourceType, TicketStatus} from 'business/types/ticket'
 import useSearch from 'hooks/useSearch'
 import {useTitle} from 'hooks/useTitle'
 import {RootState} from 'state/types'
@@ -53,7 +53,7 @@ import TicketView from './components/TicketView'
 import {updateMessageText} from './components/ReplyArea/TicketReplyEditor'
 
 export type SubmitArgs = {
-    status?: string
+    status?: TicketStatus
     next?: any
     action?: string
     resetMessage?: boolean
@@ -164,6 +164,31 @@ export const TicketDetailContainer = ({
             [ticketIdParam]
         )
 
+    const prepareAndSubmitNewTicket = async ({
+        status,
+        resetMessage,
+    }: SubmitArgs) => {
+        let submittedTicket
+        const receiver = newMessage.getIn(['newMessage', 'receiver'])
+        const sender = {id: currentUser.get('id')}
+
+        const sourceType = newMessage.getIn(['newMessage', 'source', 'type'])
+        submittedTicket = ticket.setIn(['newMessage', 'sender'], sender)
+
+        // Ensure that a customer is always set on the ticket when created
+        if (sourceType !== 'internal-note') {
+            submittedTicket = ticket.set('customer', receiver)
+        }
+
+        await submitTicket(
+            submittedTicket,
+            status,
+            ticket.getIn(['state', 'appliedMacro', 'actions']),
+            currentUser,
+            resetMessage
+        )
+    }
+
     const submitNewMessage = async ({
         status,
         action,
@@ -171,12 +196,15 @@ export const TicketDetailContainer = ({
     }: SubmitArgs) => {
         try {
             const {messageId, messageToSend, replyAreaState} =
-                await prepareTicketMessage(
+                await prepareTicketMessage({
                     status,
-                    ticket.getIn(['state', 'appliedMacro', 'actions']),
-                    resetMessage
-                )
-
+                    macroActions: ticket.getIn([
+                        'state',
+                        'appliedMacro',
+                        'actions',
+                    ]),
+                    resetMessage,
+                })
             if (messageToSend.source.type === 'email') {
                 pendingMessageManager.sendMessage({
                     messageId,
@@ -205,7 +233,7 @@ export const TicketDetailContainer = ({
         }
     }
 
-    const submit = ({
+    const submit = async ({
         status,
         next,
         action,
@@ -224,44 +252,21 @@ export const TicketDetailContainer = ({
         // flush any pending updates from the TicketReplyEditor debouncer
         updateMessageText.flush()
 
-        let promise
-
         // The ticket does not exist yet.
         if (!ticket.get('id')) {
-            let submittedTicket
-            const receiver = newMessage.getIn(['newMessage', 'receiver'])
-            const sender = {id: currentUser.get('id')}
-
-            const sourceType = newMessage.getIn([
-                'newMessage',
-                'source',
-                'type',
-            ])
-            submittedTicket = ticket.setIn(['newMessage', 'sender'], sender)
-
-            // Ensure that a customer is always set on the ticket when created
-            if (sourceType !== 'internal-note') {
-                submittedTicket = ticket.set('customer', receiver)
-            }
-
-            promise = submitTicket(
-                submittedTicket,
+            await prepareAndSubmitNewTicket({
                 status,
-                ticket.getIn(['state', 'appliedMacro', 'actions']),
-                currentUser,
-                resetMessage
-            )
-        } else {
-            promise = submitNewMessage({status, next, action, resetMessage})
-        }
-
-        if (status && promise) {
-            void promise.then(() => {
-                return handleStatusChange(status || '')
+                next,
+                action,
+                resetMessage,
             })
+        } else {
+            await submitNewMessage({status, next, action, resetMessage})
         }
 
-        return promise
+        if (status === TicketStatus.Closed) {
+            maybeGoToNextTicket()
+        }
     }
 
     useEffect(() => {
@@ -297,7 +302,7 @@ export const TicketDetailContainer = ({
                         e.stopImmediatePropagation()
                     }
 
-                    void submit({status: 'closed', next: true})
+                    void submit({status: TicketStatus.Closed, next: true})
                 },
             },
         })
@@ -464,16 +469,20 @@ export const TicketDetailContainer = ({
         })
     }
 
+    const maybeGoToNextTicket = () => {
+        // If the history is open, we don't want to go to the next ticket
+        if (!ticket.getIn(['_internal', 'displayHistory'])) {
+            const promise = hideTicket().then(clearTicket)
+            void goToNextTicket(parseInt(ticketIdParamRef.current), promise)
+        }
+    }
+
     const handleStatusChange = (status: string) => {
         return setStatus(status, () => {
-            if (status !== 'closed') {
+            if (status !== TicketStatus.Closed) {
                 return
             }
-            // If the history is open, we don't want to go to the next ticket
-            if (!ticket.getIn(['_internal', 'displayHistory'])) {
-                const promise = hideTicket().then(clearTicket)
-                void goToNextTicket(parseInt(ticketIdParamRef.current), promise)
-            }
+            maybeGoToNextTicket()
         })
     }
 

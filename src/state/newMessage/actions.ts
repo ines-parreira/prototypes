@@ -36,6 +36,7 @@ import {
     TicketChannel,
     TicketVia,
     TicketMessageSourceType,
+    TicketStatus,
 } from 'business/types/ticket'
 import {IntegrationType, ProductCardDetails} from 'models/integration/types'
 import client from 'models/api/resources'
@@ -49,6 +50,7 @@ import {SearchType, UserSearchResult} from 'models/search/types'
 import {search} from 'models/search/resources'
 import {CustomerChannel} from 'models/customerChannel/types'
 
+import {MacroActionName, MacroActionType} from 'models/macroAction/types'
 import * as responseUtils from './responseUtils'
 import * as selectors from './selectors'
 import * as constants from './constants'
@@ -876,12 +878,41 @@ function onMessageSent(dispatch: StoreDispatch) {
     })
 }
 
-export function prepareTicketMessage(
-    status: Maybe<string>,
-    macroActions: Maybe<MacroActions>,
+function upsertNewMessageAction(
+    messageToSend: NewMessage,
+    action: Map<any, any>
+): void {
+    if (!messageToSend.actions) {
+        messageToSend.actions = fromJS([action])
+        return
+    }
+
+    const existingActionIndex = messageToSend.actions.findIndex(
+        (existingAction?: Map<any, any>) =>
+            existingAction?.get('name') === action.get('name')
+    )
+    if (existingActionIndex !== -1) {
+        messageToSend.actions = messageToSend.actions.set(
+            existingActionIndex,
+            action
+        )
+        return
+    }
+
+    messageToSend.actions = messageToSend.actions.push(action)
+}
+
+export function prepareTicketMessage({
+    status,
+    macroActions,
     resetMessage = true,
+    retryMessage,
+}: {
+    status?: TicketStatus
+    macroActions?: MacroActions
+    resetMessage?: boolean
     retryMessage?: Map<any, any>
-) {
+} = {}) {
     return (
         dispatch: StoreDispatch,
         getState: () => RootState
@@ -967,6 +998,22 @@ export function prepareTicketMessage(
                         }
                     }
                 }
+            }
+
+            if (status === TicketStatus.Closed) {
+                const closeTicketAction = formatAction(
+                    fromJS({
+                        name: MacroActionName.SetStatus,
+                        type: MacroActionType.User,
+                        title: 'Set status',
+                        arguments: {
+                            status: TicketStatus.Closed,
+                        },
+                    }),
+                    fromJS(getActionTemplate(MacroActionName.SetStatus)),
+                    {}
+                )
+                upsertNewMessageAction(messageToSend, closeTicketAction)
             }
 
             const state = getState()
@@ -1107,12 +1154,11 @@ export function sendTicketMessage(
 export function retrySubmitTicketMessage(message: Map<any, any>) {
     return (dispatch: StoreDispatch) => {
         return dispatch(
-            prepareTicketMessage(
-                message.getIn(['_internal', 'status']),
-                null,
-                false,
-                message
-            )
+            prepareTicketMessage({
+                status: message.getIn(['_internal', 'status']),
+                resetMessage: false,
+                retryMessage: message,
+            })
         ).then(({messageId, messageToSend}) => {
             return dispatch(
                 sendTicketMessage(messageId, messageToSend, null, false)
