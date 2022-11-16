@@ -17,5 +17,5 @@ export enum FeatureFlagKey {
     TicketMessagesVirtualization = 'ticket-messages-virtualization',
     RevenueAlphaTesters = 'revenue-alpha-testers',
     RevenueBetaTesters = 'revenue-beta-testers',
-    RevenueDiscountCodesV0 = 'revenue-discount-codes-v0',
+    RevenueHideDiscountCodeButton = 'revenue-hide-discount-code-button',
 }

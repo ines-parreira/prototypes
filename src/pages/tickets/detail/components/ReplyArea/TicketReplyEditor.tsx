@@ -392,7 +392,11 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
             displayedActions = [ActionName.Emoji, ActionName.ProductPicker]
         }
 
-        if (this._isLDFlagActivated(FeatureFlagKey.RevenueDiscountCodesV0)) {
+        if (
+            !this._isLDFlagActivated(
+                FeatureFlagKey.RevenueHideDiscountCodeButton
+            )
+        ) {
             displayedActions.push(ActionName.DiscountCodePicker)
         }
 

@@ -45,7 +45,7 @@ describe('TicketReplyEditor component', () => {
         notify: jest.fn(),
         setResponseText: jest.fn(),
         flags: {
-            [FeatureFlagKey.RevenueDiscountCodesV0]: true,
+            [FeatureFlagKey.RevenueHideDiscountCodeButton]: false,
         },
     }
 
