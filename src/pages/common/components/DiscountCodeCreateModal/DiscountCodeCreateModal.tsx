@@ -210,7 +210,7 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
                             isChecked={isOneTime}
                             onChange={setIsOneTime}
                         >
-                            One-Time use
+                            One-time use
                         </CheckBox>
                     </FormGroup>
                 </ModalBody>
