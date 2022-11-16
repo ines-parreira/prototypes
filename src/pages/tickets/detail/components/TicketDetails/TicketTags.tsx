@@ -31,6 +31,7 @@ type OwnProps = {
     transparent: boolean
     right?: boolean
     dropdownContainer?: HTMLElement
+    disabled?: boolean
 }
 
 type Props = OwnProps &
@@ -261,67 +262,78 @@ export class TicketTags extends Component<Props, State> {
                         >
                             <span>
                                 {tag.get('name')}
-                                <i
-                                    className={classnames(
-                                        css.remove,
-                                        'material-icons cursor-pointer ml-1'
-                                    )}
-                                    onClick={() =>
-                                        removeTag(tag.get('name') as string)
-                                    }
-                                >
-                                    close
-                                </i>
+                                {!this.props.disabled && (
+                                    <i
+                                        className={classnames(
+                                            css.remove,
+                                            'material-icons cursor-pointer ml-1'
+                                        )}
+                                        onClick={() =>
+                                            removeTag(tag.get('name') as string)
+                                        }
+                                    >
+                                        close
+                                    </i>
+                                )}
                             </span>
                         </TagLabel>
                     ))}
 
-                <Dropdown
-                    className={css.addTags}
-                    isOpen={this.state.dropdownOpen}
-                    toggle={this.toggle}
-                    group={false}
-                    key={+this.state.isLoading} //Force re-render so dropdown position is correct
-                >
-                    <DropdownToggle
-                        color="secondary"
-                        type="button"
-                        size="sm"
-                        className={classnames({
-                            'btn-transparent': transparent,
-                        })}
+                {!this.props.disabled && (
+                    <Dropdown
+                        className={css.addTags}
+                        isOpen={this.state.dropdownOpen}
+                        toggle={this.toggle}
+                        group={false}
+                        key={+this.state.isLoading} //Force re-render so dropdown position is correct
                     >
-                        <i className="material-icons md-1 align-middle">add</i>
-                        {!ticketTags.size && (
-                            <strong className="ml-1 align-middle">
-                                Add tags
-                            </strong>
-                        )}
-                    </DropdownToggle>
-                    <TagDropdownMenu
-                        right={!!right}
-                        style={{padding: '0.5rem 4px'}}
-                        container={dropdownContainer}
-                        modifiers={{
-                            preventOverflow: {boundariesElement: 'viewport'},
-                        }}
-                    >
-                        <DropdownItem header>ADD TAG:</DropdownItem>
-                        <DropdownItem header className="dropdown-item-input">
-                            <TextInput
-                                ref={this.searchInputRef}
-                                placeholder="Search tags..."
-                                autoFocus
-                                value={this.state.search}
-                                onChange={this.search}
-                                onKeyDown={this.handleSearchKeyDown}
-                                role="menuitem"
-                            />
-                        </DropdownItem>
-                        <DropdownItem divider />
-                        {this.displayMenu()}
-                    </TagDropdownMenu>
-                </Dropdown>
+                        <DropdownToggle
+                            color="secondary"
+                            type="button"
+                            size="sm"
+                            className={classnames({
+                                'btn-transparent': transparent,
+                            })}
+                        >
+                            <i className="material-icons md-1 align-middle">
+                                add
+                            </i>
+                            {!ticketTags.size && (
+                                <strong className="ml-1 align-middle">
+                                    Add tags
+                                </strong>
+                            )}
+                        </DropdownToggle>
+                        <TagDropdownMenu
+                            right={!!right}
+                            style={{padding: '0.5rem 4px'}}
+                            container={dropdownContainer}
+                            modifiers={{
+                                preventOverflow: {
+                                    boundariesElement: 'viewport',
+                                },
+                            }}
+                        >
+                            <DropdownItem header>ADD TAG:</DropdownItem>
+                            <DropdownItem
+                                header
+                                className="dropdown-item-input"
+                            >
+                                <TextInput
+                                    ref={this.searchInputRef}
+                                    placeholder="Search tags..."
+                                    autoFocus
+                                    value={this.state.search}
+                                    onChange={this.search}
+                                    onKeyDown={this.handleSearchKeyDown}
+                                    role="menuitem"
+                                />
+                            </DropdownItem>
+                            <DropdownItem divider />
+                            {this.displayMenu()}
+                        </TagDropdownMenu>
+                    </Dropdown>
+                )}
             </div>
         )
     }

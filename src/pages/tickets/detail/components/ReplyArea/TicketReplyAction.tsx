@@ -27,8 +27,9 @@ import css from './TicketReplyAction.less'
 type Props = {
     action: Map<any, any>
     index: number
-    remove: (actionIndex: number, ticketId: number) => void
+    remove?: (actionIndex: number, ticketId: number) => void
     ticketId: number
+    disabled?: boolean
 } & ConnectedProps<typeof connector>
 
 type State = {
@@ -257,6 +258,7 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                                     }}
                                     fullWidth={false}
                                     dropdownContainer={document.body}
+                                    disabled={this.props.disabled}
                                 />
                             )
                         case 'tags-select':
@@ -274,6 +276,7 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                                         }}
                                         right={true}
                                         dropdownContainer={document.body}
+                                        disabled={this.props.disabled}
                                     />
                                 </div>
                             )
@@ -433,7 +436,7 @@ export class TicketReplyActionContainer extends Component<Props, State> {
             argsComponent = this.renderArgs(args, isInline)
         }
 
-        const notes = getActionTemplate(action.get('name'))!.notes
+        const notes = getActionTemplate(action.get('name'))?.notes
 
         return (
             <div className={css.component}>
@@ -475,15 +478,19 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                                 </Caption>
                             ))}
                     </div>
-                    <i
-                        className={classnames(
-                            css.closeIcon,
-                            'material-icons ml-4'
-                        )}
-                        onClick={() => remove(this.props.index, ticketId)}
-                    >
-                        close
-                    </i>
+                    {!this.props.disabled && (
+                        <i
+                            className={classnames(
+                                css.closeIcon,
+                                'material-icons ml-4'
+                            )}
+                            onClick={() =>
+                                remove && remove(this.props.index, ticketId)
+                            }
+                        >
+                            close
+                        </i>
+                    )}
                 </div>
             </div>
         )

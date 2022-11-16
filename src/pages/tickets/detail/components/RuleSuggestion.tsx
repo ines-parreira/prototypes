@@ -15,6 +15,7 @@ import {
     TicketVia,
 } from 'business/types/ticket'
 import {getCurrentUser} from 'state/currentUser/selectors'
+import TicketReplyAction from 'pages/tickets/detail/components/ReplyArea/TicketReplyAction'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {ActionStatus, Ticket} from 'models/ticket/types'
 import {actionsConfig} from 'pages/common/components/ast/actions/Action'
@@ -178,20 +179,30 @@ const RuleSuggestion = ({ticket}: Props) => {
                     </div>
                 </div>
             </header>
-            <div className={css.bodyContainer}>
-                <Collapse isOpen={isOpen}>
-                    {text?.body_html && (
-                        <div className={css.textContainer}>
-                            <div
-                                dangerouslySetInnerHTML={{
-                                    __html: text.body_html,
-                                }}
+            <Collapse className={css.bodyContainer} isOpen={isOpen}>
+                {text?.body_html && (
+                    <div className={css.textContainer}>
+                        <div
+                            dangerouslySetInnerHTML={{
+                                __html: text.body_html,
+                            }}
+                        />
+                    </div>
+                )}
+                <div>
+                    {actions.map((action, index) => {
+                        return (
+                            <TicketReplyAction
+                                key={action.name + 'suggestion'}
+                                index={index}
+                                action={fromJS(action)}
+                                ticketId={ticket.id}
+                                disabled
                             />
-                        </div>
-                    )}
-                    <div>{/* Actions Placehold  */}</div>
-                </Collapse>
-            </div>
+                        )
+                    })}
+                </div>
+            </Collapse>
         </div>
     ) : null
 }

@@ -6,6 +6,7 @@ import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags
 type Props = {
     args: Map<string, string>
     index: number
+    disabled?: boolean
     updateActionArgs: (index: number, args: Map<string, string>) => void
     right?: boolean
     dropdownContainer?: HTMLElement
@@ -46,6 +47,7 @@ export default class AddTagsAction extends React.Component<Props> {
         return (
             <TicketTags
                 ticketTags={ticketTags}
+                disabled={this.props.disabled}
                 addTag={this.addTag}
                 removeTag={this.removeTag}
                 right={!!right}

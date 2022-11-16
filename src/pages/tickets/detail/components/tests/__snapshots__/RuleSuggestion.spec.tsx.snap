@@ -96,21 +96,65 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
       </div>
     </header>
     <div
-      class="bodyContainer"
+      class="bodyContainer collapse show"
     >
       <div
-        class="collapse show"
+        class="textContainer"
       >
-        <div
-          class="textContainer"
-        >
+        <div>
           <div>
-            <div>
-              Text coming from rule suggestion
+            Text coming from rule suggestion
+          </div>
+        </div>
+      </div>
+      <div>
+        <div
+          class="component"
+        >
+          <div
+            class="d-flex justify-content-between align-items-baseline"
+          >
+            <div
+              class="flex-grow"
+            >
+              <div
+                class="d-flex align-items-center flex-wrap"
+              >
+                <div
+                  class="title"
+                >
+                  <i
+                    class="material-icons md-3 mr-1 text-secondary"
+                  >
+                    label
+                  </i>
+                  <span>
+                    Add tags
+                  </span>
+                </div>
+                <div
+                  class="spacer"
+                />
+                <div
+                  class="tagsSelect"
+                >
+                  <div
+                    class="d-none d-md-inline-flex align-items-center flex-wrap mr-2 mb-1 justify-content-end"
+                  >
+                    <span
+                      class="badge-tag tagLabel badge badge-secondary"
+                      style="color: rgb(128, 136, 214);"
+                    >
+                      <span>
+                        auto-close
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <div />
       </div>
     </div>
   </div>
