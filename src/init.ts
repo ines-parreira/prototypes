@@ -18,6 +18,7 @@ import configureStore from 'store/configureStore'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {transformSystemMessagesToNotifications} from 'utils'
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
+import {getCurrentUser} from 'state/currentUser/selectors'
 import {GorgiasInitialState, InitialRootState} from 'types'
 import {initDatadogLogger} from 'utils/datadog'
 import {initializeNewReleaseHandler} from 'models/api/resources'
@@ -142,6 +143,25 @@ export const notifyAccountNotVerified = (reduxStore: Store) => {
     }
 }
 
+export const notifyUserImpersonated = (reduxStore: Store) => {
+    if (window.USER_IMPERSONATED) {
+        const currentUser = getCurrentUser(reduxStore.getState())
+
+        reduxStore.dispatch(
+            notify({
+                allowHTML: true,
+                id: 'user-impersonated-notification',
+                style: NotificationStyle.Banner,
+                status: NotificationStatus.Warning,
+                dismissible: false,
+                message: `You are impersonating <b>${
+                    currentUser.get('name') as string
+                }</b> in <b>${getEnvironment()}</b> environment.`,
+            }) as any
+        )
+    }
+}
+
 export const notifyChatIntegrationDeprecated = (reduxStore: Store) => {
     const integrations = getActiveIntegrations(reduxStore.getState())
     const hasActiveSmoochInsideIntegrations = integrations.find(
@@ -231,6 +251,7 @@ export function initApp({logRocket, datadog, sentry}: InitAppParams) {
 
     notifyDeprecatedTld(window.location.href, store)
     notifyAccountNotVerified(store)
+    notifyUserImpersonated(store)
 
     notifyChatIntegrationDeprecated(store)
 

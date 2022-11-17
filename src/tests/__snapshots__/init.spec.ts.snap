@@ -46,6 +46,28 @@ Array [
 
 exports[`init notifyDeprecatedTld() should not do anything because the URL's TLD is not \`.io\` 1`] = `Array []`;
 
+exports[`init notifyUserImpersonated() should not do anything because user is not impersonated 1`] = `Array []`;
+
+exports[`init notifyUserImpersonated() user is impersonated should dispatch a notification because user is impersonated 1`] = `
+Array [
+  Object {
+    "payload": Object {
+      "allowHTML": true,
+      "buttons": Array [],
+      "closeButton": false,
+      "dismissAfter": 0,
+      "dismissible": false,
+      "id": "user-impersonated-notification",
+      "message": "You are impersonating <b>Alex Plugaru</b> in <b>development</b> environment.",
+      "position": "top-center",
+      "status": "warning",
+      "style": "banner",
+    },
+    "type": "reapop/upsertNotification",
+  },
+]
+`;
+
 exports[`init toInitialStoreState() should return the expected store state 1`] = `
 Object {
   "agents": Immutable.Map {

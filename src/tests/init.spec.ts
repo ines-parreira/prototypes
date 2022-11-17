@@ -9,6 +9,7 @@ import {
     InitAppParams,
     notifyAccountNotVerified,
     notifyDeprecatedTld,
+    notifyUserImpersonated,
     toInitialStoreState,
 } from 'init'
 import {RootState} from 'state/types'
@@ -89,6 +90,38 @@ describe('init', () => {
             notifyAccountNotVerified(reduxStore)
 
             expect(reduxStore.getActions()).toMatchSnapshot()
+        })
+    })
+
+    describe('notifyUserImpersonated()', () => {
+        beforeEach(() => {
+            reduxStore = mockStore({currentUser: fromJS(user)} as RootState)
+        })
+
+        it('should not do anything because user is not impersonated', () => {
+            notifyUserImpersonated(reduxStore)
+
+            expect(reduxStore.getActions()).toMatchSnapshot()
+        })
+
+        describe('user is impersonated', () => {
+            let USER_IMPERSONATED: typeof window.USER_IMPERSONATED
+
+            beforeAll(() => {
+                USER_IMPERSONATED = window.USER_IMPERSONATED
+
+                window.USER_IMPERSONATED = true
+            })
+
+            afterAll(() => {
+                window.USER_IMPERSONATED = USER_IMPERSONATED
+            })
+
+            it('should dispatch a notification because user is impersonated', () => {
+                notifyUserImpersonated(reduxStore)
+
+                expect(reduxStore.getActions()).toMatchSnapshot()
+            })
         })
     })
 
