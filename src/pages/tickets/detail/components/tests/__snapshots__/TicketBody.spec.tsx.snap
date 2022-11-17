@@ -629,6 +629,7 @@ exports[`TicketBody should display rule suggestion in correct order 1`] = `
     timezone="UTC"
   />
   <RuleSuggestion
+    isCollapsed={true}
     ticket={
       Object {
         "id": 1,
