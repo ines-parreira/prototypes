@@ -10,6 +10,8 @@ import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
 import {TicketVirtuosoContextType} from 'pages/tickets/detail/components/TicketBodyVirtualized'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {editorFocused} from 'state/ui/editor/actions'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {SubmitArgs} from '../TicketDetailContainer'
 import ReplyMessageChannel from './ReplyArea/ReplyMessageChannel'
 import PhoneTicketSubmitButtons from './ReplyArea/PhoneTicketSubmitButtons'
@@ -31,6 +33,7 @@ const ReplyForm = ({submit}: ReplyFormProps) => {
     const statusParamsRef = useRef<SubmitArgs>({})
     const newMessageFormRef = useRef<HTMLFormElement>(null)
 
+    const dispatch = useAppDispatch()
     const ticket = useAppSelector((state) => state.ticket)
     const sourceType = useAppSelector(getNewMessageType)
     const hasPhoneIntegration = useAppSelector(
@@ -87,6 +90,8 @@ const ReplyForm = ({submit}: ReplyFormProps) => {
                 'mt-3': !isExistingTicket,
                 [css.isVirtualized]: isVirtualizationEnabled,
             })}
+            onFocus={() => dispatch(editorFocused(true))}
+            onBlur={() => dispatch(editorFocused(false))}
         >
             <form
                 onSubmit={handleSubmit}

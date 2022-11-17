@@ -37,6 +37,7 @@ export const initialState: TicketState = fromJS({
         pendingMessages: [],
         isShopperTyping: false,
         isShopperTypingTimeoutId: undefined,
+        isPartialUpdating: false,
     },
     events: [],
     messages: [],
@@ -699,6 +700,15 @@ export default function reducer(
                     ['_internal', 'isShopperTypingTimeoutId'],
                     isShopperTypingTimeoutId
                 )
+        }
+
+        case types.TICKET_PARTIAL_UPDATE_START: {
+            return state.setIn(['_internal', 'isPartialUpdating'], true)
+        }
+
+        case types.TICKET_PARTIAL_UPDATE_SUCCESS:
+        case types.TICKET_PARTIAL_UPDATE_ERROR: {
+            return state.setIn(['_internal', 'isPartialUpdating'], false)
         }
 
         default:

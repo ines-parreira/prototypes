@@ -1,11 +1,12 @@
 import React from 'react'
-import {render} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import userEvent from '@testing-library/user-event'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import LD from 'launchdarkly-react-client-sdk'
+import {editorFocused} from 'state/ui/editor/actions'
 
 import ReplyForm from 'pages/tickets/detail/components/ReplyForm'
 import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
@@ -42,6 +43,8 @@ jest.mock(
             )
         }
 )
+
+jest.mock('state/ui/editor/actions')
 
 const mockStore = configureMockStore([thunk])
 
@@ -95,6 +98,16 @@ describe('<ReplyForm />', () => {
 
             expect(container.firstChild).toMatchSnapshot()
         })
+    })
+
+    it('should send events when focused', () => {
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <ReplyForm submit={mockSubmit} />
+            </Provider>
+        )
+        screen.getByRole('button').focus()
+        expect(editorFocused).toHaveBeenCalledTimes(1)
     })
 
     describe('phone submit buttons', () => {

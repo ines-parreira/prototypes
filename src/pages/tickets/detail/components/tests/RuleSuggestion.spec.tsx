@@ -39,6 +39,16 @@ const store = {
         },
     },
     integrations: fromJS(integrationsState),
+    ui: {
+        editor: {
+            isFocused: false,
+        },
+    },
+    ticket: fromJS({
+        _internal: {
+            isPartialUpdating: false,
+        },
+    }),
 }
 
 const ticket = {

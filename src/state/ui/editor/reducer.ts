@@ -1,10 +1,11 @@
 import {createReducer} from '@reduxjs/toolkit'
 
-import {linkEditionStarted, linkEditionEnded} from './actions'
+import {linkEditionStarted, linkEditionEnded, editorFocused} from './actions'
 import {EditorState} from './types'
 
 export const initialState = {
     isEditingLink: false,
+    isFocused: false,
 }
 
 const statsReducer = createReducer<EditorState>(initialState, (builder) =>
@@ -14,6 +15,9 @@ const statsReducer = createReducer<EditorState>(initialState, (builder) =>
         })
         .addCase(linkEditionEnded, (state) => {
             state.isEditingLink = false
+        })
+        .addCase(editorFocused, (state, {payload}) => {
+            state.isFocused = payload
         })
 )
 

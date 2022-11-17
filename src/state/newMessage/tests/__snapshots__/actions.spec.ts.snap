@@ -2159,6 +2159,7 @@ Array [
         "pendingMessages": Immutable.List [],
         "isShopperTyping": false,
         "isShopperTypingTimeoutId": undefined,
+        "isPartialUpdating": false,
       },
       "customer": null,
     },

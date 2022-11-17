@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import _pick from 'lodash/pick'
 import {fromJS} from 'immutable'
@@ -38,6 +38,7 @@ type Props = {
     ticket: Ticket & {
         meta: Record<'rule_suggestion', RuleSuggestionData> | null
     }
+    isCollapsed?: boolean
 }
 
 type RuleSuggestionData = {
@@ -45,15 +46,23 @@ type RuleSuggestionData = {
     slug: string
 }
 
-const RuleSuggestion = ({ticket}: Props) => {
-    const [isOpen, setIsOpen] = useState(true)
+const RuleSuggestion = ({ticket, isCollapsed}: Props) => {
+    const [isOpen, setIsOpen] = useState(!isCollapsed)
     const dispatch = useAppDispatch()
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const {isFocused} = useAppSelector((state) => state.ui.editor)
+    const isPartialUpdating = useAppSelector(
+        (state) =>
+            state.ticket.getIn(['_internal', 'isPartialUpdating']) as boolean
+    )
     const ruleSuggestionFeatureFlag = useFlags()[FeatureFlagKey.RuleSuggestion]
     const currentUser = useAppSelector(getCurrentUser)
     const emailChannels = useAppSelector(getEmailChannels)
     const recipes = useRuleRecipes()
-    if (!recipes) return null
+
+    useEffect(() => {
+        if (isFocused || isPartialUpdating) setIsOpen(false)
+    }, [isFocused, isPartialUpdating])
 
     const suggestion = ticket.meta?.['rule_suggestion']
     if (!suggestion) return null
@@ -89,7 +98,7 @@ const RuleSuggestion = ({ticket}: Props) => {
         emailChannels
     )
 
-    const ruleName = recipes[suggestion.slug]?.rule?.name ?? suggestion.slug
+    const ruleName = recipes?.[suggestion.slug]?.rule?.name ?? suggestion.slug
 
     const applySuggestion = async () => {
         let message = {
@@ -113,8 +122,6 @@ const RuleSuggestion = ({ticket}: Props) => {
         } as unknown as NewMessage
 
         if (!text) {
-            const ruleName =
-                recipes[suggestion.slug]?.rule?.name ?? suggestion.slug
             const {newMessage, newActions} = transformToInternalNote(
                 message,
                 fromJS(actions),

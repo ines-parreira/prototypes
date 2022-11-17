@@ -4,6 +4,7 @@ import {LINK_EDITION_STARTED, LINK_EDITION_ENDED} from './constants'
 
 export type EditorState = {
     isEditingLink: boolean
+    isFocused: boolean
 }
 
 export type EditorAction = LinkEditionStartedAction | LinkEditionEndedAction

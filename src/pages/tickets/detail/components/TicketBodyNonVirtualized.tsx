@@ -287,7 +287,18 @@ export class TicketBodyNonVirtualized extends React.Component<Props, State> {
                             }
 
                             if (isTicketRuleSuggestion(element))
-                                return <RuleSuggestion ticket={ticket.toJS()} />
+                                return elements.find(
+                                    (element: Map<any, any>) =>
+                                        !!element.getIn([
+                                            'meta',
+                                            'rule_suggestion_slug',
+                                        ])
+                                ) ? null : (
+                                    <RuleSuggestion
+                                        ticket={ticket.toJS()}
+                                        isCollapsed={!isLast}
+                                    />
+                                )
 
                             if (isTicketEvent(element)) {
                                 if (

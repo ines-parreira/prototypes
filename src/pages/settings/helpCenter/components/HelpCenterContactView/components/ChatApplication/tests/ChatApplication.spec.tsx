@@ -60,6 +60,7 @@ const defaultState: Partial<RootState> = {
         },
         editor: {
             isEditingLink: false,
+            isFocused: false,
         },
         stats: {
             fetchingMap: {},
