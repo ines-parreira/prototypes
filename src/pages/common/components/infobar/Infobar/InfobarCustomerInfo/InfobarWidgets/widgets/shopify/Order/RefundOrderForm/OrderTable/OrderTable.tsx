@@ -1,6 +1,10 @@
 import React, {memo, useCallback} from 'react'
 import {Table} from 'reactstrap'
 import {List, Map} from 'immutable'
+import classnames from 'classnames'
+
+import {FulfillmentStatus} from 'constants/integrations/types/shopify'
+import Tooltip from 'pages/common/components/Tooltip'
 
 import OrderLineItemRow from './OrderLineItemRow'
 import css from './OrderTable.less'
@@ -9,6 +13,7 @@ type Props = {
     shopName: string
     currencyCode: string
     shopCurrencyCode: string
+    fulfillmentStatus: FulfillmentStatus | null
     refund: Map<string, any> | null
     lineItems: List<Map<string, any>>
     onLineItemChange: (lineItem: Map<string, any>, index: number) => void
@@ -17,6 +22,7 @@ type Props = {
 function OrderTable({
     onLineItemChange,
     lineItems,
+    fulfillmentStatus,
     refund,
     shopName,
     currencyCode,
@@ -41,14 +47,40 @@ function OrderTable({
         },
         [refund]
     )
+
+    const showQtyWarningIcon =
+        !fulfillmentStatus || fulfillmentStatus === FulfillmentStatus.Partial
+
     return (
-        <Table hover className={css.table}>
+        <Table hover className={classnames(css.table, 'mb-4')}>
             <thead>
                 <tr>
                     <th>Product</th>
                     <th>Item price</th>
-                    <th>Qty</th>
-                    <th>Item total</th>
+                    <th>
+                        <div className={css.qty}>
+                            Qty
+                            {showQtyWarningIcon ? (
+                                <>
+                                    <span
+                                        className="material-icons orange ml-1"
+                                        id="qty-warning-icon"
+                                        aria-label="Quantity warning"
+                                    >
+                                        warning
+                                    </span>
+                                    <Tooltip
+                                        placement="top"
+                                        target="qty-warning-icon"
+                                    >
+                                        All unfulfilled items with QTY other
+                                        than 0 will be removed from the order.
+                                    </Tooltip>
+                                </>
+                            ) : null}
+                        </div>
+                    </th>
+                    <th className={css.itemTotal}>Item total</th>
                 </tr>
             </thead>
             <tbody>

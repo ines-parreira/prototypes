@@ -1,7 +1,8 @@
 import React from 'react'
-import {fromJS, Map, List} from 'immutable'
-import {render, fireEvent, screen} from '@testing-library/react'
+import {fromJS, List, Map} from 'immutable'
+import {fireEvent, render, screen} from '@testing-library/react'
 
+import {FulfillmentStatus} from 'constants/integrations/types/shopify'
 import {
     shopifyOrderFixture,
     shopifySuggestedRefundFixture,
@@ -34,10 +35,28 @@ describe('<OrderTable/>', () => {
                 lineItems={lineItems}
                 refund={refund}
                 onLineItemChange={onLineItemChange}
+                fulfillmentStatus={FulfillmentStatus.Partial}
             />
         )
 
         expect(container.firstChild).toMatchSnapshot()
+        expect(screen.getByLabelText('Quantity warning'))
+    })
+
+    it('should render without warning icon', () => {
+        render(
+            <OrderTable
+                shopName="storegorgias3"
+                currencyCode="USD"
+                shopCurrencyCode="USD"
+                lineItems={lineItems}
+                refund={refund}
+                onLineItemChange={onLineItemChange}
+                fulfillmentStatus={FulfillmentStatus.Fulfilled}
+            />
+        )
+
+        expect(screen.queryByAltText('Quantity warning')).toBeNull()
     })
 
     it('should render for multi-currency order', () => {
@@ -49,6 +68,7 @@ describe('<OrderTable/>', () => {
                 lineItems={lineItems}
                 refund={refund}
                 onLineItemChange={onLineItemChange}
+                fulfillmentStatus={FulfillmentStatus.Partial}
             />
         )
 
@@ -69,6 +89,7 @@ describe('<OrderTable/>', () => {
                     )
                     .setIn(['refund_line_items', 0, 'location_id'], null)}
                 onLineItemChange={onLineItemChange}
+                fulfillmentStatus={FulfillmentStatus.Partial}
             />
         )
         expect(screen.getByText("This product can't be restocked."))
@@ -83,6 +104,7 @@ describe('<OrderTable/>', () => {
                 lineItems={lineItems}
                 refund={refund}
                 onLineItemChange={onLineItemChange}
+                fulfillmentStatus={FulfillmentStatus.Partial}
             />
         )
         fireEvent.change(screen.getAllByRole('textbox')[0], {
@@ -103,6 +125,7 @@ describe('<OrderTable/>', () => {
                 lineItems={lineItems.setIn([0, 'quantity'], 3)}
                 refund={refund}
                 onLineItemChange={onLineItemChange}
+                fulfillmentStatus={FulfillmentStatus.Partial}
             />
         )
         fireEvent.click(screen.getAllByText('▼')[0])

@@ -53,6 +53,7 @@ export default function RefundOrderForm({
                 lineItems={lineItems}
                 refund={refund}
                 onLineItemChange={onLineItemChange}
+                fulfillmentStatus={order.get('fulfillment_status')}
             />
             <OrderFooter
                 editable

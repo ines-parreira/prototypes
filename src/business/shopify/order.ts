@@ -93,6 +93,12 @@ export function getFinalCancelOrderPayload(
     )
 }
 
+export const getFormattedRefundAmount = (payload: Map<any, any>) => {
+    const currency = payload.get('currency')
+
+    return formatPrice(payload.getIn(['transactions', 0, 'amount']), currency)
+}
+
 export function getFinalRefundOrderPayload(
     payload: Map<any, any>,
     refund: Map<any, any>
@@ -100,12 +106,7 @@ export function getFinalRefundOrderPayload(
     let finalPayload = payload
 
     // Format amount
-    const currency = finalPayload.get('currency')
-    const amount = formatPrice(
-        finalPayload.getIn(['transactions', 0, 'amount']),
-        currency
-    )
-
+    const amount = getFormattedRefundAmount(finalPayload)
     // Remove discrepancy reason if there is no discrepancy
     const discrepancyLimit = getRefundAmount(refund)
     const hasDiscrepancy = parseFloat(amount) !== discrepancyLimit

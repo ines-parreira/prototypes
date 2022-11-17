@@ -46,6 +46,10 @@ exports[`<RefundOrderModal /> should render a spinner when missing data 1`] = `
         type="submit"
       >
         Refund
+         
+        <span>
+          $0.00
+        </span>
       </button>
     </div>
   </form>
@@ -60,7 +64,7 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
     class=""
   >
     <table
-      class="table table table-hover"
+      class="table mb-4 table table-hover"
     >
       <thead>
         <tr>
@@ -71,9 +75,22 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
             Item price
           </th>
           <th>
-            Qty
+            <div
+              class="qty"
+            >
+              Qty
+              <span
+                aria-label="Quantity warning"
+                class="material-icons orange ml-1"
+                id="qty-warning-icon"
+              >
+                warning
+              </span>
+            </div>
           </th>
-          <th>
+          <th
+            class="itemTotal"
+          >
             Item total
           </th>
         </tr>
@@ -327,114 +344,11 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
           class="col-12 order-2 col-xl-7 order-xl-1"
         >
           <div
-            class="row"
-          >
-            <div
-              class="col-12 col-lg-6"
-            >
-              <div
-                class="form-group"
-              >
-                <label
-                  class=""
-                  for="amount"
-                >
-                  Refund with: Manual
-                </label>
-                <div
-                  class="container amountInput"
-                >
-                  <span
-                    class="leftLabel"
-                    style="width: 2rem;"
-                  >
-                    $
-                  </span>
-                  <input
-                    class="input form-control"
-                    id="amount"
-                    min="0"
-                    required=""
-                    step="0.01"
-                    style="padding-left: 2rem;"
-                    type="number"
-                    value=""
-                  />
-                </div>
-              </div>
-            </div>
-            <div
-              class="col-12 col-lg-6"
-            >
-              <div
-                class="form-group"
-              >
-                <label
-                  class=""
-                  for="reason"
-                >
-                  Reason for refund
-                </label>
-                <input
-                  class="form-control"
-                  id="reason"
-                  type="text"
-                  value=""
-                />
-                <small
-                  class="form-text text-muted"
-                >
-                  Only you and other staff can see this reason.
-                </small>
-              </div>
-            </div>
-          </div>
-          <div
-            class="row"
+            class="mb-5 row"
           >
             <div
               class="col-12"
             >
-              <div
-                class="form-group"
-              >
-                <label
-                  class=""
-                  for="discrepancy-reason"
-                >
-                  Reason for custom refund amount
-                </label>
-                <select
-                  class="discrepancyReasonInput form-control"
-                  id="discrepancy-reason"
-                >
-                  <option
-                    value="restock"
-                  >
-                    Restocking fee
-                  </option>
-                  <option
-                    value="damage"
-                  >
-                    Damaged goods
-                  </option>
-                  <option
-                    value="customer"
-                  >
-                    Customer satisfaction
-                  </option>
-                  <option
-                    value="other"
-                  >
-                    Other
-                  </option>
-                </select>
-                <small
-                  class="form-text text-muted"
-                >
-                  The amount being refunded is different from the value of items being returned.
-                </small>
-              </div>
               <div
                 class="mb-3"
               >
@@ -453,7 +367,7 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
                 <div
                   class="caption caption"
                 >
-                  The claimed quantity for products in this order will be restocked back to your store.
+                  The claimed quantity will be restocked back to your store. Note that custom items can’t be restocked.
                 </div>
               </div>
               <div
@@ -475,136 +389,6 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
               </div>
             </div>
           </div>
-        </div>
-        <div
-          class="mb-sm-4 col-12 order-1 col-xl-5 order-xl-2"
-        >
-          <dl
-            class="row text-right mb-0"
-          >
-            <dt
-              class="col-7 mb-2 grey"
-            >
-              Subtotal
-            </dt>
-            <dd
-              class="col-5 mb-2"
-            >
-              <span>
-                $0.00
-              </span>
-            </dd>
-            <dt
-              class="col-7 grey mb-2"
-            >
-              <label
-                class="d-inline"
-                for="shipping"
-              >
-                Shipping
-                 
-              </label>
-            </dt>
-            <dd
-              class="col-5 mb-2"
-            >
-              —
-            </dd>
-            <dt
-              class="col-7 mb-2 grey"
-            >
-              Discounts
-            </dt>
-            <dd
-              class="col-5 mb-2"
-            >
-              —
-            </dd>
-            <dt
-              class="col-7 mb-2 grey"
-            >
-              Tax
-            </dt>
-            <dd
-              class="col-5 mb-2"
-            >
-              —
-            </dd>
-            <dt
-              class="col-7 mb-2 grey"
-            >
-              Total available to refund
-            </dt>
-            <dd
-              class="col-5 mb-2"
-            >
-              <span>
-                $0.00
-              </span>
-            </dd>
-          </dl>
-        </div>
-      </div>
-    </div>
-    <div
-      class="footer modal-footer"
-    >
-      <button
-        class="focusable btn btn-secondary"
-        tabindex="0"
-        type="button"
-      >
-        Cancel
-      </button>
-      <button
-        class="focusable ml-auto btn btn-primary"
-        tabindex="0"
-        type="submit"
-      >
-        Refund
-      </button>
-    </div>
-  </form>
-</div>
-`;
-
-exports[`<RefundOrderModal /> should render with an empty order table when data is empty 1`] = `
-<div
-  data-testid="Modal"
->
-  <form
-    class=""
-  >
-    <table
-      class="table table table-hover"
-    >
-      <thead>
-        <tr>
-          <th>
-            Product
-          </th>
-          <th>
-            Item price
-          </th>
-          <th>
-            Qty
-          </th>
-          <th>
-            Item total
-          </th>
-        </tr>
-      </thead>
-      <tbody />
-    </table>
-    <div
-      class="container container-fluid"
-    >
-      <div
-        class="row"
-      >
-        <div
-          class="col-12 order-2 col-xl-7 order-xl-1"
-        >
           <div
             class="row"
           >
@@ -615,7 +399,7 @@ exports[`<RefundOrderModal /> should render with an empty order table when data 
                 class="form-group"
               >
                 <label
-                  class=""
+                  class="label"
                   for="amount"
                 >
                   Refund with: Manual
@@ -649,7 +433,7 @@ exports[`<RefundOrderModal /> should render with an empty order table when data 
                 class="form-group"
               >
                 <label
-                  class=""
+                  class="label"
                   for="reason"
                 >
                   Reason for refund
@@ -678,7 +462,7 @@ exports[`<RefundOrderModal /> should render with an empty order table when data 
                 class="form-group"
               >
                 <label
-                  class=""
+                  class="label"
                   for="discrepancy-reason"
                 >
                   Reason for custom refund amount
@@ -714,44 +498,6 @@ exports[`<RefundOrderModal /> should render with an empty order table when data 
                   The amount being refunded is different from the value of items being returned.
                 </small>
               </div>
-              <div
-                class="mb-3"
-              >
-                <label
-                  class="label label"
-                  for="checkbox-1"
-                >
-                  <input
-                    class="input"
-                    id="checkbox-1"
-                    name="checkbox-1"
-                    type="checkbox"
-                  />
-                  Restock items
-                </label>
-                <div
-                  class="caption caption"
-                >
-                  The claimed quantity for products in this order will be restocked back to your store.
-                </div>
-              </div>
-              <div
-                class="mb-3"
-              >
-                <label
-                  class="label label"
-                  for="notify-customer"
-                >
-                  <input
-                    checked=""
-                    class="input"
-                    id="notify-customer"
-                    name="notify-customer"
-                    type="checkbox"
-                  />
-                  Send notification to customer
-                </label>
-              </div>
             </div>
           </div>
         </div>
@@ -767,7 +513,7 @@ exports[`<RefundOrderModal /> should render with an empty order table when data 
               Subtotal
             </dt>
             <dd
-              class="col-5 mb-2"
+              class="col-5 mb-2 value"
             >
               <span>
                 $0.00
@@ -785,7 +531,7 @@ exports[`<RefundOrderModal /> should render with an empty order table when data 
               </label>
             </dt>
             <dd
-              class="col-5 mb-2"
+              class="col-5 mb-2 value"
             >
               —
             </dd>
@@ -795,7 +541,7 @@ exports[`<RefundOrderModal /> should render with an empty order table when data 
               Discounts
             </dt>
             <dd
-              class="col-5 mb-2"
+              class="col-5 mb-2 value"
             >
               —
             </dd>
@@ -805,7 +551,7 @@ exports[`<RefundOrderModal /> should render with an empty order table when data 
               Tax
             </dt>
             <dd
-              class="col-5 mb-2"
+              class="col-5 mb-2 value"
             >
               —
             </dd>
@@ -815,7 +561,7 @@ exports[`<RefundOrderModal /> should render with an empty order table when data 
               Total available to refund
             </dt>
             <dd
-              class="col-5 mb-2"
+              class="col-5 mb-2 value"
             >
               <span>
                 $0.00
@@ -841,6 +587,310 @@ exports[`<RefundOrderModal /> should render with an empty order table when data 
         type="submit"
       >
         Refund
+         
+        —
+      </button>
+    </div>
+  </form>
+</div>
+`;
+
+exports[`<RefundOrderModal /> should render with an empty order table when data is empty 1`] = `
+<div
+  data-testid="Modal"
+>
+  <form
+    class=""
+  >
+    <table
+      class="table mb-4 table table-hover"
+    >
+      <thead>
+        <tr>
+          <th>
+            Product
+          </th>
+          <th>
+            Item price
+          </th>
+          <th>
+            <div
+              class="qty"
+            >
+              Qty
+              <span
+                aria-label="Quantity warning"
+                class="material-icons orange ml-1"
+                id="qty-warning-icon"
+              >
+                warning
+              </span>
+            </div>
+          </th>
+          <th
+            class="itemTotal"
+          >
+            Item total
+          </th>
+        </tr>
+      </thead>
+      <tbody />
+    </table>
+    <div
+      class="container container-fluid"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col-12 order-2 col-xl-7 order-xl-1"
+        >
+          <div
+            class="mb-5 row"
+          >
+            <div
+              class="col-12"
+            >
+              <div
+                class="mb-3"
+              >
+                <label
+                  class="label label"
+                  for="checkbox-1"
+                >
+                  <input
+                    class="input"
+                    id="checkbox-1"
+                    name="checkbox-1"
+                    type="checkbox"
+                  />
+                  Restock items
+                </label>
+                <div
+                  class="caption caption"
+                >
+                  The claimed quantity will be restocked back to your store. Note that custom items can’t be restocked.
+                </div>
+              </div>
+              <div
+                class="mb-3"
+              >
+                <label
+                  class="label label"
+                  for="notify-customer"
+                >
+                  <input
+                    checked=""
+                    class="input"
+                    id="notify-customer"
+                    name="notify-customer"
+                    type="checkbox"
+                  />
+                  Send notification to customer
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            class="row"
+          >
+            <div
+              class="col-12 col-lg-6"
+            >
+              <div
+                class="form-group"
+              >
+                <label
+                  class="label"
+                  for="amount"
+                >
+                  Refund with: Manual
+                </label>
+                <div
+                  class="container amountInput"
+                >
+                  <span
+                    class="leftLabel"
+                    style="width: 2rem;"
+                  >
+                    $
+                  </span>
+                  <input
+                    class="input form-control"
+                    id="amount"
+                    min="0"
+                    required=""
+                    step="0.01"
+                    style="padding-left: 2rem;"
+                    type="number"
+                    value=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              class="col-12 col-lg-6"
+            >
+              <div
+                class="form-group"
+              >
+                <label
+                  class="label"
+                  for="reason"
+                >
+                  Reason for refund
+                </label>
+                <input
+                  class="form-control"
+                  id="reason"
+                  type="text"
+                  value=""
+                />
+                <small
+                  class="form-text text-muted"
+                >
+                  Only you and other staff can see this reason.
+                </small>
+              </div>
+            </div>
+          </div>
+          <div
+            class="row"
+          >
+            <div
+              class="col-12"
+            >
+              <div
+                class="form-group"
+              >
+                <label
+                  class="label"
+                  for="discrepancy-reason"
+                >
+                  Reason for custom refund amount
+                </label>
+                <select
+                  class="discrepancyReasonInput form-control"
+                  id="discrepancy-reason"
+                >
+                  <option
+                    value="restock"
+                  >
+                    Restocking fee
+                  </option>
+                  <option
+                    value="damage"
+                  >
+                    Damaged goods
+                  </option>
+                  <option
+                    value="customer"
+                  >
+                    Customer satisfaction
+                  </option>
+                  <option
+                    value="other"
+                  >
+                    Other
+                  </option>
+                </select>
+                <small
+                  class="form-text text-muted"
+                >
+                  The amount being refunded is different from the value of items being returned.
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="mb-sm-4 col-12 order-1 col-xl-5 order-xl-2"
+        >
+          <dl
+            class="row text-right mb-0"
+          >
+            <dt
+              class="col-7 mb-2 grey"
+            >
+              Subtotal
+            </dt>
+            <dd
+              class="col-5 mb-2 value"
+            >
+              <span>
+                $0.00
+              </span>
+            </dd>
+            <dt
+              class="col-7 grey mb-2"
+            >
+              <label
+                class="d-inline"
+                for="shipping"
+              >
+                Shipping
+                 
+              </label>
+            </dt>
+            <dd
+              class="col-5 mb-2 value"
+            >
+              —
+            </dd>
+            <dt
+              class="col-7 mb-2 grey"
+            >
+              Discounts
+            </dt>
+            <dd
+              class="col-5 mb-2 value"
+            >
+              —
+            </dd>
+            <dt
+              class="col-7 mb-2 grey"
+            >
+              Tax
+            </dt>
+            <dd
+              class="col-5 mb-2 value"
+            >
+              —
+            </dd>
+            <dt
+              class="col-7 mb-2 grey"
+            >
+              Total available to refund
+            </dt>
+            <dd
+              class="col-5 mb-2 value"
+            >
+              <span>
+                $0.00
+              </span>
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+    <div
+      class="footer modal-footer"
+    >
+      <button
+        class="focusable btn btn-secondary"
+        tabindex="0"
+        type="button"
+      >
+        Cancel
+      </button>
+      <button
+        class="focusable ml-auto btn btn-primary"
+        tabindex="0"
+        type="submit"
+      >
+        Refund
+         
+        —
       </button>
     </div>
   </form>

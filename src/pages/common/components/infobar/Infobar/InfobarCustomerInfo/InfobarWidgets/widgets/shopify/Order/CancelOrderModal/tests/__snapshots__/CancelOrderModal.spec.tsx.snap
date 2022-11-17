@@ -60,7 +60,7 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
     class=""
   >
     <table
-      class="table table table-hover"
+      class="table mb-4 table table-hover"
     >
       <thead>
         <tr>
@@ -71,9 +71,22 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
             Item price
           </th>
           <th>
-            Qty
+            <div
+              class="qty"
+            >
+              Qty
+              <span
+                aria-label="Quantity warning"
+                class="material-icons orange ml-1"
+                id="qty-warning-icon"
+              >
+                warning
+              </span>
+            </div>
           </th>
-          <th>
+          <th
+            class="itemTotal"
+          >
             Item total
           </th>
         </tr>
@@ -327,6 +340,52 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
           class="col-12 order-2 col-xl-7 order-xl-1"
         >
           <div
+            class="mb-5 row"
+          >
+            <div
+              class="col-12"
+            >
+              <div
+                class="mb-3"
+              >
+                <label
+                  class="label label"
+                  for="checkbox-3"
+                >
+                  <input
+                    class="input"
+                    id="checkbox-3"
+                    name="checkbox-3"
+                    type="checkbox"
+                  />
+                  Restock items
+                </label>
+                <div
+                  class="caption caption"
+                >
+                  The claimed quantity will be restocked back to your store. Note that custom items can’t be restocked.
+                </div>
+              </div>
+              <div
+                class="mb-3"
+              >
+                <label
+                  class="label label"
+                  for="notify-customer"
+                >
+                  <input
+                    checked=""
+                    class="input"
+                    id="notify-customer"
+                    name="notify-customer"
+                    type="checkbox"
+                  />
+                  Send notification to customer
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
             class="row"
           >
             <div
@@ -336,7 +395,7 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
                 class="form-group"
               >
                 <label
-                  class=""
+                  class="label"
                   for="amount"
                 >
                   Refund with: Manual
@@ -370,7 +429,7 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
                 class="form-group"
               >
                 <label
-                  class=""
+                  class="label"
                   for="reason"
                 >
                   Reason for canceling this order
@@ -418,7 +477,7 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
                 class="form-group"
               >
                 <label
-                  class=""
+                  class="label"
                   for="discrepancy-reason"
                 >
                   Reason for custom refund amount
@@ -454,44 +513,6 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
                   The amount being refunded is different from the value of items being returned.
                 </small>
               </div>
-              <div
-                class="mb-3"
-              >
-                <label
-                  class="label label"
-                  for="checkbox-3"
-                >
-                  <input
-                    class="input"
-                    id="checkbox-3"
-                    name="checkbox-3"
-                    type="checkbox"
-                  />
-                  Restock items
-                </label>
-                <div
-                  class="caption caption"
-                >
-                  The claimed quantity for products in this order will be restocked back to your store.
-                </div>
-              </div>
-              <div
-                class="mb-3"
-              >
-                <label
-                  class="label label"
-                  for="notify-customer"
-                >
-                  <input
-                    checked=""
-                    class="input"
-                    id="notify-customer"
-                    name="notify-customer"
-                    type="checkbox"
-                  />
-                  Send notification to customer
-                </label>
-              </div>
             </div>
           </div>
         </div>
@@ -507,7 +528,7 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
               Subtotal
             </dt>
             <dd
-              class="col-5 mb-2"
+              class="col-5 mb-2 value"
             >
               <span>
                 $0.00
@@ -525,7 +546,7 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
               </label>
             </dt>
             <dd
-              class="col-5 mb-2"
+              class="col-5 mb-2 value"
             >
               —
             </dd>
@@ -535,7 +556,7 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
               Discounts
             </dt>
             <dd
-              class="col-5 mb-2"
+              class="col-5 mb-2 value"
             >
               —
             </dd>
@@ -545,7 +566,7 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
               Tax
             </dt>
             <dd
-              class="col-5 mb-2"
+              class="col-5 mb-2 value"
             >
               —
             </dd>
@@ -555,7 +576,7 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
               Total available to refund
             </dt>
             <dd
-              class="col-5 mb-2"
+              class="col-5 mb-2 value"
             >
               <span>
                 $0.00
@@ -595,7 +616,7 @@ exports[`<CancelOrderContainer /> should render with an empty order table when d
     class=""
   >
     <table
-      class="table table table-hover"
+      class="table mb-4 table table-hover"
     >
       <thead>
         <tr>
@@ -606,9 +627,22 @@ exports[`<CancelOrderContainer /> should render with an empty order table when d
             Item price
           </th>
           <th>
-            Qty
+            <div
+              class="qty"
+            >
+              Qty
+              <span
+                aria-label="Quantity warning"
+                class="material-icons orange ml-1"
+                id="qty-warning-icon"
+              >
+                warning
+              </span>
+            </div>
           </th>
-          <th>
+          <th
+            class="itemTotal"
+          >
             Item total
           </th>
         </tr>
@@ -625,6 +659,52 @@ exports[`<CancelOrderContainer /> should render with an empty order table when d
           class="col-12 order-2 col-xl-7 order-xl-1"
         >
           <div
+            class="mb-5 row"
+          >
+            <div
+              class="col-12"
+            >
+              <div
+                class="mb-3"
+              >
+                <label
+                  class="label label"
+                  for="checkbox-1"
+                >
+                  <input
+                    class="input"
+                    id="checkbox-1"
+                    name="checkbox-1"
+                    type="checkbox"
+                  />
+                  Restock items
+                </label>
+                <div
+                  class="caption caption"
+                >
+                  The claimed quantity will be restocked back to your store. Note that custom items can’t be restocked.
+                </div>
+              </div>
+              <div
+                class="mb-3"
+              >
+                <label
+                  class="label label"
+                  for="notify-customer"
+                >
+                  <input
+                    checked=""
+                    class="input"
+                    id="notify-customer"
+                    name="notify-customer"
+                    type="checkbox"
+                  />
+                  Send notification to customer
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
             class="row"
           >
             <div
@@ -634,7 +714,7 @@ exports[`<CancelOrderContainer /> should render with an empty order table when d
                 class="form-group"
               >
                 <label
-                  class=""
+                  class="label"
                   for="amount"
                 >
                   Refund with: Manual
@@ -668,7 +748,7 @@ exports[`<CancelOrderContainer /> should render with an empty order table when d
                 class="form-group"
               >
                 <label
-                  class=""
+                  class="label"
                   for="reason"
                 >
                   Reason for canceling this order
@@ -716,7 +796,7 @@ exports[`<CancelOrderContainer /> should render with an empty order table when d
                 class="form-group"
               >
                 <label
-                  class=""
+                  class="label"
                   for="discrepancy-reason"
                 >
                   Reason for custom refund amount
@@ -752,44 +832,6 @@ exports[`<CancelOrderContainer /> should render with an empty order table when d
                   The amount being refunded is different from the value of items being returned.
                 </small>
               </div>
-              <div
-                class="mb-3"
-              >
-                <label
-                  class="label label"
-                  for="checkbox-1"
-                >
-                  <input
-                    class="input"
-                    id="checkbox-1"
-                    name="checkbox-1"
-                    type="checkbox"
-                  />
-                  Restock items
-                </label>
-                <div
-                  class="caption caption"
-                >
-                  The claimed quantity for products in this order will be restocked back to your store.
-                </div>
-              </div>
-              <div
-                class="mb-3"
-              >
-                <label
-                  class="label label"
-                  for="notify-customer"
-                >
-                  <input
-                    checked=""
-                    class="input"
-                    id="notify-customer"
-                    name="notify-customer"
-                    type="checkbox"
-                  />
-                  Send notification to customer
-                </label>
-              </div>
             </div>
           </div>
         </div>
@@ -805,7 +847,7 @@ exports[`<CancelOrderContainer /> should render with an empty order table when d
               Subtotal
             </dt>
             <dd
-              class="col-5 mb-2"
+              class="col-5 mb-2 value"
             >
               <span>
                 $0.00
@@ -823,7 +865,7 @@ exports[`<CancelOrderContainer /> should render with an empty order table when d
               </label>
             </dt>
             <dd
-              class="col-5 mb-2"
+              class="col-5 mb-2 value"
             >
               —
             </dd>
@@ -833,7 +875,7 @@ exports[`<CancelOrderContainer /> should render with an empty order table when d
               Discounts
             </dt>
             <dd
-              class="col-5 mb-2"
+              class="col-5 mb-2 value"
             >
               —
             </dd>
@@ -843,7 +885,7 @@ exports[`<CancelOrderContainer /> should render with an empty order table when d
               Tax
             </dt>
             <dd
-              class="col-5 mb-2"
+              class="col-5 mb-2 value"
             >
               —
             </dd>
@@ -853,7 +895,7 @@ exports[`<CancelOrderContainer /> should render with an empty order table when d
               Total available to refund
             </dt>
             <dd
-              class="col-5 mb-2"
+              class="col-5 mb-2 value"
             >
               <span>
                 $0.00

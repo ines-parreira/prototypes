@@ -4,6 +4,7 @@ exports[`<RefundOrderForm/> render() should render 1`] = `
 <Fragment>
   <Memo(OrderTable)
     currencyCode="USD"
+    fulfillmentStatus={null}
     lineItems={
       Immutable.List [
         Immutable.Map {
@@ -139,6 +140,7 @@ exports[`<RefundOrderForm/> render() should render for multi-currency order 1`] 
 <Fragment>
   <Memo(OrderTable)
     currencyCode="USD"
+    fulfillmentStatus={null}
     lineItems={
       Immutable.List [
         Immutable.Map {

@@ -17,11 +17,15 @@ import {getRefundOrderState} from 'state/infobarActions/shopify/refundOrder/sele
 import {getIntegrationsByType} from 'state/integrations/selectors'
 import {RootState} from 'state/types'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
-import {getFinalRefundOrderPayload} from 'business/shopify/order'
+import {
+    getFinalRefundOrderPayload,
+    getFormattedRefundAmount,
+} from 'business/shopify/order'
 import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import Loader from 'pages/common/components/Loader/Loader'
 import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
+import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import {InfobarModalProps} from '../../../types'
 import RefundOrderForm from '../RefundOrderForm/RefundOrderForm'
 
@@ -186,7 +190,16 @@ export const RefundOrderModalContainer = ({
                         tabIndex={0}
                         className={classnames(css.focusable, 'ml-auto')}
                     >
-                        Refund
+                        Refund{' '}
+                        <MoneyAmount
+                            amount={
+                                payload
+                                    ? getFormattedRefundAmount(payload)
+                                    : '0'
+                            }
+                            currencyCode={payload?.get('currency') || null}
+                            renderIfZero
+                        />
                     </Button>
                 </ModalFooter>
             </Form>

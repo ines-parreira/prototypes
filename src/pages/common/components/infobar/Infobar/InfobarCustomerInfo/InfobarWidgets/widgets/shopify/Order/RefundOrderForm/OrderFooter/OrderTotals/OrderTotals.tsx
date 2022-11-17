@@ -76,7 +76,7 @@ export default class OrderTotals extends React.PureComponent<Props, State> {
             <dl className="row text-right mb-0">
                 <dt className={classnames('col-7 mb-2', css.grey)}>Subtotal</dt>
                 <dd
-                    className={classnames('col-5 mb-2', {
+                    className={classnames('col-5 mb-2', css.value, {
                         'text-muted': loading,
                     })}
                 >
@@ -115,7 +115,7 @@ export default class OrderTotals extends React.PureComponent<Props, State> {
                 )}
                 {hasShippingLine && (
                     <dd
-                        className={classnames('col-5 mb-2', {
+                        className={classnames('col-5 mb-2', css.value, {
                             'text-muted': loading,
                         })}
                     >
@@ -141,7 +141,7 @@ export default class OrderTotals extends React.PureComponent<Props, State> {
                     Discounts
                 </dt>
                 <dd
-                    className={classnames('col-5 mb-2', {
+                    className={classnames('col-5 mb-2', css.value, {
                         'text-muted': loading,
                     })}
                 >
@@ -157,7 +157,7 @@ export default class OrderTotals extends React.PureComponent<Props, State> {
 
                 <dt className={classnames('col-7 mb-2', css.grey)}>Tax</dt>
                 <dd
-                    className={classnames('col-5 mb-2', {
+                    className={classnames('col-5 mb-2', css.value, {
                         'text-muted': loading,
                     })}
                 >
@@ -170,7 +170,7 @@ export default class OrderTotals extends React.PureComponent<Props, State> {
                 <dt className={classnames('col-7 mb-2', css.grey)}>
                     Total available to refund
                 </dt>
-                <dd className="col-5 mb-2">
+                <dd className={classnames('col-5 mb-2', css.value)}>
                     <MoneyAmount
                         amount={formatPrice(
                             getTotalAvailableToRefund(refund),

@@ -10,7 +10,7 @@ exports[`<OrderTotals/> render() should render as loading 1`] = `
     Subtotal
   </dt>
   <dd
-    class="col-5 mb-2 text-muted"
+    class="col-5 mb-2 value text-muted"
   >
     <span>
       $1.00
@@ -22,7 +22,7 @@ exports[`<OrderTotals/> render() should render as loading 1`] = `
     Discounts
   </dt>
   <dd
-    class="col-5 mb-2 text-muted"
+    class="col-5 mb-2 value text-muted"
   >
     —
   </dd>
@@ -32,7 +32,7 @@ exports[`<OrderTotals/> render() should render as loading 1`] = `
     Tax
   </dt>
   <dd
-    class="col-5 mb-2 text-muted"
+    class="col-5 mb-2 value text-muted"
   >
     <span>
       $0.20
@@ -44,7 +44,7 @@ exports[`<OrderTotals/> render() should render as loading 1`] = `
     Total available to refund
   </dt>
   <dd
-    class="col-5 mb-2"
+    class="col-5 mb-2 value"
   >
     <span>
       $1.20
@@ -63,7 +63,7 @@ exports[`<OrderTotals/> render() should render as not loading 1`] = `
     Subtotal
   </dt>
   <dd
-    class="col-5 mb-2"
+    class="col-5 mb-2 value"
   >
     <span>
       $1.00
@@ -75,7 +75,7 @@ exports[`<OrderTotals/> render() should render as not loading 1`] = `
     Discounts
   </dt>
   <dd
-    class="col-5 mb-2"
+    class="col-5 mb-2 value"
   >
     —
   </dd>
@@ -85,7 +85,7 @@ exports[`<OrderTotals/> render() should render as not loading 1`] = `
     Tax
   </dt>
   <dd
-    class="col-5 mb-2"
+    class="col-5 mb-2 value"
   >
     <span>
       $0.20
@@ -97,7 +97,7 @@ exports[`<OrderTotals/> render() should render as not loading 1`] = `
     Total available to refund
   </dt>
   <dd
-    class="col-5 mb-2"
+    class="col-5 mb-2 value"
   >
     <span>
       $1.20
@@ -116,7 +116,7 @@ exports[`<OrderTotals/> render() should render with shipping line 1`] = `
     Subtotal
   </dt>
   <dd
-    class="col-5 mb-2"
+    class="col-5 mb-2 value"
   >
     <span>
       $1.00
@@ -142,7 +142,7 @@ exports[`<OrderTotals/> render() should render with shipping line 1`] = `
     </label>
   </dt>
   <dd
-    class="col-5 mb-2"
+    class="col-5 mb-2 value"
   >
     <div
       class="container text-right"
@@ -172,7 +172,7 @@ exports[`<OrderTotals/> render() should render with shipping line 1`] = `
     Discounts
   </dt>
   <dd
-    class="col-5 mb-2"
+    class="col-5 mb-2 value"
   >
     —
   </dd>
@@ -182,7 +182,7 @@ exports[`<OrderTotals/> render() should render with shipping line 1`] = `
     Tax
   </dt>
   <dd
-    class="col-5 mb-2"
+    class="col-5 mb-2 value"
   >
     <span>
       $0.20
@@ -194,7 +194,7 @@ exports[`<OrderTotals/> render() should render with shipping line 1`] = `
     Total available to refund
   </dt>
   <dd
-    class="col-5 mb-2"
+    class="col-5 mb-2 value"
   >
     <span>
       $1.20

@@ -11,6 +11,53 @@ exports[`<OrderFooter/> render() should render 1`] = `
       class="col-12 order-2 col-xl-7 order-xl-1"
     >
       <div
+        class="mb-5 row"
+      >
+        <div
+          class="col-12"
+        >
+          <div
+            class="mb-3"
+          >
+            <label
+              class="label label"
+              for="checkbox-1"
+            >
+              <input
+                checked=""
+                class="input"
+                id="checkbox-1"
+                name="checkbox-1"
+                type="checkbox"
+              />
+              Restock items
+            </label>
+            <div
+              class="caption caption"
+            >
+              The claimed quantity will be restocked back to your store. Note that custom items can’t be restocked.
+            </div>
+          </div>
+          <div
+            class="mb-3"
+          >
+            <label
+              class="label label"
+              for="notify-customer"
+            >
+              <input
+                checked=""
+                class="input"
+                id="notify-customer"
+                name="notify-customer"
+                type="checkbox"
+              />
+              Send notification to customer
+            </label>
+          </div>
+        </div>
+      </div>
+      <div
         class="row"
       >
         <div
@@ -20,7 +67,7 @@ exports[`<OrderFooter/> render() should render 1`] = `
             class="form-group"
           >
             <label
-              class=""
+              class="label"
               for="amount"
             >
               Refund with: Manual
@@ -55,7 +102,7 @@ exports[`<OrderFooter/> render() should render 1`] = `
             class="form-group"
           >
             <label
-              class=""
+              class="label"
               for="reason"
             >
               Reason for canceling this order
@@ -103,7 +150,7 @@ exports[`<OrderFooter/> render() should render 1`] = `
             class="form-group"
           >
             <label
-              class=""
+              class="label"
               for="discrepancy-reason"
             >
               Reason for custom refund amount
@@ -139,45 +186,6 @@ exports[`<OrderFooter/> render() should render 1`] = `
               The amount being refunded is different from the value of items being returned.
             </small>
           </div>
-          <div
-            class="mb-3"
-          >
-            <label
-              class="label label"
-              for="checkbox-1"
-            >
-              <input
-                checked=""
-                class="input"
-                id="checkbox-1"
-                name="checkbox-1"
-                type="checkbox"
-              />
-              Restock items
-            </label>
-            <div
-              class="caption caption"
-            >
-              The claimed quantity for products in this order will be restocked back to your store.
-            </div>
-          </div>
-          <div
-            class="mb-3"
-          >
-            <label
-              class="label label"
-              for="notify-customer"
-            >
-              <input
-                checked=""
-                class="input"
-                id="notify-customer"
-                name="notify-customer"
-                type="checkbox"
-              />
-              Send notification to customer
-            </label>
-          </div>
         </div>
       </div>
     </div>
@@ -193,7 +201,7 @@ exports[`<OrderFooter/> render() should render 1`] = `
           Subtotal
         </dt>
         <dd
-          class="col-5 mb-2"
+          class="col-5 mb-2 value"
         >
           <span>
             $1.00
@@ -219,7 +227,7 @@ exports[`<OrderFooter/> render() should render 1`] = `
           </label>
         </dt>
         <dd
-          class="col-5 mb-2"
+          class="col-5 mb-2 value"
         >
           <div
             class="container text-right"
@@ -249,7 +257,7 @@ exports[`<OrderFooter/> render() should render 1`] = `
           Discounts
         </dt>
         <dd
-          class="col-5 mb-2"
+          class="col-5 mb-2 value"
         >
           —
         </dd>
@@ -259,7 +267,7 @@ exports[`<OrderFooter/> render() should render 1`] = `
           Tax
         </dt>
         <dd
-          class="col-5 mb-2"
+          class="col-5 mb-2 value"
         >
           <span>
             $0.20
@@ -271,7 +279,7 @@ exports[`<OrderFooter/> render() should render 1`] = `
           Total available to refund
         </dt>
         <dd
-          class="col-5 mb-2"
+          class="col-5 mb-2 value"
         >
           <span>
             $1.20
@@ -294,6 +302,53 @@ exports[`<OrderFooter/> render() should render for refund order action 1`] = `
       class="col-12 order-2 col-xl-7 order-xl-1"
     >
       <div
+        class="mb-5 row"
+      >
+        <div
+          class="col-12"
+        >
+          <div
+            class="mb-3"
+          >
+            <label
+              class="label label"
+              for="checkbox-3"
+            >
+              <input
+                checked=""
+                class="input"
+                id="checkbox-3"
+                name="checkbox-3"
+                type="checkbox"
+              />
+              Restock items
+            </label>
+            <div
+              class="caption caption"
+            >
+              The claimed quantity will be restocked back to your store. Note that custom items can’t be restocked.
+            </div>
+          </div>
+          <div
+            class="mb-3"
+          >
+            <label
+              class="label label"
+              for="notify-customer"
+            >
+              <input
+                checked=""
+                class="input"
+                id="notify-customer"
+                name="notify-customer"
+                type="checkbox"
+              />
+              Send notification to customer
+            </label>
+          </div>
+        </div>
+      </div>
+      <div
         class="row"
       >
         <div
@@ -303,7 +358,7 @@ exports[`<OrderFooter/> render() should render for refund order action 1`] = `
             class="form-group"
           >
             <label
-              class=""
+              class="label"
               for="amount"
             >
               Refund with: Manual
@@ -338,7 +393,7 @@ exports[`<OrderFooter/> render() should render for refund order action 1`] = `
             class="form-group"
           >
             <label
-              class=""
+              class="label"
               for="reason"
             >
               Reason for refund
@@ -367,7 +422,7 @@ exports[`<OrderFooter/> render() should render for refund order action 1`] = `
             class="form-group"
           >
             <label
-              class=""
+              class="label"
               for="discrepancy-reason"
             >
               Reason for custom refund amount
@@ -403,45 +458,6 @@ exports[`<OrderFooter/> render() should render for refund order action 1`] = `
               The amount being refunded is different from the value of items being returned.
             </small>
           </div>
-          <div
-            class="mb-3"
-          >
-            <label
-              class="label label"
-              for="checkbox-3"
-            >
-              <input
-                checked=""
-                class="input"
-                id="checkbox-3"
-                name="checkbox-3"
-                type="checkbox"
-              />
-              Restock items
-            </label>
-            <div
-              class="caption caption"
-            >
-              The claimed quantity for products in this order will be restocked back to your store.
-            </div>
-          </div>
-          <div
-            class="mb-3"
-          >
-            <label
-              class="label label"
-              for="notify-customer"
-            >
-              <input
-                checked=""
-                class="input"
-                id="notify-customer"
-                name="notify-customer"
-                type="checkbox"
-              />
-              Send notification to customer
-            </label>
-          </div>
         </div>
       </div>
     </div>
@@ -457,7 +473,7 @@ exports[`<OrderFooter/> render() should render for refund order action 1`] = `
           Subtotal
         </dt>
         <dd
-          class="col-5 mb-2"
+          class="col-5 mb-2 value"
         >
           <span>
             $1.00
@@ -483,7 +499,7 @@ exports[`<OrderFooter/> render() should render for refund order action 1`] = `
           </label>
         </dt>
         <dd
-          class="col-5 mb-2"
+          class="col-5 mb-2 value"
         >
           <div
             class="container text-right"
@@ -513,7 +529,7 @@ exports[`<OrderFooter/> render() should render for refund order action 1`] = `
           Discounts
         </dt>
         <dd
-          class="col-5 mb-2"
+          class="col-5 mb-2 value"
         >
           —
         </dd>
@@ -523,7 +539,7 @@ exports[`<OrderFooter/> render() should render for refund order action 1`] = `
           Tax
         </dt>
         <dd
-          class="col-5 mb-2"
+          class="col-5 mb-2 value"
         >
           <span>
             $0.20
@@ -535,7 +551,7 @@ exports[`<OrderFooter/> render() should render for refund order action 1`] = `
           Total available to refund
         </dt>
         <dd
-          class="col-5 mb-2"
+          class="col-5 mb-2 value"
         >
           <span>
             $1.20

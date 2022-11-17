@@ -2,7 +2,7 @@
 
 exports[`<OrderTable/> should render 1`] = `
 <table
-  class="table table table-hover"
+  class="table mb-4 table table-hover"
 >
   <thead>
     <tr>
@@ -13,9 +13,22 @@ exports[`<OrderTable/> should render 1`] = `
         Item price
       </th>
       <th>
-        Qty
+        <div
+          class="qty"
+        >
+          Qty
+          <span
+            aria-label="Quantity warning"
+            class="material-icons orange ml-1"
+            id="qty-warning-icon"
+          >
+            warning
+          </span>
+        </div>
       </th>
-      <th>
+      <th
+        class="itemTotal"
+      >
         Item total
       </th>
     </tr>
@@ -263,7 +276,7 @@ exports[`<OrderTable/> should render 1`] = `
 
 exports[`<OrderTable/> should render for multi-currency order 1`] = `
 <table
-  class="table table table-hover"
+  class="table mb-4 table table-hover"
 >
   <thead>
     <tr>
@@ -274,9 +287,22 @@ exports[`<OrderTable/> should render for multi-currency order 1`] = `
         Item price
       </th>
       <th>
-        Qty
+        <div
+          class="qty"
+        >
+          Qty
+          <span
+            aria-label="Quantity warning"
+            class="material-icons orange ml-1"
+            id="qty-warning-icon"
+          >
+            warning
+          </span>
+        </div>
       </th>
-      <th>
+      <th
+        class="itemTotal"
+      >
         Item total
       </th>
     </tr>

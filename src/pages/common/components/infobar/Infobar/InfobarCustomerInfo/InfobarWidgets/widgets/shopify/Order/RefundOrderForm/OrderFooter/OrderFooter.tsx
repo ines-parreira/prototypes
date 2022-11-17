@@ -1,13 +1,5 @@
 import React, {ChangeEvent} from 'react'
-import {
-    Col,
-    Container,
-    FormGroup,
-    FormText,
-    Input,
-    Label,
-    Row,
-} from 'reactstrap'
+import {Col, Container, FormGroup, FormText, Input, Row} from 'reactstrap'
 import {Map} from 'immutable'
 
 import {
@@ -16,6 +8,7 @@ import {
     getTotalQuantities,
 } from 'business/shopify/refund'
 import CheckBox from 'pages/common/forms/CheckBox'
+import Label from 'pages/common/forms/Label/Label'
 import {ShopifyActionType} from '../../../types'
 import AmountInput from '../../../shared/AmountInput/AmountInput'
 
@@ -72,7 +65,9 @@ export default class OrderFooter extends React.PureComponent<Props> {
         if (actionName === ShopifyActionType.CancelOrder) {
             return (
                 <FormGroup>
-                    <Label for="reason">Reason for canceling this order</Label>
+                    <Label htmlFor="reason">
+                        Reason for canceling this order
+                    </Label>
                     <Input
                         type="select"
                         id="reason"
@@ -93,7 +88,7 @@ export default class OrderFooter extends React.PureComponent<Props> {
 
         return (
             <FormGroup>
-                <Label for="reason">Reason for refund</Label>
+                <Label htmlFor="reason">Reason for refund</Label>
                 <Input
                     id="reason"
                     value={reason || ''}
@@ -131,10 +126,31 @@ export default class OrderFooter extends React.PureComponent<Props> {
             <Container fluid className={css.container}>
                 <Row>
                     <Col xs={{size: 12, order: 2}} xl={{size: 7, order: 1}}>
+                        <Row className="mb-5">
+                            <Col xs={12}>
+                                <CheckBox
+                                    className="mb-3"
+                                    isChecked={payload.get('restock', false)}
+                                    isDisabled={totalQuantities === 0}
+                                    onChange={this._onRestockItemsChange}
+                                    caption="The claimed quantity will be restocked back to your store. Note that custom items can’t be restocked."
+                                >
+                                    Restock items
+                                </CheckBox>
+                                <CheckBox
+                                    className="mb-3"
+                                    name="notify-customer"
+                                    isChecked={notify}
+                                    onChange={onNotifyChange}
+                                >
+                                    Send notification to customer
+                                </CheckBox>
+                            </Col>
+                        </Row>
                         <Row>
                             <Col xs={12} lg={6}>
                                 <FormGroup>
-                                    <Label for="amount">
+                                    <Label htmlFor="amount">
                                         Refund with: Manual
                                     </Label>
                                     <AmountInput
@@ -153,11 +169,11 @@ export default class OrderFooter extends React.PureComponent<Props> {
                                 {this._renderReason()}
                             </Col>
                         </Row>
-                        <Row>
-                            <Col xs={12}>
-                                {hasDiscrepancy && (
+                        {hasDiscrepancy && (
+                            <Row>
+                                <Col xs={12}>
                                     <FormGroup>
-                                        <Label for="discrepancy-reason">
+                                        <Label htmlFor="discrepancy-reason">
                                             Reason for custom refund amount
                                         </Label>
                                         <Input
@@ -191,28 +207,9 @@ export default class OrderFooter extends React.PureComponent<Props> {
                                             being returned.
                                         </FormText>
                                     </FormGroup>
-                                )}
-                                <CheckBox
-                                    className="mb-3"
-                                    isChecked={payload.get('restock', false)}
-                                    isDisabled={totalQuantities === 0}
-                                    onChange={this._onRestockItemsChange}
-                                    caption="The claimed quantity for products in
-                                        this order will be restocked back to
-                                        your store."
-                                >
-                                    Restock items
-                                </CheckBox>
-                                <CheckBox
-                                    className="mb-3"
-                                    name="notify-customer"
-                                    isChecked={notify}
-                                    onChange={onNotifyChange}
-                                >
-                                    Send notification to customer
-                                </CheckBox>
-                            </Col>
-                        </Row>
+                                </Col>
+                            </Row>
+                        )}
                     </Col>
                     <Col
                         xs={{size: 12, order: 1}}
