@@ -28,6 +28,7 @@ import {ChatCampaign} from '../../types/Campaign'
 import {CampaignAuthor} from '../../types/CampaignAgent'
 
 import {chatIsShopifyStore} from '../../utils/chatIsShopifyStore'
+import {isAllowedToUpdateTrigger} from '../../utils/isAllowedToUpdateTrigger'
 
 import {TriggersProvider} from '../TriggersProvider'
 
@@ -86,17 +87,32 @@ export const AdvancedCampaignDetails = memo(
                 const newKey = _uniqueId()
                 const newTrigger = createTrigger(key)
 
+                const isAllowedToEdit = isAllowedToUpdateTrigger(
+                    newTrigger,
+                    isRevenueBetaTester
+                )
+
+                if (!isAllowedToEdit) return
+
                 updateTriggers(
                     produce(triggers, (draft) => {
                         draft[newKey] = newTrigger
                     })
                 )
             },
-            [triggers, updateTriggers]
+            [isRevenueBetaTester, triggers, updateTriggers]
         )
 
         const handleUpdateTrigger = useCallback<UpdateTriggerFn>(
             (triggerId, payload) => {
+                const currentTrigger = triggers[triggerId]
+                const isAllowedToEdit = isAllowedToUpdateTrigger(
+                    currentTrigger,
+                    isRevenueBetaTester
+                )
+
+                if (!isAllowedToEdit) return
+
                 updateTriggers(
                     produce(triggers, (draft) => {
                         if (draft[triggerId]) {
@@ -110,11 +126,19 @@ export const AdvancedCampaignDetails = memo(
                     })
                 )
             },
-            [triggers, updateTriggers]
+            [isRevenueBetaTester, triggers, updateTriggers]
         )
 
         const handleDeleteTrigger = useCallback<DeleteTriggerFn>(
             (triggerId) => {
+                const currentTrigger = triggers[triggerId]
+                const isAllowedToEdit = isAllowedToUpdateTrigger(
+                    currentTrigger,
+                    isRevenueBetaTester
+                )
+
+                if (!isAllowedToEdit) return
+
                 updateTriggers(
                     produce(triggers, (draft) => {
                         if (draft[triggerId]) {
@@ -123,7 +147,7 @@ export const AdvancedCampaignDetails = memo(
                     })
                 )
             },
-            [triggers, updateTriggers]
+            [isRevenueBetaTester, triggers, updateTriggers]
         )
 
         const handleChangeMessage = useCallback(
@@ -322,7 +346,10 @@ export const AdvancedCampaignDetails = memo(
                                 onUpdateTrigger={handleUpdateTrigger}
                                 onDeleteTrigger={handleDeleteTrigger}
                             >
-                                <AdvancedTriggersForm triggers={triggers} />
+                                <AdvancedTriggersForm
+                                    isRevenueBetaTester={isRevenueBetaTester}
+                                    triggers={triggers}
+                                />
                             </TriggersProvider>
                             <AdvancedTriggersSelect
                                 isShopifyStore={isShopifyStore}

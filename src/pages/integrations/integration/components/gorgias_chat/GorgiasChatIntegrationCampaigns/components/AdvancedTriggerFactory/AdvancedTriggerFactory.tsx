@@ -2,6 +2,10 @@ import React, {useMemo} from 'react'
 
 import {useTriggers} from '../../containers/TriggersProvider'
 
+import {useIsRevenueBetaTester} from '../../hooks/useIsRevenueBetaTester'
+
+import {isAllowedToUpdateTrigger} from '../../utils/isAllowedToUpdateTrigger'
+
 import {CampaignTrigger} from '../../types/CampaignTrigger'
 import {CampaignTriggerKey} from '../../types/enums/CampaignTriggerKey.enum'
 
@@ -16,6 +20,8 @@ import {SessionTimeTrigger} from './SessionTimeTrigger'
 import {TimeSpentOnPageTrigger} from './TimeSpentOnPageTrigger'
 import {VisitCountTrigger} from './VisitCountTrigger'
 
+import css from './style.less'
+
 type Props = {
     trigger: CampaignTrigger
     id: string
@@ -28,10 +34,18 @@ export const AdvancedTriggerFactory = ({
     trigger,
 }: Props): JSX.Element => {
     const {onUpdateTrigger, onDeleteTrigger} = useTriggers()
+    const isRevenueBetaTester: boolean = useIsRevenueBetaTester()
+
+    const isAllowedToEdit = isAllowedToUpdateTrigger(
+        trigger,
+        isRevenueBetaTester
+    )
+
     const content = useMemo(() => {
         const baseProps = {
             id,
             trigger,
+            isAllowedToEdit,
             onUpdateTrigger,
             onDeleteTrigger,
         }
@@ -57,16 +71,23 @@ export const AdvancedTriggerFactory = ({
             default:
                 return <div />
         }
-    }, [id, trigger, onUpdateTrigger, onDeleteTrigger])
+    }, [isAllowedToEdit, id, trigger, onUpdateTrigger, onDeleteTrigger])
 
     return (
         <BaseTriggerRow
             id={id}
+            isAllowedToEdit={isAllowedToEdit}
             isFirst={isFirst}
             trigger={trigger}
             onDeleteTrigger={onDeleteTrigger}
         >
             {content}
+            {!isAllowedToEdit && (
+                <div
+                    data-testid={`paywall-${trigger.key}`}
+                    className={css.triggerPaywall}
+                />
+            )}
         </BaseTriggerRow>
     )
 }

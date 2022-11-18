@@ -49,7 +49,7 @@ describe('<ChatCampaignDetailsFactory />', () => {
                 'useIsRevenueBetaTester'
             ).mockImplementation(() => false)
         })
-        it('renders the "GorgiasChatCampaignDetailForm" component', () => {
+        it('renders the "AdvancedCampaignDetails" component', () => {
             const {getByTestId} = render(
                 <Provider store={mockStore(defaultState)}>
                     <ChatCampaignDetailsFactory
@@ -59,7 +59,7 @@ describe('<ChatCampaignDetailsFactory />', () => {
                 </Provider>
             )
 
-            getByTestId('common-campaign-details-page')
+            getByTestId('advanced-campaign-details-page')
         })
     })
 })

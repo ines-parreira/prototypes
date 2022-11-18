@@ -1,4 +1,6 @@
 import React, {ReactNode} from 'react'
+import classNames from 'classnames'
+
 import {Button} from 'reactstrap'
 
 import {CampaignTrigger} from '../../types/CampaignTrigger'
@@ -9,6 +11,7 @@ import css from './style.less'
 type Props = {
     children: ReactNode
     id: string
+    isAllowedToEdit?: boolean
     isFirst?: boolean
     trigger: CampaignTrigger
     onDeleteTrigger?: DeleteTriggerFn
@@ -17,12 +20,19 @@ type Props = {
 export const BaseTriggerRow = ({
     children,
     id,
+    isAllowedToEdit = false,
     isFirst = false,
     trigger,
     onDeleteTrigger,
 }: Props): JSX.Element => {
+    const handleClickDelete = () => {
+        onDeleteTrigger && onDeleteTrigger(id)
+    }
     return (
-        <div className={css.triggerWrapper}>
+        <div
+            data-testid={`trigger-row-${trigger.key}`}
+            className={css.triggerWrapper}
+        >
             {!isFirst && (
                 <Button className="btn-frozen" color="warning" tag="div">
                     AND
@@ -31,9 +41,12 @@ export const BaseTriggerRow = ({
             {children}
             {onDeleteTrigger && (
                 <div
-                    className={css.closeWrapper}
+                    className={classNames({
+                        [css.closeWrapper]: true,
+                        [css.hidden]: !isAllowedToEdit,
+                    })}
                     data-testid={`btn-delete-${trigger.key}`}
-                    onClick={() => onDeleteTrigger(id)}
+                    onClick={handleClickDelete}
                 >
                     <i className="material-icons md-2 text-danger">clear</i>
                 </div>

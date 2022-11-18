@@ -17,8 +17,6 @@ import {
 
 import {useIsRevenueBetaTester} from '../../hooks/useIsRevenueBetaTester'
 
-import {GorgiasChatCampaignDetailForm} from '../../components/CampaignDetailForm'
-
 import {ChatCampaign} from '../../types/Campaign'
 
 import {BaseCampaignDetails} from '../BaseCampaignDetails'
@@ -75,28 +73,16 @@ export const ChatCampaignDetailsFactory = ({
 
     return (
         <BaseCampaignDetails integration={integration}>
-            {isRevenueBetaTester ? (
-                <AdvancedCampaignDetails
-                    agents={memoAgents}
-                    id={id}
-                    integration={integration}
-                    isRevenueBetaTester={isRevenueBetaTester}
-                    campaign={memoCampaign}
-                    createCampaign={handleCreateCampaign}
-                    updateCampaign={handleUpdateCampaign}
-                    deleteCampaign={handleDeleteCampaign}
-                />
-            ) : (
-                <GorgiasChatCampaignDetailForm
-                    id={id}
-                    integration={integration}
-                    campaign={campaign}
-                    agents={agents}
-                    createCampaign={handleCreateCampaign}
-                    updateCampaign={handleUpdateCampaign}
-                    deleteCampaign={handleDeleteCampaign}
-                />
-            )}
+            <AdvancedCampaignDetails
+                agents={memoAgents}
+                id={id}
+                integration={integration}
+                isRevenueBetaTester={isRevenueBetaTester}
+                campaign={memoCampaign}
+                createCampaign={handleCreateCampaign}
+                updateCampaign={handleUpdateCampaign}
+                deleteCampaign={handleDeleteCampaign}
+            />
         </BaseCampaignDetails>
     )
 }

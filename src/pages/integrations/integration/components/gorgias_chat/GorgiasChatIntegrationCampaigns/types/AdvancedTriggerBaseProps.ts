@@ -16,6 +16,7 @@ export type DeleteTriggerFn = (triggerId: string) => void
 
 export type AdvancedTriggerBaseProps = {
     id: string
+    isAllowedToEdit?: boolean
     trigger: CampaignTrigger
     onUpdateTrigger: UpdateTriggerFn
     onDeleteTrigger: DeleteTriggerFn

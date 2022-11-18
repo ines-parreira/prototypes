@@ -19,6 +19,7 @@ type Props = AdvancedTriggerBaseProps
 
 export const CartValueTrigger = ({
     id,
+    isAllowedToEdit = false,
     trigger,
     onUpdateTrigger,
 }: Props): JSX.Element => {
@@ -37,6 +38,8 @@ export const CartValueTrigger = ({
     }
 
     const handleChangeValue = (value: string) => {
+        if (!isAllowedToEdit) return
+
         setInnerValue(value)
     }
 
