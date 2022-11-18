@@ -23,13 +23,8 @@ export const BaseCampaignDetails = ({
                 title={
                     <Breadcrumb>
                         <BreadcrumbItem>
-                            <Link to="/app/settings/integrations">
-                                Integrations
-                            </Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
                             <Link
-                                to={`/app/settings/integrations/${
+                                to={`/app/settings/channels/${
                                     integration.get('type') as string
                                 }/${integration.get('id') as string}`}
                             >

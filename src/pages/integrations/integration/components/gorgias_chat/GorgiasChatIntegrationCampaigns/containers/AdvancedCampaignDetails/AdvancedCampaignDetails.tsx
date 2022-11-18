@@ -287,7 +287,7 @@ export const AdvancedCampaignDetails = memo(
         return (
             <div data-testid="advanced-campaign-details-page">
                 <CampaignDetailsHeader
-                    backToHref={`/app/settings/integrations/${
+                    backToHref={`/app/settings/channels/${
                         integration.get('type') as string
                     }/${integration.get('id') as string}/campaigns`}
                     isUpdate={isUpdate}

@@ -19,16 +19,7 @@ exports[`<BaseCampaignDetails /> matches snapshot 1`] = `
             class="breadcrumb-item"
           >
             <a
-              to="/app/settings/integrations"
-            >
-              Integrations
-            </a>
-          </li>
-          <li
-            class="breadcrumb-item"
-          >
-            <a
-              to="/app/settings/integrations/gorgias_chat/1"
+              to="/app/settings/channels/gorgias_chat/1"
             >
               Chat
             </a>
