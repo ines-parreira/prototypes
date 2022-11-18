@@ -1,4 +1,5 @@
 @import '~css/new/colorTokens';
+@import '~css/new/mixins';
 
 :local .container {
     background: rgba(154, 200, 255, 0.3);
@@ -9,6 +10,16 @@
     overflow-y: visible;
     border-left: 5px solid @classic-main-primary;
     grid-template-columns: 56px 1fr;
+
+    // TODO: refactor after Virtualization is rolled out
+    &.isVirtualized {
+        margin: 0;
+
+        @media @mobiles {
+            padding: 0.8em 16px;
+            margin: 0 -16px;
+        }
+    }
 
     .avatar {
         img {

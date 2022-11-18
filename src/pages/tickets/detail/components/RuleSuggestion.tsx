@@ -3,6 +3,7 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import _pick from 'lodash/pick'
 import {fromJS} from 'immutable'
 import {Collapse} from 'reactstrap'
+import classnames from 'classnames'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -56,6 +57,8 @@ const RuleSuggestion = ({ticket, isCollapsed}: Props) => {
             state.ticket.getIn(['_internal', 'isPartialUpdating']) as boolean
     )
     const ruleSuggestionFeatureFlag = useFlags()[FeatureFlagKey.RuleSuggestion]
+    const isVirtualizationEnabled =
+        useFlags()[FeatureFlagKey.TicketMessagesVirtualization]
     const currentUser = useAppSelector(getCurrentUser)
     const emailChannels = useAppSelector(getEmailChannels)
     const recipes = useRuleRecipes()
@@ -136,7 +139,11 @@ const RuleSuggestion = ({ticket, isCollapsed}: Props) => {
     return hasAutomationAddOn &&
         ruleSuggestionFeatureFlag &&
         (actions?.length || text) ? (
-        <div className={css.container}>
+        <div
+            className={classnames(css.container, {
+                [css.isVirtualized]: isVirtualizationEnabled,
+            })}
+        >
             <div className={css.avatar}>
                 <Avatar
                     name="Gorgias Tips"
