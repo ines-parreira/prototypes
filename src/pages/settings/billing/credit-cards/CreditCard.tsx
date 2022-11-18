@@ -55,6 +55,7 @@ import Button from 'pages/common/components/button/Button'
 
 import AutomationAmount from '../plans/AutomationAmount'
 import TotalAmount from '../plans/TotalAmount'
+import TaxDisclaimer from '../TaxDisclaimer'
 
 import {
     creditCardCVCNormalizer,
@@ -535,7 +536,6 @@ export class CreditCardContainer extends Component<Props, State> {
                             <FormGroup color="danger">
                                 <Errors>{this.state.errors.global}</Errors>
                             </FormGroup>
-
                             <Button
                                 type="submit"
                                 isLoading={this.state.isSubmitting}
@@ -550,6 +550,8 @@ export class CreditCardContainer extends Component<Props, State> {
                                     : 'Add payment method'}{' '}
                                 {payment}
                             </Button>
+
+                            <TaxDisclaimer className={css.taxDisclaimer} />
                         </Form>
                     </div>
                     {!currentPlan.isEmpty() && regularCurrentPlan && (

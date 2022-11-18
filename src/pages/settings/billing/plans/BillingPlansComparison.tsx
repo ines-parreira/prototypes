@@ -25,6 +25,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import SynchronizedScrollTopProvider from 'pages/common/components/SynchronizedScrollTop/SynchronizedScrollTopProvider'
 import SynchronizedScrollTopContainer from 'pages/common/components/SynchronizedScrollTop/SynchronizedScrollTopContainer'
+import TaxDisclaimer from '../TaxDisclaimer'
 
 import css from './BillingPlansComparison.less'
 import BillingComparisonPlanCard from './BillingComparisonPlanCard'
@@ -242,16 +243,7 @@ export default function BillingPlansComparison({
                     )}
                 </CardDeck>
 
-                <div className={css.taxDisclaimer}>
-                    * Prices do not include{' '}
-                    <a
-                        href="https://www.gorgias.com/pricing/billing-sales-tax"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        sales tax
-                    </a>
-                </div>
+                <TaxDisclaimer className={css.taxDisclaimer} />
             </Container>
         </SynchronizedScrollTopProvider>
     )

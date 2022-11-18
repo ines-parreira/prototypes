@@ -106,6 +106,9 @@ exports[`CreditCard component should display credit card form 1`] = `
            
            and pay $1000
         </ForwardRef>
+        <TaxDisclaimer
+          className="taxDisclaimer"
+        />
       </Form>
     </div>
     <BillingPlanCard
@@ -239,6 +242,9 @@ exports[`CreditCard component should not render the billing address form when a 
           Add payment method
            
         </ForwardRef>
+        <TaxDisclaimer
+          className="taxDisclaimer"
+        />
       </Form>
     </div>
   </Container>
@@ -351,6 +357,9 @@ exports[`CreditCard component should render billing plan card with automation fo
            
            and pay $1000
         </ForwardRef>
+        <TaxDisclaimer
+          className="taxDisclaimer"
+        />
       </Form>
     </div>
     <BillingPlanCard
@@ -511,6 +520,9 @@ exports[`CreditCard component should render nothing if loaded, but no current su
           Add payment method
            
         </ForwardRef>
+        <TaxDisclaimer
+          className="taxDisclaimer"
+        />
       </Form>
     </div>
   </Container>
@@ -647,6 +659,9 @@ exports[`CreditCard component should render the billing address form when accoun
           Add payment method
            
         </ForwardRef>
+        <TaxDisclaimer
+          className="taxDisclaimer"
+        />
       </Form>
     </div>
   </Container>

@@ -20,6 +20,7 @@ import Button from 'pages/common/components/button/Button'
 
 import css from './BillingPaymentMethod.less'
 import BillingHeader from './common/BillingHeader'
+import TaxDisclaimer from './TaxDisclaimer'
 
 type State = {
     isLoading: boolean
@@ -210,6 +211,8 @@ export class BillingPaymentMethodContainer extends Component<
                                 {buttonLabel}
                             </Button>
                         </a>
+                        <TaxDisclaimer className={css.taxDisclaimer} />
+
                         {hasNoSubscription ? (
                             <UncontrolledTooltip
                                 placement="top"

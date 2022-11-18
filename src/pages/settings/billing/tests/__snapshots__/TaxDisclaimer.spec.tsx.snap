@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TaxDisclaimer/> should display 1`] = `
+<div
+  class="wrapper"
+>
+  * Prices do not include
+   
+  <a
+    href="https://www.gorgias.com/pricing/billing-sales-tax"
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    sales tax
+  </a>
+</div>
+`;

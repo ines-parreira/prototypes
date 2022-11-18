@@ -1382,7 +1382,7 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
     </div>
   </div>
   <div
-    class="taxDisclaimer"
+    class="wrapper taxDisclaimer"
   >
     * Prices do not include
      
@@ -1810,7 +1810,7 @@ exports[`<BillingPlansComparison /> should render a custom plan 1`] = `
     </div>
   </div>
   <div
-    class="taxDisclaimer"
+    class="wrapper taxDisclaimer"
   >
     * Prices do not include
      
@@ -3573,7 +3573,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
     </div>
   </div>
   <div
-    class="taxDisclaimer"
+    class="wrapper taxDisclaimer"
   >
     * Prices do not include
      
@@ -4959,7 +4959,7 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
     </div>
   </div>
   <div
-    class="taxDisclaimer"
+    class="wrapper taxDisclaimer"
   >
     * Prices do not include
      
@@ -6472,7 +6472,7 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
     </div>
   </div>
   <div
-    class="taxDisclaimer"
+    class="wrapper taxDisclaimer"
   >
     * Prices do not include
      

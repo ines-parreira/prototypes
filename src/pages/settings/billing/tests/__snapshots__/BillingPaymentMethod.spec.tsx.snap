@@ -171,6 +171,23 @@ exports[`BillingPaymentMethod Shopify should render a button 1`] = `
                   </BaseButton>
                 </ForwardRef>
               </a>
+              <TaxDisclaimer
+                className="taxDisclaimer"
+              >
+                <div
+                  className="wrapper taxDisclaimer"
+                >
+                  * Prices do not include
+                   
+                  <a
+                    href="https://www.gorgias.com/pricing/billing-sales-tax"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    sales tax
+                  </a>
+                </div>
+              </TaxDisclaimer>
             </div>
           </div>
         </CardBody>
@@ -258,6 +275,9 @@ exports[`BillingPaymentMethod Shopify should render a disabled button 1`] = `
             Activate billing with Shopify
           </ForwardRef>
         </a>
+        <TaxDisclaimer
+          className="taxDisclaimer"
+        />
         <UncontrolledTooltip
           placement="top"
           target="activate-shopify-billing-button"
