@@ -32,6 +32,7 @@ import {
 } from '../utils'
 import {getPersonLabelFromSource} from '../../../pages/tickets/common/utils'
 import {
+    TicketChannel,
     TicketMessageSourceType,
     TicketVia,
 } from '../../../business/types/ticket'
@@ -869,6 +870,27 @@ describe('ticket utils', () => {
             })
             const newMessageSourceType = TicketMessageSourceType.Phone
             const expectedSender = fromJS({
+                id: integrationId,
+                name: 'Acme Phone',
+                address: '+14151112222',
+            })
+            const channels = fromJS([expectedSender])
+
+            expect(
+                getNewMessageSender(
+                    ticket,
+                    newMessageSourceType,
+                    channels,
+                    integrations
+                )
+            ).toEqual(expectedSender)
+        })
+
+        it('should get the sender channel mapped from ticket source type', () => {
+            const integrationId = 1
+            const newMessageSourceType = TicketMessageSourceType.WhatsAppMessage
+            const expectedSender = fromJS({
+                type: TicketChannel.WhatsApp,
                 id: integrationId,
                 name: 'Acme Phone',
                 address: '+14151112222',

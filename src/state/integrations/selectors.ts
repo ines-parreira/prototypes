@@ -3,6 +3,7 @@ import {createSelector} from 'reselect'
 import _isArray from 'lodash/isArray'
 
 import {INTEGRATION_TYPE_CONFIG, isChannel} from 'config'
+import {TicketMessageSourceType} from 'business/types/ticket'
 import {
     Integration,
     IntegrationType,
@@ -382,14 +383,12 @@ export const makeGetPhoneChannels = (
     createSelector<
         RootState,
         List<any>,
-        Map<any, any>,
         List<any>,
         Record<number, PhoneNumber>
     >(
-        (state: RootState) => state.ticket || fromJS({}),
         DEPRECATED_getIntegrationsByTypes([type]),
         getPhoneNumbersState,
-        (currentTicket, integrations, phoneNumbers) => {
+        (integrations, phoneNumbers) => {
             return integrations.map((integration: Map<any, any>) => {
                 const phoneNumber =
                     phoneNumbers[
@@ -447,6 +446,20 @@ export const getChannelsByType = (type: string) =>
                         integration.get('type') === type
                 ) as List<any>
     )
+
+export const getChannelsForSourceType =
+    (sourceType: TicketMessageSourceType) => (state: RootState) => {
+        switch (sourceType) {
+            case TicketMessageSourceType.Phone:
+                return getPhoneChannelsForPhoneSource(state)
+            case TicketMessageSourceType.Sms:
+                return getPhoneChannelsForSmsSource(state)
+            case TicketMessageSourceType.WhatsAppMessage:
+                return getWhatsAppChannels(state)
+            default:
+                return getEmailChannels(state)
+        }
+    }
 
 export const getChannelByTypeAndAddress = (
     type: IntegrationType,

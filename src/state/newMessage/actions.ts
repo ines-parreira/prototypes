@@ -336,21 +336,9 @@ export const setSender =
         const state = getState()
         const {integrations, ticket} = state
         const sourceType = selectors.getNewMessageType(state)
-        const {
-            getPhoneChannelsForPhoneSource,
-            getPhoneChannelsForSmsSource,
-            getEmailChannels,
-        } = integrationSelectors
-        const emailChannels = getEmailChannels(state)
-        const phoneChannels =
-            sourceType === TicketMessageSourceType.Sms
-                ? getPhoneChannelsForSmsSource(state)
-                : getPhoneChannelsForPhoneSource(state)
-        const channels =
-            sourceType === TicketMessageSourceType.Phone ||
-            sourceType === TicketMessageSourceType.Sms
-                ? phoneChannels
-                : emailChannels
+        const {getChannelsForSourceType} = integrationSelectors
+
+        const channels = getChannelsForSourceType(sourceType)(state)
         let _sender: Map<any, any> = fromJS({})
         if (sender) {
             _sender =

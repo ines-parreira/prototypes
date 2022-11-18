@@ -427,6 +427,10 @@ export function responseSourceType(
         return TicketMessageSourceType.Sms
     }
 
+    if (lastSourceType === TicketMessageSourceType.WhatsAppMessage) {
+        return TicketMessageSourceType.WhatsAppMessage
+    }
+
     if (
         lastSourceType === TicketMessageSourceType.Twilio ||
         via === TicketVia.Twilio

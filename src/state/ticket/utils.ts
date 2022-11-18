@@ -281,7 +281,8 @@ export function guessReceiversFromTicket(
                 if (address) {
                     if (
                         sourceType === TicketMessageSourceType.Sms ||
-                        sourceType === TicketMessageSourceType.Phone
+                        sourceType === TicketMessageSourceType.Phone ||
+                        sourceType === TicketMessageSourceType.WhatsAppMessage
                     ) {
                         const parsedNumber = parsePhoneNumber(address)
                         if (parsedNumber) {
@@ -438,7 +439,7 @@ export function buildPartialUpdateFromAction(
  * return first available channels as a fallback
  */
 export function getPreferredChannel(
-    channelType: TicketMessageSourceType,
+    channelType: TicketMessageSourceType | TicketChannel,
     channels: List<any>
 ) {
     // get the preferred channel
@@ -547,7 +548,11 @@ export function getNewMessageSender(
     }
 
     const preferredChannel =
-        getPreferredChannel(newMessageSourceType, channels) || fromJS({})
+        getPreferredChannel(
+            ticketConfig.sourceTypeToChannel(newMessageSourceType),
+            channels
+        ) || fromJS({})
+
     const lastMessage: Map<any, any> | undefined = (
         ticket.get('messages') as List<any>
     ).findLast((message: Map<any, any>) => {

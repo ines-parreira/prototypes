@@ -1,6 +1,8 @@
 import {fromJS, List} from 'immutable'
 import {size} from 'lodash'
 
+import {TicketMessageSourceType} from 'business/types/ticket'
+
 import {RootState} from '../../types'
 
 import {
@@ -29,6 +31,7 @@ import {
     getMessagingIntegrations,
     DEPRECATED_getPhoneIntegrations,
     getActiveIntegrations,
+    getChannelsForSourceType,
 } from '../selectors'
 import {integrationsState} from '../../../fixtures/integrations'
 import {
@@ -200,6 +203,120 @@ describe('integrations selectors', () => {
                 'support@acme.gorgias.io'
             )(state)
         ).toMatchSnapshot()
+    })
+
+    describe('getChannelsForSourceType()', () => {
+        const state = {
+            integrations: fromJS({
+                integrations: [
+                    {
+                        id: 1,
+                        type: 'email',
+                        name: 'John Doe',
+                        meta: {address: 'support@mycompany.com'},
+                    },
+                    {
+                        id: 2,
+                        type: 'phone',
+                        name: 'John Doe',
+                        meta: {
+                            twilio_phone_number_id: 1,
+                        },
+                    },
+                    {
+                        id: 3,
+                        type: 'sms',
+                        name: 'John Doe',
+                        meta: {
+                            twilio_phone_number_id: 1,
+                        },
+                    },
+                    {
+                        id: 3,
+                        type: 'whatsapp',
+                        name: 'John Doe',
+                        meta: {
+                            routing: {
+                                phone_number: '+123456789',
+                            },
+                        },
+                    },
+                ],
+            }),
+            entities: {
+                phoneNumbers: {
+                    1: {
+                        phone_number: '+123456789',
+                    },
+                },
+            },
+        } as unknown as RootState
+
+        it('should get email integrations as channels when source type is email', () => {
+            expect(
+                getChannelsForSourceType(TicketMessageSourceType.Email)(state)
+            ).toEqual(
+                fromJS([
+                    {
+                        id: 1,
+                        type: 'email',
+                        name: 'John Doe',
+                        address: 'support@mycompany.com',
+                        preferred: undefined,
+                        signature: undefined,
+                        verified: false,
+                        isDeactivated: false,
+                    },
+                ])
+            )
+        })
+
+        it('should get phone integrations as channels when source type is phone', () => {
+            expect(
+                getChannelsForSourceType(TicketMessageSourceType.Phone)(state)
+            ).toEqual(
+                fromJS([
+                    {
+                        id: 2,
+                        type: 'phone',
+                        name: 'John Doe',
+                        address: '+123456789',
+                    },
+                ])
+            )
+        })
+
+        it('should get SMS integrations as channels when source type is sms', () => {
+            expect(
+                getChannelsForSourceType(TicketMessageSourceType.Sms)(state)
+            ).toEqual(
+                fromJS([
+                    {
+                        id: 3,
+                        type: 'sms',
+                        name: 'John Doe',
+                        address: '+123456789',
+                    },
+                ])
+            )
+        })
+
+        it('should get WhatsApp integrations as channels when source type is whatsapp-message', () => {
+            expect(
+                getChannelsForSourceType(
+                    TicketMessageSourceType.WhatsAppMessage
+                )(state)
+            ).toEqual(
+                fromJS([
+                    {
+                        id: 3,
+                        type: 'whatsapp',
+                        name: 'John Doe',
+                        address: '+123456789',
+                    },
+                ])
+            )
+        })
     })
 
     describe('getShopifyIntegrationsWithoutChat()', () => {
