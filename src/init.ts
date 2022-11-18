@@ -29,8 +29,6 @@ import {SMOOCH_INSIDE_INTEGRATION_TYPE} from 'constants/integration'
 import {initLaunchDarkly} from 'utils/launchDarkly'
 import {getEnvironment, isProduction, isStaging} from 'utils/environment'
 import {initErrorReporter} from 'utils/errors'
-import {initLogRocket} from 'utils/logRocket'
-import {LOG_ROCKET_APP_ID, LOG_ROCKET_SAMPLE_RATE} from 'config'
 
 const initMoment = (currentUser: EditableUserProfile) => {
     // set default locale and timezone
@@ -192,13 +190,9 @@ export const notifyChatIntegrationDeprecated = (reduxStore: Store) => {
 export type InitAppParams = {
     datadog: boolean
     sentry: boolean
-    logRocket?: {
-        appId: string
-        sampleRate: number
-    }
 }
 
-export function initApp({logRocket, datadog, sentry}: InitAppParams) {
+export function initApp({datadog, sentry}: InitAppParams) {
     if (datadog && (isStaging() || isProduction())) {
         initDatadogLogger(
             window.GORGIAS_STATE.currentAccount,
@@ -212,19 +206,6 @@ export function initApp({logRocket, datadog, sentry}: InitAppParams) {
             dsn: window.SENTRY_DSN,
             release: window.GORGIAS_RELEASE,
             environment: getEnvironment(),
-            currentUser: window.GORGIAS_STATE.currentUser,
-            currentAccount: window.GORGIAS_STATE.currentAccount,
-        })
-    }
-
-    if (
-        logRocket &&
-        (isStaging() ||
-            (isProduction() && Math.random() <= logRocket.sampleRate))
-    ) {
-        initLogRocket({
-            appId: logRocket.appId,
-            release: window.GORGIAS_RELEASE,
             currentUser: window.GORGIAS_STATE.currentUser,
             currentAccount: window.GORGIAS_STATE.currentAccount,
         })
@@ -273,8 +254,4 @@ export function initApp({logRocket, datadog, sentry}: InitAppParams) {
 export const store = initApp({
     sentry: true,
     datadog: true,
-    logRocket: {
-        appId: LOG_ROCKET_APP_ID,
-        sampleRate: LOG_ROCKET_SAMPLE_RATE,
-    },
 })

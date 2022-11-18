@@ -5,26 +5,15 @@ import thunk from 'redux-thunk'
 import {EMAIL_INTEGRATION_TYPE} from 'constants/integration'
 import {initialState} from 'fixtures/initialState'
 import {
-    initApp,
-    InitAppParams,
     notifyAccountNotVerified,
     notifyDeprecatedTld,
     notifyUserImpersonated,
     toInitialStoreState,
 } from 'init'
 import {RootState} from 'state/types'
-import {initLogRocket} from 'utils/logRocket'
-import {mockProductionEnvironment, mockStagingEnvironment} from 'utils/testing'
-import {account} from 'fixtures/account'
 import {user} from 'fixtures/users'
-import {GorgiasInitialState} from 'types'
 
 const mockStore = configureMockStore([thunk])
-
-jest.mock('utils/logRocket')
-const initLogRocketMock = initLogRocket as jest.MockedFunction<
-    typeof initLogRocket
->
 
 describe('init', () => {
     let reduxStore: MockStoreEnhanced<unknown>
@@ -95,6 +84,7 @@ describe('init', () => {
 
     describe('notifyUserImpersonated()', () => {
         beforeEach(() => {
+            window.USER_IMPERSONATED = null
             reduxStore = mockStore({currentUser: fromJS(user)} as RootState)
         })
 
@@ -104,93 +94,17 @@ describe('init', () => {
             expect(reduxStore.getActions()).toMatchSnapshot()
         })
 
-        describe('user is impersonated', () => {
-            let USER_IMPERSONATED: typeof window.USER_IMPERSONATED
+        it('should dispatch a notification because user is impersonated', () => {
+            window.USER_IMPERSONATED = true
+            notifyUserImpersonated(reduxStore)
 
-            beforeAll(() => {
-                USER_IMPERSONATED = window.USER_IMPERSONATED
-
-                window.USER_IMPERSONATED = true
-            })
-
-            afterAll(() => {
-                window.USER_IMPERSONATED = USER_IMPERSONATED
-            })
-
-            it('should dispatch a notification because user is impersonated', () => {
-                notifyUserImpersonated(reduxStore)
-
-                expect(reduxStore.getActions()).toMatchSnapshot()
-            })
+            expect(reduxStore.getActions()).toMatchSnapshot()
         })
     })
 
     describe('toInitialStoreState()', () => {
         it('should return the expected store state', () => {
             expect(toInitialStoreState(initialState)).toMatchSnapshot()
-        })
-    })
-
-    describe('initApp', () => {
-        const defaultParams: InitAppParams = {
-            sentry: false,
-            datadog: false,
-            logRocket: {
-                appId: 'foo',
-                sampleRate: 1,
-            },
-        }
-
-        beforeEach(() => {
-            mockStagingEnvironment()
-            window.GORGIAS_STATE = {
-                currentAccount: account,
-                currentUser: user,
-            } as GorgiasInitialState
-            jest.spyOn(global.Math, 'random').mockReturnValue(0)
-        })
-
-        it('should initialize log rocket when random() returns a number smaller/equal than the sample rate', () => {
-            initApp(defaultParams)
-
-            expect(initLogRocketMock).toHaveBeenLastCalledWith({
-                appId: defaultParams.logRocket?.appId,
-                currentAccount: account,
-                currentUser: user,
-                release: window.GORGIAS_RELEASE,
-            })
-        })
-
-        it('should not initialize log rocket on production when random() returns a number higher than the sample rate', () => {
-            mockProductionEnvironment()
-            jest.spyOn(global.Math, 'random').mockReturnValue(0.3)
-            initApp({
-                ...defaultParams,
-                logRocket: {
-                    ...defaultParams.logRocket!,
-                    sampleRate: 0.1,
-                },
-            })
-
-            expect(initLogRocketMock).not.toHaveBeenCalled()
-        })
-
-        it('should initialize log rocket on staging even when random() returns a number higher than the sample rate', () => {
-            jest.spyOn(global.Math, 'random').mockReturnValue(0.3)
-            initApp({
-                ...defaultParams,
-                logRocket: {
-                    ...defaultParams.logRocket!,
-                    sampleRate: 0.1,
-                },
-            })
-
-            expect(initLogRocketMock).toHaveBeenLastCalledWith({
-                appId: defaultParams.logRocket?.appId,
-                currentAccount: account,
-                currentUser: user,
-                release: window.GORGIAS_RELEASE,
-            })
         })
     })
 })

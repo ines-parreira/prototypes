@@ -46,9 +46,7 @@ Array [
 
 exports[`init notifyDeprecatedTld() should not do anything because the URL's TLD is not \`.io\` 1`] = `Array []`;
 
-exports[`init notifyUserImpersonated() should not do anything because user is not impersonated 1`] = `Array []`;
-
-exports[`init notifyUserImpersonated() user is impersonated should dispatch a notification because user is impersonated 1`] = `
+exports[`init notifyUserImpersonated() should dispatch a notification because user is impersonated 1`] = `
 Array [
   Object {
     "payload": Object {
@@ -67,6 +65,8 @@ Array [
   },
 ]
 `;
+
+exports[`init notifyUserImpersonated() should not do anything because user is not impersonated 1`] = `Array []`;
 
 exports[`init toInitialStoreState() should return the expected store state 1`] = `
 Object {
