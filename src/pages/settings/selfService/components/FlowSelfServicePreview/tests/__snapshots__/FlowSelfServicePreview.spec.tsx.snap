@@ -182,6 +182,153 @@ exports[`<ChatIntegrationPreview/> render() displays landing page 1`] = `
 </div>
 `;
 
+exports[`<ChatIntegrationPreview/> render() displays landing page with the merged order management button 1`] = `
+<div>
+  <div
+    class="container"
+  >
+    <div
+      class="mb-4 btn-group"
+      role="group"
+    >
+      <button
+        class="btn btn-info"
+        type="button"
+      >
+        Landing Page
+      </button>
+      <button
+        class="btn btn-secondary"
+        type="button"
+      >
+        Message Thread
+      </button>
+    </div>
+    <div
+      class="preview"
+    >
+      <div
+        class="dialog"
+      >
+        <div
+          class="header"
+          style="background-color: rgb(13, 135, 221);"
+        >
+          <div
+            class="agents"
+          >
+            <div
+              class="agent first"
+              style="border-color: #0d87dd;"
+            >
+              <i
+                class="material-icons"
+              >
+                person
+              </i>
+            </div>
+            <div
+              class="agent middle"
+              style="border-color: #0d87dd;"
+            >
+              <i
+                class="material-icons"
+              >
+                person
+              </i>
+              <div
+                class="onlineMarker"
+              />
+            </div>
+            <div
+              class="agent last"
+              style="border-color: #0d87dd;"
+            >
+              <i
+                class="material-icons"
+              >
+                person
+              </i>
+            </div>
+          </div>
+          <div
+            class="details"
+          >
+            <div
+              class="appName"
+            >
+              Chat
+            </div>
+            <div
+              class="introductionText"
+            >
+              How can we help?
+            </div>
+          </div>
+        </div>
+        <div
+          class="content"
+        >
+          <ul
+            class="buttons list-group"
+          >
+            <li
+              class="button header list-group-item"
+            >
+              Quick answers
+            </li>
+            <li
+              class="button list-group-item"
+            >
+              question
+              <span
+                class="material-icons-outlined chevronIcon"
+              >
+                chevron_right
+              </span>
+            </li>
+          </ul>
+          <ul
+            class="buttons list-group"
+          >
+            <li
+              class="button header list-group-item"
+            >
+              Track and manage my orders
+              <span
+                class="material-icons-outlined chevronIcon"
+              >
+                chevron_right
+              </span>
+            </li>
+          </ul>
+        </div>
+        <div
+          class="footer"
+        >
+          <span
+            class="needHelpText"
+          >
+            Need more help?
+          </span>
+          <button
+            class="btn btn-primary"
+            style="background-color: rgb(13, 135, 221); border-color: #0d87dd;"
+          >
+            <img
+              alt="send message icon"
+              class="sendMessageIcon"
+              src="test-file-stub"
+            />
+            Send us a message
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`<ChatIntegrationPreview/> render() displays thread page with answer 1`] = `
 <div>
   <div

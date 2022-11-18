@@ -114,7 +114,10 @@ const SelfServicePreview = ({showHelpCenterPreview = false}: Props) => {
                                     {sspTexts.quickAnswers}
                                 </HomePageListGroupItem>
                                 {visibleQuickReplies.map((policy) => (
-                                    <HomePageListGroupItem key={policy.title}>
+                                    <HomePageListGroupItem
+                                        key={policy.title}
+                                        arrowRight
+                                    >
                                         {policy.title}
                                     </HomePageListGroupItem>
                                 ))}

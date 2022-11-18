@@ -5,7 +5,9 @@ import configureMockStore from 'redux-mock-store'
 import {fromJS, List, Map} from 'immutable'
 import MockDate from 'mockdate'
 import {useParams, useRouteMatch} from 'react-router-dom'
+import LD from 'launchdarkly-react-client-sdk'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {RootState, StoreDispatch} from 'state/types'
 import {user} from 'fixtures/users'
 
@@ -54,6 +56,30 @@ describe('<ChatIntegrationPreview/>', () => {
 
     describe('render()', () => {
         it('displays landing page', () => {
+            const {container, getByText} = render(
+                <Provider store={mockStore(state)}>
+                    <FlowSelfServicePreview
+                        message="question"
+                        responseMessage={quickResponseMessage}
+                        newMessageAttachments={List()}
+                        isLandingPage={true}
+                        setIsLandingPage={jest.fn()}
+                        isQuickResponsePreview
+                        showHelpfulPrompt
+                    />
+                </Provider>
+            )
+
+            getByText('Quick answers')
+            getByText('question')
+
+            expect(container).toMatchSnapshot()
+        })
+
+        it('displays landing page with the merged order management button', () => {
+            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+                [FeatureFlagKey.ChatMergedOrderManagementButton]: true,
+            }))
             const {container, getByText} = render(
                 <Provider store={mockStore(state)}>
                     <FlowSelfServicePreview

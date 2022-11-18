@@ -151,14 +151,16 @@ const FlowSelfServicePreview = ({
                                             <React.Fragment key={policy.title}>
                                                 {quickResponseId !==
                                                     policy.id && (
-                                                    <HomePageListGroupItem>
+                                                    <HomePageListGroupItem
+                                                        arrowRight
+                                                    >
                                                         {policy.title}
                                                     </HomePageListGroupItem>
                                                 )}
                                             </React.Fragment>
                                         ))}
                                     {isQuickResponsePreview && (
-                                        <HomePageListGroupItem>
+                                        <HomePageListGroupItem arrowRight>
                                             {message}
                                         </HomePageListGroupItem>
                                     )}

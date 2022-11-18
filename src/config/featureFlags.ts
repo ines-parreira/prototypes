@@ -18,4 +18,5 @@ export enum FeatureFlagKey {
     RevenueAlphaTesters = 'revenue-alpha-testers',
     RevenueBetaTesters = 'revenue-beta-testers',
     RevenueHideDiscountCodeButton = 'revenue-hide-discount-code-button',
+    ChatMergedOrderManagementButton = 'chat-merged-order-management-button',
 }
