@@ -22,7 +22,9 @@ export const OrderManagementFlow = ({
     return useChatMergedOrderManagementButton ? (
         <ListGroup className={css.buttons}>
             <HomePageListGroupItem header arrowRight>
-                {sspTexts.trackAndManageMyOrders}
+                {selfServiceConfiguration.track_order_policy.enabled
+                    ? sspTexts.trackAndManageMyOrders
+                    : sspTexts.manageMyOrders}
             </HomePageListGroupItem>
         </ListGroup>
     ) : (
