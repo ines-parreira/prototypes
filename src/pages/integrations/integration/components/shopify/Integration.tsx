@@ -8,7 +8,6 @@ import {
 } from 'state/integrations/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import css from 'pages/settings/settings.less'
-import LinkAlert from 'pages/common/components/Alert/LinkAlert'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
@@ -18,9 +17,10 @@ import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
 import GroupAddon from 'pages/common/forms/input/GroupAddon'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import useQueryNotify from 'pages/integrations/integration/hooks/useQueryNotify'
 import useAuthenticationPolling from 'pages/integrations/integration/hooks/useAuthenticationPolling'
+
+import SyncNotification from 'pages/integrations/integration/components/SyncNotification'
 
 type Props = {
     integration: Map<any, any>
@@ -84,22 +84,11 @@ export default function Integration({
         <Container fluid className={css.pageContainer}>
             <Row>
                 <Col md="8">
-                    {isCustomersImportOver ? (
-                        <LinkAlert
-                            className="mb-4"
-                            actionLabel="Review your customers."
-                            actionHref="/app/customers"
-                        >
-                            All your Shopify customers have been imported. You
-                            can now see their info in the sidebar.
-                        </LinkAlert>
-                    ) : (
-                        <Alert className="mb-4" type={AlertType.Loading} icon>
-                            Import in progress. We typically sync 3,000
-                            customers an hour.We will send you an email once it
-                            is done. Feel free to leave this page.
-                        </Alert>
-                    )}
+                    <SyncNotification
+                        platform="Shopify"
+                        shopName={shopName}
+                        isSyncComplete={isCustomersImportOver}
+                    />
 
                     <form onSubmit={handleUpdate}>
                         <Label

@@ -52,8 +52,8 @@ function Integration({integration, loading, redirectUri}: Props) {
                                 icon
                             >
                                 Import in progress. We typically sync 3,000
-                                customers an hour.We will send you an email once
-                                it is done. Feel free to leave this page.
+                                customers an hour. We will send you an email
+                                once it is done. Feel free to leave this page.
                             </Alert>
                         ))}
 

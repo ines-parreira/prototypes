@@ -7,8 +7,6 @@ import {
     deleteIntegration,
     updateOrCreateIntegrationRequest,
 } from 'state/integrations/actions'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import LinkAlert from 'pages/common/components/Alert/LinkAlert'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -19,6 +17,7 @@ import TextInput from 'pages/common/forms/input/TextInput'
 import settingsCss from 'pages/settings/settings.less'
 import useQueryNotify from 'pages/integrations/integration/hooks/useQueryNotify'
 import useAuthenticationPolling from 'pages/integrations/integration/hooks/useAuthenticationPolling'
+import SyncNotification from 'pages/integrations/integration/components/SyncNotification'
 import {getConnectUrl} from './Utils'
 
 type Props = {
@@ -47,6 +46,7 @@ const Integration = ({integration, loading}: Props) => {
     const needScopeUpdate = Boolean(
         integration.getIn(['meta', 'need_scope_update'], false)
     )
+    const shopName = integration.getIn(['meta', 'shop_name'])
 
     const handleUpdate = useCallback(
         (evt: FormEvent<HTMLFormElement>) => {
@@ -65,21 +65,11 @@ const Integration = ({integration, loading}: Props) => {
         <Container fluid className={settingsCss.pageContainer}>
             <Row>
                 <Col md="8">
-                    {isCustomersImportOver ? (
-                        <LinkAlert
-                            className="mb-4"
-                            actionLabel="Review your customers."
-                            actionHref="/app/customers"
-                        >
-                            All your BigCommerce customers have been imported.
-                            You can now see their info in the sidebar.
-                        </LinkAlert>
-                    ) : (
-                        <Alert className="mb-4" type={AlertType.Loading} icon>
-                            Import in progress. We will send you an email once
-                            it is done. Feel free to leave this page.
-                        </Alert>
-                    )}
+                    <SyncNotification
+                        platform="BigCommerce"
+                        shopName={shopName}
+                        isSyncComplete={isCustomersImportOver}
+                    />
 
                     <form onSubmit={handleUpdate}>
                         <Label

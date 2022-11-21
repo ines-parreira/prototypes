@@ -69,7 +69,11 @@ describe('<BigCommerceIntegration/>', () => {
                 </Provider>
             )
 
-            expect(screen.getByText(/All your BigCommerce customers/))
+            expect(
+                screen.getByText(
+                    /Import complete. The real-time sync with BigCommerce is active./
+                )
+            )
         })
 
         it('should render an integration with a delete button that deletes the integration', async () => {

@@ -70,7 +70,11 @@ describe('<ShopifyIntegration/>', () => {
                 </Provider>
             )
 
-            expect(screen.getByText(/All your Shopify customers/))
+            expect(
+                screen.getByText(
+                    /Import complete. The real-time sync with Shopify is active./
+                )
+            )
         })
 
         it('should render an integration with a delete button that deletes the integration', async () => {
