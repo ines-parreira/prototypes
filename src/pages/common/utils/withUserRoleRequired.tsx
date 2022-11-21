@@ -24,7 +24,7 @@ const withUserRoleRequired = (
 
         // user hasn't required role
         if (redirectTo) {
-            history.push(redirectTo)
+            history.replace(redirectTo)
             return null
         }
         return (

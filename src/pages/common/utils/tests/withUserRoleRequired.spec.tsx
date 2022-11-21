@@ -92,6 +92,6 @@ describe('withUserRoleRequired', () => {
             </Provider>
         )
 
-        expect(history.push).toHaveBeenCalledWith('foo/bar')
+        expect(history.replace).toHaveBeenCalledWith('foo/bar')
     })
 })

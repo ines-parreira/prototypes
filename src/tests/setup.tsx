@@ -91,6 +91,7 @@ Object.defineProperty(window, 'localStorage', {
 
 // Mock historyAPI
 history.push = jest.fn()
+history.replace = jest.fn()
 
 // Mock of the PushJS API (browser notification)
 class mockPushJS {

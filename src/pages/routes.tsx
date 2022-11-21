@@ -546,11 +546,13 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                     content: memoizedWithUserRoleRequired(
                         IntegrationDetail,
                         ADMIN_ROLE,
-                        PageSection.Integrations
+                        PageSection.Channels,
+                        `${path}/help-center`
                     ),
                     navbar: SettingsNavbar,
                 })}
             />
+
             <Route path={`${path}/channels`} render={ChannelsSettingsRoutes} />
             <Route
                 path={`${path}/integrations`}
