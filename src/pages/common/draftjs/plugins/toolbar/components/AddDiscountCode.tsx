@@ -80,6 +80,7 @@ export function AddDiscountCode({
                     currency: (integrationRow.get('meta') as Map<any, any>).get(
                         'currency'
                     ),
+                    oauth: integrationRow.getIn(['meta', 'oauth']),
                 })
             )
         },

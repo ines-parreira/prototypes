@@ -429,6 +429,8 @@ export const integrationsStateWithShopify = fromJS({
                         'read_products',
                         'read_draft_orders',
                         'write_draft_orders',
+                        'read_discounts',
+                        'write_discounts',
                     ],
                     status: 'success',
                 },

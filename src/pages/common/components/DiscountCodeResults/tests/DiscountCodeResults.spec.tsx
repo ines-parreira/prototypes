@@ -12,7 +12,12 @@ import {discountCodeResult} from 'fixtures/discountCodes'
 import DiscountCodeResults from '../DiscountCodeResults'
 
 const minProps = {
-    integration: fromJS(integrationsState.integration),
+    integration: fromJS({
+        ...integrationsState.integration,
+        oauth: {
+            scope: ['read_discounts', 'write_discounts'],
+        },
+    }),
     onDiscountClicked: jest.fn(),
     onResetStoreChoice: jest.fn(),
 }
