@@ -8,6 +8,17 @@ import {SessionTimeOperators} from '../types/enums/SessionTimeOperators.enum'
 import {TimeSpentOnPageOperators} from '../types/enums/TimeSpentOnPageOperators.enum'
 import {VisitCountOperators} from '../types/enums/VisitCountOperators.enum'
 
+export const BETA_TRIGGERS = [
+    CampaignTriggerKey.BusinessHours,
+    CampaignTriggerKey.CartValue,
+    CampaignTriggerKey.ExitIntent,
+    CampaignTriggerKey.ProductTags,
+    CampaignTriggerKey.SessionTime,
+    CampaignTriggerKey.SingleInView,
+    CampaignTriggerKey.VisitCount,
+    CampaignTriggerKey.DeviceType,
+]
+
 export const TRIGGER_LIST = [
     {
         key: CampaignTriggerKey.BusinessHours,

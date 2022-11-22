@@ -1,6 +1,7 @@
 import {BusinessHoursOperators} from '../types/enums/BusinessHoursOperators.enum'
 import {CartValueOperators} from '../types/enums/CartValueOperators.enum'
 import {CurrentUrlOperators} from '../types/enums/CurrentUrlOperators.enum'
+import {DeviceTypeOperators} from '../types/enums/DeviceTypeOperators.enum'
 import {ProductTagsOperators} from '../types/enums/ProductTagsOperators.enum'
 import {VisitCountOperators} from '../types/enums/VisitCountOperators.enum'
 
@@ -84,5 +85,20 @@ export const PRODUCT_TAGS_OPERATORS = [
     {
         label: 'contains',
         value: ProductTagsOperators.Contains,
+    },
+]
+
+export const DEVICE_TYPE_OPERATORS = [
+    {
+        value: DeviceTypeOperators.All,
+        label: 'Desktop and mobile',
+    },
+    {
+        value: DeviceTypeOperators.Desktop,
+        label: 'Only desktop',
+    },
+    {
+        value: DeviceTypeOperators.Mobile,
+        label: 'Only mobile',
     },
 ]

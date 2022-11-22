@@ -6,6 +6,7 @@ export enum CampaignTriggerKey {
     ProductTags = 'product_tags',
     VisitCount = 'visit_count',
     SessionTime = 'session_time',
-    SingleInView = 'single_in_view',
     ExitIntent = 'exit_intent',
+    SingleInView = 'single_in_view',
+    DeviceType = 'device_type',
 }

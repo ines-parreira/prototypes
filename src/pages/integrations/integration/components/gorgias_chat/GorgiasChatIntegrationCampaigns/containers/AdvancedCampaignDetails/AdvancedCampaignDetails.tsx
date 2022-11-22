@@ -9,6 +9,7 @@ import {sanitizeHtmlDefault} from 'utils/html'
 import {User} from 'config/types/user'
 import history from 'pages/history'
 
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import InputField from 'pages/common/forms/input/InputField'
 import {Value} from 'pages/common/forms/SelectField/types'
 
@@ -20,6 +21,7 @@ import GorgiasChatIntegrationPreviewContainer from '../../../GorgiasChatIntegrat
 
 import {CampaignTriggerMap} from '../../types/CampaignTriggerMap'
 import {CampaignTriggerKey} from '../../types/enums/CampaignTriggerKey.enum'
+import {isDeviceTypeOperators} from '../../types/enums/DeviceTypeOperators.enum'
 import {
     DeleteTriggerFn,
     UpdateTriggerFn,
@@ -38,7 +40,7 @@ import {CampaignFooter} from '../../components/CampaignFooter'
 import {AdvancedTriggersForm} from '../../components/AdvancedTriggersForm'
 import {CampaignDetailsHeader} from '../../components/CampaignDetailsHeader'
 import {AdvancedTriggersSelect} from '../../components/AdvancedTriggersSelect'
-import {CampaignCollisionForm} from '../../components/CampaignCollisionForm'
+import {CampaignDisplaySettings} from '../../components/CampaignDisplaySettings'
 
 import {SingleCampaignInViewOperators} from '../../types/enums/SingleCampaignInViewOperators.enum'
 
@@ -212,6 +214,32 @@ export const AdvancedCampaignDetails = memo(
             [triggers, updateTriggers]
         )
 
+        const handleChangeDeviceType = useCallback(
+            (triggerId: string, operator: string) => {
+                if (isDeviceTypeOperators(operator)) {
+                    updateTriggers(
+                        produce(triggers, (draft) => {
+                            if (triggerId) {
+                                draft[triggerId] = {
+                                    key: CampaignTriggerKey.DeviceType,
+                                    value: 'true',
+                                    operator,
+                                }
+                            } else {
+                                const newKey = _uniqueId()
+                                draft[newKey] = {
+                                    key: CampaignTriggerKey.DeviceType,
+                                    value: 'true',
+                                    operator,
+                                }
+                            }
+                        })
+                    )
+                }
+            },
+            [triggers, updateTriggers]
+        )
+
         const handleSaveCampaign = async () => {
             setIsActionInProgress(true)
 
@@ -307,6 +335,9 @@ export const AdvancedCampaignDetails = memo(
         }, [campaign, isRevenueBetaTester])
 
         const isShopifyStore = chatIsShopifyStore(integration)
+        const shouldShowContactCsm = Object.values(triggers).some(
+            (trigger) => !isAllowedToUpdateTrigger(trigger, isRevenueBetaTester)
+        )
 
         return (
             <div data-testid="advanced-campaign-details-page">
@@ -339,17 +370,24 @@ export const AdvancedCampaignDetails = memo(
                             />
                         </div>
 
-                        <h5 className={css.section}>Choose your audience</h5>
+                        <h3 className={css.section}>Choose your audience</h3>
+                        <div className="mb-4">
+                            {shouldShowContactCsm && (
+                                <Alert icon type={AlertType.Warning}>
+                                    Advanced triggers are only available to
+                                    Revenue subscribers.To update them, please
+                                    contact your Customer Success Manager to
+                                    activate this subscription.
+                                </Alert>
+                            )}
+                        </div>
                         <div className="mb-4">
                             <TriggersProvider
                                 triggers={triggers}
                                 onUpdateTrigger={handleUpdateTrigger}
                                 onDeleteTrigger={handleDeleteTrigger}
                             >
-                                <AdvancedTriggersForm
-                                    isRevenueBetaTester={isRevenueBetaTester}
-                                    triggers={triggers}
-                                />
+                                <AdvancedTriggersForm triggers={triggers} />
                             </TriggersProvider>
                             <AdvancedTriggersSelect
                                 isShopifyStore={isShopifyStore}
@@ -358,14 +396,14 @@ export const AdvancedCampaignDetails = memo(
                             />
                         </div>
 
-                        {isRevenueBetaTester && (
-                            <CampaignCollisionForm
-                                triggers={triggers}
-                                onChange={handleToggleSingleCampaignInView}
-                            />
-                        )}
+                        <CampaignDisplaySettings
+                            isRevenueBetaTester={isRevenueBetaTester}
+                            triggers={triggers}
+                            onChangeCollision={handleToggleSingleCampaignInView}
+                            onChangeDeviceType={handleChangeDeviceType}
+                        />
 
-                        <h5 className={css.section}>Write your message</h5>
+                        <h3 className={css.section}>Write your message</h3>
                         {stateInitialized && (
                             <CampaignMessage
                                 agents={agents}
