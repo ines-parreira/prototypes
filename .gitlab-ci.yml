@@ -46,7 +46,9 @@ variables:
     STORAGE_BUCKET: gs://gorgias-assets-production
     DEPLOY_ENV: production
   rules:
-    - if: $CI_COMMIT_REF_NAME == "main"
+    # TODO: return back to main branch CD after BFCM
+    - if: $CI_COMMIT_REF_NAME == "staging"
+  when: manual
 
 # This keyword only works on a job, cannot be extended
 .gitlab_environment: &gitlab_environment
@@ -222,7 +224,7 @@ Force deploy production:
       gorgias-helpdesk-production-aus-southeast1-fcb9
       gorgias-main-us-east1-635c
   rules:
-    - if: $CI_COMMIT_REF_NAME == "main" || $CI_COMMIT_REF_NAME == "staging"
+    - if: $CI_COMMIT_REF_NAME == "staging"
   script:
     - . deployment/bin/deploy-utils.sh
     - . deploy-argo-utils.sh
