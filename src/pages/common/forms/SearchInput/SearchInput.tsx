@@ -29,9 +29,7 @@ type Props<ResultType, SubResultType> = {
     renderSubResult?: ComponentType<
         SearchInputSubResultProps<ResultType, SubResultType>
     >
-    onResultClicked: (
-        result: ResultType
-    ) => Array<SearchResultType & SubResultType> | void
+    onResultClicked: (result: ResultType) => Array<SubResultType> | void
     onSubResultClicked: (result: ResultType, subResult: SubResultType) => void
     resultLabel: string
     resultLabelPlural: string
@@ -44,14 +42,14 @@ type State<ResultType extends SearchResultType, SubResultType> = {
     isLoading: boolean
     isOpen: boolean
     results: ResultType[]
-    subResults: Array<SearchResultType & SubResultType>
+    subResults: Array<SubResultType>
     clickedResult: ResultType | null
     hoveredIndex: number
 }
 
 export default class SearchInput<
     ResultType extends SearchResultType,
-    SubResultType = void
+    SubResultType extends SearchResultType
 > extends Component<
     Props<ResultType, SubResultType>,
     State<ResultType, SubResultType>
@@ -327,7 +325,7 @@ export default class SearchInput<
         const {hoveredIndex, clickedResult, subResults} = this.state
 
         return subResults.length && clickedResult && SubResult
-            ? subResults.map<ReactNode>((subResult, index) => (
+            ? subResults.map<ReactNode>((subResult: SubResultType, index) => (
                   <DropdownItem
                       key={`sub-result-${subResult.id}`}
                       onMouseEnter={() => this.setState({hoveredIndex: index})}

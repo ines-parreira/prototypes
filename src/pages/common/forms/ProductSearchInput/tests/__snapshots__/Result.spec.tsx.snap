@@ -1,5 +1,40 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<Result/> render() should render with SKU as subtitle 1`] = `
+<div
+  className="container"
+>
+  <div
+    className="imgContainer"
+  >
+    <img
+      alt="Alt"
+      className="img"
+      src="test-file-stub"
+    />
+  </div>
+  <div
+    className="legend"
+  >
+    <div
+      className="title"
+    >
+      Product 1
+    </div>
+    <div
+      className="subtitle"
+    >
+      SKU: 11111
+    </div>
+  </div>
+  <div
+    className="stock grey"
+  >
+    Inventory not tracked
+  </div>
+</div>
+`;
+
 exports[`<Result/> render() should render with default image 1`] = `
 <div
   className="container"
@@ -49,7 +84,7 @@ exports[`<Result/> render() should render with image and subtitle 1`] = `
     <img
       alt="alt"
       className="img"
-      src="//foo.bar/image_small.jpg"
+      src="https://foo.bar/image.jpg"
     />
   </div>
   <div
@@ -78,6 +113,269 @@ exports[`<Result/> render() should render with image and subtitle 1`] = `
 </div>
 `;
 
+exports[`<Result/> render() should render with number of variants as subtitle 1`] = `
+<div
+  className="container"
+>
+  <div
+    className="imgContainer"
+  >
+    <img
+      alt="Alt"
+      className="img"
+      src="test-file-stub"
+    />
+  </div>
+  <div
+    className="legend"
+  >
+    <div
+      className="title"
+    >
+      Product 1
+    </div>
+    <div
+      className="subtitle"
+    >
+      2 variants
+    </div>
+  </div>
+  <div
+    className="stock grey"
+  >
+    Inventory not tracked
+  </div>
+</div>
+`;
+
+exports[`<Result/> render() should render with product negative stock quantity 1`] = `
+<div
+  className="container"
+>
+  <div
+    className="imgContainer"
+  >
+    <img
+      alt="Alt"
+      className="img"
+      src="test-file-stub"
+    />
+  </div>
+  <div
+    className="legend"
+  >
+    <div
+      className="title"
+    >
+      Product 1
+    </div>
+    <div
+      className="subtitle"
+    >
+      2 variants
+    </div>
+  </div>
+  <div
+    className="stock"
+  >
+    <ProductStockQuantity
+      value={-8990}
+    />
+     in stock
+     
+    for 2 variants
+  </div>
+</div>
+`;
+
+exports[`<Result/> render() should render with product stock quantity 1`] = `
+<div
+  className="container"
+>
+  <div
+    className="imgContainer"
+  >
+    <img
+      alt="Alt"
+      className="img"
+      src="test-file-stub"
+    />
+  </div>
+  <div
+    className="legend"
+  >
+    <div
+      className="title"
+    >
+      Product 1
+    </div>
+    <div
+      className="subtitle"
+    >
+      SKU: 11111
+    </div>
+  </div>
+  <div
+    className="stock"
+  >
+    <ProductStockQuantity
+      value={99}
+    />
+     in stock
+     
+  </div>
+</div>
+`;
+
+exports[`<Result/> render() should render with product stock quantity 2`] = `
+<div
+  className="container"
+>
+  <div
+    className="imgContainer"
+  >
+    <img
+      alt="Alt"
+      className="img"
+      src="test-file-stub"
+    />
+  </div>
+  <div
+    className="legend"
+  >
+    <div
+      className="title"
+    >
+      Product 1
+    </div>
+    <div
+      className="subtitle"
+    >
+      SKU: 11111
+    </div>
+  </div>
+  <div
+    className="stock"
+  >
+    <ProductStockQuantity
+      value={1}
+    />
+     in stock
+     
+  </div>
+</div>
+`;
+
+exports[`<Result/> render() should render with product title as title, and SKU as subtitle 1`] = `
+<div
+  className="container"
+>
+  <div
+    className="imgContainer"
+  >
+    <img
+      alt="Alt"
+      className="img"
+      src="test-file-stub"
+    />
+  </div>
+  <div
+    className="legend"
+  >
+    <div
+      className="title"
+    >
+      Product 1
+    </div>
+    <div
+      className="subtitle"
+    >
+      SKU: 11111
+    </div>
+  </div>
+  <div
+    className="stock grey"
+  >
+    Inventory not tracked
+  </div>
+</div>
+`;
+
+exports[`<Result/> render() should render with product total stock quantity of all variants 1`] = `
+<div
+  className="container"
+>
+  <div
+    className="imgContainer"
+  >
+    <img
+      alt="Alt"
+      className="img"
+      src="test-file-stub"
+    />
+  </div>
+  <div
+    className="legend"
+  >
+    <div
+      className="title"
+    >
+      Product 1
+    </div>
+    <div
+      className="subtitle"
+    >
+      2 variants
+    </div>
+  </div>
+  <div
+    className="stock"
+  >
+    <ProductStockQuantity
+      value={30}
+    />
+     in stock
+     
+    for 2 variants
+  </div>
+</div>
+`;
+
+exports[`<Result/> render() should render with variant title in title 1`] = `
+<div
+  className="container"
+>
+  <div
+    className="imgContainer"
+  >
+    <img
+      alt="Alt"
+      className="img"
+      src="test-file-stub"
+    />
+  </div>
+  <div
+    className="legend"
+  >
+    <div
+      className="title"
+    >
+      Product 1 - Variant 2
+    </div>
+    <div
+      className="subtitle"
+    >
+      SKU: 22222
+    </div>
+  </div>
+  <div
+    className="stock grey"
+  >
+    Inventory not tracked
+  </div>
+</div>
+`;
+
 exports[`<Result/> render() should render without product stock quantity 1`] = `
 <div
   className="container"
@@ -88,7 +386,7 @@ exports[`<Result/> render() should render without product stock quantity 1`] = `
     <img
       alt="alt"
       className="img"
-      src="//foo.bar/image_small.jpg"
+      src="https://foo.bar/image.jpg"
     />
   </div>
   <div
@@ -113,6 +411,41 @@ exports[`<Result/> render() should render without product stock quantity 1`] = `
 </div>
 `;
 
+exports[`<Result/> render() should render without product stock quantity because the inventory is not tracked 1`] = `
+<div
+  className="container"
+>
+  <div
+    className="imgContainer"
+  >
+    <img
+      alt="Alt"
+      className="img"
+      src="test-file-stub"
+    />
+  </div>
+  <div
+    className="legend"
+  >
+    <div
+      className="title"
+    >
+      Product 1
+    </div>
+    <div
+      className="subtitle"
+    >
+      SKU: 11111
+    </div>
+  </div>
+  <div
+    className="stock grey"
+  >
+    Inventory not tracked
+  </div>
+</div>
+`;
+
 exports[`<Result/> render() should render without subtitle 1`] = `
 <div
   className="container"
@@ -123,7 +456,7 @@ exports[`<Result/> render() should render without subtitle 1`] = `
     <img
       alt="alt"
       className="img"
-      src="//foo.bar/image_small.jpg"
+      src="https://foo.bar/image.jpg"
     />
   </div>
   <div
@@ -143,6 +476,66 @@ exports[`<Result/> render() should render without subtitle 1`] = `
     />
      in stock
      
+  </div>
+</div>
+`;
+
+exports[`<Result/> render() should render without subtitle 2`] = `
+<div
+  className="container"
+>
+  <div
+    className="imgContainer"
+  >
+    <img
+      alt="Alt"
+      className="img"
+      src="test-file-stub"
+    />
+  </div>
+  <div
+    className="legend"
+  >
+    <div
+      className="title"
+    >
+      Product 1
+    </div>
+  </div>
+  <div
+    className="stock grey"
+  >
+    Inventory not tracked
+  </div>
+</div>
+`;
+
+exports[`<Result/> render() should render without subtitle 3`] = `
+<div
+  className="container"
+>
+  <div
+    className="imgContainer"
+  >
+    <img
+      alt="Alt"
+      className="img"
+      src="test-file-stub"
+    />
+  </div>
+  <div
+    className="legend"
+  >
+    <div
+      className="title"
+    >
+      Product 1
+    </div>
+  </div>
+  <div
+    className="stock grey"
+  >
+    Inventory not tracked
   </div>
 </div>
 `;

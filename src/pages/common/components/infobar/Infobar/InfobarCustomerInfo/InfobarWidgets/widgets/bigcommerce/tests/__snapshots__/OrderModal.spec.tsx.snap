@@ -75,6 +75,51 @@ exports[`OrderModal should render when the modal is opened 1`] = `
           >
             Products
           </p>
+          <div
+            class="searchInput dropdown"
+          >
+            <div
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="input-icon input-icon-right"
+              data-toggle="dropdown"
+            >
+              <div
+                class="wrapper"
+              >
+                <input
+                  class="input"
+                  id="input-text-3"
+                  name="input-text-3"
+                  placeholder="Search products..."
+                  type="text"
+                  value=""
+                />
+                <span
+                  class="suffix"
+                >
+                  <i
+                    class="material-icons icon"
+                  >
+                    search
+                  </i>
+                </span>
+              </div>
+            </div>
+            <div
+              aria-hidden="true"
+              class="dropdown dropdown-menu"
+              role="menu"
+              tabindex="-1"
+            >
+              <h6
+                class="header dropdown-header"
+                tabindex="-1"
+              >
+                0 product
+              </h6>
+            </div>
+          </div>
           <p
             class="subsection"
           >

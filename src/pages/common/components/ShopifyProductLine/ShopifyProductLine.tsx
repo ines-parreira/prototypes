@@ -1,38 +1,27 @@
 import React, {ChangeEvent, useState, useEffect, useCallback} from 'react'
 import {useDebounce} from 'react-use'
-
 import {Input, ListGroup, ListGroupItem} from 'reactstrap'
 import {Map} from 'immutable'
-
 import classnames from 'classnames'
 
-import {IntegrationType} from 'models/integration/constants'
-import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import useAppDispatch from '../../../../hooks/useAppDispatch'
-
-import GorgiasApi from '../../../../services/gorgiasApi'
+import {getIconFromUrl} from 'utils'
 import {
     INTEGRATION_DATA_ITEM_TYPE_PRODUCT,
     PRODUCTS_PER_PAGE,
-} from '../../../../constants/integration'
+} from 'constants/integration'
+import {IntegrationDataItem, ProductCardDetails} from 'models/integration/types'
+import GorgiasApi from 'services/gorgiasApi'
+import {notify} from 'state/notifications/actions'
+import {getIconFromType} from 'state/integrations/helpers'
+import {NotificationStatus} from 'state/notifications/types'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {IntegrationType} from 'models/integration/constants'
+import {Product, Variant} from 'constants/integrations/types/shopify'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import Result from 'pages/common/forms/ProductSearchInput/Result'
 
-import ProductResult from '../../forms/ProductSearchInput/ProductResult'
-import VariantResult from '../../forms/ProductSearchInput/VariantResult'
-
-import {
-    IntegrationDataItem,
-    Product,
-    Variant,
-    ProductCardDetails,
-} from '../../../../models/integration/types'
-
-import {notify} from '../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../state/notifications/types'
-
-import {getIconFromType} from '../../../../state/integrations/helpers'
-import {getIconFromUrl} from '../../../../utils'
-
+import {shopifyDataMappers} from 'pages/common/forms/ProductSearchInput/Mappings'
 import css from './ShopifyProductLine.less'
 
 type OwnProps = {
@@ -269,20 +258,24 @@ export default function ShopifyProductLine({
             <div className={css.listGroupContainer}>
                 {shopifyProducts.length > 0 && !subResults.length && (
                     <ListGroup flush>
-                        {shopifyProducts.map((result, index) => (
-                            <ListGroupItem
-                                key={index}
-                                tag="button"
-                                id={'resultRow'.concat(index.toString())}
-                                action
-                                onClick={(event) => {
-                                    event.preventDefault()
-                                    handleProductClick(index)
-                                }}
-                            >
-                                <ProductResult result={result} />
-                            </ListGroupItem>
-                        ))}
+                        {shopifyProducts.map((result, index) => {
+                            return (
+                                <ListGroupItem
+                                    key={result.id}
+                                    tag="button"
+                                    id={'resultRow'.concat(index.toString())}
+                                    action
+                                    onClick={(event) => {
+                                        event.preventDefault()
+                                        handleProductClick(index)
+                                    }}
+                                >
+                                    <Result
+                                        {...shopifyDataMappers.product(result)}
+                                    />
+                                </ListGroupItem>
+                            )
+                        })}
                     </ListGroup>
                 )}
                 {shopifyProducts.length > 0 && subResults.length > 0 && (
@@ -298,10 +291,14 @@ export default function ShopifyProductLine({
                                         handleSubResultClicked(index)
                                     }}
                                 >
-                                    <VariantResult
-                                        result={clickedResult!}
-                                        subResult={subResult}
-                                    />
+                                    {clickedResult && (
+                                        <Result
+                                            {...shopifyDataMappers.variants(
+                                                clickedResult,
+                                                subResult
+                                            )}
+                                        />
+                                    )}
                                 </ListGroupItem>
                             )
                         )}

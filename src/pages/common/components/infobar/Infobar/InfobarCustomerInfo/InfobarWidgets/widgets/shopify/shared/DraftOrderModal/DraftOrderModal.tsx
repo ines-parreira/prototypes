@@ -36,6 +36,7 @@ import Loader from 'pages/common/components/Loader/Loader'
 import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 
+import {shopifyDataMappers} from 'pages/common/forms/ProductSearchInput/Mappings'
 import {InfobarModalProps} from '../../../types'
 import {ShopifyActionType} from '../../types'
 
@@ -273,6 +274,7 @@ export function DraftOrderModalContainer({
                         )
                     }}
                     searchOnFocus={!data.order && isEmpty}
+                    dataMappers={shopifyDataMappers}
                 />
                 <AddCustomItemPopover
                     id="add-custom-item"

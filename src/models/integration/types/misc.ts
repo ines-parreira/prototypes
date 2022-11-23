@@ -1,8 +1,4 @@
 import {IntegrationType} from '../constants'
-import {
-    Product as IntegrationProduct,
-    Variant as IntegrationVariant,
-} from '../../../constants/integrations/types/shopify'
 
 export type OAuth2 = {
     status: string
@@ -51,9 +47,6 @@ export type IntegrationExtra<T extends IntegrationType> =
 export enum IntegrationDataItemType {
     IntegrationDataItemTypeProduct = 'product',
 }
-
-export type Product = IntegrationProduct
-export type Variant = IntegrationVariant
 
 export type IntegrationDataItem<T> = {
     id: number

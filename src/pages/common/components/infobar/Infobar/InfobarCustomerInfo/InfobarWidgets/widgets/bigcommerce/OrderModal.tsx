@@ -3,6 +3,7 @@ import {Button, ModalFooter} from 'reactstrap'
 import classnames from 'classnames'
 import {useUpdateEffect, usePrevious} from 'react-use'
 
+import _noop from 'lodash/noop'
 import {
     onCancel,
     onInit,
@@ -21,6 +22,8 @@ import Alert from 'pages/common/components/Alert/Alert'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import useAppDispatch from 'hooks/useAppDispatch'
+import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
+import {bigcommerceDataMappers} from 'pages/common/forms/ProductSearchInput/Mappings'
 import css from './OrderModal.less'
 
 type Props = {
@@ -77,6 +80,13 @@ export default function OrderModal({
                 <p className={classnames(css.paddedVertical, css.subsection)}>
                     Products
                 </p>
+                {isOpen && (
+                    <ProductSearchInput
+                        className={css.searchInput}
+                        dataMappers={bigcommerceDataMappers}
+                        onVariantClicked={_noop}
+                    />
+                )}
                 <p className={css.subsection}>Fulfillment</p>
                 <div>
                     <h5 className={css.subsectionSmall}>Shipping address</h5>

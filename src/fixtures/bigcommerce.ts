@@ -1,9 +1,9 @@
-import {BigCommerceResponse} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/types'
 import {
     BigCommerceIntegration,
     BigCommerceIntegrationMeta,
     IntegrationType,
 } from 'models/integration/types'
+import {BigCommerceResponse} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/types'
 
 export const bigCommerceCustomerFixture = () => ({
     id: 1234,

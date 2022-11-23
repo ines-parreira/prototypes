@@ -13,10 +13,32 @@ export type LineItem = {
 }
 
 export type BigCommercePayload = {
-    line_items: Array<LineItem>
     customer_id: number
+    line_items: Array<LineItem>
 }
 
 export type BigCommerceResponse = {
     id: string
+}
+
+export type Variant = {
+    id: number
+    sku: string
+    price: string
+    image_url: string
+    product_id: number
+    inventory_level: number
+    options: Array<Record<string, any>>
+}
+
+export type Product = {
+    id: number
+    sku: string
+    inventory_level: number
+    name: string
+    created_at: string
+    image_url: string
+    options: Array<Record<string, any>>
+    handle?: string
+    variants: Variant[]
 }

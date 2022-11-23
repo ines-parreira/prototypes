@@ -37,7 +37,9 @@ export const onCancel =
         const state = getState()
         const createOrderState = getCreateOrderState(state)
         const cartId = createOrderState.cartId
-        void deleteCart(integrationId, cartId)
+        if (!!cartId) {
+            void deleteCart(integrationId, cartId)
+        }
         const eventName = SegmentEvent.BigCommerceCreateOrderCancel
         logEvent(eventName, {via})
         dispatch(setCartId(null))
@@ -55,8 +57,8 @@ const createCart = async (
     customer: Customer
 ): Promise<BigCommerceResponse> => {
     const payload: BigCommercePayload = {
-        line_items: [],
         customer_id: customer.id,
+        line_items: [],
     }
     return await _api.createBigCommerceCart(integrationId, payload)
 }

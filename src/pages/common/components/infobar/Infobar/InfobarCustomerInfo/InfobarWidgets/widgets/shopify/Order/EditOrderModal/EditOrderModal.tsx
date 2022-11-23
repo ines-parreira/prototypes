@@ -6,7 +6,6 @@ import classnames from 'classnames'
 import {Link} from 'react-router-dom'
 import {useUpdateEffect, usePrevious} from 'react-use'
 
-import {Product, Variant} from 'constants/integrations/types/shopify'
 import {getEditOrderState} from 'state/infobarActions/shopify/editOrder/selectors'
 import {
     addCustomRow,
@@ -21,16 +20,13 @@ import {
 import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {getIntegrationsByType} from 'state/integrations/selectors'
 import {RootState} from 'state/types'
-import {
-    IntegrationType,
-    IntegrationDataItem,
-    ShopifyIntegration,
-} from 'models/integration/types'
+import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
 import Loader from 'pages/common/components/Loader/Loader'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
+import {shopifyDataMappers} from 'pages/common/forms/ProductSearchInput/Mappings'
 import {InfobarModalProps} from '../../../types'
 import {ShopifyActionType} from '../../types'
 import AddCustomItemPopover from '../../shared/DraftOrderModal/AddCustomItemPopover/AddCustomItemPopover'
@@ -220,10 +216,7 @@ export function EditOrderModalContainer({
             <div className={css.formHeader}>
                 <ProductSearchInput
                     className={css.searchInput}
-                    onVariantClicked={(
-                        item: IntegrationDataItem<Product>,
-                        variant: Variant
-                    ) => {
+                    onVariantClicked={(item, variant) => {
                         void addRow(
                             data.actionName!,
                             integrationId!,
@@ -233,6 +226,7 @@ export function EditOrderModalContainer({
                     }}
                     autoFocus={false}
                     searchOnFocus={true}
+                    dataMappers={shopifyDataMappers}
                 />
                 <AddCustomItemPopover
                     id="add-custom-item"
