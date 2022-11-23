@@ -1,0 +1,327 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TeamList /> should render with data 1`] = `
+<div
+  class="component full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <h1
+      class="d-flex align-items-center"
+    >
+      Teams
+    </h1>
+    <div>
+      <button
+        class="wrapper fill primary medium"
+        type="button"
+      >
+        Create Team
+      </button>
+    </div>
+  </div>
+  <div
+    class="pageContainer container-fluid"
+  >
+    <p>
+      Create teams of users to define what views they see by default on your account.
+    </p>
+    <a
+      class="card p-3 card d-flex flex-row mb-3"
+      to="/app/settings/teams/33/members"
+    >
+      <div
+        class="d-flex justify-content-center mr-3"
+      >
+        <i
+          class="material-icons"
+        >
+          people
+        </i>
+      </div>
+      <div
+        class="flex-grow mr-1"
+      >
+        <h5
+          class="title"
+        >
+          Foo
+        </h5>
+        <p />
+        <div
+          class="d-flex flex-row align-items-center"
+        >
+          <ul
+            class="list-unstyled d-flex flex-row mb-0 mr-2"
+          >
+            <li
+              class="mr-1"
+            >
+              <div
+                class="component"
+                style="width: 30px; height: 30px;"
+              >
+                <div
+                  class="initials"
+                  style="width: 30px; height: 30px; font-size: 12.5px;"
+                >
+                  <span
+                    style="line-height: 32px;"
+                  >
+                    F
+                  </span>
+                </div>
+              </div>
+            </li>
+          </ul>
+          <p
+            class="mb-0 text-muted"
+          >
+            1
+             member
+          </p>
+        </div>
+      </div>
+      <div
+        class="align-self-center"
+      >
+        <div
+          class="action"
+        >
+          <i
+            class="material-icons md-1"
+          >
+            navigate_next
+          </i>
+        </div>
+      </div>
+    </a>
+    <a
+      class="card p-3 card d-flex flex-row mb-3"
+      to="/app/settings/teams/34/members"
+    >
+      <div
+        class="d-flex justify-content-center mr-3"
+      >
+        <i
+          class="material-icons"
+        >
+          people
+        </i>
+      </div>
+      <div
+        class="flex-grow mr-1"
+      >
+        <h5
+          class="title"
+        >
+          Phone team - +1 205-396-3441
+        </h5>
+        <p>
+          Default team, which was created for phone tickets auto-assignment.
+        </p>
+        <div
+          class="d-flex flex-row align-items-center"
+        >
+          <ul
+            class="list-unstyled d-flex flex-row mb-0 mr-2"
+          >
+            <li
+              class="mr-1"
+            >
+              <div
+                class="component"
+                style="width: 30px; height: 30px;"
+              >
+                <div
+                  class="initials"
+                  style="width: 30px; height: 30px; font-size: 12.5px;"
+                >
+                  <span
+                    style="line-height: 32px;"
+                  >
+                    JD
+                  </span>
+                </div>
+              </div>
+            </li>
+          </ul>
+          <p
+            class="mb-0 text-muted"
+          >
+            1
+             member
+          </p>
+        </div>
+      </div>
+      <div
+        class="align-self-center"
+      >
+        <div
+          class="action"
+        >
+          <i
+            class="material-icons md-1"
+          >
+            navigate_next
+          </i>
+        </div>
+      </div>
+    </a>
+    <a
+      class="card p-3 card d-flex flex-row mb-3"
+      to="/app/settings/teams/35/members"
+    >
+      <div
+        class="d-flex justify-content-center mr-3"
+      >
+        <i
+          class="material-icons"
+        >
+          people
+        </i>
+      </div>
+      <div
+        class="flex-grow mr-1"
+      >
+        <h5
+          class="title"
+        >
+          Team: user meta null
+        </h5>
+        <p />
+        <div
+          class="d-flex flex-row align-items-center"
+        >
+          <ul
+            class="list-unstyled d-flex flex-row mb-0 mr-2"
+          >
+            <li
+              class="mr-1"
+            >
+              <div
+                class="component"
+                style="width: 30px; height: 30px;"
+              >
+                <div
+                  class="initials"
+                  style="width: 30px; height: 30px; font-size: 12.5px;"
+                >
+                  <span
+                    style="line-height: 32px;"
+                  >
+                    JB
+                  </span>
+                </div>
+              </div>
+            </li>
+          </ul>
+          <p
+            class="mb-0 text-muted"
+          >
+            1
+             member
+          </p>
+        </div>
+      </div>
+      <div
+        class="align-self-center"
+      >
+        <div
+          class="action"
+        >
+          <i
+            class="material-icons md-1"
+          >
+            navigate_next
+          </i>
+        </div>
+      </div>
+    </a>
+    <a
+      class="card p-3 card d-flex flex-row mb-3"
+      to="/app/settings/teams/36/members"
+    >
+      <div
+        class="d-flex justify-content-center mr-3"
+      >
+        <i
+          class="material-icons"
+        >
+          people
+        </i>
+      </div>
+      <div
+        class="flex-grow mr-1"
+      >
+        <h5
+          class="title"
+        >
+          test
+        </h5>
+        <p />
+        <div
+          class="d-flex flex-row align-items-center"
+        >
+          <p
+            class="mb-0 text-muted"
+          >
+            No
+             member
+          </p>
+        </div>
+      </div>
+      <div
+        class="align-self-center"
+      >
+        <div
+          class="action"
+        >
+          <i
+            class="material-icons md-1"
+          >
+            navigate_next
+          </i>
+        </div>
+      </div>
+    </a>
+  </div>
+</div>
+`;
+
+exports[`<TeamList /> should render without data 1`] = `
+<div
+  class="component full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <h1
+      class="d-flex align-items-center"
+    >
+      Teams
+    </h1>
+    <div>
+      <button
+        class="wrapper fill primary medium"
+        type="button"
+      >
+        Create Team
+      </button>
+    </div>
+  </div>
+  <div
+    class="pageContainer container-fluid"
+  >
+    <p>
+      Create teams of users to define what views they see by default on your account.
+      <span
+        class="d-block"
+      >
+        Your account doesn't have any teams yet.
+      </span>
+    </p>
+  </div>
+</div>
+`;

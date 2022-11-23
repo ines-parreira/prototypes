@@ -37,6 +37,22 @@ export const teams: Team[] = [
         uri: '/api/teams/34/',
     },
     {
+        created_datetime: '2021-11-23T10:12:02.463745+00:00',
+        decoration: {},
+        description: null,
+        id: 35,
+        members: [
+            {
+                email: 'doe@gorgias.io',
+                id: 3,
+                meta: null,
+                name: 'John Bar',
+            },
+        ],
+        name: 'Team: user meta null',
+        uri: '/api/teams/35/',
+    },
+    {
         created_datetime: '2021-11-24T15:01:09.788109+00:00',
         decoration: {},
         description: null,

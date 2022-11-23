@@ -704,6 +704,22 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
                         name="checkbox-30"
                         type="checkbox"
                       />
+                      Team: user meta null
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-31"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-31"
+                        name="checkbox-31"
+                        type="checkbox"
+                      />
                       Test
                     </label>
                   </div>
@@ -723,13 +739,13 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
                 >
                   <label
                     class="label label labelItem"
-                    for="checkbox-31"
+                    for="checkbox-32"
                   >
                     <input
                       checked=""
                       class="input"
-                      id="checkbox-31"
-                      name="checkbox-31"
+                      id="checkbox-32"
+                      name="checkbox-32"
                       type="checkbox"
                     />
                      Acme Support
@@ -740,12 +756,12 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
                 >
                   <label
                     class="label label labelItem"
-                    for="checkbox-32"
+                    for="checkbox-33"
                   >
                     <input
                       class="input"
-                      id="checkbox-32"
-                      name="checkbox-32"
+                      id="checkbox-33"
+                      name="checkbox-33"
                       type="checkbox"
                     />
                      Bob Smith

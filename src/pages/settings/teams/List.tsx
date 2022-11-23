@@ -54,7 +54,7 @@ const TeamItem = ({team}: TeamItemProps) => {
                                 .slice(0, maxMembersPreview)
                                 .map((member) => {
                                     const memberProfilePictureUrl =
-                                        member.meta.profile_picture_url
+                                        member.meta?.profile_picture_url
 
                                     return (
                                         <li key={member.id} className="mr-1">

@@ -131,6 +131,22 @@ exports[`AgentsStatsFilter should render agents stats filter 1`] = `
               name="checkbox-4"
               type="checkbox"
             />
+            Team: user meta null
+          </label>
+        </div>
+        <div
+          class="wrapperItem"
+        >
+          <label
+            class="label label labelItem"
+            for="checkbox-5"
+          >
+            <input
+              class="input"
+              id="checkbox-5"
+              name="checkbox-5"
+              type="checkbox"
+            />
             Test
           </label>
         </div>
@@ -150,13 +166,13 @@ exports[`AgentsStatsFilter should render agents stats filter 1`] = `
       >
         <label
           class="label label labelItem"
-          for="checkbox-5"
+          for="checkbox-6"
         >
           <input
             checked=""
             class="input"
-            id="checkbox-5"
-            name="checkbox-5"
+            id="checkbox-6"
+            name="checkbox-6"
             type="checkbox"
           />
            Acme Support
@@ -167,12 +183,12 @@ exports[`AgentsStatsFilter should render agents stats filter 1`] = `
       >
         <label
           class="label label labelItem"
-          for="checkbox-6"
+          for="checkbox-7"
         >
           <input
             class="input"
-            id="checkbox-6"
-            name="checkbox-6"
+            id="checkbox-7"
+            name="checkbox-7"
             type="checkbox"
           />
            Bob Smith

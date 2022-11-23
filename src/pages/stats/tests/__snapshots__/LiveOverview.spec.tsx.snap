@@ -511,6 +511,22 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                         name="checkbox-23"
                         type="checkbox"
                       />
+                      Team: user meta null
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-24"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-24"
+                        name="checkbox-24"
+                        type="checkbox"
+                      />
                       Test
                     </label>
                   </div>
@@ -530,13 +546,13 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                 >
                   <label
                     class="label label labelItem"
-                    for="checkbox-24"
+                    for="checkbox-25"
                   >
                     <input
                       checked=""
                       class="input"
-                      id="checkbox-24"
-                      name="checkbox-24"
+                      id="checkbox-25"
+                      name="checkbox-25"
                       type="checkbox"
                     />
                      Acme Support
@@ -547,12 +563,12 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                 >
                   <label
                     class="label label labelItem"
-                    for="checkbox-25"
+                    for="checkbox-26"
                   >
                     <input
                       class="input"
-                      id="checkbox-25"
-                      name="checkbox-25"
+                      id="checkbox-26"
+                      name="checkbox-26"
                       type="checkbox"
                     />
                      Bob Smith

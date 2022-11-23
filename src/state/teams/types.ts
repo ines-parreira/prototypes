@@ -26,7 +26,7 @@ export type TeamUser = {
                 offset?: string
             }
         }
-    }
+    } | null
 }
 
 type TeamDecoration = {
