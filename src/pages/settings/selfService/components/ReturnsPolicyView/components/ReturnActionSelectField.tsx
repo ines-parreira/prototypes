@@ -82,6 +82,7 @@ export const ReturnActionSelectField = ({
 
     return (
         <SelectField
+            style={{maxWidth: 680}}
             fullWidth
             placeholder="Select a return method"
             value={value === null ? null : JSON.stringify(value)}
