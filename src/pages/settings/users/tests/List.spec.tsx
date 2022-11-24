@@ -3,24 +3,20 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {RootState, StoreDispatch} from 'state/types'
+import thunk from 'redux-thunk'
+
+import {account} from 'fixtures/account'
 import {agents} from 'fixtures/agents'
-import {UserListContainer} from '../List'
+import {RootState, StoreDispatch} from 'state/types'
 
-const mockStore = configureMockStore<RootState, StoreDispatch>()
+import UserList from '../List'
 
-const pagination = {
-    data: agents,
-    meta: {
-        page: 1,
-        per_page: 30,
-        current_page:
-            '/api/users/?page=1&roles%5B%5D=admin&roles%5B%5D=agent&roles%5B%5D=basic-agent&roles%5B%5D=lite-agent&roles%5B%5D=observer-agent',
-        item_count: 3,
-        nb_pages: 1,
-        data: agents,
-    },
-}
+jest.mock('models/agents/resources', () => ({
+    fetchAgents: jest.fn(() => () => ({})),
+}))
+
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+
 const accessSettings = {
     id: 5,
     account_id: 1,
@@ -33,42 +29,48 @@ const accessSettings = {
     allowed_domains: ['*.gorgias.com', 'gorgias.com', 'yahoo.com'],
 }
 
-const minProps = {
-    agents: fromJS(agents),
-    pagination: fromJS(pagination.meta),
-    accountOwnerId: 1,
-    accessSettings: fromJS(accessSettings),
-    getPaginatedAgents: jest.fn(),
-    getPagination: jest.fn(),
-    getAccessSettings: jest.fn(),
-    fetchAgents: jest.fn(() => Promise.resolve(agents)),
-}
-
 describe('<List />', () => {
     const defaultState = {
         agents: fromJS({
             all: agents,
-            pagination: pagination,
+            pagination: agents,
         }),
-        currentAccount: fromJS({settings: [accessSettings], user_id: 1}),
+        currentAccount: fromJS({
+            ...account,
+            settings: [accessSettings],
+        }),
     } as RootState
+
     it('should render', async () => {
         const {container, findByText} = render(
             <Provider store={mockStore(defaultState)}>
-                <UserListContainer {...minProps} />
+                <UserList />
             </Provider>
         )
         await findByText('Add user')
         expect(container.firstChild).toMatchSnapshot()
     })
+
     it('should render without access settings alert', async () => {
-        accessSettings.data.signup_mode = 'allowed-domains'
+        const state = {
+            ...defaultState,
+            currentAccount: fromJS({
+                settings: [
+                    {
+                        ...accessSettings,
+                        data: {
+                            ...accessSettings.data,
+                            signup_mode: 'allowed-domains',
+                        },
+                    },
+                ],
+                user_id: 1,
+            }),
+        }
+
         const {findByText} = render(
-            <Provider store={mockStore(defaultState)}>
-                <UserListContainer
-                    {...minProps}
-                    accessSettings={fromJS(accessSettings)}
-                />
+            <Provider store={mockStore(state)}>
+                <UserList />
             </Provider>
         )
         await findByText('Add user')

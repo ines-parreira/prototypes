@@ -6,8 +6,8 @@ import _isUndefined from 'lodash/isUndefined'
 import {Map} from 'immutable'
 
 import client from 'models/api/resources'
-import {deepMapKeysToSnakeCase} from 'models/api/utils'
 import {fetchWidgets as fetchWidgetsRequest} from 'models/widget/resources'
+import {FetchWidgetsOptions} from 'models/widget/types'
 import {PartialTemplate} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/types'
 import {
     Button,
@@ -22,16 +22,11 @@ import {StoreDispatch, RootState} from 'state/types'
 import {getSources, getSourcesWithCustomer} from 'state/widgets/selectors'
 
 import * as types from './constants'
-import {FetchWidgetsOptions, Widget, WidgetContextType} from './types'
+import {Widget, WidgetContextType} from './types'
 import {CUSTOM_WIDGET_TYPE} from './constants'
 
 export function fetchWidgets(options: FetchWidgetsOptions = {}) {
     return async (dispatch: StoreDispatch) => {
-        const params = deepMapKeysToSnakeCase(options)
-        if (!options.orderBy) {
-            params.order_by = 'order:asc'
-        }
-
         dispatch({
             type: types.FETCH_WIDGETS_START,
         })
@@ -39,7 +34,7 @@ export function fetchWidgets(options: FetchWidgetsOptions = {}) {
         const client = new GorgiasApi()
         const generator = client.cursorPaginate<Widget, FetchWidgetsOptions>(
             fetchWidgetsRequest,
-            params
+            options
         )
 
         let result: Widget[] = []

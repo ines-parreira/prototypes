@@ -9,7 +9,7 @@ Object {
     },
   ],
   "locations": Object {},
-  "pagination": Object {},
+  "pagination": Array [],
   "typingStatuses": Object {},
 }
 `;
@@ -28,7 +28,7 @@ Object {
   ],
   "all": Array [],
   "locations": Object {},
-  "pagination": Object {},
+  "pagination": Array [],
   "typingStatuses": Object {},
 }
 `;
@@ -58,7 +58,7 @@ Immutable.Map {
 exports[`agents reducers fetch users (agents) 1`] = `
 Immutable.Map {
   "all": Immutable.List [],
-  "pagination": Immutable.Map {},
+  "pagination": Immutable.List [],
   "locations": Immutable.Map {},
   "typingStatuses": Immutable.Map {},
 }
@@ -67,7 +67,7 @@ Immutable.Map {
 exports[`agents reducers fetch users (agents) 2`] = `
 Immutable.Map {
   "all": Immutable.List [],
-  "pagination": Immutable.Map {},
+  "pagination": Immutable.List [],
   "locations": Immutable.Map {},
   "typingStatuses": Immutable.Map {},
 }
@@ -83,7 +83,7 @@ Immutable.Map {
       "id": 2,
     },
   ],
-  "pagination": Immutable.Map {},
+  "pagination": Immutable.List [],
   "locations": Immutable.Map {},
   "typingStatuses": Immutable.Map {},
 }
@@ -107,7 +107,7 @@ Object {
       "ticket": "2",
     },
   ],
-  "pagination": Object {},
+  "pagination": Array [],
   "typingStatuses": Object {},
 }
 `;
@@ -116,7 +116,7 @@ exports[`agents reducers set agents typing status 1`] = `
 Object {
   "all": Array [],
   "locations": Object {},
-  "pagination": Object {},
+  "pagination": Array [],
   "typingStatuses": Array [
     Object {
       "ticket": "1",
@@ -148,7 +148,7 @@ Object {
     },
   ],
   "locations": Object {},
-  "pagination": Object {},
+  "pagination": Array [],
   "typingStatuses": Object {},
 }
 `;
@@ -166,7 +166,7 @@ Object {
     },
   ],
   "locations": Object {},
-  "pagination": Object {},
+  "pagination": Array [],
   "typingStatuses": Object {},
 }
 `;
@@ -184,7 +184,7 @@ Object {
     },
   ],
   "locations": Object {},
-  "pagination": Object {},
+  "pagination": Array [],
   "typingStatuses": Object {},
 }
 `;
@@ -202,7 +202,7 @@ Object {
     },
   ],
   "locations": Object {},
-  "pagination": Object {},
+  "pagination": Array [],
   "typingStatuses": Object {},
 }
 `;

@@ -37,21 +37,6 @@ Array [
 ]
 `;
 
-exports[`agents actions fetch agents 1`] = `
-Array [
-  Object {
-    "resp": Immutable.Map {
-      "data": Immutable.List [
-        Immutable.Map {
-          "id": 1,
-        },
-      ],
-    },
-    "type": "FETCH_AGENTS_PAGINATION_SUCCESS",
-  },
-]
-`;
-
 exports[`agents actions invite agent 1`] = `
 Array [
   Object {

@@ -15,17 +15,8 @@ export const getPaginatedAgents: Selector<RootState, Agents> =
     createImmutableSelector<RootState, List<any>, AgentsState>(
         getState,
         (state: AgentsState) =>
-            (state.getIn(['pagination', 'data']) as List<any>) || fromJS([])
+            (state.getIn(['pagination']) as List<any>) || fromJS([])
     )
-
-export const getPagination: Selector<
-    RootState,
-    Map<any, any>
-> = createImmutableSelector<RootState, Map<any, any>, AgentsState>(
-    getState,
-    (state: AgentsState) =>
-        (state.getIn(['pagination', 'meta']) as Map<any, any>) || fromJS({})
-)
 
 export const getAgents = createImmutableSelector<
     RootState,

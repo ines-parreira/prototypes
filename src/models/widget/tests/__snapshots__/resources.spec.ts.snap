@@ -12,7 +12,9 @@ Object {
     "maxBodyLength": -1,
     "maxContentLength": -1,
     "method": "get",
-    "params": Object {},
+    "params": Object {
+      "order_by": "order:asc",
+    },
     "timeout": 0,
     "transformRequest": Array [
       [Function],

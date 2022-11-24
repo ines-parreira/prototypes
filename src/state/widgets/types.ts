@@ -1,5 +1,4 @@
 import {Map} from 'immutable'
-import {ApiPaginationParams} from 'models/api/types'
 import {Integration} from 'models/integration/types'
 import {PartialTemplate} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/types'
 import {
@@ -36,11 +35,3 @@ export type Widget = {
 }
 
 export type WidgetsState = Map<any, any>
-
-export type FetchWidgetsOptions = ApiPaginationParams & {
-    orderBy?:
-        | 'order:asc'
-        | 'order:desc'
-        | 'created_datetime:asc'
-        | 'created_datetime:desc'
-}

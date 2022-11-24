@@ -3,10 +3,9 @@ import {connect, ConnectedProps} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {fromJS, List} from 'immutable'
 
-import {USER_ROLES} from '../../../../../config/user'
-import {RootState} from '../../../../../state/types'
-import * as userActions from '../../../../../state/agents/actions'
-import * as agentSelectors from '../../../../../state/agents/selectors'
+import {RootState} from 'state/types'
+import * as userActions from 'state/agents/actions'
+import * as agentSelectors from 'state/agents/selectors'
 
 import Select from './ReactSelect'
 
@@ -24,7 +23,7 @@ export class AssigneeUserSelectContainer extends React.Component<
         const {actions, agents} = this.props
 
         if (agents.isEmpty()) {
-            actions.fetchUsers(USER_ROLES)
+            actions.fetchUsers()
         }
     }
 

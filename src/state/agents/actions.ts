@@ -1,47 +1,57 @@
 import axios, {CancelToken} from 'axios'
-import {Map, List} from 'immutable'
-import qs from 'qs'
+import {Map} from 'immutable'
 
-import {UserRole, User, UserDraft} from '../../config/types/user'
-import client from '../../models/api/resources'
-import {toImmutable, toJS} from '../../utils'
-import {notify} from '../notifications/actions'
-import {NotificationStatus} from '../notifications/types'
-import {StoreDispatch} from '../types'
+import {User, UserDraft} from 'config/types/user'
+import {USER_ROLES} from 'config/user'
+import {fetchAgents} from 'models/agents/resources'
+import {FetchAgentsOptions} from 'models/agents/types'
+import client from 'models/api/resources'
+import GorgiasApi from 'services/gorgiasApi'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {StoreDispatch} from 'state/types'
+import {toImmutable, toJS} from 'utils'
 
 import * as constants from './constants'
 
-export function fetchUsers(roles: UserRole[]) {
-    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
+export function fetchUsers(options: FetchAgentsOptions = {}) {
+    return async (
+        dispatch: StoreDispatch
+    ): Promise<ReturnType<StoreDispatch>> => {
+        const {cursor, externalId, limit, orderBy, roles = USER_ROLES} = options
         dispatch({
             type: constants.FETCH_USER_LIST_START,
         })
 
-        let rolesParam = ''
+        const client = new GorgiasApi()
+        const generator = client.cursorPaginate<User, FetchAgentsOptions>(
+            fetchAgents,
+            {
+                cursor,
+                externalId,
+                limit,
+                orderBy,
+                roles,
+            }
+        )
 
-        if (roles && roles instanceof Array) {
-            rolesParam = `?roles=${roles.join('&roles=')}`
+        let result: User[] = []
+        try {
+            for await (const page of generator) {
+                result = result.concat(page)
+            }
+            return dispatch({
+                type: constants.FETCH_USER_LIST_SUCCESS,
+                resp: result,
+                roles,
+            })
+        } catch (error) {
+            return dispatch({
+                type: constants.FETCH_USER_LIST_ERROR,
+                error,
+                reason: 'Failed to fetch users',
+            })
         }
-
-        return client
-            .get<User[]>(`/api/users/${rolesParam}`)
-            .then((json) => json.data)
-            .then(
-                (resp) => {
-                    dispatch({
-                        type: constants.FETCH_USER_LIST_SUCCESS,
-                        resp,
-                        roles,
-                    })
-                },
-                (error) => {
-                    return dispatch({
-                        type: constants.FETCH_USER_LIST_ERROR,
-                        error,
-                        reason: 'Failed to fetch users',
-                    })
-                }
-            )
     }
 }
 
@@ -128,37 +138,6 @@ export const fetchAgent =
                     }
                 }
             ) as Promise<Map<any, any>>
-    }
-
-export const fetchPagination =
-    (page = 1) =>
-    (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
-        return client
-            .get<User[]>('/api/users/', {
-                paramsSerializer: (params) => {
-                    return qs.stringify(params, {arrayFormat: 'repeat'})
-                },
-                params: {
-                    roles: Object.values(UserRole),
-                    page: page.toString(),
-                },
-            })
-            .then((json) => json.data)
-            .then(
-                (resp) => {
-                    return dispatch({
-                        type: constants.FETCH_AGENTS_PAGINATION_SUCCESS,
-                        resp: toImmutable<List<any>>(resp),
-                    })
-                },
-                (error) => {
-                    return dispatch({
-                        type: constants.FETCH_AGENTS_PAGINATION_ERROR,
-                        error,
-                        reason: 'Failed to fetch team members',
-                    })
-                }
-            )
     }
 
 export const inviteAgent =

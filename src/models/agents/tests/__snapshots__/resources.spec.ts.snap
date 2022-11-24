@@ -1,0 +1,102 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Agents resources fetchAgents should resolve with a list of agents on success 1`] = `
+Object {
+  "config": Object {
+    "data": undefined,
+    "headers": Object {
+      "Accept": "application/json, text/plain, */*",
+      "X-CSRF-Token": "abcd",
+      "X-Gorgias-User-Client": "web",
+    },
+    "maxBodyLength": -1,
+    "maxContentLength": -1,
+    "method": "get",
+    "params": Object {
+      "limit": 30,
+      "roles": Array [
+        "observer-agent",
+        "lite-agent",
+        "basic-agent",
+        "agent",
+        "admin",
+      ],
+    },
+    "paramsSerializer": [Function],
+    "timeout": 0,
+    "transformRequest": Array [
+      [Function],
+    ],
+    "transformResponse": Array [
+      [Function],
+    ],
+    "url": "/api/users/",
+    "validateStatus": [Function],
+    "xsrfCookieName": "XSRF-TOKEN",
+    "xsrfHeaderName": "X-XSRF-TOKEN",
+  },
+  "data": Object {
+    "data": Object {
+      "data": Array [
+        Object {
+          "active": true,
+          "bio": null,
+          "country": "US",
+          "created_datetime": "2017-07-31T21:43:05.483835+00:00",
+          "deactivated_datetime": null,
+          "email": "support@acme.gorgias.io",
+          "external_id": "1",
+          "firstname": "Acme",
+          "has_2fa_enabled": false,
+          "id": 1,
+          "language": "en-US",
+          "lastname": "Support",
+          "meta": Object {
+            "profile_picture_url": null,
+          },
+          "name": "Acme Support",
+          "role": Object {
+            "name": "agent",
+          },
+          "settings": Array [],
+          "timezone": "UTC",
+          "updated_datetime": "2017-07-31T21:43:05.502541+00:00",
+        },
+        Object {
+          "active": true,
+          "bio": null,
+          "country": "US",
+          "created_datetime": "2017-07-31T21:43:08.027035+00:00",
+          "deactivated_datetime": null,
+          "email": "agent-smith@gorgias.io",
+          "external_id": "2",
+          "firstname": "Bob",
+          "has_2fa_enabled": false,
+          "id": 2,
+          "language": "en-US",
+          "lastname": "Smith",
+          "meta": Object {
+            "profile_picture_url": null,
+          },
+          "name": "Bob Smith",
+          "role": Object {
+            "name": "agent",
+          },
+          "settings": Array [],
+          "timezone": "UTC",
+          "updated_datetime": "2017-07-31T21:43:08.033390+00:00",
+        },
+      ],
+      "meta": Object {
+        "next_cursor": null,
+        "prev_cursor": null,
+      },
+    },
+  },
+  "headers": undefined,
+  "request": Object {
+    "responseUrl": "/api/users/",
+  },
+  "status": 200,
+}
+`;

@@ -22,7 +22,7 @@ describe('agents selectors', () => {
             agents: initialState.mergeDeep({
                 pagination: {
                     data: [{id: 1}, {id: 2}],
-                    meta: {page: 1},
+                    meta: {next_cursor: null, prev_cursor: null},
                 },
                 all: [{id: 1}, {id: 2}],
                 locations: agentFixtures.locations,
@@ -38,19 +38,10 @@ describe('agents selectors', () => {
 
     it('getPaginatedAgents()', () => {
         expect(selectors.getPaginatedAgents(state)).toEqualImmutable(
-            state.agents.getIn(['pagination', 'data'])
+            state.agents.getIn(['pagination'])
         )
         expect(selectors.getPaginatedAgents({} as RootState)).toEqualImmutable(
             fromJS([])
-        )
-    })
-
-    it('getPagination()', () => {
-        expect(selectors.getPagination(state)).toEqualImmutable(
-            state.agents.getIn(['pagination', 'meta'])
-        )
-        expect(selectors.getPagination({} as RootState)).toEqualImmutable(
-            fromJS({})
         )
     })
 

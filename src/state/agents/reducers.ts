@@ -10,7 +10,7 @@ import {AgentsState} from './types'
 
 export const initialState: AgentsState = fromJS({
     all: [],
-    pagination: {},
+    pagination: [],
     locations: {},
     typingStatuses: {},
 })
