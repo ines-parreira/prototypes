@@ -15,6 +15,7 @@ export enum FeatureFlagKey {
     BigCommerceCreateOrder = 'bigcommerce-create-order',
     EnableWhatsApp = 'enable-whatsapp',
     TicketMessagesVirtualization = 'ticket-messages-virtualization',
+    EnableSendgrid = 'use-sendgrid',
     RevenueAlphaTesters = 'revenue-alpha-testers',
     RevenueBetaTesters = 'revenue-beta-testers',
     RevenueHideDiscountCodeButton = 'revenue-hide-discount-code-button',

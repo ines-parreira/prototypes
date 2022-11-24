@@ -2,7 +2,7 @@
 
 import {createTypeGuard} from '../../../utils'
 
-import {IntegrationType} from '../constants'
+import {EmailProvider, IntegrationType} from '../constants'
 
 import {IntegrationBase} from './base'
 
@@ -26,6 +26,7 @@ export type EmailIntegrationMeta = {
         ssl: boolean
         user: string
     }>
+    provider: EmailProvider
 }
 
 export type DomainDNSRecord = {

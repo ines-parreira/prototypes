@@ -28,6 +28,7 @@ import {compare} from 'utils'
 import {isFeatureEnabled} from 'utils/account'
 import useAppDispatch from 'hooks/useAppDispatch'
 
+import {EmailProvider} from 'models/integration/constants'
 import history from '../../history'
 
 import AircallIntegrationList from './components/aircall/AircallIntegrationList'
@@ -103,11 +104,13 @@ import SmsIntegration from './components/sms/SmsIntegration'
 import TwitterIntegrationDetail from './components/twitter/TwitterIntegrationDetail'
 import TwitterIntegrationList from './components/twitter/TwitterIntegrationList'
 import WhatsAppSpike from './components/voice/WhatsAppSpike'
+import EmailOutboundVerification from './components/email/EmailOutboundVerification/EmailOutboundVerification'
 
 export enum Tab {
     EmailForwarding = 'forwarding',
     EmailVerification = 'verification',
     EmailDomainVerification = 'dns',
+    EmailOutboundVerification = 'outbound',
     EmailCustom = 'custom',
     FacebookCustomerChat = 'customer_chat',
     Preferences = 'preferences',
@@ -241,6 +244,9 @@ export const IntegrationDetail = ({
     }, [integrationId, isIntegrationId])
 
     const enableWhatsApp = useFlags()[FeatureFlagKey.EnableWhatsApp]
+    const sendgridEnabled = useFlags()[FeatureFlagKey.EnableSendgrid]
+
+    const integrationProvider = integration.getIn(['meta', 'provider'])
 
     switch (integrationType) {
         case IntegrationType.Aircall:
@@ -690,13 +696,32 @@ export const IntegrationDetail = ({
                         )
                     }
 
-                    if (extra === Tab.EmailDomainVerification) {
+                    if (
+                        extra === Tab.EmailDomainVerification &&
+                        (!sendgridEnabled ||
+                            integrationProvider !== EmailProvider.Sendgrid)
+                    ) {
                         return (
                             <EmailIntegrationLayout integration={integration}>
                                 <EmailDomainVerification
                                     actions={actions}
                                     integration={integration}
                                     loading={loading}
+                                />
+                            </EmailIntegrationLayout>
+                        )
+                    }
+
+                    if (
+                        extra === Tab.EmailOutboundVerification &&
+                        sendgridEnabled &&
+                        integrationProvider === EmailProvider.Sendgrid
+                    ) {
+                        return (
+                            <EmailIntegrationLayout integration={integration}>
+                                <EmailOutboundVerification
+                                    integration={integration.toJS()}
+                                    loading={loading.toJS()}
                                 />
                             </EmailIntegrationLayout>
                         )
