@@ -9,6 +9,7 @@ import React, {
     useImperativeHandle,
     useMemo,
     useState,
+    useEffect,
 } from 'react'
 import {useEffectOnce, useEvent} from 'react-use'
 
@@ -34,6 +35,7 @@ type Props = {
     prefix?: ReactNode
     suffix?: ReactNode
     value?: number
+    step?: number
 } & Omit<
     InputHTMLAttributes<HTMLInputElement>,
     | 'disabled'
@@ -45,6 +47,11 @@ type Props = {
     | 'min'
     | 'value'
 >
+
+function computeDecimalPlaces(step: number) {
+    const stepComponents = `${step}`.split('.')
+    return stepComponents.length > 1 ? stepComponents[1].length : 0
+}
 
 function NumberInput(
     {
@@ -60,6 +67,7 @@ function NumberInput(
         prefix,
         suffix,
         value,
+        step = 1,
         ...other
     }: Props,
     ref: ForwardedRef<HTMLInputElement>
@@ -105,19 +113,44 @@ function NumberInput(
         }
     }, [inputElement])
 
+    // get the number if decimals places from the `step` parameter
+    const decimalPlaces = computeDecimalPlaces(step)
+    const formatFactor = Math.round(Math.pow(10, decimalPlaces))
+
+    const displayValue = useMemo(() => {
+        if (value === undefined || isNaN(value)) {
+            return ''
+        }
+        return isFocused ? value : value.toFixed(decimalPlaces)
+    }, [value, isFocused, decimalPlaces])
+
+    useEffect(() => {
+        if (!isFocused) {
+            if (value && !isNaN(value)) {
+                const finalValue =
+                    Math.round(value * formatFactor) / formatFactor
+
+                if (finalValue !== value) onChange(finalValue)
+            }
+        }
+    }, [isFocused, formatFactor, onChange, value])
+
     const handleArrowClick = useCallback(
         (direction: 'up' | 'down') => () => {
             if (!isFocused && inputElement) {
                 inputElement.focus()
             }
-            onChange(
-                Math.max(
-                    Math.min((value ?? 0) + (direction === 'up' ? 1 : -1), max),
-                    min
-                )
+            const multiplier = direction === 'up' ? 1 : -1
+            let newValue = Math.max(
+                Math.min((value ?? 0) + multiplier * step, max),
+                min
             )
+
+            newValue = Math.round(newValue * formatFactor) / formatFactor
+
+            onChange(newValue)
         },
-        [inputElement, isFocused, max, min, onChange, value]
+        [inputElement, isFocused, max, min, step, formatFactor, onChange, value]
     )
 
     return (
@@ -144,10 +177,13 @@ function NumberInput(
                 max={max}
                 min={min}
                 onChange={(e) => {
-                    const parsedValue = Number(e.target.value)
+                    const parsedValue =
+                        e.target.value !== ''
+                            ? Number(e.target.value)
+                            : undefined
 
                     onChange(
-                        isNaN(parsedValue) || e.target.value === ''
+                        parsedValue == null || isNaN(parsedValue)
                             ? undefined
                             : parsedValue
                     )
@@ -155,7 +191,8 @@ function NumberInput(
                 ref={setInputElement}
                 required={isRequired}
                 type="number"
-                value={value ?? ''}
+                value={displayValue ?? ''}
+                step={step}
                 {...other}
             />
             {suffix && (

@@ -487,6 +487,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                           class="input isAlignedRight"
                           max="200"
                           min="-20"
+                          step="1"
                           type="number"
                           value="0"
                         />
@@ -545,6 +546,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                           class="input isAlignedRight"
                           max="200"
                           min="-20"
+                          step="1"
                           type="number"
                           value="0"
                         />
@@ -1208,6 +1210,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                           class="input isAlignedRight"
                           max="200"
                           min="-20"
+                          step="1"
                           type="number"
                           value="0"
                         />
@@ -1266,6 +1269,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                           class="input isAlignedRight"
                           max="200"
                           min="-20"
+                          step="1"
                           type="number"
                           value="0"
                         />
@@ -1958,6 +1962,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                           class="input isAlignedRight"
                           max="200"
                           min="-20"
+                          step="1"
                           type="number"
                           value="0"
                         />
@@ -2016,6 +2021,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                           class="input isAlignedRight"
                           max="200"
                           min="-20"
+                          step="1"
                           type="number"
                           value="0"
                         />
@@ -2686,6 +2692,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                           class="input isAlignedRight"
                           max="200"
                           min="-20"
+                          step="1"
                           type="number"
                           value="0"
                         />
@@ -2744,6 +2751,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                           class="input isAlignedRight"
                           max="200"
                           min="-20"
+                          step="1"
                           type="number"
                           value="0"
                         />
@@ -3406,6 +3414,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                           class="input isAlignedRight"
                           max="200"
                           min="-20"
+                          step="1"
                           type="number"
                           value="0"
                         />
@@ -3464,6 +3473,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                           class="input isAlignedRight"
                           max="200"
                           min="-20"
+                          step="1"
                           type="number"
                           value="0"
                         />
@@ -4140,6 +4150,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                           class="input isAlignedRight"
                           max="200"
                           min="-20"
+                          step="1"
                           type="number"
                           value="0"
                         />
@@ -4198,6 +4209,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                           class="input isAlignedRight"
                           max="200"
                           min="-20"
+                          step="1"
                           type="number"
                           value="0"
                         />
@@ -4891,6 +4903,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                           class="input isAlignedRight"
                           max="200"
                           min="-20"
+                          step="1"
                           type="number"
                           value="0"
                         />
@@ -4949,6 +4962,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                           class="input isAlignedRight"
                           max="200"
                           min="-20"
+                          step="1"
                           type="number"
                           value="0"
                         />
@@ -5722,6 +5736,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                           class="input isAlignedRight"
                           max="200"
                           min="-20"
+                          step="1"
                           type="number"
                           value="0"
                         />
@@ -5780,6 +5795,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                           class="input isAlignedRight"
                           max="200"
                           min="-20"
+                          step="1"
                           type="number"
                           value="0"
                         />
@@ -6450,6 +6466,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                           class="input isAlignedRight"
                           max="200"
                           min="-20"
+                          step="1"
                           type="number"
                           value="0"
                         />
@@ -6508,6 +6525,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                           class="input isAlignedRight"
                           max="200"
                           min="-20"
+                          step="1"
                           type="number"
                           value="0"
                         />

@@ -169,7 +169,7 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                                     className={css.input}
                                     key={key}
                                     {...args.input}
-                                    value={value as number}
+                                    value={Number(value)}
                                     onChange={(value) =>
                                         this.setValue(key, value!)
                                     }

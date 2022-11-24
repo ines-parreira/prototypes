@@ -215,6 +215,7 @@ exports[`<TicketAssignment/> should render the "Save changes" button loading and
                       max="500"
                       min="0"
                       required=""
+                      step="1"
                       type="number"
                       value="3"
                     />
@@ -267,6 +268,7 @@ exports[`<TicketAssignment/> should render the "Save changes" button loading and
                       max="500"
                       min="0"
                       required=""
+                      step="1"
                       type="number"
                       value="4"
                     />
@@ -687,6 +689,7 @@ exports[`<TicketAssignment/> should render the store data 1`] = `
                       max="500"
                       min="0"
                       required=""
+                      step="1"
                       type="number"
                       value="20"
                     />
@@ -739,6 +742,7 @@ exports[`<TicketAssignment/> should render the store data 1`] = `
                       max="500"
                       min="0"
                       required=""
+                      step="1"
                       type="number"
                       value="50"
                     />

@@ -12,6 +12,7 @@ exports[`TimedeltaPicker component should render correct passed data 1`] = `
       max="Infinity"
       min="0"
       required=""
+      step="1"
       type="number"
       value="2"
     />
