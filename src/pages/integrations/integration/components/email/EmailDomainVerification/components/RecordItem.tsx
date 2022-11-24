@@ -40,7 +40,6 @@ const RecordItem = ({record, provider}: Props) => {
             {provider !== EmailProvider.Sendgrid && (
                 <BodyCell
                     className={classnames(css.cell, css['current-values-cell'])}
-                    size="small"
                 >
                     {_isEmpty(record.current_values)
                         ? 'None found'
