@@ -87,39 +87,22 @@ Jest:
   script:
     - yarn test:ci:cover
 
-.build:
+Build:
   extends: .yarn cache
   stage: build
+  variables:
+    GORGIAS_WEBAPP_BUILD_PATH: ${WEBAPP_PATH}
   script:
     - yarn build
   artifacts:
     paths:
       - build/
 
-Build preview:
-  extends: .build
-  variables: 
-    GORGIAS_ASSETS_URL: https://gorgias-assets.gorgias.xyz/preview/${CI_COMMIT_SHA}/${WEBAPP_PATH}
-  rules:
-    - if: $CI_COMMIT_REF_NAME != "main" && $CI_COMMIT_REF_NAME != "staging"
-
-Build staging:
-  extends: .build
-  variables: 
-    GORGIAS_ASSETS_URL: https://gorgias-assets.gorgias.xyz/${WEBAPP_PATH}
-  rules:
-    - if: $CI_COMMIT_REF_NAME == "staging"
-
-Build production:
-  extends: .build
-  variables: 
-    GORGIAS_ASSETS_URL: https://gorgias-assets.gorgias.io/${WEBAPP_PATH}
-  rules:
-    - if: $CI_COMMIT_REF_NAME == "main"
-  
 .deploy:
   stage: deploy
   extends: [.deploy common]
+  dependencies: [Build]
+  needs: [Build]
   before_script:
     - gcloud auth activate-service-account $GCLOUD_SERVICE_ACCOUNT --key-file=${GCLOUD_SERVICE_KEY_FILE} --project=${GCLOUD_PROJECT}
     - export GOOGLE_APPLICATION_CREDENTIALS=${GCLOUD_SERVICE_KEY_FILE}
@@ -132,8 +115,6 @@ Build production:
     - publish_manifest_configmap $CONTEXT default $BUILD_DIR /${WEBAPP_PATH}/build
 
 .deploy staging:
-  dependencies: [Build staging]
-  needs: [Build staging]
   extends:
     - .deploy
     - .staging_env
@@ -151,8 +132,6 @@ Deploy STG us-east4-a5a0:
   <<: *gitlab_environment
 
 .deploy production:
-  dependencies: [Build production]
-  needs: [Build production]
   extends:
     - .deploy
     - .production_env
@@ -207,8 +186,8 @@ Deploy PRD us-east1-635c:
 
 Deploy preview:
   extends: .deploy
-  dependencies: [Build preview]
-  needs: [Build preview]
+  dependencies: [Build]
+  needs: [Build]
   when: manual
   allow_failure: true
   variables:
