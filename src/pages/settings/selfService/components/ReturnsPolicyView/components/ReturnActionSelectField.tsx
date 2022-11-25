@@ -23,13 +23,6 @@ export const ReturnActionSelectField = ({
 }: Props) => {
     const options = useMemo<ComponentProps<typeof SelectField>['options']>(
         () => [
-            {
-                value: JSON.stringify({
-                    type: ReturnActionType.AutomatedResponse,
-                }),
-                text: 'Automated response',
-                label: 'Automated response',
-            },
             ...loopReturnsIntegrations.map((loopReturnsIntegration) => ({
                 value: JSON.stringify({
                     type: ReturnActionType.LoopReturns,
@@ -82,7 +75,7 @@ export const ReturnActionSelectField = ({
 
     return (
         <SelectField
-            style={{maxWidth: 680}}
+            style={{width: '100%', maxWidth: 680, float: 'left'}}
             fullWidth
             placeholder="Select a return method"
             value={value === null ? null : JSON.stringify(value)}

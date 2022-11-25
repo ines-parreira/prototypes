@@ -98,7 +98,12 @@ export const ReturnsPolicyView = () => {
     const [storedReturnAction, setStoredReturnAction] =
         useState<ReturnAction | null>(null)
 
-    const [showDeleteButton, setShowDeleteButton] = useState(true)
+    const [
+        showEligibilityWindowDeleteButton,
+        setShowEligibilityWindowDeleteButton,
+    ] = useState(true)
+    const [showReturnActionDeleteButton, setShowReturnActionDeleteButton] =
+        useState(true)
     const [showLessThan, setShowLessThan] = useState(false)
     const [
         isNewReturnIntegrationModalOpen,
@@ -124,7 +129,10 @@ export const ReturnsPolicyView = () => {
             value: (eligibilityFilter?.value as string) || '1',
             condition: eligibilityFilter?.key || '',
         })
-        setShowDeleteButton(Boolean(eligibilityFilter?.key || ''))
+        setShowEligibilityWindowDeleteButton(
+            Boolean(eligibilityFilter?.key || '')
+        )
+        setShowReturnActionDeleteButton(Boolean(returnAction))
         setReturnAction(returnAction)
         setStoredReturnAction(returnAction)
     }, [
@@ -170,9 +178,14 @@ export const ReturnsPolicyView = () => {
         setReturnAction(storedReturnAction)
     }
 
-    const onDelete = () => {
+    const onEligibilityWindowDelete = () => {
         setEligibilityWindowCondition('')
-        setShowDeleteButton(false)
+        setShowEligibilityWindowDeleteButton(false)
+    }
+
+    const onReturnActionDelete = () => {
+        setReturnAction(null)
+        setShowReturnActionDeleteButton(false)
     }
 
     const onSubmit = async (event: FormEvent) => {
@@ -375,9 +388,11 @@ export const ReturnsPolicyView = () => {
                                                 >
                                                     day(s) ago
                                                 </div>
-                                                {showDeleteButton ? (
+                                                {showEligibilityWindowDeleteButton ? (
                                                     <div
-                                                        onClick={onDelete}
+                                                        onClick={
+                                                            onEligibilityWindowDelete
+                                                        }
                                                         className={
                                                             css.deleteButton
                                                         }
@@ -401,16 +416,33 @@ export const ReturnsPolicyView = () => {
                                                 Return method
                                             </h5>
 
-                                            <ReturnActionSelectField
-                                                loopReturnsIntegrations={
-                                                    loopReturnsIntegrations
-                                                }
-                                                value={returnAction}
-                                                onChange={setReturnAction}
-                                                onCreateNewLoopReturnsIntegrationClick={
-                                                    handleCreateNewLoopReturnsIntegrationClick
-                                                }
-                                            />
+                                            <div className="d-inline-flex align-items-center w-100">
+                                                <ReturnActionSelectField
+                                                    loopReturnsIntegrations={
+                                                        loopReturnsIntegrations
+                                                    }
+                                                    value={returnAction}
+                                                    onChange={setReturnAction}
+                                                    onCreateNewLoopReturnsIntegrationClick={
+                                                        handleCreateNewLoopReturnsIntegrationClick
+                                                    }
+                                                />
+
+                                                {showReturnActionDeleteButton && (
+                                                    <div
+                                                        onClick={
+                                                            onReturnActionDelete
+                                                        }
+                                                        className={
+                                                            css.deleteButton
+                                                        }
+                                                    >
+                                                        <i className="material-icons red mr-1">
+                                                            clear
+                                                        </i>
+                                                    </div>
+                                                )}
+                                            </div>
 
                                             {isLoopReturnsIntegrationMissing && (
                                                 <Alert
