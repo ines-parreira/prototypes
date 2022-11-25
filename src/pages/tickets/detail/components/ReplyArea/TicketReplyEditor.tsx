@@ -392,20 +392,20 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
             displayedActions = [ActionName.Emoji, ActionName.ProductPicker]
         }
 
-        if (
-            !this._isLDFlagActivated(
-                FeatureFlagKey.RevenueHideDiscountCodeButton
-            )
-        ) {
-            displayedActions.push(ActionName.DiscountCodePicker)
-        }
-
         if (isNewMessageFacebookMessengerType) {
             displayedActions.push(ActionName.Image)
         }
 
         if (isNewMessageSmsType) {
             displayedActions = [ActionName.Emoji]
+        }
+
+        if (
+            !this._isLDFlagActivated(
+                FeatureFlagKey.RevenueHideDiscountCodeButton
+            )
+        ) {
+            displayedActions.push(ActionName.DiscountCodePicker)
         }
 
         const canInsertInlineImages =

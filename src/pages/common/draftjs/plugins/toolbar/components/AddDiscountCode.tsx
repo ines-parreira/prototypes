@@ -17,7 +17,7 @@ import {
     EditorStateGetter,
     EditorStateSetter,
 } from 'pages/common/draftjs/plugins/toolbar/types'
-import {UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_PRODUCT_LINKS} from 'config/integrations/shopify'
+import {UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_DISCOUNT_CODES} from 'config/integrations/shopify'
 import {getTicket} from 'state/ticket/selectors'
 import {useModalManager} from 'hooks/useModalManager'
 import useAppSelector from 'hooks/useAppSelector'
@@ -96,7 +96,7 @@ export function AddDiscountCode({
             let newEditorState
             if (
                 discount.shareable_url &&
-                !UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_PRODUCT_LINKS.includes(
+                !UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_DISCOUNT_CODES.includes(
                     newMessageChannel
                 )
             ) {

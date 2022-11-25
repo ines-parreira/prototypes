@@ -93,8 +93,8 @@ exports[`TicketReplyEditor component should allow inline image 1`] = `
       Array [
         "EMOJI",
         "PRODUCTPICKER",
-        "DISCOUNTCODE",
         "IMAGE",
+        "DISCOUNTCODE",
       ]
     }
     emailExtraEnabled={true}

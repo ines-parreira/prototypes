@@ -84,6 +84,11 @@ export const UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_PRODUCT_LINKS = [
     TicketChannel.InstagramDirectMessage,
 ]
 
+export const UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_DISCOUNT_CODES = [
+    ...UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_PRODUCT_LINKS,
+    TicketChannel.Sms,
+]
+
 export const MACRO_PREVIOUS_VARIABLES = {
     type: IntegrationType.Shopify,
     name: 'Shopify',
