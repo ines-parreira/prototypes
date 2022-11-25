@@ -3634,13 +3634,6 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-document-title@2.0.4":
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/@types/react-document-title/-/react-document-title-2.0.4.tgz#8e7b74b195dd10ccf105fceb1345dead3665df5f"
-  integrity sha512-Gq7zbJ44bvHQx6WzGwRaoG4bV9hlX1giKkgaa3IAUp9+4KXPgEAG6ukAS5I1+rpwjzBypkNBF6sZ7qlAitSjgA==
-  dependencies:
-    "@types/react" "*"
-
 "@types/react-dom@16.9.14":
   version "16.9.14"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-16.9.14.tgz#674b8f116645fe5266b40b525777fc6bb8eb3bcd"
@@ -13972,14 +13965,6 @@ react-docgen@^5.0.0:
     node-dir "^0.1.10"
     strip-indent "^3.0.0"
 
-react-document-title@2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/react-document-title/-/react-document-title-2.0.3.tgz#bbf922a0d71412fc948245e4283b2412df70f2b9"
-  integrity sha1-u/kioNcUEvyUgkXkKDskEt9w8rk=
-  dependencies:
-    prop-types "^15.5.6"
-    react-side-effect "^1.0.2"
-
 react-dom@16.14.0, react-dom@^16.4.2:
   version "16.14.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.14.0.tgz#7ad838ec29a777fb3c75c3a190f661cf92ab8b89"
@@ -14227,13 +14212,6 @@ react-select@1.0.0-beta14:
     blacklist "^1.1.2"
     classnames "^2.2.4"
     react-input-autosize "^1.1.0"
-
-react-side-effect@^1.0.2:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/react-side-effect/-/react-side-effect-1.2.0.tgz#0e940c78faba0c73b9b0eba9cd3dda8dfb7e7dae"
-  integrity sha512-v1ht1aHg5k/thv56DRcjw+WtojuuDHFUgGfc+bFHOWsF4ZK6C2V57DO0Or0GPsg6+LSTE0M6Ry/gfzhzSwbc5w==
-  dependencies:
-    shallowequal "^1.0.1"
 
 react-sizeme@^3.0.1:
   version "3.0.2"
@@ -15290,7 +15268,7 @@ shallow-clone@^3.0.0:
   dependencies:
     kind-of "^6.0.2"
 
-shallowequal@^1.0.1, shallowequal@^1.1.0:
+shallowequal@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/shallowequal/-/shallowequal-1.1.0.tgz#188d521de95b9087404fd4dcb68b13df0ae4e7f8"
   integrity sha512-y0m1JoUZSlPAjXVtPPW70aZWfIL/dSP7AFkRnniLCrK/8MDKog3TySTBmckD+RObVxH0v4Tox67+F14PdED2oQ==

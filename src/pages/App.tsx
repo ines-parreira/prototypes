@@ -1,6 +1,5 @@
 import classnames from 'classnames'
 import React, {ComponentType, ReactNode} from 'react'
-import DocumentTitle from 'react-document-title'
 import {connect, ConnectedProps} from 'react-redux'
 import {Container} from 'reactstrap'
 import _isEqual from 'lodash/isEqual'
@@ -140,100 +139,90 @@ class App extends React.Component<Props> {
         const hasOpenedPanel = !!openedPanel
 
         return (
-            <DocumentTitle title="Gorgias">
-                <ErrorBoundary>
-                    <div className={classnames(css.page)}>
-                        <BannerNotifications
-                            notifications={bannerNotifications}
-                        />
+            <ErrorBoundary>
+                <div className={classnames(css.page)}>
+                    <BannerNotifications notifications={bannerNotifications} />
 
-                        <div id="app-root" className={css.app}>
-                            <Navbar />
+                    <div id="app-root" className={css.app}>
+                        <Navbar />
 
+                        <div
+                            className={classnames(
+                                'd-flex flex-grow-1 flex-column',
+                                css.container
+                            )}
+                        >
                             <div
-                                className={classnames(
-                                    'd-flex flex-grow-1 flex-column',
-                                    css.container
-                                )}
+                                className="d-flex flex-grow-1"
+                                style={{
+                                    overflow: 'hidden',
+                                }}
                             >
                                 <div
-                                    className="d-flex flex-grow-1"
-                                    style={{
-                                        overflow: 'hidden',
-                                    }}
+                                    className={classnames(
+                                        'app-content',
+                                        css.content
+                                    )}
                                 >
-                                    <div
-                                        className={classnames(
-                                            'app-content',
-                                            css.content
-                                        )}
-                                    >
-                                        <div className="mobile-nav d-md-none d-flex justify-content-between align-items-center">
-                                            <IconButton
-                                                className="mr-3"
+                                    <div className="mobile-nav d-md-none d-flex justify-content-between align-items-center">
+                                        <IconButton
+                                            className="mr-3"
+                                            fillStyle="ghost"
+                                            intent="secondary"
+                                            onClick={() =>
+                                                this.props.openPanel('navbar')
+                                            }
+                                        >
+                                            menu
+                                        </IconButton>
+                                        {infobarOnMobile && (
+                                            <Button
+                                                className="ml-3"
                                                 fillStyle="ghost"
                                                 intent="secondary"
                                                 onClick={() =>
                                                     this.props.openPanel(
-                                                        'navbar'
+                                                        'infobar'
                                                     )
                                                 }
                                             >
-                                                menu
-                                            </IconButton>
-                                            {infobarOnMobile && (
-                                                <Button
-                                                    className="ml-3"
-                                                    fillStyle="ghost"
-                                                    intent="secondary"
-                                                    onClick={() =>
-                                                        this.props.openPanel(
-                                                            'infobar'
-                                                        )
-                                                    }
-                                                >
-                                                    More info
-                                                </Button>
-                                            )}
-                                        </div>
-
-                                        <Wrapper {...wrapperProps}>
-                                            <ErrorBoundary>
-                                                {content}
-                                            </ErrorBoundary>
-                                        </Wrapper>
+                                                More info
+                                            </Button>
+                                        )}
                                     </div>
 
-                                    {!!Infobar && (
-                                        <Infobar
-                                            isEditingWidgets={
-                                                !!isEditingWidgets
-                                            }
-                                        />
-                                    )}
+                                    <Wrapper {...wrapperProps}>
+                                        <ErrorBoundary>{content}</ErrorBoundary>
+                                    </Wrapper>
                                 </div>
-                                {hasPhoneIntegration && <PhoneIntegrationBar />}
-                            </div>
 
-                            <div
-                                className={classnames(css.backdrop, {
-                                    [css.hidden]: !hasOpenedPanel,
-                                })}
-                                onClick={this.props.closePanels}
-                            />
+                                {!!Infobar && (
+                                    <Infobar
+                                        isEditingWidgets={!!isEditingWidgets}
+                                    />
+                                )}
+                            </div>
+                            {hasPhoneIntegration && <PhoneIntegrationBar />}
                         </div>
-                        <KeyboardHelp />
-                        <NotificationsSystem
-                            theme={notificationsTheme}
-                            notifications={alertNotifications}
-                            dismissNotification={dismissNotification}
-                            components={{
-                                NotificationIcon: GorgiasNotificationIcon,
-                            }}
+
+                        <div
+                            className={classnames(css.backdrop, {
+                                [css.hidden]: !hasOpenedPanel,
+                            })}
+                            onClick={this.props.closePanels}
                         />
                     </div>
-                </ErrorBoundary>
-            </DocumentTitle>
+                    <KeyboardHelp />
+                    <NotificationsSystem
+                        theme={notificationsTheme}
+                        notifications={alertNotifications}
+                        dismissNotification={dismissNotification}
+                        components={{
+                            NotificationIcon: GorgiasNotificationIcon,
+                        }}
+                    />
+                </div>
+            </ErrorBoundary>
         )
     }
 }

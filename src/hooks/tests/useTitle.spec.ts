@@ -3,7 +3,7 @@ import {renderHook} from 'react-hooks-testing-library'
 import useTitle from '../useTitle'
 
 describe('useTitle hook', () => {
-    const defaultTitle = 'test title'
+    const defaultTitle = 'Gorgias'
     document.title = defaultTitle
 
     it('should do nothing if passed an empty value', () => {

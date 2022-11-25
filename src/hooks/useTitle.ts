@@ -1,8 +1,8 @@
-import {useEffect, useRef} from 'react'
+import {useEffect} from 'react'
+
+const originalTitle = (document && document.title) || 'Gorgias'
 
 export function useTitle(title?: string) {
-    const originalTitleRef = useRef(document.title)
-
     useEffect(() => {
         if (!title || document.title === title) {
             return
@@ -10,11 +10,10 @@ export function useTitle(title?: string) {
 
         document.title = title
 
-        const originalTitle = originalTitleRef.current
         return () => {
             document.title = originalTitle
         }
-    }, [title, originalTitleRef])
+    }, [title])
 }
 
 export default useTitle
