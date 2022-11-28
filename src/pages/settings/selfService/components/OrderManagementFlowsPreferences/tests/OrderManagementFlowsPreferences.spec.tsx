@@ -13,10 +13,10 @@ import {
 import {RootState, StoreDispatch} from 'state/types'
 import {updateSelfServiceConfiguration} from 'models/selfServiceConfiguration/resources'
 import {SelfServiceConfigurationsState} from 'state/entities/selfServiceConfigurations/types'
-import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
 import {billingState} from 'fixtures/billing'
 import {account} from 'fixtures/account'
 import {basicPlan} from 'fixtures/subscriptionPlan'
+import {entitiesInitialState} from 'fixtures/entities'
 import {OrderManagementFlowsPreferences} from '../OrderManagementFlowsPreferences'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -103,21 +103,7 @@ describe('<OrderManagementFlowsPreferences/>', () => {
                 },
             }),
         }),
-        entities: {
-            macros: {},
-            rules: {},
-            ruleRecipes: {},
-            sections: {},
-            stats: {},
-            tags: {},
-            views: {},
-            viewsCount: {},
-            helpCenter: helpCenterInitialState,
-            helpCenterArticles: {},
-            selfServiceConfigurations: {},
-            phoneNumbers: {},
-            auditLogEvents: {},
-        },
+        entities: entitiesInitialState,
         integrations: fromJS({}),
     }
 

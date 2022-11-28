@@ -4,7 +4,7 @@ import {ShopType} from 'models/selfServiceConfiguration/types'
 import {billingState} from 'fixtures/billing'
 import {account, automationSubscriptionProductPrices} from 'fixtures/account'
 
-import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
+import {entitiesInitialState} from 'fixtures/entities'
 
 export const defaultState = {
     currentAccount: fromJS({
@@ -17,16 +17,7 @@ export const defaultState = {
     }),
     billing: fromJS(billingState),
     entities: {
-        auditLogEvents: {},
-        macros: {},
-        rules: {},
-        ruleRecipes: {},
-        sections: {},
-        stats: {},
-        tags: {},
-        views: {},
-        viewsCount: {},
-        helpCenter: helpCenterInitialState,
+        ...entitiesInitialState,
         selfServiceConfigurations: {
             1: {
                 id: 1,
@@ -106,7 +97,6 @@ export const defaultState = {
                 ],
             },
         },
-        phoneNumbers: {},
     },
     integrations: fromJS({
         integrations: fromJS([

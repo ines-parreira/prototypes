@@ -42,7 +42,9 @@ export default function VerificationCardFooter({
                         >
                             check_circle
                         </i>
-                        <div>Verified</div>
+                        <div data-testid="verification-status-value">
+                            Verified
+                        </div>
                         <i
                             className={classNames(
                                 'material-icons',
@@ -64,7 +66,9 @@ export default function VerificationCardFooter({
                         >
                             close
                         </i>
-                        <div>Not verified</div>
+                        <div data-testid="verification-status-value">
+                            Not verified
+                        </div>
                     </>
                 )}
             </div>

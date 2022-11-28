@@ -14,10 +14,10 @@ import {RootState, StoreDispatch} from 'state/types'
 import {IntegrationType} from 'models/integration/types'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import {updateOrCreateIntegration} from 'state/integrations/actions'
-import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
 import {billingState} from 'fixtures/billing'
 import {automationPriceFeatures} from 'fixtures/productPrices'
 import {automationSubscriptionProductPrices} from 'fixtures/account'
+import {entitiesInitialState} from 'fixtures/entities'
 
 import GorgiasChatIntegrationSelfService from '..'
 
@@ -82,21 +82,7 @@ describe('<GorgiasChatIntegrationSelfService/>', () => {
             created_datetime: '2021-08-01T00:00:00Z',
         }),
         billing: fromJS(billingState),
-        entities: {
-            macros: {},
-            rules: {},
-            ruleRecipes: {},
-            sections: {},
-            stats: {},
-            tags: {},
-            views: {},
-            viewsCount: {},
-            helpCenter: helpCenterInitialState,
-            helpCenterArticles: {},
-            selfServiceConfigurations: {},
-            phoneNumbers: {},
-            auditLogEvents: {},
-        },
+        entities: entitiesInitialState,
         integrations: fromJS({}),
     }
 

@@ -77,6 +77,16 @@ Immutable.List [
     "verified": false,
     "isDeactivated": false,
   },
+  Immutable.Map {
+    "id": 12,
+    "type": "email",
+    "name": "Sendgrid Integration",
+    "address": "sendgrid@gorgias.io",
+    "preferred": true,
+    "signature": undefined,
+    "verified": false,
+    "isDeactivated": false,
+  },
 ]
 `;
 

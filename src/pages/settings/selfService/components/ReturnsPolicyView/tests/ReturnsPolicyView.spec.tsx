@@ -10,12 +10,12 @@ import {
     SelfServiceConfiguration,
     ShopType,
 } from 'models/selfServiceConfiguration/types'
-import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
 import {SelfServiceConfigurationsState} from 'state/entities/selfServiceConfigurations/types'
 import {RootState, StoreDispatch} from 'state/types'
 import {billingState} from 'fixtures/billing'
 import {automationPriceFeatures} from 'fixtures/productPrices'
 import {automationSubscriptionProductPrices} from 'fixtures/account'
+import {entitiesInitialState} from 'fixtures/entities'
 import {ReturnsPolicyView} from '../ReturnsPolicyView'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -87,21 +87,7 @@ describe('<ReturnsPolicyView />', () => {
             features: automationPriceFeatures,
             created_datetime: '2021-08-01T00:00:00Z',
         }),
-        entities: {
-            macros: {},
-            rules: {},
-            ruleRecipes: {},
-            sections: {},
-            stats: {},
-            tags: {},
-            views: {},
-            viewsCount: {},
-            helpCenter: helpCenterInitialState,
-            helpCenterArticles: {},
-            selfServiceConfigurations: {},
-            phoneNumbers: {},
-            auditLogEvents: {},
-        },
+        entities: entitiesInitialState,
         integrations: fromJS({}),
     }
 

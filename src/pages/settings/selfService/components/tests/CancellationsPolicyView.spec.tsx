@@ -11,13 +11,13 @@ import {
     SelfServiceConfiguration,
     ShopType,
 } from 'models/selfServiceConfiguration/types'
-import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
 import {SelfServiceConfigurationsState} from 'state/entities/selfServiceConfigurations/types'
 import {RootState, StoreDispatch} from 'state/types'
 import {updateSelfServiceConfiguration} from 'models/selfServiceConfiguration/resources'
 import {billingState} from 'fixtures/billing'
 import {account} from 'fixtures/account'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {entitiesInitialState} from 'fixtures/entities'
 import {CancellationsPolicyView} from '../CancellationsPolicyView'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -100,21 +100,7 @@ describe('<CancellationsPolicyView/>', () => {
             created_datetime: '2021-08-01T00:00:00Z',
             current_subscription: account.current_subscription,
         }),
-        entities: {
-            macros: {},
-            rules: {},
-            ruleRecipes: {},
-            sections: {},
-            stats: {},
-            tags: {},
-            views: {},
-            viewsCount: {},
-            helpCenter: helpCenterInitialState,
-            helpCenterArticles: {},
-            selfServiceConfigurations: {},
-            phoneNumbers: {},
-            auditLogEvents: {},
-        },
+        entities: entitiesInitialState,
         integrations: fromJS({}),
     }
 

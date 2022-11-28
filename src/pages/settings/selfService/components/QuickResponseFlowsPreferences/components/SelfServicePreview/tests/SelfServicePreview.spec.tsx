@@ -8,6 +8,7 @@ import {fromJS} from 'immutable'
 
 import configureMockStore from 'redux-mock-store'
 
+import {entitiesInitialState} from 'fixtures/entities'
 import {RootState, StoreDispatch} from '../../../../../../../../state/types'
 import {billingState} from '../../../../../../../../fixtures/billing'
 import {account} from '../../../../../../../../fixtures/account'
@@ -27,15 +28,7 @@ describe('<SelfServicePreview />', () => {
         currentAccount: fromJS(account),
         billing: fromJS(billingState),
         entities: {
-            auditLogEvents: {},
-            macros: {},
-            rules: {},
-            ruleRecipes: {},
-            sections: {},
-            stats: {},
-            tags: {},
-            views: {},
-            viewsCount: {},
+            ...entitiesInitialState,
             helpCenter: {
                 articles: {
                     articlesById: {},
@@ -50,7 +43,6 @@ describe('<SelfServicePreview />', () => {
             },
             selfServiceConfigurations:
                 defaultState.entities.selfServiceConfigurations,
-            phoneNumbers: {},
         },
         integrations: fromJS({
             integrations: fromJS([

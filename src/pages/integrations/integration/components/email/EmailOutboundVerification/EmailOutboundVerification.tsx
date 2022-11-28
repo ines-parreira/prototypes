@@ -3,10 +3,9 @@ import {Route, Switch} from 'react-router-dom'
 import {Col, Container} from 'reactstrap'
 
 import settingsCss from 'pages/settings/settings.less'
-import Loader from 'pages/common/components/Loader/Loader'
 import {EmailIntegration, isEmailIntegration} from 'models/integration/types'
 import EmailVerification from './EmailVerification'
-// import SingleSenderVerification from './SingleSenderVerification'
+import SingleSenderVerification from './SingleSenderVerification/SingleSenderVerification'
 
 type Props = {
     integration: EmailIntegration
@@ -19,10 +18,6 @@ export default function EmailOutboundVerification({
 }: Props) {
     const baseURL = `/app/settings/channels/email/${integration.id}/outbound`
 
-    if (loading?.integration || loading?.emailDomain) {
-        return <Loader />
-    }
-
     if (!isEmailIntegration(integration)) return null
 
     return (
@@ -33,11 +28,17 @@ export default function EmailOutboundVerification({
                         <EmailVerification
                             integration={integration}
                             baseURL={baseURL}
+                            loading={
+                                loading?.integration || loading?.emailDomain
+                            }
                         />
                     </Route>
-                    {/* <Route exact path={`${baseURL}/single-sender`}>
-                        <SingleSenderVerification baseURL={baseURL} />
-                    </Route> */}
+                    <Route exact path={`${baseURL}/single-sender`}>
+                        <SingleSenderVerification
+                            baseURL={baseURL}
+                            integration={integration}
+                        />
+                    </Route>
                 </Switch>
             </Col>
         </Container>

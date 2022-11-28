@@ -243,7 +243,6 @@ export const IntegrationDetail = ({
     }, [integrationId, isIntegrationId])
 
     const enableWhatsApp = useFlags()[FeatureFlagKey.EnableWhatsApp]
-    const sendgridEnabled = useFlags()[FeatureFlagKey.EnableSendgrid]
 
     const integrationProvider = integration.getIn(['meta', 'provider'])
 
@@ -692,8 +691,7 @@ export const IntegrationDetail = ({
 
                     if (
                         extra === Tab.EmailDomainVerification &&
-                        (!sendgridEnabled ||
-                            integrationProvider !== EmailProvider.Sendgrid)
+                        integrationProvider !== EmailProvider.Sendgrid
                     ) {
                         return (
                             <EmailIntegrationLayout integration={integration}>
@@ -708,7 +706,6 @@ export const IntegrationDetail = ({
 
                     if (
                         extra === Tab.EmailOutboundVerification &&
-                        sendgridEnabled &&
                         integrationProvider === EmailProvider.Sendgrid
                     ) {
                         return (

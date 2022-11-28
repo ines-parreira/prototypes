@@ -8,6 +8,18 @@ import {IntegrationBase} from './base'
 
 import type {Integration} from './'
 
+export enum OutboundVerificationStatusValue {
+    Unverified = 'unverified',
+    Pending = 'pending',
+    Success = 'success',
+    Failure = 'failure',
+}
+
+export enum OutboundVerificationType {
+    SingleSender = 'single_sender',
+    Domain = 'domain',
+}
+
 export type EmailIntegration = IntegrationBase & {
     type: IntegrationType.Email
     meta: EmailIntegrationMeta
@@ -27,6 +39,10 @@ export type EmailIntegrationMeta = {
         user: string
     }>
     provider: EmailProvider
+    outbound_verification_status: {
+        [OutboundVerificationType.SingleSender]: OutboundVerificationStatusValue
+        [OutboundVerificationType.Domain]: OutboundVerificationStatusValue
+    }
 }
 
 export type DomainDNSRecord = {

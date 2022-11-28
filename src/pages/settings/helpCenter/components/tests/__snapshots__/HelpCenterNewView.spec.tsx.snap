@@ -473,6 +473,16 @@ exports[`<HelpCenterNewView /> should render the component 1`] = `
                     Acme Unverified &lt;unverified@gorgias.io&gt;
                   </span>
                 </button>
+                <button
+                  class="option dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span>
+                    Sendgrid Integration &lt;sendgrid@gorgias.io&gt;
+                  </span>
+                </button>
               </div>
             </div>
             <div

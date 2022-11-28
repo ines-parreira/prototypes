@@ -12,10 +12,10 @@ import {
 import {RootState, StoreDispatch} from 'state/types'
 import {fetchSelfServiceConfigurations} from 'models/selfServiceConfiguration/resources'
 import {SelfServiceConfigurationsState} from 'state/entities/selfServiceConfigurations/types'
-import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
 import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {automationPriceFeatures} from 'fixtures/productPrices'
+import {entitiesInitialState} from 'fixtures/entities'
 import {SelfServiceView} from '../SelfServiceView'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -75,21 +75,7 @@ describe('<SelfServiceView/>', () => {
             features: automationPriceFeatures,
             created_datetime: '2021-08-01T00:00:00Z',
         }),
-        entities: {
-            macros: {},
-            rules: {},
-            ruleRecipes: {},
-            sections: {},
-            stats: {},
-            tags: {},
-            views: {},
-            viewsCount: {},
-            helpCenter: helpCenterInitialState,
-            helpCenterArticles: {},
-            selfServiceConfigurations: {},
-            phoneNumbers: {},
-            auditLogEvents: {},
-        },
+        entities: entitiesInitialState,
         integrations: fromJS({}),
     }
 

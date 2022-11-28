@@ -4,19 +4,31 @@ import Button from 'pages/common/components/button/Button'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Tooltip from 'pages/common/components/Tooltip'
 import history from 'pages/history'
-import {EmailIntegration} from 'models/integration/types'
+import {
+    EmailIntegration,
+    OutboundVerificationStatusValue,
+} from 'models/integration/types'
+import Loader from 'pages/common/components/Loader/Loader'
 import VerificationCardFooter from './VerificationCard/VerificationCardFooter'
 import VerificationCard from './VerificationCard/VerificationCard'
 
-type Props = {
+export type Props = {
     baseURL: string
     integration: EmailIntegration
+    loading: boolean
 }
 
-export default function EmailVerification({baseURL, integration}: Props) {
+export default function EmailVerification({
+    baseURL,
+    integration,
+    loading,
+}: Props) {
     const [showAlert, setShowAlert] = useState(true)
 
     const isDomainVerified = false
+    const isSingleSenderVerified =
+        integration.meta.outbound_verification_status?.single_sender ===
+        OutboundVerificationStatusValue.Success
 
     const handleVerifyDomainClick = () => {
         // TODO
@@ -24,6 +36,8 @@ export default function EmailVerification({baseURL, integration}: Props) {
     const handleVerifySingleSenderClick = () => {
         history.push(`${baseURL}/single-sender`)
     }
+
+    if (loading) return <Loader />
 
     return (
         <>
@@ -90,29 +104,31 @@ export default function EmailVerification({baseURL, integration}: Props) {
                     </>
                 }
                 bodyActions={
-                    <>
-                        {/* wrap button into div to enable tooltip when button is disabled */}
-                        <div id="verify-single-sender">
-                            <Button
-                                onClick={handleVerifySingleSenderClick}
-                                isDisabled={isDomainVerified}
-                            >
-                                Verify single sender
-                            </Button>
-                        </div>
-                        {isDomainVerified && (
-                            <Tooltip target="verify-single-sender">
-                                Delete Domain verification to send emails with a
-                                Single Sender.
-                            </Tooltip>
-                        )}
-                    </>
+                    !isSingleSenderVerified && (
+                        <>
+                            {/* wrap button into div to enable tooltip when button is disabled */}
+                            <div id="verify-single-sender">
+                                <Button
+                                    onClick={handleVerifySingleSenderClick}
+                                    isDisabled={isDomainVerified}
+                                >
+                                    Verify single sender
+                                </Button>
+                            </div>
+                            {isDomainVerified && (
+                                <Tooltip target="verify-single-sender">
+                                    Delete Domain verification to send emails
+                                    with a Single Sender.
+                                </Tooltip>
+                            )}
+                        </>
+                    )
                 }
                 footer={
                     <VerificationCardFooter
                         label={integration.meta.address}
                         icon="email"
-                        isVerified={false}
+                        isVerified={isSingleSenderVerified}
                         onClick={handleVerifySingleSenderClick}
                     />
                 }

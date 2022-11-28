@@ -34,7 +34,6 @@ import {
     selfServiceVolumePerFlowNoData,
 } from 'fixtures/stats'
 import {StatsFilters} from 'models/stat/types'
-import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
 
 import {billingState} from 'fixtures/billing'
 import {
@@ -44,6 +43,7 @@ import {
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
 import {account} from 'fixtures/account'
+import {entitiesInitialState} from 'fixtures/entities'
 import useStatResource from '../../useStatResource'
 import SelfServiceStatsPage from '../SelfServiceStatsPage'
 
@@ -82,21 +82,7 @@ describe('<SelfServiceStatsPage />', () => {
             created_datetime: '2021-08-01T00:00:00Z',
             current_subscription: account.current_subscription,
         }),
-        entities: {
-            macros: {},
-            rules: {},
-            ruleRecipes: {},
-            sections: {},
-            stats: {},
-            tags: {},
-            views: {},
-            viewsCount: {},
-            helpCenter: helpCenterInitialState,
-            helpCenterArticles: {},
-            selfServiceConfigurations: {},
-            phoneNumbers: {},
-            auditLogEvents: {},
-        } as RootState['entities'],
+        entities: entitiesInitialState,
         integrations: fromJS({integrations: []}),
         billing: fromJS(billingState),
     } as RootState

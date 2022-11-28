@@ -10,7 +10,6 @@ import {AUTOMATION_OVERVIEW, stats as statsConfig} from 'config/stats'
 import {AutomationStatsSelfServiceMetric} from 'pages/stats/AutomationStatsSelfServiceMetric'
 import {RootState, StoreDispatch} from 'state/types'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
-import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
 import {billingState} from 'fixtures/billing'
 import {
     HELPDESK_PRODUCT_ID,
@@ -18,6 +17,7 @@ import {
     starterHelpdeskPrice,
 } from 'fixtures/productPrices'
 import {automationSubscriptionProductPrices} from 'fixtures/account'
+import {entitiesInitialState} from 'fixtures/entities'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -63,20 +63,7 @@ describe('<AutomationStatsSelfServiceMetric />', () => {
                 },
             },
         }),
-        entities: {
-            macros: {},
-            rules: {},
-            ruleRecipes: {},
-            sections: {},
-            stats: {},
-            tags: {},
-            views: {},
-            viewsCount: {},
-            helpCenter: helpCenterInitialState,
-            selfServiceConfigurations: {},
-            phoneNumbers: {},
-            auditLogEvents: {},
-        },
+        entities: entitiesInitialState,
     }
 
     const selfServiceConfiguration: SelfServiceConfiguration = {

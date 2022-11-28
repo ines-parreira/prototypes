@@ -89,7 +89,7 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
                     <div
                       class="badge"
                     >
-                      6
+                      7
                     </div>
                   </label>
                 </div>
@@ -222,6 +222,27 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
                     <i
                       class="icon material-icons icon"
                     >
+                      email
+                    </i>
+                     Sendgrid Integration
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-8"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-8"
+                      name="checkbox-8"
+                      type="checkbox"
+                    />
+                    <i
+                      class="icon material-icons icon"
+                    >
                       chat
                     </i>
                      Chitty chatty
@@ -270,13 +291,13 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
                 >
                   <label
                     class="label label quickSelectionOption"
-                    for="checkbox-8"
+                    for="checkbox-9"
                   >
                     <input
                       checked=""
                       class="input"
-                      id="checkbox-8"
-                      name="checkbox-8"
+                      id="checkbox-9"
+                      name="checkbox-9"
                       type="checkbox"
                     />
                     Deselect
@@ -300,12 +321,12 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
                 >
                   <label
                     class="label label labelItem"
-                    for="checkbox-9"
+                    for="checkbox-10"
                   >
                     <input
                       class="input"
-                      id="checkbox-9"
-                      name="checkbox-9"
+                      id="checkbox-10"
+                      name="checkbox-10"
                       type="checkbox"
                     />
                      Aircall
@@ -316,12 +337,12 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
                 >
                   <label
                     class="label label labelItem"
-                    for="checkbox-10"
+                    for="checkbox-11"
                   >
                     <input
                       class="input"
-                      id="checkbox-10"
-                      name="checkbox-10"
+                      id="checkbox-11"
+                      name="checkbox-11"
                       type="checkbox"
                     />
                      Api
@@ -332,32 +353,16 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
                 >
                   <label
                     class="label label labelItem"
-                    for="checkbox-11"
-                  >
-                    <input
-                      checked=""
-                      class="input"
-                      id="checkbox-11"
-                      name="checkbox-11"
-                      type="checkbox"
-                    />
-                     Chat
-                  </label>
-                </div>
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="label label labelItem"
                     for="checkbox-12"
                   >
                     <input
+                      checked=""
                       class="input"
                       id="checkbox-12"
                       name="checkbox-12"
                       type="checkbox"
                     />
-                     Email
+                     Chat
                   </label>
                 </div>
                 <div
@@ -373,7 +378,7 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
                       name="checkbox-13"
                       type="checkbox"
                     />
-                     Facebook
+                     Email
                   </label>
                 </div>
                 <div
@@ -389,7 +394,7 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
                       name="checkbox-14"
                       type="checkbox"
                     />
-                     Facebook mention
+                     Facebook
                   </label>
                 </div>
                 <div
@@ -405,7 +410,7 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
                       name="checkbox-15"
                       type="checkbox"
                     />
-                     Facebook messenger
+                     Facebook mention
                   </label>
                 </div>
                 <div
@@ -421,7 +426,7 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
                       name="checkbox-16"
                       type="checkbox"
                     />
-                     Facebook recommendations
+                     Facebook messenger
                   </label>
                 </div>
                 <div
@@ -437,7 +442,7 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
                       name="checkbox-17"
                       type="checkbox"
                     />
-                     Help center
+                     Facebook recommendations
                   </label>
                 </div>
                 <div
@@ -453,7 +458,7 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
                       name="checkbox-18"
                       type="checkbox"
                     />
-                     Instagram ad comment
+                     Help center
                   </label>
                 </div>
                 <div
@@ -469,7 +474,7 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
                       name="checkbox-19"
                       type="checkbox"
                     />
-                     Instagram comment
+                     Instagram ad comment
                   </label>
                 </div>
                 <div
@@ -485,7 +490,7 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
                       name="checkbox-20"
                       type="checkbox"
                     />
-                     Instagram mention
+                     Instagram comment
                   </label>
                 </div>
                 <div
@@ -501,7 +506,7 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
                       name="checkbox-21"
                       type="checkbox"
                     />
-                     Instagram direct message
+                     Instagram mention
                   </label>
                 </div>
                 <div
@@ -517,7 +522,7 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
                       name="checkbox-22"
                       type="checkbox"
                     />
-                     Phone
+                     Instagram direct message
                   </label>
                 </div>
                 <div
@@ -533,7 +538,7 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
                       name="checkbox-23"
                       type="checkbox"
                     />
-                     Sms
+                     Phone
                   </label>
                 </div>
                 <div
@@ -549,7 +554,7 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
                       name="checkbox-24"
                       type="checkbox"
                     />
-                     Twitter
+                     Sms
                   </label>
                 </div>
                 <div
@@ -565,7 +570,7 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
                       name="checkbox-25"
                       type="checkbox"
                     />
-                     Twitter direct message
+                     Twitter
                   </label>
                 </div>
                 <div
@@ -579,6 +584,22 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
                       class="input"
                       id="checkbox-26"
                       name="checkbox-26"
+                      type="checkbox"
+                    />
+                     Twitter direct message
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-27"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-27"
+                      name="checkbox-27"
                       type="checkbox"
                     />
                      Yotpo review
@@ -627,13 +648,13 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
                 >
                   <label
                     class="label label quickSelectionOption"
-                    for="checkbox-27"
+                    for="checkbox-28"
                   >
                     <input
                       checked=""
                       class="input"
-                      id="checkbox-27"
-                      name="checkbox-27"
+                      id="checkbox-28"
+                      name="checkbox-28"
                       type="checkbox"
                     />
                     Deselect
@@ -664,22 +685,6 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
                   >
                     <label
                       class="label label labelItem"
-                      for="checkbox-28"
-                    >
-                      <input
-                        class="input"
-                        id="checkbox-28"
-                        name="checkbox-28"
-                        type="checkbox"
-                      />
-                      Foo
-                    </label>
-                  </div>
-                  <div
-                    class="wrapperItem"
-                  >
-                    <label
-                      class="label label labelItem"
                       for="checkbox-29"
                     >
                       <input
@@ -688,7 +693,7 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
                         name="checkbox-29"
                         type="checkbox"
                       />
-                      Phone team - +1 205-396-3441
+                      Foo
                     </label>
                   </div>
                   <div
@@ -704,7 +709,7 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
                         name="checkbox-30"
                         type="checkbox"
                       />
-                      Team: user meta null
+                      Phone team - +1 205-396-3441
                     </label>
                   </div>
                   <div
@@ -718,6 +723,22 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
                         class="input"
                         id="checkbox-31"
                         name="checkbox-31"
+                        type="checkbox"
+                      />
+                      Team: user meta null
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-32"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-32"
+                        name="checkbox-32"
                         type="checkbox"
                       />
                       Test
@@ -739,13 +760,13 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
                 >
                   <label
                     class="label label labelItem"
-                    for="checkbox-32"
+                    for="checkbox-33"
                   >
                     <input
                       checked=""
                       class="input"
-                      id="checkbox-32"
-                      name="checkbox-32"
+                      id="checkbox-33"
+                      name="checkbox-33"
                       type="checkbox"
                     />
                      Acme Support
@@ -756,12 +777,12 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
                 >
                   <label
                     class="label label labelItem"
-                    for="checkbox-33"
+                    for="checkbox-34"
                   >
                     <input
                       class="input"
-                      id="checkbox-33"
-                      name="checkbox-33"
+                      id="checkbox-34"
+                      name="checkbox-34"
                       type="checkbox"
                     />
                      Bob Smith

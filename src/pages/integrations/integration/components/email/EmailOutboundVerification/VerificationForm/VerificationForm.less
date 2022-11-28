@@ -1,0 +1,18 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .halfWidth {
+        width: 50%;
+    }
+
+    .required {
+        &::after {
+            content: ' *';
+            color: @classic-feedback-error;
+        }
+    }
+
+    .isDisabled {
+        color: @classic-neutral-grey-4;
+    }
+}

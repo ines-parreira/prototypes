@@ -3,10 +3,8 @@ import {Map} from 'immutable'
 import {NavLink} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {EmailProvider} from 'models/integration/constants'
 
 type Props = {
@@ -15,8 +13,6 @@ type Props = {
 }
 
 const EmailIntegrationUpdateLayout = ({integration, children}: Props) => {
-    const sendgridEnabled = useFlags()[FeatureFlagKey.EnableSendgrid]
-
     const integrationId: number = integration.get('id')
     const integrationProvider: EmailProvider = integration.getIn([
         'meta',
@@ -49,8 +45,7 @@ const EmailIntegrationUpdateLayout = ({integration, children}: Props) => {
                 >
                     Preferences
                 </NavLink>
-                {(!sendgridEnabled ||
-                    integrationProvider !== EmailProvider.Sendgrid) && (
+                {integrationProvider !== EmailProvider.Sendgrid && (
                     <NavLink
                         to={`/app/settings/channels/email/${integrationId}/dns`}
                         exact
@@ -58,15 +53,14 @@ const EmailIntegrationUpdateLayout = ({integration, children}: Props) => {
                         Domain Verification
                     </NavLink>
                 )}
-                {sendgridEnabled &&
-                    integrationProvider === EmailProvider.Sendgrid && (
-                        <NavLink
-                            to={`/app/settings/channels/email/${integrationId}/outbound`}
-                            exact
-                        >
-                            Outbound Verification
-                        </NavLink>
-                    )}
+                {integrationProvider === EmailProvider.Sendgrid && (
+                    <NavLink
+                        to={`/app/settings/channels/email/${integrationId}/outbound`}
+                        exact
+                    >
+                        Outbound Verification
+                    </NavLink>
+                )}
             </SecondaryNavbar>
             {children}
         </div>

@@ -36,7 +36,7 @@ jest.mock('react-router')
 
 jest.mock('models/selfServiceConfiguration/resources')
 
-const defaultEntities = {
+const entitiesInitialState = {
     ...defaultState.entities,
     selfServiceConfigurations: {
         1: {
@@ -104,7 +104,7 @@ describe('<QuickResponseFlowEditItem />', () => {
                     status: 'active',
                 },
             }),
-            entities: defaultEntities,
+            entities: entitiesInitialState,
         }
 
         render(
@@ -126,7 +126,7 @@ describe('<QuickResponseFlowEditItem />', () => {
             <Provider
                 store={mockStore({
                     ...defaultState,
-                    entities: defaultEntities,
+                    entities: entitiesInitialState,
                 })}
             >
                 <QuickResponseFlowEditItem />
@@ -195,7 +195,7 @@ describe('<QuickResponseFlowEditItem />', () => {
             <Provider
                 store={mockStore({
                     ...defaultState,
-                    entities: defaultEntities,
+                    entities: entitiesInitialState,
                 })}
             >
                 <QuickResponseFlowEditItem />
@@ -221,7 +221,7 @@ describe('<QuickResponseFlowEditItem />', () => {
             <Provider
                 store={mockStore({
                     ...defaultState,
-                    entities: defaultEntities,
+                    entities: entitiesInitialState,
                 })}
             >
                 <QuickResponseFlowEditItem />
@@ -285,7 +285,7 @@ describe('<QuickResponseFlowEditItem />', () => {
             <Provider
                 store={mockStore({
                     ...defaultState,
-                    entities: defaultEntities,
+                    entities: entitiesInitialState,
                 })}
             >
                 <QuickResponseFlowEditItem />
