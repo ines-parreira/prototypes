@@ -75,12 +75,24 @@ exports[`HelpCenterChangePlanModal should render the automation plan card when c
                     plan
                   </div>
                   <div>
-                    plan: 
-                    basic-monthly-usd-4
+                    amount: 
+                    60
                   </div>
                   <div>
-                    features plan: 
-                    basic-automation-full-price-monthly-usd-4
+                    currency: 
+                    usd
+                  </div>
+                  <div>
+                    interval: 
+                    month
+                  </div>
+                  <div>
+                    name: 
+                    Basic
+                  </div>
+                  <div>
+                    features: 
+                    [object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]
                   </div>
                 </div>
                 <img
@@ -97,12 +109,24 @@ exports[`HelpCenterChangePlanModal should render the automation plan card when c
                     plan
                   </div>
                   <div>
-                    plan: 
-                    basic-monthly-usd-4
+                    amount: 
+                    60
                   </div>
                   <div>
-                    features plan: 
-                    basic-automation-full-price-monthly-usd-4
+                    currency: 
+                    usd
+                  </div>
+                  <div>
+                    interval: 
+                    month
+                  </div>
+                  <div>
+                    name: 
+                    Basic
+                  </div>
+                  <div>
+                    features: 
+                    [object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]
                   </div>
                 </div>
               </div>

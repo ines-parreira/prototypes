@@ -10,6 +10,7 @@ import {RootState, StoreDispatch} from 'state/types'
 import BillingPlanCard from 'pages/settings/billing/plans/BillingPlanCard'
 import {billingState} from 'fixtures/billing'
 import {
+    basicMonthlyHelpdeskPrice,
     HELPDESK_PRODUCT_ID,
     legacyBasicHelpdeskPrice,
     products,
@@ -35,8 +36,11 @@ jest.mock(
     'pages/settings/billing/plans/BillingPlanCard',
     () =>
         ({
-            plan,
-            featuresPlan,
+            amount,
+            currency,
+            features,
+            interval,
+            name,
             theme,
             className,
         }: ComponentProps<typeof BillingPlanCard>) =>
@@ -45,8 +49,11 @@ jest.mock(
                     BillingPlanCard mock,
                     <div>theme: {theme}</div>
                     <div>className: {className}</div>
-                    <div>plan: {plan.id}</div>
-                    <div>features plan: {featuresPlan.id}</div>
+                    <div>amount: {amount}</div>
+                    <div>currency: {currency}</div>
+                    <div>interval: {interval}</div>
+                    <div>name: {name}</div>
+                    <div>features: {features.toString()}</div>
                 </div>
             )
 )
@@ -54,7 +61,7 @@ jest.mock(
 describe('HelpCenterChangePlanModal', () => {
     const props = {
         isOpen: true,
-        currentPlan: fromJS(transitoryPlans.legacyPlan),
+        helpdeskPrice: legacyBasicHelpdeskPrice,
         suitablePlanWithoutAutomationAddOn: transitoryPlans.basicPlan,
         onClose: jest.fn(),
     }
@@ -89,9 +96,9 @@ describe('HelpCenterChangePlanModal', () => {
 
         fireEvent.click(upgradeButton)
 
-        expect(mockedHandleSubscriptionUpdate).toHaveBeenCalledWith(
-            'basic-monthly-usd-4'
-        )
+        expect(mockedHandleSubscriptionUpdate).toHaveBeenCalledWith([
+            legacyBasicHelpdeskPrice.price_id,
+        ])
     })
 
     it('should render the automation plan card when current plan has automation enabled', () => {
@@ -107,7 +114,7 @@ describe('HelpCenterChangePlanModal', () => {
             <Provider store={mockStore(state)}>
                 <HelpCenterChangePlanModal
                     {...props}
-                    currentPlan={transitoryPlans.basicAutomationPlan}
+                    helpdeskPrice={basicMonthlyHelpdeskPrice}
                 />
             </Provider>
         )

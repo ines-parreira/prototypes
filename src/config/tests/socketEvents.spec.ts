@@ -6,9 +6,13 @@ import {EnhancedStore} from '@reduxjs/toolkit'
 
 import {TicketChannel} from 'business/types/ticket'
 import browserNotification from 'services/browserNotification'
-import {advancedPlan} from 'fixtures/subscriptionPlan'
-import {PlanWithCurrencySign} from 'state/billing/types'
+import {
+    advancedMonthlyHelpdeskPrice,
+    HELPDESK_PRODUCT_ID,
+    proMonthlyHelpdeskPrice as mockedProMonthlyHelpdeskPrice,
+} from 'fixtures/productPrices'
 import * as currentUserActions from 'state/currentUser/actions'
+import {HelpdeskPrice} from 'models/billing/types'
 import {TicketStatuses} from '../../business/ticket'
 import {shouldTicketBeDisplayedInRecentChats} from '../../business/recentChats'
 
@@ -72,6 +76,7 @@ jest.mock('../../init', () => {
 
     const mockStore = configureMockStore([thunk])
     const store = mockStore({
+        billing: fromJS({products: [mockedProMonthlyHelpdeskPrice]}),
         currentUser: fromJS({id: 1}),
         chats: fromJS({
             tickets: Array(MAX_RECENT_CHATS - 1).fill({
@@ -207,12 +212,16 @@ describe('Config: socketEvents', () => {
             const accountUpdatedHandler = _find(receivedEvents, {
                 name: SocketEventType.AccountUpdated,
             })
-            const getPlanSpy = jest.spyOn(billingSelectors, 'getPlan')
+            const getPricesMapSpy = jest.spyOn(billingSelectors, 'getPricesMap')
 
             beforeEach(() => {
                 jest.useFakeTimers()
-                getPlanSpy.mockImplementation(
-                    () => () => advancedPlan as PlanWithCurrencySign
+                getPricesMapSpy.mockImplementation(
+                    () =>
+                        ({
+                            [mockedProMonthlyHelpdeskPrice.price_id]:
+                                mockedProMonthlyHelpdeskPrice,
+                        } as Record<string, HelpdeskPrice>)
                 )
             })
 
@@ -231,7 +240,13 @@ describe('Config: socketEvents', () => {
                 ).mockReturnValue(fromJS({}))
 
                 if (accountUpdatedHandler) {
-                    accountUpdatedHandler.onReceive({account: {}} as any)
+                    accountUpdatedHandler.onReceive({
+                        account: {
+                            current_subscription: {
+                                products: {},
+                            },
+                        },
+                    } as any)
                 }
 
                 expect(typeSafeReduxStore.dispatch).toHaveBeenCalledTimes(2)
@@ -243,6 +258,9 @@ describe('Config: socketEvents', () => {
 
             it('should not fetch chats because `ticket_assignment` settings do not exist', () => {
                 const account = {
+                    current_subscription: {
+                        products: {},
+                    },
                     settings: [],
                 }
 
@@ -264,6 +282,9 @@ describe('Config: socketEvents', () => {
 
             it('should fetch chats because `ticket_assignment` settings were just created', () => {
                 const account = {
+                    current_subscription: {
+                        products: {},
+                    },
                     settings: [
                         {
                             type: currentAccountConstants.SETTING_TYPE_TICKET_ASSIGNMENT,
@@ -295,6 +316,9 @@ describe('Config: socketEvents', () => {
                 'should fetch chats because the auto_assign setting has changed',
                 (oldAutoAssignToTeams, newAutoAssignToTeams) => {
                     const account = {
+                        current_subscription: {
+                            products: {},
+                        },
                         settings: [
                             {
                                 type: currentAccountConstants.SETTING_TYPE_TICKET_ASSIGNMENT,
@@ -334,6 +358,9 @@ describe('Config: socketEvents', () => {
                 'should not fetch chats because the auto_assign setting did not change',
                 (autoAssignToTeams) => {
                     const account = {
+                        current_subscription: {
+                            products: {},
+                        },
                         settings: [
                             {
                                 type: currentAccountConstants.SETTING_TYPE_TICKET_ASSIGNMENT,
@@ -380,7 +407,12 @@ describe('Config: socketEvents', () => {
                 if (accountUpdatedHandler) {
                     accountUpdatedHandler.onReceive({
                         account: {
-                            current_subscription: {plan: advancedPlan.id},
+                            current_subscription: {
+                                products: {
+                                    [HELPDESK_PRODUCT_ID]:
+                                        mockedProMonthlyHelpdeskPrice.price_id,
+                                },
+                            },
                         },
                     } as any)
                 }
@@ -401,10 +433,17 @@ describe('Config: socketEvents', () => {
                     >
                 ).mockReturnValue(fromJS({}))
 
-                getPlanSpy.mockImplementation(() => () => undefined)
-
                 if (accountUpdatedHandler) {
-                    accountUpdatedHandler.onReceive({account: {}} as any)
+                    accountUpdatedHandler.onReceive({
+                        account: {
+                            current_subscription: {
+                                products: {
+                                    [HELPDESK_PRODUCT_ID]:
+                                        advancedMonthlyHelpdeskPrice.price_id,
+                                },
+                            },
+                        },
+                    } as any)
                 }
 
                 expect(spy).toHaveBeenCalledWith({

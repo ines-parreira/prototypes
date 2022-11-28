@@ -31,7 +31,6 @@ import {
 } from 'state/currentAccount/selectors'
 import {AccountFeature, CurrentAccountState} from 'state/currentAccount/types'
 import {SegmentEvent} from 'store/middlewares/segmentTracker'
-import {DEPRECATED_getCurrentPlan} from 'state/billing/selectors'
 import {getStatsFilters} from 'state/stats/selectors'
 import {mergeStatsFilters} from 'state/stats/actions'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -40,6 +39,7 @@ import PageHeader from 'pages/common/components/PageHeader'
 import AutomationSubscriptionModal from 'pages/settings/billing/automation/AutomationSubscriptionModal'
 import AutomationSubscriptionButton from 'pages/settings/billing/automation/AutomationSubscriptionButton'
 
+import {getCurrentHelpdeskProduct} from 'state/billing/selectors'
 import {getIntegrations} from 'state/integrations/selectors'
 import KeyMetricStat from '../common/components/charts/KeyMetricStat/KeyMetricStat'
 import TableStat from '../common/components/charts/TableStat/TableStat'
@@ -81,7 +81,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
         currentAccountHasFeature(AccountFeature.AutomationSelfServiceStatistics)
     )
     const account = useAppSelector<CurrentAccountState>(getCurrentAccountState)
-    const currentPlan = useAppSelector(DEPRECATED_getCurrentPlan)
+    const currentHelpdeskPrice = useAppSelector(getCurrentHelpdeskProduct)
     const integrations = useAppSelector(getIntegrations)
     const statsFilters = useAppSelector(getStatsFilters)
 
@@ -97,7 +97,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
         name: SegmentEvent.PaywallUpgradeButtonSelected,
         props: {
             domain: account.get('domain'),
-            current_plan: currentPlan.get('id'),
+            current_plan: currentHelpdeskPrice?.price_id,
             paywall_feature: 'automation_addon',
         },
     }

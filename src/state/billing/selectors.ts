@@ -3,27 +3,26 @@ import {fromJS, List, Map} from 'immutable'
 import _isEmpty from 'lodash/isEmpty'
 
 import {
-    createAutomationPlanFromProducts,
-    createHelpdeskPlanFromProducts,
+    getFormattedAmount,
     getFullPrice,
+    isHelpdeskPrice,
 } from 'models/billing/utils'
 import {
     AutomationPrice,
     HelpdeskPrice,
-    Plan,
     Product,
     ProductType,
 } from 'models/billing/types'
-import {CurrentAccountState} from '../currentAccount/types'
+import {
+    AccountFeature,
+    AccountFeatureMetadata,
+    CurrentAccountState,
+} from '../currentAccount/types'
 import {getCurrentSubscription} from '../currentAccount/selectors'
 import {getActiveIntegrations} from '../integrations/selectors'
 import {RootState} from '../types'
 
-import {
-    BillingImmutableState,
-    BillingState,
-    PlanWithCurrencySign,
-} from './types'
+import {BillingImmutableState, BillingState} from './types'
 
 export const DEFAULT_PLAN = 'standard-usd-1'
 
@@ -38,18 +37,18 @@ export const getBillingState = createSelector(
     }
 )
 
-const getProducts = createSelector(getBillingState, (billingState) => {
+export const getProducts = createSelector(getBillingState, (billingState) => {
     return billingState.products
 })
 
-const getHelpdeskProduct = createSelector(getProducts, (products) => {
+export const getHelpdeskProduct = createSelector(getProducts, (products) => {
     return products.find(
         (product): product is Product<HelpdeskPrice> =>
             product.type === ProductType.Helpdesk
     )!
 })
 
-const getAutomationProduct = createSelector(getProducts, (products) => {
+export const getAutomationProduct = createSelector(getProducts, (products) => {
     return products.find(
         (product): product is Product<AutomationPrice> =>
             product.type === ProductType.Automation
@@ -90,226 +89,150 @@ const getCurrentProducts = createSelector(
     }
 )
 
-const getCurrentHelpdeskProduct = createSelector(
+export const getCurrentHelpdeskProduct = createSelector(
     getCurrentProducts,
     (currentProducts) => currentProducts?.helpdesk
 )
 
-const getCurrentAutomationProduct = createSelector(
+export const getCurrentAutomationProduct = createSelector(
     getCurrentProducts,
     (currentProducts) => currentProducts?.automation
 )
 
-export const currentPlanId = createSelector(
+export const getCurrentHelpdeskName = createSelector(
+    getCurrentHelpdeskProduct,
+    (currentHelpdeskProduct) => currentHelpdeskProduct?.name
+)
+
+export const getCurrentProductsAmount = createSelector(
+    getCurrentProducts,
+    (currentProducts) =>
+        Object.values(currentProducts || {}).reduce(
+            (acc, product) => acc + getFormattedAmount(product.amount),
+            0
+        )
+)
+
+export const getCurrentHelpdeskAddons = createSelector(
+    getCurrentHelpdeskProduct,
+    (currentHelpdeskProduct) => currentHelpdeskProduct?.addons
+)
+
+export const getCurrentHelpdeskAmount = createSelector(
+    getCurrentHelpdeskProduct,
+    (currentHelpdeskProduct) =>
+        currentHelpdeskProduct
+            ? getFormattedAmount(currentHelpdeskProduct.amount)
+            : undefined
+)
+
+export const getCurrentHelpdeskCurrency = createSelector(
+    getCurrentHelpdeskProduct,
+    (currentHelpdeskProduct) => currentHelpdeskProduct?.currency || 'usd'
+)
+
+export const getCurrentHelpdeskFreeTickets = createSelector(
+    getCurrentHelpdeskProduct,
+    (currentHelpdeskProduct) => currentHelpdeskProduct?.free_tickets || 0
+)
+
+export const getCurrentHelpdeskInterval = createSelector(
+    getCurrentHelpdeskProduct,
+    (currentHelpdeskProduct) => currentHelpdeskProduct?.interval
+)
+
+export const getIsCurrentHelpdeskLegacy = createSelector(
+    getCurrentHelpdeskProduct,
+    (currentHelpdeskProduct) => !!currentHelpdeskProduct?.is_legacy
+)
+
+export const getIsCurrentHelpdeskCustom = createSelector(
+    getCurrentHelpdeskProduct,
+    (currentHelpdeskProduct) => !!currentHelpdeskProduct?.custom
+)
+
+export const getCurrentHelpdeskMaxIntegrations = createSelector(
+    getCurrentHelpdeskProduct,
+    (helpdeskProduct) => helpdeskProduct?.integrations || 0
+)
+
+export const getCurrentProductsFeatures = createSelector(
+    getCurrentProducts,
+    (currentProducts) =>
+        Object.values(currentProducts || {}).reduce<
+            Partial<Record<AccountFeature, AccountFeatureMetadata>>
+        >((acc, product) => Object.assign(acc, product.features), {})
+)
+
+export const makeHasFeature = createSelector(
+    getCurrentProductsFeatures,
+    (features) => (feature: AccountFeature) => !!features[feature]?.enabled
+)
+
+export const getPrices = createSelector(getProducts, (products) =>
+    products
+        .reduce<Array<HelpdeskPrice | AutomationPrice>>(
+            (acc, product) => acc.concat(product.prices),
+            []
+        )
+        .sort((a, b) => a.amount - b.amount)
+)
+
+export const getHelpdeskPrices = createSelector(getHelpdeskProduct, (product) =>
+    product.prices.sort((a, b) => a.amount - b.amount)
+)
+
+export const getPricesMap = createSelector(getProducts, (products) =>
+    products.reduce<Record<string, HelpdeskPrice | AutomationPrice>>(
+        (acc, product) => {
+            product.prices.map((price) => {
+                acc[price.price_id] = price
+            })
+            return acc
+        },
+        {}
+    )
+)
+
+export const getAutomationPricesMap = createSelector(
+    getAutomationProduct,
+    (product) =>
+        product.prices.reduce<Record<string, AutomationPrice>>((acc, price) => {
+            acc[price.price_id] = price
+            return acc
+        }, {})
+)
+
+export const getHasAutomationAddOn = createSelector(
+    getCurrentAutomationProduct,
+    (price) => !!price
+)
+
+export const getCurrentHelpdeskAutomationAddonAmount = createSelector(
+    getPricesMap,
     getCurrentHelpdeskProduct,
     getCurrentAutomationProduct,
-    getBillingState,
-    (helpdeskProduct, automationProduct, billingState) => {
-        return (
-            automationProduct?.legacy_id ||
-            helpdeskProduct?.legacy_id ||
-            billingState.futureSubscriptionPlan
-        )
+    (prices, helpdesk, automation) => {
+        if (automation) {
+            return getFormattedAmount(automation.amount)
+        }
+        const addonId = helpdesk?.addons?.[0]
+
+        if (addonId && prices[addonId]) {
+            return getFormattedAmount(prices[addonId].amount)
+        }
+        return undefined
     }
 )
 
-export const getPlans = createSelector(getProducts, (products) => {
-    const helpdeskProductPrices = products.find(
-        (product): product is Product<HelpdeskPrice> =>
-            product.type === ProductType.Helpdesk
-    )!.prices
-    const automationProductPrices = products.find(
-        (product): product is Product<AutomationPrice> =>
-            product.type === ProductType.Automation
-    )!.prices
-
-    const basePlans: PlanWithCurrencySign[] = helpdeskProductPrices.map(
-        (product) => {
-            const equivalentAutomationPriceId = product.addons
-                ? product.addons[0]
-                : undefined
-            const equivalentAutomationProduct = equivalentAutomationPriceId
-                ? automationProductPrices.find(
-                      (price) => price.price_id === equivalentAutomationPriceId
-                  )
-                : undefined
-            return createHelpdeskPlanFromProducts(
-                product,
-                equivalentAutomationProduct
-            )
-        }
-    )
-    const automationPlans = automationProductPrices.map(
-        (automationProductPrice) => {
-            const equivalentHelpdeskProductPrice = helpdeskProductPrices.find(
-                (helpdeskProductPrice) =>
-                    helpdeskProductPrice.price_id ===
-                    automationProductPrice.base_price_id
-            )
-
-            if (!equivalentHelpdeskProductPrice) {
-                const fallbackHelpdeskProductPrice = helpdeskProductPrices.find(
-                    (helpdeskProductPrice) =>
-                        helpdeskProductPrice.name ===
-                            automationProductPrice.name &&
-                        helpdeskProductPrice.interval ===
-                            automationProductPrice.interval
-                )!
-
-                return createAutomationPlanFromProducts(
-                    automationProductPrice,
-                    fallbackHelpdeskProductPrice
-                )
-            }
-
-            return createAutomationPlanFromProducts(
-                automationProductPrice,
-                equivalentHelpdeskProductPrice
-            )
-        }
-    )
-    return [...basePlans, ...automationPlans].sort(
-        ({order: orderA}, {order: orderB}) =>
-            (orderA || Infinity) - (orderB || Infinity)
-    )
-})
-
-export const DEPRECATED_getPlans = createSelector<
-    RootState,
-    Map<any, any>,
-    PlanWithCurrencySign[]
->(getPlans, (plans) => {
-    const planDictionary: Record<string, PlanWithCurrencySign> = {}
-    plans.forEach((plan) => {
-        planDictionary[plan.id] = plan
-    })
-    return (fromJS(planDictionary) as Map<any, any>).sortBy(
-        (plan: Map<any, any>) => (plan.get('order') as number) || Infinity
-    ) as Map<any, any>
-})
-
-export const DEPRECATED_getCurrentPlan = createSelector<
-    RootState,
-    Map<any, any>,
-    Map<any, any>,
-    string | undefined
->(
-    DEPRECATED_getPlans,
-    currentPlanId,
-    (p, id) => (p.get(id) || fromJS({})) as Map<any, any>
-)
-
-export const getCurrentPlan = createSelector<
-    RootState,
-    Plan | undefined,
-    Plan[],
-    string | undefined
->(getPlans, currentPlanId, (plans, id) => {
-    return plans.find((plan) => plan.id === id)
-})
-
-export const DEPRECATED_getPlan = (planId: string) =>
-    createSelector<RootState, Map<any, any>, Map<any, any>>(
-        DEPRECATED_getPlans,
-        (p) => (p.get(planId) || fromJS({})) as Map<any, any>
-    )
-
-export const getPlan = (planId: string) =>
-    createSelector(getPlans, (plans) =>
-        plans.find((plan) => plan.id === planId)
-    )
-
-export const getHasAutomationAddOn = createSelector<
-    RootState,
-    boolean,
-    Map<any, any>
->(DEPRECATED_getCurrentPlan, (plan) => !!plan.get('automation_addon_included'))
-
-export const getEquivalentAutomationCurrentPlan = createSelector<
-    RootState,
-    Plan | undefined,
-    Plan[],
-    Plan | undefined
->(getPlans, getCurrentPlan, (plans, currentPlan) => {
-    return currentPlan
-        ? !currentPlan.automation_addon_included
-            ? plans.find(
-                  (plan) =>
-                      plan.id ===
-                      currentPlan['automation_addon_equivalent_plan']
+export const getCurrentAutomationFullAmount = createSelector(
+    getCurrentAutomationProduct,
+    (price) =>
+        price?.amount && price?.automation_addon_discount
+            ? getFormattedAmount(
+                  getFullPrice(price.amount, price.automation_addon_discount)
               )
-            : currentPlan
-        : undefined
-})
-
-export const getEquivalentRegularCurrentPlan = createSelector<
-    RootState,
-    Map<any, any> | undefined,
-    Map<any, any>,
-    Plan | undefined
->(DEPRECATED_getPlans, getCurrentPlan, (plans, currentPlan) =>
-    currentPlan
-        ? currentPlan.automation_addon_included
-            ? (plans.get(
-                  currentPlan['automation_addon_equivalent_plan']
-              ) as Map<any, any>)
-            : (fromJS(currentPlan) as Map<any, any>)
-        : undefined
-)
-
-export const getAddOnAutomationAmountCurrentPlan = createSelector<
-    RootState,
-    number | undefined,
-    Map<any, any>,
-    Map<any, any>
->(DEPRECATED_getCurrentPlan, DEPRECATED_getPlans, (currentPlan, plans) => {
-    const equivalentPlan: Map<any, any> = plans.get(
-        currentPlan.get('automation_addon_equivalent_plan')
-    )
-    if (!equivalentPlan) {
-        return undefined
-    }
-
-    return Math.abs(equivalentPlan.get('amount') - currentPlan.get('amount'))
-})
-
-export const getAddOnAutomationDiscountCurrentPlan = createSelector<
-    RootState,
-    number | undefined,
-    Plan[],
-    Plan | undefined
->(getPlans, getCurrentPlan, (plans, currentPlan) => {
-    if (currentPlan?.automation_addon_included) {
-        return currentPlan.automation_addon_discount
-    }
-
-    const equivalentPlan =
-        currentPlan &&
-        plans.find(
-            (plan) => plan.id === currentPlan.automation_addon_equivalent_plan
-        )
-    if (!equivalentPlan) {
-        return undefined
-    }
-
-    return equivalentPlan.automation_addon_discount
-})
-
-export const getAddOnAutomationFullAmountCurrentPlan = createSelector<
-    RootState,
-    number | undefined,
-    number | undefined,
-    number | undefined
->(
-    getAddOnAutomationAmountCurrentPlan,
-    getAddOnAutomationDiscountCurrentPlan,
-    (amount, discount) => {
-        if (amount && discount) {
-            return getFullPrice(amount, discount)
-        }
-
-        return undefined
-    }
+            : undefined
 )
 
 export const invoices = createSelector<
@@ -376,39 +299,17 @@ export const getCurrentUsage = createSelector<
     (billing) => (billing.get('currentUsage') as Map<any, any>) || fromJS({})
 )
 
-export const planIntegrations = createSelector<
-    RootState,
-    number,
-    Map<any, any>
->(DEPRECATED_getCurrentPlan, (plan) => plan.get('integrations', 0) as number)
-
-export const isAllowedToCreateIntegration = createSelector<
-    RootState,
-    boolean,
-    number,
-    List<any>
->(
-    planIntegrations,
+export const makeGetIsAllowedToChangePrice = createSelector(
+    getPricesMap,
     getActiveIntegrations,
-    (integrations, activeIntegrations) => {
-        return integrations > activeIntegrations.size
-    }
-)
+    (prices, activeIntegrations) => {
+        return (priceId: string) => {
+            const price = prices[priceId]
 
-export const isAllowedToChangePlan = (planId: string) =>
-    createSelector<RootState, boolean, Map<any, any>, List<any>>(
-        DEPRECATED_getPlan(planId),
-        getActiveIntegrations,
-        (plan, activeIntegrations) => {
-            return plan.get('integrations', 0) >= activeIntegrations.size
+            return (
+                (isHelpdeskPrice(price) ? price.integrations : 0) >=
+                activeIntegrations.size
+            )
         }
-    )
-
-export const makeIsAllowedToChangePlan =
-    (state: RootState) => (planId: string) =>
-        isAllowedToChangePlan(planId)(state)
-
-export const hasLegacyPlan = createSelector<RootState, boolean, Map<any, any>>(
-    DEPRECATED_getCurrentPlan,
-    (plan) => !plan.isEmpty() && (plan.get('is_legacy') as boolean)
+    }
 )

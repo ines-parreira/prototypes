@@ -116,3 +116,13 @@ export const getPricesByPlanId = (
         prices,
     }
 }
+
+export function isHelpdeskPrice(
+    price: HelpdeskPrice | AutomationPrice
+): price is HelpdeskPrice {
+    return 'public' in price
+}
+
+export function getFormattedAmount(amountInCents: number) {
+    return amountInCents / 100
+}

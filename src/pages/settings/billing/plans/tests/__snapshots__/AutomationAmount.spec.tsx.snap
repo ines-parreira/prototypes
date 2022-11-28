@@ -9,7 +9,7 @@ exports[`<AutomationAmount /> should render a string as amount 1`] = `
       class="align-middle checkboxLabel"
     >
       <span
-        id="automation-text-planId1"
+        id="automation-text-1"
       >
         Automation
       </span>
@@ -35,19 +35,19 @@ exports[`<AutomationAmount /> should render formatted amount number without disc
     >
       <label
         class="label label"
-        for="planId5"
+        for="5"
       >
         <input
           class="input"
-          id="planId5"
-          name="planId5"
+          id="5"
+          name="5"
           type="checkbox"
         />
         <div
           class="align-middle checkboxLabel"
         >
           <span
-            id="automation-text-planId5"
+            id="automation-text-5"
           >
             Automation
           </span>
@@ -86,19 +86,19 @@ exports[`<AutomationAmount /> should render formatted numbers as amount 1`] = `
     >
       <label
         class="label label"
-        for="planId2"
+        for="2"
       >
         <input
           class="input"
-          id="planId2"
-          name="planId2"
+          id="2"
+          name="2"
           type="checkbox"
         />
         <div
           class="align-middle checkboxLabel"
         >
           <span
-            id="automation-text-planId2"
+            id="automation-text-2"
           >
             Automation
           </span>
@@ -202,19 +202,19 @@ exports[`<AutomationAmount /> should render with abbreviated plan interval 1`] =
     >
       <label
         class="label label"
-        for="planId8"
+        for="8"
       >
         <input
           class="input"
-          id="planId8"
-          name="planId8"
+          id="8"
+          name="8"
           type="checkbox"
         />
         <div
           class="align-middle checkboxLabel"
         >
           <span
-            id="automation-text-planId8"
+            id="automation-text-8"
           >
             Automation
           </span>

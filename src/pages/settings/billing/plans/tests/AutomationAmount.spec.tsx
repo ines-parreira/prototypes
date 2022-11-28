@@ -9,9 +9,6 @@ import AutomationAmount from '../AutomationAmount'
 describe('<AutomationAmount />', () => {
     const minProps: ComponentProps<typeof AutomationAmount> = {
         addOnAmount: 'Amount',
-        plan: {
-            id: 'planId',
-        },
         isAutomationChecked: false,
         onAutomationChange: jest.fn(),
     }
@@ -27,12 +24,8 @@ describe('<AutomationAmount />', () => {
                 {...minProps}
                 addOnAmount={45612}
                 fullAddOnAmount={91224}
-                plan={{
-                    id: 'planId',
-                    interval: PlanInterval.Month,
-                    amount: 40000,
-                    currency: 'usd',
-                }}
+                interval={PlanInterval.Month}
+                currency="usd"
             />
         )
         expect(container).toMatchSnapshot()
@@ -43,12 +36,8 @@ describe('<AutomationAmount />', () => {
             <AutomationAmount
                 {...minProps}
                 addOnAmount={45612}
-                plan={{
-                    id: 'planId',
-                    interval: PlanInterval.Month,
-                    amount: 40000,
-                    currency: 'usd',
-                }}
+                interval={PlanInterval.Month}
+                currency="usd"
             />
         )
         expect(container).toMatchSnapshot()
@@ -60,12 +49,8 @@ describe('<AutomationAmount />', () => {
                 {...minProps}
                 addOnAmount={45612}
                 fullAddOnAmount={91224}
-                plan={{
-                    id: 'planId',
-                    interval: PlanInterval.Month,
-                    amount: 40000,
-                    currency: 'usd',
-                }}
+                interval={PlanInterval.Month}
+                currency="usd"
                 isIntervalAbbreviated
             />
         )
@@ -92,12 +77,8 @@ describe('<AutomationAmount />', () => {
                 {...minProps}
                 addOnAmount={2000}
                 fullAddOnAmount={4000}
-                plan={{
-                    id: 'planId',
-                    interval: PlanInterval.Month,
-                    amount: 40000,
-                    currency: 'usd',
-                }}
+                interval={PlanInterval.Month}
+                currency="usd"
                 editable={false}
             />
         )
@@ -109,10 +90,26 @@ describe('<AutomationAmount />', () => {
             <AutomationAmount
                 {...minProps}
                 addOnAmount={undefined}
-                plan={starterPlan}
+                interval={starterPlan.interval}
+                currency={starterPlan.currency}
+                editable={false}
             />
         )
 
         expect(container).toMatchSnapshot()
+    })
+
+    it('should render Unavailable when no amount is passed', () => {
+        const {getByText} = render(
+            <AutomationAmount
+                {...minProps}
+                addOnAmount={undefined}
+                fullAddOnAmount={91224}
+                interval={PlanInterval.Month}
+                currency="usd"
+            />
+        )
+
+        expect(getByText(/Unavailable/)).toBeTruthy()
     })
 })

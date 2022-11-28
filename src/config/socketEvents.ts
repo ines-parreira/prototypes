@@ -457,6 +457,7 @@ export const receivedEvents: ReceivedEvent[] = [
         name: SocketEventType.AccountUpdated,
         onReceive: function (json) {
             const state = reduxStore.getState() as RootState
+            const prices = currentBillingSelectors.getPricesMap(state)
             const newAccountStatus =
                 (json as AccountUpdatedEvent)?.account?.status?.status ||
                 'active'
@@ -533,11 +534,12 @@ export const receivedEvents: ReceivedEvent[] = [
                 chatsActions.fetchChatsThrottled(reduxStore.dispatch)
             }
 
-            const newAccountPlan = account.current_subscription?.plan
-            const isPlanLoaded =
-                !!currentBillingSelectors.getPlan(newAccountPlan)(state)
+            const newAccountProducts = account.current_subscription.products
+            const areProductsLoaded = Object.values(newAccountProducts).every(
+                (priceId) => !!prices[priceId]
+            )
 
-            if (!isPlanLoaded) {
+            if (!areProductsLoaded) {
                 reduxStore.dispatch(
                     notificationsActions.notify({
                         message:

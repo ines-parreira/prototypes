@@ -24,7 +24,7 @@ import CheckBox from 'pages/common/forms/CheckBox'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import history from 'pages/history'
 import settingsCss from 'pages/settings/settings.less'
-import {DEPRECATED_getCurrentPlan} from 'state/billing/selectors'
+import {getCurrentHelpdeskProduct} from 'state/billing/selectors'
 import {AccountFeature} from 'state/currentAccount/types'
 import {
     activateOnboardingIntegrations,
@@ -107,13 +107,12 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
         let {selectedIntegrations} = this.state
         const id: number = integration.get('id')
 
-        const {currentPlan} = this.props
+        const {currentHelpdeskProduct} = this.props
 
-        const currentPlanHasInstagramDMFeature = currentPlan.getIn([
-            'features',
-            AccountFeature.InstagramDirectMessage,
-            'enabled',
-        ])
+        const currentPlanHasInstagramDMFeature =
+            !!currentHelpdeskProduct?.features[
+                AccountFeature.InstagramDirectMessage
+            ].enabled
 
         let userPermissions: string | undefined | string[] = integration.getIn([
             'meta',
@@ -238,8 +237,12 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
     }
 
     _renderIntegrations = () => {
-        const {integrations, pagination, currentAccount, currentPlan} =
-            this.props
+        const {
+            integrations,
+            pagination,
+            currentAccount,
+            currentHelpdeskProduct,
+        } = this.props
         const {selectedIntegrations, isLoading} = this.state
 
         if (integrations.isEmpty()) {
@@ -340,11 +343,10 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
                                     integration
                                 )
                             const currentPlanHasInstagramDMFeature =
-                                currentPlan.getIn([
-                                    'features',
-                                    AccountFeature.InstagramDirectMessage,
-                                    'enabled',
-                                ])
+                                !!currentHelpdeskProduct?.features[
+                                    AccountFeature.InstagramDirectMessage
+                                ].enabled
+
                             const isAllowedToInstagramDM =
                                 instagramDMSettingStatus ===
                                     InstagramDMSettingStatus.ALLOWED &&
@@ -354,7 +356,7 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
                                 getInstagramDMSettingsInlineComponent(
                                     instagramDMSettingStatus,
                                     currentAccount,
-                                    currentPlan,
+                                    currentHelpdeskProduct,
                                     id
                                 )
 
@@ -872,7 +874,7 @@ const connector = connect(
         ),
         pagination: getOnboardingMeta(IntegrationType.Facebook)(state),
         currentAccount: state.currentAccount,
-        currentPlan: DEPRECATED_getCurrentPlan(state),
+        currentHelpdeskProduct: getCurrentHelpdeskProduct(state),
     }),
     {
         activateOnboardingIntegrations,

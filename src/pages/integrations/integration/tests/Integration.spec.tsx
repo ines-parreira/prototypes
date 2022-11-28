@@ -6,7 +6,6 @@ import configureMockStore from 'redux-mock-store'
 import {RootState, StoreDispatch} from 'state/types'
 import {renderWithRouter} from 'utils/testing'
 import {IntegrationType} from 'models/integration/types'
-import {Plan} from 'models/billing/types'
 
 import {IntegrationDetail, Tab} from '../Integration'
 
@@ -240,13 +239,7 @@ describe('<IntegrationDetail />', () => {
             createGorgiasChatIntegration: jest.fn(),
         },
         integrations: fromJS([]),
-        currentPlan: {
-            features: {
-                twitter_integration: {
-                    enabled: true,
-                },
-            },
-        } as Plan,
+        hasTwitterFeature: true,
         getEligibleShopifyIntegrationsFor: jest.fn(),
         getRedirectUri: jest.fn(),
         currentUser: fromJS({}),
@@ -289,19 +282,9 @@ describe('<IntegrationDetail />', () => {
     )
 
     it(`should display not available message if ${IntegrationType.Twitter} integration not included in plan`, () => {
-        const basicPlan = {
-            features: {
-                twitter_integration: {
-                    enabled: false,
-                },
-            },
-        }
         const {container} = renderWithRouter(
             <Provider store={store}>
-                <IntegrationDetail
-                    {...minProps}
-                    currentPlan={basicPlan as Plan}
-                />
+                <IntegrationDetail {...minProps} hasTwitterFeature={false} />
             </Provider>,
             {
                 path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',

@@ -5,53 +5,62 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import BillingPlanCard from 'pages/settings/billing/plans/BillingPlanCard'
 import ChangePlanModal from 'pages/settings/billing/plans/ChangePlanModal'
-import {PlanWithCurrencySign, SubscriptionPlan} from 'state/billing/types'
-import {setFutureSubscriptionPlan} from 'state/billing/actions'
 import {updateSubscription} from 'state/currentAccount/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {getPlan, isAllowedToChangePlan} from 'state/billing/selectors'
-import {getFullPrice} from 'models/billing/utils'
+import {
+    getAutomationPricesMap,
+    getCurrentAutomationProduct,
+} from 'state/billing/selectors'
+import {getFormattedAmount, getFullPrice} from 'models/billing/utils'
 
+import {getPlanCardFeaturesForPrices} from 'pages/settings/billing/plans/billingPlanFeatures'
 import TotalAmount from 'pages/settings/billing/plans/TotalAmount'
 import AutomationAmount from 'pages/settings/billing/plans/AutomationAmount'
+import {getActiveIntegrations} from 'state/integrations/selectors'
 
-import {Plan} from '../../../../../models/billing/types'
+import {HelpdeskPrice} from '../../../../../models/billing/types'
 import OpenChatButton from './components/OpenChatButton'
 
 type Props = {
     isOpen: boolean
-    currentPlan: Plan
-    suitablePlanWithoutAutomationAddOn: PlanWithCurrencySign
+    helpdeskPrice: HelpdeskPrice
     onClose: () => void
 }
 
 const HelpCenterChangePlanModal = ({
-    currentPlan,
-    suitablePlanWithoutAutomationAddOn,
+    helpdeskPrice,
     isOpen,
     onClose,
 }: Props): JSX.Element => {
     const dispatch = useAppDispatch()
-    const hasAutomationAddOn = !!currentPlan.automation_addon_included
-    const [isModalAutomationChecked, setModalIsAutomationChecked] =
-        useState(hasAutomationAddOn)
-
-    const suitablePlanWithAutomationAddOn = useAppSelector(
-        getPlan(
-            suitablePlanWithoutAutomationAddOn.automation_addon_equivalent_plan!
-        )
+    const currentAutomationPrice = useAppSelector(getCurrentAutomationProduct)
+    const [isModalAutomationChecked, setModalIsAutomationChecked] = useState(
+        !!currentAutomationPrice
     )
-    const addOnAmount = suitablePlanWithAutomationAddOn
-        ? Math.abs(
-              suitablePlanWithAutomationAddOn.amount -
-                  suitablePlanWithoutAutomationAddOn.amount
-          )
-        : '?'
-
-    const addOnDiscount =
-        suitablePlanWithAutomationAddOn &&
-        suitablePlanWithAutomationAddOn.automation_addon_discount
+    const pricesMap = useAppSelector(getAutomationPricesMap)
+    const automationPrice = useMemo(
+        () => helpdeskPrice.addons && pricesMap[helpdeskPrice.addons[0]],
+        [helpdeskPrice.addons, pricesMap]
+    )
+    const addOnAmount = useMemo(
+        () =>
+            automationPrice?.amount != null
+                ? Math.abs(getFormattedAmount(automationPrice.amount))
+                : '?',
+        [automationPrice?.amount]
+    )
+    const addOnDiscount = automationPrice?.automation_addon_discount
+    const features = useMemo(
+        () =>
+            getPlanCardFeaturesForPrices(
+                isModalAutomationChecked && automationPrice
+                    ? [helpdeskPrice, automationPrice]
+                    : [helpdeskPrice]
+            ),
+        [automationPrice, helpdeskPrice, isModalAutomationChecked]
+    )
+    const activeIntegrations = useAppSelector(getActiveIntegrations)
 
     const fullAddOnAmount = useMemo(() => {
         return typeof addOnAmount === 'number' && addOnDiscount
@@ -60,8 +69,8 @@ const HelpCenterChangePlanModal = ({
     }, [addOnAmount, addOnDiscount])
 
     const [{loading: isSubscriptionUpdating}, handleSubscriptionUpdate] =
-        useAsyncFn(async (planId: SubscriptionPlan) => {
-            if (!isAllowedToChangePlan(planId)) {
+        useAsyncFn(async (prices: string[]) => {
+            if ((helpdeskPrice.integrations || 0) < activeIntegrations.size) {
                 void dispatch(
                     notify({
                         status: NotificationStatus.Error,
@@ -73,10 +82,9 @@ const HelpCenterChangePlanModal = ({
                 return
             }
 
-            dispatch(setFutureSubscriptionPlan(planId))
             await dispatch(
                 updateSubscription({
-                    plan: planId,
+                    prices,
                 })
             )
         })
@@ -97,21 +105,23 @@ const HelpCenterChangePlanModal = ({
             onClose={onClose}
             renderComparedPlan={({className, renderBody}) => (
                 <BillingPlanCard
-                    plan={suitablePlanWithoutAutomationAddOn}
-                    featuresPlan={
-                        isModalAutomationChecked &&
-                        suitablePlanWithAutomationAddOn
-                            ? suitablePlanWithAutomationAddOn
-                            : suitablePlanWithoutAutomationAddOn
-                    }
+                    amount={getFormattedAmount(helpdeskPrice.amount)}
+                    currency={helpdeskPrice.currency}
+                    features={features}
+                    interval={helpdeskPrice.interval}
+                    name={helpdeskPrice.name}
                     className={className}
                     renderBody={renderBody}
                     footer={
                         <>
                             <AutomationAmount
                                 addOnAmount={addOnAmount}
+                                currency={helpdeskPrice.currency}
+                                editable={
+                                    !!automationPrice || addOnAmount != null
+                                }
                                 fullAddOnAmount={fullAddOnAmount}
-                                plan={suitablePlanWithoutAutomationAddOn}
+                                interval={helpdeskPrice.interval}
                                 isAutomationChecked={isModalAutomationChecked}
                                 onAutomationChange={() =>
                                     setModalIsAutomationChecked(
@@ -121,7 +131,11 @@ const HelpCenterChangePlanModal = ({
                             />
                             <TotalAmount
                                 addOnAmount={addOnAmount}
-                                plan={suitablePlanWithoutAutomationAddOn}
+                                amount={getFormattedAmount(
+                                    helpdeskPrice.amount
+                                )}
+                                currency={helpdeskPrice.currency}
+                                interval={helpdeskPrice.interval}
                                 isAutomationChecked={isModalAutomationChecked}
                             />
                         </>
@@ -129,10 +143,10 @@ const HelpCenterChangePlanModal = ({
                 />
             )}
             onConfirm={() => {
-                handleSubscriptionUpdate?.(
-                    (isModalAutomationChecked && suitablePlanWithAutomationAddOn
-                        ? suitablePlanWithAutomationAddOn.id
-                        : suitablePlanWithoutAutomationAddOn.id) as SubscriptionPlan
+                void handleSubscriptionUpdate(
+                    isModalAutomationChecked && automationPrice
+                        ? [helpdeskPrice.price_id, automationPrice.price_id]
+                        : [helpdeskPrice.price_id]
                 )
                 onClose()
             }}

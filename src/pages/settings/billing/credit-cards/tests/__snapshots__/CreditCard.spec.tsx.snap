@@ -104,7 +104,7 @@ exports[`CreditCard component should display credit card form 1`] = `
         >
           Add payment method
            
-           and pay $1000
+           and pay $60
         </ForwardRef>
         <TaxDisclaimer
           className="taxDisclaimer"
@@ -112,17 +112,112 @@ exports[`CreditCard component should display credit card form 1`] = `
       </Form>
     </div>
     <BillingPlanCard
+      amount={60}
       className="plan"
-      featuresPlan={
-        Object {
-          "amount": 1000,
-          "currencySign": "$",
-          "name": "basic",
-        }
+      currency="usd"
+      features={
+        Array [
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="playlist_add_check"
+            />,
+            "label": <BillableTicketsLabel
+              costPerTicket={0.4}
+              currency="usd"
+              freeTickets={300}
+            />,
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="thumb_up"
+            />,
+            "label": "Facebook, Messenger, Instagram",
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="forum"
+            />,
+            "label": "Live chat",
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="phone"
+            />,
+            "isDisabled": false,
+            "label": <React.Fragment>
+              <b>
+                1
+              </b>
+               Phone number
+            </React.Fragment>,
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="auto_awesome"
+            />,
+            "label": "Macros and rules",
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="insert_emoticon"
+            />,
+            "isDisabled": false,
+            "label": "Satisfaction surveys",
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="web_asset"
+            />,
+            "isDisabled": false,
+            "label": <HelpCenterLabel
+              disabled={false}
+            />,
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="directions_walk"
+            />,
+            "label": <React.Fragment>
+              <b>
+                Self
+              </b>
+               onboarding
+            </React.Fragment>,
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="attach_money"
+            />,
+            "isDisabled": true,
+            "label": "Revenue statistics",
+          },
+          Object {
+            "icon": <PlanFeatureVectorIcon
+              url="test-file-stub"
+            />,
+            "isDisabled": true,
+            "label": "Magento integration",
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="person_pin"
+            />,
+            "isDisabled": true,
+            "label": "Dedicated success manager",
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="blur_on"
+            />,
+            "isDisabled": true,
+            "label": "Custom services",
+          },
+        ]
       }
       footer={false}
+      interval="month"
       isCurrentPlan={true}
-      plan={Object {}}
+      name="Basic"
       renderBody={[Function]}
     />
   </Container>
@@ -241,12 +336,122 @@ exports[`CreditCard component should not render the billing address form when a 
         >
           Add payment method
            
+           and pay $60
         </ForwardRef>
         <TaxDisclaimer
           className="taxDisclaimer"
         />
       </Form>
     </div>
+    <BillingPlanCard
+      amount={60}
+      className="plan"
+      currency="usd"
+      features={
+        Array [
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="playlist_add_check"
+            />,
+            "label": <BillableTicketsLabel
+              costPerTicket={0.4}
+              currency="usd"
+              freeTickets={300}
+            />,
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="thumb_up"
+            />,
+            "label": "Facebook, Messenger, Instagram",
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="forum"
+            />,
+            "label": "Live chat",
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="phone"
+            />,
+            "isDisabled": false,
+            "label": <React.Fragment>
+              <b>
+                1
+              </b>
+               Phone number
+            </React.Fragment>,
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="auto_awesome"
+            />,
+            "label": "Macros and rules",
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="insert_emoticon"
+            />,
+            "isDisabled": false,
+            "label": "Satisfaction surveys",
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="web_asset"
+            />,
+            "isDisabled": false,
+            "label": <HelpCenterLabel
+              disabled={false}
+            />,
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="directions_walk"
+            />,
+            "label": <React.Fragment>
+              <b>
+                Self
+              </b>
+               onboarding
+            </React.Fragment>,
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="attach_money"
+            />,
+            "isDisabled": true,
+            "label": "Revenue statistics",
+          },
+          Object {
+            "icon": <PlanFeatureVectorIcon
+              url="test-file-stub"
+            />,
+            "isDisabled": true,
+            "label": "Magento integration",
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="person_pin"
+            />,
+            "isDisabled": true,
+            "label": "Dedicated success manager",
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="blur_on"
+            />,
+            "isDisabled": true,
+            "label": "Custom services",
+          },
+        ]
+      }
+      footer={false}
+      interval="month"
+      isCurrentPlan={true}
+      name="Basic"
+      renderBody={[Function]}
+    />
   </Container>
 </div>
 `;
@@ -355,7 +560,7 @@ exports[`CreditCard component should render billing plan card with automation fo
         >
           Add payment method
            
-           and pay $1000
+           and pay $62
         </ForwardRef>
         <TaxDisclaimer
           className="taxDisclaimer"
@@ -363,52 +568,369 @@ exports[`CreditCard component should render billing plan card with automation fo
       </Form>
     </div>
     <BillingPlanCard
+      amount={60}
       className="plan"
-      featuresPlan={
-        Object {
-          "amount": 1000,
-          "automation_addon_included": true,
-          "currencySign": "$",
-          "name": "basic-automation",
-        }
+      currency="usd"
+      features={
+        Array [
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="playlist_add_check"
+            />,
+            "label": <BillableTicketsLabel
+              costPerTicket={0.4}
+              currency="usd"
+              freeTickets={300}
+            />,
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="thumb_up"
+            />,
+            "label": "Facebook, Messenger, Instagram",
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="forum"
+            />,
+            "label": "Live chat",
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="phone"
+            />,
+            "isDisabled": false,
+            "label": <React.Fragment>
+              <b>
+                1
+              </b>
+               Phone number
+            </React.Fragment>,
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="auto_awesome"
+            />,
+            "label": "Macros and rules",
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="insert_emoticon"
+            />,
+            "isDisabled": false,
+            "label": "Satisfaction surveys",
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="web_asset"
+            />,
+            "isDisabled": false,
+            "label": <HelpCenterLabel
+              disabled={false}
+            />,
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="directions_walk"
+            />,
+            "label": <React.Fragment>
+              <b>
+                Self
+              </b>
+               onboarding
+            </React.Fragment>,
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="attach_money"
+            />,
+            "isDisabled": true,
+            "label": "Revenue statistics",
+          },
+          Object {
+            "icon": <PlanFeatureVectorIcon
+              url="test-file-stub"
+            />,
+            "isDisabled": true,
+            "label": "Magento integration",
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="person_pin"
+            />,
+            "isDisabled": true,
+            "label": "Dedicated success manager",
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="blur_on"
+            />,
+            "isDisabled": true,
+            "label": "Custom services",
+          },
+        ]
       }
       footer={
         <React.Fragment>
           <AutomationAmount
-            addOnAmount={200}
+            addOnAmount={2}
+            currency="usd"
             editable={false}
-            plan={
-              Object {
-                "amount": 800,
-                "automation_addon_included": false,
-                "currencySign": "$",
-                "name": "basic",
-              }
-            }
+            fullAddOnAmount={2}
+            interval="month"
           />
           <TotalAmount
-            addOnAmount={200}
+            addOnAmount={2}
+            amount={60}
+            currency="usd"
+            interval="month"
             isEditable={false}
-            plan={
-              Object {
-                "amount": 800,
-                "automation_addon_included": false,
-                "currencySign": "$",
-                "name": "basic",
-              }
-            }
           />
         </React.Fragment>
       }
+      interval="month"
       isCurrentPlan={true}
-      plan={
-        Object {
-          "amount": 800,
-          "automation_addon_included": false,
-          "currencySign": "$",
-          "name": "basic",
-        }
+      name="Basic"
+      renderBody={[Function]}
+    />
+  </Container>
+</div>
+`;
+
+exports[`CreditCard component should render billing plan card with automation footer when current plan is not active and has automation add-on when the automation price is not discounted 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        aria-label="breadcrumb"
+        listTag="ol"
+        tag="nav"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            className="section"
+            to="/app/settings/billing/"
+          >
+            Billing & usage
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          Add payment method
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <Container
+    className="pageContainer container"
+    fluid={true}
+    tag="div"
+  >
+    <div
+      className="form"
+    >
+      <Alert
+        className="mb-3"
+      >
+        You will be charged for the current period of your plan once you add your Credit Card
+      </Alert>
+      <h3
+        className="heading-section-semibold"
+      >
+        Payment information
+      </h3>
+      <Form
+        onSubmit={[Function]}
+        tag="form"
+      >
+        <InputField
+          className="mb16"
+          id="name"
+          isRequired={true}
+          label="Name on the card"
+          onChange={[Function]}
+          placeholder="Marie Curie"
+          value=""
+        />
+        <div
+          className="row mb32"
+        >
+          <InputField
+            className="inputRow"
+            id="number"
+            isRequired={true}
+            label="Card number"
+            onChange={[Function]}
+            placeholder="4657 7894 1234 7895"
+            value=""
+          />
+          <InputField
+            className="inputRow"
+            id="expDate"
+            isRequired={true}
+            label="Expiry date"
+            onChange={[Function]}
+            placeholder="05 / 21"
+            value=""
+          />
+          <InputField
+            className="inputRow"
+            id="cvc"
+            isRequired={true}
+            label="CVC"
+            onChange={[Function]}
+            placeholder="693"
+            value=""
+          />
+        </div>
+        <FormGroup
+          color="danger"
+          tag="div"
+        >
+          <Errors />
+        </FormGroup>
+        <ForwardRef
+          isDisabled={true}
+          isLoading={false}
+          type="submit"
+        >
+          Add payment method
+           
+           and pay $62
+        </ForwardRef>
+        <TaxDisclaimer
+          className="taxDisclaimer"
+        />
+      </Form>
+    </div>
+    <BillingPlanCard
+      amount={60}
+      className="plan"
+      currency="usd"
+      features={
+        Array [
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="playlist_add_check"
+            />,
+            "label": <BillableTicketsLabel
+              costPerTicket={0.4}
+              currency="usd"
+              freeTickets={300}
+            />,
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="thumb_up"
+            />,
+            "label": "Facebook, Messenger, Instagram",
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="forum"
+            />,
+            "label": "Live chat",
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="phone"
+            />,
+            "isDisabled": false,
+            "label": <React.Fragment>
+              <b>
+                1
+              </b>
+               Phone number
+            </React.Fragment>,
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="auto_awesome"
+            />,
+            "label": "Macros and rules",
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="insert_emoticon"
+            />,
+            "isDisabled": false,
+            "label": "Satisfaction surveys",
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="web_asset"
+            />,
+            "isDisabled": false,
+            "label": <HelpCenterLabel
+              disabled={false}
+            />,
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="directions_walk"
+            />,
+            "label": <React.Fragment>
+              <b>
+                Self
+              </b>
+               onboarding
+            </React.Fragment>,
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="attach_money"
+            />,
+            "isDisabled": true,
+            "label": "Revenue statistics",
+          },
+          Object {
+            "icon": <PlanFeatureVectorIcon
+              url="test-file-stub"
+            />,
+            "isDisabled": true,
+            "label": "Magento integration",
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="person_pin"
+            />,
+            "isDisabled": true,
+            "label": "Dedicated success manager",
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="blur_on"
+            />,
+            "isDisabled": true,
+            "label": "Custom services",
+          },
+        ]
       }
+      footer={
+        <React.Fragment>
+          <AutomationAmount
+            addOnAmount={2}
+            currency="usd"
+            editable={false}
+            interval="month"
+          />
+          <TotalAmount
+            addOnAmount={2}
+            amount={60}
+            currency="usd"
+            interval="month"
+            isEditable={false}
+          />
+        </React.Fragment>
+      }
+      interval="month"
+      isCurrentPlan={true}
+      name="Basic"
       renderBody={[Function]}
     />
   </Container>
@@ -519,12 +1041,122 @@ exports[`CreditCard component should render nothing if loaded, but no current su
         >
           Add payment method
            
+           and pay $60
         </ForwardRef>
         <TaxDisclaimer
           className="taxDisclaimer"
         />
       </Form>
     </div>
+    <BillingPlanCard
+      amount={60}
+      className="plan"
+      currency="usd"
+      features={
+        Array [
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="playlist_add_check"
+            />,
+            "label": <BillableTicketsLabel
+              costPerTicket={0.4}
+              currency="usd"
+              freeTickets={300}
+            />,
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="thumb_up"
+            />,
+            "label": "Facebook, Messenger, Instagram",
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="forum"
+            />,
+            "label": "Live chat",
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="phone"
+            />,
+            "isDisabled": false,
+            "label": <React.Fragment>
+              <b>
+                1
+              </b>
+               Phone number
+            </React.Fragment>,
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="auto_awesome"
+            />,
+            "label": "Macros and rules",
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="insert_emoticon"
+            />,
+            "isDisabled": false,
+            "label": "Satisfaction surveys",
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="web_asset"
+            />,
+            "isDisabled": false,
+            "label": <HelpCenterLabel
+              disabled={false}
+            />,
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="directions_walk"
+            />,
+            "label": <React.Fragment>
+              <b>
+                Self
+              </b>
+               onboarding
+            </React.Fragment>,
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="attach_money"
+            />,
+            "isDisabled": true,
+            "label": "Revenue statistics",
+          },
+          Object {
+            "icon": <PlanFeatureVectorIcon
+              url="test-file-stub"
+            />,
+            "isDisabled": true,
+            "label": "Magento integration",
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="person_pin"
+            />,
+            "isDisabled": true,
+            "label": "Dedicated success manager",
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="blur_on"
+            />,
+            "isDisabled": true,
+            "label": "Custom services",
+          },
+        ]
+      }
+      footer={false}
+      interval="month"
+      isCurrentPlan={true}
+      name="Basic"
+      renderBody={[Function]}
+    />
   </Container>
 </div>
 `;
@@ -658,12 +1290,122 @@ exports[`CreditCard component should render the billing address form when accoun
         >
           Add payment method
            
+           and pay $60
         </ForwardRef>
         <TaxDisclaimer
           className="taxDisclaimer"
         />
       </Form>
     </div>
+    <BillingPlanCard
+      amount={60}
+      className="plan"
+      currency="usd"
+      features={
+        Array [
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="playlist_add_check"
+            />,
+            "label": <BillableTicketsLabel
+              costPerTicket={0.4}
+              currency="usd"
+              freeTickets={300}
+            />,
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="thumb_up"
+            />,
+            "label": "Facebook, Messenger, Instagram",
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="forum"
+            />,
+            "label": "Live chat",
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="phone"
+            />,
+            "isDisabled": false,
+            "label": <React.Fragment>
+              <b>
+                1
+              </b>
+               Phone number
+            </React.Fragment>,
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="auto_awesome"
+            />,
+            "label": "Macros and rules",
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="insert_emoticon"
+            />,
+            "isDisabled": false,
+            "label": "Satisfaction surveys",
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="web_asset"
+            />,
+            "isDisabled": false,
+            "label": <HelpCenterLabel
+              disabled={false}
+            />,
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="directions_walk"
+            />,
+            "label": <React.Fragment>
+              <b>
+                Self
+              </b>
+               onboarding
+            </React.Fragment>,
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="attach_money"
+            />,
+            "isDisabled": true,
+            "label": "Revenue statistics",
+          },
+          Object {
+            "icon": <PlanFeatureVectorIcon
+              url="test-file-stub"
+            />,
+            "isDisabled": true,
+            "label": "Magento integration",
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="person_pin"
+            />,
+            "isDisabled": true,
+            "label": "Dedicated success manager",
+          },
+          Object {
+            "icon": <PlanFeatureMaterialIcon
+              icon="blur_on"
+            />,
+            "isDisabled": true,
+            "label": "Custom services",
+          },
+        ]
+      }
+      footer={false}
+      interval="month"
+      isCurrentPlan={true}
+      name="Basic"
+      renderBody={[Function]}
+    />
   </Container>
 </div>
 `;

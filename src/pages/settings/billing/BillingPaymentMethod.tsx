@@ -4,7 +4,11 @@ import {Link} from 'react-router-dom'
 import {Card, CardBody, Col, Row, UncontrolledTooltip} from 'reactstrap'
 import classnames from 'classnames'
 
-import {creditCard, DEPRECATED_getCurrentPlan} from 'state/billing/selectors'
+import {
+    creditCard,
+    getCurrentProductsAmount,
+    getCurrentHelpdeskCurrency,
+} from 'state/billing/selectors'
 import {
     getCurrentSubscription,
     getShopifyBillingStatus,
@@ -123,7 +127,12 @@ export class BillingPaymentMethodContainer extends Component<
     }
 
     renderShopify() {
-        const {currentPlan, shopifyBillingStatus, subscription} = this.props
+        const {
+            productCurrency,
+            productsAmount,
+            shopifyBillingStatus,
+            subscription,
+        } = this.props
         const {isActivatingShopifyBilling} = this.state
         const hasNoSubscription = subscription.isEmpty()
         let content = null
@@ -179,13 +188,16 @@ export class BillingPaymentMethodContainer extends Component<
                 break
 
             case ShopifyBillingStatus.Inactive: {
-                const amount = currentPlan.get('amount')
                 let buttonLabel = 'Activate billing with Shopify'
+                const formattedAmount = new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: productCurrency,
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0,
+                }).format(productsAmount)
 
-                if (amount && amount !== 0) {
-                    buttonLabel += ` and pay ${
-                        currentPlan.get('currencySign') as string
-                    }${amount as string}`
+                if (productsAmount) {
+                    buttonLabel += ` and pay ${formattedAmount}`
                 }
 
                 content = (
@@ -260,7 +272,8 @@ const connector = connect(
             currentAccountDomain: state.currentAccount.get('domain'),
             creditCard: creditCard(state),
             subscription: getCurrentSubscription(state),
-            currentPlan: DEPRECATED_getCurrentPlan(state),
+            productsAmount: getCurrentProductsAmount(state),
+            productCurrency: getCurrentHelpdeskCurrency(state),
             paymentMethod: paymentMethod(state),
             shopifyBillingStatus: getShopifyBillingStatus(state),
         }

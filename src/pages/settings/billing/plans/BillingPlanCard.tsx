@@ -1,13 +1,12 @@
 import React, {ComponentProps} from 'react'
 
-import {PlanWithCurrencySign} from 'state/billing/types'
-import {hasLegacyPlan} from 'state/billing/selectors'
+import {PlanInterval} from 'models/billing/types'
+import {getIsCurrentHelpdeskLegacy} from 'state/billing/selectors'
 import LegacyPlanBadge from 'pages/common/components/LegacyPlanBadge'
 import SubscriptionAmount from 'pages/settings/common/SubscriptionAmount'
 import useAppSelector from 'hooks/useAppSelector'
 
-import PlanCard, {PlanCardTheme} from './PlanCard'
-import {getPlanCardFeaturesForPlan} from './billingPlanFeatures'
+import PlanCard, {PlanCardFeature, PlanCardTheme} from './PlanCard'
 
 const PLAN_THEMES: Partial<Record<string, PlanCardTheme>> = {
     Basic: PlanCardTheme.Blue,
@@ -18,22 +17,28 @@ const PLAN_THEMES: Partial<Record<string, PlanCardTheme>> = {
 }
 
 type Props = {
-    plan: PlanWithCurrencySign
-    featuresPlan: PlanWithCurrencySign
+    amount: number
+    currency: string
+    features: PlanCardFeature[]
+    interval: PlanInterval
     isCurrentPlan?: boolean
+    name: string
 } & Omit<ComponentProps<typeof PlanCard>, 'planName' | 'features' | 'price'>
 
 export default function BillingPlanCard({
-    plan,
-    featuresPlan,
+    amount,
+    currency,
+    features,
+    interval,
     theme,
     isCurrentPlan = false,
     headerBadge,
+    name,
     ...planCardProps
 }: Props) {
-    const accountHasLegacyPlan = useAppSelector(hasLegacyPlan)
+    const isCurrentHelpdeskLegacy = useAppSelector(getIsCurrentHelpdeskLegacy)
     const badge =
-        isCurrentPlan && accountHasLegacyPlan ? (
+        isCurrentPlan && isCurrentHelpdeskLegacy ? (
             <LegacyPlanBadge />
         ) : (
             headerBadge
@@ -41,20 +46,15 @@ export default function BillingPlanCard({
     return (
         <PlanCard
             {...planCardProps}
-            theme={theme || PLAN_THEMES[plan.name]}
-            planName={plan.name}
+            theme={theme || PLAN_THEMES[name]}
+            planName={name}
             headerBadge={badge}
-            features={getPlanCardFeaturesForPlan({
-                plan: featuresPlan,
-                enableHardCodedFeatures: !(
-                    isCurrentPlan && accountHasLegacyPlan
-                ),
-            })}
+            features={features}
             price={
                 <SubscriptionAmount
-                    amount={plan.amount}
-                    currency={plan.currency}
-                    interval={plan.interval}
+                    amount={amount}
+                    currency={currency}
+                    interval={interval}
                 />
             }
         />

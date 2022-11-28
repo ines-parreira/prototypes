@@ -1,15 +1,17 @@
 import React from 'react'
 
 import {paywallConfigs as defaultPaywallConfigs} from 'config/paywalls'
-import {AccountFeature} from 'state/currentAccount/types'
 import {
-    hasLegacyPlan,
-    DEPRECATED_getCurrentPlan,
-    DEPRECATED_getPlans,
+    AccountFeature,
+    AccountFeatureMetadata,
+} from 'state/currentAccount/types'
+import {
+    getPrices,
+    getIsCurrentHelpdeskLegacy,
+    getIsCurrentHelpdeskCustom,
+    getCurrentHelpdeskName,
 } from 'state/billing/selectors'
-import {Plan} from 'models/billing/types'
-import {toJS} from 'utils'
-import {getCheapestPlanNameForFeature} from 'utils/paywalls'
+import {getCheapestPriceNameForFeature} from 'utils/paywalls'
 import useAppSelector from 'hooks/useAppSelector'
 
 import Paywall, {PaywallTheme, UpgradeType} from '../Paywall/Paywall'
@@ -23,26 +25,29 @@ const FeaturePaywall = ({
     feature,
     paywallConfigs = defaultPaywallConfigs,
 }: Props) => {
-    const immutablePlans = useAppSelector(DEPRECATED_getPlans)
-    const isLegacyPlan = useAppSelector(hasLegacyPlan)
-    const currentPlan = useAppSelector(DEPRECATED_getCurrentPlan)
-    const plans: Record<string, Plan> | undefined = toJS(immutablePlans)
+    const prices = useAppSelector(getPrices)
+    const isProductLegacy = useAppSelector(getIsCurrentHelpdeskLegacy)
+    const isProductCustom = useAppSelector(getIsCurrentHelpdeskCustom)
+    const helpdeskName = useAppSelector(getCurrentHelpdeskName)
+
     const shouldKeepPlan =
-        currentPlan.get('custom') ||
-        (isLegacyPlan &&
-            plans &&
-            !!Object.values(plans).find(
-                (plan) =>
-                    plan.name.split(' ')[0] ===
-                        (currentPlan.get('name') as string | undefined)?.split(
-                            ' '
-                        )[0] && plan.features[feature]?.enabled
+        isProductCustom ||
+        (isProductLegacy &&
+            !!prices.find(
+                (price) =>
+                    price.name.split(' ')[0] === helpdeskName?.split(' ')[0] &&
+                    (
+                        price.features as Record<
+                            AccountFeature,
+                            AccountFeatureMetadata
+                        >
+                    )[feature]?.enabled
             ))
-    const requiredPlanName = currentPlan.get('custom')
+    const requiredPlanName = isProductCustom
         ? 'Enterprise'
         : shouldKeepPlan
-        ? (currentPlan.get('name') as string)?.split(' ')[0]
-        : getCheapestPlanNameForFeature(feature, plans || {})
+        ? helpdeskName?.split(' ')[0]
+        : getCheapestPriceNameForFeature(feature, prices || {})
     const config = paywallConfigs[feature]!
 
     return config && requiredPlanName ? (

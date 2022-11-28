@@ -189,4 +189,31 @@ describe('HelpCenterPaywall', () => {
 
         expect(mockedOpenChat).toHaveBeenCalledTimes(1)
     })
+
+    it('should suggest the proper price when clicking the upgrade cta', () => {
+        const state: Partial<RootState> = {
+            currentAccount: fromJS({
+                current_subscription: {
+                    products: {
+                        [HELPDESK_PRODUCT_ID]: 'legacyPlan',
+                    },
+                },
+            }),
+            billing: fromJS({
+                ...billingState,
+                products: createProductPricesWithLegacyPrice(PlanName.Advanced),
+            }),
+        }
+        const {getByText} = render(
+            <Provider store={mockStore(state)}>
+                <HelpCenterPaywall />
+            </Provider>
+        )
+
+        fireEvent.click(getByText(/Upgrade your plan/i))
+
+        expect(
+            getByText(/Advanced/i, {selector: '.greenTheme div'})
+        ).toBeTruthy()
+    })
 })

@@ -1,11 +1,12 @@
-import React, {useState} from 'react'
+import React, {useMemo, useState} from 'react'
 
 import helpCenterImagePreview from 'assets/img/paywalls/screens/helpcenter.png'
-import {PlanInterval} from 'models/billing/types'
 import Paywall, {PaywallTheme} from 'pages/common/components/Paywall/Paywall'
 import UpgradeButton from 'pages/common/components/UpgradeButton'
 import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentPlan, getPlans} from 'state/billing/selectors'
+import {HelpdeskPrice, PlanInterval} from 'models/billing/types'
+import {isHelpdeskPrice} from 'models/billing/utils'
+import {getCurrentHelpdeskProduct, getPrices} from 'state/billing/selectors'
 import {openChat} from 'utils'
 import {convertLegacyPlanNameToPublicPlanName, PlanName} from 'utils/paywalls'
 
@@ -13,26 +14,26 @@ import HelpCenterChangePlanModal from './HelpCenterChangePlanModal'
 
 const HelpCenterPaywall = (): JSX.Element => {
     const [isPlanChangeModalOpen, setIsPlanChangeModalOpen] = useState(false)
-    const plans = useAppSelector(getPlans)
-    const currentPlan = useAppSelector(getCurrentPlan)
-    const currentPlanName = currentPlan
-        ? convertLegacyPlanNameToPublicPlanName(currentPlan.name)
+    const helpdeskPrice = useAppSelector(getCurrentHelpdeskProduct)
+    const currentPlanName = helpdeskPrice
+        ? convertLegacyPlanNameToPublicPlanName(helpdeskPrice.name)
         : null
-
     const displayContactUsButton = currentPlanName === PlanName.Enterprise
-    const isEnterprisePlan = !!currentPlan?.custom
-    const availablePlans = plans.filter(
-        (plan) =>
-            plan.interval === (currentPlan?.interval || PlanInterval.Month) &&
-            plan.public &&
-            !plan.custom
+    const isEnterprisePlan = !!helpdeskPrice?.custom
+    const prices = useAppSelector(getPrices)
+    const availableHelpdeskPrice = useMemo(
+        () =>
+            prices.find(
+                (price) =>
+                    isHelpdeskPrice(price) &&
+                    price.public &&
+                    price.interval ===
+                        (helpdeskPrice?.interval || PlanInterval.Month) &&
+                    !price.custom &&
+                    price.name === currentPlanName
+            ) as HelpdeskPrice,
+        [currentPlanName, helpdeskPrice, prices]
     )
-    const suitablePlanWithoutAutomationAddOn =
-        !isEnterprisePlan &&
-        availablePlans.find(
-            (plan) =>
-                plan.name === currentPlanName && !plan.automation_addon_included
-        )
 
     return (
         <Paywall
@@ -73,13 +74,10 @@ const HelpCenterPaywall = (): JSX.Element => {
             }
             shouldKeepPlan
             modal={
-                currentPlan &&
-                suitablePlanWithoutAutomationAddOn && (
+                !isEnterprisePlan &&
+                availableHelpdeskPrice && (
                     <HelpCenterChangePlanModal
-                        currentPlan={currentPlan}
-                        suitablePlanWithoutAutomationAddOn={
-                            suitablePlanWithoutAutomationAddOn
-                        }
+                        helpdeskPrice={availableHelpdeskPrice}
                         isOpen={isPlanChangeModalOpen}
                         onClose={() => setIsPlanChangeModalOpen(false)}
                     />

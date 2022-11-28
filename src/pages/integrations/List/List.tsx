@@ -11,9 +11,10 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
-    planIntegrations,
-    getCurrentPlan,
-    DEPRECATED_getPlans,
+    getCurrentHelpdeskMaxIntegrations,
+    getCurrentHelpdeskName,
+    getPrices,
+    getCurrentProductsFeatures,
 } from 'state/billing/selectors'
 import {
     getActiveIntegrations,
@@ -26,20 +27,19 @@ import PageHeader from 'pages/common/components/PageHeader'
 import {AlertType} from 'pages/common/components/Alert/Alert'
 import Loader from 'pages/common/components/Loader/Loader'
 import LinkAlert from 'pages/common/components/Alert/LinkAlert'
-
-import {isFeatureEnabled} from 'utils/account'
 import css from 'pages/settings/settings.less'
-import {getCheapestPlanNameForFeature} from 'utils/paywalls'
+import {getCheapestPriceNameForFeature} from 'utils/paywalls'
 
 import IntegrationListRow from './Row'
 
 export const List = ({
-    currentPlan,
-    plans,
     integrations,
     integrationsList,
     activeIntegrations,
-    allowedIntegrations,
+    maxIntegrations,
+    features,
+    prices,
+    helpdeskName,
 }: ConnectedProps<typeof connector>) => {
     const [isLoading, setLoading] = useState(true)
     const [apps, setApps] = useState<AppListItem[]>([])
@@ -102,7 +102,7 @@ export const List = ({
     )
 
     const limitWarning = useMemo(() => {
-        const remainingIntegrations = allowedIntegrations - activeIntegrations
+        const remainingIntegrations = maxIntegrations - activeIntegrations
         const plural = activeIntegrations > 1
 
         if (remainingIntegrations > 3) {
@@ -126,10 +126,10 @@ export const List = ({
                         <strong>
                             {activeIntegrations}{' '}
                             {plural ? 'integrations' : 'integration'} of{' '}
-                            {allowedIntegrations} allowed
+                            {maxIntegrations} allowed
                         </strong>{' '}
-                        allowed on your{' '}
-                        <strong>{currentPlan?.name} plan.</strong> Need more?
+                        allowed on your <strong>{helpdeskName} plan.</strong>{' '}
+                        Need more?
                     </span>
                 ) : (
                     <span>
@@ -141,7 +141,7 @@ export const List = ({
                 )}
             </LinkAlert>
         )
-    }, [activeIntegrations, allowedIntegrations, currentPlan])
+    }, [activeIntegrations, maxIntegrations, helpdeskName])
 
     const deprecatedChatWarning = useMemo(
         () =>
@@ -198,16 +198,11 @@ export const List = ({
         .map((integration) => {
             const requiredFeature = integration.requiredFeature
 
-            if (
-                requiredFeature &&
-                (!currentPlan ||
-                    !isFeatureEnabled(currentPlan.features[requiredFeature]))
-            ) {
-                let requiredPlanName =
-                    getCheapestPlanNameForFeature(
-                        requiredFeature,
-                        plans.toJS()
-                    ) || undefined
+            if (requiredFeature && !features[requiredFeature]?.enabled) {
+                let requiredPlanName = getCheapestPriceNameForFeature(
+                    requiredFeature,
+                    prices
+                )
                 // Kind of a hacky way because `plans` variable doesn't
                 // contain the custom plans (Enterprise plans == Custom plans)
                 if (
@@ -272,11 +267,12 @@ export const List = ({
 
 const connector = connect((state: RootState) => ({
     activeIntegrations: getActiveIntegrations(state).size,
-    allowedIntegrations: planIntegrations(state),
-    currentPlan: getCurrentPlan(state),
+    maxIntegrations: getCurrentHelpdeskMaxIntegrations(state),
+    features: getCurrentProductsFeatures(state),
     integrations: getIntegrations(state),
     integrationsList: getIntegrationsList(state),
-    plans: DEPRECATED_getPlans(state),
+    prices: getPrices(state),
+    helpdeskName: getCurrentHelpdeskName(state),
 }))
 
 export default connector(List)

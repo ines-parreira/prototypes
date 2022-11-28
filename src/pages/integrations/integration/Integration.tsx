@@ -10,7 +10,7 @@ import {Container} from 'reactstrap'
 import classNames from 'classnames'
 
 import * as IntegrationsActions from 'state/integrations/actions'
-import {getCurrentPlan} from 'state/billing/selectors'
+import {makeHasFeature} from 'state/billing/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {IntegrationType} from 'models/integration/types'
@@ -25,7 +25,6 @@ import {fetchPhoneNumbers} from 'models/phoneNumber/resources'
 import {phoneNumbersFetched} from 'state/entities/phoneNumbers/actions'
 import {AccountFeature} from 'state/currentAccount/types'
 import {compare} from 'utils'
-import {isFeatureEnabled} from 'utils/account'
 import useAppDispatch from 'hooks/useAppDispatch'
 
 import {EmailProvider} from 'models/integration/constants'
@@ -133,8 +132,8 @@ export const IntegrationDetail = ({
     actions,
     currentUser,
     getRedirectUri,
+    hasTwitterFeature,
     integrations,
-    currentPlan,
 }: ConnectedProps<typeof connector>) => {
     const {extra, integrationId, integrationType, subId} = useParams<{
         extra: string
@@ -554,12 +553,7 @@ export const IntegrationDetail = ({
             )
 
         case IntegrationType.Twitter:
-            if (
-                !currentPlan ||
-                !isFeatureEnabled(
-                    currentPlan.features[AccountFeature.TwitterIntegration]
-                )
-            ) {
+            if (!hasTwitterFeature) {
                 // TODO: This should be replaced with a Paywall component when design available
                 return (
                     <Container fluid>
@@ -762,7 +756,9 @@ const connector = connect(
             getEligibleShopifyIntegrationsFor(state),
         getRedirectUri: makeGetRedirectUri(state),
         currentUser: state.currentUser,
-        currentPlan: getCurrentPlan(state),
+        hasTwitterFeature: makeHasFeature(state)(
+            AccountFeature.TwitterIntegration
+        ),
     }),
     (dispatch) => ({
         actions: bindActionCreators(IntegrationsActions, dispatch),

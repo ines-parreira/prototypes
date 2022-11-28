@@ -84,8 +84,12 @@ export enum SubscriptionPlan {
     AdvancedAutomationYearlyUSD2 = 'advanced-automation-yearly-usd-2',
 }
 
-export type Subscription = {
+export type DEPRECATED_Subscription = {
     plan: SubscriptionPlan
+}
+
+export type Subscription = {
+    prices: string[]
 }
 
 export type ProductPriceSubscription =
@@ -106,6 +110,5 @@ export type BillingState = {
         [plan in SubscriptionPlan]: Plan
     }
     products: BillingProducts
-    futureSubscriptionPlan?: string
     invoices: Invoice[]
 }

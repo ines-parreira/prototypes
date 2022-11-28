@@ -15,7 +15,7 @@ import * as Sentry from '@sentry/react'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import HomePageLink from 'pages/common/components/HomePageLink'
 import shortcutManager from '../../../services/shortcutManager/index'
-import {DEPRECATED_getCurrentPlan} from '../../../state/billing/selectors'
+import {getCurrentHelpdeskProduct} from '../../../state/billing/selectors'
 import {isTrialing} from '../../../state/currentAccount/selectors'
 import {submitSetting} from '../../../state/currentUser/actions'
 import {
@@ -225,14 +225,13 @@ export class Navbar extends Component<Props, State> {
     render() {
         const {
             available,
-            currentPlan,
+            currentHelpdeskProduct,
             currentUser,
             isTrialing,
             isPreferencesLoading,
         } = this.props
-        const currentPlanName = (currentPlan.get('name') as string) || ''
         const isBasicOrPro = ['pro', 'basic'].some((planType) =>
-            currentPlanName.toLowerCase().includes(planType)
+            currentHelpdeskProduct?.name.toLowerCase().includes(planType)
         )
 
         return (
@@ -784,9 +783,9 @@ const connector = connect(
         const getIsPreferencesLoading = isLoading(['settings', 'preferences'])
 
         return {
+            currentHelpdeskProduct: getCurrentHelpdeskProduct(state),
             currentUser: getCurrentUser(state),
             currentUserPreferences: getPreferences(state),
-            currentPlan: DEPRECATED_getCurrentPlan(state),
             available: isAvailable(state),
             isOpenedPanel: isOpenedPanel('navbar')(state),
             isTrialing: isTrialing(state),

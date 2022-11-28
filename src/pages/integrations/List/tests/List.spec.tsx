@@ -6,8 +6,11 @@ import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 
+import {
+    basicMonthlyAutomationPrice,
+    basicMonthlyHelpdeskPrice,
+} from 'fixtures/productPrices'
 import {AccountFeature} from 'state/currentAccount/types'
-import {Plan} from 'models/billing/types'
 import {Integration, IntegrationType} from 'models/integration/types'
 import client from 'models/api/resources'
 import {List} from '../List'
@@ -33,8 +36,7 @@ describe('<IntegrationsList />', () => {
     const minProps = {
         dispatch: jest.fn(),
         activeIntegrations: 0,
-        allowedIntegrations: 100,
-        currentPlan: {} as Plan,
+        maxIntegrations: 100,
         currentAccount: fromJS({}),
         integrations: [] as Integration[],
         integrationsList: [
@@ -46,7 +48,9 @@ describe('<IntegrationsList />', () => {
                 count: 1,
             },
         ],
-        plans: fromJS({}),
+        features: {},
+        helpdeskName: 'Pro',
+        prices: [basicMonthlyHelpdeskPrice, basicMonthlyAutomationPrice],
         accountDomain: 'acme',
     }
 
@@ -80,7 +84,7 @@ describe('<IntegrationsList />', () => {
                 <List
                     {...minProps}
                     activeIntegrations={2}
-                    allowedIntegrations={5}
+                    maxIntegrations={5}
                 />
             </Provider>
         )
@@ -104,16 +108,6 @@ describe('<IntegrationsList />', () => {
                             requiredFeature: AccountFeature.TwitterIntegration,
                         },
                     ]}
-                    currentPlan={
-                        {
-                            features: {
-                                twitter_integration: {
-                                    enabled: false,
-                                    limit: 0,
-                                },
-                            },
-                        } as Plan
-                    }
                 />
             </Provider>
         )

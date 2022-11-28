@@ -13,6 +13,7 @@ import {fromJS, Map} from 'immutable'
 import {AxiosError} from 'axios'
 import {AnyAction} from 'redux'
 import classnames from 'classnames'
+import _memoize from 'lodash/memoize'
 
 import Errors from 'pages/common/forms/Errors'
 import {
@@ -22,14 +23,19 @@ import {
     updateContact,
 } from 'state/billing/actions'
 import {
-    DEPRECATED_getCurrentPlan as currentPlanSelector,
-    getAddOnAutomationAmountCurrentPlan,
-    getAddOnAutomationFullAmountCurrentPlan,
+    getCurrentHelpdeskAutomationAddonAmount,
+    getCurrentAutomationFullAmount,
     getContact,
-    getEquivalentRegularCurrentPlan,
     getHasAutomationAddOn,
-    hasLegacyPlan as hasLegacyPlanSelector,
+    getIsCurrentHelpdeskLegacy,
     isMissingContactInformation,
+    getCurrentHelpdeskProduct,
+    getCurrentAutomationProduct,
+    getCurrentHelpdeskAmount,
+    getCurrentHelpdeskCurrency,
+    getIsCurrentHelpdeskCustom,
+    getCurrentHelpdeskInterval,
+    getCurrentHelpdeskName,
 } from 'state/billing/selectors'
 import Loader from 'pages/common/components/Loader/Loader'
 import {loadScript} from 'utils'
@@ -52,8 +58,10 @@ import BillingAddressInputs from 'pages/settings/billing/common/BillingAddressIn
 import {UPDATE_BILLING_CONTACT_ERROR} from 'state/billing/constants'
 import settingsCss from 'pages/settings/settings.less'
 import Button from 'pages/common/components/button/Button'
+import {AutomationPrice, HelpdeskPrice} from 'models/billing/types'
 
 import AutomationAmount from '../plans/AutomationAmount'
+import {getPlanCardFeaturesForPrices} from '../plans/billingPlanFeatures'
 import TotalAmount from '../plans/TotalAmount'
 import TaxDisclaimer from '../TaxDisclaimer'
 
@@ -93,7 +101,6 @@ export class CreditCardContainer extends Component<Props, State> {
 
     static defaultProps = {
         currentSubscription: fromJS({}),
-        currentPlan: fromJS({}),
         number: '',
         name: '',
         expDate: '',
@@ -161,7 +168,7 @@ export class CreditCardContainer extends Component<Props, State> {
 
     componentDidUpdate(prevProps: Props, prevState: State) {
         const {
-            currentPlan,
+            currentHelpdeskPrice,
             currentSubscription,
             contact,
             hasCreditCard,
@@ -169,7 +176,7 @@ export class CreditCardContainer extends Component<Props, State> {
         } = this.props
         const {isFetchingInfo, isStripeLoaded} = this.state
         const noSubscriptionNorPlan =
-            currentSubscription.isEmpty() || currentPlan.isEmpty()
+            currentSubscription.isEmpty() || !currentHelpdeskPrice
 
         if (
             isStripeLoaded &&
@@ -370,15 +377,29 @@ export class CreditCardContainer extends Component<Props, State> {
         )
     }
 
+    getPriceFeatures = _memoize(
+        (helpdeskPrice: HelpdeskPrice, automationPrice?: AutomationPrice) => {
+            const prices = automationPrice
+                ? [helpdeskPrice, automationPrice]
+                : [helpdeskPrice]
+            return getPlanCardFeaturesForPrices(prices, false)
+        }
+    )
+
     render() {
         const {
-            currentPlan,
             hasAutomationAddOn,
-            regularCurrentPlan,
             automationAddOnAmount,
             automationAddOnFullAmount,
             location,
-            accountHasLegacyPlan,
+            isCurrentHelpdeskLegacy,
+            currentHelpdeskPrice,
+            currentAutomationPrice,
+            currentHelpdeskAmount,
+            currentHelpdeskCurrency,
+            isCurrentHelpdeskCustom,
+            currentHelpdeskInterval,
+            currentHelpdeskName,
         } = this.props
         const {
             isStripeLoaded,
@@ -394,13 +415,18 @@ export class CreditCardContainer extends Component<Props, State> {
             ).some((value) => !value)
         const isUpdating = /change-credit-card/.test(location.pathname)
         const payment =
-            isUpdating ||
-            currentPlan.isEmpty() ||
-            currentPlan.get('amount') === 0
+            isUpdating || !currentHelpdeskAmount
                 ? ''
-                : ` and pay ${currentPlan.get('currencySign') as string}${
-                      currentPlan.get('amount') as number
-                  }`
+                : ` and pay ${new Intl.NumberFormat('en-US', {
+                      style: 'currency',
+                      currency: currentHelpdeskCurrency,
+                      minimumFractionDigits: 0,
+                      maximumFractionDigits: 0,
+                  }).format(
+                      currentHelpdeskAmount +
+                          (automationAddOnFullAmount ??
+                              (automationAddOnAmount || 0))
+                  )}`
 
         if (!isStripeLoaded) {
             return <Loader />
@@ -436,9 +462,9 @@ export class CreditCardContainer extends Component<Props, State> {
                     )}
                 >
                     <div className={css.form}>
-                        {accountHasLegacyPlan && (
+                        {isCurrentHelpdeskLegacy && (
                             <LegacyPlanBanner
-                                isCustomPlan={currentPlan.get('custom')}
+                                isCustomPlan={isCurrentHelpdeskCustom}
                             />
                         )}
                         {!isUpdating && (
@@ -554,38 +580,63 @@ export class CreditCardContainer extends Component<Props, State> {
                             <TaxDisclaimer className={css.taxDisclaimer} />
                         </Form>
                     </div>
-                    {!currentPlan.isEmpty() && regularCurrentPlan && (
-                        <BillingPlanCard
-                            className={css.plan}
-                            plan={regularCurrentPlan.toJS()}
-                            featuresPlan={currentPlan.toJS()}
-                            isCurrentPlan
-                            renderBody={(features) => (
-                                <div className={css.planCardBody}>
-                                    {features}
-                                </div>
-                            )}
-                            footer={
-                                hasAutomationAddOn && (
-                                    <>
-                                        <AutomationAmount
-                                            addOnAmount={automationAddOnAmount}
-                                            fullAddOnAmount={
-                                                automationAddOnFullAmount
-                                            }
-                                            plan={regularCurrentPlan.toJS()}
-                                            editable={false}
-                                        />
-                                        <TotalAmount
-                                            addOnAmount={automationAddOnAmount}
-                                            plan={regularCurrentPlan.toJS()}
-                                            isEditable={false}
-                                        />
-                                    </>
-                                )
-                            }
-                        />
-                    )}
+                    {currentHelpdeskPrice &&
+                        currentHelpdeskInterval &&
+                        currentHelpdeskName && (
+                            <BillingPlanCard
+                                className={css.plan}
+                                amount={currentHelpdeskAmount || 0}
+                                currency={currentHelpdeskCurrency}
+                                interval={currentHelpdeskInterval}
+                                features={this.getPriceFeatures(
+                                    currentHelpdeskPrice,
+                                    currentAutomationPrice
+                                )}
+                                isCurrentPlan
+                                name={currentHelpdeskName}
+                                renderBody={(features) => (
+                                    <div className={css.planCardBody}>
+                                        {features}
+                                    </div>
+                                )}
+                                footer={
+                                    hasAutomationAddOn && (
+                                        <>
+                                            <AutomationAmount
+                                                addOnAmount={
+                                                    automationAddOnAmount
+                                                }
+                                                currency={
+                                                    currentHelpdeskCurrency
+                                                }
+                                                fullAddOnAmount={
+                                                    automationAddOnFullAmount
+                                                }
+                                                interval={
+                                                    currentHelpdeskInterval
+                                                }
+                                                editable={false}
+                                            />
+                                            <TotalAmount
+                                                addOnAmount={
+                                                    automationAddOnAmount
+                                                }
+                                                amount={
+                                                    currentHelpdeskAmount || 0
+                                                }
+                                                currency={
+                                                    currentHelpdeskCurrency
+                                                }
+                                                interval={
+                                                    currentHelpdeskInterval
+                                                }
+                                                isEditable={false}
+                                            />
+                                        </>
+                                    )
+                                }
+                            />
+                        )}
                 </Container>
             </div>
         )
@@ -594,20 +645,24 @@ export class CreditCardContainer extends Component<Props, State> {
 
 const connector = connect(
     (state: RootState) => ({
-        currentPlan: currentPlanSelector(state),
         hasAutomationAddOn: getHasAutomationAddOn(state),
-        regularCurrentPlan: getEquivalentRegularCurrentPlan(state),
-        automationAddOnAmount: getAddOnAutomationAmountCurrentPlan(state),
-        automationAddOnFullAmount:
-            getAddOnAutomationFullAmountCurrentPlan(state),
+        automationAddOnAmount: getCurrentHelpdeskAutomationAddonAmount(state),
+        automationAddOnFullAmount: getCurrentAutomationFullAmount(state),
         currentUser: state.currentUser,
         currentSubscription:
             currentAccountSelectors.getCurrentSubscription(state),
         currentAccount: state.currentAccount,
         hasCreditCard: !!state.billing.get('creditCard'),
         isMissingContactInformation: isMissingContactInformation(state),
-        accountHasLegacyPlan: hasLegacyPlanSelector(state),
+        isCurrentHelpdeskLegacy: getIsCurrentHelpdeskLegacy(state),
+        isCurrentHelpdeskCustom: getIsCurrentHelpdeskCustom(state),
         contact: getContact(state),
+        currentHelpdeskPrice: getCurrentHelpdeskProduct(state),
+        currentAutomationPrice: getCurrentAutomationProduct(state),
+        currentHelpdeskAmount: getCurrentHelpdeskAmount(state),
+        currentHelpdeskCurrency: getCurrentHelpdeskCurrency(state),
+        currentHelpdeskInterval: getCurrentHelpdeskInterval(state),
+        currentHelpdeskName: getCurrentHelpdeskName(state),
     }),
     {
         setCurrentSubscription,

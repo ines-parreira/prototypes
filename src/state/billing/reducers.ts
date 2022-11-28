@@ -12,8 +12,6 @@ export default function reducer(
     action: GorgiasAction
 ): BillingImmutableState {
     switch (action.type) {
-        case constants.SET_FUTURE_SUBSCRIPTION_PLAN:
-            return state.set('futureSubscriptionPlan', action.planId)
         case constants.UPDATE_INVOICE_IN_LIST:
             return state.update('invoices', (invoices: List<any>) => {
                 return invoices.map((invoice: Map<any, any>) => {

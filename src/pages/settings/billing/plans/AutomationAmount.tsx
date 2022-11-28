@@ -1,8 +1,8 @@
-import React, {useMemo} from 'react'
+import React from 'react'
 import classnames from 'classnames'
 
 import useId from 'hooks/useId'
-import {Plan} from 'models/billing/types'
+import {PlanInterval} from 'models/billing/types'
 import Tooltip from 'pages/common/components/Tooltip'
 import CheckBox from 'pages/common/forms/CheckBox'
 import SubscriptionAmount from 'pages/settings/common/SubscriptionAmount'
@@ -17,51 +17,30 @@ const AutomationLabel = ({id}: {id: string}) => (
 
 type Props = {
     addOnAmount?: number | string
+    currency?: string
     fullAddOnAmount?: number
+    interval?: PlanInterval
     isAutomationChecked?: boolean
     onAutomationChange?: () => void
-    plan: Partial<
-        Pick<
-            Plan,
-            | 'amount'
-            | 'currency'
-            | 'id'
-            | 'interval'
-            | 'automation_addon_equivalent_plan'
-            | 'automation_addon_included'
-        >
-    >
     editable?: boolean
     isIntervalAbbreviated?: boolean
 }
 
 const AutomationAmount = ({
     addOnAmount,
+    currency,
     fullAddOnAmount,
+    interval,
     isAutomationChecked,
     onAutomationChange,
-    plan,
     editable = true,
     isIntervalAbbreviated = false,
 }: Props) => {
-    const id = useId()
-    const checkboxId = (plan.id || '') + id
-
-    const isAutomationAvailable = useMemo(
-        () =>
-            plan.automation_addon_equivalent_plan != null ||
-            plan.automation_addon_included ||
-            addOnAmount != null,
-        [
-            plan.automation_addon_equivalent_plan,
-            plan.automation_addon_included,
-            addOnAmount,
-        ]
-    )
+    const checkboxId = useId()
 
     return (
         <>
-            {editable && isAutomationAvailable ? (
+            {editable ? (
                 <div className={css.automationRow}>
                     {typeof addOnAmount === 'number' ? (
                         <CheckBox
@@ -79,21 +58,21 @@ const AutomationAmount = ({
                     )}
                     <div className={css.amountContainer}>
                         {typeof addOnAmount === 'number' &&
-                        plan.currency &&
-                        plan.interval ? (
+                        currency &&
+                        interval ? (
                             <SubscriptionAmount
                                 amount={addOnAmount}
                                 fullAmount={fullAddOnAmount}
                                 className={classnames(css.amount, {
                                     [css.amountDisabled]: !isAutomationChecked,
                                 })}
-                                currency={plan.currency}
-                                interval={plan.interval}
+                                currency={currency}
+                                interval={interval}
                                 renderAmount={(amount) => <b>{amount}</b>}
                                 isIntervalAbbreviated={isIntervalAbbreviated}
                             />
                         ) : (
-                            <i>{addOnAmount}</i>
+                            <i>{addOnAmount || 'Unavailable'}</i>
                         )}
                     </div>
                     <Tooltip
@@ -125,14 +104,14 @@ const AutomationAmount = ({
                     </div>
                     <div className={css.amountContainer}>
                         {typeof addOnAmount === 'number' &&
-                        plan.currency &&
-                        plan.interval ? (
+                        currency &&
+                        interval ? (
                             <SubscriptionAmount
                                 amount={addOnAmount}
                                 fullAmount={fullAddOnAmount}
                                 className={classnames(css.amount)}
-                                currency={plan.currency}
-                                interval={plan.interval}
+                                currency={currency}
+                                interval={interval}
                                 renderAmount={(amount) => <b>{amount}</b>}
                                 isIntervalAbbreviated={isIntervalAbbreviated}
                             />

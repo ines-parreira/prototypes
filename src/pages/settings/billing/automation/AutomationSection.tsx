@@ -4,10 +4,11 @@ import {Card, CardBody, CardTitle} from 'reactstrap'
 import {Link} from 'react-router-dom'
 
 import {
-    getAddOnAutomationAmountCurrentPlan,
-    getAddOnAutomationFullAmountCurrentPlan,
-    getCurrentPlan,
+    getCurrentHelpdeskAutomationAddonAmount,
+    getCurrentAutomationFullAmount,
     getHasAutomationAddOn,
+    getCurrentHelpdeskCurrency,
+    getCurrentHelpdeskInterval,
 } from 'state/billing/selectors'
 import {hasAutomationLegacyFeatures} from 'state/currentAccount/selectors'
 import SubscriptionAmount from 'pages/settings/common/SubscriptionAmount'
@@ -19,11 +20,10 @@ import AutomationSubscriptionModal from './AutomationSubscriptionModal'
 import css from './AutomationSection.less'
 
 const AutomationSection = () => {
-    const currentPlan = useAppSelector(getCurrentPlan)
-    const addOnAmount = useAppSelector(getAddOnAutomationAmountCurrentPlan)
-    const fullAddOnAmount = useAppSelector(
-        getAddOnAutomationFullAmountCurrentPlan
-    )
+    const currency = useAppSelector(getCurrentHelpdeskCurrency)
+    const interval = useAppSelector(getCurrentHelpdeskInterval)
+    const addOnAmount = useAppSelector(getCurrentHelpdeskAutomationAddonAmount)
+    const fullAddOnAmount = useAppSelector(getCurrentAutomationFullAmount)
 
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
         useState(false)
@@ -36,11 +36,11 @@ const AutomationSection = () => {
         >
             <CardTitle className={classnames(css['card-title'])}>
                 Automation
-                {!hasAutomationAddOn && addOnAmount != null && currentPlan && (
+                {!hasAutomationAddOn && addOnAmount != null && interval && (
                     <SubscriptionAmount
                         className={css['automation-amount']}
-                        currency={currentPlan.currency}
-                        interval={currentPlan.interval}
+                        currency={currency}
+                        interval={interval}
                         amount={addOnAmount}
                         fullAmount={fullAddOnAmount}
                         renderAmount={(amount) => <b>{amount}</b>}

@@ -24,18 +24,6 @@ Immutable.Map {
 }
 `;
 
-exports[`billing reducers SET_FUTURE_SUBSCRIPTION_PLAN should set the future subscription plan (initial state). 1`] = `
-Immutable.Map {
-  "futureSubscriptionPlan": "plan-1",
-}
-`;
-
-exports[`billing reducers SET_FUTURE_SUBSCRIPTION_PLAN should set the future subscription plan and override the previous one. 1`] = `
-Immutable.Map {
-  "futureSubscriptionPlan": "plan-2",
-}
-`;
-
 exports[`billing reducers UPDATE_INVOICE_IN_LIST should update an invoice in the list of invoices. (existing invoice) 1`] = `
 Immutable.Map {
   "invoices": Immutable.List [

@@ -7,24 +7,25 @@ import {useAsyncFn} from 'react-use'
 import Button from 'pages/common/components/button/Button'
 import Group from 'pages/common/components/layout/Group'
 import {
-    DEPRECATED_getCurrentPlan,
-    getEquivalentRegularCurrentPlan,
     getHasAutomationAddOn,
-    hasLegacyPlan,
-    makeIsAllowedToChangePlan,
-    DEPRECATED_getPlans,
+    getIsCurrentHelpdeskLegacy,
+    makeGetIsAllowedToChangePrice,
+    getCurrentHelpdeskProduct,
+    getPricesMap,
+    getAutomationProduct,
+    getIsCurrentHelpdeskCustom,
+    getHelpdeskPrices,
 } from 'state/billing/selectors'
-import {PlanInterval} from 'models/billing/types'
+import {HelpdeskPrice, PlanInterval} from 'models/billing/types'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {Subscription} from 'state/billing/types'
 import {updateSubscription} from 'state/currentAccount/actions'
-import {setFutureSubscriptionPlan} from 'state/billing/actions'
 import {getCurrentSubscription} from 'state/currentAccount/selectors'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import SynchronizedScrollTopProvider from 'pages/common/components/SynchronizedScrollTop/SynchronizedScrollTopProvider'
 import SynchronizedScrollTopContainer from 'pages/common/components/SynchronizedScrollTop/SynchronizedScrollTopContainer'
+import {Subscription} from 'state/billing/types'
 import TaxDisclaimer from '../TaxDisclaimer'
 
 import css from './BillingPlansComparison.less'
@@ -45,32 +46,33 @@ export default function BillingPlansComparison({
     onSubscriptionChanged,
 }: Props) {
     const dispatch = useAppDispatch()
-    const plans = useAppSelector(DEPRECATED_getPlans)
-    const accountHasLegacyPlan = useAppSelector(hasLegacyPlan)
-    const currentPlan = useAppSelector(DEPRECATED_getCurrentPlan)
-    const regularCurrentPlan = useAppSelector(getEquivalentRegularCurrentPlan)
-    const displayedCurrentPlan = regularCurrentPlan || currentPlan
+    const pricesMap = useAppSelector(getPricesMap)
+    const helpdeskPrices = useAppSelector(getHelpdeskPrices)
+    const automationProduct = useAppSelector(getAutomationProduct)
+    const currentHelpdeskProduct = useAppSelector(getCurrentHelpdeskProduct)
+    const isCurrentHelpdeskLegacy = useAppSelector(getIsCurrentHelpdeskLegacy)
     const currentSubscription = useAppSelector(getCurrentSubscription)
-    const isAllowedToChangePlan = useAppSelector(makeIsAllowedToChangePlan)
-    const [selectedInterval, setSelectedInterval] = useState<PlanInterval>(
-        currentPlan.get('interval') || PlanInterval.Month
+    const getIsAllowedToChangePrice = useAppSelector(
+        makeGetIsAllowedToChangePrice
     )
-    const isCustomPlan = currentPlan.get('custom', false)
-    const availablePlans = isCustomPlan
-        ? (plans.filter(
-              (plan: Map<any, any>) =>
-                  !plan.get('is_legacy') &&
-                  plan.get('id') === displayedCurrentPlan.get('id')
-          ) as Map<any, any>)
-        : (plans.filter(
-              (plan: Map<any, any>) =>
-                  (plan.get('interval') as string) === selectedInterval &&
-                  !(plan.get('automation_addon_included') as boolean) &&
-                  ((plan.get('public') as boolean) ||
-                      (plan.get('id') === displayedCurrentPlan.get('id') &&
-                          !accountHasLegacyPlan)) &&
-                  !(plan.get('custom') as boolean)
-          ) as Map<any, any>)
+    const [selectedInterval, setSelectedInterval] = useState<PlanInterval>(
+        currentHelpdeskProduct?.interval || PlanInterval.Month
+    )
+    const isCurrentHelpdeskCustom = useAppSelector(getIsCurrentHelpdeskCustom)
+    const availablePrices = isCurrentHelpdeskCustom
+        ? helpdeskPrices.filter(
+              (price) =>
+                  !price.is_legacy &&
+                  price.price_id === currentHelpdeskProduct?.price_id
+          )
+        : helpdeskPrices.filter(
+              (price) =>
+                  price.interval === selectedInterval &&
+                  !price.custom &&
+                  (price.public ||
+                      (price.price_id === currentHelpdeskProduct?.price_id &&
+                          !isCurrentHelpdeskLegacy))
+          )
 
     const handleIntervalToggle = () => {
         setSelectedInterval(
@@ -80,10 +82,10 @@ export default function BillingPlansComparison({
         )
     }
 
-    const [{loading: isSubscriptionUpdating}, handleSubscriptionUpdate] =
+    const [{loading: isSubscriptionChanging}, handleSubscriptionChange] =
         useAsyncFn(
-            async (planId: string) => {
-                if (!isAllowedToChangePlan(planId)) {
+            async (priceId: string, isAutomationChecked: boolean) => {
+                if (!getIsAllowedToChangePrice(priceId)) {
                     void dispatch(
                         notify({
                             status: NotificationStatus.Error,
@@ -94,29 +96,30 @@ export default function BillingPlansComparison({
                     )
                     return
                 }
+                const automationPrice = automationProduct.prices.find((price) =>
+                    (pricesMap[priceId] as HelpdeskPrice).addons?.includes(
+                        price.price_id
+                    )
+                )
 
-                dispatch(setFutureSubscriptionPlan(planId))
                 await dispatch(
                     updateSubscription({
-                        plan: planId,
+                        prices: [priceId].concat(
+                            isAutomationChecked && automationPrice
+                                ? [automationPrice.price_id]
+                                : []
+                        ),
                     } as Subscription)
                 )
                 onSubscriptionChanged(currentSubscription)
             },
-            [onSubscriptionChanged]
+            [
+                automationProduct,
+                dispatch,
+                getIsAllowedToChangePrice,
+                onSubscriptionChanged,
+            ]
         )
-
-    const onPlanChange = (
-        planId: string,
-        automationAddonEquivalentPlan: string | null,
-        isAutomationChecked: boolean
-    ) => {
-        const id =
-            isAutomationChecked && automationAddonEquivalentPlan
-                ? automationAddonEquivalentPlan
-                : planId
-        void handleSubscriptionUpdate(id)
-    }
 
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
     const [isAutomationChecked, setIsAutomationChecked] = useState(
@@ -156,14 +159,14 @@ export default function BillingPlansComparison({
                     </Group>
                 </div>
                 <CardDeck className={css.cardDeck}>
-                    {accountHasLegacyPlan && (
+                    {isCurrentHelpdeskLegacy && (
                         <BillingComparisonPlanCard
                             className={classNames(css.planCard, 'mt-4', {
-                                [css.isPublicPlan]: !isCustomPlan,
+                                [css.isPublicPlan]: !isCurrentHelpdeskCustom,
                             })}
-                            plan={displayedCurrentPlan.toJS()}
+                            helpdeskPrice={currentHelpdeskProduct!}
                             isCurrentPlan
-                            isUpdating={isSubscriptionUpdating}
+                            isUpdating={isSubscriptionChanging}
                             renderBody={(features) => (
                                 <SynchronizedScrollTopContainer
                                     height={PLAN_FEATURES_HEIGHT}
@@ -173,62 +176,57 @@ export default function BillingPlansComparison({
                             )}
                             isAutomationChecked={isAutomationChecked}
                             onAutomationChange={onAutomationChange}
-                            onPlanChange={(isAutomationChecked) =>
-                                onPlanChange(
-                                    displayedCurrentPlan.get('id'),
-                                    displayedCurrentPlan.get(
-                                        'automation_addon_equivalent_plan'
-                                    ),
-                                    isAutomationChecked
-                                )
-                            }
-                        />
-                    )}
-                    {availablePlans
-                        .map((plan: Map<any, any>) => (
-                            <BillingComparisonPlanCard
-                                key={plan.get('id')}
-                                className={classNames(css.planCard, 'mt-4', {
-                                    [css.isPublicPlan]:
-                                        accountHasLegacyPlan && !isCustomPlan,
-                                })}
-                                plan={plan.toJS()}
-                                isCurrentPlan={
-                                    !accountHasLegacyPlan &&
-                                    plan.get('id') ===
-                                        displayedCurrentPlan.get('id')
-                                }
-                                isUpdating={isSubscriptionUpdating}
-                                renderBody={(features) => (
-                                    <SynchronizedScrollTopContainer
-                                        height={PLAN_FEATURES_HEIGHT}
-                                    >
-                                        {features}
-                                    </SynchronizedScrollTopContainer>
-                                )}
-                                onPlanChange={(isAutomationChecked) =>
-                                    onPlanChange(
-                                        plan.get('id'),
-                                        plan.get(
-                                            'automation_addon_equivalent_plan'
-                                        ),
+                            onPlanChange={(isAutomationChecked) => {
+                                if (currentHelpdeskProduct) {
+                                    void handleSubscriptionChange(
+                                        currentHelpdeskProduct.price_id,
                                         isAutomationChecked
                                     )
                                 }
-                                defaultIsPlanChangeModalOpen={
-                                    openedPlanModal === plan.get('name')
-                                }
-                                isAutomationChecked={isAutomationChecked}
-                                onAutomationChange={onAutomationChange}
-                            />
-                        ))
-                        .toList()}
-                    {!isCustomPlan && (
+                            }}
+                        />
+                    )}
+                    {availablePrices.map((price) => (
+                        <BillingComparisonPlanCard
+                            key={price.price_id}
+                            className={classNames(css.planCard, 'mt-4', {
+                                [css.isPublicPlan]:
+                                    isCurrentHelpdeskLegacy &&
+                                    !isCurrentHelpdeskCustom,
+                            })}
+                            helpdeskPrice={price}
+                            isCurrentPlan={
+                                !isCurrentHelpdeskLegacy &&
+                                price.price_id ===
+                                    currentHelpdeskProduct?.price_id
+                            }
+                            isUpdating={isSubscriptionChanging}
+                            renderBody={(features) => (
+                                <SynchronizedScrollTopContainer
+                                    height={PLAN_FEATURES_HEIGHT}
+                                >
+                                    {features}
+                                </SynchronizedScrollTopContainer>
+                            )}
+                            onPlanChange={(isAutomationChecked) =>
+                                handleSubscriptionChange(
+                                    price.price_id,
+                                    isAutomationChecked
+                                )
+                            }
+                            defaultIsPlanChangeModalOpen={
+                                openedPlanModal === price.name
+                            }
+                            isAutomationChecked={isAutomationChecked}
+                            onAutomationChange={onAutomationChange}
+                        />
+                    ))}
+                    {!isCurrentHelpdeskCustom && (
                         <EnterpriseComparisonPlanCard
                             className={classNames(css.planCard, 'mt-4', {
-                                [css.isPublicPlan]: accountHasLegacyPlan,
+                                [css.isPublicPlan]: isCurrentHelpdeskLegacy,
                             })}
-                            isUpdating={isSubscriptionUpdating}
+                            isUpdating={isSubscriptionChanging}
                             defaultIsPlanChangeModalOpen={
                                 openedPlanModal === 'Enterprise'
                             }

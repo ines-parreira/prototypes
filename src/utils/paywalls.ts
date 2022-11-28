@@ -1,7 +1,12 @@
-import {AccountFeature} from '../state/currentAccount/types'
-import {Plan, PlanInterval} from '../models/billing/types'
-
-import {isFeatureEnabled} from './account'
+import {
+    AccountFeature,
+    AccountFeatureMetadata,
+} from '../state/currentAccount/types'
+import {
+    AutomationPrice,
+    HelpdeskPrice,
+    PlanInterval,
+} from '../models/billing/types'
 
 export enum PlanName {
     Starter = 'Starter',
@@ -9,6 +14,8 @@ export enum PlanName {
     Pro = 'Pro',
     Advanced = 'Advanced',
     Enterprise = 'Enterprise',
+    Custom = 'Custom',
+    Free = 'Free',
 }
 
 export const convertLegacyPlanNameToPublicPlanName = (
@@ -25,22 +32,26 @@ export const convertLegacyPlanNameToPublicPlanName = (
               PlanName.Basic,
               PlanName.Pro,
               PlanName.Advanced,
+              PlanName.Custom,
+              PlanName.Free,
           ].includes(name as PlanName)
         ? PlanName.Enterprise
         : (name as PlanName)
 }
 
-export const getCheapestPlanNameForFeature = (
+export const getCheapestPriceNameForFeature = (
     featureName: AccountFeature,
-    plans: Record<string, Plan>
-): string | null => {
-    const plan = Object.values(plans)
-        .filter((plan) => plan.interval === PlanInterval.Month)
-        .sort((planA, planB) => planA.amount - planB.amount)
+    prices: (HelpdeskPrice | AutomationPrice)[]
+) => {
+    return prices
+        .filter((price) => price.interval === PlanInterval.Month)
         .find(
-            (plan) =>
-                plan.features[featureName] &&
-                isFeatureEnabled(plan.features[featureName])
-        )
-    return plan ? plan.name : null
+            (price) =>
+                (
+                    price.features as Record<
+                        AccountFeature,
+                        AccountFeatureMetadata
+                    >
+                )[featureName]?.enabled
+        )?.name
 }

@@ -1,6 +1,6 @@
 import React, {ComponentProps, MouseEvent, useState} from 'react'
 
-import {hasLegacyPlan} from 'state/billing/selectors'
+import {getIsCurrentHelpdeskLegacy} from 'state/billing/selectors'
 import {openChat} from 'utils'
 import Button from 'pages/common/components/button/Button'
 import useAppSelector from 'hooks/useAppSelector'
@@ -31,7 +31,7 @@ export default function EnterpriseComparisonPlanCard({
     const [isPlanChangeModalOpen, setIsPlanChangeModalOpen] = useState(
         defaultIsPlanChangeModalOpen
     )
-    const isLegacyPlan = useAppSelector(hasLegacyPlan)
+    const isCurrentHelpdeskLegacy = useAppSelector(getIsCurrentHelpdeskLegacy)
 
     const canChoosePlan = !isUpdating
     const switchPlanButtonText = 'Contact us'
@@ -45,17 +45,11 @@ export default function EnterpriseComparisonPlanCard({
             features={getEnterprisePlanCardFeatures()}
             price="Custom price"
             subHeader={
-                <AutomationAmount
-                    addOnAmount="Custom price"
-                    plan={{id: 'enterprise'}}
-                />
+                <AutomationAmount addOnAmount="Custom price" editable={false} />
             }
             footer={
                 <>
-                    <TotalAmount
-                        addOnAmount="Custom price"
-                        plan={{id: 'enterprise'}}
-                    />
+                    <TotalAmount addOnAmount="Custom price" />
                     <Button
                         aria-label={switchPlanButtonText}
                         className={css.footerButton}
@@ -85,7 +79,7 @@ export default function EnterpriseComparisonPlanCard({
                             </>
                         }
                         header={
-                            isLegacyPlan
+                            isCurrentHelpdeskLegacy
                                 ? 'Switch to our updated plans'
                                 : "We're happy to see you grow 👏"
                         }
@@ -110,12 +104,9 @@ export default function EnterpriseComparisonPlanCard({
                                     <>
                                         <AutomationAmount
                                             addOnAmount="Custom price"
-                                            plan={{id: 'enterprise'}}
+                                            editable={false}
                                         />
-                                        <TotalAmount
-                                            addOnAmount="Custom price"
-                                            plan={{id: 'enterprise'}}
-                                        />
+                                        <TotalAmount addOnAmount="Custom price" />
                                     </>
                                 }
                             />

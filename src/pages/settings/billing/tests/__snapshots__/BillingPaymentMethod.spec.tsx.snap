@@ -4,12 +4,6 @@ exports[`BillingPaymentMethod Shopify should render a button 1`] = `
 <BillingPaymentMethodContainer
   creditCard={Immutable.Map {}}
   currentAccountDomain="foo"
-  currentPlan={
-    Immutable.Map {
-      "amount": 12,
-      "currencySign": "$",
-    }
-  }
   currentUserId="1"
   fetchCreditCard={
     [MockFunction] {
@@ -103,6 +97,8 @@ exports[`BillingPaymentMethod Shopify should render a button 1`] = `
     }
   }
   paymentMethod="shopify"
+  productCurrency="usd"
+  productsAmount={12}
   shopifyBillingStatus="inactive"
   subscription={
     Immutable.Map {
@@ -272,7 +268,7 @@ exports[`BillingPaymentMethod Shopify should render a disabled button 1`] = `
             isLoading={false}
             onClick={[Function]}
           >
-            Activate billing with Shopify
+            Activate billing with Shopify and pay $12
           </ForwardRef>
         </a>
         <TaxDisclaimer
@@ -294,7 +290,6 @@ exports[`BillingPaymentMethod Shopify should render an active status 1`] = `
 <BillingPaymentMethodContainer
   creditCard={Immutable.Map {}}
   currentAccountDomain="foo"
-  currentPlan={Immutable.Map {}}
   currentUserId="1"
   fetchCreditCard={
     [MockFunction] {
@@ -358,6 +353,8 @@ exports[`BillingPaymentMethod Shopify should render an active status 1`] = `
     }
   }
   paymentMethod="shopify"
+  productCurrency="usd"
+  productsAmount={12}
   shopifyBillingStatus="active"
   subscription={
     Immutable.Map {
@@ -417,7 +414,6 @@ exports[`BillingPaymentMethod Stripe should render a button 1`] = `
 <BillingPaymentMethodContainer
   creditCard={Immutable.Map {}}
   currentAccountDomain="foo"
-  currentPlan={Immutable.Map {}}
   currentUserId="1"
   fetchCreditCard={
     [MockFunction] {
@@ -451,6 +447,8 @@ exports[`BillingPaymentMethod Stripe should render a button 1`] = `
     }
   }
   paymentMethod="stripe"
+  productCurrency="usd"
+  productsAmount={12}
   shopifyBillingStatus="inactive"
   subscription={
     Immutable.Map {
@@ -593,7 +591,6 @@ exports[`BillingPaymentMethod Stripe should render a button to update a credit c
     }
   }
   currentAccountDomain="foo"
-  currentPlan={Immutable.Map {}}
   currentUserId="1"
   fetchCreditCard={
     [MockFunction] {
@@ -647,6 +644,8 @@ exports[`BillingPaymentMethod Stripe should render a button to update a credit c
     }
   }
   paymentMethod="stripe"
+  productCurrency="usd"
+  productsAmount={12}
   shopifyBillingStatus="inactive"
   subscription={
     Immutable.Map {
@@ -871,7 +870,6 @@ exports[`BillingPaymentMethod Stripe should render a loader 1`] = `
 <BillingPaymentMethodContainer
   creditCard={Immutable.Map {}}
   currentAccountDomain="foo"
-  currentPlan={Immutable.Map {}}
   currentUserId="1"
   fetchCreditCard={[MockFunction]}
   fetchPaymentMethod={
@@ -888,6 +886,8 @@ exports[`BillingPaymentMethod Stripe should render a loader 1`] = `
     }
   }
   paymentMethod="stripe"
+  productCurrency="usd"
+  productsAmount={12}
   shopifyBillingStatus="inactive"
   subscription={Immutable.Map {}}
 >

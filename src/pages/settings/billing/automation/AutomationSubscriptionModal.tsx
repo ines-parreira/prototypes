@@ -4,10 +4,8 @@ import classnames from 'classnames'
 import {useAsyncFn} from 'react-use'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {setFutureSubscriptionPlan} from 'state/billing/actions'
 import {
-    getEquivalentAutomationCurrentPlan,
-    getEquivalentRegularCurrentPlan,
+    getCurrentHelpdeskProduct,
     getHasAutomationAddOn,
 } from 'state/billing/selectors'
 import {updateSubscription} from 'state/currentAccount/actions'
@@ -62,20 +60,14 @@ const AutomationSubscriptionModal = ({
     fade = true,
 }: Props) => {
     const dispatch = useAppDispatch()
-    const regularCurrentPlan = useAppSelector(getEquivalentRegularCurrentPlan)
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
-    const automationPlan = useAppSelector(getEquivalentAutomationCurrentPlan)
     const isSelfServeLegacy = useAppSelector(hasAutomationLegacyFeatures)
+    const helpdeskPrice = useAppSelector(getCurrentHelpdeskProduct)
 
     const [{loading: isSubscriptionUpdating}, handleSubscriptionUpdate] =
-        useAsyncFn(async (planId) => {
-            dispatch(setFutureSubscriptionPlan(planId))
+        useAsyncFn(async (prices: string[]) => {
             try {
-                await dispatch(
-                    updateSubscription({
-                        plan: planId,
-                    })
-                )
+                await dispatch(updateSubscription({prices}))
                 onClose()
             } catch (error) {
                 void dispatch(
@@ -96,17 +88,15 @@ const AutomationSubscriptionModal = ({
         : 'Confirm automation subscription'
 
     const onConfirm = () => {
-        automationPlan &&
-            handleSubscriptionUpdate(automationPlan.id).then(
-                () => onSubscribe && onSubscribe()
-            )
+        helpdeskPrice?.addons &&
+            handleSubscriptionUpdate([
+                helpdeskPrice.price_id,
+                helpdeskPrice.addons[0],
+            ]).then(() => onSubscribe && onSubscribe())
     }
 
     const handleUnsubscribeClick = () => {
-        regularCurrentPlan &&
-            void handleSubscriptionUpdate(
-                regularCurrentPlan.get('id') as string
-            )
+        helpdeskPrice && void handleSubscriptionUpdate([helpdeskPrice.price_id])
     }
 
     return (

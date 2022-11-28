@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo} from 'react'
+import React, {useCallback, useEffect} from 'react'
 import classnames from 'classnames'
 import moment from 'moment'
 import {
@@ -11,14 +11,17 @@ import {
 } from 'reactstrap'
 import {useAsyncFn} from 'react-use'
 
-import {fromJS} from 'immutable'
+import {PlanInterval} from 'models/billing/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {fetchCurrentUsage} from 'state/billing/actions'
 import {openChat} from 'utils'
 import {
     getCurrentUsage,
-    hasLegacyPlan,
-    getCurrentPlan,
+    getIsCurrentHelpdeskLegacy,
+    getCurrentHelpdeskFreeTickets,
+    getCurrentHelpdeskName,
+    getCurrentHelpdeskInterval,
+    getIsCurrentHelpdeskCustom,
 } from 'state/billing/selectors'
 import {getCurrentSubscription} from 'state/currentAccount/selectors'
 import {notify} from 'state/notifications/actions'
@@ -29,6 +32,7 @@ import Loader from 'pages/common/components/Loader/Loader'
 import Button from 'pages/common/components/button/Button'
 import history from 'pages/history'
 import useAppSelector from 'hooks/useAppSelector'
+import {convertLegacyPlanNameToPublicPlanName} from 'utils/paywalls'
 
 import AutomationSection from './automation/AutomationSection'
 import CurrentPlanBadge from './plans/CurrentPlanBadge'
@@ -38,15 +42,16 @@ import BillingHeader from './common/BillingHeader'
 
 const BillingUsage = () => {
     const dispatch = useAppDispatch()
-
-    const accountHasLegacyPlan = useAppSelector(hasLegacyPlan)
+    const isCurrentHelpdeskLegacy = useAppSelector(getIsCurrentHelpdeskLegacy)
     const currentSubscription = useAppSelector(getCurrentSubscription)
-    const currentPlan = useAppSelector(getCurrentPlan)
-    const immutableCurrentPlan = useMemo(
-        () => fromJS(currentPlan || {}) as Map<any, any>,
-        [currentPlan]
-    )
     const currentUsage = useAppSelector(getCurrentUsage)
+    const priceName = useAppSelector(getCurrentHelpdeskName)
+    const formattedPriceName = convertLegacyPlanNameToPublicPlanName(
+        priceName || ''
+    )
+    const freeTickets = useAppSelector(getCurrentHelpdeskFreeTickets)
+    const interval = useAppSelector(getCurrentHelpdeskInterval)
+    const isCustom = useAppSelector(getIsCurrentHelpdeskCustom)
 
     const [{loading: isLoading}, handleCurrentUsageFetch] =
         useAsyncFn(async () => {
@@ -76,9 +81,6 @@ const BillingUsage = () => {
             currentUsage.getIn(['meta', 'end_datetime'])
         ).format(dateFormat)
 
-        // tickets included/used + extra cost
-        const includedTickets =
-            (immutableCurrentPlan.get('free_tickets') as number) || 0
         const usedTickets =
             (currentUsage.getIn(['data', 'tickets']) as number) || 0
         const extraCost = (currentUsage.getIn(['data', 'cost']) as number) || 0
@@ -87,13 +89,13 @@ const BillingUsage = () => {
         let percentUsed = 100
         let percentRemaining = 100
 
-        if (includedTickets) {
-            if (usedTickets >= includedTickets) {
-                percentUsed = Math.round((includedTickets * 100) / usedTickets)
+        if (freeTickets) {
+            if (usedTickets >= freeTickets) {
+                percentUsed = Math.round((freeTickets * 100) / usedTickets)
                 percentRemaining = 100 - percentUsed
             } else {
                 // we're still in the "no extra usage" zone of included tickets in the helpdesk
-                percentUsed = Math.round((usedTickets * 100) / includedTickets)
+                percentUsed = Math.round((usedTickets * 100) / freeTickets)
                 percentRemaining = 100 - percentUsed
             }
         }
@@ -102,7 +104,7 @@ const BillingUsage = () => {
             <div>
                 <div className={css['ticket-numbers']}>
                     {usedTickets.toLocaleString()}/
-                    {includedTickets.toLocaleString()} tickets{' '}
+                    {freeTickets.toLocaleString()} tickets{' '}
                     <a id="current-period">
                         <i className="material-icons text-muted">
                             info_outline
@@ -122,13 +124,13 @@ const BillingUsage = () => {
                         value={percentUsed}
                         barClassName={classnames(css.progressBar, {
                             [css.isWarning]:
-                                includedTickets &&
-                                usedTickets >= includedTickets &&
+                                freeTickets &&
+                                usedTickets >= freeTickets &&
                                 percentRemaining === 0,
                         })}
                     />
-                    {!!includedTickets &&
-                        usedTickets >= includedTickets &&
+                    {!!freeTickets &&
+                        usedTickets >= freeTickets &&
                         percentRemaining > 0 && (
                             <Progress
                                 bar
@@ -150,7 +152,7 @@ const BillingUsage = () => {
                 </div>
             </div>
         )
-    }, [immutableCurrentPlan, currentUsage])
+    }, [freeTickets, currentUsage])
 
     const renderNoSubscription = () => (
         <CardGroup className={css['card-group']}>
@@ -184,9 +186,8 @@ const BillingUsage = () => {
         const dateFormat = 'MMM DD'
 
         const isTrialing = currentSubscription.get('status') === 'trialing'
-        const planName = immutableCurrentPlan.get('name') as string
-        const planTitle = `${planName} ${
-            immutableCurrentPlan.get('interval') as string
+        const planTitle = `${formattedPriceName} ${
+            interval || PlanInterval.Month
         }ly plan`
 
         const currentSubscriptionStart = moment(
@@ -208,17 +209,17 @@ const BillingUsage = () => {
                         className={classnames(
                             css['card-title'],
                             css['current-plan-title'],
-                            css[planName.toLowerCase()],
+                            css[formattedPriceName.toLowerCase()],
                             {
-                                [css.legacy]: accountHasLegacyPlan,
+                                [css.legacy]: isCurrentHelpdeskLegacy,
                             }
                         )}
                     >
                         <div className={css.planTitle}>{planTitle}</div>
-                        {accountHasLegacyPlan ? (
+                        {isCurrentHelpdeskLegacy ? (
                             <LegacyPlanBadge />
                         ) : (
-                            <CurrentPlanBadge planName={planName} />
+                            <CurrentPlanBadge planName={formattedPriceName} />
                         )}
                     </CardTitle>
                     <CardBody
@@ -263,10 +264,8 @@ const BillingUsage = () => {
         <Loader />
     ) : (
         <div className={css.wrapper}>
-            {accountHasLegacyPlan && (
-                <LegacyPlanBanner
-                    isCustomPlan={immutableCurrentPlan.get('custom')}
-                />
+            {isCurrentHelpdeskLegacy && (
+                <LegacyPlanBanner isCustomPlan={isCustom} />
             )}
             <BillingHeader icon="insert_chart">Usage & Plans</BillingHeader>
 

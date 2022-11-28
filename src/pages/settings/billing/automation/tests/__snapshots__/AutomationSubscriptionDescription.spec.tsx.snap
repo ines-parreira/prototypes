@@ -1,5 +1,50 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<AutomationSubscriptionDescription /> should render a discounted price when the price is discounted 1`] = `
+<div
+  class="description"
+>
+  <div
+    class="flex"
+  >
+    <div>
+      Your current subscription started on
+       
+      <b>
+        Sep 03
+      </b>
+      .
+      <br />
+      <br />
+      If you cancel now, you will lose access to self-service
+       
+      custom report issue flow 
+      immediately.
+    </div>
+    <div
+      class="amountWrapper amount"
+    >
+      <span
+        class="amount"
+      >
+        <span
+          class="fullAmount"
+        >
+          $30
+        </span>
+        <wbr />
+        <b>
+          $15
+        </b>
+         
+        / 
+        month
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`<AutomationSubscriptionDescription /> should render for customers already with full add-on features 1`] = `
 <div
   class="description"

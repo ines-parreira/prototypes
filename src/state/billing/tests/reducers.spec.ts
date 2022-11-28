@@ -163,29 +163,6 @@ describe('billing reducers', () => {
         })
     })
 
-    describe('SET_FUTURE_SUBSCRIPTION_PLAN', () => {
-        it('should set the future subscription plan (initial state).', () => {
-            const action = {
-                type: types.SET_FUTURE_SUBSCRIPTION_PLAN,
-                planId: 'plan-1',
-            }
-            expect(reducer(initialState, action)).toMatchSnapshot()
-        })
-
-        it('should set the future subscription plan and override the previous one.', () => {
-            const action = {
-                type: types.SET_FUTURE_SUBSCRIPTION_PLAN,
-                planId: 'plan-1',
-            }
-            const state = reducer(initialState, action)
-            const newAction = {
-                type: types.SET_FUTURE_SUBSCRIPTION_PLAN,
-                planId: 'plan-2',
-            }
-            expect(reducer(state, newAction)).toMatchSnapshot()
-        })
-    })
-
     describe('UPDATE_INVOICE_IN_LIST', () => {
         it('should update an invoice in the list of invoices. (existing invoice)', () => {
             const invoices = [

@@ -10,6 +10,8 @@ import {
     createHelpdeskPlanFromProducts,
     getFullPrice,
     getPricesByPlanId,
+    isHelpdeskPrice,
+    getFormattedAmount,
 } from '../utils'
 
 describe('getFullPrice', () => {
@@ -139,5 +141,23 @@ describe('getPricesByPlanId', () => {
         expect(getPricesByPlanId(products, 'foo-plan')).toEqual({
             prices: [],
         })
+    })
+})
+
+describe('isHelpdeskPrice', () => {
+    it.each([
+        [basicMonthlyHelpdeskPrice, true],
+        [basicMonthlyAutomationPrice, false],
+    ])(
+        'should validate if the price is of helpdesk price',
+        (price, expectedResult) => {
+            expect(isHelpdeskPrice(price)).toBe(expectedResult)
+        }
+    )
+})
+
+describe('getFormattedAmount', () => {
+    it('should return a formatted amount', () => {
+        expect(getFormattedAmount(1234)).toBe(12.34)
     })
 })

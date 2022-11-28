@@ -12,8 +12,9 @@ describe('BillingPaymentMethod', () => {
         currentAccountDomain: 'foo',
         creditCard: fromJS({}),
         subscription: fromJS({}),
-        currentPlan: fromJS({}),
         paymentMethod: PaymentMethodType.Stripe,
+        productsAmount: 12,
+        productCurrency: 'usd',
         shopifyBillingStatus: ShopifyBillingStatus.Inactive,
         fetchPaymentMethod: jest.fn().mockResolvedValue({}),
         fetchCreditCard: jest.fn().mockResolvedValue({}),
@@ -106,10 +107,6 @@ describe('BillingPaymentMethod', () => {
             const component = mount(
                 <BillingPaymentMethodContainer
                     {...minProps}
-                    currentPlan={fromJS({
-                        amount: 12,
-                        currencySign: '$',
-                    })}
                     paymentMethod={PaymentMethodType.Shopify}
                     subscription={fromJS({plan: 'basic-usd-1'})}
                     shopifyBillingStatus={ShopifyBillingStatus.Inactive}

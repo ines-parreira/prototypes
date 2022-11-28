@@ -1,13 +1,17 @@
 import React from 'react'
 import {render} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {fromJS, Map} from 'immutable'
+import {fromJS} from 'immutable'
 import {within} from '@testing-library/dom'
 
 import {DEFAULT_PREFERENCES} from 'config'
-import {proPlan, advancedPlan} from 'fixtures/subscriptionPlan'
 import {user} from 'fixtures/users'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+
+import {
+    advancedMonthlyHelpdeskPrice,
+    proMonthlyHelpdeskPrice,
+} from 'fixtures/productPrices'
 
 import {Navbar} from '../Navbar'
 
@@ -21,7 +25,7 @@ describe('<Navbar />', () => {
         available: true,
         children: null,
         closePanels: jest.fn(),
-        currentPlan: fromJS(advancedPlan) as Map<any, any>,
+        currentHelpdeskProduct: advancedMonthlyHelpdeskPrice,
         currentUser: fromJS(user),
         currentUserPreferences: fromJS({
             type: 'preferences',
@@ -86,7 +90,10 @@ describe('<Navbar />', () => {
 
     it('should render additional item to book office hours', () => {
         const {getByText} = render(
-            <Navbar {...minProps} currentPlan={fromJS(proPlan)} />
+            <Navbar
+                {...minProps}
+                currentHelpdeskProduct={proMonthlyHelpdeskPrice}
+            />
         )
 
         userEvent.click(getByText(user.name))
@@ -97,7 +104,7 @@ describe('<Navbar />', () => {
         const {queryByText, getByText} = render(
             <Navbar
                 {...minProps}
-                currentPlan={fromJS(proPlan)}
+                currentHelpdeskProduct={proMonthlyHelpdeskPrice}
                 isTrialing={true}
             />
         )
@@ -108,7 +115,10 @@ describe('<Navbar />', () => {
 
     it(`should log ${SegmentEvent.MenuUserLinkClicked} event on book office hours click`, () => {
         const {getByText} = render(
-            <Navbar {...minProps} currentPlan={fromJS(proPlan)} />
+            <Navbar
+                {...minProps}
+                currentHelpdeskProduct={proMonthlyHelpdeskPrice}
+            />
         )
 
         userEvent.click(getByText(user.name))
@@ -133,7 +143,7 @@ describe('<Navbar />', () => {
         const {getAllByRole} = render(
             <Navbar
                 {...minProps}
-                currentPlan={fromJS(proPlan)}
+                currentHelpdeskProduct={proMonthlyHelpdeskPrice}
                 isTrialing={true}
                 currentUser={fromJS({
                     ...user,

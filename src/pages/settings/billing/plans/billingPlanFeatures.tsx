@@ -3,6 +3,13 @@ import React from 'react'
 
 import magentoIcon from 'assets/img/integrations/magento2-mono.svg'
 
+import {
+    AutomationPrice,
+    AutomationPriceFeatures,
+    HelpdeskPrice,
+    HelpdeskPriceFeatures,
+} from 'models/billing/types'
+import {isHelpdeskPrice} from 'models/billing/utils'
 import {isFeatureEnabled} from '../../../../utils/account'
 import {
     AccountFeature,
@@ -128,15 +135,15 @@ const getCommonPlanCardFeatures = ({
             label: 'Dedicated success manager',
             icon: <PlanFeatureMaterialIcon icon="person_pin" />,
             isDisabled: !(
-                planId.includes('advanced') ||
-                planId.includes('enterprise') ||
+                planId?.includes('advanced') ||
+                planId?.includes('enterprise') ||
                 isCustom
             ),
         },
         {
             label: 'Custom services',
             icon: <PlanFeatureMaterialIcon icon="blur_on" />,
-            isDisabled: !(planId.includes('enterprise') || isCustom),
+            isDisabled: !(planId?.includes('enterprise') || isCustom),
         },
     ]
 }
@@ -185,7 +192,13 @@ export const getPlanCardFeaturesForPlan = ({
         [
             {
                 icon: <PlanFeatureMaterialIcon icon="playlist_add_check" />,
-                label: <BillableTicketsLabel plan={plan} />,
+                label: (
+                    <BillableTicketsLabel
+                        costPerTicket={plan.cost_per_ticket}
+                        currency={plan.currency}
+                        freeTickets={plan.free_tickets}
+                    />
+                ),
             },
         ] as PlanCardFeature[]
     ).concat(
@@ -197,6 +210,60 @@ export const getPlanCardFeaturesForPlan = ({
             phoneNumbersLimit:
                 planFeatures && planFeatures[AccountFeature.PhoneNumber]?.limit,
             isCustom: plan.custom,
+        })
+    )
+}
+
+export const getPlanCardFeaturesForPrices = (
+    prices: (HelpdeskPrice | AutomationPrice)[],
+    enableHardCodedFeatures = false
+): PlanCardFeature[] => {
+    const helpdeskPrice = prices.find((price) => isHelpdeskPrice(price)) as
+        | HelpdeskPrice
+        | undefined
+    if (!helpdeskPrice) {
+        return []
+    }
+    if (helpdeskPrice.name.toLocaleLowerCase() === 'enterprise') {
+        return getEnterprisePlanCardFeatures()
+    }
+    const planFeatures = prices.reduce(
+        (
+            acc: Partial<HelpdeskPriceFeatures & AutomationPriceFeatures>,
+            price
+        ) => {
+            return {...acc, ...price.features}
+        },
+        {}
+    )
+    const enabledFeatures = _pickBy(planFeatures, (featureMetadata) =>
+        isFeatureEnabled(featureMetadata)
+    ) as AccountFeatures
+    const enabledFeaturesNames = Object.keys(
+        enabledFeatures
+    ) as AccountFeature[]
+    return (
+        [
+            {
+                icon: <PlanFeatureMaterialIcon icon="playlist_add_check" />,
+                label: (
+                    <BillableTicketsLabel
+                        costPerTicket={helpdeskPrice.cost_per_ticket}
+                        currency={helpdeskPrice.currency}
+                        freeTickets={helpdeskPrice.free_tickets}
+                    />
+                ),
+            },
+        ] as PlanCardFeature[]
+    ).concat(
+        getCommonPlanCardFeatures({
+            planId: helpdeskPrice.name.toLocaleLowerCase(),
+            planName: helpdeskPrice.name,
+            enableHardCodedFeatures,
+            enabledFeatures: enabledFeaturesNames,
+            phoneNumbersLimit:
+                planFeatures && planFeatures[AccountFeature.PhoneNumber]?.limit,
+            isCustom: helpdeskPrice.custom,
         })
     )
 }

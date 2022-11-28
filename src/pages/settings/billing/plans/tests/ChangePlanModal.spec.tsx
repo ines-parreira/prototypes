@@ -6,6 +6,12 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
+import {
+    AUTOMATION_PRODUCT_ID,
+    HELPDESK_PRODUCT_ID,
+    legacyBasicAutomationPrice,
+    legacyBasicHelpdeskPrice,
+} from 'fixtures/productPrices'
 import {RootState, StoreDispatch} from 'state/types'
 import {account, automationSubscriptionProductPrices} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
@@ -20,11 +26,15 @@ jest.mock(
     '../BillingPlanCard',
     () =>
         ({
-            plan,
-            featuresPlan,
+            amount,
+            currency,
+            features,
+            interval,
+            name,
             theme,
             renderBody,
             className,
+            footer,
         }: ComponentProps<typeof BillingPlanCard>) =>
             (
                 <div>
@@ -34,8 +44,12 @@ jest.mock(
                         renderBody: {renderBody?.(<span>features mock</span>)}
                     </div>
                     <div>className: {className}</div>
-                    <div>plan: {plan.id}</div>
-                    <div>features plan: {featuresPlan.id}</div>
+                    <div>amount: {amount}</div>
+                    <div>currency: {currency}</div>
+                    <div>interval: {interval}</div>
+                    <div>name: {name}</div>
+                    <div>features: {features.toString()}</div>
+                    {footer}
                 </div>
             )
 )
@@ -125,18 +139,46 @@ describe('<ChangePlanModal />', () => {
         expect(minProps.onConfirm).toHaveBeenCalled()
     })
 
-    it('should display only compared plan when there is no current plan', () => {
+    it('should display only compared plan when there is no current price', () => {
         const {baseElement} = render(
             <Provider
                 store={mockStore({
                     ...defaultState,
                     currentAccount: defaultState.currentAccount?.setIn(
-                        [
-                            'current_subscription',
-                            'products',
-                            'prod_LsH6kV35G6zKWo',
-                        ],
-                        'price_foo'
+                        ['current_subscription', 'products'],
+                        fromJS({})
+                    ),
+                })}
+            >
+                <ChangePlanModal {...minProps} />
+            </Provider>
+        )
+
+        expect(baseElement).toMatchSnapshot()
+    })
+
+    it('should render a discount when discounted prices', () => {
+        const {baseElement} = render(
+            <Provider
+                store={mockStore({
+                    ...defaultState,
+                    billing: defaultState.billing
+                        ?.mergeIn(
+                            ['products', 0, 'prices'],
+                            fromJS([legacyBasicHelpdeskPrice])
+                        )
+                        ?.mergeIn(
+                            ['products', 1, 'prices'],
+                            fromJS([legacyBasicAutomationPrice])
+                        ),
+                    currentAccount: defaultState.billing?.setIn(
+                        ['current_subscription', 'products'],
+                        fromJS({
+                            [HELPDESK_PRODUCT_ID]:
+                                legacyBasicHelpdeskPrice.price_id,
+                            [AUTOMATION_PRODUCT_ID]:
+                                legacyBasicAutomationPrice.price_id,
+                        })
                     ),
                 })}
             >

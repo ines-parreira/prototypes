@@ -1,6 +1,7 @@
 import React from 'react'
 import {Map} from 'immutable'
 
+import {HelpdeskPrice} from 'models/billing/types'
 import UpgradeButton from '../../../../common/components/UpgradeButton/UpgradeButton'
 import {SegmentEvent} from '../../../../../store/middlewares/segmentTracker'
 import {AccountFeature} from '../../../../../state/currentAccount/types'
@@ -256,21 +257,20 @@ export function getInstagramDMSettingStatus(
 export function getInstagramDMSettingsInlineComponent(
     instagramDMSettingStatus: number,
     currentAccount: Map<any, any>,
-    currentPlan: Map<any, any>,
+    currentHelpdeskProduct: HelpdeskPrice | undefined,
     tooltipId?: number
 ) {
-    const currentPlanHasInstagramDMFeature = currentPlan.getIn([
-        'features',
-        AccountFeature.InstagramDirectMessage,
-        'enabled',
-    ])
+    const currentPlanHasInstagramDMFeature =
+        !!currentHelpdeskProduct?.features[
+            AccountFeature.InstagramDirectMessage
+        ].enabled
 
     if (!currentPlanHasInstagramDMFeature) {
         const segmentEventToSend = {
             name: SegmentEvent.PaywallUpgradeButtonSelected,
             props: {
                 domain: currentAccount.get('domain'),
-                current_plan: currentPlan.get('name'),
+                current_plan: currentHelpdeskProduct!.name,
                 paywall_feature: AccountFeature.InstagramDirectMessage,
             },
         }

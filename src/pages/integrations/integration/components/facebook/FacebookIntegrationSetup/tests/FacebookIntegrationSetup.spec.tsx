@@ -2,6 +2,8 @@ import React, {ComponentProps} from 'react'
 import {fromJS, Map, List} from 'immutable'
 import {shallow} from 'enzyme'
 
+import {basicMonthlyHelpdeskPrice} from 'fixtures/productPrices'
+import {AccountFeature} from 'state/currentAccount/types'
 import {FacebookIntegrationSetupContainer} from '../FacebookIntegrationSetup'
 import {
     ADS_MANAGEMENT,
@@ -60,11 +62,7 @@ describe('FacebookIntegrationSetup', () => {
         currentAccount: fromJS({
             domain: 'acme',
         }),
-        currentPlan: fromJS({
-            features: {
-                instagram_dm: {enabled: true},
-            },
-        }),
+        currentHelpdeskProduct: basicMonthlyHelpdeskPrice,
         fetchFacebookOnboardingIntegrations: jest.fn(() => Promise.resolve()),
         activateOnboardingIntegrations: jest.fn(() => Promise.resolve()),
         fetchIntegrations: jest.fn(() => Promise.resolve()),
@@ -431,18 +429,21 @@ describe('FacebookIntegrationSetup', () => {
                 domain: 'acme',
             })
 
-            const currentPlan: Map<any, any> = fromJS({
-                name: planHasInstagramDmFeature ? 'non-legacy' : 'legacy',
+            const currentHelpdeskProduct = {
+                ...basicMonthlyHelpdeskPrice,
                 features: {
-                    instagram_dm: {enabled: planHasInstagramDmFeature},
+                    ...basicMonthlyHelpdeskPrice.features,
+                    [AccountFeature.InstagramDirectMessage]: {
+                        enabled: planHasInstagramDmFeature,
+                    },
                 },
-            })
+            }
 
             const component = shallow(
                 <FacebookIntegrationSetupContainer
                     {...minProps}
                     integrations={integrations}
-                    currentPlan={currentPlan}
+                    currentHelpdeskProduct={currentHelpdeskProduct}
                     currentAccount={currentAccount}
                 />
             )

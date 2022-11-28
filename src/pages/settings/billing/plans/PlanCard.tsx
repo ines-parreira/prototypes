@@ -42,7 +42,7 @@ export default function PlanCard({
     renderBody = (featureList) => featureList,
 }: Props) {
     const displayedPlanName = useMemo(() => {
-        return planName.replace(/[\s]+[pP]lan$/, '')
+        return planName?.replace(/[\s]+[pP]lan$/, '')
     }, [planName])
 
     return (

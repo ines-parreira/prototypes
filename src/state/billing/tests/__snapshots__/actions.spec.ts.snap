@@ -106,13 +106,6 @@ Object {
 }
 `;
 
-exports[`billing actions setFutureSubscriptionPlan() should return a Redux action to set the future subscription plan. 1`] = `
-Object {
-  "planId": "advanced-usd-1",
-  "type": "SET_FUTURE_SUBSCRIPTION_PLAN",
-}
-`;
-
 exports[`billing actions update billing contact information failure 1`] = `
 Array [
   Object {

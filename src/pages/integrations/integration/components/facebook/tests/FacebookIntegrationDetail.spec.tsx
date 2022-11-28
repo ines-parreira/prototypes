@@ -15,6 +15,9 @@ import {
     FacebookIntegration,
 } from 'models/integration/types'
 import {IntegrationType} from 'models/integration/constants'
+import {basicMonthlyHelpdeskPrice} from 'fixtures/productPrices'
+import {AccountFeature} from 'state/currentAccount/types'
+
 import {FacebookIntegrationDetail} from '../FacebookIntegrationDetail'
 import {
     ADS_MANAGEMENT,
@@ -54,13 +57,10 @@ const minProps: ComponentProps<typeof FacebookIntegrationDetail> = {
     currentAccount: fromJS({
         domain: 'acme',
     }),
-    currentPlan: fromJS({
-        features: {
-            instagram_dm: {enabled: true},
-        },
-    }),
+    currentHelpdeskProduct: basicMonthlyHelpdeskPrice,
     updateOrCreateIntegration: jest.fn(),
     deleteIntegration: jest.fn(),
+    hasInstagramDMFeature: true,
 }
 
 const defaultFacebookIntegrationSettings: FacebookIntegrationSettings = {
@@ -1172,12 +1172,15 @@ describe('<FacebookIntegrationDetail/>', () => {
                     domain: 'acme',
                 })
 
-                const currentPlan: Map<any, any> = fromJS({
-                    name: planHasInstagramDmFeature ? 'non-legacy' : 'legacy',
+                const currentHelpdeskProduct = {
+                    ...basicMonthlyHelpdeskPrice,
                     features: {
-                        instagram_dm: {enabled: planHasInstagramDmFeature},
+                        ...basicMonthlyHelpdeskPrice.features,
+                        [AccountFeature.InstagramDirectMessage]: {
+                            enabled: planHasInstagramDmFeature,
+                        },
                     },
-                })
+                }
 
                 const component = shallow<FacebookIntegrationDetail>(
                     <Provider store={store}>
@@ -1185,7 +1188,8 @@ describe('<FacebookIntegrationDetail/>', () => {
                             {...minProps}
                             integration={integration}
                             currentAccount={currentAccount}
-                            currentPlan={currentPlan}
+                            currentHelpdeskProduct={currentHelpdeskProduct}
+                            hasInstagramDMFeature={planHasInstagramDmFeature}
                         />
                     </Provider>
                 )

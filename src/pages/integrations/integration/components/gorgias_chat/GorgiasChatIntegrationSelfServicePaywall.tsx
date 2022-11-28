@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 
 import Paywall, {UpgradeType} from 'pages/common/components/Paywall/Paywall'
 import AutomationSubscriptionModal from 'pages/settings/billing/automation/AutomationSubscriptionModal'
-import {getCurrentPlan} from 'state/billing/selectors'
+import {getCurrentHelpdeskProduct} from 'state/billing/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {CurrentAccountState} from 'state/currentAccount/types'
 import {SegmentEvent} from 'store/middlewares/segmentTracker'
@@ -18,13 +18,13 @@ export const GorgiasChatIntegrationSelfServicePaywall = () => {
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
         useState(false)
     const account = useAppSelector<CurrentAccountState>(getCurrentAccountState)
-    const currentPlan = useAppSelector(getCurrentPlan)
+    const currentHelpdeskPrice = useAppSelector(getCurrentHelpdeskProduct)
 
     const segmentEventToSend = {
         name: SegmentEvent.PaywallUpgradeButtonSelected,
         props: {
             domain: account.get('domain'),
-            current_plan: currentPlan?.id,
+            current_plan: currentHelpdeskPrice?.price_id,
             paywall_feature: 'automation_addon',
         },
     }

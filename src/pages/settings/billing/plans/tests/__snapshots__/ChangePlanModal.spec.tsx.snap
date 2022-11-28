@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<ChangePlanModal /> should display only compared plan when there is no current plan 1`] = `
+exports[`<ChangePlanModal /> should display only compared plan when there is no current price 1`] = `
 <body
   class="modal-open"
 >
@@ -171,12 +171,308 @@ exports[`<ChangePlanModal /> should render 1`] = `
                     plan
                   </div>
                   <div>
-                    plan: 
-                    basic-monthly-usd-4
+                    amount: 
+                    60
                   </div>
                   <div>
-                    features plan: 
-                    basic-monthly-usd-4
+                    currency: 
+                    usd
+                  </div>
+                  <div>
+                    interval: 
+                    month
+                  </div>
+                  <div>
+                    name: 
+                    Basic
+                  </div>
+                  <div>
+                    features: 
+                    [object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]
+                  </div>
+                  <div
+                    class="automationRow"
+                  >
+                    <div
+                      class="checkbox"
+                    >
+                      <label
+                        class="label label"
+                        for="1"
+                      >
+                        <input
+                          class="input"
+                          id="1"
+                          name="1"
+                          readonly=""
+                          type="checkbox"
+                        />
+                        <div
+                          class="align-middle checkboxLabel"
+                        >
+                          <span
+                            id="automation-text-1"
+                          >
+                            Automation
+                          </span>
+                        </div>
+                      </label>
+                    </div>
+                    <div
+                      class="amountContainer"
+                    >
+                      <div
+                        class="amountWrapper amount amountDisabled"
+                      >
+                        <span
+                          class="amount"
+                        >
+                          <b>
+                            $30
+                          </b>
+                           
+                          / 
+                          month
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="row"
+                  >
+                    <div>
+                      Total
+                    </div>
+                    <div
+                      class="amountContainer"
+                    >
+                      <div
+                        class="amountWrapper amount"
+                      >
+                        <span
+                          class="amount"
+                        >
+                          <b>
+                            $60
+                          </b>
+                           
+                          / 
+                          month
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <img
+                  alt="arrow-icon"
+                  src="test-file-stub"
+                />
+                <div>
+                  renderComparedPlan
+                </div>
+              </div>
+            </div>
+            <div
+              class="footer modal-footer"
+            >
+              <button
+                class="wrapper fill secondary medium"
+                type="button"
+              >
+                Cancel
+              </button>
+              <button
+                class="wrapper fill primary medium"
+                type="button"
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="modal-backdrop fade"
+      />
+    </div>
+  </div>
+</body>
+`;
+
+exports[`<ChangePlanModal /> should render a discount when discounted prices 1`] = `
+<body
+  class="modal-open"
+>
+  <div />
+  <div
+    style="position: relative; z-index: 1050; display: block;"
+    tabindex="-1"
+  >
+    <div
+      class=""
+    >
+      <div
+        class="modal fade"
+        role="dialog"
+        style="display: block;"
+        tabindex="-1"
+      >
+        <div
+          class="modal-dialog modal modal-dialog-centered"
+          role="document"
+        >
+          <div
+            class="modal-content"
+          >
+            <div
+              class="modal-header"
+            >
+              <h5
+                class="modal-title"
+              >
+                Title of modal
+              </h5>
+              <button
+                aria-label="Close"
+                class="close"
+                type="button"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  ×
+                </span>
+              </button>
+            </div>
+            <div
+              class="p-0 modal-body"
+            >
+              <div
+                class="m-3"
+              >
+                description of the plan change
+              </div>
+              <div
+                class="m-3 flex justify-content-between"
+              >
+                <div>
+                  BillingPlanCard mock,
+                  <div>
+                    theme: 
+                    Grey
+                  </div>
+                  <div>
+                    renderBody: 
+                    <div>
+                      SynchronizedScrollTopContainer mock,
+                      <div>
+                        height: 
+                        280
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    className: 
+                    plan
+                  </div>
+                  <div>
+                    amount: 
+                    60
+                  </div>
+                  <div>
+                    currency: 
+                    usd
+                  </div>
+                  <div>
+                    interval: 
+                    month
+                  </div>
+                  <div>
+                    name: 
+                    Basic
+                  </div>
+                  <div>
+                    features: 
+                    [object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]
+                  </div>
+                  <div
+                    class="automationRow"
+                  >
+                    <div
+                      class="checkbox"
+                    >
+                      <label
+                        class="label label"
+                        for="13"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          id="13"
+                          name="13"
+                          readonly=""
+                          type="checkbox"
+                        />
+                        <div
+                          class="align-middle checkboxLabel"
+                        >
+                          <span
+                            id="automation-text-13"
+                          >
+                            Automation
+                          </span>
+                        </div>
+                      </label>
+                    </div>
+                    <div
+                      class="amountContainer"
+                    >
+                      <div
+                        class="amountWrapper amount"
+                      >
+                        <span
+                          class="amount"
+                        >
+                          <span
+                            class="fullAmount"
+                          >
+                            $30
+                          </span>
+                          <wbr />
+                          <b>
+                            $15
+                          </b>
+                           
+                          / 
+                          month
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="row"
+                  >
+                    <div>
+                      Total
+                    </div>
+                    <div
+                      class="amountContainer"
+                    >
+                      <div
+                        class="amountWrapper amount"
+                      >
+                        <span
+                          class="amount"
+                        >
+                          <b>
+                            $75
+                          </b>
+                           
+                          / 
+                          month
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <img
@@ -292,12 +588,97 @@ exports[`<ChangePlanModal /> should render the automation plan features for the 
                     plan
                   </div>
                   <div>
-                    plan: 
-                    basic-monthly-usd-4
+                    amount: 
+                    60
                   </div>
                   <div>
-                    features plan: 
-                    basic-automation-full-price-monthly-usd-4
+                    currency: 
+                    usd
+                  </div>
+                  <div>
+                    interval: 
+                    month
+                  </div>
+                  <div>
+                    name: 
+                    Basic
+                  </div>
+                  <div>
+                    features: 
+                    [object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]
+                  </div>
+                  <div
+                    class="automationRow"
+                  >
+                    <div
+                      class="checkbox"
+                    >
+                      <label
+                        class="label label"
+                        for="5"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          id="5"
+                          name="5"
+                          readonly=""
+                          type="checkbox"
+                        />
+                        <div
+                          class="align-middle checkboxLabel"
+                        >
+                          <span
+                            id="automation-text-5"
+                          >
+                            Automation
+                          </span>
+                        </div>
+                      </label>
+                    </div>
+                    <div
+                      class="amountContainer"
+                    >
+                      <div
+                        class="amountWrapper amount"
+                      >
+                        <span
+                          class="amount"
+                        >
+                          <b>
+                            $30
+                          </b>
+                           
+                          / 
+                          month
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="row"
+                  >
+                    <div>
+                      Total
+                    </div>
+                    <div
+                      class="amountContainer"
+                    >
+                      <div
+                        class="amountWrapper amount"
+                      >
+                        <span
+                          class="amount"
+                        >
+                          <b>
+                            $90
+                          </b>
+                           
+                          / 
+                          month
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <img

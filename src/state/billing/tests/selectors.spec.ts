@@ -1,8 +1,7 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
-import {fromJS, List, Map} from 'immutable'
+import {fromJS} from 'immutable'
 import _cloneDeep from 'lodash/cloneDeep'
 
-import {AutomationPrice, Plan, Product} from 'models/billing/types'
 import {
     AUTOMATION_PRODUCT_ID,
     automationProduct,
@@ -12,12 +11,15 @@ import {
     basicYearlyHelpdeskPrice,
     HELPDESK_PRODUCT_ID,
     helpdeskProduct,
-    legacyBasicAutomationPrice,
     legacyBasicHelpdeskPrice,
     products,
+    customHelpdeskPrice,
 } from 'fixtures/productPrices'
 import * as billingFixtures from 'fixtures/billing'
 import {automationSubscriptionProductPrices} from 'fixtures/account'
+import {PlanInterval} from 'models/billing/types'
+import {getFormattedAmount} from 'models/billing/utils'
+import {AccountFeature} from 'state/currentAccount/types'
 import {RootState} from '../../types'
 import * as selectors from '../selectors'
 import {initialState} from '../reducers'
@@ -65,141 +67,6 @@ describe('billing selectors', () => {
         expect(selectors.getBillingState(state)).toEqual(state.billing.toJS())
     })
 
-    it('getPlans (deprecated)', () => {
-        const plans = selectors.DEPRECATED_getPlans(state)
-
-        expect(
-            (state.billing.get('products') as List<any>)
-                .map(
-                    (product: Map<any, any>) =>
-                        product.get('prices') as List<any>
-                )
-                .flatten(1).size
-        ).toBe(plans.size)
-
-        plans.forEach((plan: Map<any, any>) => {
-            const planJS = plan.toJS()
-            expect(planJS).toHaveProperty('amount')
-            expect(planJS).toHaveProperty('currencySign')
-        })
-    })
-
-    describe('getPlans', () => {
-        it('should return plans', () => {
-            const plans = selectors.getPlans(state)
-
-            expect(
-                (state.billing.get('products') as List<any>)
-                    .map(
-                        (product: Map<any, any>) =>
-                            product.get('prices') as List<any>
-                    )
-                    .flatten(1).size
-            ).toBe(plans.length)
-
-            plans.forEach((plan: Plan) => {
-                expect(plan).toHaveProperty('amount')
-                expect(plan).toHaveProperty('currencySign')
-            })
-        })
-
-        it('should not fail in case of mismatched automation product', () => {
-            const mismatchedAutomationProduct: Product<AutomationPrice> = {
-                ...automationProduct,
-                prices: [
-                    ...automationProduct.prices,
-                    {...legacyBasicAutomationPrice, name: 'Basic'},
-                ],
-            }
-
-            const products = [helpdeskProduct, mismatchedAutomationProduct]
-            state = {
-                ...state,
-                currentAccount: fromJS({
-                    current_subscription: {
-                        products: {
-                            [HELPDESK_PRODUCT_ID]:
-                                basicMonthlyHelpdeskPrice.price_id,
-                            [AUTOMATION_PRODUCT_ID]:
-                                legacyBasicAutomationPrice.price_id,
-                        },
-                    },
-                }),
-                billing: initialState.mergeDeep({
-                    ...billingFixtures.billingState,
-                    products,
-                }),
-            }
-
-            const plans = selectors.getPlans(state)
-
-            expect(
-                (state.billing.get('products') as List<any>)
-                    .map(
-                        (product: Map<any, any>) =>
-                            product.get('prices') as List<any>
-                    )
-                    .flatten(1).size
-            ).toBe(plans.length)
-        })
-    })
-
-    it('getCurrentPlan (deprecated)', () => {
-        expect(selectors.DEPRECATED_getCurrentPlan(state).get('id')).toBe(
-            basicMonthlyHelpdeskPrice.legacy_id
-        )
-    })
-
-    it('getCurrentPlan', () => {
-        const plan = selectors.getCurrentPlan(state)
-        expect(plan?.id).toBe(basicMonthlyHelpdeskPrice.legacy_id)
-    })
-
-    it('DEPRECATED_getPlan', () => {
-        expect(selectors.DEPRECATED_getPlan('')(state)).toEqualImmutable(
-            fromJS({})
-        )
-        expect(
-            selectors
-                .DEPRECATED_getPlan('basic-monthly-usd-4')(state)
-                .get('name')
-        ).toBe(basicMonthlyHelpdeskPrice.name)
-        expect(
-            selectors
-                .DEPRECATED_getPlan(
-                    'basic-automation-full-price-monthly-usd-4'
-                )(state)
-                .get('name')
-        ).toBe(basicMonthlyAutomationPrice.name)
-    })
-
-    describe('getPlan', () => {
-        it('should return undefined when state has no plans', () => {
-            expect(
-                selectors.getPlan('')({
-                    ...state,
-                    billing: fromJS({
-                        ...billingFixtures.billingState,
-                        products: [
-                            {...helpdeskProduct, prices: []},
-                            {...automationProduct, prices: []},
-                        ],
-                    }),
-                })
-            ).toBe(undefined)
-        })
-
-        it('should return undefined when plan is not found in the state plans', () => {
-            expect(selectors.getPlan('')(state)).toBe(undefined)
-        })
-
-        it('should return the plan from the state', () => {
-            expect(
-                selectors.getPlan('basic-monthly-usd-4')(state)
-            ).toMatchSnapshot()
-        })
-    })
-
     it('invoices', () => {
         expect(selectors.invoices({} as RootState)).toEqualImmutable(fromJS([]))
         expect(selectors.invoices(state).size).toBe(1)
@@ -237,62 +104,13 @@ describe('billing selectors', () => {
         )
     })
 
-    it('isAllowedToCreateIntegration', () => {
-        expect(
-            selectors.isAllowedToCreateIntegration({
-                ...state,
-                billing: fromJS({
-                    ...billingFixtures.billingState,
-                    products: [
-                        {
-                            ...helpdeskProduct,
-                            prices: [
-                                {
-                                    ...basicMonthlyHelpdeskPrice,
-                                    integrations: 5,
-                                },
-                            ],
-                        },
-                        {
-                            ...automationProduct,
-                            prices: [basicMonthlyAutomationPrice],
-                        },
-                    ],
-                }),
-            } as RootState)
-        ).toBe(false)
-        expect(
-            selectors.isAllowedToCreateIntegration({
-                ...state,
-                billing: fromJS({
-                    ...billingFixtures.billingState,
-                    products: [
-                        {
-                            ...helpdeskProduct,
-                            prices: [
-                                {
-                                    ...basicMonthlyHelpdeskPrice,
-                                    integrations: 7,
-                                },
-                            ],
-                        },
-                        {
-                            ...automationProduct,
-                            prices: [basicMonthlyAutomationPrice],
-                        },
-                    ],
-                }),
-            } as RootState)
-        ).toBe(true)
+    it('getCurrentHelpdeskMaxIntegrations', () => {
+        expect(selectors.getCurrentHelpdeskMaxIntegrations(state)).toBe(150)
     })
 
-    it('planIntegrations', () => {
-        expect(selectors.planIntegrations(state)).toBe(150)
-    })
-
-    it('isAllowedToChangePlan', () => {
+    it('makeGetIsAllowedToChangePrice', () => {
         expect(
-            selectors.isAllowedToChangePlan('basic-yearly-usd-4')({
+            selectors.makeGetIsAllowedToChangePrice({
                 ...state,
                 billing: fromJS({
                     ...billingFixtures.billingState,
@@ -313,157 +131,23 @@ describe('billing selectors', () => {
                         },
                     ],
                 }),
-            } as RootState)
+            } as RootState)(basicYearlyHelpdeskPrice.price_id)
         ).toBe(false)
         expect(
-            selectors.isAllowedToChangePlan('basic-yearly-usd-4')(state)
+            selectors.makeGetIsAllowedToChangePrice(state)(
+                basicYearlyHelpdeskPrice.price_id
+            )
         ).toBe(true)
     })
 
-    describe('accountHasLegacyPlan', () => {
-        const productsWithLegacyPrice = _cloneDeep(products)
-        productsWithLegacyPrice[0].prices.push(legacyBasicHelpdeskPrice)
-        productsWithLegacyPrice[1].prices.push(legacyBasicAutomationPrice)
-
-        it('should return the proper value for a legacy and non legacy plan', () => {
-            expect(selectors.hasLegacyPlan(state)).toBe(false)
-            state = {
-                ...state,
-                currentAccount: fromJS({
-                    current_subscription: {
-                        products: {
-                            [HELPDESK_PRODUCT_ID]:
-                                legacyBasicHelpdeskPrice.price_id,
-                        },
-                    },
-                }),
-                billing: fromJS({
-                    ...billingFixtures.billingState,
-                    products: productsWithLegacyPrice,
-                }),
-            }
-            expect(selectors.hasLegacyPlan(state)).toBe(true)
-        })
-    })
-
-    describe('currentPlanId()', () => {
-        it('should return undefined when no current subscription', () => {
-            state = {
-                ...state,
-                billing: fromJS({
-                    ...billingFixtures.billingState,
-                }),
-                currentAccount: fromJS({
-                    current_subscription: {
-                        products: {[HELPDESK_PRODUCT_ID]: null},
-                    },
-                }),
-            }
-            expect(selectors.currentPlanId(state)).toEqual(undefined)
-        })
-
-        it('should return plan of the current subscription', () => {
-            expect(selectors.currentPlanId(state)).toEqual(
-                'basic-monthly-usd-4'
-            )
-        })
-
-        it('should return the future subscription plan', () => {
-            state = {
-                currentAccount: fromJS({
-                    current_subscription: {
-                        products: {[HELPDESK_PRODUCT_ID]: null},
-                    },
-                }),
-                billing: fromJS({
-                    ...billingFixtures.billingState,
-                    futureSubscriptionPlan: 'future-plan-123',
-                }),
-            } as RootState
-            expect(selectors.currentPlanId(state)).toEqual('future-plan-123')
-        })
-    })
-
-    describe('getEquivalentAutomationCurrentPlan()', () => {
-        it('should return undefined when no current plan', () => {
-            state = {
-                ...state,
-                currentAccount: fromJS({
-                    current_subscription: {
-                        products: {[HELPDESK_PRODUCT_ID]: null},
-                    },
-                }),
-            } as RootState
-            expect(selectors.getEquivalentAutomationCurrentPlan(state)).toBe(
-                undefined
-            )
-        })
-
-        it('should return automation plan when current plan is regular', () => {
-            expect(
-                selectors.getEquivalentAutomationCurrentPlan(state)
-            ).toMatchSnapshot()
-        })
-
-        it('should return automation plan when current plan is also automation', () => {
-            state = {
-                ...state,
-                currentAccount: fromJS({
-                    current_subscription: {
-                        products: automationSubscriptionProductPrices,
-                    },
-                }),
-            }
-            expect(
-                selectors.getEquivalentAutomationCurrentPlan(state)
-            ).toMatchSnapshot()
-        })
-    })
-
-    describe('getEquivalentRegularCurrentPlan()', () => {
-        it('should return undefined when no current plan', () => {
-            state = {
-                ...state,
-                currentAccount: fromJS({
-                    current_subscription: {
-                        products: {[HELPDESK_PRODUCT_ID]: null},
-                    },
-                }),
-            } as RootState
-            expect(selectors.getEquivalentRegularCurrentPlan(state)).toBe(
-                undefined
-            )
-        })
-
-        it('should return regular plan when current plan is also regular', () => {
-            expect(
-                selectors.getEquivalentRegularCurrentPlan(state)
-            ).toMatchSnapshot()
-        })
-
-        it('should return regular plan when current plan is automation', () => {
-            state = {
-                ...state,
-                currentAccount: fromJS({
-                    current_subscription: {
-                        products: automationSubscriptionProductPrices,
-                    },
-                }),
-            }
-            expect(
-                selectors.getEquivalentRegularCurrentPlan(state)
-            ).toMatchSnapshot()
-        })
-    })
-
-    describe('getAddOnAutomationAmountCurrentPlan()', () => {
+    describe('getCurrentHelpdeskAutomationAddonAmount()', () => {
         it('should return the amount of automation add-on', () => {
             expect(
-                selectors.getAddOnAutomationAmountCurrentPlan(state)
+                selectors.getCurrentHelpdeskAutomationAddonAmount(state)
             ).toMatchSnapshot()
         })
 
-        it('should return undefined when equivalent plan does not exist', () => {
+        it('should return undefined when addon does not exist', () => {
             state = {
                 ...state,
                 currentAccount: fromJS({
@@ -476,64 +160,12 @@ describe('billing selectors', () => {
                 }),
             }
             expect(
-                selectors.getAddOnAutomationAmountCurrentPlan(state)
+                selectors.getCurrentHelpdeskAutomationAddonAmount(state)
             ).toMatchSnapshot()
         })
     })
 
-    describe('getAddOnAutomationDiscountCurrentPlan()', () => {
-        it('should return the discount of automation add-on amount', () => {
-            expect(
-                selectors.getAddOnAutomationDiscountCurrentPlan(state)
-            ).toMatchSnapshot()
-        })
-
-        it('should return the add-on amount discount of the current plan when plan is an automation plan', () => {
-            const productsWithDiscountedAutomationPrice = _cloneDeep(products)
-            productsWithDiscountedAutomationPrice[1].prices.push(
-                basicDiscountedAutomationPrice
-            )
-            state = {
-                ...state,
-                currentAccount: fromJS({
-                    current_subscription: {
-                        products: {
-                            [HELPDESK_PRODUCT_ID]:
-                                basicMonthlyHelpdeskPrice.price_id,
-                            [AUTOMATION_PRODUCT_ID]:
-                                basicDiscountedAutomationPrice.price_id,
-                        },
-                    },
-                }),
-                billing: fromJS({
-                    ...billingFixtures.billingState,
-                    products: productsWithDiscountedAutomationPrice,
-                }),
-            }
-            expect(
-                selectors.getAddOnAutomationDiscountCurrentPlan(state)
-            ).toMatchSnapshot()
-        })
-
-        it('should return undefined when equivalent plan does not exist', () => {
-            state = {
-                ...state,
-                currentAccount: fromJS({
-                    current_subscription: {
-                        products: {
-                            [HELPDESK_PRODUCT_ID]:
-                                legacyBasicHelpdeskPrice.price_id,
-                        },
-                    },
-                }),
-            }
-            expect(
-                selectors.getAddOnAutomationDiscountCurrentPlan(state)
-            ).toMatchSnapshot()
-        })
-    })
-
-    describe('getAddOnAutomationFullAmountCurrentPlan()', () => {
+    describe('getCurrentAutomationFullAmount()', () => {
         it('should return the full amount of automation add-on', () => {
             const productsWithDiscountedAutomationPrice = _cloneDeep(products)
             productsWithDiscountedAutomationPrice[1].prices.push(
@@ -558,7 +190,7 @@ describe('billing selectors', () => {
                 }),
             }
             expect(
-                selectors.getAddOnAutomationFullAmountCurrentPlan(state)
+                selectors.getCurrentAutomationFullAmount(state)
             ).toMatchSnapshot()
         })
 
@@ -575,7 +207,7 @@ describe('billing selectors', () => {
                 }),
             }
             expect(
-                selectors.getAddOnAutomationFullAmountCurrentPlan(state)
+                selectors.getCurrentAutomationFullAmount(state)
             ).toMatchSnapshot()
         })
     })
@@ -685,5 +317,199 @@ describe('billing selectors', () => {
                 ).toBeFalsy()
             }
         )
+    })
+
+    describe('getProducts', () => {
+        it('should return products', () => {
+            expect(selectors.getProducts(state)).toMatchSnapshot()
+        })
+    })
+
+    describe('getHelpdeskProduct', () => {
+        it('should return the helpdesk product', () => {
+            expect(selectors.getHelpdeskProduct(state)).toMatchSnapshot()
+        })
+    })
+
+    describe('getAutomationProduct', () => {
+        it('should return the automation product', () => {
+            expect(selectors.getAutomationProduct(state)).toMatchSnapshot()
+        })
+    })
+
+    describe('getCurrentHelpdeskProduct', () => {
+        it('should return the current helpdesk product', () => {
+            expect(selectors.getCurrentHelpdeskProduct(state)).toEqual(
+                basicMonthlyHelpdeskPrice
+            )
+        })
+    })
+
+    describe('getCurrentAutomationProduct', () => {
+        it('should return the current automation product', () => {
+            expect(
+                selectors.getCurrentAutomationProduct({
+                    ...state,
+                    currentAccount: state.currentAccount.setIn(
+                        [
+                            'current_subscription',
+                            'products',
+                            AUTOMATION_PRODUCT_ID,
+                        ],
+                        basicMonthlyAutomationPrice.price_id
+                    ),
+                })
+            ).toEqual(basicMonthlyAutomationPrice)
+        })
+    })
+
+    describe('getCurrentHelpdeskName', () => {
+        it('should return the current product name', () => {
+            expect(selectors.getCurrentHelpdeskName(state)).toBe('Basic')
+        })
+    })
+
+    describe('getCurrentProductsAmount', () => {
+        it('should return the amount for the current products', () => {
+            expect(
+                selectors.getCurrentProductsAmount({
+                    ...state,
+                    currentAccount: state.currentAccount.setIn(
+                        [
+                            'current_subscription',
+                            'products',
+                            AUTOMATION_PRODUCT_ID,
+                        ],
+                        basicMonthlyAutomationPrice.price_id
+                    ),
+                })
+            ).toBe(90)
+        })
+    })
+
+    describe('getCurrentHelpdeskAddons', () => {
+        it('should return the product addons', () => {
+            expect(selectors.getCurrentHelpdeskAddons(state)).toEqual(
+                basicMonthlyHelpdeskPrice.addons
+            )
+        })
+    })
+
+    describe('getCurrentHelpdeskAmount', () => {
+        it('should return the formatted amount', () => {
+            expect(selectors.getCurrentHelpdeskAmount(state)).toEqual(
+                getFormattedAmount(basicMonthlyHelpdeskPrice.amount)
+            )
+        })
+    })
+
+    describe('getCurrentHelpdeskCurrency', () => {
+        it('should return the product currency', () => {
+            expect(selectors.getCurrentHelpdeskCurrency(state)).toBe('usd')
+        })
+    })
+
+    describe('getCurrentHelpdeskFreeTickets', () => {
+        it('should return the amount of free tickets', () => {
+            expect(selectors.getCurrentHelpdeskFreeTickets(state)).toBe(300)
+        })
+    })
+
+    describe('getCurrentHelpdeskInterval', () => {
+        it('should return the product interval', () => {
+            expect(selectors.getCurrentHelpdeskInterval(state)).toBe(
+                PlanInterval.Month
+            )
+        })
+    })
+
+    describe('getIsCurrentHelpdeskLegacy', () => {
+        it.each([basicMonthlyHelpdeskPrice, legacyBasicHelpdeskPrice])(
+            'should return if the product is legacy',
+            (product) => {
+                expect(
+                    selectors.getIsCurrentHelpdeskLegacy({
+                        ...state,
+                        currentAccount: state.currentAccount.setIn(
+                            [
+                                'current_subscription',
+                                'products',
+                                HELPDESK_PRODUCT_ID,
+                            ],
+                            product.price_id
+                        ),
+                        billing: state.billing.mergeIn(
+                            ['products', 0, 'prices'],
+                            fromJS([legacyBasicHelpdeskPrice])
+                        ),
+                    })
+                ).toBe(product.is_legacy)
+            }
+        )
+    })
+
+    describe('getIsCurrentHelpdeskCustom', () => {
+        it.each([basicMonthlyHelpdeskPrice, customHelpdeskPrice])(
+            'should return if the product is custom',
+            (product) => {
+                expect(
+                    selectors.getIsCurrentHelpdeskCustom({
+                        ...state,
+                        currentAccount: state.currentAccount.setIn(
+                            [
+                                'current_subscription',
+                                'products',
+                                HELPDESK_PRODUCT_ID,
+                            ],
+                            product.price_id
+                        ),
+                        billing: state.billing.mergeIn(
+                            ['products', 0, 'prices'],
+                            fromJS([customHelpdeskPrice])
+                        ),
+                    })
+                ).toBe(!!product.custom)
+            }
+        )
+    })
+
+    describe('getCurrentProductsFeatures', () => {
+        it('should return the current features', () => {
+            expect(
+                selectors.getCurrentProductsFeatures({
+                    ...state,
+                    currentAccount: state.currentAccount.setIn(
+                        [
+                            'current_subscription',
+                            'products',
+                            AUTOMATION_PRODUCT_ID,
+                        ],
+                        basicMonthlyAutomationPrice.price_id
+                    ),
+                })
+            ).toMatchSnapshot()
+        })
+    })
+
+    describe('makeHasFeature', () => {
+        it.each([
+            AccountFeature.FacebookComment,
+            AccountFeature.AutomationManagedRules,
+        ])('should return if the feature is enabled', (feature) => {
+            const hasFeature = selectors.makeHasFeature(state)
+            expect(hasFeature(feature)).toMatchSnapshot()
+        })
+    })
+
+    describe('getPrices', () => {
+        it('should return the prices', () => {
+            expect(selectors.getPrices(state)).toMatchSnapshot()
+        })
+    })
+
+    describe('getHelpdeskPrices', () => {
+        it('should return the helpdesk prices', () => {
+            expect(selectors.getHelpdeskPrices(state)).toMatchSnapshot()
+        })
     })
 })

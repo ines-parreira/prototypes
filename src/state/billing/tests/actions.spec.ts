@@ -168,14 +168,6 @@ describe('billing actions', () => {
         })
     })
 
-    describe('setFutureSubscriptionPlan()', () => {
-        it('should return a Redux action to set the future subscription plan.', () => {
-            expect(
-                actions.setFutureSubscriptionPlan('advanced-usd-1')
-            ).toMatchSnapshot()
-        })
-    })
-
     describe('updateInvoiceInList()', () => {
         it('should return a Redux action to update an invoice in a list of invoices.', () => {
             const invoice = {

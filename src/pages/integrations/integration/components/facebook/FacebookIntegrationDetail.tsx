@@ -149,8 +149,9 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
             integration,
             loading,
             currentAccount,
-            currentPlan,
+            currentHelpdeskProduct,
             deleteIntegration,
+            hasInstagramDMFeature,
         } = this.props
 
         const integrationMeta = integration.meta || {}
@@ -221,21 +222,15 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
             fromJS(integration)
         )
 
-        const currentPlanHasInstagramDMFeature = currentPlan.getIn([
-            'features',
-            AccountFeature.InstagramDirectMessage,
-            'enabled',
-        ])
-
         const isAllowedToInstagramDM =
             instagramDMSettingStatus === InstagramDMSettingStatus.ALLOWED &&
-            currentPlanHasInstagramDMFeature
+            hasInstagramDMFeature
 
         const instagramDMSettingsInlineComponent =
             getInstagramDMSettingsInlineComponent(
                 instagramDMSettingStatus,
                 currentAccount,
-                currentPlan
+                currentHelpdeskProduct
             )
 
         const isSubmitting = !!loading.get('updateIntegration')
@@ -245,7 +240,7 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
         }
 
         const shouldDisplayDisabledWithTooltip =
-            currentPlanHasInstagramDMFeature &&
+            hasInstagramDMFeature &&
             !instagramIsDisabled &&
             (instagramDMSettingStatus ===
                 InstagramDMSettingStatus.SHOULD_RECONNECT ||
@@ -585,7 +580,11 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
 const connector = connect(
     (state: RootState) => ({
         currentAccount: state.currentAccount,
-        currentPlan: billingSelectors.DEPRECATED_getCurrentPlan(state),
+        currentHelpdeskProduct:
+            billingSelectors.getCurrentHelpdeskProduct(state),
+        hasInstagramDMFeature: billingSelectors.makeHasFeature(state)(
+            AccountFeature.InstagramDirectMessage
+        ),
     }),
     {
         updateOrCreateIntegration,

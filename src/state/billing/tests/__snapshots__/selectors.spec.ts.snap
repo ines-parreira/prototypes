@@ -1,627 +1,3664 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`billing selectors getAddOnAutomationAmountCurrentPlan() should return the amount of automation add-on 1`] = `30`;
-
-exports[`billing selectors getAddOnAutomationAmountCurrentPlan() should return undefined when equivalent plan does not exist 1`] = `undefined`;
-
-exports[`billing selectors getAddOnAutomationDiscountCurrentPlan() should return the add-on amount discount of the current plan when plan is an automation plan 1`] = `0.5`;
-
-exports[`billing selectors getAddOnAutomationDiscountCurrentPlan() should return the discount of automation add-on amount 1`] = `0`;
-
-exports[`billing selectors getAddOnAutomationDiscountCurrentPlan() should return undefined when equivalent plan does not exist 1`] = `undefined`;
-
-exports[`billing selectors getAddOnAutomationFullAmountCurrentPlan() should return the full amount of automation add-on 1`] = `30`;
-
-exports[`billing selectors getAddOnAutomationFullAmountCurrentPlan() should return undefined when no automation add-on amount or discount exists 1`] = `undefined`;
-
-exports[`billing selectors getEquivalentAutomationCurrentPlan() should return automation plan when current plan is also automation 1`] = `
+exports[`billing selectors getAutomationProduct should return the automation product 1`] = `
 Object {
-  "amount": 90,
-  "automation_addon_discount": 0,
-  "automation_addon_equivalent_plan": "basic-monthly-usd-4",
-  "automation_addon_included": true,
-  "cost_per_ticket": 0.6,
-  "currency": "usd",
-  "currencySign": "$",
-  "features": Object {
-    "api_1st_party_rate_limit": Object {
-      "enabled": true,
-      "rate_limit": Object {
-        "interval_ms": 2000,
-        "max_burst": 40,
+  "id": "prod_LsHD5xmSqoFBBs",
+  "prices": Array [
+    Object {
+      "additional_cost_per_ticket": 0.2,
+      "amount": 3000,
+      "automation_addon_discount": 0,
+      "automation_addon_included": true,
+      "base_price_id": "price_1LJBjWI9qXomtXqSPZn8LqlD",
+      "currency": "usd",
+      "features": Object {
+        "automation_cancellations_flow": Object {
+          "enabled": true,
+        },
+        "automation_managed_rules": Object {
+          "enabled": true,
+        },
+        "automation_report_issue_flow": Object {
+          "enabled": true,
+        },
+        "automation_return_flow": Object {
+          "enabled": true,
+        },
+        "automation_self_service_statistics": Object {
+          "enabled": true,
+        },
+        "automation_track_order_flow": Object {
+          "enabled": true,
+        },
       },
+      "interval": "month",
+      "legacy_id": "basic-automation-full-price-monthly-usd-4",
+      "name": "Basic",
+      "order": 2,
+      "price_id": "price_1LJBjXI9qXomtXqSSX34F3we",
+      "product_id": "prod_LsHD5xmSqoFBBs",
     },
-    "api_3rd_party_rate_limit": Object {
-      "enabled": true,
-      "rate_limit": Object {
-        "interval_ms": 20000,
-        "max_burst": 40,
+    Object {
+      "additional_cost_per_ticket": 0.2,
+      "amount": 30000,
+      "automation_addon_discount": 0,
+      "automation_addon_included": true,
+      "base_price_id": "price_1LJBjYI9qXomtXqSLEjOrpmV",
+      "currency": "usd",
+      "features": Object {
+        "automation_cancellations_flow": Object {
+          "enabled": true,
+        },
+        "automation_managed_rules": Object {
+          "enabled": true,
+        },
+        "automation_report_issue_flow": Object {
+          "enabled": true,
+        },
+        "automation_return_flow": Object {
+          "enabled": true,
+        },
+        "automation_self_service_statistics": Object {
+          "enabled": true,
+        },
+        "automation_track_order_flow": Object {
+          "enabled": true,
+        },
       },
+      "interval": "year",
+      "legacy_id": "basic-automation-full-price-yearly-usd-4",
+      "name": "Basic",
+      "order": 2,
+      "price_id": "price_1LJBjZI9qXomtXqSPNgkEZpl",
+      "product_id": "prod_LsHD5xmSqoFBBs",
     },
-    "auto_assignment": Object {
-      "enabled": true,
+    Object {
+      "additional_cost_per_ticket": 0.18,
+      "amount": 18000,
+      "automation_addon_discount": 0,
+      "automation_addon_included": true,
+      "base_price_id": "price_1LJBjaI9qXomtXqSvYfzmmEU",
+      "currency": "usd",
+      "features": Object {
+        "automation_cancellations_flow": Object {
+          "enabled": true,
+        },
+        "automation_managed_rules": Object {
+          "enabled": true,
+        },
+        "automation_report_issue_flow": Object {
+          "enabled": true,
+        },
+        "automation_return_flow": Object {
+          "enabled": true,
+        },
+        "automation_self_service_statistics": Object {
+          "enabled": true,
+        },
+        "automation_track_order_flow": Object {
+          "enabled": true,
+        },
+      },
+      "interval": "month",
+      "legacy_id": "pro-automation-full-price-monthly-usd-4",
+      "name": "Pro",
+      "order": 3,
+      "price_id": "price_1LJBjbI9qXomtXqS2sfi1J7P",
+      "product_id": "prod_LsHD5xmSqoFBBs",
     },
-    "automation_cancellations_flow": Object {
-      "enabled": true,
+    Object {
+      "additional_cost_per_ticket": 0.18,
+      "amount": 180000,
+      "automation_addon_discount": 0,
+      "automation_addon_included": true,
+      "base_price_id": "price_1LJBjbI9qXomtXqShB9YLy7V",
+      "currency": "usd",
+      "features": Object {
+        "automation_cancellations_flow": Object {
+          "enabled": true,
+        },
+        "automation_managed_rules": Object {
+          "enabled": true,
+        },
+        "automation_report_issue_flow": Object {
+          "enabled": true,
+        },
+        "automation_return_flow": Object {
+          "enabled": true,
+        },
+        "automation_self_service_statistics": Object {
+          "enabled": true,
+        },
+        "automation_track_order_flow": Object {
+          "enabled": true,
+        },
+      },
+      "interval": "year",
+      "legacy_id": "pro-automation-full-price-yearly-usd-4",
+      "name": "Pro",
+      "order": 3,
+      "price_id": "price_1LJBjdI9qXomtXqSlp9sh6iQ",
+      "product_id": "prod_LsHD5xmSqoFBBs",
     },
-    "automation_managed_rules": Object {
-      "enabled": true,
+    Object {
+      "additional_cost_per_ticket": 0.18,
+      "amount": 45000,
+      "automation_addon_discount": 0,
+      "automation_addon_included": true,
+      "base_price_id": "price_1LJBjdI9qXomtXqS8RzPPA7K",
+      "currency": "usd",
+      "features": Object {
+        "automation_cancellations_flow": Object {
+          "enabled": true,
+        },
+        "automation_managed_rules": Object {
+          "enabled": true,
+        },
+        "automation_report_issue_flow": Object {
+          "enabled": true,
+        },
+        "automation_return_flow": Object {
+          "enabled": true,
+        },
+        "automation_self_service_statistics": Object {
+          "enabled": true,
+        },
+        "automation_track_order_flow": Object {
+          "enabled": true,
+        },
+      },
+      "interval": "month",
+      "legacy_id": "advanced-automation-full-price-monthly-usd-4",
+      "name": "Advanced",
+      "order": 4,
+      "price_id": "price_1LJBjeI9qXomtXqSXRjmhPsL",
+      "product_id": "prod_LsHD5xmSqoFBBs",
     },
-    "automation_report_issue_flow": Object {
-      "enabled": true,
+    Object {
+      "additional_cost_per_ticket": 0.18,
+      "amount": 450000,
+      "automation_addon_discount": 0,
+      "automation_addon_included": true,
+      "base_price_id": "price_1LJBjfI9qXomtXqSeKJ5lJjD",
+      "currency": "usd",
+      "features": Object {
+        "automation_cancellations_flow": Object {
+          "enabled": true,
+        },
+        "automation_managed_rules": Object {
+          "enabled": true,
+        },
+        "automation_report_issue_flow": Object {
+          "enabled": true,
+        },
+        "automation_return_flow": Object {
+          "enabled": true,
+        },
+        "automation_self_service_statistics": Object {
+          "enabled": true,
+        },
+        "automation_track_order_flow": Object {
+          "enabled": true,
+        },
+      },
+      "interval": "year",
+      "legacy_id": "advanced-automation-full-price-yearly-usd-4",
+      "name": "Advanced",
+      "order": 4,
+      "price_id": "price_1LJBjgI9qXomtXqSBZoBcg7G",
+      "product_id": "prod_LsHD5xmSqoFBBs",
     },
-    "automation_return_flow": Object {
-      "enabled": true,
-    },
-    "automation_self_service_statistics": Object {
-      "enabled": true,
-    },
-    "automation_track_order_flow": Object {
-      "enabled": true,
-    },
-    "chat_campaigns": Object {
-      "enabled": true,
-    },
-    "facebook_comment": Object {
-      "enabled": true,
-    },
-    "help_center": Object {
-      "enabled": true,
-    },
-    "instagram_comment": Object {
-      "enabled": true,
-    },
-    "instagram_dm": Object {
-      "enabled": true,
-    },
-    "magento_integration": Object {
-      "enabled": false,
-    },
-    "overview_live_statistics": Object {
-      "enabled": true,
-    },
-    "phone_number": Object {
-      "enabled": true,
-      "limit": 1,
-    },
-    "revenue_statistics": Object {
-      "enabled": false,
-    },
-    "satisfaction_surveys": Object {
-      "enabled": true,
-    },
-    "teams": Object {
-      "enabled": true,
-    },
-    "twitter_integration": Object {
-      "enabled": false,
-      "limit": 0,
-    },
-    "user_roles": Object {
-      "enabled": true,
-    },
-    "users_live_statistics": Object {
-      "enabled": false,
-    },
-    "view_sharing": Object {
-      "enabled": true,
-    },
-    "yotpo_integration": Object {
-      "enabled": true,
-    },
-  },
-  "free_tickets": 300,
-  "id": "basic-automation-full-price-monthly-usd-4",
-  "integrations": 150,
-  "interval": "month",
-  "is_legacy": false,
-  "limits": Object {
-    "messages": Object {
-      "default": 100,
-      "max": 100,
-      "min": 75,
-    },
-    "tickets": Object {
-      "default": 100,
-      "max": 100,
-      "min": 75,
-    },
-  },
-  "name": "Basic",
-  "order": 2,
-  "phone_limits": Object {
-    "billing": 50,
-  },
-  "public": true,
-  "trial_period_days": 7,
+  ],
+  "type": "automation",
 }
 `;
 
-exports[`billing selectors getEquivalentAutomationCurrentPlan() should return automation plan when current plan is regular 1`] = `
+exports[`billing selectors getCurrentAutomationFullAmount() should return the full amount of automation add-on 1`] = `30`;
+
+exports[`billing selectors getCurrentAutomationFullAmount() should return undefined when no automation add-on amount or discount exists 1`] = `undefined`;
+
+exports[`billing selectors getCurrentHelpdeskAutomationAddonAmount() should return the amount of automation add-on 1`] = `30`;
+
+exports[`billing selectors getCurrentHelpdeskAutomationAddonAmount() should return undefined when addon does not exist 1`] = `undefined`;
+
+exports[`billing selectors getCurrentProductsFeatures should return the current features 1`] = `
 Object {
-  "amount": 90,
-  "automation_addon_discount": 0,
-  "automation_addon_equivalent_plan": "basic-monthly-usd-4",
-  "automation_addon_included": true,
-  "cost_per_ticket": 0.6,
-  "currency": "usd",
-  "currencySign": "$",
-  "features": Object {
-    "api_1st_party_rate_limit": Object {
-      "enabled": true,
-      "rate_limit": Object {
-        "interval_ms": 2000,
-        "max_burst": 40,
-      },
-    },
-    "api_3rd_party_rate_limit": Object {
-      "enabled": true,
-      "rate_limit": Object {
-        "interval_ms": 20000,
-        "max_burst": 40,
-      },
-    },
-    "auto_assignment": Object {
-      "enabled": true,
-    },
-    "automation_cancellations_flow": Object {
-      "enabled": true,
-    },
-    "automation_managed_rules": Object {
-      "enabled": true,
-    },
-    "automation_report_issue_flow": Object {
-      "enabled": true,
-    },
-    "automation_return_flow": Object {
-      "enabled": true,
-    },
-    "automation_self_service_statistics": Object {
-      "enabled": true,
-    },
-    "automation_track_order_flow": Object {
-      "enabled": true,
-    },
-    "chat_campaigns": Object {
-      "enabled": true,
-    },
-    "facebook_comment": Object {
-      "enabled": true,
-    },
-    "help_center": Object {
-      "enabled": true,
-    },
-    "instagram_comment": Object {
-      "enabled": true,
-    },
-    "instagram_dm": Object {
-      "enabled": true,
-    },
-    "magento_integration": Object {
-      "enabled": false,
-    },
-    "overview_live_statistics": Object {
-      "enabled": true,
-    },
-    "phone_number": Object {
-      "enabled": true,
-      "limit": 1,
-    },
-    "revenue_statistics": Object {
-      "enabled": false,
-    },
-    "satisfaction_surveys": Object {
-      "enabled": true,
-    },
-    "teams": Object {
-      "enabled": true,
-    },
-    "twitter_integration": Object {
-      "enabled": false,
-      "limit": 0,
-    },
-    "user_roles": Object {
-      "enabled": true,
-    },
-    "users_live_statistics": Object {
-      "enabled": false,
-    },
-    "view_sharing": Object {
-      "enabled": true,
-    },
-    "yotpo_integration": Object {
-      "enabled": true,
+  "api_1st_party_rate_limit": Object {
+    "enabled": true,
+    "rate_limit": Object {
+      "interval_ms": 2000,
+      "max_burst": 40,
     },
   },
-  "free_tickets": 300,
-  "id": "basic-automation-full-price-monthly-usd-4",
-  "integrations": 150,
-  "interval": "month",
-  "is_legacy": false,
-  "limits": Object {
-    "messages": Object {
-      "default": 100,
-      "max": 100,
-      "min": 75,
-    },
-    "tickets": Object {
-      "default": 100,
-      "max": 100,
-      "min": 75,
+  "api_3rd_party_rate_limit": Object {
+    "enabled": true,
+    "rate_limit": Object {
+      "interval_ms": 20000,
+      "max_burst": 40,
     },
   },
-  "name": "Basic",
-  "order": 2,
-  "phone_limits": Object {
-    "billing": 50,
+  "auto_assignment": Object {
+    "enabled": true,
   },
-  "public": true,
-  "trial_period_days": 7,
+  "automation_cancellations_flow": Object {
+    "enabled": true,
+  },
+  "automation_managed_rules": Object {
+    "enabled": true,
+  },
+  "automation_report_issue_flow": Object {
+    "enabled": true,
+  },
+  "automation_return_flow": Object {
+    "enabled": true,
+  },
+  "automation_self_service_statistics": Object {
+    "enabled": true,
+  },
+  "automation_track_order_flow": Object {
+    "enabled": true,
+  },
+  "chat_campaigns": Object {
+    "enabled": true,
+  },
+  "facebook_comment": Object {
+    "enabled": true,
+  },
+  "help_center": Object {
+    "enabled": true,
+  },
+  "instagram_comment": Object {
+    "enabled": true,
+  },
+  "instagram_dm": Object {
+    "enabled": true,
+  },
+  "magento_integration": Object {
+    "enabled": false,
+  },
+  "overview_live_statistics": Object {
+    "enabled": true,
+  },
+  "phone_number": Object {
+    "enabled": true,
+    "limit": 1,
+  },
+  "revenue_statistics": Object {
+    "enabled": false,
+  },
+  "satisfaction_surveys": Object {
+    "enabled": true,
+  },
+  "teams": Object {
+    "enabled": true,
+  },
+  "twitter_integration": Object {
+    "enabled": false,
+    "limit": 0,
+  },
+  "user_roles": Object {
+    "enabled": true,
+  },
+  "users_live_statistics": Object {
+    "enabled": false,
+  },
+  "view_sharing": Object {
+    "enabled": true,
+  },
+  "yotpo_integration": Object {
+    "enabled": true,
+  },
 }
 `;
 
-exports[`billing selectors getEquivalentRegularCurrentPlan() should return regular plan when current plan is also regular 1`] = `
-Immutable.Map {
-  "cost_per_ticket": 0.4,
-  "interval": "month",
-  "automation_addon_discount": 0,
-  "phone_limits": Immutable.Map {
-    "billing": 50,
-  },
-  "public": true,
-  "name": "Basic",
-  "trial_period_days": 7,
-  "currencySign": "$",
-  "order": 2,
-  "currency": "usd",
-  "free_tickets": 300,
-  "automation_addon_equivalent_plan": "basic-automation-full-price-monthly-usd-4",
-  "limits": Immutable.Map {
-    "messages": Immutable.Map {
-      "default": 100,
-      "max": 100,
-      "min": 75,
-    },
-    "tickets": Immutable.Map {
-      "default": 100,
-      "max": 100,
-      "min": 75,
-    },
-  },
-  "amount": 60,
-  "id": "basic-monthly-usd-4",
-  "features": Immutable.Map {
-    "view_sharing": Immutable.Map {
-      "enabled": true,
-    },
-    "automation_cancellations_flow": Immutable.Map {
-      "enabled": false,
-    },
-    "revenue_statistics": Immutable.Map {
-      "enabled": false,
-    },
-    "facebook_comment": Immutable.Map {
-      "enabled": true,
-    },
-    "satisfaction_surveys": Immutable.Map {
-      "enabled": true,
-    },
-    "api_1st_party_rate_limit": Immutable.Map {
-      "enabled": true,
-      "rate_limit": Immutable.Map {
-        "interval_ms": 2000,
-        "max_burst": 40,
+exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1`] = `
+Array [
+  Object {
+    "addons": Array [
+      "price_1LJBjXI9qXomtXqSSX34F3we",
+    ],
+    "amount": 6000,
+    "cost_per_ticket": 0.4,
+    "currency": "usd",
+    "features": Object {
+      "api_1st_party_rate_limit": Object {
+        "enabled": true,
+        "rate_limit": Object {
+          "interval_ms": 2000,
+          "max_burst": 40,
+        },
+      },
+      "api_3rd_party_rate_limit": Object {
+        "enabled": true,
+        "rate_limit": Object {
+          "interval_ms": 20000,
+          "max_burst": 40,
+        },
+      },
+      "auto_assignment": Object {
+        "enabled": true,
+      },
+      "automation_cancellations_flow": Object {
+        "enabled": false,
+      },
+      "automation_managed_rules": Object {
+        "enabled": false,
+      },
+      "automation_report_issue_flow": Object {
+        "enabled": false,
+      },
+      "automation_return_flow": Object {
+        "enabled": false,
+      },
+      "automation_self_service_statistics": Object {
+        "enabled": false,
+      },
+      "automation_track_order_flow": Object {
+        "enabled": false,
+      },
+      "chat_campaigns": Object {
+        "enabled": true,
+      },
+      "facebook_comment": Object {
+        "enabled": true,
+      },
+      "help_center": Object {
+        "enabled": true,
+      },
+      "instagram_comment": Object {
+        "enabled": true,
+      },
+      "instagram_dm": Object {
+        "enabled": true,
+      },
+      "magento_integration": Object {
+        "enabled": false,
+      },
+      "overview_live_statistics": Object {
+        "enabled": true,
+      },
+      "phone_number": Object {
+        "enabled": true,
+        "limit": 1,
+      },
+      "revenue_statistics": Object {
+        "enabled": false,
+      },
+      "satisfaction_surveys": Object {
+        "enabled": true,
+      },
+      "teams": Object {
+        "enabled": true,
+      },
+      "twitter_integration": Object {
+        "enabled": false,
+        "limit": 0,
+      },
+      "user_roles": Object {
+        "enabled": true,
+      },
+      "users_live_statistics": Object {
+        "enabled": false,
+      },
+      "view_sharing": Object {
+        "enabled": true,
+      },
+      "yotpo_integration": Object {
+        "enabled": true,
       },
     },
-    "twitter_integration": Immutable.Map {
-      "enabled": false,
-      "limit": 0,
-    },
-    "user_roles": Immutable.Map {
-      "enabled": true,
-    },
-    "magento_integration": Immutable.Map {
-      "enabled": false,
-    },
-    "automation_managed_rules": Immutable.Map {
-      "enabled": false,
-    },
-    "overview_live_statistics": Immutable.Map {
-      "enabled": true,
-    },
-    "instagram_comment": Immutable.Map {
-      "enabled": true,
-    },
-    "yotpo_integration": Immutable.Map {
-      "enabled": true,
-    },
-    "help_center": Immutable.Map {
-      "enabled": true,
-    },
-    "api_3rd_party_rate_limit": Immutable.Map {
-      "enabled": true,
-      "rate_limit": Immutable.Map {
-        "interval_ms": 20000,
-        "max_burst": 40,
+    "free_tickets": 300,
+    "integrations": 150,
+    "interval": "month",
+    "is_legacy": false,
+    "legacy_id": "basic-monthly-usd-4",
+    "limits": Object {
+      "messages": Object {
+        "default": 100,
+        "max": 100,
+        "min": 75,
+      },
+      "tickets": Object {
+        "default": 100,
+        "max": 100,
+        "min": 75,
       },
     },
-    "automation_return_flow": Immutable.Map {
-      "enabled": false,
+    "name": "Basic",
+    "order": 2,
+    "phone_limits": Object {
+      "billing": 50,
     },
-    "instagram_dm": Immutable.Map {
-      "enabled": true,
-    },
-    "teams": Immutable.Map {
-      "enabled": true,
-    },
-    "automation_report_issue_flow": Immutable.Map {
-      "enabled": false,
-    },
-    "automation_self_service_statistics": Immutable.Map {
-      "enabled": false,
-    },
-    "phone_number": Immutable.Map {
-      "enabled": true,
-      "limit": 1,
-    },
-    "automation_track_order_flow": Immutable.Map {
-      "enabled": false,
-    },
-    "chat_campaigns": Immutable.Map {
-      "enabled": true,
-    },
-    "auto_assignment": Immutable.Map {
-      "enabled": true,
-    },
-    "users_live_statistics": Immutable.Map {
-      "enabled": false,
-    },
+    "price_id": "price_1LJBjWI9qXomtXqSPZn8LqlD",
+    "product_id": "prod_LsH6kV35G6zKWo",
+    "public": true,
+    "trial_period_days": 7,
   },
-  "is_legacy": false,
-  "integrations": 150,
-}
+  Object {
+    "addons": Array [
+      "price_1LJBjbI9qXomtXqS2sfi1J7P",
+    ],
+    "amount": 36000,
+    "cost_per_ticket": 0.36,
+    "currency": "usd",
+    "features": Object {
+      "api_1st_party_rate_limit": Object {
+        "enabled": true,
+        "rate_limit": Object {
+          "interval_ms": 2000,
+          "max_burst": 40,
+        },
+      },
+      "api_3rd_party_rate_limit": Object {
+        "enabled": true,
+        "rate_limit": Object {
+          "interval_ms": 20000,
+          "max_burst": 40,
+        },
+      },
+      "auto_assignment": Object {
+        "enabled": true,
+      },
+      "automation_cancellations_flow": Object {
+        "enabled": false,
+      },
+      "automation_managed_rules": Object {
+        "enabled": false,
+      },
+      "automation_report_issue_flow": Object {
+        "enabled": false,
+      },
+      "automation_return_flow": Object {
+        "enabled": false,
+      },
+      "automation_self_service_statistics": Object {
+        "enabled": false,
+      },
+      "automation_track_order_flow": Object {
+        "enabled": false,
+      },
+      "chat_campaigns": Object {
+        "enabled": true,
+      },
+      "facebook_comment": Object {
+        "enabled": true,
+      },
+      "help_center": Object {
+        "enabled": true,
+      },
+      "instagram_comment": Object {
+        "enabled": true,
+      },
+      "instagram_dm": Object {
+        "enabled": true,
+      },
+      "magento_integration": Object {
+        "enabled": true,
+      },
+      "overview_live_statistics": Object {
+        "enabled": true,
+      },
+      "phone_number": Object {
+        "enabled": true,
+        "limit": 3,
+      },
+      "revenue_statistics": Object {
+        "enabled": true,
+      },
+      "satisfaction_surveys": Object {
+        "enabled": true,
+      },
+      "teams": Object {
+        "enabled": true,
+      },
+      "twitter_integration": Object {
+        "enabled": false,
+        "limit": 0,
+      },
+      "user_roles": Object {
+        "enabled": true,
+      },
+      "users_live_statistics": Object {
+        "enabled": true,
+      },
+      "view_sharing": Object {
+        "enabled": true,
+      },
+      "yotpo_integration": Object {
+        "enabled": true,
+      },
+    },
+    "free_tickets": 2000,
+    "integrations": 150,
+    "interval": "month",
+    "is_legacy": false,
+    "legacy_id": "pro-monthly-usd-4",
+    "limits": Object {
+      "messages": Object {
+        "default": 100,
+        "max": 100,
+        "min": 75,
+      },
+      "tickets": Object {
+        "default": 100,
+        "max": 100,
+        "min": 75,
+      },
+    },
+    "name": "Pro",
+    "order": 3,
+    "phone_limits": Object {
+      "billing": 200,
+    },
+    "price_id": "price_1LJBjaI9qXomtXqSvYfzmmEU",
+    "product_id": "prod_LsH6kV35G6zKWo",
+    "public": true,
+    "trial_period_days": 7,
+  },
+  Object {
+    "addons": Array [
+      "price_1LJBjZI9qXomtXqSPNgkEZpl",
+    ],
+    "amount": 60000,
+    "cost_per_ticket": 0.4,
+    "currency": "usd",
+    "features": Object {
+      "api_1st_party_rate_limit": Object {
+        "enabled": true,
+        "rate_limit": Object {
+          "interval_ms": 2000,
+          "max_burst": 40,
+        },
+      },
+      "api_3rd_party_rate_limit": Object {
+        "enabled": true,
+        "rate_limit": Object {
+          "interval_ms": 20000,
+          "max_burst": 40,
+        },
+      },
+      "auto_assignment": Object {
+        "enabled": true,
+      },
+      "automation_cancellations_flow": Object {
+        "enabled": false,
+      },
+      "automation_managed_rules": Object {
+        "enabled": false,
+      },
+      "automation_report_issue_flow": Object {
+        "enabled": false,
+      },
+      "automation_return_flow": Object {
+        "enabled": false,
+      },
+      "automation_self_service_statistics": Object {
+        "enabled": false,
+      },
+      "automation_track_order_flow": Object {
+        "enabled": false,
+      },
+      "chat_campaigns": Object {
+        "enabled": true,
+      },
+      "facebook_comment": Object {
+        "enabled": true,
+      },
+      "help_center": Object {
+        "enabled": true,
+      },
+      "instagram_comment": Object {
+        "enabled": true,
+      },
+      "instagram_dm": Object {
+        "enabled": true,
+      },
+      "magento_integration": Object {
+        "enabled": false,
+      },
+      "overview_live_statistics": Object {
+        "enabled": true,
+      },
+      "phone_number": Object {
+        "enabled": true,
+        "limit": 1,
+      },
+      "revenue_statistics": Object {
+        "enabled": false,
+      },
+      "satisfaction_surveys": Object {
+        "enabled": true,
+      },
+      "teams": Object {
+        "enabled": true,
+      },
+      "twitter_integration": Object {
+        "enabled": false,
+        "limit": 0,
+      },
+      "user_roles": Object {
+        "enabled": true,
+      },
+      "users_live_statistics": Object {
+        "enabled": false,
+      },
+      "view_sharing": Object {
+        "enabled": true,
+      },
+      "yotpo_integration": Object {
+        "enabled": true,
+      },
+    },
+    "free_tickets": 3600,
+    "integrations": 150,
+    "interval": "year",
+    "is_legacy": false,
+    "legacy_id": "basic-yearly-usd-4",
+    "limits": Object {
+      "messages": Object {
+        "default": 100,
+        "max": 100,
+        "min": 75,
+      },
+      "tickets": Object {
+        "default": 100,
+        "max": 100,
+        "min": 75,
+      },
+    },
+    "name": "Basic",
+    "order": 2,
+    "phone_limits": Object {
+      "billing": 50,
+    },
+    "price_id": "price_1LJBjYI9qXomtXqSLEjOrpmV",
+    "product_id": "prod_LsH6kV35G6zKWo",
+    "public": true,
+    "trial_period_days": 7,
+  },
+  Object {
+    "addons": Array [
+      "price_1LJBjeI9qXomtXqSXRjmhPsL",
+    ],
+    "amount": 90000,
+    "cost_per_ticket": 0.36,
+    "currency": "usd",
+    "features": Object {
+      "api_1st_party_rate_limit": Object {
+        "enabled": true,
+        "rate_limit": Object {
+          "interval_ms": 2000,
+          "max_burst": 40,
+        },
+      },
+      "api_3rd_party_rate_limit": Object {
+        "enabled": true,
+        "rate_limit": Object {
+          "interval_ms": 20000,
+          "max_burst": 40,
+        },
+      },
+      "auto_assignment": Object {
+        "enabled": true,
+      },
+      "automation_cancellations_flow": Object {
+        "enabled": false,
+      },
+      "automation_managed_rules": Object {
+        "enabled": false,
+      },
+      "automation_report_issue_flow": Object {
+        "enabled": false,
+      },
+      "automation_return_flow": Object {
+        "enabled": false,
+      },
+      "automation_self_service_statistics": Object {
+        "enabled": false,
+      },
+      "automation_track_order_flow": Object {
+        "enabled": false,
+      },
+      "chat_campaigns": Object {
+        "enabled": true,
+      },
+      "facebook_comment": Object {
+        "enabled": true,
+      },
+      "help_center": Object {
+        "enabled": true,
+      },
+      "instagram_comment": Object {
+        "enabled": true,
+      },
+      "instagram_dm": Object {
+        "enabled": true,
+      },
+      "magento_integration": Object {
+        "enabled": true,
+      },
+      "overview_live_statistics": Object {
+        "enabled": true,
+      },
+      "phone_number": Object {
+        "enabled": true,
+        "limit": 10,
+      },
+      "revenue_statistics": Object {
+        "enabled": true,
+      },
+      "satisfaction_surveys": Object {
+        "enabled": true,
+      },
+      "teams": Object {
+        "enabled": true,
+      },
+      "twitter_integration": Object {
+        "enabled": true,
+        "limit": 2,
+      },
+      "user_roles": Object {
+        "enabled": true,
+      },
+      "users_live_statistics": Object {
+        "enabled": true,
+      },
+      "view_sharing": Object {
+        "enabled": true,
+      },
+      "yotpo_integration": Object {
+        "enabled": true,
+      },
+    },
+    "free_tickets": 5000,
+    "integrations": 150,
+    "interval": "month",
+    "is_legacy": false,
+    "legacy_id": "advanced-monthly-usd-4",
+    "limits": Object {
+      "messages": Object {
+        "default": 100,
+        "max": 100,
+        "min": 75,
+      },
+      "tickets": Object {
+        "default": 100,
+        "max": 100,
+        "min": 75,
+      },
+    },
+    "name": "Advanced",
+    "order": 4,
+    "phone_limits": Object {
+      "billing": 750,
+    },
+    "price_id": "price_1LJBjdI9qXomtXqS8RzPPA7K",
+    "product_id": "prod_LsH6kV35G6zKWo",
+    "public": true,
+    "trial_period_days": 7,
+  },
+  Object {
+    "addons": Array [
+      "price_1LJBjdI9qXomtXqSlp9sh6iQ",
+    ],
+    "amount": 360000,
+    "cost_per_ticket": 0.36,
+    "currency": "usd",
+    "features": Object {
+      "api_1st_party_rate_limit": Object {
+        "enabled": true,
+        "rate_limit": Object {
+          "interval_ms": 2000,
+          "max_burst": 40,
+        },
+      },
+      "api_3rd_party_rate_limit": Object {
+        "enabled": true,
+        "rate_limit": Object {
+          "interval_ms": 20000,
+          "max_burst": 40,
+        },
+      },
+      "auto_assignment": Object {
+        "enabled": true,
+      },
+      "automation_cancellations_flow": Object {
+        "enabled": false,
+      },
+      "automation_managed_rules": Object {
+        "enabled": false,
+      },
+      "automation_report_issue_flow": Object {
+        "enabled": false,
+      },
+      "automation_return_flow": Object {
+        "enabled": false,
+      },
+      "automation_self_service_statistics": Object {
+        "enabled": false,
+      },
+      "automation_track_order_flow": Object {
+        "enabled": false,
+      },
+      "chat_campaigns": Object {
+        "enabled": true,
+      },
+      "facebook_comment": Object {
+        "enabled": true,
+      },
+      "help_center": Object {
+        "enabled": true,
+      },
+      "instagram_comment": Object {
+        "enabled": true,
+      },
+      "instagram_dm": Object {
+        "enabled": true,
+      },
+      "magento_integration": Object {
+        "enabled": true,
+      },
+      "overview_live_statistics": Object {
+        "enabled": true,
+      },
+      "phone_number": Object {
+        "enabled": true,
+        "limit": 3,
+      },
+      "revenue_statistics": Object {
+        "enabled": true,
+      },
+      "satisfaction_surveys": Object {
+        "enabled": true,
+      },
+      "teams": Object {
+        "enabled": true,
+      },
+      "twitter_integration": Object {
+        "enabled": false,
+        "limit": 0,
+      },
+      "user_roles": Object {
+        "enabled": true,
+      },
+      "users_live_statistics": Object {
+        "enabled": true,
+      },
+      "view_sharing": Object {
+        "enabled": true,
+      },
+      "yotpo_integration": Object {
+        "enabled": true,
+      },
+    },
+    "free_tickets": 24000,
+    "integrations": 150,
+    "interval": "year",
+    "is_legacy": false,
+    "legacy_id": "pro-yearly-usd-4",
+    "limits": Object {
+      "messages": Object {
+        "default": 100,
+        "max": 100,
+        "min": 75,
+      },
+      "tickets": Object {
+        "default": 100,
+        "max": 100,
+        "min": 75,
+      },
+    },
+    "name": "Pro",
+    "order": 3,
+    "phone_limits": Object {
+      "billing": 200,
+    },
+    "price_id": "price_1LJBjbI9qXomtXqShB9YLy7V",
+    "product_id": "prod_LsH6kV35G6zKWo",
+    "public": true,
+    "trial_period_days": 7,
+  },
+  Object {
+    "addons": Array [
+      "price_1LJBjgI9qXomtXqSBZoBcg7G",
+    ],
+    "amount": 900000,
+    "cost_per_ticket": 0.36,
+    "currency": "usd",
+    "features": Object {
+      "api_1st_party_rate_limit": Object {
+        "enabled": true,
+        "rate_limit": Object {
+          "interval_ms": 2000,
+          "max_burst": 40,
+        },
+      },
+      "api_3rd_party_rate_limit": Object {
+        "enabled": true,
+        "rate_limit": Object {
+          "interval_ms": 20000,
+          "max_burst": 40,
+        },
+      },
+      "auto_assignment": Object {
+        "enabled": true,
+      },
+      "automation_cancellations_flow": Object {
+        "enabled": false,
+      },
+      "automation_managed_rules": Object {
+        "enabled": false,
+      },
+      "automation_report_issue_flow": Object {
+        "enabled": false,
+      },
+      "automation_return_flow": Object {
+        "enabled": false,
+      },
+      "automation_self_service_statistics": Object {
+        "enabled": false,
+      },
+      "automation_track_order_flow": Object {
+        "enabled": false,
+      },
+      "chat_campaigns": Object {
+        "enabled": true,
+      },
+      "facebook_comment": Object {
+        "enabled": true,
+      },
+      "help_center": Object {
+        "enabled": true,
+      },
+      "instagram_comment": Object {
+        "enabled": true,
+      },
+      "instagram_dm": Object {
+        "enabled": true,
+      },
+      "magento_integration": Object {
+        "enabled": true,
+      },
+      "overview_live_statistics": Object {
+        "enabled": true,
+      },
+      "phone_number": Object {
+        "enabled": true,
+        "limit": 10,
+      },
+      "revenue_statistics": Object {
+        "enabled": true,
+      },
+      "satisfaction_surveys": Object {
+        "enabled": true,
+      },
+      "teams": Object {
+        "enabled": true,
+      },
+      "twitter_integration": Object {
+        "enabled": true,
+        "limit": 2,
+      },
+      "user_roles": Object {
+        "enabled": true,
+      },
+      "users_live_statistics": Object {
+        "enabled": true,
+      },
+      "view_sharing": Object {
+        "enabled": true,
+      },
+      "yotpo_integration": Object {
+        "enabled": true,
+      },
+    },
+    "free_tickets": 60000,
+    "integrations": 150,
+    "interval": "year",
+    "is_legacy": false,
+    "legacy_id": "advanced-yearly-usd-4",
+    "limits": Object {
+      "messages": Object {
+        "default": 100,
+        "max": 100,
+        "min": 75,
+      },
+      "tickets": Object {
+        "default": 100,
+        "max": 100,
+        "min": 75,
+      },
+    },
+    "name": "Advanced",
+    "order": 4,
+    "phone_limits": Object {
+      "billing": 750,
+    },
+    "price_id": "price_1LJBjfI9qXomtXqSeKJ5lJjD",
+    "product_id": "prod_LsH6kV35G6zKWo",
+    "public": true,
+    "trial_period_days": 7,
+  },
+]
 `;
 
-exports[`billing selectors getEquivalentRegularCurrentPlan() should return regular plan when current plan is automation 1`] = `
-Immutable.Map {
-  "cost_per_ticket": 0.4,
-  "interval": "month",
-  "automation_addon_discount": 0,
-  "phone_limits": Immutable.Map {
-    "billing": 50,
-  },
-  "public": true,
-  "name": "Basic",
-  "trial_period_days": 7,
-  "currencySign": "$",
-  "order": 2,
-  "currency": "usd",
-  "free_tickets": 300,
-  "automation_addon_equivalent_plan": "basic-automation-full-price-monthly-usd-4",
-  "limits": Immutable.Map {
-    "messages": Immutable.Map {
-      "default": 100,
-      "max": 100,
-      "min": 75,
-    },
-    "tickets": Immutable.Map {
-      "default": 100,
-      "max": 100,
-      "min": 75,
-    },
-  },
-  "amount": 60,
-  "id": "basic-monthly-usd-4",
-  "features": Immutable.Map {
-    "view_sharing": Immutable.Map {
-      "enabled": true,
-    },
-    "automation_cancellations_flow": Immutable.Map {
-      "enabled": false,
-    },
-    "revenue_statistics": Immutable.Map {
-      "enabled": false,
-    },
-    "facebook_comment": Immutable.Map {
-      "enabled": true,
-    },
-    "satisfaction_surveys": Immutable.Map {
-      "enabled": true,
-    },
-    "api_1st_party_rate_limit": Immutable.Map {
-      "enabled": true,
-      "rate_limit": Immutable.Map {
-        "interval_ms": 2000,
-        "max_burst": 40,
-      },
-    },
-    "twitter_integration": Immutable.Map {
-      "enabled": false,
-      "limit": 0,
-    },
-    "user_roles": Immutable.Map {
-      "enabled": true,
-    },
-    "magento_integration": Immutable.Map {
-      "enabled": false,
-    },
-    "automation_managed_rules": Immutable.Map {
-      "enabled": false,
-    },
-    "overview_live_statistics": Immutable.Map {
-      "enabled": true,
-    },
-    "instagram_comment": Immutable.Map {
-      "enabled": true,
-    },
-    "yotpo_integration": Immutable.Map {
-      "enabled": true,
-    },
-    "help_center": Immutable.Map {
-      "enabled": true,
-    },
-    "api_3rd_party_rate_limit": Immutable.Map {
-      "enabled": true,
-      "rate_limit": Immutable.Map {
-        "interval_ms": 20000,
-        "max_burst": 40,
-      },
-    },
-    "automation_return_flow": Immutable.Map {
-      "enabled": false,
-    },
-    "instagram_dm": Immutable.Map {
-      "enabled": true,
-    },
-    "teams": Immutable.Map {
-      "enabled": true,
-    },
-    "automation_report_issue_flow": Immutable.Map {
-      "enabled": false,
-    },
-    "automation_self_service_statistics": Immutable.Map {
-      "enabled": false,
-    },
-    "phone_number": Immutable.Map {
-      "enabled": true,
-      "limit": 1,
-    },
-    "automation_track_order_flow": Immutable.Map {
-      "enabled": false,
-    },
-    "chat_campaigns": Immutable.Map {
-      "enabled": true,
-    },
-    "auto_assignment": Immutable.Map {
-      "enabled": true,
-    },
-    "users_live_statistics": Immutable.Map {
-      "enabled": false,
-    },
-  },
-  "is_legacy": false,
-  "integrations": 150,
-}
-`;
-
-exports[`billing selectors getPlan should return the plan from the state 1`] = `
+exports[`billing selectors getHelpdeskProduct should return the helpdesk product 1`] = `
 Object {
-  "amount": 60,
-  "automation_addon_discount": 0,
-  "automation_addon_equivalent_plan": "basic-automation-full-price-monthly-usd-4",
-  "cost_per_ticket": 0.4,
-  "currency": "usd",
-  "currencySign": "$",
-  "features": Object {
-    "api_1st_party_rate_limit": Object {
-      "enabled": true,
-      "rate_limit": Object {
-        "interval_ms": 2000,
-        "max_burst": 40,
+  "id": "prod_LsH6kV35G6zKWo",
+  "prices": Array [
+    Object {
+      "addons": Array [
+        "price_1LJBjXI9qXomtXqSSX34F3we",
+      ],
+      "amount": 6000,
+      "cost_per_ticket": 0.4,
+      "currency": "usd",
+      "features": Object {
+        "api_1st_party_rate_limit": Object {
+          "enabled": true,
+          "rate_limit": Object {
+            "interval_ms": 2000,
+            "max_burst": 40,
+          },
+        },
+        "api_3rd_party_rate_limit": Object {
+          "enabled": true,
+          "rate_limit": Object {
+            "interval_ms": 20000,
+            "max_burst": 40,
+          },
+        },
+        "auto_assignment": Object {
+          "enabled": true,
+        },
+        "automation_cancellations_flow": Object {
+          "enabled": false,
+        },
+        "automation_managed_rules": Object {
+          "enabled": false,
+        },
+        "automation_report_issue_flow": Object {
+          "enabled": false,
+        },
+        "automation_return_flow": Object {
+          "enabled": false,
+        },
+        "automation_self_service_statistics": Object {
+          "enabled": false,
+        },
+        "automation_track_order_flow": Object {
+          "enabled": false,
+        },
+        "chat_campaigns": Object {
+          "enabled": true,
+        },
+        "facebook_comment": Object {
+          "enabled": true,
+        },
+        "help_center": Object {
+          "enabled": true,
+        },
+        "instagram_comment": Object {
+          "enabled": true,
+        },
+        "instagram_dm": Object {
+          "enabled": true,
+        },
+        "magento_integration": Object {
+          "enabled": false,
+        },
+        "overview_live_statistics": Object {
+          "enabled": true,
+        },
+        "phone_number": Object {
+          "enabled": true,
+          "limit": 1,
+        },
+        "revenue_statistics": Object {
+          "enabled": false,
+        },
+        "satisfaction_surveys": Object {
+          "enabled": true,
+        },
+        "teams": Object {
+          "enabled": true,
+        },
+        "twitter_integration": Object {
+          "enabled": false,
+          "limit": 0,
+        },
+        "user_roles": Object {
+          "enabled": true,
+        },
+        "users_live_statistics": Object {
+          "enabled": false,
+        },
+        "view_sharing": Object {
+          "enabled": true,
+        },
+        "yotpo_integration": Object {
+          "enabled": true,
+        },
       },
-    },
-    "api_3rd_party_rate_limit": Object {
-      "enabled": true,
-      "rate_limit": Object {
-        "interval_ms": 20000,
-        "max_burst": 40,
+      "free_tickets": 300,
+      "integrations": 150,
+      "interval": "month",
+      "is_legacy": false,
+      "legacy_id": "basic-monthly-usd-4",
+      "limits": Object {
+        "messages": Object {
+          "default": 100,
+          "max": 100,
+          "min": 75,
+        },
+        "tickets": Object {
+          "default": 100,
+          "max": 100,
+          "min": 75,
+        },
       },
+      "name": "Basic",
+      "order": 2,
+      "phone_limits": Object {
+        "billing": 50,
+      },
+      "price_id": "price_1LJBjWI9qXomtXqSPZn8LqlD",
+      "product_id": "prod_LsH6kV35G6zKWo",
+      "public": true,
+      "trial_period_days": 7,
     },
-    "auto_assignment": Object {
-      "enabled": true,
+    Object {
+      "addons": Array [
+        "price_1LJBjZI9qXomtXqSPNgkEZpl",
+      ],
+      "amount": 60000,
+      "cost_per_ticket": 0.4,
+      "currency": "usd",
+      "features": Object {
+        "api_1st_party_rate_limit": Object {
+          "enabled": true,
+          "rate_limit": Object {
+            "interval_ms": 2000,
+            "max_burst": 40,
+          },
+        },
+        "api_3rd_party_rate_limit": Object {
+          "enabled": true,
+          "rate_limit": Object {
+            "interval_ms": 20000,
+            "max_burst": 40,
+          },
+        },
+        "auto_assignment": Object {
+          "enabled": true,
+        },
+        "automation_cancellations_flow": Object {
+          "enabled": false,
+        },
+        "automation_managed_rules": Object {
+          "enabled": false,
+        },
+        "automation_report_issue_flow": Object {
+          "enabled": false,
+        },
+        "automation_return_flow": Object {
+          "enabled": false,
+        },
+        "automation_self_service_statistics": Object {
+          "enabled": false,
+        },
+        "automation_track_order_flow": Object {
+          "enabled": false,
+        },
+        "chat_campaigns": Object {
+          "enabled": true,
+        },
+        "facebook_comment": Object {
+          "enabled": true,
+        },
+        "help_center": Object {
+          "enabled": true,
+        },
+        "instagram_comment": Object {
+          "enabled": true,
+        },
+        "instagram_dm": Object {
+          "enabled": true,
+        },
+        "magento_integration": Object {
+          "enabled": false,
+        },
+        "overview_live_statistics": Object {
+          "enabled": true,
+        },
+        "phone_number": Object {
+          "enabled": true,
+          "limit": 1,
+        },
+        "revenue_statistics": Object {
+          "enabled": false,
+        },
+        "satisfaction_surveys": Object {
+          "enabled": true,
+        },
+        "teams": Object {
+          "enabled": true,
+        },
+        "twitter_integration": Object {
+          "enabled": false,
+          "limit": 0,
+        },
+        "user_roles": Object {
+          "enabled": true,
+        },
+        "users_live_statistics": Object {
+          "enabled": false,
+        },
+        "view_sharing": Object {
+          "enabled": true,
+        },
+        "yotpo_integration": Object {
+          "enabled": true,
+        },
+      },
+      "free_tickets": 3600,
+      "integrations": 150,
+      "interval": "year",
+      "is_legacy": false,
+      "legacy_id": "basic-yearly-usd-4",
+      "limits": Object {
+        "messages": Object {
+          "default": 100,
+          "max": 100,
+          "min": 75,
+        },
+        "tickets": Object {
+          "default": 100,
+          "max": 100,
+          "min": 75,
+        },
+      },
+      "name": "Basic",
+      "order": 2,
+      "phone_limits": Object {
+        "billing": 50,
+      },
+      "price_id": "price_1LJBjYI9qXomtXqSLEjOrpmV",
+      "product_id": "prod_LsH6kV35G6zKWo",
+      "public": true,
+      "trial_period_days": 7,
     },
-    "automation_cancellations_flow": Object {
-      "enabled": false,
+    Object {
+      "addons": Array [
+        "price_1LJBjbI9qXomtXqS2sfi1J7P",
+      ],
+      "amount": 36000,
+      "cost_per_ticket": 0.36,
+      "currency": "usd",
+      "features": Object {
+        "api_1st_party_rate_limit": Object {
+          "enabled": true,
+          "rate_limit": Object {
+            "interval_ms": 2000,
+            "max_burst": 40,
+          },
+        },
+        "api_3rd_party_rate_limit": Object {
+          "enabled": true,
+          "rate_limit": Object {
+            "interval_ms": 20000,
+            "max_burst": 40,
+          },
+        },
+        "auto_assignment": Object {
+          "enabled": true,
+        },
+        "automation_cancellations_flow": Object {
+          "enabled": false,
+        },
+        "automation_managed_rules": Object {
+          "enabled": false,
+        },
+        "automation_report_issue_flow": Object {
+          "enabled": false,
+        },
+        "automation_return_flow": Object {
+          "enabled": false,
+        },
+        "automation_self_service_statistics": Object {
+          "enabled": false,
+        },
+        "automation_track_order_flow": Object {
+          "enabled": false,
+        },
+        "chat_campaigns": Object {
+          "enabled": true,
+        },
+        "facebook_comment": Object {
+          "enabled": true,
+        },
+        "help_center": Object {
+          "enabled": true,
+        },
+        "instagram_comment": Object {
+          "enabled": true,
+        },
+        "instagram_dm": Object {
+          "enabled": true,
+        },
+        "magento_integration": Object {
+          "enabled": true,
+        },
+        "overview_live_statistics": Object {
+          "enabled": true,
+        },
+        "phone_number": Object {
+          "enabled": true,
+          "limit": 3,
+        },
+        "revenue_statistics": Object {
+          "enabled": true,
+        },
+        "satisfaction_surveys": Object {
+          "enabled": true,
+        },
+        "teams": Object {
+          "enabled": true,
+        },
+        "twitter_integration": Object {
+          "enabled": false,
+          "limit": 0,
+        },
+        "user_roles": Object {
+          "enabled": true,
+        },
+        "users_live_statistics": Object {
+          "enabled": true,
+        },
+        "view_sharing": Object {
+          "enabled": true,
+        },
+        "yotpo_integration": Object {
+          "enabled": true,
+        },
+      },
+      "free_tickets": 2000,
+      "integrations": 150,
+      "interval": "month",
+      "is_legacy": false,
+      "legacy_id": "pro-monthly-usd-4",
+      "limits": Object {
+        "messages": Object {
+          "default": 100,
+          "max": 100,
+          "min": 75,
+        },
+        "tickets": Object {
+          "default": 100,
+          "max": 100,
+          "min": 75,
+        },
+      },
+      "name": "Pro",
+      "order": 3,
+      "phone_limits": Object {
+        "billing": 200,
+      },
+      "price_id": "price_1LJBjaI9qXomtXqSvYfzmmEU",
+      "product_id": "prod_LsH6kV35G6zKWo",
+      "public": true,
+      "trial_period_days": 7,
     },
-    "automation_managed_rules": Object {
-      "enabled": false,
+    Object {
+      "addons": Array [
+        "price_1LJBjdI9qXomtXqSlp9sh6iQ",
+      ],
+      "amount": 360000,
+      "cost_per_ticket": 0.36,
+      "currency": "usd",
+      "features": Object {
+        "api_1st_party_rate_limit": Object {
+          "enabled": true,
+          "rate_limit": Object {
+            "interval_ms": 2000,
+            "max_burst": 40,
+          },
+        },
+        "api_3rd_party_rate_limit": Object {
+          "enabled": true,
+          "rate_limit": Object {
+            "interval_ms": 20000,
+            "max_burst": 40,
+          },
+        },
+        "auto_assignment": Object {
+          "enabled": true,
+        },
+        "automation_cancellations_flow": Object {
+          "enabled": false,
+        },
+        "automation_managed_rules": Object {
+          "enabled": false,
+        },
+        "automation_report_issue_flow": Object {
+          "enabled": false,
+        },
+        "automation_return_flow": Object {
+          "enabled": false,
+        },
+        "automation_self_service_statistics": Object {
+          "enabled": false,
+        },
+        "automation_track_order_flow": Object {
+          "enabled": false,
+        },
+        "chat_campaigns": Object {
+          "enabled": true,
+        },
+        "facebook_comment": Object {
+          "enabled": true,
+        },
+        "help_center": Object {
+          "enabled": true,
+        },
+        "instagram_comment": Object {
+          "enabled": true,
+        },
+        "instagram_dm": Object {
+          "enabled": true,
+        },
+        "magento_integration": Object {
+          "enabled": true,
+        },
+        "overview_live_statistics": Object {
+          "enabled": true,
+        },
+        "phone_number": Object {
+          "enabled": true,
+          "limit": 3,
+        },
+        "revenue_statistics": Object {
+          "enabled": true,
+        },
+        "satisfaction_surveys": Object {
+          "enabled": true,
+        },
+        "teams": Object {
+          "enabled": true,
+        },
+        "twitter_integration": Object {
+          "enabled": false,
+          "limit": 0,
+        },
+        "user_roles": Object {
+          "enabled": true,
+        },
+        "users_live_statistics": Object {
+          "enabled": true,
+        },
+        "view_sharing": Object {
+          "enabled": true,
+        },
+        "yotpo_integration": Object {
+          "enabled": true,
+        },
+      },
+      "free_tickets": 24000,
+      "integrations": 150,
+      "interval": "year",
+      "is_legacy": false,
+      "legacy_id": "pro-yearly-usd-4",
+      "limits": Object {
+        "messages": Object {
+          "default": 100,
+          "max": 100,
+          "min": 75,
+        },
+        "tickets": Object {
+          "default": 100,
+          "max": 100,
+          "min": 75,
+        },
+      },
+      "name": "Pro",
+      "order": 3,
+      "phone_limits": Object {
+        "billing": 200,
+      },
+      "price_id": "price_1LJBjbI9qXomtXqShB9YLy7V",
+      "product_id": "prod_LsH6kV35G6zKWo",
+      "public": true,
+      "trial_period_days": 7,
     },
-    "automation_report_issue_flow": Object {
-      "enabled": false,
+    Object {
+      "addons": Array [
+        "price_1LJBjeI9qXomtXqSXRjmhPsL",
+      ],
+      "amount": 90000,
+      "cost_per_ticket": 0.36,
+      "currency": "usd",
+      "features": Object {
+        "api_1st_party_rate_limit": Object {
+          "enabled": true,
+          "rate_limit": Object {
+            "interval_ms": 2000,
+            "max_burst": 40,
+          },
+        },
+        "api_3rd_party_rate_limit": Object {
+          "enabled": true,
+          "rate_limit": Object {
+            "interval_ms": 20000,
+            "max_burst": 40,
+          },
+        },
+        "auto_assignment": Object {
+          "enabled": true,
+        },
+        "automation_cancellations_flow": Object {
+          "enabled": false,
+        },
+        "automation_managed_rules": Object {
+          "enabled": false,
+        },
+        "automation_report_issue_flow": Object {
+          "enabled": false,
+        },
+        "automation_return_flow": Object {
+          "enabled": false,
+        },
+        "automation_self_service_statistics": Object {
+          "enabled": false,
+        },
+        "automation_track_order_flow": Object {
+          "enabled": false,
+        },
+        "chat_campaigns": Object {
+          "enabled": true,
+        },
+        "facebook_comment": Object {
+          "enabled": true,
+        },
+        "help_center": Object {
+          "enabled": true,
+        },
+        "instagram_comment": Object {
+          "enabled": true,
+        },
+        "instagram_dm": Object {
+          "enabled": true,
+        },
+        "magento_integration": Object {
+          "enabled": true,
+        },
+        "overview_live_statistics": Object {
+          "enabled": true,
+        },
+        "phone_number": Object {
+          "enabled": true,
+          "limit": 10,
+        },
+        "revenue_statistics": Object {
+          "enabled": true,
+        },
+        "satisfaction_surveys": Object {
+          "enabled": true,
+        },
+        "teams": Object {
+          "enabled": true,
+        },
+        "twitter_integration": Object {
+          "enabled": true,
+          "limit": 2,
+        },
+        "user_roles": Object {
+          "enabled": true,
+        },
+        "users_live_statistics": Object {
+          "enabled": true,
+        },
+        "view_sharing": Object {
+          "enabled": true,
+        },
+        "yotpo_integration": Object {
+          "enabled": true,
+        },
+      },
+      "free_tickets": 5000,
+      "integrations": 150,
+      "interval": "month",
+      "is_legacy": false,
+      "legacy_id": "advanced-monthly-usd-4",
+      "limits": Object {
+        "messages": Object {
+          "default": 100,
+          "max": 100,
+          "min": 75,
+        },
+        "tickets": Object {
+          "default": 100,
+          "max": 100,
+          "min": 75,
+        },
+      },
+      "name": "Advanced",
+      "order": 4,
+      "phone_limits": Object {
+        "billing": 750,
+      },
+      "price_id": "price_1LJBjdI9qXomtXqS8RzPPA7K",
+      "product_id": "prod_LsH6kV35G6zKWo",
+      "public": true,
+      "trial_period_days": 7,
     },
-    "automation_return_flow": Object {
-      "enabled": false,
+    Object {
+      "addons": Array [
+        "price_1LJBjgI9qXomtXqSBZoBcg7G",
+      ],
+      "amount": 900000,
+      "cost_per_ticket": 0.36,
+      "currency": "usd",
+      "features": Object {
+        "api_1st_party_rate_limit": Object {
+          "enabled": true,
+          "rate_limit": Object {
+            "interval_ms": 2000,
+            "max_burst": 40,
+          },
+        },
+        "api_3rd_party_rate_limit": Object {
+          "enabled": true,
+          "rate_limit": Object {
+            "interval_ms": 20000,
+            "max_burst": 40,
+          },
+        },
+        "auto_assignment": Object {
+          "enabled": true,
+        },
+        "automation_cancellations_flow": Object {
+          "enabled": false,
+        },
+        "automation_managed_rules": Object {
+          "enabled": false,
+        },
+        "automation_report_issue_flow": Object {
+          "enabled": false,
+        },
+        "automation_return_flow": Object {
+          "enabled": false,
+        },
+        "automation_self_service_statistics": Object {
+          "enabled": false,
+        },
+        "automation_track_order_flow": Object {
+          "enabled": false,
+        },
+        "chat_campaigns": Object {
+          "enabled": true,
+        },
+        "facebook_comment": Object {
+          "enabled": true,
+        },
+        "help_center": Object {
+          "enabled": true,
+        },
+        "instagram_comment": Object {
+          "enabled": true,
+        },
+        "instagram_dm": Object {
+          "enabled": true,
+        },
+        "magento_integration": Object {
+          "enabled": true,
+        },
+        "overview_live_statistics": Object {
+          "enabled": true,
+        },
+        "phone_number": Object {
+          "enabled": true,
+          "limit": 10,
+        },
+        "revenue_statistics": Object {
+          "enabled": true,
+        },
+        "satisfaction_surveys": Object {
+          "enabled": true,
+        },
+        "teams": Object {
+          "enabled": true,
+        },
+        "twitter_integration": Object {
+          "enabled": true,
+          "limit": 2,
+        },
+        "user_roles": Object {
+          "enabled": true,
+        },
+        "users_live_statistics": Object {
+          "enabled": true,
+        },
+        "view_sharing": Object {
+          "enabled": true,
+        },
+        "yotpo_integration": Object {
+          "enabled": true,
+        },
+      },
+      "free_tickets": 60000,
+      "integrations": 150,
+      "interval": "year",
+      "is_legacy": false,
+      "legacy_id": "advanced-yearly-usd-4",
+      "limits": Object {
+        "messages": Object {
+          "default": 100,
+          "max": 100,
+          "min": 75,
+        },
+        "tickets": Object {
+          "default": 100,
+          "max": 100,
+          "min": 75,
+        },
+      },
+      "name": "Advanced",
+      "order": 4,
+      "phone_limits": Object {
+        "billing": 750,
+      },
+      "price_id": "price_1LJBjfI9qXomtXqSeKJ5lJjD",
+      "product_id": "prod_LsH6kV35G6zKWo",
+      "public": true,
+      "trial_period_days": 7,
     },
-    "automation_self_service_statistics": Object {
-      "enabled": false,
-    },
-    "automation_track_order_flow": Object {
-      "enabled": false,
-    },
-    "chat_campaigns": Object {
-      "enabled": true,
-    },
-    "facebook_comment": Object {
-      "enabled": true,
-    },
-    "help_center": Object {
-      "enabled": true,
-    },
-    "instagram_comment": Object {
-      "enabled": true,
-    },
-    "instagram_dm": Object {
-      "enabled": true,
-    },
-    "magento_integration": Object {
-      "enabled": false,
-    },
-    "overview_live_statistics": Object {
-      "enabled": true,
-    },
-    "phone_number": Object {
-      "enabled": true,
-      "limit": 1,
-    },
-    "revenue_statistics": Object {
-      "enabled": false,
-    },
-    "satisfaction_surveys": Object {
-      "enabled": true,
-    },
-    "teams": Object {
-      "enabled": true,
-    },
-    "twitter_integration": Object {
-      "enabled": false,
-      "limit": 0,
-    },
-    "user_roles": Object {
-      "enabled": true,
-    },
-    "users_live_statistics": Object {
-      "enabled": false,
-    },
-    "view_sharing": Object {
-      "enabled": true,
-    },
-    "yotpo_integration": Object {
-      "enabled": true,
-    },
-  },
-  "free_tickets": 300,
-  "id": "basic-monthly-usd-4",
-  "integrations": 150,
-  "interval": "month",
-  "is_legacy": false,
-  "limits": Object {
-    "messages": Object {
-      "default": 100,
-      "max": 100,
-      "min": 75,
-    },
-    "tickets": Object {
-      "default": 100,
-      "max": 100,
-      "min": 75,
-    },
-  },
-  "name": "Basic",
-  "order": 2,
-  "phone_limits": Object {
-    "billing": 50,
-  },
-  "public": true,
-  "trial_period_days": 7,
+  ],
+  "type": "helpdesk",
 }
 `;
+
+exports[`billing selectors getPrices should return the prices 1`] = `
+Array [
+  Object {
+    "additional_cost_per_ticket": 0.2,
+    "amount": 3000,
+    "automation_addon_discount": 0,
+    "automation_addon_included": true,
+    "base_price_id": "price_1LJBjWI9qXomtXqSPZn8LqlD",
+    "currency": "usd",
+    "features": Object {
+      "automation_cancellations_flow": Object {
+        "enabled": true,
+      },
+      "automation_managed_rules": Object {
+        "enabled": true,
+      },
+      "automation_report_issue_flow": Object {
+        "enabled": true,
+      },
+      "automation_return_flow": Object {
+        "enabled": true,
+      },
+      "automation_self_service_statistics": Object {
+        "enabled": true,
+      },
+      "automation_track_order_flow": Object {
+        "enabled": true,
+      },
+    },
+    "interval": "month",
+    "legacy_id": "basic-automation-full-price-monthly-usd-4",
+    "name": "Basic",
+    "order": 2,
+    "price_id": "price_1LJBjXI9qXomtXqSSX34F3we",
+    "product_id": "prod_LsHD5xmSqoFBBs",
+  },
+  Object {
+    "addons": Array [
+      "price_1LJBjXI9qXomtXqSSX34F3we",
+    ],
+    "amount": 6000,
+    "cost_per_ticket": 0.4,
+    "currency": "usd",
+    "features": Object {
+      "api_1st_party_rate_limit": Object {
+        "enabled": true,
+        "rate_limit": Object {
+          "interval_ms": 2000,
+          "max_burst": 40,
+        },
+      },
+      "api_3rd_party_rate_limit": Object {
+        "enabled": true,
+        "rate_limit": Object {
+          "interval_ms": 20000,
+          "max_burst": 40,
+        },
+      },
+      "auto_assignment": Object {
+        "enabled": true,
+      },
+      "automation_cancellations_flow": Object {
+        "enabled": false,
+      },
+      "automation_managed_rules": Object {
+        "enabled": false,
+      },
+      "automation_report_issue_flow": Object {
+        "enabled": false,
+      },
+      "automation_return_flow": Object {
+        "enabled": false,
+      },
+      "automation_self_service_statistics": Object {
+        "enabled": false,
+      },
+      "automation_track_order_flow": Object {
+        "enabled": false,
+      },
+      "chat_campaigns": Object {
+        "enabled": true,
+      },
+      "facebook_comment": Object {
+        "enabled": true,
+      },
+      "help_center": Object {
+        "enabled": true,
+      },
+      "instagram_comment": Object {
+        "enabled": true,
+      },
+      "instagram_dm": Object {
+        "enabled": true,
+      },
+      "magento_integration": Object {
+        "enabled": false,
+      },
+      "overview_live_statistics": Object {
+        "enabled": true,
+      },
+      "phone_number": Object {
+        "enabled": true,
+        "limit": 1,
+      },
+      "revenue_statistics": Object {
+        "enabled": false,
+      },
+      "satisfaction_surveys": Object {
+        "enabled": true,
+      },
+      "teams": Object {
+        "enabled": true,
+      },
+      "twitter_integration": Object {
+        "enabled": false,
+        "limit": 0,
+      },
+      "user_roles": Object {
+        "enabled": true,
+      },
+      "users_live_statistics": Object {
+        "enabled": false,
+      },
+      "view_sharing": Object {
+        "enabled": true,
+      },
+      "yotpo_integration": Object {
+        "enabled": true,
+      },
+    },
+    "free_tickets": 300,
+    "integrations": 150,
+    "interval": "month",
+    "is_legacy": false,
+    "legacy_id": "basic-monthly-usd-4",
+    "limits": Object {
+      "messages": Object {
+        "default": 100,
+        "max": 100,
+        "min": 75,
+      },
+      "tickets": Object {
+        "default": 100,
+        "max": 100,
+        "min": 75,
+      },
+    },
+    "name": "Basic",
+    "order": 2,
+    "phone_limits": Object {
+      "billing": 50,
+    },
+    "price_id": "price_1LJBjWI9qXomtXqSPZn8LqlD",
+    "product_id": "prod_LsH6kV35G6zKWo",
+    "public": true,
+    "trial_period_days": 7,
+  },
+  Object {
+    "additional_cost_per_ticket": 0.18,
+    "amount": 18000,
+    "automation_addon_discount": 0,
+    "automation_addon_included": true,
+    "base_price_id": "price_1LJBjaI9qXomtXqSvYfzmmEU",
+    "currency": "usd",
+    "features": Object {
+      "automation_cancellations_flow": Object {
+        "enabled": true,
+      },
+      "automation_managed_rules": Object {
+        "enabled": true,
+      },
+      "automation_report_issue_flow": Object {
+        "enabled": true,
+      },
+      "automation_return_flow": Object {
+        "enabled": true,
+      },
+      "automation_self_service_statistics": Object {
+        "enabled": true,
+      },
+      "automation_track_order_flow": Object {
+        "enabled": true,
+      },
+    },
+    "interval": "month",
+    "legacy_id": "pro-automation-full-price-monthly-usd-4",
+    "name": "Pro",
+    "order": 3,
+    "price_id": "price_1LJBjbI9qXomtXqS2sfi1J7P",
+    "product_id": "prod_LsHD5xmSqoFBBs",
+  },
+  Object {
+    "additional_cost_per_ticket": 0.2,
+    "amount": 30000,
+    "automation_addon_discount": 0,
+    "automation_addon_included": true,
+    "base_price_id": "price_1LJBjYI9qXomtXqSLEjOrpmV",
+    "currency": "usd",
+    "features": Object {
+      "automation_cancellations_flow": Object {
+        "enabled": true,
+      },
+      "automation_managed_rules": Object {
+        "enabled": true,
+      },
+      "automation_report_issue_flow": Object {
+        "enabled": true,
+      },
+      "automation_return_flow": Object {
+        "enabled": true,
+      },
+      "automation_self_service_statistics": Object {
+        "enabled": true,
+      },
+      "automation_track_order_flow": Object {
+        "enabled": true,
+      },
+    },
+    "interval": "year",
+    "legacy_id": "basic-automation-full-price-yearly-usd-4",
+    "name": "Basic",
+    "order": 2,
+    "price_id": "price_1LJBjZI9qXomtXqSPNgkEZpl",
+    "product_id": "prod_LsHD5xmSqoFBBs",
+  },
+  Object {
+    "addons": Array [
+      "price_1LJBjbI9qXomtXqS2sfi1J7P",
+    ],
+    "amount": 36000,
+    "cost_per_ticket": 0.36,
+    "currency": "usd",
+    "features": Object {
+      "api_1st_party_rate_limit": Object {
+        "enabled": true,
+        "rate_limit": Object {
+          "interval_ms": 2000,
+          "max_burst": 40,
+        },
+      },
+      "api_3rd_party_rate_limit": Object {
+        "enabled": true,
+        "rate_limit": Object {
+          "interval_ms": 20000,
+          "max_burst": 40,
+        },
+      },
+      "auto_assignment": Object {
+        "enabled": true,
+      },
+      "automation_cancellations_flow": Object {
+        "enabled": false,
+      },
+      "automation_managed_rules": Object {
+        "enabled": false,
+      },
+      "automation_report_issue_flow": Object {
+        "enabled": false,
+      },
+      "automation_return_flow": Object {
+        "enabled": false,
+      },
+      "automation_self_service_statistics": Object {
+        "enabled": false,
+      },
+      "automation_track_order_flow": Object {
+        "enabled": false,
+      },
+      "chat_campaigns": Object {
+        "enabled": true,
+      },
+      "facebook_comment": Object {
+        "enabled": true,
+      },
+      "help_center": Object {
+        "enabled": true,
+      },
+      "instagram_comment": Object {
+        "enabled": true,
+      },
+      "instagram_dm": Object {
+        "enabled": true,
+      },
+      "magento_integration": Object {
+        "enabled": true,
+      },
+      "overview_live_statistics": Object {
+        "enabled": true,
+      },
+      "phone_number": Object {
+        "enabled": true,
+        "limit": 3,
+      },
+      "revenue_statistics": Object {
+        "enabled": true,
+      },
+      "satisfaction_surveys": Object {
+        "enabled": true,
+      },
+      "teams": Object {
+        "enabled": true,
+      },
+      "twitter_integration": Object {
+        "enabled": false,
+        "limit": 0,
+      },
+      "user_roles": Object {
+        "enabled": true,
+      },
+      "users_live_statistics": Object {
+        "enabled": true,
+      },
+      "view_sharing": Object {
+        "enabled": true,
+      },
+      "yotpo_integration": Object {
+        "enabled": true,
+      },
+    },
+    "free_tickets": 2000,
+    "integrations": 150,
+    "interval": "month",
+    "is_legacy": false,
+    "legacy_id": "pro-monthly-usd-4",
+    "limits": Object {
+      "messages": Object {
+        "default": 100,
+        "max": 100,
+        "min": 75,
+      },
+      "tickets": Object {
+        "default": 100,
+        "max": 100,
+        "min": 75,
+      },
+    },
+    "name": "Pro",
+    "order": 3,
+    "phone_limits": Object {
+      "billing": 200,
+    },
+    "price_id": "price_1LJBjaI9qXomtXqSvYfzmmEU",
+    "product_id": "prod_LsH6kV35G6zKWo",
+    "public": true,
+    "trial_period_days": 7,
+  },
+  Object {
+    "additional_cost_per_ticket": 0.18,
+    "amount": 45000,
+    "automation_addon_discount": 0,
+    "automation_addon_included": true,
+    "base_price_id": "price_1LJBjdI9qXomtXqS8RzPPA7K",
+    "currency": "usd",
+    "features": Object {
+      "automation_cancellations_flow": Object {
+        "enabled": true,
+      },
+      "automation_managed_rules": Object {
+        "enabled": true,
+      },
+      "automation_report_issue_flow": Object {
+        "enabled": true,
+      },
+      "automation_return_flow": Object {
+        "enabled": true,
+      },
+      "automation_self_service_statistics": Object {
+        "enabled": true,
+      },
+      "automation_track_order_flow": Object {
+        "enabled": true,
+      },
+    },
+    "interval": "month",
+    "legacy_id": "advanced-automation-full-price-monthly-usd-4",
+    "name": "Advanced",
+    "order": 4,
+    "price_id": "price_1LJBjeI9qXomtXqSXRjmhPsL",
+    "product_id": "prod_LsHD5xmSqoFBBs",
+  },
+  Object {
+    "addons": Array [
+      "price_1LJBjZI9qXomtXqSPNgkEZpl",
+    ],
+    "amount": 60000,
+    "cost_per_ticket": 0.4,
+    "currency": "usd",
+    "features": Object {
+      "api_1st_party_rate_limit": Object {
+        "enabled": true,
+        "rate_limit": Object {
+          "interval_ms": 2000,
+          "max_burst": 40,
+        },
+      },
+      "api_3rd_party_rate_limit": Object {
+        "enabled": true,
+        "rate_limit": Object {
+          "interval_ms": 20000,
+          "max_burst": 40,
+        },
+      },
+      "auto_assignment": Object {
+        "enabled": true,
+      },
+      "automation_cancellations_flow": Object {
+        "enabled": false,
+      },
+      "automation_managed_rules": Object {
+        "enabled": false,
+      },
+      "automation_report_issue_flow": Object {
+        "enabled": false,
+      },
+      "automation_return_flow": Object {
+        "enabled": false,
+      },
+      "automation_self_service_statistics": Object {
+        "enabled": false,
+      },
+      "automation_track_order_flow": Object {
+        "enabled": false,
+      },
+      "chat_campaigns": Object {
+        "enabled": true,
+      },
+      "facebook_comment": Object {
+        "enabled": true,
+      },
+      "help_center": Object {
+        "enabled": true,
+      },
+      "instagram_comment": Object {
+        "enabled": true,
+      },
+      "instagram_dm": Object {
+        "enabled": true,
+      },
+      "magento_integration": Object {
+        "enabled": false,
+      },
+      "overview_live_statistics": Object {
+        "enabled": true,
+      },
+      "phone_number": Object {
+        "enabled": true,
+        "limit": 1,
+      },
+      "revenue_statistics": Object {
+        "enabled": false,
+      },
+      "satisfaction_surveys": Object {
+        "enabled": true,
+      },
+      "teams": Object {
+        "enabled": true,
+      },
+      "twitter_integration": Object {
+        "enabled": false,
+        "limit": 0,
+      },
+      "user_roles": Object {
+        "enabled": true,
+      },
+      "users_live_statistics": Object {
+        "enabled": false,
+      },
+      "view_sharing": Object {
+        "enabled": true,
+      },
+      "yotpo_integration": Object {
+        "enabled": true,
+      },
+    },
+    "free_tickets": 3600,
+    "integrations": 150,
+    "interval": "year",
+    "is_legacy": false,
+    "legacy_id": "basic-yearly-usd-4",
+    "limits": Object {
+      "messages": Object {
+        "default": 100,
+        "max": 100,
+        "min": 75,
+      },
+      "tickets": Object {
+        "default": 100,
+        "max": 100,
+        "min": 75,
+      },
+    },
+    "name": "Basic",
+    "order": 2,
+    "phone_limits": Object {
+      "billing": 50,
+    },
+    "price_id": "price_1LJBjYI9qXomtXqSLEjOrpmV",
+    "product_id": "prod_LsH6kV35G6zKWo",
+    "public": true,
+    "trial_period_days": 7,
+  },
+  Object {
+    "addons": Array [
+      "price_1LJBjeI9qXomtXqSXRjmhPsL",
+    ],
+    "amount": 90000,
+    "cost_per_ticket": 0.36,
+    "currency": "usd",
+    "features": Object {
+      "api_1st_party_rate_limit": Object {
+        "enabled": true,
+        "rate_limit": Object {
+          "interval_ms": 2000,
+          "max_burst": 40,
+        },
+      },
+      "api_3rd_party_rate_limit": Object {
+        "enabled": true,
+        "rate_limit": Object {
+          "interval_ms": 20000,
+          "max_burst": 40,
+        },
+      },
+      "auto_assignment": Object {
+        "enabled": true,
+      },
+      "automation_cancellations_flow": Object {
+        "enabled": false,
+      },
+      "automation_managed_rules": Object {
+        "enabled": false,
+      },
+      "automation_report_issue_flow": Object {
+        "enabled": false,
+      },
+      "automation_return_flow": Object {
+        "enabled": false,
+      },
+      "automation_self_service_statistics": Object {
+        "enabled": false,
+      },
+      "automation_track_order_flow": Object {
+        "enabled": false,
+      },
+      "chat_campaigns": Object {
+        "enabled": true,
+      },
+      "facebook_comment": Object {
+        "enabled": true,
+      },
+      "help_center": Object {
+        "enabled": true,
+      },
+      "instagram_comment": Object {
+        "enabled": true,
+      },
+      "instagram_dm": Object {
+        "enabled": true,
+      },
+      "magento_integration": Object {
+        "enabled": true,
+      },
+      "overview_live_statistics": Object {
+        "enabled": true,
+      },
+      "phone_number": Object {
+        "enabled": true,
+        "limit": 10,
+      },
+      "revenue_statistics": Object {
+        "enabled": true,
+      },
+      "satisfaction_surveys": Object {
+        "enabled": true,
+      },
+      "teams": Object {
+        "enabled": true,
+      },
+      "twitter_integration": Object {
+        "enabled": true,
+        "limit": 2,
+      },
+      "user_roles": Object {
+        "enabled": true,
+      },
+      "users_live_statistics": Object {
+        "enabled": true,
+      },
+      "view_sharing": Object {
+        "enabled": true,
+      },
+      "yotpo_integration": Object {
+        "enabled": true,
+      },
+    },
+    "free_tickets": 5000,
+    "integrations": 150,
+    "interval": "month",
+    "is_legacy": false,
+    "legacy_id": "advanced-monthly-usd-4",
+    "limits": Object {
+      "messages": Object {
+        "default": 100,
+        "max": 100,
+        "min": 75,
+      },
+      "tickets": Object {
+        "default": 100,
+        "max": 100,
+        "min": 75,
+      },
+    },
+    "name": "Advanced",
+    "order": 4,
+    "phone_limits": Object {
+      "billing": 750,
+    },
+    "price_id": "price_1LJBjdI9qXomtXqS8RzPPA7K",
+    "product_id": "prod_LsH6kV35G6zKWo",
+    "public": true,
+    "trial_period_days": 7,
+  },
+  Object {
+    "additional_cost_per_ticket": 0.18,
+    "amount": 180000,
+    "automation_addon_discount": 0,
+    "automation_addon_included": true,
+    "base_price_id": "price_1LJBjbI9qXomtXqShB9YLy7V",
+    "currency": "usd",
+    "features": Object {
+      "automation_cancellations_flow": Object {
+        "enabled": true,
+      },
+      "automation_managed_rules": Object {
+        "enabled": true,
+      },
+      "automation_report_issue_flow": Object {
+        "enabled": true,
+      },
+      "automation_return_flow": Object {
+        "enabled": true,
+      },
+      "automation_self_service_statistics": Object {
+        "enabled": true,
+      },
+      "automation_track_order_flow": Object {
+        "enabled": true,
+      },
+    },
+    "interval": "year",
+    "legacy_id": "pro-automation-full-price-yearly-usd-4",
+    "name": "Pro",
+    "order": 3,
+    "price_id": "price_1LJBjdI9qXomtXqSlp9sh6iQ",
+    "product_id": "prod_LsHD5xmSqoFBBs",
+  },
+  Object {
+    "addons": Array [
+      "price_1LJBjdI9qXomtXqSlp9sh6iQ",
+    ],
+    "amount": 360000,
+    "cost_per_ticket": 0.36,
+    "currency": "usd",
+    "features": Object {
+      "api_1st_party_rate_limit": Object {
+        "enabled": true,
+        "rate_limit": Object {
+          "interval_ms": 2000,
+          "max_burst": 40,
+        },
+      },
+      "api_3rd_party_rate_limit": Object {
+        "enabled": true,
+        "rate_limit": Object {
+          "interval_ms": 20000,
+          "max_burst": 40,
+        },
+      },
+      "auto_assignment": Object {
+        "enabled": true,
+      },
+      "automation_cancellations_flow": Object {
+        "enabled": false,
+      },
+      "automation_managed_rules": Object {
+        "enabled": false,
+      },
+      "automation_report_issue_flow": Object {
+        "enabled": false,
+      },
+      "automation_return_flow": Object {
+        "enabled": false,
+      },
+      "automation_self_service_statistics": Object {
+        "enabled": false,
+      },
+      "automation_track_order_flow": Object {
+        "enabled": false,
+      },
+      "chat_campaigns": Object {
+        "enabled": true,
+      },
+      "facebook_comment": Object {
+        "enabled": true,
+      },
+      "help_center": Object {
+        "enabled": true,
+      },
+      "instagram_comment": Object {
+        "enabled": true,
+      },
+      "instagram_dm": Object {
+        "enabled": true,
+      },
+      "magento_integration": Object {
+        "enabled": true,
+      },
+      "overview_live_statistics": Object {
+        "enabled": true,
+      },
+      "phone_number": Object {
+        "enabled": true,
+        "limit": 3,
+      },
+      "revenue_statistics": Object {
+        "enabled": true,
+      },
+      "satisfaction_surveys": Object {
+        "enabled": true,
+      },
+      "teams": Object {
+        "enabled": true,
+      },
+      "twitter_integration": Object {
+        "enabled": false,
+        "limit": 0,
+      },
+      "user_roles": Object {
+        "enabled": true,
+      },
+      "users_live_statistics": Object {
+        "enabled": true,
+      },
+      "view_sharing": Object {
+        "enabled": true,
+      },
+      "yotpo_integration": Object {
+        "enabled": true,
+      },
+    },
+    "free_tickets": 24000,
+    "integrations": 150,
+    "interval": "year",
+    "is_legacy": false,
+    "legacy_id": "pro-yearly-usd-4",
+    "limits": Object {
+      "messages": Object {
+        "default": 100,
+        "max": 100,
+        "min": 75,
+      },
+      "tickets": Object {
+        "default": 100,
+        "max": 100,
+        "min": 75,
+      },
+    },
+    "name": "Pro",
+    "order": 3,
+    "phone_limits": Object {
+      "billing": 200,
+    },
+    "price_id": "price_1LJBjbI9qXomtXqShB9YLy7V",
+    "product_id": "prod_LsH6kV35G6zKWo",
+    "public": true,
+    "trial_period_days": 7,
+  },
+  Object {
+    "additional_cost_per_ticket": 0.18,
+    "amount": 450000,
+    "automation_addon_discount": 0,
+    "automation_addon_included": true,
+    "base_price_id": "price_1LJBjfI9qXomtXqSeKJ5lJjD",
+    "currency": "usd",
+    "features": Object {
+      "automation_cancellations_flow": Object {
+        "enabled": true,
+      },
+      "automation_managed_rules": Object {
+        "enabled": true,
+      },
+      "automation_report_issue_flow": Object {
+        "enabled": true,
+      },
+      "automation_return_flow": Object {
+        "enabled": true,
+      },
+      "automation_self_service_statistics": Object {
+        "enabled": true,
+      },
+      "automation_track_order_flow": Object {
+        "enabled": true,
+      },
+    },
+    "interval": "year",
+    "legacy_id": "advanced-automation-full-price-yearly-usd-4",
+    "name": "Advanced",
+    "order": 4,
+    "price_id": "price_1LJBjgI9qXomtXqSBZoBcg7G",
+    "product_id": "prod_LsHD5xmSqoFBBs",
+  },
+  Object {
+    "addons": Array [
+      "price_1LJBjgI9qXomtXqSBZoBcg7G",
+    ],
+    "amount": 900000,
+    "cost_per_ticket": 0.36,
+    "currency": "usd",
+    "features": Object {
+      "api_1st_party_rate_limit": Object {
+        "enabled": true,
+        "rate_limit": Object {
+          "interval_ms": 2000,
+          "max_burst": 40,
+        },
+      },
+      "api_3rd_party_rate_limit": Object {
+        "enabled": true,
+        "rate_limit": Object {
+          "interval_ms": 20000,
+          "max_burst": 40,
+        },
+      },
+      "auto_assignment": Object {
+        "enabled": true,
+      },
+      "automation_cancellations_flow": Object {
+        "enabled": false,
+      },
+      "automation_managed_rules": Object {
+        "enabled": false,
+      },
+      "automation_report_issue_flow": Object {
+        "enabled": false,
+      },
+      "automation_return_flow": Object {
+        "enabled": false,
+      },
+      "automation_self_service_statistics": Object {
+        "enabled": false,
+      },
+      "automation_track_order_flow": Object {
+        "enabled": false,
+      },
+      "chat_campaigns": Object {
+        "enabled": true,
+      },
+      "facebook_comment": Object {
+        "enabled": true,
+      },
+      "help_center": Object {
+        "enabled": true,
+      },
+      "instagram_comment": Object {
+        "enabled": true,
+      },
+      "instagram_dm": Object {
+        "enabled": true,
+      },
+      "magento_integration": Object {
+        "enabled": true,
+      },
+      "overview_live_statistics": Object {
+        "enabled": true,
+      },
+      "phone_number": Object {
+        "enabled": true,
+        "limit": 10,
+      },
+      "revenue_statistics": Object {
+        "enabled": true,
+      },
+      "satisfaction_surveys": Object {
+        "enabled": true,
+      },
+      "teams": Object {
+        "enabled": true,
+      },
+      "twitter_integration": Object {
+        "enabled": true,
+        "limit": 2,
+      },
+      "user_roles": Object {
+        "enabled": true,
+      },
+      "users_live_statistics": Object {
+        "enabled": true,
+      },
+      "view_sharing": Object {
+        "enabled": true,
+      },
+      "yotpo_integration": Object {
+        "enabled": true,
+      },
+    },
+    "free_tickets": 60000,
+    "integrations": 150,
+    "interval": "year",
+    "is_legacy": false,
+    "legacy_id": "advanced-yearly-usd-4",
+    "limits": Object {
+      "messages": Object {
+        "default": 100,
+        "max": 100,
+        "min": 75,
+      },
+      "tickets": Object {
+        "default": 100,
+        "max": 100,
+        "min": 75,
+      },
+    },
+    "name": "Advanced",
+    "order": 4,
+    "phone_limits": Object {
+      "billing": 750,
+    },
+    "price_id": "price_1LJBjfI9qXomtXqSeKJ5lJjD",
+    "product_id": "prod_LsH6kV35G6zKWo",
+    "public": true,
+    "trial_period_days": 7,
+  },
+]
+`;
+
+exports[`billing selectors getProducts should return products 1`] = `
+Array [
+  Object {
+    "id": "prod_LsH6kV35G6zKWo",
+    "prices": Array [
+      Object {
+        "addons": Array [
+          "price_1LJBjXI9qXomtXqSSX34F3we",
+        ],
+        "amount": 6000,
+        "cost_per_ticket": 0.4,
+        "currency": "usd",
+        "features": Object {
+          "api_1st_party_rate_limit": Object {
+            "enabled": true,
+            "rate_limit": Object {
+              "interval_ms": 2000,
+              "max_burst": 40,
+            },
+          },
+          "api_3rd_party_rate_limit": Object {
+            "enabled": true,
+            "rate_limit": Object {
+              "interval_ms": 20000,
+              "max_burst": 40,
+            },
+          },
+          "auto_assignment": Object {
+            "enabled": true,
+          },
+          "automation_cancellations_flow": Object {
+            "enabled": false,
+          },
+          "automation_managed_rules": Object {
+            "enabled": false,
+          },
+          "automation_report_issue_flow": Object {
+            "enabled": false,
+          },
+          "automation_return_flow": Object {
+            "enabled": false,
+          },
+          "automation_self_service_statistics": Object {
+            "enabled": false,
+          },
+          "automation_track_order_flow": Object {
+            "enabled": false,
+          },
+          "chat_campaigns": Object {
+            "enabled": true,
+          },
+          "facebook_comment": Object {
+            "enabled": true,
+          },
+          "help_center": Object {
+            "enabled": true,
+          },
+          "instagram_comment": Object {
+            "enabled": true,
+          },
+          "instagram_dm": Object {
+            "enabled": true,
+          },
+          "magento_integration": Object {
+            "enabled": false,
+          },
+          "overview_live_statistics": Object {
+            "enabled": true,
+          },
+          "phone_number": Object {
+            "enabled": true,
+            "limit": 1,
+          },
+          "revenue_statistics": Object {
+            "enabled": false,
+          },
+          "satisfaction_surveys": Object {
+            "enabled": true,
+          },
+          "teams": Object {
+            "enabled": true,
+          },
+          "twitter_integration": Object {
+            "enabled": false,
+            "limit": 0,
+          },
+          "user_roles": Object {
+            "enabled": true,
+          },
+          "users_live_statistics": Object {
+            "enabled": false,
+          },
+          "view_sharing": Object {
+            "enabled": true,
+          },
+          "yotpo_integration": Object {
+            "enabled": true,
+          },
+        },
+        "free_tickets": 300,
+        "integrations": 150,
+        "interval": "month",
+        "is_legacy": false,
+        "legacy_id": "basic-monthly-usd-4",
+        "limits": Object {
+          "messages": Object {
+            "default": 100,
+            "max": 100,
+            "min": 75,
+          },
+          "tickets": Object {
+            "default": 100,
+            "max": 100,
+            "min": 75,
+          },
+        },
+        "name": "Basic",
+        "order": 2,
+        "phone_limits": Object {
+          "billing": 50,
+        },
+        "price_id": "price_1LJBjWI9qXomtXqSPZn8LqlD",
+        "product_id": "prod_LsH6kV35G6zKWo",
+        "public": true,
+        "trial_period_days": 7,
+      },
+      Object {
+        "addons": Array [
+          "price_1LJBjZI9qXomtXqSPNgkEZpl",
+        ],
+        "amount": 60000,
+        "cost_per_ticket": 0.4,
+        "currency": "usd",
+        "features": Object {
+          "api_1st_party_rate_limit": Object {
+            "enabled": true,
+            "rate_limit": Object {
+              "interval_ms": 2000,
+              "max_burst": 40,
+            },
+          },
+          "api_3rd_party_rate_limit": Object {
+            "enabled": true,
+            "rate_limit": Object {
+              "interval_ms": 20000,
+              "max_burst": 40,
+            },
+          },
+          "auto_assignment": Object {
+            "enabled": true,
+          },
+          "automation_cancellations_flow": Object {
+            "enabled": false,
+          },
+          "automation_managed_rules": Object {
+            "enabled": false,
+          },
+          "automation_report_issue_flow": Object {
+            "enabled": false,
+          },
+          "automation_return_flow": Object {
+            "enabled": false,
+          },
+          "automation_self_service_statistics": Object {
+            "enabled": false,
+          },
+          "automation_track_order_flow": Object {
+            "enabled": false,
+          },
+          "chat_campaigns": Object {
+            "enabled": true,
+          },
+          "facebook_comment": Object {
+            "enabled": true,
+          },
+          "help_center": Object {
+            "enabled": true,
+          },
+          "instagram_comment": Object {
+            "enabled": true,
+          },
+          "instagram_dm": Object {
+            "enabled": true,
+          },
+          "magento_integration": Object {
+            "enabled": false,
+          },
+          "overview_live_statistics": Object {
+            "enabled": true,
+          },
+          "phone_number": Object {
+            "enabled": true,
+            "limit": 1,
+          },
+          "revenue_statistics": Object {
+            "enabled": false,
+          },
+          "satisfaction_surveys": Object {
+            "enabled": true,
+          },
+          "teams": Object {
+            "enabled": true,
+          },
+          "twitter_integration": Object {
+            "enabled": false,
+            "limit": 0,
+          },
+          "user_roles": Object {
+            "enabled": true,
+          },
+          "users_live_statistics": Object {
+            "enabled": false,
+          },
+          "view_sharing": Object {
+            "enabled": true,
+          },
+          "yotpo_integration": Object {
+            "enabled": true,
+          },
+        },
+        "free_tickets": 3600,
+        "integrations": 150,
+        "interval": "year",
+        "is_legacy": false,
+        "legacy_id": "basic-yearly-usd-4",
+        "limits": Object {
+          "messages": Object {
+            "default": 100,
+            "max": 100,
+            "min": 75,
+          },
+          "tickets": Object {
+            "default": 100,
+            "max": 100,
+            "min": 75,
+          },
+        },
+        "name": "Basic",
+        "order": 2,
+        "phone_limits": Object {
+          "billing": 50,
+        },
+        "price_id": "price_1LJBjYI9qXomtXqSLEjOrpmV",
+        "product_id": "prod_LsH6kV35G6zKWo",
+        "public": true,
+        "trial_period_days": 7,
+      },
+      Object {
+        "addons": Array [
+          "price_1LJBjbI9qXomtXqS2sfi1J7P",
+        ],
+        "amount": 36000,
+        "cost_per_ticket": 0.36,
+        "currency": "usd",
+        "features": Object {
+          "api_1st_party_rate_limit": Object {
+            "enabled": true,
+            "rate_limit": Object {
+              "interval_ms": 2000,
+              "max_burst": 40,
+            },
+          },
+          "api_3rd_party_rate_limit": Object {
+            "enabled": true,
+            "rate_limit": Object {
+              "interval_ms": 20000,
+              "max_burst": 40,
+            },
+          },
+          "auto_assignment": Object {
+            "enabled": true,
+          },
+          "automation_cancellations_flow": Object {
+            "enabled": false,
+          },
+          "automation_managed_rules": Object {
+            "enabled": false,
+          },
+          "automation_report_issue_flow": Object {
+            "enabled": false,
+          },
+          "automation_return_flow": Object {
+            "enabled": false,
+          },
+          "automation_self_service_statistics": Object {
+            "enabled": false,
+          },
+          "automation_track_order_flow": Object {
+            "enabled": false,
+          },
+          "chat_campaigns": Object {
+            "enabled": true,
+          },
+          "facebook_comment": Object {
+            "enabled": true,
+          },
+          "help_center": Object {
+            "enabled": true,
+          },
+          "instagram_comment": Object {
+            "enabled": true,
+          },
+          "instagram_dm": Object {
+            "enabled": true,
+          },
+          "magento_integration": Object {
+            "enabled": true,
+          },
+          "overview_live_statistics": Object {
+            "enabled": true,
+          },
+          "phone_number": Object {
+            "enabled": true,
+            "limit": 3,
+          },
+          "revenue_statistics": Object {
+            "enabled": true,
+          },
+          "satisfaction_surveys": Object {
+            "enabled": true,
+          },
+          "teams": Object {
+            "enabled": true,
+          },
+          "twitter_integration": Object {
+            "enabled": false,
+            "limit": 0,
+          },
+          "user_roles": Object {
+            "enabled": true,
+          },
+          "users_live_statistics": Object {
+            "enabled": true,
+          },
+          "view_sharing": Object {
+            "enabled": true,
+          },
+          "yotpo_integration": Object {
+            "enabled": true,
+          },
+        },
+        "free_tickets": 2000,
+        "integrations": 150,
+        "interval": "month",
+        "is_legacy": false,
+        "legacy_id": "pro-monthly-usd-4",
+        "limits": Object {
+          "messages": Object {
+            "default": 100,
+            "max": 100,
+            "min": 75,
+          },
+          "tickets": Object {
+            "default": 100,
+            "max": 100,
+            "min": 75,
+          },
+        },
+        "name": "Pro",
+        "order": 3,
+        "phone_limits": Object {
+          "billing": 200,
+        },
+        "price_id": "price_1LJBjaI9qXomtXqSvYfzmmEU",
+        "product_id": "prod_LsH6kV35G6zKWo",
+        "public": true,
+        "trial_period_days": 7,
+      },
+      Object {
+        "addons": Array [
+          "price_1LJBjdI9qXomtXqSlp9sh6iQ",
+        ],
+        "amount": 360000,
+        "cost_per_ticket": 0.36,
+        "currency": "usd",
+        "features": Object {
+          "api_1st_party_rate_limit": Object {
+            "enabled": true,
+            "rate_limit": Object {
+              "interval_ms": 2000,
+              "max_burst": 40,
+            },
+          },
+          "api_3rd_party_rate_limit": Object {
+            "enabled": true,
+            "rate_limit": Object {
+              "interval_ms": 20000,
+              "max_burst": 40,
+            },
+          },
+          "auto_assignment": Object {
+            "enabled": true,
+          },
+          "automation_cancellations_flow": Object {
+            "enabled": false,
+          },
+          "automation_managed_rules": Object {
+            "enabled": false,
+          },
+          "automation_report_issue_flow": Object {
+            "enabled": false,
+          },
+          "automation_return_flow": Object {
+            "enabled": false,
+          },
+          "automation_self_service_statistics": Object {
+            "enabled": false,
+          },
+          "automation_track_order_flow": Object {
+            "enabled": false,
+          },
+          "chat_campaigns": Object {
+            "enabled": true,
+          },
+          "facebook_comment": Object {
+            "enabled": true,
+          },
+          "help_center": Object {
+            "enabled": true,
+          },
+          "instagram_comment": Object {
+            "enabled": true,
+          },
+          "instagram_dm": Object {
+            "enabled": true,
+          },
+          "magento_integration": Object {
+            "enabled": true,
+          },
+          "overview_live_statistics": Object {
+            "enabled": true,
+          },
+          "phone_number": Object {
+            "enabled": true,
+            "limit": 3,
+          },
+          "revenue_statistics": Object {
+            "enabled": true,
+          },
+          "satisfaction_surveys": Object {
+            "enabled": true,
+          },
+          "teams": Object {
+            "enabled": true,
+          },
+          "twitter_integration": Object {
+            "enabled": false,
+            "limit": 0,
+          },
+          "user_roles": Object {
+            "enabled": true,
+          },
+          "users_live_statistics": Object {
+            "enabled": true,
+          },
+          "view_sharing": Object {
+            "enabled": true,
+          },
+          "yotpo_integration": Object {
+            "enabled": true,
+          },
+        },
+        "free_tickets": 24000,
+        "integrations": 150,
+        "interval": "year",
+        "is_legacy": false,
+        "legacy_id": "pro-yearly-usd-4",
+        "limits": Object {
+          "messages": Object {
+            "default": 100,
+            "max": 100,
+            "min": 75,
+          },
+          "tickets": Object {
+            "default": 100,
+            "max": 100,
+            "min": 75,
+          },
+        },
+        "name": "Pro",
+        "order": 3,
+        "phone_limits": Object {
+          "billing": 200,
+        },
+        "price_id": "price_1LJBjbI9qXomtXqShB9YLy7V",
+        "product_id": "prod_LsH6kV35G6zKWo",
+        "public": true,
+        "trial_period_days": 7,
+      },
+      Object {
+        "addons": Array [
+          "price_1LJBjeI9qXomtXqSXRjmhPsL",
+        ],
+        "amount": 90000,
+        "cost_per_ticket": 0.36,
+        "currency": "usd",
+        "features": Object {
+          "api_1st_party_rate_limit": Object {
+            "enabled": true,
+            "rate_limit": Object {
+              "interval_ms": 2000,
+              "max_burst": 40,
+            },
+          },
+          "api_3rd_party_rate_limit": Object {
+            "enabled": true,
+            "rate_limit": Object {
+              "interval_ms": 20000,
+              "max_burst": 40,
+            },
+          },
+          "auto_assignment": Object {
+            "enabled": true,
+          },
+          "automation_cancellations_flow": Object {
+            "enabled": false,
+          },
+          "automation_managed_rules": Object {
+            "enabled": false,
+          },
+          "automation_report_issue_flow": Object {
+            "enabled": false,
+          },
+          "automation_return_flow": Object {
+            "enabled": false,
+          },
+          "automation_self_service_statistics": Object {
+            "enabled": false,
+          },
+          "automation_track_order_flow": Object {
+            "enabled": false,
+          },
+          "chat_campaigns": Object {
+            "enabled": true,
+          },
+          "facebook_comment": Object {
+            "enabled": true,
+          },
+          "help_center": Object {
+            "enabled": true,
+          },
+          "instagram_comment": Object {
+            "enabled": true,
+          },
+          "instagram_dm": Object {
+            "enabled": true,
+          },
+          "magento_integration": Object {
+            "enabled": true,
+          },
+          "overview_live_statistics": Object {
+            "enabled": true,
+          },
+          "phone_number": Object {
+            "enabled": true,
+            "limit": 10,
+          },
+          "revenue_statistics": Object {
+            "enabled": true,
+          },
+          "satisfaction_surveys": Object {
+            "enabled": true,
+          },
+          "teams": Object {
+            "enabled": true,
+          },
+          "twitter_integration": Object {
+            "enabled": true,
+            "limit": 2,
+          },
+          "user_roles": Object {
+            "enabled": true,
+          },
+          "users_live_statistics": Object {
+            "enabled": true,
+          },
+          "view_sharing": Object {
+            "enabled": true,
+          },
+          "yotpo_integration": Object {
+            "enabled": true,
+          },
+        },
+        "free_tickets": 5000,
+        "integrations": 150,
+        "interval": "month",
+        "is_legacy": false,
+        "legacy_id": "advanced-monthly-usd-4",
+        "limits": Object {
+          "messages": Object {
+            "default": 100,
+            "max": 100,
+            "min": 75,
+          },
+          "tickets": Object {
+            "default": 100,
+            "max": 100,
+            "min": 75,
+          },
+        },
+        "name": "Advanced",
+        "order": 4,
+        "phone_limits": Object {
+          "billing": 750,
+        },
+        "price_id": "price_1LJBjdI9qXomtXqS8RzPPA7K",
+        "product_id": "prod_LsH6kV35G6zKWo",
+        "public": true,
+        "trial_period_days": 7,
+      },
+      Object {
+        "addons": Array [
+          "price_1LJBjgI9qXomtXqSBZoBcg7G",
+        ],
+        "amount": 900000,
+        "cost_per_ticket": 0.36,
+        "currency": "usd",
+        "features": Object {
+          "api_1st_party_rate_limit": Object {
+            "enabled": true,
+            "rate_limit": Object {
+              "interval_ms": 2000,
+              "max_burst": 40,
+            },
+          },
+          "api_3rd_party_rate_limit": Object {
+            "enabled": true,
+            "rate_limit": Object {
+              "interval_ms": 20000,
+              "max_burst": 40,
+            },
+          },
+          "auto_assignment": Object {
+            "enabled": true,
+          },
+          "automation_cancellations_flow": Object {
+            "enabled": false,
+          },
+          "automation_managed_rules": Object {
+            "enabled": false,
+          },
+          "automation_report_issue_flow": Object {
+            "enabled": false,
+          },
+          "automation_return_flow": Object {
+            "enabled": false,
+          },
+          "automation_self_service_statistics": Object {
+            "enabled": false,
+          },
+          "automation_track_order_flow": Object {
+            "enabled": false,
+          },
+          "chat_campaigns": Object {
+            "enabled": true,
+          },
+          "facebook_comment": Object {
+            "enabled": true,
+          },
+          "help_center": Object {
+            "enabled": true,
+          },
+          "instagram_comment": Object {
+            "enabled": true,
+          },
+          "instagram_dm": Object {
+            "enabled": true,
+          },
+          "magento_integration": Object {
+            "enabled": true,
+          },
+          "overview_live_statistics": Object {
+            "enabled": true,
+          },
+          "phone_number": Object {
+            "enabled": true,
+            "limit": 10,
+          },
+          "revenue_statistics": Object {
+            "enabled": true,
+          },
+          "satisfaction_surveys": Object {
+            "enabled": true,
+          },
+          "teams": Object {
+            "enabled": true,
+          },
+          "twitter_integration": Object {
+            "enabled": true,
+            "limit": 2,
+          },
+          "user_roles": Object {
+            "enabled": true,
+          },
+          "users_live_statistics": Object {
+            "enabled": true,
+          },
+          "view_sharing": Object {
+            "enabled": true,
+          },
+          "yotpo_integration": Object {
+            "enabled": true,
+          },
+        },
+        "free_tickets": 60000,
+        "integrations": 150,
+        "interval": "year",
+        "is_legacy": false,
+        "legacy_id": "advanced-yearly-usd-4",
+        "limits": Object {
+          "messages": Object {
+            "default": 100,
+            "max": 100,
+            "min": 75,
+          },
+          "tickets": Object {
+            "default": 100,
+            "max": 100,
+            "min": 75,
+          },
+        },
+        "name": "Advanced",
+        "order": 4,
+        "phone_limits": Object {
+          "billing": 750,
+        },
+        "price_id": "price_1LJBjfI9qXomtXqSeKJ5lJjD",
+        "product_id": "prod_LsH6kV35G6zKWo",
+        "public": true,
+        "trial_period_days": 7,
+      },
+    ],
+    "type": "helpdesk",
+  },
+  Object {
+    "id": "prod_LsHD5xmSqoFBBs",
+    "prices": Array [
+      Object {
+        "additional_cost_per_ticket": 0.2,
+        "amount": 3000,
+        "automation_addon_discount": 0,
+        "automation_addon_included": true,
+        "base_price_id": "price_1LJBjWI9qXomtXqSPZn8LqlD",
+        "currency": "usd",
+        "features": Object {
+          "automation_cancellations_flow": Object {
+            "enabled": true,
+          },
+          "automation_managed_rules": Object {
+            "enabled": true,
+          },
+          "automation_report_issue_flow": Object {
+            "enabled": true,
+          },
+          "automation_return_flow": Object {
+            "enabled": true,
+          },
+          "automation_self_service_statistics": Object {
+            "enabled": true,
+          },
+          "automation_track_order_flow": Object {
+            "enabled": true,
+          },
+        },
+        "interval": "month",
+        "legacy_id": "basic-automation-full-price-monthly-usd-4",
+        "name": "Basic",
+        "order": 2,
+        "price_id": "price_1LJBjXI9qXomtXqSSX34F3we",
+        "product_id": "prod_LsHD5xmSqoFBBs",
+      },
+      Object {
+        "additional_cost_per_ticket": 0.2,
+        "amount": 30000,
+        "automation_addon_discount": 0,
+        "automation_addon_included": true,
+        "base_price_id": "price_1LJBjYI9qXomtXqSLEjOrpmV",
+        "currency": "usd",
+        "features": Object {
+          "automation_cancellations_flow": Object {
+            "enabled": true,
+          },
+          "automation_managed_rules": Object {
+            "enabled": true,
+          },
+          "automation_report_issue_flow": Object {
+            "enabled": true,
+          },
+          "automation_return_flow": Object {
+            "enabled": true,
+          },
+          "automation_self_service_statistics": Object {
+            "enabled": true,
+          },
+          "automation_track_order_flow": Object {
+            "enabled": true,
+          },
+        },
+        "interval": "year",
+        "legacy_id": "basic-automation-full-price-yearly-usd-4",
+        "name": "Basic",
+        "order": 2,
+        "price_id": "price_1LJBjZI9qXomtXqSPNgkEZpl",
+        "product_id": "prod_LsHD5xmSqoFBBs",
+      },
+      Object {
+        "additional_cost_per_ticket": 0.18,
+        "amount": 18000,
+        "automation_addon_discount": 0,
+        "automation_addon_included": true,
+        "base_price_id": "price_1LJBjaI9qXomtXqSvYfzmmEU",
+        "currency": "usd",
+        "features": Object {
+          "automation_cancellations_flow": Object {
+            "enabled": true,
+          },
+          "automation_managed_rules": Object {
+            "enabled": true,
+          },
+          "automation_report_issue_flow": Object {
+            "enabled": true,
+          },
+          "automation_return_flow": Object {
+            "enabled": true,
+          },
+          "automation_self_service_statistics": Object {
+            "enabled": true,
+          },
+          "automation_track_order_flow": Object {
+            "enabled": true,
+          },
+        },
+        "interval": "month",
+        "legacy_id": "pro-automation-full-price-monthly-usd-4",
+        "name": "Pro",
+        "order": 3,
+        "price_id": "price_1LJBjbI9qXomtXqS2sfi1J7P",
+        "product_id": "prod_LsHD5xmSqoFBBs",
+      },
+      Object {
+        "additional_cost_per_ticket": 0.18,
+        "amount": 180000,
+        "automation_addon_discount": 0,
+        "automation_addon_included": true,
+        "base_price_id": "price_1LJBjbI9qXomtXqShB9YLy7V",
+        "currency": "usd",
+        "features": Object {
+          "automation_cancellations_flow": Object {
+            "enabled": true,
+          },
+          "automation_managed_rules": Object {
+            "enabled": true,
+          },
+          "automation_report_issue_flow": Object {
+            "enabled": true,
+          },
+          "automation_return_flow": Object {
+            "enabled": true,
+          },
+          "automation_self_service_statistics": Object {
+            "enabled": true,
+          },
+          "automation_track_order_flow": Object {
+            "enabled": true,
+          },
+        },
+        "interval": "year",
+        "legacy_id": "pro-automation-full-price-yearly-usd-4",
+        "name": "Pro",
+        "order": 3,
+        "price_id": "price_1LJBjdI9qXomtXqSlp9sh6iQ",
+        "product_id": "prod_LsHD5xmSqoFBBs",
+      },
+      Object {
+        "additional_cost_per_ticket": 0.18,
+        "amount": 45000,
+        "automation_addon_discount": 0,
+        "automation_addon_included": true,
+        "base_price_id": "price_1LJBjdI9qXomtXqS8RzPPA7K",
+        "currency": "usd",
+        "features": Object {
+          "automation_cancellations_flow": Object {
+            "enabled": true,
+          },
+          "automation_managed_rules": Object {
+            "enabled": true,
+          },
+          "automation_report_issue_flow": Object {
+            "enabled": true,
+          },
+          "automation_return_flow": Object {
+            "enabled": true,
+          },
+          "automation_self_service_statistics": Object {
+            "enabled": true,
+          },
+          "automation_track_order_flow": Object {
+            "enabled": true,
+          },
+        },
+        "interval": "month",
+        "legacy_id": "advanced-automation-full-price-monthly-usd-4",
+        "name": "Advanced",
+        "order": 4,
+        "price_id": "price_1LJBjeI9qXomtXqSXRjmhPsL",
+        "product_id": "prod_LsHD5xmSqoFBBs",
+      },
+      Object {
+        "additional_cost_per_ticket": 0.18,
+        "amount": 450000,
+        "automation_addon_discount": 0,
+        "automation_addon_included": true,
+        "base_price_id": "price_1LJBjfI9qXomtXqSeKJ5lJjD",
+        "currency": "usd",
+        "features": Object {
+          "automation_cancellations_flow": Object {
+            "enabled": true,
+          },
+          "automation_managed_rules": Object {
+            "enabled": true,
+          },
+          "automation_report_issue_flow": Object {
+            "enabled": true,
+          },
+          "automation_return_flow": Object {
+            "enabled": true,
+          },
+          "automation_self_service_statistics": Object {
+            "enabled": true,
+          },
+          "automation_track_order_flow": Object {
+            "enabled": true,
+          },
+        },
+        "interval": "year",
+        "legacy_id": "advanced-automation-full-price-yearly-usd-4",
+        "name": "Advanced",
+        "order": 4,
+        "price_id": "price_1LJBjgI9qXomtXqSBZoBcg7G",
+        "product_id": "prod_LsHD5xmSqoFBBs",
+      },
+    ],
+    "type": "automation",
+  },
+]
+`;
+
+exports[`billing selectors makeHasFeature should return if the feature is enabled 1`] = `true`;
+
+exports[`billing selectors makeHasFeature should return if the feature is enabled 2`] = `false`;

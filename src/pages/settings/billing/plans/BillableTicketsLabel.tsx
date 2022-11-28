@@ -2,29 +2,32 @@ import React from 'react'
 
 import useId from 'hooks/useId'
 import Tooltip from 'pages/common/components/Tooltip'
-import {PlanWithCurrencySign} from 'state/billing/types'
 
 import css from './BillableTicketsLabel.less'
 
 type Props = {
     id?: string
     costMultiplier?: number
-    plan: PlanWithCurrencySign
+    costPerTicket: number
+    currency: string
+    freeTickets: number
 }
 
 export default function BillableTicketsLabel({
     costMultiplier = 100,
-    plan,
+    costPerTicket,
+    currency,
+    freeTickets,
 }: Props) {
     const id = useId()
     const tooltipId = 'billable-ticket-label-' + id
-    const costPerTicket = plan.cost_per_ticket * costMultiplier
+    const formattedCostPerTicket = costPerTicket * costMultiplier
 
     return (
         <>
             <span id={tooltipId} className={css.billableTickets}>
-                {new Intl.NumberFormat('en-US').format(plan.free_tickets)}{' '}
-                billable tickets
+                {new Intl.NumberFormat('en-US').format(freeTickets)} billable
+                tickets
             </span>{' '}
             included
             <Tooltip
@@ -34,10 +37,10 @@ export default function BillableTicketsLabel({
             >
                 {new Intl.NumberFormat('en-US', {
                     style: 'currency',
-                    currency: plan.currency,
+                    currency: currency,
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0,
-                }).format(costPerTicket)}{' '}
+                }).format(formattedCostPerTicket)}{' '}
                 per {costMultiplier} extra tickets
             </Tooltip>
         </>

@@ -1,0 +1,203 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`billingPlanFeatures getPlanCardFeaturesForPrices should return the features for prices 1`] = `
+Array [
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="playlist_add_check"
+    />,
+    "label": <BillableTicketsLabel
+      costPerTicket={0.36}
+      currency="usd"
+      freeTickets={2000}
+    />,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="thumb_up"
+    />,
+    "label": "Facebook, Messenger, Instagram",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="forum"
+    />,
+    "label": "Live chat",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="phone"
+    />,
+    "isDisabled": false,
+    "label": <React.Fragment>
+      <b>
+        3
+      </b>
+       Phone number
+      s
+    </React.Fragment>,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="auto_awesome"
+    />,
+    "label": "Macros and rules",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="insert_emoticon"
+    />,
+    "isDisabled": false,
+    "label": "Satisfaction surveys",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="web_asset"
+    />,
+    "isDisabled": false,
+    "label": <HelpCenterLabel
+      disabled={false}
+    />,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="directions_bike"
+    />,
+    "label": <React.Fragment>
+      <b>
+        Lite
+      </b>
+       onboarding
+    </React.Fragment>,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="attach_money"
+    />,
+    "isDisabled": false,
+    "label": "Revenue statistics",
+  },
+  Object {
+    "icon": <PlanFeatureVectorIcon
+      url="test-file-stub"
+    />,
+    "isDisabled": false,
+    "label": "Magento integration",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="person_pin"
+    />,
+    "isDisabled": true,
+    "label": "Dedicated success manager",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="blur_on"
+    />,
+    "isDisabled": true,
+    "label": "Custom services",
+  },
+]
+`;
+
+exports[`billingPlanFeatures getPlanCardFeaturesForPrices should return the features for prices with hardcoded features 1`] = `
+Array [
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="playlist_add_check"
+    />,
+    "label": <BillableTicketsLabel
+      costPerTicket={0.36}
+      currency="usd"
+      freeTickets={2000}
+    />,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="thumb_up"
+    />,
+    "label": "Facebook, Messenger, Instagram & DMs",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="forum"
+    />,
+    "label": "Live chat",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="phone"
+    />,
+    "isDisabled": false,
+    "label": <React.Fragment>
+      <b>
+        3
+      </b>
+       Phone number
+      s
+    </React.Fragment>,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="auto_awesome"
+    />,
+    "label": "Macros and rules",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="insert_emoticon"
+    />,
+    "isDisabled": false,
+    "label": "Satisfaction surveys",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="web_asset"
+    />,
+    "isDisabled": false,
+    "label": <HelpCenterLabel
+      disabled={false}
+    />,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="directions_bike"
+    />,
+    "label": <React.Fragment>
+      <b>
+        Lite
+      </b>
+       onboarding
+    </React.Fragment>,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="attach_money"
+    />,
+    "isDisabled": false,
+    "label": "Revenue statistics",
+  },
+  Object {
+    "icon": <PlanFeatureVectorIcon
+      url="test-file-stub"
+    />,
+    "isDisabled": false,
+    "label": "Magento integration",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="person_pin"
+    />,
+    "isDisabled": true,
+    "label": "Dedicated success manager",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="blur_on"
+    />,
+    "isDisabled": true,
+    "label": "Custom services",
+  },
+]
+`;

@@ -5,7 +5,7 @@ import {connect, ConnectedProps} from 'react-redux'
 import PrivateReply from 'pages/common/components/PrivateReplyToFBComment/PrivateReply'
 
 import * as infobarActions from 'state/infobar/actions'
-import * as billingSelectors from 'state/billing/selectors'
+import {getIsCurrentHelpdeskLegacy} from 'state/billing/selectors'
 import {TicketMessageSourceType} from 'business/types/ticket'
 import {RootState} from 'state/types'
 import type {TicketMessage} from 'models/ticket/types'
@@ -68,9 +68,9 @@ export class SourceActionsHeader extends Component<Props> {
                 sender,
                 created_datetime: messageCreatedDatetime,
             },
-            accountHasLegacyPlan,
             collapseActions,
             collapseIntents,
+            isCurrentHelpdeskLegacy,
         } = this.props
 
         if (!source || !source.type || meta?.is_duplicated) {
@@ -88,7 +88,8 @@ export class SourceActionsHeader extends Component<Props> {
             (isInstagramComment || isFacebookComment) && !fromAgent
 
         const showPrivateReplyAction =
-            (isInstagramComment && !accountHasLegacyPlan) || isFacebookComment
+            (isInstagramComment && !isCurrentHelpdeskLegacy) ||
+            isFacebookComment
 
         let hiddenDatetime = null
 
@@ -182,7 +183,7 @@ export class SourceActionsHeader extends Component<Props> {
 const connector = connect(
     (state: RootState) => {
         return {
-            accountHasLegacyPlan: billingSelectors.hasLegacyPlan(state),
+            isCurrentHelpdeskLegacy: getIsCurrentHelpdeskLegacy(state),
         }
     },
     {

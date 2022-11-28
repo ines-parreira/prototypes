@@ -7,9 +7,6 @@ import TotalAmount from '../TotalAmount'
 describe('<TotalAmount />', () => {
     const minProps: ComponentProps<typeof TotalAmount> = {
         addOnAmount: 'Amount',
-        plan: {
-            id: 'planId',
-        },
         isAutomationChecked: false,
     }
 
@@ -23,12 +20,9 @@ describe('<TotalAmount />', () => {
             <TotalAmount
                 {...minProps}
                 addOnAmount={45612}
-                plan={{
-                    id: 'planId',
-                    interval: PlanInterval.Month,
-                    amount: 40000,
-                    currency: 'usd',
-                }}
+                interval={PlanInterval.Month}
+                amount={40000}
+                currency="usd"
             />
         )
         expect(container).toMatchSnapshot()
@@ -39,12 +33,9 @@ describe('<TotalAmount />', () => {
             <TotalAmount
                 {...minProps}
                 addOnAmount={2000}
-                plan={{
-                    id: 'planId',
-                    interval: PlanInterval.Month,
-                    amount: 40000,
-                    currency: 'usd',
-                }}
+                interval={PlanInterval.Month}
+                amount={40000}
+                currency="usd"
                 isEditable={false}
             />
         )

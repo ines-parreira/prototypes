@@ -2,26 +2,25 @@ import React, {ComponentProps} from 'react'
 import {fireEvent, render} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {fromJS, Map} from 'immutable'
+import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import _cloneDeep from 'lodash/cloneDeep'
 
-import {createHelpdeskPlanFromProducts} from 'models/billing/utils'
-import {Plan} from 'models/billing/types'
+import {HelpdeskPrice} from 'models/billing/types'
 import {RootState, StoreDispatch} from 'state/types'
 import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {
+    advancedMonthlyHelpdeskPrice,
+    basicMonthlyHelpdeskPrice,
+    customAutomationPrice,
     customHelpdeskPrice,
     HELPDESK_PRODUCT_ID,
     legacyBasicAutomationPrice,
     legacyBasicHelpdeskPrice,
     products,
     proMonthlyHelpdeskPrice,
-    transitoryPlans,
 } from 'fixtures/productPrices'
-import * as billingSelectors from 'state/billing/selectors'
-import {PlanWithCurrencySign} from 'state/billing/types'
 import BillingComparisonPlanCard from '../BillingComparisonPlanCard'
 
 jest.mock('popper.js')
@@ -30,32 +29,20 @@ jest.mock('lodash/uniqueId', () => () => '42')
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('<BillingComparisonPlanCard />', () => {
-    let DEPRECATED_getCurrentPlanSpy: jest.SpyInstance
-    let getHasLegacyPlan: jest.SpyInstance
-
-    const {basicPlan, proPlan, advancedPlan} = transitoryPlans
-    const plans = [basicPlan, advancedPlan, proPlan]
+    const prices = [
+        basicMonthlyHelpdeskPrice,
+        advancedMonthlyHelpdeskPrice,
+        proMonthlyHelpdeskPrice,
+    ]
 
     const stateProducts = _cloneDeep(products)
     stateProducts[0].prices.push(legacyBasicHelpdeskPrice)
+    stateProducts[0].prices.push(customHelpdeskPrice)
     stateProducts[1].prices.push(legacyBasicAutomationPrice)
+    stateProducts[1].prices.push(customAutomationPrice)
 
     beforeEach(() => {
         jest.resetAllMocks()
-        DEPRECATED_getCurrentPlanSpy = jest.spyOn(
-            billingSelectors,
-            'DEPRECATED_getCurrentPlan'
-        )
-        DEPRECATED_getCurrentPlanSpy.mockImplementation(
-            () => fromJS(basicPlan) as Map<any, any>
-        )
-        getHasLegacyPlan = jest.spyOn(billingSelectors, 'hasLegacyPlan')
-        getHasLegacyPlan.mockImplementation(() => false)
-    })
-
-    afterEach(() => {
-        DEPRECATED_getCurrentPlanSpy.mockRestore()
-        getHasLegacyPlan.mockRestore()
     })
 
     const defaultState: Partial<RootState> = {
@@ -76,7 +63,7 @@ describe('<BillingComparisonPlanCard />', () => {
     }
     const onPlanChangeMock = jest.fn()
     const minProps: ComponentProps<typeof BillingComparisonPlanCard> = {
-        plan: transitoryPlans.basicPlan,
+        helpdeskPrice: basicMonthlyHelpdeskPrice,
         isCurrentPlan: false,
         isUpdating: false,
         onPlanChange: onPlanChangeMock,
@@ -94,16 +81,12 @@ describe('<BillingComparisonPlanCard />', () => {
     })
 
     it('should render current legacy plan', () => {
-        const legacyPlan = transitoryPlans.legacyPlan
-        DEPRECATED_getCurrentPlanSpy.mockImplementation(
-            () => fromJS(legacyPlan) as Map<any, any>
-        )
         const {container} = render(
             <Provider store={mockStore(defaultState)}>
                 <BillingComparisonPlanCard
                     {...minProps}
                     isCurrentPlan
-                    plan={legacyPlan}
+                    helpdeskPrice={legacyBasicHelpdeskPrice}
                 />
             </Provider>
         )
@@ -111,24 +94,21 @@ describe('<BillingComparisonPlanCard />', () => {
     })
 
     it.each([
-        ['custom', transitoryPlans.customPlan],
+        ['custom', customHelpdeskPrice],
         [
             'customLegacyPlan',
-            createHelpdeskPlanFromProducts({
+            {
                 ...customHelpdeskPrice,
                 is_legacy: true,
-            }),
+            },
         ],
-    ])('should render %s plan', (testName, plan) => {
-        DEPRECATED_getCurrentPlanSpy.mockImplementation(
-            () => fromJS(plan) as Map<any, any>
-        )
+    ])('should render %s plan', (testName, price) => {
         const {container} = render(
             <Provider store={mockStore(defaultState)}>
                 <BillingComparisonPlanCard
                     {...minProps}
                     isCurrentPlan
-                    plan={plan}
+                    helpdeskPrice={price}
                 />
             </Provider>
         )
@@ -137,7 +117,19 @@ describe('<BillingComparisonPlanCard />', () => {
 
     it('should not render plan as current plan', () => {
         const {container} = render(
-            <Provider store={mockStore(defaultState)}>
+            <Provider
+                store={mockStore({
+                    ...defaultState,
+                    currentAccount: defaultState.currentAccount?.setIn(
+                        [
+                            'current_subscription',
+                            'products',
+                            HELPDESK_PRODUCT_ID,
+                        ],
+                        basicMonthlyHelpdeskPrice.price_id
+                    ),
+                })}
+            >
                 <BillingComparisonPlanCard {...minProps} />
             </Provider>
         )
@@ -146,7 +138,19 @@ describe('<BillingComparisonPlanCard />', () => {
 
     it('should render spinner when plan is updating', () => {
         const {container} = render(
-            <Provider store={mockStore(defaultState)}>
+            <Provider
+                store={mockStore({
+                    ...defaultState,
+                    currentAccount: defaultState.currentAccount?.setIn(
+                        [
+                            'current_subscription',
+                            'products',
+                            HELPDESK_PRODUCT_ID,
+                        ],
+                        basicMonthlyHelpdeskPrice.price_id
+                    ),
+                })}
+            >
                 <BillingComparisonPlanCard {...minProps} isUpdating={true} />
             </Provider>
         )
@@ -168,8 +172,23 @@ describe('<BillingComparisonPlanCard />', () => {
 
     it('should render the plan upgrade modal comparison', () => {
         const {getByRole, getByText} = render(
-            <Provider store={mockStore(defaultState)}>
-                <BillingComparisonPlanCard {...minProps} plan={proPlan} />
+            <Provider
+                store={mockStore({
+                    ...defaultState,
+                    currentAccount: defaultState.currentAccount?.setIn(
+                        [
+                            'current_subscription',
+                            'products',
+                            HELPDESK_PRODUCT_ID,
+                        ],
+                        basicMonthlyHelpdeskPrice.price_id
+                    ),
+                })}
+            >
+                <BillingComparisonPlanCard
+                    {...minProps}
+                    helpdeskPrice={proMonthlyHelpdeskPrice}
+                />
             </Provider>
         )
         fireEvent.click(getByRole('button', {name: 'Upgrade to Pro Plan'}))
@@ -181,12 +200,12 @@ describe('<BillingComparisonPlanCard />', () => {
     })
 
     it('should render the plan downgrade modal comparison', () => {
-        DEPRECATED_getCurrentPlanSpy.mockImplementation(
-            () => fromJS(proPlan) as Map<any, any>
-        )
         const {getByRole, getByText} = render(
             <Provider store={mockStore(defaultState)}>
-                <BillingComparisonPlanCard {...minProps} plan={basicPlan} />
+                <BillingComparisonPlanCard
+                    {...minProps}
+                    helpdeskPrice={basicMonthlyHelpdeskPrice}
+                />
             </Provider>
         )
         fireEvent.click(getByRole('button', {name: 'Downgrade to Basic Plan'}))
@@ -196,28 +215,17 @@ describe('<BillingComparisonPlanCard />', () => {
     })
 
     it.each(
-        plans.map((plan: Plan) => {
-            if (plan.name === 'Basic') {
-                return [plan, 'Downgrade']
-            } else if (plan.name === 'Pro') {
-                return [plan, 'Switch']
+        prices.map((price) => {
+            if (price.name === 'Basic') {
+                return [price, 'Downgrade']
+            } else if (price.name === 'Pro') {
+                return [price, 'Switch']
             }
-            return [plan, 'Upgrade']
-        })
+            return [price, 'Upgrade']
+        }) as unknown as [HelpdeskPrice, string][]
     )(
         'should render expected comparison on modal with plan %s',
-        (plan, text) => {
-            DEPRECATED_getCurrentPlanSpy.mockImplementation(
-                () => fromJS({...proPlan, id: 'pro-monthly'}) as Map<any, any>
-            )
-            const getEquivalentRegularCurrentPlanSpy = jest.spyOn(
-                billingSelectors,
-                'getEquivalentRegularCurrentPlan'
-            )
-            getEquivalentRegularCurrentPlanSpy.mockImplementation(
-                () => fromJS({...proPlan, id: 'pro-monthly'}) as Map<any, any>
-            )
-
+        (price, text) => {
             const {getByText} = render(
                 <Provider
                     store={mockStore({
@@ -227,61 +235,64 @@ describe('<BillingComparisonPlanCard />', () => {
                             current_subscription: {
                                 ...account.current_subscription,
                                 status: 'active',
+                                products: {
+                                    [HELPDESK_PRODUCT_ID]:
+                                        proMonthlyHelpdeskPrice.price_id,
+                                },
                             },
                         }),
                     })}
                 >
                     <BillingComparisonPlanCard
                         {...minProps}
-                        plan={plan as PlanWithCurrencySign}
+                        helpdeskPrice={price}
                         defaultIsPlanChangeModalOpen={true}
                     />
                 </Provider>
             )
 
-            expect(getByText(new RegExp(text as string, 'i'))).toBeTruthy()
+            expect(getByText(new RegExp(text, 'i'))).toBeTruthy()
         }
     )
 
     it.each(
-        plans.map((plan: Plan) => {
-            if (plan.name === 'Basic' || plan.name === 'Pro') {
-                return [plan, 'Switch']
+        prices.map((price) => {
+            if (price.name === 'Basic' || price.name === 'Pro') {
+                return [price, 'Switch']
             }
-            return [plan, 'Upgrade']
-        })
+            return [price, 'Upgrade']
+        }) as unknown as [HelpdeskPrice, string][]
     )(
         'should render expected comparison on modal between current legacy plan and %s plan',
-        (plan, text) => {
-            DEPRECATED_getCurrentPlanSpy.mockImplementation(
-                () =>
-                    fromJS({
-                        ...proPlan,
-                        id: 'pro-monthly',
-                        public: 'false',
-                    }) as Map<any, any>
-            )
-            getHasLegacyPlan.mockImplementation(() => true)
-
+        (price, text) => {
             const {getAllByText, getByText} = render(
-                <Provider store={mockStore(defaultState)}>
+                <Provider
+                    store={mockStore({
+                        ...defaultState,
+                        currentAccount: defaultState.currentAccount?.setIn(
+                            [
+                                'current_subscription',
+                                'products',
+                                HELPDESK_PRODUCT_ID,
+                            ],
+                            legacyBasicHelpdeskPrice.price_id
+                        ),
+                    })}
+                >
                     <BillingComparisonPlanCard
                         {...minProps}
-                        plan={plan as PlanWithCurrencySign}
+                        helpdeskPrice={price}
                         defaultIsPlanChangeModalOpen={true}
                     />
                 </Provider>
             )
 
-            expect(getAllByText(new RegExp(text as string, 'i'))).toBeTruthy()
+            expect(getAllByText(new RegExp(text, 'i'))).toBeTruthy()
             expect(getByText('Switch to our updated plans')).toBeTruthy()
         }
     )
 
     it('should render the automation plan features when the automation checkbox is checked', () => {
-        DEPRECATED_getCurrentPlanSpy.mockImplementation(
-            () => fromJS(proPlan) as Map<any, any>
-        )
         const {baseElement} = render(
             <Provider store={mockStore(defaultState)}>
                 <BillingComparisonPlanCard

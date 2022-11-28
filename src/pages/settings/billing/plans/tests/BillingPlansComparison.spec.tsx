@@ -14,6 +14,7 @@ import {billingState} from 'fixtures/billing'
 import {
     AUTOMATION_PRODUCT_ID,
     basicMonthlyAutomationPrice,
+    basicMonthlyHelpdeskPrice,
     customAutomationPrice,
     customHelpdeskPrice,
     HELPDESK_PRODUCT_ID,
@@ -59,21 +60,21 @@ describe('<BillingPlansComparison />', () => {
         typeof updateSubscription
     >
     let openChatSpy: jest.SpyInstance
-    let makeIsAllowedToChangePlanSpy: jest.SpyInstance
+    let makeGetIsAllowedToChangePriceSpy: jest.SpyInstance
     beforeEach(() => {
         jest.clearAllMocks()
         openChatSpy = jest.spyOn(utils, 'openChat')
-        makeIsAllowedToChangePlanSpy = jest.spyOn(
+        makeGetIsAllowedToChangePriceSpy = jest.spyOn(
             billingSelectors,
-            'makeIsAllowedToChangePlan'
+            'makeGetIsAllowedToChangePrice'
         )
-        makeIsAllowedToChangePlanSpy.mockImplementation(() => () => true)
+        makeGetIsAllowedToChangePriceSpy.mockImplementation(() => () => true)
         updateSubscriptionMock.mockImplementation(() => () => Promise.resolve())
     })
 
     afterEach(() => {
         openChatSpy.mockRestore()
-        makeIsAllowedToChangePlanSpy.mockRestore()
+        makeGetIsAllowedToChangePriceSpy.mockRestore()
     })
 
     it('should render available plans', () => {
@@ -87,7 +88,7 @@ describe('<BillingPlansComparison />', () => {
                             'products',
                             HELPDESK_PRODUCT_ID,
                         ],
-                        'price_foo'
+                        proMonthlyHelpdeskPrice.price_id
                     ),
                 })}
             >
@@ -227,7 +228,7 @@ describe('<BillingPlansComparison />', () => {
     })
 
     it('should display notification when not allowed to change plan on plan change', () => {
-        makeIsAllowedToChangePlanSpy.mockImplementation(() => () => false)
+        makeGetIsAllowedToChangePriceSpy.mockImplementation(() => () => false)
         const store = mockStore(defaultState)
         const {getByRole} = render(
             <Provider store={store}>
@@ -260,9 +261,8 @@ describe('<BillingPlansComparison />', () => {
         )
         fireEvent.click(getByRole('button', {name: 'Confirm'}))
 
-        expect(store.getActions()).toMatchSnapshot()
         expect(updateSubscriptionMock).toHaveBeenLastCalledWith({
-            plan: proMonthlyHelpdeskPrice.legacy_id,
+            prices: [proMonthlyHelpdeskPrice.price_id],
         })
         await waitFor(() => {
             expect(minProps.onSubscriptionChanged).toHaveBeenLastCalledWith(
@@ -327,7 +327,10 @@ describe('<BillingPlansComparison />', () => {
 
         fireEvent.click(getByRole('button', {name: 'Confirm'}))
         expect(updateSubscriptionMock).toHaveBeenLastCalledWith({
-            plan: basicMonthlyAutomationPrice.legacy_id,
+            prices: [
+                basicMonthlyHelpdeskPrice.price_id,
+                basicMonthlyAutomationPrice.price_id,
+            ],
         })
     })
 })

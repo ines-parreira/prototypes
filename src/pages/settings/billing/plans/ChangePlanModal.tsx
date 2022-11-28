@@ -1,19 +1,28 @@
-import React, {ComponentProps, MouseEventHandler, ReactNode} from 'react'
+import React, {
+    ComponentProps,
+    MouseEventHandler,
+    ReactNode,
+    useMemo,
+} from 'react'
 import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
 import classnames from 'classnames'
 
 import ArrowForward from 'assets/img/icons/arrow-forward.svg'
+import {getFormattedAmount} from 'models/billing/utils'
 import {
-    DEPRECATED_getCurrentPlan,
-    getAddOnAutomationAmountCurrentPlan,
-    getAddOnAutomationFullAmountCurrentPlan,
-    getEquivalentRegularCurrentPlan,
+    getCurrentHelpdeskAutomationAddonAmount,
+    getCurrentAutomationFullAmount,
     getHasAutomationAddOn,
+    getCurrentHelpdeskProduct,
+    getCurrentAutomationProduct,
+    getAutomationPricesMap,
+    getCurrentHelpdeskAddons,
 } from 'state/billing/selectors'
 import SynchronizedScrollTopProvider from 'pages/common/components/SynchronizedScrollTop/SynchronizedScrollTopProvider'
 import SynchronizedScrollTopContainer from 'pages/common/components/SynchronizedScrollTop/SynchronizedScrollTopContainer'
 import Button from 'pages/common/components/button/Button'
 import useAppSelector from 'hooks/useAppSelector'
+import {convertLegacyPlanNameToPublicPlanName} from 'utils/paywalls'
 
 import BillingPlanCard from './BillingPlanCard'
 import CurrentPlanBadge from './CurrentPlanBadge'
@@ -22,6 +31,7 @@ import TotalAmount from './TotalAmount'
 import AutomationAmount from './AutomationAmount'
 
 import css from './ChangePlanModal.less'
+import {getPlanCardFeaturesForPrices} from './billingPlanFeatures'
 
 type Props = {
     confirmLabel: string
@@ -49,17 +59,38 @@ export const ChangePlanModal = ({
     onConfirm,
     renderComparedPlan,
 }: Props) => {
-    const currentPlan = useAppSelector(DEPRECATED_getCurrentPlan)
-    const regularCurrentPlan = useAppSelector(getEquivalentRegularCurrentPlan)
-    const plan = regularCurrentPlan || currentPlan
+    const currentHelpdeskPrice = useAppSelector(getCurrentHelpdeskProduct)
+    const currentAutomationPrice = useAppSelector(getCurrentAutomationProduct)
+    const automationPrices = useAppSelector(getAutomationPricesMap)
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const currentHelpdeskAddons = useAppSelector(getCurrentHelpdeskAddons)
+    const features = useMemo(
+        () =>
+            currentHelpdeskPrice
+                ? getPlanCardFeaturesForPrices([currentHelpdeskPrice], false)
+                : [],
+        [currentHelpdeskPrice]
+    )
 
     const addOnAmountCurrentPlan = useAppSelector(
-        getAddOnAutomationAmountCurrentPlan
+        getCurrentHelpdeskAutomationAddonAmount
     )
     const addOnFullAmountCurrentPlan = useAppSelector(
-        getAddOnAutomationFullAmountCurrentPlan
+        getCurrentAutomationFullAmount
     )
+    const isEditable = useMemo(
+        () =>
+            currentAutomationPrice != null ||
+            currentHelpdeskAddons?.some(
+                (priceId) => !!automationPrices[priceId]
+            ),
+        [currentAutomationPrice, currentHelpdeskAddons, automationPrices]
+    )
+    const formattedName =
+        currentHelpdeskPrice &&
+        convertLegacyPlanNameToPublicPlanName(currentHelpdeskPrice.name)
+    const formattedAmount =
+        currentHelpdeskPrice && getFormattedAmount(currentHelpdeskPrice.amount)
 
     return (
         <SynchronizedScrollTopProvider>
@@ -74,62 +105,79 @@ export const ChangePlanModal = ({
                     <div className="m-3">{description}</div>
                     <div
                         className={classnames('m-3 flex', {
-                            'justify-content-center': plan.isEmpty(),
-                            'justify-content-between': !plan.isEmpty(),
+                            'justify-content-center': !currentHelpdeskPrice,
+                            'justify-content-between': !!currentHelpdeskPrice,
                         })}
                     >
-                        {!plan.isEmpty() && (
-                            <>
-                                <BillingPlanCard
-                                    isCurrentPlan
-                                    theme={PlanCardTheme.Grey}
-                                    plan={plan.toJS()}
-                                    featuresPlan={currentPlan.toJS()}
-                                    renderBody={(features) => (
-                                        <SynchronizedScrollTopContainer
-                                            height={280}
-                                        >
-                                            {features}
-                                        </SynchronizedScrollTopContainer>
-                                    )}
-                                    headerBadge={
-                                        <CurrentPlanBadge
-                                            planName={plan.get('name')}
-                                        />
-                                    }
-                                    className={css.plan}
-                                    footer={
-                                        <>
-                                            <AutomationAmount
-                                                addOnAmount={
-                                                    addOnAmountCurrentPlan
-                                                }
-                                                fullAddOnAmount={
-                                                    addOnFullAmountCurrentPlan
-                                                }
-                                                plan={plan.toJS()}
-                                                isAutomationChecked={
-                                                    hasAutomationAddOn
-                                                }
+                        {currentHelpdeskPrice &&
+                            formattedName &&
+                            formattedAmount && (
+                                <>
+                                    <BillingPlanCard
+                                        amount={formattedAmount}
+                                        currency={currentHelpdeskPrice.currency}
+                                        interval={currentHelpdeskPrice.interval}
+                                        name={formattedName}
+                                        features={features}
+                                        isCurrentPlan
+                                        theme={PlanCardTheme.Grey}
+                                        renderBody={(features) => (
+                                            <SynchronizedScrollTopContainer
+                                                height={280}
+                                            >
+                                                {features}
+                                            </SynchronizedScrollTopContainer>
+                                        )}
+                                        headerBadge={
+                                            <CurrentPlanBadge
+                                                planName={formattedName}
                                             />
-                                            <TotalAmount
-                                                addOnAmount={
-                                                    addOnAmountCurrentPlan
-                                                }
-                                                plan={plan.toJS()}
-                                                isAutomationChecked={
-                                                    hasAutomationAddOn
-                                                }
-                                            />
-                                        </>
-                                    }
-                                />
-                                <img src={ArrowForward} alt="arrow-icon" />
-                            </>
-                        )}
+                                        }
+                                        className={css.plan}
+                                        footer={
+                                            <>
+                                                <AutomationAmount
+                                                    addOnAmount={
+                                                        addOnAmountCurrentPlan
+                                                    }
+                                                    currency={
+                                                        currentHelpdeskPrice.currency
+                                                    }
+                                                    editable={isEditable}
+                                                    interval={
+                                                        currentHelpdeskPrice.interval
+                                                    }
+                                                    fullAddOnAmount={
+                                                        addOnFullAmountCurrentPlan
+                                                    }
+                                                    isAutomationChecked={
+                                                        hasAutomationAddOn
+                                                    }
+                                                />
+                                                <TotalAmount
+                                                    addOnAmount={
+                                                        addOnAmountCurrentPlan
+                                                    }
+                                                    amount={formattedAmount}
+                                                    currency={
+                                                        currentHelpdeskPrice.currency
+                                                    }
+                                                    interval={
+                                                        currentHelpdeskPrice.interval
+                                                    }
+                                                    isAutomationChecked={
+                                                        hasAutomationAddOn
+                                                    }
+                                                />
+                                            </>
+                                        }
+                                    />
+                                    <img src={ArrowForward} alt="arrow-icon" />
+                                </>
+                            )}
                         {renderComparedPlan({
                             className: classnames(css.plan, {
-                                [`${css.isSinglePlan}`]: plan.isEmpty(),
+                                [`${css.isSinglePlan}`]: !currentHelpdeskPrice,
                             }),
                             renderBody: (body) => (
                                 <SynchronizedScrollTopContainer height={280}>

@@ -6,10 +6,11 @@ import {
     hasAutomationLegacyFeatures,
 } from 'state/currentAccount/selectors'
 import {
-    getAddOnAutomationAmountCurrentPlan,
-    DEPRECATED_getCurrentPlan,
+    getCurrentHelpdeskAutomationAddonAmount,
     getHasAutomationAddOn,
-    getAddOnAutomationFullAmountCurrentPlan,
+    getCurrentAutomationFullAmount,
+    getCurrentHelpdeskCurrency,
+    getCurrentHelpdeskInterval,
 } from 'state/billing/selectors'
 import SubscriptionAmount from 'pages/settings/common/SubscriptionAmount'
 import useAppSelector from 'hooks/useAppSelector'
@@ -21,13 +22,12 @@ import css from './AutomationSubscriptionDescription.less'
 const AutomationSubscriptionDescription = () => {
     const currentSubscription = useAppSelector(getCurrentSubscription)
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
-    const currentPlan = useAppSelector(DEPRECATED_getCurrentPlan)
     const currentSubscriptionStart = currentSubscription.get('start_datetime')
     const isSelfServeLegacy = useAppSelector(hasAutomationLegacyFeatures)
-    const addOnAmount = useAppSelector(getAddOnAutomationAmountCurrentPlan)
-    const fullAddOnAmount = useAppSelector(
-        getAddOnAutomationFullAmountCurrentPlan
-    )
+    const addOnAmount = useAppSelector(getCurrentHelpdeskAutomationAddonAmount)
+    const fullAddOnAmount = useAppSelector(getCurrentAutomationFullAmount)
+    const productCurrency = useAppSelector(getCurrentHelpdeskCurrency)
+    const productInterval = useAppSelector(getCurrentHelpdeskInterval)
 
     return (
         <div className={css.description}>
@@ -66,10 +66,10 @@ const AutomationSubscriptionDescription = () => {
                         </a>
                     </div>
                 )}
-                {addOnAmount != null && (
+                {addOnAmount != null && productInterval && (
                     <SubscriptionAmount
-                        currency={currentPlan.get('currency')}
-                        interval={currentPlan.get('interval')}
+                        currency={productCurrency}
+                        interval={productInterval}
                         amount={addOnAmount}
                         fullAmount={fullAddOnAmount}
                         renderAmount={(amount) => <b>{amount}</b>}

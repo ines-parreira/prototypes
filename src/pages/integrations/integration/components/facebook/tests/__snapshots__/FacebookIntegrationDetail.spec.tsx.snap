@@ -19,16 +19,131 @@ exports[`<FacebookIntegrationDetail/> render() should render a loading state bec
         "domain": "acme",
       }
     }
-    currentPlan={
-      Immutable.Map {
-        "features": Immutable.Map {
-          "instagram_dm": Immutable.Map {
+    currentHelpdeskProduct={
+      Object {
+        "addons": Array [
+          "price_1LJBjXI9qXomtXqSSX34F3we",
+        ],
+        "amount": 6000,
+        "cost_per_ticket": 0.4,
+        "currency": "usd",
+        "features": Object {
+          "api_1st_party_rate_limit": Object {
+            "enabled": true,
+            "rate_limit": Object {
+              "interval_ms": 2000,
+              "max_burst": 40,
+            },
+          },
+          "api_3rd_party_rate_limit": Object {
+            "enabled": true,
+            "rate_limit": Object {
+              "interval_ms": 20000,
+              "max_burst": 40,
+            },
+          },
+          "auto_assignment": Object {
+            "enabled": true,
+          },
+          "automation_cancellations_flow": Object {
+            "enabled": false,
+          },
+          "automation_managed_rules": Object {
+            "enabled": false,
+          },
+          "automation_report_issue_flow": Object {
+            "enabled": false,
+          },
+          "automation_return_flow": Object {
+            "enabled": false,
+          },
+          "automation_self_service_statistics": Object {
+            "enabled": false,
+          },
+          "automation_track_order_flow": Object {
+            "enabled": false,
+          },
+          "chat_campaigns": Object {
+            "enabled": true,
+          },
+          "facebook_comment": Object {
+            "enabled": true,
+          },
+          "help_center": Object {
+            "enabled": true,
+          },
+          "instagram_comment": Object {
+            "enabled": true,
+          },
+          "instagram_dm": Object {
+            "enabled": true,
+          },
+          "magento_integration": Object {
+            "enabled": false,
+          },
+          "overview_live_statistics": Object {
+            "enabled": true,
+          },
+          "phone_number": Object {
+            "enabled": true,
+            "limit": 1,
+          },
+          "revenue_statistics": Object {
+            "enabled": false,
+          },
+          "satisfaction_surveys": Object {
+            "enabled": true,
+          },
+          "teams": Object {
+            "enabled": true,
+          },
+          "twitter_integration": Object {
+            "enabled": false,
+            "limit": 0,
+          },
+          "user_roles": Object {
+            "enabled": true,
+          },
+          "users_live_statistics": Object {
+            "enabled": false,
+          },
+          "view_sharing": Object {
+            "enabled": true,
+          },
+          "yotpo_integration": Object {
             "enabled": true,
           },
         },
+        "free_tickets": 300,
+        "integrations": 150,
+        "interval": "month",
+        "is_legacy": false,
+        "legacy_id": "basic-monthly-usd-4",
+        "limits": Object {
+          "messages": Object {
+            "default": 100,
+            "max": 100,
+            "min": 75,
+          },
+          "tickets": Object {
+            "default": 100,
+            "max": 100,
+            "min": 75,
+          },
+        },
+        "name": "Basic",
+        "order": 2,
+        "phone_limits": Object {
+          "billing": 50,
+        },
+        "price_id": "price_1LJBjWI9qXomtXqSPZn8LqlD",
+        "product_id": "prod_LsH6kV35G6zKWo",
+        "public": true,
+        "trial_period_days": 7,
       }
     }
     deleteIntegration={[MockFunction]}
+    hasInstagramDMFeature={true}
     integration={
       Object {
         "created_datetime": "",
@@ -141,16 +256,131 @@ exports[`<FacebookIntegrationDetail/> render() should render a loading state bec
         "domain": "acme",
       }
     }
-    currentPlan={
-      Immutable.Map {
-        "features": Immutable.Map {
-          "instagram_dm": Immutable.Map {
+    currentHelpdeskProduct={
+      Object {
+        "addons": Array [
+          "price_1LJBjXI9qXomtXqSSX34F3we",
+        ],
+        "amount": 6000,
+        "cost_per_ticket": 0.4,
+        "currency": "usd",
+        "features": Object {
+          "api_1st_party_rate_limit": Object {
+            "enabled": true,
+            "rate_limit": Object {
+              "interval_ms": 2000,
+              "max_burst": 40,
+            },
+          },
+          "api_3rd_party_rate_limit": Object {
+            "enabled": true,
+            "rate_limit": Object {
+              "interval_ms": 20000,
+              "max_burst": 40,
+            },
+          },
+          "auto_assignment": Object {
+            "enabled": true,
+          },
+          "automation_cancellations_flow": Object {
+            "enabled": false,
+          },
+          "automation_managed_rules": Object {
+            "enabled": false,
+          },
+          "automation_report_issue_flow": Object {
+            "enabled": false,
+          },
+          "automation_return_flow": Object {
+            "enabled": false,
+          },
+          "automation_self_service_statistics": Object {
+            "enabled": false,
+          },
+          "automation_track_order_flow": Object {
+            "enabled": false,
+          },
+          "chat_campaigns": Object {
+            "enabled": true,
+          },
+          "facebook_comment": Object {
+            "enabled": true,
+          },
+          "help_center": Object {
+            "enabled": true,
+          },
+          "instagram_comment": Object {
+            "enabled": true,
+          },
+          "instagram_dm": Object {
+            "enabled": true,
+          },
+          "magento_integration": Object {
+            "enabled": false,
+          },
+          "overview_live_statistics": Object {
+            "enabled": true,
+          },
+          "phone_number": Object {
+            "enabled": true,
+            "limit": 1,
+          },
+          "revenue_statistics": Object {
+            "enabled": false,
+          },
+          "satisfaction_surveys": Object {
+            "enabled": true,
+          },
+          "teams": Object {
+            "enabled": true,
+          },
+          "twitter_integration": Object {
+            "enabled": false,
+            "limit": 0,
+          },
+          "user_roles": Object {
+            "enabled": true,
+          },
+          "users_live_statistics": Object {
+            "enabled": false,
+          },
+          "view_sharing": Object {
+            "enabled": true,
+          },
+          "yotpo_integration": Object {
             "enabled": true,
           },
         },
+        "free_tickets": 300,
+        "integrations": 150,
+        "interval": "month",
+        "is_legacy": false,
+        "legacy_id": "basic-monthly-usd-4",
+        "limits": Object {
+          "messages": Object {
+            "default": 100,
+            "max": 100,
+            "min": 75,
+          },
+          "tickets": Object {
+            "default": 100,
+            "max": 100,
+            "min": 75,
+          },
+        },
+        "name": "Basic",
+        "order": 2,
+        "phone_limits": Object {
+          "billing": 50,
+        },
+        "price_id": "price_1LJBjWI9qXomtXqSPZn8LqlD",
+        "product_id": "prod_LsH6kV35G6zKWo",
+        "public": true,
+        "trial_period_days": 7,
       }
     }
     deleteIntegration={[MockFunction]}
+    hasInstagramDMFeature={true}
     integration={Immutable.Map {}}
     loading={
       Immutable.Map {
@@ -766,7 +996,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
                         Object {
                           "name": "paywall-upgrade-button-selected",
                           "props": Object {
-                            "current_plan": "legacy",
+                            "current_plan": "Basic",
                             "domain": "acme",
                             "paywall_feature": "instagram_dm",
                           },
@@ -1602,7 +1832,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
                         Object {
                           "name": "paywall-upgrade-button-selected",
                           "props": Object {
-                            "current_plan": "legacy",
+                            "current_plan": "Basic",
                             "domain": "acme",
                             "paywall_feature": "instagram_dm",
                           },
