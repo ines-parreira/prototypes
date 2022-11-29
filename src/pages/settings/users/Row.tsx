@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 import {Map} from 'immutable'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import useAppDispatch from 'hooks/useAppDispatch'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -12,8 +13,12 @@ import Avatar from 'pages/common/components/Avatar/Avatar'
 import {EventNavDirection} from 'pages/settings/audit/constants'
 import {deleteAgent} from 'state/agents/actions'
 import {toJS} from 'utils'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {User} from 'config/types/user'
+import {getAvailabilityStatus} from './utils'
 
 import css from './Row.less'
+import Status from './Status'
 
 type Props = {
     agent: Map<any, any>
@@ -25,38 +30,51 @@ type Props = {
     ) => Promise<{type: string; error: unknown; reason: string} | undefined>
 }
 
-const Row = ({agent, cursorToRefresh, isAccountOwner, refreshData}: Props) => {
+const Row = ({
+    agent: agentMap,
+    cursorToRefresh,
+    isAccountOwner,
+    refreshData,
+}: Props) => {
     const dispatch = useAppDispatch()
+    const isAgentAvailabilityStatusEnabled =
+        useFlags()[FeatureFlagKey.AgentsAvailabilityStatus]
+
+    const agent: User = agentMap.toJS()
 
     const handleDeleteAgent = useCallback(async () => {
-        await dispatch(deleteAgent(agent.get('id')))
+        await dispatch(deleteAgent(agent.id))
         await refreshData(undefined, cursorToRefresh)
     }, [agent, cursorToRefresh, refreshData, dispatch])
 
-    const editLink = `/app/settings/users/${agent.get('id') as number}`
-    const has2FaEnabled = agent.get('has_2fa_enabled')
+    const availabilityStatus = agent.availability_status
+        ? getAvailabilityStatus(agent.availability_status)
+        : null
+    const editLink = `/app/settings/users/${agent.id}`
+    const has2FaEnabled = agent.has_2fa_enabled
 
     return (
         <Link to={editLink} className={css.component}>
             <span className="d-flex align-items-center">
                 <Avatar
-                    name={agent.get('name') || agent.get('email')}
-                    url={agent.getIn(['meta', 'profile_picture_url'])}
+                    name={agent.name || agent.email}
+                    url={agent.meta.profile_picture_url}
                     size={36}
                     className={classnames(css.avatar, 'd-none d-md-block')}
                 />
                 <span className={css.meta}>
-                    <p className={css.name}>
-                        {agent.get('name') || agent.get('email')}
-                    </p>
-                    {agent.get('name') != null && (
+                    <p className={css.name}>{agent.name || agent.email}</p>
+                    {agent.name != null && (
                         <p className={classnames(css.email, 'text-faded')}>
-                            {agent.get('email')}
+                            {agent.email}
                         </p>
                     )}
                 </span>
+                {isAgentAvailabilityStatusEnabled && availabilityStatus && (
+                    <Status {...availabilityStatus} className={css.status} />
+                )}
                 <span className={css.role}>
-                    <RoleLabel role={toJS(agent.get('role'))} />
+                    <RoleLabel role={toJS(agent.role)} />
                     {isAccountOwner && (
                         <Badge type={ColorType.Dark}>Account Owner</Badge>
                     )}
@@ -75,7 +93,7 @@ const Row = ({agent, cursorToRefresh, isAccountOwner, refreshData}: Props) => {
                         buttonProps={{
                             intent: 'destructive',
                         }}
-                        id={`delete-agent-${agent.get('id') as number}`}
+                        id={`delete-agent-${agent.id}`}
                         content={
                             <span>
                                 You are about to <b>delete</b> this user. This

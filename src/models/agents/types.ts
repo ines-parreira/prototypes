@@ -8,6 +8,10 @@ export enum AgentSortableProperties {
     NameDesc = 'name:desc',
 }
 
+export enum AgentsRelationshipsParam {
+    AvailabilityStatus = 'availability_status',
+}
+
 export type FetchAgentsOptions = Omit<
     ApiCursorPaginationParams,
     'orderBy' | 'orderDir'
@@ -15,4 +19,5 @@ export type FetchAgentsOptions = Omit<
     OrderParams<AgentSortableProperties> & {
         externalId?: string
         roles?: UserRole[]
+        relationships?: AgentsRelationshipsParam
     }

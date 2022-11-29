@@ -5,9 +5,10 @@ import {Container} from 'reactstrap'
 import {List, Map} from 'immutable'
 import {useAsyncFn, useEffectOnce} from 'react-use'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {FetchAgentsOptions} from 'models/agents/types'
+import {AgentsRelationshipsParam, FetchAgentsOptions} from 'models/agents/types'
 import {fetchAgents as fetchAgentsRequest} from 'models/agents/resources'
 import {CursorMeta} from 'models/api/types'
 import Button from 'pages/common/components/button/Button'
@@ -25,6 +26,7 @@ import {getPaginatedAgents} from 'state/agents/selectors'
 import {getAccessSettings} from 'state/currentAccount/selectors'
 import {AccountSettingAccessSignupMode as SignupMode} from 'state/currentAccount/types'
 import {toImmutable} from 'utils'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import Row from './Row'
 import css from './List.less'
@@ -37,6 +39,8 @@ const UserList = () => {
 
     const [meta, setMeta] = useState<CursorMeta | null>(null)
     const [currentCursor, setCurrentCursor] = useState<string | null>(null)
+    const isAgentAvailabilityStatusEnabled =
+        useFlags()[FeatureFlagKey.AgentsAvailabilityStatus]
 
     const dispatch = useAppDispatch()
     const agents = useAppSelector(getPaginatedAgents)
@@ -51,7 +55,9 @@ const UserList = () => {
         direction?: EventNavDirection,
         cursor?: string | null
     ) => {
-        const params: FetchAgentsOptions = {}
+        const params: FetchAgentsOptions = {
+            relationships: AgentsRelationshipsParam.AvailabilityStatus,
+        }
 
         if (direction === EventNavDirection.PrevCursor && !!meta?.prev_cursor) {
             params.cursor = meta.prev_cursor
@@ -108,7 +114,7 @@ const UserList = () => {
                 {accessSettings.getIn(['data', 'signup_mode']) ===
                     SignupMode.Invite && (
                     <LinkAlert
-                        className={css.mb16}
+                        className="mb-3"
                         icon
                         actionLabel="Setup Your Email Domain"
                         actionHref="/app/settings/access"
@@ -128,6 +134,9 @@ const UserList = () => {
                             User
                         </span>
                         <span className={cssRow.meta} />
+                        {isAgentAvailabilityStatusEnabled && (
+                            <span className={cssRow.status}>Status</span>
+                        )}
                         <span className={cssRow.role}>Role</span>
                         <span className={cssRow.twoFa}>2FA enabled</span>
                         <span className={cssRow.delete} />

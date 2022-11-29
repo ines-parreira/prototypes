@@ -39,7 +39,7 @@ exports[`<List /> should render 1`] = `
       , at no additional cost.
     </p>
     <div
-      class="alert info mb16"
+      class="alert info mb-3"
     >
       <div
         class="iconContainer"
@@ -84,6 +84,11 @@ exports[`<List /> should render 1`] = `
         <span
           class="meta"
         />
+        <span
+          class="status"
+        >
+          Status
+        </span>
         <span
           class="role"
         >
@@ -134,6 +139,16 @@ exports[`<List /> should render 1`] = `
               support@acme.gorgias.io
             </p>
           </span>
+          <div
+            class="status statusLabel d-flex align-items-center flex-wrap"
+          >
+            <div
+              class="statusDot neutral"
+            />
+            <div>
+              Unavailable
+            </div>
+          </div>
           <span
             class="role"
           >

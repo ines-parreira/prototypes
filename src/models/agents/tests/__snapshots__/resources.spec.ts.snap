@@ -40,6 +40,11 @@ Object {
       "data": Array [
         Object {
           "active": true,
+          "availability_status": Object {
+            "channel": "phone",
+            "status": "offline",
+            "status_detail_code": 1,
+          },
           "bio": null,
           "country": "US",
           "created_datetime": "2017-07-31T21:43:05.483835+00:00",

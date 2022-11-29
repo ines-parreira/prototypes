@@ -1,0 +1,25 @@
+@import '~css/new/colors';
+
+:local {
+    .statusLabel {
+        color: @classic-neutral-grey-6;
+    }
+
+    .statusDot {
+        border-radius: 4px;
+        display: inline-block;
+        height: 8px;
+        margin-right: 8px;
+        width: 8px;
+
+        &.neutral {
+            background-color: #99a5b6;
+        }
+        &.success {
+            background-color: @classic-feedback-success;
+        }
+        &.warning {
+            background-color: @classic-feedback-warning;
+        }
+    }
+}

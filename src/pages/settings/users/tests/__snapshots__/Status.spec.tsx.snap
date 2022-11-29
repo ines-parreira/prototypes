@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Status should render dot and label 1`] = `
+<div
+  class="statusLabel d-flex align-items-center flex-wrap"
+>
+  <div
+    class="statusDot neutral"
+  />
+  <div>
+    Unknown
+  </div>
+</div>
+`;
