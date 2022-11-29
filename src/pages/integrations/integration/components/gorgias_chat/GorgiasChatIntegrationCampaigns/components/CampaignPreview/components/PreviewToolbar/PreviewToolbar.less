@@ -1,0 +1,29 @@
+:local {
+    .titlebar {
+        display: block;
+
+        height: 2em;
+        padding-left: 0.4em;
+        margin: -2.4em -2.4em 2em;
+
+        background-color: #edeeef;
+
+        &:before {
+            display: block;
+            content: '';
+
+            width: 4.2em;
+            height: 100%;
+
+            background-image: radial-gradient(
+                ellipse at center,
+                #f8f9fa 0%,
+                #f8f9fa 45%,
+                transparent 45%
+            );
+            background-repeat: repeat-x;
+            background-size: 1.4em 1.4em;
+            background-position: 0 center;
+        }
+    }
+}

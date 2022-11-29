@@ -1,15 +1,14 @@
-import React, {Component} from 'react'
+import React from 'react'
 import classnames from 'classnames'
 
 import {
     GorgiasChatPosition,
     GorgiasChatPositionAlignmentEnum,
 } from 'models/integration/types'
-import CloseIcon from 'assets/img/icons/DefaultCloseIcon.svg'
 
-import GorgiasChatPoweredBy from '../../../GorgiasChatIntegrationPreview/GorgiasChatPoweredBy'
-
-import Avatar from '../../../../../../../common/components/Avatar/Avatar'
+import {PreviewToolbar} from './components/PreviewToolbar'
+import {ChatCampaign} from './components/ChatCampaign'
+import {ChatBubble} from './components/ChatBubble'
 
 import css from './CampaignPreview.less'
 
@@ -22,86 +21,37 @@ type Props = {
     position: GorgiasChatPosition
 }
 
-export default class CampaignPreview extends Component<Props> {
-    render() {
-        const {
-            html,
-            authorName,
-            authorAvatarUrl,
-            mainColor,
-            translatedTexts,
-            position,
-        } = this.props
+const CampaignPreview = ({
+    html,
+    authorName,
+    authorAvatarUrl,
+    mainColor,
+    translatedTexts,
+    position,
+}: Props) => {
+    const isButtonOnTop =
+        position.alignment === GorgiasChatPositionAlignmentEnum.TOP_RIGHT ||
+        position.alignment === GorgiasChatPositionAlignmentEnum.TOP_LEFT
 
-        const _bgColor = (color?: string) => ({backgroundColor: color})
+    const previewContainerClassNames = classnames({
+        [css.container]: true,
+        [css.bubbleOnTop]: isButtonOnTop,
+    })
 
-        const isButtonOnTop =
-            position.alignment === GorgiasChatPositionAlignmentEnum.TOP_RIGHT ||
-            position.alignment === GorgiasChatPositionAlignmentEnum.TOP_LEFT
-
-        return (
-            <div className={css.preview}>
-                <div className={css.titlebar} />
-                {isButtonOnTop && (
-                    <div
-                        className={classnames(
-                            css.button,
-                            css[position.alignment]
-                        )}
-                        style={_bgColor(mainColor)}
-                    >
-                        <img
-                            className={css.icon}
-                            src={`${
-                                window.GORGIAS_ASSETS_URL || ''
-                            }/static/private/js/assets/img/icons/DefaultCloseIcon.svg`}
-                            alt="Close icon"
-                        />
-                    </div>
-                )}
-                <div className={css.campaign}>
-                    <div className={css.header}>
-                        <div className={css.author}>
-                            <Avatar
-                                key={authorAvatarUrl}
-                                className={css.authorAvatar}
-                                name={authorName || 'Random agent'}
-                                url={authorAvatarUrl}
-                            />
-                        </div>
-                        <div className={css.message}>
-                            <div className={css.authorName}>
-                                <b>{authorName || "[Random agent's name]"}</b>
-                            </div>
-                            <div
-                                className={css.messageText}
-                                dangerouslySetInnerHTML={{__html: html}}
-                            />
-                        </div>
-                    </div>
-
-                    <GorgiasChatPoweredBy translatedTexts={translatedTexts} />
-
-                    <div className={css.footer}>
-                        {translatedTexts.campaignClickToReply}
-                    </div>
-                </div>
-                {!isButtonOnTop && (
-                    <div
-                        className={classnames(
-                            css.button,
-                            css[position.alignment]
-                        )}
-                        style={_bgColor(mainColor)}
-                    >
-                        <img
-                            className={css.icon}
-                            src={CloseIcon}
-                            alt="Close icon"
-                        />
-                    </div>
-                )}
+    return (
+        <div className={css.preview}>
+            <PreviewToolbar />
+            <div className={previewContainerClassNames}>
+                <ChatCampaign
+                    authorAvatarUrl={authorAvatarUrl}
+                    authorName={authorName}
+                    html={html}
+                    translatedTexts={translatedTexts}
+                />
+                <ChatBubble alignment={position.alignment} color={mainColor} />
             </div>
-        )
-    }
+        </div>
+    )
 }
+
+export default CampaignPreview

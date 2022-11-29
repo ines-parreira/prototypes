@@ -1,0 +1,62 @@
+@import '~css/new/colorTokens';
+
+:local {
+    @classic-neutral-grey-4: #c3c8d0;
+    @darker-grey: #424242;
+
+    .campaign {
+        overflow: hidden;
+        display: flex;
+        flex-shrink: 0;
+        flex-direction: column;
+        width: 330px;
+        max-height: 500px;
+        background: @classic-neutral-grey-0;
+        border-radius: 5px;
+        box-shadow: 0 10px 64px fade(black, 9%);
+        margin-bottom: 10px;
+
+        .header {
+            display: flex;
+            padding: 10px;
+
+            .message {
+                padding: 10px;
+                overflow: hidden;
+                color: @darker-grey;
+
+                .authorName {
+                    font-size: 13px;
+                }
+
+                .messageText {
+                    overflow-wrap: break-word;
+                    font-size: 13px;
+                    margin-top: 15px;
+                }
+
+                img {
+                    max-width: 100%;
+                }
+            }
+
+            .author {
+                padding: 10px;
+
+                .authorAvatar {
+                    height: 50px;
+                    width: 50px;
+                    border-radius: 100px !important;
+                    overflow: hidden;
+                }
+            }
+        }
+
+        .footer {
+            cursor: pointer;
+            padding: 15px 20px;
+            border-top: 1px solid #e8e8e8;
+            color: @classic-neutral-grey-4;
+        }
+    }
+}
