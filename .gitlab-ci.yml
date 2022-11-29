@@ -1,6 +1,6 @@
 include:
   - project: 'gorgias/gorgias-ops'
-    ref: 79ddbc6a027dd9bfbccfa88afb229af30c1ee0f4
+    ref: fb804c0601d9bbab1142f7fbf70a23d355823581
     file: /.gitlab/ci/common.gitlab-ci.yml
 
 stages:
@@ -12,7 +12,7 @@ stages:
   - force deploy
 
 default:
-  image: node:14-stretch-slim
+  image: node:14
   tags:
     - non-gpu
   timeout: 30m
@@ -223,12 +223,6 @@ Publish Chromatic:
   stage: docs
   dependencies: [Install dependencies]
   needs: [Install dependencies]
-  when: manual
-  rules:
-    - if: $CI_COMMIT_REF_NAME == "main" || $CI_COMMIT_REF_NAME == "staging"
-  variables:
-    # See: https://github.com/webpack/webpack/issues/14532
-    NODE_OPTIONS: --openssl-legacy-provider
   script:
     - yarn chromatic --project-token=${CHROMATIC_PROJECT_TOKEN}
 
