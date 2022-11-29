@@ -10,12 +10,7 @@ const pkg = require('./package.json')
 const __PRODUCTION__ = process.env.NODE_ENV === 'production'
 const HASH = process.env.RELEASE ? process.env.RELEASE : '[hash]'
 
-const ASSETS_URL =
-    process.env.GORGIAS_ASSETS_URL ?? __PRODUCTION__
-        ? 'https://gorgias-assets.gorgias.io'
-        : ''
-const WEBAPP_BUILD_PATH =
-    process.env.GORGIAS_WEBAPP_BUILD_PATH ?? __PRODUCTION__ ? 'web-app' : ''
+const ASSETS_URL = process.env.GORGIAS_ASSETS_URL ?? ''
 
 const BUNDLE_PUBLIC_PATH = 'http://acme.gorgias.docker:8080/'
 
@@ -72,7 +67,7 @@ const urlLoader = {
         limit: 5000,
         fallback: 'file-loader',
         emitFile: false,
-        name: `${ASSETS_URL}/${WEBAPP_BUILD_PATH}/[path][name].[ext]`,
+        name: `${ASSETS_URL}/[path][name].[ext]`,
         context: 'src/',
     },
 }
