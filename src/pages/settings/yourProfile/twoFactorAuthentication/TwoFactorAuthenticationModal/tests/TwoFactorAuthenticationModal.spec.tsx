@@ -48,6 +48,58 @@ const createRecoveryCodesMock = createRecoveryCodes as jest.MockedFunction<
 jest.mock('store/middlewares/segmentTracker')
 const logEventMock = logEvent as jest.Mock
 
+const renderInitialModal = async (baseElement: HTMLElement) => {
+    // Wait until the show class is added to the modal
+    await waitFor(() =>
+        expect(baseElement.getElementsByClassName('modal show').length).toBe(1)
+    )
+
+    // wait for the loading elements to disappear
+    await waitFor(() => {
+        expect(() => screen.queryAllByText('Loading...')).toHaveLength(0)
+        expect(screen.getByText(/Continue/).getAttribute('disabled')).toBe(null)
+    })
+}
+
+const validateInput = async (baseElement: HTMLElement) => {
+    await renderInitialModal(baseElement)
+
+    // Navigate to step 2
+    let continueButton = screen.getByText(/Continue/)
+    fireEvent.click(continueButton)
+
+    const inputField = screen.getByPlaceholderText(
+        'Enter 6-digit verification code from app'
+    ) as HTMLInputElement
+    fireEvent.change(inputField, {target: {value: '123456'}})
+
+    // Try to navigate to step 3 in order to trigger validation
+    continueButton = screen.getByText(/Continue/)
+    fireEvent.click(continueButton)
+
+    // wait for the loading spinners to disappear
+    await waitForElementToBeRemoved(() => screen.getAllByText('Loading...'))
+}
+
+const handleInputValidationFailed = async (baseElement: HTMLElement) => {
+    expect(baseElement).toMatchSnapshot(
+        'error banner and continue button disabled'
+    )
+
+    const inputField = screen.getByPlaceholderText(
+        'Enter 6-digit verification code from app'
+    ) as HTMLInputElement
+    fireEvent.change(inputField, {target: {value: '123457'}})
+
+    await waitFor(() => {
+        expect(screen.getByText(/Continue/).getAttribute('disabled')).toBe(null)
+    })
+
+    expect(baseElement).toMatchSnapshot(
+        'no error banner and continue button enabled'
+    )
+}
+
 describe('<TwoFactorAuthenticationModal />', () => {
     const minProps: ComponentProps<typeof TwoFactorAuthenticationModal> = {
         isOpen: true,
@@ -56,20 +108,6 @@ describe('<TwoFactorAuthenticationModal />', () => {
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
         thunk,
     ])
-
-    const renderInitialModal = async (baseElement: HTMLElement) => {
-        // Wait until the show class is added to the modal
-        await waitFor(() =>
-            expect(
-                baseElement.getElementsByClassName('modal show').length
-            ).toBe(1)
-        )
-
-        // wait for the loading spinners to disappear
-        await waitFor(() => {
-            expect(() => screen.queryAllByText('Loading...')).toHaveLength(0)
-        })
-    }
 
     describe('render()', () => {
         it('should not render the modal', () => {
@@ -137,7 +175,17 @@ describe('<TwoFactorAuthenticationModal />', () => {
                 </Provider>
             )
 
-            await renderInitialModal(baseElement)
+            await waitFor(() =>
+                expect(
+                    baseElement.getElementsByClassName('modal show').length
+                ).toBe(1)
+            )
+
+            await waitFor(() => {
+                expect(() => screen.queryAllByText('Loading...')).toHaveLength(
+                    0
+                )
+            })
 
             // Wait for the qrcode library to render the image
             await screen.findByText(
@@ -172,51 +220,6 @@ describe('<TwoFactorAuthenticationModal />', () => {
         })
 
         describe('Validate verification code', () => {
-            const validateInput = async (baseElement: HTMLElement) => {
-                await renderInitialModal(baseElement)
-
-                // Navigate to step 2
-                let continueButton = screen.getByText(/Continue/)
-                fireEvent.click(continueButton)
-
-                const inputField = screen.getByPlaceholderText(
-                    'Enter 6-digit verification code from app'
-                ) as HTMLInputElement
-                fireEvent.change(inputField, {target: {value: '123456'}})
-
-                // Try to navigate to step 3 in order to trigger validation
-                continueButton = screen.getByText(/Continue/)
-                fireEvent.click(continueButton)
-
-                // wait for the loading spinners to disappear
-                await waitForElementToBeRemoved(() =>
-                    screen.getAllByText('Loading...')
-                )
-            }
-
-            const handleInputValidationFailed = async (
-                baseElement: HTMLElement
-            ) => {
-                expect(baseElement).toMatchSnapshot(
-                    'error banner and continue button disabled'
-                )
-
-                const inputField = screen.getByPlaceholderText(
-                    'Enter 6-digit verification code from app'
-                ) as HTMLInputElement
-                fireEvent.change(inputField, {target: {value: '123457'}})
-
-                await waitFor(() => {
-                    expect(
-                        screen.getByText(/Continue/).getAttribute('disabled')
-                    ).toBe(null)
-                })
-
-                expect(baseElement).toMatchSnapshot(
-                    'no error banner and continue button enabled'
-                )
-            }
-
             fetchAuthenticatorDataMock.mockResolvedValue(authenticatorData)
 
             it('should render modal with error banner because validation failed', async () => {
