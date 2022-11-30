@@ -46,9 +46,7 @@ variables:
     STORAGE_BUCKET: gs://gorgias-assets-production
     DEPLOY_ENV: production
   rules:
-    # TODO: return back to main branch CD after BFCM
-    - if: $CI_COMMIT_REF_NAME == "staging"
-  when: manual
+    - if: $CI_COMMIT_REF_NAME == "main"
 
 # This keyword only works on a job, cannot be extended
 .gitlab_environment: &gitlab_environment
@@ -98,25 +96,25 @@ Jest:
 
 Build preview:
   extends: .build
-  variables: 
+  variables:
     GORGIAS_ASSETS_URL: https://gorgias-assets.gorgias.xyz/preview/${CI_COMMIT_SHA}/${WEBAPP_PATH}
   rules:
     - if: $CI_COMMIT_REF_NAME != "main" && $CI_COMMIT_REF_NAME != "staging"
 
 Build staging:
   extends: .build
-  variables: 
+  variables:
     GORGIAS_ASSETS_URL: https://gorgias-assets.gorgias.xyz/${WEBAPP_PATH}
   rules:
     - if: $CI_COMMIT_REF_NAME == "staging"
 
 Build production:
   extends: .build
-  variables: 
+  variables:
     GORGIAS_ASSETS_URL: https://gorgias-assets.gorgias.io/${WEBAPP_PATH}
   rules:
     - if: $CI_COMMIT_REF_NAME == "main"
-  
+
 .deploy:
   stage: deploy
   extends: [.deploy common]
@@ -241,7 +239,7 @@ Force deploy production:
       gorgias-helpdesk-production-aus-southeast1-fcb9
       gorgias-main-us-east1-635c
   rules:
-    - if: $CI_COMMIT_REF_NAME == "staging"
+    - if: $CI_COMMIT_REF_NAME == "main" || $CI_COMMIT_REF_NAME == "staging"
   script:
     - . deployment/bin/deploy-utils.sh
     - . deploy-argo-utils.sh
