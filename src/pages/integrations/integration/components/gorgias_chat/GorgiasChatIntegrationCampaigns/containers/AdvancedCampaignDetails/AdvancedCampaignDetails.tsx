@@ -77,7 +77,6 @@ export const AdvancedCampaignDetails = memo(
         const [campaignName, setCampaignName] = useState<string>(
             campaign.name ?? ''
         )
-        const [campaignDelay, setCampaignDelay] = useState<number>()
         const [campaignAgent, setCampaignAgent] = useState<CampaignAuthor>()
         const [campaignMessageHTML, setCampaignMessageHTML] =
             useState<string>('')
@@ -250,30 +249,31 @@ export const AdvancedCampaignDetails = memo(
                 const html = campaignMessageHTML
                 const text = campaignMessageText
 
-                let payload: ChatCampaign = {
-                    id: campaign.id,
-                    message: {
-                        author,
-                        html,
-                        text,
-                    },
-                    name: campaignName,
-                    triggers: triggersArr,
-                }
-
-                if (campaignDelay && campaignDelay >= 0) {
-                    payload = {
-                        ...payload,
-                        meta: {
-                            ...payload?.meta,
-                            delay: campaignDelay,
-                        },
-                    }
-                }
-
                 if (isUpdate) {
+                    const payload = {
+                        id: campaign.id,
+                        message: {
+                            author,
+                            html,
+                            text,
+                        },
+                        name: campaignName,
+                        triggers: triggersArr,
+                    }
+
                     await updateCampaign(fromJS(payload), integration)
                 } else {
+                    const payload = {
+                        id: campaign.id,
+                        message: {
+                            author,
+                            html,
+                            text,
+                        },
+                        name: campaignName,
+                        triggers: triggersArr,
+                    }
+
                     await createCampaign(fromJS(payload), integration)
                 }
             } finally {
@@ -325,10 +325,6 @@ export const AdvancedCampaignDetails = memo(
                 }
 
                 setCampaignName(campaign.name)
-
-                if (campaign.meta && campaign.meta.delay >= 0) {
-                    setCampaignDelay(campaign.meta.delay)
-                }
 
                 if (campaign.message) {
                     setCampaignMessageHTML(campaign.message.html)
@@ -403,9 +399,7 @@ export const AdvancedCampaignDetails = memo(
                         <CampaignDisplaySettings
                             isRevenueBetaTester={isRevenueBetaTester}
                             triggers={triggers}
-                            delay={campaignDelay}
                             onChangeCollision={handleToggleSingleCampaignInView}
-                            onChangeDelay={setCampaignDelay}
                             onChangeDeviceType={handleChangeDeviceType}
                         />
 
