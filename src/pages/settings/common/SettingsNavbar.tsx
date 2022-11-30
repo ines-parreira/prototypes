@@ -2,6 +2,7 @@ import React from 'react'
 import classnames from 'classnames'
 import {Link, useLocation} from 'react-router-dom'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import css from 'assets/css/navbar.less'
 
 import {hasRole} from 'utils'
@@ -16,11 +17,13 @@ import useAppSelector from 'hooks/useAppSelector'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import Navbar from 'pages/common/components/Navbar'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {buildPasswordAnd2FaText} from '../yourProfile/twoFactorAuthentication/utils'
 
 type CategoryLink = {
     className?: string
     requiredRole?: UserRole
+    requiredFeatureFlag?: FeatureFlagKey
     text: string
     to: string
     isHidden?: boolean
@@ -147,6 +150,12 @@ const CATEGORIES: Category[] = [
             },
             {
                 requiredRole: ADMIN_ROLE,
+                requiredFeatureFlag: FeatureFlagKey.TicketFields,
+                to: 'ticket-fields',
+                text: 'Ticket fields',
+            },
+            {
+                requiredRole: ADMIN_ROLE,
                 to: 'business-hours',
                 text: 'Business hours',
             },
@@ -193,17 +202,20 @@ const SettingsNavbar = () => {
     const currentUser = useAppSelector(getCurrentUser)
     const account = useAppSelector(getCurrentAccountState)
     const pathname = useLocation().pathname
+    const featureFlags = useFlags()
 
     return (
         <Navbar activeContent="settings">
             {CATEGORIES.map(({name, icon, links}, index) => {
                 const displayedLinks = links
                     .filter((link) => !link.isHidden)
-                    .map(({to, text, requiredRole}) => {
+                    .map(({to, text, requiredRole, requiredFeatureFlag}) => {
                         let computedText = text
                         if (
-                            requiredRole &&
-                            !hasRole(currentUser, requiredRole)
+                            (requiredRole &&
+                                !hasRole(currentUser, requiredRole)) ||
+                            (requiredFeatureFlag &&
+                                !featureFlags[requiredFeatureFlag])
                         ) {
                             return null
                         }

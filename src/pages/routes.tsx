@@ -72,6 +72,7 @@ import List from './settings/teams/members/List'
 import UserAuditList from './settings/audit/UserAuditList'
 import BusinessHours from './settings/businessHours/BusinessHours'
 import TicketAssignment from './settings/ticketAssignment/TicketAssignment'
+import TicketFields from './settings/ticketFields/TicketFields'
 
 import withFeaturePaywall from './common/utils/withFeaturePaywall'
 import CanduContent from './onboarding/CanduContent'
@@ -684,6 +685,18 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                     ),
                     navbar: SettingsNavbar,
                 })}
+            />
+            <Route
+                path={`${path}/ticket-fields`}
+                render={appRender({
+                    content: memoizedWithUserRoleRequired(
+                        TicketFields,
+                        ADMIN_ROLE,
+                        PageSection.TicketFields
+                    ),
+                    navbar: SettingsNavbar,
+                })}
+                exact
             />
         </Switch>
     )

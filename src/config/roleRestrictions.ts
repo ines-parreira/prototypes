@@ -47,6 +47,9 @@ export const roleRestrictionConfigs: Record<
     [PageSection.TicketAssignment]: {
         pageHeader: SectionPageHeader.TicketAssignment,
     },
+    [PageSection.TicketFields]: {
+        pageHeader: SectionPageHeader.TicketFields,
+    },
     [PageSection.PhoneNumbers]: {
         pageHeader: SectionPageHeader.PhoneNumbers,
     },

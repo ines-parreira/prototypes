@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TicketFields/> should render if the account has the feature flag 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          Ticket fields
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <div
+    class="container"
+  >
+    <h2>
+      Get started with Ticket Fields
+    </h2>
+    <p>
+      Set up custom fields to make sure your team handle tickets efficiently and consistently. You can create a custom field to track the contact reason, product or even the resolution provided in the ticket.
+    </p>
+    <button
+      class="wrapper fill primary medium"
+      type="button"
+    >
+      Create Field
+    </button>
+  </div>
+</div>
+`;
