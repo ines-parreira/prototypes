@@ -5,6 +5,7 @@ import {CampaignCollisionForm} from '../../components/CampaignCollisionForm'
 import {CampaignTriggerMap} from '../../types/CampaignTriggerMap'
 import {CampaignTriggerKey} from '../../types/enums/CampaignTriggerKey.enum'
 
+import {CampaignDelay} from '../CampaignDelay'
 import {CampaignDeviceType} from '../CampaignDeviceType'
 import {WithRevenuePaywall} from '../WithRevenuePaywall'
 
@@ -12,8 +13,10 @@ import css from './CampaignDisplaySettings.less'
 
 type Props = {
     isRevenueBetaTester?: boolean
+    delay?: number
     triggers: CampaignTriggerMap
     onChangeCollision: (triggerId: string, value: boolean) => void
+    onChangeDelay: (value: number) => void
     onChangeDeviceType: (triggerId: string, value: string) => void
 }
 
@@ -31,8 +34,10 @@ function getTriggerIdByKey(
 
 export const CampaignDisplaySettings = ({
     isRevenueBetaTester,
+    delay,
     triggers,
     onChangeCollision,
+    onChangeDelay,
     onChangeDeviceType,
 }: Props): JSX.Element => {
     const deviceTypeId = getTriggerIdByKey(
@@ -44,7 +49,7 @@ export const CampaignDisplaySettings = ({
         CampaignTriggerKey.SingleInView
     )
     const shouldRenderSettings =
-        isRevenueBetaTester || singleInViewId || deviceTypeId
+        isRevenueBetaTester || singleInViewId || deviceTypeId || delay
 
     const deviceTypeTrigger = useMemo(() => {
         return triggers[deviceTypeId] ?? null
@@ -61,6 +66,12 @@ export const CampaignDisplaySettings = ({
         <WithRevenuePaywall showPaywall={!isRevenueBetaTester}>
             <h3 style={{marginTop: 32}}>Display</h3>
             <div className={css.settingsContainer}>
+                <div className="mb-4">
+                    <CampaignDelay
+                        delay={delay}
+                        onChangeDelay={onChangeDelay}
+                    />
+                </div>
                 <div className="mb-4">
                     <CampaignDeviceType
                         trigger={deviceTypeTrigger}
