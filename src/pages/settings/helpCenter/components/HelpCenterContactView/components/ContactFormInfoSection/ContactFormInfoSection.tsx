@@ -2,9 +2,10 @@ import React, {useMemo, useRef, useCallback, useState} from 'react'
 import {useLocalStorage} from 'react-use'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {noop as _noop} from 'lodash'
-import classNames from 'classnames'
-
+import classnames from 'classnames'
 import {ModalBody} from 'reactstrap'
+import settingsCss from 'pages/settings/settings.less'
+
 import * as integrationsSelectors from 'state/integrations/selectors'
 import useAppSelector from 'hooks/useAppSelector'
 import {EmailContactInfoDto, HelpCenter} from 'models/helpCenter/types'
@@ -173,9 +174,14 @@ const ContactFormInfoSection = ({helpCenter}: ContactFormInfoSectionProps) => {
 
     return (
         <>
-            <section className={css.container}>
+            <section className={classnames(css.container, settingsCss.mb40)}>
                 <div className={helpCenterContactViewCss.leftColumn}>
-                    <section className={css.emailSection}>
+                    <section
+                        className={classnames(
+                            css.emailSection,
+                            settingsCss.mb40
+                        )}
+                    >
                         <div className={css.heading}>
                             <div>
                                 <h3>Email</h3>
@@ -289,7 +295,7 @@ const ContactFormInfoSection = ({helpCenter}: ContactFormInfoSectionProps) => {
                                     Code
                                 </Button>
                                 <a
-                                    className={classNames(css.embedPreview, {
+                                    className={classnames(css.embedPreview, {
                                         [css.embedPreviewDisabled]:
                                             !isEmailIntegrationSelected,
                                     })}

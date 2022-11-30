@@ -13,7 +13,7 @@ export const DisplayName: React.FC = () => {
         })
     }
     return (
-        <section>
+        <section className={settingsCss.mb40}>
             <InputField
                 type="text"
                 className={settingsCss.mb16}

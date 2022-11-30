@@ -16,7 +16,9 @@ exports[`<CsvColumnMatching /> renders initial mappings with default help center
   <p>
     Choose the languages you want to import. If you don’t see all languages you wish to import from here, you might need to add them in preferences before and re-upload the file.
   </p>
-  <section>
+  <section
+    class="mb40"
+  >
     <div
       class="wrapper"
     >

@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import classNames from 'classnames'
+import settingsCss from 'pages/settings/settings.less'
 import InputField from '../../../../common/forms/input/InputField'
 
 import css from './GoogleAnalyticsSection.less'
@@ -25,7 +26,7 @@ export const GoogleAnalyticsSection = ({onChange, onDelete, gaid}: Props) => {
     }
 
     return (
-        <section>
+        <section className={settingsCss.mb40}>
             <h4>Google Analytics</h4>
             <p>
                 Provide your <b>Google Universal Analytics ID</b> or{' '}

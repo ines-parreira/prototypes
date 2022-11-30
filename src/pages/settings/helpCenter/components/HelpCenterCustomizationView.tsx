@@ -14,6 +14,7 @@ import {
 import {getViewLanguage} from 'state/ui/helpCenter'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
+import settingsCss from 'pages/settings/settings.less'
 import {SocialNavigationLinks} from '../components/SocialNavigationLinks'
 import {HELP_CENTER_DEFAULT_LOCALE, SOCIAL_NAVIGATION_LINKS} from '../constants'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
@@ -256,7 +257,7 @@ export const HelpCenterCustomizationView = () => {
 
     return (
         <HelpCenterPageWrapper helpCenter={helpCenter} className={css.wrapper}>
-            <section>
+            <section className={settingsCss.mb40}>
                 <div className={css.heading}>
                     <div>
                         <div className={css.headingInner}>
@@ -266,7 +267,7 @@ export const HelpCenterCustomizationView = () => {
                     </div>
                 </div>
             </section>
-            <section>
+            <section className={settingsCss.mb40}>
                 <div className={css.heading}>
                     <h4>Header settings</h4>
                     <p>
@@ -363,7 +364,7 @@ export const HelpCenterCustomizationView = () => {
                     />
                 )}
             </section>
-            <section>
+            <section className={settingsCss.mb40}>
                 <div className={css.heading}>
                     <div>
                         <h4>Footer settings</h4>
@@ -474,7 +475,7 @@ export const HelpCenterCustomizationView = () => {
                     />
                 )}
             </section>
-            <section>
+            <section className={settingsCss.mb40}>
                 <div className={css.heading}>
                     <h4>Extra HTML</h4>
                     <p>

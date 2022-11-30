@@ -230,7 +230,7 @@ export const CustomDomain = () => {
     }
 
     return (
-        <section>
+        <section className={settingsCss.mb40}>
             <div>
                 <h4 className={css.title}>Custom Domain</h4>
                 <p>

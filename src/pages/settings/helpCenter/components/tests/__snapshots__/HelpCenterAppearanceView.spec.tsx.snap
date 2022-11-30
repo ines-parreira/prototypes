@@ -133,7 +133,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
           </p>
         </div>
         <section
-          class="logos"
+          class="logos mb40"
         >
           <div
             class="container"
@@ -352,7 +352,9 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
             </div>
           </div>
         </section>
-        <section>
+        <section
+          class="mb40"
+        >
           <h4>
             Theme
           </h4>
@@ -467,6 +469,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
           </div>
         </section>
         <section
+          class="mb40"
           style="margin-top: -20px;"
         >
           <label
@@ -663,7 +666,9 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
             This font will be applied to the website and set by default to new articles.
           </small>
         </section>
-        <section>
+        <section
+          class="mb40"
+        >
           <div
             class="bannerHeader"
           >
@@ -856,7 +861,9 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
             </div>
           </div>
         </section>
-        <section>
+        <section
+          class="mb40"
+        >
           <h3>
             Other settings
           </h3>

@@ -1,4 +1,5 @@
 import React, {useEffect} from 'react'
+import settingsCss from 'pages/settings/settings.less'
 
 import {useHelpCenterActions} from '../../hooks/useHelpCenterActions'
 import {useCurrentHelpCenter} from '../../providers/CurrentHelpCenter'
@@ -27,7 +28,7 @@ export const HelpCenterPreferencesView: React.FC = () => {
     return (
         <HelpCenterPageWrapper helpCenter={helpCenter} showLanguageSelector>
             <DisplayName />
-            <section>
+            <section className={settingsCss.mb40}>
                 <h3>Languages</h3>
                 <DefaultLanguageSelect availableLocales={locales} />
                 <AvailableLanguagesTags availableLocales={locales} />

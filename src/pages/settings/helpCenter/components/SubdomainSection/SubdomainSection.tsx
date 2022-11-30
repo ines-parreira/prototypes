@@ -1,5 +1,6 @@
 import React, {ReactNode} from 'react'
 
+import settingsCss from 'pages/settings/settings.less'
 import {SubdomainInput, SubdomainInputProps} from './components/SubdomainInput'
 import css from './SubdomainSection.less'
 
@@ -17,7 +18,7 @@ export const SubdomainSection = ({
     ...inputProps
 }: Props): JSX.Element => {
     return (
-        <section>
+        <section className={settingsCss.mb40}>
             <div className={css.header}>
                 <h4>Subdomain</h4>
                 <a

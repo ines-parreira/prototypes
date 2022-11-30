@@ -3,7 +3,7 @@
 exports[`<ChatApplication /> allows to enable chat widget and selects the first chat by default 1`] = `
 <div>
   <section
-    class="container"
+    class="container mb40"
   >
     <div
       class="leftColumn"
@@ -307,7 +307,7 @@ exports[`<ChatApplication /> allows to enable chat widget and selects the first 
 exports[`<ChatApplication /> is disabled if there are no chat integrations 1`] = `
 <div>
   <section
-    class="container"
+    class="container mb40"
   >
     <div
       class="leftColumn"

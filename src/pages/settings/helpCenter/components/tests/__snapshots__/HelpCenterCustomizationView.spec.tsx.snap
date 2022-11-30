@@ -112,7 +112,9 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
       <div
         class="contentWrapper"
       >
-        <section>
+        <section
+          class="mb40"
+        >
           <div
             class="heading"
           >
@@ -198,7 +200,9 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
             </div>
           </div>
         </section>
-        <section>
+        <section
+          class="mb40"
+        >
           <div
             class="heading"
           >
@@ -266,7 +270,9 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
             </span>
           </div>
         </section>
-        <section>
+        <section
+          class="mb40"
+        >
           <div
             class="heading"
           >
@@ -439,7 +445,9 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
             </div>
           </div>
         </section>
-        <section>
+        <section
+          class="mb40"
+        >
           <div
             class="heading"
           >

@@ -1,8 +1,10 @@
 import React, {useMemo, useState} from 'react'
-import classNames from 'classnames'
+import classnames from 'classnames'
 import {Map} from 'immutable'
 import {Link} from 'react-router-dom'
 import {Label} from 'reactstrap'
+
+import settingsCss from 'pages/settings/settings.less'
 
 import warningIcon from 'assets/img/icons/warning2.svg'
 
@@ -158,7 +160,7 @@ const ChatApplication: React.FC<Props> = ({helpCenterId}) => {
         chatHelpCenterConfiguration.help_center_id !== helpCenterId
 
     return (
-        <section className={css.container}>
+        <section className={classnames(css.container, settingsCss.mb40)}>
             <div className={helpCenterContactViewCss.leftColumn}>
                 <div className={css.leftColumn}>
                     <div className={css.heading}>
@@ -188,7 +190,7 @@ const ChatApplication: React.FC<Props> = ({helpCenterId}) => {
                                 </Link>
                             </span>
                             <span
-                                className={classNames(
+                                className={classnames(
                                     css['warning-icon'],
                                     'mr-2'
                                 )}

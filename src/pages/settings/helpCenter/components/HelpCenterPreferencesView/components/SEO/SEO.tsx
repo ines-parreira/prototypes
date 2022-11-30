@@ -38,7 +38,7 @@ export const SEO: React.FC<Props> = ({helpCenter}: Props) => {
         }
 
     return (
-        <section>
+        <section className={settingsCss.mb40}>
             <div className={css.heading}>
                 <div>
                     <h3>Search Engine Optimization (SEO)</h3>

@@ -3,6 +3,7 @@ import axios from 'axios'
 import {useAsyncFn} from 'react-use'
 import {FormGroup} from 'reactstrap'
 import isHexColor from 'validator/lib/isHexColor'
+import classnames from 'classnames'
 
 import Button from 'pages/common/components/button/Button'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
@@ -380,7 +381,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                     mode as well as the favicon.
                 </p>
             </div>
-            <section className={css.logos}>
+            <section className={classnames(css.logos, settingsCss.mb40)}>
                 <ImageUpload
                     id="primary_logo"
                     title="Standard Logo"
@@ -434,7 +435,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                     accept="image/png,image/jpeg,image/x-icon"
                 />
             </section>
-            <section>
+            <section className={settingsCss.mb40}>
                 <ThemeSwitch
                     selectedTheme={selectedTheme}
                     currentColor={currentColor}
@@ -442,7 +443,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                     onColorChange={setCurrentColor}
                 />
             </section>
-            <section style={{marginTop: -20}}>
+            <section style={{marginTop: -20}} className={settingsCss.mb40}>
                 <FontSelectField
                     title="Primary Font"
                     help="This font will be applied to the website and set by default to new articles."
@@ -452,7 +453,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                     }}
                 />
             </section>
-            <section>
+            <section className={settingsCss.mb40}>
                 <div className={css.bannerHeader}>
                     <div className={css.bannerHeaderText}>
                         <div className={css.heading}>
@@ -580,7 +581,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                     }}
                 />
             </section>
-            <section>
+            <section className={settingsCss.mb40}>
                 <h3>Other settings</h3>
                 <UpdateToggle
                     activated={helpCenter.search_deactivated_datetime === null}

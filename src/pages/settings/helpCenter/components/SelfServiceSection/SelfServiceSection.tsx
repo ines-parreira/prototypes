@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react'
 import {Label} from 'reactstrap'
 import {Link} from 'react-router-dom'
-import classNames from 'classnames'
+import classnames from 'classnames'
 import {Map} from 'immutable'
 import {useAsyncFn} from 'react-use'
 
+import settingsCss from 'pages/settings/settings.less'
 import ToggleInput from '../../../../common/forms/ToggleInput'
 
 import {
@@ -74,7 +75,7 @@ export const SelfServiceSection = ({
         updating || loading || sspShopState !== 'shop_ssp_enabled'
 
     return (
-        <section>
+        <section className={settingsCss.mb40}>
             <div className={css.heading}>
                 <h3>Enable Self-service</h3>
                 <p>
@@ -97,7 +98,7 @@ export const SelfServiceSection = ({
                     onClick={handleOnChangeSwitch}
                 >
                     <p
-                        className={classNames(
+                        className={classnames(
                             css['enable-self-service-label'],
                             sspShopState === 'shop_ssp_enabled'
                                 ? undefined
@@ -109,7 +110,7 @@ export const SelfServiceSection = ({
 
                     {sspShopState === 'shop_ssp_disabled' && (
                         <p
-                            className={classNames(
+                            className={classnames(
                                 css['connect-shopify-shop-hint'],
                                 css['force-disabled']
                             )}
@@ -124,7 +125,7 @@ export const SelfServiceSection = ({
 
                     {sspShopState === 'no_shop_integration' && (
                         <p
-                            className={classNames(
+                            className={classnames(
                                 css['connect-shopify-shop-hint']
                             )}
                         >

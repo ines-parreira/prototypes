@@ -2,12 +2,14 @@
 
 exports[`<PhoneContactInfoSection /> should render the component 1`] = `
 <section
-  class="container"
+  class="container mb40"
 >
   <div
     class="leftColumn"
   >
-    <section>
+    <section
+      class="mb40"
+    >
       <div
         class="heading"
       >

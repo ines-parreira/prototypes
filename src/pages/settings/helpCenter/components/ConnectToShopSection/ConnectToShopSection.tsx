@@ -13,6 +13,8 @@ import {HelpCenter} from 'models/helpCenter/types'
 import Tooltip from 'pages/common/components/Tooltip'
 import useAppSelector from 'hooks/useAppSelector'
 
+import settingsCss from 'pages/settings/settings.less'
+
 import {useShopifyStoreWithChatConnectionsOptions} from '../../hooks/useShopifyStoreWithChatConnectionsOptions'
 
 import css from './ConnectToShopSection.less'
@@ -86,7 +88,7 @@ export const ConnectToShopSection = ({
     }, [shopifyShopsOptions, selectedShop])
 
     return (
-        <section>
+        <section className={settingsCss.mb40}>
             <h4>Connect to Shopify store</h4>
 
             <p>

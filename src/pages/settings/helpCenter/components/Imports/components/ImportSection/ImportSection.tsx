@@ -1,10 +1,12 @@
-import classNames from 'classnames'
+import classnames from 'classnames'
 import React, {ChangeEvent, useRef, useState, useEffect} from 'react'
 import {Link, useHistory} from 'react-router-dom'
 import {Modal, ModalBody, ModalFooter, ModalHeader, Spinner} from 'reactstrap'
 import {useAsyncFn} from 'react-use'
 import {fromJS, Map} from 'immutable'
 import {AxiosError} from 'axios'
+
+import settingsCss from 'pages/settings/settings.less'
 
 import zendeskLogo from 'assets/img/integrations/zendesk.png'
 import helpdocsLogo from 'assets/img/integrations/helpdocs.png'
@@ -269,7 +271,7 @@ export const ImportSection: React.FC<Props> = ({
     )
 
     return (
-        <section className={className}>
+        <section className={classnames(className, settingsCss.mb40)}>
             <h4>Import articles from another Help Center</h4>
 
             <p>
@@ -375,7 +377,7 @@ export const ImportSection: React.FC<Props> = ({
                                         onDragOver={(e) => e.preventDefault()}
                                     >
                                         <i
-                                            className={classNames(
+                                            className={classnames(
                                                 'material-icons',
                                                 css.modalCloudIcon
                                             )}

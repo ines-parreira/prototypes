@@ -1,5 +1,7 @@
 import React, {useState} from 'react'
 import parsePhoneNumber from 'libphonenumber-js'
+import classnames from 'classnames'
+import settingsCss from 'pages/settings/settings.less'
 
 import {PhoneContactInfoDto} from 'models/helpCenter/types'
 import TextArea from 'pages/common/forms/TextArea'
@@ -35,9 +37,9 @@ const PhoneContactInfoSection: React.FC = () => {
     }
 
     return (
-        <section className={css.container}>
+        <section className={classnames(css.container, settingsCss.mb40)}>
             <div className={helpCenterContactViewCss.leftColumn}>
-                <section>
+                <section className={settingsCss.mb40}>
                     <div className={css.heading}>
                         <div>
                             <h3>Phone</h3>

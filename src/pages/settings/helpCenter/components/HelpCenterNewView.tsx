@@ -352,7 +352,7 @@ export const HelpCenterNewView = ({
             />
             <Container fluid className={settingsCss.pageContainer}>
                 <div className={settingsCss.contentWrapper}>
-                    <section className={css['sectionNameSubdomain']}>
+                    <section className={css.sectionNameSubdomain}>
                         <div>
                             <Label className={css.label} isRequired>
                                 Help center name
@@ -380,7 +380,7 @@ export const HelpCenterNewView = ({
                         />
                     </section>
 
-                    <section className={css['sectionPart']}>
+                    <section className={css.sectionPart}>
                         <label className="control-label">
                             Available languages
                         </label>
@@ -394,7 +394,7 @@ export const HelpCenterNewView = ({
                     </section>
 
                     {availableLocales.length > 1 && (
-                        <section className={css['sectionPart']}>
+                        <section className={css.sectionPart}>
                             <label className="control-label">
                                 Default language
                             </label>
@@ -415,7 +415,7 @@ export const HelpCenterNewView = ({
                         </section>
                     )}
 
-                    <section className={css['sectionPart']}>
+                    <section className={css.sectionPart}>
                         <label className="control-label" htmlFor="contactForm">
                             Email integration
                         </label>
@@ -442,7 +442,7 @@ export const HelpCenterNewView = ({
                         />
                     </section>
 
-                    <section className={css['sectionPart']}>
+                    <section className={css.sectionPart}>
                         <label className="control-label">Shopify store</label>
 
                         {newHelpCenter.shop_name ? (
