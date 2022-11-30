@@ -1,6 +1,6 @@
 import {createContext} from 'react'
 
-// TODO @Manuel: Once all classes from InfobarWidgets are migrated to functional
+// TODO(@Manuel): Once all classes from InfobarWidgets are migrated to functional
 // components, remove `editing` and `isEditing` props drilling and enrich this
 // context
 

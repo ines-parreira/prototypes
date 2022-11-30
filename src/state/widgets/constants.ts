@@ -28,7 +28,7 @@ export const SUBMIT_WIDGET_START = 'SUBMIT_WIDGET_START'
 export const SUBMIT_WIDGET_SUCCESS = 'SUBMIT_WIDGET_SUCCESS'
 export const SUBMIT_WIDGET_ERROR = 'SUBMIT_WIDGET_ERROR'
 
-export const CUSTOM_WIDGET_TYPE = 'custom'
+export const CUSTOM_WIDGET_TYPE = 'custom' // deprecated in favor of CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE
 export const HTTP_WIDGET_TYPE = 'http'
 export const MAGENTO2_WIDGET_TYPE = 'magento2'
 export const RECHARGE_WIDGET_TYPE = 'recharge'
@@ -39,5 +39,6 @@ export const YOTPO_WIDGET_TYPE = 'yotpo'
 export const KLAVIYO_WIDGET_TYPE = 'klaviyo'
 export const BIGCOMMERCE_WIDGET_TYPE = 'bigcommerce'
 export const CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE = 'customer_external_data'
+export const STANDALONE_WIDGET_TYPE = 'standalone'
 
 export const THIRD_PARTY_APP_NAME_KEY = '__app_name__'

@@ -31,7 +31,7 @@ type baseTemplate = {
     order?: number
 }
 
-// The type of 'path' in WrapperTemplate is due to _getPreparedDisplayList in InfobarWidgets.js
+// The type of 'path' in WrapperTemplate is due to getPreparedDisplayList in InfobarWidgets.tsx
 
 export type WrapperTemplate = baseTemplate & {
     type: 'wrapper'

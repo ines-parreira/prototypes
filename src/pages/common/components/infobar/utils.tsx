@@ -25,25 +25,23 @@ import moment, {MomentInput} from 'moment'
 import ReactStars from 'react-rating-stars-component'
 
 import {SENTIMENT_TYPE_LOWER_BOUND, SENTIMENT_TYPE_UPPER_BOUND} from 'config'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import * as utils from 'utils'
 import {reportError} from 'utils/errors'
 import {WidgetContextType} from 'state/widgets/types'
+import {getSourcePathFromContext} from 'state/widgets/utils'
 import {
-    getContextFromSourcePath,
-    getSourcePathFromContext,
-} from 'state/widgets/utils'
-
+    CUSTOM_WIDGET_TYPE,
+    CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+    STANDALONE_WIDGET_TYPE,
+} from 'state/widgets/constants'
+import {DatetimeLabel} from 'pages/common/utils/labels'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {
     Template,
     CardTemplate,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/types'
 import EditableListWidget from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/EditableListWidget'
-import {
-    CUSTOM_WIDGET_TYPE,
-    CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
-} from 'state/widgets/constants'
-import {DatetimeLabel} from 'pages/common/utils/labels'
+
 import css from './utils.less'
 import {
     FEDEX_BASE_TRACKING_LINK,
@@ -290,7 +288,8 @@ export function makeWrapper({
     integrationId: number | null
     appId: string | null
 }) {
-    let type = getContextFromSourcePath(sourcePath).type
+    // TODO(@Manuel): Replace the default type with standalone once custom is removed
+    let type = CUSTOM_WIDGET_TYPE
 
     if (widgetType) {
         type = widgetType
@@ -304,14 +303,16 @@ export function makeWrapper({
     // we don't want to display a card around data in wrapper (unnecessary nesting)
     // if there is only a card in the wrapper and no simple widget in this card (ie. only cards or lists) we move those
     // children into the wrapper directly instead of letting them in the card
-    const firstWidget = (
-        wrapperWidget.get('widgets', fromJS([])) as List<any>
-    ).first() as Map<any, any>
-    if (hasNoSimpleWidget(firstWidget)) {
-        wrapperWidget = wrapperWidget.set(
-            'widgets',
-            firstWidget.get('widgets', fromJS([]))
-        )
+    if (widgetType !== STANDALONE_WIDGET_TYPE) {
+        const firstWidget = (
+            wrapperWidget.get('widgets', fromJS([])) as List<any>
+        ).first() as Map<any, any>
+        if (hasNoSimpleWidget(firstWidget)) {
+            wrapperWidget = wrapperWidget.set(
+                'widgets',
+                firstWidget.get('widgets', fromJS([]))
+            )
+        }
     }
 
     return fromJS({

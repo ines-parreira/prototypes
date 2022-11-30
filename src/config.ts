@@ -18,6 +18,7 @@ import {TicketMessageSourceType} from 'business/types/ticket'
 import {
     CUSTOM_WIDGET_TYPE,
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+    STANDALONE_WIDGET_TYPE,
 } from 'state/widgets/constants'
 import {WidgetContextType} from 'state/widgets/types'
 
@@ -148,17 +149,20 @@ export const DEFAULT_SOURCE_PATHS = {
             'customer',
             'external_data',
         ],
+        [STANDALONE_WIDGET_TYPE]: ['ticket', 'customer'],
     },
     [WidgetContextType.Customer]: {
         [CUSTOM_WIDGET_TYPE]: ['customer', 'data'],
         integrations: ['customer', 'integrations'],
         [CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE]: ['customer', 'external_data'],
+        [STANDALONE_WIDGET_TYPE]: ['customer'],
     },
     //TODO(customers-migration): remove this property when we migrated widgets.
     [WidgetContextType.User]: {
         [CUSTOM_WIDGET_TYPE]: ['customer', 'data'],
         integrations: ['customer', 'integrations'],
         [CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE]: ['customer', 'external_data'],
+        [STANDALONE_WIDGET_TYPE]: ['customer'],
     },
 }
 

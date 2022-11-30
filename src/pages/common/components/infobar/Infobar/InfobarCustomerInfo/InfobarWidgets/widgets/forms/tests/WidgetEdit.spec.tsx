@@ -11,7 +11,8 @@ import {IntegrationType} from 'models/integration/constants'
 import * as actions from 'state/widgets/actions'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {HTTP_WIDGET_TYPE} from 'state/widgets/constants'
-import {Integration} from 'models/integration/types'
+
+import {WidgetType} from 'state/widgets/types'
 import WidgetEdit from '../WidgetEdit'
 
 const mockStore = configureMockStore([thunk])
@@ -40,7 +41,7 @@ describe('<WidgetEdit/>', () => {
         }),
         parent: fromJS({}),
         editionHiddenFields: [],
-        widgetType: HTTP_WIDGET_TYPE as Integration['type'],
+        widgetType: HTTP_WIDGET_TYPE as WidgetType,
         isRootWidget: false,
         isParentList: false,
     }
@@ -188,7 +189,7 @@ describe('<WidgetEdit/>', () => {
                                 },
                             ],
                         })}
-                        widgetType={HTTP_WIDGET_TYPE as Integration['type']}
+                        widgetType={HTTP_WIDGET_TYPE as WidgetType}
                     />
                 </IntegrationContext.Provider>
             </Provider>

@@ -23,7 +23,6 @@ import {getSources, getSourcesWithCustomer} from 'state/widgets/selectors'
 
 import * as types from './constants'
 import {Widget, WidgetContextType} from './types'
-import {CUSTOM_WIDGET_TYPE} from './constants'
 
 export function fetchWidgets(options: FetchWidgetsOptions = {}) {
     return async (dispatch: StoreDispatch) => {
@@ -141,7 +140,11 @@ export function drop(
     return (dispatch: StoreDispatch, getState: () => RootState) => {
         const state = getState()
         const splitKey = key.split('.')
-        let type = null
+        // TODO(@Manuel): default to standalone when custom is removed
+        let type = types.CUSTOM_WIDGET_TYPE
+        if (splitKey.length && splitKey[0] === '') {
+            type = types.STANDALONE_WIDGET_TYPE
+        }
         let integrationId = null
         let appId = null
 
@@ -241,7 +244,7 @@ export function submitWidgets(data: Maybe<Widget[]>) {
             items = [
                 {
                     order: 0,
-                    type: CUSTOM_WIDGET_TYPE,
+                    type: types.STANDALONE_WIDGET_TYPE,
                     context,
                     template: {},
                 },

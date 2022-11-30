@@ -24,7 +24,7 @@ import {
 import {getIntegrationsByTypes} from 'state/integrations/selectors'
 import CustomerChannels from './CustomerChannels'
 import CustomerNote from './CustomerNote/CustomerNote'
-import InfobarWidgets from './InfobarWidgets/InfobarWidgets.js'
+import InfobarWidgets from './InfobarWidgets/InfobarWidgets'
 import AddIntegrationSuggestion from './AddIntegrationSuggestion'
 
 type GenerateButtonProps = {

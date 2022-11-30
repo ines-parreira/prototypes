@@ -43,7 +43,7 @@ describe('getSourcePathFromContext()', () => {
         expect(sourcePath2.includes('1')).toBe(false)
     })
 
-    it('should render the sourcePath for custom widget because of wrong widget type', () => {
+    it('should render the sourcePath for standalone widget because of wrong widget type', () => {
         const sourcePath = getSourcePathFromContext(
             WidgetContextType.Ticket,
             'abc_random_widget_type'

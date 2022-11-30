@@ -1,11 +1,9 @@
 import {fromJS, List, Map} from 'immutable'
-import _difference from 'lodash/difference'
 import _values from 'lodash/values'
-import _forEach from 'lodash/forEach'
 import _cloneDeep from 'lodash/cloneDeep'
 
 import {DEFAULT_SOURCE_PATHS} from 'config'
-
+import {STANDALONE_WIDGET_TYPE} from './constants'
 import {WidgetContextType} from './types'
 
 /**
@@ -50,9 +48,13 @@ export function getSourcePathFromContext(
     const config = _cloneDeep(DEFAULT_SOURCE_PATHS[context])
 
     // if we can't find a source for the context type
-    // return the ticket context type
+    // return the standalone context type
     if (!config) {
-        return _cloneDeep(DEFAULT_SOURCE_PATHS[WidgetContextType.Ticket].custom)
+        return _cloneDeep(
+            DEFAULT_SOURCE_PATHS[WidgetContextType.Ticket][
+                STANDALONE_WIDGET_TYPE
+            ]
+        )
     }
 
     if (!type) {
@@ -65,31 +67,6 @@ export function getSourcePathFromContext(
     }
 
     return sourcePath
-}
-
-/**
- * Return context and type of widget for passed source path (path on wrapper)
- */
-export function getContextFromSourcePath(sourcePath: Array<string> | string) {
-    const config = DEFAULT_SOURCE_PATHS
-
-    let result = {
-        context: 'ticket',
-        type: 'custom',
-    }
-
-    _forEach(config, (contextConfig, context) => {
-        _forEach(contextConfig, (path, type) => {
-            if (_difference(path, sourcePath).length === 0) {
-                result = {
-                    context,
-                    type,
-                }
-            }
-        })
-    })
-
-    return result
 }
 
 /**

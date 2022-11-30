@@ -5,7 +5,8 @@ import {Map} from 'immutable'
 
 import {getIntegrationById} from 'state/integrations/selectors'
 import {RootState} from 'state/types'
-import {WIDGET_COLOR_SUPPORTED_TYPES} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/constants.js'
+import {WIDGET_COLOR_SUPPORTED_TYPES} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/constants'
+import {Editing} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
 
 import {getWidgetName} from 'state/widgets/predicates'
 import cssWrapper from './Wrapper.less'
@@ -15,14 +16,7 @@ type OwnProps = {
     source: Map<any, any>
     widget: Map<any, any>
     template: Map<any, any>
-    editing: {
-        actions: {
-            removeEditedWidget: (
-                templatePath: string,
-                absolutePath: Array<string | number>
-            ) => void
-        }
-    }
+    editing?: Editing
 }
 
 export class Placeholder extends Component<
@@ -31,7 +25,7 @@ export class Placeholder extends Component<
     _deleteWidget = (evt: MouseEvent) => {
         const {template, editing} = this.props
 
-        const absolutePath: Array<string | number> = template.get('path')
+        const absolutePath: string[] = template.get('path')
         const templatePath: string = template.get('templatePath')
 
         evt.stopPropagation()

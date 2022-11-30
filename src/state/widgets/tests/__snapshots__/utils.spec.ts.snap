@@ -4,7 +4,6 @@ exports[`getSourcePathFromContext() should render defaultSourcePath for ticket c
 Array [
   "ticket",
   "customer",
-  "data",
 ]
 `;
 
@@ -74,7 +73,7 @@ Array [
 ]
 `;
 
-exports[`getSourcePathFromContext() should render the sourcePath for custom widget because of wrong widget type 1`] = `
+exports[`getSourcePathFromContext() should render the sourcePath for standalone widget because of wrong widget type 1`] = `
 Array [
   "ticket",
   "customer",
@@ -98,6 +97,10 @@ Array [
     "ticket",
     "customer",
     "external_data",
+  ],
+  Array [
+    "ticket",
+    "customer",
   ],
 ]
 `;

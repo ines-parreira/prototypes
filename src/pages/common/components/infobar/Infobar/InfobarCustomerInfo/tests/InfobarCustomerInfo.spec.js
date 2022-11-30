@@ -11,14 +11,14 @@ import {
     SHOPIFY_INTEGRATION_TYPE,
     SMILE_INTEGRATION_TYPE,
     BIGCOMMERCE_INTEGRATION_TYPE,
-} from '../../../../../../../constants/integration.ts'
+} from '../../../../../../../constants/integration'
 
 import InfobarCustomerInfo, {
     InfobarCustomerInfoContainer,
-} from '../InfobarCustomerInfo.tsx'
+} from '../InfobarCustomerInfo'
 
-jest.mock('../CustomerChannels.tsx', () => () => <div>CustomerChannels</div>)
-jest.mock('../InfobarWidgets/InfobarWidgets.js', () => () => (
+jest.mock('../CustomerChannels', () => () => <div>CustomerChannels</div>)
+jest.mock('../InfobarWidgets/InfobarWidgets', () => () => (
     <div>InfobarWidgets</div>
 ))
 

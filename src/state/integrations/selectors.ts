@@ -138,7 +138,9 @@ export const getIntegrationById = (id: number) =>
         }
     )
 
-export const getIntegrationsByType = <T extends Integration>(type: T['type']) =>
+export const getIntegrationsByType = <T extends Integration>(
+    type: IntegrationType | string
+) =>
     createSelector<RootState, T[], IntegrationsState>(
         getIntegrationsState,
         (state) => {

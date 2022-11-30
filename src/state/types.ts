@@ -24,7 +24,7 @@ import {Rule, RulePriority, RuleOperation} from './rules/types'
 import {Tag} from './tags/types'
 import {Customer, CustomerExternalData} from './customers/types'
 import {UIState} from './ui/reducers'
-import {Widget, WidgetContextType} from './widgets/types'
+import {Widget, WidgetContextType, WidgetType} from './widgets/types'
 import {TwilioState} from './twilio/types'
 import {Notification} from './notifications/types'
 
@@ -173,7 +173,7 @@ export type GorgiasAction = {
     fromIndex?: number
     targetParentTemplatePath?: string
     source?: Map<any, any>
-    widgetType?: Maybe<IntegrationType | 'custom'>
+    widgetType?: WidgetType
     templatePath?: string
     absolutePath?: string[]
     item?: Map<any, any>

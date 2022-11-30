@@ -184,11 +184,22 @@ export default function reducer(
 
             // generate the widget we are going to put with the others
             let widget = fromJS(
-                jsonToWidget(
-                    isDraggingARootSource
-                        ? preparedData[key as string]
-                        : preparedData
-                )
+                widgetType === types.STANDALONE_WIDGET_TYPE
+                    ? {
+                          meta: {
+                              displayCard: true,
+                          },
+                          path: '',
+                          type: 'card',
+                          order: 999,
+                          title: 'Standalone widget',
+                          widgets: [],
+                      }
+                    : jsonToWidget(
+                          isDraggingARootSource
+                              ? preparedData[key as string]
+                              : preparedData
+                      )
             ) as Map<any, any>
 
             // path where to put generated widgets
@@ -251,6 +262,7 @@ export default function reducer(
                             ![
                                 types.HTTP_WIDGET_TYPE,
                                 types.CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+                                types.STANDALONE_WIDGET_TYPE,
                             ].includes(type) && widget.get('type') === type
                         const integrationIdIsAlreadyPresent =
                             type === types.HTTP_WIDGET_TYPE &&

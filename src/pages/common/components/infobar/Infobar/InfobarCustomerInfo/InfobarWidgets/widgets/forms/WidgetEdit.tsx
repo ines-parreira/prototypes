@@ -22,8 +22,9 @@ import {
     CUSTOM_WIDGET_TYPE,
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
     HTTP_WIDGET_TYPE,
+    STANDALONE_WIDGET_TYPE,
 } from 'state/widgets/constants'
-import {Integration} from 'models/integration/types'
+import {WidgetType} from 'state/widgets/types'
 
 type EditionHiddenField = 'link' | 'displayCard'
 
@@ -33,7 +34,7 @@ type Props = {
     editionHiddenFields: EditionHiddenField[]
     isParentList: boolean
     isRootWidget: boolean
-    widgetType: Integration['type']
+    widgetType: WidgetType
 }
 
 type FormState = {
@@ -157,6 +158,7 @@ const WidgetEdit = ({
                         HTTP_WIDGET_TYPE,
                         CUSTOM_WIDGET_TYPE,
                         CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+                        STANDALONE_WIDGET_TYPE,
                     ].includes(widgetType) && (
                         <>
                             <FileField

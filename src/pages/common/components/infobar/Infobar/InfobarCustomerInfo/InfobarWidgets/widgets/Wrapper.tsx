@@ -7,17 +7,14 @@ import {Popover, PopoverBody} from 'reactstrap'
 import useId from 'hooks/useId'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import {Integration} from 'models/integration/types'
+import {WidgetType} from 'state/widgets/types'
 import {
     removeEditedWidget,
     startWidgetEdition,
     stopWidgetEdition,
 } from 'state/widgets/actions'
 import * as integrationsSelectors from 'state/integrations/selectors'
-import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
-import {WIDGET_COLOR_SUPPORTED_TYPES} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/constants.js'
-import {Editing} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
-import InfobarWidget from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/InfobarWidget.js'
-
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {EditionContext} from 'providers/infobar/EditionContext'
 import {getWidgetId, getWidgetName} from 'state/widgets/predicates'
@@ -25,12 +22,16 @@ import {
     CUSTOM_WIDGET_TYPE,
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
     HTTP_WIDGET_TYPE,
+    STANDALONE_WIDGET_TYPE,
 } from 'state/widgets/constants'
 
+import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
+import {WIDGET_COLOR_SUPPORTED_TYPES} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/constants'
+import {Editing} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
+import InfobarWidget from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/InfobarWidget.js'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
-import {Integration} from 'models/integration/types'
 import css from './Wrapper.less'
 import WrapperEdit from './forms/WrapperEdit'
 
@@ -56,7 +57,7 @@ export default function Wrapper({widget, template, source, editing}: Props) {
     const templatePath = template.get('templatePath', '') as string
 
     const widgetTitle = template.getIn(['widgets', 0, 'title'])
-    const widgetType = widget.get('type') as Integration['type']
+    const widgetType = widget.get('type') as WidgetType
     const integration = useIntegration(absolutePath, widgetType)
 
     const widgetName = getWidgetName({
@@ -87,7 +88,7 @@ export default function Wrapper({widget, template, source, editing}: Props) {
         <IntegrationContext.Provider
             value={{
                 integration,
-                integrationId: integration.get('id'),
+                integrationId: integration.get('id', null),
             }}
         >
             <div
@@ -108,6 +109,7 @@ export default function Wrapper({widget, template, source, editing}: Props) {
                             HTTP_WIDGET_TYPE,
                             CUSTOM_WIDGET_TYPE,
                             CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+                            STANDALONE_WIDGET_TYPE,
                         ].includes(widgetType) && (
                             <Button
                                 type="button"
@@ -205,10 +207,7 @@ export default function Wrapper({widget, template, source, editing}: Props) {
     )
 }
 
-function useIntegration(
-    absolutePath: string[],
-    widgetType: Integration['type']
-) {
+function useIntegration(absolutePath: string[], widgetType: WidgetType) {
     const integrationId = parseInt(_last(absolutePath) || '')
 
     const integration = useAppSelector(

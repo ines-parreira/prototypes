@@ -23,7 +23,6 @@ import bigcommerce from './widgets/bigcommerce'
 import {infobarWidgetShouldRender} from './predicates.ts'
 
 import {WidgetContext} from 'providers/infobar/WidgetContext.ts'
-
 import {
     HTTP_WIDGET_TYPE,
     MAGENTO2_WIDGET_TYPE,
@@ -33,6 +32,7 @@ import {
     SMOOCH_INSIDE_WIDGET_TYPE,
     YOTPO_WIDGET_TYPE,
     BIGCOMMERCE_WIDGET_TYPE,
+    STANDALONE_WIDGET_TYPE,
 } from 'state/widgets/constants.ts'
 
 export default class InfobarWidget extends React.Component {
@@ -153,13 +153,14 @@ export default class InfobarWidget extends React.Component {
             }
             case 'card': {
                 data = fromJS(data || {})
-
-                if (!Map.isMap(data)) {
-                    return null
-                }
-                // do not display card if there is no data to display in it
-                if (!isEditing && data.isEmpty()) {
-                    return null
+                if (widget.get('type') !== STANDALONE_WIDGET_TYPE) {
+                    if (!Map.isMap(data)) {
+                        return null
+                    }
+                    // do not display card if there is no data to display in it
+                    if (!isEditing && data.isEmpty()) {
+                        return null
+                    }
                 }
 
                 component = (

@@ -2,7 +2,6 @@ import React from 'react'
 import {fromJS, Map} from 'immutable'
 
 import {prepareWidgetToDisplay} from '../infobar/utils'
-
 import Field from './widgets/Field'
 import List from './widgets/List'
 import Card from './widgets/Card'

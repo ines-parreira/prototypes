@@ -4,6 +4,7 @@ import {IntegrationType} from 'models/integration/constants'
 import {
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
     HTTP_WIDGET_TYPE,
+    STANDALONE_WIDGET_TYPE,
     THIRD_PARTY_APP_NAME_KEY,
 } from 'state/widgets/constants'
 import {humanizeString} from 'utils'
@@ -15,6 +16,7 @@ const LABELS: {[key: string]: string} = {
     [IntegrationType.Magento2]: 'Magento',
     [IntegrationType.SmoochInside]: 'Chat',
     [CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE]: 'Customer third party data',
+    [STANDALONE_WIDGET_TYPE]: 'Standalone',
 }
 
 export function getWidgetLabel(widgetType: string): string {
@@ -92,9 +94,11 @@ export function getWidgetName({
 }: GetWidgetNameParams) {
     if (
         widgetTitle &&
-        [CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE, HTTP_WIDGET_TYPE].includes(
-            widgetType
-        )
+        [
+            CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+            HTTP_WIDGET_TYPE,
+            STANDALONE_WIDGET_TYPE,
+        ].includes(widgetType)
     ) {
         return widgetTitle
     }

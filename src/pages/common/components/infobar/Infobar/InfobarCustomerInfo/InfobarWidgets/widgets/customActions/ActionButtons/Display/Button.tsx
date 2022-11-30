@@ -50,7 +50,7 @@ function Button({index, label, action, isDropdown = false, openEditor}: Props) {
                 executeAction({
                     actionName: INFOBAR_CUSTOM_BUTTON_ACTION_NAME,
                     actionLabel: label,
-                    integrationId: integrationId!,
+                    integrationId: integrationId,
                     customerId: customerId?.toString(),
                     payload: mapActionToActionPayload(action, {
                         listIndex:

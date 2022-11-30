@@ -1,9 +1,10 @@
 import {Map} from 'immutable'
-import {Integration} from 'models/integration/types'
+import {IntegrationType} from 'models/integration/types'
 import {PartialTemplate} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/types'
 import {
     CUSTOM_WIDGET_TYPE,
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+    STANDALONE_WIDGET_TYPE,
 } from 'state/widgets/constants'
 
 export enum WidgetContextType {
@@ -15,10 +16,10 @@ export enum WidgetContextType {
 export type WidgetContext = WidgetContextType | string
 
 export type WidgetType =
-    | Integration['type']
-    // https://stackoverflow.com/a/43628789/15450814
+    | IntegrationType
     | typeof CUSTOM_WIDGET_TYPE
     | typeof CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE
+    | typeof STANDALONE_WIDGET_TYPE
 
 export type Widget = {
     order: number

@@ -159,7 +159,7 @@ export class EventContainer extends React.Component<Props, State> {
 
         const hasIntegration = !integration.isEmpty()
 
-        let actionLabel =
+        const actionLabel =
             event.getIn(['data', 'action_label']) || actionConfig.label
         let objectLabel = ''
         let objectLink = ''
@@ -235,10 +235,6 @@ export class EventContainer extends React.Component<Props, State> {
                     objectLink = `https://${storeName}.myshopify.com/tools/recurring/customers/${hash}/orders`
                 }
             }
-        } else {
-            actionLabel += ` #${
-                payload.get('order_id') as number
-            } (deleted integration)`
         }
 
         return (

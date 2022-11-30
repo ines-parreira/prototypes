@@ -7,7 +7,11 @@ import useAppSelector from 'hooks/useAppSelector'
 import {IntegrationType} from 'models/integration/types/'
 import {DEPRECATED_getIntegrations} from 'state/integrations/selectors'
 import history from 'pages/history'
-import {CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE} from 'state/widgets/constants'
+import {
+    CUSTOM_WIDGET_TYPE,
+    CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+    STANDALONE_WIDGET_TYPE,
+} from 'state/widgets/constants'
 import {
     areSourcesReady,
     jsonToWidgets,
@@ -128,11 +132,11 @@ export const WIDGET_DATA_TYPES = [
         ),
     },
     {
-        type: 'custom',
-        title: 'Customer data',
+        type: CUSTOM_WIDGET_TYPE,
+        title: 'Customer data (Deprecated)',
         description: (
             <div>
-                The following data comes is the one you push yourself using our{' '}
+                The following data is pushed using our{' '}
                 <a
                     href="https://developers.gorgias.com/"
                     target="_blank"
@@ -161,6 +165,12 @@ export const WIDGET_DATA_TYPES = [
                 .
             </div>
         ),
+    },
+    {
+        type: STANDALONE_WIDGET_TYPE,
+        title: 'Standalone widget',
+        description:
+            'Drag the box below into the sidebar to have a widget unrelated to any integration or data',
     },
 ]
 
@@ -194,10 +204,10 @@ export default function SourceWrapper({
 
     useEffect(() => {
         const context = widgets.get('currentContext', '')
-        const hasNoWidgetsTemplates = widgetsTemplate.isEmpty()
 
         const shouldGenerateWidgets =
-            areSourcesReady(sources as any, context) && hasNoWidgetsTemplates
+            areSourcesReady(sources as any, context) &&
+            widgetsTemplate.isEmpty()
 
         // Generate widgets template from incoming json and use it to display source widgets (i.e. the things you can
         // drag into the infobar).
@@ -255,12 +265,27 @@ export default function SourceWrapper({
                         CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE
                     )
                 } else {
-                    typesAlreadyDisplayed.push('custom')
+                    typesAlreadyDisplayed.push(CUSTOM_WIDGET_TYPE)
                 }
 
                 return ret
             }) as List<any>
         ).filter((w: Map<any, any>) => !!w) as List<any> // filter out null values
+
+        newWidgetsTemplate = newWidgetsTemplate.push(
+            fromJS({
+                type: STANDALONE_WIDGET_TYPE,
+                order: 0, // Doesn’t matter
+                context,
+                template: {
+                    type: 'wrapper',
+                    widgets: [],
+                },
+                sourcePath: [''],
+                integration_id: null,
+            })
+        )
+        typesAlreadyDisplayed.push(STANDALONE_WIDGET_TYPE)
 
         setWidgetsTemplate(newWidgetsTemplate)
         setAvailableTypes(Set(typesAlreadyDisplayed) as Set<any>)
