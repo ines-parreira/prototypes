@@ -414,6 +414,9 @@ export class CreditCardContainer extends Component<Props, State> {
                 _pick(this.state, ['name', 'number', 'expDate', 'cvc'])
             ).some((value) => !value)
         const isUpdating = /change-credit-card/.test(location.pathname)
+        const extraAmount = hasAutomationAddOn
+            ? automationAddOnFullAmount ?? (automationAddOnAmount || 0)
+            : 0
         const payment =
             isUpdating || !currentHelpdeskAmount
                 ? ''
@@ -422,11 +425,7 @@ export class CreditCardContainer extends Component<Props, State> {
                       currency: currentHelpdeskCurrency,
                       minimumFractionDigits: 0,
                       maximumFractionDigits: 0,
-                  }).format(
-                      currentHelpdeskAmount +
-                          (automationAddOnFullAmount ??
-                              (automationAddOnAmount || 0))
-                  )}`
+                  }).format(currentHelpdeskAmount + extraAmount)}`
 
         if (!isStripeLoaded) {
             return <Loader />

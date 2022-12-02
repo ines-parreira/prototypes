@@ -44,7 +44,7 @@ describe('CreditCard component', () => {
         setCurrentSubscription: jest.fn(),
         updateCreditCard: jest.fn(),
         hasAutomationAddOn: false,
-        automationAddOnAmount: 0,
+        automationAddOnAmount: 2,
         updateContact: jest.fn(),
         contact: fromJS({}),
         fetchContact: jest.fn(),
@@ -95,7 +95,6 @@ describe('CreditCard component', () => {
                     status: 'past_due',
                 })}
                 hasAutomationAddOn={true}
-                automationAddOnAmount={2}
                 automationAddOnFullAmount={2}
                 currentAutomationPrice={basicMonthlyAutomationPrice}
             />
@@ -112,7 +111,6 @@ describe('CreditCard component', () => {
                     status: 'past_due',
                 })}
                 hasAutomationAddOn={true}
-                automationAddOnAmount={2}
                 currentAutomationPrice={basicMonthlyAutomationPrice}
             />
         )
