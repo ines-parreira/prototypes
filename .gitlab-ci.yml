@@ -221,6 +221,7 @@ Publish Chromatic:
   stage: docs
   dependencies: [Install dependencies]
   needs: [Install dependencies]
+  allow_failure: true
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       when: always
