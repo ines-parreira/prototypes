@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react'
+import React, {ReactElement, ReactNode} from 'react'
 import classNames from 'classnames'
 
 import infoIcon from 'assets/img/icons/info.svg'
@@ -24,9 +24,9 @@ const bannerIcon = {
 export type Props = {
     hide?: (value: string | number | undefined) => void
     id?: string | number
-    actionHTML?: ReactNode | string
+    actionHTML?: ReactNode
     onClose?: () => void
-    message: string
+    message: ReactElement | string
     status?: Exclude<NotificationStatus, NotificationStatus.Loading>
     borderless?: boolean
 } & Pick<
@@ -77,7 +77,7 @@ const BannerNotification = ({
                     />
                 )}
                 <span className={css.messageText}>
-                    {allowHTML ? (
+                    {allowHTML && typeof message === 'string' ? (
                         <span
                             dangerouslySetInnerHTML={{
                                 __html: message,

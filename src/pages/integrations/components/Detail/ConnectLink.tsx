@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react'
+import React, {ReactElement, ReactNode} from 'react'
 import {Link} from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -25,7 +25,7 @@ type Props = {
     isExternal?: boolean
     integrationTitle: string
     isDisabled?: boolean
-    disabledMessage?: string
+    disabledMessage?: ReactElement | string
     children: ReactNode
 }
 

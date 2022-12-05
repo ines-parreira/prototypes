@@ -1,27 +1,14 @@
 import React from 'react'
 
-import {IntegrationConfig} from 'config'
-import {AppDetail, isAppDetail} from 'models/integration/types/app'
-import BannerNotification, {
-    Props as BannerProps,
-} from 'pages/common/components/BannerNotifications/BannerNotification'
+import {isAppDetail} from 'models/integration/types/app'
+import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
 import Header from './Header'
 import Slides from './Slides'
-import InfoCard from './InfoCard'
+import InfoCard, {InfoCardProps} from './InfoCard'
 
 import css from './Detail.less'
 
-export default function Detail(
-    props:
-        | AppDetail
-        | (IntegrationConfig & {
-              connectUrl: string
-              connectTitle?: string
-              isExternalConnectUrl: boolean
-              notification?: BannerProps
-              isConnectionDisabled?: boolean
-          })
-) {
+export default function Detail(props: InfoCardProps) {
     const {screenshots = [], longDescription} = props
 
     return (

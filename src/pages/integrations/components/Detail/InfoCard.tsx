@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {ReactChild, useState} from 'react'
 import {Card, CardBody} from 'reactstrap'
 import classNames from 'classnames'
 
@@ -23,17 +23,18 @@ import {disconnectApp} from 'models/integration/resources'
 import css from './Detail.less'
 import ConnectLink from './ConnectLink'
 
-export default function InfoCard(
-    props:
-        | AppDetail
-        | (IntegrationConfig & {
-              connectUrl: string
-              connectTitle?: string
-              isExternalConnectUrl: boolean
-              notification?: BannerProps
-              isConnectionDisabled?: boolean
-          })
-) {
+export type InfoCardProps =
+    | AppDetail
+    | (IntegrationConfig & {
+          connectUrl: string
+          connectTitle?: string
+          isExternalConnectUrl: boolean
+          notification?: BannerProps
+          isConnectionDisabled?: boolean
+          disabledConnectionNotification?: ReactChild
+      })
+
+export default function InfoCard(props: InfoCardProps) {
     const {
         title,
         company,
@@ -44,6 +45,7 @@ export default function InfoCard(
         setupGuide,
         connectUrl,
     } = props
+
     const dispatch = useAppDispatch()
     const domain = useAppSelector(getCurrentAccountState).get('domain')
     const [isLoading, setLoading] = useState(false)
@@ -59,11 +61,13 @@ export default function InfoCard(
               `Contact ${company || 'the company'} for pricing details.`
 
     let isDisabled = false
-    let disabledMessage = ''
+    let disabledMessage
+    let disabledConnectionNotification: ReactChild | undefined
 
     if (!isAppDetail(props)) {
         isDisabled = props.isConnectionDisabled || false
         disabledMessage = props.notification?.message || ''
+        disabledConnectionNotification = props.disabledConnectionNotification
     }
 
     const handleIntegrationDisconnection = async () => {
@@ -127,32 +131,37 @@ export default function InfoCard(
                             Disconnect App
                         </Button>
                     ) : (
-                        <ConnectLink
-                            connectUrl={connectUrl}
-                            isApp={isAppDetail(props)}
-                            integrationTitle={title}
-                            isExternal={
-                                !isAppDetail(props) &&
-                                props.isExternalConnectUrl
-                            }
-                            isDisabled={isDisabled}
-                            disabledMessage={disabledMessage}
-                        >
-                            {isAppDetail(props)}
-                            <Button
-                                className={css.actionButton}
+                        <>
+                            <ConnectLink
+                                connectUrl={connectUrl}
+                                isApp={isAppDetail(props)}
+                                integrationTitle={title}
+                                isExternal={
+                                    !isAppDetail(props) &&
+                                    props.isExternalConnectUrl
+                                }
                                 isDisabled={isDisabled}
+                                disabledMessage={disabledMessage}
                             >
-                                {isAppDetail(props) &&
-                                    (props.isUnapproved
-                                        ? 'Connect Unapproved App'
-                                        : 'Connect App')}
-                                {!isAppDetail(props) &&
-                                    (props.connectTitle
-                                        ? props.connectTitle
-                                        : 'Connect App')}
-                            </Button>
-                        </ConnectLink>
+                                {isAppDetail(props)}
+                                <Button
+                                    className={css.actionButton}
+                                    isDisabled={isDisabled}
+                                >
+                                    {isAppDetail(props) &&
+                                        (props.isUnapproved
+                                            ? 'Connect Unapproved App'
+                                            : 'Connect App')}
+                                    {!isAppDetail(props) &&
+                                        (props.connectTitle
+                                            ? props.connectTitle
+                                            : 'Connect App')}
+                                </Button>
+                            </ConnectLink>
+                            {isDisabled && disabledConnectionNotification
+                                ? disabledConnectionNotification
+                                : null}
+                        </>
                     )}
                 </div>
                 <h2 className={classNames(css.categoryTitle, css.cardTitle)}>

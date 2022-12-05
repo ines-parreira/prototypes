@@ -3,6 +3,7 @@ import {Link, useParams, NavLink} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 import {List as ImmutableList, Map} from 'immutable'
 
+import {PlanName} from 'utils/paywalls'
 import useAppSelector from 'hooks/useAppSelector'
 import {IntegrationType} from 'models/integration/types'
 import {makeHasFeature} from 'state/billing/selectors'
@@ -15,6 +16,8 @@ import Detail from '../../../components/Detail/Detail'
 import Integration from './Integration'
 import Create from './Create'
 import List from './List'
+
+import css from './Magento2.less'
 
 const connectionsPath = 'connections'
 
@@ -48,10 +51,22 @@ function Magento2({integration, integrations, loading, redirectUri}: Props) {
         connectUrl: '/app/settings/integrations/magento2/new',
         isExternalConnectUrl: false,
         ...(!hasMagentoFeature && {
-            notification: {
-                message: 'Feature not available on your current plan.',
-            },
             isConnectionDisabled: true,
+            disabledConnectionNotification: (
+                <div className={css.disabledConnectionNotification}>
+                    App is not available on your current plan.{' '}
+                    <Link
+                        to={{
+                            pathname: '/app/settings/billing/plans',
+                            state: {
+                                openedPlanModal: PlanName.Pro,
+                            },
+                        }}
+                    >
+                        See upgrade details.
+                    </Link>
+                </div>
+            ),
         }),
     }
 

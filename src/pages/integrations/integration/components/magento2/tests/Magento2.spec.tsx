@@ -168,7 +168,7 @@ describe('<Magento2/>', () => {
             '/magento2/1/',
             '/magento2/connections/',
         ])(
-            'should render the detail page with a banner and disabled connect in any case',
+            'should render the detail page with a disabled connect and disabled notice in any case',
             (integrationType) => {
                 renderWithRouter(
                     <Provider store={noEnabledFeatureStore}>
@@ -181,7 +181,7 @@ describe('<Magento2/>', () => {
                 )
                 expect(
                     screen.getByText(
-                        'Feature not available on your current plan.'
+                        'App is not available on your current plan.'
                     )
                 )
             }
