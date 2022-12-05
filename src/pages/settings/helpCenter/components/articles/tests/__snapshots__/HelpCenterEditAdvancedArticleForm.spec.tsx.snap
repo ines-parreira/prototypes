@@ -221,7 +221,7 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
             class="input-group-append"
           >
             <span
-              class="input-group-text"
+              class="input-group-text inputGroupText"
             >
               http://acme.gorgias.rehab/en-US/
             </span>
@@ -237,7 +237,7 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
             class="input-group-append"
           >
             <span
-              class="input-group-text"
+              class="input-group-text inputGroupText"
             >
               -1
             </span>

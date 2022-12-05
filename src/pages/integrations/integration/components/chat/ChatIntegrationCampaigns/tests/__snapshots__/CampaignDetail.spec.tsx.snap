@@ -970,7 +970,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                       class="input-group-append"
                     >
                       <span
-                        class="input-group-text"
+                        class="input-group-text inputGroupText"
                       >
                         seconds
                       </span>
@@ -1750,7 +1750,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                       class="input-group-append"
                     >
                       <span
-                        class="input-group-text"
+                        class="input-group-text inputGroupText"
                       >
                         seconds
                       </span>

@@ -164,7 +164,12 @@ export default class InputField<
                 >
                     {leftAddon && (
                         <span className="input-group-append">
-                            <span className="input-group-text">
+                            <span
+                                className={classnames(
+                                    'input-group-text',
+                                    css.inputGroupText
+                                )}
+                            >
                                 {leftAddon}
                             </span>
                         </span>
@@ -172,7 +177,12 @@ export default class InputField<
                     {this._getField()}
                     {rightAddon && (
                         <span className="input-group-append">
-                            <span className="input-group-text">
+                            <span
+                                className={classnames(
+                                    'input-group-text',
+                                    css.inputGroupText
+                                )}
+                            >
                                 {rightAddon}
                             </span>
                         </span>

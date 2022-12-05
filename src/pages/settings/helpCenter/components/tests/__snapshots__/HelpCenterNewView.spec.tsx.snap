@@ -118,7 +118,7 @@ exports[`<HelpCenterNewView /> should render the component 1`] = `
                 class="input-group-append"
               >
                 <span
-                  class="input-group-text"
+                  class="input-group-text inputGroupText"
                 >
                   .gorgias.docker:4000
                 </span>

@@ -100,7 +100,7 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
                   class="input-group-append"
                 >
                   <span
-                    class="input-group-text"
+                    class="input-group-text inputGroupText"
                   >
                     .zendesk.com
                   </span>
@@ -324,7 +324,7 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
                   class="input-group-append"
                 >
                   <span
-                    class="input-group-text"
+                    class="input-group-text inputGroupText"
                   >
                     .zendesk.com
                   </span>
@@ -531,7 +531,7 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
                   class="input-group-append"
                 >
                   <span
-                    class="input-group-text"
+                    class="input-group-text inputGroupText"
                   >
                     .zendesk.com
                   </span>

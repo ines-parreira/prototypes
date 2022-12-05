@@ -204,7 +204,7 @@ exports[`DEPRECATED_InputField should render a text input with a right addon 1`]
       className="input-group-append"
     >
       <span
-        className="input-group-text"
+        className="input-group-text inputGroupText"
       >
         @rightaddon.io
       </span>
