@@ -1,17 +1,16 @@
 import {useCallback} from 'react'
-import {TwilioError} from '@twilio/voice-sdk'
 
 import {PhoneCallDirection, TwilioSocketEventType} from 'business/twilio'
-import {reportError} from 'utils/errors'
-import {setCall, setError, setIsDialing, setWarning} from 'state/twilio/actions'
-import client from 'models/api/resources'
+import {setCall, setIsDialing} from 'state/twilio/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {RootState} from 'state/types'
 import {
     sendTwilioSocketEvent,
     gatherCallContext,
+    handleCallEvents,
 } from 'hooks/integrations/phone/utils'
+import {connectCall} from 'hooks/integrations/phone/api'
 
 type Options = {
     fromAddress: string
@@ -24,23 +23,7 @@ type Options = {
 
 export function useOutboundCall(): (options: Options) => void {
     const dispatch = useAppDispatch()
-    const device = useAppSelector((state: RootState) => state.twilio.device)
-
-    const handleDisconnect = useCallback(async () => {
-        try {
-            await client.post('/integrations/phone/call/disconnected')
-        } catch (error) {
-            reportError(error as Error)
-        }
-    }, [])
-
-    const handleConnect = useCallback(async () => {
-        try {
-            await client.post('/integrations/phone/call/connected')
-        } catch (error) {
-            reportError(error as Error)
-        }
-    }, [])
+    const {device} = useAppSelector((state: RootState) => state.twilio)
 
     return useCallback(
         async ({
@@ -79,78 +62,12 @@ export function useOutboundCall(): (options: Options) => void {
                 data: gatherCallContext(call),
             })
 
-            call.on('accept', () => {
-                dispatch(setIsDialing(false))
-                sendTwilioSocketEvent({
-                    type: TwilioSocketEventType.CallAccepted,
-                    data: gatherCallContext(call),
-                })
-            })
-
-            call.on('cancel', () => {
-                dispatch(setIsDialing(false))
-                dispatch(setCall(null))
-                sendTwilioSocketEvent({
-                    type: TwilioSocketEventType.CallCancelled,
-                    data: gatherCallContext(call),
-                })
-            })
-
-            call.on('disconnect', () => {
-                dispatch(setIsDialing(false))
-                dispatch(setCall(null))
-                void handleDisconnect()
-                sendTwilioSocketEvent({
-                    type: TwilioSocketEventType.CallDisconnected,
-                    data: gatherCallContext(call),
-                })
-            })
-
-            call.on('reconnected', () => {
-                sendTwilioSocketEvent({
-                    type: TwilioSocketEventType.CallReconnected,
-                    data: gatherCallContext(call),
-                })
-            })
-
-            call.on('error', (error: TwilioError.TwilioError) => {
-                dispatch(setError(error))
-                reportError(error)
-                sendTwilioSocketEvent({
-                    type: TwilioSocketEventType.CallError,
-                    data: {
-                        ...gatherCallContext(call),
-                        error,
-                    },
-                })
-            })
-
-            call.on('warning', (metricName: string) => {
-                dispatch(setWarning(metricName))
-                sendTwilioSocketEvent({
-                    type: TwilioSocketEventType.CallWarningStarted,
-                    data: {
-                        ...gatherCallContext(call),
-                        metric_name: metricName,
-                    },
-                })
-            })
-
-            call.on('warning-cleared', (metricName: string) => {
-                dispatch(setWarning(null))
-                sendTwilioSocketEvent({
-                    type: TwilioSocketEventType.CallWarningEnded,
-                    data: {
-                        ...gatherCallContext(call),
-                        metric_name: metricName,
-                    },
-                })
-            })
+            handleCallEvents(call, dispatch)
 
             dispatch(setIsDialing(true))
             dispatch(setCall(call))
-            await handleConnect()
+            await connectCall()
         },
-        [device, dispatch, handleConnect, handleDisconnect]
+        [device, dispatch]
     )
 }

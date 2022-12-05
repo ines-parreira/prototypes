@@ -1,6 +1,5 @@
 import {useEffect} from 'react'
 import {dismissNotification} from 'reapop'
-import {TwilioError} from '@twilio/voice-sdk'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -8,7 +7,8 @@ import useAppSelector from 'hooks/useAppSelector'
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
 import {setWarning} from 'state/twilio/actions'
 import {notify} from 'state/notifications/actions'
-import {TwilioErrorCode} from 'business/twilio'
+import {DEFAULT_WARNING_MESSAGE} from 'business/twilio'
+import {errorMessage, isRecoverableError} from 'hooks/integrations/phone/utils'
 
 import refreshIcon from 'assets/img/icons/refresh.svg'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -17,9 +17,6 @@ enum PhoneBannerNotification {
     Error = 'phone-error-banner',
     Warning = 'phone-warning-banner',
 }
-
-const DEFAULT_ERROR_MESSAGE =
-    'Failed to initialize the phone integration. If the problem persists, please contact support.'
 
 export function useErrorHandling() {
     const dispatch = useAppDispatch()
@@ -59,8 +56,8 @@ export function useErrorHandling() {
         }
 
         if (warning) {
-            const message =
-                'Poor network connection detected. Phone calls cannot be properly received or made until connection improves. Try restarting the network on your device.'
+            const message = DEFAULT_WARNING_MESSAGE
+
             void dispatch(
                 notify({
                     message,
@@ -76,28 +73,4 @@ export function useErrorHandling() {
             dispatch(dismissNotification(PhoneBannerNotification.Warning))
         }
     }, [dispatch, warning, useNewErrorHandling])
-}
-
-function errorMessage(error: Error): string {
-    if (error instanceof TwilioError.TwilioError) {
-        switch (error.code) {
-            case 31401:
-                return 'Microphone access has not been granted.'
-            default:
-                return DEFAULT_ERROR_MESSAGE
-        }
-    }
-
-    return DEFAULT_ERROR_MESSAGE
-}
-
-function isRecoverableError(error: Error): boolean {
-    if (error instanceof TwilioError.TwilioError) {
-        return [
-            TwilioErrorCode.GeneralTransport,
-            TwilioErrorCode.GeneralConnection,
-        ].includes(error?.code)
-    }
-
-    return false
 }

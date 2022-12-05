@@ -3,11 +3,13 @@ import {Call, Device} from '@twilio/voice-sdk'
 import {
     SET_TWILIO_CALL,
     SET_TWILIO_DEVICE,
+    SET_TWILIO_IS_CONNECTING,
     SET_TWILIO_IS_DIALING,
     SET_TWILIO_IS_RECORDING,
     SET_TWILIO_IS_RINGING,
     SET_TWILIO_ERROR,
     SET_TWILIO_WARNING,
+    INCREMENT_TWILIO_RECONNECT_ATTEMPTS,
 } from './constants'
 
 export type SetDeviceAction = {
@@ -18,6 +20,11 @@ export type SetDeviceAction = {
 export type SetConnectionAction = {
     type: string
     payload: Call | null
+}
+
+export type SetIsConnectingAction = {
+    type: string
+    payload: boolean
 }
 
 export type SetIsDialingAction = {
@@ -42,12 +49,16 @@ export type SetWarningAction = {
     type: string
     payload: string | null
 }
+export type IncrementReconnectAttemptsAction = {
+    type: string
+}
 
 export type TwilioAction =
     | SetDeviceAction
     | SetConnectionAction
     | SetIsDialingAction
     | SetIsRingingAction
+    | IncrementReconnectAttemptsAction
 
 export function setDevice(device: Device | null): SetDeviceAction {
     return {
@@ -60,6 +71,13 @@ export function setCall(call: Call | null): SetConnectionAction {
     return {
         type: SET_TWILIO_CALL,
         payload: call,
+    }
+}
+
+export function setIsConnecting(isConnecting = true): SetIsConnectingAction {
+    return {
+        type: SET_TWILIO_IS_CONNECTING,
+        payload: isConnecting,
     }
 }
 
@@ -95,5 +113,11 @@ export function setWarning(warning: string | null): SetWarningAction {
     return {
         type: SET_TWILIO_WARNING,
         payload: warning,
+    }
+}
+
+export function incrementReconnectAttempts(): IncrementReconnectAttemptsAction {
+    return {
+        type: INCREMENT_TWILIO_RECONNECT_ATTEMPTS,
     }
 }

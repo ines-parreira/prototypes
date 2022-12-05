@@ -1,6 +1,10 @@
 import {TwilioError} from '@twilio/voice-sdk'
 
-export const DEVICE_INITIALIZATION_TIMEOUT = 20 * 1000
+export const MAX_DEVICE_RECONNECT_ATTEMPTS = 5
+export const DEFAULT_ERROR_MESSAGE =
+    'An error has occurred while trying to connect to the Gorgias Voice application. Please refresh your browser to reset the connection. If the problem persists, please reach out to support. '
+export const DEFAULT_WARNING_MESSAGE =
+    'Poor network connection detected. Voice calls cannot be properly received or made until connection improves. Try restarting the network on your device.'
 
 export enum PhoneCallDirection {
     Inbound = 'inbound',
@@ -49,6 +53,29 @@ export enum TwilioErrorCode {
     MediaClientLocalDescFailed = 53400,
     MediaClientRemoteDescFailed = 53402,
     MediaConnectionError = 53405,
+}
+
+export enum VoiceAppErrorCode {
+    TooManyReconnectionAttepts = 1,
+    HttpsProtoRequired = 2,
+    MissingOrInvalidToken = 3,
+}
+export class VoiceAppError extends Error {
+    code: VoiceAppErrorCode
+
+    static messages: Record<VoiceAppErrorCode, string> = {
+        [VoiceAppErrorCode.TooManyReconnectionAttepts]:
+            'Too many failed attempts at connecting to Twilio',
+        [VoiceAppErrorCode.HttpsProtoRequired]:
+            'Cannot use the voice application without HTTPS',
+        [VoiceAppErrorCode.MissingOrInvalidToken]:
+            'Missing or invalid JWT token',
+    }
+
+    constructor(code: VoiceAppErrorCode) {
+        super(VoiceAppError.messages[code])
+        this.code = code
+    }
 }
 
 export enum CallForwardingCountries {

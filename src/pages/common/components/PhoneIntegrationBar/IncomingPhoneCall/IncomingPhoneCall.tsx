@@ -3,7 +3,7 @@ import {Call} from '@twilio/voice-sdk'
 import {useHistory} from 'react-router-dom'
 
 import Button from 'pages/common/components/button/Button'
-import client from '../../../../../models/api/resources'
+import {declineCall} from 'hooks/integrations/phone/api'
 import PhoneIntegrationName from '../PhoneIntegrationName/PhoneIntegrationName'
 import PhoneInfobarWrapper from '../PhoneInfobarWrapper/PhoneInfobarWrapper'
 import PhoneCustomerName from '../PhoneCustomerName/PhoneCustomerName'
@@ -16,9 +16,15 @@ type Props = {
 }
 
 export default function IncomingPhoneCall({call}: Props): JSX.Element {
-    const {onAccept} = useAccept(call)
-    const {onDecline} = useDecline(call)
-    const {onOpenTicket} = useOpenTicket(call)
+    const history = useHistory()
+    const {ticketId} = useConnectionParameters(call)
+
+    const openTicket = useCallback(() => {
+        if (ticketId) {
+            history.push(`/app/ticket/${ticketId}`)
+        }
+    }, [history, ticketId])
+
     const {integrationId, customerName, customerPhoneNumber} =
         useConnectionParameters(call)
 
@@ -26,7 +32,7 @@ export default function IncomingPhoneCall({call}: Props): JSX.Element {
         <div
             data-testid="incoming-phone-call"
             className={css.container}
-            onClick={onOpenTicket}
+            onClick={openTicket}
         >
             <div className={css.inner}>
                 <PhoneIntegrationName integrationId={integrationId} primary />
@@ -38,7 +44,7 @@ export default function IncomingPhoneCall({call}: Props): JSX.Element {
                     data-testid="accept-call-button"
                     intent="secondary"
                     className={css.accept}
-                    onClick={onAccept}
+                    onClick={() => call.accept()}
                 >
                     <i className="material-icons mr-2">phone</i>
                     Accept
@@ -47,7 +53,13 @@ export default function IncomingPhoneCall({call}: Props): JSX.Element {
                     intent="secondary"
                     data-testid="decline-call-button"
                     className={css.decline}
-                    onClick={onDecline}
+                    onClick={(event: SyntheticEvent<HTMLButtonElement>) => {
+                        event.stopPropagation()
+                        call.ignore()
+                        call.emit('cancel')
+
+                        void declineCall(call)
+                    }}
                 >
                     <i className="material-icons mr-2">call_end</i>
                     Decline
@@ -58,55 +70,4 @@ export default function IncomingPhoneCall({call}: Props): JSX.Element {
             </PhoneInfobarWrapper>
         </div>
     )
-}
-
-function useAccept(call: Call) {
-    const onAccept = useCallback(() => {
-        call.accept()
-    }, [call])
-
-    return {onAccept}
-}
-
-function useDecline(call: Call) {
-    const onDecline = useCallback(
-        (event: SyntheticEvent<HTMLButtonElement>) => {
-            event.stopPropagation()
-            call.ignore()
-            call.emit('cancel')
-            onIgnore(call).catch(console.error)
-        },
-        [call]
-    )
-
-    return {onDecline}
-}
-
-function useOpenTicket(call: Call) {
-    const history = useHistory()
-    const {ticketId} = useConnectionParameters(call)
-
-    const onOpenTicket = useCallback(() => {
-        if (ticketId) {
-            history.push(`/app/ticket/${ticketId}`)
-        }
-    }, [history, ticketId])
-
-    return {onOpenTicket}
-}
-
-async function onIgnore(call: Call) {
-    try {
-        const ticketId = parseInt(
-            call.customParameters.get('ticket_id') as string
-        )
-        const callSid = call.customParameters.get('call_sid') as string
-
-        await client.post('/integrations/phone/call/declined', {
-            ticket_id: ticketId,
-            call_sid: callSid,
-        })
-    } catch (error) {
-        console.error(error)
-    }
 }

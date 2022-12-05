@@ -15,10 +15,10 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {TwilioErrorCode, TwilioSocketEventType} from 'business/twilio'
 import {
-    getToken,
     sendTwilioSocketEvent,
     gatherCallContext,
 } from 'hooks/integrations/phone/utils'
+import {getToken} from 'hooks/integrations/phone/api'
 
 export function useDevice_DEPRECATED(useNewErrorHandling: boolean | undefined) {
     const dispatch = useAppDispatch()

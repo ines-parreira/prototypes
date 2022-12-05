@@ -2,6 +2,7 @@ import {
     SetConnectionAction,
     SetDeviceAction,
     SetErrorAction,
+    SetIsConnectingAction,
     SetIsDialingAction,
     SetIsRecordingAction,
     SetIsRingingAction,
@@ -16,17 +17,21 @@ import {
     SET_TWILIO_IS_RECORDING,
     SET_TWILIO_IS_RINGING,
     SET_TWILIO_WARNING,
+    INCREMENT_TWILIO_RECONNECT_ATTEMPTS,
+    SET_TWILIO_IS_CONNECTING,
 } from './constants'
 import {TwilioState} from './types'
 
 export const initialState: TwilioState = {
     device: null,
     call: null,
+    isConnecting: false,
     isDialing: false,
     isRinging: false,
     isRecording: false,
     warning: null,
     error: null,
+    reconnectAttempts: 0,
 }
 
 export default function reducer(
@@ -34,15 +39,22 @@ export default function reducer(
     action: TwilioAction
 ): TwilioState {
     switch (action.type) {
-        case SET_TWILIO_DEVICE:
+        case SET_TWILIO_DEVICE: {
             return {
                 ...state,
                 device: (action as SetDeviceAction).payload,
+                isConnecting: false,
             }
+        }
         case SET_TWILIO_CALL:
             return {
                 ...state,
                 call: (action as SetConnectionAction).payload,
+            }
+        case SET_TWILIO_IS_CONNECTING:
+            return {
+                ...state,
+                isConnecting: (action as SetIsConnectingAction).payload,
             }
         case SET_TWILIO_IS_DIALING:
             return {
@@ -68,6 +80,11 @@ export default function reducer(
             return {
                 ...state,
                 warning: (action as SetWarningAction).payload,
+            }
+        case INCREMENT_TWILIO_RECONNECT_ATTEMPTS:
+            return {
+                ...state,
+                reconnectAttempts: state.reconnectAttempts + 1,
             }
         default:
             return state

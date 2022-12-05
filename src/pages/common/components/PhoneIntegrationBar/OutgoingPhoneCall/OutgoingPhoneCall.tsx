@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react'
+import React from 'react'
 import {Call} from '@twilio/voice-sdk'
 
 import Button from 'pages/common/components/button/Button'
@@ -15,7 +15,6 @@ type Props = {
 }
 
 export default function OutgoingPhoneCall({call}: Props): JSX.Element {
-    const {onDisconnect} = useDisconnect(call)
     const {integrationId, customerName, customerPhoneNumber} =
         useConnectionParameters(call)
     const status = useCallStatus(call)
@@ -33,7 +32,7 @@ export default function OutgoingPhoneCall({call}: Props): JSX.Element {
                     intent="secondary"
                     data-testid="end-call-button"
                     className={css.end}
-                    onClick={onDisconnect}
+                    onClick={() => call.disconnect()}
                 >
                     <i className="material-icons mr-2">call_end</i>
                     End Call
@@ -44,12 +43,4 @@ export default function OutgoingPhoneCall({call}: Props): JSX.Element {
             </PhoneInfobarWrapper>
         </div>
     )
-}
-
-function useDisconnect(call: Call) {
-    const onDisconnect = useCallback(() => {
-        call.disconnect()
-    }, [call])
-
-    return {onDisconnect}
 }

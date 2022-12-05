@@ -1,330 +1,69 @@
-import {useCallback, useEffect} from 'react'
-import {useTimeoutFn} from 'react-use'
-import {Call, Device, TwilioError} from '@twilio/voice-sdk'
+import {useEffect} from 'react'
+import {Device} from '@twilio/voice-sdk'
 
-import {
-    setCall,
-    setDevice,
-    setError,
-    setIsDialing,
-    setIsRinging,
-    setWarning,
-} from 'state/twilio/actions'
-import client from 'models/api/resources'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {useErrorHandling} from 'hooks/integrations/phone/useErrorHandling'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
 
 import {
-    DEVICE_INITIALIZATION_TIMEOUT,
-    TwilioSocketEventType,
-} from 'business/twilio'
-import {reportError} from 'utils/errors'
-import {
-    getToken,
-    sendTwilioSocketEvent,
-    gatherCallContext,
+    connectDevice,
+    disconnectDevice,
+    isRecoverableError,
 } from 'hooks/integrations/phone/utils'
+import {setDevice} from 'state/twilio/actions'
 
 export function useDevice(useNewErrorHandling: boolean | undefined) {
     useErrorHandling()
     const dispatch = useAppDispatch()
-    const {device} = useAppSelector((state) => state.twilio)
-    const instantiateDevice = useInstantiateDevice()
-
-    useTimeoutFn(() => {
-        if (device?.state !== Device.State.Registered) {
-            const error = new Error(
-                'Timeout while initializing the Twilio connection'
-            )
-            reportError(error)
-            dispatch(setError(error))
-        }
-    }, DEVICE_INITIALIZATION_TIMEOUT)
+    const {device, isConnecting, reconnectAttempts, error} = useAppSelector(
+        (state) => state.twilio
+    )
 
     useEffect(() => {
         if (useNewErrorHandling !== true) {
             return
         }
 
-        if (device) {
+        if (error && !isRecoverableError(error)) {
             return
         }
 
-        async function init() {
-            const isHttps = window.location.protocol.startsWith('https')
-            if (!isHttps) {
-                return
-            }
-            const token = await getToken()
-            if (!token) {
-                reportError(new Error("Couldn't obtain phone token"))
-                return null
-            }
-
-            const newDevice = instantiateDevice(token)
-            dispatch(setDevice(newDevice))
+        if (isConnecting) {
+            return
         }
 
-        init().catch((error) => {
-            dispatch(setError(error))
-            reportError(error)
-        })
+        if (!device) {
+            void connectDevice(dispatch, reconnectAttempts)
+            return
+        }
+
+        switch (device.state) {
+            case Device.State.Registered:
+            case Device.State.Registering:
+                break
+
+            case Device.State.Unregistered:
+            case Device.State.Destroyed:
+                disconnectDevice(device)
+                void connectDevice(dispatch, reconnectAttempts)
+                break
+
+            default:
+                break
+        }
 
         return () => {
             if (device) {
-                ;(device as Device).disconnectAll()
-                dispatch(setDevice(null))
+                disconnectDevice(device)
+                setDevice(null)
             }
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [device, useNewErrorHandling])
-}
-
-function useInstantiateDevice() {
-    const dispatch = useAppDispatch()
-
-    const refreshToken = useCallback(async (device: Device) => {
-        try {
-            const token = await getToken()
-            if (token) {
-                device.updateToken(token)
-            }
-        } catch (error) {
-            reportError(error as Error)
-        }
-    }, [])
-
-    const onCallAlreadyAccepted = useCallback(() => {
-        void dispatch(
-            notify({
-                status: NotificationStatus.Info,
-                message: 'Another agent already accepted the call',
-            })
-        )
-    }, [dispatch])
-
-    const onCancel = useCallback(async (call?: Call) => {
-        try {
-            if (call === undefined) {
-                await client.post('/integrations/phone/call/canceled')
-            } else {
-                const ticketId = parseInt(
-                    call.customParameters.get('ticket_id') as string
-                )
-                const callSid = call.customParameters.get('call_sid') as string
-                await client.post('/integrations/phone/call/canceled', {
-                    ticket_id: ticketId,
-                    call_sid: callSid,
-                })
-            }
-        } catch (error) {
-            reportError(error as Error)
-        }
-    }, [])
-
-    const onAccept = useCallback(
-        async (call: Call) => {
-            try {
-                // When two agents pick up simultaneously, they both receive an "accept" event. However, the call is
-                // actually accepted by the first agent only. The second agent then receives a "cancel" event and the
-                // call status changes to "closed". Here, we wait a bit and then double-check the status, to avoid
-                // creating wrong events "Call answered by x". See issue APPC-795
-                await sleep(1000)
-                if (call.status() === Call.State.Closed) {
-                    onCallAlreadyAccepted()
-                    await onCancel()
-                    return
-                }
-
-                const integrationId = parseInt(
-                    call.customParameters.get('integration_id') as string
-                )
-                const customerPhoneNumber = call.parameters.From
-                const customerName = call.customParameters.get(
-                    'customer_name'
-                ) as string
-                const ticketId = parseInt(
-                    call.customParameters.get('ticket_id') as string
-                )
-                const callSid = call.customParameters.get('call_sid') as string
-
-                await client.post('/integrations/phone/call/accepted', {
-                    integration_id: integrationId,
-                    ticket_id: ticketId,
-                    call_sid: callSid,
-                    customer: {
-                        phone_number: customerPhoneNumber,
-                        name: customerName,
-                    },
-                })
-
-                dispatch(setIsDialing(false))
-            } catch (error) {
-                reportError(error as Error)
-            }
-        },
-        [dispatch, onCallAlreadyAccepted, onCancel]
-    )
-
-    return useCallback(
-        (token: string) => {
-            const device = new Device(token, {
-                closeProtection: true,
-                codecPreferences: [Call.Codec.Opus, Call.Codec.PCMU],
-                tokenRefreshMs: 30 * 1000,
-                logLevel: 'debug',
-            })
-
-            void device.register()
-
-            const maxReconnectionAttempts = 10
-            let reconnectionAttempts = 0
-
-            device.on(Device.EventName.Registered, () => {
-                dispatch(setError(null))
-                reconnectionAttempts = 0
-                sendTwilioSocketEvent({
-                    type: TwilioSocketEventType.DeviceRegistered,
-                })
-            })
-
-            device.on(
-                Device.EventName.Error,
-                (error: TwilioError.TwilioError) => {
-                    reportError(error)
-                    dispatch(setError(error))
-                    sendTwilioSocketEvent({
-                        type: TwilioSocketEventType.DeviceError,
-                        data: {
-                            error,
-                        },
-                    })
-                }
-            )
-
-            device.on(Device.EventName.Unregistered, () => {
-                if (reconnectionAttempts > maxReconnectionAttempts) {
-                    return
-                }
-
-                const timeout = 1000 * reconnectionAttempts
-                reconnectionAttempts++
-
-                sendTwilioSocketEvent({
-                    type: TwilioSocketEventType.DeviceUnregistered,
-                })
-
-                setTimeout(() => {
-                    void refreshToken(device)
-                }, timeout)
-            })
-
-            device.on(Device.EventName.TokenWillExpire, () => {
-                void refreshToken(device)
-            })
-
-            device.on(Device.EventName.Incoming, (call: Call) => {
-                dispatch(setIsRinging(true))
-                dispatch(setCall(call))
-
-                sendTwilioSocketEvent({
-                    type: TwilioSocketEventType.CallIncoming,
-                    data: gatherCallContext(call),
-                })
-
-                call.on('accept', () => {
-                    dispatch(setIsRinging(false))
-                    void onAccept(call)
-
-                    sendTwilioSocketEvent({
-                        type: TwilioSocketEventType.CallAccepted,
-                        data: gatherCallContext(call),
-                    })
-                })
-
-                call.on('reject', () => {
-                    sendTwilioSocketEvent({
-                        type: TwilioSocketEventType.CallRejected,
-                        data: gatherCallContext(call),
-                    })
-                })
-
-                call.on('cancel', () => {
-                    dispatch(setCall(null))
-                    dispatch(setIsRinging(false))
-                    dispatch(setWarning(null))
-
-                    void onCancel(call)
-
-                    sendTwilioSocketEvent({
-                        type: TwilioSocketEventType.CallCancelled,
-                        data: gatherCallContext(call),
-                    })
-                })
-
-                call.on('disconnect', () => {
-                    dispatch(setCall(null))
-                    dispatch(setIsRinging(false))
-                    dispatch(setWarning(null))
-
-                    sendTwilioSocketEvent({
-                        type: TwilioSocketEventType.CallDisconnected,
-                        data: gatherCallContext(call),
-                    })
-                })
-
-                call.on('reconnected', () => {
-                    dispatch(setError(null))
-                    sendTwilioSocketEvent({
-                        type: TwilioSocketEventType.CallReconnected,
-                        data: gatherCallContext(call),
-                    })
-                })
-
-                call.on('error', (error: TwilioError.TwilioError) => {
-                    dispatch(setError(error))
-                    reportError(error)
-                    sendTwilioSocketEvent({
-                        type: TwilioSocketEventType.CallError,
-                        data: {
-                            ...gatherCallContext(call),
-                            error,
-                        },
-                    })
-                })
-
-                call.on('warning', (metricName: string) => {
-                    dispatch(setWarning(metricName))
-                    sendTwilioSocketEvent({
-                        type: TwilioSocketEventType.CallWarningStarted,
-                        data: {
-                            ...gatherCallContext(call),
-                            metric_name: metricName,
-                        },
-                    })
-                })
-
-                call.on('warning-cleared', (metricName: string) => {
-                    dispatch(setWarning(null))
-                    sendTwilioSocketEvent({
-                        type: TwilioSocketEventType.CallWarningEnded,
-                        data: {
-                            ...gatherCallContext(call),
-                            metric_name: metricName,
-                        },
-                    })
-                })
-            })
-
-            return device
-        },
-        [dispatch, onAccept, onCancel, refreshToken]
-    )
-}
-
-function sleep(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms))
+    }, [
+        device,
+        dispatch,
+        error,
+        isConnecting,
+        reconnectAttempts,
+        useNewErrorHandling,
+    ])
 }
