@@ -7,6 +7,7 @@ import {useErrorHandling} from 'hooks/integrations/phone/useErrorHandling'
 
 import {
     connectDevice,
+    destroyDevice,
     disconnectDevice,
     isRecoverableError,
 } from 'hooks/integrations/phone/utils'
@@ -43,9 +44,11 @@ export function useDevice(useNewErrorHandling: boolean | undefined) {
                 break
 
             case Device.State.Unregistered:
+                destroyDevice(device)
+                break
+
             case Device.State.Destroyed:
-                disconnectDevice(device)
-                void connectDevice(dispatch, reconnectAttempts)
+                dispatch(setDevice(null))
                 break
 
             default:
@@ -54,8 +57,8 @@ export function useDevice(useNewErrorHandling: boolean | undefined) {
 
         return () => {
             if (device) {
-                disconnectDevice(device)
-                setDevice(null)
+                void disconnectDevice(device)
+                dispatch(setDevice(null))
             }
         }
     }, [

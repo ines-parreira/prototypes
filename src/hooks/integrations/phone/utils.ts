@@ -85,8 +85,8 @@ export async function connectDevice(
     }
 
     const device = utils.createDevice(token)
-    dispatch(setDevice(device))
     await utils.registerDevice(device, dispatch)
+    dispatch(setDevice(device))
     dispatch(setIsConnecting(false))
 }
 
@@ -269,18 +269,26 @@ export function handleAcceptedCallEvent(call: Call, dispatch: StoreDispatch) {
     }
 }
 
-export function disconnectDevice(device: Device) {
-    if (device.state === Device.State.Destroyed) {
+export async function disconnectDevice(device: Device) {
+    if (device.state !== Device.State.Registered) {
         return
     }
-
-    if (device.state === Device.State.Registered) {
-        device.unregister().catch(reportError)
+    try {
+        device.disconnectAll()
+        await device.unregister()
+        destroyDevice(device)
+    } catch (error) {
+        if (error instanceof Error) {
+            reportError(error)
+        }
     }
+}
 
-    device.disconnectAll()
+export function destroyDevice(device: Device) {
     device.removeAllListeners()
-    device.destroy()
+    if (device.state !== Device.State.Destroyed) {
+        device.destroy()
+    }
 }
 
 export function sendTwilioSocketEvent(event: TwilioSocketEvent) {
