@@ -9,6 +9,7 @@ import {
 import {useUpdateEffect} from 'react-use'
 import _memoize from 'lodash/memoize'
 
+import {assetsUrl} from 'utils'
 import {ADMIN_ROLE, AGENT_ROLE} from 'config/user'
 import {PageSection} from 'config/pages'
 import {currentAccountHasFeature} from 'state/currentAccount/selectors'
@@ -108,8 +109,6 @@ import SelfServiceStatsPage from './stats/self-service/SelfServiceStatsPage'
 import TwilioSubaccountStatusForm from './tasks/detail/TwilioSubaccountStatusForm'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
-
-const assetsURL = window.GORGIAS_ASSETS_URL || ''
 
 const appRender =
     (props: {
@@ -534,7 +533,9 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
     const satisfactionPaywallConfig = {
         [AccountFeature.SatisfactionSurveys]: {
             ...defaultPaywallConfigs[AccountFeature.SatisfactionSurveys],
-            preview: `${assetsURL}/static/private/js/assets/img/paywalls/screens/satisfaction-surveys-settings.png`,
+            preview: assetsUrl(
+                '/img/paywalls/screens/satisfaction-surveys-settings.png'
+            ),
         } as PaywallConfig,
     }
 

@@ -25,7 +25,7 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
         <img
           alt="avatar"
           class="gravatar"
-          src="/static/private/js/assets/img/icons/gorgias-icon-logo-white.png"
+          src="/assets/img/icons/gorgias-icon-logo-white.png"
         />
       </div>
     </div>

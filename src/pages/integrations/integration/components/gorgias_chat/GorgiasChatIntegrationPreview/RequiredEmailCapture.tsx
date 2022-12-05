@@ -1,6 +1,8 @@
 import React from 'react'
 import classnames from 'classnames'
 
+import {assetsUrl} from 'utils'
+
 import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
@@ -37,9 +39,7 @@ export default class RequiredEmailCapture extends React.Component<Props> {
                 <div className={css.appMakerMessageWrapper}>
                     <div className={classnames(css.avatar, css.robotLogo)}>
                         <img
-                            src={`${
-                                window.GORGIAS_ASSETS_URL || ''
-                            }/static/private/js/assets/img/icons/robot-icon.svg`}
+                            src={assetsUrl('/img/icons/robot-icon.svg')}
                             alt="Robot icon"
                         />
                     </div>

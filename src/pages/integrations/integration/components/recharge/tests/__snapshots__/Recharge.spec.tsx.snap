@@ -56,7 +56,7 @@ exports[`<Recharge/> Detail should render a detail view 1`] = `
     <img
       alt="Recharge's logo"
       class="heroImage"
-      src="/static/private/js/assets/img/integrations/recharge.svg"
+      src="/assets/img/integrations/recharge.svg"
     />
     <div>
       <h1
@@ -136,7 +136,7 @@ exports[`<Recharge/> Detail should render a detail view 1`] = `
           <img
             alt="Screenshot number 1 of things this app allows you to do in Gorgias"
             class="screenshot"
-            src="/static/private/js/assets/img/integrations/screenshots/recharge-1.jpeg"
+            src="/assets/img/integrations/screenshots/recharge-1.jpeg"
           />
         </li>
         <li
@@ -145,7 +145,7 @@ exports[`<Recharge/> Detail should render a detail view 1`] = `
           <img
             alt="Screenshot number 2 of things this app allows you to do in Gorgias"
             class="screenshot"
-            src="/static/private/js/assets/img/integrations/screenshots/recharge-2.jpeg"
+            src="/assets/img/integrations/screenshots/recharge-2.jpeg"
           />
         </li>
         <li
@@ -154,7 +154,7 @@ exports[`<Recharge/> Detail should render a detail view 1`] = `
           <img
             alt="Screenshot number 3 of things this app allows you to do in Gorgias"
             class="screenshot"
-            src="/static/private/js/assets/img/integrations/screenshots/recharge-3.jpeg"
+            src="/assets/img/integrations/screenshots/recharge-3.jpeg"
           />
         </li>
       </ul>

@@ -3,6 +3,7 @@ import Clipboard from 'clipboard'
 import classnames from 'classnames'
 import {Alert, Card, CardBody} from 'reactstrap'
 
+import {assetsUrl} from 'utils'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Button from 'pages/common/components/button/Button'
 import {FACEBOOK_INTEGRATION_TYPE} from 'constants/integration'
@@ -64,9 +65,9 @@ export default class CustomInstallationCard extends Component<Props, State> {
                         <div className={css['logo-wrapper']}>
                             <img
                                 alt="javascript-logo"
-                                src={`${
-                                    window.GORGIAS_ASSETS_URL || ''
-                                }/static/private/js/assets/img/integrations/javascript.png`}
+                                src={assetsUrl(
+                                    '/img/integrations/javascript.png'
+                                )}
                             />
                         </div>
                         <div>

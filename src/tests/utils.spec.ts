@@ -762,4 +762,46 @@ describe('global utils', () => {
             expect(data).toMatchSnapshot()
         })
     })
+
+    describe('assetsUrl()', () => {
+        it('should build asset URLs from a given path', () => {
+            process.env.GORGIAS_ASSETS_URL = 'https://gorgias-assets/web-app'
+
+            expect(utils.assetsUrl('/some-image.jpg')).toBe(
+                'https://gorgias-assets/web-app/assets/some-image.jpg'
+            )
+        })
+
+        it('returns a relative path if process.env.GORGIAS_ASSETS_URL is undefined', () => {
+            process.env.GORGIAS_ASSETS_URL = undefined
+
+            expect(utils.assetsUrl('/some-image.jpg')).toBe(
+                '/assets/some-image.jpg'
+            )
+        })
+
+        it('returns a relative path if process.env.GORGIAS_ASSETS_URL is not a valid URL', () => {
+            process.env.GORGIAS_ASSETS_URL = '//'
+
+            expect(utils.assetsUrl('/some-image.jpg')).toBe(
+                '/assets/some-image.jpg'
+            )
+        })
+
+        describe('properly joins paths when all parts contain leading and trailing slashes', () => {
+            process.env.GORGIAS_ASSETS_URL = 'https://gorgias-assets/web-app/'
+
+            expect(utils.assetsUrl('/some-image.jpg')).toBe(
+                'https://gorgias-assets/web-app/assets/some-image.jpg'
+            )
+        })
+
+        describe('properly joins paths when the parts have no leading or trailing slashes', () => {
+            process.env.GORGIAS_ASSETS_URL = 'https://gorgias-assets/web-app'
+
+            expect(utils.assetsUrl('some-image.jpg')).toBe(
+                'https://gorgias-assets/web-app/assets/some-image.jpg'
+            )
+        })
+    })
 })

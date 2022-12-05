@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import {assetsUrl} from 'utils'
 
 import Avatar from '../../../../../common/components/Avatar/Avatar'
 
@@ -59,9 +60,7 @@ export default class CampaignPreview extends Component<Props> {
                     <img
                         alt="close icon"
                         className={css.icon}
-                        src={`${
-                            window.GORGIAS_ASSETS_URL || ''
-                        }/static/private/js/assets/img/icons/DefaultCloseIcon.svg`}
+                        src={assetsUrl('/img/icons/DefaultCloseIcon.svg')}
                     />
                 </div>
             </div>

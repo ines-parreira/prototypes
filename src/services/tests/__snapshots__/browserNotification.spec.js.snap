@@ -4,7 +4,7 @@ exports[`services browserNotification newMessage() should create a browser notif
 Array [
   Object {
     "body": "body",
-    "icon": "/static/private/js/assets/img/icons/logo.png",
+    "icon": "/assets/img/icons/logo.png",
     "onClick": [Function],
     "requireInteraction": false,
     "timeout": 5000,
@@ -17,7 +17,7 @@ exports[`services browserNotification newMessage() should create a browser notif
 Array [
   Object {
     "body": "You received an answer",
-    "icon": "/static/private/js/assets/img/icons/logo.png",
+    "icon": "/assets/img/icons/logo.png",
     "onClick": [Function],
     "requireInteraction": false,
     "timeout": 5000,
@@ -30,7 +30,7 @@ exports[`services browserNotification newMessage() should create a browser notif
 Array [
   Object {
     "body": "You received an answer",
-    "icon": "/static/private/js/assets/img/icons/logo.png",
+    "icon": "/assets/img/icons/logo.png",
     "onClick": [Function],
     "requireInteraction": false,
     "timeout": 5000,
@@ -43,7 +43,7 @@ exports[`services browserNotification newMessage() should create a browser notif
 Array [
   Object {
     "body": "You received an answer",
-    "icon": "/static/private/js/assets/img/icons/logo.png",
+    "icon": "/assets/img/icons/logo.png",
     "onClick": [Function],
     "requireInteraction": false,
     "timeout": 5000,
@@ -56,7 +56,7 @@ exports[`services browserNotification newMessage() should create a browser notif
 Array [
   Object {
     "body": "You received an answer",
-    "icon": "/static/private/js/assets/img/icons/logo.png",
+    "icon": "/assets/img/icons/logo.png",
     "onClick": [Function],
     "requireInteraction": false,
     "timeout": 5000,
@@ -69,7 +69,7 @@ exports[`services browserNotification newMessage() should display several notifi
 Array [
   Object {
     "body": "body",
-    "icon": "/static/private/js/assets/img/icons/logo.png",
+    "icon": "/assets/img/icons/logo.png",
     "onClick": [Function],
     "requireInteraction": false,
     "timeout": 5000,
@@ -77,7 +77,7 @@ Array [
   },
   Object {
     "body": "body",
-    "icon": "/static/private/js/assets/img/icons/logo.png",
+    "icon": "/assets/img/icons/logo.png",
     "onClick": [Function],
     "requireInteraction": false,
     "timeout": 5000,
@@ -90,7 +90,7 @@ exports[`services browserNotification newMessage() should not throw unhandled pr
 Array [
   Object {
     "body": "body",
-    "icon": "/static/private/js/assets/img/icons/logo.png",
+    "icon": "/assets/img/icons/logo.png",
     "onClick": [Function],
     "requireInteraction": false,
     "timeout": 5000,
@@ -103,7 +103,7 @@ exports[`services browserNotification newMessage() should require interaction 1`
 Array [
   Object {
     "body": "You received an answer",
-    "icon": "/static/private/js/assets/img/icons/logo.png",
+    "icon": "/assets/img/icons/logo.png",
     "onClick": [Function],
     "requireInteraction": true,
     "timeout": undefined,
@@ -116,7 +116,7 @@ exports[`services browserNotification newMessageThrottled() should display a sin
 Array [
   Object {
     "body": "body",
-    "icon": "/static/private/js/assets/img/icons/logo.png",
+    "icon": "/assets/img/icons/logo.png",
     "onClick": [Function],
     "requireInteraction": false,
     "timeout": 5000,

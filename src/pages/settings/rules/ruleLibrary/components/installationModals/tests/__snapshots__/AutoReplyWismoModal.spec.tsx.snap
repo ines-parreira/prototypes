@@ -145,7 +145,7 @@ exports[`<AutoReplyWismoModal/> should render an alert when there are no shopify
               <img
                 alt="avatar"
                 class="gravatar"
-                src="/static/private/js/assets/img/icons/logo.png"
+                src="/assets/img/icons/logo.png"
               />
             </div>
           </div>
@@ -404,7 +404,7 @@ exports[`<AutoReplyWismoModal/> should render the autoclose spam body when autom
               <img
                 alt="avatar"
                 class="gravatar"
-                src="/static/private/js/assets/img/icons/logo.png"
+                src="/assets/img/icons/logo.png"
               />
             </div>
           </div>
@@ -654,7 +654,7 @@ exports[`<AutoReplyWismoModal/> should render the autoclose spam body when autom
               <img
                 alt="avatar"
                 class="gravatar"
-                src="/static/private/js/assets/img/icons/logo.png"
+                src="/assets/img/icons/logo.png"
               />
             </div>
           </div>

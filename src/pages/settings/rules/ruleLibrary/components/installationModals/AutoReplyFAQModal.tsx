@@ -1,5 +1,7 @@
 import classnames from 'classnames'
 import React, {useEffect} from 'react'
+
+import {assetsUrl} from 'utils'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import FakeFAQArticlePreview from 'pages/settings/rules/components/FakeFAQArticlePreview'
 import {getActiveHelpCenterList} from 'state/entities/helpCenter/helpCenters'
@@ -18,9 +20,7 @@ export const AutoReplyFAQModal = ({
     handleInstallationError,
     handleDefaultSettings,
 }: ManagedRuleModalProps) => {
-    const icon = `${
-        window.GORGIAS_ASSETS_URL || ''
-    }/static/private/js/assets/img/icons/logo.png`
+    const icon = assetsUrl('/img/icons/logo.png')
     const helpCenters = useAppSelector(getActiveHelpCenterList)
 
     useEffect(() => {

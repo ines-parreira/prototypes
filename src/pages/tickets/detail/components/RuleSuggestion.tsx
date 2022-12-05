@@ -4,6 +4,8 @@ import _pick from 'lodash/pick'
 import {fromJS} from 'immutable'
 import {Collapse} from 'reactstrap'
 import classnames from 'classnames'
+
+import {assetsUrl} from 'utils'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -148,9 +150,7 @@ const RuleSuggestion = ({ticket, isCollapsed}: Props) => {
                 <Avatar
                     name="Gorgias Tips"
                     size={36}
-                    url={`${
-                        window.GORGIAS_ASSETS_URL || ''
-                    }/static/private/js/assets/img/icons/gorgias-icon-logo-white.png`}
+                    url={assetsUrl('/img/icons/gorgias-icon-logo-white.png')}
                 />
             </div>
             <header className={css.header}>

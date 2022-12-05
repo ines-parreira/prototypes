@@ -1,8 +1,7 @@
 import React, {ReactElement} from 'react'
+import {assetsUrl} from 'utils'
 
 import {AccountFeature} from '../state/currentAccount/types'
-
-const assetsURL = window.GORGIAS_ASSETS_URL || ''
 
 export type PaywallConfig = {
     pageHeader?: string
@@ -29,7 +28,7 @@ export const paywallConfigs: Partial<Record<AccountFeature, PaywallConfig>> = {
         header: 'Track customer satisfaction',
         description:
             'Send surveys to customers after your team has assisted them to monitor how well your support team is doing.',
-        preview: `${assetsURL}/static/private/js/assets/img/paywalls/screens/satisfaction-surveys.png`,
+        preview: assetsUrl('/img/paywalls/screens/satisfaction-surveys.png'),
     },
     [AccountFeature.RevenueStatistics]: {
         pageHeader: 'Revenue',
@@ -39,7 +38,7 @@ export const paywallConfigs: Partial<Record<AccountFeature, PaywallConfig>> = {
         testimonial: {
             author: {
                 name: 'Cody Szymanski',
-                avatar: `${assetsURL}/static/private/js/assets/img/paywalls/avatars/cody-szymanski.png`,
+                avatar: assetsUrl('/img/paywalls/avatars/cody-szymanski.png'),
                 position: 'Customer Experience Manager',
                 company: {
                     name: 'Shinesty',
@@ -48,21 +47,21 @@ export const paywallConfigs: Partial<Record<AccountFeature, PaywallConfig>> = {
             },
             text: 'At Shinesty, our agents convert visitors into customers by using pre-sell questions sent via chat campaigns. I see the concrete results of our actions thanks to Revenue Statistics.',
         },
-        preview: `${assetsURL}/static/private/js/assets/img/paywalls/screens/revenue-statistics.png`,
+        preview: assetsUrl('/img/paywalls/screens/revenue-statistics.png'),
     },
     [AccountFeature.OverviewLiveStatistics]: {
         pageHeader: 'Live overview',
         header: 'Track support in real time',
         description:
             'Get a live bird’s-eye view of your support team, including agent status, open tickets, and customers waiting longest for support to recognize and mitigate issues before they happen.',
-        preview: `${assetsURL}/static/private/js/assets/img/paywalls/screens/live-overview-statistic.png`,
+        preview: assetsUrl('/img/paywalls/screens/live-overview-statistic.png'),
     },
     [AccountFeature.UsersLiveStatistics]: {
         pageHeader: 'Live agents',
         header: 'Track support in real time',
         description:
             'Track your agents in real-time. See how long they have been online, how many tickets have been assigned to them and the work they have accomplished over a given day.',
-        preview: `${assetsURL}/static/private/js/assets/img/paywalls/screens/live-agents-statistic.png`,
+        preview: assetsUrl('/img/paywalls/screens/live-agents-statistic.png'),
     },
     [AccountFeature.AutomationSelfServiceStatistics]: {
         header: 'Track self-service performance',
@@ -72,6 +71,8 @@ export const paywallConfigs: Partial<Record<AccountFeature, PaywallConfig>> = {
                 flows, gain insights to improve your automation rate, and more!
             </div>
         ),
-        preview: `${assetsURL}/static/private/js/assets/img/paywalls/screens/self-service-statistics-v2.png`,
+        preview: assetsUrl(
+            '/img/paywalls/screens/self-service-statistics-v2.png'
+        ),
     },
 }

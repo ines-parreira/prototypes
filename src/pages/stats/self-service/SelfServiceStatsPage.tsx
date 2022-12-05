@@ -2,6 +2,7 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {useAsyncFn} from 'react-use'
 import {fromJS, Map} from 'immutable'
 
+import {assetsUrl} from 'utils'
 import {
     SELF_SERVICE_OVERVIEW,
     SELF_SERVICE_TOP_REPORTED_ISSUES,
@@ -69,7 +70,6 @@ const DESCRIPTION = (
     </div>
 )
 const HELP_URL = 'https://docs.gorgias.com/statistics/self-service-statistics'
-const ASSETS_URL = window.GORGIAS_ASSETS_URL || ''
 
 export const SelfServiceStatsPage = (): JSX.Element => {
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
@@ -372,7 +372,9 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                                         Self-service."
                                         buttonText="Check out quick response"
                                         buttonRedirectUrl="/app/settings/self-service"
-                                        imageUrl={`${ASSETS_URL}/static/private/js/assets/img/presentationals/quick-response-preview.png`}
+                                        imageUrl={assetsUrl(
+                                            '/img/presentationals/quick-response-preview.png'
+                                        )}
                                         imageAltText="Quick response feature preview"
                                     />
                                 ) : (
@@ -431,7 +433,9 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                         description="Enable article recommendation in Chat settings to automatically recommend relevant Help Center articles to shoppers."
                                         buttonText="Set up article recommendation"
                                         buttonRedirectUrl="/app/settings/channels/gorgias_chat"
-                                        imageUrl={`${ASSETS_URL}/static/private/js/assets/img/presentationals/article-recommendation-preview.png`}
+                                        imageUrl={assetsUrl(
+                                            '/img/presentationals/article-recommendation-preview.png'
+                                        )}
                                         imageAltText="Article Recommendation feature preview"
                                     />
                                 ) : (
@@ -481,7 +485,9 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                         description="Enable and customize the report issue flow in Self-service."
                                         buttonText="Customize Report Issue Flow"
                                         buttonRedirectUrl="/app/settings/self-service"
-                                        imageUrl={`${ASSETS_URL}/static/private/js/assets/img/presentationals/report-issue-preview.png`}
+                                        imageUrl={assetsUrl(
+                                            '/img/presentationals/report-issue-preview.png'
+                                        )}
                                         imageAltText="Report Issue feature preview"
                                     />
                                 ) : (
@@ -520,7 +526,9 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                         description="Enable and customize these order management flows in Self-service."
                                         buttonText="Check out order management flows"
                                         buttonRedirectUrl="/app/settings/self-service"
-                                        imageUrl={`${ASSETS_URL}/static/private/js/assets/img/presentationals/return-order-preview.png`}
+                                        imageUrl={assetsUrl(
+                                            '/img/presentationals/return-order-preview.png'
+                                        )}
                                         imageAltText="Return Order feature preview"
                                     />
                                 ) : (

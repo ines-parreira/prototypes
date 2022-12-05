@@ -387,7 +387,7 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                                 >
                                   <img
                                     alt="javascript-logo"
-                                    src="/static/private/js/assets/img/integrations/javascript.png"
+                                    src="/assets/img/integrations/javascript.png"
                                   />
                                 </div>
                                 <div>

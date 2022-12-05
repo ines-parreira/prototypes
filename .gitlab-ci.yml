@@ -113,7 +113,7 @@ Build production:
   variables:
     GORGIAS_ASSETS_URL: https://gorgias-assets.gorgias.io/${WEBAPP_PATH}
   rules:
-    - if: $CI_COMMIT_REF_NAME == "main"
+    - if: $CI_COMMIT_REF_NAME == "main" || $CI_COMMIT_REF_NAME == "staging"
 
 .deploy:
   stage: deploy

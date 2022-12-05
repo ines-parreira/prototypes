@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
 import classnames from 'classnames'
 
+import {assetsUrl} from 'utils'
+
 import {
     SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
     SMOOCH_INSIDE_WIDGET_TEXTS,
@@ -35,9 +37,7 @@ export default class OptionalEmailCapture extends Component<Props> {
                     <div className={classnames(css.avatar, css.robotLogo)}>
                         <img
                             alt="robot icon"
-                            src={`${
-                                window.GORGIAS_ASSETS_URL || ''
-                            }/static/private/js/assets/img/icons/robot-icon.svg`}
+                            src={assetsUrl('/img/icons/robot-icon.svg')}
                         />
                     </div>
                     <div>

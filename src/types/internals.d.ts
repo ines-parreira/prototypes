@@ -11,7 +11,6 @@ declare global {
         SEGMENT_EVENTS_TO_TRACK?: {data: any; type: string}[]
         SYSTEM_MESSAGES: SystemMessage[]
         EMAIL_FORWARDING_DOMAIN: string
-        GORGIAS_ASSETS_URL: Maybe<string>
         GORGIAS_RELEASE: string
         SHARED_WORKER_BUILD_URL: string
         WS_URL: string

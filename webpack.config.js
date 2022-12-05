@@ -213,6 +213,9 @@ module.exports = (env = {}) => {
             new webpack.ProvidePlugin({
                 Tether: 'tether',
             }),
+            new webpack.EnvironmentPlugin({
+                GORGIAS_ASSETS_URL: 'http://localhost:8080/',
+            }),
         ],
         resolve: {
             alias: {

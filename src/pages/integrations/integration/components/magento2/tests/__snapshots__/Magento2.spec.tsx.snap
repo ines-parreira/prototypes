@@ -56,7 +56,7 @@ exports[`<Magento2/> Detail should render a detail view 1`] = `
     <img
       alt="Magento 2's logo"
       class="heroImage"
-      src="/static/private/js/assets/img/integrations/magento.png"
+      src="/assets/img/integrations/magento.png"
     />
     <div>
       <h1
@@ -165,7 +165,7 @@ exports[`<Magento2/> Detail should render a detail view 1`] = `
           <img
             alt="Screenshot number 1 of things this app allows you to do in Gorgias"
             class="screenshot"
-            src="/static/private/js/assets/img/integrations/screenshots/magento-1.png"
+            src="/assets/img/integrations/screenshots/magento-1.png"
           />
         </li>
         <li
@@ -174,7 +174,7 @@ exports[`<Magento2/> Detail should render a detail view 1`] = `
           <img
             alt="Screenshot number 2 of things this app allows you to do in Gorgias"
             class="screenshot"
-            src="/static/private/js/assets/img/integrations/screenshots/magento-2.png"
+            src="/assets/img/integrations/screenshots/magento-2.png"
           />
         </li>
         <li
@@ -183,7 +183,7 @@ exports[`<Magento2/> Detail should render a detail view 1`] = `
           <img
             alt="Screenshot number 3 of things this app allows you to do in Gorgias"
             class="screenshot"
-            src="/static/private/js/assets/img/integrations/screenshots/magento-3.png"
+            src="/assets/img/integrations/screenshots/magento-3.png"
           />
         </li>
       </ul>

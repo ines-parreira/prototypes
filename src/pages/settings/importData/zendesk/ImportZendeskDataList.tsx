@@ -2,6 +2,8 @@ import React from 'react'
 import {Progress, Table} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 
+import {assetsUrl} from 'utils'
+
 import {getIntegrationsByType} from '../../../../state/integrations/selectors'
 import {getTimezone} from '../../../../state/currentUser/selectors'
 import {
@@ -157,9 +159,7 @@ export const ImportZendeskDataList = (
 }
 
 const mapStateToProps = (state: RootState) => ({
-    img: `${
-        window.GORGIAS_ASSETS_URL || ''
-    }/static/private/js/assets/img/integrations/zendesk.png`,
+    img: assetsUrl('/img/integrations/zendesk.png'),
     zendeskImports: getIntegrationsByType<ZendeskIntegration>(
         IntegrationType.Zendesk
     )(state),

@@ -1,5 +1,8 @@
 import React from 'react'
 import classnames from 'classnames'
+
+import {assetsUrl} from 'utils'
+
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import useAppSelector from 'hooks/useAppSelector'
@@ -19,9 +22,7 @@ export const AutoReplyWismoModal = ({
     renderTags,
     viewCreationCheckbox,
 }: ManagedRuleModalProps) => {
-    const icon = `${
-        window.GORGIAS_ASSETS_URL || ''
-    }/static/private/js/assets/img/icons/logo.png`
+    const icon = assetsUrl('/img/icons/logo.png')
 
     const integrations = useAppSelector(
         getIntegrationsByType<ShopifyIntegration>(IntegrationType.Shopify)

@@ -4,6 +4,7 @@ import {fromJS, Map, List} from 'immutable'
 import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Col, Container, Row} from 'reactstrap'
 
+import {assetsUrl} from 'utils'
 import CustomInstallationCard from 'pages/integrations/common/components/CustomInstallationCard/CustomInstallationCard'
 import InstallOnIntegrationsCard from 'pages/integrations/common/components/InstallOnIntegrationsCard/InstallOnIntegrationsCard'
 import FacebookIntegrationNavigation from 'pages/integrations/integration/components/facebook/FacebookIntegrationNavigation'
@@ -128,9 +129,9 @@ class FacebookIntegrationCustomerChat extends Component<Props, State> {
                                 <img
                                     alt="facebook messenger logo"
                                     className={css.image}
-                                    src={`${
-                                        window.GORGIAS_ASSETS_URL || ''
-                                    }/static/private/js/assets/img/presentationals/messenger-preview.png`}
+                                    src={assetsUrl(
+                                        '/img/presentationals/messenger-preview.png'
+                                    )}
                                 />
                             </div>
                         </Col>

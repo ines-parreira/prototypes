@@ -1,14 +1,11 @@
 import React from 'react'
 import {Badge} from 'reactstrap'
 
+import {assetsUrl} from 'utils'
 import {IntegrationConfig} from 'config'
 import {AppDetail, isAppDetail, TrialPeriod} from 'models/integration/types/app'
 
 import css from './Detail.less'
-
-const imgPrefix = `${
-    window.GORGIAS_ASSETS_URL || ''
-}/static/private/js/assets/img/integrations/`
 
 export default function Header(props: AppDetail | IntegrationConfig) {
     const {
@@ -31,7 +28,11 @@ export default function Header(props: AppDetail | IntegrationConfig) {
         <header className={css.hero}>
             {image && (
                 <img
-                    src={isAppDetail(props) ? image : `${imgPrefix}${image}`}
+                    src={
+                        isAppDetail(props)
+                            ? image
+                            : assetsUrl(`/img/integrations/${image}`)
+                    }
                     alt={`${title}'s logo`}
                     className={css.heroImage}
                 />

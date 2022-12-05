@@ -374,7 +374,7 @@ exports[`FacebookIntegrationCustomerChat component should display the list of Sh
                                 >
                                   <img
                                     alt="javascript-logo"
-                                    src="/static/private/js/assets/img/integrations/javascript.png"
+                                    src="/assets/img/integrations/javascript.png"
                                   />
                                 </div>
                                 <div>
@@ -580,7 +580,7 @@ exports[`FacebookIntegrationCustomerChat component should display the list of Sh
                       <img
                         alt="facebook messenger logo"
                         className="image"
-                        src="/static/private/js/assets/img/presentationals/messenger-preview.png"
+                        src="/assets/img/presentationals/messenger-preview.png"
                       />
                     </div>
                   </div>

@@ -3,14 +3,11 @@ import {Modal} from 'reactstrap'
 import classNames from 'classnames'
 import Slider from 'react-slick'
 
+import {assetsUrl} from 'utils'
 import {AppDetail} from 'models/integration/types/app'
 import IconButton from 'pages/common/components/button/IconButton'
 
 import css from './Detail.less'
-
-const imgPrefix = `${
-    window.GORGIAS_ASSETS_URL || ''
-}/static/private/js/assets/img/integrations/`
 
 export default function Slides(
     props: Pick<AppDetail, 'screenshots'> & {isApp: boolean}
@@ -23,10 +20,16 @@ export default function Slides(
     return (
         <>
             <ul className={css.screenshotList}>
-                {screenshots.map((src, index) => (
+                {screenshots.map((screenshot, index) => (
                     <li className={css.screenshotListItem} key={index}>
                         <img
-                            src={isApp ? src : `${imgPrefix}screenshots/${src}`}
+                            src={
+                                isApp
+                                    ? screenshot
+                                    : assetsUrl(
+                                          `/img/integrations/screenshots/${screenshot}`
+                                      )
+                            }
                             alt={`Screenshot number ${
                                 index + 1
                             } of things this app allows you to do in Gorgias`}
@@ -79,7 +82,7 @@ export default function Slides(
                         </SlideArrow>
                     }
                 >
-                    {screenshots.map((url, index) => (
+                    {screenshots.map((screenshot, index) => (
                         <div
                             key={index}
                             className={css.pictureContainer}
@@ -100,8 +103,10 @@ export default function Slides(
                                 } of things this app allows you to do in Gorgias`}
                                 src={
                                     isApp
-                                        ? url
-                                        : `${imgPrefix}screenshots/${url}`
+                                        ? screenshot
+                                        : assetsUrl(
+                                              `/img/integrations/screenshots/${screenshot}`
+                                          )
                                 }
                             />
                         </div>

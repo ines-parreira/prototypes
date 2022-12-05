@@ -1008,6 +1008,19 @@ export const getIconFromUrl = (url: string): string => {
     return url ? (require(`assets/img/${url}`) as string) : ''
 }
 
+export function assetsUrl(filepath: string): string {
+    const assetsUrl = process.env.GORGIAS_ASSETS_URL ?? ''
+    if (!isUrl(assetsUrl)) {
+        return ['/assets', filepath].join('/').replace(/\/{2,}/g, '/')
+    }
+
+    const url = new URL(assetsUrl)
+    url.pathname = [url.pathname, 'assets', filepath]
+        .join('/')
+        .replace(/\/{2,}/g, '/')
+    return url.toString()
+}
+
 /**
  * This function can be called in the default case of some switch
  * statements so that the switch is exhaustive. See (https://stackoverflow.com/a/39419171).
