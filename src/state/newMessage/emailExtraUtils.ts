@@ -142,10 +142,10 @@ const generateForwardedReplyThreadMessageHeader = (
         .format('ddd, MMM DD, YYYY, [at] hh:mm A')
     const recipients =
         channel === TicketChannel.Email
-            ? message.source?.to.map(
+            ? message.source?.to?.map(
                   ({address}) => `<a href="${address}">${address}</a>`
               ) || []
-            : [message.receiver.name]
+            : [message.receiver?.name]
 
     const headerHtml = [
         '---------- Forwarded message ----------',

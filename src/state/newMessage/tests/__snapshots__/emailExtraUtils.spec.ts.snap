@@ -275,6 +275,205 @@ Array [
 ]
 `;
 
+exports[`emailExtraUtils addEmailExtraContent should leave empty To field when message has no source.to nor receiver 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "User response",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "On Mon, Jul 31, 2017, at 11:07 PM, Acme Support <support@acme.gorgias.io> wrote:",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "First message (forwarded)",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "---------- Forwarded message ----------",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "From: Acme Support <support@acme.gorgias.io>",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "Date: Mon, Jul 31, 2017, at 11:07 PM",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "Subject: Great ticket",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "To: ",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "Second message (forwarded)",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "---------- Forwarded message ----------",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "From: Acme Support",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "Date: Mon, Jul 31, 2017, at 11:07 PM",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "Subject: Great ticket",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "To: ",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "Third message (forwarded)",
+    "type": "unstyled",
+  },
+]
+`;
+
 exports[`emailExtraUtils addEmailExtraContent should limit reply blocks 1`] = `
 Array [
   Object {

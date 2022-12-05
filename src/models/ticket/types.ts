@@ -84,7 +84,7 @@ export type TicketMessage = {
     integration_id: number | null
     request_id?: string
     sender: Actor
-    receiver: Actor
+    receiver: Actor | null
     subject: string
     body_html?: string
     body_text?: string
@@ -182,7 +182,7 @@ export type Channel = TicketChannel
 export type Source = {
     type: SourceType
     from?: SourceAddress
-    to: SourceAddress[]
+    to?: SourceAddress[]
     cc?: SourceAddress[]
     bcc?: SourceAddress[]
     extra?: {

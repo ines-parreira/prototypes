@@ -8,6 +8,8 @@ import {
     getContentStateBlocksSnapshot,
     getContentStateSelectionSnapshot,
 } from 'utils/editor'
+import {TicketChannel} from 'business/types/ticket'
+
 import {
     addEmailExtraContent,
     EmailExtraArgs,
@@ -538,6 +540,57 @@ describe('emailExtraUtils', () => {
                             stripped_html: createLongMessageLines(1, 7).join(
                                 '<br>'
                             ),
+                        },
+                    ] as ReplyThreadMessage[],
+                }
+            )
+            expect(
+                getContentStateBlocksSnapshot(contentState)
+            ).toMatchSnapshot()
+        })
+
+        it('should leave empty To field when message has no source.to nor receiver', () => {
+            const contentState = addEmailExtraContent(
+                ContentState.createFromText('User response'),
+                {
+                    ...emailExtraArgs,
+                    signature: fromJS({}),
+                    replyThreadMessages: [
+                        {
+                            ...replyThreadMessages[0],
+                            receiver: null,
+                            stripped_html: 'First message (forwarded)',
+                            source: {
+                                ...replyThreadMessages[0].source,
+                                to: undefined,
+                                extra: {
+                                    forward: true,
+                                },
+                            },
+                        },
+                        {
+                            ...replyThreadMessages[0],
+                            receiver: null,
+                            stripped_html: 'Second message (forwarded)',
+                            source: {
+                                ...replyThreadMessages[0].source,
+                                to: undefined,
+                                extra: {
+                                    forward: true,
+                                },
+                            },
+                        },
+                        {
+                            ...replyThreadMessages[0],
+                            channel: TicketChannel.Api,
+                            receiver: null,
+                            stripped_html: 'Third message (forwarded)',
+                            source: {
+                                ...replyThreadMessages[0].source,
+                                extra: {
+                                    forward: true,
+                                },
+                            },
                         },
                     ] as ReplyThreadMessage[],
                 }
