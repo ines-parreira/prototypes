@@ -52,6 +52,7 @@ import {deleteAttachment as deleteAttachmentAction} from 'state/newMessage/actio
 import {FeatureFlagKey} from 'config/featureFlags'
 import {convertToHTML} from 'utils/editor'
 import {getNewMessageAttachments} from 'state/newMessage/selectors'
+import {MAX_AUTOMATED_RESPONSE_LENGTH} from '../constants'
 import {useConfigurationData} from './hooks'
 import css from './CancellationsPolicyView.less'
 import SelfServicePreferencesNavbar from './SelfServicePreferencesNavbar'
@@ -130,8 +131,6 @@ export const CancellationsPolicyView = () => {
     useEffect(() => {
         setLoading(isLoadingConfig)
     }, [isLoadingConfig])
-
-    const MAX_RESPONSE_LENGTH = 1000
 
     const onCancel = () => {
         setEligibilityWindowOptionValue(configCancelOrderStatusEligibility)
@@ -230,7 +229,7 @@ export const CancellationsPolicyView = () => {
         }))
 
         if (
-            content.getPlainText().length > MAX_RESPONSE_LENGTH &&
+            content.getPlainText().length > MAX_AUTOMATED_RESPONSE_LENGTH &&
             !isResponseTooLong
         ) {
             void dispatch(
@@ -243,7 +242,9 @@ export const CancellationsPolicyView = () => {
         }
 
         setIsResponseTooLong(
-            content.getPlainText().length > MAX_RESPONSE_LENGTH ? true : false
+            content.getPlainText().length > MAX_AUTOMATED_RESPONSE_LENGTH
+                ? true
+                : false
         )
     }
 
@@ -394,7 +395,7 @@ export const CancellationsPolicyView = () => {
                                                     {`${
                                                         responseMessageContent
                                                             .text?.length ?? 0
-                                                    }/${MAX_RESPONSE_LENGTH} characters`}
+                                                    }/${MAX_AUTOMATED_RESPONSE_LENGTH} characters`}
                                                 </FormText>
                                                 <TicketAttachments
                                                     removable

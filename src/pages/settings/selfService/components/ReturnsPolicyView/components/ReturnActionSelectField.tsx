@@ -15,6 +15,11 @@ type Props = {
     onCreateNewLoopReturnsIntegrationClick: () => void
 }
 
+const valueForAutomatedResponse = () =>
+    JSON.stringify({
+        type: ReturnActionType.AutomatedResponse,
+    })
+
 export const ReturnActionSelectField = ({
     loopReturnsIntegrations,
     value,
@@ -23,6 +28,11 @@ export const ReturnActionSelectField = ({
 }: Props) => {
     const options = useMemo<ComponentProps<typeof SelectField>['options']>(
         () => [
+            {
+                value: valueForAutomatedResponse(),
+                text: 'Automated response',
+                label: 'Automated response',
+            },
             ...loopReturnsIntegrations.map((loopReturnsIntegration) => ({
                 value: JSON.stringify({
                     type: ReturnActionType.LoopReturns,
@@ -73,12 +83,22 @@ export const ReturnActionSelectField = ({
             [onChange]
         )
 
+    const valueAsJSON = useMemo(() => {
+        if (value === null) {
+            return null
+        }
+
+        return value.type === ReturnActionType.AutomatedResponse
+            ? valueForAutomatedResponse()
+            : JSON.stringify(value)
+    }, [value])
+
     return (
         <SelectField
             style={{width: '100%', maxWidth: 680, float: 'left'}}
             fullWidth
             placeholder="Select a return method"
-            value={value === null ? null : JSON.stringify(value)}
+            value={valueAsJSON}
             options={options}
             onChange={handleChange}
         />

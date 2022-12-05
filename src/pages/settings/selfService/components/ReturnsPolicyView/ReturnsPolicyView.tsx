@@ -13,10 +13,14 @@ import {
     Col,
     Container,
     Form,
+    FormGroup,
+    FormText,
     Input,
+    Label,
     Row,
 } from 'reactstrap'
 import classNames from 'classnames'
+import {EditorState} from 'draft-js'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import _isEqual from 'lodash/isEqual'
 import Button from 'pages/common/components/button/Button'
@@ -45,9 +49,16 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {Integration, IntegrationType} from 'models/integration/types'
 import {getIntegrationsByType} from 'state/integrations/selectors'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import TicketAttachments from 'pages/tickets/detail/components/ReplyArea/TicketAttachments'
+import {deleteAttachment as deleteAttachmentAction} from 'state/newMessage/actions'
+import {getNewMessageAttachments} from 'state/newMessage/selectors'
+
+import DEPRECATED_RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'
+import {convertToHTML} from 'utils/editor'
 import {useConfigurationData} from '../hooks'
 import SelfServicePreferencesNavbar from '../SelfServicePreferencesNavbar'
 import BackButton from '../BackButton'
+import {MAX_AUTOMATED_RESPONSE_LENGTH} from '../../constants'
 import {ReturnActionSelectField} from './components/ReturnActionSelectField'
 import {NewReturnIntegrationModal} from './components/NewReturnIntegrationModal'
 import {LOOP_RETURNS_API_URL} from './constants'
@@ -69,10 +80,21 @@ export const ReturnsPolicyView = () => {
     const isSelfServiceLoopReturnsFlowEnabled: boolean =
         useFlags()[FeatureFlagKey.SelfServiceLoopReturnsFlow] ?? false
 
+    const hasAutomatedResponseOrderManagementFlag =
+        useFlags()[FeatureFlagKey.SelfServiceAutomatedResponseOrderManagement]
+
+    const newMessageAttachments = useAppSelector(getNewMessageAttachments)
+    const deleteAttachment = (index: number) => {
+        dispatch(deleteAttachmentAction(index))
+    }
+
     const getHttpIntegrations = useMemo(
         () => getIntegrationsByType(IntegrationType.Http),
         []
     )
+
+    const [isLandingPage, setIsLandingPage] = useState(true)
+    const [isResponseTooLong, setIsResponseTooLong] = useState(false)
 
     const hasSelfServiceV1Features = useAppSelector(hasAutomationLegacyFeatures)
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
@@ -275,6 +297,42 @@ export const ReturnsPolicyView = () => {
         })
         handleNewReturnIntegrationModalClose()
     }, [loopReturnsIntegrations, handleNewReturnIntegrationModalClose])
+
+    const handleAutomatedResponseChange = (value: EditorState) => {
+        if (isLandingPage) {
+            setIsLandingPage(false)
+        }
+
+        const content = value.getCurrentContent()
+
+        setReturnAction((state) => ({
+            ...state,
+            type: ReturnActionType.AutomatedResponse,
+            response_message_content: {
+                html: convertToHTML(content),
+                text: content.getPlainText(),
+            },
+        }))
+
+        if (
+            content.getPlainText().length > MAX_AUTOMATED_RESPONSE_LENGTH &&
+            !isResponseTooLong
+        ) {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message:
+                        'Maximum number of characters exceeded. Please review your message',
+                })
+            )
+        }
+
+        setIsResponseTooLong(
+            content.getPlainText().length > MAX_AUTOMATED_RESPONSE_LENGTH
+                ? true
+                : false
+        )
+    }
 
     if (!(hasSelfServiceV1Features || hasAutomationAddOn)) {
         return <GorgiasChatIntegrationSelfServicePaywall />
@@ -482,6 +540,59 @@ export const ReturnsPolicyView = () => {
                                             />
                                         </>
                                     )}
+
+                                    {hasAutomatedResponseOrderManagementFlag &&
+                                        returnAction?.type ===
+                                            ReturnActionType.AutomatedResponse && (
+                                            <FormGroup>
+                                                <Label
+                                                    for="responseText"
+                                                    className="control-label"
+                                                >
+                                                    Response text
+                                                </Label>
+                                                <p>
+                                                    After customers request a
+                                                    return in chat, reply with
+                                                    an automated message.
+                                                </p>
+                                                <DEPRECATED_RichField
+                                                    value={{
+                                                        html: returnAction
+                                                            .response_message_content
+                                                            ?.html,
+                                                    }}
+                                                    onChange={
+                                                        handleAutomatedResponseChange
+                                                    }
+                                                    placeholder="Add a response"
+                                                />
+                                                <FormText
+                                                    color={
+                                                        isResponseTooLong
+                                                            ? 'danger'
+                                                            : 'muted'
+                                                    }
+                                                >
+                                                    {`${
+                                                        returnAction
+                                                            .response_message_content
+                                                            ?.text?.length ?? 0
+                                                    }/${MAX_AUTOMATED_RESPONSE_LENGTH} characters`}
+                                                </FormText>
+                                                <TicketAttachments
+                                                    removable
+                                                    attachments={
+                                                        newMessageAttachments
+                                                    }
+                                                    deleteAttachment={
+                                                        deleteAttachment
+                                                    }
+                                                    className="p-2 d-flex flex-wrap"
+                                                />
+                                            </FormGroup>
+                                        )}
+
                                     <div className={css.formButtonsContainer}>
                                         <Button
                                             className={classNames('mr-2', {

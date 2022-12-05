@@ -24,6 +24,7 @@ export type LoopReturnsReturnAction = {
 
 export type AutomatedResponseReturnAction = {
     type: ReturnActionType.AutomatedResponse
+    response_message_content: ResponseMessageContent
 }
 
 export type ReturnAction =
