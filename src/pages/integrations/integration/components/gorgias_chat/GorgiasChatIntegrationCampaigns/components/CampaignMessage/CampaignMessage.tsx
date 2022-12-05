@@ -50,7 +50,7 @@ export const CampaignMessage = memo(
                     name: agent.name,
                 }
 
-                if (agent.meta.profile_picture_url) {
+                if (agent.meta?.profile_picture_url) {
                     props['profilePictureUrl'] = agent.meta
                         .profile_picture_url as unknown as string
                 }

@@ -33,10 +33,10 @@ export type User = UserDraft & {
     firstname: string
     id: number
     lastname: string
-    meta: {
+    meta: Maybe<{
         profile_picture_url: string | null
         [key: string]: any
-    }
+    }>
     updated_datetime: string
     settings: UserSetting[]
     timezone: string | null

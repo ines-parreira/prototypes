@@ -58,7 +58,7 @@ const Row = ({
             <span className="d-flex align-items-center">
                 <Avatar
                     name={agent.name || agent.email}
-                    url={agent.meta.profile_picture_url}
+                    url={agent.meta?.profile_picture_url}
                     size={36}
                     className={classnames(css.avatar, 'd-none d-md-block')}
                 />
