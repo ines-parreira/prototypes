@@ -1,4 +1,4 @@
-import React, {useCallback, useContext} from 'react'
+import React, {useCallback, useContext, useState} from 'react'
 import {Button, ModalFooter} from 'reactstrap'
 import classnames from 'classnames'
 import {useUpdateEffect, usePrevious} from 'react-use'
@@ -16,6 +16,7 @@ import {InfobarModalProps} from 'pages/common/components/infobar/Infobar/Infobar
 
 import {
     BigCommerceActionType,
+    BigCommerceCustomerAddress,
     Customer,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/types'
 import Alert from 'pages/common/components/Alert/Alert'
@@ -24,7 +25,10 @@ import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import useAppDispatch from 'hooks/useAppDispatch'
 import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
 import {bigcommerceDataMappers} from 'pages/common/forms/ProductSearchInput/Mappings'
+import {getCustomerAddresses} from 'state/infobarActions/bigcommerce/createOrder/selectors'
+import useAppSelector from 'hooks/useAppSelector'
 import css from './OrderModal.less'
+import {ShippingAddressesDropdown} from './ShippingAddressesDropdown'
 
 type Props = {
     data?: {
@@ -41,10 +45,17 @@ export default function OrderModal({
     const {integrationId} = useContext(IntegrationContext)
     const previousIsOpen = usePrevious(isOpen)
     const dispatch = useAppDispatch()
+    const shippingAddresses: BigCommerceCustomerAddress[] = useAppSelector(
+        getCustomerAddresses(integrationId)
+    )
+
+    const [shippingAddress, setShippingAddress] =
+        useState<Maybe<BigCommerceCustomerAddress>>(null)
 
     const handleReset = useCallback(() => {
         dispatch(onReset())
         shortcutManager.unpause()
+        setShippingAddress(null)
     }, [dispatch])
 
     const handleCancel = useCallback(
@@ -87,10 +98,13 @@ export default function OrderModal({
                         onVariantClicked={_noop}
                     />
                 )}
-                <p className={css.subsection}>Fulfillment</p>
-                <div>
-                    <h5 className={css.subsectionSmall}>Shipping address</h5>
-                </div>
+                {isOpen && (
+                    <ShippingAddressesDropdown
+                        shippingAddress={shippingAddress}
+                        setShippingAddress={setShippingAddress}
+                        shippingAddresses={shippingAddresses}
+                    />
+                )}
                 <p className={css.subsection}>Comments & Notes</p>
                 <div>
                     <h5 className={css.subsectionSmall}>Comment</h5>

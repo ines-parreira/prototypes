@@ -43,6 +43,7 @@ type Props = {
     safeDistance?: number
     target: RefObject<HTMLElement | null>
     value?: boolean | number | string | Array<number | string> | null
+    contained?: boolean
 }
 
 type DropdownContextState = Pick<Props, 'isMultiple' | 'onToggle' | 'value'> & {
@@ -68,6 +69,7 @@ const Dropdown = forwardRef(
             safeDistance = 8,
             target,
             value,
+            contained = false,
         }: Props,
         ref: Ref<HTMLElement> | null | undefined
     ) => {
@@ -84,7 +86,9 @@ const Dropdown = forwardRef(
                     size({
                         apply({reference}) {
                             Object.assign(refs.floating.current?.style ?? {}, {
-                                minWidth: `${reference.width}px`,
+                                [contained
+                                    ? 'width'
+                                    : 'minWidth']: `${reference.width}px`,
                             })
                         },
                         padding: safeDistance,

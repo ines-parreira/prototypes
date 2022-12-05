@@ -42,3 +42,26 @@ export type Product = {
     handle?: string
     variants: Variant[]
 }
+
+export enum BigCommerceCustomerAddressType {
+    Residential = 'residential',
+    Commercial = 'commercial',
+}
+
+export type BigCommerceCustomerAddress = {
+    id: number
+    email: string
+    first_name: string
+    last_name: string
+    address1: string
+    address2: Maybe<string>
+    address_type: BigCommerceCustomerAddressType
+    city: string
+    company: Maybe<string>
+    country: string
+    country_code: string
+    customer_id: number
+    phone: Maybe<string>
+    postal_code: Maybe<string>
+    state_or_province: Maybe<string>
+}

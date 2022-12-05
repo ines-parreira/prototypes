@@ -120,17 +120,49 @@ exports[`OrderModal should render when the modal is opened 1`] = `
               </h6>
             </div>
           </div>
-          <p
-            class="subsection"
-          >
-            Fulfillment
-          </p>
           <div>
-            <h5
-              class="subsectionSmall"
+            <p
+              class="subsection mt-4"
+            >
+              Fulfillment
+            </p>
+            <label
+              class="label subsectionSmall mb-2"
             >
               Shipping address
-            </h5>
+              <abbr
+                aria-label="required"
+                class="abbr"
+                title="required"
+              >
+                *
+              </abbr>
+            </label>
+            <div
+              class="wrapper"
+              role="listbox"
+              tabindex="0"
+            >
+              <div
+                class="inputWrapper"
+              >
+                <div
+                  class="input isGreyed"
+                >
+                  Select from address book...
+                </div>
+                <i
+                  class="affix suffix toggle material-icons"
+                >
+                  arrow_drop_down
+                </i>
+              </div>
+            </div>
+            <p
+              class="infoText"
+            >
+              Same address will be used for billing address.
+            </p>
           </div>
           <p
             class="subsection"
@@ -192,5 +224,8 @@ exports[`OrderModal should render when the modal is opened 1`] = `
       </div>
     </div>
   </div>
+  <div
+    id="floating-ui-root"
+  />
 </body>
 `;

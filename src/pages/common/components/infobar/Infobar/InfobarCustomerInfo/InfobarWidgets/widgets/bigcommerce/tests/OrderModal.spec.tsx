@@ -1,14 +1,14 @@
-import {render, screen, waitFor} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
+import thunk from 'redux-thunk'
 import {
     bigCommerceCustomerFixture,
     bigCommerceIntegrationFixture,
 } from 'fixtures/bigcommerce'
 import OrderModal from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/OrderModal'
 import {BigCommerceActionType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/types'
-import {RootState, StoreDispatch} from 'state/types'
 
 const minProps = {
     isOpen: true,
@@ -30,29 +30,26 @@ const minProps = {
 
 jest.mock('state/infobarActions/bigcommerce/createOrder/actions', () => ({
     onInit: jest.fn(() => () => Promise.resolve({})),
+    getCustomerAddresses: jest.fn(() => () => {
+        return []
+    }),
 }))
 
 jest.mock('store/middlewares/segmentTracker')
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
+const mockStore = configureMockStore([thunk])
 const store = mockStore({})
-
-const renderInitialModal = async (baseElement: HTMLElement) => {
-    // Wait until the show class is added to the modal
-    await waitFor(() => expect(baseElement.children.length).toBe(2))
-}
 
 describe('OrderModal', () => {
     beforeEach(() => {
         jest.clearAllMocks()
     })
 
-    it('should not render when the modal is closed', async () => {
+    it('should not render when the modal is closed', () => {
         const {baseElement} = render(
             <Provider store={store}>
                 <OrderModal {...minProps} isOpen={false} />
             </Provider>
         )
-        await renderInitialModal(baseElement)
 
         expect(baseElement.firstChild).toMatchSnapshot()
     })
@@ -63,7 +60,6 @@ describe('OrderModal', () => {
                 <OrderModal {...minProps} />
             </Provider>
         )
-        await renderInitialModal(baseElement)
         await screen.findByText('Awaiting Fulfillment')
 
         expect(baseElement).toMatchSnapshot()

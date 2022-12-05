@@ -3,6 +3,7 @@ import {RootState, StoreDispatch} from 'state/types'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import GorgiasApi from 'services/gorgiasApi'
 import {
+    BigCommerceCustomerAddress,
     BigCommercePayload,
     BigCommerceResponse,
     Customer,
@@ -66,3 +67,23 @@ const createCart = async (
 const deleteCart = async (integrationId: number, cartId: Maybe<string>) => {
     await _api.deleteBigCommerceCart(integrationId, cartId)
 }
+
+export const addCheckoutBillingAddress =
+    (
+        integrationId: Maybe<number>,
+        selectedAddress: Maybe<BigCommerceCustomerAddress>
+    ) =>
+    async (dispatch: StoreDispatch, getState: () => RootState) => {
+        if (integrationId && selectedAddress) {
+            const state = getState()
+            const createOrderState = getCreateOrderState(state)
+            const cartId = createOrderState.cartId
+            if (cartId) {
+                await _api.addBigCommerceCheckoutBillingAddress(
+                    integrationId,
+                    cartId,
+                    selectedAddress
+                )
+            }
+        }
+    }

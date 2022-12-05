@@ -22,6 +22,7 @@ import type {
 } from 'constants/integrations/types/shopify'
 import {fetchEvents} from 'models/event/resources'
 import {
+    BigCommerceCustomerAddress,
     BigCommercePayload,
     BigCommerceResponse,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/types'
@@ -331,6 +332,21 @@ export default class GorgiasApi {
                 },
             })
         }
+    }
+
+    async addBigCommerceCheckoutBillingAddress(
+        integrationId: number,
+        cartId: string,
+        payload: BigCommerceCustomerAddress
+    ): Promise<BigCommerceResponse> {
+        const url = '/integrations/bigcommerce/order/billing-address/'
+        const response = await this._api.post(url, payload, {
+            params: {
+                integration_id: integrationId,
+                cart_id: cartId,
+            },
+        })
+        return response.data as BigCommerceResponse
     }
 
     async calculateEditOrder(

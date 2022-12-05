@@ -1,0 +1,124 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ShippingAddressesDropdown/> should call addCheckoutBillingAddress when address option is selected 1`] = `
+Array [
+  Array [
+    1,
+    Object {
+      "address1": "Random Street 19",
+      "address2": "",
+      "address_type": "residential",
+      "city": "Paris",
+      "company": "test",
+      "country": "France",
+      "country_code": "FR",
+      "customer_id": 160,
+      "email": "test2@gorgias.com",
+      "first_name": "A",
+      "id": 13,
+      "last_name": "Test 2",
+      "phone": "",
+      "postal_code": "507051",
+      "state_or_province": "Paris",
+    },
+  ],
+]
+`;
+
+exports[`<ShippingAddressesDropdown/> should display \`No results\` when shippingAddresses = [] & snapshot should render \`Select from address book...\` 1`] = `
+<div>
+  <div>
+    <p
+      class="subsection mt-4"
+    >
+      Fulfillment
+    </p>
+    <label
+      class="label subsectionSmall mb-2"
+    >
+      Shipping address
+      <abbr
+        aria-label="required"
+        class="abbr"
+        title="required"
+      >
+        *
+      </abbr>
+    </label>
+    <div
+      class="wrapper"
+      role="listbox"
+      tabindex="0"
+    >
+      <div
+        class="inputWrapper isFocused"
+      >
+        <div
+          class="input isGreyed"
+        >
+          Select from address book...
+        </div>
+        <i
+          class="affix suffix toggle material-icons"
+        >
+          arrow_drop_down
+        </i>
+      </div>
+    </div>
+    <p
+      class="infoText"
+    >
+      Same address will be used for billing address.
+    </p>
+  </div>
+</div>
+`;
+
+exports[`<ShippingAddressesDropdown/> snapshot renders the selected shipping address instead of \`Select from address book...\` 1`] = `
+<div>
+  <div>
+    <p
+      class="subsection mt-4"
+    >
+      Fulfillment
+    </p>
+    <label
+      class="label subsectionSmall mb-2"
+    >
+      Shipping address
+      <abbr
+        aria-label="required"
+        class="abbr"
+        title="required"
+      >
+        *
+      </abbr>
+    </label>
+    <div
+      class="wrapper"
+      role="listbox"
+      tabindex="0"
+    >
+      <div
+        class="inputWrapper"
+      >
+        <div
+          class="input"
+        >
+          A Test 2, Random Street 19, 507051 Paris, Paris, FR, France
+        </div>
+        <i
+          class="affix suffix toggle material-icons"
+        >
+          arrow_drop_down
+        </i>
+      </div>
+    </div>
+    <p
+      class="infoText"
+    >
+      Same address will be used for billing address.
+    </p>
+  </div>
+</div>
+`;
