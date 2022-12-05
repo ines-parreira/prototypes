@@ -26,6 +26,7 @@ import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentH
 import {saveFileAsDownloaded} from 'utils/file'
 import {HOTSWAP_SDK_URL} from 'config'
 
+import Tooltip from 'pages/common/components/Tooltip'
 import css from './ImportSection.less'
 import {
     buildCsvColumnMatchingUrl,
@@ -54,6 +55,7 @@ type ModalState =
 type Props = {
     className?: string
     isDisabled?: boolean
+    isButton?: boolean
 }
 
 const SHOW_HOTSWAP_IMPORTS = false
@@ -61,6 +63,7 @@ const SHOW_HOTSWAP_IMPORTS = false
 export const ImportSection: React.FC<Props> = ({
     className,
     isDisabled,
+    isButton,
 }: Props) => {
     const dispatch = useAppDispatch()
     const history = useHistory()
@@ -271,46 +274,77 @@ export const ImportSection: React.FC<Props> = ({
     )
 
     return (
-        <section className={classnames(className, settingsCss.mb40)}>
-            <h4>Import articles from another Help Center</h4>
-
-            <p>
-                You can import CSV files with articles from another Help Center.
-            </p>
-
-            {isHotswapImportInProgress && (
-                <div className={css.importInProgressContainer}>
-                    <div>
-                        <Spinner
-                            size="sm"
-                            color="primary"
-                            className={css.spinner}
-                        />
-                        Import in progress
-                    </div>
-
-                    <span
-                        onClick={handleMoreDetailsClick}
-                        className={css.moreDetails}
+        <>
+            {isButton ? (
+                <>
+                    <Button
+                        id="import-button"
+                        isDisabled={
+                            isHotswapImportProgressRequestLoading || isDisabled
+                        }
+                        intent="secondary"
+                        onClick={() =>
+                            setModalState({state: 'NO_FILE_SELECTED'})
+                        }
+                        className={css.button}
                     >
-                        More Details
-                    </span>
-                </div>
-            )}
+                        <i className="material-icons">cloud_upload</i>
+                    </Button>
+                    <Tooltip
+                        target="import-button"
+                        placement="top"
+                        innerClassName={css.tooltip}
+                        autohide={false}
+                    >
+                        Import articles from another Help Center
+                    </Tooltip>
+                </>
+            ) : (
+                <section className={classnames(className, settingsCss.mb40)}>
+                    <h4>Import articles from another Help Center</h4>
 
-            {!isHotswapImportInProgress && (
-                <Button
-                    isDisabled={
-                        isHotswapImportProgressRequestLoading || isDisabled
-                    }
-                    intent="secondary"
-                    onClick={() => setModalState({state: 'NO_FILE_SELECTED'})}
-                >
-                    <i className="material-icons mr-2">cloud_upload</i>Import
-                    Articles
-                </Button>
-            )}
+                    <p>
+                        You can import CSV files with articles from another Help
+                        Center.
+                    </p>
 
+                    {isHotswapImportInProgress && (
+                        <div className={css.importInProgressContainer}>
+                            <div>
+                                <Spinner
+                                    size="sm"
+                                    color="primary"
+                                    className={css.spinner}
+                                />
+                                Import in progress
+                            </div>
+
+                            <span
+                                onClick={handleMoreDetailsClick}
+                                className={css.moreDetails}
+                            >
+                                More Details
+                            </span>
+                        </div>
+                    )}
+
+                    {!isHotswapImportInProgress && (
+                        <Button
+                            isDisabled={
+                                isHotswapImportProgressRequestLoading ||
+                                isDisabled
+                            }
+                            intent="secondary"
+                            onClick={() =>
+                                setModalState({state: 'NO_FILE_SELECTED'})
+                            }
+                        >
+                            <i className="material-icons mr-2">cloud_upload</i>
+                            Import Articles
+                        </Button>
+                    )}
+                </section>
+            )}
             <Modal
                 size="lg"
                 isOpen={modalState !== null}
@@ -436,7 +470,7 @@ export const ImportSection: React.FC<Props> = ({
                     </ModalFooter>
                 )}
             </Modal>
-        </section>
+        </>
     )
 }
 

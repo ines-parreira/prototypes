@@ -9,7 +9,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {CustomDomain as CustomDomainEntity} from 'models/helpCenter/types'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {isProduction} from 'utils/environment'
 import Loader from 'pages/common/components/Loader/Loader'
 
 import settingsCss from 'pages/settings/settings.less'
@@ -165,8 +164,6 @@ export const CustomDomain = () => {
         }
     }, [helpCenter.customDomain])
 
-    const domain = isProduction() ? 'gorgias.help' : 'gorgias.rehab'
-
     const handleOnChangeDomainValue = (value: string) => {
         setDomainValue(value)
     }
@@ -231,22 +228,12 @@ export const CustomDomain = () => {
 
     return (
         <section className={settingsCss.mb40}>
-            <div>
-                <h4 className={css.title}>Custom Domain</h4>
-                <p>
-                    {`Enabling a custom domain will create a redirection from your
-                    ${domain} subdomain to this custom domain. This means
-                    that you don’t need to manually update old references of
-                    your subdomain.`}
-                </p>
-            </div>
-            <HelpText isHidden={currentDomain?.status === 'active'} />
             <div className={css.domainForm}>
                 <div className={css.domainInput}>
                     <InputField
                         className={settingsCss.mb16}
                         isDisabled={!!currentDomain?.status}
-                        caption="Add a custom domain"
+                        caption="Redirect from your gorgias.help subdomain to this custom domain."
                         label="Custom domain"
                         name="domain"
                         placeholder="help.brand-name.com"
@@ -275,6 +262,7 @@ export const CustomDomain = () => {
                 onCheckStatus={checkDomainStatus}
                 status={currentDomain?.status}
             />
+            <HelpText isHidden={currentDomain?.status === 'active'} />
         </section>
     )
 }

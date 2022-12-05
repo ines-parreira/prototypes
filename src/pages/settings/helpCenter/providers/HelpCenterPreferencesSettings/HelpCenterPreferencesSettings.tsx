@@ -30,7 +30,6 @@ import {
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
 
 export type HelpCenterPreferencesState = {
-    name: string
     defaultLanguage: LocaleCode
     availableLanguages: LocaleCode[]
     seoMeta: HelpCenterTranslationSeoMeta
@@ -50,7 +49,6 @@ type HelpCenterPreferencesContext = {
 }
 
 const defaultPreferences: HelpCenterPreferencesState = {
-    name: '',
     defaultLanguage: HELP_CENTER_DEFAULT_LOCALE,
     availableLanguages: [],
     seoMeta: {
@@ -80,11 +78,6 @@ export const HelpCenterPreferencesSettings = ({
         useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
     const [preferences, updatePreferences] =
         useState<HelpCenterPreferencesState>(defaultPreferences)
-
-    const nameChanged = useMemo(
-        () => helpCenter.name !== preferences.name,
-        [helpCenter, preferences]
-    )
 
     const defaultLanguageChanged = useMemo(
         () => helpCenter.default_locale !== preferences.defaultLanguage,
@@ -123,13 +116,9 @@ export const HelpCenterPreferencesSettings = ({
         )
     }, [helpCenter.translations, preferences, viewLanguage])
 
-    const areChangesValid = useMemo(() => !!preferences.name, [preferences])
-
     const canSavePreferences = useMemo(
-        () =>
-            (nameChanged || defaultLanguageChanged || seoChanged) &&
-            areChangesValid,
-        [nameChanged, defaultLanguageChanged, seoChanged, areChangesValid]
+        () => defaultLanguageChanged || seoChanged,
+        [defaultLanguageChanged, seoChanged]
     )
 
     const savePreferences = async () => {
@@ -155,11 +144,10 @@ export const HelpCenterPreferencesSettings = ({
                 await fetchHelpCenterTranslations()
             }
 
-            if (nameChanged || defaultLanguageChanged) {
+            if (defaultLanguageChanged) {
                 const {data: updatedHelpCenter} = await client.updateHelpCenter(
                     {help_center_id: helpCenter.id},
                     {
-                        name: preferences.name,
                         default_locale: preferences.defaultLanguage,
                     }
                 )
@@ -250,7 +238,6 @@ export const HelpCenterPreferencesSettings = ({
 
     const updatePreferencesFromData = useCallback(() => {
         const updateFn = (draftSettings: Draft<HelpCenterPreferencesState>) => {
-            draftSettings.name = helpCenter.name
             draftSettings.defaultLanguage = helpCenter.default_locale
             draftSettings.availableLanguages = helpCenter.supported_locales
 

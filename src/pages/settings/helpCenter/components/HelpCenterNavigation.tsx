@@ -31,11 +31,11 @@ export const HelpCenterNavigation: React.FC<Props> = ({
             <NavLink to={`${baseURL}/customization`} exact>
                 Customization
             </NavLink>
-            <NavLink to={`${baseURL}/self-service`} exact>
-                Self-service
+            <NavLink to={`${baseURL}/automation`} exact>
+                Automation
             </NavLink>
-            <NavLink to={`${baseURL}/installation`} exact>
-                Installation
+            <NavLink to={`${baseURL}/publish-track`} exact>
+                Publish & Track
             </NavLink>
         </SecondaryNavbar>
     )

@@ -191,4 +191,30 @@ describe(`InfoCard`, () => {
         )
         expect(screen.getByText(/has not been approved/))
     })
+
+    it('should display other resources with the right text', () => {
+        render(
+            <Provider store={store}>
+                <InfoCard
+                    {...{
+                        ...dummyAppDetail,
+                        otherResources: [
+                            {
+                                title: 'Resource 1',
+                                icon: 'ondemand_video',
+                                url: 'https://www.gorgias.com',
+                            },
+                            {
+                                title: 'Resource 2',
+                                icon: 'ondemand_video',
+                                url: 'https://www.gorgias.com',
+                            },
+                        ],
+                    }}
+                />
+            </Provider>
+        )
+        expect(screen.getByText(/Resource 1/))
+        expect(screen.getByText(/Resource 2/))
+    })
 })

@@ -60,6 +60,12 @@ export const SelfServiceSection = ({
         }
     }, [])
 
+    useEffect(() => {
+        setSspShopState(
+            helpCenter.shop_name ? 'shop_ssp_enabled' : 'no_shop_integration'
+        )
+    }, [helpCenter.shop_name])
+
     useEffect(() => void fetchGlobalSsp(), [fetchGlobalSsp])
 
     const handleOnChangeSwitch = () => {
@@ -77,7 +83,7 @@ export const SelfServiceSection = ({
     return (
         <section className={settingsCss.mb40}>
             <div className={css.heading}>
-                <h3>Enable Self-service</h3>
+                <h4>Enable Self-service</h4>
                 <p>
                     Enabling{' '}
                     <Link to="/app/settings/self-service">self-service</Link>{' '}
@@ -105,38 +111,8 @@ export const SelfServiceSection = ({
                                 : css['force-disabled']
                         )}
                     >
-                        Enable self-service for this Help Center
+                        Self-service flows
                     </p>
-
-                    {sspShopState === 'shop_ssp_disabled' && (
-                        <p
-                            className={classnames(
-                                css['connect-shopify-shop-hint'],
-                                css['force-disabled']
-                            )}
-                        >
-                            <Link to={'/app/settings/self-service'}>
-                                Enable Self-service
-                            </Link>{' '}
-                            at the store level to enable self-service for the
-                            Help Center.
-                        </p>
-                    )}
-
-                    {sspShopState === 'no_shop_integration' && (
-                        <p
-                            className={classnames(
-                                css['connect-shopify-shop-hint']
-                            )}
-                        >
-                            <Link
-                                to={`/app/settings/help-center/${helpCenter.id}/installation`}
-                            >
-                                Connect a Shopify store
-                            </Link>{' '}
-                            to enable self-service for this Help Center.
-                        </p>
-                    )}
                 </Label>
             </div>
         </section>

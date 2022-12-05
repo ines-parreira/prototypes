@@ -1,0 +1,30 @@
+@import '~css/new/colorTokens';
+@import '~css/new/mixins';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+
+        // Deduct 112px, which is the height of the header and navbar
+        max-height: calc(~'100% - 112px');
+    }
+    .addHelpCenter {
+        flex: 0 0 auto;
+        margin-bottom: 24px;
+        margin-left: 24px;
+    }
+
+    .tableHelpCenter {
+        flex: 0 1 auto;
+        overflow: auto;
+        margin-bottom: 24px;
+    }
+    .createNewButton {
+        display: flex;
+        align-items: center;
+        i {
+            font-size: 18px;
+        }
+    }
+}

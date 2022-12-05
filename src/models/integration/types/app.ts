@@ -76,6 +76,13 @@ export type AppDetail = Omit<IntegrationConfig, 'isExternalConnectUrl'> & {
     connectUrl: AppData['app_url']
     supportEmail: AppData['support_email']
     supportPhone: AppData['support_phone']
+    connectTitle?: string
+    icon?: string
+    otherResources?: {
+        title: string
+        icon: string
+        url: string
+    }[]
 }
 
 export type DisconnectResponse = {

@@ -3,14 +3,8 @@
 exports[`<ThemeSwitch> matches snapshot 1`] = `
 <div>
   <h4>
-    Theme
+    Header & footer theme
   </h4>
-  <p>
-    Select which theme you prefer to use in your Help Center. 
-    <b>
-      This will affect the header & footer.
-    </b>
-  </p>
   <div
     class="list"
   >

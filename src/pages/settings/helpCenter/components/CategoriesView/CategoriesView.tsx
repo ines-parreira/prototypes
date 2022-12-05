@@ -106,32 +106,35 @@ export const CategoriesViews = ({
             {showCreateFirst ? (
                 <Container fluid className={settingsCss.pageContainer}>
                     <h1>
-                        Start your Help Center here&nbsp;
+                        Start your help center here&nbsp;
                         <span aria-label="books" role="img">
                             📚
                         </span>
                     </h1>
                     <p>
-                        Write your first article and create article categories
-                        to be displayed in your Help Center.
+                        Write your first article or create your first category
+                        to be displayed in your very own help center.
                     </p>
-                    <Button
-                        className="mr-2"
-                        onClick={onCreateArticle}
-                        isDisabled={!canUpdateArticle}
-                    >
-                        <i className="material-icons-outlined mr-1">article</i>
-                        Create Article
-                    </Button>
+                    <div className={css.createFirst}>
+                        <Button
+                            className={css.createButton}
+                            onClick={onCreateArticle}
+                            isDisabled={!canUpdateArticle}
+                        >
+                            <i className="material-icons-outlined mr-1">add</i>
+                            Article
+                        </Button>
 
-                    <Button
-                        intent="secondary"
-                        onClick={onCreateCategory}
-                        isDisabled={!canUpdateCategory}
-                    >
-                        <i className="material-icons mr-1">list</i>
-                        Create Category
-                    </Button>
+                        <Button
+                            className={css.createButton}
+                            intent="secondary"
+                            onClick={onCreateCategory}
+                            isDisabled={!canUpdateCategory}
+                        >
+                            <i className="material-icons mr-1">add</i>
+                            Category
+                        </Button>
+                    </div>
 
                     <ImportSection
                         className={css.importSection}

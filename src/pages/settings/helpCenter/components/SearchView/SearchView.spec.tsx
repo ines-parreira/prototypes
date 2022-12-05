@@ -17,6 +17,14 @@ import {SearchView} from './SearchView'
 
 jest.mock('../../providers/SearchContext')
 
+jest.mock('pages/settings/helpCenter/hooks/useArticlesActions', () => {
+    return {
+        useArticlesActions: () => ({
+            getArticleCount: jest.fn().mockResolvedValue(0),
+        }),
+    }
+})
+
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
     const dep: Record<string, unknown> = jest.requireActual(
         'pages/settings/helpCenter/hooks/useHelpCenterApi'
@@ -28,6 +36,10 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
 })
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+
+const wrapper = ({children}: {children?: React.ReactNode}) => (
+    <Provider store={store}>{children}</Provider>
+)
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterIdParam')
 ;(useHelpCenterIdParam as jest.Mock).mockReturnValue(helpCenter.id)
@@ -108,7 +120,12 @@ describe('SearchView', () => {
                 helpCenter={helpCenter}
                 onArticleClick={jest.fn()}
                 onArticleClickSettings={jest.fn()}
-            />
+                onArticleCreate={jest.fn()}
+                onCategoryCreate={jest.fn()}
+                canUpdateArticle={true}
+                canUpdateCategory={true}
+            />,
+            {wrapper}
         )
 
         expect(container).toMatchSnapshot()
@@ -129,7 +146,12 @@ describe('SearchView', () => {
                 helpCenter={helpCenter}
                 onArticleClick={jest.fn()}
                 onArticleClickSettings={jest.fn()}
-            />
+                onArticleCreate={jest.fn()}
+                onCategoryCreate={jest.fn()}
+                canUpdateArticle={true}
+                canUpdateCategory={true}
+            />,
+            {wrapper}
         )
 
         expect(container).toMatchSnapshot()
@@ -149,7 +171,12 @@ describe('SearchView', () => {
                 helpCenter={helpCenter}
                 onArticleClick={jest.fn()}
                 onArticleClickSettings={jest.fn()}
-            />
+                onArticleCreate={jest.fn()}
+                onCategoryCreate={jest.fn()}
+                canUpdateArticle={true}
+                canUpdateCategory={true}
+            />,
+            {wrapper}
         )
 
         expect(container).toMatchSnapshot()
@@ -172,7 +199,12 @@ describe('SearchView', () => {
                 helpCenter={helpCenter}
                 onArticleClick={jest.fn()}
                 onArticleClickSettings={jest.fn()}
-            />
+                onArticleCreate={jest.fn()}
+                onCategoryCreate={jest.fn()}
+                canUpdateArticle={true}
+                canUpdateCategory={true}
+            />,
+            {wrapper}
         )
 
         expect(container).toMatchSnapshot()
@@ -242,13 +274,16 @@ describe('SearchView', () => {
         })
 
         const {container} = render(
-            <Provider store={store}>
-                <SearchView
-                    helpCenter={helpCenter}
-                    onArticleClick={jest.fn()}
-                    onArticleClickSettings={jest.fn()}
-                />
-            </Provider>
+            <SearchView
+                helpCenter={helpCenter}
+                onArticleClick={jest.fn()}
+                onArticleClickSettings={jest.fn()}
+                onArticleCreate={jest.fn()}
+                onCategoryCreate={jest.fn()}
+                canUpdateArticle={true}
+                canUpdateCategory={true}
+            />,
+            {wrapper}
         )
 
         expect(container).toMatchSnapshot()

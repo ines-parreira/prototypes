@@ -3,33 +3,25 @@
 exports[`SearchBar triggers search when searchInput is not empty 1`] = `
 <div>
   <div
-    class="wrapper"
+    class="wrapper input"
   >
-    <div
-      class="searchBar"
+    <span
+      class="prefix"
     >
-      <div
-        class="wrapper input"
+      <i
+        class="material-icons icon"
       >
-        <span
-          class="prefix"
-        >
-          <i
-            class="material-icons icon"
-          >
-            search
-          </i>
-        </span>
-        <input
-          class="input"
-          id="input-text-1"
-          name="input-text-1"
-          placeholder="Search by content, articles and categories"
-          type="text"
-          value=""
-        />
-      </div>
-    </div>
+        search
+      </i>
+    </span>
+    <input
+      class="input"
+      id="input-text-1"
+      name="input-text-1"
+      placeholder="Search by content, articles and categories"
+      type="text"
+      value=""
+    />
   </div>
 </div>
 `;
@@ -37,42 +29,34 @@ exports[`SearchBar triggers search when searchInput is not empty 1`] = `
 exports[`SearchBar triggers search when searchInput is not empty 2`] = `
 <div>
   <div
-    class="wrapper"
+    class="wrapper input"
   >
-    <div
-      class="searchBar"
+    <span
+      class="prefix"
     >
-      <div
-        class="wrapper input"
+      <i
+        class="material-icons icon"
       >
-        <span
-          class="prefix"
-        >
-          <i
-            class="material-icons icon"
-          >
-            search
-          </i>
-        </span>
-        <input
-          class="input"
-          id="input-text-1"
-          name="input-text-1"
-          placeholder="Search by content, articles and categories"
-          type="text"
-          value="my search"
-        />
-        <span
-          class="suffix"
-        >
-          <i
-            class="material-icons icon clearButton"
-          >
-            close
-          </i>
-        </span>
-      </div>
-    </div>
+        search
+      </i>
+    </span>
+    <input
+      class="input"
+      id="input-text-1"
+      name="input-text-1"
+      placeholder="Search by content, articles and categories"
+      type="text"
+      value="my search"
+    />
+    <span
+      class="suffix"
+    >
+      <i
+        class="material-icons icon clearButton"
+      >
+        close
+      </i>
+    </span>
   </div>
 </div>
 `;

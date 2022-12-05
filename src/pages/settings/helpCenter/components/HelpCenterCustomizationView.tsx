@@ -34,6 +34,7 @@ import {LinkList} from './LinkList'
 import css from './HelpCenterCustomizationView.less'
 import {LanguageSelect} from './LanguageSelect'
 import CloseTabModal from './CloseTabModal'
+import {UpdateToggle} from './UpdateToggle'
 
 export const HelpCenterCustomizationView = () => {
     const dispatch = useAppDispatch()
@@ -132,6 +133,7 @@ export const HelpCenterCustomizationView = () => {
     const handleOnReset = () => {
         headerNavigation.resetFields()
         footerNavigation.resetFields()
+        socialNavigation.resetFields()
         setIsDirty(false)
     }
     const handleSaveLinks = async () => {
@@ -348,7 +350,7 @@ export const HelpCenterCustomizationView = () => {
                     <CodeEditor
                         value={extraHTML?.custom_header}
                         onChange={(value) => {
-                            setIsDirty(true)
+                            setIsDirty(value !== extraHTML?.custom_header)
                             setExtraHTML(
                                 (extraHTML) =>
                                     extraHTML && {
@@ -412,6 +414,16 @@ export const HelpCenterCustomizationView = () => {
                         </div>
                     </ToggleInput>
                 </div>
+                <div className={settingsCss.mb24}>
+                    <UpdateToggle
+                        activated={
+                            helpCenter.powered_by_deactivated_datetime === null
+                        }
+                        label="Powered by Gorgias"
+                        description=""
+                        fieldName="powered_by_deactivated"
+                    />
+                </div>
                 {!isCustomFooterToggled ? (
                     <>
                         <h5>Navigation Links</h5>
@@ -459,7 +471,7 @@ export const HelpCenterCustomizationView = () => {
                     <CodeEditor
                         value={extraHTML?.custom_footer}
                         onChange={(value) => {
-                            setIsDirty(true)
+                            setIsDirty(value !== extraHTML?.custom_footer)
                             setExtraHTML(
                                 (extraHTML) =>
                                     extraHTML && {
@@ -512,7 +524,7 @@ export const HelpCenterCustomizationView = () => {
                     <CodeEditor
                         value={extraHTML?.extra_head}
                         onChange={(value) => {
-                            setIsDirty(true)
+                            setIsDirty(value !== extraHTML?.extra_head)
                             setExtraHTML(
                                 (extraHTML) =>
                                     extraHTML && {
@@ -534,7 +546,8 @@ export const HelpCenterCustomizationView = () => {
                     isDisabled={
                         !headerNavigation.isListValid() ||
                         !footerNavigation.isListValid() ||
-                        !socialNavigation.isListValid()
+                        !socialNavigation.isListValid() ||
+                        !isDirty
                     }
                     onClick={handleOnSave}
                 >

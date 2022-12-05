@@ -6,7 +6,7 @@ exports[`<HelpText> matches snapshot 1`] = `
     class="container"
   >
     <div
-      class="actions"
+      class="actions hd-help-text-actions"
     >
       <div
         class="highlight"
@@ -14,7 +14,9 @@ exports[`<HelpText> matches snapshot 1`] = `
         Upload image
       </div>
     </div>
-    <p>
+    <p
+      class="hd-help-text-text"
+    >
       recommended size 1640 x 624
     </p>
   </div>

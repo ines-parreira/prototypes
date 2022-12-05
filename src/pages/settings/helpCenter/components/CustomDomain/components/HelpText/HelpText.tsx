@@ -22,8 +22,12 @@ export const HelpText = ({isHidden}: Props): JSX.Element | null => {
             <div className={css.helpContainer} data-testid="domain-help">
                 <p>
                     Visit the admin console of your domain registrar (the
-                    website you bought your domain from) and create or update a
-                    CNAME so that it points to <code>{dns}</code>
+                    website you bought your domain from) and create a CNAME
+                    pointing to:
+                </p>
+                <p>
+                    In your DNS manager, add a CNAME pointing to{' '}
+                    <code>{dns}</code>
                 </p>
                 <a
                     target="_blank"

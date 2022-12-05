@@ -1,0 +1,850 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<HelpCenterStartView /> should render the About component 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="page-header pageHeader"
+    >
+      <h1
+        class="d-flex align-items-center"
+      >
+        Help Center
+      </h1>
+    </div>
+    <nav
+      class="navbar navbar"
+    >
+      <a
+        aria-current="page"
+        class="link active"
+        href="/app/settings/help-center"
+      >
+        About
+      </a>
+      <a
+        class="link"
+        href="/app/settings/help-center/manage"
+      >
+        Manage
+      </a>
+    </nav>
+    <header
+      class="hero"
+    >
+      
+      <i
+        class="icon material-icons-outlined"
+      >
+        live_help
+      </i>
+      <div>
+        <h1
+          class="heroHeading"
+        >
+          Help Center
+        </h1>
+        <p
+          class="heroDescription"
+        >
+          Set up a free Help Center/FAQ site and let your customers find answers.
+        </p>
+        <div
+          class="heroMeta"
+        >
+          <span
+            class="by"
+          >
+            by
+             
+            <a
+              href="https://gorgias.com"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Gorgias
+            </a>
+          </span>
+        </div>
+      </div>
+    </header>
+    <main
+      class="main"
+    >
+      <section
+        class="longDescription"
+      >
+        <h2
+          class="categoryTitle"
+        >
+          About
+        </h2>
+        <div>
+          <p>
+            With the Gorgias native Help Center, you can set up help articles on your website for free. This is a great way to allow your customers to self serve and get instant answers before reaching out to your Support team. You can add images, videos, and GIFs to help your customers learn about your products and services in-depth!
+          </p>
+          <h2>
+            Highlights
+          </h2>
+          <p />
+          <ul>
+            <li>
+              Multilingual, customizable settings to match with your brand;
+            </li>
+            <li>
+              Contact cards (including contact form) to direct inquiries to one central location;
+            </li>
+            <li>
+              Google Analytics to get insights about your shoppers behavior;
+            </li>
+            <li>
+              Internal knowledge base to transfer knowledge with your team.
+            </li>
+          </ul>
+          <p />
+          <p />
+          <h2>
+            For Automation Add-on subscribers only:
+          </h2>
+          <ul>
+            <li>
+              Self-Service flows available in the Help Center to deflect even more tickets;
+            </li>
+            <li>
+              Articles recommendations in chat.
+            </li>
+          </ul>
+          <p />
+        </div>
+        <ul
+          class="screenshotList"
+        >
+          <li
+            class="screenshotListItem"
+          >
+            <img
+              alt="Screenshot number 1 of things this app allows you to do in Gorgias"
+              class="screenshot"
+              src="helpcenter-1.png"
+            />
+          </li>
+        </ul>
+      </section>
+      <div
+        class="infoCard card"
+      >
+        <div
+          class="card-body"
+        >
+          <div
+            class="connectWrapper"
+          >
+            <a
+              class="connectButtonWrapper"
+              href="http://localhost/app/settings/help-center/new?account=undefined"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <button
+                class="wrapper actionButton fill primary medium"
+                type="button"
+              >
+                Create New
+              </button>
+            </a>
+          </div>
+          <h2
+            class="categoryTitle cardTitle"
+          >
+            Pricing
+          </h2>
+          <ul
+            class="cardList"
+          >
+            <li>
+              Free
+            </li>
+          </ul>
+          <h2
+            class="categoryTitle cardTitle"
+          >
+            Resources
+          </h2>
+          <ul
+            class="cardList"
+          >
+            <li>
+              <a
+                class="actionLink"
+                href="https://docs.gorgias.com/en-US/articles/help-center-18396"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <i
+                  class="material-icons-outlined actionIcon actionIconBigger"
+                >
+                  description
+                </i>
+                Documentation
+              </a>
+            </li>
+            <li>
+              <a
+                class="actionLink"
+                href="https://app.livestorm.co/gorgias-1/help-center-on-demand?utm_source=Livestorm+company+page"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <i
+                  class="material-icons actionIcon"
+                >
+                  ondemand_video
+                </i>
+                Monthly Webinar
+              </a>
+            </li>
+            
+          </ul>
+          <h2
+            class="categoryTitle cardTitle"
+          >
+            Support
+          </h2>
+          <ul
+            class="cardList"
+          >
+            <li>
+              <a
+                class="actionLink"
+                href="mailto:support@gorgias.com"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <i
+                  class="material-icons actionIcon"
+                >
+                  mail
+                </i>
+                support@gorgias.com
+              </a>
+            </li>
+            
+          </ul>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+`;
+
+exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="page-header pageHeader"
+    >
+      <h1
+        class="d-flex align-items-center"
+      >
+        Help Center
+      </h1>
+    </div>
+    <nav
+      class="navbar navbar"
+    >
+      <a
+        class="link"
+        href="/app/settings/help-center/about"
+      >
+        About
+      </a>
+      <a
+        aria-current="page"
+        class="link active"
+        href="/app/settings/help-center"
+      >
+        Manage
+      </a>
+    </nav>
+    <div
+      class="component"
+    >
+      <div
+        class="container"
+      >
+        <div
+          class="tableHelpCenter"
+        >
+          <table
+            class="table tableWrapper"
+          >
+            <thead
+              class="tableHead"
+            >
+              <tr
+                class="headerRow"
+              >
+                <td
+                  class="wrapper smallest"
+                />
+                <td
+                  class="wrapper normal"
+                >
+                  <div
+                    class="content"
+                  >
+                    <div>
+                      <span
+                        class="title"
+                      >
+                        Help Center name
+                      </span>
+                      <i
+                        class="material-icons md-1 directionIcon"
+                      >
+                        arrow_drop_up
+                      </i>
+                    </div>
+                  </div>
+                </td>
+                <td
+                  class="wrapper normal"
+                >
+                  <div
+                    class="content"
+                  >
+                    <div>
+                      <span
+                        class="title"
+                      >
+                        Languages
+                      </span>
+                      <i
+                        class="material-icons md-1 directionIcon"
+                      >
+                        arrow_drop_up
+                      </i>
+                    </div>
+                  </div>
+                </td>
+                <td
+                  class="wrapper normal"
+                >
+                  <div
+                    class="content"
+                  >
+                    <div>
+                      <span
+                        class="title"
+                      >
+                        Last updated
+                      </span>
+                      <i
+                        class="material-icons md-1 directionIcon"
+                      >
+                        arrow_drop_up
+                      </i>
+                    </div>
+                  </div>
+                </td>
+                <td
+                  class="wrapper normal"
+                />
+              </tr>
+            </thead>
+            <tbody
+              class="tableBody"
+            >
+              <tr
+                class="row tableBodyRow isClickable"
+              >
+                <td
+                  class="wrapper actions smallest"
+                >
+                  <div
+                    class="cellContent"
+                  >
+                    <div>
+                      <label
+                        aria-checked="true"
+                        class="label label"
+                        for="toggle-button-2"
+                        role="switch"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          disabled=""
+                          id="toggle-button-2"
+                          name="toggle-button-2"
+                          type="checkbox"
+                        />
+                        <div
+                          class="slider"
+                        />
+                      </label>
+                    </div>
+                  </div>
+                </td>
+                <td
+                  class="wrapper helpCenterName normal"
+                >
+                  <div
+                    class="cellContent"
+                  >
+                    ACME Help Center
+                  </div>
+                </td>
+                <td
+                  class="wrapper small"
+                >
+                  <div
+                    class="cellContent"
+                  >
+                    <div
+                      class="language-bullet-list"
+                    >
+                      <div
+                        class="language-bullet-item"
+                        data-testid="locale-bullet-en-US"
+                      >
+                        <img
+                          alt="en-US"
+                          class="flag-emoji"
+                          data-testid="flag-en-US"
+                          src="test-file-stub"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td
+                  class="wrapper normal"
+                >
+                  <div
+                    class="cellContent"
+                  >
+                    05/17/2021
+                  </div>
+                </td>
+                <td
+                  class="wrapper lastBodyCell normal"
+                >
+                  <div
+                    class="cellContent"
+                  >
+                    <button
+                      class="wrapper mr-1 wrapper ghost ghost secondary medium"
+                      title="Duplicate Help Center"
+                      type="button"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        file_copy
+                      </i>
+                    </button>
+                    <button
+                      class="wrapper mr-1 wrapper ghost ghost destructive medium"
+                      id="delete-button-1"
+                      title="Delete Help Center"
+                      type="button"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        delete
+                      </i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr
+                class="row tableBodyRow isClickable"
+              >
+                <td
+                  class="wrapper actions smallest"
+                >
+                  <div
+                    class="cellContent"
+                  >
+                    <div>
+                      <label
+                        aria-checked="true"
+                        class="label label"
+                        for="toggle-button-3"
+                        role="switch"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          disabled=""
+                          id="toggle-button-3"
+                          name="toggle-button-3"
+                          type="checkbox"
+                        />
+                        <div
+                          class="slider"
+                        />
+                      </label>
+                    </div>
+                  </div>
+                </td>
+                <td
+                  class="wrapper helpCenterName normal"
+                >
+                  <div
+                    class="cellContent"
+                  >
+                    ACME Help Center 2
+                  </div>
+                </td>
+                <td
+                  class="wrapper small"
+                >
+                  <div
+                    class="cellContent"
+                  >
+                    <div
+                      class="language-bullet-list"
+                    >
+                      <div
+                        class="language-bullet-item"
+                        data-testid="locale-bullet-en-US"
+                      >
+                        <img
+                          alt="en-US"
+                          class="flag-emoji"
+                          data-testid="flag-en-US"
+                          src="test-file-stub"
+                        />
+                      </div>
+                      <div
+                        class="language-bullet-item"
+                        data-testid="locale-bullet-de-DE"
+                      >
+                        <img
+                          alt="de-DE"
+                          class="flag-emoji"
+                          data-testid="flag-de-DE"
+                          src="test-file-stub"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td
+                  class="wrapper normal"
+                >
+                  <div
+                    class="cellContent"
+                  >
+                    05/17/2021
+                  </div>
+                </td>
+                <td
+                  class="wrapper lastBodyCell normal"
+                >
+                  <div
+                    class="cellContent"
+                  >
+                    <button
+                      class="wrapper mr-1 wrapper ghost ghost secondary medium"
+                      title="Duplicate Help Center"
+                      type="button"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        file_copy
+                      </i>
+                    </button>
+                    <button
+                      class="wrapper mr-1 wrapper ghost ghost destructive medium"
+                      id="delete-button-2"
+                      title="Delete Help Center"
+                      type="button"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        delete
+                      </i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr
+                class="row tableBodyRow isClickable"
+              >
+                <td
+                  class="wrapper actions smallest"
+                >
+                  <div
+                    class="cellContent"
+                  >
+                    <div>
+                      <label
+                        aria-checked="true"
+                        class="label label"
+                        for="toggle-button-4"
+                        role="switch"
+                      >
+                        <input
+                          checked=""
+                          class="input"
+                          disabled=""
+                          id="toggle-button-4"
+                          name="toggle-button-4"
+                          type="checkbox"
+                        />
+                        <div
+                          class="slider"
+                        />
+                      </label>
+                    </div>
+                  </div>
+                </td>
+                <td
+                  class="wrapper helpCenterName normal"
+                >
+                  <div
+                    class="cellContent"
+                  >
+                    ACME Help Center 3
+                  </div>
+                </td>
+                <td
+                  class="wrapper small"
+                >
+                  <div
+                    class="cellContent"
+                  >
+                    <div
+                      class="language-bullet-list"
+                    >
+                      <div
+                        class="language-bullet-item"
+                        data-testid="locale-bullet-en-US"
+                      >
+                        <img
+                          alt="en-US"
+                          class="flag-emoji"
+                          data-testid="flag-en-US"
+                          src="test-file-stub"
+                        />
+                      </div>
+                      <div
+                        class="language-bullet-item"
+                        data-testid="locale-bullet-fr-FR"
+                      >
+                        <img
+                          alt="fr-FR"
+                          class="flag-emoji"
+                          data-testid="flag-fr-FR"
+                          src="test-file-stub"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td
+                  class="wrapper normal"
+                >
+                  <div
+                    class="cellContent"
+                  >
+                    05/17/2021
+                  </div>
+                </td>
+                <td
+                  class="wrapper lastBodyCell normal"
+                >
+                  <div
+                    class="cellContent"
+                  >
+                    <button
+                      class="wrapper mr-1 wrapper ghost ghost secondary medium"
+                      title="Duplicate Help Center"
+                      type="button"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        file_copy
+                      </i>
+                    </button>
+                    <button
+                      class="wrapper mr-1 wrapper ghost ghost destructive medium"
+                      id="delete-button-3"
+                      title="Delete Help Center"
+                      type="button"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        delete
+                      </i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr
+                class="row tableBodyRow isClickable"
+              >
+                <td
+                  class="wrapper actions smallest"
+                >
+                  <div
+                    class="cellContent"
+                  >
+                    <div>
+                      <label
+                        aria-checked="false"
+                        class="label label"
+                        for="toggle-button-5"
+                        role="switch"
+                      >
+                        <input
+                          class="input"
+                          disabled=""
+                          id="toggle-button-5"
+                          name="toggle-button-5"
+                          type="checkbox"
+                        />
+                        <div
+                          class="slider"
+                        />
+                      </label>
+                    </div>
+                  </div>
+                </td>
+                <td
+                  class="wrapper helpCenterName normal"
+                >
+                  <div
+                    class="cellContent"
+                  >
+                    ACME Help Center 4
+                  </div>
+                </td>
+                <td
+                  class="wrapper small"
+                >
+                  <div
+                    class="cellContent"
+                  >
+                    <div
+                      class="language-bullet-list"
+                    >
+                      <div
+                        class="language-bullet-item"
+                        data-testid="locale-bullet-en-US"
+                      >
+                        <img
+                          alt="en-US"
+                          class="flag-emoji"
+                          data-testid="flag-en-US"
+                          src="test-file-stub"
+                        />
+                      </div>
+                      <div
+                        class="language-bullet-item"
+                        data-testid="locale-bullet-fr-FR"
+                      >
+                        <img
+                          alt="fr-FR"
+                          class="flag-emoji"
+                          data-testid="flag-fr-FR"
+                          src="test-file-stub"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td
+                  class="wrapper normal"
+                >
+                  <div
+                    class="cellContent"
+                  >
+                    05/17/2021
+                  </div>
+                </td>
+                <td
+                  class="wrapper lastBodyCell normal"
+                >
+                  <div
+                    class="cellContent"
+                  >
+                    <button
+                      class="wrapper mr-1 wrapper ghost ghost secondary medium"
+                      title="Duplicate Help Center"
+                      type="button"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        file_copy
+                      </i>
+                    </button>
+                    <button
+                      class="wrapper mr-1 wrapper ghost ghost destructive medium"
+                      id="delete-button-4"
+                      title="Delete Help Center"
+                      type="button"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        delete
+                      </i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div
+          class="addHelpCenter"
+        >
+          <button
+            class="wrapper fill primary medium"
+            id="add-new-help-center-button"
+            type="button"
+          >
+            <div
+              class="createNewButton"
+            >
+              <i
+                class="material-icons mr-2"
+              >
+                add
+              </i>
+              Create New
+            </div>
+          </button>
+        </div>
+      </div>
+      <div
+        class="container loader"
+      >
+        <div
+          class="inner"
+          style="min-height: 0;"
+        >
+          <i
+            class="icon-custom icon-circle-o-notch md-spin"
+            style="font-size: 30px;"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

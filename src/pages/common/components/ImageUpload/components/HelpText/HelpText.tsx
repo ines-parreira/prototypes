@@ -8,6 +8,7 @@ export type HelpTextProps = {
     highlight?: string
     onHighlightClick?: () => void
     onRemoveClick?: (event: MouseEvent<HTMLDivElement>) => void
+    className?: string
 }
 
 export const HelpText: FunctionComponent<HelpTextProps> = ({
@@ -15,9 +16,10 @@ export const HelpText: FunctionComponent<HelpTextProps> = ({
     highlight,
     onHighlightClick,
     onRemoveClick,
+    className,
 }: HelpTextProps) => (
-    <div className={css.container}>
-        <div className={css.actions}>
+    <div className={classNames(css.container, className)}>
+        <div className={`${css.actions} hd-help-text-actions`}>
             {highlight && (
                 <div
                     className={classNames({
@@ -37,6 +39,6 @@ export const HelpText: FunctionComponent<HelpTextProps> = ({
             )}
         </div>
 
-        <p>{text}</p>
+        <p className="hd-help-text-text">{text}</p>
     </div>
 )

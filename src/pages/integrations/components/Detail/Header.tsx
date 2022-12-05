@@ -1,5 +1,6 @@
 import React from 'react'
 import {Badge} from 'reactstrap'
+import classNames from 'classnames'
 
 import {assetsUrl} from 'utils'
 import {IntegrationConfig} from 'config'
@@ -36,6 +37,11 @@ export default function Header(props: AppDetail | IntegrationConfig) {
                     alt={`${title}'s logo`}
                     className={css.heroImage}
                 />
+            )}
+            {isAppDetail(props) && props.icon && (
+                <i className={classNames(css.icon, 'material-icons-outlined')}>
+                    {props.icon}
+                </i>
             )}
             <div>
                 <h1 className={css.heroHeading}>{title}</h1>

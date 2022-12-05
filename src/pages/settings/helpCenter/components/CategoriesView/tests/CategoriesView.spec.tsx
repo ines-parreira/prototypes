@@ -115,7 +115,7 @@ describe('<CategoriesViews />', () => {
             </Provider>
         )
 
-        await screen.findByText('Start your Help Center here')
+        await screen.findByText('Start your help center here')
 
         expect(screen.queryByText('Uncategorized articles')).toBe(null)
     })

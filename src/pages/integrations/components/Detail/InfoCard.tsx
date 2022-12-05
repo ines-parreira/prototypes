@@ -148,14 +148,12 @@ export default function InfoCard(props: InfoCardProps) {
                                     className={css.actionButton}
                                     isDisabled={isDisabled}
                                 >
-                                    {isAppDetail(props) &&
-                                        (props.isUnapproved
-                                            ? 'Connect Unapproved App'
-                                            : 'Connect App')}
-                                    {!isAppDetail(props) &&
-                                        (props.connectTitle
-                                            ? props.connectTitle
-                                            : 'Connect App')}
+                                    {props.connectTitle
+                                        ? props.connectTitle
+                                        : isAppDetail(props) &&
+                                          props.isUnapproved
+                                        ? 'Connect Unapproved App'
+                                        : 'Connect App'}
                                 </Button>
                             </ConnectLink>
                             {isDisabled && disabledConnectionNotification
@@ -227,6 +225,31 @@ export default function InfoCard(props: InfoCardProps) {
                                     </a>
                                 </li>
                             )}
+                            {isAppDetail(props) &&
+                                props.otherResources &&
+                                props.otherResources.length > 0 &&
+                                props.otherResources.map(
+                                    ({url, title, icon}, index) => (
+                                        <li key={`resource_${index}`}>
+                                            <a
+                                                href={url}
+                                                className={css.actionLink}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                <i
+                                                    className={classNames(
+                                                        'material-icons',
+                                                        css.actionIcon
+                                                    )}
+                                                >
+                                                    {icon}
+                                                </i>
+                                                {title}
+                                            </a>
+                                        </li>
+                                    )
+                                )}
                             {privacyPolicy && (
                                 <li>
                                     <a

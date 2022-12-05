@@ -3,7 +3,6 @@ import axios from 'axios'
 import {useAsyncFn} from 'react-use'
 import {FormGroup} from 'reactstrap'
 import isHexColor from 'validator/lib/isHexColor'
-import classnames from 'classnames'
 
 import Button from 'pages/common/components/button/Button'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
@@ -42,16 +41,16 @@ import {Client, Components} from 'rest_api/help_center_api/client.generated'
 import settingsCss from 'pages/settings/settings.less'
 
 import InputField from 'pages/common/forms/input/InputField'
-import {ImageUpload} from './ImageUpload'
-import {UpdateToggle} from './UpdateToggle'
-import {FontSelectField} from './FontSelectField/FontSelectField'
-import HelpCenterPageWrapper from './HelpCenterPageWrapper'
-import {ThemeSwitch} from './ThemeSwitch'
-import {ImageRepositioningModal} from './ImageRepositioningModal'
-import css from './HelpCenterAppearanceView.less'
+import {ImageUpload} from '../ImageUpload'
+import {UpdateToggle} from '../UpdateToggle'
+import {FontSelectField} from '../FontSelectField/FontSelectField'
+import HelpCenterPageWrapper from '../HelpCenterPageWrapper'
+import {ThemeSwitch} from '../ThemeSwitch'
+import {ImageRepositioningModal} from '../ImageRepositioningModal'
 
-import {RepositionableImageUpload} from './RepositionableImageUpload/RepositionableImageUpload'
-import CloseTabModal from './CloseTabModal'
+import {RepositionableImageUpload} from '../RepositionableImageUpload/RepositionableImageUpload'
+import CloseTabModal from '../CloseTabModal'
+import css from './HelpCenterAppearanceView.less'
 
 export const HelpCenterAppearanceView: React.FC = () => {
     const dispatch = useAppDispatch()
@@ -66,6 +65,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
         helpCenter.primary_color || HELP_CENTER_DEFAULT_COLOR
     const helpCenterFont =
         helpCenter.primary_font_family || HELP_CENTER_DEFAULT_FONT
+    const [currentBrandName, setCurrentBrandName] = useState(helpCenter.name)
     const [selectedTheme, setSelectedTheme] =
         useState<HelpCenterTheme>(helpCenterTheme)
     const [currentColor, setCurrentColor] = useState(helpCenterColor)
@@ -209,6 +209,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                     theme: selectedTheme,
                     primary_color: currentColor,
                     primary_font_family: currentPrimaryFont,
+                    name: currentBrandName,
                 }
 
                 payload.brand_logo_url = await getFileUploadURL(primaryLogo)
@@ -279,6 +280,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
         selectedTheme,
         currentColor,
         currentPrimaryFont,
+        currentBrandName,
         primaryLogo,
         favicon,
         lightLogo,
@@ -301,6 +303,10 @@ export const HelpCenterAppearanceView: React.FC = () => {
             return Boolean(currentPrimaryFont)
         }
 
+        if (!!currentBrandName && currentBrandName !== helpCenter.name) {
+            return Boolean(currentBrandName)
+        }
+
         if (
             primaryLogo.isTouched ||
             lightLogo.isTouched ||
@@ -317,6 +323,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
         selectedTheme,
         currentColor,
         currentPrimaryFont,
+        currentBrandName,
         primaryLogo,
         lightLogo,
         favicon,
@@ -334,6 +341,9 @@ export const HelpCenterAppearanceView: React.FC = () => {
     const resetCurrentAppearance = () => {
         setSelectedTheme(helpCenterTheme)
         setCurrentColor(helpCenterColor)
+        setCurrentBrandName(helpCenter.name)
+        setCurrentPrimaryFont(helpCenterFont)
+        setBannerText(translation?.banner_text || '')
         bannerImage.discardFile()
         discardAllFiles()
     }
@@ -370,97 +380,104 @@ export const HelpCenterAppearanceView: React.FC = () => {
 
     return (
         <HelpCenterPageWrapper helpCenter={helpCenter}>
-            <div className={css.heading}>
-                <h3>Appearance</h3>
-                <p>Set up your Help Center's logo, color and theme.</p>
-            </div>
-            <div className={css.heading}>
-                <h4>Logo &amp; Favicon</h4>
-                <p>
-                    Select which logo you want to display on Light &amp; Dark
-                    mode as well as the favicon.
-                </p>
-            </div>
-            <section className={classnames(css.logos, settingsCss.mb40)}>
-                <ImageUpload
-                    id="primary_logo"
-                    title="Standard Logo"
-                    info="Used in the main navigation when with the light theme."
-                    imageRole="logo"
-                    file={primaryLogo.payload}
-                    defaultPreview={helpCenter.brand_logo_url || ''}
-                    onChangeFile={primaryLogo.changeFile}
-                    isTouched={primaryLogo.isTouched}
-                    helpTextProps={{
-                        highlight: getImageUploadHighlightText(
-                            primaryLogo,
-                            helpCenter.brand_logo_url
-                        ),
-                        text: 'maximum 10 MB',
-                    }}
-                />
-                <ImageUpload
-                    id="light_logo"
-                    title="Light Logo"
-                    info="Used in the main navigation when with the dark theme."
-                    imageRole="logo"
-                    file={lightLogo.payload}
-                    defaultPreview={helpCenter.brand_logo_light_url || ''}
-                    onChangeFile={lightLogo.changeFile}
-                    isTouched={lightLogo.isTouched}
-                    helpTextProps={{
-                        highlight: getImageUploadHighlightText(
-                            lightLogo,
-                            helpCenter.brand_logo_light_url
-                        ),
-                        text: 'maximum 10 MB',
-                    }}
-                />
-                <ImageUpload
-                    id="favicon"
-                    title="Favicon"
-                    info="This is shown in each browser beside your website’s name."
-                    imageRole="favicon"
-                    file={favicon.payload}
-                    defaultPreview={helpCenter.favicon_url || ''}
-                    onChangeFile={favicon.changeFile}
-                    isTouched={favicon.isTouched}
-                    helpTextProps={{
-                        highlight: getImageUploadHighlightText(
-                            favicon,
-                            helpCenter.favicon_url
-                        ),
-                        text: 'recommended size 64 x 64',
-                    }}
-                    accept="image/png,image/jpeg,image/x-icon"
-                />
-            </section>
             <section className={settingsCss.mb40}>
-                <ThemeSwitch
-                    selectedTheme={selectedTheme}
-                    currentColor={currentColor}
-                    onThemeChange={setSelectedTheme}
-                    onColorChange={setCurrentColor}
-                />
-            </section>
-            <section style={{marginTop: -20}} className={settingsCss.mb40}>
-                <FontSelectField
-                    title="Primary Font"
-                    help="This font will be applied to the website and set by default to new articles."
-                    value={currentPrimaryFont}
-                    onChange={(value) => {
-                        setCurrentPrimaryFont(value)
-                    }}
-                />
+                <div className={css.heading}>
+                    <h3>Branding</h3>
+                    <p>Set up your Help Center's logo, color and theme.</p>
+                </div>
+                <div className={settingsCss.mb24}>
+                    <InputField
+                        type="text"
+                        className={settingsCss.mb16}
+                        name="name"
+                        label="Brand name"
+                        caption="This is going to be displayed whenever your logo isn’t available and also in search engines."
+                        placeholder="Ex. Customer Support"
+                        value={currentBrandName}
+                        isRequired
+                        onChange={setCurrentBrandName}
+                    />
+                </div>
+                <div className={css.logos}>
+                    <ImageUpload
+                        id="primary_logo"
+                        title="Standard Logo"
+                        info="Used in the main navigation when with the light theme."
+                        imageRole="logo"
+                        file={primaryLogo.payload}
+                        defaultPreview={helpCenter.brand_logo_url || ''}
+                        onChangeFile={primaryLogo.changeFile}
+                        isTouched={primaryLogo.isTouched}
+                        helpTextProps={{
+                            highlight: getImageUploadHighlightText(
+                                primaryLogo,
+                                helpCenter.brand_logo_url
+                            ),
+                            text: ' - recommended size 1640 x 624',
+                            className: css.imageUpload,
+                        }}
+                    />
+                    <ImageUpload
+                        id="light_logo"
+                        title="White Logo"
+                        info="Used in the main navigation when with the dark theme."
+                        imageRole="logo"
+                        file={lightLogo.payload}
+                        defaultPreview={helpCenter.brand_logo_light_url || ''}
+                        onChangeFile={lightLogo.changeFile}
+                        isTouched={lightLogo.isTouched}
+                        helpTextProps={{
+                            highlight: getImageUploadHighlightText(
+                                lightLogo,
+                                helpCenter.brand_logo_light_url
+                            ),
+                            text: ' - recommended size 1640 x 624',
+                            className: css.imageUpload,
+                        }}
+                    />
+                    <ImageUpload
+                        id="favicon"
+                        title="Favicon"
+                        info="This is shown in each browser beside your website’s name."
+                        imageRole="favicon"
+                        file={favicon.payload}
+                        defaultPreview={helpCenter.favicon_url || ''}
+                        onChangeFile={favicon.changeFile}
+                        isTouched={favicon.isTouched}
+                        helpTextProps={{
+                            text: 'Ideally a 64px square PNG',
+                            className: css.imageUpload,
+                        }}
+                        accept="image/png,image/jpeg,image/x-icon"
+                    />
+                </div>
+                <div className={settingsCss.mb16}>
+                    <ThemeSwitch
+                        selectedTheme={selectedTheme}
+                        currentColor={currentColor}
+                        onThemeChange={setSelectedTheme}
+                        onColorChange={setCurrentColor}
+                    />
+                </div>
+                <div className={settingsCss.mb16}>
+                    <FontSelectField
+                        title="Primary Font"
+                        help="This font will be applied to the website and set by default to new articles. This will override the default font in existing articles."
+                        value={currentPrimaryFont}
+                        onChange={(value) => {
+                            setCurrentPrimaryFont(value)
+                        }}
+                    />
+                </div>
             </section>
             <section className={settingsCss.mb40}>
                 <div className={css.bannerHeader}>
                     <div className={css.bannerHeaderText}>
                         <div className={css.heading}>
-                            <h3>Background settings</h3>
+                            <h3>Banner settings</h3>
                             <p>
-                                Add a banner title in multiple languages and a
-                                background image.
+                                Add a banner background image and set titles in
+                                multiple languages.
                             </p>
                         </div>
                     </div>
@@ -474,12 +491,18 @@ export const HelpCenterAppearanceView: React.FC = () => {
                         />
                     </div>
                 </div>
+                <UpdateToggle
+                    activated={helpCenter.search_deactivated_datetime === null}
+                    label="Search bar"
+                    description="Allow customers to search articles and categories."
+                    fieldName="search_deactivated"
+                />
                 <div>
                     <InputField
                         className={settingsCss.mb16}
                         type="text"
                         name="name"
-                        label="Banner title"
+                        label="Title"
                         placeholder="Banner title"
                         value={bannerText}
                         onChange={setBannerText}
@@ -487,7 +510,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                 </div>
                 <RepositionableImageUpload
                     id="banner_image"
-                    title="Banner Background"
+                    title="Background"
                     imageRole="bannerImage"
                     file={bannerImage.payload}
                     defaultPreview={bannerImageUrl || ''}
@@ -501,7 +524,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                             bannerImage,
                             bannerImageUrl
                         ),
-                        text: 'Use 2500px wide images for best quality. Images less than 1440px wide may appear blurry. File size of 500 KB or less will help your help center load quickly. Max file size 10 MB.',
+                        text: 'Recommended file size: 2500px wide, 500KB or less. Max file size: 10MB.',
                     }}
                     verticalOffset={translation?.banner_image_vertical_offset}
                     inputRef={bannerInputRef}
@@ -579,23 +602,6 @@ export const HelpCenterAppearanceView: React.FC = () => {
                             batchApply: batchApply,
                         })
                     }}
-                />
-            </section>
-            <section className={settingsCss.mb40}>
-                <h3>Other settings</h3>
-                <UpdateToggle
-                    activated={helpCenter.search_deactivated_datetime === null}
-                    label="Enable search bar"
-                    description="Use this toggle to display or hide the search bar in your Help Center."
-                    fieldName="search_deactivated"
-                />
-                <UpdateToggle
-                    activated={
-                        helpCenter.powered_by_deactivated_datetime === null
-                    }
-                    label="Powered by Gorgias"
-                    description="Use this toggle to display or hide the Gorgias branding on the footer in Help Center."
-                    fieldName="powered_by_deactivated"
                 />
             </section>
             <footer>

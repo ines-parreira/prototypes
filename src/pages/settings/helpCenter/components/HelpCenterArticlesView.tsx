@@ -4,8 +4,6 @@ import copy from 'copy-to-clipboard'
 import _isEqual from 'lodash/isEqual'
 import {usePrevious} from 'react-use'
 
-import Button from 'pages/common/components/button/Button'
-
 import {useLimitations} from 'hooks/helpCenter/useLimitations'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -755,6 +753,10 @@ export const HelpCenterArticlesView: React.FC = () => {
         can('update', 'ArticleEntity')
     )
 
+    const canUpdateCategory = isPassingRulesCheck(({can}) =>
+        can('update', 'CategoryEntity')
+    )
+
     /**
      * Derived values
      */
@@ -857,33 +859,6 @@ export const HelpCenterArticlesView: React.FC = () => {
     return (
         <HelpCenterPageWrapper
             helpCenter={helpCenter}
-            actions={
-                <>
-                    <Button
-                        intent="secondary"
-                        onClick={onCategoryCreate}
-                        isDisabled={
-                            !isPassingRulesCheck(({can}) =>
-                                can('create', 'CategoryEntity')
-                            )
-                        }
-                    >
-                        Create Category
-                    </Button>
-                    <Button
-                        isDisabled={
-                            isPassingRulesCheck(({can}) =>
-                                can('create', 'ArticleEntity')
-                            )
-                                ? limitations.createArticle.disabled
-                                : true
-                        }
-                        onClick={onArticleCreate}
-                    >
-                        Create Article
-                    </Button>
-                </>
-            }
             fluidContainer={false}
             className={css.wrapper}
         >
@@ -895,6 +870,12 @@ export const HelpCenterArticlesView: React.FC = () => {
                 helpCenter={helpCenter}
                 onArticleClick={onArticleSelect}
                 onArticleClickSettings={onArticleRowSettingsClick}
+                onArticleCreate={onArticleCreate}
+                onCategoryCreate={onCategoryCreate}
+                canUpdateArticle={
+                    canUpdateArticle && !limitations.createArticle.disabled
+                }
+                canUpdateCategory={canUpdateCategory}
             />
 
             {isReady && !isSearching && (

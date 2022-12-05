@@ -123,9 +123,7 @@ describe('<SelfServiceSection/>', () => {
         )
 
         await waitFor(() => {
-            fireEvent.click(
-                getByText('Enable self-service for this Help Center')
-            )
+            fireEvent.click(getByText('Self-service flows'))
         })
 
         expect(mockedUpdateHelpCenter).toHaveBeenLastCalledWith({

@@ -8,11 +8,13 @@ exports[`<ConnectToShopSection /> renders in disabled state while fetching data 
     <h4>
       Connect to Shopify store
     </h4>
-    <p>
+    <p
+      class="connectDescription"
+    >
       Connect this Help Center to a Shopify store to enable Self-service flows.
     </p>
     <button
-      class="wrapper fill primary medium"
+      class="wrapper fill secondary medium"
       type="button"
     >
       Connect

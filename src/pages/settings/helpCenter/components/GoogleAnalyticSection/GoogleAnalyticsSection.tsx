@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import classNames from 'classnames'
 import settingsCss from 'pages/settings/settings.less'
 import InputField from '../../../../common/forms/input/InputField'
@@ -17,13 +17,18 @@ export const GoogleAnalyticsSection = ({onChange, onDelete, gaid}: Props) => {
 
     const handleChange = (nextValue: string) => {
         const upperCased = nextValue.toUpperCase()
+
+        onChange(upperCased)
+    }
+
+    useEffect(() => {
+        const upperCased = gaid.toUpperCase()
         if (upperCased && !isValidGaid(upperCased)) {
             setError('Invalid Google analytics ID value')
         } else {
             setError('')
         }
-        onChange(upperCased)
-    }
+    }, [gaid])
 
     return (
         <section className={settingsCss.mb40}>

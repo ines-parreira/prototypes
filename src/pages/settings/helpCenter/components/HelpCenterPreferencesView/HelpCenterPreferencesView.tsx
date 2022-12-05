@@ -9,7 +9,6 @@ import CloseTabModal from '../CloseTabModal'
 import HelpCenterPageWrapper from '../HelpCenterPageWrapper'
 import {AvailableLanguagesTags} from './components/AvailableLanguagesTags'
 import {DefaultLanguageSelect} from './components/DefaultLanguageSelect'
-import {DisplayName} from './components/DisplayName'
 import {FooterActions} from './components/FooterActions'
 import {SEO} from './components/SEO'
 
@@ -27,7 +26,6 @@ export const HelpCenterPreferencesView: React.FC = () => {
 
     return (
         <HelpCenterPageWrapper helpCenter={helpCenter} showLanguageSelector>
-            <DisplayName />
             <section className={settingsCss.mb40}>
                 <h3>Languages</h3>
                 <DefaultLanguageSelect availableLocales={locales} />

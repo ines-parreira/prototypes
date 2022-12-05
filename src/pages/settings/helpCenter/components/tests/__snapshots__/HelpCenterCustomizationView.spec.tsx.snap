@@ -94,16 +94,16 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/help-center/1/self-service"
+        to="/app/settings/help-center/1/automation"
       >
-        Self-service
+        Automation
       </a>
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/help-center/1/installation"
+        to="/app/settings/help-center/1/publish-track"
       >
-        Installation
+        Publish & Track
       </a>
     </nav>
     <div
@@ -321,6 +321,33 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
               </label>
             </div>
           </div>
+          <div
+            class="mb24"
+          >
+            <div
+              class="toggle"
+            >
+              <label
+                aria-checked="true"
+                class="label label"
+                for="toggle-button-3"
+                role="switch"
+              >
+                <input
+                  checked=""
+                  class="input"
+                  disabled=""
+                  id="toggle-button-3"
+                  name="toggle-button-3"
+                  type="checkbox"
+                />
+                <div
+                  class="slider"
+                />
+                Powered by Gorgias
+              </label>
+            </div>
+          </div>
           <h5>
             Navigation Links
           </h5>
@@ -474,14 +501,14 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
               <label
                 aria-checked="false"
                 class="label label"
-                for="toggle-button-3"
+                for="toggle-button-4"
                 role="switch"
               >
                 <input
                   class="input"
                   disabled=""
-                  id="toggle-button-3"
-                  name="toggle-button-3"
+                  id="toggle-button-4"
+                  name="toggle-button-4"
                   type="checkbox"
                 />
                 <div
@@ -496,7 +523,8 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
           class="form-group"
         >
           <button
-            class="wrapper mr-2 fill primary medium"
+            class="wrapper mr-2 fill primary medium isDisabled"
+            disabled=""
             type="button"
           >
             Save Changes

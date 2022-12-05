@@ -10,6 +10,7 @@ import css from './SubdomainInput.less'
 
 export type SubdomainInputProps = {
     label?: string
+    caption?: string
     tooltip?: string
     name?: string
     placeholder?: string
@@ -21,6 +22,7 @@ export type SubdomainInputProps = {
 
 export const SubdomainInput: React.FC<SubdomainInputProps> = ({
     label = 'Subdomain',
+    caption,
     tooltip,
     name = 'subdomain',
     value = '',
@@ -30,7 +32,7 @@ export const SubdomainInput: React.FC<SubdomainInputProps> = ({
     className,
 }: SubdomainInputProps) => {
     const help = useMemo(() => {
-        if (!error) return null
+        if (!error) return caption
 
         if (typeof value === 'string' && !isValidSubdomain(value)) {
             return (
@@ -65,7 +67,7 @@ export const SubdomainInput: React.FC<SubdomainInputProps> = ({
                 {error}
             </span>
         )
-    }, [value, error])
+    }, [value, error, caption])
 
     return (
         <DEPRECATED_InputField
@@ -77,11 +79,12 @@ export const SubdomainInput: React.FC<SubdomainInputProps> = ({
                 className
             )}
             type="text"
-            name={name}
             label={label}
+            name={name}
             help={help}
             tooltip={tooltip}
             placeholder={placeholder}
+            caption={caption}
             rightAddon={HELP_CENTER_DOMAIN}
             value={value}
             onChange={onChange}

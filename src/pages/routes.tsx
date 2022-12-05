@@ -821,7 +821,7 @@ export function HelpCenterSettingsRoutes({match: {path}}: RouteComponentProps) {
             <SupportedLocalesProvider>
                 <Switch>
                     <Route
-                        path={`${path}/`}
+                        path={[`${path}/`, `${path}/about`, `${path}/manage`]}
                         exact
                         render={appRender({
                             content: withFeaturePaywall(

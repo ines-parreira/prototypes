@@ -13,7 +13,7 @@ import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixt
 import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
-import HelpCenterAppearanceView from '../HelpCenterAppearanceView'
+import HelpCenterAppearanceView from '../HelpCenterAppearanceView/HelpCenterAppearanceView'
 import {getHelpCenterTranslationsResponseFixture} from '../../fixtures/getHelpCenterTranslationsResponse.fixture'
 import {HelpCenterTranslationProvider} from '../../providers/HelpCenterTranslation'
 

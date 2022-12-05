@@ -11,6 +11,8 @@ import React, {
 import _toArray from 'lodash/toArray'
 import classNames from 'classnames'
 
+import Button from 'pages/common/components/button/Button'
+
 import css from './DropZone.less'
 
 export type DropZoneProps = {
@@ -159,6 +161,17 @@ export const DropZone: FunctionComponent<DropZoneProps> = ({
                 >
                     <div className={css.content}>{children}</div>
                 </div>
+                {imageRole === 'favicon' && (
+                    <Button
+                        intent="secondary"
+                        className={css.uploadButton}
+                        onClick={() => {
+                            inputRef.current?.click()
+                        }}
+                    >
+                        <i className="material-icons">attachment</i>Upload
+                    </Button>
+                )}
             </label>
             <input
                 ref={inputRef}

@@ -12,7 +12,7 @@ function getSubdomainInput(component: JSX.Element): HTMLInputElement {
 describe('<SubdomainSection />', () => {
     it('renders the default domain name if no domain is passed', async () => {
         const {findByText} = render(
-            <SubdomainSection value="" href="" onChange={jest.fn} />
+            <SubdomainSection value="" caption="" onChange={jest.fn} />
         )
 
         await findByText(HELP_CENTER_DOMAIN)
@@ -20,7 +20,7 @@ describe('<SubdomainSection />', () => {
 
     it('renders the subdomain value in the input', () => {
         const {value} = getSubdomainInput(
-            <SubdomainSection value="my-domain" href="" onChange={jest.fn} />
+            <SubdomainSection value="my-domain" caption="" onChange={jest.fn} />
         )
 
         expect(value).toEqual('my-domain')
@@ -30,7 +30,7 @@ describe('<SubdomainSection />', () => {
         const {placeholder} = getSubdomainInput(
             <SubdomainSection
                 value=""
-                href=""
+                caption=""
                 placeholder="input something"
                 onChange={jest.fn}
             />
@@ -44,7 +44,7 @@ describe('<SubdomainSection />', () => {
             const {getByTestId} = render(
                 <SubdomainSection
                     value="domain-test"
-                    href=""
+                    caption=""
                     onChange={jest.fn}
                     error={
                         'Subdomain is invalid or contains forbidden keywords'

@@ -24,7 +24,7 @@ import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
 import {GorgiasFieldsMappingsLocalized} from './Imports/components/CsvColumnMatching/types'
 import {gorgiasFieldsMappingsLocalizedToDto} from './Imports/components/CsvColumnMatching/utils'
 
-const urlToInstallation = (
+const urlToArticles = (
     helpCenterId: number,
     locationPathname: string
 ): string => {
@@ -32,7 +32,7 @@ const urlToInstallation = (
         helpCenterId.toString()
     )[0]
 
-    return `${helpCenterRootPath}${helpCenterId}/installation`
+    return `${helpCenterRootPath}${helpCenterId}/articles`
 }
 
 const notifyPartialImport = (
@@ -130,7 +130,7 @@ export const HelpCenterImportCsvColumnMatchingView: React.FC = () => {
                         })
 
                         history.push(
-                            urlToInstallation(helpCenter.id, location.pathname)
+                            urlToArticles(helpCenter.id, location.pathname)
                         )
                     } else {
                         setCsvColumns(response.data.result.columns)
@@ -215,9 +215,7 @@ export const HelpCenterImportCsvColumnMatchingView: React.FC = () => {
                     } else if (report.status === 'PARTIAL') {
                         void dispatch(notify(notifyPartialImport(report)))
 
-                        return history.push(
-                            `${baseHelpCenterPath}/installation`
-                        )
+                        return history.push(`${baseHelpCenterPath}/articles`)
                     } else if (report.status === 'FAILED') {
                         void dispatch(
                             notify({
@@ -227,9 +225,7 @@ export const HelpCenterImportCsvColumnMatchingView: React.FC = () => {
                             })
                         )
 
-                        return history.push(
-                            `${baseHelpCenterPath}/installation`
-                        )
+                        return history.push(`${baseHelpCenterPath}/articles`)
                     }
                 })
                 .catch((error: AxiosError) => {
@@ -252,7 +248,7 @@ export const HelpCenterImportCsvColumnMatchingView: React.FC = () => {
     }
 
     const handleOnCancel = () => {
-        history.push(urlToInstallation(helpCenter.id, location.pathname))
+        history.push(urlToArticles(helpCenter.id, location.pathname))
     }
 
     return (

@@ -75,7 +75,10 @@ export const ConnectToShopSection = ({
                 {
                     value: NO_SELECTED_SHOP,
                     label: optionLabel(
-                        <span className={css['select-default']}>
+                        <span
+                            className={css['select-default']}
+                            data-testid="selectStore"
+                        >
                             Select store
                         </span>
                     ),
@@ -91,7 +94,7 @@ export const ConnectToShopSection = ({
         <section className={settingsCss.mb40}>
             <h4>Connect to Shopify store</h4>
 
-            <p>
+            <p className={css.connectDescription}>
                 Connect this Help Center to a Shopify store to enable
                 Self-service flows.
             </p>
@@ -162,7 +165,10 @@ export const ConnectToShopSection = ({
                     </Popover>
                 </div>
             ) : (
-                <Button onClick={() => setConnectModalOpen(true)}>
+                <Button
+                    intent="secondary"
+                    onClick={() => setConnectModalOpen(true)}
+                >
                     Connect
                 </Button>
             )}
@@ -200,17 +206,7 @@ export const ConnectToShopSection = ({
                 }
             >
                 <>
-                    <p>
-                        Activate the customer chat widget on your Shopify store
-                        in one click.
-                        {hasAutomationAddOn && (
-                            <span>
-                                {' '}
-                                Note that this will automatically enable
-                                Self-Service.
-                            </span>
-                        )}
-                    </p>
+                    <div className={css.selectStoreLabel}>Select store</div>
 
                     <SelectField
                         value={selectedShop}

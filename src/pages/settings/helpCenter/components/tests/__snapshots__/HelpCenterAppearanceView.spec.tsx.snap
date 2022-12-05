@@ -94,16 +94,16 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/help-center/1/self-service"
+        to="/app/settings/help-center/1/automation"
       >
-        Self-service
+        Automation
       </a>
       <a
         activeclassname="active"
         class="link"
-        to="/app/settings/help-center/1/installation"
+        to="/app/settings/help-center/1/publish-track"
       >
-        Installation
+        Publish & Track
       </a>
     </nav>
     <div
@@ -112,559 +112,598 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
       <div
         class="contentWrapper"
       >
-        <div
-          class="heading"
-        >
-          <h3>
-            Appearance
-          </h3>
-          <p>
-            Set up your Help Center's logo, color and theme.
-          </p>
-        </div>
-        <div
-          class="heading"
-        >
-          <h4>
-            Logo & Favicon
-          </h4>
-          <p>
-            Select which logo you want to display on Light & Dark mode as well as the favicon.
-          </p>
-        </div>
-        <section
-          class="logos mb40"
-        >
-          <div
-            class="container"
-          >
-            <div
-              class="container"
-            >
-              Standard Logo
-              <i
-                class="help material-icons-outlined ml-2"
-                role="img"
-              >
-                info
-              </i>
-            </div>
-            <label
-              class="wrapper"
-              data-testid="dropZone"
-              for="primary_logo"
-            >
-              <div
-                class="container logo dropZone"
-              >
-                <div
-                  class="content"
-                >
-                  <div
-                    class="content"
-                  >
-                    <div
-                      class="wrapper"
-                    >
-                      <img
-                        alt="upload"
-                        class="icon"
-                        src="test-file-stub"
-                      />
-                      <div
-                        class="text"
-                      >
-                        <span>
-                          Drop your image here, or
-                        </span>
-                        <span
-                          class="browseInput"
-                        >
-                          browse
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </label>
-            <input
-              accept="image/jpeg,image/png"
-              id="primary_logo"
-              style="display: none;"
-              type="file"
-            />
-            <div
-              class="container"
-            >
-              <div
-                class="actions"
-              >
-                <div
-                  class="highlight clickable"
-                >
-                  Upload image
-                </div>
-              </div>
-              <p>
-                maximum 10 MB
-              </p>
-            </div>
-          </div>
-          <div
-            class="container"
-          >
-            <div
-              class="container"
-            >
-              Light Logo
-              <i
-                class="help material-icons-outlined ml-2"
-                role="img"
-              >
-                info
-              </i>
-            </div>
-            <label
-              class="wrapper"
-              data-testid="dropZone"
-              for="light_logo"
-            >
-              <div
-                class="container logo dropZone"
-              >
-                <div
-                  class="content"
-                >
-                  <div
-                    class="content"
-                  >
-                    <div
-                      class="wrapper"
-                    >
-                      <img
-                        alt="upload"
-                        class="icon"
-                        src="test-file-stub"
-                      />
-                      <div
-                        class="text"
-                      >
-                        <span>
-                          Drop your image here, or
-                        </span>
-                        <span
-                          class="browseInput"
-                        >
-                          browse
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </label>
-            <input
-              accept="image/jpeg,image/png"
-              id="light_logo"
-              style="display: none;"
-              type="file"
-            />
-            <div
-              class="container"
-            >
-              <div
-                class="actions"
-              >
-                <div
-                  class="highlight clickable"
-                >
-                  Upload image
-                </div>
-              </div>
-              <p>
-                maximum 10 MB
-              </p>
-            </div>
-          </div>
-          <div
-            class="container"
-          >
-            <div
-              class="container"
-            >
-              Favicon
-              <i
-                class="help material-icons-outlined ml-2"
-                role="img"
-              >
-                info
-              </i>
-            </div>
-            <label
-              class="wrapper"
-              data-testid="dropZone"
-              for="favicon"
-            >
-              <div
-                class="container favicon dropZone"
-              >
-                <div
-                  class="content"
-                >
-                  <div
-                    class="content"
-                  >
-                    <div
-                      class="wrapper"
-                    >
-                      <img
-                        alt="upload"
-                        class="icon icon-small"
-                        src="test-file-stub"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </label>
-            <input
-              accept="image/png,image/jpeg,image/x-icon"
-              id="favicon"
-              style="display: none;"
-              type="file"
-            />
-            <div
-              class="container"
-            >
-              <div
-                class="actions"
-              >
-                <div
-                  class="highlight clickable"
-                >
-                  Upload image
-                </div>
-              </div>
-              <p>
-                recommended size 64 x 64
-              </p>
-            </div>
-          </div>
-        </section>
         <section
           class="mb40"
         >
-          <h4>
-            Theme
-          </h4>
-          <p>
-            Select which theme you prefer to use in your Help Center. 
-            <b>
-              This will affect the header & footer.
-            </b>
-          </p>
           <div
-            class="list"
+            class="heading"
+          >
+            <h3>
+              Branding
+            </h3>
+            <p>
+              Set up your Help Center's logo, color and theme.
+            </p>
+          </div>
+          <div
+            class="mb24"
           >
             <div
-              aria-checked="true"
-              aria-label="Light Theme"
-              class="wrapper selected"
-              role="radio"
-              tabindex="0"
+              class="mb16"
             >
-              <div
-                class="preview"
-                role="img"
+              <label
+                class="label label"
+                for="input-text-1"
               >
-                <img
-                  alt="preview-light"
-                  src="test-file-stub"
+                Brand name
+                <abbr
+                  aria-label="required"
+                  class="abbr"
+                  title="required"
+                >
+                  *
+                </abbr>
+              </label>
+              <div
+                class="wrapper"
+              >
+                <input
+                  aria-describedby="input-text-1-caption"
+                  class="input"
+                  id="input-text-1"
+                  name="name"
+                  placeholder="Ex. Customer Support"
+                  required=""
+                  type="text"
+                  value="ACME Help Center"
                 />
               </div>
-              <div>
-                <label
-                  class="label label"
-                  for="light"
-                >
-                  <input
-                    checked=""
-                    class="input"
-                    id="light"
-                    name="theme"
-                    tabindex="-1"
-                    type="radio"
-                  />
-                  Light Theme
-                </label>
-              </div>
-            </div>
-            <div
-              aria-checked="false"
-              aria-label="Dark Theme"
-              class="wrapper"
-              role="radio"
-              tabindex="0"
-            >
               <div
-                class="preview"
-                role="img"
+                class="caption"
+                id="input-text-1-caption"
               >
-                <img
-                  alt="preview-dark"
-                  src="test-file-stub"
-                />
-              </div>
-              <div>
-                <label
-                  class="label label"
-                  for="dark"
-                >
-                  <input
-                    class="input"
-                    id="dark"
-                    name="theme"
-                    tabindex="-1"
-                    type="radio"
-                  />
-                  Dark Theme
-                </label>
+                This is going to be displayed whenever your logo isn’t available and also in search engines.
               </div>
             </div>
           </div>
           <div
-            class="InputField form-group"
-            color=""
+            class="logos"
+          >
+            <div
+              class="container"
+            >
+              <div
+                class="container"
+              >
+                Standard Logo
+                <i
+                  class="help material-icons-outlined ml-2"
+                  role="img"
+                >
+                  info
+                </i>
+              </div>
+              <label
+                class="wrapper"
+                data-testid="dropZone"
+                for="primary_logo"
+              >
+                <div
+                  class="container logo dropZone"
+                >
+                  <div
+                    class="content"
+                  >
+                    <div
+                      class="content"
+                    >
+                      <div
+                        class="wrapper"
+                      >
+                        <img
+                          alt="upload"
+                          class="icon"
+                          src="test-file-stub"
+                        />
+                        <div
+                          class="text"
+                        >
+                          <span>
+                            Drop your image here, or
+                          </span>
+                          <span
+                            class="browseInput"
+                          >
+                            browse
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </label>
+              <input
+                accept="image/jpeg,image/png"
+                id="primary_logo"
+                style="display: none;"
+                type="file"
+              />
+              <div
+                class="container imageUpload"
+              >
+                <div
+                  class="actions hd-help-text-actions"
+                >
+                  <div
+                    class="highlight clickable"
+                  >
+                    Upload image
+                  </div>
+                </div>
+                <p
+                  class="hd-help-text-text"
+                >
+                   - recommended size 1640 x 624
+                </p>
+              </div>
+            </div>
+            <div
+              class="container"
+            >
+              <div
+                class="container"
+              >
+                White Logo
+                <i
+                  class="help material-icons-outlined ml-2"
+                  role="img"
+                >
+                  info
+                </i>
+              </div>
+              <label
+                class="wrapper"
+                data-testid="dropZone"
+                for="light_logo"
+              >
+                <div
+                  class="container logo dropZone"
+                >
+                  <div
+                    class="content"
+                  >
+                    <div
+                      class="content"
+                    >
+                      <div
+                        class="wrapper"
+                      >
+                        <img
+                          alt="upload"
+                          class="icon"
+                          src="test-file-stub"
+                        />
+                        <div
+                          class="text"
+                        >
+                          <span>
+                            Drop your image here, or
+                          </span>
+                          <span
+                            class="browseInput"
+                          >
+                            browse
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </label>
+              <input
+                accept="image/jpeg,image/png"
+                id="light_logo"
+                style="display: none;"
+                type="file"
+              />
+              <div
+                class="container imageUpload"
+              >
+                <div
+                  class="actions hd-help-text-actions"
+                >
+                  <div
+                    class="highlight clickable"
+                  >
+                    Upload image
+                  </div>
+                </div>
+                <p
+                  class="hd-help-text-text"
+                >
+                   - recommended size 1640 x 624
+                </p>
+              </div>
+            </div>
+            <div
+              class="container"
+            >
+              <div
+                class="container"
+              >
+                Favicon
+                <i
+                  class="help material-icons-outlined ml-2"
+                  role="img"
+                >
+                  info
+                </i>
+              </div>
+              <label
+                class="wrapper"
+                data-testid="dropZone"
+                for="favicon"
+              >
+                <div
+                  class="container favicon dropZone"
+                >
+                  <div
+                    class="content"
+                  >
+                    <div
+                      class="content"
+                    >
+                      <div
+                        class="wrapper"
+                      >
+                        <img
+                          alt="upload"
+                          class="icon icon-small"
+                          src="test-file-stub"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <button
+                  class="wrapper uploadButton fill secondary medium"
+                  type="button"
+                >
+                  <i
+                    class="material-icons"
+                  >
+                    attachment
+                  </i>
+                  Upload
+                </button>
+              </label>
+              <input
+                accept="image/png,image/jpeg,image/x-icon"
+                id="favicon"
+                style="display: none;"
+                type="file"
+              />
+              <div
+                class="container imageUpload"
+              >
+                <div
+                  class="actions hd-help-text-actions"
+                />
+                <p
+                  class="hd-help-text-text"
+                >
+                  Ideally a 64px square PNG
+                </p>
+              </div>
+            </div>
+          </div>
+          <div
+            class="mb16"
+          >
+            <h4>
+              Header & footer theme
+            </h4>
+            <div
+              class="list"
+            >
+              <div
+                aria-checked="true"
+                aria-label="Light Theme"
+                class="wrapper selected"
+                role="radio"
+                tabindex="0"
+              >
+                <div
+                  class="preview"
+                  role="img"
+                >
+                  <img
+                    alt="preview-light"
+                    src="test-file-stub"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="label label"
+                    for="light"
+                  >
+                    <input
+                      checked=""
+                      class="input"
+                      id="light"
+                      name="theme"
+                      tabindex="-1"
+                      type="radio"
+                    />
+                    Light Theme
+                  </label>
+                </div>
+              </div>
+              <div
+                aria-checked="false"
+                aria-label="Dark Theme"
+                class="wrapper"
+                role="radio"
+                tabindex="0"
+              >
+                <div
+                  class="preview"
+                  role="img"
+                >
+                  <img
+                    alt="preview-dark"
+                    src="test-file-stub"
+                  />
+                </div>
+                <div>
+                  <label
+                    class="label label"
+                    for="dark"
+                  >
+                    <input
+                      class="input"
+                      id="dark"
+                      name="theme"
+                      tabindex="-1"
+                      type="radio"
+                    />
+                    Dark Theme
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div
+              class="InputField form-group"
+              color=""
+            >
+              <label
+                class="control-label"
+                for="id-input-3"
+              >
+                Primary Color
+              </label>
+              <div
+                class=""
+              >
+                <div
+                  class="d-inline-block"
+                >
+                  <button
+                    class="wrapper fill secondary medium"
+                    id="color-picker-4"
+                    type="button"
+                  >
+                    <div
+                      class="color"
+                      style="background-color: rgb(74, 141, 249);"
+                    />
+                  </button>
+                </div>
+              </div>
+              <small
+                class="form-text text-muted"
+              >
+                This color will be used for hyperlinks, section titles, pagination buttons and icons.
+              </small>
+            </div>
+          </div>
+          <div
+            class="mb16"
           >
             <label
               class="control-label"
-              for="id-input-1"
             >
-              Primary Color
+              Primary Font
             </label>
-            <div
-              class=""
-            >
+            <div>
               <div
-                class="d-inline-block"
+                class="dropdown"
               >
-                <button
-                  class="wrapper fill secondary medium"
-                  id="color-picker-2"
-                  type="button"
+                <div
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  class=""
+                  data-toggle="dropdown"
                 >
                   <div
-                    class="color"
-                    style="background-color: rgb(74, 141, 249);"
-                  />
-                </button>
+                    class="select dropdown-toggle selectFullWidth"
+                  >
+                    <span
+                      class="label"
+                      style="min-width: 10px; opacity: 1;"
+                    >
+                      <span
+                        style="font-family: Inter;"
+                      >
+                        Inter
+                      </span>
+                    </span>
+                    <input
+                      autocomplete="chrome-off"
+                      class="input"
+                      style="min-width: 10px;"
+                      type="text"
+                      value=""
+                    />
+                    <i
+                      class="material-icons dropdownIcon"
+                    >
+                      arrow_drop_down
+                    </i>
+                  </div>
+                </div>
+                <div
+                  aria-hidden="true"
+                  class="options longDropdown optionsFullWidth dropdown-menu"
+                  role="menu"
+                  tabindex="-1"
+                >
+                  
+                  <div>
+                    <h6
+                      class="action action--focused dropdown-header"
+                      tabindex="-1"
+                      type="button"
+                    >
+                      <div
+                        class="dropdownAction"
+                      >
+                        <div
+                          class="dropdownActionIcon"
+                        >
+                          <i
+                            class="material-icons"
+                          >
+                            add
+                          </i>
+                        </div>
+                        <span>
+                          More fonts
+                        </span>
+                      </div>
+                    </h6>
+                  </div>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      <span
+                        style="font-family: Arial;"
+                      >
+                        Arial
+                      </span>
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      <span
+                        style="font-family: Georgia;"
+                      >
+                        Georgia
+                      </span>
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      <span
+                        style="font-family: Impact;"
+                      >
+                        Impact
+                      </span>
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      <span
+                        style="font-family: Merriweather;"
+                      >
+                        Merriweather
+                      </span>
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      <span
+                        style="font-family: Source Code Pro;"
+                      >
+                        Source Code Pro
+                      </span>
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      <span
+                        style="font-family: Tahoma;"
+                      >
+                        Tahoma
+                      </span>
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      <span
+                        style="font-family: Times New Roman;"
+                      >
+                        Times New Roman
+                      </span>
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      <span
+                        style="font-family: Verdana;"
+                      >
+                        Verdana
+                      </span>
+                    </span>
+                  </button>
+                </div>
               </div>
             </div>
             <small
               class="form-text text-muted"
             >
-              This color will be used for hyperlinks, section titles, pagination buttons and icons.
+              This font will be applied to the website and set by default to new articles. This will override the default font in existing articles.
             </small>
           </div>
-        </section>
-        <section
-          class="mb40"
-          style="margin-top: -20px;"
-        >
-          <label
-            class="control-label"
-          >
-            Primary Font
-          </label>
-          <div>
-            <div
-              class="dropdown"
-            >
-              <div
-                aria-expanded="false"
-                aria-haspopup="true"
-                class=""
-                data-toggle="dropdown"
-              >
-                <div
-                  class="select dropdown-toggle selectFullWidth"
-                >
-                  <span
-                    class="label"
-                    style="min-width: 10px; opacity: 1;"
-                  >
-                    <span
-                      style="font-family: Inter;"
-                    >
-                      Inter
-                    </span>
-                  </span>
-                  <input
-                    autocomplete="chrome-off"
-                    class="input"
-                    style="min-width: 10px;"
-                    type="text"
-                    value=""
-                  />
-                  <i
-                    class="material-icons dropdownIcon"
-                  >
-                    arrow_drop_down
-                  </i>
-                </div>
-              </div>
-              <div
-                aria-hidden="true"
-                class="options longDropdown optionsFullWidth dropdown-menu"
-                role="menu"
-                tabindex="-1"
-              >
-                
-                <div>
-                  <h6
-                    class="action action--focused dropdown-header"
-                    tabindex="-1"
-                    type="button"
-                  >
-                    <div
-                      class="dropdownAction"
-                    >
-                      <div
-                        class="dropdownActionIcon"
-                      >
-                        <i
-                          class="material-icons"
-                        >
-                          add
-                        </i>
-                      </div>
-                      <span>
-                        More fonts
-                      </span>
-                    </div>
-                  </h6>
-                </div>
-                <button
-                  class="option dropdown-item"
-                  role="menuitem"
-                  tabindex="0"
-                  type="button"
-                >
-                  <span>
-                    <span
-                      style="font-family: Arial;"
-                    >
-                      Arial
-                    </span>
-                  </span>
-                </button>
-                <button
-                  class="option dropdown-item"
-                  role="menuitem"
-                  tabindex="0"
-                  type="button"
-                >
-                  <span>
-                    <span
-                      style="font-family: Georgia;"
-                    >
-                      Georgia
-                    </span>
-                  </span>
-                </button>
-                <button
-                  class="option dropdown-item"
-                  role="menuitem"
-                  tabindex="0"
-                  type="button"
-                >
-                  <span>
-                    <span
-                      style="font-family: Impact;"
-                    >
-                      Impact
-                    </span>
-                  </span>
-                </button>
-                <button
-                  class="option dropdown-item"
-                  role="menuitem"
-                  tabindex="0"
-                  type="button"
-                >
-                  <span>
-                    <span
-                      style="font-family: Merriweather;"
-                    >
-                      Merriweather
-                    </span>
-                  </span>
-                </button>
-                <button
-                  class="option dropdown-item"
-                  role="menuitem"
-                  tabindex="0"
-                  type="button"
-                >
-                  <span>
-                    <span
-                      style="font-family: Source Code Pro;"
-                    >
-                      Source Code Pro
-                    </span>
-                  </span>
-                </button>
-                <button
-                  class="option dropdown-item"
-                  role="menuitem"
-                  tabindex="0"
-                  type="button"
-                >
-                  <span>
-                    <span
-                      style="font-family: Tahoma;"
-                    >
-                      Tahoma
-                    </span>
-                  </span>
-                </button>
-                <button
-                  class="option dropdown-item"
-                  role="menuitem"
-                  tabindex="0"
-                  type="button"
-                >
-                  <span>
-                    <span
-                      style="font-family: Times New Roman;"
-                    >
-                      Times New Roman
-                    </span>
-                  </span>
-                </button>
-                <button
-                  class="option dropdown-item"
-                  role="menuitem"
-                  tabindex="0"
-                  type="button"
-                >
-                  <span>
-                    <span
-                      style="font-family: Verdana;"
-                    >
-                      Verdana
-                    </span>
-                  </span>
-                </button>
-              </div>
-            </div>
-          </div>
-          <small
-            class="form-text text-muted"
-          >
-            This font will be applied to the website and set by default to new articles.
-          </small>
         </section>
         <section
           class="mb40"
@@ -679,10 +718,10 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                 class="heading"
               >
                 <h3>
-                  Background settings
+                  Banner settings
                 </h3>
                 <p>
-                  Add a banner title in multiple languages and a background image.
+                  Add a banner background image and set titles in multiple languages.
                 </p>
               </div>
             </div>
@@ -762,22 +801,49 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               </div>
             </div>
           </div>
+          <div
+            class="toggle"
+          >
+            <label
+              aria-checked="false"
+              class="label label"
+              for="toggle-button-5"
+              role="switch"
+            >
+              <input
+                class="input"
+                disabled=""
+                id="toggle-button-5"
+                name="toggle-button-5"
+                type="checkbox"
+              />
+              <div
+                class="slider"
+              />
+              Search bar
+            </label>
+            <div
+              class="caption caption"
+            >
+              Allow customers to search articles and categories.
+            </div>
+          </div>
           <div>
             <div
               class="mb16"
             >
               <label
                 class="label label"
-                for="input-text-3"
+                for="input-text-6"
               >
-                Banner title
+                Title
               </label>
               <div
                 class="wrapper"
               >
                 <input
                   class="input"
-                  id="input-text-3"
+                  id="input-text-6"
                   name="name"
                   placeholder="Banner title"
                   type="text"
@@ -792,7 +858,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
             <div
               class="container"
             >
-              Banner Background
+              Background
             </div>
             <label
               class="wrapper"
@@ -846,7 +912,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                 class="container"
               >
                 <div
-                  class="actions"
+                  class="actions hd-help-text-actions"
                 >
                   <div
                     class="highlight clickable"
@@ -854,72 +920,12 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                     Upload image
                   </div>
                 </div>
-                <p>
-                  Use 2500px wide images for best quality. Images less than 1440px wide may appear blurry. File size of 500 KB or less will help your help center load quickly. Max file size 10 MB.
+                <p
+                  class="hd-help-text-text"
+                >
+                  Recommended file size: 2500px wide, 500KB or less. Max file size: 10MB.
                 </p>
               </div>
-            </div>
-          </div>
-        </section>
-        <section
-          class="mb40"
-        >
-          <h3>
-            Other settings
-          </h3>
-          <div
-            class="toggle"
-          >
-            <label
-              aria-checked="false"
-              class="label label"
-              for="toggle-button-5"
-              role="switch"
-            >
-              <input
-                class="input"
-                disabled=""
-                id="toggle-button-5"
-                name="toggle-button-5"
-                type="checkbox"
-              />
-              <div
-                class="slider"
-              />
-              Enable search bar
-            </label>
-            <div
-              class="caption caption"
-            >
-              Use this toggle to display or hide the search bar in your Help Center.
-            </div>
-          </div>
-          <div
-            class="toggle"
-          >
-            <label
-              aria-checked="true"
-              class="label label"
-              for="toggle-button-6"
-              role="switch"
-            >
-              <input
-                checked=""
-                class="input"
-                disabled=""
-                id="toggle-button-6"
-                name="toggle-button-6"
-                type="checkbox"
-              />
-              <div
-                class="slider"
-              />
-              Powered by Gorgias
-            </label>
-            <div
-              class="caption caption"
-            >
-              Use this toggle to display or hide the Gorgias branding on the footer in Help Center.
             </div>
           </div>
         </section>

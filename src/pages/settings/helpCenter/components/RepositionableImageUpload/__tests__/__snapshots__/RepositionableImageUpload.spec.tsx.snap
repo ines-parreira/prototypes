@@ -54,7 +54,7 @@ exports[`<RepositionableImageUpload /> matches snapshot with preview 1`] = `
         class="container"
       >
         <div
-          class="actions"
+          class="actions hd-help-text-actions"
         >
           <div
             class="highlight clickable"
@@ -67,7 +67,9 @@ exports[`<RepositionableImageUpload /> matches snapshot with preview 1`] = `
             Remove image
           </div>
         </div>
-        <p>
+        <p
+          class="hd-help-text-text"
+        >
           text
         </p>
       </div>

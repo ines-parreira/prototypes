@@ -27,7 +27,6 @@ import css from './HelpCenterPageWrapper.less'
 type Props = {
     helpCenter: HelpCenter
     children?: ReactNode
-    actions?: ReactNode
     fluidContainer?: boolean
     showLanguageSelector?: boolean
     className?: string
@@ -37,7 +36,6 @@ type Props = {
 export const HelpCenterPageWrapper: React.FC<Props> = ({
     helpCenter,
     children,
-    actions,
     fluidContainer = true,
     showLanguageSelector = false,
     className,
@@ -97,7 +95,6 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
                         <i className="material-icons">open_in_new</i>
                         <span>Preview</span>
                     </Button>
-                    {actions}
                 </div>
             </PageHeader>
             <HelpCenterNavigation

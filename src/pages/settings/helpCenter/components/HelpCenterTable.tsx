@@ -2,6 +2,7 @@ import React, {MouseEvent, useCallback} from 'react'
 import moment from 'moment'
 import {Container} from 'reactstrap'
 
+import classNames from 'classnames'
 import {HelpCenter, Locale} from 'models/helpCenter/types'
 import {LanguageList} from 'pages/common/components/LanguageBulletList'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -65,14 +66,17 @@ export const HelpCenterTable: React.FC<Props> = ({
 
     if (list.length === 0) {
         return (
-            <Container fluid className={settingsCss.py24}>
+            <Container
+                fluid
+                className={classNames(settingsCss.py24, settingsCss.mt24)}
+            >
                 <div>You have no Help Center at the moment.</div>
             </Container>
         )
     }
 
     return (
-        <TableWrapper>
+        <TableWrapper className={css.tableWrapper}>
             <TableHead className={css.tableHead}>
                 <HeaderCell size="smallest" />
                 <HeaderCellProperty title="Help Center name" />

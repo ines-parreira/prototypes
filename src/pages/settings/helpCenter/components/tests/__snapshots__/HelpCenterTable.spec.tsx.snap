@@ -3,7 +3,7 @@
 exports[`<HelpCenterTable /> should display a message when list is empty 1`] = `
 <div>
   <div
-    class="py24 container-fluid"
+    class="py24 mt24 container-fluid"
   >
     <div>
       You have no Help Center at the moment.
@@ -33,7 +33,7 @@ exports[`<HelpCenterTable /> should display the table correctly when loading 1`]
 exports[`<HelpCenterTable /> should display the table correctly when not loading 1`] = `
 <div>
   <table
-    class="table"
+    class="table tableWrapper"
   >
     <thead
       class="tableHead"

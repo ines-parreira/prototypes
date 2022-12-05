@@ -7,6 +7,8 @@ import Button from 'pages/common/components/button/Button'
 
 import {Paths} from 'rest_api/help_center_api/client.generated'
 
+import warningIcon from 'assets/img/icons/warning2.svg'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     helpCenterDeleted,
@@ -16,24 +18,24 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {ConfirmModalAction} from 'pages/common/components/ConfirmModalAction'
 import InputField from 'pages/common/forms/input/InputField'
+import LinkAlert from 'pages/common/components/Alert/LinkAlert'
+import {AlertType} from 'pages/common/components/Alert/Alert'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
 import {useCurrentHelpCenter} from '../providers/CurrentHelpCenter'
-import {getAbsoluteUrl, getHelpCenterDomain} from '../utils/helpCenter.utils'
 import {
     getSubdomainValidationError,
     isValidSubdomain,
 } from '../utils/validations'
 
-import {ConnectToShopSection} from './ConnectToShopSection'
 import {CustomDomain} from './CustomDomain'
 import HelpCenterPageWrapper from './HelpCenterPageWrapper'
-import {ImportSection} from './Imports/components/ImportSection'
 import {SubdomainSection} from './SubdomainSection'
 
-import css from './HelpCenterInstallationView.less'
+import css from './HelpCenterPublishAndTrackView.less'
 import GoogleAnalyticsSection from './GoogleAnalyticSection'
 import CloseTabModal from './CloseTabModal'
+import {UpdateToggle} from './UpdateToggle'
 
 export const HelpCenterInstallationView: React.FC = () => {
     const dispatch = useAppDispatch()
@@ -46,6 +48,7 @@ export const HelpCenterInstallationView: React.FC = () => {
     const [gaid, setGaid] = useState<string | null>(null)
     const [isSubdomainAvailable, setIsSubdomainAvailable] = useState(true)
     const [deleteModalConfirmation, setDeleteModalConfirmation] = useState('')
+    const [showWarning, setShowWarning] = useState(true)
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const checkSubdomainAvailability = useCallback(
@@ -131,6 +134,11 @@ export const HelpCenterInstallationView: React.FC = () => {
         }
     }
 
+    const handleOnCancel = () => {
+        setSubdomainValue(helpCenter.subdomain)
+        setGaid(helpCenter.gaid)
+    }
+
     useEffect(() => {
         setIsSubdomainAvailable(true)
 
@@ -157,21 +165,51 @@ export const HelpCenterInstallationView: React.FC = () => {
         !subdomainError
     const isUpdatedGaid =
         helpCenter.gaid === null ? !!gaid : helpCenter.gaid !== gaid
-    const helpCenterDomain = getHelpCenterDomain(helpCenter)
 
     return (
         <HelpCenterPageWrapper
             helpCenter={helpCenter}
             className={css.container}
         >
+            <section className="mb-4">
+                <h3 className={css.sectionTitle}>Publish</h3>
+                <UpdateToggle
+                    activated={!Boolean(helpCenter.deactivated_datetime)}
+                    description="Publishing Help Center only makes it available to anyone with the direct link. It does not make it automatically available to your customers until you add the link to Help Center on your website."
+                    fieldName="deactivated"
+                    label="Publish Help Center"
+                />
+                {showWarning && (
+                    <LinkAlert
+                        actionLabel="Learn more"
+                        type={AlertType.Warning}
+                        className={css.alert}
+                        actionHref="https://docs.gorgias.com/en-US/help-center---setup-81865#link-to-shopify"
+                        onClose={() => {
+                            setShowWarning(false)
+                        }}
+                    >
+                        <div className={css.alertContent}>
+                            <img src={warningIcon} alt="warning icon" />
+                            <div>
+                                Don't forget to connect Help Center to your
+                                website.
+                            </div>
+                        </div>
+                    </LinkAlert>
+                )}
+            </section>
             <SubdomainSection
                 value={subdomainValue}
-                href={getAbsoluteUrl({domain: helpCenterDomain})}
+                caption="This is the URL that can be used to access your help center."
                 placeholder="brand-name"
                 onChange={setSubdomainValue}
                 error={subdomainError}
             />
             <CustomDomain />
+            <section className="mb-4">
+                <h3 className={css.sectionTitle}>Track</h3>
+            </section>
             <GoogleAnalyticsSection
                 gaid={gaid ?? ''}
                 onChange={(value) => {
@@ -185,26 +223,26 @@ export const HelpCenterInstallationView: React.FC = () => {
                         : null
                 }
             />
-            <ImportSection />
-            <ConnectToShopSection
-                onUpdate={handleOnUpdateHelpCenter}
-                helpCenter={helpCenter}
-            />
 
-            <div className={css['ctas-group']}>
-                <Button
-                    isDisabled={!isNewSubdomainValid && !isUpdatedGaid}
-                    onClick={() =>
-                        handleOnUpdateHelpCenter({
-                            ...(isNewSubdomainValid
-                                ? {subdomain: subdomainValue}
-                                : {}),
-                            ...(isUpdatedGaid ? {gaid: gaid || null} : {}),
-                        })
-                    }
-                >
-                    Save Changes
-                </Button>
+            <div className={css.ctasGroup}>
+                <div className={css.leftSideButtons}>
+                    <Button
+                        isDisabled={!isNewSubdomainValid && !isUpdatedGaid}
+                        onClick={() =>
+                            handleOnUpdateHelpCenter({
+                                ...(isNewSubdomainValid
+                                    ? {subdomain: subdomainValue}
+                                    : {}),
+                                ...(isUpdatedGaid ? {gaid: gaid || null} : {}),
+                            })
+                        }
+                    >
+                        Save Changes
+                    </Button>
+                    <Button intent="secondary" onClick={handleOnCancel}>
+                        Cancel
+                    </Button>
+                </div>
 
                 <ConfirmModalAction
                     actions={(onClose) => (

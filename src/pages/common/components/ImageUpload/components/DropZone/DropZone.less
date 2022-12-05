@@ -3,6 +3,8 @@
 :local {
     .wrapper {
         display: flex;
+        align-items: center;
+        column-gap: 16px;
     }
     .container {
         border: 2px dashed @classic-neutral-grey-3;
@@ -21,7 +23,7 @@
 
         &.logo {
             width: 228px;
-            height: 100px;
+            height: 172px;
         }
 
         &.favicon {
@@ -50,5 +52,14 @@
         display: flex;
         height: 100%;
         width: 100%;
+    }
+
+    .uploadButton {
+        display: flex;
+        gap: 4px;
+
+        i {
+            font-size: 20px;
+        }
     }
 }

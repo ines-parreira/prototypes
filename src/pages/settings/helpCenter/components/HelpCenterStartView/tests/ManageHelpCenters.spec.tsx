@@ -6,11 +6,11 @@ import configureMockStore from 'redux-mock-store'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {renderWithRouter} from 'utils/testing'
-import {HELP_CENTER_BASE_PATH} from 'pages/settings/helpCenter/constants'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
-import HelpCenterStartView from '../HelpCenterStartView'
+import {useHelpCenterList} from '../../../hooks/useHelpCenterList'
+import ManageHelpCenters, {ManageHelpCentersProps} from '../ManageHelpCenters'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
     return {
@@ -42,7 +42,26 @@ const mockedHistory = {...createBrowserHistory(), push: jest.fn()}
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 ;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
 
-describe('<HelpCenterStartView />', () => {
+const helpCenters = getHelpCentersResponseFixture.data
+
+jest.mock('pages/settings/helpCenter/hooks/useHelpCenterList')
+;(useHelpCenterList as jest.Mock).mockReturnValue({
+    isLoading: false,
+    hasMore: false,
+    fetchMore: jest.fn(),
+    helpCenters,
+})
+const props: ManageHelpCentersProps = {
+    helpCenterList: helpCenters,
+    standaloneHelpCenters: [],
+    isButtonDisabled: false,
+    isHelpCenterLimitReached: false,
+    isLoading: false,
+    fetchMore: jest.fn(),
+    hasMore: false,
+}
+
+describe('<ManageHelpCenters />', () => {
     const defaultState: Partial<RootState> = {
         entities: {
             helpCenter: {
@@ -56,7 +75,6 @@ describe('<HelpCenterStartView />', () => {
             },
         } as any,
     }
-    const props = {}
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -65,7 +83,7 @@ describe('<HelpCenterStartView />', () => {
     it('should render the component', () => {
         const {container} = renderWithRouter(
             <Provider store={mockedStore(defaultState)}>
-                <HelpCenterStartView {...props} />
+                <ManageHelpCenters {...props} />
             </Provider>
         )
 
@@ -75,15 +93,15 @@ describe('<HelpCenterStartView />', () => {
     it('should navigate to the creation page when clicking on the new button', () => {
         renderWithRouter(
             <Provider store={mockedStore(defaultState)}>
-                <HelpCenterStartView {...props} />
+                <ManageHelpCenters {...props} />
             </Provider>,
             {history: mockedHistory}
         )
-        const newBtn = screen.getByText(/add new/i)
+        const newBtn = screen.getByText(/create new/i)
         fireEvent.click(newBtn)
 
-        expect(mockedHistory.push).toHaveBeenLastCalledWith(
-            `${HELP_CENTER_BASE_PATH}/new`
+        expect(mockedHistory.push).toHaveBeenCalledWith(
+            '/app/settings/help-center/new'
         )
     })
 })

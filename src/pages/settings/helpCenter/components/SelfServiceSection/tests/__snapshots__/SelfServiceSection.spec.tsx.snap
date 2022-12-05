@@ -8,9 +8,9 @@ exports[`<SelfServiceSection/> should render the component 1`] = `
     <div
       class="heading"
     >
-      <h3>
+      <h4>
         Enable Self-service
-      </h3>
+      </h4>
       <p>
         Enabling
          
@@ -51,7 +51,7 @@ exports[`<SelfServiceSection/> should render the component 1`] = `
         <p
           class="enable-self-service-label"
         >
-          Enable self-service for this Help Center
+          Self-service flows
         </p>
       </label>
     </div>

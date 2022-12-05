@@ -18,8 +18,9 @@ import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useCurrentHelpCenter} from '../providers/CurrentHelpCenter'
 import HelpCenterPageWrapper from './HelpCenterPageWrapper'
 import {SelfServiceSection} from './SelfServiceSection'
+import {ConnectToShopSection} from './ConnectToShopSection'
 
-export const HelpCenterSelfServiceView = (): JSX.Element | null => {
+export const HelpCenterAutomationView = (): JSX.Element | null => {
     const helpCenter = useCurrentHelpCenter()
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
     const integrations = useAppSelector(DEPRECATED_getIntegrations)
@@ -92,12 +93,18 @@ export const HelpCenterSelfServiceView = (): JSX.Element | null => {
 
         if (hasAutomationAddOn) {
             return (
-                <SelfServiceSection
-                    shopifyIntegration={shopifyIntegration}
-                    helpCenter={helpCenter}
-                    updateHelpCenter={updateHelpCenter}
-                    updating={updatingHelpCenter}
-                />
+                <>
+                    <ConnectToShopSection
+                        onUpdate={updateHelpCenter}
+                        helpCenter={helpCenter}
+                    />
+                    <SelfServiceSection
+                        shopifyIntegration={shopifyIntegration}
+                        helpCenter={helpCenter}
+                        updateHelpCenter={updateHelpCenter}
+                        updating={updatingHelpCenter}
+                    />
+                </>
             )
         }
 
@@ -114,4 +121,4 @@ export const HelpCenterSelfServiceView = (): JSX.Element | null => {
     )
 }
 
-export default HelpCenterSelfServiceView
+export default HelpCenterAutomationView

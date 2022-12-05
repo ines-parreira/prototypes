@@ -23,14 +23,14 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 
 import settingsCss from 'pages/settings/settings.less'
-import HelpCenterAppearanceView from 'pages/settings/helpCenter/components/HelpCenterAppearanceView'
+import HelpCenterAppearanceView from 'pages/settings/helpCenter/components/HelpCenterAppearanceView/HelpCenterAppearanceView'
 import HelpCenterArticlesView from 'pages/settings/helpCenter/components/HelpCenterArticlesView'
 import HelpCenterContactView from 'pages/settings/helpCenter/components/HelpCenterContactView'
 import HelpCenterCustomizationView from 'pages/settings/helpCenter/components/HelpCenterCustomizationView'
 import HelpCenterImportCsvColumnMatchingView from 'pages/settings/helpCenter/components/HelpCenterImportCsvColumnMatchingView'
-import HelpCenterInstallationView from 'pages/settings/helpCenter/components/HelpCenterInstallationView'
+import HelpCenterPublishAndTrackView from 'pages/settings/helpCenter/components/HelpCenterPublishAndTrackView'
 import HelpCenterPreferencesView from 'pages/settings/helpCenter/components/HelpCenterPreferencesView'
-import HelpCenterSelfServiceView from 'pages/settings/helpCenter/components/HelpCenterSelfServiceView'
+import HelpCenterAutomationView from 'pages/settings/helpCenter/components/HelpCenterAutomationView'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {useHelpCenterIdParam} from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
 import {
@@ -155,18 +155,18 @@ export const CurrentHelpCenter: React.FC = () => {
                     )}
                 />
                 <Route
-                    path={`${path}/installation`}
+                    path={`${path}/publish-track`}
                     exact
-                    component={HelpCenterInstallationView}
+                    component={HelpCenterPublishAndTrackView}
                 />
                 <Route
                     path={`${path}/import/csv/column-matching`}
                     component={HelpCenterImportCsvColumnMatchingView}
                 />
                 <Route
-                    path={`${path}/self-service`}
+                    path={`${path}/automation`}
                     exact
-                    component={HelpCenterSelfServiceView}
+                    component={HelpCenterAutomationView}
                 />
             </Switch>
         </CurrentHelpCenterContext.Provider>

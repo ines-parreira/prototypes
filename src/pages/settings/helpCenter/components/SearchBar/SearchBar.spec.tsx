@@ -156,7 +156,7 @@ describe('SearchBar', () => {
         })
     })
 
-    it('renders null if the search client could not be initialized', async () => {
+    it('renders disabled input if the search client could not be initialized', async () => {
         initSearchClient.mockImplementationOnce(() =>
             Promise.resolve('no_index')
         )
@@ -177,6 +177,6 @@ describe('SearchBar', () => {
             </SearchContextProvider>
         )
 
-        expect(container.firstChild).toEqual(null)
+        expect(container.firstChild?.lastChild).toHaveProperty('disabled')
     })
 })
