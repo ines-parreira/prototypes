@@ -1771,6 +1771,10 @@ exports[`YourProfileView render should render current user profile form 1`] = `
                     "value": "Europe/Kirov",
                   },
                   Object {
+                    "label": "(UTC+03:00) Europe/Kyiv",
+                    "value": "Europe/Kyiv",
+                  },
+                  Object {
                     "label": "(UTC+03:00) Europe/Mariehamn",
                     "value": "Europe/Mariehamn",
                   },
@@ -2541,6 +2545,10 @@ exports[`YourProfileView render should render current user profile form 1`] = `
                   Object {
                     "label": "(UTC+13:00) Pacific/Fakaofo",
                     "value": "Pacific/Fakaofo",
+                  },
+                  Object {
+                    "label": "(UTC+13:00) Pacific/Kanton",
+                    "value": "Pacific/Kanton",
                   },
                   Object {
                     "label": "(UTC+13:00) Pacific/Tongatapu",
