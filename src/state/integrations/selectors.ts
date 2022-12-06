@@ -666,3 +666,15 @@ export const getAreIntegrationsLoading = createSelector(
     getIntegrationsState,
     (state) => state?.state?.loading?.integrations === true
 )
+
+export const getIsChatIntegrationStatusLoading = (id: number) =>
+    createSelector<RootState, boolean, IntegrationsState>(
+        getIntegrationsState,
+        (state) => !!state.state?.loading?.chatStatus?.[id]
+    )
+
+export const getIsChatIntegrationStatusError = (id: number) =>
+    createSelector<RootState, boolean, IntegrationsState>(
+        getIntegrationsState,
+        (state) => !!state.state?.error?.chatStatus?.[id]
+    )

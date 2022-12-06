@@ -9,17 +9,22 @@ import client from 'models/api/resources'
 import {ApiListResponsePagination, GorgiasApiError} from 'models/api/types'
 import {
     GorgiasChatIntegration,
+    GorgiasChatStatusEnum,
     Integration,
     IntegrationType,
 } from 'models/integration/types'
 import history from 'pages/history'
 import * as constants from 'state/integrations/constants'
 import * as integrationSelectors from 'state/integrations/selectors'
+import * as currentAccountSelectors from 'state/currentAccount/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import type {StoreDispatch, RootState} from 'state/types'
 import GorgiasApi from 'services/gorgiasApi'
 import {fetchIntegrations as fetchIntegrationsResources} from 'models/integration/resources'
+import {getGorgiasChatApiClient} from 'rest_api/gorgias_chat_api/client'
+import type {AplicationAgentsResponse} from 'rest_api/gorgias_chat_api/types'
+import * as helpers from './helpers'
 
 export function fetchIntegrations() {
     return async (
@@ -934,5 +939,67 @@ export function deleteEmailDomain(domainName: string) {
                     })
                 }
             )
+    }
+}
+
+export function fetchChatIntegrationStatus(integrationId: number) {
+    return async (
+        dispatch: StoreDispatch,
+        getState: () => RootState
+    ): Promise<ReturnType<StoreDispatch>> => {
+        const state = getState()
+        const integration =
+            integrationSelectors.getIntegrationById(integrationId)(state)
+
+        try {
+            const isBusinessHours = helpers.isAccountDuringBusinessHours(
+                currentAccountSelectors.getBusinessHoursSettings(state)
+            )
+            const chatStatus = helpers.computeChatIntegrationStatus(
+                integration,
+                isBusinessHours
+            )
+
+            if (chatStatus) {
+                return dispatch({
+                    chatStatus,
+                    id: integrationId,
+                    type: constants.FETCH_CHAT_STATUS_SUCCESS,
+                })
+            }
+
+            void dispatch({
+                id: integrationId,
+                type: constants.FETCH_CHAT_STATUS_START,
+            })
+
+            const applicationId: string = integration.getIn(['meta', 'app_id'])
+            const client = await getGorgiasChatApiClient()
+            const {data}: {data: AplicationAgentsResponse} =
+                await client.getApplicationAgents({
+                    applicationId,
+                })
+
+            if (data.hasAvailableAgents) {
+                return dispatch({
+                    chatStatus: GorgiasChatStatusEnum.ONLINE,
+                    id: integrationId,
+                    type: constants.FETCH_CHAT_STATUS_SUCCESS,
+                })
+            }
+
+            return dispatch({
+                chatStatus: GorgiasChatStatusEnum.OFFLINE,
+                id: integrationId,
+                type: constants.FETCH_CHAT_STATUS_SUCCESS,
+            })
+        } catch (error) {
+            return dispatch({
+                error,
+                id: integrationId,
+                type: constants.FETCH_CHAT_STATUS_ERROR,
+                reason: `Failed to fetch Status for Chat ID ${integrationId}`,
+            })
+        }
     }
 }

@@ -41,6 +41,7 @@ export type GorgiasChatIntegrationMeta = {
         configurations?: SelfServiceConfiguration[]
     }
     position?: GorgiasChatPosition
+    status?: GorgiasChatStatusEnum
 }
 
 enum GorgiasChatEmailCaptureType {
@@ -88,4 +89,11 @@ export interface GorgiasChatPosition {
     alignment: GorgiasChatPositionAlignmentEnum
     offsetX: number
     offsetY: number
+}
+
+export enum GorgiasChatStatusEnum {
+    ONLINE = 'online',
+    OFFLINE = 'offline',
+    HIDDEN = 'hidden',
+    HIDDEN_OUTSIDE_BUSINESS_HOURS = 'hidden-outside-business-hours',
 }

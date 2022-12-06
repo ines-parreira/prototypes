@@ -63,6 +63,13 @@ export const GORGIAS_CHAT_OFFLINE_MODE_ENABLED_DATETIME_DEFAULT = null
 export const GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT = true
 export const GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC = 'reply-dynamic'
 
+// Live chat availability / Auto offline mode
+export const GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY =
+    'auto-based-on-agent-availability'
+export const GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS =
+    'always-live-during-business-hours'
+export const GORGIAS_CHAT_LIVE_CHAT_OFFLINE = 'offline'
+
 // Company picture types
 export const GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_MEMBERS = 'team-members'
 export const GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_PICTURE = 'team-picture'

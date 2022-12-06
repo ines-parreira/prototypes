@@ -5,6 +5,7 @@ import {ThunkDispatch} from 'redux-thunk'
 import {TicketMessageSourceType, TicketVia} from 'business/types/ticket'
 import {
     EmailDomain,
+    GorgiasChatStatusEnum,
     Integration,
     IntegrationType,
 } from 'models/integration/types'
@@ -180,6 +181,7 @@ export type GorgiasAction = {
     attachments?: List<any>
     cartId?: string
     externalData?: CustomerExternalData
+    chatStatus?: GorgiasChatStatusEnum
 }
 
 export type CurrentUser = Map<any, any>

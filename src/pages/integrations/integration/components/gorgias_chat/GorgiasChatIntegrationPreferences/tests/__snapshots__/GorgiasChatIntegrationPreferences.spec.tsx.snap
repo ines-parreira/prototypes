@@ -10,6 +10,7 @@ Object {
   "isInitialized": false,
   "isUpdating": false,
   "linkedEmailIntegration": null,
+  "liveChatAvailability": "auto-based-on-agent-availability",
   "offlineModeEnabledDatetime": null,
   "preview": "email-capture",
 }
@@ -25,6 +26,7 @@ Object {
   "isInitialized": false,
   "isUpdating": false,
   "linkedEmailIntegration": 234,
+  "liveChatAvailability": "auto-based-on-agent-availability",
   "offlineModeEnabledDatetime": null,
   "preview": "email-capture",
 }
@@ -48,6 +50,7 @@ exports[`<GorgiasChatIntegrationPreferences/> _submitPreferences() should submit
             "hide_on_mobile": false,
             "hide_outside_business_hours": false,
             "offline_mode_enabled_datetime": null,
+            "live_chat_availability": "auto-based-on-agent-availability",
           },
         },
       },
@@ -79,6 +82,7 @@ exports[`<GorgiasChatIntegrationPreferences/> _submitPreferences() should submit
             "hide_on_mobile": false,
             "hide_outside_business_hours": false,
             "offline_mode_enabled_datetime": null,
+            "live_chat_availability": "auto-based-on-agent-availability",
           },
           "language": "en-US",
         },
@@ -104,6 +108,7 @@ Object {
   "isInitialized": true,
   "isUpdating": false,
   "linkedEmailIntegration": null,
+  "liveChatAvailability": "auto-based-on-agent-availability",
   "offlineModeEnabledDatetime": null,
   "preview": "email-capture",
 }
@@ -119,6 +124,7 @@ Object {
   "isInitialized": true,
   "isUpdating": false,
   "linkedEmailIntegration": null,
+  "liveChatAvailability": "auto-based-on-agent-availability",
   "offlineModeEnabledDatetime": null,
   "preview": "email-capture",
 }
@@ -203,7 +209,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
             Email prompt
             <i
               className="material-icons-outlined tooltipIcon"
-              id="email-capture-help"
+              id="email-prompt-help"
             >
               info
             </i>
@@ -214,12 +220,12 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
               innerClassName="tooltip-inner"
               placement="top-start"
               popperClassName="tooltip"
-              target="email-capture-help"
+              target="email-prompt-help"
             >
               You can change the email prompt message by adjusting the chat default text values.
                
               <a
-                href="https://docs.gorgias.com/en-US/chat-getting-started-81789#email-capture"
+                href="https://docs.gorgias.com/en-US/chat-getting-started-81789#change-email-promptmessage"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -252,27 +258,60 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
           <h4
             className="title"
           >
-            Chat conversations
+            Live chat
           </h4>
-          <div
-            className="formGroup d-flex"
-          >
-            <ToggleInput
-              isToggled={true}
-              onClick={[Function]}
-            />
-            <div
-              className="ml-2"
+          <div>
+            <p
+              className="mb-3"
             >
-              <b>
-                Live chat
-              </b>
-              <div
-                className="form-text text-muted"
+              Choose when customers can send live chat messages to your team during
+               
+              <Link
+                to="/app/settings/business-hours"
               >
-                Let customers start live conversations with agents. When disabled, customers can interact with self-service features and fill the contact form.
-              </div>
-            </div>
+                Business hours
+              </Link>
+              .
+            </p>
+            <RadioFieldSet
+              className="mb-3 radioFieldSet"
+              onChange={[Function]}
+              options={
+                Array [
+                  Object {
+                    "caption": "Customers can only send live chat messages when an agent is available in Gorgias",
+                    "label": "Live when agents are available",
+                    "value": "auto-based-on-agent-availability",
+                  },
+                  Object {
+                    "caption": "Customers can always send live chat messages during business hours",
+                    "label": "Always live during business hours",
+                    "value": "always-live-during-business-hours",
+                  },
+                  Object {
+                    "caption": "Customers can only send messages using the contact form",
+                    "label": "Offline",
+                    "value": "offline",
+                  },
+                ]
+              }
+              selectedValue="auto-based-on-agent-availability"
+            />
+            <p
+              className="mb-3"
+            >
+              Automation Add-On features are always available, if enabled. When live chat is unavailable, customers can message your team with
+               
+              <a
+                href="https://docs.gorgias.com/en-US/gorgias-chat---contact-form-88573"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                contact form
+              </a>
+               
+              to receive an email response. Live chat is always unavailable outside business hours.
+            </p>
           </div>
         </div>
         <div
@@ -446,14 +485,14 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
             </p>
           </div>
         </div>
-        <h4
-          className="title"
-        >
-          Associated email integration
-        </h4>
         <div
           className="formSection"
         >
+          <h4
+            className="title"
+          >
+            Associated email integration
+          </h4>
           <p
             className="mb-3"
           >
@@ -586,7 +625,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
             Email prompt
             <i
               className="material-icons-outlined tooltipIcon"
-              id="email-capture-help"
+              id="email-prompt-help"
             >
               info
             </i>
@@ -597,12 +636,12 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
               innerClassName="tooltip-inner"
               placement="top-start"
               popperClassName="tooltip"
-              target="email-capture-help"
+              target="email-prompt-help"
             >
               You can change the email prompt message by adjusting the chat default text values.
                
               <a
-                href="https://docs.gorgias.com/en-US/chat-getting-started-81789#email-capture"
+                href="https://docs.gorgias.com/en-US/chat-getting-started-81789#change-email-promptmessage"
                 rel="noopener noreferrer"
                 target="_blank"
               >
@@ -635,27 +674,60 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
           <h4
             className="title"
           >
-            Chat conversations
+            Live chat
           </h4>
-          <div
-            className="formGroup d-flex"
-          >
-            <ToggleInput
-              isToggled={true}
-              onClick={[Function]}
-            />
-            <div
-              className="ml-2"
+          <div>
+            <p
+              className="mb-3"
             >
-              <b>
-                Live chat
-              </b>
-              <div
-                className="form-text text-muted"
+              Choose when customers can send live chat messages to your team during
+               
+              <Link
+                to="/app/settings/business-hours"
               >
-                Let customers start live conversations with agents. When disabled, customers can interact with self-service features and fill the contact form.
-              </div>
-            </div>
+                Business hours
+              </Link>
+              .
+            </p>
+            <RadioFieldSet
+              className="mb-3 radioFieldSet"
+              onChange={[Function]}
+              options={
+                Array [
+                  Object {
+                    "caption": "Customers can only send live chat messages when an agent is available in Gorgias",
+                    "label": "Live when agents are available",
+                    "value": "auto-based-on-agent-availability",
+                  },
+                  Object {
+                    "caption": "Customers can always send live chat messages during business hours",
+                    "label": "Always live during business hours",
+                    "value": "always-live-during-business-hours",
+                  },
+                  Object {
+                    "caption": "Customers can only send messages using the contact form",
+                    "label": "Offline",
+                    "value": "offline",
+                  },
+                ]
+              }
+              selectedValue="auto-based-on-agent-availability"
+            />
+            <p
+              className="mb-3"
+            >
+              Automation Add-On features are always available, if enabled. When live chat is unavailable, customers can message your team with
+               
+              <a
+                href="https://docs.gorgias.com/en-US/gorgias-chat---contact-form-88573"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                contact form
+              </a>
+               
+              to receive an email response. Live chat is always unavailable outside business hours.
+            </p>
           </div>
         </div>
         <div
@@ -829,14 +901,14 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
             </p>
           </div>
         </div>
-        <h4
-          className="title"
-        >
-          Associated email integration
-        </h4>
         <div
           className="formSection"
         >
+          <h4
+            className="title"
+          >
+            Associated email integration
+          </h4>
           <p
             className="mb-3"
           >

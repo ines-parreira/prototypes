@@ -197,8 +197,8 @@ function GorgiasChatIntegrationInstall({
                                         from your website but won't uninstall
                                         it. <br /> <br />
                                         If you are looking to reduce chat ticket
-                                        volume, we recommend you disable{' '}
-                                        <b>Live Chat</b> in the{' '}
+                                        volume, we recommend you set your chat
+                                        as <b>Always offline</b> in the{' '}
                                         <Link
                                             to={`/app/settings/channels/${IntegrationType.GorgiasChat}/${integrationId}/preferences`}
                                         >

@@ -20,6 +20,10 @@ export const initialState: IntegrationsImmutableState = fromJS({
             updateIntegration: false,
             testing: false,
             delete: false,
+            chatStatus: {},
+        },
+        error: {
+            chatStatus: {},
         },
     },
 
@@ -255,6 +259,37 @@ export default function reducer(
                 fromJS((action.resp as {meta: Record<string, any>}).meta)
             )
         }
+
+        case constants.FETCH_CHAT_STATUS_START:
+            return state
+                .setIn(['state', 'loading', 'chatStatus', action.id], true)
+                .setIn(['state', 'error', 'chatStatus', action.id], false)
+
+        case constants.FETCH_CHAT_STATUS_SUCCESS: {
+            const integrations = state.get('integrations') as List<any>
+
+            return state
+                .setIn(['state', 'loading', 'chatStatus', action.id], false)
+                .set(
+                    'integrations',
+                    integrations.update(
+                        integrations.findIndex(
+                            (integration: Map<any, any>) =>
+                                integration.get('id') === action.id
+                        ),
+                        (integration: Map<any, any>) =>
+                            integration.setIn(
+                                ['meta', 'status'],
+                                action.chatStatus
+                            )
+                    )
+                )
+        }
+
+        case constants.FETCH_CHAT_STATUS_ERROR:
+            return state
+                .setIn(['state', 'loading', 'chatStatus', action.id], false)
+                .setIn(['state', 'error', 'chatStatus', action.id], true)
 
         default:
             return state

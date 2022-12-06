@@ -34,7 +34,10 @@
         "uglify-file": "terser --compress --mangle --",
         "helpcenter:fetch-openapi": "curl http://localhost:4001/api/help-center/api-json > ./src/rest_api/help_center_api/help-center.openapi.json && prettier --write ./src/rest_api/help_center_api/help-center.openapi.json",
         "helpcenter:generate-types": "typegen ./src/rest_api/help_center_api/help-center.openapi.json > ./src/rest_api/help_center_api/client.generated.d.ts",
-        "helpcenter:update-client": "yarn run helpcenter:fetch-openapi && yarn run helpcenter:generate-types"
+        "helpcenter:update-client": "yarn run helpcenter:fetch-openapi && yarn run helpcenter:generate-types",
+        "gorgiaschat:generate-openapi": "p2o ./src/rest_api/gorgias_chat_api/gorgias-chat-api.postman_collection.json -f ./src/rest_api/gorgias_chat_api/gorgias-chat-api.openapi.json -o ./src/rest_api/gorgias_chat_api/gorgias-chat-api.p2o_options.json",
+        "gorgiaschat:generate-types": "typegen ./src/rest_api/gorgias_chat_api/gorgias-chat-api.openapi.json > ./src/rest_api/gorgias_chat_api/client.generated.d.ts",
+        "gorgiaschat:update-client": "yarn run gorgiaschat:generate-openapi && yarn run gorgiaschat:generate-types"
     },
     "author": "Alex Plugaru <alex@gorgias.com>",
     "license": "UNLICENSED",
@@ -251,6 +254,7 @@
         "optimize-css-assets-webpack-plugin": "5.0.1",
         "patch-package": "6.4.7",
         "postinstall-postinstall": "2.1.0",
+        "postman-to-openapi": "^2.9.0",
         "prettier": "2.4.1",
         "react-hooks-testing-library": "0.5.1",
         "react-test-renderer": "16.8.6",

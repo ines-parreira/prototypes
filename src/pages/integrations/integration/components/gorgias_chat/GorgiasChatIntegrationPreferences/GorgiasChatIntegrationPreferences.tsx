@@ -25,6 +25,9 @@ import {
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
     GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
+    GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS,
+    GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
+    GORGIAS_CHAT_LIVE_CHAT_OFFLINE,
 } from '../../../../../../config/integrations/gorgias_chat'
 import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
 import {getIntegrationsByTypes} from '../../../../../../state/integrations/selectors'
@@ -56,8 +59,36 @@ const emailCaptureOptions = [
     },
 ]
 
+const liveChatAvailabilityOptions = [
+    {
+        caption:
+            'Customers can only send live chat messages when an agent is available in Gorgias',
+        label: 'Live when agents are available',
+        value: GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
+    },
+    {
+        caption:
+            'Customers can always send live chat messages during business hours',
+        label: 'Always live during business hours',
+        value: GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS,
+    },
+    {
+        caption: 'Customers can only send messages using the contact form',
+        label: 'Offline',
+        value: GORGIAS_CHAT_LIVE_CHAT_OFFLINE,
+    },
+]
+
 export const PREVIEW_EMAIL_CAPTURE = 'email-capture'
 export const PREVIEW_AUTO_RESPONDER = 'auto-responder'
+export const PREVIEW_LIVE_CHAT_AVAILABILITY = 'live-chat-availability'
+
+/**
+ * For backwards compatibility, the "Chat conversation" section that holds
+ * the "offline_mode_enabled_datetime" state is kept but hidden with value.
+ * It will be removed entirely in a subsequent PR
+ */
+const SHOW_CHAT_CONVERSATIONS_SECTION = false
 
 type Props = {
     integration: Map<any, any>
@@ -74,6 +105,7 @@ type State = {
     preview: string
     linkedEmailIntegration: number | null
     offlineModeEnabledDatetime: Date | null
+    liveChatAvailability: string
 }
 
 export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
@@ -95,6 +127,8 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         isUpdating: false,
         preview: PREVIEW_EMAIL_CAPTURE,
         offlineModeEnabledDatetime: null,
+        liveChatAvailability:
+            GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
     }
 
     _initState = (integration: Map<any, any>) => {
@@ -148,6 +182,11 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                         'meta',
                         'preferences',
                         'offline_mode_enabled_datetime',
+                    ]),
+                    liveChatAvailability: integration.getIn([
+                        'meta',
+                        'preferences',
+                        'live_chat_availability',
                     ]),
                 },
                 _isUndefined
@@ -210,6 +249,13 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         })
     }
 
+    _setLiveChatAvailability = (value: string) => {
+        this.setState({
+            liveChatAvailability: value,
+            preview: PREVIEW_LIVE_CHAT_AVAILABILITY,
+        })
+    }
+
     _submitPreferences = async (event: React.SyntheticEvent) => {
         const {updateOrCreateIntegration, integration} = this.props
         event.preventDefault()
@@ -230,6 +276,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             hide_outside_business_hours: this.state.hideOutsideBusinessHours,
             offline_mode_enabled_datetime:
                 this.state.offlineModeEnabledDatetime,
+            live_chat_availability: this.state.liveChatAvailability,
         }
 
         const payload = fromJS({
@@ -260,6 +307,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             preview,
             linkedEmailIntegration,
             offlineModeEnabledDatetime,
+            liveChatAvailability,
         } = this.state
         const {integration, emailIntegrations: integrations} = this.props
         const emailIntegrations = integrations.filter(isGenericEmailIntegration)
@@ -283,6 +331,11 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                 GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.offsetY
             ),
         }
+
+        const isPreviewOnline =
+            preview === PREVIEW_LIVE_CHAT_AVAILABILITY
+                ? liveChatAvailability !== GORGIAS_CHAT_LIVE_CHAT_OFFLINE
+                : true
 
         const renderPreviewFooter =
             preview === PREVIEW_AUTO_RESPONDER ||
@@ -333,7 +386,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                     'offline_introduction_text',
                 ])}
                 mainColor={integration.getIn(['decoration', 'main_color'])}
-                isOnline={true}
+                isOnline={isPreviewOnline}
                 language={language}
                 position={position}
                 renderFooter={renderPreviewFooter}
@@ -424,7 +477,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                 <h4 className={css.title}>
                                     Email prompt
                                     <i
-                                        id="email-capture-help"
+                                        id="email-prompt-help"
                                         className={classnames(
                                             'material-icons-outlined',
                                             css.tooltipIcon
@@ -435,7 +488,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                     <Tooltip
                                         autohide={false}
                                         delay={100}
-                                        target="email-capture-help"
+                                        target="email-prompt-help"
                                         placement="top-start"
                                         popperClassName={css.tooltip}
                                         innerClassName={css['tooltip-inner']}
@@ -447,7 +500,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                         <a
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            href="https://docs.gorgias.com/en-US/chat-getting-started-81789#email-capture"
+                                            href="https://docs.gorgias.com/en-US/chat-getting-started-81789#change-email-promptmessage"
                                         >
                                             Read more
                                         </a>
@@ -460,40 +513,83 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                 />
                             </div>
 
-                            <div className={css.formSection}>
-                                <h4 className={css.title}>
-                                    Chat conversations
-                                </h4>
-                                <div
-                                    className={classnames(
-                                        css.formGroup,
-                                        'd-flex'
-                                    )}
-                                >
-                                    <ToggleInput
-                                        onClick={() =>
-                                            this._setOfflineModeEnabledDatetime(
+                            {SHOW_CHAT_CONVERSATIONS_SECTION && (
+                                <div className={css.formSection}>
+                                    <h4 className={css.title}>
+                                        Chat conversations
+                                    </h4>
+                                    <div
+                                        className={classnames(
+                                            css.formGroup,
+                                            'd-flex'
+                                        )}
+                                    >
+                                        <ToggleInput
+                                            onClick={() =>
+                                                this._setOfflineModeEnabledDatetime(
+                                                    offlineModeEnabledDatetime ===
+                                                        null
+                                                        ? new Date()
+                                                        : null
+                                                )
+                                            }
+                                            isToggled={
                                                 offlineModeEnabledDatetime ===
-                                                    null
-                                                    ? new Date()
-                                                    : null
-                                            )
-                                        }
-                                        isToggled={
-                                            offlineModeEnabledDatetime === null
-                                        }
-                                    />
+                                                null
+                                            }
+                                        />
 
-                                    <div className="ml-2">
-                                        <b>Live chat</b>
-                                        <div className="form-text text-muted">
-                                            Let customers start live
-                                            conversations with agents. When
-                                            disabled, customers can interact
-                                            with self-service features and fill
-                                            the contact form.
+                                        <div className="ml-2">
+                                            <b>Live chat</b>
+                                            <div className="form-text text-muted">
+                                                Let customers start live
+                                                conversations with agents. When
+                                                disabled, customers can interact
+                                                with self-service features and
+                                                fill the contact form.
+                                            </div>
                                         </div>
                                     </div>
+                                </div>
+                            )}
+
+                            <div className={css.formSection}>
+                                <h4 className={css.title}>Live chat</h4>
+
+                                <div>
+                                    <p className="mb-3">
+                                        Choose when customers can send live chat
+                                        messages to your team during{' '}
+                                        <Link to="/app/settings/business-hours">
+                                            Business hours
+                                        </Link>
+                                        .
+                                    </p>
+                                    <RadioFieldSet
+                                        className={classnames(
+                                            'mb-3',
+                                            css.radioFieldSet
+                                        )}
+                                        options={liveChatAvailabilityOptions}
+                                        selectedValue={liveChatAvailability}
+                                        onChange={this._setLiveChatAvailability}
+                                    />
+                                    <p className="mb-3">
+                                        Automation Add-On features are always
+                                        available, if enabled. When live chat is
+                                        unavailable, customers can message your
+                                        team with{' '}
+                                        <a
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            href="https://docs.gorgias.com/en-US/gorgias-chat---contact-form-88573"
+                                        >
+                                            contact form
+                                        </a>{' '}
+                                        to receive an email response. Live chat
+                                        is always unavailable outside business
+                                        hours.
+                                    </p>
                                 </div>
                             </div>
 
@@ -626,11 +722,11 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                 </div>
                             </div>
 
-                            <h4 className={css.title}>
-                                Associated email integration
-                            </h4>
-
                             <div className={css.formSection}>
+                                <h4 className={css.title}>
+                                    Associated email integration
+                                </h4>
+
                                 <p className="mb-3">
                                     If a customer doesn't see your responses on
                                     a chat for 1 hour, Gorgias will

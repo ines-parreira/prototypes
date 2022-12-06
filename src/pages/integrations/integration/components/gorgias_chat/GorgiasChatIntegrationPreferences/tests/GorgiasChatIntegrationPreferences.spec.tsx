@@ -7,6 +7,8 @@ import {
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
+    GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS,
+    GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
 } from 'config/integrations/gorgias_chat'
 import {
     CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
@@ -19,6 +21,7 @@ import {
     GorgiasChatIntegrationPreferencesComponent,
     PREVIEW_AUTO_RESPONDER,
     PREVIEW_EMAIL_CAPTURE,
+    PREVIEW_LIVE_CHAT_AVAILABILITY,
 } from '../GorgiasChatIntegrationPreferences'
 
 describe('<GorgiasChatIntegrationPreferences/>', () => {
@@ -343,6 +346,51 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
         })
     })
 
+    describe('_setLiveChatAvailability()', () => {
+        it('should set passed value in the state and set the preview to "live chat availability"', () => {
+            const integration: Map<any, any> = fromJS({
+                id: 1,
+                type: GORGIAS_CHAT_INTEGRATION_TYPE,
+                meta: {
+                    preferences: {
+                        live_chat_availability:
+                            GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
+                    },
+                },
+            })
+
+            const component =
+                shallow<GorgiasChatIntegrationPreferencesComponent>(
+                    <GorgiasChatIntegrationPreferencesComponent
+                        {...minProps}
+                        integration={integration}
+                    />
+                )
+
+            const prevState = component.state()
+            expect(prevState.liveChatAvailability).toEqual(
+                GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY
+            )
+            expect(prevState.preview).toEqual(PREVIEW_EMAIL_CAPTURE)
+
+            const expectedState = (fromJS(prevState) as Map<any, any>)
+                .set(
+                    'liveChatAvailability',
+                    GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS
+                )
+                .set('preview', PREVIEW_LIVE_CHAT_AVAILABILITY)
+                .toJS()
+
+            component
+                .instance()
+                ._setLiveChatAvailability(
+                    GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS
+                )
+
+            expect(component.state()).toEqual(expectedState)
+        })
+    })
+
     describe('_setLinkedEmailIntegration()', () => {
         it('should update the linked email integration in the state.', () => {
             const component =
@@ -359,7 +407,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
     describe('_submitPreferences()', () => {
         it('should be called when the form is submitted', () => {
             ;[
-                'email-capture-help',
+                'email-prompt-help',
                 'hide-outside-business-hours-help',
                 'dynamic-wait-time-option',
             ].forEach((tooltipId) => {

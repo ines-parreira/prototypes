@@ -29,6 +29,149 @@ Immutable.Map {
       "updateIntegration": false,
       "testing": false,
       "delete": false,
+      "chatStatus": Immutable.Map {},
+    },
+    "error": Immutable.Map {
+      "chatStatus": Immutable.Map {},
+    },
+  },
+  "extra": Immutable.Map {
+    "facebook": Immutable.Map {
+      "onboardingIntegrations": Immutable.Map {
+        "data": Immutable.List [],
+        "meta": Immutable.Map {},
+      },
+    },
+    "outlook": Immutable.Map {
+      "onboardingIntegrations": Immutable.Map {
+        "data": Immutable.List [],
+        "meta": Immutable.Map {},
+      },
+    },
+  },
+}
+`;
+
+exports[`integrations reducers FETCH_CHAT_STATUS_ERROR should set the loading flag for chatStatus to \`false\` and error flag for chatStatus to \`true\` 1`] = `
+Immutable.Map {
+  "integrations": Immutable.List [
+    Immutable.Map {
+      "id": 1,
+      "type": "gorgias_chat",
+    },
+  ],
+  "integration": Immutable.Map {},
+  "emailDomain": Immutable.Map {},
+  "authentication": Immutable.Map {},
+  "state": Immutable.Map {
+    "loading": Immutable.Map {
+      "integration": false,
+      "integrations": false,
+      "emailDomain": false,
+      "updateIntegration": false,
+      "testing": false,
+      "delete": false,
+      "chatStatus": Immutable.Map {
+        1: false,
+      },
+    },
+    "error": Immutable.Map {
+      "chatStatus": Immutable.Map {
+        1: true,
+      },
+    },
+  },
+  "extra": Immutable.Map {
+    "facebook": Immutable.Map {
+      "onboardingIntegrations": Immutable.Map {
+        "data": Immutable.List [],
+        "meta": Immutable.Map {},
+      },
+    },
+    "outlook": Immutable.Map {
+      "onboardingIntegrations": Immutable.Map {
+        "data": Immutable.List [],
+        "meta": Immutable.Map {},
+      },
+    },
+  },
+}
+`;
+
+exports[`integrations reducers FETCH_CHAT_STATUS_START should set the loading flag for chatStatus to \`true\` and error flag for chatStatus to \`false\` 1`] = `
+Immutable.Map {
+  "integrations": Immutable.List [
+    Immutable.Map {
+      "id": 1,
+      "type": "gorgias_chat",
+    },
+  ],
+  "integration": Immutable.Map {},
+  "emailDomain": Immutable.Map {},
+  "authentication": Immutable.Map {},
+  "state": Immutable.Map {
+    "loading": Immutable.Map {
+      "integration": false,
+      "integrations": false,
+      "emailDomain": false,
+      "updateIntegration": false,
+      "testing": false,
+      "delete": false,
+      "chatStatus": Immutable.Map {
+        1: true,
+      },
+    },
+    "error": Immutable.Map {
+      "chatStatus": Immutable.Map {
+        1: false,
+      },
+    },
+  },
+  "extra": Immutable.Map {
+    "facebook": Immutable.Map {
+      "onboardingIntegrations": Immutable.Map {
+        "data": Immutable.List [],
+        "meta": Immutable.Map {},
+      },
+    },
+    "outlook": Immutable.Map {
+      "onboardingIntegrations": Immutable.Map {
+        "data": Immutable.List [],
+        "meta": Immutable.Map {},
+      },
+    },
+  },
+}
+`;
+
+exports[`integrations reducers FETCH_CHAT_STATUS_SUCCESS should store the chat status in the \`status\` field and set the loading flag for chatStatus to \`false\` 1`] = `
+Immutable.Map {
+  "integrations": Immutable.List [
+    Immutable.Map {
+      "id": 1,
+      "type": "gorgias_chat",
+      "meta": Immutable.Map {
+        "status": "online",
+      },
+    },
+  ],
+  "integration": Immutable.Map {},
+  "emailDomain": Immutable.Map {},
+  "authentication": Immutable.Map {},
+  "state": Immutable.Map {
+    "loading": Immutable.Map {
+      "integration": false,
+      "integrations": false,
+      "emailDomain": false,
+      "updateIntegration": false,
+      "testing": false,
+      "delete": false,
+      "chatStatus": Immutable.Map {
+        1: false,
+      },
+    },
+    "error": Immutable.Map {
+      "chatStatus": Immutable.Map {},
     },
   },
   "extra": Immutable.Map {
@@ -83,6 +226,10 @@ Immutable.Map {
       "updateIntegration": false,
       "testing": false,
       "delete": false,
+      "chatStatus": Immutable.Map {},
+    },
+    "error": Immutable.Map {
+      "chatStatus": Immutable.Map {},
     },
   },
   "extra": Immutable.Map {

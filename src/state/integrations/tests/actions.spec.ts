@@ -3,12 +3,19 @@ import {fromJS} from 'immutable'
 import thunk from 'redux-thunk'
 import MockAdapter from 'axios-mock-adapter'
 
+import {getGorgiasChatApiClient} from 'rest_api/gorgias_chat_api/client'
+import type {Client} from 'rest_api/gorgias_chat_api/client.generated'
 import history from '../../../pages/history'
 import * as actions from '../actions'
+import * as helpers from '../helpers'
 import {initialState} from '../reducers'
 import client from '../../../models/api/resources'
 import {StoreDispatch} from '../../types'
-import {Integration, IntegrationType} from '../../../models/integration/types'
+import {
+    GorgiasChatStatusEnum,
+    Integration,
+    IntegrationType,
+} from '../../../models/integration/types'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -250,6 +257,110 @@ describe('integrations actions', () => {
             expect(history.push).toHaveBeenCalledWith(
                 '/app/settings/channels/gorgias_chat/123/installation'
             )
+        })
+    })
+
+    describe('fetchChatIntegrationStatus action', () => {
+        let chatClient: Client
+        const defaultApiResponse = {
+            statusText: '',
+            config: {},
+            headers: {},
+            data: {},
+            status: 200,
+        }
+
+        beforeEach(async () => {
+            chatClient = await getGorgiasChatApiClient()
+        })
+
+        it('should set status if computed', async () => {
+            const spyGetApplicationAgents = jest
+                .spyOn(chatClient, 'getApplicationAgents')
+                .mockResolvedValue(defaultApiResponse)
+            const spyIsAccountDuringBusinessHours = jest
+                .spyOn(helpers, 'isAccountDuringBusinessHours')
+                .mockImplementation(() => true)
+            const spyComputeChatIntegrationStatus = jest
+                .spyOn(helpers, 'computeChatIntegrationStatus')
+                .mockImplementation(() => GorgiasChatStatusEnum.HIDDEN)
+
+            await store.dispatch(actions.fetchChatIntegrationStatus(1))
+
+            expect(spyIsAccountDuringBusinessHours).toHaveBeenCalled()
+            expect(spyComputeChatIntegrationStatus).toHaveBeenCalled()
+            expect(spyGetApplicationAgents).not.toHaveBeenCalled()
+            expect(store.getActions()).toMatchSnapshot()
+        })
+
+        it('should set online status if there are agents available', async () => {
+            const spyGetApplicationAgents = jest
+                .spyOn(chatClient, 'getApplicationAgents')
+                .mockResolvedValue({
+                    ...defaultApiResponse,
+                    data: {
+                        hasAvailableAgents: true,
+                    },
+                })
+            const spyIsAccountDuringBusinessHours = jest
+                .spyOn(helpers, 'isAccountDuringBusinessHours')
+                .mockImplementation(() => true)
+            const spyComputeChatIntegrationStatus = jest
+                .spyOn(helpers, 'computeChatIntegrationStatus')
+                .mockImplementation(() => null)
+
+            await store.dispatch(actions.fetchChatIntegrationStatus(1))
+
+            expect(spyIsAccountDuringBusinessHours).toHaveBeenCalled()
+            expect(spyComputeChatIntegrationStatus).toHaveBeenCalled()
+            expect(spyGetApplicationAgents).toHaveBeenCalled()
+            expect(store.getActions()).toMatchSnapshot()
+        })
+
+        it('should set offline status if there are no agents available', async () => {
+            const spyGetApplicationAgents = jest
+                .spyOn(chatClient, 'getApplicationAgents')
+                .mockResolvedValue({
+                    ...defaultApiResponse,
+                    data: {
+                        hasAvailableAgents: false,
+                    },
+                })
+            const spyIsAccountDuringBusinessHours = jest
+                .spyOn(helpers, 'isAccountDuringBusinessHours')
+                .mockImplementation(() => true)
+            const spyComputeChatIntegrationStatus = jest
+                .spyOn(helpers, 'computeChatIntegrationStatus')
+                .mockImplementation(() => null)
+
+            await store.dispatch(actions.fetchChatIntegrationStatus(1))
+
+            expect(spyIsAccountDuringBusinessHours).toHaveBeenCalled()
+            expect(spyComputeChatIntegrationStatus).toHaveBeenCalled()
+            expect(spyGetApplicationAgents).toHaveBeenCalled()
+            expect(store.getActions()).toMatchSnapshot()
+        })
+
+        it('should handle error from api', async () => {
+            const spyGetApplicationAgents = jest
+                .spyOn(chatClient, 'getApplicationAgents')
+                .mockRejectedValue({
+                    ...defaultApiResponse,
+                    status: 400,
+                })
+            const spyIsAccountDuringBusinessHours = jest
+                .spyOn(helpers, 'isAccountDuringBusinessHours')
+                .mockImplementation(() => true)
+            const spyComputeChatIntegrationStatus = jest
+                .spyOn(helpers, 'computeChatIntegrationStatus')
+                .mockImplementation(() => null)
+
+            await store.dispatch(actions.fetchChatIntegrationStatus(1))
+
+            expect(spyIsAccountDuringBusinessHours).toHaveBeenCalled()
+            expect(spyComputeChatIntegrationStatus).toHaveBeenCalled()
+            expect(spyGetApplicationAgents).toHaveBeenCalled()
+            expect(store.getActions()).toMatchSnapshot()
         })
     })
 })

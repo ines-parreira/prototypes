@@ -237,6 +237,7 @@ describe('<IntegrationDetail />', () => {
             verifyEmailIntegrationManually: jest.fn(),
             klaviyoSyncHistoricalEvent: jest.fn(),
             createGorgiasChatIntegration: jest.fn(),
+            fetchChatIntegrationStatus: jest.fn(),
         },
         integrations: fromJS([]),
         hasTwitterFeature: true,

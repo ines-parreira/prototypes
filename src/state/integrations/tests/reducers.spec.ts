@@ -8,7 +8,10 @@ import {
 import reducer, {initialState} from '../reducers'
 import * as types from '../constants'
 import {RootState} from '../../types'
-import {IntegrationType} from '../../../models/integration/types'
+import {
+    GorgiasChatStatusEnum,
+    IntegrationType,
+} from '../../../models/integration/types'
 
 const state = {
     integrations: fromJS(integrationsState),
@@ -280,5 +283,83 @@ describe('integrations reducers', () => {
                 expect(reducer(integrationsState, action)).toMatchSnapshot()
             }
         )
+    })
+
+    describe('FETCH_CHAT_STATUS_START', () => {
+        it('should set the loading flag for chatStatus to `true` and error flag for chatStatus to `false`', () => {
+            const integrationsState = initialState.mergeDeep(
+                fromJS({
+                    integrations: [
+                        {
+                            id: 1,
+                            type: IntegrationType.GorgiasChat,
+                        },
+                    ],
+                    state: {
+                        loading: {chatStatus: {}},
+                        error: {chatStatus: {}},
+                    },
+                })
+            )
+
+            const action = {
+                id: 1,
+                type: types.FETCH_CHAT_STATUS_START,
+            }
+
+            expect(reducer(integrationsState, action)).toMatchSnapshot()
+        })
+    })
+
+    describe('FETCH_CHAT_STATUS_SUCCESS', () => {
+        it('should store the chat status in the `status` field and set the loading flag for chatStatus to `false`', () => {
+            const integrationsState = initialState.mergeDeep(
+                fromJS({
+                    integrations: [
+                        {
+                            id: 1,
+                            type: IntegrationType.GorgiasChat,
+                            meta: {},
+                        },
+                    ],
+                    state: {loading: {chatStatus: {}}},
+                })
+            )
+
+            const action = {
+                id: 1,
+                chatStatus: GorgiasChatStatusEnum.ONLINE,
+                type: types.FETCH_CHAT_STATUS_SUCCESS,
+            }
+
+            expect(reducer(integrationsState, action)).toMatchSnapshot()
+        })
+    })
+
+    describe('FETCH_CHAT_STATUS_ERROR', () => {
+        it('should set the loading flag for chatStatus to `false` and error flag for chatStatus to `true`', () => {
+            const integrationsState = initialState.mergeDeep(
+                fromJS({
+                    integrations: [
+                        {
+                            id: 1,
+                            type: IntegrationType.GorgiasChat,
+                        },
+                    ],
+                    state: {
+                        loading: {chatStatus: {}},
+                        error: {chatStatus: {}},
+                    },
+                })
+            )
+
+            const action = {
+                id: 1,
+                type: types.FETCH_CHAT_STATUS_ERROR,
+                reason: `Failed`,
+            }
+
+            expect(reducer(integrationsState, action)).toMatchSnapshot()
+        })
     })
 })

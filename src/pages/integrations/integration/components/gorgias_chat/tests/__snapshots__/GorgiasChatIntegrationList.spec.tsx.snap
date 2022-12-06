@@ -1,148 +1,279 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<GorgiasChatIntegrationList/> should display correcty the list of chat integrations 1`] = `
-<div
-  className="w-100"
->
-  <PageHeader
-    title={
-      <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
-      >
-        <BreadcrumbItem
-          active={true}
-          tag="li"
-        >
-          Chat
-        </BreadcrumbItem>
-      </Breadcrumb>
-    }
-  >
-    <Button
-      color="success"
-      onClick={[Function]}
-      tag="button"
-      type="submit"
-    >
-      <div
-        className="createIntegrationBtn"
-      >
-        <i
-          className="material-icons mr-2"
-        >
-          add
-        </i>
-        Add New
-      </div>
-    </Button>
-  </PageHeader>
-  <Container
-    className="pageContainer pb0"
-    data-candu-id="integration-list-top"
-    fluid={true}
-    tag="div"
+exports[`<GorgiasChatIntegrationList /> should display correcty the list of chat integrations 1`] = `
+<div>
+  <div
+    class="w-100"
   >
     <div
-      className="mb-3"
+      class="page-header pageHeader"
     >
-      <div>
-        Chat with your customers by adding our Chat widget on your website. Every time a customer starts a conversation on your website, it opens a ticket in Gorgias.
-      </div>
-    </div>
-    <div>
-      <Alert
-        className="mb-4"
-        icon={true}
-        onClose={[Function]}
-        type="info"
+      <nav
+        aria-label="breadcrumb"
+        class=""
       >
-        The toggle to hide the chat from your website was moved to the
-         
-        <b>
-          Installation
-        </b>
-         tab of your chat's settings.
-      </Alert>
-    </div>
-  </Container>
-  <TableWrapper
-    className="table"
-  >
-    <TableHead
-      className="header"
-    >
-      <HeaderCellProperty
-        title="Chat name"
-      />
-      <HeaderCellProperty
-        title="Store"
-      />
-      <HeaderCellProperty
-        title="Language"
-      />
-      <HeaderCell />
-    </TableHead>
-    <ForwardRef(TableBody)>
-      <ForwardRef(TableBodyRow)
-        onClick={[Function]}
-      >
-        <ForwardRef
-          innerClassName="chatName"
+        <ol
+          class="breadcrumb"
         >
-          my chat enabled
-        </ForwardRef>
-        <ForwardRef
-          size="small"
+          <li
+            aria-current="page"
+            class="active breadcrumb-item"
+          >
+            Chat
+          </li>
+        </ol>
+      </nav>
+      <div>
+        <button
+          class="btn btn-success"
+          type="submit"
         >
           <div
-            className="shopifyStoreDiv"
+            class="createIntegrationBtn"
           >
-            <span
-              className="shopifyStoreName"
+            <i
+              class="material-icons mr-2"
             >
-              <img
-                alt="logo Shopify"
-                src="test-file-stub"
-              />
-              <span>
-                my associated Shopify store
-              </span>
-            </span>
+              add
+            </i>
+            Add New
+          </div>
+        </button>
+      </div>
+    </div>
+    <div
+      class="pageContainer pb0 container-fluid"
+      data-candu-id="integration-list-top"
+    >
+      <div
+        class="mb-3"
+      >
+        <div>
+          Chat with your customers by adding our Chat widget on your website. Every time a customer starts a conversation on your website, it opens a ticket in Gorgias.
+        </div>
+      </div>
+      <div>
+        <div
+          class="alert info closable mb-4"
+        >
+          <div
+            class="iconContainer"
+          >
             <img
-              alt="warning icon"
-              className="material-icons warningIcon"
-              id="store-disconnected-1"
+              alt="icon"
               src="test-file-stub"
             />
-            <Tooltip
-              placement="top"
-              target="store-disconnected-1"
-            >
-              This store is currently disconnected
-            </Tooltip>
           </div>
-        </ForwardRef>
-        <ForwardRef
-          size="small"
+          <div
+            class="content"
+          >
+            <span
+              class="label"
+            >
+              The toggle to hide the chat from your website was moved to the
+               
+              <b>
+                Installation
+              </b>
+               tab of your chat's settings.
+            </span>
+          </div>
+          <div
+            aria-label="Close Icon"
+            class="close"
+          >
+            <img
+              alt="close-icon"
+              class="closeIcon"
+              src="test-file-stub"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <table
+      class="table table"
+    >
+      <thead
+        class="header"
+      >
+        <tr
+          class="headerRow"
         >
-          <LanguageBullet />
-        </ForwardRef>
-        <ForwardRef
-          size="smallest"
-        >
-          <ForwardIcon
-            href="/app/settings/channels/gorgias_chat/1/campaigns"
+          <td
+            class="wrapper normal"
+          >
+            <div
+              class="content"
+            >
+              <div>
+                <span
+                  class="title"
+                >
+                  Chat name
+                </span>
+                <i
+                  class="material-icons md-1 directionIcon"
+                >
+                  arrow_drop_up
+                </i>
+              </div>
+            </div>
+          </td>
+          <td
+            class="wrapper normal"
+          >
+            <div
+              class="content"
+            >
+              <div>
+                <span
+                  class="title"
+                >
+                  Store
+                </span>
+                <i
+                  class="material-icons md-1 directionIcon"
+                >
+                  arrow_drop_up
+                </i>
+              </div>
+            </div>
+          </td>
+          <td
+            class="wrapper normal"
+          >
+            <div
+              class="content"
+            >
+              <div>
+                <span
+                  class="title"
+                >
+                  Status
+                </span>
+                <i
+                  class="material-icons md-1 directionIcon"
+                >
+                  arrow_drop_up
+                </i>
+              </div>
+            </div>
+          </td>
+          <td
+            class="wrapper normal"
+          >
+            <div
+              class="content"
+            >
+              <div>
+                <span
+                  class="title"
+                >
+                  Language
+                </span>
+                <i
+                  class="material-icons md-1 directionIcon"
+                >
+                  arrow_drop_up
+                </i>
+              </div>
+            </div>
+          </td>
+          <td
+            class="wrapper normal"
           />
-        </ForwardRef>
-      </ForwardRef(TableBodyRow)>
-    </ForwardRef(TableBody)>
-  </TableWrapper>
-  <Container
-    data-candu-id="integration-list-bottom"
-    fluid={true}
-    tag="div"
-  />
+        </tr>
+      </thead>
+      <tbody
+        class="tableBody"
+      >
+        <tr
+          class="row isClickable"
+        >
+          <td
+            class="wrapper normal"
+          >
+            <div
+              class="cellContent chatName"
+            >
+              my chat enabled
+            </div>
+          </td>
+          <td
+            class="wrapper small"
+          >
+            <div
+              class="cellContent"
+            >
+              <div
+                class="shopifyStoreDiv"
+              >
+                <span
+                  class="shopifyStoreName"
+                >
+                  <img
+                    alt="logo Shopify"
+                    src="test-file-stub"
+                  />
+                  <span>
+                    my associated Shopify store
+                  </span>
+                </span>
+                <img
+                  alt="warning icon"
+                  class="material-icons warningIcon"
+                  id="store-disconnected-1"
+                  src="test-file-stub"
+                />
+              </div>
+            </div>
+          </td>
+          <td
+            class="wrapper small"
+          >
+            <div
+              class="cellContent"
+            >
+              <span
+                class="chatStatusDot chatStatusDotOnline"
+              />
+              <span>
+                Online
+              </span>
+            </div>
+          </td>
+          <td
+            class="wrapper small"
+          >
+            <div
+              class="cellContent"
+            />
+          </td>
+          <td
+            class="wrapper smallest"
+          >
+            <div
+              class="cellContent"
+            >
+              <a
+                to="/app/settings/channels/gorgias_chat/1/campaigns"
+              >
+                <i
+                  class="material-icons md-2 align-middle icon-go-forward"
+                >
+                  keyboard_arrow_right
+                </i>
+              </a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div
+      class="container-fluid"
+      data-candu-id="integration-list-bottom"
+    />
+  </div>
 </div>
 `;

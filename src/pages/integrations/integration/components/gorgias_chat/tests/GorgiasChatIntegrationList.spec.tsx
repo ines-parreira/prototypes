@@ -1,19 +1,26 @@
 import React from 'react'
-import {shallow} from 'enzyme'
+import {render} from '@testing-library/react'
 import {fromJS, Map, List} from 'immutable'
 
-import GorgiasChatIntegrationList from '../GorgiasChatIntegrationList'
-import {IntegrationType} from '../../../../../../models/integration/types'
+import thunk from 'redux-thunk'
+import configureMockStore from 'redux-mock-store'
+import {Provider} from 'react-redux'
 
-describe('<GorgiasChatIntegrationList/>', () => {
-    const mockedActivateIntegration = jest.fn()
-    const mockedDeactivateIntegration = jest.fn()
+import {RootState, StoreDispatch} from 'state/types'
+import GorgiasChatIntegrationList from '../GorgiasChatIntegrationList'
+
+import {
+    GorgiasChatStatusEnum,
+    IntegrationType,
+} from '../../../../../../models/integration/types'
+
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+
+describe('<GorgiasChatIntegrationList />', () => {
     const props = {
-        actions: {
-            activateIntegration: mockedActivateIntegration,
-            deactivateIntegration: mockedDeactivateIntegration,
-        },
-        loading: fromJS({}),
+        loading: fromJS({
+            integrations: false,
+        }),
         integrations: fromJS([
             {
                 id: 1,
@@ -25,6 +32,7 @@ describe('<GorgiasChatIntegrationList/>', () => {
                     },
                     shop_name: 'my associated Shopify store',
                     shop_type: IntegrationType.Shopify,
+                    status: GorgiasChatStatusEnum.ONLINE,
                 },
                 decoration: {
                     introduction_text: 'this is an intro',
@@ -50,25 +58,38 @@ describe('<GorgiasChatIntegrationList/>', () => {
             },
         ]) as List<Map<any, any>>,
     }
+    const defaultState = {
+        integrations: fromJS({integrations: props.integrations}),
+    } as RootState
 
     beforeEach(() => {
         jest.resetAllMocks()
     })
 
     it('should display correcty the list of chat integrations', () => {
-        const component = shallow(<GorgiasChatIntegrationList {...props} />)
-        expect(component).toMatchSnapshot()
+        const {container} = render(
+            <Provider store={mockStore(defaultState)}>
+                <GorgiasChatIntegrationList {...props} />
+            </Provider>
+        )
+        expect(container).toMatchSnapshot()
     })
 
     it('should display associated Shopify store to chat integration', () => {
-        const component = shallow(<GorgiasChatIntegrationList {...props} />)
-        const shopifyStoreName = component.find('.shopify-store-name')
-        expect(shopifyStoreName).toBeDefined()
+        const {getByText} = render(
+            <Provider store={mockStore(defaultState)}>
+                <GorgiasChatIntegrationList {...props} />
+            </Provider>
+        )
+        expect(getByText(/my associated Shopify store/)).toBeDefined()
     })
 
     it('should display disconnected icon if Shopify store is disconnected', () => {
-        const component = shallow(<GorgiasChatIntegrationList {...props} />)
-        const isDisconnectedIcon = component.find('#store-disconnected-1')
-        expect(isDisconnectedIcon).toBeDefined()
+        const {getByAltText} = render(
+            <Provider store={mockStore(defaultState)}>
+                <GorgiasChatIntegrationList {...props} />
+            </Provider>
+        )
+        expect(getByAltText(/warning icon/)).toBeDefined()
     })
 })

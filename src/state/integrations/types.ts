@@ -22,6 +22,14 @@ export type IntegrationsState = {
             updateIntegration?: boolean
             testing?: boolean
             delete?: boolean
+            chatStatus?: {
+                [key: number]: boolean
+            }
+        }
+        error: {
+            chatStatus?: {
+                [key: number]: boolean
+            }
         }
     }
 }

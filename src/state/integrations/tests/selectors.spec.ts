@@ -32,6 +32,8 @@ import {
     DEPRECATED_getPhoneIntegrations,
     getActiveIntegrations,
     getChannelsForSourceType,
+    getIsChatIntegrationStatusLoading,
+    getIsChatIntegrationStatusError,
 } from '../selectors'
 import {integrationsState} from '../../../fixtures/integrations'
 import {
@@ -832,5 +834,77 @@ describe('integrations selectors', () => {
         )
 
         expect(integrations).toEqual(expected)
+    })
+
+    describe('getIsChatIntegrationStatusLoading()', () => {
+        it('should return true if chat status is being fetched', () => {
+            const state = {
+                integrations: fromJS({
+                    state: {
+                        loading: {
+                            chatStatus: {
+                                1: true,
+                            },
+                        },
+                    },
+                }),
+            } as RootState
+
+            const res = getIsChatIntegrationStatusLoading(1)(state)
+            expect(res).toEqual(true)
+        })
+
+        it('should return false if chat status finished fetching', () => {
+            const state = {
+                integrations: fromJS({
+                    state: {
+                        loading: {
+                            chatStatus: {
+                                1: false,
+                            },
+                        },
+                    },
+                }),
+            } as RootState
+
+            const res = getIsChatIntegrationStatusLoading(1)(state)
+            expect(res).toEqual(false)
+        })
+    })
+
+    describe('getIsChatIntegrationStatusError()', () => {
+        it('should return false if chat status fetching did not resulted in error', () => {
+            const state = {
+                integrations: fromJS({
+                    state: {
+                        error: {
+                            chatStatus: {
+                                1: false,
+                            },
+                        },
+                    },
+                }),
+            } as RootState
+
+            const res = getIsChatIntegrationStatusError(1)(state)
+            expect(res).toEqual(false)
+        })
+
+        it('should return true if chat status fetching resulted in error', () => {
+            const state = {
+                integrations: fromJS({
+                    state: {
+                        error: {
+                            chatStatus: {
+                                1: true,
+                            },
+                        },
+                    },
+                }),
+            } as RootState
+
+            const res = getIsChatIntegrationStatusError(1)(state)
+            expect(res).toEqual(true)
+        })
     })
 })

@@ -83,6 +83,65 @@ Array [
 ]
 `;
 
+exports[`integrations actions fetchChatIntegrationStatus action should handle error from api 1`] = `
+Array [
+  Object {
+    "id": 1,
+    "type": "FETCH_CHAT_STATUS_START",
+  },
+  Object {
+    "error": Object {
+      "config": Object {},
+      "data": Object {},
+      "headers": Object {},
+      "status": 400,
+      "statusText": "",
+    },
+    "id": 1,
+    "reason": "Failed to fetch Status for Chat ID 1",
+    "type": "FETCH_CHAT_STATUS_ERROR",
+  },
+]
+`;
+
+exports[`integrations actions fetchChatIntegrationStatus action should set offline status if there are no agents available 1`] = `
+Array [
+  Object {
+    "id": 1,
+    "type": "FETCH_CHAT_STATUS_START",
+  },
+  Object {
+    "chatStatus": "offline",
+    "id": 1,
+    "type": "FETCH_CHAT_STATUS_SUCCESS",
+  },
+]
+`;
+
+exports[`integrations actions fetchChatIntegrationStatus action should set online status if there are agents available 1`] = `
+Array [
+  Object {
+    "id": 1,
+    "type": "FETCH_CHAT_STATUS_START",
+  },
+  Object {
+    "chatStatus": "online",
+    "id": 1,
+    "type": "FETCH_CHAT_STATUS_SUCCESS",
+  },
+]
+`;
+
+exports[`integrations actions fetchChatIntegrationStatus action should set status if computed 1`] = `
+Array [
+  Object {
+    "chatStatus": "hidden",
+    "id": 1,
+    "type": "FETCH_CHAT_STATUS_SUCCESS",
+  },
+]
+`;
+
 exports[`integrations actions on update success 1`] = `
 Array [
   Object {
