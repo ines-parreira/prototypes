@@ -280,7 +280,6 @@ export class TicketBodyVirtualized extends React.Component<Props, State> {
             setStatus,
             lastReadMessage,
             lastCustomerMessage = fromJS({}),
-            lastSentMessageFromAgent,
         } = this.props
         const id = `message-${index}`
         return (
@@ -296,7 +295,6 @@ export class TicketBodyVirtualized extends React.Component<Props, State> {
                 setStatus={setStatus}
                 lastReadMessageId={lastReadMessage.get('id')}
                 lastCustomerMessage={lastCustomerMessage}
-                lastSentMessageIdFromAgent={lastSentMessageFromAgent.get('id')}
                 hasCursor={this.state.messageCursor === index}
                 highlightedElements={this.state.highlightedElements}
                 customer={ticket.get('customer')}
@@ -346,6 +344,7 @@ export class TicketBodyVirtualized extends React.Component<Props, State> {
                         if (element === 'header') {
                             itemContent = (
                                 <TicketHeaderWrapper
+                                    key={`ticket-header-${index}`}
                                     hideTicket={hideTicket}
                                     handleHistoryToggle={handleHistoryToggle}
                                 />
@@ -381,6 +380,7 @@ export class TicketBodyVirtualized extends React.Component<Props, State> {
                                         ])
                                 ) ? null : (
                                     <RuleSuggestion
+                                        key={`rule-suggestion-${index}`}
                                         ticket={ticket.toJS()}
                                         isCollapsed={!isLast}
                                     />
@@ -460,8 +460,6 @@ const connector = connect((state: RootState) => ({
     lastReadMessage: ticketSelectors.getLastReadMessage(state),
     isHistoryDisplayed: ticketSelectors.getDisplayHistory(state),
     lastCustomerMessage: ticketSelectors.getLastCustomerMessage(state),
-    lastSentMessageFromAgent:
-        ticketSelectors.getLastSentMessageFromAgent(state),
 }))
 
 export default connector(TicketBodyVirtualized)

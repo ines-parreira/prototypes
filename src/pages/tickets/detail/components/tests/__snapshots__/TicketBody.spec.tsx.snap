@@ -2,13 +2,17 @@
 
 exports[`TicketBody last read message should not pass \`isLastReadMessage\` for a new message 1`] = `
 <Fragment>
-  <TicketHeaderWrapper />
+  <TicketHeaderWrapper
+    key="ticket-header-0"
+  />
 </Fragment>
 `;
 
 exports[`TicketBody last read message should pass \`isLastReadMessage\` only for the last read message 1`] = `
 <Fragment>
-  <TicketHeaderWrapper />
+  <TicketHeaderWrapper
+    key="ticket-header-0"
+  />
   <TicketMessages
     hasCursor={false}
     highlightedElements={null}
@@ -173,7 +177,9 @@ exports[`TicketBody last read message should pass \`isLastReadMessage\` only for
 
 exports[`TicketBody should display and highlight the messages 1`] = `
 <Fragment>
-  <TicketHeaderWrapper />
+  <TicketHeaderWrapper
+    key="ticket-header-0"
+  />
   <TicketMessages
     hasCursor={false}
     highlightedElements={
@@ -236,7 +242,9 @@ exports[`TicketBody should display and highlight the messages 1`] = `
 
 exports[`TicketBody should display and not highlight the messages 1`] = `
 <Fragment>
-  <TicketHeaderWrapper />
+  <TicketHeaderWrapper
+    key="ticket-header-0"
+  />
   <TicketMessages
     hasCursor={false}
     highlightedElements={
@@ -299,7 +307,9 @@ exports[`TicketBody should display and not highlight the messages 1`] = `
 
 exports[`TicketBody should display audit log events with messages 1`] = `
 <Fragment>
-  <TicketHeaderWrapper />
+  <TicketHeaderWrapper
+    key="ticket-header-0"
+  />
   <TicketMessages
     hasCursor={true}
     highlightedElements={null}
@@ -377,7 +387,9 @@ exports[`TicketBody should display audit log events with messages 1`] = `
 
 exports[`TicketBody should display events with messages 1`] = `
 <Fragment>
-  <TicketHeaderWrapper />
+  <TicketHeaderWrapper
+    key="ticket-header-0"
+  />
   <TicketMessages
     hasCursor={true}
     highlightedElements={null}
@@ -483,7 +495,9 @@ exports[`TicketBody should display events with messages 1`] = `
 
 exports[`TicketBody should display messages 1`] = `
 <Fragment>
-  <TicketHeaderWrapper />
+  <TicketHeaderWrapper
+    key="ticket-header-0"
+  />
   <TicketMessages
     hasCursor={false}
     highlightedElements={null}
@@ -542,7 +556,9 @@ exports[`TicketBody should display messages 1`] = `
 
 exports[`TicketBody should display phone events 1`] = `
 <Fragment>
-  <TicketHeaderWrapper />
+  <TicketHeaderWrapper
+    key="ticket-header-0"
+  />
   <PhoneEvent
     event={
       Immutable.Map {
@@ -574,7 +590,9 @@ exports[`TicketBody should display phone events 1`] = `
 
 exports[`TicketBody should display rule suggestion in correct order 1`] = `
 <Fragment>
-  <TicketHeaderWrapper />
+  <TicketHeaderWrapper
+    key="ticket-header-0"
+  />
   <TicketMessages
     hasCursor={false}
     highlightedElements={null}
@@ -630,6 +648,7 @@ exports[`TicketBody should display rule suggestion in correct order 1`] = `
   />
   <RuleSuggestion
     isCollapsed={true}
+    key="rule-suggestion-2"
     ticket={
       Object {
         "id": 1,

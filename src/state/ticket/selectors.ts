@@ -144,13 +144,6 @@ export const getCustomerMessages = createImmutableSelector<
             fromJS([])) as List<any>
 )
 
-export const getAgentMessages = createSelector<RootState, List<any>, List<any>>(
-    getMessages,
-    (messages) =>
-        (messages.filter((m: Map<any, any>) => m.get('from_agent') === true) ||
-            fromJS([])) as List<any>
-)
-
 export const getPendingMessages = createImmutableSelector<
     RootState,
     List<any>,
@@ -188,21 +181,6 @@ export const getLastMessage = createImmutableSelector<
             .sortBy(
                 (message: Map<any, any>) =>
                     message.get('created_datetime') as string
-            )
-            .last() || fromJS({})) as Map<any, any>
-)
-
-export const getLastSentMessageFromAgent = createSelector<
-    RootState,
-    Map<any, any>,
-    List<any>
->(
-    getAgentMessages,
-    (state) =>
-        (state
-            .sortBy(
-                (message: Map<any, any>) =>
-                    message.get('sent_datetime') as string
             )
             .last() || fromJS({})) as Map<any, any>
 )

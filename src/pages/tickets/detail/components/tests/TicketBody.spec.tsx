@@ -46,9 +46,6 @@ describe('TicketBody', () => {
         currentUser: fromJS({
             timezone: 'UTC',
         }),
-        lastSentMessageFromAgent: fromJS({
-            id: undefined,
-        }),
     } as ComponentProps<typeof TicketBodyVirtualized>
 
     it('should display messages', () => {
