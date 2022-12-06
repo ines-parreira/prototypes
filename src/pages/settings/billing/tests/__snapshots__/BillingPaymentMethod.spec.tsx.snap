@@ -1,218 +1,84 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`BillingPaymentMethod Shopify should render a button 1`] = `
-<BillingPaymentMethodContainer
-  creditCard={Immutable.Map {}}
-  currentAccountDomain="foo"
-  currentUserId="1"
-  fetchCreditCard={
-    [MockFunction] {
-      "calls": Array [
-        Array [],
-        Array [],
-        Array [],
-        Array [],
-        Array [],
-        Array [],
-        Array [],
-      ],
-      "results": Array [
-        Object {
-          "type": "return",
-          "value": Promise {},
-        },
-        Object {
-          "type": "return",
-          "value": Promise {},
-        },
-        Object {
-          "type": "return",
-          "value": Promise {},
-        },
-        Object {
-          "type": "return",
-          "value": Promise {},
-        },
-        Object {
-          "type": "return",
-          "value": Promise {},
-        },
-        Object {
-          "type": "return",
-          "value": Promise {},
-        },
-        Object {
-          "type": "return",
-          "value": Promise {},
-        },
-      ],
-    }
-  }
-  fetchPaymentMethod={
-    [MockFunction] {
-      "calls": Array [
-        Array [],
-        Array [],
-        Array [],
-        Array [],
-        Array [],
-        Array [],
-        Array [],
-        Array [],
-      ],
-      "results": Array [
-        Object {
-          "type": "return",
-          "value": Promise {},
-        },
-        Object {
-          "type": "return",
-          "value": Promise {},
-        },
-        Object {
-          "type": "return",
-          "value": Promise {},
-        },
-        Object {
-          "type": "return",
-          "value": Promise {},
-        },
-        Object {
-          "type": "return",
-          "value": Promise {},
-        },
-        Object {
-          "type": "return",
-          "value": Promise {},
-        },
-        Object {
-          "type": "return",
-          "value": Promise {},
-        },
-        Object {
-          "type": "return",
-          "value": Promise {},
-        },
-      ],
-    }
-  }
-  paymentMethod="shopify"
-  productCurrency="usd"
-  productsAmount={12}
-  shopifyBillingStatus="inactive"
-  subscription={
-    Immutable.Map {
-      "plan": "basic-usd-1",
-    }
-  }
+<div
+  class="wrapper"
 >
-  <div
-    className="wrapper"
+  <h4
+    class="header"
   >
-    <BillingHeader
-      icon="credit_card"
+    <i
+      class="icon material-icons"
     >
-      <h4
-        className="header"
-      >
-        <i
-          className="icon material-icons"
-        >
-          credit_card
-        </i>
-        Payment method
-      </h4>
-    </BillingHeader>
-    <Card
-      tag="div"
+      credit_card
+    </i>
+    Payment method
+  </h4>
+  <div
+    class="card"
+  >
+    <div
+      class="card-body"
     >
       <div
-        className="card"
+        id="activate-shopify-billing-button"
+        style="display: inline-block;"
       >
-        <CardBody
-          tag="div"
+        <a
+          class=""
+          href="/integrations/shopify/billing/activate/"
         >
-          <div
-            className="card-body"
+          <button
+            class="wrapper fill primary medium"
+            type="button"
           >
-            <div
-              id="activate-shopify-billing-button"
-              style={
-                Object {
-                  "display": "inline-block",
-                }
-              }
-            >
-              <a
-                className=""
-                href="/integrations/shopify/billing/activate/"
-              >
-                <ForwardRef
-                  isDisabled={false}
-                  isLoading={false}
-                  onClick={[Function]}
-                >
-                  <BaseButton
-                    isDisabled={false}
-                    isLoading={false}
-                  >
-                    <button
-                      className="wrapper fill primary medium"
-                      disabled={false}
-                      onClick={[Function]}
-                      type="button"
-                    >
-                      Activate billing with Shopify and pay $12
-                    </button>
-                  </BaseButton>
-                </ForwardRef>
-              </a>
-              <TaxDisclaimer
-                className="taxDisclaimer"
-              >
-                <div
-                  className="wrapper taxDisclaimer"
-                >
-                  * Prices do not include
-                   
-                  <a
-                    href="https://www.gorgias.com/pricing/billing-sales-tax"
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    sales tax
-                  </a>
-                </div>
-              </TaxDisclaimer>
-            </div>
-          </div>
-        </CardBody>
+            Activate billing with Shopify and pay $12
+          </button>
+        </a>
+        <div
+          class="wrapper taxDisclaimer"
+        >
+          * Prices do not include
+           
+          <a
+            href="https://www.gorgias.com/pricing/billing-sales-tax"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            sales tax
+          </a>
+        </div>
       </div>
-    </Card>
+    </div>
   </div>
-</BillingPaymentMethodContainer>
+</div>
 `;
 
 exports[`BillingPaymentMethod Shopify should render a button to reactivate billing 1`] = `
 <div
-  className="wrapper"
+  class="wrapper"
 >
-  <BillingHeader
-    icon="credit_card"
+  <h4
+    class="header"
   >
+    <i
+      class="icon material-icons"
+    >
+      credit_card
+    </i>
     Payment method
-  </BillingHeader>
-  <Card
-    tag="div"
+  </h4>
+  <div
+    class="card"
   >
-    <CardBody
-      tag="div"
+    <div
+      class="card-body"
     >
       <div
-        className="content"
+        class="content"
       >
         <i
-          className="statusIcon material-icons text-warning md-2"
+          class="statusIcon material-icons text-warning md-2"
         >
           warning
         </i>
@@ -220,703 +86,291 @@ exports[`BillingPaymentMethod Shopify should render a button to reactivate billi
         Billing with Shopify is inactive. Please reactivate to avoid account cancellation.
          
         <a
-          className="float-right"
+          class="float-right"
           href="/integrations/shopify/billing/activate/"
         >
-          <ForwardRef
-            isLoading={false}
-            onClick={[Function]}
+          <button
+            class="wrapper fill primary medium"
+            type="button"
           >
             Reactivate billing with Shopify
-          </ForwardRef>
+          </button>
         </a>
       </div>
-    </CardBody>
-  </Card>
+    </div>
+  </div>
 </div>
 `;
 
 exports[`BillingPaymentMethod Shopify should render a disabled button 1`] = `
 <div
-  className="wrapper"
+  class="wrapper"
 >
-  <BillingHeader
-    icon="credit_card"
+  <h4
+    class="header"
   >
+    <i
+      class="icon material-icons"
+    >
+      credit_card
+    </i>
     Payment method
-  </BillingHeader>
-  <Card
-    tag="div"
+  </h4>
+  <div
+    class="card"
   >
-    <CardBody
-      tag="div"
+    <div
+      class="card-body"
     >
       <div
         id="activate-shopify-billing-button"
-        style={
-          Object {
-            "display": "inline-block",
-          }
-        }
+        style="display: inline-block;"
       >
         <a
-          className="disabledLink"
+          class="disabledLink"
           href="/integrations/shopify/billing/activate/"
         >
-          <ForwardRef
-            isDisabled={true}
-            isLoading={false}
-            onClick={[Function]}
+          <button
+            class="wrapper fill primary medium isDisabled"
+            disabled=""
+            type="button"
           >
             Activate billing with Shopify and pay $12
-          </ForwardRef>
+          </button>
         </a>
-        <TaxDisclaimer
-          className="taxDisclaimer"
-        />
-        <UncontrolledTooltip
-          placement="top"
-          target="activate-shopify-billing-button"
+        <div
+          class="wrapper taxDisclaimer"
         >
-          Select a plan before activating Shopify billing
-        </UncontrolledTooltip>
+          * Prices do not include
+           
+          <a
+            href="https://www.gorgias.com/pricing/billing-sales-tax"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            sales tax
+          </a>
+        </div>
       </div>
-    </CardBody>
-  </Card>
+    </div>
+  </div>
 </div>
 `;
 
 exports[`BillingPaymentMethod Shopify should render an active status 1`] = `
-<BillingPaymentMethodContainer
-  creditCard={Immutable.Map {}}
-  currentAccountDomain="foo"
-  currentUserId="1"
-  fetchCreditCard={
-    [MockFunction] {
-      "calls": Array [
-        Array [],
-        Array [],
-        Array [],
-        Array [],
-      ],
-      "results": Array [
-        Object {
-          "type": "return",
-          "value": Promise {},
-        },
-        Object {
-          "type": "return",
-          "value": Promise {},
-        },
-        Object {
-          "type": "return",
-          "value": Promise {},
-        },
-        Object {
-          "type": "return",
-          "value": Promise {},
-        },
-      ],
-    }
-  }
-  fetchPaymentMethod={
-    [MockFunction] {
-      "calls": Array [
-        Array [],
-        Array [],
-        Array [],
-        Array [],
-        Array [],
-      ],
-      "results": Array [
-        Object {
-          "type": "return",
-          "value": Promise {},
-        },
-        Object {
-          "type": "return",
-          "value": Promise {},
-        },
-        Object {
-          "type": "return",
-          "value": Promise {},
-        },
-        Object {
-          "type": "return",
-          "value": Promise {},
-        },
-        Object {
-          "type": "return",
-          "value": Promise {},
-        },
-      ],
-    }
-  }
-  paymentMethod="shopify"
-  productCurrency="usd"
-  productsAmount={12}
-  shopifyBillingStatus="active"
-  subscription={
-    Immutable.Map {
-      "plan": "basic-usd-1",
-    }
-  }
+<div
+  class="wrapper"
 >
-  <div
-    className="wrapper"
+  <h4
+    class="header"
   >
-    <BillingHeader
-      icon="credit_card"
+    <i
+      class="icon material-icons"
     >
-      <h4
-        className="header"
-      >
-        <i
-          className="icon material-icons"
-        >
-          credit_card
-        </i>
-        Payment method
-      </h4>
-    </BillingHeader>
-    <Card
-      tag="div"
+      credit_card
+    </i>
+    Payment method
+  </h4>
+  <div
+    class="card"
+  >
+    <div
+      class="card-body"
     >
       <div
-        className="card"
+        class="content"
       >
-        <CardBody
-          tag="div"
+        <i
+          class="statusIcon material-icons text-success md-2"
         >
-          <div
-            className="card-body"
-          >
-            <div
-              className="content"
-            >
-              <i
-                className="statusIcon material-icons text-success md-2"
-              >
-                check_circle
-              </i>
-               
-              Payment with Shopify is active. You're all set.
-            </div>
-          </div>
-        </CardBody>
+          check_circle
+        </i>
+         
+        Payment with Shopify is active. You're all set.
       </div>
-    </Card>
+    </div>
   </div>
-</BillingPaymentMethodContainer>
+</div>
 `;
 
 exports[`BillingPaymentMethod Stripe should render a button 1`] = `
-<BillingPaymentMethodContainer
-  creditCard={Immutable.Map {}}
-  currentAccountDomain="foo"
-  currentUserId="1"
-  fetchCreditCard={
-    [MockFunction] {
-      "calls": Array [
-        Array [],
-      ],
-      "results": Array [
-        Object {
-          "type": "return",
-          "value": Promise {},
-        },
-      ],
-    }
-  }
-  fetchPaymentMethod={
-    [MockFunction] {
-      "calls": Array [
-        Array [],
-        Array [],
-      ],
-      "results": Array [
-        Object {
-          "type": "return",
-          "value": Promise {},
-        },
-        Object {
-          "type": "return",
-          "value": Promise {},
-        },
-      ],
-    }
-  }
-  paymentMethod="stripe"
-  productCurrency="usd"
-  productsAmount={12}
-  shopifyBillingStatus="inactive"
-  subscription={
-    Immutable.Map {
-      "plan": "basic-usd-1",
-    }
-  }
+<div
+  class="wrapper"
 >
-  <div
-    className="wrapper"
+  <h4
+    class="header"
   >
-    <BillingHeader
-      icon="credit_card"
+    <i
+      class="icon material-icons"
     >
-      <h4
-        className="header"
-      >
-        <i
-          className="icon material-icons"
-        >
-          credit_card
-        </i>
-        Payment method
-      </h4>
-    </BillingHeader>
-    <Card
-      tag="div"
+      credit_card
+    </i>
+    Payment method
+  </h4>
+  <div
+    class="card"
+  >
+    <div
+      class="card-body"
     >
       <div
-        className="card"
+        class="row"
       >
-        <CardBody
-          tag="div"
+        <div
+          class="content col-sm-8"
+        >
+          No credit card registered
+        </div>
+        <div
+          class="text-right col-sm-4"
         >
           <div
-            className="card-body"
+            id="add-payment-method-button"
+            style="display: inline-block;"
           >
-            <Row
-              tag="div"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
+            <a
+              class=""
+              to="/app/settings/billing/add-payment-method"
             >
-              <div
-                className="row"
+              <button
+                class="wrapper fill primary medium"
+                type="button"
               >
-                <Col
-                  className="content"
-                  sm={8}
-                  tag="div"
-                  widths={
-                    Array [
-                      "xs",
-                      "sm",
-                      "md",
-                      "lg",
-                      "xl",
-                    ]
-                  }
-                >
-                  <div
-                    className="content col-sm-8"
-                  >
-                    No credit card registered
-                  </div>
-                </Col>
-                <Col
-                  className="text-right"
-                  sm={4}
-                  tag="div"
-                  widths={
-                    Array [
-                      "xs",
-                      "sm",
-                      "md",
-                      "lg",
-                      "xl",
-                    ]
-                  }
-                >
-                  <div
-                    className="text-right col-sm-4"
-                  >
-                    <div
-                      id="add-payment-method-button"
-                      style={
-                        Object {
-                          "display": "inline-block",
-                        }
-                      }
-                    >
-                      <Link
-                        className=""
-                        to="/app/settings/billing/add-payment-method"
-                      >
-                        <a
-                          className=""
-                          to="/app/settings/billing/add-payment-method"
-                        >
-                          <ForwardRef
-                            isDisabled={false}
-                          >
-                            <BaseButton>
-                              <button
-                                className="wrapper fill primary medium"
-                                type="button"
-                              >
-                                Add payment method
-                              </button>
-                            </BaseButton>
-                          </ForwardRef>
-                        </a>
-                      </Link>
-                    </div>
-                  </div>
-                </Col>
-              </div>
-            </Row>
+                Add payment method
+              </button>
+            </a>
           </div>
-        </CardBody>
+        </div>
       </div>
-    </Card>
+    </div>
   </div>
-</BillingPaymentMethodContainer>
+</div>
 `;
 
 exports[`BillingPaymentMethod Stripe should render a button to update a credit card 1`] = `
-<BillingPaymentMethodContainer
-  creditCard={
-    Immutable.Map {
-      "brand": "Visa",
-      "last4": 4242,
-      "exp_month": 9,
-      "exp_year": 2017,
-    }
-  }
-  currentAccountDomain="foo"
-  currentUserId="1"
-  fetchCreditCard={
-    [MockFunction] {
-      "calls": Array [
-        Array [],
-        Array [],
-        Array [],
-      ],
-      "results": Array [
-        Object {
-          "type": "return",
-          "value": Promise {},
-        },
-        Object {
-          "type": "return",
-          "value": Promise {},
-        },
-        Object {
-          "type": "return",
-          "value": Promise {},
-        },
-      ],
-    }
-  }
-  fetchPaymentMethod={
-    [MockFunction] {
-      "calls": Array [
-        Array [],
-        Array [],
-        Array [],
-        Array [],
-      ],
-      "results": Array [
-        Object {
-          "type": "return",
-          "value": Promise {},
-        },
-        Object {
-          "type": "return",
-          "value": Promise {},
-        },
-        Object {
-          "type": "return",
-          "value": Promise {},
-        },
-        Object {
-          "type": "return",
-          "value": Promise {},
-        },
-      ],
-    }
-  }
-  paymentMethod="stripe"
-  productCurrency="usd"
-  productsAmount={12}
-  shopifyBillingStatus="inactive"
-  subscription={
-    Immutable.Map {
-      "plan": "basic-usd-1",
-    }
-  }
+<div
+  class="wrapper"
 >
-  <div
-    className="wrapper"
+  <h4
+    class="header"
   >
-    <BillingHeader
-      icon="credit_card"
+    <i
+      class="icon material-icons"
     >
-      <h4
-        className="header"
-      >
-        <i
-          className="icon material-icons"
-        >
-          credit_card
-        </i>
-        Payment method
-      </h4>
-    </BillingHeader>
-    <Card
-      tag="div"
+      credit_card
+    </i>
+    Payment method
+  </h4>
+  <div
+    class="card"
+  >
+    <div
+      class="card-body"
     >
       <div
-        className="card"
+        class="row"
       >
-        <CardBody
-          tag="div"
+        <div
+          class="content col-sm-8"
         >
-          <div
-            className="card-body"
+          <span
+            class="cardLabel"
           >
-            <Row
-              tag="div"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
+            Visa
+             ending with
+             
+            <strong>
+              4242
+            </strong>
+          </span>
+        </div>
+        <div
+          class="text-right col-sm-4"
+        >
+          <a
+            to="/app/settings/billing/change-credit-card"
+          >
+            <button
+              class="wrapper fill secondary medium"
+              type="button"
             >
-              <div
-                className="row"
-              >
-                <Col
-                  className="content"
-                  sm={8}
-                  tag="div"
-                  widths={
-                    Array [
-                      "xs",
-                      "sm",
-                      "md",
-                      "lg",
-                      "xl",
-                    ]
-                  }
-                >
-                  <div
-                    className="content col-sm-8"
-                  >
-                    <span
-                      className="cardLabel"
-                    >
-                      Visa
-                       ending with
-                       
-                      <strong>
-                        4242
-                      </strong>
-                    </span>
-                  </div>
-                </Col>
-                <Col
-                  className="text-right"
-                  sm={4}
-                  tag="div"
-                  widths={
-                    Array [
-                      "xs",
-                      "sm",
-                      "md",
-                      "lg",
-                      "xl",
-                    ]
-                  }
-                >
-                  <div
-                    className="text-right col-sm-4"
-                  >
-                    <Link
-                      to="/app/settings/billing/change-credit-card"
-                    >
-                      <a
-                        to="/app/settings/billing/change-credit-card"
-                      >
-                        <ForwardRef
-                          intent="secondary"
-                        >
-                          <BaseButton
-                            intent="secondary"
-                          >
-                            <button
-                              className="wrapper fill secondary medium"
-                              type="button"
-                            >
-                              Change card
-                            </button>
-                          </BaseButton>
-                        </ForwardRef>
-                      </a>
-                    </Link>
-                  </div>
-                </Col>
-              </div>
-            </Row>
-          </div>
-        </CardBody>
+              Change card
+            </button>
+          </a>
+        </div>
       </div>
-    </Card>
+    </div>
   </div>
-</BillingPaymentMethodContainer>
+</div>
 `;
 
 exports[`BillingPaymentMethod Stripe should render a disabled button 1`] = `
 <div
-  className="wrapper"
+  class="wrapper"
 >
-  <BillingHeader
-    icon="credit_card"
+  <h4
+    class="header"
   >
-    Payment method
-  </BillingHeader>
-  <Card
-    tag="div"
-  >
-    <CardBody
-      tag="div"
+    <i
+      class="icon material-icons"
     >
-      <Row
-        tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
+      credit_card
+    </i>
+    Payment method
+  </h4>
+  <div
+    class="card"
+  >
+    <div
+      class="card-body"
+    >
+      <div
+        class="row"
       >
-        <Col
-          className="content"
-          sm={8}
-          tag="div"
-          widths={
-            Array [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
+        <div
+          class="content col-sm-8"
         >
           No credit card registered
-        </Col>
-        <Col
-          className="text-right"
-          sm={4}
-          tag="div"
-          widths={
-            Array [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
+        </div>
+        <div
+          class="text-right col-sm-4"
         >
           <div
             id="add-payment-method-button"
-            style={
-              Object {
-                "display": "inline-block",
-              }
-            }
+            style="display: inline-block;"
           >
-            <Link
-              className="disabledLink"
+            <a
+              class="disabledLink"
               to="/app/settings/billing/add-payment-method"
             >
-              <ForwardRef
-                isDisabled={true}
+              <button
+                class="wrapper fill primary medium isDisabled"
+                disabled=""
+                type="button"
               >
                 Add payment method
-              </ForwardRef>
-            </Link>
-            <UncontrolledTooltip
-              placement="top"
-              target="add-payment-method-button"
-            >
-              Select a plan before adding a credit card
-            </UncontrolledTooltip>
+              </button>
+            </a>
           </div>
-        </Col>
-      </Row>
-    </CardBody>
-  </Card>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 `;
 
 exports[`BillingPaymentMethod Stripe should render a loader 1`] = `
-<BillingPaymentMethodContainer
-  creditCard={Immutable.Map {}}
-  currentAccountDomain="foo"
-  currentUserId="1"
-  fetchCreditCard={[MockFunction]}
-  fetchPaymentMethod={
-    [MockFunction] {
-      "calls": Array [
-        Array [],
-      ],
-      "results": Array [
-        Object {
-          "type": "return",
-          "value": Promise {},
-        },
-      ],
-    }
-  }
-  paymentMethod="stripe"
-  productCurrency="usd"
-  productsAmount={12}
-  shopifyBillingStatus="inactive"
-  subscription={Immutable.Map {}}
+<div
+  class="container"
 >
-  <Loader
-    inline={false}
-    minHeight="500px"
-    size="40px"
+  <div
+    class="inner"
+    style="min-height: 500px;"
   >
-    <div
-      className="container"
-    >
-      <div
-        className="inner"
-        style={
-          Object {
-            "minHeight": "500px",
-          }
-        }
-      >
-        <i
-          className="icon-custom icon-circle-o-notch md-spin"
-          style={
-            Object {
-              "fontSize": "40px",
-            }
-          }
-        />
-      </div>
-    </div>
-  </Loader>
-</BillingPaymentMethodContainer>
+    <i
+      class="icon-custom icon-circle-o-notch md-spin"
+      style="font-size: 40px;"
+    />
+  </div>
+</div>
 `;

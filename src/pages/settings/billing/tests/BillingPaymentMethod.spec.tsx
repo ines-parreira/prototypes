@@ -1,10 +1,10 @@
 import React, {ComponentProps} from 'react'
-import {mount, shallow} from 'enzyme'
+import {render, waitFor} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
-import {BillingPaymentMethodContainer} from '../BillingPaymentMethod'
-import {PaymentMethodType} from '../../../../state/billing/types'
-import {ShopifyBillingStatus} from '../../../../state/currentAccount/types'
+import {PaymentMethodType} from 'state/billing/types'
+import {ShopifyBillingStatus} from 'state/currentAccount/types'
+import {BillingPaymentMethodContainer} from 'pages/settings/billing/BillingPaymentMethod'
 
 describe('BillingPaymentMethod', () => {
     const minProps: ComponentProps<typeof BillingPaymentMethodContainer> = {
@@ -22,33 +22,39 @@ describe('BillingPaymentMethod', () => {
 
     describe('Stripe', () => {
         it('should render a loader', () => {
-            const component = mount(
+            const {container} = render(
                 <BillingPaymentMethodContainer {...minProps} />
             )
-            expect(component).toMatchSnapshot()
+
+            expect(container.firstChild).toMatchSnapshot()
         })
 
-        it('should render a button', () => {
-            const component = mount(
+        it('should render a button', async () => {
+            const {container, findByText} = render(
                 <BillingPaymentMethodContainer
                     {...minProps}
                     subscription={fromJS({plan: 'basic-usd-1'})}
                 />
             )
-            component.setState({isLoading: false})
-            expect(component).toMatchSnapshot()
+
+            await findByText('Add payment method')
+
+            expect(container.firstChild).toMatchSnapshot()
         })
 
-        it('should render a disabled button', () => {
-            const component = shallow(
+        it('should render a disabled button', async () => {
+            const {container, getByRole} = render(
                 <BillingPaymentMethodContainer {...minProps} />
             )
-            component.setState({isLoading: false})
-            expect(component).toMatchSnapshot()
+
+            await waitFor(() => getByRole('button'))
+
+            expect(getByRole('button').closest('button')?.disabled).toBe(true)
+            expect(container.firstChild).toMatchSnapshot()
         })
 
-        it('should render a button to update a credit card', () => {
-            const component = mount(
+        it('should render a button to update a credit card', async () => {
+            const {container, findByText} = render(
                 <BillingPaymentMethodContainer
                     {...minProps}
                     creditCard={fromJS({
@@ -60,14 +66,16 @@ describe('BillingPaymentMethod', () => {
                     subscription={fromJS({plan: 'basic-usd-1'})}
                 />
             )
-            component.setState({isLoading: false})
-            expect(component).toMatchSnapshot()
+
+            await findByText('Change card')
+
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 
     describe('Shopify', () => {
-        it('should render an active status', () => {
-            const component = mount(
+        it('should render an active status', async () => {
+            const {container, findByText} = render(
                 <BillingPaymentMethodContainer
                     {...minProps}
                     paymentMethod={PaymentMethodType.Shopify}
@@ -75,36 +83,43 @@ describe('BillingPaymentMethod', () => {
                     shopifyBillingStatus={ShopifyBillingStatus.Active}
                 />
             )
-            component.setState({isLoading: false})
-            expect(component).toMatchSnapshot()
+
+            await findByText("Payment with Shopify is active. You're all set.")
+
+            expect(container.firstChild).toMatchSnapshot()
         })
 
-        it('should render a disabled button', () => {
-            const component = shallow(
+        it('should render a disabled button', async () => {
+            const {container, getByRole} = render(
                 <BillingPaymentMethodContainer
                     {...minProps}
                     paymentMethod={PaymentMethodType.Shopify}
                     shopifyBillingStatus={ShopifyBillingStatus.Inactive}
                 />
             )
-            component.setState({isLoading: false})
-            expect(component).toMatchSnapshot()
+
+            await waitFor(() => getByRole('button'))
+
+            expect(getByRole('button').closest('button')?.disabled).toBe(true)
+            expect(container.firstChild).toMatchSnapshot()
         })
 
-        it('should render a button to reactivate billing', () => {
-            const component = shallow(
+        it('should render a button to reactivate billing', async () => {
+            const {container, findByText} = render(
                 <BillingPaymentMethodContainer
                     {...minProps}
                     paymentMethod={PaymentMethodType.Shopify}
                     shopifyBillingStatus={ShopifyBillingStatus.Canceled}
                 />
             )
-            component.setState({isLoading: false})
-            expect(component).toMatchSnapshot()
+
+            await findByText('Reactivate billing with Shopify')
+
+            expect(container.firstChild).toMatchSnapshot()
         })
 
-        it('should render a button', () => {
-            const component = mount(
+        it('should render a button', async () => {
+            const {container, getByRole} = render(
                 <BillingPaymentMethodContainer
                     {...minProps}
                     paymentMethod={PaymentMethodType.Shopify}
@@ -112,8 +127,8 @@ describe('BillingPaymentMethod', () => {
                     shopifyBillingStatus={ShopifyBillingStatus.Inactive}
                 />
             )
-            component.setState({isLoading: false})
-            expect(component).toMatchSnapshot()
+            await waitFor(() => getByRole('button'))
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 })
