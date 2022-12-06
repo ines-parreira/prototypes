@@ -13,6 +13,8 @@ export type WhatsAppIntegration = IntegrationBase & {
 }
 
 export type WhatsAppIntegrationMeta = {
+    emoji?: string
+    phone_number_id: number
     routing: {
         phone_number: string
     }

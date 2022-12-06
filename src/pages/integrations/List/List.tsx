@@ -1,7 +1,9 @@
 import React, {useEffect, useMemo, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Col, Container, Row} from 'reactstrap'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {isSmoochInsideIntegration} from 'models/integration/types/smoochInside'
 import {fetchApps} from 'models/integration/resources'
 import {RootState} from 'state/types'
@@ -173,6 +175,8 @@ export const List = ({
         [hasActiveSmoochInsideIntegrations]
     )
 
+    const isWhatsAppEnabled = useFlags()[FeatureFlagKey.EnableWhatsApp]
+
     let displayList: (IntegrationListItem | AppListItem)[] = integrationsList
         .filter((integration) => {
             // do not return the smooch inside integration
@@ -189,6 +193,13 @@ export const List = ({
             if (
                 integration.type === IntegrationType.Klaviyo &&
                 !hasKlaviyoIntegrations
+            ) {
+                return false
+            }
+
+            if (
+                integration.type === IntegrationType.WhatsApp &&
+                !isWhatsAppEnabled
             ) {
                 return false
             }

@@ -99,6 +99,7 @@ import HTTPIntegrationLayout from './components/http/HTTPIntegrationLayout/HTTPI
 
 import VoiceIntegration from './components/voice/VoiceIntegration'
 import SmsIntegration from './components/sms/SmsIntegration'
+import WhatsAppIntegration from './components/whatsapp/WhatsAppIntegration'
 
 import TwitterIntegrationDetail from './components/twitter/TwitterIntegrationDetail'
 import TwitterIntegrationList from './components/twitter/TwitterIntegrationList'
@@ -434,6 +435,14 @@ export const IntegrationDetail = ({
             }
 
             return <VoiceIntegration />
+
+        case IntegrationType.WhatsApp: {
+            if (!enableWhatsApp) {
+                return null
+            }
+
+            return <WhatsAppIntegration />
+        }
 
         case IntegrationType.Sms: {
             return <SmsIntegration />

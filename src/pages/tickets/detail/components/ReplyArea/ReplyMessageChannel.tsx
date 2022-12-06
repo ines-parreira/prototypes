@@ -206,8 +206,7 @@ export class ReplyMessageChannelContainer extends Component<Props> {
                 !!replyOptions.get(TicketMessageSourceType.Sms))
         const suggestWhatsApp =
             hasWhatsAppIntegration &&
-            (!isTicketExisting ||
-                !!replyOptions.get(TicketMessageSourceType.WhatsAppMessage))
+            !!replyOptions.get(TicketMessageSourceType.WhatsAppMessage)
         const suggestYotpoReview =
             isTicketExisting &&
             !!replyOptions.get(TicketMessageSourceType.YotpoReview)

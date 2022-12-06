@@ -18,8 +18,10 @@ export function canReply(
     }
 
     const isInvalid =
-        messageType === TicketMessageSourceType.InstagramDirectMessage &&
-        attachmentCount > 0
+        (messageType === TicketMessageSourceType.InstagramDirectMessage &&
+            attachmentCount > 0) ||
+        (messageType === TicketMessageSourceType.WhatsAppMessage &&
+            attachmentCount > 0)
 
     if (isInvalid) {
         return {
@@ -43,6 +45,7 @@ export function canAddAttachments(
 ): Maybe<Notification> {
     const messagePlusAttachmentInvalidSources = [
         TicketMessageSourceType.InstagramDirectMessage,
+        TicketMessageSourceType.WhatsAppMessage,
     ]
 
     let isInvalid =
@@ -72,6 +75,7 @@ export function canAddAttachments(
         [TicketMessageSourceType.TwitterDirectMessage, 1],
         [TicketMessageSourceType.YotpoReviewPublicComment, 0],
         [TicketMessageSourceType.YotpoReviewPrivateComment, 0],
+        [TicketMessageSourceType.WhatsAppMessage, 1],
         [TicketMessageSourceType.Sms, 1],
     ]).get(messageType)
 

@@ -55,6 +55,7 @@ declare global {
         SEGMENT_ANALYTICS_USER_ID: string
         GORGIAS_LAUNCHDARKLY_CLIENT_ID: string
         SENTRY_DSN: string
+        WHATSAPP_APP_ID: string
         devToolsExtension: () => Middleware
         Candu?: {
             elementCanduRootMap?: Map<any, any>

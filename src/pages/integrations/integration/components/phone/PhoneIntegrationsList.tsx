@@ -7,13 +7,13 @@ import {OrderDirection} from 'models/api/types'
 import {
     PhoneIntegration,
     IntegrationType,
-    isPhoneIntegration,
-    isSmsIntegration,
     SmsIntegration,
+    WhatsAppIntegration,
+    isWhatsAppIntegration,
 } from 'models/integration/types'
 import {PhoneNumber} from 'models/phoneNumber/types'
 import {getIntegrationConfig} from 'state/integrations/helpers'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import {getIntegrationsByType} from 'state/integrations/selectors'
 import {getPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
@@ -32,32 +32,37 @@ import settingsCss from 'pages/settings/settings.less'
 import css from './PhoneIntegrationsList.less'
 
 type Row = {
-    integration: PhoneIntegration | SmsIntegration
+    integration: PhoneIntegration | SmsIntegration | WhatsAppIntegration
     phoneNumber: Maybe<PhoneNumber>
 }
 
 type Props = {
-    type: IntegrationType.Phone | IntegrationType.Sms
+    type: IntegrationType.Phone | IntegrationType.Sms | IntegrationType.WhatsApp
 }
 
 export function PhoneIntegrationsList({type}: Props): JSX.Element | null {
     const config = getIntegrationConfig(type)
-    const integrations = useAppSelector(getIntegrationsByTypes([type]))
-    const phoneIntegrations: Array<PhoneIntegration | SmsIntegration> =
-        type === IntegrationType.Phone
-            ? integrations.filter(isPhoneIntegration)
-            : integrations.filter(isSmsIntegration)
+    const integrations = useAppSelector(
+        getIntegrationsByType<
+            PhoneIntegration | SmsIntegration | WhatsAppIntegration
+        >(type)
+    )
 
     const phoneNumbers = useAppSelector(getPhoneNumbers)
     const rows: Row[] = useMemo(
         () =>
-            phoneIntegrations.reduce(
+            integrations.reduce(
                 (
                     rows: Row[],
-                    integration: PhoneIntegration | SmsIntegration
+                    integration:
+                        | PhoneIntegration
+                        | SmsIntegration
+                        | WhatsAppIntegration
                 ) => {
-                    const phoneNumber =
-                        phoneNumbers[integration.meta.twilio_phone_number_id]
+                    // TODO(@anddon): remove this once the new API for phone is available
+                    const phoneNumber = isWhatsAppIntegration(integration)
+                        ? phoneNumbers[integration.meta.phone_number_id]
+                        : phoneNumbers[integration.meta?.twilio_phone_number_id]
                     return [
                         ...rows,
                         {
@@ -68,7 +73,7 @@ export function PhoneIntegrationsList({type}: Props): JSX.Element | null {
                 },
                 []
             ),
-        [phoneIntegrations, phoneNumbers]
+        [integrations, phoneNumbers]
     )
 
     const [orderBy, setOrderBy] = useState<string>('integration.id')
@@ -105,17 +110,9 @@ export function PhoneIntegrationsList({type}: Props): JSX.Element | null {
         return (
             <Container fluid className={settingsCss.pageContainer}>
                 <p>You have no integration of this type at the moment.</p>
-                <Button
-                    onClick={() =>
-                        history.push(`/app/settings/channels/${type}/new`)
-                    }
-                >
-                    Add {type === IntegrationType.Phone ? 'Voice' : 'SMS'}
-                </Button>
+                <AddButton type={type} />
             </Container>
         )
-
-        return null
     }
 
     return (
@@ -143,10 +140,14 @@ export function PhoneIntegrationsList({type}: Props): JSX.Element | null {
                 <TableBody>
                     {sortedRows.map((row) => {
                         const {
-                            integration: {id, name, meta},
+                            integration: {id, type, name, meta},
                             phoneNumber,
                         } = row
-                        const detailsLink = `/app/settings/channels/${type}/${id}/preferences`
+                        const detailsLink =
+                            type === IntegrationType.WhatsApp
+                                ? `/app/settings/integrations/${type}/${id}/preferences`
+                                : `/app/settings/channels/${type}/${id}/preferences`
+
                         return (
                             <TableBodyRow
                                 key={id}
@@ -182,52 +183,49 @@ export function PhoneIntegrationsList({type}: Props): JSX.Element | null {
                 </TableBody>
             </TableWrapper>
             <Container fluid className={css.footer}>
-                {type === IntegrationType.Phone && (
-                    <>
-                        <p>
-                            Make and receive phone calls from Gorgias with easy
-                            access to customer data and conversation history.{' '}
-                            <a
-                                href={config?.pricingLink}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                Additional charges apply.
-                            </a>
-                        </p>
-                        <Button
-                            onClick={() =>
-                                history.push(`/app/settings/channels/phone/new`)
-                            }
+                <p>
+                    {config?.description}
+                    {type !== IntegrationType.WhatsApp && (
+                        <a
+                            href={config?.pricingLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
                         >
-                            Add Voice
-                        </Button>
-                    </>
-                )}
-                {type === IntegrationType.Sms && (
-                    <>
-                        <p>
-                            Send and receive text messages in Gorgias for
-                            seamless conversations with customers on the go.{' '}
-                            <a
-                                href={config?.pricingLink}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                Additional charges apply.
-                            </a>
-                        </p>
-                        <Button
-                            onClick={() =>
-                                history.push(`/app/settings/channels/sms/new`)
-                            }
-                        >
-                            Add SMS
-                        </Button>
-                    </>
-                )}
+                            &nbsp;Additional charges apply.
+                        </a>
+                    )}
+                </p>
+                <AddButton type={type} />
             </Container>
         </>
+    )
+}
+
+function AddButton({type}: Pick<Props, 'type'>) {
+    const openOnboardingPage = (type: IntegrationType) => {
+        const url =
+            type === IntegrationType.WhatsApp
+                ? `/app/settings/integrations/${type}/new`
+                : `/app/settings/channels/${type}/new`
+
+        if (type === IntegrationType.WhatsApp) {
+            window.location.href = url
+            return
+        }
+
+        history.push(url)
+    }
+
+    const name = {
+        [IntegrationType.Sms]: 'SMS',
+        [IntegrationType.Phone]: 'Voice',
+        [IntegrationType.WhatsApp]: 'WhatsApp',
+    }[type]
+
+    return (
+        <Button onClick={() => openOnboardingPage(type)}>
+            {`Add ${name}`}
+        </Button>
     )
 }
 

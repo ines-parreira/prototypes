@@ -6,13 +6,15 @@ import {
     PhoneIntegration,
     IntegrationType,
     SmsIntegration,
+    WhatsAppIntegration,
+    isWhatsAppIntegration,
 } from 'models/integration/types'
 import {getPhoneNumber} from 'state/entities/phoneNumbers/selectors'
 import useAppSelector from 'hooks/useAppSelector'
 
 type Props = {
-    type: IntegrationType.Phone | IntegrationType.Sms
-    integration?: PhoneIntegration | SmsIntegration
+    type: IntegrationType.Phone | IntegrationType.Sms | IntegrationType.WhatsApp
+    integration?: PhoneIntegration | SmsIntegration | WhatsAppIntegration
 }
 
 export default function PhoneIntegrationBreadcrumbs({
@@ -22,14 +24,25 @@ export default function PhoneIntegrationBreadcrumbs({
     const {integrationId} = useParams<{integrationId: string}>()
     const phoneNumber = useAppSelector((state) => {
         if (integration) {
-            return getPhoneNumber(integration?.meta.twilio_phone_number_id)(
-                state
-            )
+            // TODO(@anddon): remove this once the new API for phone is available
+            const phoneNumberId = isWhatsAppIntegration(integration)
+                ? integration.meta.phone_number_id
+                : integration.meta?.twilio_phone_number_id
+
+            return getPhoneNumber(phoneNumberId)(state)
         }
         return null
     })
-    const baseUrl = `/app/settings/channels/${type}`
-    const name = type === IntegrationType.Sms ? 'SMS' : 'Voice'
+
+    const [name, baseUrl] = {
+        [IntegrationType.Phone]: ['Voice', `/app/settings/channels/${type}`],
+        [IntegrationType.Sms]: ['SMS', `/app/settings/channels/${type}`],
+        [IntegrationType.WhatsApp]: [
+            'WhatsApp',
+            `/app/settings/integrations/${type}`,
+        ],
+    }[type]
+
     return (
         <Breadcrumb>
             {integration && (
@@ -50,7 +63,11 @@ export default function PhoneIntegrationBreadcrumbs({
                     <BreadcrumbItem>
                         <Link to={baseUrl}>{name}</Link>
                     </BreadcrumbItem>
-                    <BreadcrumbItem>Add {name} Integration</BreadcrumbItem>
+                    <BreadcrumbItem>
+                        {type === IntegrationType.WhatsApp
+                            ? 'Connect WhatsApp'
+                            : `Add ${name} Integration`}
+                    </BreadcrumbItem>
                 </>
             )}
             {!integration && integrationId !== 'new' && (
