@@ -6,6 +6,7 @@ import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 import {resetLDMocks, mockFlags} from 'jest-launchdarkly-mock'
+import {useMeasure} from 'react-use'
 import {emailTicket} from 'state/ticket/tests/fixtures'
 import {toJS} from 'utils'
 import {billingState} from 'fixtures/billing'
@@ -15,10 +16,22 @@ import {account, automationSubscriptionProductPrices} from 'fixtures/account'
 import {sendTicketMessage} from 'state/newMessage/actions'
 import {agents} from 'fixtures/agents'
 import {integrationsState} from 'fixtures/integrations'
+import {emptyManagedRule, emptyRule} from 'fixtures/rule'
+import {UserRole} from 'config/types/user'
 import RuleSuggestion from '../RuleSuggestion'
 
 jest.mock('state/newMessage/actions.ts')
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
+
+jest.mock('react-use', () => {
+    const originalModule = jest.requireActual('react-use')
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return {
+        __esModule: true,
+        ...originalModule,
+        useMeasure: jest.fn().mockImplementation(() => [undefined, 0]),
+    }
+})
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -34,21 +47,12 @@ const store = {
     }),
     billing: fromJS({...billingState}),
     entities: {
-        ruleRecipes: {
-            [emptyRuleRecipeFixture.slug]: emptyRuleRecipeFixture,
-        },
+        rules: {[emptyRule.id]: emptyRule},
+        ruleRecipes: {[emptyRuleRecipeFixture.slug]: emptyRuleRecipeFixture},
     },
     integrations: fromJS(integrationsState),
-    ui: {
-        editor: {
-            isFocused: false,
-        },
-    },
-    ticket: fromJS({
-        _internal: {
-            isPartialUpdating: false,
-        },
-    }),
+    ui: {editor: {isFocused: false}},
+    ticket: fromJS({_internal: {isPartialUpdating: false}}),
 }
 
 const ticket = {
@@ -140,6 +144,9 @@ describe('RuleSuggestion', () => {
 
         fireEvent.click(screen.getByText('Apply & Send'))
         expect((sendTicketMessage as jest.Mock).mock.calls).toMatchSnapshot()
+
+        const placeholder = screen.queryByText('(No reply will be sent)')
+        expect(placeholder).not.toBeNull()
     })
 
     it('should send message', () => {
@@ -149,7 +156,96 @@ describe('RuleSuggestion', () => {
             </Provider>
         )
 
-        fireEvent.click(screen.getByText('Apply & Send'))
+        const button = screen.getByText('Apply & Send')
+        fireEvent.click(button)
         expect((sendTicketMessage as jest.Mock).mock.calls).toMatchSnapshot()
+        expect(button.className.includes('isDisabled')).toBeTruthy()
+    })
+
+    it('should display in preview for large suggestion body', async () => {
+        const bodyHeight = 150
+        ;(useMeasure as jest.Mock).mockImplementation(() => [
+            undefined,
+            bodyHeight,
+        ])
+
+        const {container} = render(
+            <Provider store={mockStore(store)}>
+                <RuleSuggestion {...minProps} />
+            </Provider>
+        )
+
+        fireEvent.click(await screen.findByText('Expand'))
+        expect(screen.queryByText('Expand')).toBeNull()
+        expect(container).toMatchSnapshot()
+    })
+
+    it('should disable install if not admin or lead', () => {
+        const liteAgentStore = {
+            ...store,
+            currentUser: fromJS({
+                ...agents[0],
+                role: {name: UserRole.LiteAgent},
+            }),
+        }
+        render(
+            <Provider store={mockStore(liteAgentStore)}>
+                <RuleSuggestion {...minProps} />
+            </Provider>
+        )
+
+        const install = screen.getByText('Install')
+        expect(
+            Object.values(install.classList).includes('isDisabled')
+        ).toBeTruthy()
+    })
+
+    it('should display activate if rule already installed', () => {
+        const storeWithRule = {
+            ...store,
+            entities: {
+                ...store.entities,
+                rules: [
+                    {
+                        ...emptyManagedRule,
+                        settings: {slug: emptyRuleRecipeFixture.slug},
+                        deactivated_datetime: '01/01/2022',
+                    },
+                ],
+            },
+        }
+
+        render(
+            <Provider store={mockStore(storeWithRule)}>
+                <RuleSuggestion {...minProps} />
+            </Provider>
+        )
+        const activate = screen.getByText('Activate')
+        expect(!!activate).toBeTruthy()
+    })
+
+    it('should not display install button if rule is installed', () => {
+        const storeWithRule = {
+            ...store,
+            entities: {
+                ...store.entities,
+                rules: [
+                    {
+                        ...emptyManagedRule,
+                        settings: {slug: emptyRuleRecipeFixture.slug},
+                    },
+                ],
+            },
+        }
+
+        render(
+            <Provider store={mockStore(storeWithRule)}>
+                <RuleSuggestion {...minProps} />
+            </Provider>
+        )
+        const install = screen.queryByText('Install')
+        const activate = screen.queryByText('Activate')
+        expect(install).toBeNull()
+        expect(activate).toBeNull()
     })
 })

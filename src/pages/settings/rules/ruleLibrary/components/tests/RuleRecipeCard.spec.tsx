@@ -161,5 +161,22 @@ describe('<RuleRecipeCard/>', () => {
             expect(createViewMock.mock.calls).toMatchSnapshot()
             expect(createTagMock.mock.calls).toMatchSnapshot()
         })
+
+        it('should install on auto install', async () => {
+            render(
+                <Provider store={defaultStore}>
+                    <RuleRecipeCard
+                        {...minProps}
+                        autoInstall={true}
+                        isModalOpenOnLoad={true}
+                        recipe={emptyRuleRecipeFixtureWithSections}
+                    />
+                </Provider>
+            )
+
+            await waitFor(() => {
+                expect(createRuleMock).toHaveBeenCalled()
+            })
+        })
     })
 })

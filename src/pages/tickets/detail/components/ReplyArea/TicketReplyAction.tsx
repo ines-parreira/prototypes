@@ -30,6 +30,7 @@ type Props = {
     remove?: (actionIndex: number, ticketId: number) => void
     ticketId: number
     disabled?: boolean
+    className?: string
 } & ConnectedProps<typeof connector>
 
 type State = {
@@ -320,7 +321,7 @@ export class TicketReplyActionContainer extends Component<Props, State> {
     }
 
     render() {
-        const {remove, ticketId} = this.props
+        const {remove, ticketId, className} = this.props
         const action = this.getAction()
 
         let type = action.get('name')
@@ -439,7 +440,7 @@ export class TicketReplyActionContainer extends Component<Props, State> {
         const notes = getActionTemplate(action.get('name'))?.notes
 
         return (
-            <div className={css.component}>
+            <div className={classnames(css.component, className)}>
                 <div
                     className={
                         'd-flex justify-content-between align-items-baseline'

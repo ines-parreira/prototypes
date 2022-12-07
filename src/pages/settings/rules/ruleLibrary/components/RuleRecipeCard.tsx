@@ -37,6 +37,7 @@ import {sectionCreated} from 'state/entities/sections/actions'
 import {createSection} from 'models/section/resources'
 
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {getHasAutomationAddOn} from 'state/billing/selectors'
 
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -56,6 +57,7 @@ type Props = {
     onInstall: (rule: Rule) => void
     isModalOpenOnLoad?: boolean
     isReady: boolean
+    autoInstall?: boolean
 }
 
 const tagColors: {[key: string]: string} = {
@@ -68,6 +70,7 @@ function RuleRecipeCard({
     recipe,
     isReady,
     isModalOpenOnLoad = false,
+    autoInstall,
     onInstall = _noop,
 }: Props) {
     const dispatch = useAppDispatch()
@@ -81,7 +84,10 @@ function RuleRecipeCard({
         Partial<AnyManagedRuleSettings>
     >({})
     const [isModalOpen, setModalOpen] = useState(isModalOpenOnLoad)
+    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
     const {rule, tags, recipe_tag, views_per_section} = recipe
+    const isBehindPaywall =
+        rule.type === RuleType.Managed && !hasAutomationAddOn
 
     const handleCodeAst = (
         path: List<any>,
@@ -354,6 +360,14 @@ function RuleRecipeCard({
         } else {
             setModalOpen(true)
         }
+    }
+    if (isModalOpen && shouldInstall && autoInstall && !isBehindPaywall) {
+        void handleInstall(true, true)
+        logEvent(SegmentEvent.RuleSuggestion, {
+            rule: rule.name,
+            event_type: 'installed',
+        })
+        setModalOpen(false)
     }
 
     return (

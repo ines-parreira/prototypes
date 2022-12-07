@@ -36,7 +36,7 @@ import PrivateReplyEvent from './PrivateReplyEvent/PrivateReplyEvent'
 import {PRIVATE_REPLY_ACTIONS} from './PrivateReplyEvent/constants'
 
 import css from './TicketBody.less'
-import RuleSuggestion from './RuleSuggestion'
+import RuleSuggestion from './RuleSuggestion/RuleSuggestion'
 import {MessageQuoteContext} from './TicketBodyVirtualized'
 
 // $TSFixMe replace with importing HighlightedElements from AuditLogEvent.tsx on migration

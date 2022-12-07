@@ -39,7 +39,7 @@ import {PRIVATE_REPLY_ACTIONS} from './PrivateReplyEvent/constants'
 import SatisfactionSurvey from './SatisfactionSurvey'
 import AuditLogEvent, {contentfulEventTypesValues} from './AuditLogEvent'
 import Event from './Event'
-import RuleSuggestion from './RuleSuggestion'
+import RuleSuggestion from './RuleSuggestion/RuleSuggestion'
 import {ReplyFormWithVirtuosoContext} from './ReplyForm'
 
 import css from './TicketBody.less'

@@ -8,6 +8,7 @@ import {
     RouteComponentProps,
     useHistory,
 } from 'react-router-dom'
+import {parse} from 'qs'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import Video from 'pages/common/components/Video/Video'
@@ -100,11 +101,13 @@ export function RulesViewContainer({
     const [selectedTags, setSelectedTags] = useState<string[]>([])
     const [hasUnseenRules, setHasUnseenRules] = useState(false)
     const [slug, setSlug] = useState('')
+    const [autoInstall, setAutoInstall] = useState(false)
     const history = useHistory()
 
     const segmentEventProps = {account_id: currentAccount.get('domain')}
 
     useEffect(() => {
+        const {install} = parse(location.search, {ignoreQueryPrefix: true})
         const [tab, ...splitSlug] = location.hash.substring(1).split('?')
         if (Object.values(RuleTabs).includes(tab as RuleTabs)) {
             setActiveTab(tab as RuleTabs)
@@ -117,6 +120,7 @@ export function RulesViewContainer({
                 history.replace(`/app/settings/rules/${rule.id}`)
             }
             setSlug(splitSlug.join('?'))
+            if (install !== undefined) setAutoInstall(true)
         }
     }, [location, history, rules])
 
@@ -335,6 +339,7 @@ export function RulesViewContainer({
                             onInstall={(rule) => setHasUnseenRules(!!rule)}
                             activeSlug={slug}
                             isReady={isReady}
+                            autoInstall={autoInstall}
                         />
                     )}
                 </>

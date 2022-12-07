@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`useRules should load the rules 1`] = `
+Array [
+  null,
+  true,
+]
+`;
+
+exports[`useRules should return the rules 1`] = `
+Array [
+  Object {
+    "1": Object {
+      "code": "",
+      "code_ast": Object {},
+      "created_datetime": "2020-01-01T00:00:00",
+      "deactivated_datetime": null,
+      "description": "foo",
+      "event_types": "ticket-created",
+      "id": 1,
+      "name": "my rule",
+      "priority": 100,
+      "type": "user",
+      "updated_datetime": "2020-01-01T00:00:00",
+      "uri": "/api/rule/17",
+    },
+  },
+  false,
+]
+`;

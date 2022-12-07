@@ -275,5 +275,42 @@ describe('<TicketReplyArea/>', () => {
                 })
             }
         )
+
+        it('should not prefill macro if rule suggestion is displayed', async () => {
+            const macros = [
+                {
+                    id: 1,
+                    external_id: null,
+                    name: 'Macro 1',
+                    intent: null,
+                    language: 'en',
+                    usage: 0,
+                    actions: [],
+                    relevance_rank: 1,
+                    score: 0.99,
+                },
+            ]
+
+            minProps.ruleSuggestionState = 'pending'
+
+            const component = mount(
+                <Provider store={mockedStore({})}>
+                    <TicketReplyArea
+                        {...minProps}
+                        flags={{[FeatureFlagKey.PrefillBestMacro]: true}}
+                    />
+                </Provider>
+            )
+            const ticketReplyArea = component.find('TicketReplyArea')
+            ticketReplyArea.setState({
+                searchResults: {
+                    macros: fromJS(macros),
+                },
+            })
+
+            await waitFor(() => {
+                expect(minProps.applyMacro).not.toHaveBeenCalled()
+            })
+        })
     })
 })

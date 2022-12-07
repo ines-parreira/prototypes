@@ -36,3 +36,5 @@ export type RulesFetchedAction = PayloadActionCreator<
     Rule[],
     typeof RULES_FETCHED
 >
+
+export type RuleSuggestionState = 'ignored' | 'accepted' | 'pending'

@@ -1,6 +1,7 @@
 import {fromJS, Map, List} from 'immutable'
 import {createSelector} from 'reselect'
 
+import {RuleSuggestionState} from 'state/entities/rules/types'
 import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'
 import {createImmutableSelector} from '../../utils'
 import {getNewMessageState} from '../newMessage/selectors'
@@ -342,4 +343,17 @@ export const getTopRankMacroState = createImmutableSelector<
         return null
     }
     return topRankMacroState.toJS() as TopRankMacroState
+})
+
+export const getRuleSuggestionState = createImmutableSelector<
+    RootState,
+    RuleSuggestionState | undefined,
+    TicketState
+>(getTicketState, (state) => {
+    const ruleSuggestionState = state.getIn([
+        'state',
+        'ruleSuggestionState',
+    ]) as unknown
+
+    return ruleSuggestionState as RuleSuggestionState | undefined
 })

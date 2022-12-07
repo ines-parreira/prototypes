@@ -16,6 +16,7 @@ export type Props = {
     activeSlug?: string
     onInstall: (rule: Rule) => void
     isReady: boolean
+    autoInstall?: boolean
 }
 
 export function RuleLibrary({
@@ -24,6 +25,7 @@ export function RuleLibrary({
     searchTerm,
     isReady,
     activeSlug = '',
+    autoInstall,
     onInstall = _noop,
 }: Props) {
     const [filteredRecipes, setFilteredRecipes] = useState(recipes)
@@ -64,6 +66,9 @@ export function RuleLibrary({
                             key={recipe.slug}
                             onInstall={onInstall}
                             isModalOpenOnLoad={activeSlug === recipe.slug}
+                            autoInstall={
+                                autoInstall && activeSlug === recipe.slug
+                            }
                             isReady={isReady}
                         />
                     ))

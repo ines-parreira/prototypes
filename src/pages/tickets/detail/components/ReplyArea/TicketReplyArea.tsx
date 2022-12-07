@@ -39,6 +39,7 @@ import {
     getAppliedMacro,
     getTopRankMacroState,
     getLastMessage,
+    getRuleSuggestionState,
 } from 'state/ticket/selectors'
 import {RootState} from 'state/types'
 import {getMacroParametersOptions} from 'state/macro/selectors'
@@ -147,6 +148,10 @@ export class TicketReplyArea extends Component<Props, State> {
     }
 
     checkTopRankMacro() {
+        if (this.props.ruleSuggestionState === 'pending') {
+            return
+        }
+
         if (this.props.topRankMacroState?.state === 'pending') {
             this.setState({topRankMacro: this.props.appliedMacro})
             return
@@ -678,6 +683,7 @@ const connector = connect(
         macroParametersOptions: getMacroParametersOptions(state),
         appliedMacro: getAppliedMacro(state),
         topRankMacroState: getTopRankMacroState(state),
+        ruleSuggestionState: getRuleSuggestionState(state),
     }),
     {
         applyMacro,

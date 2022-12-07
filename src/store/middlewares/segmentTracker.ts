@@ -82,6 +82,7 @@ export enum SegmentEvent {
     RuleLibraryVisited = 'rule-library/visited',
     RuleLibraryItemShown = 'rule-library/item-shown',
     RuleLibraryItemInstalled = 'rule-library/item-installed',
+    RuleSuggestion = 'rule-suggestion',
     RecentActivityClicked = 'recent-activity-clicked',
     InsertDiscountCodeOpen = 'insert-discount-code/open',
     InsertDiscountCodeAdded = 'insert-discount-code/added',

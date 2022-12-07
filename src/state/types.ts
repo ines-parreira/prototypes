@@ -12,6 +12,7 @@ import {
 import {PaginationMeta, OrderDirection} from 'models/api/types'
 
 import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'
+import {RuleSuggestionState} from 'state/entities/rules/types'
 import {BillingContact} from './billing/types'
 import {AccountSetting} from './currentAccount/types'
 import {MacrosAction} from './entities/macros/types'
@@ -128,6 +129,7 @@ export type GorgiasAction = {
     receivers?: List<any>
     replaceAll?: boolean
     rule?: Rule
+    ruleSuggestionState?: RuleSuggestionState
     priorities?: RulePriority[]
     rules?: Rule[]
     path?: List<any>

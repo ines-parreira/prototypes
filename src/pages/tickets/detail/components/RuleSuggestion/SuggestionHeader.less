@@ -1,0 +1,58 @@
+@import '~css/new/colorTokens';
+
+:local .container {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 8px;
+    z-index: 1;
+    flex-wrap: wrap;
+
+    .infoContainer {
+        flex: 1;
+
+        .title {
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+
+            span:first-child {
+                font-style: normal;
+                font-weight: 600;
+                font-size: 14px;
+                line-height: 20px;
+                margin-right: 8px;
+            }
+
+            span:last-child {
+                font-size: 12px;
+            }
+        }
+
+        .info {
+            span:last-child {
+                white-space: nowrap;
+            }
+        }
+
+        a {
+            font-weight: 600;
+        }
+    }
+
+    .buttonsContainer {
+        align-items: center;
+        display: flex;
+        margin-right: 5.35px;
+
+        .buttons {
+            display: flex;
+            gap: 4px;
+        }
+
+        .chevron {
+            cursor: pointer;
+            margin-left: 24px;
+            font-size: 18px;
+        }
+    }
+}

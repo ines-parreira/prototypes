@@ -711,6 +711,14 @@ export default function reducer(
             return state.setIn(['_internal', 'isPartialUpdating'], false)
         }
 
+        case types.SET_RULE_SUGGESTION_STATE: {
+            const ruleSuggestionState = action.ruleSuggestionState
+            return state.setIn(
+                ['state', 'ruleSuggestionState'],
+                ruleSuggestionState
+            )
+        }
+
         default:
             return state
     }
