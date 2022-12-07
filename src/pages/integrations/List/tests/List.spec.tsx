@@ -45,6 +45,7 @@ describe('<IntegrationsList />', () => {
                 title: 'an integration',
                 description: 'this is a cool integration',
                 image: 'ok.png',
+                categories: [],
                 count: 1,
             },
         ],
@@ -105,6 +106,7 @@ describe('<IntegrationsList />', () => {
                             description: 'this is a cool integration',
                             image: 'ok.png',
                             count: 1,
+                            categories: [],
                             requiredFeature: AccountFeature.TwitterIntegration,
                         },
                     ]}
@@ -124,6 +126,7 @@ describe('<IntegrationsList />', () => {
                     title: 'SMS',
                     description: 'this is a cool integration',
                     image: 'ok.png',
+                    categories: [],
                     count: 1,
                 },
             ],

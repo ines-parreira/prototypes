@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<LimitWarning /> should render a limit warning 1`] = `
+<div
+  class="alert error"
+>
+  <div
+    class="iconContainer"
+  >
+    <img
+      alt="icon"
+      src="test-file-stub"
+    />
+  </div>
+  <div
+    class="content"
+  >
+    <span
+      class="label"
+    >
+      <span>
+        <strong>
+          Your account has reached the integration limit.
+           
+        </strong>
+        Need more?
+      </span>
+    </span>
+    <div
+      class="customActions"
+    >
+      <a
+        class="actionLink"
+        to="/app/settings/billing"
+      >
+        Upgrade your plan
+      </a>
+    </div>
+  </div>
+</div>
+`;

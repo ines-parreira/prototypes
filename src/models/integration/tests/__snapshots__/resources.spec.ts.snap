@@ -79,8 +79,10 @@ exports[`integration resource fetchApps should return formatted apps 1`] = `
 Array [
   Object {
     "appId": "someid",
+    "categories": Array [
+      "Quality Assurance",
+    ],
     "description": "Some tagline here",
-    "grantedScopes": undefined,
     "image": "https://ok.com/1.png",
     "isConnected": false,
     "title": "My test app",

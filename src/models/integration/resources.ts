@@ -12,8 +12,23 @@ import {
     AppErrorLog,
     AppListItem,
     DisconnectResponse,
+    Category,
 } from './types/app'
 import {Integration, IntegrationType} from './types'
+
+export const appListDataToAppListMapper = (data: AppListData): AppListItem => {
+    const categories = data.categories || []
+    if (data.is_featured) categories.push(Category.FEATURED)
+    return {
+        type: IntegrationType.App,
+        appId: data.id,
+        isConnected: data.is_installed,
+        title: data.name,
+        description: data.headline,
+        categories,
+        image: data.app_icon,
+    }
+}
 
 export const appDataToAppDetailMapper = (data: AppData): AppDetail => ({
     type: IntegrationType.App,
@@ -45,17 +60,7 @@ export const fetchApps = async (): Promise<AppListItem[]> => {
     const response = await client.get<ApiListResponse<AppListData[], never>>(
         '/api/apps/'
     )
-    return (response.data?.data || []).map((app): AppListItem => {
-        return {
-            type: IntegrationType.App,
-            appId: app.id,
-            isConnected: app.is_installed,
-            grantedScopes: app.granted_scopes,
-            title: app.name,
-            description: app.headline,
-            image: app.app_icon,
-        }
-    })
+    return (response.data?.data || []).map(appListDataToAppListMapper)
 }
 
 export const fetchApp = async (

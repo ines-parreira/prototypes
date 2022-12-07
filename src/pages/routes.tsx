@@ -26,6 +26,7 @@ import App from './App'
 import IntegrationDetail from './integrations/integration/Integration'
 import AppDetail from './integrations/App'
 import IntegrationsList from './integrations/List'
+import AllIntegrations from './integrations/All'
 import PhoneNumbersListContainer from './phoneNumbers/PhoneNumbersListContainer'
 import PhoneNumberCreateContainer from './phoneNumbers/PhoneNumberCreateContainer'
 import PhoneNumberDetailContainer from './phoneNumbers/PhoneNumberDetailContainer'
@@ -736,6 +737,18 @@ export function IntegrationsSettingsRoutes({
                     render={appRender({
                         content: memoizedWithUserRoleRequired(
                             IntegrationsList,
+                            ADMIN_ROLE,
+                            PageSection.Integrations
+                        ),
+                        navbar: SettingsNavbar,
+                    })}
+                />
+                <Route
+                    path={`${path}/all`}
+                    exact
+                    render={appRender({
+                        content: memoizedWithUserRoleRequired(
+                            AllIntegrations,
                             ADMIN_ROLE,
                             PageSection.Integrations
                         ),

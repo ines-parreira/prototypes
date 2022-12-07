@@ -201,7 +201,16 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         description:
             'Please migrate to the new chat integration as this one will soon be removed.',
         longDescription: '',
-    } as IntegrationConfig,
+        categories: [],
+        company: 'Gorgias',
+        companyUrl: 'https://www.gorgias.com/',
+        screenshots: [],
+        pricingPlan: PricingPlan.FREE,
+        privacyPolicy: '',
+        setupGuide: '',
+        hasFreeTrial: false,
+        freeTrialPeriod: null,
+    },
     {
         type: IntegrationType.Email,
         subTypes: [
@@ -213,7 +222,16 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         description:
             'Connect your support email addresses and respond to your customers from Gorgias.',
         longDescription: '',
-    } as IntegrationConfig,
+        categories: [],
+        company: 'Gorgias',
+        companyUrl: 'https://www.gorgias.com/',
+        screenshots: [],
+        pricingPlan: PricingPlan.FREE,
+        privacyPolicy: '',
+        setupGuide: '',
+        hasFreeTrial: false,
+        freeTrialPeriod: null,
+    },
     {
         type: IntegrationType.Phone,
         title: 'Voice',
@@ -283,7 +301,16 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         title: 'Chat',
         description: 'Add a chat on your website.',
         longDescription: '',
-    } as IntegrationConfig,
+        categories: [],
+        company: 'Gorgias',
+        companyUrl: 'https://www.gorgias.com/',
+        screenshots: [],
+        pricingPlan: PricingPlan.FREE,
+        privacyPolicy: '',
+        setupGuide: '',
+        hasFreeTrial: false,
+        freeTrialPeriod: null,
+    },
     {
         type: IntegrationType.Facebook,
         title: 'Facebook, Messenger & Instagram',
@@ -331,7 +358,16 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         description: 'Connect any application to Gorgias.',
         image: 'http.png',
         longDescription: '',
-    } as IntegrationConfig,
+        categories: [],
+        company: 'Gorgias',
+        companyUrl: 'https://www.gorgias.com/',
+        screenshots: [],
+        pricingPlan: PricingPlan.FREE,
+        privacyPolicy: '',
+        setupGuide: '',
+        hasFreeTrial: false,
+        freeTrialPeriod: null,
+    },
     {
         type: IntegrationType.Shopify,
         title: 'Shopify',
@@ -389,7 +425,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         description:
             'Display customer BigCommerce profile & orders next to their ticket.',
         image: 'bigcommerce.svg',
-        categories: [Category.ECOMMERCE],
+        categories: [Category.FEATURED, Category.ECOMMERCE],
         longDescription:
             "<p>BigCommerce is an ecommerce platform that provides 'software as a service' services to retailers. The company’s platform includes online store creation, search engine optimization, hosting, marketing and security.</p><p>With Gorgias, you can:</p><ul><li>View BigCommerce customer and order information in a customer's ticket.</li><li>Easily access links to customer and order profile.</li></ul>",
         screenshots: [
@@ -456,7 +492,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         description:
             'Display subscription info. Refund charges & skip monthly payments.',
         image: 'recharge.svg',
-        categories: [Category.PAYMENT],
+        categories: [Category.SUBSCRIPTIONS],
         longDescription:
             '<p>Recharge connects the world through seamless payments and empowers thousands of merchants to grow their subscription business. Connect Gorgias and Recharge for a simple way to manage customer subscriptions and customer service from one convenient location. </p><p><strong>With this integration, you’ll be able to:&nbsp;</strong></p><ul role="list"><li>Display Recharge subscriptions next to support tickets in Gorgias, to gather full customer context before replying to questions</li><li>Cancel subscriptions, re-activate subscriptions, or refund a charge (either partially or totally)&nbsp;right from the Gorgias helpdesk</li><li>Embed Recharge data in your Macro replies to automate the most common support questions</li></ul>',
         screenshots: ['recharge-1.jpeg', 'recharge-2.jpeg', 'recharge-3.jpeg'],
@@ -499,7 +535,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
             'Yotpo is a user-generated content tool for merchants. It includes customer reviews, visual marketing, loyalty, and referrals.',
         image: 'yotpo.png',
         requiredFeature: AccountFeature.YotpoIntegration,
-        categories: [Category.SMS_EMAIL, Category.LOYALTY, Category.REVIEWS],
+        categories: [Category.SMS, Category.LOYALTY, Category.REVIEWS],
         longDescription:
             '<p>Yotpo is an eCommerce marketing platform with the most advanced solutions for customer reviews, visual marketing, loyalty, referrals, and SMS marketing.</p><p>From approving a product review to updating reward points of a specific customer, allow your support agents to manage product reviews, questions, loyalty plans, and referrals without leaving Gorgias. </p><p><strong>Connect Yotpo with Gorgias to:</strong></p><ul role="list"><li>Display customer’s Yotpo data in Gorgias customer Activity Sidebar such as loyalty points, provided ratings, latest reviews, etc.</li><li>Manage customer loyalty plans (change point balance, assign VIP tier, honor redemptions, and send rewards) from the Gorgias sidebar.</li><li>Respond to a question with an answer either publicly or privately as new tickets.</li><li>Moderate customer reviews (product and site) and questions from within Gorgias as new tickets.</li><li>Request reviews from a customer. </li></ul>',
         screenshots: [
@@ -526,7 +562,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         image: 'smooch.png',
         categories: [],
         longDescription: '',
-        screenshots: ['facebook-1.png', 'facebook-2.png', 'facebook-3.png'],
+        screenshots: [],
         pricingPlan: PricingPlan.FREE,
         pricingDetails: '',
         pricingLink: '',
@@ -536,15 +572,24 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         setupGuide: '',
         hasFreeTrial: false,
         freeTrialPeriod: null,
-    } as IntegrationConfig,
+    },
     {
         type: IntegrationType.Klaviyo,
         title: 'Klaviyo - 🗄 DEPRECATED',
+        categories: [],
+        company: 'Gorgias',
+        companyUrl: 'https://www.gorgias.com/',
+        screenshots: [],
+        pricingPlan: PricingPlan.FREE,
         description:
             'Handle your customers, lists and segments from your Klaviyo campaigns via emails or sms.',
         image: 'klaviyo.png',
         longDescription: '',
-    } as IntegrationConfig,
+        privacyPolicy: '',
+        setupGuide: '',
+        hasFreeTrial: false,
+        freeTrialPeriod: null,
+    },
 ]
 
 const CHANNELS = [

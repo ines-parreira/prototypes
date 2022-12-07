@@ -75,7 +75,7 @@ exports[`<Recharge/> Detail should render a detail view 1`] = `
         <span
           class="badge badge badge-secondary badge-pill"
         >
-          PAYMENT, BILLING & SUBSCRIPTION
+          SUBSCRIPTIONS
         </span>
         <span
           class="by"

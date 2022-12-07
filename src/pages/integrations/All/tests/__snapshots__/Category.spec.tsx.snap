@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Category /> should render correctly 1`] = `
+<section
+  class="section"
+>
+  <header
+    class="header"
+  >
+    <h2
+      class="title"
+    >
+      My 
+      <b>
+        Title
+      </b>
+    </h2>
+    <p
+      class="subtitle"
+    >
+      My subtitle
+    </p>
+  </header>
+  <ul
+    class="cardWrapper"
+  >
+    My category content
+  </ul>
+</section>
+`;

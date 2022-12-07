@@ -3,18 +3,21 @@ import {IntegrationListItem} from 'state/integrations/types'
 import {IntegrationType} from '../constants'
 
 export enum Category {
-    SMS_EMAIL = 'SMS and Email',
-    ECOMMERCE = 'Ecommerce',
+    FEATURED = 'Featured',
+    CHAT = 'Chat',
     PHONE = 'Phone',
-    REVIEWS = 'Reviews & UGC',
-    LOYALTY = 'Loyalty & Retention',
-    RETURNS = 'Returns & Exchanges',
-    SHIPPING = 'Shipping & Fulfillment',
-    PAYMENT = 'Payment, Billing & Subscription',
+    SMS = 'SMS',
     SOCIAL = 'Social Media',
+    ECOMMERCE = 'Ecommerce',
+    SUBSCRIPTIONS = 'Subscriptions',
+    SHIPPING = 'Shipping & Fulfillment',
+    RETURNS = 'Returns & Exchanges',
+    LOYALTY = 'Loyalty & Retention',
+    REVIEWS = 'Reviews & UGC',
+    MARKETING = 'Marketing',
     ANALYTICS = 'BI & Analytics',
-    ERP = 'ERP and Accounting',
     DATA = 'Data Management',
+    QUALITY = 'Quality Assurance',
 }
 
 export enum PricingPlan {
@@ -34,16 +37,17 @@ export type AppListData = {
     id: string
     name: string
     headline: string
+    categories: Category[]
     app_icon: string
+    is_featured: boolean
     is_installed: boolean
-    granted_scopes?: string[]
 }
 
 export type AppData = AppListData & {
+    granted_scopes?: string[]
     is_unapproved: boolean
     description: string
     app_url: string
-    categories: Category[]
     company: string
     company_url: string
     screenshots: string[]
@@ -62,14 +66,13 @@ export type AppListItem = Omit<IntegrationListItem, 'count'> & {
     type: IntegrationType.App
     appId: AppListData['id']
     isConnected: AppListData['is_installed']
-    grantedScopes: AppListData['granted_scopes']
     image: AppListData['app_icon']
 }
 
 export type AppDetail = Omit<IntegrationConfig, 'isExternalConnectUrl'> & {
     type: IntegrationType.App
     isConnected: AppListData['is_installed']
-    grantedScopes: AppListData['granted_scopes']
+    grantedScopes: AppData['granted_scopes']
     appId: AppListData['id']
     image: AppListData['app_icon']
     isUnapproved: AppData['is_unapproved']

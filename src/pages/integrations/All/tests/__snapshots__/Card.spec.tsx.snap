@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Card /> should render a basic link card with proper link 1`] = `
+<li
+  class="listItem"
+>
+  <a
+    class="card interactive"
+    data-testid=""
+    to="/app/settings/integrations/bigcommerce/connections"
+  >
+    <div
+      class="flexContainer"
+    >
+      <img
+        alt="My test app logo"
+        class="icon"
+        role="presentation"
+        src="test-file-stub"
+      />
+      <div
+        class="pillsContainer"
+      >
+        <div
+          class="installedPill"
+        >
+          1
+        </div>
+      </div>
+    </div>
+    <h3
+      class="title"
+    >
+      My test app
+    </h3>
+    <p
+      class="description"
+    >
+      Some tagline here
+    </p>
+  </a>
+</li>
+`;

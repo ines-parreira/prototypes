@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<RequestApp /> should render correctly 1`] = `
+<footer
+  class="footer"
+>
+  <h4
+    class="title"
+  >
+    Can’t find what you need?
+  </h4>
+  <p
+    class="incentive"
+  >
+    If we are missing an app you were looking for, let us know.
+  </p>
+  <a
+    class="wrapper fill primary medium"
+    href="https://gorgias.productboard.com/insights/notes/"
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    Request App
+  </a>
+</footer>
+`;

@@ -36,8 +36,13 @@ export type IntegrationsState = {
 
 export type IntegrationListItem = Pick<
     IntegrationConfig,
-    'type' | 'description' | 'title' | 'requiredFeature' | 'image'
+    | 'type'
+    | 'description'
+    | 'title'
+    | 'requiredFeature'
+    | 'image'
+    | 'categories'
 > & {
     count: number
-    requiredPlanName?: string
+    requiredPlanName?: Maybe<string>
 }

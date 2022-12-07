@@ -1,0 +1,91 @@
+@import '~css/new/colors';
+
+:local {
+    .listItem {
+        display: block;
+        list-style-type: none;
+        min-width: 0;
+        overflow: visible;
+    }
+
+    .card {
+        display: block;
+        height: 190px;
+        padding: 16px;
+        background-color: @classic-neutral-grey-0;
+        border: 1px solid @classic-neutral-grey-3;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .card[data-testid='card-featured'] {
+        background-color: @classic-main-primary-0;
+    }
+
+    .interactive {
+        position: relative;
+        &:hover {
+            top: -1px;
+            box-shadow: 0 2px 3px fade(@classic-neutral-grey-6, 20%);
+        }
+        &:active {
+            box-shadow: inset 1px 1px 2px fade(black, 5%);
+        }
+    }
+
+    .flexContainer {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    .icon {
+        margin-bottom: 16px;
+        margin-right: 16px;
+        width: 50px;
+        height: 50px;
+        object-fit: contain;
+        object-position: 0;
+    }
+
+    .pillsContainer {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .installedPill {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 24px;
+        height: 24px;
+        font-weight: 600;
+        color: @classic-neutral-grey-0;
+        background-color: @modern-feedback-success;
+        border-radius: 50%;
+    }
+
+    .title {
+        margin-bottom: 4px;
+        font-weight: 600;
+        font-size: 20px;
+        color: @classic-neutral-grey-6;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    .description {
+        margin: 0;
+        padding: 0;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        line-height: 20px;
+        color: @classic-neutral-grey-5;
+        overflow: hidden;
+    }
+}

@@ -6,6 +6,7 @@ import thunk from 'redux-thunk'
 
 import {IntegrationType} from 'models/integration/constants'
 import {AppListItem} from 'models/integration/types/app'
+
 import Row from '../Row'
 
 const mockStore = configureMockStore([thunk])
@@ -18,6 +19,7 @@ describe('IntegrationsListRow', () => {
             title: 'an integration',
             description: 'this is a cool integration',
             image: 'ok.png',
+            categories: [],
             count: 1,
         }
 
@@ -33,7 +35,7 @@ describe('IntegrationsListRow', () => {
         const integration: AppListItem = {
             type: IntegrationType.App,
             isConnected: false,
-            grantedScopes: [],
+            categories: [],
             title: 'an integration',
             description: 'this is a cool integration',
             appId: '420',
@@ -52,7 +54,7 @@ describe('IntegrationsListRow', () => {
         const integration: AppListItem = {
             type: IntegrationType.App,
             isConnected: true,
-            grantedScopes: ['write:all'],
+            categories: [],
             title: 'an integration',
             description: 'this is a cool integration',
             appId: '420',
@@ -74,6 +76,7 @@ describe('IntegrationsListRow', () => {
             description: 'this is a cool integration',
             requiredPlanName: 'Basic',
             image: 'ok.png',
+            categories: [],
             count: 0,
         }
 
@@ -91,6 +94,7 @@ describe('IntegrationsListRow', () => {
             title: 'Shopify',
             description: '',
             image: 'ok.png',
+            categories: [],
             count: 2,
         }
 

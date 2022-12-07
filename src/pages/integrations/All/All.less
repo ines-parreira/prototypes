@@ -1,0 +1,29 @@
+@import '~css/new/colors';
+@import '~css/new/mixins';
+
+:local {
+    .spacer {
+        margin-bottom: 16px;
+    }
+
+    li.showDesktop {
+        display: none;
+        @media @desktops {
+            display: block;
+        }
+    }
+
+    li.showLargeDesktop {
+        display: none;
+        @media @large-desktops {
+            display: block;
+        }
+    }
+
+    li.showXLargeDesktop {
+        display: none;
+        @media @xlarge-desktops {
+            display: block;
+        }
+    }
+}

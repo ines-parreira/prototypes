@@ -128,7 +128,7 @@ export const List = ({
                         <strong>
                             {activeIntegrations}{' '}
                             {plural ? 'integrations' : 'integration'} of{' '}
-                            {maxIntegrations} allowed
+                            {maxIntegrations}
                         </strong>{' '}
                         allowed on your <strong>{helpdeskName} plan.</strong>{' '}
                         Need more?

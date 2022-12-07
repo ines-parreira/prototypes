@@ -1,22 +1,30 @@
-import {appDataToAppDetailMapper} from 'models/integration/resources'
+import {
+    appDataToAppDetailMapper,
+    appListDataToAppListMapper,
+} from 'models/integration/resources'
 import {
     AppData,
+    AppListData,
     Category,
     PricingPlan,
     TrialPeriod,
 } from 'models/integration/types/app'
 
-export const dummyAppListData = {
+export const dummyAppListData: AppListData = {
     app_icon: 'https://ok.com/1.png',
-    app_url: 'https://ok.com',
     headline: 'Some tagline here',
+    categories: [Category.QUALITY],
     id: 'someid',
     name: 'My test app',
     is_installed: false,
+    is_featured: false,
 }
+
+export const dummyAppListItem = appListDataToAppListMapper(dummyAppListData)
 
 export const dummyAppData: AppData = {
     ...dummyAppListData,
+    app_url: 'https://ok.com',
     is_unapproved: false,
     is_installed: false,
     company_url: 'https://www.gomycompany.com/',
