@@ -3177,6 +3177,17 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                             productCardsEnabled={true}
                                             setEditorState={[Function]}
                                             setReadOnly={[Function]}
+                                            videoAction={
+                                              <UNDEFINED
+                                                getEditorRef={[Function]}
+                                                getEditorState={[Function]}
+                                                getPlugins={[Function]}
+                                                getProps={[Function]}
+                                                getReadOnly={[Function]}
+                                                setEditorState={[Function]}
+                                                setReadOnly={[Function]}
+                                              />
+                                            }
                                           >
                                             <Toolbar
                                               attachFiles={[Function]}
@@ -3221,6 +3232,17 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                               productCardsEnabled={true}
                                               setEditorState={[Function]}
                                               setReadOnly={[Function]}
+                                              videoAction={
+                                                <UNDEFINED
+                                                  getEditorRef={[Function]}
+                                                  getEditorState={[Function]}
+                                                  getPlugins={[Function]}
+                                                  getProps={[Function]}
+                                                  getReadOnly={[Function]}
+                                                  setEditorState={[Function]}
+                                                  setReadOnly={[Function]}
+                                                />
+                                              }
                                             >
                                               <div
                                                 className="editor-toolbar page"

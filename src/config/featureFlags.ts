@@ -23,4 +23,6 @@ export enum FeatureFlagKey {
     RevenueHideDiscountCodeButton = 'revenue-hide-discount-code-button',
     ChatMergedOrderManagementButton = 'chat-merged-order-management-button',
     AgentsAvailabilityStatus = 'agents-availability-status',
+    ChatVideoSharingConversations = 'chat-video-sharing-conversations',
+    ChatVideoSharingCampaigns = 'chat-video-sharing-campaigns',
 }

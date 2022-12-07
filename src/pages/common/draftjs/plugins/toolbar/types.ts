@@ -7,6 +7,7 @@ export enum ActionName {
     Underline = 'UNDERLINE',
     Link = 'LINK',
     Image = 'IMAGE',
+    Video = 'VIDEO',
     Emoji = 'EMOJI',
     ProductPicker = 'PRODUCTPICKER',
     DiscountCodePicker = 'DISCOUNTCODE',

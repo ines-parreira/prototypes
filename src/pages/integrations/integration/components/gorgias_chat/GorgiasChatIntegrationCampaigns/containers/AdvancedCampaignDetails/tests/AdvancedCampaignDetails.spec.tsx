@@ -4,11 +4,13 @@ import {fromJS} from 'immutable'
 import {render, within, screen, fireEvent} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {act} from 'react-hooks-testing-library'
+import {mockFlags} from 'jest-launchdarkly-mock'
 
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 
 import {User} from 'config/types/user'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import {RootState, StoreDispatch} from 'state/types'
 
@@ -101,6 +103,12 @@ const shopifyChatIntegration = fromJS({
 })
 
 describe('<AdvancedCampaignDetails />', () => {
+    beforeEach(() => {
+        mockFlags({
+            [FeatureFlagKey.ChatVideoSharingCampaigns]: true,
+        })
+    })
+
     describe('Creating a campaign as regular merchant', () => {
         beforeEach(() => {
             jest.spyOn(

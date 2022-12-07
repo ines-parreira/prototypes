@@ -33,6 +33,7 @@ type Props = {
     displayedActions?: ActionName[]
     linkAction: ReactNode
     imageAction: ReactNode
+    videoAction: ReactNode
     quickReply: ReactNode
 } & ActionInjectedProps &
     ConnectedProps<typeof connector>
@@ -128,6 +129,10 @@ export class Toolbar extends Component<Props, State> {
                             this.props.linkAction}
                         {this._isDisplayedAction(ActionName.Image) &&
                             this.props.imageAction}
+                        {/* Do not display `insert Video` by default if `displayedActions` prop is not set. */}
+                        {this._isDisplayedAction(ActionName.Video) &&
+                            this.props.displayedActions &&
+                            this.props.videoAction}
                         {this._isDisplayedAction(ActionName.Emoji) && (
                             <AddEmoji {...actionsProps} />
                         )}
@@ -140,6 +145,7 @@ export class Toolbar extends Component<Props, State> {
                                     productCardsEnabled={productCardsEnabled}
                                 />
                             )}
+                        {/* Do not display `insert Discount Code` by default if `displayedActions` prop is not set. */}
                         {this._isDisplayedAction(
                             ActionName.DiscountCodePicker
                         ) &&

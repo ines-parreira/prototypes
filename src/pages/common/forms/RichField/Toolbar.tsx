@@ -3,7 +3,11 @@ import React, {ReactNode} from 'react'
 import {ActionName} from '../../draftjs/plugins/toolbar/types'
 import {PluginMethods} from '../../draftjs/plugins/types'
 import Toolbar from '../../draftjs/plugins/toolbar/Toolbar'
-import {AddImage, AddLink} from '../../draftjs/plugins/toolbar/components/index'
+import {
+    AddImage,
+    AddVideo,
+    AddLink,
+} from '../../draftjs/plugins/toolbar/components/index'
 
 type Props = {
     attachFiles: (T: Array<Blob>) => void
@@ -53,6 +57,7 @@ export default function RichFieldToolbar(props: Props) {
             imageAction={
                 <AddImage attachments={props.attachments} {...pluginMethods} />
             }
+            videoAction={<AddVideo {...pluginMethods} />}
             quickReply={props.quickReply}
             {...pluginMethods}
             productCardsEnabled={props.productCardsEnabled}

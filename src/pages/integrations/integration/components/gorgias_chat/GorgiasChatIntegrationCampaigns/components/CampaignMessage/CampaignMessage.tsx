@@ -2,11 +2,15 @@ import React, {memo, useMemo} from 'react'
 import classnames from 'classnames'
 
 import {EditorState} from 'draft-js'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+
 import {User} from 'config/types/user'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import {AgentLabel} from 'pages/common/utils/labels'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import DEPRECATED_RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'
+import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
 
 import {Option, Value} from 'pages/common/forms/SelectField/types'
 
@@ -74,6 +78,27 @@ export const CampaignMessage = memo(
             [html, text]
         )
 
+        const allowVideoSharingForCampaigns: boolean | undefined =
+            useFlags()[FeatureFlagKey.ChatVideoSharingCampaigns]
+
+        const displayedActions = useMemo(() => {
+            const actions = [
+                ActionName.Bold,
+                ActionName.Italic,
+                ActionName.Underline,
+                ActionName.Link,
+                ActionName.Image,
+                ActionName.Emoji,
+                ActionName.ProductPicker,
+            ]
+
+            if (allowVideoSharingForCampaigns) {
+                actions.push(ActionName.Video)
+            }
+
+            return actions
+        }, [allowVideoSharingForCampaigns])
+
         return (
             <div className="mb-4">
                 <div
@@ -93,6 +118,7 @@ export const CampaignMessage = memo(
                     allowExternalChanges
                     onChange={onChangeMessage}
                     placeholder={'Write your message'}
+                    displayedActions={displayedActions}
                     isRequired
                 />
             </div>

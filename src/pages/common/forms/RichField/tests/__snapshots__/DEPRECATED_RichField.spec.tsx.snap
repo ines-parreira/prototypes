@@ -2492,6 +2492,17 @@ exports[`DEPRECATED_RichField should render default content state 1`] = `
                   productCardsEnabled={true}
                   setEditorState={[Function]}
                   setReadOnly={[Function]}
+                  videoAction={
+                    <UNDEFINED
+                      getEditorRef={[Function]}
+                      getEditorState={[Function]}
+                      getPlugins={[Function]}
+                      getProps={[Function]}
+                      getReadOnly={[Function]}
+                      setEditorState={[Function]}
+                      setReadOnly={[Function]}
+                    />
+                  }
                 >
                   <Toolbar
                     attachFiles={[Function]}
@@ -2536,6 +2547,17 @@ exports[`DEPRECATED_RichField should render default content state 1`] = `
                     productCardsEnabled={true}
                     setEditorState={[Function]}
                     setReadOnly={[Function]}
+                    videoAction={
+                      <UNDEFINED
+                        getEditorRef={[Function]}
+                        getEditorState={[Function]}
+                        getPlugins={[Function]}
+                        getProps={[Function]}
+                        getReadOnly={[Function]}
+                        setEditorState={[Function]}
+                        setReadOnly={[Function]}
+                      />
+                    }
                   >
                     <div
                       className="editor-toolbar page"
@@ -8480,6 +8502,17 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                   productCardsEnabled={true}
                   setEditorState={[Function]}
                   setReadOnly={[Function]}
+                  videoAction={
+                    <UNDEFINED
+                      getEditorRef={[Function]}
+                      getEditorState={[Function]}
+                      getPlugins={[Function]}
+                      getProps={[Function]}
+                      getReadOnly={[Function]}
+                      setEditorState={[Function]}
+                      setReadOnly={[Function]}
+                    />
+                  }
                 >
                   <Toolbar
                     attachFiles={[Function]}
@@ -8524,6 +8557,17 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                     productCardsEnabled={true}
                     setEditorState={[Function]}
                     setReadOnly={[Function]}
+                    videoAction={
+                      <UNDEFINED
+                        getEditorRef={[Function]}
+                        getEditorState={[Function]}
+                        getPlugins={[Function]}
+                        getProps={[Function]}
+                        getReadOnly={[Function]}
+                        setEditorState={[Function]}
+                        setReadOnly={[Function]}
+                      />
+                    }
                   >
                     <div
                       className="editor-toolbar page"
@@ -11706,6 +11750,17 @@ exports[`DEPRECATED_RichField should render mutable variable 1`] = `
                   productCardsEnabled={true}
                   setEditorState={[Function]}
                   setReadOnly={[Function]}
+                  videoAction={
+                    <UNDEFINED
+                      getEditorRef={[Function]}
+                      getEditorState={[Function]}
+                      getPlugins={[Function]}
+                      getProps={[Function]}
+                      getReadOnly={[Function]}
+                      setEditorState={[Function]}
+                      setReadOnly={[Function]}
+                    />
+                  }
                 >
                   <Toolbar
                     attachFiles={[Function]}
@@ -11750,6 +11805,17 @@ exports[`DEPRECATED_RichField should render mutable variable 1`] = `
                     productCardsEnabled={true}
                     setEditorState={[Function]}
                     setReadOnly={[Function]}
+                    videoAction={
+                      <UNDEFINED
+                        getEditorRef={[Function]}
+                        getEditorState={[Function]}
+                        getPlugins={[Function]}
+                        getProps={[Function]}
+                        getReadOnly={[Function]}
+                        setEditorState={[Function]}
+                        setReadOnly={[Function]}
+                      />
+                    }
                   >
                     <div
                       className="editor-toolbar page"

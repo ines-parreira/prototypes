@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AddVideo/> should not render when the popover is closed 1`] = `
+<div>
+  <span
+    class="popoverWrapper"
+  >
+    <button
+      class="wrapper button wrapper small fill secondary small"
+      id="insert_video"
+      type="button"
+    >
+      <i
+        class="material-icons icon"
+      >
+        video_library
+      </i>
+    </button>
+    <div
+      class="popover popover top-left hidden"
+    />
+  </span>
+</div>
+`;
+
+exports[`<AddVideo/> should render the popover when the button is clicked 1`] = `
+<div>
+  <span
+    class="popoverWrapper"
+  >
+    <button
+      class="wrapper button wrapper small fill secondary small"
+      id="insert_video"
+      type="button"
+    >
+      <i
+        class="material-icons icon"
+      >
+        video_library
+      </i>
+    </button>
+    <div
+      class="popover popover top-left"
+    >
+      <div>
+        <h4
+          class="title"
+        >
+          Video URL
+        </h4>
+        <div
+          class="wrapper isFocused input"
+        >
+          <input
+            class="input"
+            id="input-text-1"
+            name="input-text-1"
+            placeholder="External video URL"
+            type="text"
+            value=""
+          />
+        </div>
+        <div
+          class="buttons"
+        >
+          <button
+            class="wrapper fill primary medium isDisabled"
+            disabled=""
+            type="button"
+          >
+            Insert Video
+          </button>
+          <button
+            class="wrapper ml-2 fill secondary medium"
+            type="button"
+          >
+            Cancel
+          </button>
+          <a
+            class="helpLink"
+            href="#"
+          >
+            See supported providers
+          </a>
+        </div>
+      </div>
+    </div>
+  </span>
+</div>
+`;
