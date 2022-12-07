@@ -17,16 +17,8 @@ exports[`<ViewName/> .render() should display view name 1`] = `
 </span>
 `;
 
-exports[`<ViewName/> .render() should not display emoji if decoration is a string 1`] = `
+exports[`<ViewName/> .render() should not display emoji if decoration is not a string 1`] = `
 <span>
-  foo bar
-</span>
-`;
-
-exports[`<ViewName/> .render() should pass props to span 1`] = `
-<span
-  style="color:red"
->
   foo bar
 </span>
 `;

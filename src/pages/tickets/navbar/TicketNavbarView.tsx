@@ -1,5 +1,4 @@
 import classnames from 'classnames'
-import {fromJS} from 'immutable'
 import React, {useMemo, useRef} from 'react'
 import {useDrag} from 'react-dnd'
 import {connect, ConnectedProps} from 'react-redux'
@@ -23,11 +22,7 @@ import TicketNavbarDropTarget from './TicketNavbarDropTarget'
 type OwnProps = {
     className?: string
     view: View
-}
-
-export type ViewItem = {
-    id: number
-    type: string
+    viewCount: number | undefined
 }
 
 export function TicketNavbarViewContainer({
@@ -38,10 +33,10 @@ export function TicketNavbarViewContainer({
     sections,
     view,
     views,
-    viewsCount,
+    viewCount,
 }: OwnProps & ConnectedProps<typeof connector>) {
     const wrapperRef = useRef<HTMLDivElement>(null)
-    const count = viewsCount[view.id] || 0
+    const count = viewCount || 0
     const ticketNavbarId = `ticket-navbar-view-${view.id}`
 
     const canDrag = useMemo(
@@ -126,10 +121,17 @@ export function TicketNavbarViewContainer({
                                     'flex-grow'
                                 )}
                             >
-                                <ViewName view={fromJS(view)} />
+                                <ViewName
+                                    viewName={view.name}
+                                    emoji={view.decoration?.emoji}
+                                />
                             </span>
                             <span className={navbarCss['item-count']}>
-                                <ViewCount view={fromJS(view)} />
+                                <ViewCount
+                                    viewId={view.id}
+                                    viewCount={viewCount}
+                                    isDeactivated={!!view.deactivated_datetime}
+                                />
                             </span>
                         </Link>
                     </div>
@@ -145,7 +147,6 @@ const connector = connect(
         currentUser: state.currentUser,
         sections: state.entities.sections,
         views: state.entities.views,
-        viewsCount: state.entities.viewsCount,
     }),
     {
         activeViewIdSet,

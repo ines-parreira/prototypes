@@ -1,25 +1,23 @@
 import React from 'react'
-import {Map} from 'immutable'
-import {connect, ConnectedProps} from 'react-redux'
 import classnames from 'classnames'
 import {UncontrolledTooltip} from 'reactstrap'
 
-import {MAX_TICKET_COUNT_PER_VIEW} from '../../../../config/views'
-import {compactInteger} from '../../../../utils'
-import {makeGetViewCount} from '../../../../state/views/selectors'
-import {RootState} from '../../../../state/types'
+import {MAX_TICKET_COUNT_PER_VIEW} from 'config/views'
+import {compactInteger} from 'utils'
 
 import css from './ViewCount.less'
 
 type OwnProps = {
-    view: Map<any, any>
+    viewId: number
+    isDeactivated: boolean
+    viewCount: number | undefined
 }
 
-type Props = OwnProps & ConnectedProps<typeof connector>
+type Props = OwnProps
 
-export function ViewCountContainer({view, getViewCount}: Props) {
-    if (!!view.get('deactivated_datetime')) {
-        const id = `deactivated-view-${view.get('id') as number}`
+export function ViewCountContainer({viewId, isDeactivated, viewCount}: Props) {
+    if (isDeactivated) {
+        const id = `deactivated-view-${viewId}`
 
         return (
             <>
@@ -40,8 +38,7 @@ export function ViewCountContainer({view, getViewCount}: Props) {
         )
     }
 
-    const viewCount = getViewCount(view.get('id'))
-    if (viewCount === null) {
+    if (viewCount === undefined) {
         return null
     }
 
@@ -57,8 +54,4 @@ export function ViewCountContainer({view, getViewCount}: Props) {
     )
 }
 
-const connector = connect((state: RootState) => ({
-    getViewCount: makeGetViewCount(state),
-}))
-
-export default connector(ViewCountContainer)
+export default React.memo(ViewCountContainer)

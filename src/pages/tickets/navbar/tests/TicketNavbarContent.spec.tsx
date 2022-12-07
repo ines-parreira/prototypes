@@ -63,6 +63,9 @@ describe('<TicketNavbarContent/>', () => {
         notify: jest.fn(),
         viewUpdated: jest.fn(),
         isPrivate: true,
+        viewsCount: {
+            7: 0,
+        },
     } as unknown as ComponentProps<typeof TicketNavbarContentContainer>
 
     beforeEach(() => {

@@ -255,12 +255,18 @@ class ViewNavbarView extends Component<Props, State> {
                                         <span
                                             className={navbarCss['item-name']}
                                         >
-                                            <ViewName view={view} />
+                                            <ViewName
+                                                viewName={view.get('name')}
+                                            />
                                         </span>
                                         <span
                                             className={navbarCss['item-count']}
                                         >
-                                            <ViewCount view={view} />
+                                            <ViewCount
+                                                viewCount={viewCount}
+                                                viewId={view.get('id')}
+                                                isDeactivated={false}
+                                            />
                                         </span>
                                     </Link>
                                 )

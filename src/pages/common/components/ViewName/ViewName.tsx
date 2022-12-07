@@ -1,24 +1,21 @@
 import React from 'react'
-import {Map} from 'immutable'
 
 import css from './ViewName.less'
 
 type Props = {
-    view: Map<any, any>
+    viewName: string
+    emoji?: string
 }
 
-const ViewName = (props: Props) => {
-    const {view, ...wrapperProps} = props
-    const name = view.get('name', '')
-    const emoji = view.getIn(['decoration', 'emoji'])
+const ViewName = ({viewName = '', emoji}: Props) => {
     return (
-        <span {...wrapperProps}>
+        <span>
             {typeof emoji === 'string' && (
                 <span className={css.emoji}>{emoji}</span>
             )}
-            {name}
+            {viewName}
         </span>
     )
 }
 
-export default ViewName
+export default React.memo(ViewName)

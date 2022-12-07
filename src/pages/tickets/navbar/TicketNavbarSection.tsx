@@ -21,6 +21,7 @@ type OwnProps = {
     onSectionDeleteClick?: (sectionId: number) => void
     onSectionRenameClick?: (sectionId: number) => void
     sectionElement: TicketNavbarSectionElement
+    viewsCount: Record<string, number>
 }
 
 export function TicketNavbarSectionContainer({
@@ -32,6 +33,7 @@ export function TicketNavbarSectionContainer({
     sectionElement: {data: section, children},
     sections,
     views,
+    viewsCount,
 }: OwnProps & ConnectedProps<typeof connector>) {
     const emoji = section.decoration?.emoji
     const [isOpen, setOpen] = useState(false)
@@ -155,7 +157,11 @@ export function TicketNavbarSectionContainer({
             </TicketNavbarDropTarget>
             {isExpanded &&
                 children.map((view) => (
-                    <TicketNavbarView key={view.id} view={view} />
+                    <TicketNavbarView
+                        key={view.id}
+                        view={view}
+                        viewCount={viewsCount[view.id]}
+                    />
                 ))}
         </TicketNavbarDropTarget>
     )

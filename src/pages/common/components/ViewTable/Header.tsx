@@ -219,7 +219,13 @@ export class HeaderContainer extends React.Component<Props, State> {
                                         this.props.setViewEditMode(activeView)
                                     }
                                 >
-                                    <ViewName view={activeView} />
+                                    <ViewName
+                                        viewName={activeView.get('name')}
+                                        emoji={activeView.getIn([
+                                            'decoration',
+                                            'emoji',
+                                        ])}
+                                    />
                                     <i className="material-icons">
                                         keyboard_arrow_down
                                     </i>

@@ -14,16 +14,16 @@ import {user as currentUserFixture} from '../../../../fixtures/users'
 jest.mock(
     '../../../common/components/ViewName/ViewName',
     () =>
-        ({view}: ComponentProps<typeof ViewName>) => {
-            return <div data-testid="ViewName">{view.get('name')}</div>
+        ({viewName}: ComponentProps<typeof ViewName>) => {
+            return <div data-testid="ViewName">{viewName}</div>
         }
 )
 
 jest.mock(
     '../../../common/components/ViewCount/ViewCount',
     () =>
-        ({view}: ComponentProps<typeof ViewCount>) => {
-            return <div data-testid="ViewCount">{view.get('name')}</div>
+        ({viewCount}: ComponentProps<typeof ViewCount>) => {
+            return <div data-testid="ViewCount">{viewCount}</div>
         }
 )
 
@@ -31,10 +31,7 @@ describe('<TicketNavbarView/>', () => {
     const minProps = {
         view,
         activeViewId: 4,
-        viewsCount: {
-            4: 100,
-            7: MAX_TICKET_COUNT_PER_VIEW,
-        },
+        viewCount: MAX_TICKET_COUNT_PER_VIEW,
         currentUser: fromJS(currentUserFixture),
     } as unknown as ComponentProps<typeof TicketNavbarViewContainer>
 

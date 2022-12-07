@@ -67,6 +67,7 @@ export function TicketNavbarContentContainer({
     sections,
     views,
     viewUpdated,
+    viewsCount,
 }: OwnProps & ConnectedProps<typeof connector>) {
     const [collapsedSections, setCollapsedSections] = useLocalStorage<number[]>(
         'collapsed-view-sections',
@@ -175,6 +176,7 @@ export function TicketNavbarContentContainer({
                     <TicketNavbarView
                         key={`view-${element.data.id}`}
                         view={element.data}
+                        viewCount={viewsCount[element.data.id]}
                     />
                 ) : (
                     <TicketNavbarSection
@@ -187,6 +189,7 @@ export function TicketNavbarContentContainer({
                         onSectionDeleteClick={onSectionDeleteClick}
                         onSectionRenameClick={onSectionRenameClick}
                         sectionElement={element}
+                        viewsCount={viewsCount}
                     />
                 )
             )}
@@ -195,10 +198,13 @@ export function TicketNavbarContentContainer({
 }
 
 const connector = connect(
-    (state: RootState) => ({
-        sections: state.entities.sections,
-        views: state.entities.views,
-    }),
+    (state: RootState) => {
+        return {
+            sections: state.entities.sections,
+            views: state.entities.views,
+            viewsCount: state.entities.viewsCount,
+        }
+    },
     {
         notify,
         optimisticAccountSettingsSet,

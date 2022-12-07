@@ -28,7 +28,7 @@ exports[`<TicketNavbarView/> should render 1`] = `
         <div
           data-testid="ViewCount"
         >
-          New & Open Tickets
+          5000
         </div>
       </span>
     </a>
