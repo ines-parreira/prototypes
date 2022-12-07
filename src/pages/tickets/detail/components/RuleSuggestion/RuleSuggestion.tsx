@@ -37,9 +37,8 @@ export type RuleSuggestionData = {
 export type SuggestionStates = 'collapse' | 'expand' | 'preview' | null
 
 export default function RuleSuggestion({ticket, isCollapsed}: Props) {
-    const [suggestionState, setSuggestionState] = useState<SuggestionStates>(
-        isCollapsed ? 'collapse' : null
-    )
+    const [suggestionState, setSuggestionState] =
+        useState<SuggestionStates>(null)
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
     const {isFocused} = useAppSelector((state) => state.ui.editor)
     const isPartialUpdating = useAppSelector(
@@ -54,6 +53,10 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
     useEffect(() => {
         if (isFocused || isPartialUpdating) setSuggestionState('collapse')
     }, [isFocused, isPartialUpdating])
+
+    useEffect(() => {
+        if (isCollapsed) setSuggestionState('collapse')
+    }, [isCollapsed])
 
     const suggestion = ticket.meta?.['rule_suggestion']
     if (!suggestion) return null
