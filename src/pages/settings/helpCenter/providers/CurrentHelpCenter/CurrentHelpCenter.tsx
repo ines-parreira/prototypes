@@ -39,7 +39,6 @@ import {
     helpCenterUpdated,
 } from 'state/entities/helpCenter/helpCenters'
 
-import './CurrentHelpCenter.less'
 import {EditionManagerContextProvider} from '../EditionManagerContext'
 import {SearchContextProvider} from '../SearchContext'
 import {HelpCenterTranslationProvider} from '../HelpCenterTranslation'
