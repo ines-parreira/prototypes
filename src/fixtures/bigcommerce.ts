@@ -3,7 +3,13 @@ import {
     BigCommerceIntegrationMeta,
     IntegrationType,
 } from 'models/integration/types'
-import {BigCommerceResponse} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/types'
+import {
+    BigCommerceNestedCart,
+    Cart,
+    LineItem,
+    Product,
+    Variant,
+} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/types'
 
 export const bigCommerceCustomerFixture = () => ({
     id: 1234,
@@ -142,6 +148,109 @@ export const bigCommerceIntegrationFixture = (): BigCommerceIntegration => ({
     },
 })
 
-export const bigCommerceCartResponseFixture = (): BigCommerceResponse => ({
-    id: 'eed98ad3-8f2a-4558-864a-3a9e04d2cb61',
+export const bigCommerceEmptyCartFixture = (): Cart => ({
+    id: 'c58d3aac-244c-4405-bad5-638b555bc31b',
+    customer_id: 1,
+    channel_id: 1,
+    email: 'alexandru.daineanu+bigcommerce@gorgias.com',
+    currency: {
+        code: 'EUR',
+    },
+    tax_included: false,
+    base_amount: 0,
+    discount_amount: 0,
+    cart_amount: 0,
+    coupons: [],
+    discounts: [],
+    line_items: {
+        physical_items: [],
+        digital_items: [],
+        gift_certificates: [],
+        custom_items: [],
+    },
+    created_time: '2022-12-02T11:50:22+00:00',
+    updated_time: '2022-12-02T11:50:22+00:00',
+    locale: 'en',
+})
+
+export const bigCommerceLineItemFixture = (): LineItem => ({
+    id: '3aee2b2f-9182-4d16-82ae-734dced3d218',
+    parent_id: null,
+    variant_id: 324,
+    product_id: 245,
+    sku: '',
+    name: 'test 102',
+    url: 'https://max-mad-store.mybigcommerce.com/test-102/',
+    quantity: 1,
+    taxable: true,
+    image_url:
+        'https://cdn11.bigcommerce.com/r-4b20dad619e29ebf3490f7f35369a8220637ce48/themes/ClassicNext/images/ProductDefault.gif',
+    discounts: [],
+    coupons: [],
+    discount_amount: 0,
+    coupon_amount: 0,
+    original_price: 78,
+    list_price: 78,
+    sale_price: 78,
+    extended_list_price: 78,
+    extended_sale_price: 78,
+    is_require_shipping: true,
+    is_mutable: true,
+})
+
+export const bigCommerceCartFixture = (): Cart => ({
+    id: 'c58d3aac-244c-4405-bad5-638b555bc31b',
+    customer_id: 1,
+    channel_id: 1,
+    email: 'alexandru.daineanu+bigcommerce@gorgias.com',
+    currency: {
+        code: 'EUR',
+    },
+    tax_included: false,
+    base_amount: 78,
+    discount_amount: 0,
+    cart_amount: 93.6,
+    coupons: [],
+    discounts: [
+        {
+            id: '3aee2b2f-9182-4d16-82ae-734dced3d218',
+            discounted_amount: 0,
+        },
+    ],
+    line_items: {
+        physical_items: [bigCommerceLineItemFixture()],
+        digital_items: [],
+        gift_certificates: [],
+        custom_items: [],
+    },
+    created_time: '2022-12-02T11:50:22+00:00',
+    updated_time: '2022-12-02T11:52:28+00:00',
+    locale: 'en',
+})
+
+export const BigCommerceNestedCartFixture = (): BigCommerceNestedCart => ({
+    data: bigCommerceCartFixture(),
+})
+
+export const bigCommerceVariantFixture = (): Variant => ({
+    id: 1,
+    sku: 'SLCTBS-A9615491',
+    price: null,
+    image_url: '',
+    product_id: 77,
+    inventory_level: 0,
+    options: [],
+})
+
+export const bigCommerceProductFixture = (): Product => ({
+    id: 77,
+    sku: 'SLCTBS',
+    name: '[Sample] Serviette de plage Fog Linen en chambray - Beige rayé',
+    image_url:
+        'https://cdn11.bigcommerce.com/s-pk360c6roo/products/77/images/266/foglinenbeigestripetowel1b.1650970371.220.290.jpg?c=1',
+    inventory_level: 0,
+    inventory_tracking: 'none',
+    created_at: '2022-12-02T11:50:22+00:00',
+    options: [],
+    variants: [bigCommerceVariantFixture()],
 })

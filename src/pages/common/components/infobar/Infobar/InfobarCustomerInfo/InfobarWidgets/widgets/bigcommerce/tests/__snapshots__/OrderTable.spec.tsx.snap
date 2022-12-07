@@ -1,0 +1,149 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<OrderTable/> rendering should render with items 1`] = `
+<div>
+  <table
+    class="table table table-hover"
+  >
+    <thead>
+      <tr>
+        <th>
+          Product
+        </th>
+        <th>
+          Price
+        </th>
+        <th>
+          Qty
+        </th>
+        <th>
+          Total
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td
+          class="container"
+        >
+          <div
+            class="imgContainer"
+          >
+            <img
+              alt=""
+              class="img"
+              src="test-file-stub"
+            />
+          </div>
+          <div
+            class="legend"
+          >
+            <div>
+              <a
+                class="title"
+                href="https://store-testHash.mybigcommerce.com/manage/products/edit/245/"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                test 102
+              </a>
+            </div>
+            <div
+              class="subtitle"
+            >
+              <div
+                class="numberCol"
+              >
+                <span
+                  class="text-muted"
+                >
+                  N/A
+                </span>
+              </div>
+            </div>
+          </div>
+        </td>
+        <td
+          class="numberCol"
+        >
+          <span>
+            $78.00
+          </span>
+        </td>
+        <td
+          class="quantityCol"
+        >
+          <div
+            class="d-flex"
+          >
+            <div
+              class="wrapper input"
+            >
+              <input
+                class="input"
+                id="input-text-1"
+                min="1"
+                name="input-text-1"
+                type="text"
+                value="1"
+              />
+            </div>
+          </div>
+        </td>
+        <td
+          class="numberCol"
+        >
+          <div
+            class="d-flex"
+          >
+            <strong
+              class="mt-auto mb-auto mr-auto"
+            >
+              <span>
+                $78.00
+              </span>
+            </strong>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
+
+exports[`<OrderTable/> rendering should render without items 1`] = `
+<div>
+  <table
+    class="table table"
+  >
+    <thead>
+      <tr>
+        <th>
+          Product
+        </th>
+        <th>
+          Price
+        </th>
+        <th>
+          Qty
+        </th>
+        <th>
+          Total
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td
+          class="text-center text-muted"
+          colspan="4"
+        >
+          <small>
+            No items
+          </small>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;

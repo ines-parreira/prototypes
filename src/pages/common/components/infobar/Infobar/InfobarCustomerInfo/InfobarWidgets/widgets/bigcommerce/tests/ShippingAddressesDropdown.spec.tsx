@@ -4,10 +4,10 @@ import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import * as actions from 'state/infobarActions/bigcommerce/createOrder/actions'
+import * as utils from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/utils'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {IntegrationType} from 'models/integration/constants'
-import {initialState} from 'state/infobarActions/bigcommerce/createOrder/reducers'
+import {integrationsState} from 'fixtures/integrations'
+import {bigCommerceCartFixture} from 'fixtures/bigcommerce'
 import {ShippingAddressesDropdown} from '../ShippingAddressesDropdown'
 import {
     BigCommerceCustomerAddress,
@@ -15,10 +15,9 @@ import {
 } from '../types'
 
 const integrationContextValue = {integration: fromJS({}), integrationId: 1}
-const mockStore = configureMockStore([thunk])
 
-jest.spyOn(actions, 'addCheckoutBillingAddress')
-const addCheckoutBillingAddress = actions.addCheckoutBillingAddress as jest.Mock
+jest.spyOn(utils, 'addCheckoutBillingAddress')
+const addCheckoutBillingAddress = utils.addCheckoutBillingAddress as jest.Mock
 
 const shippingAddresses: BigCommerceCustomerAddress[] = [
     {
@@ -57,30 +56,37 @@ const shippingAddresses: BigCommerceCustomerAddress[] = [
     },
 ]
 
-const store = mockStore({
-    infobarActions: {
-        [IntegrationType.BigCommerce]: {
-            createOrder: initialState,
-        },
-    },
-})
+const defaultState = {
+    integrations: fromJS(integrationsState),
+}
+const mockStore = configureMockStore([thunk])
+const store = mockStore(defaultState)
+
+const cart = bigCommerceCartFixture()
+const setCheckout = jest.fn()
 
 const emptyProps = {
     shippingAddress: null,
     shippingAddresses: [],
     setShippingAddress: jest.fn(),
+    cart: cart,
+    setCheckout: setCheckout,
 }
 
 const shippingAddressesProps = {
     shippingAddress: null,
     shippingAddresses: shippingAddresses,
     setShippingAddress: jest.fn(),
+    cart: cart,
+    setCheckout: setCheckout,
 }
 
 const selectedShippingAddressProps = {
     shippingAddress: shippingAddresses[1],
     shippingAddresses: shippingAddresses,
     setShippingAddress: jest.fn(),
+    cart: cart,
+    setCheckout: setCheckout,
 }
 
 describe('<ShippingAddressesDropdown/>', () => {

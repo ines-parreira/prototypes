@@ -1,0 +1,295 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<OrderLineItemRow/> render() should render 1`] = `
+<tr>
+  <td
+    class="container"
+  >
+    <div
+      class="imgContainer"
+    >
+      <img
+        alt="[Sample] Serviette de plage Fog Linen en chambray - Beige rayé"
+        class="img"
+        src="https://cdn11.bigcommerce.com/s-pk360c6roo/products/77/images/266/foglinenbeigestripetowel1b.1650970371.220.290.jpg?c=1"
+      />
+    </div>
+    <div
+      class="legend"
+    >
+      <div>
+        <a
+          class="title"
+          href="https://store-storeHash.mybigcommerce.com/manage/products/edit/245/"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          test 102
+        </a>
+      </div>
+      <div
+        class="subtitle"
+      >
+        <div
+          class="numberCol"
+        >
+          <span
+            class="text-muted"
+          >
+            N/A
+          </span>
+        </div>
+      </div>
+    </div>
+  </td>
+  <td
+    class="numberCol"
+  >
+    <span>
+      $78.00
+    </span>
+  </td>
+  <td
+    class="quantityCol"
+  >
+    <div
+      class="d-flex"
+    >
+      <div
+        class="wrapper input"
+      >
+        <input
+          class="input"
+          id="input-text-1"
+          min="1"
+          name="input-text-1"
+          type="text"
+          value="1"
+        />
+      </div>
+      <button
+        class="wrapper wrapper ghost ghost destructive medium"
+        tabindex="0"
+        type="button"
+      >
+        <i
+          class="material-icons icon"
+        >
+          close
+        </i>
+      </button>
+    </div>
+  </td>
+  <td
+    class="numberCol"
+  >
+    <div
+      class="d-flex"
+    >
+      <strong
+        class="mt-auto mb-auto mr-auto"
+      >
+        <span>
+          $78.00
+        </span>
+      </strong>
+    </div>
+  </td>
+</tr>
+`;
+
+exports[`<OrderLineItemRow/> render() should render with the default image 1`] = `
+<tr>
+  <td
+    class="container"
+  >
+    <div
+      class="imgContainer"
+    >
+      <img
+        alt="[Sample] Serviette de plage Fog Linen en chambray - Beige rayé"
+        class="img"
+        src="test-file-stub"
+      />
+    </div>
+    <div
+      class="legend"
+    >
+      <div>
+        <a
+          class="title"
+          href="https://store-storeHash.mybigcommerce.com/manage/products/edit/245/"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          test 102
+        </a>
+      </div>
+      <div
+        class="subtitle"
+      >
+        <div
+          class="numberCol"
+        >
+          <span
+            class="text-muted"
+          >
+            N/A
+          </span>
+        </div>
+      </div>
+    </div>
+  </td>
+  <td
+    class="numberCol"
+  >
+    <span>
+      $78.00
+    </span>
+  </td>
+  <td
+    class="quantityCol"
+  >
+    <div
+      class="d-flex"
+    >
+      <div
+        class="wrapper input"
+      >
+        <input
+          class="input"
+          id="input-text-2"
+          min="1"
+          name="input-text-2"
+          type="text"
+          value="1"
+        />
+      </div>
+      <button
+        class="wrapper wrapper ghost ghost destructive medium"
+        tabindex="0"
+        type="button"
+      >
+        <i
+          class="material-icons icon"
+        >
+          close
+        </i>
+      </button>
+    </div>
+  </td>
+  <td
+    class="numberCol"
+  >
+    <div
+      class="d-flex"
+    >
+      <strong
+        class="mt-auto mb-auto mr-auto"
+      >
+        <span>
+          $78.00
+        </span>
+      </strong>
+    </div>
+  </td>
+</tr>
+`;
+
+exports[`<OrderLineItemRow/> render() should render without quantity and without price 1`] = `
+<tr>
+  <td
+    class="container"
+  >
+    <div
+      class="imgContainer"
+    >
+      <img
+        alt="[Sample] Serviette de plage Fog Linen en chambray - Beige rayé"
+        class="img"
+        src="https://cdn11.bigcommerce.com/s-pk360c6roo/products/77/images/266/foglinenbeigestripetowel1b.1650970371.220.290.jpg?c=1"
+      />
+    </div>
+    <div
+      class="legend"
+    >
+      <div>
+        <a
+          class="title"
+          href="https://store-storeHash.mybigcommerce.com/manage/products/edit/245/"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          test 102
+        </a>
+      </div>
+      <div
+        class="subtitle"
+      >
+        <div
+          class="numberCol"
+        >
+          <span
+            class="text-muted"
+          >
+            N/A
+          </span>
+        </div>
+      </div>
+    </div>
+  </td>
+  <td
+    class="numberCol"
+  >
+    <span>
+      $0.00
+    </span>
+  </td>
+  <td
+    class="quantityCol"
+  >
+    <div
+      class="d-flex"
+    >
+      <div
+        class="wrapper input"
+      >
+        <input
+          class="input"
+          id="input-text-3"
+          min="1"
+          name="input-text-3"
+          type="text"
+          value="1"
+        />
+      </div>
+      <button
+        class="wrapper wrapper ghost ghost destructive medium"
+        tabindex="0"
+        type="button"
+      >
+        <i
+          class="material-icons icon"
+        >
+          close
+        </i>
+      </button>
+    </div>
+  </td>
+  <td
+    class="numberCol"
+  >
+    <div
+      class="d-flex"
+    >
+      <strong
+        class="mt-auto mb-auto mr-auto"
+      >
+        <span>
+          $78.00
+        </span>
+      </strong>
+    </div>
+  </td>
+</tr>
+`;

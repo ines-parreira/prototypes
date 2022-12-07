@@ -1,0 +1,35 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .table {
+        thead {
+            th {
+                text-transform: uppercase;
+                font-weight: 600;
+                font-size: 11px;
+                line-height: 13px;
+                letter-spacing: 0.05em;
+                color: @classic-neutral-grey-4;
+                border-bottom: 0;
+                box-shadow: inset 0px -1px 0px @classic-neutral-grey-2;
+            }
+        }
+
+        tbody {
+            td {
+                font-weight: 500;
+                font-size: 14px;
+                color: @classic-neutral-grey-6;
+                padding-top: 5px;
+                padding-bottom: 5px;
+                vertical-align: middle;
+                min-height: 66px;
+            }
+        }
+
+        th,
+        td {
+            font-family: 'Inter', sans-serif;
+        }
+    }
+}

@@ -6,7 +6,6 @@ import {initialState as cancelOrderInitialState} from '../state/infobarActions/s
 import {initialState as refundOrderInitialState} from '../state/infobarActions/shopify/refundOrder/reducers'
 import {initialState as editOrderInitialState} from '../state/infobarActions/shopify/editOrder/reducers'
 import {initialState as shippingAddressInitialState} from '../state/infobarActions/shopify/editShippingAddress/reducers'
-import {initialState as bigcommerceCreateOrderInitialState} from '../state/infobarActions/bigcommerce/createOrder/reducers'
 import {CreateOrderState} from '../state/infobarActions/shopify/createOrder/types'
 import {CancelOrderState} from '../state/infobarActions/shopify/cancelOrder/types'
 import {RefundOrderState} from '../state/infobarActions/shopify/refundOrder/types'
@@ -18,14 +17,12 @@ export const infobarActionsStateFixture = ({
     refundOrderState = refundOrderInitialState,
     editOrderState = editOrderInitialState,
     editShippingAddressState = shippingAddressInitialState,
-    bigcommerceCreateOrderState = bigcommerceCreateOrderInitialState,
 }: {
     cancelOrderState?: typeof cancelOrderInitialState
     shopifyCreateOrderState?: typeof shopifyCreateOrderInitialState
     refundOrderState?: typeof refundOrderInitialState
     editOrderState?: typeof editOrderInitialState
     editShippingAddressState?: typeof shippingAddressInitialState
-    bigcommerceCreateOrderState?: typeof bigcommerceCreateOrderInitialState
 } = {}): InfobarActionsState => ({
     [IntegrationType.Shopify]: {
         cancelOrder: cancelOrderState,
@@ -33,9 +30,6 @@ export const infobarActionsStateFixture = ({
         refundOrder: refundOrderState,
         editOrder: editOrderState,
         editShippingAddress: editShippingAddressState,
-    },
-    [IntegrationType.BigCommerce]: {
-        createOrder: bigcommerceCreateOrderState,
     },
 })
 

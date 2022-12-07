@@ -2,6 +2,7 @@ import {render, screen} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
+import {fromJS} from 'immutable'
 import thunk from 'redux-thunk'
 import {
     bigCommerceCustomerFixture,
@@ -9,6 +10,7 @@ import {
 } from 'fixtures/bigcommerce'
 import OrderModal from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/OrderModal'
 import {BigCommerceActionType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/types'
+import {integrationsState} from 'fixtures/integrations'
 
 const minProps = {
     isOpen: true,
@@ -28,16 +30,26 @@ const minProps = {
     onClose: jest.fn(),
 } as unknown as ComponentProps<typeof OrderModal>
 
-jest.mock('state/infobarActions/bigcommerce/createOrder/actions', () => ({
-    onInit: jest.fn(() => () => Promise.resolve({})),
-    getCustomerAddresses: jest.fn(() => () => {
-        return []
-    }),
-}))
+jest.mock(
+    'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/utils',
+    () => ({
+        onInit: jest.fn(() => () => Promise.resolve({})),
+        getCustomerAddresses: jest.fn(() => () => {
+            return []
+        }),
+        getOneLineAddress: jest.fn(() => () => {
+            return ''
+        }),
+    })
+)
 
 jest.mock('store/middlewares/segmentTracker')
+
+const defaultState = {
+    integrations: fromJS(integrationsState),
+}
 const mockStore = configureMockStore([thunk])
-const store = mockStore({})
+const store = mockStore(defaultState)
 
 describe('OrderModal', () => {
     beforeEach(() => {

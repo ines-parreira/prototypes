@@ -13,10 +13,10 @@ exports[`OrderModal should render when the modal is opened 1`] = `
     role="dialog"
   >
     <div
-      class="dialog medium"
+      class="dialog medium scrollableDialog"
     >
       <div
-        class="modalContent default"
+        class="modalContent scrollableContent default"
       >
         <div
           class="wrapper"
@@ -39,187 +39,220 @@ exports[`OrderModal should render when the modal is opened 1`] = `
           </i>
         </div>
         <div
-          class="formBody"
+          class="scrollable"
         >
           <div
-            class="alert info paddedVertical"
+            class="formBody"
           >
             <div
-              class="content"
-            >
-              <span
-                class="label"
-              >
-                <i
-                  class="infoIcon material-icons"
-                >
-                  info
-                </i>
-                <span>
-                  Add an order with status 
-                  <strong>
-                    Paid
-                  </strong>
-                   and
-                   
-                  <strong>
-                    Awaiting Fulfillment
-                  </strong>
-                  .
-                </span>
-              </span>
-            </div>
-          </div>
-          <p
-            class="paddedVertical subsection"
-          >
-            Products
-          </p>
-          <div
-            class="searchInput dropdown"
-          >
-            <div
-              aria-expanded="false"
-              aria-haspopup="true"
-              class="input-icon input-icon-right"
-              data-toggle="dropdown"
+              class="alert info"
             >
               <div
-                class="wrapper"
+                class="iconContainer"
               >
-                <input
-                  class="input"
-                  id="input-text-3"
-                  name="input-text-3"
-                  placeholder="Search products..."
-                  type="text"
-                  value=""
+                <img
+                  alt="icon"
+                  src="test-file-stub"
                 />
+              </div>
+              <div
+                class="content"
+              >
                 <span
-                  class="suffix"
+                  class="label"
                 >
-                  <i
-                    class="material-icons icon"
-                  >
-                    search
-                  </i>
+                  <span>
+                    Add an order with status 
+                    <strong>
+                      Paid
+                    </strong>
+                     and
+                     
+                    <strong>
+                      Awaiting Fulfillment
+                    </strong>
+                    .
+                  </span>
                 </span>
+                <div
+                  class="customActions"
+                >
+                  <a
+                    class="actionLink"
+                    to="#"
+                  >
+                    X
+                  </a>
+                </div>
               </div>
             </div>
-            <div
-              aria-hidden="true"
-              class="dropdown dropdown-menu"
-              role="menu"
-              tabindex="-1"
-            >
-              <h6
-                class="header dropdown-header"
-                tabindex="-1"
+            <div>
+              <p
+                class="paddedVertical subsection inline"
               >
-                0 product
-              </h6>
+                Products
+              </p>
             </div>
-          </div>
-          <div>
-            <p
-              class="subsection mt-4"
-            >
-              Fulfillment
-            </p>
-            <label
-              class="label subsectionSmall mb-2"
-            >
-              Shipping address
-              <abbr
-                aria-label="required"
-                class="abbr"
-                title="required"
-              >
-                *
-              </abbr>
-            </label>
             <div
-              class="wrapper"
-              role="listbox"
-              tabindex="0"
+              class="relative"
             >
               <div
-                class="inputWrapper"
+                class="searchInput dropdown"
               >
                 <div
-                  class="input isGreyed"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  class="input-icon input-icon-right"
+                  data-toggle="dropdown"
                 >
-                  Select from address book...
+                  <div
+                    class="wrapper"
+                  >
+                    <input
+                      class="input"
+                      id="input-text-3"
+                      name="input-text-3"
+                      placeholder="Search products..."
+                      type="text"
+                      value=""
+                    />
+                    <span
+                      class="suffix"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        search
+                      </i>
+                    </span>
+                  </div>
                 </div>
-                <i
-                  class="affix suffix toggle material-icons"
+                <div
+                  aria-hidden="true"
+                  class="dropdown dropdown-menu"
+                  role="menu"
+                  tabindex="-1"
                 >
-                  arrow_drop_down
-                </i>
+                  <h6
+                    class="header dropdown-header"
+                    tabindex="-1"
+                  >
+                    0 product
+                  </h6>
+                </div>
               </div>
+              <p
+                class="searchbarInfo"
+              >
+                This order is currently empty. Add products using the search above.
+              </p>
+            </div>
+            <div>
+              <p
+                class="subsection mt-4"
+              >
+                Fulfillment
+              </p>
+              <label
+                class="label subsectionSmall mb-2"
+              >
+                Shipping address
+                <abbr
+                  aria-label="required"
+                  class="abbr"
+                  title="required"
+                >
+                  *
+                </abbr>
+              </label>
+              <div
+                class="wrapper"
+                role="listbox"
+                tabindex="0"
+              >
+                <div
+                  class="inputWrapper"
+                >
+                  <div
+                    class="input isGreyed"
+                  >
+                    Select from address book...
+                  </div>
+                  <i
+                    class="affix suffix toggle material-icons"
+                  >
+                    arrow_drop_down
+                  </i>
+                </div>
+              </div>
+              <p
+                class="infoText"
+              >
+                Same address will be used for billing address.
+              </p>
             </div>
             <p
-              class="infoText"
+              class="subsection"
             >
-              Same address will be used for billing address.
+              Comments & Notes
             </p>
-          </div>
-          <p
-            class="subsection"
-          >
-            Comments & Notes
-          </p>
-          <div>
-            <h5
-              class="subsectionSmall"
-            >
-              Comment
-            </h5>
-            <textarea
-              class="form-control"
-              placeholder="Add comment..."
-              rows="1"
-            />
-            <p
-              class="infoText"
-            >
-              Visible to customer
-            </p>
-          </div>
-          <div>
-            <h5
-              class="subsectionSmall"
-            >
-              Staff note
-            </h5>
-            <textarea
-              class="form-control"
-              placeholder="Add note..."
-              rows="1"
-            />
-            <p
-              class="infoText"
-            >
-              Not visible to customer
-            </p>
+            <div>
+              <h5
+                class="subsectionSmall"
+              >
+                Comment
+              </h5>
+              <textarea
+                class="form-control"
+                placeholder="Add comment..."
+                rows="1"
+              />
+              <p
+                class="infoText"
+              >
+                Visible to customer
+              </p>
+            </div>
+            <div>
+              <h5
+                class="subsectionSmall"
+              >
+                Staff note
+              </h5>
+              <textarea
+                class="form-control"
+                placeholder="Add note..."
+                rows="1"
+              />
+              <p
+                class="infoText"
+              >
+                Not visible to customer
+              </p>
+            </div>
           </div>
         </div>
         <div
-          class="formFooter modal-footer"
+          class="wrapper wrapper"
         >
-          <button
-            class="focusable btn btn-primary"
-            tabindex="0"
+          <div
+            class="actions"
           >
-            Add order
-          </button>
-          <button
-            class="focusable ml-auto btn btn-secondary"
-            tabindex="0"
-            type="button"
-          >
-            Cancel
-          </button>
+            <button
+              class="wrapper fill primary medium"
+              tabindex="0"
+              type="button"
+            >
+              Add order
+            </button>
+            <button
+              class="wrapper fill secondary medium"
+              tabindex="0"
+              type="button"
+            >
+              Cancel
+            </button>
+          </div>
         </div>
       </div>
     </div>

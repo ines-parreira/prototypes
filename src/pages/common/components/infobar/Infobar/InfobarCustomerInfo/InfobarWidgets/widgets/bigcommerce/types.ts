@@ -2,45 +2,123 @@ export enum BigCommerceActionType {
     CreateOrder = 'bigCommerceCreateOrder',
 }
 
+export type BigCommerceNestedCart = {
+    data: Cart
+}
+
 export type Customer = {
     id: number
     email: string
 }
 
-export type LineItem = {
-    quantity: number
-    product_id: number
-}
-
-export type BigCommercePayload = {
-    customer_id: number
-    line_items: Array<LineItem>
-}
-
-export type BigCommerceResponse = {
+export type Cart = {
     id: string
+    customer_id: number
+    channel_id: number
+    email: string
+    currency: any
+    tax_included: boolean
+    base_amount: number
+    discount_amount: number
+    cart_amount: number
+    coupons: Array<any>
+    discounts: Array<any>
+    line_items: LineItems
+    created_time: string
+    updated_time: string
+    locale: string
 }
 
-export type Variant = {
-    id: number
-    sku: string
-    price: string
-    image_url: string
+type BigCommerceBillingAddress = {
+    id: string
+    first_name: string
+    last_name: string
+    email: string
+    company: string
+    address1: string
+    address2: string
+    city: string
+    state_or_province: string
+    state_or_province_code: string
+    country: string
+    country_code: string
+    postal_code: string
+    phone: string
+    custom_fields: Array<any>
+}
+
+export type Checkout = {
+    id: string
+    cart: Cart
+    billing_address: BigCommerceBillingAddress
+    consignments: Array<any>
+    taxes: Array<any>
+    coupons: Array<any>
+    order_id: any
+    shipping_cost_total_inc_tax: number
+    shipping_cost_total_ex_tax: number
+    handling_cost_total_inc_tax: number
+    handling_cost_total_ex_tax: number
+    tax_total: number
+    subtotal_inc_tax: number
+    subtotal_ex_tax: number
+    grand_total: number
+    created_time: string
+    updated_time: string
+    customer_message: string
+}
+
+export type LineItem = {
+    id: string
+    parent_id: number | null
+    variant_id: number
     product_id: number
-    inventory_level: number
-    options: Array<Record<string, any>>
+    sku: string
+    name: string
+    url: string
+    quantity: number
+    taxable: boolean
+    image_url: string
+    discounts: Array<any>
+    coupons: Array<any>
+    discount_amount: number
+    coupon_amount: number
+    original_price: number
+    list_price: number
+    sale_price: number
+    extended_list_price: number
+    extended_sale_price: number
+    is_require_shipping: boolean
+    is_mutable: boolean
+}
+
+type LineItems = {
+    physical_items: Array<LineItem>
+    digital_items: Array<LineItem>
+    gift_certificates: Array<any>
+    custom_items: Array<any>
 }
 
 export type Product = {
     id: number
     sku: string
     inventory_level: number
+    inventory_tracking: string
     name: string
     created_at: string
     image_url: string
     options: Array<Record<string, any>>
-    handle?: string
     variants: Variant[]
+}
+
+export type Variant = {
+    id: number
+    sku: string
+    price: string | null
+    image_url: string
+    product_id: number
+    inventory_level: number
+    options: Array<Record<string, any>>
 }
 
 export enum BigCommerceCustomerAddressType {

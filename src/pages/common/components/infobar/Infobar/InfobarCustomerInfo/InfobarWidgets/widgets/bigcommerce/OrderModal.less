@@ -1,4 +1,4 @@
-@import '~css/new/colorTokens.less';
+@import '~css/new/colorTokens';
 
 :local {
     .focusable {
@@ -27,8 +27,14 @@
     }
 
     .infoText {
-        color: gray;
+        color: @classic-neutral-grey-5;
         font-size: 12px;
+        margin-top: 5px;
+    }
+
+    .searchbarInfo {
+        color: @classic-neutral-grey-5;
+        font-size: 14px;
         margin-top: 5px;
     }
 
@@ -40,5 +46,33 @@
     .subsectionSmall {
         font-size: 14px;
         font-weight: 600;
+    }
+
+    .wrapper {
+        padding: 12px 16px;
+        .actions {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+
+    .loader {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        background: @classic-neutral-grey-0;
+        opacity: 50%;
+    }
+
+    .relative {
+        position: relative;
+    }
+
+    .scrollable {
+        overflow-y: auto;
+        overflow-x: hidden;
     }
 }

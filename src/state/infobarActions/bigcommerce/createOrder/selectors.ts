@@ -1,20 +1,11 @@
 import {createSelector} from 'reselect'
 
 import {RootState} from 'state/types'
-import {getBigCommerceActionsState} from 'state/infobarActions/bigcommerce/selectors'
-import {BigCommerceActionsState} from 'state/infobarActions/bigcommerce/types'
 
 import {toJS} from 'utils'
 import {getIntegrationDataByIntegrationId} from 'state/ticket/selectors'
 import {getActiveCustomerIntegrationDataByIntegrationId} from 'state/customers/selectors'
 import {BigCommerceCustomerAddress} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/types'
-import {CreateOrderState} from './types'
-
-export const getCreateOrderState = createSelector<
-    RootState,
-    CreateOrderState,
-    BigCommerceActionsState
->(getBigCommerceActionsState, (state) => state.createOrder)
 
 export const getCustomerAddresses = (integrationId: Maybe<number>) =>
     createSelector(

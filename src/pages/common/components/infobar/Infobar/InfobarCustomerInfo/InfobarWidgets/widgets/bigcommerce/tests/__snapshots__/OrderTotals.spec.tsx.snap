@@ -1,0 +1,91 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<OrderTotals/> rendering should render 1`] = `
+<div>
+  <div>
+    <dl
+      class="row text-left mb-0"
+    >
+      <dt
+        class="col-9 mb-2"
+        style="font-weight: 400;"
+      >
+        Add discount
+      </dt>
+      <dd
+        class="col-3 mb-2"
+      >
+        -
+      </dd>
+      <dt
+        class="col-9 mb-2"
+        style="font-weight: 400;"
+      >
+        Apply coupon or gift certificate
+      </dt>
+      <dd
+        class="col-3 mb-2"
+      >
+        -
+      </dd>
+      <dt
+        class="col-9 mb-2"
+        style="font-weight: 400;"
+      >
+        Subtotal
+      </dt>
+      <dd
+        class="col-3 mb-2"
+      >
+        <span>
+          €78.00
+        </span>
+      </dd>
+      <dt
+        class="col-9 mb-2"
+        style="font-weight: 400;"
+      >
+        Add shipping
+      </dt>
+      <dd
+        class="col-3 mb-2"
+      >
+        -
+      </dd>
+      <dt
+        class="col-9 mb-2"
+        style="font-weight: 400;"
+      >
+        Taxes
+      </dt>
+      <dd
+        class="col-3 mb-2"
+      >
+        <span>
+          €15.60
+        </span>
+      </dd>
+    </dl>
+    <hr />
+    <dl
+      class="row text-left mb-0"
+    >
+      <dt
+        class="col-9 mb-2"
+      >
+        Total
+      </dt>
+      <dd
+        class="col-3 mb-2"
+      >
+        <strong>
+          <span>
+            €93.60
+          </span>
+        </strong>
+      </dd>
+    </dl>
+    <br />
+  </div>
+</div>
+`;

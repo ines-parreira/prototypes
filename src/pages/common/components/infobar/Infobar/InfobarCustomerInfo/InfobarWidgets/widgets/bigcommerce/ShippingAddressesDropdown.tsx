@@ -2,8 +2,6 @@ import React, {useContext, useRef, useState} from 'react'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import Label from 'pages/common/forms/Label/Label'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {addCheckoutBillingAddress} from 'state/infobarActions/bigcommerce/createOrder/actions'
-import useAppDispatch from 'hooks/useAppDispatch'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import SelectInputBox, {
@@ -11,22 +9,28 @@ import SelectInputBox, {
 } from 'pages/common/forms/input/SelectInputBox'
 import css from './ShippingAddressesDropdown.less'
 import cssOrderModal from './OrderModal.less'
-import {BigCommerceCustomerAddress} from './types'
-import {buildAddressComponent, getOneLineAddress} from './utils'
+import {BigCommerceCustomerAddress, Cart, Checkout} from './types'
+import {
+    addCheckoutBillingAddress,
+    buildAddressComponent,
+    getOneLineAddress,
+} from './utils'
 
 type Props = {
     shippingAddress: Maybe<BigCommerceCustomerAddress>
     shippingAddresses: BigCommerceCustomerAddress[]
     setShippingAddress: (shippingAddress: BigCommerceCustomerAddress) => void
+    cart: Maybe<Cart>
+    setCheckout: (checkout: Maybe<Checkout>) => void
 }
 
 export function ShippingAddressesDropdown({
     shippingAddress,
     shippingAddresses,
     setShippingAddress,
+    cart,
+    setCheckout,
 }: Props) {
-    const dispatch = useAppDispatch()
-
     const selectRef = useRef(null)
     const floatingSelectRef = useRef(null)
     const [isSelectOpen, setIsSelectOpen] = useState(false)
@@ -34,7 +38,12 @@ export function ShippingAddressesDropdown({
     const {integrationId} = useContext(IntegrationContext)
 
     const onDropDownClick = (selectedAddress: BigCommerceCustomerAddress) => {
-        void dispatch(addCheckoutBillingAddress(integrationId, selectedAddress))
+        void addCheckoutBillingAddress({
+            integrationId,
+            selectedAddress,
+            cart,
+            setCheckout,
+        })
         setShippingAddress(selectedAddress)
     }
 
@@ -52,7 +61,7 @@ export function ShippingAddressesDropdown({
                 floating={floatingSelectRef}
                 onToggle={setIsSelectOpen}
                 placeholder={'Select from address book...'}
-                label={getOneLineAddress(shippingAddress)}
+                label={getOneLineAddress({addressObj: shippingAddress})}
             >
                 <SelectInputBoxContext.Consumer>
                     {(context) => (
@@ -110,8 +119,12 @@ export function ShippingAddressesDropdown({
                                                         </>
                                                         <>
                                                             {buildAddressComponent(
-                                                                address,
-                                                                false
+                                                                {
+                                                                    addressObj:
+                                                                        address,
+                                                                    includeCountry:
+                                                                        false,
+                                                                }
                                                             )}
                                                             <br />
                                                             {address.country}

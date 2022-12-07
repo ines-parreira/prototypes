@@ -1,0 +1,72 @@
+@import '~css/new/colors';
+
+:local {
+    .container {
+        display: flex;
+        padding-left: 0;
+    }
+
+    .imgContainer {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 14px;
+    }
+
+    .img {
+        max-width: 40px;
+        max-height: 40px;
+        border-radius: 2px;
+    }
+
+    .legend {
+        flex: 1;
+        font-family: 'Inter', sans-serif;
+        font-weight: 500;
+        font-size: 13px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .title {
+        font-weight: 600;
+        display: inline;
+    }
+
+    .subtitle {
+        font-weight: normal;
+    }
+
+    .numberCol {
+        width: 170px;
+    }
+
+    .centered {
+        text-align: center;
+    }
+
+    .quantityCol {
+        width: 90px;
+    }
+
+    .times {
+        color: @classic-neutral-grey-4;
+        font-size: 14px;
+        line-height: 133%;
+        align-self: center;
+        margin-left: auto;
+    }
+
+    .focusable {
+        &:focus {
+            outline: auto 5px -webkit-focus-ring-color;
+        }
+    }
+
+    .input {
+        width: 60px;
+    }
+}

@@ -23,8 +23,10 @@ import type {
 import {fetchEvents} from 'models/event/resources'
 import {
     BigCommerceCustomerAddress,
-    BigCommercePayload,
-    BigCommerceResponse,
+    BigCommerceNestedCart,
+    Checkout,
+    Cart,
+    LineItem,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/types'
 
 type GorgiasApiOptions = {
@@ -307,18 +309,18 @@ export default class GorgiasApi {
 
     async createBigCommerceCart(
         integrationId: number,
-        payload: BigCommercePayload
-    ): Promise<BigCommerceResponse> {
+        customerId: number
+    ): Promise<Cart> {
+        const payload = {
+            customer_id: customerId,
+            line_items: [],
+        }
         const url = '/integrations/bigcommerce/order/cart/'
-        const response = await this._api.post<BigCommerceResponse>(
-            url,
-            payload,
-            {
-                params: {
-                    integration_id: integrationId,
-                },
-            }
-        )
+        const response = await this._api.post<Cart>(url, payload, {
+            params: {
+                integration_id: integrationId,
+            },
+        })
         return response.data
     }
 
@@ -338,15 +340,85 @@ export default class GorgiasApi {
         integrationId: number,
         cartId: string,
         payload: BigCommerceCustomerAddress
-    ): Promise<BigCommerceResponse> {
+    ): Promise<Checkout> {
         const url = '/integrations/bigcommerce/order/billing-address/'
-        const response = await this._api.post(url, payload, {
+        const response = await this._api.post<Checkout>(url, payload, {
             params: {
                 integration_id: integrationId,
                 cart_id: cartId,
             },
         })
-        return response.data as BigCommerceResponse
+        return response.data
+    }
+
+    async addBigCommerceLineItem(
+        integrationId: number,
+        cartId: string,
+        productId: number,
+        variantId: number
+    ): Promise<Cart> {
+        const payload = {
+            line_items: [
+                {
+                    product_id: productId,
+                    variant_id: variantId,
+                    quantity: 1,
+                },
+            ],
+        }
+        const url = '/integrations/bigcommerce/order/line-item/'
+        const response = await this._api.post<Cart>(url, payload, {
+            params: {
+                integration_id: integrationId,
+                cart_id: cartId,
+            },
+        })
+        return response.data
+    }
+
+    async editBigCommerceLineItem(
+        integrationId: number,
+        cartId: string,
+        lineItem: LineItem,
+        newQuantity: number
+    ): Promise<Cart> {
+        const payload = {
+            line_item: {
+                product_id: lineItem.product_id,
+                variant_id: lineItem.variant_id,
+                quantity: newQuantity,
+            },
+        }
+
+        const url = '/integrations/bigcommerce/order/line-item/'
+        const response = await this._api.put<BigCommerceNestedCart>(
+            url,
+            payload,
+            {
+                params: {
+                    integration_id: integrationId,
+                    line_item_id: lineItem.id,
+                    cart_id: cartId,
+                },
+            }
+        )
+        return response.data.data
+    }
+
+    async removeBigCommerceLineItem(
+        integrationId: number,
+        cartId: string,
+        lineItemId: string
+    ): Promise<Cart> {
+        const url = '/integrations/bigcommerce/order/line-item/delete/'
+        const response = await this._api.get<BigCommerceNestedCart>(url, {
+            params: {
+                integration_id: integrationId,
+                cart_id: cartId,
+                line_item_id: lineItemId,
+            },
+        })
+        return response.data.data
     }
 
     async calculateEditOrder(

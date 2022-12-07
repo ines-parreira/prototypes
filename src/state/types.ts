@@ -10,7 +10,6 @@ import {
     IntegrationType,
 } from 'models/integration/types'
 import {PaginationMeta, OrderDirection} from 'models/api/types'
-
 import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'
 import {RuleSuggestionState} from 'state/entities/rules/types'
 import {BillingContact} from './billing/types'
@@ -181,7 +180,6 @@ export type GorgiasAction = {
     absolutePath?: string[]
     item?: Map<any, any>
     attachments?: List<any>
-    cartId?: string
     externalData?: CustomerExternalData
     chatStatus?: GorgiasChatStatusEnum
 }

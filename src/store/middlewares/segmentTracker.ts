@@ -51,6 +51,13 @@ export const logPageChange = () => {
 export enum SegmentEvent {
     BigCommerceCreateOrderCancel = 'bigcommerce/create-order/cancel',
     BigCommerceCreateOrderOpen = 'bigcommerce/create-order/open',
+    BigCommerceCreateOrderSetProducts = 'bigcommerce/create-order/set-products',
+    BigCommerceCreateOrderResetModal = 'bigcommerce/create-order/reset-modal',
+    BigCommerceCreateOrderCreateCart = 'bigcommerce/create-order/create-cart',
+    BigCommerceCreateOrderDeleteCart = 'bigcommerce/create-order/delete-cart',
+    BigCommerceCreateOrderAddRow = 'bigcommerce/create-order/add-row',
+    BigCommerceCreateOrderRemoveRow = 'bigcommerce/create-order/remove-row',
+    BigCommerceCreateOrderUpdateRow = 'bigcommerce/create-order/update-row',
     BookCallClicked = 'book-call-clicked',
     CustomerNoteEdited = 'customer-note-edited',
     DisplayAllEventsClicked = 'display-all-events-clicked',

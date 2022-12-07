@@ -1,14 +1,13 @@
-import React, {useCallback, useContext, useState} from 'react'
-import {Button, ModalFooter} from 'reactstrap'
+import React, {
+    ChangeEvent,
+    useCallback,
+    useContext,
+    useMemo,
+    useState,
+} from 'react'
 import classnames from 'classnames'
 import {useUpdateEffect, usePrevious} from 'react-use'
 
-import _noop from 'lodash/noop'
-import {
-    onCancel,
-    onInit,
-    onReset,
-} from 'state/infobarActions/bigcommerce/createOrder/actions'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
@@ -17,16 +16,32 @@ import {InfobarModalProps} from 'pages/common/components/infobar/Infobar/Infobar
 import {
     BigCommerceActionType,
     BigCommerceCustomerAddress,
+    Cart,
+    Checkout,
     Customer,
+    Product,
+    Variant,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/types'
-import Alert from 'pages/common/components/Alert/Alert'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import useAppDispatch from 'hooks/useAppDispatch'
 import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
 import {bigcommerceDataMappers} from 'pages/common/forms/ProductSearchInput/Mappings'
-import {getCustomerAddresses} from 'state/infobarActions/bigcommerce/createOrder/selectors'
+import {
+    BigCommerceIntegration,
+    IntegrationDataItem,
+    IntegrationType,
+} from 'models/integration/types'
+import {getIntegrationsByType} from 'state/integrations/selectors'
 import useAppSelector from 'hooks/useAppSelector'
+import Button from 'pages/common/components/button/Button'
+import Loader from 'pages/common/components/Loader/Loader'
+import ModalFooter from 'pages/common/components/modal/ModalFooter'
+import {getCustomerAddresses} from 'state/infobarActions/bigcommerce/createOrder/selectors'
+import Tip from 'pages/common/components/tip/Tip'
+import OrderTable from './OrderTable'
+import OrderTotals from './OrderTotals'
+import {addRow, onCancel, onInit, onReset, removeRow, updateRow} from './utils'
+
 import css from './OrderModal.less'
 import {ShippingAddressesDropdown} from './ShippingAddressesDropdown'
 
@@ -44,102 +59,233 @@ export default function OrderModal({
 }: Props) {
     const {integrationId} = useContext(IntegrationContext)
     const previousIsOpen = usePrevious(isOpen)
-    const dispatch = useAppDispatch()
+
+    const [cart, setCart] = useState<Maybe<Cart>>(null)
+    const [, setCheckout] = useState<Maybe<Checkout>>(null)
+    const [products, setProducts] = useState<Map<number, Product>>(new Map())
     const shippingAddresses: BigCommerceCustomerAddress[] = useAppSelector(
         getCustomerAddresses(integrationId)
     )
 
     const [shippingAddress, setShippingAddress] =
         useState<Maybe<BigCommerceCustomerAddress>>(null)
+    const [isLoading, setIsLoading] = useState(false)
+    const [note, setNote] = useState('')
+    const [comment, setComment] = useState('')
+
+    const integrations = useAppSelector(
+        getIntegrationsByType(IntegrationType.BigCommerce)
+    )
+
+    const onUpdateNote = (event: ChangeEvent<HTMLTextAreaElement>) => {
+        setNote(event.currentTarget.value)
+    }
+
+    const onUpdateComment = (event: ChangeEvent<HTMLTextAreaElement>) => {
+        setComment(event.currentTarget.value)
+    }
+
+    const currentIntegration = useMemo(
+        () =>
+            integrations.find(
+                (integration) => integration.id === integrationId
+            ) as BigCommerceIntegration,
+        [integrations, integrationId]
+    )
+
+    const lineItems = cart
+        ? cart.line_items.physical_items.concat(cart.line_items.digital_items)
+        : []
 
     const handleReset = useCallback(() => {
-        dispatch(onReset())
+        onReset({setCart, setProducts, setComment, setNote, setShippingAddress})
         shortcutManager.unpause()
-        setShippingAddress(null)
-    }, [dispatch])
+    }, [])
 
     const handleCancel = useCallback(
         (via: string) => () => {
             onClose()
-            dispatch(onCancel(integrationId!, via))
+            onCancel({integrationId, via, cart, setCart})
             handleReset()
         },
-        [dispatch, handleReset, integrationId, onClose]
+        [cart, handleReset, integrationId, onClose]
     )
 
     useUpdateEffect(() => {
         if (!previousIsOpen && isOpen) {
             if (data.customer && integrationId) {
-                void dispatch(onInit(data.customer, integrationId))
+                void onInit({
+                    customer: data.customer,
+                    integrationId,
+                    setIsLoading,
+                    setCart,
+                })
             }
             shortcutManager.pause()
         }
-    }, [isOpen, previousIsOpen, data, integrationId, onInit, dispatch])
+    }, [isOpen, previousIsOpen, data, integrationId, onInit])
     return (
-        <Modal isOpen={isOpen} onClose={handleCancel('header')} size="medium">
+        <Modal
+            isOpen={isOpen}
+            isScrollable={true}
+            onClose={handleCancel('header')}
+            size="medium"
+        >
             <ModalHeader title="Add order" />
-            <div className={css.formBody}>
-                <Alert className={css.paddedVertical}>
-                    <i className={classnames(css.infoIcon, 'material-icons')}>
-                        info
-                    </i>
-                    <span>
-                        Add an order with status <strong>Paid</strong> and{' '}
-                        <strong>Awaiting Fulfillment</strong>.
-                    </span>
-                </Alert>
-                <p className={classnames(css.paddedVertical, css.subsection)}>
-                    Products
-                </p>
-                {isOpen && (
-                    <ProductSearchInput
-                        className={css.searchInput}
-                        dataMappers={bigcommerceDataMappers}
-                        onVariantClicked={_noop}
-                    />
-                )}
-                {isOpen && (
-                    <ShippingAddressesDropdown
-                        shippingAddress={shippingAddress}
-                        setShippingAddress={setShippingAddress}
-                        shippingAddresses={shippingAddresses}
-                    />
-                )}
-                <p className={css.subsection}>Comments & Notes</p>
-                <div>
-                    <h5 className={css.subsectionSmall}>Comment</h5>
-                    <textarea
-                        rows={1}
-                        className="form-control"
-                        placeholder="Add comment..."
-                        value=""
-                        onChange={() => null}
-                    />
-                    <p className={css.infoText}>Visible to customer</p>
-                </div>
-                <div>
-                    <h5 className={css.subsectionSmall}>Staff note</h5>
-                    <textarea
-                        rows={1}
-                        className={classnames('form-control')}
-                        placeholder="Add note..."
-                        value=""
-                        onChange={() => null}
-                    />
-                    <p className={css.infoText}>Not visible to customer</p>
+            <div className={css.scrollable}>
+                <div className={css.formBody}>
+                    <Tip
+                        actionLabel="X"
+                        icon={true}
+                        storageKey="infobar-bigcommerce-create-order-tip"
+                    >
+                        <span>
+                            Add an order with status <strong>Paid</strong> and{' '}
+                            <strong>Awaiting Fulfillment</strong>.
+                        </span>
+                    </Tip>
+                    <div>
+                        <p
+                            className={classnames(
+                                css.paddedVertical,
+                                css.subsection,
+                                css.inline
+                            )}
+                        >
+                            Products
+                        </p>
+                    </div>
+                    <div className={css.relative}>
+                        {isOpen && (
+                            <ProductSearchInput
+                                className={css.searchInput}
+                                dataMappers={bigcommerceDataMappers}
+                                onVariantClicked={(
+                                    item: IntegrationDataItem<Product>,
+                                    variant: Variant
+                                ) => {
+                                    if (integrationId) {
+                                        void addRow({
+                                            integrationId,
+                                            product: item.data,
+                                            variant,
+                                            setIsLoading,
+                                            cart,
+                                            setCart,
+                                            products,
+                                            setProducts,
+                                        })
+                                    }
+                                }}
+                            />
+                        )}
+                        {isOpen && !lineItems.length && (
+                            <p className={css.searchbarInfo}>
+                                This order is currently empty. Add products
+                                using the search above.
+                            </p>
+                        )}
+                        {currentIntegration &&
+                            currentIntegration.meta &&
+                            !!lineItems.length && (
+                                <OrderTable
+                                    storeHash={
+                                        currentIntegration.meta.store_hash
+                                    }
+                                    currencyCode={
+                                        currentIntegration.meta.currency
+                                    }
+                                    lineItems={lineItems}
+                                    products={products}
+                                    onLineItemUpdate={(
+                                        index: number,
+                                        newQuantity: number,
+                                        setQuantity: (quantity: number) => void
+                                    ) => {
+                                        if (integrationId) {
+                                            void updateRow({
+                                                integrationId,
+                                                index,
+                                                newQuantity,
+                                                setIsLoading,
+                                                cart,
+                                                setCart,
+                                                setQuantity,
+                                            })
+                                        }
+                                    }}
+                                    onLineItemDelete={(index: number) => {
+                                        if (integrationId) {
+                                            void removeRow({
+                                                integrationId,
+                                                index,
+                                                setIsLoading,
+                                                cart,
+                                                setCart,
+                                            })
+                                        }
+                                    }}
+                                />
+                            )}
+                        {isLoading && (
+                            <div className={css.loader}>
+                                <Loader minHeight={'50px'} />
+                            </div>
+                        )}
+                    </div>
+                    {!!lineItems.length && (
+                        <OrderTotals
+                            cart={cart}
+                            integration={currentIntegration}
+                        />
+                    )}
+                    {isOpen && (
+                        <ShippingAddressesDropdown
+                            shippingAddress={shippingAddress}
+                            setShippingAddress={setShippingAddress}
+                            shippingAddresses={shippingAddresses}
+                            cart={cart}
+                            setCheckout={setCheckout}
+                        />
+                    )}
+                    <p className={css.subsection}>Comments & Notes</p>
+                    <div>
+                        <h5 className={css.subsectionSmall}>Comment</h5>
+                        <textarea
+                            rows={1}
+                            className="form-control"
+                            placeholder="Add comment..."
+                            value={comment}
+                            onChange={onUpdateComment}
+                        />
+                        <p className={css.infoText}>Visible to customer</p>
+                    </div>
+                    <div>
+                        <h5 className={css.subsectionSmall}>Staff note</h5>
+                        <textarea
+                            rows={1}
+                            className={classnames('form-control')}
+                            placeholder="Add note..."
+                            value={note}
+                            onChange={onUpdateNote}
+                        />
+                        <p className={css.infoText}>Not visible to customer</p>
+                    </div>
                 </div>
             </div>
-            <ModalFooter className={css.formFooter}>
-                <Button color="primary" tabIndex={0} className={css.focusable}>
-                    Add order
-                </Button>
-                <Button
-                    tabIndex={0}
-                    className={classnames(css.focusable, 'ml-auto')}
-                    onClick={handleCancel('footer')}
-                >
-                    Cancel
-                </Button>
+            <ModalFooter className={css.wrapper}>
+                <div className={css.actions}>
+                    <Button intent="primary" tabIndex={0}>
+                        Add order
+                    </Button>
+                    <Button
+                        tabIndex={0}
+                        intent="secondary"
+                        onClick={handleCancel('footer')}
+                    >
+                        Cancel
+                    </Button>
+                </div>
             </ModalFooter>
         </Modal>
     )
