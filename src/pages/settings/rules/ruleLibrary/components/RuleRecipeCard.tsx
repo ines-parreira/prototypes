@@ -46,6 +46,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {RuleRecipe, RuleRecipeTag} from 'models/ruleRecipe/types'
 
+import {RuleDraft} from 'models/rule/types'
 import {CodeASTType} from '../../types'
 
 import {RuleRecipeModal} from './RuleRecipeModal'
@@ -233,7 +234,8 @@ function RuleRecipeCard({
 
     const handleInstall = async (
         shouldCreateViews: boolean,
-        shouldGoToRule = false
+        shouldGoToRule = false,
+        installFromSuggestion = false
     ) => {
         void dispatch(
             notify({
@@ -293,7 +295,7 @@ function RuleRecipeCard({
             ? `[${recipe_tag}] ${rule.name}`
             : rule.name
         try {
-            const newRuleDraft = {
+            let newRuleDraft = {
                 ...rule,
                 name: newRuleName,
             }
@@ -304,6 +306,12 @@ function RuleRecipeCard({
                     ...extraDefaultSettings,
                 }
             }
+
+            if (installFromSuggestion)
+                newRuleDraft = {
+                    ...newRuleDraft,
+                    meta: {via_suggestion: true},
+                } as RuleDraft
 
             const newRule = await createRule(newRuleDraft)
             void dispatch(ruleCreated(newRule))
@@ -362,11 +370,7 @@ function RuleRecipeCard({
         }
     }
     if (isModalOpen && shouldInstall && autoInstall && !isBehindPaywall) {
-        void handleInstall(true, true)
-        logEvent(SegmentEvent.RuleSuggestion, {
-            rule: rule.name,
-            event_type: 'installed',
-        })
+        void handleInstall(true, true, true)
         setModalOpen(false)
     }
 
