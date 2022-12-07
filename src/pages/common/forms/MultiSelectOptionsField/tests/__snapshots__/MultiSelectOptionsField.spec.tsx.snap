@@ -20,6 +20,7 @@ exports[`MultiSelectField select option should display max TAGS_LIMIT options 1`
           data-toggle="dropdown"
         >
           <input
+            autocomplete="off"
             class="input"
             placeholder="Add tags..."
             value=""
@@ -470,6 +471,7 @@ exports[`MultiSelectField should render a multi select input with custom props 1
                             value=""
                           >
                             <input
+                              autoComplete="off"
                               className="input"
                               onBlur={[Function]}
                               onChange={[Function]}
@@ -697,6 +699,7 @@ exports[`MultiSelectField should render a select input with default props 1`] = 
                             value=""
                           >
                             <input
+                              autoComplete="off"
                               className="input"
                               onBlur={[Function]}
                               onChange={[Function]}

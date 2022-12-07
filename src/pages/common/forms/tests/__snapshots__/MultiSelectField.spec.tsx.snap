@@ -134,6 +134,7 @@ exports[`MultiSelectField should render the select field with no selected option
                               value=""
                             >
                               <input
+                                autoComplete="off"
                                 className="input"
                                 onBlur={[Function]}
                                 onChange={[Function]}

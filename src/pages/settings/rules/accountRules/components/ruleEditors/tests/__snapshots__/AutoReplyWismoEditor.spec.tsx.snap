@@ -73,6 +73,7 @@ exports[`<AutoReplyWismoEditor/> should render correctly 1`] = `
                 data-toggle="dropdown"
               >
                 <input
+                  autocomplete="off"
                   class="input"
                   placeholder="Add emails..."
                   value=""

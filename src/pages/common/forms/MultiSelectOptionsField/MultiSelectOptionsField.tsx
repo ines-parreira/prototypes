@@ -149,9 +149,7 @@ export default class MultiSelectOptionsField extends Component<Props, State> {
             ),
         })
 
-        if (onInputChange) {
-            onInputChange(input)
-        }
+        onInputChange?.(input)
     }
 
     _onDropdownDelete = () => {

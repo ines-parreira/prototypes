@@ -93,8 +93,7 @@ export default class Input extends Component<Props> {
 
     handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         const {onChange} = this.props
-        const value = event.target.value
-        onChange && onChange(value)
+        onChange(event.target.value)
     }
 
     render() {
@@ -112,6 +111,7 @@ export default class Input extends Component<Props> {
                 onBlur={this.handleBlur}
                 onKeyDown={this.handleKeyDown}
                 onChange={this.handleChange}
+                autoComplete="off"
             />
         )
     }

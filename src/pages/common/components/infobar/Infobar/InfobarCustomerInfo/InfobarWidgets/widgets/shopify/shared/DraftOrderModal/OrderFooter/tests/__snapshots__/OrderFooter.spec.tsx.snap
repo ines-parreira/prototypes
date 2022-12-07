@@ -48,6 +48,7 @@ exports[`<OrderFooterComponent/> render() should render 1`] = `
                     data-toggle="dropdown"
                   >
                     <input
+                      autocomplete="off"
                       class="input"
                       placeholder="Add tags..."
                       value=""
@@ -266,6 +267,7 @@ exports[`<OrderFooterComponent/> render() should render with tags 1`] = `
                     data-toggle="dropdown"
                   >
                     <input
+                      autocomplete="off"
                       class="input"
                       placeholder="Add tags..."
                       value=""

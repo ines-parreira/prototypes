@@ -21,6 +21,7 @@ exports[`<IntentsSentimentsSelect /> should render component with deprecated ite
           data-toggle="dropdown"
         >
           <input
+            autocomplete="off"
             class="input"
             placeholder="Add intents..."
             value=""
@@ -104,6 +105,7 @@ exports[`<IntentsSentimentsSelect /> should render component with deprecated ite
           data-toggle="dropdown"
         >
           <input
+            autocomplete="off"
             class="input"
             placeholder="Add intents..."
             value=""
@@ -153,6 +155,7 @@ exports[`<IntentsSentimentsSelect /> should render component with no selected it
           data-toggle="dropdown"
         >
           <input
+            autocomplete="off"
             class="input"
             placeholder="Add intents..."
             value=""
@@ -226,6 +229,7 @@ exports[`<IntentsSentimentsSelect /> should render component with selected item 
           data-toggle="dropdown"
         >
           <input
+            autocomplete="off"
             class="input"
             placeholder="Add intents..."
             value=""

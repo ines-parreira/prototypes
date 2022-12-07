@@ -52,6 +52,7 @@ exports[`<EditableListWidget/> should render a list with some tags in it 1`] = `
               data-toggle="dropdown"
             >
               <input
+                autocomplete="off"
                 class="input compact"
                 placeholder="Add tags..."
                 value=""
@@ -102,6 +103,7 @@ exports[`<EditableListWidget/> should render an empty list because no options ha
               data-toggle="dropdown"
             >
               <input
+                autocomplete="off"
                 class="input compact"
                 placeholder="Add tags..."
                 value=""

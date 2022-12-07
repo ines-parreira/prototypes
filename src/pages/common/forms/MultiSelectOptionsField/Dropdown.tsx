@@ -6,7 +6,7 @@ import {DropdownMenu, DropdownToggle, UncontrolledDropdown} from 'reactstrap'
 import classnames from 'classnames'
 
 import css from './Dropdown.less'
-import OptionInput from './Input'
+import Input from './Input'
 import Menu from './Menu'
 import {Option} from './types'
 
@@ -104,7 +104,7 @@ export default class Dropdown extends Component<Props, State> {
                     isOpen={isFocused && (!!options.length || !!value)}
                 >
                     <DropdownToggle tag="div" data-toggle="dropdown">
-                        <OptionInput
+                        <Input
                             placeholder={placeholder}
                             value={value}
                             isFocused={isFocused}
