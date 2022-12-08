@@ -1,7 +1,7 @@
 import React from 'react'
 import {render} from '@testing-library/react'
 
-import {customFieldInput} from 'fixtures/customField'
+import {customField, customFieldInput} from 'fixtures/customField'
 
 import FieldForm from '../FieldForm'
 
@@ -9,6 +9,17 @@ describe('<FieldForm/>', () => {
     it('should render correctly', () => {
         const props = {
             field: customFieldInput,
+            onSubmit: jest.fn(),
+            onCancel: jest.fn(),
+        }
+
+        const {container} = render(<FieldForm {...props} />)
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should show archiving status and disable type change on edit', () => {
+        const props = {
+            field: customField,
             onSubmit: jest.fn(),
             onCancel: jest.fn(),
         }

@@ -109,6 +109,7 @@ import AutomationMacros from './stats/AutomationMacros'
 import AutomationIntents from './stats/AutomationIntents'
 import SelfServiceStatsPage from './stats/self-service/SelfServiceStatsPage'
 import TwilioSubaccountStatusForm from './tasks/detail/TwilioSubaccountStatusForm'
+import EditTicketField from './settings/ticketFields/EditTicketField'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -715,6 +716,18 @@ export function TicketFieldsRoutes({match: {path}}: RouteComponentProps) {
                 render={appRender({
                     content: memoizedWithUserRoleRequired(
                         AddTicketField,
+                        ADMIN_ROLE,
+                        PageSection.TicketFields
+                    ),
+                    navbar: SettingsNavbar,
+                })}
+            />
+            <Route
+                path={`${path}/:id`}
+                exact
+                render={appRender({
+                    content: memoizedWithUserRoleRequired(
+                        EditTicketField,
                         ADMIN_ROLE,
                         PageSection.TicketFields
                     ),

@@ -18,3 +18,9 @@ export interface CustomField extends CustomFieldInput {
     updated_datetime: string
     deactivated_datetime: string | null
 }
+
+export function isCustomField(
+    field: CustomField | CustomFieldInput
+): field is CustomField {
+    return 'id' in field
+}

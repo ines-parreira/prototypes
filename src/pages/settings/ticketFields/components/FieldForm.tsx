@@ -1,10 +1,15 @@
 import React, {FormEvent, useEffect, useRef, useState} from 'react'
 import {set} from 'lodash'
 
-import {CustomFieldInput} from 'models/customField/types'
+import {
+    CustomField,
+    CustomFieldInput,
+    isCustomField,
+} from 'models/customField/types'
 import InputField from 'pages/common/forms/input/InputField'
 import CheckBox from 'pages/common/forms/CheckBox'
 import Label from 'pages/common/forms/Label/Label'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Button from 'pages/common/components/button/Button'
 import Caption from 'pages/common/forms/Caption/Caption'
 import TextArea from 'pages/common/forms/TextArea'
@@ -13,7 +18,7 @@ import css from './FieldForm.less'
 import TypeSelectInput from './TypeSelectInput'
 
 interface FieldFormProps {
-    field: CustomFieldInput
+    field: CustomField | CustomFieldInput
     onSubmit: (field: CustomFieldInput) => Promise<void>
     onCancel: () => void
 }
@@ -49,6 +54,22 @@ export default function FieldForm(props: FieldFormProps) {
 
     return (
         <form onSubmit={handleSubmit} ref={formRef}>
+            {isCustomField(props.field) && (
+                <div className={css.formRow}>
+                    <Label className={css.formLabel}>Status</Label>
+                    <Badge
+                        type={
+                            props.field.deactivated_datetime
+                                ? ColorType.Classic
+                                : ColorType.Success
+                        }
+                    >
+                        {props.field.deactivated_datetime
+                            ? 'ARCHIVED'
+                            : 'ACTIVE'}
+                    </Badge>
+                </div>
+            )}
             <InputField
                 name="name"
                 label="Name"
@@ -82,6 +103,7 @@ export default function FieldForm(props: FieldFormProps) {
                     onChange={(val) =>
                         setValue('value_type_settings.type', val)
                     }
+                    isDisabled={isCustomField(props.field)}
                 />
                 <Caption>
                     Field type can't be changed once it's been saved.

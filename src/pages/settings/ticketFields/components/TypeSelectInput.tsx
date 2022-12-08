@@ -18,6 +18,7 @@ const TYPE_TO_LABEL: Record<string, string> = VALUE_TYPES.reduce(
 interface TypeSelectInputProps {
     value: string
     onChange: (value: string) => void
+    isDisabled?: boolean
 }
 
 export default function TypeSelectInput(props: TypeSelectInputProps) {
@@ -32,6 +33,7 @@ export default function TypeSelectInput(props: TypeSelectInputProps) {
             floating={floatingSelectRef}
             onToggle={setIsSelectOpen}
             label={TYPE_TO_LABEL[props.value]}
+            isDisabled={props.isDisabled}
         >
             <SelectInputBoxContext.Consumer>
                 {(context) => (

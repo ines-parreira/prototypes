@@ -151,3 +151,169 @@ exports[`<FieldForm/> should render correctly 1`] = `
   </div>
 </form>
 `;
+
+exports[`<FieldForm/> should show archiving status and disable type change on edit 1`] = `
+<form>
+  <div
+    class="formRow"
+  >
+    <label
+      class="label formLabel"
+    >
+      Status
+    </label>
+    <div
+      class="badge"
+    >
+      ACTIVE
+    </div>
+  </div>
+  <div
+    class="formRow"
+  >
+    <label
+      class="label label"
+      for="input-text-7"
+    >
+      Name
+      <abbr
+        aria-label="required"
+        class="abbr"
+        title="required"
+      >
+        *
+      </abbr>
+    </label>
+    <div
+      class="wrapper"
+    >
+      <input
+        class="input"
+        id="input-text-7"
+        name="name"
+        required=""
+        type="text"
+        value="Test field"
+      />
+    </div>
+  </div>
+  <div
+    class="formRow"
+  >
+    <label
+      class="label label"
+      for="textarea-9"
+    >
+      Description
+    </label>
+    <textarea
+      aria-describedby="textarea-9-caption"
+      class="textarea"
+      id="textarea-9"
+      name="description"
+      rows="1"
+    />
+    <div
+      class="caption"
+      id="textarea-9-caption"
+    >
+      Not visible to agents
+    </div>
+  </div>
+  <div
+    class="formRow"
+  >
+    <label
+      class="label label"
+      for="checkbox-10"
+    >
+      <input
+        class="input"
+        id="checkbox-10"
+        name="checkbox-10"
+        type="checkbox"
+      />
+      Required to close ticket
+    </label>
+  </div>
+  <div
+    class="formRow"
+  >
+    <label
+      class="label formLabel"
+      for="type"
+    >
+      Type
+      <abbr
+        aria-label="required"
+        class="abbr"
+        title="required"
+      >
+        *
+      </abbr>
+    </label>
+    <div
+      class="wrapper"
+      role="listbox"
+      tabindex="-1"
+    >
+      <div
+        class="inputWrapper isDisabled"
+      >
+        <div
+          class="input isGreyed"
+        >
+          Text
+        </div>
+        <i
+          class="affix suffix toggle material-icons"
+        >
+          arrow_drop_down
+        </i>
+      </div>
+    </div>
+    <div
+      class="caption"
+    >
+      Field type can't be changed once it's been saved.
+    </div>
+  </div>
+  <div
+    class="formRow"
+  >
+    <label
+      class="label label"
+      for="input-text-11"
+    >
+      Placeholder
+    </label>
+    <div
+      class="wrapper"
+    >
+      <input
+        class="input"
+        id="input-text-11"
+        name="settings.placeholder"
+        type="text"
+        value="Test placeholder"
+      />
+    </div>
+  </div>
+  <div
+    class="buttons"
+  >
+    <button
+      class="wrapper fill primary medium"
+      type="submit"
+    >
+      Save Changes
+    </button>
+    <button
+      class="wrapper fill secondary medium"
+      type="button"
+    >
+      Cancel
+    </button>
+  </div>
+</form>
+`;
