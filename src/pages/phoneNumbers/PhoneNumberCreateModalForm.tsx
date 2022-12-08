@@ -4,12 +4,12 @@ import {useAsyncFn} from 'react-use'
 
 import InputField from 'pages/common/forms/input/InputField'
 import {
+    PhoneNumber,
     PhoneNumberMeta,
     AddressInformation,
     AddressType,
     PhoneCountry,
     PhoneType,
-    OldPhoneNumber,
 } from 'models/phoneNumber/types'
 import {createPhoneNumber} from 'models/phoneNumber/resources'
 import {GorgiasApiError} from 'models/api/types'
@@ -33,7 +33,7 @@ import {shouldValidateAddress} from './utils'
 type Props = {
     isOpen: boolean
     onClose: () => void
-    onCreate: (phoneNumber: OldPhoneNumber) => void
+    onCreate: (phoneNumber: PhoneNumber) => void
 }
 
 enum Step {
@@ -67,7 +67,7 @@ export default function PhoneNumberCreateModalForm({
                     name,
                     meta,
                     address,
-                } as Partial<OldPhoneNumber>
+                } as Partial<PhoneNumber>
 
                 const phoneNumber = await createPhoneNumber(payload)
                 dispatch(phoneNumberCreated(phoneNumber))

@@ -4,10 +4,7 @@ import {Container, Row} from 'reactstrap'
 import {useAsyncFn} from 'react-use'
 import {isEmpty} from 'lodash'
 
-import {
-    fetchNewPhoneNumbers,
-    fetchPhoneNumbers,
-} from 'models/phoneNumber/resources'
+import {fetchPhoneNumbers} from 'models/phoneNumber/resources'
 import {phoneNumbersFetched} from 'state/entities/phoneNumbers/actions'
 import {getPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
 import {notify} from 'state/notifications/actions'
@@ -41,14 +38,11 @@ export function PhoneNumbersListContainer() {
     const [{loading: isLoading}, handleFetchPhoneNumbers] = useAsyncFn(
         async () => {
             try {
-                const numbers = await fetchPhoneNumbers()
-                if (numbers) {
-                    dispatch(phoneNumbersFetched(numbers.data))
+                const res = await fetchPhoneNumbers()
+                if (!res) {
+                    return
                 }
-                const newNumbers = await fetchNewPhoneNumbers()
-                if (newNumbers) {
-                    dispatch(phoneNumbersFetched(newNumbers.data))
-                }
+                dispatch(phoneNumbersFetched(res.data))
             } catch (error) {
                 void dispatch(
                     notify({

@@ -3,7 +3,7 @@ import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import {RootState, StoreDispatch} from 'state/types'
-import {OldPhoneNumber} from 'models/phoneNumber/types'
+import {PhoneNumber} from 'models/phoneNumber/types'
 import {IntegrationType} from 'models/integration/types'
 import {phoneNumbers} from 'fixtures/phoneNumber'
 
@@ -20,9 +20,9 @@ const store = mockStore({
 } as RootState)
 
 describe('<PhoneNumberSelectField/>', () => {
-    const onCreate: jest.MockedFunction<(value: OldPhoneNumber) => void> =
+    const onCreate: jest.MockedFunction<(value: PhoneNumber) => void> =
         jest.fn()
-    const onChange: jest.MockedFunction<(value: OldPhoneNumber) => void> =
+    const onChange: jest.MockedFunction<(value: PhoneNumber) => void> =
         jest.fn()
 
     describe('render()', () => {

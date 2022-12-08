@@ -3,43 +3,29 @@ import {CancelToken} from 'axios'
 import client from 'models/api/resources'
 import {ApiListResponsePagination} from 'models/api/types'
 
-import {
-    PhoneCapabilitiesLimitationsMap,
-    NewPhoneNumber,
-    OldPhoneNumber,
-} from './types'
+import {PhoneNumber, PhoneCapabilitiesLimitationsMap} from './types'
 
 export const fetchPhoneNumbers = async (
     cancelToken?: CancelToken
-): Promise<ApiListResponsePagination<OldPhoneNumber[]>> => {
-    const res = await client.get<ApiListResponsePagination<OldPhoneNumber[]>>(
+): Promise<ApiListResponsePagination<PhoneNumber[]>> => {
+    const res = await client.get<ApiListResponsePagination<PhoneNumber[]>>(
         '/api/integrations/phone/phone-numbers/',
         {cancelToken}
     )
     return res.data
 }
 
-export const fetchNewPhoneNumbers = async (
-    cancelToken?: CancelToken
-): Promise<ApiListResponsePagination<NewPhoneNumber[]>> => {
-    const res = await client.get<ApiListResponsePagination<NewPhoneNumber[]>>(
-        '/integrations/phone/phone-numbers-new/',
-        {cancelToken}
-    )
-    return res.data
-}
-
-export const fetchPhoneNumber = async (id: number): Promise<OldPhoneNumber> => {
-    const res = await client.get<OldPhoneNumber>(
+export const fetchPhoneNumber = async (id: number): Promise<PhoneNumber> => {
+    const res = await client.get<PhoneNumber>(
         `/api/integrations/phone/phone-numbers/${id}/`
     )
     return res.data
 }
 
 export const createPhoneNumber = async (
-    phoneNumber: Partial<OldPhoneNumber>
-): Promise<OldPhoneNumber> => {
-    const res = await client.post<OldPhoneNumber>(
+    phoneNumber: Partial<PhoneNumber>
+): Promise<PhoneNumber> => {
+    const res = await client.post<PhoneNumber>(
         '/api/integrations/phone/phone-numbers/',
         phoneNumber
     )
@@ -47,13 +33,13 @@ export const createPhoneNumber = async (
 }
 
 export const updatePhoneNumber = async (
-    phoneNumber: OldPhoneNumber
-): Promise<OldPhoneNumber> => {
-    const res = await client.put<OldPhoneNumber>(
+    phoneNumber: PhoneNumber
+): Promise<PhoneNumber> => {
+    const res = await client.put(
         `/api/integrations/phone/phone-numbers/${phoneNumber.id}/`,
         phoneNumber
     )
-    return res.data
+    return res.data as PhoneNumber
 }
 
 export const deletePhoneNumber = async (id: number): Promise<void> => {

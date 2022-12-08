@@ -1,9 +1,7 @@
 import {Integration} from 'models/integration/types'
 import {PhoneType, PhoneCountry, PhoneFunction} from 'business/twilio'
 
-export type PhoneNumber = OldPhoneNumber | NewPhoneNumber
-
-export type OldPhoneNumber = {
+export type PhoneNumber = {
     id: number
     name: string
     phone_number: string
@@ -14,33 +12,6 @@ export type OldPhoneNumber = {
     integrations: IntegrationPreview[]
     capabilities: PhoneCapabilities
     meta: PhoneNumberMeta
-}
-
-export type NewPhoneNumber = {
-    id: number
-    name: string
-    phone_number: string
-    phone_number_friendly: Maybe<string>
-    twilio_phone_number: TwilioPhoneNumberMeta
-    whatsapp_phone_number: WhatsAppPhoneNumberMeta
-    created_datetime: string
-    updated_datetime: string
-    deleted_datetime: Maybe<string>
-    integrations: IntegrationPreview[]
-    capabilities: PhoneCapabilities
-}
-
-export type TwilioPhoneNumberMeta = {
-    type: PhoneType
-    country: PhoneCountry
-    state?: Maybe<string>
-    area_code: number
-}
-
-export type WhatsAppPhoneNumberMeta = {
-    routing: {
-        phone_number: string
-    }
 }
 
 export type PhoneNumberMeta = {

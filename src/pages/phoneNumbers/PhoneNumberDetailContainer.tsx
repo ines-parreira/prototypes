@@ -12,15 +12,10 @@ import PageHeader from 'pages/common/components/PageHeader'
 import PhoneNumberDetails from 'pages/phoneNumbers/PhoneNumberDetails'
 
 import css from 'pages/settings/settings.less'
-import {isNewPhoneNumber} from './utils'
 
 export function PhoneNumberDetailContainer({
     phoneNumber,
 }: ConnectedProps<typeof connector>) {
-    if (isNewPhoneNumber(phoneNumber)) {
-        return null
-    }
-
     return (
         <div className="full-width">
             <PageHeader

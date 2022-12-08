@@ -11,7 +11,6 @@ import {
 } from 'models/integration/types'
 import {getPhoneNumber} from 'state/entities/phoneNumbers/selectors'
 import useAppSelector from 'hooks/useAppSelector'
-import {friendlyName} from 'pages/phoneNumbers/utils'
 
 type Props = {
     type: IntegrationType.Phone | IntegrationType.Sms | IntegrationType.WhatsApp
@@ -54,7 +53,7 @@ export default function PhoneIntegrationBreadcrumbs({
                     <BreadcrumbItem>
                         {integration.meta.emoji} {integration.name}
                         <small className="text-muted ml-2">
-                            {phoneNumber && friendlyName(phoneNumber)}
+                            {phoneNumber?.meta.friendly_name}
                         </small>
                     </BreadcrumbItem>
                 </>
