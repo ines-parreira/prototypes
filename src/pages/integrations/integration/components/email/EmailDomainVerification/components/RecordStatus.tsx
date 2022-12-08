@@ -13,18 +13,24 @@ const RecordStatus = ({isVerified}: Props) => {
             <i
                 className={classnames(
                     css['status-icon'],
-                    'material-icons',
-                    'green'
+                    css.success,
+                    'material-icons'
                 )}
             >
-                done
+                check_circle
             </i>
         )
     }
 
     return (
-        <i className={classnames(css['status-icon'], 'material-icons', 'red')}>
-            clear
+        <i
+            className={classnames(
+                css['status-icon'],
+                css.error,
+                'material-icons'
+            )}
+        >
+            cancel
         </i>
     )
 }

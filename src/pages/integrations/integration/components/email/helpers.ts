@@ -1,44 +1,46 @@
+import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 import {
     EmailIntegration,
+    GmailIntegration,
+    Integration,
+    IntegrationType,
+    OutlookIntegration,
     OutboundVerificationStatusValue,
-    OutboundVerificationType,
 } from 'models/integration/types'
 
-const checkIsOutboundVerificationInProgressByType = (
-    integration: EmailIntegration,
-    verificationType: OutboundVerificationType
-): boolean => {
-    const verificationStatus =
-        integration.meta.outbound_verification_status?.[verificationType]
-    return (
-        verificationStatus === OutboundVerificationStatusValue.Pending ||
-        verificationStatus === OutboundVerificationStatusValue.Failure
-    )
-}
-
-export const isSingleSenderVerificationInProgress = (
-    integration: EmailIntegration
-): boolean => {
-    return checkIsOutboundVerificationInProgressByType(
-        integration,
-        OutboundVerificationType.SingleSender
-    )
-}
-
-export const isOutboundDomainVerificationInProgress = (
-    integration: EmailIntegration
-): boolean => {
-    return checkIsOutboundVerificationInProgressByType(
-        integration,
-        OutboundVerificationType.Domain
-    )
-}
-
-export const isOutboundVerificationInProgress = (
+export const isOutboundDomainVerified = (
     integration: EmailIntegration
 ): boolean => {
     return (
-        isSingleSenderVerificationInProgress(integration) ||
-        isOutboundDomainVerificationInProgress(integration)
+        integration.meta.outbound_verification_status?.domain ===
+        OutboundVerificationStatusValue.Success
     )
+}
+
+export const getDomainFromEmailAddress = (address: string): string =>
+    address.substring(address.lastIndexOf('@') + 1)
+
+export const isGenericEmailIntegration = (
+    integration: Integration
+): integration is EmailIntegration | GmailIntegration | OutlookIntegration => {
+    return (EMAIL_INTEGRATION_TYPES as IntegrationType[]).includes(
+        integration.type
+    )
+}
+
+export const isBaseEmailAddress = (emailAddress: string): boolean => {
+    const forwardingEmailAddress =
+        window.GORGIAS_STATE?.integrations?.authentication?.email
+            ?.forwarding_email_address
+    const forwardingAddressDomain = getDomainFromEmailAddress(
+        forwardingEmailAddress ?? '@'
+    )
+
+    return emailAddress.endsWith(`@${forwardingAddressDomain}`)
+}
+
+export const isBaseEmailIntegration = (
+    emailIntegration: EmailIntegration | GmailIntegration | OutlookIntegration
+): boolean => {
+    return isBaseEmailAddress(emailIntegration.meta.address)
 }

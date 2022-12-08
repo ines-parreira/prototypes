@@ -2,6 +2,7 @@ import {Map} from 'immutable'
 
 import {IntegrationConfig} from 'config'
 import {
+    EmailDomain,
     Integration,
     IntegrationAuthentication,
     IntegrationType,
@@ -32,6 +33,7 @@ export type IntegrationsState = {
             }
         }
     }
+    emailDomain?: EmailDomain
 }
 
 export type IntegrationListItem = Pick<

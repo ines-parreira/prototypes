@@ -7,25 +7,18 @@ import Button from 'pages/common/components/button/Button'
 import gmailImg from 'assets/img/integrations/gmail.png'
 import outlookImg from 'assets/img/integrations/outlook.png'
 
-import {
-    EMAIL_INTEGRATION_TYPES,
-    getIsBaseEmailAddress,
-} from 'constants/integration'
-import {EmailProvider} from 'models/integration/constants'
-import ForwardIcon from '../../../common/components/ForwardIcon'
+import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
+import Loader from 'pages/common/components/Loader/Loader'
+import {EmailDomain, IntegrationType} from 'models/integration/types'
+import history from 'pages/history'
+import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
+import {getIntegrationsByTypes} from 'state/integrations/helpers'
 import IntegrationList from '../IntegrationList'
-import Loader from '../../../../common/components/Loader/Loader'
-import {getIntegrationsByTypes} from '../../../../../state/integrations/helpers'
-import history from '../../../../history'
-import {
-    EmailDomain,
-    IntegrationType,
-} from '../../../../../models/integration/types'
 import {fetchEmailDomains} from './resources'
+import {getDomainFromEmailAddress, isBaseEmailIntegration} from './helpers'
+import WarningWithTooltip from './WarningWithTooltip'
 
 import css from './EmailIntegrationList.less'
-import {isOutboundVerificationInProgress} from './helpers'
-import WarningWithTooltip from './WarningWithTooltip'
 
 type Props = {
     integrations: List<Map<any, any>>
@@ -75,10 +68,9 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
         const toolTipId = `integration-tooltip-${String(integrationId)}`
 
         const address = integration.getIn(['meta', 'address'], '') as string
-        const domain = address.substr(address.lastIndexOf('@') + 1)
-        const isBaseEmailIntegration = getIsBaseEmailAddress(address)
-        const isSendgridIntegration =
-            integration.getIn(['meta', 'provider']) === EmailProvider.Sendgrid
+        const domain = getDomainFromEmailAddress(address)
+
+        const isBaseIntegration = isBaseEmailIntegration(integration.toJS())
 
         const isGmail = integration.get('type') === IntegrationType.Gmail
         const isOutlook = integration.get('type') === IntegrationType.Outlook
@@ -93,24 +85,15 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
         // Whether to show the "pending domain verification" warning for this integration
 
         const shouldDisplayDomainVerificationWarning =
-            !isSendgridIntegration && // In case the provider is sendgrid, use shouldDisplayOutboundVerificationWarning
             !isDomainVerified &&
-            !isBaseEmailIntegration && // The base email integration cannot have a domain associated
+            !isBaseIntegration && // The base email integration cannot have a domain associated
             !isOutlook && // Outlook does not need domain verification
             !(isGmail && enableGmailSending) && // GMail only needs domain verification if email sending is disabled
             (isGmail || isVerified) // Email integrations must be verified before adding a domain configuration
 
-        const shouldDisplayOutboundVerificationWarning =
-            isSendgridIntegration &&
-            !isBaseEmailIntegration &&
-            isOutboundVerificationInProgress(integration.toJS())
-
-        const getTabURL = () => {
-            if (shouldDisplayOutboundVerificationWarning) return '/outbound'
-            return isVerified || isGmail ? '' : '/verification'
-        }
-
-        const editLink = `/app/settings/channels/email/${integrationId}${getTabURL()}`
+        const editLink = `/app/settings/channels/email/${integrationId}${
+            isVerified || isGmail ? '' : '/verification'
+        }`
 
         let imgComponent = (
             <i
@@ -192,11 +175,6 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
                         {shouldDisplayDomainVerificationWarning && (
                             <WarningWithTooltip id={toolTipId}>
                                 Pending domain verification
-                            </WarningWithTooltip>
-                        )}
-                        {shouldDisplayOutboundVerificationWarning && (
-                            <WarningWithTooltip id={`${toolTipId}-outbound`}>
-                                Pending outbound verification
                             </WarningWithTooltip>
                         )}
                     </div>

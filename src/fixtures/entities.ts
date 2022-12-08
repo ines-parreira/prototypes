@@ -13,6 +13,5 @@ export const entitiesInitialState: RootState['entities'] = {
     viewsCount: {},
     helpCenter: helpCenterInitialState,
     selfServiceConfigurations: {},
-    singleSenderVerifications: {},
     phoneNumbers: {},
 }

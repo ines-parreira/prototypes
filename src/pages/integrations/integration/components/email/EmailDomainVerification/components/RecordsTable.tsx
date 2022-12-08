@@ -1,12 +1,11 @@
 import React from 'react'
 
+import TableWrapper from 'pages/common/components/table/TableWrapper'
+import TableHead from 'pages/common/components/table/TableHead'
+import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
+import TableBody from 'pages/common/components/table/TableBody'
 import {EmailProvider} from 'models/integration/constants'
-
-import TableWrapper from '../../../../../../common/components/table/TableWrapper'
-import TableHead from '../../../../../../common/components/table/TableHead'
-import HeaderCell from '../../../../../../common/components/table/cells/HeaderCell'
-import TableBody from '../../../../../../common/components/table/TableBody'
-import {DomainDNSRecord} from '../../../../../../../models/integration/types'
+import {DomainDNSRecord} from 'models/integration/types'
 
 import css from '../EmailDomainVerification.less'
 import RecordItem from './RecordItem'

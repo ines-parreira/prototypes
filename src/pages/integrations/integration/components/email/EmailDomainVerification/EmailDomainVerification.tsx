@@ -1,16 +1,12 @@
 import React, {useLayoutEffect, useState} from 'react'
-import {RouteComponentProps, withRouter} from 'react-router-dom'
-import {connect} from 'react-redux'
-import {Map} from 'immutable'
-import {Container, FormGroup, Label} from 'reactstrap'
+import {FormGroup, Label} from 'reactstrap'
 import Button from 'pages/common/components/button/Button'
 
 import Loader from 'pages/common/components/Loader/Loader'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 
-import {RootState} from 'state/types'
-import * as currentUserSelectors from 'state/currentUser/selectors'
+import {getCurrentUser} from 'state/currentUser/selectors'
 import {
     IntegrationType,
     DEFAULT_EMAIL_DKIM_KEY_SIZE,
@@ -22,57 +18,81 @@ import settingsCss from 'pages/settings/settings.less'
 
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {getIsBaseEmailAddress} from 'constants/integration'
-import css from './EmailDomainVerification.less'
+import useAppSelector from 'hooks/useAppSelector'
+import {getIntegrationsState} from 'state/integrations/selectors'
+import {
+    EmailIntegration,
+    GmailIntegration,
+    OutlookIntegration,
+} from 'models/integration/types'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {
+    createEmailDomain,
+    deleteEmailDomain,
+    fetchEmailDomain,
+    fetchIntegration,
+} from 'state/integrations/actions'
+import {getDomainFromEmailAddress, isBaseEmailAddress} from '../helpers'
 import RecordsTable from './components/RecordsTable'
 
-type OwnProps = {
-    integration: Map<string, any>
-    loading: Map<string, any>
-    emailDomain: Map<string, any>
-    currentUser: Map<any, any>
-    actions: {
-        fetchEmailDomain: (domainName: string) => unknown
-        createEmailDomain: (domainName: string, dkimKeySize: number) => unknown
-        deleteEmailDomain: (domainName: string) => void
-    }
+import css from './EmailDomainVerification.less'
+
+export type Props = {
+    integration: EmailIntegration | GmailIntegration | OutlookIntegration
+    loading?: Record<string, boolean>
+    onDeleteDomain?: () => void
 }
 
-type Props = OwnProps & RouteComponentProps
-
-export const EmailDomainVerificationContainer = (props: Props) => {
-    const {integration, emailDomain, loading, actions, currentUser} = props
-
+export default function EmailDomainVerification({
+    integration,
+    loading,
+    onDeleteDomain,
+}: Props) {
     const [dkimKeySize, setDkimKeySize] = useState(DEFAULT_EMAIL_DKIM_KEY_SIZE)
 
-    const address = integration.getIn(['meta', 'address'], '') as string
-    const provider = integration.getIn(['meta', 'provider'], '') as string
-    const domain = address.substr(address.lastIndexOf('@') + 1)
+    const integrationsState = useAppSelector(getIntegrationsState)
+    const currentUser = useAppSelector(getCurrentUser)
+
+    const dispatch = useAppDispatch()
+
+    const {emailDomain} = integrationsState
+    const address = integration.meta?.address || ''
+    const domain = getDomainFromEmailAddress(address)
 
     useLayoutEffect(() => {
         if (domain) {
-            void actions.fetchEmailDomain(domain)
+            void dispatch(fetchEmailDomain(domain))
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [domain])
 
-    if (loading.get('integration') || loading.get('emailDomain')) {
+    if (loading?.integration || loading?.emailDomain) {
         return <Loader />
     }
 
-    const isBaseEmailIntegration = getIsBaseEmailAddress(address)
+    const isBaseIntegration = isBaseEmailAddress(address)
 
-    const isGmail = integration.get('type') === IntegrationType.Gmail
-    const isOutlook = integration.get('type') === IntegrationType.Outlook
+    const isGmail = integration.type === IntegrationType.Gmail
+    const isOutlook = integration.type === IntegrationType.Outlook
+    const provider =
+        (integration as EmailIntegration | GmailIntegration).meta?.provider ||
+        ''
+    const isSendgrid = provider === EmailProvider.Sendgrid
+
+    const handleDeleteDomain = async () => {
+        await dispatch(deleteEmailDomain(domain))
+        void fetchIntegration(`${integration.id}`, integration.type)(dispatch)
+        onDeleteDomain?.()
+    }
 
     return (
-        <Container fluid className={settingsCss.pageContainer}>
+        <>
             {emailDomain && (
                 <>
-                    {emailDomain.get('verified') && (
-                        <span>Your domain has been verified.</span>
+                    {emailDomain.verified && (
+                        <div>Your domain has been verified.</div>
                     )}
-                    {!emailDomain.get('verified') && (
+                    {!emailDomain.verified && (
                         <div>
                             <Alert
                                 type={AlertType.Warning}
@@ -88,27 +108,37 @@ export const EmailDomainVerificationContainer = (props: Props) => {
                                 To enable DKIM signing for your domain, please
                                 add the information below to your DNS records
                                 via your DNS registrar. Note that verification
-                                of these settings may take up to 72 hours after
-                                submission.
+                                of these settings{' '}
+                                <strong>
+                                    may take up to 72 hours after submission
+                                </strong>
+                                .{' '}
+                                <a
+                                    href="https://docs.gorgias.com/en-US/spf-dkim-support-81757"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    Learn more
+                                </a>
                             </span>
                         </div>
                     )}
                     <RecordsTable
                         records={
                             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                            emailDomain.toJS().data.sending_dns_records
+                            emailDomain.data.sending_dns_records
                         }
                         provider={provider}
                     />
 
                     {hasRole(currentUser, UserRole.Admin) && (
                         <ConfirmButton
-                            onConfirm={() => actions.deleteEmailDomain(domain)}
+                            onConfirm={handleDeleteDomain}
                             confirmationContent="Are you sure you want to delete this domain? Domain verification can take up to 72 hours. Non-verified domains may lead to increased deliverability issues."
                             intent="destructive"
                         >
                             <ButtonIconLabel icon="delete">
-                                Delete
+                                Delete domain
                             </ButtonIconLabel>
                         </ConfirmButton>
                     )}
@@ -116,13 +146,13 @@ export const EmailDomainVerificationContainer = (props: Props) => {
             )}
             {!emailDomain && (
                 <>
-                    {isBaseEmailIntegration && (
-                        <Alert type={AlertType.Warning}>
+                    {isBaseIntegration && (
+                        <Alert>
                             The base email integration cannot have a domain
                             associated.
                         </Alert>
                     )}
-                    {!isBaseEmailIntegration && (
+                    {!isBaseIntegration && (
                         <>
                             {(isGmail || isOutlook) && (
                                 <Alert className={settingsCss.mb16}>
@@ -148,18 +178,28 @@ export const EmailDomainVerificationContainer = (props: Props) => {
                                 No domain and DKIM configuration has been
                                 created yet.
                             </p>
-                            {provider !== EmailProvider.Sendgrid && (
-                                <FormGroup className={css['form-group']}>
+                            {
+                                <FormGroup
+                                    className={
+                                        (css['form-group'],
+                                        css.keySelectionSection)
+                                    }
+                                >
                                     <Label className="control-label">
                                         DKIM key size
                                     </Label>
                                     <SelectField
                                         value={dkimKeySize}
                                         onChange={setDkimKeySize as any}
+                                        disabled={isSendgrid}
                                         options={[
                                             {
                                                 value: 1024,
-                                                label: '1024 (Default)',
+                                                label: `1024 ${
+                                                    isSendgrid
+                                                        ? ''
+                                                        : '(Default)'
+                                                }`,
                                             },
                                             {
                                                 value: 2048,
@@ -169,15 +209,14 @@ export const EmailDomainVerificationContainer = (props: Props) => {
                                         fullWidth
                                     />
                                 </FormGroup>
-                            )}
+                            }
 
                             <Button
                                 type="submit"
                                 color="primary"
                                 onClick={() => {
-                                    void actions.createEmailDomain(
-                                        domain,
-                                        dkimKeySize
+                                    void dispatch(
+                                        createEmailDomain(domain, dkimKeySize)
                                     )
                                 }}
                             >
@@ -187,17 +226,6 @@ export const EmailDomainVerificationContainer = (props: Props) => {
                     )}
                 </>
             )}
-        </Container>
+        </>
     )
 }
-
-const mapStateToProps = (state: RootState) => {
-    return {
-        emailDomain: state.integrations.get('emailDomain'),
-        currentUser: currentUserSelectors.getCurrentUser(state),
-    }
-}
-
-const connector = connect(mapStateToProps)
-
-export default withRouter(connector(EmailDomainVerificationContainer))

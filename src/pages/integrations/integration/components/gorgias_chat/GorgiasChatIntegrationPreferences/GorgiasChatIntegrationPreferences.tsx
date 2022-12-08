@@ -8,10 +8,7 @@ import {Breadcrumb, BreadcrumbItem, Button, Form, Label} from 'reactstrap'
 import classnames from 'classnames'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
-import {
-    EMAIL_INTEGRATION_TYPES,
-    isGenericEmailIntegration,
-} from 'constants/integration'
+import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 import {IntegrationType} from 'models/integration/constants'
 import {
     CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
@@ -44,6 +41,7 @@ import ChatIntegrationPreview from '../GorgiasChatIntegrationPreview/ChatIntegra
 import OptionalEmailCapturePreview from '../GorgiasChatIntegrationPreview/OptionalEmailCapture'
 import RequiredEmailCapturePreview from '../GorgiasChatIntegrationPreview/RequiredEmailCapture'
 import AutoResponderPreview from '../GorgiasChatIntegrationPreview/AutoResponder'
+import {isGenericEmailIntegration} from '../../email/helpers'
 import css from './GorgiasChatIntegrationPreferences.less'
 
 const emailCaptureOptions = [

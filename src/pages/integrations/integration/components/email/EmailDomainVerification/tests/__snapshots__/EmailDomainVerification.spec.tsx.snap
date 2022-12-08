@@ -1,508 +1,584 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<EmailDomainVerificationContainer/> render() should render a delete button to account admins 1`] = `
+exports[`<EmailDomainVerification/> render() should render a delete button to account admins 1`] = `
 <div>
-  <div
-    class="pageContainer container-fluid"
-  >
-    <span>
-      Your domain has been verified.
-    </span>
-    <table
-      class="table records-table"
-    >
-      <thead
-        class=""
-      >
-        <tr
-          class="headerRow"
-        >
-          <td
-            class="wrapper normal"
-          >
-            Status
-          </td>
-          <td
-            class="wrapper normal"
-          >
-            Record Type
-          </td>
-          <td
-            class="wrapper normal"
-          >
-            Host
-          </td>
-          <td
-            class="wrapper normal"
-          >
-            Value
-          </td>
-          <td
-            class="wrapper normal"
-          >
-            Current Values
-          </td>
-        </tr>
-      </thead>
-      <tbody
-        class="tableBody"
-      />
-    </table>
-    <button
-      class="wrapper fill destructive medium"
-      id="confirm-42"
-      type="button"
-    >
-      <span
-        class="wrapper"
-      >
-        <i
-          class="material-icons icon isLeft medium"
-        >
-          delete
-        </i>
-        Delete
-      </span>
-    </button>
+  <div>
+    Your domain has been verified.
   </div>
+  <table
+    class="table records-table"
+  >
+    <thead
+      class=""
+    >
+      <tr
+        class="headerRow"
+      >
+        <td
+          class="wrapper normal"
+        >
+          Status
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          Record Type
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          Host
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          Value
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          Current Values
+        </td>
+      </tr>
+    </thead>
+    <tbody
+      class="tableBody"
+    />
+  </table>
+  <button
+    class="wrapper fill destructive medium"
+    id="confirm-42"
+    type="button"
+  >
+    <span
+      class="wrapper"
+    >
+      <i
+        class="material-icons icon isLeft medium"
+      >
+        delete
+      </i>
+      Delete domain
+    </span>
+  </button>
 </div>
 `;
 
-exports[`<EmailDomainVerificationContainer/> render() should render the page when domain is not verified 1`] = `
+exports[`<EmailDomainVerification/> render() should render the page when domain is not verified 1`] = `
 <div>
-  <div
-    class="pageContainer container-fluid"
+  <div>
+    <div
+      class="alert warning mb16"
+    >
+      <div
+        class="content"
+      >
+        <span
+          class="label"
+        >
+          This domain has not yet been verified. You can still send emails from this address but you may be more susceptible to deliverability issues. Please verify your domain to ensure the best possible performance.
+        </span>
+      </div>
+    </div>
+    <span>
+      To enable DKIM signing for your domain, please add the information below to your DNS records via your DNS registrar. Note that verification of these settings
+       
+      <strong>
+        may take up to 72 hours after submission
+      </strong>
+      .
+       
+      <a
+        href="https://docs.gorgias.com/en-US/spf-dkim-support-81757"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Learn more
+      </a>
+    </span>
+  </div>
+  <table
+    class="table records-table"
   >
+    <thead
+      class=""
+    >
+      <tr
+        class="headerRow"
+      >
+        <td
+          class="wrapper normal"
+        >
+          Status
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          Record Type
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          Host
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          Value
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          Current Values
+        </td>
+      </tr>
+    </thead>
+    <tbody
+      class="tableBody"
+    />
+  </table>
+</div>
+`;
+
+exports[`<EmailDomainVerification/> render() should render the page when domain is verified 1`] = `
+<div>
+  <div>
+    <div
+      class="alert warning mb16"
+    >
+      <div
+        class="content"
+      >
+        <span
+          class="label"
+        >
+          This domain has not yet been verified. You can still send emails from this address but you may be more susceptible to deliverability issues. Please verify your domain to ensure the best possible performance.
+        </span>
+      </div>
+    </div>
+    <span>
+      To enable DKIM signing for your domain, please add the information below to your DNS records via your DNS registrar. Note that verification of these settings
+       
+      <strong>
+        may take up to 72 hours after submission
+      </strong>
+      .
+       
+      <a
+        href="https://docs.gorgias.com/en-US/spf-dkim-support-81757"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Learn more
+      </a>
+    </span>
+  </div>
+  <table
+    class="table records-table"
+  >
+    <thead
+      class=""
+    >
+      <tr
+        class="headerRow"
+      >
+        <td
+          class="wrapper normal"
+        >
+          Status
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          Record Type
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          Host
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          Value
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          Current Values
+        </td>
+      </tr>
+    </thead>
+    <tbody
+      class="tableBody"
+    />
+  </table>
+</div>
+`;
+
+exports[`<EmailDomainVerification/> render() should render the page when there is no domain - mailgun 1`] = `
+<div>
+  <p>
+    No domain and DKIM configuration has been created yet.
+  </p>
+  <div
+    class="keySelectionSection form-group"
+  >
+    <label
+      class="control-label"
+    >
+      DKIM key size
+    </label>
     <div>
       <div
-        class="alert warning mb16"
+        class="dropdown"
       >
         <div
-          class="content"
+          aria-expanded="false"
+          aria-haspopup="true"
+          class=""
+          data-toggle="dropdown"
         >
-          <span
-            class="label"
+          <div
+            class="select dropdown-toggle selectFullWidth"
           >
-            This domain has not yet been verified. You can still send emails from this address but you may be more susceptible to deliverability issues. Please verify your domain to ensure the best possible performance.
-          </span>
+            <span
+              class="label"
+              style="min-width: 10px; opacity: 1;"
+            >
+              1024 (Default)
+            </span>
+            <input
+              autocomplete="chrome-off"
+              class="input"
+              style="min-width: 10px;"
+              type="text"
+              value=""
+            />
+            <i
+              class="material-icons dropdownIcon"
+            >
+              arrow_drop_down
+            </i>
+          </div>
+        </div>
+        <div
+          aria-hidden="true"
+          class="options optionsFullWidth dropdown-menu"
+          role="menu"
+          tabindex="-1"
+        >
+          
+          <button
+            class="option option--focused dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              2048
+            </span>
+          </button>
         </div>
       </div>
-      <span>
-        To enable DKIM signing for your domain, please add the information below to your DNS records via your DNS registrar. Note that verification of these settings may take up to 72 hours after submission.
+    </div>
+  </div>
+  <button
+    class="wrapper fill primary medium"
+    color="primary"
+    type="submit"
+  >
+    Add Domain
+  </button>
+</div>
+`;
+
+exports[`<EmailDomainVerification/> render() should render the page when there is no domain - sendgrid 1`] = `
+<div>
+  <p>
+    No domain and DKIM configuration has been created yet.
+  </p>
+  <div
+    class="keySelectionSection form-group"
+  >
+    <label
+      class="control-label"
+    >
+      DKIM key size
+    </label>
+    <div>
+      <div
+        class="dropdown"
+      >
+        <div
+          aria-expanded="false"
+          aria-haspopup="true"
+          class=""
+          data-toggle="dropdown"
+        >
+          <div
+            class="select dropdown-toggle selectFullWidth disabled"
+          >
+            <span
+              class="label"
+              style="min-width: 10px; opacity: 1;"
+            >
+              1024 
+            </span>
+            <input
+              autocomplete="chrome-off"
+              class="input"
+              disabled=""
+              style="min-width: 10px;"
+              type="text"
+              value=""
+            />
+            <i
+              class="material-icons dropdownIcon"
+            >
+              arrow_drop_down
+            </i>
+          </div>
+        </div>
+        <div
+          aria-hidden="true"
+          class="options optionsFullWidth dropdown-menu"
+          role="menu"
+          tabindex="-1"
+        >
+          
+          <button
+            class="option option--focused dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              2048
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button
+    class="wrapper fill primary medium"
+    color="primary"
+    type="submit"
+  >
+    Add Domain
+  </button>
+</div>
+`;
+
+exports[`<EmailDomainVerification/> render() should render the page with an optional verification information box when there is no domain 1`] = `
+<div>
+  <div
+    class="alert info mb16"
+  >
+    <div
+      class="content"
+    >
+      <span
+        class="label"
+      >
+        Domain verification is 
+        <b>
+          not required
+        </b>
+         
+        for 
+        <b>
+          Gmail and Outlook
+        </b>
+         integrations
+         
+        <i>
+          unless you have disabled the "email sending" setting in Gorgias for a Gmail integration.
+        </i>
+        <br />
+        <br />
+        While it is not required, you can verify the domain of a Gmail or Outlook integration, which may allow you to continue to send emails in the event of an outage on either platform, as we will be able to attempt to route your emails through our system as a backup.
       </span>
     </div>
-    <table
-      class="table records-table"
-    >
-      <thead
-        class=""
-      >
-        <tr
-          class="headerRow"
-        >
-          <td
-            class="wrapper normal"
-          >
-            Status
-          </td>
-          <td
-            class="wrapper normal"
-          >
-            Record Type
-          </td>
-          <td
-            class="wrapper normal"
-          >
-            Host
-          </td>
-          <td
-            class="wrapper normal"
-          >
-            Value
-          </td>
-          <td
-            class="wrapper normal"
-          >
-            Current Values
-          </td>
-        </tr>
-      </thead>
-      <tbody
-        class="tableBody"
-      />
-    </table>
   </div>
-</div>
-`;
-
-exports[`<EmailDomainVerificationContainer/> render() should render the page when domain is verified 1`] = `
-<div>
+  <p>
+    No domain and DKIM configuration has been created yet.
+  </p>
   <div
-    class="pageContainer container-fluid"
+    class="keySelectionSection form-group"
   >
-    <span>
-      Your domain has been verified.
-    </span>
-    <table
-      class="table records-table"
+    <label
+      class="control-label"
     >
-      <thead
-        class=""
-      >
-        <tr
-          class="headerRow"
-        >
-          <td
-            class="wrapper normal"
-          >
-            Status
-          </td>
-          <td
-            class="wrapper normal"
-          >
-            Record Type
-          </td>
-          <td
-            class="wrapper normal"
-          >
-            Host
-          </td>
-          <td
-            class="wrapper normal"
-          >
-            Value
-          </td>
-          <td
-            class="wrapper normal"
-          >
-            Current Values
-          </td>
-        </tr>
-      </thead>
-      <tbody
-        class="tableBody"
-      />
-    </table>
-  </div>
-</div>
-`;
-
-exports[`<EmailDomainVerificationContainer/> render() should render the page when there is no domain - mailgun 1`] = `
-<div>
-  <div
-    class="pageContainer container-fluid"
-  >
-    <p>
-      No domain and DKIM configuration has been created yet.
-    </p>
-    <div
-      class="form-group form-group"
-    >
-      <label
-        class="control-label"
-      >
-        DKIM key size
-      </label>
-      <div>
-        <div
-          class="dropdown"
-        >
-          <div
-            aria-expanded="false"
-            aria-haspopup="true"
-            class=""
-            data-toggle="dropdown"
-          >
-            <div
-              class="select dropdown-toggle selectFullWidth"
-            >
-              <span
-                class="label"
-                style="min-width: 10px; opacity: 1;"
-              >
-                1024 (Default)
-              </span>
-              <input
-                autocomplete="chrome-off"
-                class="input"
-                style="min-width: 10px;"
-                type="text"
-                value=""
-              />
-              <i
-                class="material-icons dropdownIcon"
-              >
-                arrow_drop_down
-              </i>
-            </div>
-          </div>
-          <div
-            aria-hidden="true"
-            class="options optionsFullWidth dropdown-menu"
-            role="menu"
-            tabindex="-1"
-          >
-            
-            <button
-              class="option option--focused dropdown-item"
-              role="menuitem"
-              tabindex="0"
-              type="button"
-            >
-              <span>
-                2048
-              </span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <button
-      class="wrapper fill primary medium"
-      color="primary"
-      type="submit"
-    >
-      Add Domain
-    </button>
-  </div>
-</div>
-`;
-
-exports[`<EmailDomainVerificationContainer/> render() should render the page when there is no domain - sendgrid 1`] = `
-<div>
-  <div
-    class="pageContainer container-fluid"
-  >
-    <p>
-      No domain and DKIM configuration has been created yet.
-    </p>
-    <button
-      class="wrapper fill primary medium"
-      color="primary"
-      type="submit"
-    >
-      Add Domain
-    </button>
-  </div>
-</div>
-`;
-
-exports[`<EmailDomainVerificationContainer/> render() should render the page with an optional verification information box when there is no domain 1`] = `
-<div>
-  <div
-    class="pageContainer container-fluid"
-  >
-    <div
-      class="alert info mb16"
-    >
+      DKIM key size
+    </label>
+    <div>
       <div
-        class="content"
+        class="dropdown"
       >
-        <span
-          class="label"
-        >
-          Domain verification is 
-          <b>
-            not required
-          </b>
-           
-          for 
-          <b>
-            Gmail and Outlook
-          </b>
-           integrations
-           
-          <i>
-            unless you have disabled the "email sending" setting in Gorgias for a Gmail integration.
-          </i>
-          <br />
-          <br />
-          While it is not required, you can verify the domain of a Gmail or Outlook integration, which may allow you to continue to send emails in the event of an outage on either platform, as we will be able to attempt to route your emails through our system as a backup.
-        </span>
-      </div>
-    </div>
-    <p>
-      No domain and DKIM configuration has been created yet.
-    </p>
-    <div
-      class="form-group form-group"
-    >
-      <label
-        class="control-label"
-      >
-        DKIM key size
-      </label>
-      <div>
         <div
-          class="dropdown"
+          aria-expanded="false"
+          aria-haspopup="true"
+          class=""
+          data-toggle="dropdown"
         >
           <div
-            aria-expanded="false"
-            aria-haspopup="true"
-            class=""
-            data-toggle="dropdown"
+            class="select dropdown-toggle selectFullWidth"
           >
-            <div
-              class="select dropdown-toggle selectFullWidth"
+            <span
+              class="label"
+              style="min-width: 10px; opacity: 1;"
             >
-              <span
-                class="label"
-                style="min-width: 10px; opacity: 1;"
-              >
-                1024 (Default)
-              </span>
-              <input
-                autocomplete="chrome-off"
-                class="input"
-                style="min-width: 10px;"
-                type="text"
-                value=""
-              />
-              <i
-                class="material-icons dropdownIcon"
-              >
-                arrow_drop_down
-              </i>
-            </div>
+              1024 (Default)
+            </span>
+            <input
+              autocomplete="chrome-off"
+              class="input"
+              style="min-width: 10px;"
+              type="text"
+              value=""
+            />
+            <i
+              class="material-icons dropdownIcon"
+            >
+              arrow_drop_down
+            </i>
           </div>
-          <div
-            aria-hidden="true"
-            class="options optionsFullWidth dropdown-menu"
-            role="menu"
-            tabindex="-1"
+        </div>
+        <div
+          aria-hidden="true"
+          class="options optionsFullWidth dropdown-menu"
+          role="menu"
+          tabindex="-1"
+        >
+          
+          <button
+            class="option option--focused dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
           >
-            
-            <button
-              class="option option--focused dropdown-item"
-              role="menuitem"
-              tabindex="0"
-              type="button"
-            >
-              <span>
-                2048
-              </span>
-            </button>
-          </div>
+            <span>
+              2048
+            </span>
+          </button>
         </div>
       </div>
     </div>
-    <button
-      class="wrapper fill primary medium"
-      color="primary"
-      type="submit"
-    >
-      Add Domain
-    </button>
   </div>
+  <button
+    class="wrapper fill primary medium"
+    color="primary"
+    type="submit"
+  >
+    Add Domain
+  </button>
 </div>
 `;
 
-exports[`<EmailDomainVerificationContainer/> render() should render the page with an optional verification information box when there is no domain 2`] = `
+exports[`<EmailDomainVerification/> render() should render the page with an optional verification information box when there is no domain 2`] = `
 <div>
   <div
-    class="pageContainer container-fluid"
+    class="alert info mb16"
   >
     <div
-      class="alert info mb16"
+      class="content"
     >
-      <div
-        class="content"
+      <span
+        class="label"
       >
-        <span
-          class="label"
-        >
-          Domain verification is 
-          <b>
-            not required
-          </b>
-           
-          for 
-          <b>
-            Gmail and Outlook
-          </b>
-           integrations
-           
-          <i>
-            unless you have disabled the "email sending" setting in Gorgias for a Gmail integration.
-          </i>
-          <br />
-          <br />
-          While it is not required, you can verify the domain of a Gmail or Outlook integration, which may allow you to continue to send emails in the event of an outage on either platform, as we will be able to attempt to route your emails through our system as a backup.
-        </span>
-      </div>
+        Domain verification is 
+        <b>
+          not required
+        </b>
+         
+        for 
+        <b>
+          Gmail and Outlook
+        </b>
+         integrations
+         
+        <i>
+          unless you have disabled the "email sending" setting in Gorgias for a Gmail integration.
+        </i>
+        <br />
+        <br />
+        While it is not required, you can verify the domain of a Gmail or Outlook integration, which may allow you to continue to send emails in the event of an outage on either platform, as we will be able to attempt to route your emails through our system as a backup.
+      </span>
     </div>
-    <p>
-      No domain and DKIM configuration has been created yet.
-    </p>
-    <div
-      class="form-group form-group"
+  </div>
+  <p>
+    No domain and DKIM configuration has been created yet.
+  </p>
+  <div
+    class="keySelectionSection form-group"
+  >
+    <label
+      class="control-label"
     >
-      <label
-        class="control-label"
+      DKIM key size
+    </label>
+    <div>
+      <div
+        class="dropdown"
       >
-        DKIM key size
-      </label>
-      <div>
         <div
-          class="dropdown"
+          aria-expanded="false"
+          aria-haspopup="true"
+          class=""
+          data-toggle="dropdown"
         >
           <div
-            aria-expanded="false"
-            aria-haspopup="true"
-            class=""
-            data-toggle="dropdown"
+            class="select dropdown-toggle selectFullWidth"
           >
-            <div
-              class="select dropdown-toggle selectFullWidth"
+            <span
+              class="label"
+              style="min-width: 10px; opacity: 1;"
             >
-              <span
-                class="label"
-                style="min-width: 10px; opacity: 1;"
-              >
-                1024 (Default)
-              </span>
-              <input
-                autocomplete="chrome-off"
-                class="input"
-                style="min-width: 10px;"
-                type="text"
-                value=""
-              />
-              <i
-                class="material-icons dropdownIcon"
-              >
-                arrow_drop_down
-              </i>
-            </div>
+              1024 (Default)
+            </span>
+            <input
+              autocomplete="chrome-off"
+              class="input"
+              style="min-width: 10px;"
+              type="text"
+              value=""
+            />
+            <i
+              class="material-icons dropdownIcon"
+            >
+              arrow_drop_down
+            </i>
           </div>
-          <div
-            aria-hidden="true"
-            class="options optionsFullWidth dropdown-menu"
-            role="menu"
-            tabindex="-1"
+        </div>
+        <div
+          aria-hidden="true"
+          class="options optionsFullWidth dropdown-menu"
+          role="menu"
+          tabindex="-1"
+        >
+          
+          <button
+            class="option option--focused dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
           >
-            
-            <button
-              class="option option--focused dropdown-item"
-              role="menuitem"
-              tabindex="0"
-              type="button"
-            >
-              <span>
-                2048
-              </span>
-            </button>
-          </div>
+            <span>
+              2048
+            </span>
+          </button>
         </div>
       </div>
     </div>
-    <button
-      class="wrapper fill primary medium"
-      color="primary"
-      type="submit"
-    >
-      Add Domain
-    </button>
   </div>
+  <button
+    class="wrapper fill primary medium"
+    color="primary"
+    type="submit"
+  >
+    Add Domain
+  </button>
 </div>
 `;

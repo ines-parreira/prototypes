@@ -2,7 +2,11 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
+import * as helpers from '../../helpers'
+
 import {EmailIntegrationCreateVerification} from '../EmailIntegrationCreateVerification.tsx'
+
+const isBaseEmailAddressSpy = jest.spyOn(helpers, 'isBaseEmailAddress')
 
 const commonProps = {
     forwardingEmailAddress: 'hmq29fh29zfmh29fzq2f3@emails-acme.gorgi.us',
@@ -21,6 +25,8 @@ const commonProps = {
 describe('<EmailIntegrationCreateVerification/>', () => {
     describe('render()', () => {
         it('should render the regular instructions', () => {
+            isBaseEmailAddressSpy.mockImplementation(() => false)
+
             const component = shallow(
                 <EmailIntegrationCreateVerification {...commonProps} />
             )
@@ -36,6 +42,8 @@ describe('<EmailIntegrationCreateVerification/>', () => {
                     address: 'myintegration@emails.gorgias.com',
                 },
             })
+
+            isBaseEmailAddressSpy.mockImplementation(() => true)
 
             const component = shallow(
                 <EmailIntegrationCreateVerification

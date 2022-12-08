@@ -12,11 +12,7 @@ import {EmailContactInfoDto, HelpCenter} from 'models/helpCenter/types'
 import {useHelpCenterTranslation} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
 import TextArea from 'pages/common/forms/TextArea'
 
-import {
-    EMAIL_INTEGRATION_TYPES,
-    getIsBaseEmailAddress,
-    isGenericEmailIntegration,
-} from 'constants/integration'
+import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import Button from 'pages/common/components/button/Button'
@@ -35,6 +31,10 @@ import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import Tooltip from 'pages/common/components/Tooltip'
+import {
+    isBaseEmailAddress,
+    isGenericEmailIntegration,
+} from 'pages/integrations/integration/components/email/helpers'
 import ContactCard from '../ContactCard'
 import helpCenterContactViewCss from '../../HelpCenterContactView.less'
 
@@ -86,7 +86,7 @@ const ContactFormInfoSection = ({helpCenter}: ContactFormInfoSectionProps) => {
 
     const isBaseEmailIntegration =
         !!contactForm.helpdesk_integration_email &&
-        getIsBaseEmailAddress(contactForm.helpdesk_integration_email)
+        isBaseEmailAddress(contactForm.helpdesk_integration_email)
 
     const isEmailIntegrationSelected =
         !!helpCenter.contact_form?.helpdesk_integration_email

@@ -29,6 +29,10 @@ import IconTooltip from 'pages/common/forms/Label/IconTooltip'
 import Tooltip from 'pages/common/components/Tooltip'
 import Label from 'pages/common/forms/Label/Label'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
+import {
+    isBaseEmailIntegration,
+    isGenericEmailIntegration,
+} from 'pages/integrations/integration/components/email/helpers'
 import {SubdomainInput} from '../components/SubdomainSection'
 import {
     HELP_CENTER_BASE_PATH,
@@ -52,11 +56,7 @@ import {useShopifyStoreWithChatConnectionsOptions} from '../hooks/useShopifyStor
 import settingsCss from '../../settings.less'
 
 import {useEnableArticleRecommendation} from '../hooks/useEnableArticleRecommendation'
-import {
-    EMAIL_INTEGRATION_TYPES,
-    getIsBaseEmailIntegration,
-    isGenericEmailIntegration,
-} from '../../../../constants/integration'
+import {EMAIL_INTEGRATION_TYPES} from '../../../../constants/integration'
 
 import useAppDispatch from '../../../../hooks/useAppDispatch'
 import css from './HelpCenterNewView.less'
@@ -110,8 +110,7 @@ export const HelpCenterNewView = ({
     ).filter(isGenericEmailIntegration)
 
     const defaultEmailIntegration =
-        emailIntegrations.find(getIsBaseEmailIntegration) ??
-        emailIntegrations[0]
+        emailIntegrations.find(isBaseEmailIntegration) ?? emailIntegrations[0]
 
     const [newHelpCenter, setNewHelpCenter] = useState<CreateHelpCenterPayload>(
         {

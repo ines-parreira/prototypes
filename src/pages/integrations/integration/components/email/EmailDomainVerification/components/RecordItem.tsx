@@ -28,9 +28,11 @@ const RecordItem = ({record, provider}: Props) => {
             <BodyCell>
                 <RecordStatus isVerified={record.verified} />
             </BodyCell>
-            <BodyCell>{record.record_type}</BodyCell>
+            <BodyCell className="text-uppercase">{record.record_type}</BodyCell>
             <BodyCell>
-                <span id={hostID}>{record.host}</span>
+                <span id={hostID}>
+                    <strong>{record.host}</strong>
+                </span>
                 <CopyButton clipboardTarget={`#${hostID}`} />
             </BodyCell>
             <BodyCell className={classnames(css.cell, css['value-cell'])}>

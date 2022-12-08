@@ -27,7 +27,6 @@ import {AccountFeature} from 'state/currentAccount/types'
 import {compare} from 'utils'
 import useAppDispatch from 'hooks/useAppDispatch'
 
-import {EmailProvider} from 'models/integration/constants'
 import history from '../../history'
 
 import AircallIntegrationList from './components/aircall/AircallIntegrationList'
@@ -81,7 +80,7 @@ import EmailIntegrationCreateForwarding from './components/email/EmailIntegratio
 import EmailIntegrationCreateVerification from './components/email/EmailIntegrationCreateVerification/EmailIntegrationCreateVerification'
 import EmailIntegrationCreateCustom from './components/email/EmailIntegrationCreateCustom/EmailIntegrationCreateCustom'
 import EmailIntegrationLayout from './components/email/EmailIntegrationUpdateLayout/EmailIntegrationUpdateLayout'
-import EmailDomainVerification from './components/email/EmailDomainVerification/EmailDomainVerification'
+import EmailDomainVerificationContainer from './components/email/EmailDomainVerification/EmailDomainVerificationContainer'
 
 import ChatIntegrationList from './components/chat/ChatIntegrationList'
 import ChatIntegrationAppearance from './components/chat/ChatIntegrationAppearance/ChatIntegrationAppearance'
@@ -104,13 +103,11 @@ import WhatsAppIntegration from './components/whatsapp/WhatsAppIntegration'
 import TwitterIntegrationDetail from './components/twitter/TwitterIntegrationDetail'
 import TwitterIntegrationList from './components/twitter/TwitterIntegrationList'
 import WhatsAppSpike from './components/voice/WhatsAppSpike'
-import EmailOutboundVerification from './components/email/EmailOutboundVerification/EmailOutboundVerification'
 
 export enum Tab {
     EmailForwarding = 'forwarding',
     EmailVerification = 'verification',
     EmailDomainVerification = 'dns',
-    EmailOutboundVerification = 'outbound',
     EmailCustom = 'custom',
     FacebookCustomerChat = 'customer_chat',
     Preferences = 'preferences',
@@ -244,8 +241,6 @@ export const IntegrationDetail = ({
     }, [integrationId, isIntegrationId])
 
     const enableWhatsApp = useFlags()[FeatureFlagKey.EnableWhatsApp]
-
-    const integrationProvider = integration.getIn(['meta', 'provider'])
 
     switch (integrationType) {
         case IntegrationType.Aircall:
@@ -698,28 +693,10 @@ export const IntegrationDetail = ({
                         )
                     }
 
-                    if (
-                        extra === Tab.EmailDomainVerification &&
-                        integrationProvider !== EmailProvider.Sendgrid
-                    ) {
+                    if (extra === Tab.EmailDomainVerification) {
                         return (
                             <EmailIntegrationLayout integration={integration}>
-                                <EmailDomainVerification
-                                    actions={actions}
-                                    integration={integration}
-                                    loading={loading}
-                                />
-                            </EmailIntegrationLayout>
-                        )
-                    }
-
-                    if (
-                        extra === Tab.EmailOutboundVerification &&
-                        integrationProvider === EmailProvider.Sendgrid
-                    ) {
-                        return (
-                            <EmailIntegrationLayout integration={integration}>
-                                <EmailOutboundVerification
+                                <EmailDomainVerificationContainer
                                     integration={integration.toJS()}
                                     loading={loading.toJS()}
                                 />

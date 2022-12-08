@@ -1,10 +1,4 @@
-import {
-    EmailIntegration,
-    GmailIntegration,
-    Integration,
-    IntegrationType,
-    OutlookIntegration,
-} from '../models/integration/types'
+import {IntegrationType} from '../models/integration/types'
 
 //$TsFixMe fallback values for js, use IntegrationType enum instead
 export const AIRCALL_INTEGRATION_TYPE = 'aircall'
@@ -87,21 +81,3 @@ export const INTEGRATION_DATA_ITEM_TYPES = Object.freeze(
 )
 
 export const PRODUCTS_PER_PAGE = 30
-
-export const isGenericEmailIntegration = (
-    integration: Integration
-): integration is EmailIntegration | GmailIntegration | OutlookIntegration => {
-    return (EMAIL_INTEGRATION_TYPES as IntegrationType[]).includes(
-        integration.type
-    )
-}
-
-export const getIsBaseEmailAddress = (emailAddress: string) => {
-    return emailAddress.endsWith(window.EMAIL_FORWARDING_DOMAIN)
-}
-
-export const getIsBaseEmailIntegration = (
-    emailIntegration: EmailIntegration | GmailIntegration | OutlookIntegration
-): emailIntegration is EmailIntegration => {
-    return getIsBaseEmailAddress(emailIntegration.meta.address)
-}
