@@ -18,28 +18,25 @@ import Loader from 'pages/common/components/Loader/Loader'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import LinkAlert from 'pages/common/components/Alert/LinkAlert'
 import {PolicyEnum} from 'models/selfServiceConfiguration/types'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {
-    getCurrentAccountState,
-    hasAutomationLegacyFeatures,
-} from 'state/currentAccount/selectors'
-import {getHasAutomationAddOn} from 'state/billing/selectors'
+    getHasAutomationAddOn,
+    getHasLegacyAutomationAddOnFeatures,
+} from 'state/billing/selectors'
 import {GorgiasChatIntegrationSelfServicePaywall} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
 import {openChat} from 'utils'
 import settingsCss from 'pages/settings/settings.less'
 import SelfServicePreferencesNavbar from 'pages/settings/selfService/components/SelfServicePreferencesNavbar'
 import {useConfigurationData} from 'pages/settings/selfService/components/hooks'
 
-import {notify} from '../../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../../state/notifications/types'
-import {updateSelfServiceConfiguration} from '../../../../../models/selfServiceConfiguration/resources'
-import useAppDispatch from '../../../../../hooks/useAppDispatch'
-import {updateOrCreateIntegration} from '../../../../../state/integrations/actions'
-import {selfServiceConfigurationUpdated} from '../../../../../state/entities/selfServiceConfigurations/actions'
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../../store/middlewares/segmentTracker'
-import {CurrentAccountState} from '../../../../../state/currentAccount/types'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {updateSelfServiceConfiguration} from 'models/selfServiceConfiguration/resources'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {updateOrCreateIntegration} from 'state/integrations/actions'
+import {selfServiceConfigurationUpdated} from 'state/entities/selfServiceConfigurations/actions'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {CurrentAccountState} from 'state/currentAccount/types'
 import SelfServicePreview from '../QuickResponseFlowsPreferences/components/SelfServicePreview'
 import {PolicyRow} from './components/PolicyRow'
 import css from './OrderManagementFlowsPreferences.less'
@@ -52,7 +49,9 @@ export const OrderManagementFlowsPreferences = () => {
         selfServiceIntegration,
     } = useConfigurationData()
 
-    const hasSelfServiceV1Features = useAppSelector(hasAutomationLegacyFeatures)
+    const hasSelfServiceV1Features = useAppSelector(
+        getHasLegacyAutomationAddOnFeatures
+    )
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
     const account = useAppSelector<CurrentAccountState>(getCurrentAccountState)
     const dispatch = useAppDispatch()

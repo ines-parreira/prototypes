@@ -6,11 +6,9 @@ import {getSelfServiceConfigurations} from 'state/entities/selfServiceConfigurat
 import {
     getCurrentHelpdeskProduct,
     getHasAutomationAddOn,
+    getHasLegacyAutomationAddOnFeatures,
 } from 'state/billing/selectors'
-import {
-    getCurrentAccountState,
-    hasAutomationLegacyFeatures,
-} from 'state/currentAccount/selectors'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {SegmentEvent} from 'store/middlewares/segmentTracker'
 import AutomationSubscriptionModal from 'pages/settings/billing/automation/AutomationSubscriptionModal'
 import Button from 'pages/common/components/button/Button'
@@ -37,7 +35,9 @@ export const AutomationStatsSelfServiceMetric = ({
         getSelfServiceConfigurations
     )
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
-    const hasAutomationLegacy = useAppSelector(hasAutomationLegacyFeatures)
+    const hasAutomationLegacy = useAppSelector(
+        getHasLegacyAutomationAddOnFeatures
+    )
     const hasAccessToSelfService = hasAutomationLegacy || hasAutomationAddOn
 
     const account = useAppSelector(getCurrentAccountState)

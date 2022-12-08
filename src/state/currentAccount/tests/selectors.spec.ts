@@ -373,36 +373,6 @@ describe('current account selectors', () => {
         })
     })
 
-    describe('hasAutomationLegacyFeatures()', () => {
-        it('should return false when account is created after 2021-10-04', () => {
-            expect(
-                selectors.hasAutomationLegacyFeatures(
-                    setStateWith(
-                        setStateWith(
-                            defaultState,
-                            ['current_subscription', 'status'],
-                            'active'
-                        ),
-                        ['created_datetime'],
-                        '2021-10-07'
-                    )
-                )
-            ).toBeFalsy()
-        })
-
-        it('should return true when account is not trialing and created before 2021-10-04', () => {
-            expect(
-                selectors.hasAutomationLegacyFeatures(
-                    setStateWith(
-                        defaultState,
-                        ['current_subscription', 'status'],
-                        'active'
-                    )
-                )
-            ).toBeTruthy()
-        })
-    })
-
     describe('getTwoFAEnforcedDatetime()', () => {
         it('should return the datetime when 2fa was enforced', () => {
             expect(

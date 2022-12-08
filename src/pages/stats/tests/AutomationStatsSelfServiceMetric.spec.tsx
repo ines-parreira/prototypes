@@ -13,10 +13,15 @@ import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import {billingState} from 'fixtures/billing'
 import {
     HELPDESK_PRODUCT_ID,
+    legacyBasicAutomationPrice,
+    legacyBasicHelpdeskPrice,
     products,
     starterHelpdeskPrice,
 } from 'fixtures/productPrices'
-import {automationSubscriptionProductPrices} from 'fixtures/account'
+import {
+    automationSubscriptionProductPrices,
+    legacyWithoutAutomationAddOnProductPrices,
+} from 'fixtures/account'
 import {entitiesInitialState} from 'fixtures/entities'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -47,16 +52,16 @@ describe('<AutomationStatsSelfServiceMetric />', () => {
         id: 'automated_via_selfservice-2',
     }
 
-    const afterAddonLaunch = '2021-11-01T00:00:00Z'
-    const beforeAddonLaunch = '2021-01-01T00:00:00Z'
-
     const productsWithStarterPrice = _cloneDeep(products)
     productsWithStarterPrice[0].prices.push(starterHelpdeskPrice)
+
+    const productsWithLegacy = _cloneDeep(products)
+    productsWithLegacy[0].prices.push(legacyBasicHelpdeskPrice)
+    productsWithLegacy[1].prices.push(legacyBasicAutomationPrice)
 
     const defaultState = {
         billing: fromJS({...billingState, products: productsWithStarterPrice}),
         currentAccount: fromJS({
-            created_datetime: afterAddonLaunch,
             current_subscription: {
                 products: {
                     [HELPDESK_PRODUCT_ID]: starterHelpdeskPrice.price_id,
@@ -97,37 +102,18 @@ describe('<AutomationStatsSelfServiceMetric />', () => {
     it.each<[string, state]>([
         ['paywall', defaultState],
         [
-            'setup and paywall',
+            'legacy',
             {
-                ...defaultState,
                 currentAccount: fromJS({
-                    created_datetime: beforeAddonLaunch,
                     current_subscription: {
-                        products: {
-                            [HELPDESK_PRODUCT_ID]:
-                                starterHelpdeskPrice.price_id,
-                        },
+                        products: legacyWithoutAutomationAddOnProductPrices,
                     },
                 }),
-            },
-        ],
-        [
-            'stats and paywall',
-            {
-                ...defaultState,
-                currentAccount: fromJS({
-                    created_datetime: beforeAddonLaunch,
-                    current_subscription: {
-                        products: {
-                            [HELPDESK_PRODUCT_ID]:
-                                starterHelpdeskPrice.price_id,
-                        },
-                    },
+                billing: fromJS({
+                    ...billingState,
+                    products: productsWithLegacy,
                 }),
-                entities: {
-                    ...defaultState.entities,
-                    selfServiceConfigurations: {'0': selfServiceConfiguration},
-                },
+                entities: defaultState.entities,
             },
         ],
         [
@@ -135,7 +121,6 @@ describe('<AutomationStatsSelfServiceMetric />', () => {
             {
                 ...defaultState,
                 currentAccount: fromJS({
-                    created_datetime: afterAddonLaunch,
                     current_subscription: {
                         products: automationSubscriptionProductPrices,
                     },
@@ -146,7 +131,6 @@ describe('<AutomationStatsSelfServiceMetric />', () => {
             'stats',
             {
                 currentAccount: fromJS({
-                    created_datetime: afterAddonLaunch,
                     current_subscription: {
                         products: automationSubscriptionProductPrices,
                     },

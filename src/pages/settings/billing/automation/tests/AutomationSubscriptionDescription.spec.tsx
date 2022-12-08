@@ -5,17 +5,24 @@ import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 
-import {account, automationSubscriptionProductPrices} from 'fixtures/account'
+import _cloneDeep from 'lodash/cloneDeep'
+import {
+    account,
+    automationSubscriptionProductPrices,
+    discountedAutomationAddOnProductPrices,
+    legacyWithoutAutomationAddOnProductPrices,
+} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {
-    AUTOMATION_PRODUCT_ID,
-    HELPDESK_PRODUCT_ID,
+    basicDiscountedAutomationPrice,
     legacyBasicAutomationPrice,
     legacyBasicHelpdeskPrice,
+    products,
 } from 'fixtures/productPrices'
 import {RootState, StoreDispatch} from 'state/types'
 
 import AutomationSubscriptionDescription from '../AutomationSubscriptionDescription'
+import * as billingFixtures from '../../../../../fixtures/billing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -73,15 +80,26 @@ describe('<AutomationSubscriptionDescription />', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should render for customers already with legacy add-on features', () => {
+    it('should render for customers with legacy automation add-on', () => {
+        const productsWithLegacy = _cloneDeep(products)
+        productsWithLegacy[0].prices.push(legacyBasicHelpdeskPrice)
+        productsWithLegacy[1].prices.push(legacyBasicAutomationPrice)
+
         const {container} = render(
             <Provider
                 store={mockStore({
                     ...defaultState,
-                    currentAccount: defaultState.currentAccount?.setIn(
-                        ['created_datetime'],
-                        '2021-09-12T00:00:00Z'
-                    ),
+                    currentAccount: fromJS({
+                        ...account,
+                        current_subscription: {
+                            ...account.current_subscription,
+                            products: legacyWithoutAutomationAddOnProductPrices,
+                        },
+                    }),
+                    billing: fromJS({
+                        ...billingState,
+                        products: productsWithLegacy,
+                    }),
                 })}
             >
                 <AutomationSubscriptionDescription />
@@ -90,29 +108,27 @@ describe('<AutomationSubscriptionDescription />', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should render a discounted price when the price is discounted', () => {
+    it('should render a discounted price for customers with automation add-on discount', () => {
+        const productsWithDiscountedAutomationPrice = _cloneDeep(products)
+        productsWithDiscountedAutomationPrice[1].prices.push(
+            basicDiscountedAutomationPrice
+        )
+
         const {container} = render(
             <Provider
                 store={mockStore({
                     ...defaultState,
-                    billing: defaultState.billing
-                        ?.setIn(
-                            ['products', 0, 'prices'],
-                            fromJS([legacyBasicHelpdeskPrice])
-                        )
-                        ?.setIn(
-                            ['products', 1, 'prices'],
-                            fromJS([legacyBasicAutomationPrice])
-                        ),
-                    currentAccount: defaultState.billing?.setIn(
-                        ['current_subscription', 'products'],
-                        fromJS({
-                            [HELPDESK_PRODUCT_ID]:
-                                legacyBasicHelpdeskPrice.price_id,
-                            [AUTOMATION_PRODUCT_ID]:
-                                legacyBasicAutomationPrice.price_id,
-                        })
-                    ),
+                    currentAccount: fromJS({
+                        ...account,
+                        current_subscription: {
+                            ...account.current_subscription,
+                            products: discountedAutomationAddOnProductPrices,
+                        },
+                    }),
+                    billing: fromJS({
+                        ...billingFixtures.billingState,
+                        products: productsWithDiscountedAutomationPrice,
+                    }),
                 })}
             >
                 <AutomationSubscriptionDescription />

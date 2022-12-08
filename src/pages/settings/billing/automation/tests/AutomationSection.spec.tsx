@@ -5,10 +5,20 @@ import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 
-import {account, automationSubscriptionProductPrices} from 'fixtures/account'
+import _cloneDeep from 'lodash/cloneDeep'
+import {
+    account,
+    automationSubscriptionProductPrices,
+    legacyWithoutAutomationAddOnProductPrices,
+} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {RootState, StoreDispatch} from 'state/types'
 
+import {
+    legacyBasicAutomationPrice,
+    legacyBasicHelpdeskPrice,
+    products,
+} from 'fixtures/productPrices'
 import AutomationSection from '../AutomationSection'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -57,14 +67,25 @@ describe('<AutomationSection />', () => {
     })
 
     it('should render for customers already with legacy add-on features', () => {
+        const productsWithLegacy = _cloneDeep(products)
+        productsWithLegacy[0].prices.push(legacyBasicHelpdeskPrice)
+        productsWithLegacy[1].prices.push(legacyBasicAutomationPrice)
+
         const {container} = render(
             <Provider
                 store={mockStore({
                     ...defaultState,
-                    currentAccount: defaultState.currentAccount?.setIn(
-                        ['current_subscription', 'start_datetime'],
-                        '2021-08-30T00:00:00Z'
-                    ),
+                    currentAccount: fromJS({
+                        ...account,
+                        current_subscription: {
+                            ...account.current_subscription,
+                            products: legacyWithoutAutomationAddOnProductPrices,
+                        },
+                    }),
+                    billing: fromJS({
+                        ...billingState,
+                        products: productsWithLegacy,
+                    }),
                 })}
             >
                 <AutomationSection />

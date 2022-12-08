@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<AutomationSubscriptionDescription /> should render a discounted price when the price is discounted 1`] = `
+exports[`<AutomationSubscriptionDescription /> should render a discounted price for customers with automation add-on discount 1`] = `
 <div
   class="description"
 >
@@ -11,14 +11,13 @@ exports[`<AutomationSubscriptionDescription /> should render a discounted price 
       Your current subscription started on
        
       <b>
-        Sep 03
+        Aug 23
       </b>
       .
       <br />
       <br />
       If you cancel now, you will lose access to self-service
        
-      custom report issue flow 
       immediately.
     </div>
     <div
@@ -63,7 +62,6 @@ exports[`<AutomationSubscriptionDescription /> should render for customers alrea
       <br />
       If you cancel now, you will lose access to self-service
        
-      custom report issue flow 
       immediately.
     </div>
     <div
@@ -84,7 +82,7 @@ exports[`<AutomationSubscriptionDescription /> should render for customers alrea
 </div>
 `;
 
-exports[`<AutomationSubscriptionDescription /> should render for customers already with legacy add-on features 1`] = `
+exports[`<AutomationSubscriptionDescription /> should render for customers with legacy automation add-on 1`] = `
 <div
   class="description"
 >
@@ -111,7 +109,7 @@ exports[`<AutomationSubscriptionDescription /> should render for customers alrea
         class="amount"
       >
         <b>
-          $30
+          $15
         </b>
          
         / 

@@ -2,6 +2,7 @@ import {createSelector} from 'reselect'
 import {fromJS, List, Map} from 'immutable'
 import _isEmpty from 'lodash/isEmpty'
 
+import moment from 'moment-timezone'
 import {
     getFormattedAmount,
     getFullPrice,
@@ -18,7 +19,10 @@ import {
     AccountFeatureMetadata,
     CurrentAccountState,
 } from '../currentAccount/types'
-import {getCurrentSubscription} from '../currentAccount/selectors'
+import {
+    getCurrentAccountState,
+    getCurrentSubscription,
+} from '../currentAccount/selectors'
 import {getActiveIntegrations} from '../integrations/selectors'
 import {RootState} from '../types'
 
@@ -206,6 +210,30 @@ export const getAutomationPricesMap = createSelector(
 export const getHasAutomationAddOn = createSelector(
     getCurrentAutomationProduct,
     (price) => !!price
+)
+
+export const getHasLegacyAutomationAddOnFeatures = createSelector<
+    RootState,
+    boolean,
+    CurrentAccountState,
+    HelpdeskPrice | undefined
+>(
+    getCurrentAccountState,
+    getCurrentHelpdeskProduct,
+    (accountState, product) => {
+        const automationAddonLaunchDate = '2021-10-04T00:00:00Z'
+        const accountCreatedBeforeAutomationAddonLaunch = moment
+            .utc(accountState.get('created_datetime'))
+            .isBefore(moment.utc(automationAddonLaunchDate))
+
+        const hasLegacyAutomationAddonFeatures =
+            !!product?.legacy_automation_addon_features
+
+        return (
+            accountCreatedBeforeAutomationAddonLaunch &&
+            hasLegacyAutomationAddonFeatures
+        )
+    }
 )
 
 export const getCurrentHelpdeskAutomationAddonAmount = createSelector(

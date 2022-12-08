@@ -11,7 +11,6 @@ import {
 import {updateSubscription} from 'state/currentAccount/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {hasAutomationLegacyFeatures} from 'state/currentAccount/selectors'
 import Button from 'pages/common/components/button/Button'
 import useAppSelector from 'hooks/useAppSelector'
 
@@ -61,7 +60,6 @@ const AutomationSubscriptionModal = ({
 }: Props) => {
     const dispatch = useAppDispatch()
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
-    const isSelfServeLegacy = useAppSelector(hasAutomationLegacyFeatures)
     const helpdeskPrice = useAppSelector(getCurrentHelpdeskProduct)
 
     const [{loading: isSubscriptionUpdating}, handleSubscriptionUpdate] =
@@ -83,9 +81,7 @@ const AutomationSubscriptionModal = ({
         ? headerDescription
         : hasAutomationAddOn
         ? 'Manage automation add-on'
-        : isSelfServeLegacy
-        ? 'Confirm automation add-on subscription'
-        : 'Confirm automation subscription'
+        : 'Confirm automation add-on subscription'
 
     const onConfirm = () => {
         helpdeskPrice?.addons &&

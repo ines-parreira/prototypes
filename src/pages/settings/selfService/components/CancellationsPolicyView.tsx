@@ -42,8 +42,10 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {hasAutomationLegacyFeatures} from 'state/currentAccount/selectors'
-import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {
+    getHasAutomationAddOn,
+    getHasLegacyAutomationAddOnFeatures,
+} from 'state/billing/selectors'
 import {GorgiasChatIntegrationSelfServicePaywall} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
 import settingsCss from 'pages/settings/settings.less'
 import TicketAttachments from 'pages/tickets/detail/components/ReplyArea/TicketAttachments'
@@ -68,7 +70,9 @@ export const CancellationsPolicyView = () => {
 
     const {isLoadingConfig, configuration} = useConfigurationData()
 
-    const hasSelfServiceV1Features = useAppSelector(hasAutomationLegacyFeatures)
+    const hasSelfServiceV1Features = useAppSelector(
+        getHasLegacyAutomationAddOnFeatures
+    )
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
     const hasAutomatedResponseOrderManagementFlag =
         useFlags()[FeatureFlagKey.SelfServiceAutomatedResponseOrderManagement]

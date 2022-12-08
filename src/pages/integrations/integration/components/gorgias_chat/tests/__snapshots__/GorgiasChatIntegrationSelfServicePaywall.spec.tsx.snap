@@ -1,6 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`GorgiasChatIntegrationSelfServicePaywall should render the paywall 1`] = `
+exports[
+    `GorgiasChatIntegrationSelfServicePaywall should render the paywall 1`
+] = `
 <div
   class="full-width pageWrapper"
 >
@@ -88,9 +90,11 @@ exports[`GorgiasChatIntegrationSelfServicePaywall should render the paywall 1`] 
     </div>
   </div>
 </div>
-`;
+`
 
-exports[`GorgiasChatIntegrationSelfServicePaywall should show modal on button click 1`] = `
+exports[
+    `GorgiasChatIntegrationSelfServicePaywall should show modal on button click 1`
+] = `
 <div
   class="modal fade"
   role="dialog"
@@ -135,7 +139,15 @@ exports[`GorgiasChatIntegrationSelfServicePaywall should show modal on button cl
             class="flex"
           >
             <div>
-              Unlock advanced features of the self-service, and track the performance!
+              Unlock the 
+              <b>
+                self-service
+              </b>
+               features, to answer customers 
+              <b>
+                quickly, 24/7
+              </b>
+              !
               <br />
               Questions?
                
@@ -249,4 +261,4 @@ exports[`GorgiasChatIntegrationSelfServicePaywall should show modal on button cl
     </div>
   </div>
 </div>
-`;
+`

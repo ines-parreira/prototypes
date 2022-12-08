@@ -1,16 +1,14 @@
 import React from 'react'
 import moment from 'moment-timezone'
 
-import {
-    getCurrentSubscription,
-    hasAutomationLegacyFeatures,
-} from 'state/currentAccount/selectors'
+import {getCurrentSubscription} from 'state/currentAccount/selectors'
 import {
     getCurrentHelpdeskAutomationAddonAmount,
     getHasAutomationAddOn,
     getCurrentAutomationFullAmount,
     getCurrentHelpdeskCurrency,
     getCurrentHelpdeskInterval,
+    getHasLegacyAutomationAddOnFeatures,
 } from 'state/billing/selectors'
 import SubscriptionAmount from 'pages/settings/common/SubscriptionAmount'
 import useAppSelector from 'hooks/useAppSelector'
@@ -23,7 +21,9 @@ const AutomationSubscriptionDescription = () => {
     const currentSubscription = useAppSelector(getCurrentSubscription)
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
     const currentSubscriptionStart = currentSubscription.get('start_datetime')
-    const isSelfServeLegacy = useAppSelector(hasAutomationLegacyFeatures)
+    const isSelfServeLegacy = useAppSelector(
+        getHasLegacyAutomationAddOnFeatures
+    )
     const addOnAmount = useAppSelector(getCurrentHelpdeskAutomationAddonAmount)
     const fullAddOnAmount = useAppSelector(getCurrentAutomationFullAmount)
     const productCurrency = useAppSelector(getCurrentHelpdeskCurrency)

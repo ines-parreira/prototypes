@@ -15,7 +15,7 @@ import {SelfServiceConfigurationsState} from 'state/entities/selfServiceConfigur
 import {RootState, StoreDispatch} from 'state/types'
 import {updateSelfServiceConfiguration} from 'models/selfServiceConfiguration/resources'
 import {billingState} from 'fixtures/billing'
-import {account} from 'fixtures/account'
+import {account, automationSubscriptionProductPrices} from 'fixtures/account'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {entitiesInitialState} from 'fixtures/entities'
 import {CancellationsPolicyView} from '../CancellationsPolicyView'
@@ -97,8 +97,10 @@ describe('<CancellationsPolicyView/>', () => {
                 automation_track_order_flow: {enabled: true},
                 automation_report_issue_flow: {enabled: true},
             },
-            created_datetime: '2021-08-01T00:00:00Z',
-            current_subscription: account.current_subscription,
+            current_subscription: {
+                ...account.current_subscription,
+                products: automationSubscriptionProductPrices,
+            },
         }),
         entities: entitiesInitialState,
         integrations: fromJS({}),

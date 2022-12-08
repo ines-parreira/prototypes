@@ -9,8 +9,8 @@ import {
     getHasAutomationAddOn,
     getCurrentHelpdeskCurrency,
     getCurrentHelpdeskInterval,
+    getHasLegacyAutomationAddOnFeatures,
 } from 'state/billing/selectors'
-import {hasAutomationLegacyFeatures} from 'state/currentAccount/selectors'
 import SubscriptionAmount from 'pages/settings/common/SubscriptionAmount'
 import Button from 'pages/common/components/button/Button'
 import useAppSelector from 'hooks/useAppSelector'
@@ -27,7 +27,9 @@ const AutomationSection = () => {
 
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
         useState(false)
-    const isSelfServeLegacy = useAppSelector(hasAutomationLegacyFeatures)
+    const isSelfServeLegacy = useAppSelector(
+        getHasLegacyAutomationAddOnFeatures
+    )
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
 
     return (

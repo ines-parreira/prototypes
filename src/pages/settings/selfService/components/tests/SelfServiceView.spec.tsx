@@ -12,7 +12,7 @@ import {
 import {RootState, StoreDispatch} from 'state/types'
 import {fetchSelfServiceConfigurations} from 'models/selfServiceConfiguration/resources'
 import {SelfServiceConfigurationsState} from 'state/entities/selfServiceConfigurations/types'
-import {account} from 'fixtures/account'
+import {account, automationSubscriptionProductPrices} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {automationPriceFeatures} from 'fixtures/productPrices'
 import {entitiesInitialState} from 'fixtures/entities'
@@ -73,7 +73,10 @@ describe('<SelfServiceView/>', () => {
         currentAccount: fromJS({
             ...account,
             features: automationPriceFeatures,
-            created_datetime: '2021-08-01T00:00:00Z',
+            current_subscription: {
+                ...account.current_subscription,
+                products: automationSubscriptionProductPrices,
+            },
         }),
         entities: entitiesInitialState,
         integrations: fromJS({}),

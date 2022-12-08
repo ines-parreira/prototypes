@@ -19,7 +19,7 @@ import {agents} from 'fixtures/agents'
 import {teams} from 'fixtures/teams'
 import {StatsFilters} from 'models/stat/types'
 import {billingState} from 'fixtures/billing'
-import {account} from 'fixtures/account'
+import {account, automationSubscriptionProductPrices} from 'fixtures/account'
 import useStatResource from '../useStatResource'
 import AutomationOverview from '../AutomationOverview'
 
@@ -58,7 +58,13 @@ describe('AutomationOverview', () => {
             selfServiceConfigurations: {},
         },
         billing: fromJS(billingState),
-        currentAccount: fromJS(account),
+        currentAccount: fromJS({
+            ...account,
+            current_subscription: {
+                ...account.current_subscription,
+                products: automationSubscriptionProductPrices,
+            },
+        }),
     } as RootState
 
     beforeEach(() => {

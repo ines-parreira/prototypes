@@ -2,6 +2,7 @@ import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
 import _cloneDeep from 'lodash/cloneDeep'
 
+import moment from 'moment'
 import {
     AUTOMATION_PRODUCT_ID,
     automationProduct,
@@ -14,12 +15,17 @@ import {
     legacyBasicHelpdeskPrice,
     products,
     customHelpdeskPrice,
+    legacyBasicAutomationPrice,
 } from 'fixtures/productPrices'
 import * as billingFixtures from 'fixtures/billing'
-import {automationSubscriptionProductPrices} from 'fixtures/account'
+import {
+    automationSubscriptionProductPrices,
+    legacyWithoutAutomationAddOnProductPrices,
+} from 'fixtures/account'
 import {PlanInterval} from 'models/billing/types'
 import {getFormattedAmount} from 'models/billing/utils'
 import {AccountFeature} from 'state/currentAccount/types'
+import {billingState} from 'fixtures/billing'
 import {RootState} from '../../types'
 import * as selectors from '../selectors'
 import {initialState} from '../reducers'
@@ -228,6 +234,87 @@ describe('billing selectors', () => {
 
         it('should return false', () => {
             expect(selectors.getHasAutomationAddOn(state)).toBeFalsy()
+        })
+    })
+
+    describe('getHasLegacyAutomationAddOnFeatures', () => {
+        const automationAddonLaunchDate = '2021-10-04T00:00:00Z'
+        const productsWithLegacy = _cloneDeep(products)
+        productsWithLegacy[0].prices.push(legacyBasicHelpdeskPrice)
+        productsWithLegacy[1].prices.push(legacyBasicAutomationPrice)
+
+        it('should return true when the account was created before the add-on launch date and has legacy features', () => {
+            expect(
+                selectors.getHasLegacyAutomationAddOnFeatures({
+                    ...state,
+                    currentAccount: fromJS({
+                        created_datetime: moment
+                            .utc(automationAddonLaunchDate)
+                            .subtract(10, 'd'),
+                        current_subscription: {
+                            products: legacyWithoutAutomationAddOnProductPrices,
+                        },
+                    }),
+                    billing: fromJS({
+                        ...billingState,
+                        products: productsWithLegacy,
+                    }),
+                })
+            ).toBeTruthy()
+        })
+
+        it('should return false when the account was created before the add-on launch date and does not have legacy features', () => {
+            expect(
+                selectors.getHasLegacyAutomationAddOnFeatures({
+                    ...state,
+                    currentAccount: fromJS({
+                        created_datetime: moment
+                            .utc(automationAddonLaunchDate)
+                            .subtract(10, 'd'),
+                    }),
+                    billing: fromJS({
+                        ...billingState,
+                        products: productsWithLegacy,
+                    }),
+                })
+            ).toBeFalsy()
+        })
+
+        it('should return false when the account was created after the add-on launch date and has legacy features', () => {
+            expect(
+                selectors.getHasLegacyAutomationAddOnFeatures({
+                    ...state,
+                    currentAccount: fromJS({
+                        current_subscription: {
+                            products: legacyWithoutAutomationAddOnProductPrices,
+                        },
+                        created_datetime: moment
+                            .utc(automationAddonLaunchDate)
+                            .add(10, 'd'),
+                    }),
+                    billing: fromJS({
+                        ...billingState,
+                        products: productsWithLegacy,
+                    }),
+                })
+            ).toBeFalsy()
+        })
+
+        it('should return false when the account was created after the add-on launch date and does not legacy features', () => {
+            expect(
+                selectors.getHasLegacyAutomationAddOnFeatures({
+                    ...state,
+                    currentAccount: fromJS({
+                        created_datetime: moment
+                            .utc(automationAddonLaunchDate)
+                            .add(10, 'd'),
+                    }),
+                    billing: fromJS({
+                        ...billingState,
+                        products: productsWithLegacy,
+                    }),
+                })
+            ).toBeFalsy()
         })
     })
 

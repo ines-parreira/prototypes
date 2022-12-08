@@ -1,12 +1,11 @@
 import {createSelector} from 'reselect'
-import {fromJS, Map, List} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 import moment, {Moment} from 'moment-timezone'
 
 import {RootState} from '../types'
 import {toJS} from '../../utils'
 import {isFeatureEnabled} from '../../utils/account'
 import {getTimezone} from '../currentUser/selectors'
-
 import {
     AccountFeature,
     AccountSettingBusinessHours,
@@ -15,8 +14,6 @@ import {
     ShopifyBillingStatus,
     ViewsOrderingAccountSetting,
 } from './types'
-
-// types
 
 export const getCurrentAccountState = (state: RootState) =>
     state.currentAccount || fromJS({})
@@ -74,18 +71,6 @@ export const getCurrentSubscription = createSelector<
 export const isTrialing = createSelector<RootState, boolean, Map<any, any>>(
     getCurrentSubscription,
     (state) => state.get('status') === 'trialing'
-)
-
-// see specs on automation add-on pricing https://linear.app/gorgias/issue/COR-1252#comment-7d58ba65
-// TODO: change date once the exact release is announced
-export const hasAutomationLegacyFeatures = createSelector<
-    RootState,
-    boolean,
-    Map<any, any>
->(getCurrentAccountState, (state) =>
-    moment
-        .utc(state.get('created_datetime'))
-        .isBefore(moment.utc('2021-10-04T00:00:00Z'))
 )
 
 export const hasCreditCard = createSelector<RootState, boolean, Map<any, any>>(

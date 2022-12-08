@@ -63,6 +63,15 @@ export const automationPriceFeatures: AutomationPriceFeatures = {
     [AccountFeature.AutomationSelfServiceStatistics]: {enabled: true},
 }
 
+export const legacyAutomationPriceFeatures: AutomationPriceFeatures = {
+    [AccountFeature.AutomationManagedRules]: {enabled: false},
+    [AccountFeature.AutomationTrackOrderFlow]: {enabled: true},
+    [AccountFeature.AutomationReportIssueFlow]: {enabled: true},
+    [AccountFeature.AutomationCancellationsFlow]: {enabled: true},
+    [AccountFeature.AutomationReturnFlow]: {enabled: true},
+    [AccountFeature.AutomationSelfServiceStatistics]: {enabled: false},
+}
+
 const proHelpdeskPriceFeatures: HelpdeskPriceFeatures = {
     [AccountFeature.Api1stPartyRateLimit]: {
         enabled: true,
@@ -505,6 +514,7 @@ export const legacyBasicHelpdeskPrice: HelpdeskPrice = {
     cost_per_ticket: 0.06,
     currency: 'usd',
     features: basicHelpdeskPriceFeatures,
+    legacy_automation_addon_features: legacyAutomationPriceFeatures,
     free_tickets: 600,
     integrations: 7,
     interval: PlanInterval.Month,

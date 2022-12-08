@@ -17,8 +17,10 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {GorgiasChatIntegrationSelfServicePaywall} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
 import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
-import {getHasAutomationAddOn} from 'state/billing/selectors'
-import {hasAutomationLegacyFeatures} from 'state/currentAccount/selectors'
+import {
+    getHasAutomationAddOn,
+    getHasLegacyAutomationAddOnFeatures,
+} from 'state/billing/selectors'
 import {getIconFromUrl} from 'utils'
 import {useStandaloneHelpCenterAfterDismiss} from 'pages/settings/helpCenter/hooks/useStandaloneHelpCenterAfterDismiss'
 import {
@@ -48,7 +50,9 @@ const _findSelfServiceIntegration = (
 
 export const SelfServiceView = () => {
     const dispatch = useAppDispatch()
-    const hasSelfServiceV1Features = useAppSelector(hasAutomationLegacyFeatures)
+    const hasSelfServiceV1Features = useAppSelector(
+        getHasLegacyAutomationAddOnFeatures
+    )
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
 
     const shopifyIntegrations = useAppSelector(

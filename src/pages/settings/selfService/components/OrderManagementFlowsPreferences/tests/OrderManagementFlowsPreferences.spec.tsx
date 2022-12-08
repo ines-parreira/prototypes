@@ -14,8 +14,7 @@ import {RootState, StoreDispatch} from 'state/types'
 import {updateSelfServiceConfiguration} from 'models/selfServiceConfiguration/resources'
 import {SelfServiceConfigurationsState} from 'state/entities/selfServiceConfigurations/types'
 import {billingState} from 'fixtures/billing'
-import {account} from 'fixtures/account'
-import {basicPlan} from 'fixtures/subscriptionPlan'
+import {account, automationSubscriptionProductPrices} from 'fixtures/account'
 import {entitiesInitialState} from 'fixtures/entities'
 import {OrderManagementFlowsPreferences} from '../OrderManagementFlowsPreferences'
 
@@ -78,7 +77,6 @@ const createSelfServiceConfigurationFixtures = (
 }
 
 describe('<OrderManagementFlowsPreferences/>', () => {
-    const automationPlanId = basicPlan.automation_addon_equivalent_plan!
     const shopifyIntegrations = createShopifyIntegrationFixtures(4)
     const selfServiceConfigurations = createSelfServiceConfigurationFixtures(4)
 
@@ -87,22 +85,10 @@ describe('<OrderManagementFlowsPreferences/>', () => {
             ...account,
             current_subscription: {
                 ...account.current_subscription,
-                plan: basicPlan.id,
-                status: 'active',
+                products: automationSubscriptionProductPrices,
             },
         }),
-        billing: fromJS({
-            ...billingState,
-            plans: fromJS({
-                [basicPlan.id]: basicPlan,
-                [automationPlanId]: {
-                    ...basicPlan,
-                    id: automationPlanId,
-                    amount: basicPlan.amount + 2000,
-                    automation_addon_included: true,
-                },
-            }),
-        }),
+        billing: fromJS(billingState),
         entities: entitiesInitialState,
         integrations: fromJS({}),
     }

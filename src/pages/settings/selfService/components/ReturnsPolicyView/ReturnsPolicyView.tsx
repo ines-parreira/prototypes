@@ -42,8 +42,10 @@ import useAppSelector from 'hooks/useAppSelector'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {GorgiasChatIntegrationSelfServicePaywall} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
-import {hasAutomationLegacyFeatures} from 'state/currentAccount/selectors'
-import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {
+    getHasAutomationAddOn,
+    getHasLegacyAutomationAddOnFeatures,
+} from 'state/billing/selectors'
 import settingsCss from 'pages/settings/settings.less'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {Integration, IntegrationType} from 'models/integration/types'
@@ -96,7 +98,9 @@ export const ReturnsPolicyView = () => {
     const [isLandingPage, setIsLandingPage] = useState(true)
     const [isResponseTooLong, setIsResponseTooLong] = useState(false)
 
-    const hasSelfServiceV1Features = useAppSelector(hasAutomationLegacyFeatures)
+    const hasSelfServiceV1Features = useAppSelector(
+        getHasLegacyAutomationAddOnFeatures
+    )
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
     const httpIntegrations = useAppSelector(getHttpIntegrations)
 

@@ -30,22 +30,15 @@ exports[`<AutomationSection /> should render 1`] = `
       class="description"
     >
       <p>
-        Leverage the power of the
-         
+        Leverage the power of 
         <b>
-          advanced self-service features
+          self-service
         </b>
-         like customized report issue flow and self-service integrated in help center!
-        <br />
+         to answer customers 
         <b>
-          Track
+          quickly, 24/7
         </b>
-         your customers’ requests and see
-         
-        <b>
-          how many you automate
-        </b>
-        .
+        . Activate self-tracking, return & cancel order flows, and custom report issue workflows!
       </p>
     </div>
     <div
@@ -175,7 +168,7 @@ exports[`<AutomationSection /> should render for customers already with legacy a
         class="amount"
       >
         <b>
-          $30
+          $15
         </b>
          
         / 
@@ -265,22 +258,15 @@ exports[`<AutomationSection /> should render for trialing customers 1`] = `
       class="description"
     >
       <p>
-        Leverage the power of the
-         
+        Leverage the power of 
         <b>
-          advanced self-service features
+          self-service
         </b>
-         like customized report issue flow and self-service integrated in help center!
-        <br />
+         to answer customers 
         <b>
-          Track
+          quickly, 24/7
         </b>
-         your customers’ requests and see
-         
-        <b>
-          how many you automate
-        </b>
-        .
+        . Activate self-tracking, return & cancel order flows, and custom report issue workflows!
       </p>
     </div>
     <div
