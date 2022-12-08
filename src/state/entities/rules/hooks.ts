@@ -19,8 +19,8 @@ export const useRules = (): [RulesState | null, boolean] => {
             try {
                 loading = true
                 void fetchRules().then((res) => {
-                    dispatch(rulesFetched(res.data))
                     loading = false
+                    dispatch(rulesFetched(res.data))
                 })
             } catch (error) {
                 void dispatch(
