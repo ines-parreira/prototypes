@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`custom field resources createCustomField should resolve with a new CustomField on success 1`] = `
+Object {
+  "created_datetime": "2022-01-02T03:04:05.123456+00:00",
+  "deactivated_datetime": null,
+  "entity_type": "ticket",
+  "id": 123,
+  "name": "Test field",
+  "order": 123,
+  "updated_datetime": "2022-01-02T03:04:05.123456+00:00",
+  "value_required": false,
+  "value_type_settings": Object {
+    "placeholder": "Test placeholder",
+    "type": "text",
+  },
+}
+`;
+
+exports[`custom field resources createCustomField should resolve with a new CustomField on success 2`] = `
+Object {
+  "delete": Array [],
+  "get": Array [],
+  "head": Array [],
+  "list": Array [],
+  "options": Array [],
+  "patch": Array [],
+  "post": Array [
+    Object {
+      "data": "{\\"entity_type\\":\\"ticket\\",\\"name\\":\\"Test field\\",\\"order\\":123,\\"value_required\\":false,\\"value_type_settings\\":{\\"type\\":\\"text\\",\\"placeholder\\":\\"Test placeholder\\"}}",
+      "headers": Object {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json;charset=utf-8",
+        "X-CSRF-Token": "abcd",
+        "X-Gorgias-User-Client": "web",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "post",
+      "timeout": 0,
+      "transformRequest": Array [
+        [Function],
+      ],
+      "transformResponse": Array [
+        [Function],
+      ],
+      "url": "/api/custom-fields",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "put": Array [],
+}
+`;

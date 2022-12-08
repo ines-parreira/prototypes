@@ -1,0 +1,191 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AddFieldForm/> should create custom field if the save button is clicked 1`] = `
+Object {
+  "delete": Array [],
+  "get": Array [],
+  "head": Array [],
+  "list": Array [],
+  "options": Array [],
+  "patch": Array [],
+  "post": Array [
+    Object {
+      "data": "{\\"entity_type\\":\\"ticket\\",\\"name\\":\\"Test name\\",\\"order\\":1,\\"value_required\\":false,\\"value_type_settings\\":{\\"type\\":\\"text\\"}}",
+      "headers": Object {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json;charset=utf-8",
+        "X-CSRF-Token": "abcd",
+        "X-Gorgias-User-Client": "web",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "post",
+      "timeout": 0,
+      "transformRequest": Array [
+        [Function],
+      ],
+      "transformResponse": Array [
+        [Function],
+      ],
+      "url": "/api/custom-fields",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "put": Array [],
+}
+`;
+
+exports[`<AddFieldForm/> should render correctly 1`] = `
+<form>
+  <div
+    class="formRow"
+  >
+    <label
+      class="label label"
+      for="input-text-1"
+    >
+      Name
+      <abbr
+        aria-label="required"
+        class="abbr"
+        title="required"
+      >
+        *
+      </abbr>
+    </label>
+    <div
+      class="wrapper"
+    >
+      <input
+        class="input"
+        id="input-text-1"
+        name="name"
+        required=""
+        type="text"
+        value=""
+      />
+    </div>
+  </div>
+  <div
+    class="formRow"
+  >
+    <label
+      class="label label"
+      for="textarea-3"
+    >
+      Description
+    </label>
+    <textarea
+      aria-describedby="textarea-3-caption"
+      class="textarea"
+      id="textarea-3"
+      name="description"
+      rows="1"
+    />
+    <div
+      class="caption"
+      id="textarea-3-caption"
+    >
+      Not visible to agents
+    </div>
+  </div>
+  <div
+    class="formRow"
+  >
+    <label
+      class="label label"
+      for="checkbox-4"
+    >
+      <input
+        class="input"
+        id="checkbox-4"
+        name="checkbox-4"
+        type="checkbox"
+      />
+      Required to close ticket
+    </label>
+  </div>
+  <div
+    class="formRow"
+  >
+    <label
+      class="label formLabel"
+      for="type"
+    >
+      Type
+      <abbr
+        aria-label="required"
+        class="abbr"
+        title="required"
+      >
+        *
+      </abbr>
+    </label>
+    <div
+      class="wrapper"
+      role="listbox"
+      tabindex="0"
+    >
+      <div
+        class="inputWrapper"
+      >
+        <div
+          class="input"
+        >
+          Text
+        </div>
+        <i
+          class="affix suffix toggle material-icons"
+        >
+          arrow_drop_down
+        </i>
+      </div>
+    </div>
+    <div
+      class="caption"
+    >
+      Field type can't be changed once it's been saved.
+    </div>
+  </div>
+  <div
+    class="formRow"
+  >
+    <label
+      class="label label"
+      for="input-text-5"
+    >
+      Placeholder
+    </label>
+    <div
+      class="wrapper"
+    >
+      <input
+        class="input"
+        id="input-text-5"
+        name="settings.placeholder"
+        type="text"
+        value=""
+      />
+    </div>
+  </div>
+  <div
+    class="buttons"
+  >
+    <button
+      class="wrapper fill primary medium isDisabled"
+      disabled=""
+      type="submit"
+    >
+      Save Changes
+    </button>
+    <button
+      class="wrapper fill secondary medium"
+      type="button"
+    >
+      Cancel
+    </button>
+  </div>
+</form>
+`;

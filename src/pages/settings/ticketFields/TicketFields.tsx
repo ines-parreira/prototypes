@@ -1,11 +1,16 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
+
 import {FeatureFlagKey} from 'config/featureFlags'
+import useTitle from 'hooks/useTitle'
 import PageHeader from 'pages/common/components/PageHeader'
+import history from 'pages/history'
 import EmptyView from './components/EmptyView'
 
 export default function TicketFields() {
+    useTitle('Ticket fields')
+
     // Only show this page if the ticket fields feature flag is on
     const ticketFieldsEnabled = useFlags()[FeatureFlagKey.TicketFields]
     if (!ticketFieldsEnabled) {
@@ -24,9 +29,7 @@ export default function TicketFields() {
             <EmptyView
                 title="Get started with Ticket Fields"
                 button="Create Field"
-                onClick={() => {
-                    /* no-op */
-                }}
+                onClick={() => history.push('/app/settings/ticket-fields/add')}
             >
                 <p>
                     Set up custom fields to make sure your team handle tickets
