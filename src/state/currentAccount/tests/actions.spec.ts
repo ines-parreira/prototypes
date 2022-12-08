@@ -4,6 +4,10 @@ import thunk from 'redux-thunk'
 import MockAdapter from 'axios-mock-adapter'
 
 import {billingState} from 'fixtures/billing'
+import {
+    basicMonthlyHelpdeskPrice,
+    HELPDESK_PRODUCT_ID,
+} from 'fixtures/productPrices'
 import client from 'models/api/resources'
 import * as actions from '../actions'
 import {initialState} from '../reducers'
@@ -102,14 +106,14 @@ describe('current account actions', () => {
 
     describe('update subscription', () => {
         it('update subscription', () => {
-            const subscription = {plan: 'basic'}
+            const subscription = {prices: [basicMonthlyHelpdeskPrice.price_id]}
 
             mockServer
                 .onPut('/api/billing/subscription/')
                 .reply(202, subscription)
 
             return store
-                .dispatch(actions.updateSubscription(subscription as any))
+                .dispatch(actions.updateSubscription(subscription))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
     })
@@ -117,7 +121,9 @@ describe('current account actions', () => {
     describe('setCurrentSubscription()', () => {
         it('should return a Redux action to set the current subscription.', () => {
             const subscription = {
-                plan: 'basic-usd-1',
+                products: {
+                    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
+                },
                 status: 'active',
             }
             expect(

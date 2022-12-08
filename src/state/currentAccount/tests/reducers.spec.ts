@@ -1,10 +1,14 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
 
+import {
+    advancedMonthlyHelpdeskPrice,
+    basicMonthlyHelpdeskPrice,
+    HELPDESK_PRODUCT_ID,
+} from 'fixtures/productPrices'
 import reducer, {initialState} from '../reducers'
 import * as types from '../constants'
 import {GorgiasAction} from '../../types'
-import {SubscriptionPlan} from '../../billing/types'
 
 jest.addMatchers(immutableMatchers)
 
@@ -93,7 +97,10 @@ describe('current account reducers', () => {
                 reducer(state, {
                     type: types.UPDATE_SUBSCRIPTION_SUCCESS,
                     subscription: {
-                        plan: SubscriptionPlan.BasicMonthlyUSD2,
+                        products: {
+                            [HELPDESK_PRODUCT_ID]:
+                                basicMonthlyHelpdeskPrice.price_id,
+                        },
                     },
                 }).toJS()
             ).toMatchSnapshot()
@@ -103,14 +110,20 @@ describe('current account reducers', () => {
             const state = initialState.set(
                 'current_subscription',
                 fromJS({
-                    plan: 'advanced-usd-1',
+                    products: {
+                        [HELPDESK_PRODUCT_ID]:
+                            basicMonthlyHelpdeskPrice.price_id,
+                    },
                 })
             )
             expect(
                 reducer(state, {
                     type: types.UPDATE_SUBSCRIPTION_SUCCESS,
                     subscription: {
-                        plan: SubscriptionPlan.BasicMonthlyUSD2,
+                        products: {
+                            [HELPDESK_PRODUCT_ID]:
+                                advancedMonthlyHelpdeskPrice.price_id,
+                        },
                     },
                 }).toJS()
             ).toMatchSnapshot()
@@ -119,7 +132,9 @@ describe('current account reducers', () => {
 
     describe('SET_CURRENT_SUBSCRIPTION', () => {
         const subscription = fromJS({
-            plan: 'basic-usd-1',
+            products: {
+                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
+            },
             status: 'active',
         })
 
@@ -138,7 +153,9 @@ describe('current account reducers', () => {
             }
             const state = reducer(initialState, action)
             const newSubscription = {
-                plan: 'advanced-usd-2',
+                products: {
+                    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
+                },
                 staus: 'past_due',
             }
             const newAction = {

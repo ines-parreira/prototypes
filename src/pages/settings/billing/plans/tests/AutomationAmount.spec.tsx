@@ -1,7 +1,7 @@
 import React, {ComponentProps} from 'react'
 import {render, fireEvent} from '@testing-library/react'
 
-import {starterPlan} from 'fixtures/subscriptionPlan'
+import {starterHelpdeskPrice} from 'fixtures/productPrices'
 
 import {PlanInterval} from '../../../../../models/billing/types'
 import AutomationAmount from '../AutomationAmount'
@@ -90,8 +90,8 @@ describe('<AutomationAmount />', () => {
             <AutomationAmount
                 {...minProps}
                 addOnAmount={undefined}
-                interval={starterPlan.interval}
-                currency={starterPlan.currency}
+                interval={starterHelpdeskPrice.interval}
+                currency={starterHelpdeskPrice.currency}
                 editable={false}
             />
         )

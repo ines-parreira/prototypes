@@ -30,7 +30,7 @@ const FeaturePaywall = ({
     const isProductCustom = useAppSelector(getIsCurrentHelpdeskCustom)
     const helpdeskName = useAppSelector(getCurrentHelpdeskName)
 
-    const shouldKeepPlan =
+    const shouldKeepPrice =
         isProductCustom ||
         (isProductLegacy &&
             !!prices.find(
@@ -43,23 +43,23 @@ const FeaturePaywall = ({
                         >
                     )[feature]?.enabled
             ))
-    const requiredPlanName = isProductCustom
+    const requiredPriceName = isProductCustom
         ? 'Enterprise'
-        : shouldKeepPlan
+        : shouldKeepPrice
         ? helpdeskName?.split(' ')[0]
         : getCheapestPriceNameForFeature(feature, prices || {})
     const config = paywallConfigs[feature]!
 
-    return config && requiredPlanName ? (
+    return config && requiredPriceName ? (
         <Paywall
             pageHeader={config.pageHeader}
-            requiredUpgrade={requiredPlanName}
+            requiredUpgrade={requiredPriceName}
             upgradeType={UpgradeType.Plan}
             header={config.header}
             description={config.description}
             previewImage={config.preview}
-            shouldKeepPlan={shouldKeepPlan}
-            paywallTheme={requiredPlanName as PaywallTheme}
+            shouldKeepPrice={shouldKeepPrice}
+            paywallTheme={requiredPriceName as PaywallTheme}
             showUpgradeCta
             testimonial={config.testimonial}
         />

@@ -15,26 +15,26 @@ import css from './BillingComparisonPlanCard.less'
 
 type Props = {
     isUpdating: boolean
-    defaultIsPlanChangeModalOpen?: boolean
-    onPlanChange?: () => void
+    defaultIsPriceChangeModalOpen?: boolean
+    onPriceChange?: () => void
 } & Omit<
     ComponentProps<typeof PlanCard>,
-    'features' | 'footer' | 'headerBadge' | 'plan' | 'planName' | 'theme'
+    'features' | 'footer' | 'headerBadge' | 'planName' | 'theme'
 >
 
 export default function EnterpriseComparisonPlanCard({
     className,
     isUpdating,
-    defaultIsPlanChangeModalOpen = false,
+    defaultIsPriceChangeModalOpen = false,
     ...billingCardProps
 }: Props) {
-    const [isPlanChangeModalOpen, setIsPlanChangeModalOpen] = useState(
-        defaultIsPlanChangeModalOpen
+    const [isPriceChangeModalOpen, setIsPriceChangeModalOpen] = useState(
+        defaultIsPriceChangeModalOpen
     )
     const isCurrentHelpdeskLegacy = useAppSelector(getIsCurrentHelpdeskLegacy)
 
-    const canChoosePlan = !isUpdating
-    const switchPlanButtonText = 'Contact us'
+    const canChoosePrice = !isUpdating
+    const switchPriceButtonText = 'Contact us'
 
     return (
         <PlanCard
@@ -51,18 +51,20 @@ export default function EnterpriseComparisonPlanCard({
                 <>
                     <TotalAmount addOnAmount="Custom price" />
                     <Button
-                        aria-label={switchPlanButtonText}
+                        aria-label={switchPriceButtonText}
                         className={css.footerButton}
                         fillStyle="ghost"
                         isLoading={isUpdating}
-                        isDisabled={!canChoosePlan}
+                        isDisabled={!canChoosePrice}
                         onClick={() => {
-                            if (canChoosePlan) {
-                                setIsPlanChangeModalOpen(!isPlanChangeModalOpen)
+                            if (canChoosePrice) {
+                                setIsPriceChangeModalOpen(
+                                    !isPriceChangeModalOpen
+                                )
                             }
                         }}
                     >
-                        {switchPlanButtonText}
+                        {switchPriceButtonText}
                     </Button>
                     <ChangePlanModal
                         description={
@@ -83,14 +85,14 @@ export default function EnterpriseComparisonPlanCard({
                                 ? 'Switch to our updated plans'
                                 : "We're happy to see you grow 👏"
                         }
-                        isOpen={isPlanChangeModalOpen}
+                        isOpen={isPriceChangeModalOpen}
                         isUpdating={isUpdating}
                         onClose={() => {
-                            setIsPlanChangeModalOpen(false)
+                            setIsPriceChangeModalOpen(false)
                         }}
                         onConfirm={(event: MouseEvent) => {
                             openChat(event)
-                            setIsPlanChangeModalOpen(false)
+                            setIsPriceChangeModalOpen(false)
                         }}
                         renderComparedPlan={({className, renderBody}) => (
                             <PlanCard

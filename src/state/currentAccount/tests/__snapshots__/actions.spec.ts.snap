@@ -3,7 +3,9 @@
 exports[`current account actions setCurrentSubscription() should return a Redux action to set the current subscription. 1`] = `
 Object {
   "subscription": Immutable.Map {
-    "plan": "basic-usd-1",
+    "products": Immutable.Map {
+      "prod_LsH6kV35G6zKWo": "price_1LJBjWI9qXomtXqSPZn8LqlD",
+    },
     "status": "active",
   },
   "type": "SET_CURRENT_SUBSCRIPTION",
@@ -83,7 +85,9 @@ exports[`current account actions update subscription update subscription 1`] = `
 Array [
   Object {
     "subscription": Object {
-      "plan": "basic",
+      "prices": Array [
+        "price_1LJBjWI9qXomtXqSPZn8LqlD",
+      ],
     },
     "type": "UPDATE_SUBSCRIPTION_SUCCESS",
   },

@@ -2,7 +2,6 @@ import {Map} from 'immutable'
 
 import {RecentChatTicket} from 'business/types/recentChats'
 import {User} from 'config/types/user'
-import {Plan} from 'models/billing/types'
 import {
     IntegrationType,
     IntegrationAuthentication,
@@ -45,9 +44,6 @@ export type GorgiasInitialState = {
         all: User[]
     }
     billing: {
-        plans: {
-            [key: string]: Plan
-        }
         products: BillingProducts
     }
     chats: {

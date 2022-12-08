@@ -7,7 +7,6 @@ import {Provider} from 'react-redux'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {account} from 'fixtures/account'
-import {basicPlan, starterPlan} from 'fixtures/subscriptionPlan'
 import {billingState} from 'fixtures/billing'
 import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
 import {emptyManagedRule} from 'fixtures/rule'
@@ -23,16 +22,9 @@ describe('RuleRecipeModal', () => {
             current_subscription: {
                 ...account.current_subscription,
                 status: 'active',
-                plan: basicPlan.id,
             },
         }),
-        billing: fromJS({
-            ...billingState,
-            plans: fromJS({
-                [basicPlan.id]: basicPlan,
-                [starterPlan.id]: starterPlan,
-            }),
-        }),
+        billing: fromJS(billingState),
         entities: {},
     } as RootState
 

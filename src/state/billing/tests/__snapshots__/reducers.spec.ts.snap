@@ -128,13 +128,3 @@ Immutable.Map {
   },
 }
 `;
-
-exports[`billing reducers update subscription 1`] = `
-Immutable.Map {
-  "currentUsage": Immutable.Map {
-    "data": Immutable.Map {
-      "plan": "plan",
-    },
-  },
-}
-`;

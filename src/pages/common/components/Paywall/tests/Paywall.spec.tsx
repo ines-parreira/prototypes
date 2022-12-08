@@ -112,7 +112,7 @@ describe('<Paywall />', () => {
     })
 
     it('should render with a legacy badge', () => {
-        const {container} = render(<Paywall {...minProps} shouldKeepPlan />)
+        const {container} = render(<Paywall {...minProps} shouldKeepPrice />)
         expect(container.firstChild).toMatchSnapshot()
     })
 

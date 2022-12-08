@@ -14,7 +14,6 @@ import {
     HELPDESK_PRODUCT_ID,
     legacyBasicHelpdeskPrice,
     products,
-    transitoryPlans,
 } from 'fixtures/productPrices'
 import {automationSubscriptionProductPrices} from 'fixtures/account'
 import HelpCenterChangePlanModal from '../HelpCenterChangePlanModal'
@@ -62,7 +61,6 @@ describe('HelpCenterChangePlanModal', () => {
     const props = {
         isOpen: true,
         helpdeskPrice: legacyBasicHelpdeskPrice,
-        suitablePlanWithoutAutomationAddOn: transitoryPlans.basicPlan,
         onClose: jest.fn(),
     }
 

@@ -34,7 +34,7 @@ exports[`<BillingPlans/> it should render the component 1`] = `
       </nav>
     </div>
     <div>
-      BillingPlansComparison mock, openedPlanModal:
+      BillingPlansComparison mock, openedPriceModal:
        
       <button
         data-testid="subscription-changed"

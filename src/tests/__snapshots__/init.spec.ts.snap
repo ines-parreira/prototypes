@@ -112,118 +112,6 @@ Object {
     ],
   },
   "billing": Immutable.Map {
-    "plans": Immutable.Map {
-      "pro-yearly-usd-2": Immutable.Map {
-        "cost_per_ticket": 0.23,
-        "interval": "year",
-        "automation_addon_discount": 0,
-        "phone_limits": Immutable.Map {
-          "billing": 50,
-        },
-        "public": true,
-        "name": "Pro",
-        "trial_period_days": 7,
-        "order": 2,
-        "currency": "usd",
-        "free_tickets": 300,
-        "automation_addon_equivalent_plan": "pro-automation-yearly-usd-2",
-        "limits": Immutable.Map {
-          "tickets": Immutable.Map {
-            "min": 300,
-            "default": 350,
-            "max": 350,
-          },
-          "messages": Immutable.Map {
-            "min": 800,
-            "default": 1000,
-            "max": 1000,
-          },
-        },
-        "amount": 300000,
-        "id": "pro-yearly-usd-2",
-        "features": Immutable.Map {
-          "view_sharing": Immutable.Map {
-            "enabled": false,
-          },
-          "automation_cancellations_flow": Immutable.Map {
-            "enabled": false,
-          },
-          "revenue_statistics": Immutable.Map {
-            "enabled": false,
-          },
-          "facebook_comment": Immutable.Map {
-            "enabled": true,
-          },
-          "satisfaction_surveys": Immutable.Map {
-            "enabled": true,
-          },
-          "api_1st_party_rate_limit": Immutable.Map {
-            "enabled": false,
-          },
-          "twitter_integration": Immutable.Map {
-            "enabled": false,
-            "limit": 0,
-          },
-          "user_roles": Immutable.Map {
-            "enabled": true,
-          },
-          "magento_integration": Immutable.Map {
-            "enabled": true,
-          },
-          "automation_managed_rules": Immutable.Map {
-            "enabled": true,
-          },
-          "overview_live_statistics": Immutable.Map {
-            "enabled": false,
-          },
-          "instagram_comment": Immutable.Map {
-            "enabled": true,
-          },
-          "yotpo_integration": Immutable.Map {
-            "enabled": true,
-          },
-          "help_center": Immutable.Map {
-            "enabled": true,
-          },
-          "api_3rd_party_rate_limit": Immutable.Map {
-            "enabled": false,
-          },
-          "automation_return_flow": Immutable.Map {
-            "enabled": false,
-          },
-          "instagram_dm": Immutable.Map {
-            "enabled": true,
-          },
-          "teams": Immutable.Map {
-            "enabled": true,
-          },
-          "automation_report_issue_flow": Immutable.Map {
-            "enabled": false,
-          },
-          "automation_self_service_statistics": Immutable.Map {
-            "enabled": false,
-          },
-          "phone_number": Immutable.Map {
-            "enabled": true,
-            "limit": 50,
-          },
-          "automation_track_order_flow": Immutable.Map {
-            "enabled": false,
-          },
-          "chat_campaigns": Immutable.Map {
-            "enabled": true,
-          },
-          "auto_assignment": Immutable.Map {
-            "enabled": true,
-          },
-          "users_live_statistics": Immutable.Map {
-            "enabled": false,
-          },
-        },
-        "is_legacy": false,
-        "integrations": 150,
-      },
-    },
     "products": Immutable.List [
       Immutable.Map {
         "id": "prod_LsH6kV35G6zKWo",
@@ -1209,7 +1097,6 @@ Object {
     "current_subscription": Immutable.Map {
       "trial_start_datetime": "2017-08-23T01:38:53+00:00",
       "trial_end_datetime": "2017-09-06T01:38:53+00:00",
-      "plan": "team-usd-1",
       "status": "trialing",
       "start_datetime": "2017-08-23T01:38:53+00:00",
       "products": Immutable.Map {

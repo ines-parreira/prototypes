@@ -22,7 +22,7 @@ export default function AutomationSubscriptionButton({
     const automationAddOnState = useMemo<typeof state>(() => {
         return !automationAddOnAvailable
             ? {
-                  openedPlanModal: PlanName.Basic,
+                  openedPriceModal: PlanName.Basic,
                   isAutomationAddOnChecked: true,
               }
             : (state as unknown)

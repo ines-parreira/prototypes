@@ -12,13 +12,20 @@ export function getLDClient(): LDClient.LDClient {
 
 export function initLaunchDarkly(
     user: User,
-    account: Account
+    account: Account,
+    currentHelpdeskProductId?: string,
+    currentAutomationProductId?: string
 ): LDClient.LDClient {
-    if (user && account) {
+    if (user && account && currentHelpdeskProductId) {
+        const automationMap = currentAutomationProductId
+            ? {automationPriceId: currentAutomationProductId}
+            : ({} as Record<string, never>)
+
         LDUser = {
             key: account.id.toString(),
             custom: {
-                plan: account?.current_subscription?.plan,
+                ...automationMap,
+                helpdeskPriceId: currentHelpdeskProductId,
                 domain: account.domain,
                 cluster: window.GORGIAS_CLUSTER,
             },

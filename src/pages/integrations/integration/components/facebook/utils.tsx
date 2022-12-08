@@ -260,17 +260,17 @@ export function getInstagramDMSettingsInlineComponent(
     currentHelpdeskProduct: HelpdeskPrice | undefined,
     tooltipId?: number
 ) {
-    const currentPlanHasInstagramDMFeature =
+    const currentPriceHasInstagramDMFeature =
         !!currentHelpdeskProduct?.features[
             AccountFeature.InstagramDirectMessage
         ].enabled
 
-    if (!currentPlanHasInstagramDMFeature) {
+    if (!currentPriceHasInstagramDMFeature) {
         const segmentEventToSend = {
             name: SegmentEvent.PaywallUpgradeButtonSelected,
             props: {
                 domain: currentAccount.get('domain'),
-                current_plan: currentHelpdeskProduct!.name,
+                current_price: currentHelpdeskProduct!.name,
                 paywall_feature: AccountFeature.InstagramDirectMessage,
             },
         }

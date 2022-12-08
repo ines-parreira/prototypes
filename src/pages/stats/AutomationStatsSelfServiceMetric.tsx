@@ -4,7 +4,7 @@ import {useAsyncFn} from 'react-use'
 
 import {getSelfServiceConfigurations} from 'state/entities/selfServiceConfigurations/selectors'
 import {
-    getCurrentHelpdeskProduct,
+    getCurrentProducts,
     getHasAutomationAddOn,
     getHasLegacyAutomationAddOnFeatures,
 } from 'state/billing/selectors'
@@ -41,7 +41,7 @@ export const AutomationStatsSelfServiceMetric = ({
     const hasAccessToSelfService = hasAutomationLegacy || hasAutomationAddOn
 
     const account = useAppSelector(getCurrentAccountState)
-    const currentHelpdeskPrice = useAppSelector(getCurrentHelpdeskProduct)
+    const currentProducts = useAppSelector(getCurrentProducts)
 
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
         useState(false)
@@ -74,7 +74,9 @@ export const AutomationStatsSelfServiceMetric = ({
         name: SegmentEvent.PaywallUpgradeButtonSelected,
         props: {
             domain: account.get('domain'),
-            current_plan: currentHelpdeskPrice?.price_id,
+            current_prices: Object.values(currentProducts || {})?.map(
+                (product) => product.price_id
+            ),
             paywall_feature: 'automation_addon',
         },
     }

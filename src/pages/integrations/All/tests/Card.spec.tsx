@@ -21,7 +21,7 @@ describe('<Pills />', () => {
     it('should render the upgrade button', () => {
         render(
             <Pills
-                item={{...dummyAppListItem, requiredPlanName: 'enterprise'}}
+                item={{...dummyAppListItem, requiredPriceName: 'enterprise'}}
             />
         )
         expect(screen.getByText('Upgrade'))
@@ -70,7 +70,10 @@ describe('<Card />', () => {
         render(
             <Provider store={store}>
                 <Card
-                    item={{...dummyAppListItem, requiredPlanName: 'enterprise'}}
+                    item={{
+                        ...dummyAppListItem,
+                        requiredPriceName: 'enterprise',
+                    }}
                 />
             </Provider>
         )

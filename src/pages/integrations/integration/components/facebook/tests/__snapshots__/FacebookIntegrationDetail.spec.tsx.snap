@@ -996,7 +996,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
                         Object {
                           "name": "paywall-upgrade-button-selected",
                           "props": Object {
-                            "current_plan": "Basic",
+                            "current_price": "Basic",
                             "domain": "acme",
                             "paywall_feature": "instagram_dm",
                           },
@@ -1832,7 +1832,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
                         Object {
                           "name": "paywall-upgrade-button-selected",
                           "props": Object {
-                            "current_plan": "Basic",
+                            "current_price": "Basic",
                             "domain": "acme",
                             "paywall_feature": "instagram_dm",
                           },

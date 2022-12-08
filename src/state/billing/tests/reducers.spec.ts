@@ -113,21 +113,6 @@ describe('billing reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('update subscription', () => {
-        const subscription = {
-            data: {
-                plan: 'plan',
-            },
-        }
-
-        expect(
-            reducer(initialState, {
-                type: types.FETCH_CURRENT_USAGE_SUCCESS,
-                resp: subscription,
-            })
-        ).toMatchSnapshot()
-    })
-
     describe('SET_CREDIT_CARD', () => {
         const creditCard = fromJS({
             last4: '1235',

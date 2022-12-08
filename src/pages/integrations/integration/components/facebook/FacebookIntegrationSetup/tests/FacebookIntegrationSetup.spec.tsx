@@ -407,7 +407,7 @@ describe('FacebookIntegrationSetup', () => {
         ],
     ])(
         'should render an integration for: %s',
-        (_, [isIGAccountEligible, planHasInstagramDmFeature]) => {
+        (_, [isIGAccountEligible, priceHasInstagramDmFeature]) => {
             const integrations = onboardingIntegrations
                 .setIn([0, 'meta', 'instagram', 'id'], 'foo')
                 .setIn(
@@ -434,7 +434,7 @@ describe('FacebookIntegrationSetup', () => {
                 features: {
                     ...basicMonthlyHelpdeskPrice.features,
                     [AccountFeature.InstagramDirectMessage]: {
-                        enabled: planHasInstagramDmFeature,
+                        enabled: priceHasInstagramDmFeature,
                     },
                 },
             }

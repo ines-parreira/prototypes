@@ -19,7 +19,6 @@ export const account: Account = {
     current_subscription: {
         trial_start_datetime: '2017-08-23T01:38:53+00:00',
         trial_end_datetime: '2017-09-06T01:38:53+00:00',
-        plan: 'team-usd-1',
         status: 'trialing',
         start_datetime: '2017-08-23T01:38:53+00:00',
         products: {

@@ -44,5 +44,5 @@ export type IntegrationListItem = Pick<
     | 'categories'
 > & {
     count: number
-    requiredPlanName?: Maybe<string>
+    requiredPriceName?: string
 }

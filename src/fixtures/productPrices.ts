@@ -8,10 +8,6 @@ import {
     Product,
     ProductType,
 } from 'models/billing/types'
-import {
-    createAutomationPlanFromProducts,
-    createHelpdeskPlanFromProducts,
-} from 'models/billing/utils'
 import {BillingProducts} from 'state/billing/types'
 
 export const basicHelpdeskPriceFeatures: HelpdeskPriceFeatures = {
@@ -653,45 +649,6 @@ export const starterHelpdeskPrice: HelpdeskPrice = {
     price_id: 'price_1LVt4TI9qXomtXqSeHydKB9S',
     public: false,
     trial_period_days: 7,
-}
-
-export const transitoryPlans = {
-    basicPlan: createHelpdeskPlanFromProducts(
-        basicMonthlyHelpdeskPrice,
-        basicMonthlyAutomationPrice
-    ),
-    basicAutomationPlan: createAutomationPlanFromProducts(
-        basicMonthlyAutomationPrice,
-        basicMonthlyHelpdeskPrice
-    ),
-    proPlan: createHelpdeskPlanFromProducts(
-        proMonthlyHelpdeskPrice,
-        proMonthlyAutomationPrice
-    ),
-    proAutomationPlan: createAutomationPlanFromProducts(
-        proMonthlyAutomationPrice,
-        proMonthlyHelpdeskPrice
-    ),
-    advancedPlan: createHelpdeskPlanFromProducts(
-        advancedMonthlyHelpdeskPrice,
-        advancedMonthlyAutomationPrice
-    ),
-    advancedAutomationPlan: createAutomationPlanFromProducts(
-        advancedMonthlyAutomationPrice,
-        advancedMonthlyHelpdeskPrice
-    ),
-    customPlan: createHelpdeskPlanFromProducts(
-        customHelpdeskPrice,
-        customAutomationPrice
-    ),
-    customAutomationPlan: createAutomationPlanFromProducts(
-        customAutomationPrice,
-        customHelpdeskPrice
-    ),
-    legacyPlan: createHelpdeskPlanFromProducts(
-        legacyBasicHelpdeskPrice,
-        legacyBasicAutomationPrice
-    ),
 }
 
 export const HELPDESK_PRODUCT_ID = 'prod_LsH6kV35G6zKWo'

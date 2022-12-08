@@ -36,13 +36,13 @@ const PLAN_FEATURES_HEIGHT = 516
 
 type Props = {
     isAutomationAddOnChecked?: boolean
-    openedPlanModal?: string
+    openedPriceModal?: string
     onSubscriptionChanged: (prevSubscription: Map<any, any>) => void
 }
 
 export default function BillingPlansComparison({
     isAutomationAddOnChecked = false,
-    openedPlanModal,
+    openedPriceModal,
     onSubscriptionChanged,
 }: Props) {
     const dispatch = useAppDispatch()
@@ -165,7 +165,7 @@ export default function BillingPlansComparison({
                                 [css.isPublicPlan]: !isCurrentHelpdeskCustom,
                             })}
                             helpdeskPrice={currentHelpdeskProduct!}
-                            isCurrentPlan
+                            isCurrentPrice
                             isUpdating={isSubscriptionChanging}
                             renderBody={(features) => (
                                 <SynchronizedScrollTopContainer
@@ -176,7 +176,7 @@ export default function BillingPlansComparison({
                             )}
                             isAutomationChecked={isAutomationChecked}
                             onAutomationChange={onAutomationChange}
-                            onPlanChange={(isAutomationChecked) => {
+                            onPriceChange={(isAutomationChecked) => {
                                 if (currentHelpdeskProduct) {
                                     void handleSubscriptionChange(
                                         currentHelpdeskProduct.price_id,
@@ -195,7 +195,7 @@ export default function BillingPlansComparison({
                                     !isCurrentHelpdeskCustom,
                             })}
                             helpdeskPrice={price}
-                            isCurrentPlan={
+                            isCurrentPrice={
                                 !isCurrentHelpdeskLegacy &&
                                 price.price_id ===
                                     currentHelpdeskProduct?.price_id
@@ -208,14 +208,14 @@ export default function BillingPlansComparison({
                                     {features}
                                 </SynchronizedScrollTopContainer>
                             )}
-                            onPlanChange={(isAutomationChecked) =>
+                            onPriceChange={(isAutomationChecked) =>
                                 handleSubscriptionChange(
                                     price.price_id,
                                     isAutomationChecked
                                 )
                             }
-                            defaultIsPlanChangeModalOpen={
-                                openedPlanModal === price.name
+                            defaultIsPriceChangeModalOpen={
+                                openedPriceModal === price.name
                             }
                             isAutomationChecked={isAutomationChecked}
                             onAutomationChange={onAutomationChange}
@@ -227,8 +227,8 @@ export default function BillingPlansComparison({
                                 [css.isPublicPlan]: isCurrentHelpdeskLegacy,
                             })}
                             isUpdating={isSubscriptionChanging}
-                            defaultIsPlanChangeModalOpen={
-                                openedPlanModal === 'Enterprise'
+                            defaultIsPriceChangeModalOpen={
+                                openedPriceModal === 'Enterprise'
                             }
                             renderBody={(features) => (
                                 <SynchronizedScrollTopContainer

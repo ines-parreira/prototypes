@@ -61,7 +61,7 @@ describe('<QuickResponseFlowNewItem />', () => {
         MockDate.reset()
     })
 
-    it('should show paywall if plan does not support automation addon', () => {
+    it('should show paywall if price does not support automation addon', () => {
         const state = {
             ...defaultState,
             currentAccount: fromJS({

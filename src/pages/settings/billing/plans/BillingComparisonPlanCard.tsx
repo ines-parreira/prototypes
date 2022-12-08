@@ -29,8 +29,8 @@ const countFeatures = (features: AccountFeatures) =>
 type Props = {
     helpdeskPrice: HelpdeskPrice
     isUpdating: boolean
-    defaultIsPlanChangeModalOpen?: boolean
-    onPlanChange?: (isModalAutomationChecked: boolean) => void
+    defaultIsPriceChangeModalOpen?: boolean
+    onPriceChange?: (isModalAutomationChecked: boolean) => void
     isAutomationChecked: boolean
     onAutomationChange: () => void
 } & Omit<
@@ -48,16 +48,16 @@ type Props = {
 
 export default function BillingComparisonPlanCard({
     helpdeskPrice,
-    isCurrentPlan,
+    isCurrentPrice,
     isUpdating,
-    onPlanChange,
-    defaultIsPlanChangeModalOpen = false,
+    onPriceChange,
+    defaultIsPriceChangeModalOpen = false,
     isAutomationChecked,
     onAutomationChange,
     ...billingCardProps
 }: Props) {
-    const [isPlanChangeModalOpen, setIsPlanChangeModalOpen] = useState(
-        defaultIsPlanChangeModalOpen
+    const [isPriceChangeModalOpen, setIsPriceChangeModalOpen] = useState(
+        defaultIsPriceChangeModalOpen
     )
     const isCurrentHelpdeskLegacy = useAppSelector(getIsCurrentHelpdeskLegacy)
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
@@ -101,21 +101,21 @@ export default function BillingComparisonPlanCard({
         countFeatures(helpdeskPrice.features) <
             countFeatures(currentHelpdeskPrice.features)
     const isDowngrade =
-        !isCurrentPlan &&
+        !isCurrentPrice &&
         currentHelpdeskPrice &&
         !isCurrentHelpdeskLegacy &&
         hasLessFeatures
 
     const isSwitchingToAutomation =
-        isCurrentPlan &&
+        isCurrentPrice &&
         !hasAutomationAddOn &&
         isAutomationChecked &&
         automationPrice != null
 
-    const canChoosePlan =
-        !isUpdating && (isSwitchingToAutomation || !isCurrentPlan)
+    const canChoosePrice =
+        !isUpdating && (isSwitchingToAutomation || !isCurrentPrice)
 
-    const switchPlanButtonText = isCurrentPlan
+    const switchPriceButtonText = isCurrentPrice
         ? hasAutomationAddOn ||
           (!hasAutomationAddOn && !isAutomationChecked) ||
           automationPrice == null
@@ -201,28 +201,33 @@ export default function BillingComparisonPlanCard({
         () =>
             getPlanCardFeaturesForPrices(
                 [helpdeskPrice],
-                !(isCurrentPlan && isCurrentHelpdeskLegacy)
+                !(isCurrentPrice && isCurrentHelpdeskLegacy)
             ),
-        [helpdeskPrice, isCurrentHelpdeskLegacy, isCurrentPlan]
+        [helpdeskPrice, isCurrentHelpdeskLegacy, isCurrentPrice]
     )
     const automationFeatures = useMemo(
         () =>
             automationPrice &&
             getPlanCardFeaturesForPrices(
                 [helpdeskPrice, automationPrice],
-                !(isCurrentPlan && isCurrentHelpdeskLegacy)
+                !(isCurrentPrice && isCurrentHelpdeskLegacy)
             ),
-        [automationPrice, helpdeskPrice, isCurrentHelpdeskLegacy, isCurrentPlan]
+        [
+            automationPrice,
+            helpdeskPrice,
+            isCurrentHelpdeskLegacy,
+            isCurrentPrice,
+        ]
     )
     const isEditable = useMemo(() => addOnAmount != null, [addOnAmount])
 
     return (
         <BillingPlanCard
             {...billingCardProps}
-            isCurrentPlan={isCurrentPlan}
-            theme={isCurrentPlan ? PlanCardTheme.Grey : undefined}
+            isCurrentPrice={isCurrentPrice}
+            theme={isCurrentPrice ? PlanCardTheme.Grey : undefined}
             headerBadge={
-                isCurrentPlan && <CurrentPlanBadge planName={formattedName} />
+                isCurrentPrice && <CurrentPlanBadge planName={formattedName} />
             }
             amount={getFormattedAmount(helpdeskPrice.amount)}
             currency={helpdeskPrice.currency}
@@ -251,18 +256,20 @@ export default function BillingComparisonPlanCard({
                         isAutomationChecked={isAutomationChecked}
                     />
                     <Button
-                        aria-label={switchPlanButtonText}
+                        aria-label={switchPriceButtonText}
                         className={css.footerButton}
                         fillStyle="ghost"
-                        isDisabled={!canChoosePlan}
+                        isDisabled={!canChoosePrice}
                         isLoading={isUpdating}
                         onClick={() => {
-                            if (canChoosePlan) {
-                                setIsPlanChangeModalOpen(!isPlanChangeModalOpen)
+                            if (canChoosePrice) {
+                                setIsPriceChangeModalOpen(
+                                    !isPriceChangeModalOpen
+                                )
                             }
                         }}
                     >
-                        {switchPlanButtonText}
+                        {switchPriceButtonText}
                     </Button>
                     <ChangePlanModal
                         header={
@@ -274,14 +281,14 @@ export default function BillingComparisonPlanCard({
                                 ? 'Leverage the power of automation 👏'
                                 : "We're happy to see you grow 👏"
                         }
-                        isOpen={canChoosePlan && isPlanChangeModalOpen}
+                        isOpen={canChoosePrice && isPriceChangeModalOpen}
                         isUpdating={isUpdating}
                         onClose={() => {
-                            setIsPlanChangeModalOpen(false)
+                            setIsPriceChangeModalOpen(false)
                         }}
                         onConfirm={() => {
-                            onPlanChange?.(isModalAutomationChecked)
-                            setIsPlanChangeModalOpen(false)
+                            onPriceChange?.(isModalAutomationChecked)
+                            setIsPriceChangeModalOpen(false)
                         }}
                         description={description}
                         renderComparedPlan={({className, renderBody}) => (

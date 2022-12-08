@@ -282,7 +282,7 @@ describe('<IntegrationDetail />', () => {
         }
     )
 
-    it(`should display not available message if ${IntegrationType.Twitter} integration not included in plan`, () => {
+    it(`should display not available message if ${IntegrationType.Twitter} integration not included in price`, () => {
         const {container} = renderWithRouter(
             <Provider store={store}>
                 <IntegrationDetail {...minProps} hasTwitterFeature={false} />

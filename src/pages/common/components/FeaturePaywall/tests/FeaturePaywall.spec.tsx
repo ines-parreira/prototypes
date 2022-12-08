@@ -96,7 +96,7 @@ describe('<FeaturePaywall />', () => {
             defaultState,
         ],
         [
-            'required plan name was not found',
+            'required price name was not found',
             {...minProps, feature: AccountFeature.Api1stPartyRateLimit},
             defaultState,
         ],
@@ -120,7 +120,7 @@ describe('<FeaturePaywall />', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should ask to upgrade legacy plan into new plan', () => {
+    it('should ask to upgrade legacy price into new price', () => {
         const productsWithLegacyPrice = _cloneDeep(products)
         productsWithLegacyPrice[0].prices.push(legacyBasicHelpdeskPrice)
 
@@ -155,7 +155,7 @@ describe('<FeaturePaywall />', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should ask to upgrade custom plan when missing feature', () => {
+    it('should ask to upgrade custom price when missing feature', () => {
         const productsWithCustomPrice = _cloneDeep(products)
         productsWithCustomPrice[0].prices.push(customHelpdeskPrice)
 

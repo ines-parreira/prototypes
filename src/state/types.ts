@@ -67,7 +67,6 @@ export type GorgiasAction = {
     roles?: unknown
     id?: string | number
     data?: unknown
-    planId?: string
     invoice?: Map<any, any>
     creditCard?: Map<any, any>
     billingContact?: BillingContact
@@ -76,7 +75,7 @@ export type GorgiasAction = {
     ticketId?: number | string
     ticketVia?: TicketVia
     userId?: number
-    subscription?: Record<string, string>
+    subscription?: Record<string, unknown>
     setting?: AccountSetting
     isUpdate?: boolean
     settingType?: string

@@ -216,7 +216,7 @@ exports[`CreditCard component should display credit card form 1`] = `
       }
       footer={false}
       interval="month"
-      isCurrentPlan={true}
+      isCurrentPrice={true}
       name="Basic"
       renderBody={[Function]}
     />
@@ -448,7 +448,7 @@ exports[`CreditCard component should not render the billing address form when a 
       }
       footer={false}
       interval="month"
-      isCurrentPlan={true}
+      isCurrentPrice={true}
       name="Basic"
       renderBody={[Function]}
     />
@@ -689,7 +689,7 @@ exports[`CreditCard component should render billing plan card with automation fo
         </React.Fragment>
       }
       interval="month"
-      isCurrentPlan={true}
+      isCurrentPrice={true}
       name="Basic"
       renderBody={[Function]}
     />
@@ -929,7 +929,7 @@ exports[`CreditCard component should render billing plan card with automation fo
         </React.Fragment>
       }
       interval="month"
-      isCurrentPlan={true}
+      isCurrentPrice={true}
       name="Basic"
       renderBody={[Function]}
     />
@@ -1153,7 +1153,7 @@ exports[`CreditCard component should render nothing if loaded, but no current su
       }
       footer={false}
       interval="month"
-      isCurrentPlan={true}
+      isCurrentPrice={true}
       name="Basic"
       renderBody={[Function]}
     />
@@ -1402,7 +1402,7 @@ exports[`CreditCard component should render the billing address form when accoun
       }
       footer={false}
       interval="month"
-      isCurrentPlan={true}
+      isCurrentPrice={true}
       name="Basic"
       renderBody={[Function]}
     />

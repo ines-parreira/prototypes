@@ -61,12 +61,12 @@ describe('<BillingComparisonPlanCard />', () => {
             products: stateProducts,
         }),
     }
-    const onPlanChangeMock = jest.fn()
+    const onPriceChangeMock = jest.fn()
     const minProps: ComponentProps<typeof BillingComparisonPlanCard> = {
         helpdeskPrice: basicMonthlyHelpdeskPrice,
-        isCurrentPlan: false,
+        isCurrentPrice: false,
         isUpdating: false,
-        onPlanChange: onPlanChangeMock,
+        onPriceChange: onPriceChangeMock,
         isAutomationChecked: false,
         onAutomationChange: jest.fn(),
     }
@@ -74,7 +74,7 @@ describe('<BillingComparisonPlanCard />', () => {
     it('should render current plan', () => {
         const {container} = render(
             <Provider store={mockStore(defaultState)}>
-                <BillingComparisonPlanCard {...minProps} isCurrentPlan />
+                <BillingComparisonPlanCard {...minProps} isCurrentPrice />
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
@@ -85,7 +85,7 @@ describe('<BillingComparisonPlanCard />', () => {
             <Provider store={mockStore(defaultState)}>
                 <BillingComparisonPlanCard
                     {...minProps}
-                    isCurrentPlan
+                    isCurrentPrice
                     helpdeskPrice={legacyBasicHelpdeskPrice}
                 />
             </Provider>
@@ -107,7 +107,7 @@ describe('<BillingComparisonPlanCard />', () => {
             <Provider store={mockStore(defaultState)}>
                 <BillingComparisonPlanCard
                     {...minProps}
-                    isCurrentPlan
+                    isCurrentPrice
                     helpdeskPrice={price}
                 />
             </Provider>
@@ -162,7 +162,7 @@ describe('<BillingComparisonPlanCard />', () => {
             <Provider store={mockStore(defaultState)}>
                 <BillingComparisonPlanCard
                     {...minProps}
-                    defaultIsPlanChangeModalOpen={true}
+                    defaultIsPriceChangeModalOpen={true}
                 />
             </Provider>
         )
@@ -246,7 +246,7 @@ describe('<BillingComparisonPlanCard />', () => {
                     <BillingComparisonPlanCard
                         {...minProps}
                         helpdeskPrice={price}
-                        defaultIsPlanChangeModalOpen={true}
+                        defaultIsPriceChangeModalOpen={true}
                     />
                 </Provider>
             )
@@ -282,7 +282,7 @@ describe('<BillingComparisonPlanCard />', () => {
                     <BillingComparisonPlanCard
                         {...minProps}
                         helpdeskPrice={price}
-                        defaultIsPlanChangeModalOpen={true}
+                        defaultIsPriceChangeModalOpen={true}
                     />
                 </Provider>
             )
@@ -298,7 +298,7 @@ describe('<BillingComparisonPlanCard />', () => {
                 <BillingComparisonPlanCard
                     {...minProps}
                     isAutomationChecked
-                    defaultIsPlanChangeModalOpen
+                    defaultIsPriceChangeModalOpen
                 />
             </Provider>
         )

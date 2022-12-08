@@ -90,7 +90,7 @@ describe('addRequiredPlanToIntegrations()', () => {
                     } as AccountFeatureMetadata,
                 },
                 prices
-            )[0].requiredPlanName
+            )[0].requiredPriceName
         ).toBe('Enterprise')
     })
 
@@ -104,7 +104,7 @@ describe('addRequiredPlanToIntegrations()', () => {
                 [{} as Integration],
                 {},
                 prices
-            )[0].requiredPlanName
+            )[0].requiredPriceName
         ).toBe(prices[0].name)
     })
 })

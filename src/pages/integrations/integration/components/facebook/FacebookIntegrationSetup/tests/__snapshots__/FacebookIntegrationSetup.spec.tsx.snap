@@ -642,7 +642,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                               Object {
                                 "name": "paywall-upgrade-button-selected",
                                 "props": Object {
-                                  "current_plan": "Basic",
+                                  "current_price": "Basic",
                                   "domain": "acme",
                                   "paywall_feature": "instagram_dm",
                                 },
@@ -1246,7 +1246,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                               Object {
                                 "name": "paywall-upgrade-button-selected",
                                 "props": Object {
-                                  "current_plan": "Basic",
+                                  "current_price": "Basic",
                                   "domain": "acme",
                                   "paywall_feature": "instagram_dm",
                                 },

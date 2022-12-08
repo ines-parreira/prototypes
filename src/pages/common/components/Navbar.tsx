@@ -230,8 +230,8 @@ export class Navbar extends Component<Props, State> {
             isTrialing,
             isPreferencesLoading,
         } = this.props
-        const isBasicOrPro = ['pro', 'basic'].some((planType) =>
-            currentHelpdeskProduct?.name.toLowerCase().includes(planType)
+        const isBasicOrPro = ['pro', 'basic'].some((priceType) =>
+            currentHelpdeskProduct?.name.toLowerCase().includes(priceType)
         )
 
         return (

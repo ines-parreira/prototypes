@@ -7,7 +7,9 @@ Immutable.Map {
     "loading": Immutable.Map {},
   },
   "current_subscription": Immutable.Map {
-    "plan": "basic-usd-1",
+    "products": Immutable.Map {
+      "prod_LsH6kV35G6zKWo": "price_1LJBjWI9qXomtXqSPZn8LqlD",
+    },
     "status": "active",
   },
 }
@@ -20,7 +22,9 @@ Immutable.Map {
     "loading": Immutable.Map {},
   },
   "current_subscription": Object {
-    "plan": "advanced-usd-2",
+    "products": Object {
+      "prod_LsH6kV35G6zKWo": "price_1LJBjWI9qXomtXqSPZn8LqlD",
+    },
     "staus": "past_due",
   },
 }
@@ -107,7 +111,9 @@ Object {
     "loading": Object {},
   },
   "current_subscription": Object {
-    "plan": "basic-monthly-usd-2",
+    "products": Object {
+      "prod_LsH6kV35G6zKWo": "price_1LJBjdI9qXomtXqS8RzPPA7K",
+    },
   },
   "settings": Array [],
 }
@@ -119,7 +125,9 @@ Object {
     "loading": Object {},
   },
   "current_subscription": Object {
-    "plan": "basic-monthly-usd-2",
+    "products": Object {
+      "prod_LsH6kV35G6zKWo": "price_1LJBjWI9qXomtXqSPZn8LqlD",
+    },
   },
   "settings": Array [],
 }

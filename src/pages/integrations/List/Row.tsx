@@ -49,19 +49,19 @@ const Row = ({integration}: Props) => {
             <div className="flex-grow mr-1">
                 <div className="d-flex align-items-start">
                     <h5 className={css.title}>{integration.title}</h5>
-                    {integration.requiredPlanName && (
+                    {integration.requiredPriceName && (
                         <UpgradeButton
                             className="ml-3 py-0 px-1"
                             size="small"
                             state={{
-                                openedPlanModal: integration.requiredPlanName,
+                                openedPriceModal: integration.requiredPriceName,
                             }}
                         />
                     )}
                 </div>
                 {integration.description}
             </div>
-            {!integration.requiredPlanName && (
+            {!integration.requiredPriceName && (
                 <div className={css.action}>
                     {isAppListItem(integration)
                         ? integration.isConnected && (
@@ -100,7 +100,7 @@ const Row = ({integration}: Props) => {
               .filter(isString)
               .join('/')
 
-    return integration.requiredPlanName ? (
+    return integration.requiredPriceName ? (
         <div
             className={classnames(
                 css.component,

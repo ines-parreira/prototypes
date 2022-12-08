@@ -109,7 +109,7 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
 
         const {currentHelpdeskProduct} = this.props
 
-        const currentPlanHasInstagramDMFeature =
+        const currentHelpdeskProductHasInstagramDMFeature =
             !!currentHelpdeskProduct?.features[
                 AccountFeature.InstagramDirectMessage
             ].enabled
@@ -165,7 +165,7 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
             )
             const isAllowedToInstagramDM =
                 instagramDMSettingStatus === InstagramDMSettingStatus.ALLOWED &&
-                currentPlanHasInstagramDMFeature
+                currentHelpdeskProductHasInstagramDMFeature
 
             const settings = {
                 messenger_enabled: canEnableMessenger,
@@ -342,7 +342,7 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
                                     canEnableInstagramDirectMessage,
                                     integration
                                 )
-                            const currentPlanHasInstagramDMFeature =
+                            const currentHelpdeskHasInstagramDMFeature =
                                 !!currentHelpdeskProduct?.features[
                                     AccountFeature.InstagramDirectMessage
                                 ].enabled
@@ -350,7 +350,7 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
                             const isAllowedToInstagramDM =
                                 instagramDMSettingStatus ===
                                     InstagramDMSettingStatus.ALLOWED &&
-                                currentPlanHasInstagramDMFeature
+                                currentHelpdeskHasInstagramDMFeature
 
                             const instagramDMSettingsInlineComponent =
                                 getInstagramDMSettingsInlineComponent(
@@ -381,7 +381,7 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
                                 !canEnableInstagramDirectMessage
 
                             const shouldDisplayDisabledWithTooltip =
-                                currentPlanHasInstagramDMFeature &&
+                                currentHelpdeskHasInstagramDMFeature &&
                                 !instagramIsDisabled &&
                                 (instagramDMSettingStatus ===
                                     InstagramDMSettingStatus.SHOULD_RECONNECT ||

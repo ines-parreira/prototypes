@@ -210,21 +210,21 @@ export const List = ({
             const requiredFeature = integration.requiredFeature
 
             if (requiredFeature && !features[requiredFeature]?.enabled) {
-                let requiredPlanName = getCheapestPriceNameForFeature(
+                let requiredPriceName = getCheapestPriceNameForFeature(
                     requiredFeature,
                     prices
                 )
-                // Kind of a hacky way because `plans` variable doesn't
-                // contain the custom plans (Enterprise plans == Custom plans)
+                // Kind of a hacky way because `prices` variable doesn't
+                // contain the custom prices (Enterprise prices == Custom prices)
                 if (
                     !hasTwitterIntegrations &&
                     integration.type === IntegrationType.Twitter
                 ) {
-                    requiredPlanName = 'Enterprise'
+                    requiredPriceName = 'Enterprise'
                 }
                 return {
                     ...integration,
-                    requiredPlanName,
+                    requiredPriceName,
                 }
             }
             return integration

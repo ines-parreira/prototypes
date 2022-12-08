@@ -140,7 +140,7 @@ describe('<Magento2/>', () => {
         })
     })
 
-    describe('Not in plan', () => {
+    describe('Not in price', () => {
         const productsWithMagentoDisabled = _cloneDeep(products)
         const basicPriceWithMagentoDisabled = basicMonthlyHelpdeskPrice
         basicPriceWithMagentoDisabled.features.magento_integration.enabled =

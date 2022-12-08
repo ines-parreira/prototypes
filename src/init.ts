@@ -29,6 +29,11 @@ import {SMOOCH_INSIDE_INTEGRATION_TYPE} from 'constants/integration'
 import {initLaunchDarkly} from 'utils/launchDarkly'
 import {getEnvironment, isProduction, isStaging} from 'utils/environment'
 import {initErrorReporter} from 'utils/errors'
+import {
+    getCurrentAutomationProduct,
+    getCurrentHelpdeskProduct,
+} from 'state/billing/selectors'
+import {RootState} from 'state/types'
 
 const initMoment = (currentUser: EditableUserProfile) => {
     // set default locale and timezone
@@ -242,8 +247,21 @@ export function initApp({datadog, sentry}: InitAppParams) {
     ).forEach((notification) => {
         store.dispatch(notify(notification) as any)
     })
+    const state = store.getState()
+    const hasBillingInitialized = !(state as RootState).billing.isEmpty()
+    const currentHelpdeskProduct = hasBillingInitialized
+        ? getCurrentHelpdeskProduct(state)
+        : undefined
+    const currentAutomationProduct = hasBillingInitialized
+        ? getCurrentAutomationProduct(state)
+        : undefined
 
-    initLaunchDarkly(initialState.currentUser, initialState.currentAccount)
+    initLaunchDarkly(
+        initialState.currentUser,
+        initialState.currentAccount,
+        currentHelpdeskProduct?.price_id,
+        currentAutomationProduct?.price_id
+    )
 
     // Register ChartJS Sankey plugin
     Chart.register(SankeyController, Flow)

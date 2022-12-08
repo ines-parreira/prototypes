@@ -21,7 +21,7 @@ type Props = {
     currency: string
     features: PlanCardFeature[]
     interval: PlanInterval
-    isCurrentPlan?: boolean
+    isCurrentPrice?: boolean
     name: string
 } & Omit<ComponentProps<typeof PlanCard>, 'planName' | 'features' | 'price'>
 
@@ -31,14 +31,14 @@ export default function BillingPlanCard({
     features,
     interval,
     theme,
-    isCurrentPlan = false,
+    isCurrentPrice = false,
     headerBadge,
     name,
     ...planCardProps
 }: Props) {
     const isCurrentHelpdeskLegacy = useAppSelector(getIsCurrentHelpdeskLegacy)
     const badge =
-        isCurrentPlan && isCurrentHelpdeskLegacy ? (
+        isCurrentPrice && isCurrentHelpdeskLegacy ? (
             <LegacyPlanBadge />
         ) : (
             headerBadge

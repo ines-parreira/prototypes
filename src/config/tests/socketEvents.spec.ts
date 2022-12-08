@@ -396,7 +396,7 @@ describe('Config: socketEvents', () => {
                 }
             )
 
-            it('should not notify and reload app if new account plan is preloaded', () => {
+            it('should not notify and reload app if new account price is preloaded', () => {
                 const spy = jest.spyOn(notificationActions, 'notify')
                 ;(
                     currentAccountSelectors.getTicketAssignmentSettings as jest.MockedFunction<
@@ -425,7 +425,7 @@ describe('Config: socketEvents', () => {
                 expect(window.location.reload).not.toHaveBeenCalled()
             })
 
-            it('should notify and reload app if new account plan is not preloaded', () => {
+            it('should notify and reload app if new account price is not preloaded', () => {
                 const spy = jest.spyOn(notificationActions, 'notify')
                 ;(
                     currentAccountSelectors.getTicketAssignmentSettings as jest.MockedFunction<

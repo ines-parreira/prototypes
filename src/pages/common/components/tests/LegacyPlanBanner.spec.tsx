@@ -6,9 +6,9 @@ import {LegacyPlanBanner} from '../LegacyPlanBanner'
 describe('<LegacyPlanBanner />', () => {
     it.each([false, true])(
         'should render the legacy plan banner',
-        (isCustomPlan) => {
+        (isCustomPrice) => {
             const {container} = render(
-                <LegacyPlanBanner isCustomPlan={isCustomPlan} />
+                <LegacyPlanBanner isCustomPrice={isCustomPrice} />
             )
             expect(container).toMatchSnapshot()
         }

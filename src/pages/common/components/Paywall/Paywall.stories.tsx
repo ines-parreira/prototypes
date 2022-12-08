@@ -72,7 +72,7 @@ const storyConfig: Meta = {
                 type: null,
             },
         },
-        shouldKeepPlan: {
+        shouldKeepPrice: {
             description: 'Display the legacy badge.',
         },
     },

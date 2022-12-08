@@ -175,13 +175,13 @@ export class CreditCardContainer extends Component<Props, State> {
             isMissingContactInformation,
         } = this.props
         const {isFetchingInfo, isStripeLoaded} = this.state
-        const noSubscriptionNorPlan =
+        const noSubscriptionNorPrice =
             currentSubscription.isEmpty() || !currentHelpdeskPrice
 
         if (
             isStripeLoaded &&
             !prevState.isStripeLoaded &&
-            noSubscriptionNorPlan
+            noSubscriptionNorPrice
         ) {
             history.push('/app/settings/billing/')
         }
@@ -463,7 +463,7 @@ export class CreditCardContainer extends Component<Props, State> {
                     <div className={css.form}>
                         {isCurrentHelpdeskLegacy && (
                             <LegacyPlanBanner
-                                isCustomPlan={isCurrentHelpdeskCustom}
+                                isCustomPrice={isCurrentHelpdeskCustom}
                             />
                         )}
                         {!isUpdating && (
@@ -591,7 +591,7 @@ export class CreditCardContainer extends Component<Props, State> {
                                     currentHelpdeskPrice,
                                     currentAutomationPrice
                                 )}
-                                isCurrentPlan
+                                isCurrentPrice
                                 name={currentHelpdeskName}
                                 renderBody={(features) => (
                                     <div className={css.planCardBody}>

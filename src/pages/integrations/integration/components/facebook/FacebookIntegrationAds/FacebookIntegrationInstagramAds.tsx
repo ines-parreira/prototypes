@@ -59,7 +59,7 @@ class FacebookIntegrationInstagramAds extends Component<Props> {
         } = this.props
 
         const accountTotalAds = this._getAccountTotalAds()
-        const showUpgradePlan = accountTotalAds / maxAccountAds >= 0.75
+        const showUpgradePrice = accountTotalAds / maxAccountAds >= 0.75
 
         return (
             <div className="full-width">
@@ -104,7 +104,7 @@ class FacebookIntegrationInstagramAds extends Component<Props> {
                                     .
                                 </p>
 
-                                {showUpgradePlan && (
+                                {showUpgradePrice && (
                                     <AdsOverviewCard
                                         integrations={integrations}
                                         internals={internals}

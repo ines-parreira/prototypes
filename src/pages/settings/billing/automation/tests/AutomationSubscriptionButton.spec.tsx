@@ -84,7 +84,7 @@ describe('AutomationSubscriptionButton', () => {
                 label: 'Upgrade',
                 state: {
                     isAutomationAddOnChecked: true,
-                    openedPlanModal: PlanName.Basic,
+                    openedPriceModal: PlanName.Basic,
                 },
                 onClick: undefined,
             })

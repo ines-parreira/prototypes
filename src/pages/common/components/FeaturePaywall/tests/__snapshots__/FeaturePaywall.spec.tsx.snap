@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<FeaturePaywall /> should ask to upgrade custom plan when missing feature 1`] = `
+exports[`<FeaturePaywall /> should ask to upgrade custom price when missing feature 1`] = `
 <div
   class="full-width pageWrapper"
 >
@@ -170,7 +170,7 @@ exports[`<FeaturePaywall /> should ask to upgrade custom plan when missing featu
 </div>
 `;
 
-exports[`<FeaturePaywall /> should ask to upgrade legacy plan into new plan 1`] = `
+exports[`<FeaturePaywall /> should ask to upgrade legacy price into new price 1`] = `
 <div
   class="full-width pageWrapper"
 >
@@ -342,7 +342,7 @@ exports[`<FeaturePaywall /> should ask to upgrade legacy plan into new plan 1`] 
 
 exports[`<FeaturePaywall /> should render empty page when paywall config is undefined 1`] = `null`;
 
-exports[`<FeaturePaywall /> should render empty page when required plan name was not found 1`] = `null`;
+exports[`<FeaturePaywall /> should render empty page when required price name was not found 1`] = `null`;
 
 exports[`<FeaturePaywall /> should render paywall for the feature 1`] = `
 <div

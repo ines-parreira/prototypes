@@ -265,7 +265,7 @@ const BillingUsage = () => {
     ) : (
         <div className={css.wrapper}>
             {isCurrentHelpdeskLegacy && (
-                <LegacyPlanBanner isCustomPlan={isCustom} />
+                <LegacyPlanBanner isCustomPrice={isCustom} />
             )}
             <BillingHeader icon="insert_chart">Usage & Plans</BillingHeader>
 

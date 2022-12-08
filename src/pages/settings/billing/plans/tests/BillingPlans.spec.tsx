@@ -8,11 +8,6 @@ import {fireEvent} from '@testing-library/react'
 
 import history from '../../../../history'
 import BillingPlans from '../BillingPlans'
-import {
-    basicPlan,
-    proPlan,
-    advancedPlan,
-} from '../../../../../fixtures/subscriptionPlan'
 import {account} from '../../../../../fixtures/account'
 import BillingPlansComparison from '../BillingPlansComparison'
 import {RootState, StoreDispatch} from '../../../../../state/types'
@@ -27,13 +22,13 @@ jest.mock(
     '../BillingPlansComparison',
     () =>
         ({
-            openedPlanModal,
+            openedPriceModal,
             onSubscriptionChanged,
         }: ComponentProps<typeof BillingPlansComparison>) =>
             (
                 <div>
-                    BillingPlansComparison mock, openedPlanModal:{' '}
-                    {openedPlanModal}
+                    BillingPlansComparison mock, openedPriceModal:{' '}
+                    {openedPriceModal}
                     <button
                         value="Subscription changed"
                         data-testid="subscription-changed"
@@ -46,23 +41,9 @@ jest.mock(
 )
 
 describe('<BillingPlans/>', () => {
-    const publicPlans = {
-        [basicPlan.id]: basicPlan,
-        [proPlan.id]: proPlan,
-        [advancedPlan.id]: advancedPlan,
-    }
     const defaultState: Partial<RootState> = {
-        currentAccount: fromJS({
-            ...account,
-            current_subscription: {
-                ...account.current_subscription,
-                plan: Object.values(publicPlans)[0]!.id,
-            },
-        }),
-        billing: fromJS({
-            ...billingState,
-            plans: publicPlans,
-        }),
+        currentAccount: fromJS(account),
+        billing: fromJS(billingState),
     }
 
     beforeEach(() => {
@@ -81,7 +62,7 @@ describe('<BillingPlans/>', () => {
 
     it('it should render the initially opened plan popover', () => {
         const history = createMemoryHistory({initialEntries: ['/']})
-        history.replace('/', {openedPlanModal: 'Some plan'})
+        history.replace('/', {openedPriceModal: 'Some plan'})
         const {queryByText} = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <BillingPlans />

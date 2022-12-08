@@ -15,7 +15,6 @@ import {
     AccountFeature,
     AccountFeatures,
 } from '../../../../state/currentAccount/types'
-import {PlanWithCurrencySign} from '../../../../state/billing/types'
 
 import {PlanCardFeature} from './PlanCard'
 import BillableTicketsLabel from './BillableTicketsLabel'
@@ -165,51 +164,6 @@ export const getEnterprisePlanCardFeatures = (): PlanCardFeature[] => {
             planName: 'Enterprise',
             enabledFeatures: Object.values(AccountFeature),
             enableHardCodedFeatures: true,
-        })
-    )
-}
-
-type GetPlanCardFeaturesForPlanArgs = {
-    plan: PlanWithCurrencySign
-    enableHardCodedFeatures: boolean
-}
-
-export const getPlanCardFeaturesForPlan = ({
-    plan,
-    enableHardCodedFeatures,
-}: GetPlanCardFeaturesForPlanArgs): PlanCardFeature[] => {
-    if (plan.id === 'enterprise') {
-        return getEnterprisePlanCardFeatures()
-    }
-    const planFeatures = plan.features
-    const enabledFeatures = _pickBy(planFeatures, (featureMetadata) =>
-        isFeatureEnabled(featureMetadata)
-    ) as AccountFeatures
-    const enabledFeaturesNames = Object.keys(
-        enabledFeatures
-    ) as AccountFeature[]
-    return (
-        [
-            {
-                icon: <PlanFeatureMaterialIcon icon="playlist_add_check" />,
-                label: (
-                    <BillableTicketsLabel
-                        costPerTicket={plan.cost_per_ticket}
-                        currency={plan.currency}
-                        freeTickets={plan.free_tickets}
-                    />
-                ),
-            },
-        ] as PlanCardFeature[]
-    ).concat(
-        getCommonPlanCardFeatures({
-            planId: plan.id,
-            planName: plan.name,
-            enableHardCodedFeatures,
-            enabledFeatures: enabledFeaturesNames,
-            phoneNumbersLimit:
-                planFeatures && planFeatures[AccountFeature.PhoneNumber]?.limit,
-            isCustom: plan.custom,
         })
     )
 }

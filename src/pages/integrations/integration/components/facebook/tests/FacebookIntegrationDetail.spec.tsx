@@ -1128,7 +1128,7 @@ describe('<FacebookIntegrationDetail/>', () => {
             ],
         ])(
             'should render an integration for: %s',
-            (_, [isIGAccountEligible, planHasInstagramDmFeature]) => {
+            (_, [isIGAccountEligible, priceHasInstagramDmFeature]) => {
                 const integration = merge(baseIntegration, {
                     id: 1,
                     type: FACEBOOK_INTEGRATION_TYPE,
@@ -1177,7 +1177,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                     features: {
                         ...basicMonthlyHelpdeskPrice.features,
                         [AccountFeature.InstagramDirectMessage]: {
-                            enabled: planHasInstagramDmFeature,
+                            enabled: priceHasInstagramDmFeature,
                         },
                     },
                 }
@@ -1189,7 +1189,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                             integration={integration}
                             currentAccount={currentAccount}
                             currentHelpdeskProduct={currentHelpdeskProduct}
-                            hasInstagramDMFeature={planHasInstagramDmFeature}
+                            hasInstagramDMFeature={priceHasInstagramDmFeature}
                         />
                     </Provider>
                 )

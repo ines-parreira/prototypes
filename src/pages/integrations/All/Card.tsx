@@ -55,7 +55,7 @@ function LinkOrDiv({
     const domain = useAppSelector(getCurrentAccountState).get('domain')
     const dataTestId = isFeatured ? FEATURED_TEST_ID : ''
 
-    if (isLoading || item?.requiredPlanName)
+    if (isLoading || item?.requiredPriceName)
         return (
             <div className={css.card} data-testid={dataTestId}>
                 {children}
@@ -92,12 +92,12 @@ export function Pills({
     return (
         <div className={css.pillsContainer}>
             {isFeatured && <Badge type={ColorType.Warning}>Featured</Badge>}
-            {item.requiredPlanName ? (
+            {item.requiredPriceName ? (
                 <UpgradeButton
                     size="small"
                     label="Upgrade"
                     state={{
-                        openedPlanModal: item.requiredPlanName,
+                        openedPlanModal: item.requiredPriceName,
                     }}
                 />
             ) : isAppListItem(item) ? (

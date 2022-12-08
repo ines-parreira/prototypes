@@ -3,11 +3,6 @@ import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
 
 import Button from 'pages/common/components/button/Button'
-import {
-    advancedPlan,
-    basicPlan,
-    proPlan,
-} from '../../../../../../fixtures/subscriptionPlan'
 import {user as currentUserFixture} from '../../../../../../fixtures/users'
 import {view as mockViewFixture} from '../../../../../../fixtures/views'
 import {ViewVisibility} from '../../../../../../models/view/types'
@@ -27,12 +22,6 @@ describe('<ViewSharingModal/>', () => {
     const minProps = {
         currentUser: fromJS(currentUserFixture),
         isOpen: true,
-        plans: {
-            [basicPlan.id]: basicPlan,
-            [proPlan.id]: proPlan,
-            [advancedPlan.id]: advancedPlan,
-        },
-        showPaywall: false,
         viewUpdated,
         toggle: jest.fn(),
         notify: jest.fn(),

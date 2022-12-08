@@ -161,7 +161,7 @@ exports[`<IntegrationDetail /> smooch_inside should render the migration tab of
 </div>
 `;
 
-exports[`<IntegrationDetail /> should display not available message if twitter integration not included in plan 1`] = `
+exports[`<IntegrationDetail /> should display not available message if twitter integration not included in price 1`] = `
 <div
   class="container-fluid"
 >

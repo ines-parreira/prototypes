@@ -130,7 +130,6 @@ export type AccountFeatures = Record<AccountFeature, AccountFeatureMetadata>
 export type Account = {
     id: number
     current_subscription: {
-        plan: string
         start_datetime: string
         status: 'active' | 'past_due' | 'trialing'
         trial_end_datetime: string | null

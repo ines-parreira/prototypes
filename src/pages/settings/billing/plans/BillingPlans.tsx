@@ -17,7 +17,7 @@ type Props = ConnectedProps<typeof connector> &
         any,
         any,
         // TODO[COR-1569]: There should be a single source of truth for the state
-        {isAutomationAddOnChecked?: boolean; openedPlanModal?: string}
+        {isAutomationAddOnChecked?: boolean; openedPriceModal?: string}
     >
 
 class BillingPlans extends React.Component<Props> {
@@ -60,7 +60,7 @@ class BillingPlans extends React.Component<Props> {
                 />
                 <BillingPlansComparison
                     isAutomationAddOnChecked={state?.isAutomationAddOnChecked}
-                    openedPlanModal={state?.openedPlanModal}
+                    openedPriceModal={state?.openedPriceModal}
                     onSubscriptionChanged={this.handleSubscriptionChanged}
                 />
                 <Container fluid className="page-container">

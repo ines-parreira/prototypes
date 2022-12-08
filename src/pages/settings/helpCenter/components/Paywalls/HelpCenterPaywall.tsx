@@ -72,7 +72,7 @@ const HelpCenterPaywall = (): JSX.Element => {
                     />
                 )
             }
-            shouldKeepPlan
+            shouldKeepPrice
             modal={
                 !isEnterprisePlan &&
                 availableHelpdeskPrice && (

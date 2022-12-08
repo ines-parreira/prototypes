@@ -96,16 +96,16 @@ Array [
 ]
 `;
 
-exports[`billingPlanFeatures getPlanCardFeaturesForPlan should return plan card features for Advanced plan plan 1`] = `
+exports[`billingPlanFeatures getPlanCardFeaturesForPrices should return plan card features for Advanced price 1`] = `
 Array [
   Object {
     "icon": <PlanFeatureMaterialIcon
       icon="playlist_add_check"
     />,
     "label": <BillableTicketsLabel
-      costPerTicket={0.2}
+      costPerTicket={0.36}
       currency="usd"
-      freeTickets={3000}
+      freeTickets={5000}
     />,
   },
   Object {
@@ -197,16 +197,16 @@ Array [
 ]
 `;
 
-exports[`billingPlanFeatures getPlanCardFeaturesForPlan should return plan card features for Basic plan plan 1`] = `
+exports[`billingPlanFeatures getPlanCardFeaturesForPrices should return plan card features for Basic price 1`] = `
 Array [
   Object {
     "icon": <PlanFeatureMaterialIcon
       icon="playlist_add_check"
     />,
     "label": <BillableTicketsLabel
-      costPerTicket={0.25}
+      costPerTicket={0.4}
       currency="usd"
-      freeTickets={350}
+      freeTickets={300}
     />,
   },
   Object {
@@ -243,7 +243,7 @@ Array [
     "icon": <PlanFeatureMaterialIcon
       icon="insert_emoticon"
     />,
-    "isDisabled": true,
+    "isDisabled": false,
     "label": "Satisfaction surveys",
   },
   Object {
@@ -277,7 +277,7 @@ Array [
     "icon": <PlanFeatureVectorIcon
       url="test-file-stub"
     />,
-    "isDisabled": false,
+    "isDisabled": true,
     "label": "Magento integration",
   },
   Object {
@@ -297,16 +297,16 @@ Array [
 ]
 `;
 
-exports[`billingPlanFeatures getPlanCardFeaturesForPlan should return plan card features for Custom plan plan 1`] = `
+exports[`billingPlanFeatures getPlanCardFeaturesForPrices should return plan card features for Custom price 1`] = `
 Array [
   Object {
     "icon": <PlanFeatureMaterialIcon
       icon="playlist_add_check"
     />,
     "label": <BillableTicketsLabel
-      costPerTicket={0.23}
+      costPerTicket={0.32}
       currency="usd"
-      freeTickets={2000}
+      freeTickets={10000}
     />,
   },
   Object {
@@ -328,7 +328,7 @@ Array [
     "isDisabled": false,
     "label": <React.Fragment>
       <b>
-        50
+        150
       </b>
        Phone number
       s
@@ -371,102 +371,6 @@ Array [
     "icon": <PlanFeatureMaterialIcon
       icon="attach_money"
     />,
-    "isDisabled": true,
-    "label": "Revenue statistics",
-  },
-  Object {
-    "icon": <PlanFeatureVectorIcon
-      url="test-file-stub"
-    />,
-    "isDisabled": false,
-    "label": "Magento integration",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="person_pin"
-    />,
-    "isDisabled": false,
-    "label": "Dedicated success manager",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="blur_on"
-    />,
-    "isDisabled": false,
-    "label": "Custom services",
-  },
-]
-`;
-
-exports[`billingPlanFeatures getPlanCardFeaturesForPlan should return plan card features for Enterprise plan plan 1`] = `
-Array [
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="playlist_add_check"
-    />,
-    "label": <React.Fragment>
-      Discounted prices for 
-      <b>
-        10k+ tickets
-      </b>
-    </React.Fragment>,
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="thumb_up"
-    />,
-    "label": "Facebook, Messenger, Instagram & DMs",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="forum"
-    />,
-    "label": "Live chat",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="phone"
-    />,
-    "isDisabled": false,
-    "label": "Custom limit of phone numbers",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="auto_awesome"
-    />,
-    "label": "Macros and rules",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="insert_emoticon"
-    />,
-    "isDisabled": false,
-    "label": "Satisfaction surveys",
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="web_asset"
-    />,
-    "isDisabled": false,
-    "label": <HelpCenterLabel
-      disabled={false}
-    />,
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="directions_car"
-    />,
-    "label": <React.Fragment>
-      <b>
-        Full
-      </b>
-       onboarding
-    </React.Fragment>,
-  },
-  Object {
-    "icon": <PlanFeatureMaterialIcon
-      icon="attach_money"
-    />,
     "isDisabled": false,
     "label": "Revenue statistics",
   },
@@ -494,14 +398,14 @@ Array [
 ]
 `;
 
-exports[`billingPlanFeatures getPlanCardFeaturesForPlan should return plan card features for Pro plan plan 1`] = `
+exports[`billingPlanFeatures getPlanCardFeaturesForPrices should return plan card features for Pro price 1`] = `
 Array [
   Object {
     "icon": <PlanFeatureMaterialIcon
       icon="playlist_add_check"
     />,
     "label": <BillableTicketsLabel
-      costPerTicket={0.23}
+      costPerTicket={0.36}
       currency="usd"
       freeTickets={2000}
     />,
@@ -568,7 +472,7 @@ Array [
     "icon": <PlanFeatureMaterialIcon
       icon="attach_money"
     />,
-    "isDisabled": true,
+    "isDisabled": false,
     "label": "Revenue statistics",
   },
   Object {
@@ -595,7 +499,7 @@ Array [
 ]
 `;
 
-exports[`billingPlanFeatures getPlanCardFeaturesForPlan should return plan card features for Starter plan plan 1`] = `
+exports[`billingPlanFeatures getPlanCardFeaturesForPrices should return plan card features for Starter price 1`] = `
 Array [
   Object {
     "icon": <PlanFeatureMaterialIcon
@@ -604,7 +508,7 @@ Array [
     "label": <BillableTicketsLabel
       costPerTicket={0.4}
       currency="usd"
-      freeTickets={600}
+      freeTickets={50}
     />,
   },
   Object {
@@ -690,16 +594,16 @@ Array [
 ]
 `;
 
-exports[`billingPlanFeatures getPlanCardFeaturesForPlan should return plan card features for legacy plan 1`] = `
+exports[`billingPlanFeatures getPlanCardFeaturesForPrices should return plan card features for legacy price 1`] = `
 Array [
   Object {
     "icon": <PlanFeatureMaterialIcon
       icon="playlist_add_check"
     />,
     "label": <BillableTicketsLabel
-      costPerTicket={0.25}
+      costPerTicket={0.06}
       currency="usd"
-      freeTickets={350}
+      freeTickets={600}
     />,
   },
   Object {
@@ -736,7 +640,7 @@ Array [
     "icon": <PlanFeatureMaterialIcon
       icon="insert_emoticon"
     />,
-    "isDisabled": true,
+    "isDisabled": false,
     "label": "Satisfaction surveys",
   },
   Object {
@@ -750,11 +654,11 @@ Array [
   },
   Object {
     "icon": <PlanFeatureMaterialIcon
-      icon="directions_walk"
+      icon="directions_bike"
     />,
     "label": <React.Fragment>
       <b>
-        Self
+        Lite
       </b>
        onboarding
     </React.Fragment>,
@@ -770,7 +674,7 @@ Array [
     "icon": <PlanFeatureVectorIcon
       url="test-file-stub"
     />,
-    "isDisabled": false,
+    "isDisabled": true,
     "label": "Magento integration",
   },
   Object {
@@ -790,16 +694,16 @@ Array [
 ]
 `;
 
-exports[`billingPlanFeatures getPlanCardFeaturesForPlan should return plan card features with disabled help center 1`] = `
+exports[`billingPlanFeatures getPlanCardFeaturesForPrices should return plan card features with disabled help center 1`] = `
 Array [
   Object {
     "icon": <PlanFeatureMaterialIcon
       icon="playlist_add_check"
     />,
     "label": <BillableTicketsLabel
-      costPerTicket={0.25}
+      costPerTicket={0.4}
       currency="usd"
-      freeTickets={350}
+      freeTickets={300}
     />,
   },
   Object {
@@ -836,7 +740,7 @@ Array [
     "icon": <PlanFeatureMaterialIcon
       icon="insert_emoticon"
     />,
-    "isDisabled": true,
+    "isDisabled": false,
     "label": "Satisfaction surveys",
   },
   Object {
@@ -870,7 +774,7 @@ Array [
     "icon": <PlanFeatureVectorIcon
       url="test-file-stub"
     />,
-    "isDisabled": false,
+    "isDisabled": true,
     "label": "Magento integration",
   },
   Object {

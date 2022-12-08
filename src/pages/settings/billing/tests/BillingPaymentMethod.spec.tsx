@@ -2,9 +2,10 @@ import React, {ComponentProps} from 'react'
 import {render, waitFor} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
-import {PaymentMethodType} from 'state/billing/types'
-import {ShopifyBillingStatus} from 'state/currentAccount/types'
-import {BillingPaymentMethodContainer} from 'pages/settings/billing/BillingPaymentMethod'
+import {account} from 'fixtures/account'
+import {BillingPaymentMethodContainer} from '../BillingPaymentMethod'
+import {PaymentMethodType} from '../../../../state/billing/types'
+import {ShopifyBillingStatus} from '../../../../state/currentAccount/types'
 
 describe('BillingPaymentMethod', () => {
     const minProps: ComponentProps<typeof BillingPaymentMethodContainer> = {
@@ -33,7 +34,7 @@ describe('BillingPaymentMethod', () => {
             const {container, findByText} = render(
                 <BillingPaymentMethodContainer
                     {...minProps}
-                    subscription={fromJS({plan: 'basic-usd-1'})}
+                    subscription={fromJS(account.current_subscription)}
                 />
             )
 
@@ -63,7 +64,7 @@ describe('BillingPaymentMethod', () => {
                         exp_month: 9,
                         exp_year: 2017,
                     })}
-                    subscription={fromJS({plan: 'basic-usd-1'})}
+                    subscription={fromJS(account.current_subscription)}
                 />
             )
 
@@ -79,7 +80,7 @@ describe('BillingPaymentMethod', () => {
                 <BillingPaymentMethodContainer
                     {...minProps}
                     paymentMethod={PaymentMethodType.Shopify}
-                    subscription={fromJS({plan: 'basic-usd-1'})}
+                    subscription={fromJS(account.current_subscription)}
                     shopifyBillingStatus={ShopifyBillingStatus.Active}
                 />
             )
@@ -123,7 +124,7 @@ describe('BillingPaymentMethod', () => {
                 <BillingPaymentMethodContainer
                     {...minProps}
                     paymentMethod={PaymentMethodType.Shopify}
-                    subscription={fromJS({plan: 'basic-usd-1'})}
+                    subscription={fromJS(account.current_subscription)}
                     shopifyBillingStatus={ShopifyBillingStatus.Inactive}
                 />
             )

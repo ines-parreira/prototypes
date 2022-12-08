@@ -72,10 +72,10 @@ export const ChangePlanModal = ({
         [currentHelpdeskPrice]
     )
 
-    const addOnAmountCurrentPlan = useAppSelector(
+    const currentHelpdeskAutomationAddonAmount = useAppSelector(
         getCurrentHelpdeskAutomationAddonAmount
     )
-    const addOnFullAmountCurrentPlan = useAppSelector(
+    const currentAutomationFullAmount = useAppSelector(
         getCurrentAutomationFullAmount
     )
     const isEditable = useMemo(
@@ -119,7 +119,7 @@ export const ChangePlanModal = ({
                                         interval={currentHelpdeskPrice.interval}
                                         name={formattedName}
                                         features={features}
-                                        isCurrentPlan
+                                        isCurrentPrice
                                         theme={PlanCardTheme.Grey}
                                         renderBody={(features) => (
                                             <SynchronizedScrollTopContainer
@@ -138,7 +138,7 @@ export const ChangePlanModal = ({
                                             <>
                                                 <AutomationAmount
                                                     addOnAmount={
-                                                        addOnAmountCurrentPlan
+                                                        currentHelpdeskAutomationAddonAmount
                                                     }
                                                     currency={
                                                         currentHelpdeskPrice.currency
@@ -148,7 +148,7 @@ export const ChangePlanModal = ({
                                                         currentHelpdeskPrice.interval
                                                     }
                                                     fullAddOnAmount={
-                                                        addOnFullAmountCurrentPlan
+                                                        currentAutomationFullAmount
                                                     }
                                                     isAutomationChecked={
                                                         hasAutomationAddOn
@@ -156,7 +156,7 @@ export const ChangePlanModal = ({
                                                 />
                                                 <TotalAmount
                                                     addOnAmount={
-                                                        addOnAmountCurrentPlan
+                                                        currentHelpdeskAutomationAddonAmount
                                                     }
                                                     amount={formattedAmount}
                                                     currency={

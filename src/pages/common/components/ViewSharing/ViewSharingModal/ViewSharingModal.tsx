@@ -17,7 +17,6 @@ import {RootState} from '../../../../../state/types'
 import {ViewVisibility, View} from '../../../../../models/view/types'
 import {NotificationStatus} from '../../../../../state/notifications/types'
 import {viewUpdated} from '../../../../../state/entities/views/actions'
-import {toJS} from '../../../../../utils'
 
 import ViewSharingModalBody from './ViewSharingModalBody'
 import css from './ViewSharingModal.less'
@@ -120,7 +119,6 @@ export function ViewSharingModalContainer({
 const connector = connect(
     (state: RootState) => ({
         currentUser: state.currentUser,
-        plans: toJS(state.billing.get('plans')),
     }),
     {notify, viewUpdated}
 )

@@ -66,7 +66,7 @@ const minProps: ComponentProps<typeof SelfServiceFlowSelect> = {
 
 describe('<SelfServiceFlowSelect />', () => {
     const defaultState = {
-        billing: fromJS({plans: []}),
+        billing: fromJS({}),
         currentAccount: fromJS({
             features: {
                 automation_return_flow: {enabled: true},

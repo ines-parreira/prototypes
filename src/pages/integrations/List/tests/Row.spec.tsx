@@ -74,7 +74,7 @@ describe('IntegrationsListRow', () => {
             type: IntegrationType.Twitter,
             title: 'an integration',
             description: 'this is a cool integration',
-            requiredPlanName: 'Basic',
+            requiredPriceName: 'Basic',
             image: 'ok.png',
             categories: [],
             count: 0,

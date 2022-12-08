@@ -24,7 +24,7 @@ export const GorgiasChatIntegrationSelfServicePaywall = () => {
         name: SegmentEvent.PaywallUpgradeButtonSelected,
         props: {
             domain: account.get('domain'),
-            current_plan: currentHelpdeskPrice?.price_id,
+            current_price: currentHelpdeskPrice?.price_id,
             paywall_feature: 'automation_addon',
         },
     }

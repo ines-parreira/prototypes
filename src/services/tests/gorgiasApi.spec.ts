@@ -5,6 +5,10 @@ import MockAdapter from 'axios-mock-adapter'
 import axios from 'axios/index'
 import {fromJS, List} from 'immutable'
 
+import {
+    basicMonthlyHelpdeskPrice,
+    HELPDESK_PRODUCT_ID,
+} from 'fixtures/productPrices'
 import {Event, EventObjectType, TICKET_EVENT_TYPES} from 'models/event/types'
 import {
     IntegrationDataItem,
@@ -191,7 +195,10 @@ describe('services', () => {
         describe('startSubscription()', () => {
             it('should start the subscription of the current account.', async () => {
                 const expectedSubscription = {
-                    plan: 'basic-usd-1',
+                    products: {
+                        [HELPDESK_PRODUCT_ID]:
+                            basicMonthlyHelpdeskPrice.price_id,
+                    },
                     status: 'active',
                 }
                 apiMock.onAny().reply(201, expectedSubscription)

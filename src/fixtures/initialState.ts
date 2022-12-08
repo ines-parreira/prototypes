@@ -9,7 +9,6 @@ import {IntegrationType} from 'models/integration/constants'
 import {TicketChannel} from 'business/types/ticket'
 import {GorgiasInitialState} from '../types'
 
-import planFixture from './plan'
 import {user} from './users'
 import {account} from './account'
 import {products} from './productPrices'
@@ -19,9 +18,6 @@ export const initialState: GorgiasInitialState = {
         all: [user],
     },
     billing: {
-        plans: {
-            [planFixture.id]: planFixture,
-        },
         products: products,
     },
     chats: {

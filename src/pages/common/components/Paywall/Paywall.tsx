@@ -29,7 +29,7 @@ type Props = {
     paywallTheme?: PaywallTheme
     previewImage: string
     renderFilterShadow?: boolean
-    shouldKeepPlan?: boolean
+    shouldKeepPrice?: boolean
     requiredUpgrade: string
     upgradeType?: UpgradeType
     header: string
@@ -45,7 +45,7 @@ const Paywall = ({
     paywallTheme = PaywallTheme.Default,
     previewImage,
     renderFilterShadow,
-    shouldKeepPlan,
+    shouldKeepPrice,
     requiredUpgrade,
     upgradeType = UpgradeType.Plan,
     header,
@@ -102,7 +102,7 @@ const Paywall = ({
                         <Col xs={12} lg={5} xl={5} className="pl-lg-5">
                             <div className={css.content}>
                                 <div className="flex align-items-center">
-                                    {shouldKeepPlan && (
+                                    {shouldKeepPrice && (
                                         <>
                                             <Badge type={ColorType.Error}>
                                                 <i className="material-icons mr-1">
@@ -200,12 +200,12 @@ const Paywall = ({
                                     <UpgradeButton
                                         className={css.upgradeButton}
                                         label={
-                                            shouldKeepPlan
+                                            shouldKeepPrice
                                                 ? `Upgrade to New ${requiredUpgrade}`
                                                 : `Upgrade to ${requiredUpgrade}`
                                         }
                                         state={{
-                                            openedPlanModal: requiredUpgrade,
+                                            openedPriceModal: requiredUpgrade,
                                         }}
                                     />
                                 )}

@@ -57,7 +57,7 @@ export function addRequiredPlanToIntegrations(
         if (!requiredFeature) return integration
         if (features[requiredFeature]?.enabled) return integration
 
-        let requiredPlanName = getCheapestPriceNameForFeature(
+        let requiredPriceName = getCheapestPriceNameForFeature(
             requiredFeature,
             prices
         )
@@ -67,11 +67,11 @@ export function addRequiredPlanToIntegrations(
             !hasTwitterIntegrations(integrations) &&
             integration.type === IntegrationType.Twitter
         ) {
-            requiredPlanName = 'Enterprise'
+            requiredPriceName = 'Enterprise'
         }
         return {
             ...integration,
-            requiredPlanName,
+            requiredPriceName,
         }
     })
 }

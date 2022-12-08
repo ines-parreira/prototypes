@@ -28,8 +28,6 @@ import {RootState} from '../types'
 
 import {BillingImmutableState, BillingState} from './types'
 
-export const DEFAULT_PLAN = 'standard-usd-1'
-
 export const DEPRECATED_getBillingState = (
     state: RootState
 ): BillingImmutableState => state.billing || fromJS({})
@@ -59,7 +57,7 @@ export const getAutomationProduct = createSelector(getProducts, (products) => {
     )!
 })
 
-const getCurrentProducts = createSelector(
+export const getCurrentProducts = createSelector(
     getCurrentSubscription as (state: RootState) => CurrentAccountState,
     getHelpdeskProduct,
     getAutomationProduct,
