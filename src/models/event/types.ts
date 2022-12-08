@@ -170,7 +170,7 @@ export type FetchEventsOptions = ApiCursorPaginationParams &
     }
 
 export enum EventSortableProperties {
-    CreatedDatetime = 'createdDatetime',
+    CreatedDatetime = 'created_datetime',
 }
 
 export const TICKET_EVENT_TYPES = Object.freeze({

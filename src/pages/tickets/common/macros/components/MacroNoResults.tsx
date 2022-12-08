@@ -1,15 +1,15 @@
 import React from 'react'
 
+import {UserRole} from 'config/types/user'
+import useAppSelector from 'hooks/useAppSelector'
+import {FetchMacrosOptions} from 'models/macro/types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {RootState} from 'state/types'
 import {hasRole} from 'utils'
-import {UserRole} from 'config/types/user'
-import useAppSelector from 'hooks/useAppSelector'
-import {fetchMacrosParamsTypes} from 'state/macro/actions'
 
 type Props = {
-    searchParams: fetchMacrosParamsTypes
+    searchParams: FetchMacrosOptions
     newAction: () => void
 }
 

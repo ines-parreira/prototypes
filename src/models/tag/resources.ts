@@ -1,11 +1,10 @@
 import {AxiosRequestConfig} from 'axios'
-import _snakeCase from 'lodash/snakeCase'
 
 import client from 'models/api/resources'
 import {ApiListResponseCursorPagination} from 'models/api/types'
 import {deepMapKeysToSnakeCase} from 'models/api/utils'
 
-import {Tag, TagDraft, FetchTagsOptions} from './types'
+import {Tag, TagDraft, FetchTagsOptions, TagSortableProperties} from './types'
 
 export const fetchTags = async (
     options: FetchTagsOptions = {},
@@ -16,8 +15,10 @@ export const fetchTags = async (
         ...(!options.limit ? {limit: 30} : {}),
     })
 
-    if (params.order_by) {
-        params.order_by = _snakeCase(options.orderBy)
+    // when sorting by usage, the second sorting attribute needs to be defined explicitly
+    if (options.orderBy?.startsWith(TagSortableProperties.Usage)) {
+        const orderDir = options.orderBy.split(':')[1]
+        params.order_by += `,${TagSortableProperties.Name}:${orderDir}`
     }
 
     return await client.get<ApiListResponseCursorPagination<Tag[]>>(

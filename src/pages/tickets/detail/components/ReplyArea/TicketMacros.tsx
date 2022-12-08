@@ -12,21 +12,19 @@ import {
     PopoverBody,
 } from 'reactstrap'
 
+import {UserRole} from 'config/types/user'
+import {FetchMacrosOptions} from 'models/macro/types'
 import Button from 'pages/common/components/button/Button'
-import {RootState} from '../../../../../state/types'
-import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
-import {
-    deleteMacro,
-    fetchMacrosParamsTypes,
-} from '../../../../../state/macro/actions'
-import Preview from '../../../common/macros/Preview'
-import Loader from '../../../../common/components/Loader/Loader'
-import MacroList from '../../../common/macros/components/MacroList'
-import MacroNoResults from '../../../common/macros/components/MacroNoResults'
-import MacroContainer from '../../../common/macros/MacroContainer'
-import {hasRole} from '../../../../../utils'
-import {UserRole} from '../../../../../config/types/user'
-import {notify} from '../../../../../state/notifications/actions'
+import Loader from 'pages/common/components/Loader/Loader'
+import Preview from 'pages/tickets/common/macros/Preview'
+import MacroList from 'pages/tickets/common/macros/components/MacroList'
+import MacroNoResults from 'pages/tickets/common/macros/components/MacroNoResults'
+import MacroContainer from 'pages/tickets/common/macros/MacroContainer'
+import {deleteMacro} from 'state/macro/actions'
+import * as newMessageSelectors from 'state/newMessage/selectors'
+import {notify} from 'state/notifications/actions'
+import {RootState} from 'state/types'
+import {hasRole} from 'utils'
 
 import css from './TicketMacros.less'
 
@@ -35,13 +33,15 @@ type Props = {
     className?: string
     currentMacro: Map<any, any>
     currentTicket: Map<any, any>
-    fetchMacros: (params: fetchMacrosParamsTypes) => Promise<void>
+    fetchMacros: (
+        params: FetchMacrosOptions,
+        retainPreviousResults?: boolean
+    ) => Promise<void>
     isInitialMacrosLoading: boolean
     macros: List<any>
-    page: number
     selectMacro: (macro: Map<any, any>) => void
-    searchParams: fetchMacrosParamsTypes
-    totalPages: number
+    searchParams: FetchMacrosOptions
+    hasDataToLoad?: boolean
 } & ConnectedProps<typeof connector>
 
 type State = {
@@ -49,7 +49,6 @@ type State = {
     isDeleteConfirmOpen: boolean
     isModalOpen: boolean
     macroDropdownOpen: boolean
-    page: number
 }
 
 export class TicketMacrosContainer extends Component<Props, State> {
@@ -67,7 +66,6 @@ export class TicketMacrosContainer extends Component<Props, State> {
         super(props)
 
         this.state = {
-            page: 1,
             macroDropdownOpen: false,
             isDeleteConfirmOpen: false,
             isModalOpen: false,
@@ -113,7 +111,10 @@ export class TicketMacrosContainer extends Component<Props, State> {
     closeMacroModal = () => {
         this.setState({isModalOpen: false})
         // reload macros, in case they changed in the modal
-        void this.props.fetchMacros(this.props.searchParams)
+        void this.props.fetchMacros({
+            ...this.props.searchParams,
+            cursor: null,
+        })
     }
 
     toggleCreateMacro = (isCreatingMacro = false): Promise<void> => {
@@ -126,7 +127,10 @@ export class TicketMacrosContainer extends Component<Props, State> {
         this.toggleMacroDeleteConfirmOpen()
         const macroId = this.props.currentMacro.get('id', '')
         return this.props.deleteMacro(macroId).then(() => {
-            void this.props.fetchMacros(this.props.searchParams)
+            void this.props.fetchMacros({
+                ...this.props.searchParams,
+                cursor: null,
+            })
         })
     }
 
@@ -136,12 +140,11 @@ export class TicketMacrosContainer extends Component<Props, State> {
             macros,
             newMessageType,
             className,
-            page,
-            totalPages,
             currentMacro,
             selectMacro,
             isInitialMacrosLoading,
             fetchMacros,
+            hasDataToLoad,
         } = this.props
 
         let content = null
@@ -160,15 +163,13 @@ export class TicketMacrosContainer extends Component<Props, State> {
                     <MacroList
                         className={css.macroList}
                         currentMacro={currentMacro}
-                        searchResults={{macros, page, totalPages}}
+                        searchResults={macros}
                         onClickItem={this.props.applyMacro}
                         onHoverItem={selectMacro}
                         loadMore={() =>
-                            fetchMacros({
-                                ...this.props.searchParams,
-                                page: page + 1,
-                            })
+                            fetchMacros(this.props.searchParams, true)
                         }
+                        hasDataToLoad={hasDataToLoad}
                     />
                     <div
                         className={css.previewContainer}

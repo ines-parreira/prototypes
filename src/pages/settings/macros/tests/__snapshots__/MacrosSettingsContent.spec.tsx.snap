@@ -61,16 +61,16 @@ exports[`<MacrosSettingsContent/> should match snapshot 1`] = `
     onSortOptionsChange={[Function]}
     options={
       Object {
-        "orderBy": "createdDatetime",
-        "orderDir": "asc",
+        "orderBy": "created_datetime:asc",
       }
     }
   />
   <Component
-    className="pagination-transparent"
-    currentPage={1}
-    onChange={[Function]}
-    pageCount={1}
+    className="navigation"
+    fetchNextItems={[Function]}
+    fetchPrevItems={[Function]}
+    hasNextItems={false}
+    hasPrevItems={false}
   />
 </div>
 `;

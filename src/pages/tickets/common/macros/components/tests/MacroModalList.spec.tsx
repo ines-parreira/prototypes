@@ -27,7 +27,7 @@ describe('<MacroModalList />', () => {
             <Provider store={mockStore(defaultStore)}>
                 <MacroModalList
                     currentMacro={macros.first()}
-                    searchResults={{macros: macros, page: 1, totalPages: 1}}
+                    searchResults={macros}
                     searchParams={{}}
                     fetchMacros={jest.fn()}
                     disableExternalActions={false}

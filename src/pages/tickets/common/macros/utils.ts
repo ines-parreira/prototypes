@@ -19,7 +19,7 @@ export const isMacroDisabled = (
 
 export const getDefaultSelectedMacroId = (
     macros: List<any>,
-    selectedMacroId: Maybe<number>,
+    selectedMacroId: number | null,
     isCreatingMacro?: boolean
 ) => {
     const currentMacro = getCurrentMacro(

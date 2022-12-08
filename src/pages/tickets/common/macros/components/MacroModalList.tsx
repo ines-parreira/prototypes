@@ -3,25 +3,26 @@ import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
 import {List, Map} from 'immutable'
 
-import {fetchMacrosParamsTypes, MacrosSearchResult} from 'state/macro/actions'
+import {FetchMacrosOptions, Macro} from 'models/macro/types'
 import TextInput from 'pages/common/forms/input/TextInput'
 import MacroFilters from 'pages/common/components/MacroFilters/MacroFilters'
-import shortcutManager from '../../../../../services/shortcutManager'
-import {moveIndex, MoveIndexDirection} from '../../../../common/utils/keyboard'
-import {isMacroDisabled} from '../utils'
+import {moveIndex, MoveIndexDirection} from 'pages/common/utils/keyboard'
+import {isMacroDisabled} from 'pages/tickets/common/macros/utils'
+import shortcutManager from 'services/shortcutManager'
 
 import css from './MacroModalList.less'
 
 import MacroList from './MacroList'
 
 type Props = {
-    searchParams: fetchMacrosParamsTypes
-    searchResults: MacrosSearchResult
+    searchParams: FetchMacrosOptions
+    searchResults: List<any>
     currentMacro: Map<any, any>
     disableExternalActions?: boolean
     handleClickItem: (id: number) => void
-    fetchMacros: (params: fetchMacrosParamsTypes) => Promise<void>
-    onSearch: (searchParams: fetchMacrosParamsTypes) => void
+    fetchMacros: (params?: FetchMacrosOptions) => Promise<Macro[] | void>
+    onSearch: (searchParams: FetchMacrosOptions) => void
+    hasDataToLoad?: boolean
 }
 
 export default class MacroModalList extends Component<Props> {
@@ -51,7 +52,7 @@ export default class MacroModalList extends Component<Props> {
     componentWillReceiveProps(nextProps: Props) {
         this._macroCursor = this._getMacroCursor(
             nextProps.currentMacro,
-            nextProps.searchResults.macros
+            nextProps.searchResults
         )
     }
 
@@ -62,11 +63,11 @@ export default class MacroModalList extends Component<Props> {
     }
 
     _moveCursor = (direction = MoveIndexDirection.Next) => {
-        if (this.props.searchResults.macros.isEmpty()) {
+        if (this.props.searchResults.isEmpty()) {
             return
         }
 
-        const macros = this.props.searchResults.macros
+        const macros = this.props.searchResults
         this._macroCursor = moveIndex(this._macroCursor, macros.size, {
             direction:
                 direction === MoveIndexDirection.Next
@@ -96,6 +97,7 @@ export default class MacroModalList extends Component<Props> {
             handleClickItem,
             onSearch,
             fetchMacros,
+            hasDataToLoad,
         } = this.props
 
         return (
@@ -106,7 +108,7 @@ export default class MacroModalList extends Component<Props> {
                         onSearch({...searchParams, search: value})
                     }
                     placeholder="Search macros by name, tags or body..."
-                    autoFocus={!searchResults.macros.isEmpty()}
+                    autoFocus={!searchResults.isEmpty()}
                     className={classnames(
                         css.search,
                         'shortcuts-enable',
@@ -129,15 +131,11 @@ export default class MacroModalList extends Component<Props> {
                 <MacroList
                     className={css.scroller}
                     searchResults={searchResults}
-                    loadMore={() =>
-                        fetchMacros({
-                            ...searchParams,
-                            page: searchResults.page + 1,
-                        })
-                    }
+                    loadMore={() => fetchMacros()}
                     currentMacro={currentMacro}
                     disableExternalActions={disableExternalActions}
                     onClickItem={(macro) => handleClickItem(macro.get('id'))}
+                    hasDataToLoad={hasDataToLoad}
                 />
             </div>
         )

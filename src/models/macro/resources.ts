@@ -1,32 +1,31 @@
-import {CancelToken} from 'axios'
-import _snakeCase from 'lodash/snakeCase'
-
+import {AxiosRequestConfig} from 'axios'
 import qs from 'qs'
-import {deepMapKeysToSnakeCase} from '../api/utils'
-import client from '../api/resources'
-import {ApiListResponsePagination} from '../api/types'
+
+import client from 'models/api/resources'
+import {ApiListResponseCursorPagination} from 'models/api/types'
+import {deepMapKeysToSnakeCase} from 'models/api/utils'
 
 import {Macro, MacroDraft, FetchMacrosOptions} from './types'
 
 export const fetchMacros = async (
     options: FetchMacrosOptions = {},
-    cancelToken?: CancelToken
-): Promise<ApiListResponsePagination<Macro[]>> => {
+    config: AxiosRequestConfig = {}
+) => {
     const params: Record<string, unknown> = deepMapKeysToSnakeCase(options)
-    if (params.fallback_order_by) {
-        delete params.fallback_order_by
-        params._fallback_order_by = _snakeCase(options.fallbackOrderBy)
-    }
-    if (params.order_by) {
-        params.order_by = _snakeCase(options.orderBy)
-    }
-    const res = await client.get('/api/macros/', {
-        params,
-        paramsSerializer: (params) =>
-            qs.stringify(params, {arrayFormat: 'repeat'}),
-        cancelToken,
-    })
-    return res.data as ApiListResponsePagination<Macro[]>
+
+    const res = await client.get<ApiListResponseCursorPagination<Macro[]>>(
+        '/api/macros/',
+        {
+            params: {
+                limit: 30,
+                ...params,
+            },
+            paramsSerializer: (params) =>
+                qs.stringify(params, {arrayFormat: 'repeat'}),
+            ...config,
+        }
+    )
+    return res
 }
 
 export const fetchMacro = async (id: number): Promise<Macro> => {

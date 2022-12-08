@@ -8,17 +8,21 @@ import {fromJS, List, Map} from 'immutable'
 import _debounce from 'lodash/debounce'
 import {connect, ConnectedProps} from 'react-redux'
 import {ContentState, EditorState} from 'draft-js'
-
 import {withLDConsumer} from 'launchdarkly-react-client-sdk'
 import {LDFlagSet} from 'launchdarkly-js-client-sdk'
+
 import {clearMacroBeforeApply} from 'business/macro'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
-import DEPRECATED_RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {OrderDirection} from 'models/api/types'
 import {
-    fetchMacros,
-    fetchMacrosParamsTypes,
-    MacrosSearchResult,
-} from 'state/macro/actions'
+    FetchMacrosOptions,
+    MacroSortableProperties,
+    MacrosProperties,
+} from 'models/macro/types'
+import {MacroActionName} from 'models/macroAction/types'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {fetchMacros} from 'state/macro/actions'
+import DEPRECATED_RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'
 import withCancellableRequest, {
     CancellableRequestInjectedProps,
 } from 'pages/common/utils/withCancellableRequest'
@@ -26,12 +30,12 @@ import {
     getCurrentMacro,
     getDefaultSelectedMacroId,
 } from 'pages/tickets/common/macros/utils'
-import {nestedReplace} from 'state/ticket/utils'
 import shortcutManager from 'services/shortcutManager/index'
 import {getPreferences} from 'state/currentUser/selectors'
-import {getNewMessageType, isCacheAdded} from 'state/newMessage/selectors'
 import {setResponseText} from 'state/newMessage/actions'
-
+import {getNewMessageType, isCacheAdded} from 'state/newMessage/selectors'
+import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'
+import {getMacroParametersOptions} from 'state/macro/selectors'
 import {notify} from 'state/notifications/actions'
 import {applyMacro, clearAppliedMacro} from 'state/ticket/actions'
 import {
@@ -41,14 +45,11 @@ import {
     getLastMessage,
     getRuleSuggestionState,
 } from 'state/ticket/selectors'
+import {nestedReplace} from 'state/ticket/utils'
 import {RootState} from 'state/types'
-import {getMacroParametersOptions} from 'state/macro/selectors'
-import {MacrosProperties} from 'models/macro/types'
-import {FeatureFlagKey} from 'config/featureFlags'
-import PrefillMacroAlert from 'pages/tickets/detail/components/ReplyArea/PrefillMacroAlert'
-import {MacroActionName} from 'models/macroAction/types'
 
-import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'
+import PrefillMacroAlert from 'pages/tickets/detail/components/ReplyArea/PrefillMacroAlert'
+
 import TicketMacros from './TicketMacros'
 import TicketReply from './TicketReply'
 import TicketMacrosSearch from './TicketMacrosSearch'
@@ -71,12 +72,13 @@ type Props = {
 type State = {
     hasShownMacros: boolean
     isInitialMacrosLoading: boolean
-    searchParams: fetchMacrosParamsTypes
-    searchResults: MacrosSearchResult
+    searchParams: FetchMacrosOptions
+    searchResults: List<Map<any, any>>
     macrosVisible: boolean
-    selectedMacroId?: Maybe<number>
+    selectedMacroId: number | null
     shouldFocusEditor: boolean
     topRankMacro: Map<any, any> | null
+    nextCursor: string | null
 }
 
 export class TicketReplyArea extends Component<Props, State> {
@@ -99,20 +101,17 @@ export class TicketReplyArea extends Component<Props, State> {
         this.state = {
             searchParams: {
                 search: '',
-                page: 1,
                 languages,
+                orderBy: `${MacroSortableProperties.Name}:${OrderDirection.Asc}`,
             },
-            searchResults: {
-                page: 1,
-                totalPages: 1,
-                macros: fromJS([]),
-            },
+            searchResults: fromJS([]),
             macrosVisible: false,
-            selectedMacroId: undefined,
+            selectedMacroId: null,
             isInitialMacrosLoading: false,
             shouldFocusEditor: false,
             hasShownMacros: false,
             topRankMacro: null,
+            nextCursor: null,
         }
     }
 
@@ -121,7 +120,9 @@ export class TicketReplyArea extends Component<Props, State> {
 
         this.bindKeys()
         this.setState({isInitialMacrosLoading: true})
-        await this.loadMacros(this.state.searchParams)
+        await this.loadMacros({
+            ...this.state.searchParams,
+        })
         this.setState({isInitialMacrosLoading: false})
 
         if (flags && flags[FeatureFlagKey.PrefillBestMacro]) {
@@ -163,13 +164,12 @@ export class TicketReplyArea extends Component<Props, State> {
         )
             return
 
-        const topRankMacro: Map<any, any> | undefined = (
-            this.state.searchResults.macros as List<Map<any, any>>
-        ).find(
-            (macro) =>
-                macro?.get('relevance_rank') === 1 &&
-                macro?.get('score') > PREFILL_TOP_MACRO_SCORE_THRESHOLD
-        )
+        const topRankMacro: Map<any, any> | undefined =
+            this.state.searchResults.find(
+                (macro) =>
+                    macro?.get('relevance_rank') === 1 &&
+                    macro?.get('score') > PREFILL_TOP_MACRO_SCORE_THRESHOLD
+            )
         if (!topRankMacro) return
 
         const topRankMacroStateId = this.props.topRankMacroState?.['macroId']
@@ -310,7 +310,7 @@ export class TicketReplyArea extends Component<Props, State> {
             : true
 
         return (
-            this.state.searchResults.macros.size > 0 &&
+            this.state.searchResults.size > 0 &&
             (this.props.newMessage.getIn(['newMessage', 'body_text']) as string)
                 .length < 3 &&
             !this.props.ticket.getIn(['state', 'appliedMacro']) &&
@@ -374,57 +374,51 @@ export class TicketReplyArea extends Component<Props, State> {
     }
 
     loadMacros = async (
-        searchParams: fetchMacrosParamsTypes = {
+        searchParams: FetchMacrosOptions = {
             search: '',
-            page: 1,
-        }
+        },
+        retainPreviousResults = false
     ): Promise<void> => {
         const ticketId = this.props.currentTicket.get('id')
-        const commonFilters = {
-            ...searchParams,
-            currentMacros: this.state.searchResults.macros,
-            currentPage: this.state.searchResults.page,
-        }
-        const orderDir = 'asc'
-        const orderBy = 'name'
-        let filters: fetchMacrosParamsTypes = {}
+        let filters: FetchMacrosOptions = {}
 
         if (ticketId) {
             filters = {
-                ...filters,
-                numberPredictions: 3,
-                ticketId: ticketId,
                 messageId: this.props.currentTicket.getIn([
                     'messages',
                     (this.props.currentTicket.get('messages') as List<any>)
                         .size - 1,
                     'id',
                 ]),
-                _fallbackOrderBy: 'usage',
+                numberPredictions: 3,
+                ticketId,
             }
         }
 
-        const res = await this.props.fetchMacrosCancellable(
-            {...filters, ...commonFilters},
-            orderBy,
-            orderDir
-        )
+        const res = await this.props.fetchMacrosCancellable({
+            ...searchParams,
+            ...filters,
+        })
         if (!res) {
             return
         }
+
+        const newMacros = retainPreviousResults
+            ? (this.state.searchResults.concat(
+                  fromJS(res.data) as List<Map<any, any>>
+              ) as List<Map<any, any>>)
+            : (fromJS(res.data) as List<Map<any, any>>)
+
         const selectedMacroId = getDefaultSelectedMacroId(
-            res.macros,
+            fromJS(res.data),
             this.state.selectedMacroId
         )
         return new Promise((resolve) => {
             this.setState(
                 {
                     selectedMacroId,
-                    searchResults: {
-                        macros: res.macros,
-                        page: res.page,
-                        totalPages: res.totalPages,
-                    },
+                    searchResults: newMacros,
+                    nextCursor: res.meta.next_cursor,
                 },
                 resolve
             )
@@ -432,8 +426,8 @@ export class TicketReplyArea extends Component<Props, State> {
     }
 
     loadMacrosWithLogEvent = async (
-        searchParams: fetchMacrosParamsTypes,
-        changedSearchParams: fetchMacrosParamsTypes
+        searchParams: FetchMacrosOptions,
+        changedSearchParams: FetchMacrosOptions
     ): Promise<void> => {
         logEvent(SegmentEvent.TicketMacrosSearch, {
             ...searchParams,
@@ -474,7 +468,7 @@ export class TicketReplyArea extends Component<Props, State> {
                 action: (e) => {
                     e.preventDefault()
                     if (this.shouldDisplayQuickReply()) {
-                        const macros = this.state.searchResults.macros
+                        const macros = this.state.searchResults
                         const macroIdx =
                             parseInt((e as KeyboardEvent).code.slice(-1)) - 1
                         if (macros.size > macroIdx) {
@@ -487,9 +481,9 @@ export class TicketReplyArea extends Component<Props, State> {
     }
 
     handleSearchKeyDown = (e: KeyboardEventReact) => {
-        const {macros} = this.state.searchResults
-        const macrosIds = macros
-            .map((macro: Map<any, any>) => macro.get('id') as number)
+        const {searchResults} = this.state
+        const macrosIds = searchResults
+            .map((macro) => macro?.get('id') as number)
             .toList()
         const indexCurrentMacro = macrosIds.indexOf(this.state.selectedMacroId!)
 
@@ -516,9 +510,8 @@ export class TicketReplyArea extends Component<Props, State> {
 
         if (e.key === 'Enter') {
             e.preventDefault()
-            const macro = macros.find(
-                (macro: Map<any, any>) =>
-                    macro.get('id') === this.state.selectedMacroId
+            const macro = searchResults.find(
+                (macro) => macro?.get('id') === this.state.selectedMacroId
             )
             if (macro) {
                 this.applyMacro(macro)
@@ -528,7 +521,7 @@ export class TicketReplyArea extends Component<Props, State> {
 
     debounceLoadMacrosWithLogEvent = _debounce(this.loadMacrosWithLogEvent, 350)
 
-    searchMacros = (changedSearchParams: fetchMacrosParamsTypes = {}) => {
+    searchMacros = (changedSearchParams: FetchMacrosOptions = {}) => {
         const searchParams = {
             ...this.state.searchParams,
             ...changedSearchParams,
@@ -543,7 +536,7 @@ export class TicketReplyArea extends Component<Props, State> {
             searchParams.search.trim().length > 1
         ) {
             void this.debounceLoadMacrosWithLogEvent(
-                {...searchParams, page: 1},
+                searchParams,
                 changedSearchParams
             )
         }
@@ -583,9 +576,10 @@ export class TicketReplyArea extends Component<Props, State> {
             searchResults,
             isInitialMacrosLoading,
             macrosVisible,
+            nextCursor,
         } = this.state
         const currentMacro = getCurrentMacro(
-            this.state.searchResults.macros,
+            this.state.searchResults,
             this.state.selectedMacroId
         )
         const {currentTicket, newMessageType} = this.props
@@ -634,15 +628,17 @@ export class TicketReplyArea extends Component<Props, State> {
                         </div>
                     ) : macrosVisible ? (
                         <TicketMacros
-                            macros={searchResults.macros}
-                            page={searchResults.page}
+                            macros={searchResults}
                             isInitialMacrosLoading={isInitialMacrosLoading}
-                            totalPages={searchResults.totalPages}
                             currentMacro={currentMacro}
                             selectMacro={this.setSelectedMacroId}
                             fetchMacros={this.loadMacros}
-                            searchParams={searchParams}
+                            searchParams={{
+                                ...searchParams,
+                                cursor: this.state.nextCursor,
+                            }}
                             applyMacro={this.applyMacro}
+                            hasDataToLoad={!!nextCursor}
                         />
                     ) : (
                         <TicketReply
@@ -661,7 +657,7 @@ export class TicketReplyArea extends Component<Props, State> {
                                 'appliedMacro',
                             ])}
                             richAreaRef={(ref) => (this.richArea = ref)}
-                            macros={this.state.searchResults.macros}
+                            macros={this.state.searchResults}
                             applyMacro={this.applyMacro}
                             shouldDisplayQuickReply={this.shouldDisplayQuickReply()}
                         />

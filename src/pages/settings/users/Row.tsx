@@ -5,12 +5,12 @@ import {Map} from 'immutable'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import useAppDispatch from 'hooks/useAppDispatch'
+import {CursorDirection} from 'models/api/types'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import {RoleLabel} from 'pages/common/utils/labels'
 import Avatar from 'pages/common/components/Avatar/Avatar'
-import {EventNavDirection} from 'pages/settings/audit/constants'
 import {deleteAgent} from 'state/agents/actions'
 import {toJS} from 'utils'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -25,7 +25,7 @@ type Props = {
     isAccountOwner: boolean
     cursorToRefresh?: string | null
     refreshData: (
-        direction?: EventNavDirection,
+        direction?: CursorDirection,
         cursor?: string | null
     ) => Promise<{type: string; error: unknown; reason: string} | undefined>
 }

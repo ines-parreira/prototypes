@@ -24,9 +24,9 @@ export type Tag = Omit<TagDraft, 'description'> & {
 }
 
 export enum TagSortableProperties {
-    CreatedDatetime = 'createdDatetime',
+    CreatedDatetime = 'created_datetime',
     Name = 'name',
-    UpdatedDatetime = 'updatedDatetime',
+    UpdatedDatetime = 'updated_datetime',
     Usage = 'usage',
 }
 

@@ -3,7 +3,7 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {KeyboardEvent as KeyboardEventReact, useRef} from 'react'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import {fetchMacrosParamsTypes} from 'state/macro/actions'
+import {FetchMacrosOptions} from 'models/macro/types'
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
 import MacroFilters from 'pages/common/components/MacroFilters/MacroFilters'
@@ -11,11 +11,11 @@ import OnbordingMacroPopover from 'pages/tickets/common/macros/components/Onbord
 import css from './TicketMacrosSearch.less'
 
 type Props = {
-    searchParams: fetchMacrosParamsTypes
+    searchParams: FetchMacrosOptions
     macrosVisible: boolean
     setFocus: (input: HTMLInputElement) => void
     showMacros: () => void
-    searchMacros: (search: fetchMacrosParamsTypes) => void
+    searchMacros: (search: FetchMacrosOptions) => void
     handleSearchKeyDown: (e: KeyboardEventReact) => void
     onClearMacro: () => void
     requireCustomerSelection: boolean

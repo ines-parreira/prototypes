@@ -16,7 +16,7 @@ import {
     EventsDatetimeOperator,
     FetchEventsOptions,
 } from 'models/event/types'
-import {CursorMeta} from 'models/api/types'
+import {CursorDirection, CursorMeta} from 'models/api/types'
 import {fetchEvents} from 'models/event/resources'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -31,7 +31,7 @@ import {humanizeString} from 'utils'
 
 import css from '../settings.less'
 
-import {DATETIME_LABEL_FORMAT, EventNavDirection} from './constants'
+import {DATETIME_LABEL_FORMAT} from './constants'
 import UserAuditRow from './UserAuditRow'
 
 const _startOfToday = () => getMoment().startOf('day')
@@ -76,16 +76,13 @@ const UserAuditList = () => {
     const previousFetchOptions = usePrevious(fetchOptions)
 
     const createFetchUsersAudit =
-        (cancelToken: CancelToken) => async (direction?: EventNavDirection) => {
+        (cancelToken: CancelToken) => async (direction?: CursorDirection) => {
             const params = fetchOptions
 
-            if (
-                direction === EventNavDirection.PrevCursor &&
-                meta?.prev_cursor
-            ) {
+            if (direction === CursorDirection.PrevCursor && meta?.prev_cursor) {
                 params.cursor = meta.prev_cursor
             } else if (
-                direction === EventNavDirection.NextCursor &&
+                direction === CursorDirection.NextCursor &&
                 meta?.next_cursor
             ) {
                 params.cursor = meta.next_cursor
@@ -250,10 +247,10 @@ const UserAuditList = () => {
                             hasNextItems={!!meta?.next_cursor}
                             hasPrevItems={!!meta?.prev_cursor}
                             fetchNextItems={() =>
-                                fetchUsersAudit(EventNavDirection.NextCursor)
+                                fetchUsersAudit(CursorDirection.NextCursor)
                             }
                             fetchPrevItems={() =>
-                                fetchUsersAudit(EventNavDirection.PrevCursor)
+                                fetchUsersAudit(CursorDirection.PrevCursor)
                             }
                         />
                     </div>

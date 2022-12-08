@@ -251,9 +251,7 @@ describe('<TicketReplyArea/>', () => {
                 )
                 const ticketReplyArea = component.find('TicketReplyArea')
                 ticketReplyArea.setState({
-                    searchResults: {
-                        macros: fromJS(macros),
-                    },
+                    searchResults: fromJS(macros),
                 })
 
                 await waitFor(() => {
@@ -303,9 +301,7 @@ describe('<TicketReplyArea/>', () => {
             )
             const ticketReplyArea = component.find('TicketReplyArea')
             ticketReplyArea.setState({
-                searchResults: {
-                    macros: fromJS(macros),
-                },
+                searchResults: fromJS(macros),
             })
 
             await waitFor(() => {

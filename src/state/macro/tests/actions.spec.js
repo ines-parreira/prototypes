@@ -5,7 +5,8 @@ import MockAdapter from 'axios-mock-adapter'
 
 import * as actions from '../actions.ts'
 import * as constants from '../constants.ts'
-import client from '../../../models/api/resources.ts'
+
+import client from 'models/api/resources.ts'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -24,65 +25,26 @@ describe('macro actions', () => {
         mockServer = new MockAdapter(client)
     })
 
-    describe('fetchMacros', () => {
+    describe('fetchAllMacros', () => {
         it('should return formatted data', () => {
-            const macros = fromJS([{id: 1, name: 'Pizza Pepperoni'}])
+            const macros = [{id: 1, name: 'Pizza Pepperoni'}]
             mockServer.onGet('/api/macros/').reply(200, {
-                data: macros.toJS(),
+                data: macros,
                 meta: {
-                    page: 1,
-                    nb_pages: 1,
+                    prev_cursor: null,
+                    next_cursor: null,
                 },
             })
 
-            return store.dispatch(actions.fetchMacros()).then((res) => {
-                expect(res).toEqual({
-                    macros,
-                    page: 1,
-                    totalPages: 1,
-                })
+            return store.dispatch(actions.fetchAllMacros()).then((res) => {
+                expect(res).toEqual(fromJS(macros))
                 expect(store.getActions()).toEqual([
                     {
                         type: constants.UPSERT_MACROS,
-                        payload: macros,
+                        payload: fromJS(macros),
                     },
                 ])
             })
-        })
-
-        it('should return merged macros for next page', () => {
-            const currentMacros = fromJS([{id: 1, name: 'Pizza Pepperoni'}])
-            const macros = fromJS([{id: 2, name: 'Pizza Margherita'}])
-
-            mockServer.onGet('/api/macros/').reply(200, {
-                data: macros.toJS(),
-                meta: {
-                    page: 2,
-                    nb_pages: 2,
-                },
-            })
-
-            return store
-                .dispatch(
-                    actions.fetchMacros({
-                        currentMacros,
-                        currentPage: 1,
-                        page: 2,
-                    })
-                )
-                .then((res) => {
-                    expect(res).toEqual({
-                        macros: fromJS(currentMacros).concat(macros),
-                        page: 2,
-                        totalPages: 2,
-                    })
-                    expect(store.getActions()).toEqual([
-                        {
-                            type: constants.UPSERT_MACROS,
-                            payload: macros,
-                        },
-                    ])
-                })
         })
     })
 

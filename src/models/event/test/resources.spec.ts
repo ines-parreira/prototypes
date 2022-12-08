@@ -1,5 +1,7 @@
 import MockAdapter from 'axios-mock-adapter'
 
+import {OrderDirection} from 'models/api/types'
+
 import {
     events as eventsFixtures,
     eventsServerMeta,
@@ -38,7 +40,7 @@ describe('event resources', () => {
                 meta: eventsServerMeta,
             })
             await fetchEvents({
-                orderBy: EventSortableProperties.CreatedDatetime,
+                orderBy: `${EventSortableProperties.CreatedDatetime}:${OrderDirection.Asc}`,
             })
             expect(mockedServer.history).toMatchSnapshot()
         })

@@ -9,7 +9,7 @@ import {Map} from 'immutable'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useCancellableRequest from 'hooks/useCancellableRequest'
-import {CursorMeta, OrderDirection} from 'models/api/types'
+import {CursorDirection, CursorMeta, OrderDirection} from 'models/api/types'
 import {fetchTags} from 'models/tag/resources'
 import {FetchTagsOptions, Tag, TagSortableProperties} from 'models/tag/types'
 import Button from 'pages/common/components/button/Button'
@@ -20,7 +20,6 @@ import PageHeader from 'pages/common/components/PageHeader'
 import Video from 'pages/common/components/Video/Video'
 import Search from 'pages/common/components/Search'
 import TextInput from 'pages/common/forms/input/TextInput'
-import {EventNavDirection} from 'pages/settings/audit/constants'
 import settingsCss from 'pages/settings/settings.less'
 import {REMOVE_TAG_ERROR} from 'state/tags/constants'
 
@@ -69,24 +68,23 @@ const ManageTags = () => {
             orderBy?: TagSortableProperties
             orderDir?: FetchTagsOptions['orderDir']
             search?: FetchTagsOptions['search']
-            direction?: EventNavDirection
+            direction?: CursorDirection
             refreshPreviousPage?: boolean
         } = {}) => {
             const params: FetchTagsOptions = {
                 cursor: null,
-                orderBy,
-                orderDir,
+                orderBy: `${orderBy}:${orderDir}`,
                 search,
             }
 
             if (
-                (direction === EventNavDirection.PrevCursor ||
+                (direction === CursorDirection.PrevCursor ||
                     refreshPreviousPage) &&
                 meta?.prev_cursor
             ) {
                 params.cursor = meta?.prev_cursor
             } else if (
-                direction === EventNavDirection.NextCursor &&
+                direction === CursorDirection.NextCursor &&
                 meta?.next_cursor
             ) {
                 params.cursor = meta?.next_cursor
@@ -170,7 +168,7 @@ const ManageTags = () => {
 
     const toggleCreationPopup = () => setShowCreationPopup(!showCreationPopup)
 
-    const handlePageChange = (direction: EventNavDirection) => {
+    const handlePageChange = (direction: CursorDirection) => {
         void fetchPage({direction})
         areAllTagsSelected && handleSelectAll()
     }
@@ -286,10 +284,10 @@ const ManageTags = () => {
                         hasNextItems={!!meta?.next_cursor}
                         hasPrevItems={!!meta?.prev_cursor}
                         fetchNextItems={() =>
-                            handlePageChange(EventNavDirection.NextCursor)
+                            handlePageChange(CursorDirection.NextCursor)
                         }
                         fetchPrevItems={() =>
-                            handlePageChange(EventNavDirection.PrevCursor)
+                            handlePageChange(CursorDirection.PrevCursor)
                         }
                     />
                 </>

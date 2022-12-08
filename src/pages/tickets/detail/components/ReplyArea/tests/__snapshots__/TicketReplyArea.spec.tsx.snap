@@ -47,7 +47,7 @@ exports[`<TicketReplyArea/> should block the reply area because the customer is 
       searchParams={
         Object {
           "languages": Array [],
-          "page": 1,
+          "orderBy": "name:asc",
           "search": "",
         }
       }
@@ -152,7 +152,7 @@ exports[`<TicketReplyArea/> should render 1`] = `
     searchParams={
       Object {
         "languages": Array [],
-        "page": 1,
+        "orderBy": "name:asc",
         "search": "",
       }
     }

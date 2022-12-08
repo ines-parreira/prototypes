@@ -1,151 +1,86 @@
-import axios, {CancelToken, AxiosError} from 'axios'
+import axios, {AxiosError, CancelToken} from 'axios'
 import {fromJS, Map, List} from 'immutable'
-import _get from 'lodash/get'
 
-import qs from 'qs'
-import {Macro} from '../../models/macro/types'
-import client from '../../models/api/resources'
-import {ApiListResponsePagination} from '../../models/api/types'
-import {NotificationStatus} from '../notifications/types'
-import {notify} from '../notifications/actions'
-import {StoreDispatch} from '../types'
+import client from 'models/api/resources'
+import {fetchMacros as fetchMacrosRequest} from 'models/macro/resources'
+import {FetchMacrosOptions, Macro} from 'models/macro/types'
+import GorgiasApi from 'services/gorgiasApi'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {StoreDispatch} from 'state/types'
 
 import * as constants from './constants'
 import {getErrorReason} from './utils'
 import {MacroApiError} from './types'
 
-export type fetchMacrosParamsTypes = {
-    search?: string
-    page?: number
-    currentMacros?: List<any>
-    currentPage?: number
-    ticketId?: number
-    messageId?: number
-    perPage?: number
-    _fallbackOrderBy?: string
-    languages?: string[]
-    tags?: string[]
-    numberPredictions?: number
-}
+export function fetchMacros(
+    options: FetchMacrosOptions,
+    cancelToken: CancelToken
+) {
+    return async (dispatch: StoreDispatch) => {
+        try {
+            const {data} = await fetchMacrosRequest(options, {cancelToken})
 
-export type MacrosSearchResult = {
-    macros: List<any>
-    page: number
-    totalPages: number
-}
-
-export const fetchMacros =
-    (
-        filters: fetchMacrosParamsTypes = {},
-        orderBy = '',
-        orderDir = 'asc',
-        cancelToken?: CancelToken
-    ) =>
-    (dispatch: StoreDispatch): Promise<MacrosSearchResult> => {
-        const params: {
-            page?: number
-            search?: string
-            order_by?: string
-            order_dir?: string
-            ticket_id?: number
-            message_id?: number
-            per_page?: number
-            _fallback_order_by?: string
-            languages?: string[]
-            tags?: string[]
-            number_predictions?: number
-        } = {}
-        if (filters['page']) {
-            params.page = filters['page']
+            return {
+                data: data.data.sort(
+                    (a, b) => a.relevance_rank! - b.relevance_rank!
+                ),
+                meta: data.meta,
+            }
+        } catch (error) {
+            if (axios.isCancel(error)) {
+                return Promise.resolve()
+            }
+            await dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message: 'Failed to fetch macros',
+                })
+            )
         }
-        if (filters['search']) {
-            params.search = filters['search']
-        }
-
-        if (orderBy) {
-            params.order_by = orderBy
-            params.order_dir = orderDir
-        }
-
-        if (filters['perPage']) {
-            params.per_page = filters['perPage']
-        }
-
-        if (orderBy === 'relevance') {
-            params.ticket_id = filters['ticketId']
-            params.message_id = filters['messageId']
-            params._fallback_order_by = filters['_fallbackOrderBy']
-        }
-
-        if (filters['languages']) {
-            params.languages = filters['languages']
-        }
-
-        if (filters['tags']) {
-            params.tags = filters['tags']
-        }
-
-        if (filters['numberPredictions']) {
-            params.number_predictions = filters['numberPredictions']
-            params.ticket_id = filters['ticketId']
-            params.message_id = filters['messageId']
-            params._fallback_order_by = filters['_fallbackOrderBy']
-        }
-
-        return client
-            .get<ApiListResponsePagination<Macro[]>>('/api/macros/', {
-                params,
-                paramsSerializer: (params) =>
-                    qs.stringify(params, {arrayFormat: 'repeat'}),
-                ...(cancelToken ? {cancelToken} : {}),
-            })
-            .then((json) => json?.data)
-            .then(
-                (resp) => {
-                    const page = _get(resp, ['meta', 'page'])
-                    const totalPages = _get(resp, ['meta', 'nb_pages'])
-                    let macros = fromJS(resp.data || []) as List<any>
-
-                    dispatch({
-                        type: constants.UPSERT_MACROS,
-                        payload: macros,
-                    })
-
-                    // merge macros if we loaded the next page
-                    if (
-                        filters.currentMacros &&
-                        filters.currentPage != null &&
-                        filters.currentPage + 1 === page
-                    ) {
-                        macros = filters.currentMacros.concat(
-                            macros
-                        ) as List<any>
-                    }
-
-                    macros = macros.sort(
-                        (a: Map<any, any>, b: Map<any, any>) =>
-                            a.get('relevance_rank') - b.get('relevance_rank')
-                    ) as List<any>
-
-                    return {
-                        macros,
-                        page,
-                        totalPages,
-                    }
-                },
-                (error: AxiosError) => {
-                    if (axios.isCancel(error)) {
-                        return Promise.resolve()
-                    }
-                    return dispatch(
-                        notify({
-                            status: NotificationStatus.Error,
-                            message: 'Failed to fetch macros',
-                        })
-                    )
-                }
-            ) as Promise<MacrosSearchResult>
     }
+}
+
+export function fetchAllMacros(
+    options: FetchMacrosOptions,
+    cancelToken: CancelToken
+) {
+    return async (dispatch: StoreDispatch) => {
+        const client = new GorgiasApi()
+        const generator = client.cursorPaginate(fetchMacrosRequest, options, {
+            cancelToken,
+        })
+
+        let result: Macro[] = []
+
+        try {
+            for await (const page of generator) {
+                result = result.concat(page)
+            }
+            const macros = fromJS(result || []) as List<any>
+
+            dispatch({
+                type: constants.UPSERT_MACROS,
+                payload: macros,
+            })
+
+            return macros.sort(
+                (a: Map<any, any>, b: Map<any, any>) =>
+                    a.get('relevance_rank') - b.get('relevance_rank')
+            ) as List<any>
+        } catch (error) {
+            if (axios.isCancel(error)) {
+                return Promise.resolve()
+            }
+            await dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message: 'Failed to fetch macros',
+                })
+            )
+        }
+    }
+}
 
 export const getMacro =
     (id: string, cancelToken?: CancelToken) =>

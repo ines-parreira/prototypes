@@ -31,7 +31,13 @@ describe('<MacroSelect/>', () => {
         }),
     }
     it('should render', async () => {
-        mockServer.onGet('/api/macros/').reply(200, {data: macros})
+        mockServer.onGet('/api/macros/').reply(200, {
+            data: macros,
+            meta: {
+                prev_cursor: null,
+                next_cursor: null,
+            },
+        })
         const {container} = render(
             <Provider store={mockStore(defaultStore)}>
                 <MacroSelect {...minProps} />

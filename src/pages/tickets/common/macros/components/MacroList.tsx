@@ -1,25 +1,26 @@
 import React from 'react'
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
-import {Map} from 'immutable'
+import {List, Map} from 'immutable'
 
+import useAppSelector from 'hooks/useAppSelector'
+import {Macro} from 'models/macro/types'
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
-import {MacrosSearchResult} from 'state/macro/actions'
-import useAppSelector from 'hooks/useAppSelector'
 
 import {isMacroDisabled} from '../utils'
 import css from './MacroList.less'
 
 type Props = {
     className?: string
-    searchResults: MacrosSearchResult
+    searchResults: List<any>
     currentMacro: Map<any, any>
     disableExternalActions?: boolean
     onClickItem: (item: Map<any, any>) => void
     onHoverItem?: (item: Map<any, any>) => void
-    loadMore: () => Promise<void>
+    loadMore: () => Promise<Macro[] | void>
+    hasDataToLoad?: boolean
 }
 
 const MacroListContainer = ({
@@ -30,6 +31,7 @@ const MacroListContainer = ({
     loadMore,
     onClickItem = _noop,
     onHoverItem = _noop,
+    hasDataToLoad,
 }: Props) => {
     const currentUser = useAppSelector(getCurrentUser)
     const isSuggestion = (rank: number) => rank !== 0 && rank !== 100000
@@ -38,9 +40,9 @@ const MacroListContainer = ({
         <InfiniteScroll
             className={classnames(css.component, className)}
             onLoad={loadMore}
-            shouldLoadMore={searchResults.page < searchResults.totalPages}
+            shouldLoadMore={hasDataToLoad}
         >
-            {searchResults.macros.map((macro: Map<any, any>) => {
+            {searchResults.map((macro: Map<any, any>) => {
                 const isDisabled = isMacroDisabled(
                     macro,
                     disableExternalActions

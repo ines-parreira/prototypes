@@ -1,5 +1,5 @@
-import {MacroAction} from '../macroAction/types'
-import {MetaSortOptions, OrderParams} from '../api/types'
+import {MacroAction} from 'models/macroAction/types'
+import {ApiCursorPaginationParams, OrderParams} from 'models/api/types'
 
 export type Macro = MacroDraft & {
     category: string | null
@@ -11,6 +11,7 @@ export type Macro = MacroDraft & {
     updated_datetime: string
     uri: string
     usage: number
+    relevance_rank?: number
 }
 
 export type MacroDraft = {
@@ -20,24 +21,22 @@ export type MacroDraft = {
 }
 
 export enum MacroSortableProperties {
-    CreatedDatetime = 'createdDatetime',
+    CreatedDatetime = 'created_datetime',
     Name = 'name',
-    UpdatedDatetime = 'updatedDatetime',
+    UpdatedDatetime = 'updated_datetime',
     Usage = 'usage',
     Language = 'language',
 }
 
-export type FetchMacrosOptions = OrderParams<
-    MacroSortableProperties | MetaSortOptions
-> & {
-    fallbackOrderBy?: MacroSortableProperties
-    messageId?: number
-    page?: number
-    search?: string
-    ticketId?: number
-    languages?: string[]
-    tags?: string[]
-}
+export type FetchMacrosOptions = OrderParams<MacroSortableProperties> &
+    ApiCursorPaginationParams & {
+        messageId?: number
+        search?: string
+        ticketId?: number
+        languages?: string[]
+        tags?: string[]
+        numberPredictions?: number
+    }
 
 export type MacrosProperties = {
     [MacroPropertiesOptions.Languages]?: string[]

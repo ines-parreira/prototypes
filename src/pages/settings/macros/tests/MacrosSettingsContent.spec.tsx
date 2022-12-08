@@ -2,25 +2,34 @@ import axios from 'axios'
 import _pick from 'lodash/pick'
 import {mount, shallow} from 'enzyme'
 import React, {ComponentProps} from 'react'
+import {fromJS} from 'immutable'
 
-import {macros as macrosFixtures} from '../../../../fixtures/macro'
-import {fetchMacros} from '../../../../models/macro/resources'
-import Pagination from '../../../common/components/Pagination'
-import Search from '../../../common/components/Search'
+import {macros as macrosFixtures} from 'fixtures/macro'
+import {OrderDirection} from 'models/api/types'
+import {fetchMacros} from 'models/macro/resources'
+import {Macro, MacroSortableProperties} from 'models/macro/types'
+import Navigation from 'pages/common/components/Navigation/Navigation'
+import Search from 'pages/common/components/Search'
 import {MacrosSettingsContentContainer} from '../MacrosSettingsContent'
 import MacroSettingsTable from '../MacrosSettingsTable'
 
-jest.mock('../../../../models/macro/resources')
+jest.mock('models/macro/resources')
 jest.mock(
-    '../../../common/components/Pagination',
-    //$TsFixMe Replace Props type to ComponentProps<typeof Pagination> on Pagination migration
+    'pages/common/components/Navigation/Navigation',
     () =>
-        ({onChange}: {onChange: (value: number) => void}) =>
-            <div onClick={() => onChange(2)} />
+        ({
+            fetchPrevItems,
+            fetchNextItems,
+        }: Partial<ComponentProps<typeof Navigation>>) =>
+            (
+                <>
+                    <div id="previous" onClick={() => fetchPrevItems?.()} />
+                    <div id="next" onClick={() => fetchNextItems?.()} />
+                </>
+            )
 )
 jest.mock(
-    '../../../common/components/Search',
-    //$TsFixMe Replace Props type to ComponentProps<typeof Search> on Search migration
+    'pages/common/components/Search',
     () =>
         ({onChange}: {onChange: (value: string) => void}) =>
             (
@@ -36,11 +45,11 @@ jest.mock(
     () =>
         ({onSortOptionsChange}: ComponentProps<typeof MacroSettingsTable>) => {
             //eslint-disable-next-line  @typescript-eslint/no-var-requires
-            const {OrderDirection} = require('../../../../models/api/types')
+            const {OrderDirection} = require('models/api/types')
             const {
                 MacroSortableProperties,
                 //eslint-disable-next-line  @typescript-eslint/no-var-requires
-            } = require('../../../../models/macro/types')
+            } = require('models/macro/types')
             return (
                 <div
                     onClick={() =>
@@ -65,7 +74,7 @@ jest.mock(
     () => 'MacroFilters'
 )
 
-const mockToken = axios.CancelToken.source().token
+const cancelToken = axios.CancelToken.source().token
 
 describe('<MacrosSettingsContent/>', () => {
     const mappedMacrosFixtures = macrosFixtures
@@ -85,16 +94,19 @@ describe('<MacrosSettingsContent/>', () => {
     } as any as ComponentProps<typeof MacrosSettingsContentContainer>
 
     mockFetchMacros.mockResolvedValue({
-        data: mappedMacrosFixtures,
-        meta: {
-            page: 1,
-            nb_pages: 2,
-            current_page: '',
-            item_count: 10,
-            per_page: 10,
+        data: {
+            data: mappedMacrosFixtures,
+            meta: {
+                prev_cursor: 'xxx',
+                next_cursor: 'yyy',
+            },
+            uri: '',
+            object: '',
         },
-        uri: '',
-        object: '',
+        status: 200,
+        statusText: 'ok',
+        config: {},
+        headers: {},
     })
 
     beforeEach(() => {
@@ -115,10 +127,9 @@ describe('<MacrosSettingsContent/>', () => {
         expect(mockFetchMacros).toHaveBeenNthCalledWith(
             1,
             {
-                orderBy: 'createdDatetime',
-                orderDir: 'asc',
+                orderBy: `${MacroSortableProperties.CreatedDatetime}:${OrderDirection.Asc}`,
             },
-            mockToken
+            {cancelToken}
         )
         setImmediate(() => {
             expect(mockMacrosFetched).toHaveBeenNthCalledWith(
@@ -130,7 +141,7 @@ describe('<MacrosSettingsContent/>', () => {
     })
 
     it('should notify when fetching macros fails', (done) => {
-        mockFetchMacros.mockRejectedValue('error')
+        mockFetchMacros.mockRejectedValueOnce('error')
         mount(<MacrosSettingsContentContainer {...minProps} />)
 
         setImmediate(() => {
@@ -146,16 +157,14 @@ describe('<MacrosSettingsContent/>', () => {
         const component = mount(
             <MacrosSettingsContentContainer {...minProps} />
         )
+        component.find(Navigation).find({id: 'next'}).simulate('click')
 
-        component.find(Pagination).simulate('click')
         expect(mockFetchMacros).toHaveBeenNthCalledWith(
             2,
             {
-                orderBy: 'createdDatetime',
-                orderDir: 'asc',
-                page: 2,
+                orderBy: `${MacroSortableProperties.CreatedDatetime}:${OrderDirection.Asc}`,
             },
-            mockToken
+            {cancelToken}
         )
     })
 
@@ -168,21 +177,13 @@ describe('<MacrosSettingsContent/>', () => {
         expect(mockFetchMacros).toHaveBeenNthCalledWith(
             2,
             {
-                orderBy: 'name',
-                orderDir: 'asc',
+                orderBy: `${MacroSortableProperties.Name}:${OrderDirection.Asc}`,
             },
-            mockToken
+            {cancelToken}
         )
     })
 
     it('should refetch macros when deleting macro', (done) => {
-        mockFetchMacros.mockResolvedValueOnce({
-            data: [{id: 2}],
-            meta: {
-                page: 2,
-                nb_pages: 3,
-            },
-        } as any)
         const component = mount(
             <MacrosSettingsContentContainer
                 {...minProps}
@@ -197,24 +198,32 @@ describe('<MacrosSettingsContent/>', () => {
             expect(mockFetchMacros).toHaveBeenNthCalledWith(
                 2,
                 {
-                    orderBy: 'createdDatetime',
-                    orderDir: 'asc',
-                    page: 2,
+                    orderBy: `${MacroSortableProperties.CreatedDatetime}:${OrderDirection.Asc}`,
                 },
-                mockToken
+                {cancelToken}
             )
             done()
         })
     })
 
-    it('should refetch macros at previous page index if last page is empty', (done) => {
-        mockFetchMacros.mockResolvedValueOnce({
-            data: [{id: 2}],
-            meta: {
-                page: 2,
-                nb_pages: 2,
+    it('should refetch macros at previous page if last page is empty', (done) => {
+        const prevCursor = 'prevCursor'
+        mockFetchMacros.mockResolvedValue({
+            data: {
+                data: mappedMacrosFixtures,
+                meta: {
+                    prev_cursor: prevCursor,
+                    next_cursor: null,
+                },
+                uri: '',
+                object: '',
             },
-        } as any)
+            status: 200,
+            statusText: 'ok',
+            config: {},
+            headers: {},
+        })
+
         const component = mount(
             <MacrosSettingsContentContainer
                 {...minProps}
@@ -224,16 +233,15 @@ describe('<MacrosSettingsContent/>', () => {
 
         setImmediate(() => {
             component.setProps({
-                macros: _pick(macrosState, ['1']),
+                macros: fromJS({}),
             })
             expect(mockFetchMacros).toHaveBeenNthCalledWith(
                 2,
                 {
-                    orderBy: 'createdDatetime',
-                    orderDir: 'asc',
-                    page: 1,
+                    orderBy: `${MacroSortableProperties.CreatedDatetime}:${OrderDirection.Asc}`,
+                    cursor: prevCursor,
                 },
-                mockToken
+                {cancelToken}
             )
             done()
         })
@@ -241,12 +249,20 @@ describe('<MacrosSettingsContent/>', () => {
 
     it('should not refetch macros when the only page is empty', (done) => {
         mockFetchMacros.mockResolvedValueOnce({
-            data: [{id: 1}],
-            meta: {
-                page: 1,
-                nb_pages: 1,
+            data: {
+                data: [{id: 1} as unknown as Macro],
+                meta: {
+                    prev_cursor: null,
+                    next_cursor: null,
+                },
+                uri: '',
+                object: '',
             },
-        } as any)
+            status: 200,
+            statusText: 'ok',
+            config: {},
+            headers: {},
+        })
         const component = mount(
             <MacrosSettingsContentContainer
                 {...minProps}
@@ -274,11 +290,10 @@ describe('<MacrosSettingsContent/>', () => {
         expect(mockFetchMacros).toHaveBeenNthCalledWith(
             2,
             {
-                orderBy: 'createdDatetime',
-                orderDir: 'asc',
+                orderBy: `${MacroSortableProperties.CreatedDatetime}:${OrderDirection.Asc}`,
                 search: 'foobar',
             },
-            mockToken
+            {cancelToken}
         )
     })
 

@@ -4,34 +4,29 @@ import {connect, ConnectedProps} from 'react-redux'
 import {Container} from 'reactstrap'
 import classnames from 'classnames'
 
-import useDelayedAsyncFn from 'hooks/useDelayedAsyncFn'
 import useCancellableRequest from 'hooks/useCancellableRequest'
-import {OrderDirection} from 'models/api/types'
+import useDelayedAsyncFn from 'hooks/useDelayedAsyncFn'
+import {CursorDirection, CursorMeta, OrderDirection} from 'models/api/types'
 import {fetchMacros} from 'models/macro/resources'
-import MacroFilters from 'pages/common/components/MacroFilters/MacroFilters'
 import {
     FetchMacrosOptions,
     MacroSortableProperties,
     Macro,
 } from 'models/macro/types'
+import MacroFilters from 'pages/common/components/MacroFilters/MacroFilters'
 import Video from 'pages/common/components/Video/Video'
+import Navigation from 'pages/common/components/Navigation/Navigation'
+import PageHeader from 'pages/common/components/PageHeader'
+import Search from 'pages/common/components/Search'
+import settingsCss from 'pages/settings/settings.less'
 import {macrosFetched} from 'state/entities/macros/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import PageHeader from 'pages/common/components/PageHeader'
-import Pagination from 'pages/common/components/Pagination'
-import Search from 'pages/common/components/Search'
 import {RootState} from 'state/types'
-import settingsCss from 'pages/settings/settings.less'
 
-import css from './MacrosSettingsContent.less'
-import MacrosSettingsTable from './MacrosSettingsTable'
 import {MacrosCreateDropdown} from './MacrosCreateDropdown'
-
-type PaginationState = {
-    page: number
-    nbPages: number
-}
+import MacrosSettingsTable from './MacrosSettingsTable'
+import css from './MacrosSettingsContent.less'
 
 export function MacrosSettingsContentContainer({
     macros,
@@ -39,28 +34,38 @@ export function MacrosSettingsContentContainer({
     notify,
 }: ConnectedProps<typeof connector>) {
     const [options, setOptions] = useState<FetchMacrosOptions>({
-        orderBy: MacroSortableProperties.CreatedDatetime,
-        orderDir: OrderDirection.Asc,
+        orderBy: `${MacroSortableProperties.CreatedDatetime}:${OrderDirection.Asc}`,
     })
     const [macroIds, setMacroIds] = useState<number[]>([])
-    const [pagination, setPagination] = useState<PaginationState>({
-        page: 1,
-        nbPages: 1,
-    })
+    const [meta, setMeta] = useState<CursorMeta | null>(null)
+    const [currentCursor, setCurrentCursor] = useState<string | null>()
     const [cancellableFetchMacros] = useCancellableRequest(
         (cancelToken: CancelToken) => async (options: FetchMacrosOptions) =>
-            await fetchMacros(options, cancelToken)
+            await fetchMacros(options, {cancelToken})
     )
     const [{loading: isFetchPending}, handleFetchMacros] = useDelayedAsyncFn(
-        async () => {
+        async (direction?: CursorDirection, cursor?: string) => {
+            const params = {...options}
+
+            if (direction === CursorDirection.PrevCursor && meta?.prev_cursor) {
+                params.cursor = meta?.prev_cursor
+            } else if (
+                direction === CursorDirection.NextCursor &&
+                meta?.next_cursor
+            ) {
+                params.cursor = meta?.next_cursor
+            } else if (!!cursor) {
+                params.cursor = cursor
+            }
             try {
-                const res = await cancellableFetchMacros(options)
-                if (!res) {
+                const {data} = await cancellableFetchMacros(params)
+                if (!data) {
                     return
                 }
-                macrosFetched(res.data)
-                setMacroIds(res.data.map((macro: Macro) => macro.id))
-                setPagination({page: res.meta.page, nbPages: res.meta.nb_pages})
+                macrosFetched(data.data)
+                setMacroIds(data.data.map((macro: Macro) => macro.id))
+                setMeta(data.meta)
+                setCurrentCursor(params.cursor)
             } catch (error) {
                 void notify({
                     message: 'Failed to fetch macros',
@@ -68,26 +73,36 @@ export function MacrosSettingsContentContainer({
                 })
             }
         },
-        [options],
+        [meta, options],
         200
     )
+
     useEffect(() => {
         void handleFetchMacros()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [options])
+
     useEffect(() => {
-        const {page, nbPages} = pagination
-        const nextMacroIds = macroIds.filter((macroId) => macros[macroId])
-        if (
-            nbPages > 1 &&
-            nextMacroIds.length < macroIds.length &&
-            !isFetchPending
-        ) {
-            setMacroIds(nextMacroIds)
-            setOptions({...options, page: page === nbPages ? page - 1 : page})
+        const filteredMacroIds = macroIds.filter((macroId) => macros[macroId])
+        if (filteredMacroIds.length < macroIds.length && !isFetchPending) {
+            setMacroIds(filteredMacroIds)
+
+            // we deleted the last macro of the current page which is not the first one
+            if (
+                filteredMacroIds.length === 0 &&
+                !meta?.next_cursor &&
+                !!meta?.prev_cursor
+            ) {
+                void handleFetchMacros(undefined, meta?.prev_cursor)
+            }
+
+            // we deleted a macro and will refetch the same page which is not the first and only one
+            if (!!filteredMacroIds.length && !!meta?.next_cursor) {
+                void handleFetchMacros(undefined, currentCursor)
+            }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [macros])
+    }, [currentCursor, macros, meta])
 
     return (
         <div className="full-width">
@@ -100,9 +115,7 @@ export function MacrosSettingsContentContainer({
                         onChange={(search: string) =>
                             setOptions({
                                 ...options,
-                                orderBy:
-                                    MacroSortableProperties.CreatedDatetime,
-                                orderDir: OrderDirection.Asc,
+                                orderBy: `${MacroSortableProperties.CreatedDatetime}:${OrderDirection.Asc}`,
                                 search,
                             })
                         }
@@ -159,18 +172,22 @@ export function MacrosSettingsContentContainer({
                     !options.search &&
                     setOptions({
                         ...options,
-                        orderBy,
-                        orderDir,
+                        orderBy: `${orderBy}:${orderDir}`,
                     })
                 }
                 options={options}
             />
 
-            <Pagination
-                className="pagination-transparent"
-                currentPage={pagination.page}
-                onChange={(page: number) => setOptions({...options, page})}
-                pageCount={pagination.nbPages}
+            <Navigation
+                className={css.navigation}
+                hasNextItems={!!meta?.next_cursor}
+                hasPrevItems={!!meta?.prev_cursor}
+                fetchNextItems={() =>
+                    handleFetchMacros(CursorDirection.NextCursor)
+                }
+                fetchPrevItems={() =>
+                    handleFetchMacros(CursorDirection.PrevCursor)
+                }
             />
         </div>
     )

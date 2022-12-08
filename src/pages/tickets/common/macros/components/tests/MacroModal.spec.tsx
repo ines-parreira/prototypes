@@ -58,7 +58,7 @@ describe('<MacroModal />', () => {
                 <MacroModal
                     closeModal={jest.fn()}
                     searchParams={{}}
-                    searchResults={{macros: macros, page: 1, totalPages: 1}}
+                    searchResults={macros}
                     fetchMacros={jest.fn()}
                     firstLoad={false}
                     currentMacro={macros.first()}

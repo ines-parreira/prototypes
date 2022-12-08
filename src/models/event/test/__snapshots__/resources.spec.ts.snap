@@ -15,7 +15,7 @@ Object {
       "maxContentLength": -1,
       "method": "get",
       "params": Object {
-        "order_by": "createdDatetime",
+        "order_by": "created_datetime:asc",
       },
       "paramsSerializer": [Function],
       "timeout": 0,

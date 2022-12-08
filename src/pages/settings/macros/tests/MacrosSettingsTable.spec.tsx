@@ -2,19 +2,21 @@ import {mount, shallow} from 'enzyme'
 import React, {ComponentProps} from 'react'
 
 import Button from 'pages/common/components/button/Button'
-import IconButton from '../../../common/components/button/IconButton'
-import {createMacro, deleteMacro} from '../../../../models/macro/resources'
-import {Macro} from '../../../../models/macro/types'
-import {macros as macrosFixtures} from '../../../../fixtures/macro'
-import {MacrosState} from '../../../../state/entities/macros/types'
-import Loader from '../../../common/components/Loader/Loader'
-import HeaderCellProperty from '../../../common/components/table/cells/HeaderCellProperty'
-import {MacrosSettingsTableContainer} from '../MacrosSettingsTable'
-import history from '../../../history'
+import IconButton from 'pages/common/components/button/IconButton'
+import {createMacro, deleteMacro} from 'models/macro/resources'
+import {Macro, MacroSortableProperties} from 'models/macro/types'
+import {macros as macrosFixtures} from 'fixtures/macro'
+import {MacrosState} from 'state/entities/macros/types'
+import Loader from 'pages/common/components/Loader/Loader'
+import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
+import history from 'pages/history'
+import {OrderDirection} from 'models/api/types'
 
-jest.mock('../../../history')
-jest.mock('../../../../models/macro/resources')
+import {MacrosSettingsTableContainer} from '../MacrosSettingsTable'
+
+jest.mock('models/macro/resources')
 jest.mock('pages/common/components/Tooltip', () => () => <div>Tooltip</div>) //Tooltip is mocked to avoid errors with target
+jest.mock('pages/history')
 
 jest.mock('reactstrap', () => {
     const reactstrap: Record<string, unknown> = jest.requireActual('reactstrap')
@@ -52,8 +54,7 @@ describe('<MacrosSettingsTable/>', () => {
         notify: mockNotify,
         onSortOptionsChange: mockOnSortOptionsChange,
         options: {
-            orderBy: 'createdDatetime',
-            orderDir: 'asc',
+            orderBy: `${MacroSortableProperties.CreatedDatetime}:${OrderDirection.Asc}`,
         },
     } as any as ComponentProps<typeof MacrosSettingsTableContainer>
     const mockClickEvent = {
@@ -200,8 +201,8 @@ describe('<MacrosSettingsTable/>', () => {
         component.find(HeaderCellProperty).at(0).simulate('click')
         expect(mockOnSortOptionsChange).toHaveBeenNthCalledWith(
             1,
-            'name',
-            'asc'
+            MacroSortableProperties.Name,
+            OrderDirection.Asc
         )
     })
 })

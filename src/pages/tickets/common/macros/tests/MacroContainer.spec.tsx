@@ -17,7 +17,7 @@ jest.mock('state/macro/actions')
 const fetchMacrosMock: jest.SpyInstance = fetchMacros as jest.MockedFunction<
     typeof fetchMacros
 >
-fetchMacrosMock.mockImplementation(() => () => ({macros: fromJS([])}))
+fetchMacrosMock.mockImplementation(() => () => ({data: fromJS([])}))
 
 describe('<MacroContainer />', () => {
     const defaultStore: Partial<RootState> = {}

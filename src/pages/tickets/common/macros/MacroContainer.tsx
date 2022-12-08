@@ -1,215 +1,191 @@
-import React, {Component} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+import React, {useCallback, useState} from 'react'
+import {CancelToken} from 'axios'
 import {fromJS, Map, List} from 'immutable'
 import _debounce from 'lodash/debounce'
+import {useAsyncFn, useEffectOnce} from 'react-use'
 
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import useCancellableRequest from 'hooks/useCancellableRequest'
+import {CursorMeta, OrderDirection} from 'models/api/types'
 import {
-    fetchMacros,
-    fetchMacrosParamsTypes,
-    MacrosSearchResult,
-} from 'state/macro/actions'
-import withCancellableRequest, {
-    CancellableRequestInjectedProps,
-} from '../../../common/utils/withCancellableRequest'
-import * as viewsSelectors from '../../../../state/views/selectors'
-import {getAgents} from '../../../../state/agents/selectors'
-import {RootState} from '../../../../state/types'
+    FetchMacrosOptions,
+    Macro,
+    MacroSortableProperties,
+} from 'models/macro/types'
+import {getAgents} from 'state/agents/selectors'
+import {fetchMacros} from 'state/macro/actions'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {areAllActiveViewItemsSelected} from 'state/views/selectors'
 
 import MacroModal from './components/MacroModal'
 import {getDefaultSelectedMacroId, getCurrentMacro} from './utils'
 
 type Props = {
-    activeView: Map<any, any>
+    activeView?: Map<any, any>
     closeModal: () => void
     isCreatingMacro?: boolean
     toggleCreateMacro?: (toggle?: boolean) => Promise<void>
     // macro to select when modal opens, selects first macro of list otherwise
-    selectedMacro: Map<any, any>
-    selectedItemsIds: List<any>
+    selectedMacro?: Map<any, any>
+    selectedItemsIds?: List<any>
     disableExternalActions?: boolean
     selectionMode?: boolean
-} & ConnectedProps<typeof connector> &
-    CancellableRequestInjectedProps<
-        'fetchMacrosCancellable',
-        'cancelFetchMacrosCancellable',
-        typeof fetchMacros
-    >
-
-type State = {
-    searchParams: fetchMacrosParamsTypes
-    searchResults: MacrosSearchResult
-    selectedMacroId: Maybe<number>
-    firstLoad: boolean
 }
 
-export class MacroContainer extends Component<Props, State> {
-    static defaultProps: Pick<
-        Props,
-        'activeView' | 'selectedMacro' | 'selectedItemsIds'
-    > = {
-        activeView: fromJS({}),
-        selectedMacro: fromJS({}),
-        selectedItemsIds: fromJS([]),
-    }
+const MacroContainer = ({
+    activeView = fromJS({}),
+    closeModal,
+    disableExternalActions = false,
+    isCreatingMacro,
+    selectedMacro = fromJS({}),
+    selectedItemsIds = fromJS([]),
+    selectionMode,
+    toggleCreateMacro,
+}: Props) => {
+    const dispatch = useAppDispatch()
 
-    state: State = {
-        searchParams: {},
-        searchResults: {
-            page: 1,
-            totalPages: 1,
-            macros: fromJS([]),
-        },
-        selectedMacroId: null,
-        firstLoad: true,
-    }
+    const agents = useAppSelector(getAgents)
+    const allViewItemsSelected = useAppSelector(areAllActiveViewItemsSelected)
 
-    componentDidMount() {
-        void this._loadMacros().then(() => {
-            if (!this.props.selectedMacro.isEmpty()) {
-                const currentMacro = getCurrentMacro(
-                    this.state.searchResults.macros,
-                    this.props.selectedMacro.get('id'),
-                    this.props.isCreatingMacro
-                )
+    const [searchParams, setSearchParams] = useState<FetchMacrosOptions>({})
+    const [selectedMacroId, setSelectedMacroId] = useState<number | null>(null)
 
-                this.setState({
-                    selectedMacroId: this.props.selectedMacro.get('id'),
-                })
-                // selectedMacro is not in page=1 macro list
-                if (currentMacro.isEmpty()) {
-                    // search for it
-                    this._onSearch(
-                        {search: this.props.selectedMacro.get('name')},
-                        true
-                    )
-                }
-            }
-        })
-    }
+    const [macros, setMacros] = useState<Macro[]>([])
+    const [meta, setMeta] = useState<CursorMeta | null>(null)
 
-    _loadMacros = (
-        searchParams: fetchMacrosParamsTypes = {search: '', page: 1}
-    ): Promise<void> => {
-        return this.props
-            .fetchMacrosCancellable(
-                {
-                    ...searchParams,
-                    currentMacros: this.state.searchResults.macros,
-                    currentPage: this.state.searchResults.page,
-                },
-                'name',
-                'asc'
-            )
-            .then((res) => {
-                if (!res || !res.macros) return
+    const [cancellableFetchMacros] = useCancellableRequest(
+        (cancelToken: CancelToken) => async (options: FetchMacrosOptions) =>
+            await dispatch(fetchMacros(options, cancelToken))
+    )
 
-                const selectedMacroId = getDefaultSelectedMacroId(
-                    res.macros,
-                    this.state.selectedMacroId,
-                    this.props.isCreatingMacro
-                )
-                return new Promise((resolve) => {
-                    this.setState(
-                        {
-                            selectedMacroId,
-                            searchResults: {
-                                macros: res.macros,
-                                page: res.page,
-                                totalPages: res.totalPages,
-                            },
-                            firstLoad: false,
-                        },
-                        resolve
-                    )
-                })
-            })
-    }
-
-    _handleClickItem = (macroId: number) => {
-        this.props.toggleCreateMacro && this.props.toggleCreateMacro(false)
-        this.setState({selectedMacroId: macroId})
-    }
-
-    _updateMacros = (macros: List<any>) => {
-        this.setState({
-            searchResults: {
-                ...this.state.searchResults,
-                macros: macros,
+    const [{loading: isFetchPending}, loadMacros] = useAsyncFn(
+        async (
+            {
+                cursor,
+                orderBy = `${MacroSortableProperties.Name}:${OrderDirection.Asc}`,
+                search,
+            }: FetchMacrosOptions = {
+                cursor: meta?.next_cursor,
+                orderBy: `${MacroSortableProperties.Name}:${OrderDirection.Asc}`,
+                search: searchParams.search,
             },
-        })
-    }
+            retainPreviousResults = true
+        ) => {
+            try {
+                const res = await cancellableFetchMacros({
+                    cursor,
+                    orderBy,
+                    search,
+                })
+                if (res) {
+                    const newMacros = retainPreviousResults
+                        ? macros.concat(res.data)
+                        : res.data
+                    setMeta(res.meta)
+                    setMacros(newMacros)
+                    setSearchParams({cursor, orderBy, search})
 
-    _debounceLoadMacros = _debounce(this._loadMacros, 350)
+                    const macroId = getDefaultSelectedMacroId(
+                        fromJS(newMacros),
+                        selectedMacroId,
+                        isCreatingMacro
+                    )
 
-    _onSearch = (
-        searchParams: fetchMacrosParamsTypes = {},
-        forceSearch = false
-    ) => {
-        this.setState({
-            searchParams: {...this.state.searchParams, ...searchParams},
-        })
-        if (
-            forceSearch ||
-            !searchParams.search?.trim().length ||
-            searchParams.search.trim().length > 1
-        ) {
-            void this._debounceLoadMacros({...searchParams, page: 1})
+                    macroId && setSelectedMacroId(macroId)
+
+                    return res.data
+                }
+            } catch (error) {
+                void dispatch(
+                    notify({
+                        message: 'Failed to fetch macros',
+                        status: NotificationStatus.Error,
+                    })
+                )
+            }
+        },
+        [meta, macros, searchParams, selectedMacroId],
+        {loading: true}
+    )
+
+    useEffectOnce(() => {
+        async function load() {
+            const params: FetchMacrosOptions = {
+                search: selectedMacro.isEmpty()
+                    ? ''
+                    : selectedMacro.get('name'),
+            }
+            await loadMacros(params)
+
+            if (!selectedMacro.isEmpty()) {
+                setSelectedMacroId(selectedMacro.get('id'))
+            }
         }
+
+        void load()
+    })
+
+    const handleClickItem = (macroId: number) => {
+        toggleCreateMacro?.(false)
+        setSelectedMacroId(macroId)
     }
 
-    render() {
-        const {
-            activeView,
-            agents,
-            disableExternalActions,
-            selectionMode,
-            selectedItemsIds,
-            closeModal,
-            isCreatingMacro,
-            toggleCreateMacro,
-            allViewItemsSelected,
-        } = this.props
+    const updateMacros = (macro: Macro) => {
+        const updatedMacroIndex = macros.findIndex(({id}) => id === macro.id)
 
-        const currentMacro = getCurrentMacro(
-            this.state.searchResults.macros,
-            this.state.selectedMacroId,
-            isCreatingMacro
-        )
-
-        return (
-            <MacroModal
-                closeModal={closeModal}
-                activeView={activeView}
-                searchParams={this.state.searchParams}
-                searchResults={this.state.searchResults}
-                fetchMacros={this._loadMacros}
-                firstLoad={this.state.firstLoad}
-                currentMacro={currentMacro}
-                agents={agents}
-                disableExternalActions={disableExternalActions || false}
-                selectionMode={selectionMode || false}
-                selectedItemsIds={selectedItemsIds}
-                handleClickItem={this._handleClickItem}
-                updateMacros={this._updateMacros}
-                onSearch={this._onSearch}
-                isCreatingMacro={isCreatingMacro}
-                toggleCreateMacro={toggleCreateMacro}
-                allViewItemsSelected={allViewItemsSelected}
-            />
-        )
+        const newMacros = [...macros]
+        newMacros[updatedMacroIndex] = macro
+        setMacros(newMacros)
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const debouncedLoadMacros = useCallback(
+        _debounce(
+            async (
+                params: FetchMacrosOptions = {},
+                retainPreviousResults?: boolean
+            ) => await loadMacros(params, retainPreviousResults),
+            350
+        ),
+        []
+    )
+
+    const onSearch = async (params: FetchMacrosOptions = {}) => {
+        const newParams = {...searchParams, ...params, cursor: null}
+        setSearchParams(newParams)
+        await debouncedLoadMacros(newParams, false)
+    }
+
+    const currentMacro = getCurrentMacro(
+        fromJS(macros),
+        selectedMacroId,
+        isCreatingMacro
+    )
+
+    return (
+        <MacroModal
+            closeModal={closeModal}
+            activeView={activeView}
+            searchParams={searchParams}
+            searchResults={fromJS(macros)}
+            fetchMacros={async (...params) => await loadMacros(...params)}
+            firstLoad={isFetchPending}
+            currentMacro={currentMacro}
+            agents={agents}
+            disableExternalActions={disableExternalActions || false}
+            selectionMode={selectionMode || false}
+            selectedItemsIds={selectedItemsIds}
+            handleClickItem={handleClickItem}
+            updateMacros={updateMacros}
+            onSearch={onSearch}
+            isCreatingMacro={isCreatingMacro}
+            toggleCreateMacro={toggleCreateMacro}
+            allViewItemsSelected={allViewItemsSelected}
+            hasDataToLoad={!isFetchPending && !!meta?.next_cursor}
+        />
+    )
 }
 
-const connector = connect((state: RootState) => ({
-    agents: getAgents(state),
-    allViewItemsSelected: viewsSelectors.areAllActiveViewItemsSelected(state),
-}))
-
-export default withCancellableRequest<
-    'fetchMacrosCancellable',
-    'cancelFetchMacrosCancellable',
-    typeof fetchMacros
->(
-    'fetchMacrosCancellable',
-    fetchMacros
-)(connector(MacroContainer))
+export default MacroContainer

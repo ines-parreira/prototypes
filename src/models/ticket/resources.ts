@@ -20,8 +20,6 @@ export const searchTickets = async ({
     search,
     filters,
     cancelToken,
-    orderBy,
-    orderDir,
     ...rest
 }: TicketSearchOptions) => {
     return await client.post<ApiListResponseCursorPagination<Ticket[]>>(
@@ -33,7 +31,6 @@ export const searchTickets = async ({
         {
             params: {
                 ...deepMapKeysToSnakeCase({...rest}),
-                order_by: orderBy && orderDir && `${orderBy}:${orderDir}`,
             },
             cancelToken,
         }

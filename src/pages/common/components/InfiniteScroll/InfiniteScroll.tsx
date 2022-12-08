@@ -8,8 +8,8 @@ import css from './InfiniteScroll.less'
 type Props = {
     children: ReactNode
     className?: string
-    onLoad: () => Promise<void>
-    shouldLoadMore: boolean
+    onLoad: () => Promise<any>
+    shouldLoadMore?: boolean
     threshold?: number
     loaderSize?: number
 }

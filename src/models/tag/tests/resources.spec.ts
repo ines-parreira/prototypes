@@ -2,8 +2,9 @@ import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import _pick from 'lodash/pick'
 
-import {tags as tagsFixtures} from '../../../fixtures/tag'
-import client from '../../api/resources'
+import {tags as tagsFixtures} from 'fixtures/tag'
+import client from 'models/api/resources'
+import {OrderDirection} from 'models/api/types'
 import {
     createTag,
     deleteTag,
@@ -42,17 +43,6 @@ describe('tag resources', () => {
             )
         })
 
-        it('should format orderBy value to snake_case', async () => {
-            mockedServer.onGet('/api/tags/').reply(200, {
-                data: tagsFixtures,
-                meta,
-            })
-            await fetchTags({
-                orderBy: TagSortableProperties.CreatedDatetime,
-            })
-            expect(mockedServer.history).toMatchSnapshot()
-        })
-
         it('should reject when cancelled', async () => {
             mockedServer.onGet('/api/tags/').reply(200, {
                 data: tagsFixtures,
@@ -63,11 +53,27 @@ describe('tag resources', () => {
 
             await expect(
                 fetchTags(
-                    {orderBy: TagSortableProperties.CreatedDatetime},
+                    {
+                        orderBy: `${TagSortableProperties.CreatedDatetime}:${OrderDirection.Asc}`,
+                    },
                     {cancelToken: source.token}
                 )
             ).rejects.toEqual(new axios.Cancel())
         })
+
+        it.each([OrderDirection.Asc, OrderDirection.Desc])(
+            'should concat second sorting attribute when sorting by usage',
+            async (direction) => {
+                mockedServer.onGet('/api/tags/').reply(200, {
+                    data: tagsFixtures,
+                    meta,
+                })
+                await fetchTags({
+                    orderBy: `${TagSortableProperties.Usage}:${direction}`,
+                })
+                expect(mockedServer.history.get[0].params).toMatchSnapshot()
+            }
+        )
     })
 
     describe('fetchTag', () => {

@@ -5,7 +5,7 @@ import {CancelToken} from 'axios'
 
 import {getActionTemplate} from 'utils'
 import {RootState} from 'state/types'
-import {fetchMacros, getMacro} from 'state/macro/actions'
+import {fetchAllMacros, getMacro} from 'state/macro/actions'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import {Macro} from 'state/macro/types'
 
@@ -23,7 +23,7 @@ const MacroSelect = ({
     className,
     value,
     onChange,
-    fetchMacros,
+    fetchAllMacros,
     getMacro,
     macros,
 }: OwnProps & ConnectedProps<typeof connector>) => {
@@ -41,10 +41,10 @@ const MacroSelect = ({
     const [handleMacrosSearch] = useCancellableRequest(
         (cancelToken: CancelToken) => async () => {
             setIsLoading(true)
-            const res = await fetchMacros({search}, '', 'asc', cancelToken)
+            const res = await fetchAllMacros({search}, cancelToken)
             if (res) {
                 setIsLoading(false)
-                setSearchResults(res.macros)
+                setSearchResults(res)
             }
         }
     )
@@ -110,7 +110,7 @@ const connector = connect(
         macros: state.macros?.get('items') as Map<number, any>,
     }),
     {
-        fetchMacros,
+        fetchAllMacros,
         getMacro,
     }
 )

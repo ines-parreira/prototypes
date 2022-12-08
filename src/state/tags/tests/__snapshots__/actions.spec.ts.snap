@@ -74,16 +74,14 @@ Array [
 exports[`tags actions fetchTags params change reverse 1`] = `
 Object {
   "limit": 100,
-  "order_by": "usage",
-  "order_dir": "asc",
+  "order_by": "usage:asc,name:asc",
 }
 `;
 
 exports[`tags actions fetchTags params search 1`] = `
 Object {
   "limit": 100,
-  "order_by": "name",
-  "order_dir": "asc",
+  "order_by": "name:asc",
   "search": "something",
 }
 `;

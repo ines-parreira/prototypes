@@ -3,12 +3,8 @@ import axios from 'axios'
 
 import client from 'models/api/resources'
 import {ticket} from 'fixtures/ticket'
-import {ApiListResponseCursorPagination, OrderDirection} from 'models/api/types'
-import {
-    Ticket,
-    TicketSearchOptions,
-    TicketSearchSortableProperties,
-} from 'models/ticket/types'
+import {ApiListResponseCursorPagination} from 'models/api/types'
+import {Ticket} from 'models/ticket/types'
 
 import {searchTickets} from '../resources'
 
@@ -40,7 +36,7 @@ describe('ticket resources', () => {
         })
 
         it('should pass the search phrase and filters in the payload', async () => {
-            const options: TicketSearchOptions = {
+            const options = {
                 search: 'foo',
                 filters: 'bar',
             }
@@ -64,30 +60,6 @@ describe('ticket resources', () => {
 
             expect(mockedServer.history.post[0].params).toEqual({cursor, limit})
         })
-
-        it.each(
-            Object.values(TicketSearchSortableProperties).reduce(
-                (acc, orderBy) => [
-                    ...acc,
-                    [orderBy, OrderDirection.Asc],
-                    [orderBy, OrderDirection.Desc],
-                ],
-                [] as [TicketSearchSortableProperties, OrderDirection][]
-            )
-        )(
-            'should construct order_by param for %s %s',
-            async (orderBy, orderDir) => {
-                await searchTickets({
-                    search: 'foo',
-                    orderBy,
-                    orderDir,
-                })
-
-                expect(mockedServer.history.post[0].params).toEqual({
-                    order_by: `${orderBy}:${orderDir}`,
-                })
-            }
-        )
 
         it('should cancel the request on cancel token cancel', async () => {
             const source = axios.CancelToken.source()

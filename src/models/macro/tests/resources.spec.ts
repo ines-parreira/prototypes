@@ -2,8 +2,9 @@ import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import _pick from 'lodash/pick'
 
-import {macros as macrosFixtures} from '../../../fixtures/macro'
-import client from '../../api/resources'
+import {macros as macrosFixtures} from 'fixtures/macro'
+import client from 'models/api/resources'
+import {OrderDirection} from 'models/api/types'
 import {
     fetchMacros,
     fetchMacro,
@@ -25,7 +26,8 @@ describe('macro resources', () => {
             mockedServer.onGet('/api/macros/').reply(200, {
                 data: macrosFixtures,
                 meta: {
-                    current_page: 2,
+                    prev_cursor: null,
+                    next_cursor: null,
                 },
             })
             const res = await fetchMacros({search: 'hello'})
@@ -39,37 +41,12 @@ describe('macro resources', () => {
             )
         })
 
-        it('should format fallbackOrderBy correctly', async () => {
-            mockedServer.onGet('/api/macros/').reply(200, {
-                data: macrosFixtures,
-                meta: {
-                    current_page: 2,
-                },
-            })
-            await fetchMacros({
-                fallbackOrderBy: MacroSortableProperties.CreatedDatetime,
-            })
-            expect(mockedServer.history).toMatchSnapshot()
-        })
-
-        it('should format orderBy value to snake_case', async () => {
-            mockedServer.onGet('/api/macros/').reply(200, {
-                data: macrosFixtures,
-                meta: {
-                    current_page: 2,
-                },
-            })
-            await fetchMacros({
-                orderBy: MacroSortableProperties.CreatedDatetime,
-            })
-            expect(mockedServer.history).toMatchSnapshot()
-        })
-
         it('should reject when cancelled', async () => {
             mockedServer.onGet('/api/macros/').reply(200, {
                 data: macrosFixtures,
                 meta: {
-                    current_page: 2,
+                    prev_cursor: null,
+                    next_cursor: null,
                 },
             })
             const source = axios.CancelToken.source()
@@ -77,8 +54,10 @@ describe('macro resources', () => {
 
             await expect(
                 fetchMacros(
-                    {orderBy: MacroSortableProperties.CreatedDatetime},
-                    source.token
+                    {
+                        orderBy: `${MacroSortableProperties.CreatedDatetime}:${OrderDirection.Asc}`,
+                    },
+                    {cancelToken: source.token}
                 )
             ).rejects.toEqual(new axios.Cancel())
         })

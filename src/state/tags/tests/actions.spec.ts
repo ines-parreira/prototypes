@@ -78,8 +78,7 @@ describe('tags actions', () => {
             })
             return store.dispatch(
                 actions.fetchTags({
-                    orderBy: TagSortableProperties.Usage,
-                    orderDir: OrderDirection.Asc,
+                    orderBy: `${TagSortableProperties.Usage}:${OrderDirection.Asc}`,
                 })
             )
         })
@@ -100,8 +99,7 @@ describe('tags actions', () => {
             })
             return store.dispatch(
                 actions.fetchTags({
-                    orderBy: TagSortableProperties.Name,
-                    orderDir: OrderDirection.Asc,
+                    orderBy: `${TagSortableProperties.Name}:${OrderDirection.Asc}`,
                     search: 'something',
                 })
             )
@@ -112,13 +110,9 @@ describe('tags actions', () => {
                 (config: {
                     params?: {
                         order_by: string
-                        order_dir: string
                     }
                 }) => {
-                    if (
-                        config.params?.order_by === 'name' &&
-                        config.params?.order_dir === 'desc'
-                    ) {
+                    if (config.params?.order_by === 'name:desc') {
                         return [200, {data: ['rejected', 'refund'], meta}]
                     }
 
@@ -141,8 +135,7 @@ describe('tags actions', () => {
             return store
                 .dispatch(
                     actions.fetchTags({
-                        orderBy: TagSortableProperties.Name,
-                        orderDir: OrderDirection.Desc,
+                        orderBy: `${TagSortableProperties.Name}:${OrderDirection.Desc}`,
                     })
                 )
                 .then(() => {

@@ -10,13 +10,12 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {AgentsRelationshipsParam, FetchAgentsOptions} from 'models/agents/types'
 import {fetchAgents as fetchAgentsRequest} from 'models/agents/resources'
-import {CursorMeta} from 'models/api/types'
+import {CursorDirection, CursorMeta} from 'models/api/types'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import Navigation from 'pages/common/components/Navigation/index.js'
 import PageHeader from 'pages/common/components/PageHeader'
 import LinkAlert from 'pages/common/components/Alert/LinkAlert'
-import {EventNavDirection} from 'pages/settings/audit/constants'
 import settingsCss from 'pages/settings/settings.less'
 import {
     FETCH_AGENTS_PAGINATION_ERROR,
@@ -52,17 +51,17 @@ const UserList = () => {
     const accessSettings = useAppSelector(getAccessSettings)
 
     const createFetchAgents = async (
-        direction?: EventNavDirection,
+        direction?: CursorDirection,
         cursor?: string | null
     ) => {
         const params: FetchAgentsOptions = {
             relationships: AgentsRelationshipsParam.AvailabilityStatus,
         }
 
-        if (direction === EventNavDirection.PrevCursor && !!meta?.prev_cursor) {
+        if (direction === CursorDirection.PrevCursor && !!meta?.prev_cursor) {
             params.cursor = meta.prev_cursor
         } else if (
-            direction === EventNavDirection.NextCursor &&
+            direction === CursorDirection.NextCursor &&
             meta?.next_cursor
         ) {
             params.cursor = meta.next_cursor
@@ -172,10 +171,10 @@ const UserList = () => {
                     hasNextItems={!!meta?.next_cursor}
                     hasPrevItems={!!meta?.prev_cursor}
                     fetchNextItems={() =>
-                        fetchAgents(EventNavDirection.NextCursor)
+                        fetchAgents(CursorDirection.NextCursor)
                     }
                     fetchPrevItems={() =>
-                        fetchAgents(EventNavDirection.PrevCursor)
+                        fetchAgents(CursorDirection.PrevCursor)
                     }
                 />
             </Container>

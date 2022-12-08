@@ -10,7 +10,7 @@ import useCancellableRequest from 'hooks/useCancellableRequest'
 import {FetchTagsOptions, Tag, TagSortableProperties} from 'models/tag/types'
 import {fetchTags} from 'models/tag/resources'
 import {NotificationStatus} from 'state/notifications/types'
-import {OrderDirection} from 'models/api/types'
+import {OrderDirection, OrderParams} from 'models/api/types'
 import {tagsFetched} from 'state/entities/tags/actions'
 import {notify} from 'state/notifications/actions'
 import TagDropdownMenu from 'pages/common/components/TagDropdownMenu/TagDropdownMenu'
@@ -20,9 +20,8 @@ import {StatsFilters} from 'models/stat/types'
 import css from './TagsStatsFilter.less'
 import SelectFilter from './common/SelectFilter'
 
-const ORDER_OPTIONS = {
-    orderBy: TagSortableProperties.Name,
-    orderDir: OrderDirection.Asc,
+const ORDER_OPTIONS: OrderParams<TagSortableProperties> = {
+    orderBy: `${TagSortableProperties.Name}:${OrderDirection.Asc}`,
 }
 
 const TagDropdownMenuWrapper = (

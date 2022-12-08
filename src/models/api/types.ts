@@ -38,8 +38,7 @@ export type CursorMeta = {
 }
 
 export type OrderParams<T extends string> = {
-    orderBy?: T
-    orderDir?: OrderDirection
+    orderBy?: `${T}:${OrderDirection}`
 }
 
 export enum OrderDirection {
@@ -76,4 +75,9 @@ export type GorgiasApiError<T = unknown> = Omit<AxiosError, 'response'> &
 export type GorgiasApiResponseDataError<T = unknown> = {
     msg: string
     data: T
+}
+
+export enum CursorDirection {
+    PrevCursor = 'prev',
+    NextCursor = 'next',
 }

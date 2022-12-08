@@ -141,8 +141,7 @@ describe('TagsStatsFilter', () => {
             expect(fetchTags).toHaveBeenLastCalledWith(
                 {
                     cursor: null,
-                    orderBy: TagSortableProperties.Name,
-                    orderDir: OrderDirection.Asc,
+                    orderBy: `${TagSortableProperties.Name}:${OrderDirection.Asc}`,
                     search: 'bar',
                 },
                 expect.anything()
@@ -169,8 +168,7 @@ describe('TagsStatsFilter', () => {
                 expect(fetchTags).toHaveBeenLastCalledWith(
                     {
                         cursor: null,
-                        orderBy: TagSortableProperties.Name,
-                        orderDir: OrderDirection.Asc,
+                        orderBy: `${TagSortableProperties.Name}:${OrderDirection.Asc}`,
                         search: 'foo',
                     },
                     expect.anything()

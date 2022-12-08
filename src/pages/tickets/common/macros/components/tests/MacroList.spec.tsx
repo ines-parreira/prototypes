@@ -32,7 +32,7 @@ describe('MacroList component', () => {
     ])
 
     const minProps: ComponentProps<typeof MacroListContainer> = {
-        searchResults: {macros, page: 1, totalPages: 1},
+        searchResults: macros,
         currentMacro: macros.first(),
         onClickItem: jest.fn(),
         onHoverItem: jest.fn(),

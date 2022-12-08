@@ -9,33 +9,25 @@ import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actio
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import {
-    createMacro,
-    updateMacro,
-    deleteMacro,
-    fetchMacrosParamsTypes,
-    MacrosSearchResult,
-} from 'state/macro/actions'
+import {createMacro, updateMacro, deleteMacro} from 'state/macro/actions'
+import {FetchMacrosOptions, Macro} from 'models/macro/types'
 import {MacroActionName} from 'models/macroAction/types'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import Loader from '../../../../common/components/Loader/Loader'
-import {DEFAULT_ACTIONS} from '../../../../../config'
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../../store/middlewares/segmentTracker'
-import shortcutManager from '../../../../../services/shortcutManager/index'
-import {createJob as createTicketJob} from '../../../../../state/tickets/actions'
+import Loader from 'pages/common/components/Loader/Loader'
+import {DEFAULT_ACTIONS} from 'config'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import shortcutManager from 'services/shortcutManager/index'
+import {createJob as createTicketJob} from 'state/tickets/actions'
 import {
     createJob as createViewJob,
     updateSelectedItemsIds,
-} from '../../../../../state/views/actions'
-import {JobParams, JobType} from '../../../../../models/job/types'
-import {RootState} from '../../../../../state/types'
-import {makeGetViewCount} from '../../../../../state/views/selectors'
+} from 'state/views/actions'
+import {JobParams, JobType} from 'models/job/types'
+import {RootState} from 'state/types'
+import {makeGetViewCount} from 'state/views/selectors'
 
 import css from './MacroModal.less'
 import MacroNoResults from './MacroNoResults'
@@ -44,26 +36,27 @@ import MacroEdit from './MacroEdit'
 import MacroModalList from './MacroModalList'
 
 type Props = {
-    searchParams: fetchMacrosParamsTypes
-    searchResults: MacrosSearchResult
+    searchParams: FetchMacrosOptions
+    searchResults: List<any>
     agents: List<any>
     handleClickItem: (id: number) => void
     disableExternalActions: boolean
     selectionMode: boolean
     isCreatingMacro?: boolean
     closeModal: () => void
-    updateMacros: (macros: List<any>) => void
+    updateMacros: (macro: Macro) => void
     activeView: Map<any, any>
     currentMacro: Map<any, any>
     toggleCreateMacro?: (toggle?: boolean) => Promise<void>
-    onSearch: (
-        searchParams: fetchMacrosParamsTypes,
-        forceSearch?: boolean
-    ) => void
+    onSearch: (searchParams: FetchMacrosOptions) => void
     firstLoad: boolean
     selectedItemsIds: List<any>
     allViewItemsSelected: boolean
-    fetchMacros: (opts?: {search?: string; page?: number}) => Promise<void>
+    fetchMacros: (
+        opts?: FetchMacrosOptions,
+        retainPreviousResults?: boolean
+    ) => Promise<Macro[] | void>
+    hasDataToLoad?: boolean
 } & ConnectedProps<typeof connector>
 
 type State = {
@@ -215,7 +208,7 @@ export class MacroModalContainer extends Component<Props, State> {
                 (resp as unknown as UpsertNotificationAction)?.payload
                     ?.status !== 'error'
             ) {
-                this.props.onSearch({search: newMacro.get('name')}, true)
+                this.props.onSearch({search: newMacro.get('name')})
                 this.props.handleClickItem(resp.id)
             }
         })
@@ -232,18 +225,20 @@ export class MacroModalContainer extends Component<Props, State> {
                 'language',
                 this.state.language === '' ? null : this.state.language
             )
-        return updateMacro(updatedMacro).then((res) => {
-            const macros = this.props.searchResults.macros
-            macros.some(((macro: Map<any, any>, index: number) => {
-                if (macro.get('id') === res.id) {
-                    const newMacro = fromJS(res) as Map<any, any>
-                    if (macro.get('name') !== newMacro.get('name')) {
+        return updateMacro(updatedMacro).then((newMacro) => {
+            const macros = this.props.searchResults
+            macros.some(((macro: Map<any, any>) => {
+                if (macro.get('id') === newMacro.id) {
+                    if (macro.get('name') !== newMacro.name) {
                         // if the name changed, reload macro list
-                        void fetchMacros({
-                            search: this.props.searchParams.search,
-                        })
+                        void fetchMacros(
+                            {
+                                search: newMacro.name,
+                            },
+                            false
+                        )
                     } else {
-                        this.props.updateMacros(macros.set(index, newMacro))
+                        this.props.updateMacros(newMacro)
                     }
                     return true
                 }
@@ -262,7 +257,7 @@ export class MacroModalContainer extends Component<Props, State> {
 
         return createMacro(duplicateMacro).then((res) => {
             // once the macro is created - search it in the list
-            this.props.onSearch({search: res.name || ''}, true)
+            this.props.onSearch({search: res.name || ''})
         })
     }
 
@@ -276,7 +271,12 @@ export class MacroModalContainer extends Component<Props, State> {
         const {fetchMacros, deleteMacro} = this.props
         const macroId = this.props.currentMacro.get('id', '')
         return deleteMacro(macroId).then(() => {
-            void fetchMacros({search: this.props.searchParams.search})
+            void fetchMacros(
+                {
+                    search: this.props.searchParams.search,
+                },
+                false
+            )
         })
     }
 
@@ -324,9 +324,10 @@ export class MacroModalContainer extends Component<Props, State> {
             activeView,
             getViewCount,
             allViewItemsSelected,
+            hasDataToLoad,
         } = this.props
 
-        const noResults = searchResults.macros.isEmpty() && !isCreatingMacro
+        const noResults = searchResults.isEmpty() && !isCreatingMacro
 
         const selectedCount = allViewItemsSelected
             ? getViewCount(activeView.get('id'))
@@ -359,6 +360,7 @@ export class MacroModalContainer extends Component<Props, State> {
                                     }
                                     handleClickItem={handleClickItem}
                                     onSearch={onSearch}
+                                    hasDataToLoad={hasDataToLoad}
                                 />
                             </Col>
                             <Col xs="9" className={css.content}>

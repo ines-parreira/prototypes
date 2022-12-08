@@ -65,43 +65,17 @@ Object {
 }
 `;
 
-exports[`tag resources fetchTags should format orderBy value to snake_case 1`] = `
+exports[`tag resources fetchTags should concat second sorting attribute when sorting by usage 1`] = `
 Object {
-  "delete": Array [],
-  "get": Array [
-    Object {
-      "data": undefined,
-      "headers": Object {
-        "Accept": "application/json, text/plain, */*",
-        "X-CSRF-Token": "abcd",
-        "X-Gorgias-User-Client": "web",
-      },
-      "maxBodyLength": -1,
-      "maxContentLength": -1,
-      "method": "get",
-      "params": Object {
-        "limit": 30,
-        "order_by": "created_datetime",
-      },
-      "timeout": 0,
-      "transformRequest": Array [
-        [Function],
-      ],
-      "transformResponse": Array [
-        [Function],
-      ],
-      "url": "/api/tags/",
-      "validateStatus": [Function],
-      "xsrfCookieName": "XSRF-TOKEN",
-      "xsrfHeaderName": "X-XSRF-TOKEN",
-    },
-  ],
-  "head": Array [],
-  "list": Array [],
-  "options": Array [],
-  "patch": Array [],
-  "post": Array [],
-  "put": Array [],
+  "limit": 30,
+  "order_by": "usage:asc,name:asc",
+}
+`;
+
+exports[`tag resources fetchTags should concat second sorting attribute when sorting by usage 2`] = `
+Object {
+  "limit": 30,
+  "order_by": "usage:desc,name:desc",
 }
 `;
 

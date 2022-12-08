@@ -1,6 +1,6 @@
 import classnames from 'classnames'
 import moment from 'moment'
-import React from 'react'
+import React, {useMemo} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 
 import {Link} from 'react-router-dom'
@@ -58,6 +58,15 @@ export function MacrosSettingsTableContainer({
     onSortOptionsChange,
     options,
 }: OwnProps & ConnectedProps<typeof connector>) {
+    const orderByValue = useMemo(
+        () => options.orderBy?.split(':')[0],
+        [options.orderBy]
+    )
+    const orderDirValue = useMemo(
+        () => options.orderBy?.split(':')[1] as OrderDirection,
+        [options.orderBy]
+    )
+
     const handleMacroDelete = async (macroId: number) => {
         try {
             await deleteMacro(macroId)
@@ -106,8 +115,8 @@ export function MacrosSettingsTableContainer({
     const handleSortChange = (orderBy: MacroSortableProperties) => {
         onSortOptionsChange(
             orderBy,
-            orderBy === options.orderBy
-                ? options.orderDir === OrderDirection.Asc
+            orderBy === orderByValue
+                ? orderDirValue === OrderDirection.Asc
                     ? OrderDirection.Desc
                     : OrderDirection.Asc
                 : defaultDescendingSort.includes(orderBy)
@@ -120,10 +129,8 @@ export function MacrosSettingsTableContainer({
         <TableWrapper>
             <TableHead className={css.tableHead}>
                 <HeaderCellProperty
-                    direction={options.orderDir}
-                    isOrderedBy={
-                        options.orderBy === MacroSortableProperties.Name
-                    }
+                    direction={orderDirValue}
+                    isOrderedBy={orderByValue === MacroSortableProperties.Name}
                     onClick={() =>
                         handleSortChange(MacroSortableProperties.Name)
                     }
@@ -131,9 +138,9 @@ export function MacrosSettingsTableContainer({
                 />
                 <HeaderCellProperty title="Tags" />
                 <HeaderCellProperty
-                    direction={options.orderDir}
+                    direction={orderDirValue}
                     isOrderedBy={
-                        options.orderBy === MacroSortableProperties.Language
+                        orderByValue === MacroSortableProperties.Language
                     }
                     onClick={() =>
                         handleSortChange(MacroSortableProperties.Language)
@@ -141,20 +148,17 @@ export function MacrosSettingsTableContainer({
                     title="Language"
                 />
                 <HeaderCellProperty
-                    direction={options.orderDir}
-                    isOrderedBy={
-                        options.orderBy === MacroSortableProperties.Usage
-                    }
+                    direction={orderDirValue}
+                    isOrderedBy={orderByValue === MacroSortableProperties.Usage}
                     onClick={() =>
                         handleSortChange(MacroSortableProperties.Usage)
                     }
                     title="Usage count"
                 />
                 <HeaderCellProperty
-                    direction={options.orderDir}
+                    direction={orderDirValue}
                     isOrderedBy={
-                        options.orderBy ===
-                        MacroSortableProperties.UpdatedDatetime
+                        orderByValue === MacroSortableProperties.UpdatedDatetime
                     }
                     onClick={() =>
                         handleSortChange(
