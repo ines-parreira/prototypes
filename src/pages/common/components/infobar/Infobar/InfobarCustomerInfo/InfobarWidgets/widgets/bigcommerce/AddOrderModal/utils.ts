@@ -1,17 +1,24 @@
 import _debounce from 'lodash/debounce'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
-import GorgiasApi from 'services/gorgiasApi'
 import {
+    addBigCommerceCheckoutBillingAddress,
+    addBigCommerceLineItem,
+    createBigCommerceCart,
+    createBigCommerceCheckoutConsignment,
+    deleteBigCommerceCart,
+    editBigCommerceLineItem,
+    removeBigCommerceLineItem,
+    updateBigCommerceCheckoutConsignment,
+} from 'models/integration/resources/bigcommerce'
+import {
+    BigCommerceCart,
+    BigCommerceCartLineItem,
     BigCommerceCustomerAddress,
-    Cart,
-    Checkout,
-    Customer,
-    LineItem,
-    Product,
-    Variant,
-} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/types'
-
-const _api = new GorgiasApi()
+    BigCommerceCheckout,
+    BigCommerceCustomer,
+    BigCommerceProduct,
+    BigCommerceProductVariant,
+} from 'models/integration/types'
 
 export const onInit = async ({
     customer,
@@ -19,10 +26,10 @@ export const onInit = async ({
     setIsLoading,
     setCart,
 }: {
-    customer: Customer
+    customer: BigCommerceCustomer
     integrationId: number
     setIsLoading: (state: boolean) => void
-    setCart: (state: Cart) => void
+    setCart: (state: BigCommerceCart) => void
 }) => {
     const cart = await createCart({integrationId, customer})
     const eventName = SegmentEvent.BigCommerceCreateOrderOpen
@@ -39,8 +46,8 @@ export const onCancel = ({
 }: {
     integrationId: Maybe<number>
     via: string
-    cart: Maybe<Cart>
-    setCart: (cart: Maybe<Cart>) => void
+    cart: Maybe<BigCommerceCart>
+    setCart: (cart: Maybe<BigCommerceCart>) => void
 }) => {
     if (!cart) {
         return
@@ -60,8 +67,8 @@ export const onReset = _debounce(
         setNote,
         setShippingAddress,
     }: {
-        setCart: (cart: Maybe<Cart>) => void
-        setProducts: (products: Map<number, Product>) => void
+        setCart: (cart: Maybe<BigCommerceCart>) => void
+        setProducts: (products: Map<number, BigCommerceProduct>) => void
         setComment: (value: string) => void
         setNote: (value: string) => void
         setShippingAddress: (address: Maybe<BigCommerceCustomerAddress>) => void
@@ -82,11 +89,11 @@ const createCart = async ({
     customer,
 }: {
     integrationId: number
-    customer: Customer
-}): Promise<Cart> => {
+    customer: BigCommerceCustomer
+}): Promise<BigCommerceCart> => {
     const eventName = SegmentEvent.BigCommerceCreateOrderCreateCart
     logEvent(eventName)
-    return await _api.createBigCommerceCart(integrationId, customer.id)
+    return await createBigCommerceCart(integrationId, customer.id)
 }
 
 const deleteCart = async ({
@@ -101,7 +108,7 @@ const deleteCart = async ({
     if (!integrationId) {
         return
     }
-    await _api.deleteBigCommerceCart(integrationId, cartId)
+    await deleteBigCommerceCart(integrationId, cartId)
 }
 
 export const addRow = async ({
@@ -115,13 +122,13 @@ export const addRow = async ({
     setProducts,
 }: {
     integrationId: number
-    product: Product
-    variant: Variant
+    product: BigCommerceProduct
+    variant: BigCommerceProductVariant
     setIsLoading: (state: boolean) => void
-    cart: Maybe<Cart>
-    setCart: (cart: Cart) => void
-    products: Map<number, Product>
-    setProducts: (products: Map<number, Product>) => void
+    cart: Maybe<BigCommerceCart>
+    setCart: (cart: BigCommerceCart) => void
+    products: Map<number, BigCommerceProduct>
+    setProducts: (products: Map<number, BigCommerceProduct>) => void
 }) => {
     setIsLoading(true)
     const newProducts = new Map(products)
@@ -129,7 +136,7 @@ export const addRow = async ({
     if (!cartId) {
         return
     }
-    const newCart = await _api.addBigCommerceLineItem(
+    const newCart = await addBigCommerceLineItem(
         integrationId,
         cartId,
         product.id,
@@ -168,17 +175,18 @@ export const removeRow = async ({
     integrationId: number
     index: number
     setIsLoading: (state: boolean) => void
-    cart: Maybe<Cart>
-    setCart: (cart: Cart) => void
+    cart: Maybe<BigCommerceCart>
+    setCart: (cart: BigCommerceCart) => void
 }) => {
     setIsLoading(true)
     if (!cart) {
         return
     }
-    const lineItem: LineItem = cart.line_items.physical_items.concat(
-        cart.line_items.digital_items
-    )[index]
-    const newCart = await _api.removeBigCommerceLineItem(
+    const lineItem: BigCommerceCartLineItem =
+        cart.line_items.physical_items.concat(cart.line_items.digital_items)[
+            index
+        ]
+    const newCart = await removeBigCommerceLineItem(
         integrationId,
         cart.id,
         lineItem.id
@@ -208,19 +216,20 @@ export const updateRow = _debounce(
         index: number
         newQuantity: number
         setIsLoading: (state: boolean) => void
-        cart: Maybe<Cart>
-        setCart: (cart: Cart) => void
+        cart: Maybe<BigCommerceCart>
+        setCart: (cart: BigCommerceCart) => void
         setQuantity: (quantity: number) => void
     }) => {
         setIsLoading(true)
         if (!cart) {
             return
         }
-        const lineItem: LineItem = cart.line_items.physical_items.concat(
-            cart.line_items.digital_items
-        )[index]
+        const lineItem: BigCommerceCartLineItem =
+            cart.line_items.physical_items.concat(
+                cart.line_items.digital_items
+            )[index]
         try {
-            const newCart = await _api.editBigCommerceLineItem(
+            const newCart = await editBigCommerceLineItem(
                 integrationId,
                 cart.id,
                 lineItem,
@@ -307,8 +316,8 @@ export const addCheckoutBillingAddress = async ({
 }: {
     integrationId: Maybe<number>
     selectedAddress: Maybe<BigCommerceCustomerAddress>
-    cart: Maybe<Cart>
-    setCheckout: (cart: Maybe<Checkout>) => void
+    cart: Maybe<BigCommerceCart>
+    setCheckout: (cart: Maybe<BigCommerceCheckout>) => void
 }) => {
     if (!cart) {
         return
@@ -317,7 +326,7 @@ export const addCheckoutBillingAddress = async ({
     if (integrationId && selectedAddress) {
         const cartId = cart.id
         if (cartId) {
-            const checkout = await _api.addBigCommerceCheckoutBillingAddress(
+            const checkout = await addBigCommerceCheckoutBillingAddress(
                 integrationId,
                 cartId,
                 selectedAddress
@@ -334,7 +343,7 @@ export const upsertCheckoutConsignment = async ({
     consignmentId,
 }: {
     integrationId: number
-    cart: Cart
+    cart: BigCommerceCart
     shippingAddress: BigCommerceCustomerAddress
     consignmentId: Maybe<string>
 }) => {
@@ -352,10 +361,10 @@ export const upsertCheckoutConsignment = async ({
     }
 
     if (!consignmentId) {
-        return await _api.createBigCommerceCheckoutConsignment(basePayload)
+        return await createBigCommerceCheckoutConsignment(basePayload)
     }
 
-    return await _api.updateBigCommerceCheckoutConsignment({
+    return await updateBigCommerceCheckoutConsignment({
         ...basePayload,
         consignmentId,
     })
@@ -368,11 +377,11 @@ export const updateCheckoutConsignmentShippingMethod = async ({
     consignmentId,
 }: {
     integrationId: number
-    cart: Cart
+    cart: BigCommerceCart
     shippingMethodId: string
     consignmentId: string
 }) => {
-    return await _api.updateBigCommerceCheckoutConsignment({
+    return await updateBigCommerceCheckoutConsignment({
         cartId: cart.id,
         integrationId,
         consignmentId,

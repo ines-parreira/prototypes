@@ -1,12 +1,16 @@
 import React, {useCallback} from 'react'
-import defaultImage from '../../../../../../../../../assets/img/presentationals/shopify-product-default-image.png'
-import css from './OrderLineItemRow.less'
-import {LineItem, Product, Variant} from './types'
+import {
+    BigCommerceCartLineItem,
+    BigCommerceProduct,
+    BigCommerceProductVariant,
+} from 'models/integration/types'
+import defaultImage from 'assets/img/presentationals/shopify-product-default-image.png'
 import {ProductStockQuantity} from './ProductStockQuantity'
+import css from './OrderLineItemRow.less'
 
 type Props = {
-    product?: Product
-    lineItem: LineItem
+    product?: BigCommerceProduct
+    lineItem: BigCommerceCartLineItem
     storeHash: string
 }
 export default function ProductComponent({
@@ -58,7 +62,8 @@ export default function ProductComponent({
         const variantId = lineItem.variant_id
         const variant = !!product
             ? product.variants.find(
-                  (variant: Variant) => variant.id === variantId
+                  (variant: BigCommerceProductVariant) =>
+                      variant.id === variantId
               )
             : null
 

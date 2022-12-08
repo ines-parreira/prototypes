@@ -1,6 +1,9 @@
 import React, {memo, useState} from 'react'
 
-import {LineItem, Product} from './types'
+import {
+    BigCommerceCartLineItem,
+    BigCommerceProduct,
+} from 'models/integration/types'
 
 import ProductComponent from './ProductComponent'
 import PriceComponent from './PriceComponent'
@@ -10,8 +13,8 @@ import {QuantityComponent} from './QuantityComponent'
 type Props = {
     id: string
     index: number
-    lineItem: LineItem
-    product?: Product
+    lineItem: BigCommerceCartLineItem
+    product?: BigCommerceProduct
     storeHash: string
     currencyCode: string | undefined
     removable: boolean

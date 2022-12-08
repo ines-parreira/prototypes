@@ -1,9 +1,10 @@
 import React, {memo} from 'react'
 import {Table} from 'reactstrap'
 
+import {BigCommerceCartLineItem} from 'models/integration/types'
+
 import OrderLineItemRow from './OrderLineItemRow'
 import css from './OrderTable.less'
-import {LineItem} from './types'
 
 type Props = {
     storeHash: string
@@ -43,7 +44,7 @@ function OrderTable({
                         </td>
                     </tr>
                 )}
-                {lineItems.map((lineItem: LineItem, index) => {
+                {lineItems.map((lineItem: BigCommerceCartLineItem, index) => {
                     const productId = lineItem.product_id
                     const variantId = lineItem.variant_id
                     const uid = `${productId}${

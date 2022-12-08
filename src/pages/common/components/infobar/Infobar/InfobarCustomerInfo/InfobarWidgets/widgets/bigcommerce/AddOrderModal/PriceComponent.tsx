@@ -1,10 +1,10 @@
 import React from 'react'
-import MoneyAmount from '../MoneyAmount'
+import {BigCommerceCartLineItem} from 'models/integration/types'
+import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import css from './OrderLineItemRow.less'
-import {LineItem} from './types'
 
 type Props = {
-    lineItem: LineItem
+    lineItem: BigCommerceCartLineItem
     currencyCode: Maybe<string>
 }
 export default function PriceComponent({lineItem, currencyCode}: Props) {

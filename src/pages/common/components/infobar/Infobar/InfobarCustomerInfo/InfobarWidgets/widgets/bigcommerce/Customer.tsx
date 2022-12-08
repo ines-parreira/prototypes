@@ -10,6 +10,10 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {
+    BigCommerceActionType,
+    BigCommerceCustomer,
+} from 'models/integration/types'
 import {StaticField} from '../StaticField'
 import {CardHeaderTitle} from '../CardHeaderTitle'
 import {CardHeaderIcon} from '../CardHeaderIcon'
@@ -18,8 +22,8 @@ import {CardHeaderSubtitle} from '../CardHeaderSubtitle'
 import ButtonIconLabel from '../../../../../../button/ButtonIconLabel'
 import ActionButtonsGroup from '../ActionButtonsGroup'
 import {InfobarAction} from '../types'
-import {BigCommerceActionType, Customer as BigCommerceCustomer} from './types'
-import OrderModal from './OrderModal'
+
+import OrderModal from './AddOrderModal/OrderModal'
 
 export default function Customer() {
     return {

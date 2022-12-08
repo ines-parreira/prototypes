@@ -8,20 +8,18 @@ import {
     bigCommerceCustomerFixture,
     bigCommerceIntegrationFixture,
 } from 'fixtures/bigcommerce'
-import OrderModalConnected, {
+import OrderModalRenderWrapper, {
     OrderModal,
-} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/OrderModal'
-import {BigCommerceActionType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/types'
+} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/OrderModal'
 import {integrationsState} from 'fixtures/integrations'
 import {
     IntegrationContext,
     IntegrationContextType,
 } from 'providers/infobar/IntegrationContext'
+import {BigCommerceActionType} from 'models/integration/types'
 import {onInit} from '../utils'
 
-jest.mock(
-    'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/utils'
-)
+jest.mock('../utils')
 
 jest.mock('store/middlewares/segmentTracker')
 
@@ -72,7 +70,7 @@ describe('OrderModalConnected', () => {
         integrationId: 1,
     }
 
-    const defaultProps: ComponentProps<typeof OrderModalConnected> = {
+    const defaultProps: ComponentProps<typeof OrderModalRenderWrapper> = {
         data: {
             actionName: BigCommerceActionType.CreateOrder,
             customer: bigCommerceCustomerFixture(),
@@ -86,12 +84,12 @@ describe('OrderModalConnected', () => {
         orderModalProps = defaultProps,
     }: {
         integrationContextValue?: IntegrationContextType
-        orderModalProps?: ComponentProps<typeof OrderModalConnected>
+        orderModalProps?: ComponentProps<typeof OrderModalRenderWrapper>
     }) => {
         return render(
             <Provider store={store}>
                 <IntegrationContext.Provider value={integrationContextValue}>
-                    <OrderModalConnected {...orderModalProps} />
+                    <OrderModalRenderWrapper {...orderModalProps} />
                 </IntegrationContext.Provider>
             </Provider>
         )

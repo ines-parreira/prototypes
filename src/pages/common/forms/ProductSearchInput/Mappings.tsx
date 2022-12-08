@@ -1,12 +1,13 @@
-import {IntegrationType, IntegrationDataItem} from 'models/integration/types'
+import {
+    IntegrationType,
+    IntegrationDataItem,
+    BigCommerceProductVariant,
+    BigCommerceProduct,
+} from 'models/integration/types'
 import {
     Product as ShopifyProduct,
     Variant as ShopifyVariant,
 } from 'constants/integrations/types/shopify'
-import {
-    Product as BigCommerceProduct,
-    Variant as BigCommerceVariant,
-} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/types'
 
 import {Props as ResultProps} from './Result'
 
@@ -94,7 +95,7 @@ export const bigcommerceDataMappers = {
     },
     variants: (
         integrationItem: IntegrationDataItem<BigCommerceProduct>,
-        variant: BigCommerceVariant
+        variant: BigCommerceProductVariant
     ): ResultProps => {
         const product = integrationItem.data
         const image_url = variant.image_url

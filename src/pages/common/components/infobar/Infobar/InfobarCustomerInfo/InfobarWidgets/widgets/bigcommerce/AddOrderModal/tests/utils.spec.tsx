@@ -7,7 +7,7 @@ import {
     bigCommerceVariantFixture,
 } from 'fixtures/bigcommerce'
 import client from 'models/api/resources'
-import {Product} from '../types'
+import {BigCommerceProduct} from 'models/integration/types'
 import {
     onCancel,
     onInit,
@@ -37,7 +37,7 @@ describe('utils', () => {
     const variant = bigCommerceVariantFixture()
     const index = 0
     const newQuantity = 2
-    const products = new Map<number, Product>()
+    const products = new Map<number, BigCommerceProduct>()
     products.set(product.id, product)
 
     const setCart = jest.fn()

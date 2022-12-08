@@ -6,14 +6,18 @@ import Button from 'pages/common/components/button/Button'
 import RadioFieldSet, {RadioFieldOption} from 'pages/common/forms/RadioFieldSet'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 
-import {BigCommerceCustomerAddress, Cart, Consignment} from '../types'
+import {
+    BigCommerceCart,
+    BigCommerceCustomerAddress,
+    BigCommerceConsignment,
+} from 'models/integration/types'
 
 import {
     updateCheckoutConsignmentShippingMethod,
     upsertCheckoutConsignment,
-} from '../utils'
+} from './utils'
 
-import css from '../OrderTotals.less'
+import css from './OrderTotals.less'
 
 export const useConsignment = ({
     shippingAddress,
@@ -21,10 +25,10 @@ export const useConsignment = ({
     integrationId,
 }: {
     integrationId: number
-    cart: Maybe<Cart>
+    cart: Maybe<BigCommerceCart>
     shippingAddress: Maybe<BigCommerceCustomerAddress>
 }) => {
-    const [consignment, setConsignment] = useState<Consignment>()
+    const [consignment, setConsignment] = useState<BigCommerceConsignment>()
 
     useEffect(() => {
         const updateConsignment = async () => {
@@ -59,7 +63,7 @@ export const useShippingMethods = ({
     consignment,
     currencyCode,
 }: {
-    consignment: Maybe<Consignment>
+    consignment: Maybe<BigCommerceConsignment>
     currencyCode: string | null
 }) => {
     const [selectedShippingMethodId, setSelectedShippingMethodId] = useState<
@@ -112,11 +116,11 @@ export function useOnChangeShippingMethodId({
     selectedShippingMethodId,
     onSuccess,
 }: {
-    consignment: Maybe<Consignment>
+    consignment: Maybe<BigCommerceConsignment>
     selectedShippingMethodId: Maybe<string>
     onSuccess: () => void
     integrationId: number
-    cart: Maybe<Cart>
+    cart: Maybe<BigCommerceCart>
 }) {
     return async () => {
         if (!cart || !consignment || !selectedShippingMethodId) {
@@ -140,7 +144,7 @@ export function useOnChangeShippingMethodId({
 
 type Props = {
     integrationId: number
-    cart: Maybe<Cart>
+    cart: Maybe<BigCommerceCart>
     shippingAddress: Maybe<BigCommerceCustomerAddress>
     currencyCode: string | null
 }

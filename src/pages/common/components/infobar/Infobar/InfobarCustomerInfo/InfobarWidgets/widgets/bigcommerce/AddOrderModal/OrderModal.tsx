@@ -13,23 +13,21 @@ import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
 import {InfobarModalProps} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 
-import {
-    BigCommerceActionType,
-    BigCommerceCustomerAddress,
-    Cart,
-    Checkout,
-    Customer,
-    Product,
-    Variant,
-} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/types'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
 import {bigcommerceDataMappers} from 'pages/common/forms/ProductSearchInput/Mappings'
 import {
     BigCommerceIntegration,
+    BigCommerceCart,
     IntegrationDataItem,
     IntegrationType,
+    BigCommerceCustomerAddress,
+    BigCommerceProductVariant,
+    BigCommerceProduct,
+    BigCommerceCheckout,
+    BigCommerceCustomer,
+    BigCommerceActionType,
 } from 'models/integration/types'
 import {getIntegrationsByType} from 'state/integrations/selectors'
 import useAppSelector from 'hooks/useAppSelector'
@@ -64,9 +62,11 @@ export function OrderModal({
 
     const [isLoading, setIsLoading] = useState(false)
 
-    const [cart, setCart] = useState<Maybe<Cart>>(null)
-    const [, setCheckout] = useState<Maybe<Checkout>>(null)
-    const [products, setProducts] = useState<Map<number, Product>>(new Map())
+    const [cart, setCart] = useState<Maybe<BigCommerceCart>>(null)
+    const [, setCheckout] = useState<Maybe<BigCommerceCheckout>>(null)
+    const [products, setProducts] = useState<Map<number, BigCommerceProduct>>(
+        new Map()
+    )
     const [shippingAddress, setShippingAddress] =
         useState<Maybe<BigCommerceCustomerAddress>>(null)
     const [note, setNote] = useState('')
@@ -161,8 +161,8 @@ export function OrderModal({
                             className={css.searchInput}
                             dataMappers={bigcommerceDataMappers}
                             onVariantClicked={(
-                                item: IntegrationDataItem<Product>,
-                                variant: Variant
+                                item: IntegrationDataItem<BigCommerceProduct>,
+                                variant: BigCommerceProductVariant
                             ) => {
                                 if (integrationId) {
                                     void addRow({
@@ -292,11 +292,11 @@ export function OrderModal({
 type ConnectedProps = {
     data?: {
         actionName: BigCommerceActionType | null
-        customer: Customer | null
+        customer: BigCommerceCustomer | null
     }
 } & Pick<InfobarModalProps, 'isOpen' | 'onClose'>
 
-export default function OrderModalConnected(props: ConnectedProps) {
+export default function OrderModalRenderWrapper(props: ConnectedProps) {
     const {integrationId} = useContext(IntegrationContext)
 
     if (!integrationId || !props.isOpen) {

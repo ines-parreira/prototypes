@@ -13,9 +13,9 @@ import {ShippingMethod} from '../ShippingMethod'
 import {
     updateCheckoutConsignmentShippingMethod,
     upsertCheckoutConsignment,
-} from '../../utils'
+} from '../utils'
 
-jest.mock('../../utils')
+jest.mock('../utils')
 
 describe('ShippingMethod', () => {
     let apiMock: MockAdapter

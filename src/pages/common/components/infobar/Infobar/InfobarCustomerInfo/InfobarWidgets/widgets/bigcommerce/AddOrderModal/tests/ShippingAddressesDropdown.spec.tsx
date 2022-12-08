@@ -4,15 +4,15 @@ import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import * as utils from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/utils'
+import * as utils from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/utils'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {integrationsState} from 'fixtures/integrations'
 import {bigCommerceCartFixture} from 'fixtures/bigcommerce'
-import {ShippingAddressesDropdown} from '../ShippingAddressesDropdown'
 import {
     BigCommerceCustomerAddress,
     BigCommerceCustomerAddressType,
-} from '../types'
+} from 'models/integration/types'
+import {ShippingAddressesDropdown} from '../ShippingAddressesDropdown'
 
 const integrationContextValue = {integration: fromJS({}), integrationId: 1}
 

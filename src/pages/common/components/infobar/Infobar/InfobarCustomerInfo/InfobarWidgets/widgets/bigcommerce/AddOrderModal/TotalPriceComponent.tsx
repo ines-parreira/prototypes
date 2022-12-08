@@ -1,12 +1,13 @@
 import classnames from 'classnames'
 import React from 'react'
-import MoneyAmount from '../MoneyAmount'
-import {LineItem} from './types'
+import {BigCommerceCartLineItem} from 'models/integration/types'
+import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
+
 import css from './OrderLineItemRow.less'
 
 type Props = {
     currencyCode: Maybe<string>
-    lineItem: LineItem
+    lineItem: BigCommerceCartLineItem
 }
 
 export function TotalPriceComponent({currencyCode, lineItem}: Props) {

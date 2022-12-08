@@ -1,11 +1,14 @@
 import React from 'react'
-import {BigCommerceIntegration} from 'models/integration/types'
-import MoneyAmount from '../MoneyAmount'
-import {BigCommerceCustomerAddress, Cart} from './types'
-import {ShippingMethod} from './AddOrderModal/ShippingMethod'
+import {
+    BigCommerceIntegration,
+    BigCommerceCart,
+    BigCommerceCustomerAddress,
+} from 'models/integration/types'
+import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
+import {ShippingMethod} from './ShippingMethod'
 
 type Props = {
-    cart: Maybe<Cart>
+    cart: Maybe<BigCommerceCart>
     shippingAddress: Maybe<BigCommerceCustomerAddress>
     integration: BigCommerceIntegration
 }

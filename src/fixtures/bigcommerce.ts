@@ -1,17 +1,15 @@
 import {
     BigCommerceIntegration,
     BigCommerceIntegrationMeta,
+    BigCommerceCart,
     IntegrationType,
-} from 'models/integration/types'
-import {
+    BigCommerceCartLineItem,
     BigCommerceCustomerAddress,
     BigCommerceCustomerAddressType,
+    BigCommerceProductVariant,
+    BigCommerceProduct,
     BigCommerceNestedCart,
-    Cart,
-    LineItem,
-    Product,
-    Variant,
-} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/types'
+} from 'models/integration/types'
 
 export const bigCommerceCustomerFixture = () => ({
     id: 1234,
@@ -150,7 +148,7 @@ export const bigCommerceIntegrationFixture = (): BigCommerceIntegration => ({
     },
 })
 
-export const bigCommerceEmptyCartFixture = (): Cart => ({
+export const bigCommerceEmptyCartFixture = (): BigCommerceCart => ({
     id: 'c58d3aac-244c-4405-bad5-638b555bc31b',
     customer_id: 1,
     channel_id: 1,
@@ -175,7 +173,7 @@ export const bigCommerceEmptyCartFixture = (): Cart => ({
     locale: 'en',
 })
 
-export const bigCommerceLineItemFixture = (): LineItem => ({
+export const bigCommerceLineItemFixture = (): BigCommerceCartLineItem => ({
     id: '3aee2b2f-9182-4d16-82ae-734dced3d218',
     parent_id: null,
     variant_id: 324,
@@ -218,7 +216,7 @@ export const bigCommerceShippingAddress: BigCommerceCustomerAddress = {
     state_or_province: 'Iasi',
 }
 
-export const bigCommerceCartFixture = (): Cart => ({
+export const bigCommerceCartFixture = (): BigCommerceCart => ({
     id: 'c58d3aac-244c-4405-bad5-638b555bc31b',
     customer_id: 1,
     channel_id: 1,
@@ -252,7 +250,7 @@ export const BigCommerceNestedCartFixture = (): BigCommerceNestedCart => ({
     data: bigCommerceCartFixture(),
 })
 
-export const bigCommerceVariantFixture = (): Variant => ({
+export const bigCommerceVariantFixture = (): BigCommerceProductVariant => ({
     id: 1,
     sku: 'SLCTBS-A9615491',
     price: null,
@@ -262,7 +260,7 @@ export const bigCommerceVariantFixture = (): Variant => ({
     options: [],
 })
 
-export const bigCommerceProductFixture = (): Product => ({
+export const bigCommerceProductFixture = (): BigCommerceProduct => ({
     id: 77,
     sku: 'SLCTBS',
     name: '[Sample] Serviette de plage Fog Linen en chambray - Beige rayé',

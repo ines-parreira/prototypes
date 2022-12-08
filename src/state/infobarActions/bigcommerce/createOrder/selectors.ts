@@ -5,7 +5,7 @@ import {RootState} from 'state/types'
 import {toJS} from 'utils'
 import {getIntegrationDataByIntegrationId} from 'state/ticket/selectors'
 import {getActiveCustomerIntegrationDataByIntegrationId} from 'state/customers/selectors'
-import {BigCommerceCustomerAddress} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/types'
+import {BigCommerceCustomerAddress} from 'models/integration/types'
 
 export const getCustomerAddresses = (integrationId: Maybe<number>) =>
     createSelector(

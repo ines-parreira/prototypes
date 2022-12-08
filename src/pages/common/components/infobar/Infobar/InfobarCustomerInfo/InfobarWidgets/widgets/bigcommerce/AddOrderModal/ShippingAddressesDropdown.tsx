@@ -7,21 +7,26 @@ import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
-import css from './ShippingAddressesDropdown.less'
-import cssOrderModal from './OrderModal.less'
-import {BigCommerceCustomerAddress, Cart, Checkout} from './types'
+import {
+    BigCommerceCart,
+    BigCommerceCustomerAddress,
+    BigCommerceCheckout,
+} from 'models/integration/types'
 import {
     addCheckoutBillingAddress,
     buildAddressComponent,
     getOneLineAddress,
 } from './utils'
 
+import css from './ShippingAddressesDropdown.less'
+import cssOrderModal from './OrderModal.less'
+
 type Props = {
     shippingAddress: Maybe<BigCommerceCustomerAddress>
     shippingAddresses: BigCommerceCustomerAddress[]
     setShippingAddress: (shippingAddress: BigCommerceCustomerAddress) => void
-    cart: Maybe<Cart>
-    setCheckout: (checkout: Maybe<Checkout>) => void
+    cart: Maybe<BigCommerceCart>
+    setCheckout: (checkout: Maybe<BigCommerceCheckout>) => void
 }
 
 export function ShippingAddressesDropdown({
