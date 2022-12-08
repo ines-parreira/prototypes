@@ -6,7 +6,7 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {PhoneNumber} from 'models/phoneNumber/types'
 import {PhoneIntegration} from 'models/integration/types'
-import {getPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
+import {getOldPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {DEPRECATED_getTicket} from 'state/ticket/selectors'
 import {useOutboundCall} from 'hooks/integrations/phone/useOutboundCall'
@@ -27,7 +27,7 @@ const PhoneIntegrationsDropdownList = ({
 }: Props) => {
     const call = useAppSelector((state) => state.twilio.call)
     const device = useAppSelector((state) => state.twilio.device)
-    const phoneNumbers = useAppSelector(getPhoneNumbers)
+    const phoneNumbers = useAppSelector(getOldPhoneNumbers)
     const ticketId = useAppSelector(DEPRECATED_getTicket).get('id')
     const agentId = useAppSelector(getCurrentUser).get('id')
 

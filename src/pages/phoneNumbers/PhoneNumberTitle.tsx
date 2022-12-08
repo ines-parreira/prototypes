@@ -1,6 +1,7 @@
 import React from 'react'
 import {PhoneNumber} from 'models/phoneNumber/types'
 
+import {countryCode, friendlyName} from './utils'
 import CountryFlag from './CountryFlag'
 
 import css from './PhoneNumberTitle.less'
@@ -16,18 +17,23 @@ export default function PhoneNumberTitle({
     withRoundFlag,
     withCountryCode,
 }: Props): JSX.Element {
+    const phoneCountryCode = countryCode(phoneNumber)
     return (
         <div className={css.wrapper}>
-            <CountryFlag
-                countryCode={phoneNumber.meta.country}
-                withRoundFlag={withRoundFlag}
-            />
+            {phoneCountryCode && (
+                <CountryFlag
+                    countryCode={phoneCountryCode}
+                    withRoundFlag={withRoundFlag}
+                />
+            )}
             <strong>
                 {phoneNumber.name}
-                {withCountryCode && ` - ${phoneNumber.meta.country}`}
+                {withCountryCode &&
+                    phoneCountryCode &&
+                    ` - ${phoneCountryCode}`}
             </strong>
             &nbsp;
-            <span>{phoneNumber.meta.friendly_name}</span>
+            <span>{friendlyName(phoneNumber)}</span>
         </div>
     )
 }

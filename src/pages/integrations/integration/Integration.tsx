@@ -21,7 +21,10 @@ import {
     getEligibleShopifyIntegrationsFor,
     makeGetRedirectUri,
 } from 'state/integrations/selectors'
-import {fetchPhoneNumbers} from 'models/phoneNumber/resources'
+import {
+    fetchNewPhoneNumbers,
+    fetchPhoneNumbers,
+} from 'models/phoneNumber/resources'
 import {phoneNumbersFetched} from 'state/entities/phoneNumbers/actions'
 import {AccountFeature} from 'state/currentAccount/types'
 import {compare} from 'utils'
@@ -222,11 +225,14 @@ export const IntegrationDetail = ({
     const dispatch = useAppDispatch()
     const [, handleFetchPhoneNumbers] = useAsyncFn(async () => {
         try {
-            const res = await fetchPhoneNumbers()
-            if (!res) {
-                return
+            const numbers = await fetchPhoneNumbers()
+            if (numbers) {
+                dispatch(phoneNumbersFetched(numbers.data))
             }
-            dispatch(phoneNumbersFetched(res.data))
+            const newNumbers = await fetchNewPhoneNumbers()
+            if (newNumbers) {
+                dispatch(phoneNumbersFetched(newNumbers.data))
+            }
         } catch (error) {
             void dispatch(
                 notify({

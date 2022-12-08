@@ -8,8 +8,8 @@ import {
     PHONE_NUMBERS_FETCHED,
 } from './constants'
 
-export type PhoneNumbersState = {
-    [key: number]: PhoneNumber
+export type PhoneNumbersState<N extends PhoneNumber = PhoneNumber> = {
+    [key: number]: N
 }
 
 export type PhoneNumbersAction =

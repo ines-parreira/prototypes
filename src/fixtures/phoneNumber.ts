@@ -1,12 +1,12 @@
 import {
-    PhoneNumber,
+    OldPhoneNumber,
     PhoneType,
     PhoneCountry,
     AddressType,
     PhoneCapabilitiesLimitationsMap,
 } from 'models/phoneNumber/types'
 
-export const phoneNumbers: PhoneNumber[] = [
+export const phoneNumbers: OldPhoneNumber[] = [
     {
         id: 1,
         name: 'A Phone Number',
