@@ -94,6 +94,11 @@ describe('<AuditLogEvent/>', () => {
                         new_subject: 'bar',
                     },
                 ],
+                [TICKET_EVENT_TYPES.RuleExecuted, {slug: 'rule_suggestion'}],
+                [
+                    TICKET_EVENT_TYPES.RuleSuggestionSuggested,
+                    {slug: 'rule_suggestion'},
+                ],
             ])('with event type %s', (eventType, eventData) => {
                 const event = getEvent(eventType, eventData)
                 const component = shallow(

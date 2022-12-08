@@ -58,6 +58,7 @@ export type EventData =
     | TicketAssignedEventData
     | TicketTeamAssignedEventData
     | RuleExecutedEventData
+    | RuleSuggestionEventData
     | TicketRuleExecutedEventData
     | TicketMessageSummaryCreatedEventData
     | TicketSubjectUpdatedEventData
@@ -80,6 +81,7 @@ export enum EventType {
     RuleCreated = 'rule-created',
     RuleDeleted = 'rule-deleted',
     RuleUpdated = 'rule-updated',
+    RuleSuggestionSuggested = 'rule-suggestion-suggested',
     TagCreated = 'tag-created',
     TagDeleted = 'tag-deleted',
     TagMerged = 'tag-merged',
@@ -196,6 +198,7 @@ export const TICKET_EVENT_TYPES = Object.freeze({
         'TicketUntrashed',
         'TicketUpdated',
         'TicketSubjectUpdated',
+        'RuleSuggestionSuggested',
     ]),
     RuleExecuted: 'rule-executed',
 } as const)
@@ -216,6 +219,10 @@ export type RuleExecutedEventData = {
     updated_datetime: string
     deactivated_datetime: Maybe<string>
     failed_actions: Maybe<List<any>>
+}
+
+export type RuleSuggestionEventData = {
+    slug: string
 }
 
 export const RULE_ACTIONS_EVENT_TYPES = Object.freeze([

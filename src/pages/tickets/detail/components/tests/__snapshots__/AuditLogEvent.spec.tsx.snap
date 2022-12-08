@@ -517,6 +517,70 @@ exports[`<AuditLogEvent/> render() should render with event type rule-executed 1
 </div>
 `;
 
+exports[`<AuditLogEvent/> render() should render with event type rule-executed 2`] = `
+<div
+  className="component isVirtualized"
+>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="icon"
+      >
+        <i
+          className="material-icons"
+        >
+          settings
+        </i>
+      </div>
+      <RuleSuggestionEvent
+        eventType="rule-executed"
+        slug="rule_suggestion"
+      />
+    </div>
+    <Connect(DatetimeLabelContainer)
+      className="date text-faded"
+      dateTime="2019-11-15 19:00:00.000000"
+    />
+  </div>
+</div>
+`;
+
+exports[`<AuditLogEvent/> render() should render with event type rule-suggestion-suggested 1`] = `
+<div
+  className="component isVirtualized"
+>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="icon"
+      >
+        <i
+          className="material-icons"
+        >
+          lightbulb
+        </i>
+      </div>
+      <RuleSuggestionEvent
+        eventType="rule-suggestion-suggested"
+        slug="rule_suggestion"
+      />
+    </div>
+    <Connect(DatetimeLabelContainer)
+      className="date text-faded"
+      dateTime="2019-11-15 19:00:00.000000"
+    />
+  </div>
+</div>
+`;
+
 exports[`<AuditLogEvent/> render() should render with event type ticket-assigned 1`] = `
 <div
   className="component isVirtualized"

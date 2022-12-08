@@ -5,6 +5,7 @@ import {fromJS, List, Map} from 'immutable'
 import _truncate from 'lodash/truncate'
 import _omit from 'lodash/omit'
 
+import {Link} from 'react-router-dom'
 import {
     AgentLabel,
     DatetimeLabel,
@@ -18,6 +19,7 @@ import {
     TicketEventType,
     TICKET_EVENT_TYPES,
     rulesActionsFailures,
+    EventType,
 } from 'models/event/types'
 import {
     isRuleExecutedType,
@@ -32,6 +34,7 @@ import {eventNameToLabel} from 'config/rules'
 import {getLDClient} from 'utils/launchDarkly'
 import {FeatureFlagKey} from 'config/featureFlags'
 
+import {useRuleRecipes} from 'state/entities/ruleRecipes/hooks'
 import css from './Event.less'
 
 type Props = {
@@ -53,6 +56,40 @@ export const contentfulEventTypesValues = Object.freeze(
     Object.values(CONTENTFUL_EVENT_TYPES)
 )
 
+const RuleSuggestionEvent = ({
+    slug,
+    eventType,
+}: {
+    slug: string
+    eventType:
+        | typeof TICKET_EVENT_TYPES.RuleExecuted
+        | EventType.RuleSuggestionSuggested
+}) => {
+    const recipes = useRuleRecipes()
+    const ruleName = recipes?.[slug]?.rule?.name ?? slug
+
+    return (
+        <ActionName>
+            {eventType === EventType.RuleSuggestionSuggested
+                ? 'Gorgias Tip suggested rule'
+                : 'Rule'}
+            {' "'}
+            <Link
+                to={`/app/settings/rules#rule-library?${slug}`}
+                title="Rule"
+                target="_blank"
+                rel="noreferrer"
+            >
+                {ruleName}
+            </Link>
+            {'" '}
+            {eventType === EventType.RuleSuggestionSuggested
+                ? 'to ticket'
+                : 'applied to ticket manually'}
+        </ActionName>
+    )
+}
+
 export class AuditLogEventContainer extends Component<Props> {
     static defaultProps = {
         isLast: false,
@@ -60,6 +97,7 @@ export class AuditLogEventContainer extends Component<Props> {
 
     static _ICONS = {
         [CONTENTFUL_EVENT_TYPES.RuleExecuted]: ['settings'],
+        [CONTENTFUL_EVENT_TYPES.RuleSuggestionSuggested]: ['lightbulb'],
         [CONTENTFUL_EVENT_TYPES.TicketAssigned]: ['person_add'],
         [CONTENTFUL_EVENT_TYPES.TicketClosed]: ['done', css.success],
         [CONTENTFUL_EVENT_TYPES.TicketCreated]: ['add'],
@@ -82,8 +120,19 @@ export class AuditLogEventContainer extends Component<Props> {
     }
 
     _CONTENT_RENDERERS: Partial<Record<TicketEventType, () => ReactNode>> = {
-        [CONTENTFUL_EVENT_TYPES.RuleExecuted]: () =>
-            this._renderRuleExecutedEvent(),
+        [CONTENTFUL_EVENT_TYPES.RuleExecuted]: () => {
+            const {event} = this.props
+            const hasManagedRuleSlug = event.hasIn(['data', 'slug'])
+            if (hasManagedRuleSlug)
+                return this._renderRuleSuggestionEvent(
+                    CONTENTFUL_EVENT_TYPES.RuleExecuted
+                )
+            return this._renderRuleExecutedEvent()
+        },
+        [CONTENTFUL_EVENT_TYPES.RuleSuggestionSuggested]: () =>
+            this._renderRuleSuggestionEvent(
+                CONTENTFUL_EVENT_TYPES.RuleSuggestionSuggested
+            ),
         [CONTENTFUL_EVENT_TYPES.TicketAssigned]: () =>
             this._renderTicketAssignedEvent(),
         [CONTENTFUL_EVENT_TYPES.TicketClosed]: () => (
@@ -205,6 +254,18 @@ export class AuditLogEventContainer extends Component<Props> {
                 </Tooltip>
             </>
         )
+    }
+
+    _renderRuleSuggestionEvent(
+        eventType:
+            | EventType.RuleSuggestionSuggested
+            | typeof TICKET_EVENT_TYPES.RuleExecuted
+    ) {
+        const {event} = this.props
+        const slug = event.getIn(['data', 'slug']) as string
+        return slug ? (
+            <RuleSuggestionEvent eventType={eventType} slug={slug} />
+        ) : null
     }
 
     _renderTicketAssignedEvent() {
@@ -437,7 +498,11 @@ export class AuditLogEventContainer extends Component<Props> {
             ]
 
         const {event, isLast, users, events} = this.props
+        const type = event.get('type') as TicketEventType
         const isRuleExecuted = isRuleExecutedType(event)
+        const isRuleSuggestion =
+            type === EventType.RuleSuggestionSuggested ||
+            event.hasIn(['data', 'slug'])
         const icon = this._getIcon()
         const content = this._getContent()
 
@@ -461,7 +526,8 @@ export class AuditLogEventContainer extends Component<Props> {
                         {icon}
                         {content}
 
-                        {isRuleExecuted ? null : isViaRuleEvent(
+                        {isRuleExecuted ||
+                        isRuleSuggestion ? null : isViaRuleEvent(
                               event,
                               events
                           ) ? (
@@ -483,7 +549,9 @@ export class AuditLogEventContainer extends Component<Props> {
                         className={classnames(css.date, 'text-faded')}
                     />
                 </div>
-                {isRuleExecuted && this._renderFailedRuleActions()}
+                {isRuleExecuted &&
+                    !isRuleSuggestion &&
+                    this._renderFailedRuleActions()}
             </div>
         )
     }
