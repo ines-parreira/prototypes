@@ -327,6 +327,61 @@ export const addCheckoutBillingAddress = async ({
     }
 }
 
+export const upsertCheckoutConsignment = async ({
+    integrationId,
+    cart,
+    shippingAddress,
+    consignmentId,
+}: {
+    integrationId: number
+    cart: Cart
+    shippingAddress: BigCommerceCustomerAddress
+    consignmentId: Maybe<string>
+}) => {
+    const basePayload = {
+        cartId: cart.id,
+        integrationId,
+        payload: [
+            {
+                address: shippingAddress,
+                line_items: cart.line_items.physical_items.map(
+                    ({id, quantity}) => ({item_id: id, quantity})
+                ),
+            },
+        ],
+    }
+
+    if (!consignmentId) {
+        return await _api.createBigCommerceCheckoutConsignment(basePayload)
+    }
+
+    return await _api.updateBigCommerceCheckoutConsignment({
+        ...basePayload,
+        consignmentId,
+    })
+}
+
+export const updateCheckoutConsignmentShippingMethod = async ({
+    integrationId,
+    cart,
+    shippingMethodId,
+    consignmentId,
+}: {
+    integrationId: number
+    cart: Cart
+    shippingMethodId: string
+    consignmentId: string
+}) => {
+    return await _api.updateBigCommerceCheckoutConsignment({
+        cartId: cart.id,
+        integrationId,
+        consignmentId,
+        payload: {
+            shipping_option_id: shippingMethodId,
+        },
+    })
+}
+
 export const exportedForTesting = {
     createCart,
 }

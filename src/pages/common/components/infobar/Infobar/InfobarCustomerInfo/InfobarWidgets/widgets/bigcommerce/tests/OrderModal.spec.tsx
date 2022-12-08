@@ -8,39 +8,19 @@ import {
     bigCommerceCustomerFixture,
     bigCommerceIntegrationFixture,
 } from 'fixtures/bigcommerce'
-import OrderModal from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/OrderModal'
+import OrderModalConnected, {
+    OrderModal,
+} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/OrderModal'
 import {BigCommerceActionType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/types'
 import {integrationsState} from 'fixtures/integrations'
-
-const minProps = {
-    isOpen: true,
-    header: 'Add order',
-    onOpen: jest.fn(),
-    data: {
-        actionName: BigCommerceActionType.CreateOrder,
-        customer: bigCommerceCustomerFixture(),
-    },
-    integrations: [bigCommerceIntegrationFixture()],
-    onCancel: jest.fn(),
-    onInit: jest.fn(() => () => Promise.resolve({})),
-    onReset: jest.fn(),
-    onChange: jest.fn(),
-    onBulkChange: jest.fn(),
-    onSubmit: jest.fn(),
-    onClose: jest.fn(),
-} as unknown as ComponentProps<typeof OrderModal>
+import {
+    IntegrationContext,
+    IntegrationContextType,
+} from 'providers/infobar/IntegrationContext'
+import {onInit} from '../utils'
 
 jest.mock(
-    'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/utils',
-    () => ({
-        onInit: jest.fn(() => () => Promise.resolve({})),
-        getCustomerAddresses: jest.fn(() => () => {
-            return []
-        }),
-        getOneLineAddress: jest.fn(() => () => {
-            return ''
-        }),
-    })
+    'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/utils'
 )
 
 jest.mock('store/middlewares/segmentTracker')
@@ -52,28 +32,89 @@ const mockStore = configureMockStore([thunk])
 const store = mockStore(defaultState)
 
 describe('OrderModal', () => {
+    const defaultProps: ComponentProps<typeof OrderModal> = {
+        isOpen: true,
+        data: {
+            actionName: BigCommerceActionType.CreateOrder,
+            customer: bigCommerceCustomerFixture(),
+        },
+        integrationId: bigCommerceIntegrationFixture().id,
+        onClose: jest.fn(),
+    }
+
+    beforeAll(() => {
+        ;(onInit as jest.MockedFunction<typeof onInit>).mockImplementation(
+            () => new Promise((resolve) => resolve())
+        )
+    })
+
     beforeEach(() => {
-        jest.clearAllMocks()
+        jest.resetAllMocks()
     })
 
-    it('should not render when the modal is closed', () => {
+    it('should render', async () => {
         const {baseElement} = render(
             <Provider store={store}>
-                <OrderModal {...minProps} isOpen={false} />
+                <OrderModal {...defaultProps} />
             </Provider>
         )
 
-        expect(baseElement.firstChild).toMatchSnapshot()
-    })
-
-    it('should render when the modal is opened', async () => {
-        const {baseElement} = render(
-            <Provider store={store}>
-                <OrderModal {...minProps} />
-            </Provider>
-        )
         await screen.findByText('Awaiting Fulfillment')
+        expect(onInit).toHaveBeenCalled()
 
         expect(baseElement).toMatchSnapshot()
+    })
+})
+
+describe('OrderModalConnected', () => {
+    const defaultIntegrationContextValue = {
+        integration: fromJS({}),
+        integrationId: 1,
+    }
+
+    const defaultProps: ComponentProps<typeof OrderModalConnected> = {
+        data: {
+            actionName: BigCommerceActionType.CreateOrder,
+            customer: bigCommerceCustomerFixture(),
+        },
+        isOpen: false,
+        onClose: jest.fn(),
+    }
+
+    const renderSubject = ({
+        integrationContextValue = defaultIntegrationContextValue,
+        orderModalProps = defaultProps,
+    }: {
+        integrationContextValue?: IntegrationContextType
+        orderModalProps?: ComponentProps<typeof OrderModalConnected>
+    }) => {
+        return render(
+            <Provider store={store}>
+                <IntegrationContext.Provider value={integrationContextValue}>
+                    <OrderModalConnected {...orderModalProps} />
+                </IntegrationContext.Provider>
+            </Provider>
+        )
+    }
+
+    it('renders null when `isOpen` is false', () => {
+        const {container} = renderSubject({})
+        expect(container.firstChild).toBe(null)
+    })
+
+    it('renders null when IntegrationContext has no integrationId', () => {
+        const {container} = renderSubject({
+            integrationContextValue: {
+                integrationId: null,
+                integration: fromJS({}),
+            },
+        })
+        expect(container.firstChild).toBe(null)
+    })
+
+    it('renders when `isOpen` is `true` and IntegrationContext has value', () => {
+        renderSubject({orderModalProps: {...defaultProps, isOpen: true}})
+
+        expect(screen.getByRole('button', {name: /Add order/i})).toBeTruthy()
     })
 })

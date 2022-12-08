@@ -43,14 +43,17 @@ exports[`<OrderTotals/> rendering should render 1`] = `
       </dd>
       <dt
         class="col-9 mb-2"
-        style="font-weight: 400;"
       >
-        Add shipping
+        <button
+          class="actionButton"
+        >
+          Add shipping
+        </button>
       </dt>
       <dd
         class="col-3 mb-2"
       >
-        -
+        —
       </dd>
       <dt
         class="col-9 mb-2"

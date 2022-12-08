@@ -1,0 +1,170 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ShippingMethod create/update consignment and change shipping method: dropdown open 1`] = `
+<body>
+  <div>
+    <dt
+      class="col-9 mb-2"
+    >
+      <button
+        class="actionButton"
+      >
+        Add shipping
+      </button>
+    </dt>
+    <dd
+      class="col-3 mb-2"
+    >
+      <span>
+        $77.00
+      </span>
+    </dd>
+  </div>
+  <div
+    id="floating-ui-root"
+  >
+    <div
+      class="overlay"
+      style="position: fixed; overflow: auto; top: 0px; right: 0px; bottom: 0px; left: 0px;"
+    >
+      <div
+        class="wrapper"
+        style="position: absolute;"
+      >
+        <div
+          class="wrapper dropdownBody"
+        >
+          <fieldset
+            name="radio-field-1"
+          >
+            <div
+              class="option"
+            >
+              <label
+                class="label label"
+                for="available-shipping-option-1"
+              >
+                <input
+                  class="input"
+                  id="available-shipping-option-1"
+                  name="radio-field-1"
+                  type="radio"
+                />
+                <div
+                  class="radioLabel"
+                >
+                  <span>
+                    Description One
+                  </span>
+                  <span
+                    class="radioLabelCaption"
+                  >
+                    <span>
+                      $55.00
+                    </span>
+                  </span>
+                </div>
+              </label>
+            </div>
+            <div
+              class="option"
+            >
+              <label
+                class="label label"
+                for="available-shipping-option-2"
+              >
+                <input
+                  class="input"
+                  id="available-shipping-option-2"
+                  name="radio-field-1"
+                  type="radio"
+                />
+                <div
+                  class="radioLabel"
+                >
+                  <span>
+                    Description Two
+                  </span>
+                  <span
+                    class="radioLabelCaption"
+                  >
+                    <span>
+                      $66.00
+                    </span>
+                  </span>
+                </div>
+              </label>
+            </div>
+          </fieldset>
+        </div>
+        <div
+          class="dropdownFooter"
+        >
+          <button
+            class="wrapper fill secondary medium"
+            type="button"
+          >
+            Cancel
+          </button>
+          <button
+            class="wrapper fill primary medium"
+            type="button"
+          >
+            Apply
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`ShippingMethod create/update consignment and change shipping method: initial 1`] = `
+<body>
+  <div>
+    <dt
+      class="col-9 mb-2"
+    >
+      <button
+        class="actionButton"
+      >
+        Add shipping
+      </button>
+    </dt>
+    <dd
+      class="col-3 mb-2"
+    >
+      —
+    </dd>
+  </div>
+  <div
+    id="floating-ui-root"
+  />
+</body>
+`;
+
+exports[`ShippingMethod create/update consignment and change shipping method: shipping method selected 1`] = `
+<body>
+  <div>
+    <dt
+      class="col-9 mb-2"
+    >
+      <button
+        class="actionButton"
+      >
+        Add shipping
+      </button>
+    </dt>
+    <dd
+      class="col-3 mb-2"
+    >
+      <span>
+        $77.00
+      </span>
+    </dd>
+  </div>
+  <div
+    id="floating-ui-root"
+  />
+</body>
+`;

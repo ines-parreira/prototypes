@@ -26,7 +26,10 @@ import {
     BigCommerceNestedCart,
     Checkout,
     Cart,
+    UpsertConsignmentPayload,
+    UpsertConsignmentResponse,
     LineItem,
+    CreateConsignmentPayload,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/types'
 
 type GorgiasApiOptions = {
@@ -419,6 +422,57 @@ export default class GorgiasApi {
             },
         })
         return response.data.data
+    }
+
+    async createBigCommerceCheckoutConsignment({
+        integrationId,
+        cartId,
+        payload,
+    }: {
+        integrationId: number
+        cartId: string
+        payload: Array<CreateConsignmentPayload>
+    }) {
+        const url = '/integrations/bigcommerce/order/checkout-consignment/'
+        const response = await this._api.post<UpsertConsignmentResponse>(
+            url,
+            payload,
+            {
+                params: {
+                    integration_id: integrationId,
+                    checkout_id: cartId,
+                },
+            }
+        )
+
+        return response.data
+    }
+
+    async updateBigCommerceCheckoutConsignment({
+        integrationId,
+        cartId,
+        consignmentId,
+        payload,
+    }: {
+        integrationId: number
+        cartId: string
+        consignmentId: string
+        payload: UpsertConsignmentPayload
+    }) {
+        const url = '/integrations/bigcommerce/order/checkout-consignment/'
+        const response = await this._api.put<UpsertConsignmentResponse>(
+            url,
+            payload,
+            {
+                params: {
+                    integration_id: integrationId,
+                    checkout_id: cartId,
+                    consignment_id: consignmentId,
+                },
+            }
+        )
+
+        return response.data
     }
 
     async calculateEditOrder(

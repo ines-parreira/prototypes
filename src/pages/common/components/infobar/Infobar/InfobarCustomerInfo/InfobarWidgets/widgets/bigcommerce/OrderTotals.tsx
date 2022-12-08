@@ -1,20 +1,29 @@
 import React from 'react'
 import {BigCommerceIntegration} from 'models/integration/types'
 import MoneyAmount from '../MoneyAmount'
-import {Cart} from './types'
+import {BigCommerceCustomerAddress, Cart} from './types'
+import {ShippingMethod} from './AddOrderModal/ShippingMethod'
+
 type Props = {
     cart: Maybe<Cart>
+    shippingAddress: Maybe<BigCommerceCustomerAddress>
     integration: BigCommerceIntegration
 }
 
-export default function OrderTotals({cart, integration}: Props) {
+export default function OrderTotals({
+    integration,
+    cart,
+    shippingAddress,
+}: Props) {
     const subTotal = cart ? cart.base_amount : 0
     const total = cart ? cart.cart_amount : 0
     const taxes = total && subTotal ? total - subTotal : 0
+
     const currencyCode =
         integration && integration.meta && integration.meta.currency
             ? integration.meta.currency
             : null
+
     const dtStyle = {fontWeight: 400}
     return (
         <div>
@@ -40,10 +49,12 @@ export default function OrderTotals({cart, integration}: Props) {
                     />
                 </dd>
 
-                <dt className="col-9 mb-2" style={dtStyle}>
-                    Add shipping
-                </dt>
-                <dd className="col-3 mb-2">-</dd>
+                <ShippingMethod
+                    integrationId={integration.id}
+                    currencyCode={currencyCode}
+                    cart={cart}
+                    shippingAddress={shippingAddress}
+                />
 
                 <dt className="col-9 mb-2" style={dtStyle}>
                     Taxes

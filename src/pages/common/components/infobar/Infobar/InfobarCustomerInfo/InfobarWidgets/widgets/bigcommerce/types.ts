@@ -143,3 +143,46 @@ export type BigCommerceCustomerAddress = {
     postal_code: Maybe<string>
     state_or_province: Maybe<string>
 }
+
+export type ShippingOption = {
+    id: string
+    description: string
+    cost: number
+    image_url: string
+    transit_time: string
+    additional_description: string
+    type: string
+}
+
+export type Consignment = {
+    id: string
+    available_shipping_options: Array<ShippingOption>
+    selected_shipping_option: Maybe<ShippingOption>
+    shipping_cost_inc_tax: number // The shipping cost for this consignment including tax.
+}
+
+/**
+ * @url https://developer.bigcommerce.com/api-reference/dfbf31248722d-add-consignment-to-checkout#request-body
+ */
+export type CreateConsignmentPayload = {
+    address: BigCommerceCustomerAddress
+    line_items: Array<{
+        item_id: LineItems['physical_items'][number]['id']
+        quantity: number
+    }>
+}
+
+export type UpsertConsignmentPayload =
+    | Array<CreateConsignmentPayload>
+    | {shipping_option_id: string}
+
+/**
+ * @url https://developer.bigcommerce.com/api-reference/dfbf31248722d-add-consignment-to-checkout#response-body
+ */
+export type UpsertConsignmentResponse = {
+    id: string
+    // The response may return array of consignments, if we have multiple shipping addresses
+    // but as we're only allowing to add single shipping address, we are only interested in the
+    // 0th index of `consignments` array
+    consignments: [Consignment]
+}

@@ -1,13 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`OrderModal should not render when the modal is closed 1`] = `<div />`;
-
-exports[`OrderModal should render when the modal is opened 1`] = `
+exports[`OrderModal should render 1`] = `
 <body>
   <div />
   <div
-    aria-describedby="modal-2-desc"
-    aria-labelledby="modal-2-title"
+    aria-describedby="modal-1-desc"
+    aria-labelledby="modal-1-title"
     aria-modal="true"
     class="modal default open"
     role="dialog"
@@ -24,7 +22,7 @@ exports[`OrderModal should render when the modal is opened 1`] = `
           <div>
             <div
               class="title"
-              id="modal-2-title"
+              id="modal-1-title"
             >
               Add order
             </div>
@@ -110,8 +108,8 @@ exports[`OrderModal should render when the modal is opened 1`] = `
                   >
                     <input
                       class="input"
-                      id="input-text-3"
-                      name="input-text-3"
+                      id="input-text-2"
+                      name="input-text-2"
                       placeholder="Search products..."
                       type="text"
                       value=""

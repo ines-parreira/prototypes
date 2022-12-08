@@ -2,11 +2,11 @@ import React, {
     ChangeEvent,
     useCallback,
     useContext,
+    useEffect,
     useMemo,
     useState,
 } from 'react'
 import classnames from 'classnames'
-import {useUpdateEffect, usePrevious} from 'react-use'
 
 import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
@@ -46,36 +46,31 @@ import css from './OrderModal.less'
 import {ShippingAddressesDropdown} from './ShippingAddressesDropdown'
 
 type Props = {
-    data?: {
-        actionName: BigCommerceActionType | null
-        customer: Customer | null
-    }
-} & Omit<InfobarModalProps, 'data'>
+    integrationId: number
+} & ConnectedProps
 
-export default function OrderModal({
+export function OrderModal({
+    integrationId,
     data = {actionName: null, customer: null},
-    isOpen,
     onClose,
 }: Props) {
-    const {integrationId} = useContext(IntegrationContext)
-    const previousIsOpen = usePrevious(isOpen)
-
-    const [cart, setCart] = useState<Maybe<Cart>>(null)
-    const [, setCheckout] = useState<Maybe<Checkout>>(null)
-    const [products, setProducts] = useState<Map<number, Product>>(new Map())
     const shippingAddresses: BigCommerceCustomerAddress[] = useAppSelector(
         getCustomerAddresses(integrationId)
     )
 
-    const [shippingAddress, setShippingAddress] =
-        useState<Maybe<BigCommerceCustomerAddress>>(null)
-    const [isLoading, setIsLoading] = useState(false)
-    const [note, setNote] = useState('')
-    const [comment, setComment] = useState('')
-
     const integrations = useAppSelector(
         getIntegrationsByType(IntegrationType.BigCommerce)
     )
+
+    const [isLoading, setIsLoading] = useState(false)
+
+    const [cart, setCart] = useState<Maybe<Cart>>(null)
+    const [, setCheckout] = useState<Maybe<Checkout>>(null)
+    const [products, setProducts] = useState<Map<number, Product>>(new Map())
+    const [shippingAddress, setShippingAddress] =
+        useState<Maybe<BigCommerceCustomerAddress>>(null)
+    const [note, setNote] = useState('')
+    const [comment, setComment] = useState('')
 
     const onUpdateNote = (event: ChangeEvent<HTMLTextAreaElement>) => {
         setNote(event.currentTarget.value)
@@ -99,7 +94,6 @@ export default function OrderModal({
 
     const handleReset = useCallback(() => {
         onReset({setCart, setProducts, setComment, setNote, setShippingAddress})
-        shortcutManager.unpause()
     }, [])
 
     const handleCancel = useCallback(
@@ -111,23 +105,30 @@ export default function OrderModal({
         [cart, handleReset, integrationId, onClose]
     )
 
-    useUpdateEffect(() => {
-        if (!previousIsOpen && isOpen) {
-            if (data.customer && integrationId) {
-                void onInit({
-                    customer: data.customer,
-                    integrationId,
-                    setIsLoading,
-                    setCart,
-                })
-            }
-            shortcutManager.pause()
+    useEffect(() => {
+        if (data.customer) {
+            void onInit({
+                customer: data.customer,
+                integrationId,
+                setIsLoading,
+                setCart,
+            })
         }
-    }, [isOpen, previousIsOpen, data, integrationId, onInit])
+        shortcutManager.pause()
+
+        return () => {
+            handleReset()
+            shortcutManager.unpause()
+        }
+        // Single run on mount
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
     return (
         <Modal
-            isOpen={isOpen}
+            isOpen
             isScrollable={true}
+            isClosable={false}
             onClose={handleCancel('header')}
             size="medium"
         >
@@ -156,30 +157,28 @@ export default function OrderModal({
                         </p>
                     </div>
                     <div className={css.relative}>
-                        {isOpen && (
-                            <ProductSearchInput
-                                className={css.searchInput}
-                                dataMappers={bigcommerceDataMappers}
-                                onVariantClicked={(
-                                    item: IntegrationDataItem<Product>,
-                                    variant: Variant
-                                ) => {
-                                    if (integrationId) {
-                                        void addRow({
-                                            integrationId,
-                                            product: item.data,
-                                            variant,
-                                            setIsLoading,
-                                            cart,
-                                            setCart,
-                                            products,
-                                            setProducts,
-                                        })
-                                    }
-                                }}
-                            />
-                        )}
-                        {isOpen && !lineItems.length && (
+                        <ProductSearchInput
+                            className={css.searchInput}
+                            dataMappers={bigcommerceDataMappers}
+                            onVariantClicked={(
+                                item: IntegrationDataItem<Product>,
+                                variant: Variant
+                            ) => {
+                                if (integrationId) {
+                                    void addRow({
+                                        integrationId,
+                                        product: item.data,
+                                        variant,
+                                        setIsLoading,
+                                        cart,
+                                        setCart,
+                                        products,
+                                        setProducts,
+                                    })
+                                }
+                            }}
+                        />
+                        {!lineItems.length && (
                             <p className={css.searchbarInfo}>
                                 This order is currently empty. Add products
                                 using the search above.
@@ -235,19 +234,18 @@ export default function OrderModal({
                     </div>
                     {!!lineItems.length && (
                         <OrderTotals
-                            cart={cart}
                             integration={currentIntegration}
-                        />
-                    )}
-                    {isOpen && (
-                        <ShippingAddressesDropdown
-                            shippingAddress={shippingAddress}
-                            setShippingAddress={setShippingAddress}
-                            shippingAddresses={shippingAddresses}
                             cart={cart}
-                            setCheckout={setCheckout}
+                            shippingAddress={shippingAddress}
                         />
                     )}
+                    <ShippingAddressesDropdown
+                        shippingAddress={shippingAddress}
+                        setShippingAddress={setShippingAddress}
+                        shippingAddresses={shippingAddresses}
+                        cart={cart}
+                        setCheckout={setCheckout}
+                    />
                     <p className={css.subsection}>Comments & Notes</p>
                     <div>
                         <h5 className={css.subsectionSmall}>Comment</h5>
@@ -289,4 +287,21 @@ export default function OrderModal({
             </ModalFooter>
         </Modal>
     )
+}
+
+type ConnectedProps = {
+    data?: {
+        actionName: BigCommerceActionType | null
+        customer: Customer | null
+    }
+} & Pick<InfobarModalProps, 'isOpen' | 'onClose'>
+
+export default function OrderModalConnected(props: ConnectedProps) {
+    const {integrationId} = useContext(IntegrationContext)
+
+    if (!integrationId || !props.isOpen) {
+        return null
+    }
+
+    return <OrderModal integrationId={integrationId} {...props} />
 }

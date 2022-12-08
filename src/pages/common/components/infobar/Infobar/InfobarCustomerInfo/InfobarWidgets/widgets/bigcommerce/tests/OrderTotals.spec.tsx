@@ -3,6 +3,7 @@ import {render} from '@testing-library/react'
 import {
     bigCommerceCartFixture,
     bigCommerceIntegrationFixture,
+    bigCommerceShippingAddress,
 } from 'fixtures/bigcommerce'
 import OrderTotals from '../OrderTotals'
 
@@ -13,7 +14,11 @@ describe('<OrderTotals/>', () => {
             const integration = bigCommerceIntegrationFixture()
 
             const {container} = render(
-                <OrderTotals cart={cart} integration={integration} />
+                <OrderTotals
+                    cart={cart}
+                    integration={integration}
+                    shippingAddress={bigCommerceShippingAddress}
+                />
             )
 
             expect(container).toMatchSnapshot()
