@@ -5,7 +5,11 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
+import * as helpers from '../../helpers'
+
 import {EmailIntegrationUpdateContainer} from '../EmailIntegrationUpdate.tsx'
+
+import {EmailProvider} from 'models/integration/constants'
 
 import {
     GMAIL_INTEGRATION_TYPE,
@@ -13,6 +17,11 @@ import {
     EMAIL_INTEGRATION_TYPE,
 } from 'constants/integration.ts'
 import {isBoolean} from 'pages/common/components/infobar/utils.tsx'
+
+const isOutboundDomainVerifiedSpy = jest.spyOn(
+    helpers,
+    'isOutboundDomainVerified'
+)
 
 const INTEGRATION_NAME = 'My Integration'
 const commonProps = {
@@ -29,6 +38,13 @@ describe('<EmailIntegrationUpdateContainer />', () => {
     beforeEach(() => {
         store = mockStore({})
     })
+
+    const renderWithStore = (props = {}) =>
+        render(
+            <Provider store={store}>
+                <EmailIntegrationUpdateContainer {...commonProps} {...props} />
+            </Provider>
+        )
 
     it.each([
         {
@@ -50,31 +66,24 @@ describe('<EmailIntegrationUpdateContainer />', () => {
         'should enable the submit button only if form values changed [gmail]',
         (selector) => {
             const props = {
-                ...commonProps,
-                ...{
-                    integration: fromJS({
-                        id: 1,
-                        name: INTEGRATION_NAME,
-                        type: GMAIL_INTEGRATION_TYPE,
-                        meta: {
-                            address: 'myintegration@gorgias.io',
-                            signature: {
-                                text: '',
-                                html: '<div><br></div>',
-                            },
-                            use_gmail_categories: false,
-                            enable_gmail_sending: true,
-                            enable_gmail_threading: true,
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: GMAIL_INTEGRATION_TYPE,
+                    meta: {
+                        address: 'myintegration@gorgias.io',
+                        signature: {
+                            text: '',
+                            html: '<div><br></div>',
                         },
-                    }),
-                },
+                        use_gmail_categories: false,
+                        enable_gmail_sending: true,
+                        enable_gmail_threading: true,
+                    },
+                }),
             }
 
-            const {container, getByText} = render(
-                <Provider store={store}>
-                    <EmailIntegrationUpdateContainer {...props} />
-                </Provider>
-            )
+            const {container, getByText} = renderWithStore(props)
 
             expect(
                 getByText('Save changes').hasAttribute('disabled')
@@ -116,28 +125,21 @@ describe('<EmailIntegrationUpdateContainer />', () => {
         'should enable the submit button only if form values changed [email]',
         (selector) => {
             const props = {
-                ...commonProps,
-                ...{
-                    integration: fromJS({
-                        id: 1,
-                        name: INTEGRATION_NAME,
-                        type: EMAIL_INTEGRATION_TYPE,
-                        meta: {
-                            address: 'myintegration@gorgias.io',
-                            signature: {
-                                text: '',
-                                html: '<div><br></div>',
-                            },
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: EMAIL_INTEGRATION_TYPE,
+                    meta: {
+                        address: 'myintegration@gorgias.io',
+                        signature: {
+                            text: '',
+                            html: '<div><br></div>',
                         },
-                    }),
-                },
+                    },
+                }),
             }
 
-            const {container, getByText} = render(
-                <Provider store={store}>
-                    <EmailIntegrationUpdateContainer {...props} />
-                </Provider>
-            )
+            const {container, getByText} = renderWithStore(props)
 
             expect(
                 getByText('Save changes').hasAttribute('disabled')
@@ -179,30 +181,23 @@ describe('<EmailIntegrationUpdateContainer />', () => {
         'should enable the submit button only if form values changed [outlook]',
         (field) => {
             const props = {
-                ...commonProps,
-                ...{
-                    integration: fromJS({
-                        id: 1,
-                        name: INTEGRATION_NAME,
-                        type: OUTLOOK_INTEGRATION_TYPE,
-                        meta: {
-                            address: 'myintegration@gorgias.io',
-                            signature: {
-                                text: '',
-                                html: '<div><br></div>',
-                            },
-                            use_gmail_categories: false,
-                            enable_gmail_sending: true,
+                integration: fromJS({
+                    id: 1,
+                    name: INTEGRATION_NAME,
+                    type: OUTLOOK_INTEGRATION_TYPE,
+                    meta: {
+                        address: 'myintegration@gorgias.io',
+                        signature: {
+                            text: '',
+                            html: '<div><br></div>',
                         },
-                    }),
-                },
+                        use_gmail_categories: false,
+                        enable_gmail_sending: true,
+                    },
+                }),
             }
 
-            const {container, getByText} = render(
-                <Provider store={store}>
-                    <EmailIntegrationUpdateContainer {...props} />
-                </Provider>
-            )
+            const {container, getByText} = renderWithStore(props)
 
             expect(
                 getByText('Save changes').hasAttribute('disabled')
@@ -223,4 +218,58 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             ).toBeTruthy()
         }
     )
+
+    it('disables gmail sending checkbox', () => {
+        isOutboundDomainVerifiedSpy.mockReturnValue(false)
+
+        const props = {
+            integration: fromJS({
+                id: 1,
+                name: INTEGRATION_NAME,
+                type: GMAIL_INTEGRATION_TYPE,
+                meta: {
+                    address: 'myintegration@gorgias.io',
+                    use_gmail_categories: false,
+                    enable_gmail_sending: true,
+                    enable_gmail_threading: true,
+                    provider: EmailProvider.Sendgrid,
+                },
+            }),
+        }
+
+        const {getByRole} = renderWithStore(props)
+
+        expect(
+            getByRole('checkbox', {
+                name: /enable sending emails with gmail/i,
+            }).hasAttribute('disabled')
+        ).toBeTruthy()
+    })
+
+    it('does not disable gmail sending checkbox', () => {
+        isOutboundDomainVerifiedSpy.mockReturnValue(true)
+
+        const props = {
+            integration: fromJS({
+                id: 1,
+                name: INTEGRATION_NAME,
+                type: GMAIL_INTEGRATION_TYPE,
+                meta: {
+                    address: 'myintegration@gorgias.io',
+                    use_gmail_categories: false,
+                    enable_gmail_sending: true,
+                    enable_gmail_threading: true,
+                    provider: EmailProvider.Sendgrid,
+                },
+            }),
+        }
+
+        const {getByRole} = renderWithStore(props)
+
+        expect(
+            getByRole('checkbox', {
+                name: /enable sending emails with gmail/i,
+            }).hasAttribute('disabled')
+        ).toBeFalsy()
+    })
 })

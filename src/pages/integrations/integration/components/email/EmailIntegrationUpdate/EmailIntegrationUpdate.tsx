@@ -26,7 +26,6 @@ import Loader from 'pages/common/components/Loader/Loader'
 import CheckBox from 'pages/common/forms/CheckBox'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import RichFieldWithVariables from 'pages/common/forms/RichFieldWithVariables'
-import css from 'pages/settings/settings.less'
 import {
     deleteIntegration,
     importEmails,
@@ -42,6 +41,13 @@ import {isGorgiasSupportAddress, displayRestrictedSymbols} from 'utils'
 import {convertToHTML} from 'utils/editor'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {EmailProvider} from 'models/integration/constants'
+import settingsCss from 'pages/settings/settings.less'
+import warningIcon from 'assets/img/icons/warning2.svg'
+import Tooltip from 'pages/common/components/Tooltip'
+import {isOutboundDomainVerified} from '../helpers'
+
+import css from './EmailIntegrationUpdate.less'
 
 type Props = {
     integration: Map<any, any>
@@ -435,6 +441,11 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
         const isDeleting = loading.get('delete') === integration.get('id')
         const isGmail = integration.get('type') === IntegrationType.Gmail
 
+        const isGmailSendingCheckboxDisabled =
+            integration.getIn(['meta', 'provider']) === EmailProvider.Sendgrid
+                ? !isOutboundDomainVerified(integration.toJS())
+                : false
+
         const {
             errors,
             name,
@@ -537,13 +548,50 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                                 name="enable_gmail_sending"
                                 caption={enableGmailSendingHelp}
                                 isChecked={enable_gmail_sending}
+                                isDisabled={isGmailSendingCheckboxDisabled}
                                 onChange={(value: boolean) =>
                                     this.setState({
                                         enable_gmail_sending: value,
                                     })
                                 }
+                                className="mb-3"
                             >
-                                Enable sending emails with Gmail
+                                <div
+                                    id="enable-gmail-sending-wrapper"
+                                    className={classNames(css.checkboxLabel, {
+                                        [css.disabled]:
+                                            isGmailSendingCheckboxDisabled,
+                                    })}
+                                >
+                                    <span className={css.labelText}>
+                                        Enable sending emails with Gmail
+                                    </span>
+                                    {isGmailSendingCheckboxDisabled && (
+                                        <img
+                                            src={warningIcon}
+                                            className={css.infoIcon}
+                                            alt="icon"
+                                        />
+                                    )}
+                                </div>
+                                {isGmailSendingCheckboxDisabled && (
+                                    <Tooltip
+                                        target="enable-gmail-sending-wrapper"
+                                        autohide={false}
+                                    >
+                                        To send emails through our internal
+                                        email provider, you must first{' '}
+                                        <a
+                                            href="https://docs.gorgias.com/en-US/spf-dkim-support-81757#setup-instructions"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            verify your domain
+                                        </a>
+                                        . Once verified, you can deactivate
+                                        Sending with Gmail.
+                                    </Tooltip>
+                                )}
                             </CheckBox>
                             <CheckBox
                                 name="enable_gmail_threading"
@@ -554,6 +602,7 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                                         enable_gmail_threading: value,
                                     })
                                 }
+                                className="mb-5"
                             >
                                 Enable Gmail conversation grouping
                             </CheckBox>
@@ -615,7 +664,7 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
         }
 
         return (
-            <Container fluid className={css.pageContainer}>
+            <Container fluid className={settingsCss.pageContainer}>
                 {integration.get('type') === IntegrationType.Email &&
                     this._renderInstructions()}
 

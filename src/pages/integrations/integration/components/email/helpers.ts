@@ -12,7 +12,7 @@ export const isOutboundDomainVerified = (
     integration: EmailIntegration
 ): boolean => {
     return (
-        integration.meta.outbound_verification_status?.domain ===
+        integration.meta?.outbound_verification_status?.domain ===
         OutboundVerificationStatusValue.Success
     )
 }
