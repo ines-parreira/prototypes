@@ -20,6 +20,7 @@ export enum FeatureFlagKey {
     EnableSendgrid = 'use-sendgrid',
     RevenueAlphaTesters = 'revenue-alpha-testers',
     RevenueBetaTesters = 'revenue-beta-testers',
+    RevenueBetaShopifyHeadless = 'revenue-beta-shopify-headless',
     RevenueHideDiscountCodeButton = 'revenue-hide-discount-code-button',
     ChatMergedOrderManagementButton = 'chat-merged-order-management-button',
     AgentsAvailabilityStatus = 'agents-availability-status',

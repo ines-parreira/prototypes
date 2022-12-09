@@ -15,6 +15,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {RootState, StoreDispatch} from 'state/types'
 
 import * as betaTesterHook from '../../../hooks/useIsRevenueBetaTester'
+import * as shopifyHeadlessHook from '../../../hooks/useIsHeadlessShopifyStore'
 
 import {ChatCampaign} from '../../../types/Campaign'
 import {CampaignTriggerKey} from '../../../types/enums/CampaignTriggerKey.enum'
@@ -114,6 +115,10 @@ describe('<AdvancedCampaignDetails />', () => {
             jest.spyOn(
                 betaTesterHook,
                 'useIsRevenueBetaTester'
+            ).mockImplementation(() => false)
+            jest.spyOn(
+                shopifyHeadlessHook,
+                'useIsHeadlessShopifyStore'
             ).mockImplementation(() => false)
 
             render(
@@ -215,6 +220,10 @@ describe('<AdvancedCampaignDetails />', () => {
                 betaTesterHook,
                 'useIsRevenueBetaTester'
             ).mockImplementation(() => false)
+            jest.spyOn(
+                shopifyHeadlessHook,
+                'useIsHeadlessShopifyStore'
+            ).mockImplementation(() => false)
 
             render(
                 <Provider store={mockStore(defaultState)}>
@@ -311,6 +320,10 @@ describe('<AdvancedCampaignDetails />', () => {
                 betaTesterHook,
                 'useIsRevenueBetaTester'
             ).mockImplementation(() => true)
+            jest.spyOn(
+                shopifyHeadlessHook,
+                'useIsHeadlessShopifyStore'
+            ).mockImplementation(() => false)
 
             render(
                 <Provider store={mockStore(defaultState)}>
@@ -387,6 +400,10 @@ describe('<AdvancedCampaignDetails />', () => {
                 betaTesterHook,
                 'useIsRevenueBetaTester'
             ).mockImplementation(() => true)
+            jest.spyOn(
+                shopifyHeadlessHook,
+                'useIsHeadlessShopifyStore'
+            ).mockImplementation(() => false)
 
             render(
                 <Provider store={mockStore(defaultState)}>
@@ -547,6 +564,10 @@ describe('<AdvancedCampaignDetails />', () => {
             jest.spyOn(
                 betaTesterHook,
                 'useIsRevenueBetaTester'
+            ).mockImplementation(() => false)
+            jest.spyOn(
+                shopifyHeadlessHook,
+                'useIsHeadlessShopifyStore'
             ).mockImplementation(() => false)
 
             render(

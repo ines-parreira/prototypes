@@ -6,6 +6,7 @@ import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 
 import {useAvailableTriggerList} from '../../hooks/useAvailableTriggerList'
+import {useIsHeadlessShopifyStore} from '../../hooks/useIsHeadlessShopifyStore'
 
 import {CampaignTriggerKey} from '../../types/enums/CampaignTriggerKey.enum'
 
@@ -22,6 +23,7 @@ export const AdvancedTriggersSelect = ({
 }: Props): JSX.Element => {
     const [isOpen, setIsOpen] = useState(false)
     const buttonRef = useRef<HTMLButtonElement>(null)
+    const isShopifyHeadless = useIsHeadlessShopifyStore()
 
     const handleClickItem = (value: CampaignTriggerKey) => {
         setIsOpen(false)
@@ -31,6 +33,7 @@ export const AdvancedTriggersSelect = ({
     const options = useAvailableTriggerList({
         isRevenueBetaTester,
         isShopifyStore,
+        isShopifyHeadless,
     })
 
     return (

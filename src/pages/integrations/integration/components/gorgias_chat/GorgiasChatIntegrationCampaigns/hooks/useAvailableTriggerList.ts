@@ -5,11 +5,13 @@ import {TRIGGER_LIST} from '../constants/triggers'
 type FnArguments = {
     isRevenueBetaTester?: boolean
     isShopifyStore?: boolean
+    isShopifyHeadless?: boolean
 }
 
 export function useAvailableTriggerList({
     isRevenueBetaTester = false,
     isShopifyStore = false,
+    isShopifyHeadless = false,
 }: FnArguments) {
     const options = useMemo(() => {
         return TRIGGER_LIST.filter((trigger) => {
@@ -28,10 +30,14 @@ export function useAvailableTriggerList({
                     return isRevenueBetaTester === value
                 }
 
+                if (req === 'headless') {
+                    return isShopifyHeadless === value
+                }
+
                 return false
             })
         })
-    }, [isRevenueBetaTester, isShopifyStore])
+    }, [isRevenueBetaTester, isShopifyStore, isShopifyHeadless])
 
     return options
 }

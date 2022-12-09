@@ -92,6 +92,7 @@ export const TRIGGER_LIST = [
         requirements: {
             revenue: true,
             shopify: true,
+            headless: false,
         },
     },
     {
@@ -104,6 +105,7 @@ export const TRIGGER_LIST = [
         requirements: {
             revenue: true,
             shopify: true,
+            headless: false,
         },
     },
 ]
