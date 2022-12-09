@@ -2,9 +2,9 @@ import React, {useCallback} from 'react'
 import {DropdownItem} from 'reactstrap'
 import parsePhoneNumber from 'libphonenumber-js'
 
-import {PhoneNumber} from 'models/phoneNumber/types'
+import {OldPhoneNumber} from 'models/phoneNumber/types'
 import {SmsIntegration} from 'models/integration/types'
-import {getPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
+import {getOldPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
 import {TicketMessageSourceType} from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
 import history from 'pages/history'
@@ -22,10 +22,10 @@ const SmsIntegrationsDropdownList = ({
     customerId,
     integrations,
 }: Props) => {
-    const phoneNumbers = useAppSelector(getPhoneNumbers)
+    const phoneNumbers = useAppSelector(getOldPhoneNumbers)
     const toAddress = parsePhoneNumber(address)?.format('E.164') || ''
     const onClick = useCallback(
-        (integration: SmsIntegration, phoneNumber: PhoneNumber) => {
+        (integration: SmsIntegration, phoneNumber: OldPhoneNumber) => {
             history.push(`/app/ticket/new?customer=${customerId}`, {
                 source: TicketMessageSourceType.Sms,
                 sender: phoneNumber.phone_number,

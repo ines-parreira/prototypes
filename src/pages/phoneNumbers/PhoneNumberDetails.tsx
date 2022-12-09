@@ -31,7 +31,7 @@ import {SelectableOption} from 'pages/common/forms/SelectField/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Button from 'pages/common/components/button/Button'
-import {hasCapability} from 'pages/phoneNumbers/utils'
+import {hasCapability, isOldPhoneNumber} from 'pages/phoneNumbers/utils'
 import history from 'pages/history'
 import {errorToChildren} from 'utils'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -55,17 +55,20 @@ const states: States = rawStates
 export function PhoneNumberDetails({phoneNumber}: Props) {
     const dispatch = useAppDispatch()
     const [name, setName] = useState(phoneNumber.name)
+
     const state =
+        isOldPhoneNumber(phoneNumber) &&
         phoneNumber.meta?.country === PhoneCountry.US
             ? states[phoneNumber.meta.country].find(
                   (c) => c.value === phoneNumber.meta.state
               )?.label || ''
             : ''
     const [isPhoneNumberCopied, setIsPhoneNumberCopied] = useState(false)
-    const countryName = phoneNumber.meta.country
-        ? countries.find((c) => c.value === phoneNumber.meta.country)?.label ??
-          phoneNumber.meta.country
-        : ''
+    const countryName =
+        isOldPhoneNumber(phoneNumber) && phoneNumber.meta.country
+            ? countries.find((c) => c.value === phoneNumber.meta.country)
+                  ?.label ?? phoneNumber.meta.country
+            : ''
 
     const [{loading: isDeletePending}, handleDelete] = useAsyncFn(async () => {
         try {
@@ -116,6 +119,10 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
     const [{loading: isLoading}, handleSubmit] = useAsyncFn(
         async (event: React.FormEvent) => {
             event.preventDefault()
+            if (!isOldPhoneNumber(phoneNumber)) {
+                return
+            }
+
             try {
                 const res = await updatePhoneNumber({...phoneNumber, name})
                 if (!res) {
@@ -139,6 +146,10 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
         },
         [phoneNumber, name, dispatch]
     )
+
+    if (!isOldPhoneNumber(phoneNumber)) {
+        return null
+    }
 
     return (
         <Form onSubmit={handleSubmit}>

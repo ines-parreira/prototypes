@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react'
-import {Link} from 'react-router-dom'
 import {fromJS} from 'immutable'
 import {Col, Container, Form, FormGroup, Label, Row} from 'reactstrap'
 import {useAsyncFn} from 'react-use'
@@ -113,13 +112,6 @@ export default function WhatsAppIntegrationPreferences({
                                                 phoneNumber={phoneNumber}
                                             />
                                         )}
-                                    </Col>
-                                    <Col lg={4} className={css.appLink}>
-                                        <Link
-                                            to={`/app/settings/phone-numbers/${integration.meta.phone_number_id}`}
-                                        >
-                                            Manage Phone Number
-                                        </Link>
                                     </Col>
                                 </Row>
                             </Col>

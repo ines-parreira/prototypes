@@ -2,9 +2,10 @@ import React, {useEffect, useState, useCallback} from 'react'
 import {sortBy, reverse, startCase} from 'lodash'
 
 import {OrderDirection} from 'models/api/types'
-import {PhoneNumber} from 'models/phoneNumber/types'
+import {OldPhoneNumber, PhoneNumber} from 'models/phoneNumber/types'
 import {IntegrationType} from 'models/integration/types'
-import {getPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
+import {getOldPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
+import {PhoneNumbersState} from 'state/entities/phoneNumbers/types'
 import history from 'pages/history'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
@@ -21,14 +22,16 @@ import PhoneNumberTitle from './PhoneNumberTitle'
 import css from './PhoneNumbersList.less'
 
 export function PhoneNumbersList(): JSX.Element | null {
-    const phoneNumbers = useAppSelector(getPhoneNumbers)
+    const phoneNumbers: PhoneNumbersState<OldPhoneNumber> =
+        useAppSelector(getOldPhoneNumbers)
+
     const [orderBy, setOrderBy] = useState<string>('id')
     const [orderDirection, setOrderDirection] = useState<OrderDirection>(
         OrderDirection.Desc
     )
-    const [sortedPhoneNumbers, setSortedPhoneNumbers] = useState<PhoneNumber[]>(
-        Object.values(phoneNumbers)
-    )
+    const [sortedPhoneNumbers, setSortedPhoneNumbers] = useState<
+        OldPhoneNumber[]
+    >(Object.values(phoneNumbers))
 
     useEffect(() => {
         const numbers = Object.values(phoneNumbers)
@@ -109,7 +112,7 @@ export function PhoneNumbersList(): JSX.Element | null {
                             </BodyCell>
                             <BodyCell size="small">
                                 <TagLabel>
-                                    {startCase(phoneNumber.meta?.type)}
+                                    {startCase(phoneNumber.meta.type)}
                                 </TagLabel>
                             </BodyCell>
                             <BodyCell>
@@ -127,6 +130,17 @@ export function PhoneNumbersList(): JSX.Element | null {
                                 {hasIntegration(
                                     phoneNumber,
                                     IntegrationType.Sms
+                                ) && (
+                                    <i
+                                        className="material-icons md-2 align-middle mr-3"
+                                        title="SMS"
+                                    >
+                                        sms
+                                    </i>
+                                )}
+                                {hasIntegration(
+                                    phoneNumber,
+                                    IntegrationType.WhatsApp
                                 ) && (
                                     <i
                                         className="material-icons md-2 align-middle mr-3"

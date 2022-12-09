@@ -38,11 +38,10 @@ export function PhoneNumbersListContainer() {
     const [{loading: isLoading}, handleFetchPhoneNumbers] = useAsyncFn(
         async () => {
             try {
-                const res = await fetchPhoneNumbers()
-                if (!res) {
-                    return
+                const numbers = await fetchPhoneNumbers()
+                if (numbers) {
+                    dispatch(phoneNumbersFetched(numbers.data))
                 }
-                dispatch(phoneNumbersFetched(res.data))
             } catch (error) {
                 void dispatch(
                     notify({

@@ -1,19 +1,19 @@
 import React, {useCallback, useState} from 'react'
 import CountryFlag from 'react-country-flag'
 
-import {PhoneNumber} from 'models/phoneNumber/types'
-import {getPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
+import {OldPhoneNumber} from 'models/phoneNumber/types'
+import {getOldPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
 import {IntegrationType} from 'models/integration/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import SelectFieldDropdownAction from 'pages/common/forms/SelectField/SelectFieldDropdownAction'
 import PhoneNumberCreateModalForm from 'pages/phoneNumbers/PhoneNumberCreateModalForm'
 import useAppSelector from 'hooks/useAppSelector'
-import {hasCapability} from 'pages/phoneNumbers/utils'
+import {hasCapability, isOldPhoneNumber} from 'pages/phoneNumbers/utils'
 
 type Props = {
-    value: Maybe<PhoneNumber> | '_new'
-    onChange: (phoneNumber: PhoneNumber) => void
-    onCreate: (phoneNumber: PhoneNumber) => void
+    value: Maybe<OldPhoneNumber> | '_new'
+    onChange: (phoneNumber: OldPhoneNumber) => void
+    onCreate: (phoneNumber: OldPhoneNumber) => void
     integrationType?: IntegrationType.Phone | IntegrationType.Sms
 }
 
@@ -23,8 +23,7 @@ function PhoneNumberSelectField({
     onCreate,
     integrationType,
 }: Props): JSX.Element {
-    const phoneNumbers: Record<number, PhoneNumber> =
-        useAppSelector(getPhoneNumbers)
+    const phoneNumbers = useAppSelector(getOldPhoneNumbers)
 
     const [isCreateFormVisible, setIsCreateFormVisible] = useState(
         value === '_new'
@@ -36,7 +35,7 @@ function PhoneNumberSelectField({
                 setIsCreateFormVisible(true)
             } else if (typeof value === 'number') {
                 const number = phoneNumbers[value]
-                if (number) {
+                if (number && isOldPhoneNumber(number)) {
                     onChange(number)
                 }
             }
@@ -44,8 +43,11 @@ function PhoneNumberSelectField({
         [phoneNumbers, onChange]
     )
 
-    const availableNumbers = Object.entries(phoneNumbers)
-        .filter(([, phoneNumber]) => {
+    const availableNumbers = Object.values(phoneNumbers)
+        .filter((phoneNumber) => {
+            return isOldPhoneNumber(phoneNumber)
+        })
+        .filter((phoneNumber) => {
             const existingIntegration = phoneNumber.integrations.find(
                 (integration) => integration.type === integrationType
             )
@@ -55,7 +57,6 @@ function PhoneNumberSelectField({
                 hasCapability(phoneNumber, integrationType)
             )
         })
-        .map(([, phoneNumber]) => phoneNumber)
 
     const options = [
         {
