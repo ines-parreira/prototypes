@@ -79,9 +79,6 @@ export const ReturnsPolicyView = () => {
 
     const {isLoadingConfig, configuration} = useConfigurationData()
 
-    const isSelfServiceLoopReturnsFlowEnabled: boolean =
-        useFlags()[FeatureFlagKey.SelfServiceLoopReturnsFlow] ?? false
-
     const hasAutomatedResponseOrderManagementFlag =
         useFlags()[FeatureFlagKey.SelfServiceAutomatedResponseOrderManagement]
 
@@ -195,8 +192,7 @@ export const ReturnsPolicyView = () => {
     const formHasChanged =
         storedEligibility.value !== eligibilityWindowConditionValue ||
         storedEligibility.condition !== eligibilityWindowCondition ||
-        (isSelfServiceLoopReturnsFlowEnabled &&
-            !_isEqual(storedReturnAction, returnAction))
+        !_isEqual(storedReturnAction, returnAction)
 
     const onCancel = () => {
         setEligibilityWindowConditionValue(storedEligibility.value)
@@ -260,9 +256,7 @@ export const ReturnsPolicyView = () => {
                 return_order_policy: {
                     ...configuration.return_order_policy,
                     eligibilities: updatedEligibilities,
-                    ...(isSelfServiceLoopReturnsFlowEnabled
-                        ? {action: returnAction}
-                        : {}),
+                    action: returnAction,
                 },
             })
             void dispatch(selfServiceConfigurationUpdated(res))
@@ -468,82 +462,64 @@ export const ReturnsPolicyView = () => {
                                         ) : null}
                                     </div>
 
-                                    {isSelfServiceLoopReturnsFlowEnabled && (
-                                        <>
-                                            <h5
-                                                className={
-                                                    css.returnMethodTitle
-                                                }
+                                    <h5 className={css.returnMethodTitle}>
+                                        Return method
+                                    </h5>
+                                    <div className="d-inline-flex align-items-center w-100">
+                                        <ReturnActionSelectField
+                                            loopReturnsIntegrations={
+                                                loopReturnsIntegrations
+                                            }
+                                            value={returnAction}
+                                            onChange={setReturnAction}
+                                            onCreateNewLoopReturnsIntegrationClick={
+                                                handleCreateNewLoopReturnsIntegrationClick
+                                            }
+                                        />
+
+                                        {showReturnActionDeleteButton && (
+                                            <div
+                                                onClick={onReturnActionDelete}
+                                                className={css.deleteButton}
                                             >
-                                                Return method
-                                            </h5>
-
-                                            <div className="d-inline-flex align-items-center w-100">
-                                                <ReturnActionSelectField
-                                                    loopReturnsIntegrations={
-                                                        loopReturnsIntegrations
-                                                    }
-                                                    value={returnAction}
-                                                    onChange={setReturnAction}
-                                                    onCreateNewLoopReturnsIntegrationClick={
-                                                        handleCreateNewLoopReturnsIntegrationClick
-                                                    }
-                                                />
-
-                                                {showReturnActionDeleteButton && (
-                                                    <div
-                                                        onClick={
-                                                            onReturnActionDelete
-                                                        }
-                                                        className={
-                                                            css.deleteButton
-                                                        }
-                                                    >
-                                                        <i className="material-icons red mr-1">
-                                                            clear
-                                                        </i>
-                                                    </div>
-                                                )}
+                                                <i className="material-icons red mr-1">
+                                                    clear
+                                                </i>
                                             </div>
+                                        )}
+                                    </div>
 
-                                            {isLoopReturnsIntegrationMissing && (
-                                                <Alert
-                                                    icon
-                                                    className={
-                                                        css.missingLoopReturnsIntegrationAlert
-                                                    }
-                                                    type={AlertType.Error}
-                                                >
-                                                    You must have a
-                                                    <a
-                                                        href="https://www.loopreturns.com/"
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                    >
-                                                        &nbsp;Loop Returns&nbsp;
-                                                    </a>
-                                                    account and
-                                                    <Link to="/app/settings/integrations/app/6193aad6661a2903d5fb9bff">
-                                                        &nbsp;HTTP
-                                                        integration&nbsp;
-                                                    </Link>
-                                                    to use this feature
-                                                </Alert>
-                                            )}
-
-                                            <NewReturnIntegrationModal
-                                                isOpen={
-                                                    isNewReturnIntegrationModalOpen
-                                                }
-                                                onClose={
-                                                    handleNewReturnIntegrationModalClose
-                                                }
-                                                onCreate={
-                                                    handleNewReturnIntegration
-                                                }
-                                            />
-                                        </>
+                                    {isLoopReturnsIntegrationMissing && (
+                                        <Alert
+                                            icon
+                                            className={
+                                                css.missingLoopReturnsIntegrationAlert
+                                            }
+                                            type={AlertType.Error}
+                                        >
+                                            You must have a
+                                            <a
+                                                href="https://www.loopreturns.com/"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                &nbsp;Loop Returns&nbsp;
+                                            </a>
+                                            account and
+                                            <Link to="/app/settings/integrations/app/6193aad6661a2903d5fb9bff">
+                                                &nbsp;HTTP integration&nbsp;
+                                            </Link>
+                                            to use this feature
+                                        </Alert>
                                     )}
+
+                                    <NewReturnIntegrationModal
+                                        isOpen={isNewReturnIntegrationModalOpen}
+                                        onClose={
+                                            handleNewReturnIntegrationModalClose
+                                        }
+                                        onCreate={handleNewReturnIntegration}
+                                    />
 
                                     {hasAutomatedResponseOrderManagementFlag &&
                                         returnAction?.type ===

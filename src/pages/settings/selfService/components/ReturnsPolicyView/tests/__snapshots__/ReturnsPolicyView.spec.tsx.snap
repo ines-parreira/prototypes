@@ -189,6 +189,85 @@ exports[`<ReturnsPolicyView /> render() should render the select field 1`] = `
                   </i>
                 </div>
               </div>
+              <h5
+                class="returnMethodTitle"
+              >
+                Return method
+              </h5>
+              <div
+                class="d-inline-flex align-items-center w-100"
+              >
+                <div
+                  style="width: 100%; max-width: 680px; float: left;"
+                >
+                  <div
+                    class="dropdown"
+                  >
+                    <div
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      class=""
+                      data-toggle="dropdown"
+                    >
+                      <div
+                        class="select dropdown-toggle selectFullWidth"
+                      >
+                        <span
+                          class="label placeholder"
+                          style="min-width: 10px; opacity: 1;"
+                        >
+                          Select a return method
+                        </span>
+                        <input
+                          autocomplete="chrome-off"
+                          class="input"
+                          style="min-width: 10px;"
+                          type="text"
+                          value=""
+                        />
+                        <i
+                          class="material-icons dropdownIcon"
+                        >
+                          arrow_drop_down
+                        </i>
+                      </div>
+                    </div>
+                    <div
+                      aria-hidden="true"
+                      class="options optionsFullWidth dropdown-menu"
+                      role="menu"
+                      tabindex="-1"
+                    >
+                      
+                      <div>
+                        <h6
+                          class="action action--focused dropdown-header"
+                          tabindex="-1"
+                          type="button"
+                        >
+                          <div
+                            class="dropdownAction"
+                          >
+                            <div
+                              class="dropdownActionIcon"
+                            >
+                              <i
+                                class="material-icons md-2"
+                                style="margin-left: -3px;"
+                              >
+                                add
+                              </i>
+                            </div>
+                            <span>
+                              Create new Loop Returns integration
+                            </span>
+                          </div>
+                        </h6>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div
                 class="formButtonsContainer"
               >
