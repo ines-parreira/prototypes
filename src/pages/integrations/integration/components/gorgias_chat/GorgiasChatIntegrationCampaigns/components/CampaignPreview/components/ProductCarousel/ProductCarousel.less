@@ -1,0 +1,89 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .container {
+        position: relative;
+
+        width: 100%;
+
+        box-sizing: border-box;
+    }
+
+    .track {
+        overflow: hidden;
+    }
+
+    .slides {
+        position: relative;
+
+        display: flex;
+        flex-wrap: nowrap;
+
+        width: 100%;
+        padding: 16px 0;
+
+        transition: transform 400ms cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
+        backface-visibility: hidden;
+        transform-style: preserve-3d;
+        touch-action: pan-Y;
+        will-change: transform;
+    }
+
+    .frame {
+        flex-shrink: 0;
+
+        margin: 0;
+
+        transition: transform 400ms cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
+        transform: scale(0.9);
+
+        &.highlighted {
+            transform: scale(1);
+        }
+    }
+
+    .buttonBaseControl {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 40px;
+        height: 40px;
+
+        margin: 0;
+        padding: 0;
+        border: 0;
+        outline: none;
+
+        box-shadow: 0px 2px 4px rgba(22, 22, 22, 0.16);
+        border-radius: 80px;
+
+        background: @classic-neutral-grey-2;
+
+        color: @classic-neutral-grey-4;
+        font-size: 20px;
+
+        cursor: pointer;
+
+        :focus {
+            outline: none;
+        }
+
+        &.leftSide {
+            left: 8px;
+        }
+
+        &.rightSide {
+            right: 8px;
+        }
+
+        svg {
+            vertical-align: middle;
+            font-size: 16px;
+        }
+    }
+}

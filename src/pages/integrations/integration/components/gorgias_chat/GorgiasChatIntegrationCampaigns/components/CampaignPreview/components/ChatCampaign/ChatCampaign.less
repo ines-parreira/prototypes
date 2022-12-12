@@ -10,11 +10,15 @@
         flex-shrink: 0;
         flex-direction: column;
         width: 330px;
-        max-height: 500px;
         background: @classic-neutral-grey-0;
         border-radius: 5px;
         box-shadow: 0 10px 64px fade(black, 9%);
         margin-bottom: 10px;
+
+        .content {
+            display: flex;
+            flex-direction: column;
+        }
 
         .header {
             display: flex;

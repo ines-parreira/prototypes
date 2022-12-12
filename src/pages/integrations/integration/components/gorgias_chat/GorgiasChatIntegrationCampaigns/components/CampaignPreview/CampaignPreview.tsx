@@ -6,6 +6,8 @@ import {
     GorgiasChatPositionAlignmentEnum,
 } from 'models/integration/types'
 
+import {CampaignProduct} from '../../types/CampaignProduct'
+
 import {PreviewToolbar} from './components/PreviewToolbar'
 import {ChatCampaign} from './components/ChatCampaign'
 import {ChatBubble} from './components/ChatBubble'
@@ -19,6 +21,7 @@ type Props = {
     mainColor?: string
     translatedTexts: Record<string, string>
     position: GorgiasChatPosition
+    products?: CampaignProduct[]
 }
 
 const CampaignPreview = ({
@@ -28,6 +31,7 @@ const CampaignPreview = ({
     mainColor,
     translatedTexts,
     position,
+    products = [],
 }: Props) => {
     const isButtonOnTop =
         position.alignment === GorgiasChatPositionAlignmentEnum.TOP_RIGHT ||
@@ -46,6 +50,7 @@ const CampaignPreview = ({
                     authorAvatarUrl={authorAvatarUrl}
                     authorName={authorName}
                     html={html}
+                    products={products}
                     translatedTexts={translatedTexts}
                 />
                 <ChatBubble alignment={position.alignment} color={mainColor} />
