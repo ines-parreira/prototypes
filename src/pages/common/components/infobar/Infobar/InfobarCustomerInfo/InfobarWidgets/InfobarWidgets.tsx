@@ -279,7 +279,7 @@ function getPreparedDisplayList({
                             integration.id.toString() ===
                             (
                                 widget.get('integration_id', '') as string
-                            ).toString()
+                            )?.toString()
                     )
                 }
 
