@@ -85,9 +85,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
 
             const {container, getByText} = renderWithStore(props)
 
-            expect(
-                getByText('Save changes').hasAttribute('disabled')
-            ).toBeTruthy()
+            expect(getByText('Save changes')).toBeDisabled()
 
             if (isBoolean(selector.newValue)) {
                 fireEvent.click(container.querySelector(selector.selector))

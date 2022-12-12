@@ -4,7 +4,6 @@ import {mount, ReactWrapper, shallow, ShallowWrapper} from 'enzyme'
 import _noop from 'lodash/noop'
 // aphrodite is required by react-images
 import {StyleSheetTestUtils} from 'aphrodite'
-
 import TicketAttachments from '../TicketAttachments'
 import {proxifyURL} from '../../../../../../utils'
 
@@ -62,10 +61,13 @@ describe('TicketAttachments component', () => {
         })
 
         it('should set a preview on the first attachment', () => {
-            expect(component.children().children().at(0)).toHaveStyle(
-                'backgroundImage',
-                `url(${proxifyURL('http://gorgias.io/bar', '120x80')})`
-            )
+            expect(
+                (
+                    component.children().children().at(0).props() as {
+                        style: {backgroundImage: string}
+                    }
+                ).style?.backgroundImage
+            ).toBe(`url(${proxifyURL('http://gorgias.io/bar', '120x80')})`)
         })
 
         it('should not set a preview on the second attachment', () => {

@@ -122,12 +122,13 @@ module.exports = {
     // runner: "jest-runner",
 
     // The paths to modules that run some code to configure or set up the testing environment before each test
-    setupFiles: ['./tests/setup.tsx', 'jest-launchdarkly-mock'],
+    setupFiles: ['jest-launchdarkly-mock'],
 
     // The path to a module that runs some code to configure or set up the testing framework before each test
     setupFilesAfterEnv: [
         'jest-enzyme/lib/index.js',
         '<rootDir>/tests/jest-enzyme-setup.ts',
+        './tests/setup.tsx',
     ],
 
     // A list of paths to snapshot serializer modules Jest should use for snapshot testing

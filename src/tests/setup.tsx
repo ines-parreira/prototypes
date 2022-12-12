@@ -1,3 +1,4 @@
+import '@testing-library/jest-dom/extend-expect'
 import React from 'react'
 import MutationObserver from '@sheerun/mutationobserver-shim'
 import mockMoment from 'moment'
