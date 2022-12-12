@@ -265,7 +265,7 @@ function getPreparedDisplayList({
 
                 if (source.getIn([...sourcePath, appId])) {
                     sourcePath.push(appId as string[] & string)
-                }
+                } else return
             } else {
                 let selectedIntegrations: Integration[] = []
 
