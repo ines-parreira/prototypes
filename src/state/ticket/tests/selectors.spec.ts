@@ -313,8 +313,32 @@ describe('ticket selectors', () => {
                 ],
                 7,
             ],
+            [
+                [
+                    {
+                        id: 1,
+                        sent_datetime: '2017-07-25T21:01:00',
+                        created_datetime: '2017-07-24T21:00:00',
+                        from_agent: false,
+                    },
+                    {
+                        id: 2,
+                        sent_datetime: '2017-07-29T21:01:00',
+                        created_datetime: '2017-07-29T21:00:00',
+                        from_agent: false,
+                    },
+                    {
+                        id: 3,
+                        sent_datetime: '2017-07-31T21:01:00',
+                        created_datetime: '2017-07-31T21:00:00',
+                        from_agent: false,
+                        meta: {rule_suggestion_slug: 'rule_suggestion_slug'},
+                    },
+                ],
+                -1,
+            ],
         ])(
-            'should set rule suggestion above the first message of any agent or at the end of the thread',
+            'should set rule suggestion above the first message of any agent or at the end of the thread if suggestion not applied',
             (messages, expectedIndex) => {
                 const newState = {
                     ...state,

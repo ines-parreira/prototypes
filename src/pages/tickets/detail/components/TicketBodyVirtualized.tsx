@@ -372,13 +372,7 @@ export class TicketBodyVirtualized extends React.Component<Props, State> {
                                     />
                                 )
                             } else if (isTicketRuleSuggestion(element))
-                                itemContent = elements.find(
-                                    (element: Map<any, any>) =>
-                                        !!element.getIn([
-                                            'meta',
-                                            'rule_suggestion_slug',
-                                        ])
-                                ) ? null : (
+                                itemContent = (
                                     <RuleSuggestion
                                         key={`rule-suggestion-${index}`}
                                         ticket={ticket.toJS()}
