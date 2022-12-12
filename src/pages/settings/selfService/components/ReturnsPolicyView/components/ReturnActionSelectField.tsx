@@ -1,4 +1,6 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {ComponentProps, useCallback, useMemo} from 'react'
+
 import {
     ReturnAction,
     ReturnActionType,
@@ -7,6 +9,7 @@ import {Integration} from 'models/integration/types'
 import loopReturns from 'assets/img/integrations/loop-returns.png'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import SelectFieldDropdownAction from 'pages/common/forms/SelectField/SelectFieldDropdownAction'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 type Props = {
     loopReturnsIntegrations: Integration[]
@@ -26,13 +29,20 @@ export const ReturnActionSelectField = ({
     onChange,
     onCreateNewLoopReturnsIntegrationClick,
 }: Props) => {
+    const hasAutomatedResponseOrderManagementFlag =
+        useFlags()[FeatureFlagKey.SelfServiceAutomatedResponseOrderManagement]
+
     const options = useMemo<ComponentProps<typeof SelectField>['options']>(
         () => [
-            {
-                value: valueForAutomatedResponse(),
-                text: 'Automated response',
-                label: 'Automated response',
-            },
+            ...(hasAutomatedResponseOrderManagementFlag
+                ? [
+                      {
+                          value: valueForAutomatedResponse(),
+                          text: 'Automated response',
+                          label: 'Automated response',
+                      },
+                  ]
+                : []),
             ...loopReturnsIntegrations.map((loopReturnsIntegration) => ({
                 value: JSON.stringify({
                     type: ReturnActionType.LoopReturns,
@@ -72,7 +82,11 @@ export const ReturnActionSelectField = ({
                 onClick: onCreateNewLoopReturnsIntegrationClick,
             },
         ],
-        [loopReturnsIntegrations, onCreateNewLoopReturnsIntegrationClick]
+        [
+            hasAutomatedResponseOrderManagementFlag,
+            loopReturnsIntegrations,
+            onCreateNewLoopReturnsIntegrationClick,
+        ]
     )
 
     const handleChange: ComponentProps<typeof SelectField>['onChange'] =
