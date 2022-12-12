@@ -8,7 +8,8 @@ import {
     BigCommerceCheckout,
     BigCommerceCreateConsignmentPayload,
     BigCommerceUpsertConsignmentPayload,
-    BigCommerceUpsertConsignmentResponse,
+    BigCommerceCreateConsignmentResponse,
+    BigCommerceUpdateConsignmentResponse,
 } from '../types'
 
 export async function createBigCommerceCart(
@@ -147,7 +148,7 @@ export async function createBigCommerceCheckoutConsignment({
 }) {
     const url = '/integrations/bigcommerce/order/checkout-consignment/'
 
-    const response = await client.post<BigCommerceUpsertConsignmentResponse>(
+    const response = await client.post<BigCommerceCreateConsignmentResponse>(
         url,
         payload,
         {
@@ -174,7 +175,7 @@ export async function updateBigCommerceCheckoutConsignment({
 }) {
     const url = '/integrations/bigcommerce/order/checkout-consignment/'
 
-    const response = await client.put<BigCommerceUpsertConsignmentResponse>(
+    const response = await client.put<BigCommerceUpdateConsignmentResponse>(
         url,
         payload,
         {
@@ -186,5 +187,5 @@ export async function updateBigCommerceCheckoutConsignment({
         }
     )
 
-    return response.data
+    return response.data.data
 }

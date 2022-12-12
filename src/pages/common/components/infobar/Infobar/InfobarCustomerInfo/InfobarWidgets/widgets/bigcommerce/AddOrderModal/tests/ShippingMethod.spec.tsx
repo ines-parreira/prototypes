@@ -1,15 +1,17 @@
 import React from 'react'
 
 import {render, waitFor, screen} from '@testing-library/react'
+import {renderHook, act} from 'react-hooks-testing-library'
 import userEvent from '@testing-library/user-event'
 
 import MockAdapter from 'axios-mock-adapter'
 import {
     bigCommerceCartFixture,
+    bigCommerceConsignmentFixture,
     bigCommerceShippingAddress,
 } from 'fixtures/bigcommerce'
 import client from 'models/api/resources'
-import {ShippingMethod} from '../ShippingMethod'
+import {ShippingMethod, useShippingMethods} from '../ShippingMethod'
 import {
     updateCheckoutConsignmentShippingMethod,
     upsertCheckoutConsignment,
@@ -41,33 +43,7 @@ describe('ShippingMethod', () => {
                 new Promise((resolve) => {
                     resolve({
                         id: 'some-id',
-                        consignments: [
-                            {
-                                id: 'consignment-id',
-                                available_shipping_options: [
-                                    {
-                                        id: 'available-shipping-option-1',
-                                        description: 'Description One',
-                                        cost: 55,
-                                        type: 'some-type',
-                                        additional_description: '',
-                                        image_url: '',
-                                        transit_time: '',
-                                    },
-                                    {
-                                        id: 'available-shipping-option-2',
-                                        description: 'Description Two',
-                                        cost: 66,
-                                        type: 'some-type',
-                                        additional_description: '',
-                                        image_url: '',
-                                        transit_time: '',
-                                    },
-                                ],
-                                selected_shipping_option: undefined,
-                                shipping_cost_inc_tax: 77,
-                            },
-                        ],
+                        consignments: [bigCommerceConsignmentFixture],
                     })
                 })
         )
@@ -143,5 +119,114 @@ describe('ShippingMethod', () => {
         })
 
         expect(baseElement).toMatchSnapshot('shipping method selected')
+    })
+})
+
+describe('useConsignment', () => {
+    it('works as expected', () => {
+        const updateConsignmentShippingMethodMock = jest.fn()
+
+        const {result, rerender} = renderHook(
+            (props: Partial<Parameters<typeof useShippingMethods>[0]>) =>
+                useShippingMethods({
+                    consignment: null,
+                    currencyCode: null,
+                    updateConsignmentShippingMethod:
+                        updateConsignmentShippingMethodMock,
+                    ...props,
+                })
+        )
+
+        expect(updateConsignmentShippingMethodMock).not.toHaveBeenCalled()
+        expect(result.current.selectedShippingMethod).toEqual(null)
+        expect(result.current.shippingMethodOptions).toEqual([])
+
+        // Provide initial consignment
+        rerender({consignment: bigCommerceConsignmentFixture})
+
+        expect(updateConsignmentShippingMethodMock).not.toHaveBeenCalled()
+        expect(result.current.selectedShippingMethod).toEqual(null)
+        expect(result.current.shippingMethodOptions).toEqual([
+            {
+                label: expect.anything(),
+                value: 'available-shipping-option-1',
+            },
+            {
+                label: expect.anything(),
+                value: 'available-shipping-option-2',
+            },
+        ])
+
+        /**
+         * Calling `onSelectShippingMethod` triggers a call to `updateConsignmentShippingMethod`
+         */
+        act(() => {
+            result.current.onSelectShippingMethod('available-shipping-option-1')
+        })
+        expect(updateConsignmentShippingMethodMock).toHaveBeenNthCalledWith(
+            1,
+            'available-shipping-option-1'
+        )
+        expect(result.current.selectedShippingMethod).toEqual(
+            bigCommerceConsignmentFixture.available_shipping_options[0]
+        )
+
+        /**
+         * Consignment with `selected_shipping_method` arrives, because it is the same
+         * shipping method that is currently selected, there's no call to `updateConsignmentShippingMethod` triggered
+         */
+        rerender({
+            consignment: {
+                ...bigCommerceConsignmentFixture,
+                selected_shipping_option:
+                    bigCommerceConsignmentFixture.available_shipping_options[0],
+            },
+        })
+        expect(updateConsignmentShippingMethodMock).toHaveBeenCalledTimes(1)
+        expect(result.current.selectedShippingMethod).toEqual(
+            bigCommerceConsignmentFixture.available_shipping_options[0]
+        )
+
+        /**
+         * Consignment with no `selected_shipping_method` arrives, but with `available_shipping_options`
+         * with `id` that matches current selected shipping method, call to `updateConsignmentShippingMethodMock` is
+         * triggered
+         */
+        rerender({
+            consignment: bigCommerceConsignmentFixture,
+        })
+        expect(updateConsignmentShippingMethodMock).toHaveBeenNthCalledWith(
+            2,
+            'available-shipping-option-1'
+        )
+        expect(result.current.selectedShippingMethod).toEqual(
+            bigCommerceConsignmentFixture.available_shipping_options[0]
+        )
+
+        /**
+         * Consignment with no `selected_shipping_method` arrives, but with `available_shipping_options`
+         * with `type` and `description` that matches current selected shipping method, call to `updateConsignmentShippingMethodMock`
+         * is triggered with new ID
+         */
+        rerender({
+            consignment: {
+                ...bigCommerceConsignmentFixture,
+                available_shipping_options: [
+                    {
+                        ...bigCommerceConsignmentFixture
+                            .available_shipping_options[0],
+                        id: 'modified-available-shipping-option-1',
+                    },
+                ],
+            },
+        })
+        expect(updateConsignmentShippingMethodMock).toHaveBeenNthCalledWith(
+            3,
+            'modified-available-shipping-option-1'
+        )
+        expect(result.current.selectedShippingMethod).toEqual({
+            ...bigCommerceConsignmentFixture.available_shipping_options[0],
+            id: 'modified-available-shipping-option-1',
+        })
     })
 })

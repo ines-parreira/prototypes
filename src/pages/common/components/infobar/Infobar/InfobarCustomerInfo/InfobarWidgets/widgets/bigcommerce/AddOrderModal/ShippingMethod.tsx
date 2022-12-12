@@ -10,6 +10,7 @@ import {
     BigCommerceCart,
     BigCommerceCustomerAddress,
     BigCommerceConsignment,
+    BigCommerceShippingOption,
 } from 'models/integration/types'
 
 import {
@@ -55,30 +56,99 @@ export const useConsignment = ({
         }
 
         void updateConsignment()
-    }, [cart, shippingAddress, consignment?.id, integrationId])
+    }, [cart, shippingAddress, integrationId, consignment?.id])
 
-    return consignment
+    const updateConsignmentShippingMethod = async (
+        selectedShippingMethodId: Maybe<string>
+    ) => {
+        if (!cart || !consignment || !selectedShippingMethodId) {
+            return
+        }
+
+        try {
+            const updateResult = await updateCheckoutConsignmentShippingMethod({
+                cart,
+                shippingMethodId: selectedShippingMethodId,
+                consignmentId: consignment.id,
+                integrationId,
+            })
+
+            setConsignment(updateResult.consignments[0])
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    return {consignment, updateConsignmentShippingMethod}
 }
 export const useShippingMethods = ({
     consignment,
     currencyCode,
+    updateConsignmentShippingMethod,
 }: {
     consignment: Maybe<BigCommerceConsignment>
     currencyCode: string | null
+    updateConsignmentShippingMethod: (shippingMethodId: string) => Promise<void>
 }) => {
-    const [selectedShippingMethodId, setSelectedShippingMethodId] = useState<
-        string | null
-    >(null)
+    const [selectedShippingMethod, setSelectedShippingMethod] =
+        useState<BigCommerceShippingOption | null>(null)
 
+    /**
+     * We need to track whether the `selected_shipping_option` in the consignment
+     * corresponds to what user has selected in the UI. Changes to consignment, such
+     * as address change can invalidate the selected shipping option, and we need to account for
+     * that
+     *
+     * @url https://developer.bigcommerce.com/api-reference/fea1832a96623-update-checkout-consignment#request-body
+     */
     useEffect(() => {
         if (!consignment) {
             return
         }
 
-        setSelectedShippingMethodId(
-            consignment.selected_shipping_option?.id ?? null
-        )
-    }, [consignment])
+        if (!consignment.selected_shipping_option) {
+            if (!selectedShippingMethod) {
+                return
+            }
+
+            const hasAvailableSelectedShippingMethod =
+                consignment.available_shipping_options.find(
+                    ({id}) => id === selectedShippingMethod.id
+                )
+
+            if (hasAvailableSelectedShippingMethod) {
+                return void updateConsignmentShippingMethod(
+                    selectedShippingMethod.id
+                )
+            }
+
+            const similarShippingOptions =
+                consignment.available_shipping_options.filter(
+                    ({type, description}) =>
+                        type === selectedShippingMethod.type &&
+                        description === selectedShippingMethod.description
+                )
+
+            // Update consignment and set local shipping method _only_ if we have single match
+            // based on type and description
+            if (similarShippingOptions.length === 1) {
+                void updateConsignmentShippingMethod(
+                    similarShippingOptions[0].id
+                )
+                return setSelectedShippingMethod(similarShippingOptions[0])
+            }
+
+            return setSelectedShippingMethod(null)
+        }
+
+        if (
+            selectedShippingMethod &&
+            consignment.selected_shipping_option.id !==
+                selectedShippingMethod?.id
+        ) {
+            void updateConsignmentShippingMethod(selectedShippingMethod.id)
+        }
+    }, [consignment, selectedShippingMethod, updateConsignmentShippingMethod])
 
     const shippingMethodOptions: Array<RadioFieldOption> = useMemo(
         () =>
@@ -99,46 +169,20 @@ export const useShippingMethods = ({
         [consignment?.available_shipping_options, currencyCode]
     )
 
-    return {
-        selectedShippingMethod:
-            (consignment?.available_shipping_options ?? []).find(
-                ({id}) => selectedShippingMethodId === id
-            ) ?? null,
-        setSelectedShippingMethodId,
-        shippingMethodOptions,
+    const onSelectShippingMethod = (shippingMethodId: string) => {
+        const shippingMethod = (
+            consignment?.available_shipping_options ?? []
+        ).find(({id}) => shippingMethodId === id)
+
+        if (shippingMethod) {
+            setSelectedShippingMethod(shippingMethod)
+        }
     }
-}
 
-export function useOnChangeShippingMethodId({
-    cart,
-    integrationId,
-    consignment,
-    selectedShippingMethodId,
-    onSuccess,
-}: {
-    consignment: Maybe<BigCommerceConsignment>
-    selectedShippingMethodId: Maybe<string>
-    onSuccess: () => void
-    integrationId: number
-    cart: Maybe<BigCommerceCart>
-}) {
-    return async () => {
-        if (!cart || !consignment || !selectedShippingMethodId) {
-            return
-        }
-
-        try {
-            await updateCheckoutConsignmentShippingMethod({
-                cart,
-                shippingMethodId: selectedShippingMethodId,
-                consignmentId: consignment?.id,
-                integrationId,
-            })
-
-            onSuccess()
-        } catch (error) {
-            console.error(error)
-        }
+    return {
+        selectedShippingMethod,
+        onSelectShippingMethod,
+        shippingMethodOptions,
     }
 }
 
@@ -162,7 +206,7 @@ export function ShippingMethod({
     const onToggle = () =>
         setIsDropdownOpen((isDropdownOpen) => !isDropdownOpen)
 
-    const consignment = useConsignment({
+    const {consignment, updateConsignmentShippingMethod} = useConsignment({
         integrationId,
         cart,
         shippingAddress,
@@ -170,19 +214,12 @@ export function ShippingMethod({
 
     const {
         selectedShippingMethod,
-        setSelectedShippingMethodId,
         shippingMethodOptions,
+        onSelectShippingMethod,
     } = useShippingMethods({
         consignment,
+        updateConsignmentShippingMethod,
         currencyCode,
-    })
-
-    const onClickApply = useOnChangeShippingMethodId({
-        cart,
-        integrationId,
-        selectedShippingMethodId: selectedShippingMethod?.id ?? null,
-        consignment,
-        onSuccess: onClose,
     })
 
     return (
@@ -217,7 +254,7 @@ export function ShippingMethod({
                     {shippingMethodOptions.length > 0 ? (
                         <RadioFieldSet
                             selectedValue={selectedShippingMethod?.id ?? null}
-                            onChange={setSelectedShippingMethodId}
+                            onChange={onSelectShippingMethod}
                             options={shippingMethodOptions}
                         />
                     ) : (
@@ -229,9 +266,14 @@ export function ShippingMethod({
 
                 <div className={css.dropdownFooter}>
                     <Button intent="secondary" onClick={onClose}>
-                        Cancel
+                        Close
                     </Button>
-                    <Button onClick={onClickApply}>Apply</Button>
+                    {/*
+                      Apply button is for the user to "feel" that he "confirmed" the
+                      selection of shipping method, while in reality, shipping method
+                      is changed on every change of radio select
+                    */}
+                    <Button onClick={onClose}>Apply</Button>
                 </div>
             </Dropdown>
         </>

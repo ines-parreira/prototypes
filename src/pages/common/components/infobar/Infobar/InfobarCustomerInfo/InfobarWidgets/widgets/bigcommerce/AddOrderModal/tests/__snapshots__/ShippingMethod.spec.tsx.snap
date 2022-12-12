@@ -104,7 +104,7 @@ exports[`ShippingMethod create/update consignment and change shipping method: dr
             class="wrapper fill secondary medium"
             type="button"
           >
-            Cancel
+            Close
           </button>
           <button
             class="wrapper fill primary medium"

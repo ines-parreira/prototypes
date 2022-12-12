@@ -9,6 +9,7 @@ import {
     BigCommerceProductVariant,
     BigCommerceProduct,
     BigCommerceNestedCart,
+    BigCommerceConsignment,
 } from 'models/integration/types'
 
 export const bigCommerceCustomerFixture = () => ({
@@ -272,3 +273,29 @@ export const bigCommerceProductFixture = (): BigCommerceProduct => ({
     options: [],
     variants: [bigCommerceVariantFixture()],
 })
+
+export const bigCommerceConsignmentFixture: BigCommerceConsignment = {
+    id: 'consignment-id',
+    available_shipping_options: [
+        {
+            id: 'available-shipping-option-1',
+            description: 'Description One',
+            cost: 55,
+            type: 'some-type',
+            additional_description: '',
+            image_url: '',
+            transit_time: '',
+        },
+        {
+            id: 'available-shipping-option-2',
+            description: 'Description Two',
+            cost: 66,
+            type: 'some-type',
+            additional_description: '',
+            image_url: '',
+            transit_time: '',
+        },
+    ],
+    selected_shipping_option: undefined,
+    shipping_cost_inc_tax: 77,
+}

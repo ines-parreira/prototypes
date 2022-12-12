@@ -210,18 +210,22 @@ export type BigCommerceCreateConsignmentPayload = {
 }
 
 export type BigCommerceUpsertConsignmentPayload =
-    | Array<BigCommerceCreateConsignmentPayload>
+    | BigCommerceCreateConsignmentPayload
     | {shipping_option_id: string}
 
 /**
  * @url https://developer.bigcommerce.com/api-reference/dfbf31248722d-add-consignment-to-checkout#response-body
  */
-export type BigCommerceUpsertConsignmentResponse = {
+export type BigCommerceCreateConsignmentResponse = {
     id: string
     // The response may return array of consignments, if we have multiple shipping addresses
     // but as we're only allowing to add single shipping address, we are only interested in the
     // 0th index of `consignments` array
     consignments: [BigCommerceConsignment]
+}
+
+export type BigCommerceUpdateConsignmentResponse = {
+    data: BigCommerceCreateConsignmentResponse
 }
 
 export enum BigCommerceActionType {
