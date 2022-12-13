@@ -123,38 +123,6 @@ exports[`TicketSubmitButtons component should render buttons with a filled ticke
 </div>
 `;
 
-exports[`TicketSubmitButtons component should render buttons with an Inactive account 1`] = `
-<div
-  className="buttons"
-  id="submit-button-div"
->
-  <ConfirmButton
-    className="mr-2"
-    confirmationContent="Are you sure you want to create a ticket with no subject?"
-    id="submit-button"
-    isDisabled={true}
-    isLoading={false}
-    onConfirm={[Function]}
-    tabIndex={5}
-    type="submit"
-  >
-    Send
-  </ConfirmButton>
-  <ConfirmButton
-    confirmationContent="Are you sure you want to create a ticket with no subject?"
-    id="submit-and-close-button"
-    intent="secondary"
-    isDisabled={true}
-    isLoading={false}
-    onConfirm={[Function]}
-    type="submit"
-  >
-    Send
-     & Close
-  </ConfirmButton>
-</div>
-`;
-
 exports[`TicketSubmitButtons component should render buttons with an empty ticket 1`] = `
 <div
   className="buttons"
@@ -187,7 +155,7 @@ exports[`TicketSubmitButtons component should render buttons with an empty ticke
 </div>
 `;
 
-exports[`TicketSubmitButtons component should render buttons with no recipent and public 1`] = `
+exports[`TicketSubmitButtons component should render buttons with content that can't be sent 1`] = `
 <div
   className="buttons"
   id="submit-button-div"
@@ -219,7 +187,7 @@ exports[`TicketSubmitButtons component should render buttons with no recipent an
 </div>
 `;
 
-exports[`TicketSubmitButtons component should render buttons with only macro applied 1`] = `
+exports[`TicketSubmitButtons component should render buttons with contentless action 1`] = `
 <div
   className="buttons"
   id="submit-button-div"
@@ -265,39 +233,7 @@ exports[`TicketSubmitButtons component should render buttons with only macro app
 </div>
 `;
 
-exports[`TicketSubmitButtons component should render buttons with only macro applied but only setResponseText && addAttachements 1`] = `
-<div
-  className="buttons"
-  id="submit-button-div"
->
-  <ConfirmButton
-    className="mr-2"
-    confirmationContent="Are you sure you want to create a ticket with no subject?"
-    id="submit-button"
-    isDisabled={true}
-    isLoading={false}
-    onConfirm={[Function]}
-    tabIndex={5}
-    type="submit"
-  >
-    Send
-  </ConfirmButton>
-  <ConfirmButton
-    confirmationContent="Are you sure you want to create a ticket with no subject?"
-    id="submit-and-close-button"
-    intent="secondary"
-    isDisabled={true}
-    isLoading={false}
-    onConfirm={[Function]}
-    type="submit"
-  >
-    Send
-     & Close
-  </ConfirmButton>
-</div>
-`;
-
-exports[`TicketSubmitButtons component should render buttons with ticket content & macro applied 1`] = `
+exports[`TicketSubmitButtons component should render buttons with contentless action and message content 1`] = `
 <div
   className="buttons"
   id="submit-button-div"

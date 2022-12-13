@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
 import {Map, fromJS} from 'immutable'
 
@@ -24,18 +24,14 @@ describe('TicketSubmitButtons component', () => {
         return fromJS({state: {appliedMacro: {actions}}}) as Map<any, any>
     }
 
-    const ticketWithMacro = createTicket([MacroActionName.AddInternalNote])
-    const ticketWithSetResponseTextAndAddAttachements = createTicket([
-        MacroActionName.SetResponseText,
-        MacroActionName.AddAttachments,
-    ])
     const ticketWithSubject = createTicket([MacroActionName.SetSubject])
 
-    const minProps = {
+    const minProps: ComponentProps<typeof TicketSubmitButtonsContainer> = {
         submit: () => null,
         ticket: fromJS({}),
         isAccountActive: true,
-        hasRecipientsOrPrivate: true,
+        canSend: true,
+        hasContentlessAction: false,
         hasContent: true,
         currentUserPreferences: fromJS({}),
         isHidingTips: false,
@@ -52,58 +48,38 @@ describe('TicketSubmitButtons component', () => {
 
     it('should render buttons with an empty ticket', () => {
         const component = shallow(
-            <TicketSubmitButtonsContainer {...minProps} hasContent={false} />
-        )
-        expect(component.find('div.buttons')).toMatchSnapshot()
-    })
-
-    it('should render buttons with no recipent and public', () => {
-        const component = shallow(
             <TicketSubmitButtonsContainer
                 {...minProps}
-                hasRecipientsOrPrivate={false}
+                hasContent={false}
+                canSend={false}
             />
         )
         expect(component.find('div.buttons')).toMatchSnapshot()
     })
 
-    it('should render buttons with an Inactive account', () => {
+    it("should render buttons with content that can't be sent", () => {
         const component = shallow(
-            <TicketSubmitButtonsContainer
-                {...minProps}
-                isAccountActive={false}
-            />
+            <TicketSubmitButtonsContainer {...minProps} canSend={false} />
         )
         expect(component.find('div.buttons')).toMatchSnapshot()
     })
 
-    it('should render buttons with only macro applied', () => {
+    it('should render buttons with contentless action', () => {
         const component = shallow(
             <TicketSubmitButtonsContainer
                 {...minProps}
                 hasContent={false}
-                ticket={ticketWithMacro}
+                hasContentlessAction={true}
             />
         )
         expect(component.find('div.buttons')).toMatchSnapshot()
     })
 
-    it('should render buttons with only macro applied but only setResponseText && addAttachements', () => {
+    it('should render buttons with contentless action and message content', () => {
         const component = shallow(
             <TicketSubmitButtonsContainer
                 {...minProps}
-                hasContent={false}
-                ticket={ticketWithSetResponseTextAndAddAttachements}
-            />
-        )
-        expect(component.find('div.buttons')).toMatchSnapshot()
-    })
-
-    it('should render buttons with ticket content & macro applied', () => {
-        const component = shallow(
-            <TicketSubmitButtonsContainer
-                {...minProps}
-                ticket={ticketWithMacro}
+                hasContentlessAction={true}
             />
         )
         expect(component.find('div.buttons')).toMatchSnapshot()

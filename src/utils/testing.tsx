@@ -105,6 +105,7 @@ export const makeExecuteKeyboardAction = (
         shortcutEventMock ||
         ({
             preventDefault: jest.fn(),
+            stopImmediatePropagation: jest.fn(),
         } as unknown as jest.Mocked<Event>)
 
     return (shortcutName: string) => {

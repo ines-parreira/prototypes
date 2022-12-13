@@ -1,9 +1,10 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS, List} from 'immutable'
 
+import {RootState} from 'state/types'
+
 import * as selectors from '../selectors'
 import {initialState} from '../reducers'
-import {RootState} from '../../types'
 
 jest.addMatchers(immutableMatchers)
 
@@ -34,106 +35,42 @@ describe('new message selectors', () => {
         })
     })
 
-    describe('hasText', () => {
-        it('should detect text', () => {
-            state.newMessage = state.newMessage.setIn(
-                ['newMessage', 'body_text'],
-                'Hello World'
-            )
-            expect(selectors.hasText(state)).toEqual(true)
+    describe('hasContent()', () => {
+        it('should return false when no body_text nor attachments are set and the message is not forward', () => {
+            expect(selectors.hasContent(state)).toEqual(false)
         })
 
-        it('should not detect text', () => {
+        it('should return false when body_text has only whitespace chars', () => {
             state.newMessage = state.newMessage.setIn(
                 ['newMessage', 'body_text'],
                 '  \n\t'
             )
-            expect(selectors.hasText(state)).toEqual(false)
-        })
-    })
-
-    describe('isReady()', () => {
-        it('should be ready (reply with body)', () => {
-            state.newMessage = state.newMessage
-                .setIn(['newMessage', 'body_text'], 'Hello World')
-                .setIn(
-                    ['newMessage', 'source', 'to', 0],
-                    fromJS({address: 'support@acme.gorgias.io'})
-                )
-            expect(selectors.isReady(state)).toEqual(true)
+            expect(selectors.hasContent(state)).toEqual(false)
         })
 
-        it('should be ready (reply with attachments)', () => {
-            state.newMessage = state.newMessage
-                .setIn(['newMessage', 'attachments'], List([{}]))
-                .setIn(
-                    ['newMessage', 'source', 'to', 0],
-                    fromJS({address: 'support@acme.gorgias.io'})
-                )
-            expect(selectors.isReady(state)).toEqual(true)
-        })
-
-        it('should be ready (forward with message)', () => {
-            state.newMessage = state.newMessage
-                .setIn(['newMessage', 'body_text'], 'Hello World')
-                .setIn(['newMessage', 'source', 'extra', 'forward'], true)
-                .setIn(
-                    ['newMessage', 'source', 'to', 0],
-                    fromJS({address: 'support@acme.gorgias.io'})
-                )
-            expect(selectors.isReady(state)).toEqual(true)
-        })
-
-        it('should be ready (forward without message)', () => {
-            state.newMessage = state.newMessage
-                .setIn(['newMessage', 'body_text'], '')
-                .setIn(['newMessage', 'source', 'extra', 'forward'], true)
-                .setIn(
-                    ['newMessage', 'source', 'to', 0],
-                    fromJS({address: 'support@acme.gorgias.io'})
-                )
-            expect(selectors.isReady(state)).toEqual(true)
-        })
-
-        it('should be ready (private message)', () => {
-            state.newMessage = state.newMessage
-                .setIn(['newMessage', 'body_text'], 'Hello world!')
-                .setIn(['newMessage', 'public'], false)
-                .setIn(['newMessage', 'source', 'to'], fromJS([]))
-            expect(selectors.isReady(state)).toEqual(true)
-        })
-
-        it('should not be ready (reply without recipients)', () => {
+        it('should return true when body_text has non-whitespace chars', () => {
             state.newMessage = state.newMessage.setIn(
                 ['newMessage', 'body_text'],
                 'Hello World'
             )
-            expect(selectors.isReady(state)).toEqual(false)
+            expect(selectors.hasContent(state)).toEqual(true)
         })
 
-        it('should not be ready (reply without message and attachments)', () => {
-            state.newMessage = state.newMessage
-                .setIn(['newMessage', 'attachments'], null)
-                .setIn(
-                    ['newMessage', 'source', 'to', 0],
-                    fromJS({address: 'support@acme.gorgias.io'})
-                )
-            expect(selectors.isReady(state)).toEqual(false)
+        it('should return true when message is forwarded', () => {
+            state.newMessage = state.newMessage.setIn(
+                ['newMessage', 'source', 'extra', 'forward'],
+                true
+            )
+            expect(selectors.hasContent(state)).toEqual(true)
         })
 
-        it('should not be ready (forward without recipients)', () => {
+        it('should return true when attachments are set', () => {
             state.newMessage = state.newMessage.setIn(
-                ['newMessage', 'subject'],
-                'Fwd: Hello world!'
+                ['newMessage', 'attachments'],
+                List([{}])
             )
-            expect(selectors.isReady(state)).toEqual(false)
-        })
-        it('should not be ready (private message without message)', () => {
-            state.newMessage = state.newMessage.setIn(
-                ['newMessage', 'source', 'type'],
-                'internal-note'
-            )
-            expect(selectors.isReady(state)).toEqual(false)
+
+            expect(selectors.hasContent(state)).toEqual(true)
         })
     })
 
@@ -256,7 +193,7 @@ describe('new message selectors', () => {
         })
     })
 
-    describe('isNewMessageEmailExtraAdded', () => {
+    describe('isNewMessageEmailExtraAdded()', () => {
         it('should return the emailExtraAdded of the new message state', () => {
             state.newMessage = state.newMessage.setIn(
                 ['state', 'emailExtraAdded'],
@@ -267,6 +204,70 @@ describe('new message selectors', () => {
 
         it('should return false for the initial state', () => {
             expect(selectors.isNewMessageEmailExtraAdded(state)).toBe(false)
+        })
+    })
+
+    describe('canSend()', () => {
+        describe.each([
+            ['active account', true],
+            ['inactive account', false],
+        ])('%s', (testName, isActive) => {
+            describe.each([
+                ['message with recipients', true, true],
+                ['private message', false, false],
+                ['public message without recipients', false, true],
+            ])('%s', (testName, hasRecipients, isPublic) => {
+                const expectedResult = isActive && (hasRecipients || !isPublic)
+                const resultFunc = (
+                    selectors.canSend as unknown as {
+                        resultFunc: (
+                            isAccountActive: boolean,
+                            hasRecipients: boolean,
+                            isPublic: boolean,
+                            hasContent: boolean,
+                            getHasContentlessAction: boolean
+                        ) => boolean
+                    }
+                ).resultFunc
+
+                it('should return false when has no content and no contentless actions', () => {
+                    expect(
+                        resultFunc(
+                            isActive,
+                            hasRecipients,
+                            isPublic,
+                            false,
+                            false
+                        )
+                    ).toBe(false)
+                })
+
+                it(`should return ${expectedResult.toString()} when has content`, () => {
+                    expect(
+                        resultFunc(
+                            isActive,
+
+                            hasRecipients,
+                            isPublic,
+                            true,
+                            false
+                        )
+                    ).toBe(expectedResult)
+                })
+
+                it(`should return ${expectedResult.toString()} when has contentless action`, () => {
+                    expect(
+                        resultFunc(
+                            isActive,
+
+                            hasRecipients,
+                            isPublic,
+                            false,
+                            true
+                        )
+                    ).toBe(expectedResult)
+                })
+            })
         })
     })
 })

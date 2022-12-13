@@ -90,6 +90,7 @@ describe('TicketDetailContainer component', () => {
         submitTicket: jest.fn(),
         ticket: newTicket,
         updateCursor: jest.fn(),
+        currentUser: fromJS({}),
     } as unknown as ComponentProps<typeof TicketDetailContainer>
     const preparedData = {
         messageId: 1,
@@ -896,5 +897,33 @@ describe('TicketDetailContainer component', () => {
 
         fireEvent.keyDown(container.firstChild!, {key: 'f', ctrlKey: true})
         expect(logEvent).not.toHaveBeenCalled()
+    })
+
+    it('should call ticket submit if can send message', () => {
+        renderWithRouter(
+            <TicketDetailContainer {...minProps} canSendMessage={true} />,
+            {
+                path: '/foo/:ticketId',
+                route: '/foo/new',
+            }
+        )
+
+        makeExecuteKeyboardAction(shortcutManagerMock)('SUBMIT_TICKET')
+
+        expect(minProps.submitTicket).toHaveBeenCalled()
+    })
+
+    it("should not call ticket submit if can't send message", () => {
+        renderWithRouter(
+            <TicketDetailContainer {...minProps} canSendMessage={false} />,
+            {
+                path: '/foo/:ticketId',
+                route: '/foo/new',
+            }
+        )
+
+        makeExecuteKeyboardAction(shortcutManagerMock)('SUBMIT_TICKET')
+
+        expect(minProps.submitTicket).not.toHaveBeenCalled()
     })
 })

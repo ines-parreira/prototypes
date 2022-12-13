@@ -3,11 +3,11 @@ import {createSelector} from 'reselect'
 
 import {RuleSuggestionState} from 'state/entities/rules/types'
 import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'
-import {createImmutableSelector} from '../../utils'
-import {getNewMessageState} from '../newMessage/selectors'
-import {Ticket, NewMessageState} from '../newMessage/types'
-import {RootState} from '../types'
-import {TicketVia} from '../../business/types/ticket'
+import {createImmutableSelector} from 'utils'
+import {Ticket} from 'state/newMessage/types'
+import {RootState} from 'state/types'
+import {TicketVia} from 'business/types/ticket'
+import {MacroActionName} from 'models/macroAction/types'
 
 import {TicketState} from './types'
 
@@ -103,18 +103,6 @@ export const isLoading = (name: string) =>
 // ex: isLoading: makeIsLoading(state)   then : const isMerging = isLoading('merge')
 export const makeIsLoading = (state: RootState) => (name: string) =>
     isLoading(name)(state)
-
-export const isDirty = (state: RootState) =>
-    createSelector<RootState, boolean, TicketState, NewMessageState>(
-        getTicketState,
-        getNewMessageState,
-        (ticketSate, newMessageState) => {
-            return !!(
-                ticketSate.getIn(['state', 'dirty']) ||
-                newMessageState.getIn(['state', 'dirty'])
-            )
-        }
-    )(state)
 
 export const getMessages = createImmutableSelector<
     RootState,
@@ -351,6 +339,23 @@ export const getTopRankMacroState = createImmutableSelector<
     }
     return topRankMacroState.toJS() as TopRankMacroState
 })
+
+export const hasContentlessAction = createImmutableSelector(
+    getTicketState,
+    (ticket) => {
+        const actions = ticket.getIn(
+            ['state', 'appliedMacro', 'actions'],
+            fromJS([])
+        ) as List<Map<any, any>>
+        return actions.some(
+            (action) =>
+                ![
+                    MacroActionName.SetResponseText,
+                    MacroActionName.AddAttachments,
+                ].includes(action?.get('name'))
+        )
+    }
+)
 
 export const getRuleSuggestionState = createImmutableSelector<
     RootState,

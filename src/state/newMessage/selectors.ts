@@ -1,6 +1,8 @@
 import {ContentState} from 'draft-js'
 import {fromJS, Map, List} from 'immutable'
 import {createSelector} from 'reselect'
+import {isAccountActive} from 'state/currentAccount/selectors'
+import {hasContentlessAction} from 'state/ticket/selectors'
 
 import {
     TicketMessageSourceType,
@@ -250,36 +252,37 @@ export const hasNewMessageRecipients = createSelector<
     List<any>
 >(getNewMessageRecipients, (recipients) => !recipients.isEmpty())
 
-export const hasAttachments = createSelector<RootState, boolean, Map<any, any>>(
+export const hasContent = createSelector(
     getNewMessage,
-    (message) =>
-        !((message.get('attachments') || fromJS([])) as List<any>).isEmpty()
+    isForward,
+    (message, isForward) => {
+        const hasText = /\S/.test((message.get('body_text') as string) || '')
+        const hasAttachments = !(
+            (message.get('attachments') || fromJS([])) as List<any>
+        ).isEmpty()
+        return hasText || hasAttachments || isForward
+    }
 )
 
-export const hasText = createSelector<RootState, boolean, Map<any, any>>(
-    getNewMessage,
-    (message) => /\S/.test((message.get('body_text') as string) || '')
-)
-
-export const hasRecipientsOrPrivate = createSelector(
+export const canSend = createSelector(
+    isAccountActive,
     hasNewMessageRecipients,
     isNewMessagePublic,
-    (hasRecipients, isPublic) => hasRecipients || !isPublic
-)
-
-export const hasContent = createSelector(
-    hasText,
-    hasAttachments,
-    isForward,
-    (hasText, hasAttachments, isForward) =>
-        hasText || hasAttachments || isForward
-)
-
-// Determine if the new message is ready to be sent
-export const isReady = createSelector(
-    hasRecipientsOrPrivate,
     hasContent,
-    (hasRecipientsOrPrivate, hasContent) => hasRecipientsOrPrivate && hasContent
+    hasContentlessAction,
+    (
+        isAccountActive,
+        hasRecipients,
+        isPublic,
+        hasContent,
+        hasContentlessAction
+    ) => {
+        return (
+            isAccountActive &&
+            (hasRecipients || !isPublic) &&
+            (hasContent || hasContentlessAction)
+        )
+    }
 )
 
 export const getNewMessageSignature = (state: RootState): Map<any, any> => {

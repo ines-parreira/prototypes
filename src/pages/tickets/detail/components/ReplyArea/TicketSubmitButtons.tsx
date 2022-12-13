@@ -14,7 +14,8 @@ import keymap from 'config/shortcuts'
 import {isAccountActive} from 'state/currentAccount/selectors'
 import {submitSetting} from 'state/currentUser/actions'
 import {getPreferences, isHidingTips} from 'state/currentUser/selectors'
-import {hasContent, hasRecipientsOrPrivate} from 'state/newMessage/selectors'
+import {canSend, hasContent} from 'state/newMessage/selectors'
+import {hasContentlessAction} from 'state/ticket/selectors'
 import Tooltip from 'pages/common/components/Tooltip'
 import {SubmitArgs} from 'pages/tickets/detail/TicketDetailContainer'
 
@@ -90,10 +91,10 @@ export class TicketSubmitButtonsContainer extends Component<Props> {
     render() {
         const {
             newMessage,
-            isAccountActive,
+            canSend,
+            hasContentlessAction,
             ticket,
             isHidingTips,
-            hasRecipientsOrPrivate,
             hasContent,
         } = this.props
         const loading = newMessage.getIn([
@@ -112,24 +113,12 @@ export class TicketSubmitButtonsContainer extends Component<Props> {
             fromJS([])
         ) as List<Map<any, any>>
 
-        const hasActions = actions.some(
-            (action) =>
-                ![
-                    MacroActionName.SetResponseText,
-                    MacroActionName.AddAttachments,
-                ].includes(action?.get('name'))
-        )
-
         const hasSetSubjectAction = actions.some(
             (action) => action?.get('name') === MacroActionName.SetSubject
         )
 
-        const text = hasContent || !hasActions ? 'Send' : 'Apply Macro'
-        const disabled = !(
-            isAccountActive &&
-            hasRecipientsOrPrivate &&
-            (hasContent || hasActions)
-        )
+        const text =
+            hasContent || !hasContentlessAction ? 'Send' : 'Apply Macro'
 
         const showConfirm = !hasTitle && !isUpdating && !hasSetSubjectAction
 
@@ -146,7 +135,7 @@ export class TicketSubmitButtonsContainer extends Component<Props> {
                             id="submit-button"
                             type="submit"
                             className="mr-2"
-                            isDisabled={disabled}
+                            isDisabled={!canSend}
                             tabIndex={5}
                             onClick={() => this.submit()}
                             isLoading={loading}
@@ -159,7 +148,7 @@ export class TicketSubmitButtonsContainer extends Component<Props> {
                             type="submit"
                             confirmationContent={titleConfirmation}
                             className="mr-2"
-                            isDisabled={disabled}
+                            isDisabled={!canSend}
                             tabIndex={5}
                             onConfirm={() => this.submit()}
                             isLoading={loading}
@@ -167,7 +156,7 @@ export class TicketSubmitButtonsContainer extends Component<Props> {
                             {text}
                         </ConfirmButton>
                     )}
-                    {!disabled && (
+                    {canSend && (
                         <Tooltip
                             placement="top"
                             target="submit-button"
@@ -184,7 +173,7 @@ export class TicketSubmitButtonsContainer extends Component<Props> {
                             id="submit-and-close-button"
                             type="submit"
                             intent="secondary"
-                            isDisabled={disabled}
+                            isDisabled={!canSend}
                             onClick={() =>
                                 this.submit(TicketStatus.Closed, true)
                             }
@@ -198,7 +187,7 @@ export class TicketSubmitButtonsContainer extends Component<Props> {
                             type="submit"
                             confirmationContent={titleConfirmation}
                             intent="secondary"
-                            isDisabled={disabled}
+                            isDisabled={!canSend}
                             onConfirm={() =>
                                 this.submit(TicketStatus.Closed, true)
                             }
@@ -207,7 +196,7 @@ export class TicketSubmitButtonsContainer extends Component<Props> {
                             {text} &amp; Close
                         </ConfirmButton>
                     )}
-                    {!disabled && (
+                    {canSend && (
                         <Tooltip
                             placement="top"
                             target="submit-and-close-button"
@@ -251,11 +240,12 @@ export class TicketSubmitButtonsContainer extends Component<Props> {
 const connector = connect(
     (state: RootState) => ({
         isAccountActive: isAccountActive(state),
-        hasRecipientsOrPrivate: hasRecipientsOrPrivate(state),
         hasContent: hasContent(state),
         currentUserPreferences: getPreferences(state),
         isHidingTips: isHidingTips(state),
         newMessage: state.newMessage,
+        canSend: canSend(state),
+        hasContentlessAction: hasContentlessAction(state),
     }),
     {
         submitSetting,

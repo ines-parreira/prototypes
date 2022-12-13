@@ -12,9 +12,7 @@ import pendingMessageManager from 'services/pendingMessageManager/pendingMessage
 import shortcutManager from 'services/shortcutManager'
 import socketManager from 'services/socketManager/socketManager'
 import {JoinEventType} from 'services/socketManager/types'
-import {isAccountActive} from 'state/currentAccount/selectors'
 import {fetchCustomer, fetchCustomerHistory} from 'state/customers/actions'
-import {getAppliedMacro} from 'state/ticket/selectors'
 
 import {
     DEPRECATED_getActiveCustomer,
@@ -32,7 +30,7 @@ import {
     TicketMessageActionValidationError,
     TicketMessageInvalidSendDataError,
 } from 'state/newMessage/errors'
-import {isReady, getNewMessageSource} from 'state/newMessage/selectors'
+import {getNewMessageSource, canSend} from 'state/newMessage/selectors'
 import {fetchTags} from 'state/tags/actions'
 import {
     clearTicket,
@@ -508,9 +506,7 @@ const connector = connect(
         customers: getCustomersState(state),
         ticket: state.ticket,
         newMessage: state.newMessage,
-        canSendMessage:
-            isAccountActive(state) &&
-            (isReady(state) || !!getAppliedMacro(state)),
+        canSendMessage: canSend(state),
         newMessageSource: getNewMessageSource(state),
     }),
     {

@@ -2,10 +2,13 @@ import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS, Map, List} from 'immutable'
 
 import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'
+import {TicketVia} from 'business/types/ticket'
+import {RootState} from 'state/types'
+import {MacroActionName} from 'models/macroAction/types'
+import {ACTION_TEMPLATES} from 'config'
+
 import * as selectors from '../selectors'
 import {initialState} from '../reducers'
-import {TicketVia} from '../../../business/types/ticket'
-import {RootState} from '../../types'
 
 jest.addMatchers(immutableMatchers)
 
@@ -146,18 +149,6 @@ describe('ticket selectors', () => {
         ).toEqualImmutable(
             state.ticket.getIn(['customer', 'integrations', '1'])
         )
-    })
-
-    it('isDirty', () => {
-        expect(selectors.isDirty(state)).toBe(false)
-        expect(selectors.isDirty({} as RootState)).toBe(false)
-
-        const dirtyState = {
-            ...state,
-            ticket: state.ticket.setIn(['state', 'dirty'], true),
-        }
-
-        expect(selectors.isDirty(dirtyState)).toBe(true)
     })
 
     it('getMessages', () => {
@@ -379,5 +370,53 @@ describe('ticket selectors', () => {
         expected?.constructor === Object
             ? expect(topRankMacroState).toMatchObject(expected)
             : expect(topRankMacroState).toBe(expected)
+    })
+
+    describe('hasContentlessAction', () => {
+        it('should return false when no actions applied', () => {
+            expect(selectors.hasContentlessAction(state)).toBe(false)
+        })
+
+        it.each([
+            MacroActionName.SetResponseText,
+            MacroActionName.AddAttachments,
+        ])(
+            'should return false when only %s action is applied',
+            (actionName) => {
+                const ticket = state.ticket.setIn(
+                    ['state', 'appliedMacro'],
+                    fromJS({
+                        actions: [
+                            ACTION_TEMPLATES.find(
+                                (action) => action.name === actionName
+                            ),
+                        ],
+                    })
+                )
+                expect(selectors.hasContentlessAction({...state, ticket})).toBe(
+                    false
+                )
+            }
+        )
+
+        it('should return true when contentless action is applied', () => {
+            const ticket = state.ticket.setIn(
+                ['state', 'appliedMacro'],
+                fromJS({
+                    actions: [
+                        ACTION_TEMPLATES.find(
+                            (action) =>
+                                action.name === MacroActionName.SetResponseText
+                        ),
+                        ACTION_TEMPLATES.find(
+                            (action) => action.name === MacroActionName.AddTags
+                        ),
+                    ],
+                })
+            )
+            expect(selectors.hasContentlessAction({...state, ticket})).toBe(
+                true
+            )
+        })
     })
 })
