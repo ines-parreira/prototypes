@@ -37,7 +37,7 @@ type ModalContextState = {
     bodyId?: string
     labelId?: string
     ref?: RefObject<HTMLDivElement>
-} & Pick<Props, 'id' | 'isScrollable' | 'onClose'>
+} & Pick<Props, 'id' | 'isScrollable' | 'onClose' | 'isClosable'>
 
 export const ModalContext = createContext<ModalContextState>({
     isScrollable: false,
@@ -95,11 +95,12 @@ const Modal = (
             bodyId,
             id,
             isScrollable,
+            isClosable,
             labelId,
             onClose,
             ref,
         }),
-        [bodyId, id, isScrollable, labelId, onClose, ref]
+        [bodyId, id, isScrollable, isClosable, labelId, onClose, ref]
     )
 
     const modal = (

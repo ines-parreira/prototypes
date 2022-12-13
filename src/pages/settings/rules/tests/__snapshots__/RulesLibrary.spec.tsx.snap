@@ -1,0 +1,425 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<RulesLibrary/> should render the rule library view 1`] = `
+<div
+  class="full-width overflow-auto"
+>
+  <div
+    class="pageHeaderContainer"
+  >
+    <div
+      class="page-header pageHeader"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/rules"
+            >
+              Rules
+            </a>
+          </li>
+          <li
+            aria-current="page"
+            class="active breadcrumb-item"
+          >
+            Rule Templates
+          </li>
+        </ol>
+      </nav>
+      <div>
+        <div
+          class="headerContainer"
+        >
+          <div
+            class="dropdown"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
+              type="button"
+            >
+              <span>
+                All rules
+              </span>
+            </button>
+            <div
+              aria-hidden="true"
+              class="dropdown dropdown-menu dropdown-menu-right"
+              role="menu"
+              tabindex="-1"
+            >
+              <h6
+                class="dropdown-item-input dropdownItemInput dropdown-header"
+                tabindex="-1"
+              >
+                <input
+                  class="form-control"
+                  placeholder="Search rules..."
+                  type="text"
+                  value=""
+                />
+              </h6>
+              <button
+                class="component dropdown-item"
+                role="menuitem"
+                tabindex="0"
+              >
+                <div
+                  class="checkbox"
+                >
+                  <label
+                    class="label label quickSelectionOption"
+                    for="checkbox-6"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-6"
+                      name="checkbox-6"
+                      type="checkbox"
+                    />
+                    Select all
+                    <div
+                      class="badge"
+                    >
+                      3
+                    </div>
+                  </label>
+                </div>
+              </button>
+              <div
+                class="dropdownDivider dropdown-divider"
+                tabindex="-1"
+              />
+              <div
+                class="content"
+              >
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-7"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-7"
+                      name="checkbox-7"
+                      type="checkbox"
+                    />
+                     Auto Close
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-8"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-8"
+                      name="checkbox-8"
+                      type="checkbox"
+                    />
+                     Auto Tag
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-9"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-9"
+                      name="checkbox-9"
+                      type="checkbox"
+                    />
+                     Auto Reply
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="component mr-2"
+          >
+            <div
+              class="wrapper input"
+            >
+              <span
+                class="prefix"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  search
+                </i>
+              </span>
+              <input
+                class="input"
+                id="input-text-10"
+                name="input-text-10"
+                placeholder="Search rule templates..."
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <a
+            to="/app/settings/rules/new"
+          >
+            <button
+              class="wrapper float-right fill primary medium"
+              type="button"
+            >
+              Create Custom Rule
+            </button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="info pageContainer container-fluid"
+  >
+    <div
+      class="container"
+    >
+      <div
+        class="inner"
+        style="min-height: 500px;"
+      >
+        <i
+          class="icon-custom icon-circle-o-notch md-spin"
+          style="font-size: 40px;"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<RulesLibrary/> should render the rules library view 1`] = `
+<div
+  class="full-width overflow-auto"
+>
+  <div
+    class="pageHeaderContainer"
+  >
+    <div
+      class="page-header pageHeader"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/rules"
+            >
+              Rules
+            </a>
+          </li>
+          <li
+            aria-current="page"
+            class="active breadcrumb-item"
+          >
+            Rule Templates
+          </li>
+        </ol>
+      </nav>
+      <div>
+        <div
+          class="headerContainer"
+        >
+          <div
+            class="dropdown"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
+              type="button"
+            >
+              <span>
+                All rules
+              </span>
+            </button>
+            <div
+              aria-hidden="true"
+              class="dropdown dropdown-menu dropdown-menu-right"
+              role="menu"
+              tabindex="-1"
+            >
+              <h6
+                class="dropdown-item-input dropdownItemInput dropdown-header"
+                tabindex="-1"
+              >
+                <input
+                  class="form-control"
+                  placeholder="Search rules..."
+                  type="text"
+                  value=""
+                />
+              </h6>
+              <button
+                class="component dropdown-item"
+                role="menuitem"
+                tabindex="0"
+              >
+                <div
+                  class="checkbox"
+                >
+                  <label
+                    class="label label quickSelectionOption"
+                    for="checkbox-1"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-1"
+                      name="checkbox-1"
+                      type="checkbox"
+                    />
+                    Select all
+                    <div
+                      class="badge"
+                    >
+                      3
+                    </div>
+                  </label>
+                </div>
+              </button>
+              <div
+                class="dropdownDivider dropdown-divider"
+                tabindex="-1"
+              />
+              <div
+                class="content"
+              >
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-2"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-2"
+                      name="checkbox-2"
+                      type="checkbox"
+                    />
+                     Auto Close
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-3"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-3"
+                      name="checkbox-3"
+                      type="checkbox"
+                    />
+                     Auto Tag
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-4"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-4"
+                      name="checkbox-4"
+                      type="checkbox"
+                    />
+                     Auto Reply
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="component mr-2"
+          >
+            <div
+              class="wrapper input"
+            >
+              <span
+                class="prefix"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  search
+                </i>
+              </span>
+              <input
+                class="input"
+                id="input-text-5"
+                name="input-text-5"
+                placeholder="Search rule templates..."
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <a
+            to="/app/settings/rules/new"
+          >
+            <button
+              class="wrapper float-right fill primary medium"
+              type="button"
+            >
+              Create Custom Rule
+            </button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="info pageContainer container-fluid"
+  >
+    <div
+      class="container"
+    >
+      <div
+        class="inner"
+        style="min-height: 500px;"
+      >
+        <i
+          class="icon-custom icon-circle-o-notch md-spin"
+          style="font-size: 40px;"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;

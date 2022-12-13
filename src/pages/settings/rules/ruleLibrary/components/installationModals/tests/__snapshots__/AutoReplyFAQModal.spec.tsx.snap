@@ -16,7 +16,7 @@ exports[`<AutoReplyFAQModal/> should render the autoclose spam body when automat
         <div
           class="targetTitle"
         >
-          target up to
+          install to target up to
         </div>
         <div
           class="targetValue"
@@ -27,36 +27,31 @@ exports[`<AutoReplyFAQModal/> should render the autoclose spam body when automat
             10
           </span>
            
-          tickets/month
+          <span
+            class="ticketsPerMonth"
+          >
+            tickets/month
+          </span>
         </div>
       </div>
       <div
         class="descriptionBlock"
       >
         <h4>
-          Help shoppers find answers faster
+          How it works
         </h4>
         <p>
-          This rule automatically identifies incoming questions via email and replies with relevant article suggestions from your help center.
+          This rule detects shopper questions in incoming emails, replies with relevant articles from your help center, and closes the ticket. If shoppers reply, the ticket will reopen so you never miss a response.
         </p>
       </div>
       <div
         class="descriptionBlock"
       >
         <h4>
-          Customize the message
+          Customize it
         </h4>
         <p>
-          Personalize your message to align with your brand.
-        </p>
-      </div>
-      <div
-        class="descriptionBlock"
-      >
-        <p
-          class="addendum"
-        >
-          If your customer replies to this message, it will reappear as a regular ticket.
+          Personailze the message body and signature.
         </p>
       </div>
       <div
@@ -75,7 +70,7 @@ exports[`<AutoReplyFAQModal/> should render the autoclose spam body when automat
           class="fakeMessage"
         >
           <div
-            class="component"
+            class="component clientAvatar"
             style="width: 28px; height: 28px;"
           >
             <div
@@ -107,7 +102,7 @@ exports[`<AutoReplyFAQModal/> should render the autoclose spam body when automat
         >
           <div>
             <div
-              class="component hasImage"
+              class="component hasImage autoResponderAvatar"
               style="width: 28px; height: 28px;"
             >
               <div
@@ -131,12 +126,7 @@ exports[`<AutoReplyFAQModal/> should render the autoclose spam body when automat
             <div
               class="name autoResponder"
             >
-              <i
-                class="material-icons mr-1"
-              >
-                auto_awesome
-              </i>
-              Auto Responder
+              Autoresponder
             </div>
             <div>
               <p>
@@ -146,7 +136,7 @@ exports[`<AutoReplyFAQModal/> should render the autoclose spam body when automat
                 Thank you for contacting us!
               </p>
               <p>
-                We found an article from our help center that might provide the information you’re looking for. Click the preview below to open and read more.
+                We found some articles from our help center that might provide the information you’re looking for. Click a preview below to open and read more.
               </p>
               <div
                 class="container FAQArticle"
@@ -154,20 +144,56 @@ exports[`<AutoReplyFAQModal/> should render the autoclose spam body when automat
                 <div
                   class="articleTitle"
                 >
-                  What size should I order
+                  What size should I order?
                 </div>
-                <div
+                <p
                   class="articleDescription"
                 >
-                  <p>
-                    Unsure what size will work? Check out our sizing guide located above the sizes offered on each product page for exact measure...
-                  </p>
-                  <p
-                    class="articleLink"
-                  >
-                    Read more
-                  </p>
+                  Unsure what size will work? Check out our sizing guide located above the sizes offered on each product page for exact measure...
+                </p>
+                <span
+                  class="articleLink"
+                >
+                  Read More
+                </span>
+              </div>
+              <div
+                class="container FAQArticle"
+              >
+                <div
+                  class="articleTitle"
+                >
+                  What shoe size should I buy?
                 </div>
+                <p
+                  class="articleDescription"
+                >
+                  We recommend looking at the product details on the product page for each item for specific fit information. Each style will have...
+                </p>
+                <span
+                  class="articleLink"
+                >
+                  Read More
+                </span>
+              </div>
+              <div
+                class="container FAQArticle"
+              >
+                <div
+                  class="articleTitle"
+                >
+                  What size am I in your denim?
+                </div>
+                <p
+                  class="articleDescription"
+                >
+                  Take a look at our denim size guide for measurement instructions and keep in mind that the fabric will relax during the first...
+                </p>
+                <span
+                  class="articleLink"
+                >
+                  Read More
+                </span>
               </div>
               <p>
                 This is an automated message. If it does not answer your question, just reply to this message and we will get back to you as soon as possible.
@@ -186,18 +212,8 @@ exports[`<AutoReplyFAQModal/> should render the autoclose spam body when automat
 
 exports[`<AutoReplyFAQModal/> should render the autoclose spam body when automation add-on is subscribed 2`] = `
 <div
-  class="managedRule autoReplyFAQ bordered"
+  class="managedRule autoReplyFAQ"
 >
-  <div
-    class="titleWrapper"
-  >
-    <span
-      class="title"
-    >
-      my rule
-    </span>
-    tags
-  </div>
   <div
     class="container"
   >
@@ -210,7 +226,7 @@ exports[`<AutoReplyFAQModal/> should render the autoclose spam body when automat
         <div
           class="targetTitle"
         >
-          target up to
+          install to target up to
         </div>
         <div
           class="targetValue"
@@ -221,36 +237,31 @@ exports[`<AutoReplyFAQModal/> should render the autoclose spam body when automat
             10
           </span>
            
-          tickets/month
+          <span
+            class="ticketsPerMonth"
+          >
+            tickets/month
+          </span>
         </div>
       </div>
       <div
         class="descriptionBlock"
       >
         <h4>
-          Help shoppers find answers faster
+          How it works
         </h4>
         <p>
-          This rule automatically identifies incoming questions via email and replies with relevant article suggestions from your help center.
+          This rule detects shopper questions in incoming emails, replies with relevant articles from your help center, and closes the ticket. If shoppers reply, the ticket will reopen so you never miss a response.
         </p>
       </div>
       <div
         class="descriptionBlock"
       >
         <h4>
-          Customize the message
+          Customize it
         </h4>
         <p>
-          Personalize your message to align with your brand.
-        </p>
-      </div>
-      <div
-        class="descriptionBlock"
-      >
-        <p
-          class="addendum"
-        >
-          If your customer replies to this message, it will reappear as a regular ticket.
+          Personailze the message body and signature.
         </p>
       </div>
       <div
@@ -269,7 +280,7 @@ exports[`<AutoReplyFAQModal/> should render the autoclose spam body when automat
           class="fakeMessage"
         >
           <div
-            class="component"
+            class="component clientAvatar"
             style="width: 28px; height: 28px;"
           >
             <div
@@ -301,7 +312,7 @@ exports[`<AutoReplyFAQModal/> should render the autoclose spam body when automat
         >
           <div>
             <div
-              class="component hasImage"
+              class="component hasImage autoResponderAvatar"
               style="width: 28px; height: 28px;"
             >
               <div
@@ -325,12 +336,7 @@ exports[`<AutoReplyFAQModal/> should render the autoclose spam body when automat
             <div
               class="name autoResponder"
             >
-              <i
-                class="material-icons mr-1"
-              >
-                auto_awesome
-              </i>
-              Auto Responder
+              Autoresponder
             </div>
             <div>
               <p>
@@ -340,7 +346,7 @@ exports[`<AutoReplyFAQModal/> should render the autoclose spam body when automat
                 Thank you for contacting us!
               </p>
               <p>
-                We found an article from our help center that might provide the information you’re looking for. Click the preview below to open and read more.
+                We found some articles from our help center that might provide the information you’re looking for. Click a preview below to open and read more.
               </p>
               <div
                 class="container FAQArticle"
@@ -348,20 +354,56 @@ exports[`<AutoReplyFAQModal/> should render the autoclose spam body when automat
                 <div
                   class="articleTitle"
                 >
-                  What size should I order
+                  What size should I order?
                 </div>
-                <div
+                <p
                   class="articleDescription"
                 >
-                  <p>
-                    Unsure what size will work? Check out our sizing guide located above the sizes offered on each product page for exact measure...
-                  </p>
-                  <p
-                    class="articleLink"
-                  >
-                    Read more
-                  </p>
+                  Unsure what size will work? Check out our sizing guide located above the sizes offered on each product page for exact measure...
+                </p>
+                <span
+                  class="articleLink"
+                >
+                  Read More
+                </span>
+              </div>
+              <div
+                class="container FAQArticle"
+              >
+                <div
+                  class="articleTitle"
+                >
+                  What shoe size should I buy?
                 </div>
+                <p
+                  class="articleDescription"
+                >
+                  We recommend looking at the product details on the product page for each item for specific fit information. Each style will have...
+                </p>
+                <span
+                  class="articleLink"
+                >
+                  Read More
+                </span>
+              </div>
+              <div
+                class="container FAQArticle"
+              >
+                <div
+                  class="articleTitle"
+                >
+                  What size am I in your denim?
+                </div>
+                <p
+                  class="articleDescription"
+                >
+                  Take a look at our denim size guide for measurement instructions and keep in mind that the fabric will relax during the first...
+                </p>
+                <span
+                  class="articleLink"
+                >
+                  Read More
+                </span>
               </div>
               <p>
                 This is an automated message. If it does not answer your question, just reply to this message and we will get back to you as soon as possible.

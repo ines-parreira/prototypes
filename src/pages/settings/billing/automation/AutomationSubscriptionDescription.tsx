@@ -1,5 +1,6 @@
 import React from 'react'
 import moment from 'moment-timezone'
+import classnames from 'classnames'
 
 import {getCurrentSubscription} from 'state/currentAccount/selectors'
 import {
@@ -31,6 +32,17 @@ const AutomationSubscriptionDescription = () => {
 
     return (
         <div className={css.description}>
+            {!hasAutomationAddOn && !isSelfServeLegacy && (
+                <div className={css.badge}>
+                    <i className={classnames(css.icon, 'material-icons')}>
+                        auto_awesome
+                    </i>
+                    <span>
+                        Access these features and more with the Automation
+                        Add-on!
+                    </span>
+                </div>
+            )}
             <div className="flex">
                 {hasAutomationAddOn ? (
                     <div>
@@ -57,12 +69,15 @@ const AutomationSubscriptionDescription = () => {
                     </div>
                 ) : (
                     <div>
-                        Unlock the <b>self-service</b> features, to answer
-                        customers <b>quickly, 24/7</b>!
+                        Add advanced automation features and automate up to 20%
+                        of all interactions.
                         <br />
-                        Questions?{' '}
-                        <a href={`mailto:${window.GORGIAS_SUPPORT_EMAIL}`}>
-                            <b>Get in touch!</b>
+                        <a
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            href="https://app.livestorm.co/gorgias-1/automaton-add-on-workshop?utm_source=candu&amp;utm_medium=in_product&amp;utm_campaign=homepage_addon"
+                        >
+                            Learn more.
                         </a>
                     </div>
                 )}

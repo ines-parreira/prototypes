@@ -2,44 +2,114 @@
 
 exports[`<RuleLibrary/> render should filter cards for the library 1`] = `
 <div
-  class="page-container container"
+  class="container"
 >
   <div
-    class="card"
+    class="libraryHeader d-flex justify-content-between"
   >
-    <div
-      class="content"
-    >
-      <div
-        class="title"
-      >
-        my rule
-      </div>
-      <div
-        class="description"
-      >
-        foo
+    <div>
+      <h1>
+        <i
+          class="material-icons mr-2"
+        >
+          auto_awesome
+        </i>
+        Autoresponders
+      </h1>
+      <p>
+        Install autoresponders to leverage AI to resolve tickets. Available only to Automation Add-on subscribers.
+      </p>
+    </div>
+    <div>
+      <div>
+        <div
+          class="d-flex align-items-center upgradeLink"
+        >
+          <button
+            class="wrapper fill primary medium"
+            type="button"
+          >
+            <span
+              class="wrapper"
+            >
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                auto_awesome
+              </i>
+              Get Automation Features
+            </span>
+          </button>
+        </div>
       </div>
     </div>
+  </div>
+  <div
+    class="flex autoResponders"
+  />
+  <div
+    class="libraryHeader"
+  >
+    <h1>
+      Rule Templates
+    </h1>
+    <p>
+      Install and adapt rule templates to streamline your team’s workflow.
+    </p>
+    <p>
+      <a
+        href="https://docs.gorgias.com/en-US/rule-library-new-81974"
+        rel="noreferrer"
+        target="_blank"
+      >
+        <i
+          class="material-icons mr-2"
+        >
+          menu_book
+        </i>
+        Learn About Rule Templates
+      </a>
+    </p>
+  </div>
+  <div
+    class="flex ruleTemplates"
+  >
     <div
-      class="footer"
+      class="card"
     >
       <div
-        class="ticketCount"
+        class="header"
       >
-        0
-         tickets/month
+        <span
+          class="badge badge-secondary"
+          style="color: rgb(0, 121, 107); background-color: rgb(234, 255, 239);"
+        >
+          Auto Tag
+        </span>
       </div>
       <div
-        class="tags"
+        class="content"
       >
-        <div>
-          <span
-            class="badge badge-secondary"
-            style="color: rgb(32, 192, 140); background-color: rgba(32, 192, 140, 0.05);"
-          >
-            Auto Tag
-          </span>
+        <div
+          class="title"
+        >
+          my rule
+        </div>
+        <div
+          class="description"
+        >
+          foo
+        </div>
+      </div>
+      <div
+        class="footer"
+      >
+        <div
+          class="ticketCount"
+        >
+          Target up to 
+          0
+           tickets/month
         </div>
       </div>
     </div>
@@ -49,84 +119,153 @@ exports[`<RuleLibrary/> render should filter cards for the library 1`] = `
 
 exports[`<RuleLibrary/> render should render cards for the library 1`] = `
 <div
-  class="page-container container"
+  class="container"
 >
   <div
-    class="card"
+    class="libraryHeader d-flex justify-content-between"
   >
-    <div
-      class="content"
-    >
-      <div
-        class="title"
-      >
-        my rule
-      </div>
-      <div
-        class="description"
-      >
-        foo
-      </div>
+    <div>
+      <h1>
+        <i
+          class="material-icons mr-2"
+        >
+          auto_awesome
+        </i>
+        Autoresponders
+      </h1>
+      <p>
+        Install autoresponders to leverage AI to resolve tickets. Available only to Automation Add-on subscribers.
+      </p>
     </div>
-    <div
-      class="footer"
-    >
-      <div
-        class="ticketCount"
-      >
-        0
-         tickets/month
-      </div>
-      <div
-        class="tags"
-      >
-        <div>
-          <span
-            class="badge badge-secondary"
-            style="color: rgb(214, 56, 77); background-color: rgba(214, 56, 77, 0.05);"
+    <div>
+      <div>
+        <div
+          class="d-flex align-items-center upgradeLink"
+        >
+          <button
+            class="wrapper fill primary medium"
+            type="button"
           >
-            Auto Close
-          </span>
+            <span
+              class="wrapper"
+            >
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                auto_awesome
+              </i>
+              Get Automation Features
+            </span>
+          </button>
         </div>
       </div>
     </div>
   </div>
   <div
-    class="card"
+    class="flex autoResponders"
+  />
+  <div
+    class="libraryHeader"
+  >
+    <h1>
+      Rule Templates
+    </h1>
+    <p>
+      Install and adapt rule templates to streamline your team’s workflow.
+    </p>
+    <p>
+      <a
+        href="https://docs.gorgias.com/en-US/rule-library-new-81974"
+        rel="noreferrer"
+        target="_blank"
+      >
+        <i
+          class="material-icons mr-2"
+        >
+          menu_book
+        </i>
+        Learn About Rule Templates
+      </a>
+    </p>
+  </div>
+  <div
+    class="flex ruleTemplates"
   >
     <div
-      class="content"
+      class="card"
     >
       <div
-        class="title"
+        class="header"
       >
-        my rule
+        <span
+          class="badge badge-secondary"
+          style="color: rgb(148, 17, 181); background-color: rgb(237, 234, 255);"
+        >
+          Auto Close
+        </span>
       </div>
       <div
-        class="description"
+        class="content"
       >
-        foo
+        <div
+          class="title"
+        >
+          my rule
+        </div>
+        <div
+          class="description"
+        >
+          foo
+        </div>
+      </div>
+      <div
+        class="footer"
+      >
+        <div
+          class="ticketCount"
+        >
+          Target up to 
+          0
+           tickets/month
+        </div>
       </div>
     </div>
     <div
-      class="footer"
+      class="card"
     >
       <div
-        class="ticketCount"
+        class="header"
       >
-        0
-         tickets/month
+        <span
+          class="badge badge-secondary"
+          style="color: rgb(0, 121, 107); background-color: rgb(234, 255, 239);"
+        >
+          Auto Tag
+        </span>
       </div>
       <div
-        class="tags"
+        class="content"
       >
-        <div>
-          <span
-            class="badge badge-secondary"
-            style="color: rgb(32, 192, 140); background-color: rgba(32, 192, 140, 0.05);"
-          >
-            Auto Tag
-          </span>
+        <div
+          class="title"
+        >
+          my rule
+        </div>
+        <div
+          class="description"
+        >
+          foo
+        </div>
+      </div>
+      <div
+        class="footer"
+      >
+        <div
+          class="ticketCount"
+        >
+          Target up to 
+          0
+           tickets/month
         </div>
       </div>
     </div>

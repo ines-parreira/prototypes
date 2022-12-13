@@ -32,17 +32,17 @@ describe('<RuleTicketList/>', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-
         fetchTicketsByRuleIdMock.mockResolvedValue(defaultApiResponse)
     })
-
     it('should render the rule ticket list', async () => {
-        const {container, getByText} = render(
+        const {container} = render(
             <Provider store={store}>
                 <RuleTicketList {...minProps} />
             </Provider>
         )
-        await waitFor(() => getByText('List of tickets triggering the rule'))
+        await waitFor(() =>
+            expect(container.getElementsByClassName('md-spin').length).toBe(0)
+        )
         expect(container).toMatchSnapshot()
     })
     it('should fetch the tickets on render', async () => {
@@ -61,12 +61,14 @@ describe('<RuleTicketList/>', () => {
             ...defaultApiResponse,
             meta: {next_cursor: 'foo', prev_cursor: null},
         })
-        const {container, getByText} = render(
+        const {container} = render(
             <Provider store={store}>
                 <RuleTicketList {...minProps} />
             </Provider>
         )
-        await waitFor(() => getByText('List of tickets triggering the rule'))
+        await waitFor(() =>
+            expect(container.getElementsByClassName('md-spin').length).toBe(0)
+        )
         expect(container).toMatchSnapshot()
     })
     it('should query on click on next page', async () => {
@@ -74,38 +76,29 @@ describe('<RuleTicketList/>', () => {
             ...defaultApiResponse,
             meta: {next_cursor: 'foo', prev_cursor: null},
         })
-        const {getByText} = render(
+        const {container, getByText} = render(
             <Provider store={store}>
                 <RuleTicketList {...minProps} />
             </Provider>
         )
-        await waitFor(() => getByText('List of tickets triggering the rule'))
+        await waitFor(() =>
+            expect(container.getElementsByClassName('md-spin').length).toBe(0)
+        )
         fireEvent.click(getByText('keyboard_arrow_right'))
         await waitFor(() =>
             expect(fetchTicketsByRuleIdMock).toHaveBeenCalledTimes(2)
         )
     })
     it('should log segment event on click', async () => {
-        const {getByText} = render(
-            <Provider store={store}>
-                <RuleTicketList {...minProps} />
-            </Provider>
-        )
-        await waitFor(() => getByText('List of tickets triggering the rule'))
-        fireEvent.mouseDown(getByText(ticketFixture.subject))
-        await waitFor(() => expect(logEvent).toHaveBeenCalled())
-    })
-
-    it('should collapse the element when clicking the header', async () => {
         const {container, getByText} = render(
             <Provider store={store}>
                 <RuleTicketList {...minProps} />
             </Provider>
         )
-        const header = await waitFor(() =>
-            getByText('List of tickets triggering the rule')
+        await waitFor(() =>
+            expect(container.getElementsByClassName('md-spin').length).toBe(0)
         )
-        fireEvent.click(header)
-        expect(container).toMatchSnapshot()
+        fireEvent.mouseDown(getByText(ticketFixture.subject))
+        await waitFor(() => expect(logEvent).toHaveBeenCalled())
     })
 })

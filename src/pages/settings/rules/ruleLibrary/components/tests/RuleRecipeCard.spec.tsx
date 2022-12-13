@@ -15,6 +15,7 @@ import {
     emptyRuleRecipeFixture,
     emptyRuleRecipeFixtureWithSections,
 } from 'fixtures/ruleRecipe'
+import {emptyManagedRule} from 'fixtures/rule'
 import {billingState} from 'fixtures/billing'
 import {account} from 'fixtures/account'
 
@@ -65,6 +66,7 @@ describe('<RuleRecipeCard/>', () => {
         onInstall: _noop,
         isModalOpenOnLoad: false,
         isReady: true,
+        isInstalled: false,
     }
 
     beforeEach(() => {
@@ -83,6 +85,21 @@ describe('<RuleRecipeCard/>', () => {
             const {container} = render(
                 <Provider store={defaultStore}>
                     <RuleRecipeCard {...minProps} />
+                </Provider>
+            )
+            expect(container.firstChild).toMatchSnapshot()
+        })
+        it('should render install check mark on installed automation rule', () => {
+            const {container} = render(
+                <Provider store={defaultStore}>
+                    <RuleRecipeCard
+                        {...minProps}
+                        recipe={{
+                            ...emptyRuleRecipeFixture,
+                            rule: emptyManagedRule,
+                        }}
+                        isInstalled={true}
+                    />
                 </Provider>
             )
             expect(container.firstChild).toMatchSnapshot()

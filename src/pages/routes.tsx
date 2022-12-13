@@ -62,7 +62,8 @@ import ImportZendeskCreate from './settings/importData/zendesk/ImportZendeskCrea
 import SatisfactionSurveyView from './settings/satisfactionSurveys/SatisfactionSurveyView'
 import MacrosSettingsContent from './settings/macros/MacrosSettingsContent'
 import MacrosSettingsForm from './settings/macros/MacrosSettingsForm'
-import RulesView from './settings/rules/RulesView'
+import RulesLibrary from './settings/rules/RulesLibrary'
+import RulesView from './settings/rules/RulesList'
 import RuleDetailForm from './settings/rules/accountRules/RuleDetailForm'
 import Access from './settings/access/index.js'
 import TeamList from './settings/users/List'
@@ -1088,6 +1089,18 @@ export function RulesSettingsRoute({match: {path}}: RouteComponentProps) {
                     render={appRender({
                         content: memoizedWithUserRoleRequired(
                             RulesView,
+                            AGENT_ROLE,
+                            PageSection.Rules
+                        ),
+                        navbar: SettingsNavbar,
+                    })}
+                />
+                <Route
+                    path={`${path}/library`}
+                    exact
+                    render={appRender({
+                        content: memoizedWithUserRoleRequired(
+                            RulesLibrary,
                             AGENT_ROLE,
                             PageSection.Rules
                         ),

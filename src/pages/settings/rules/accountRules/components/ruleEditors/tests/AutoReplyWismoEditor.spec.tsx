@@ -12,10 +12,6 @@ import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
 import {IntegrationType} from 'models/integration/constants'
 import AutoReplyWismoEditor from '../AutoReplyWismoEditor'
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
-jest.mock(
-    'pages/settings/rules/accountRules/components/ruleEditors/LinkToRecipeView',
-    () => () => <>Link</>
-)
 
 describe('<AutoReplyWismoEditor/>', () => {
     const minProps: ComponentProps<typeof AutoReplyWismoEditor> = {

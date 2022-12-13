@@ -1,0 +1,67 @@
+@import '~css/new/mixins';
+@import '~css/new/colorTokens';
+
+:local .container {
+    padding: 24px;
+
+    .wrapper {
+        border-radius: 4px;
+        background: @classic-neutral-grey-1;
+    }
+
+    .content {
+        display: flex;
+        width: 100%;
+        max-width: 950px;
+
+        @media @mobiles {
+            text-align: center;
+            flex-direction: column;
+        }
+    }
+
+    .title {
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .description {
+        display: inline-block;
+        max-width: 520px;
+        font-size: 16px;
+        margin-bottom: 32px;
+    }
+
+    .textContainer,
+    .imageContainer {
+        flex-basis: 50%;
+        flex-grow: 0;
+    }
+
+    .textContainer {
+        padding: 32px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        @media @mobiles {
+            padding: 48px;
+        }
+    }
+
+    .imageContainer {
+        padding: 32px 32px 0 0;
+        display: flex;
+        align-items: flex-end;
+
+        @media @mobiles {
+            display: block;
+            padding: 0 48px;
+        }
+    }
+
+    .image {
+        width: 100%;
+        max-width: 456px;
+    }
+}

@@ -1,31 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<AutoReplyWismoModal/> should render an alert when there are no shopify integrations 1`] = `
+exports[`<AutoReplyWismoModal/> should render the autoclose spam body when automation add-on is not subscribed 1`] = `
 <div
   class="managedRule autoReplyWismo"
 >
   <div
-    class="alert warning mb-2"
-  >
-    <div
-      class="iconContainer"
-    >
-      <img
-        alt="icon"
-        src="test-file-stub"
-      />
-    </div>
-    <div
-      class="content"
-    >
-      <span
-        class="label"
-      >
-        This rule requires a Shopify integration to run.
-      </span>
-    </div>
-  </div>
-  <div
     class="container"
   >
     <div
@@ -37,7 +16,7 @@ exports[`<AutoReplyWismoModal/> should render an alert when there are no shopify
         <div
           class="targetTitle"
         >
-          target up to
+          install to target up to
         </div>
         <div
           class="targetValue"
@@ -48,32 +27,21 @@ exports[`<AutoReplyWismoModal/> should render an alert when there are no shopify
             10
           </span>
            
-          tickets/month
+          <span
+            class="ticketsPerMonth"
+          >
+            tickets/month
+          </span>
         </div>
       </div>
       <div
         class="descriptionBlock"
       >
         <h4>
-          Answer "Where is my order" request automatically
+          How it works
         </h4>
         <p>
-          This rule leverages AI to automatically detect if incoming emails from shoppers are related
-           
-          <strong>
-            to tracking or “where is my order” requests
-          </strong>
-          . When such a message is detected, the rule sends an automated message providing shoppers with the tracking link for their three last orders and closes the ticket.
-        </p>
-      </div>
-      <div
-        class="descriptionBlock"
-      >
-        <h4>
-          Customize your message
-        </h4>
-        <p>
-          You can personalize your message to make it your own.
+          This rule detects emails related to order status or tracking, replies with tracking links for the shopper’s last 3 orders, and auto-closes the ticket. If shoppers reply, the ticket will reopen so you never miss a response.
         </p>
       </div>
       <div
@@ -82,7 +50,17 @@ exports[`<AutoReplyWismoModal/> should render an alert when there are no shopify
         <p
           class="addendum"
         >
-          If your customer replies to the automated message, the ticket will be reopened in your backend. This rule requires an active Shopify integration to work correctly.
+          This rule requires an active Shopify integration.
+        </p>
+      </div>
+      <div
+        class="descriptionBlock"
+      >
+        <h4>
+          Customize it
+        </h4>
+        <p>
+          Personalize the message and exclude email addresses from this rule.
         </p>
       </div>
       <div
@@ -99,7 +77,7 @@ exports[`<AutoReplyWismoModal/> should render an alert when there are no shopify
           class="fakeMessage"
         >
           <div
-            class="component"
+            class="component clientAvatar"
             style="width: 28px; height: 28px;"
           >
             <div
@@ -131,7 +109,7 @@ exports[`<AutoReplyWismoModal/> should render an alert when there are no shopify
         >
           <div>
             <div
-              class="component hasImage"
+              class="component hasImage autoResponderAvatar"
               style="width: 28px; height: 28px;"
             >
               <div
@@ -155,19 +133,14 @@ exports[`<AutoReplyWismoModal/> should render an alert when there are no shopify
             <div
               class="name autoResponder"
             >
-              <i
-                class="material-icons mr-1"
-              >
-                auto_awesome
-              </i>
-              Auto Responder
+              Autoresponder
             </div>
             <div>
               <p>
                 Hi Client Name,
               </p>
               <p>
-                We detected that your request might be about tracking an order status. Is that tracking information useful?
+                It looks like you’re reaching out about your order status. Is this tracking information helpful?
               </p>
               <div
                 class="container orderTracking"
@@ -263,266 +236,7 @@ exports[`<AutoReplyWismoModal/> should render an alert when there are no shopify
         <p
           class="legend"
         >
-          see example above
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`<AutoReplyWismoModal/> should render the autoclose spam body when automation add-on is not subscribed 1`] = `
-<div
-  class="managedRule autoReplyWismo bordered"
->
-  <div
-    class="titleWrapper"
-  >
-    <span
-      class="title"
-    >
-      my rule
-    </span>
-  </div>
-  <div
-    class="container"
-  >
-    <div
-      class="description"
-    >
-      <div
-        class="count"
-      >
-        <div
-          class="targetTitle"
-        >
-          target up to
-        </div>
-        <div
-          class="targetValue"
-        >
-          <span
-            class="bold"
-          >
-            10
-          </span>
-           
-          tickets/month
-        </div>
-      </div>
-      <div
-        class="descriptionBlock"
-      >
-        <h4>
-          Answer "Where is my order" request automatically
-        </h4>
-        <p>
-          This rule leverages AI to automatically detect if incoming emails from shoppers are related
-           
-          <strong>
-            to tracking or “where is my order” requests
-          </strong>
-          . When such a message is detected, the rule sends an automated message providing shoppers with the tracking link for their three last orders and closes the ticket.
-        </p>
-      </div>
-      <div
-        class="descriptionBlock"
-      >
-        <h4>
-          Customize your message
-        </h4>
-        <p>
-          You can personalize your message to make it your own.
-        </p>
-      </div>
-      <div
-        class="descriptionBlock"
-      >
-        <p
-          class="addendum"
-        >
-          If your customer replies to the automated message, the ticket will be reopened in your backend. This rule requires an active Shopify integration to work correctly.
-        </p>
-      </div>
-      <div
-        class="descriptionBlock"
-      />
-    </div>
-    <div
-      class="example"
-    >
-      <div
-        class="exampleContainer bordered"
-      >
-        <div
-          class="fakeMessage"
-        >
-          <div
-            class="component"
-            style="width: 28px; height: 28px;"
-          >
-            <div
-              class="initials"
-              style="width: 28px; height: 28px; font-size: 11.666666666666668px;"
-            >
-              <span
-                style="line-height: 30px;"
-              >
-                Cn
-              </span>
-            </div>
-          </div>
-          <div
-            class="ml-3"
-          >
-            <div
-              class="name"
-            >
-              Client Name
-            </div>
-            <div>
-              Hey, do you have a tracking number so I can double check?
-            </div>
-          </div>
-        </div>
-        <div
-          class="fakeMessage"
-        >
-          <div>
-            <div
-              class="component hasImage"
-              style="width: 28px; height: 28px;"
-            >
-              <div
-                class="initials"
-                style="width: 28px; height: 28px; font-size: 11.666666666666668px;"
-              >
-                <span
-                  style="line-height: 30px;"
-                />
-              </div>
-              <img
-                alt="avatar"
-                class="gravatar"
-                src="/assets/img/icons/logo.png"
-              />
-            </div>
-          </div>
-          <div
-            class="ml-3"
-          >
-            <div
-              class="name autoResponder"
-            >
-              <i
-                class="material-icons mr-1"
-              >
-                auto_awesome
-              </i>
-              Auto Responder
-            </div>
-            <div>
-              <p>
-                Hi Client Name,
-              </p>
-              <p>
-                We detected that your request might be about tracking an order status. Is that tracking information useful?
-              </p>
-              <div
-                class="container orderTracking"
-              >
-                <div
-                  class="orderTitleContainer"
-                >
-                  <div
-                    class="orderTitle"
-                  >
-                    Order number
-                  </div>
-                  <div
-                    class="orderPrice"
-                  >
-                    Price
-                  </div>
-                </div>
-                <div
-                  class="fulfillmentContainer"
-                >
-                  <div
-                    class="product"
-                  >
-                    <div
-                      class="productTitle"
-                    >
-                      Product 1
-                    </div>
-                    <div
-                      class="productPrice"
-                    >
-                      Price x1
-                    </div>
-                  </div>
-                  <div
-                    class="product"
-                  >
-                    <div
-                      class="productTitle"
-                    >
-                      Product 2
-                    </div>
-                    <div
-                      class="productPrice"
-                    >
-                      Price x2
-                    </div>
-                  </div>
-                  <div
-                    class="trackingLink"
-                  >
-                    loremipsum.com/tracking-1234
-                  </div>
-                </div>
-                <div
-                  class="fulfillmentContainer"
-                >
-                  <div
-                    class="product"
-                  >
-                    <div
-                      class="productTitle"
-                    >
-                      Product 3
-                    </div>
-                    <div
-                      class="productPrice"
-                    >
-                      Price x1
-                    </div>
-                  </div>
-                  <div
-                    class="trackingLink"
-                  >
-                    loremipsum.com/tracking-4321
-                  </div>
-                </div>
-              </div>
-              <p>
-                If you need more help you can reply to this email and we will get back to you as soon as possible.
-              </p>
-              <p>
-                Agent Name
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="descriptionBlock"
-      >
-        <p
-          class="legend"
-        >
-          see example above
+          See auto-response example above
         </p>
       </div>
     </div>
@@ -546,7 +260,7 @@ exports[`<AutoReplyWismoModal/> should render the autoclose spam body when autom
         <div
           class="targetTitle"
         >
-          target up to
+          install to target up to
         </div>
         <div
           class="targetValue"
@@ -557,32 +271,21 @@ exports[`<AutoReplyWismoModal/> should render the autoclose spam body when autom
             10
           </span>
            
-          tickets/month
+          <span
+            class="ticketsPerMonth"
+          >
+            tickets/month
+          </span>
         </div>
       </div>
       <div
         class="descriptionBlock"
       >
         <h4>
-          Answer "Where is my order" request automatically
+          How it works
         </h4>
         <p>
-          This rule leverages AI to automatically detect if incoming emails from shoppers are related
-           
-          <strong>
-            to tracking or “where is my order” requests
-          </strong>
-          . When such a message is detected, the rule sends an automated message providing shoppers with the tracking link for their three last orders and closes the ticket.
-        </p>
-      </div>
-      <div
-        class="descriptionBlock"
-      >
-        <h4>
-          Customize your message
-        </h4>
-        <p>
-          You can personalize your message to make it your own.
+          This rule detects emails related to order status or tracking, replies with tracking links for the shopper’s last 3 orders, and auto-closes the ticket. If shoppers reply, the ticket will reopen so you never miss a response.
         </p>
       </div>
       <div
@@ -591,7 +294,17 @@ exports[`<AutoReplyWismoModal/> should render the autoclose spam body when autom
         <p
           class="addendum"
         >
-          If your customer replies to the automated message, the ticket will be reopened in your backend. This rule requires an active Shopify integration to work correctly.
+          This rule requires an active Shopify integration.
+        </p>
+      </div>
+      <div
+        class="descriptionBlock"
+      >
+        <h4>
+          Customize it
+        </h4>
+        <p>
+          Personalize the message and exclude email addresses from this rule.
         </p>
       </div>
       <div
@@ -608,7 +321,7 @@ exports[`<AutoReplyWismoModal/> should render the autoclose spam body when autom
           class="fakeMessage"
         >
           <div
-            class="component"
+            class="component clientAvatar"
             style="width: 28px; height: 28px;"
           >
             <div
@@ -640,7 +353,7 @@ exports[`<AutoReplyWismoModal/> should render the autoclose spam body when autom
         >
           <div>
             <div
-              class="component hasImage"
+              class="component hasImage autoResponderAvatar"
               style="width: 28px; height: 28px;"
             >
               <div
@@ -664,19 +377,14 @@ exports[`<AutoReplyWismoModal/> should render the autoclose spam body when autom
             <div
               class="name autoResponder"
             >
-              <i
-                class="material-icons mr-1"
-              >
-                auto_awesome
-              </i>
-              Auto Responder
+              Autoresponder
             </div>
             <div>
               <p>
                 Hi Client Name,
               </p>
               <p>
-                We detected that your request might be about tracking an order status. Is that tracking information useful?
+                It looks like you’re reaching out about your order status. Is this tracking information helpful?
               </p>
               <div
                 class="container orderTracking"
@@ -772,7 +480,7 @@ exports[`<AutoReplyWismoModal/> should render the autoclose spam body when autom
         <p
           class="legend"
         >
-          see example above
+          See auto-response example above
         </p>
       </div>
     </div>

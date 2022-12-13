@@ -16,9 +16,8 @@ import {InstallationError} from '../../../constants'
 describe('<AutoReplyFAQModal/>', () => {
     const minProps: ComponentProps<typeof AutoReplyFAQModal> = {
         rule: emptyManagedRule,
+        recipeSlug: 'auto-reply-faq-questions',
         triggeredCount: 10,
-        isBehindPaywall: false,
-        renderTags: () => <>tags</>,
         viewCreationCheckbox: () => <>checkbox</>,
         handleInstallationError: jest.fn(),
         handleDefaultSettings: jest.fn(),
@@ -59,7 +58,7 @@ describe('<AutoReplyFAQModal/>', () => {
         const store = createStoreWithHelpCenter({'1': {} as HelpCenter})
         const {container} = render(
             <Provider store={store}>
-                <AutoReplyFAQModal {...minProps} isBehindPaywall={true} />
+                <AutoReplyFAQModal {...minProps} />
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
@@ -68,7 +67,7 @@ describe('<AutoReplyFAQModal/>', () => {
         const store = createStoreWithHelpCenter({})
         render(
             <Provider store={store}>
-                <AutoReplyFAQModal {...minProps} isBehindPaywall={true} />
+                <AutoReplyFAQModal {...minProps} />
             </Provider>
         )
         expect(minProps.handleInstallationError).toHaveBeenCalledWith(

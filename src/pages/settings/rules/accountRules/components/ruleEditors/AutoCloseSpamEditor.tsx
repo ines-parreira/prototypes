@@ -2,14 +2,10 @@ import React from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import MultiSelectField from 'pages/common/forms/MultiSelectField'
+import Alert from 'pages/common/components/Alert/Alert'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {
-    AutoCloseSpamSettings,
-    ManagedRuleSettings,
-    ManagedRulesSlugs,
-} from 'state/rules/types'
-import LinkToRecipeView from './LinkToRecipeView'
+import {AutoCloseSpamSettings, ManagedRuleSettings} from 'state/rules/types'
 
 import {ManagedRuleDetailProps} from './ManagedRuleEditor'
 
@@ -62,26 +58,20 @@ export const AutoCloseSpamEditor = ({
 
     return (
         <div className={css.container}>
-            <h3>Rule description</h3>
-            <p>
-                This rules leverages machine learning to auto-close tickets
-                unrelated to a customer support request.
+            <p className="mb-4">
+                This rule detects and closes irrelevant emails that don’t
+                require a response such as newsletters and spam to save you time
+                filtering through tickets.
             </p>
-            <p>
-                For best results, make sure that this rule is triggering before
-                all other rules by putting it at the top of your rule list.
-            </p>
-            <p>
-                <LinkToRecipeView recipeSlug={ManagedRulesSlugs.AutoCloseSpam}>
-                    You can see tickets closed by this rule anytime using this
-                    link
-                </LinkToRecipeView>
-            </p>
+            <Alert icon>
+                Keep this rule at the top of your rules to ensure it triggers
+                first, preventing irrelevant billable tickets.
+            </Alert>
             <div className={css.listWrapper}>
-                <h4>Accept list</h4>
+                <h4>Email exclusion list</h4>
                 <p>
-                    Emails in the following list will never be closed by this
-                    auto close rule.
+                    This rule will never trigger on incoming emails from the
+                    addresses below.
                 </p>
                 <MultiSelectField
                     allowCustomValues={true}
@@ -99,10 +89,10 @@ export const AutoCloseSpamEditor = ({
                 />
             </div>
             <div className={css.listWrapper}>
-                <h4>Block list</h4>
+                <h4>Always apply list</h4>
                 <p>
-                    Emails in the following list will always be closed by this
-                    auto close rule.
+                    Emails in the following list will <b>always be closed</b> by
+                    this rule.
                 </p>
                 <MultiSelectField
                     allowCustomValues={true}

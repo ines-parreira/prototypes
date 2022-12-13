@@ -31,7 +31,21 @@ exports[`RuleRecipeModal should render the modal 1`] = `
               <h5
                 class="modal-title"
               >
-                Access to next level automation features 🤖
+                <div
+                  class="header"
+                >
+                  <span
+                    class="name mr-2"
+                  >
+                    my rule
+                  </span>
+                  <span
+                    class="badge badge-secondary"
+                    style="color: rgb(0, 121, 107); background-color: rgb(234, 255, 239);"
+                  >
+                    Auto Tag
+                  </span>
+                </div>
               </h5>
               <button
                 aria-label="Close"
@@ -49,109 +63,8 @@ exports[`RuleRecipeModal should render the modal 1`] = `
               class="modal-body"
             >
               <div
-                class="automationHeader"
+                class="managedRule autoCloseSpam"
               >
-                <div
-                  class="alert info"
-                >
-                  <div
-                    class="iconContainer"
-                  >
-                    <i
-                      class="icon material-icons"
-                    >
-                      auto_awesome
-                    </i>
-                  </div>
-                  <div
-                    class="content"
-                  >
-                    <span
-                      class="label"
-                    >
-                      Customers automate up to 5% of all interactions with our new automation add-on!
-                    </span>
-                  </div>
-                </div>
-                <div
-                  class="features"
-                >
-                  <li
-                    class="d-flex align-items-center featureListItem"
-                  >
-                    <span
-                      class="featureIcon mr-3"
-                    >
-                      <i
-                        class="icon material-icons"
-                      >
-                        low_priority
-                      </i>
-                    </span>
-                    <span>
-                      Track, Return, Cancel & Custom 
-                      <b>
-                        workflows
-                      </b>
-                    </span>
-                  </li>
-                  <li
-                    class="d-flex align-items-center featureListItem"
-                  >
-                    <span
-                      class="featureIcon mr-3"
-                    >
-                      <i
-                        class="icon material-icons"
-                      >
-                        slow_motion_video
-                      </i>
-                    </span>
-                    <span>
-                      Self-service portal in 
-                      <b>
-                        chat
-                      </b>
-                       and
-                       
-                      <b>
-                        help center
-                      </b>
-                    </span>
-                  </li>
-                  <li
-                    class="d-flex align-items-center featureListItem"
-                  >
-                    <span
-                      class="featureIcon mr-3"
-                    >
-                      <i
-                        class="icon material-icons"
-                      >
-                        insights
-                      </i>
-                    </span>
-                    <span>
-                      Self-service 
-                      <b>
-                        statistics
-                      </b>
-                    </span>
-                  </li>
-                </div>
-              </div>
-              <div
-                class="managedRule autoCloseSpam bordered"
-              >
-                <div
-                  class="titleWrapper"
-                >
-                  <span
-                    class="title"
-                  >
-                    my rule
-                  </span>
-                </div>
                 <div
                   class="container"
                 >
@@ -164,7 +77,7 @@ exports[`RuleRecipeModal should render the modal 1`] = `
                       <div
                         class="targetTitle"
                       >
-                        target up to
+                        install to target up to
                       </div>
                       <div
                         class="targetValue"
@@ -175,47 +88,40 @@ exports[`RuleRecipeModal should render the modal 1`] = `
                           0
                         </span>
                          
-                        tickets/month
+                        <span
+                          class="ticketsPerMonth"
+                        >
+                          tickets/month
+                        </span>
                       </div>
                     </div>
                     <div
                       class="descriptionBlock"
                     >
                       <h4>
-                        Close unwanted emails
+                        How it works
                       </h4>
                       <p>
-                        This rule automatically checks and closes emails that are not related to a customer support request (e.g. newsletters, sales outreach messages...)
+                        This rule detects and closes irrelevant emails that don’t require a response like newsletters and spam to save time spent filtering through tickets. Keep this rule at the top of your rules to ensure it always triggers first and prevents irrelevant billable tickets from being created.
                       </p>
                     </div>
                     <div
                       class="descriptionBlock"
                     >
                       <h4>
-                        Allow or block some email addresses
+                        Customize it
                       </h4>
                       <p>
-                        You'll be able to add allowed email addresses and blocked email addresses in the rules settings, allowing a more precise control on your workflow. Emails coming from the allowed or blocked lists will respectively never or always be closed by this rule.
+                        You can exclude email addresses from this rule, and ensure this rule always triggers on incoming emails from certain email addresses.
                       </p>
                     </div>
                     <div
                       class="descriptionBlock"
                     >
-                      <h4>
-                        Monitor closed tickets 
-                      </h4>
-                      <p>
-                        All the auto closed tickets are tagged with an "auto-close" and "non-support-related" tags. This will allow you to find them easily in case you want to monitor which tickets the rule is closing.
-                      </p>
-                    </div>
-                    <div
-                      class="descriptionBlock"
-                    >
-                      <div
-                        class="mb-1 mt-3"
-                      >
+                      
+                      <div>
                         <label
-                          class="label label"
+                          class="label label align-items-start"
                           for="checkbox-1"
                         >
                           <input
@@ -225,13 +131,24 @@ exports[`RuleRecipeModal should render the modal 1`] = `
                             name="checkbox-1"
                             type="checkbox"
                           />
-                          Create the views related to this rule.
+                          <div>
+                            <div
+                              class="viewsLabel"
+                            >
+                              Create the ticket view "New & Open Tickets" to see tickets that trigger this rule.
+                            </div>
+                            <div
+                              class="viewsSecondaryLabel"
+                            >
+                              You can always edit ticket view names after installing.
+                            </div>
+                          </div>
                         </label>
                       </div>
                     </div>
                   </div>
                   <div
-                    class="example bordered"
+                    class="container"
                   >
                     <div
                       class="fakeTicket"
@@ -246,6 +163,7 @@ exports[`RuleRecipeModal should render the modal 1`] = `
                         </span>
                         <div
                           class="badge fakeTicketClosed"
+                          style="background-color: rgb(255, 234, 234); color: rgb(163, 46, 46);"
                         >
                           closed
                         </div>
@@ -287,6 +205,7 @@ exports[`RuleRecipeModal should render the modal 1`] = `
                         </span>
                         <div
                           class="badge fakeTicketClosed"
+                          style="background-color: rgb(255, 234, 234); color: rgb(163, 46, 46);"
                         >
                           closed
                         </div>
@@ -332,7 +251,7 @@ exports[`RuleRecipeModal should render the modal 1`] = `
                         >
                           auto_awesome
                         </i>
-                        Subscribe to automation add-on
+                        Add Automation Features to Install
                       </span>
                     </button>
                   </div>

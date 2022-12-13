@@ -55,9 +55,37 @@ export function validateEmailList(
     }
 }
 
+export function validateSubject(values: {subject: string}): string | void {
+    if (!values.subject) {
+        return 'Subject must be filled'
+    }
+}
+
 export function validateBody(values: Email): string | void {
     if (!values.body_text) {
         return 'Body must be filled'
+    }
+}
+
+export function validateApplyMacro(values: {macro: string}): string | void {
+    if (!values.macro) {
+        return 'Macro must be selected'
+    }
+}
+
+export function validateAssignAgent(values: {
+    assignee_user: string | null
+}): string | void {
+    if (values.assignee_user === '') {
+        return 'Agent must be selected'
+    }
+}
+
+export function validateAssignTeam(values: {
+    assignee_team: string | null
+}): string | void {
+    if (values.assignee_team === '') {
+        return 'Team must be selected'
     }
 }
 
@@ -85,6 +113,10 @@ type ValidateFn =
     | typeof validateBody
     | typeof validateSendEmail
     | typeof validateTags
+    | typeof validateSubject
+    | typeof validateApplyMacro
+    | typeof validateAssignAgent
+    | typeof validateAssignTeam
 
 export type ActionConfig = {
     type?: string
@@ -220,6 +252,7 @@ export const actionsConfig: {[key: string]: ActionConfig} = {
     applyMacro: {
         compact: true,
         name: 'Apply macro',
+        validate: validateApplyMacro,
     },
     addTags: {
         compact: true,
@@ -245,6 +278,7 @@ export const actionsConfig: {[key: string]: ActionConfig} = {
                 widget: 'input',
             },
         },
+        validate: validateSubject,
     },
     setStatus: {
         compact: true,
@@ -262,10 +296,12 @@ export const actionsConfig: {[key: string]: ActionConfig} = {
     setAssignee: {
         compact: true,
         name: 'Assign agent',
+        validate: validateAssignAgent,
     },
     setTeamAssignee: {
         compact: true,
         name: 'Assign team',
+        validate: validateAssignTeam,
     },
     trashTicket: {
         compact: true,
@@ -351,6 +387,8 @@ export default class Action extends React.Component<Props> {
             errors = [errors]
         }
 
+        errors = errors.filter((error) => !!error)
+
         // add 'compact' as a property of children
         children = React.Children.map(children, (child) =>
             React.cloneElement(child as any, {compact: !!config.compact})
@@ -364,7 +402,7 @@ export default class Action extends React.Component<Props> {
                 >
                     {children}
                 </span>,
-                value === 'setTeamAssignee' ? (
+                value === 'setTeamAssignee' && (
                     <ActionWarning key="warning">
                         To set up team auto-assignment, go to the{' '}
                         <Link to="/app/settings/ticket-assignment">
@@ -372,10 +410,12 @@ export default class Action extends React.Component<Props> {
                         </Link>{' '}
                         page
                     </ActionWarning>
+                ),
+                errors.length ? (
+                    <Errors className={css.inlineErrors} key="errors" inline>
+                        {errors}
+                    </Errors>
                 ) : null,
-                <Errors className={css.inlineErrors} key="errors" inline>
-                    {errors}
-                </Errors>,
             ]
         }
 
@@ -384,11 +424,13 @@ export default class Action extends React.Component<Props> {
                 <Card>
                     <CardBody>
                         {children}
-                        <Errors>
-                            {errors.map((error, id) => (
-                                <div key={id}>{error}</div>
-                            ))}
-                        </Errors>
+                        {errors.length ? (
+                            <Errors>
+                                {errors.map((error, id) => (
+                                    <div key={id}>{error}</div>
+                                ))}
+                            </Errors>
+                        ) : null}
                     </CardBody>
                 </Card>
             </div>

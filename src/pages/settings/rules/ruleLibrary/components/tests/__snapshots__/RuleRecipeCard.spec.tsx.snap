@@ -456,6 +456,16 @@ exports[`<RuleRecipeCard/> render should open modal on click 1`] = `
   class="card"
 >
   <div
+    class="header"
+  >
+    <span
+      class="badge badge-secondary"
+      style="color: rgb(0, 121, 107); background-color: rgb(234, 255, 239);"
+    >
+      Auto Tag
+    </span>
+  </div>
+  <div
     class="content"
   >
     <div
@@ -475,20 +485,9 @@ exports[`<RuleRecipeCard/> render should open modal on click 1`] = `
     <div
       class="ticketCount"
     >
+      Target up to 
       0
        tickets/month
-    </div>
-    <div
-      class="tags"
-    >
-      <div>
-        <span
-          class="badge badge-secondary"
-          style="color: rgb(32, 192, 140); background-color: rgba(32, 192, 140, 0.05);"
-        >
-          Auto Tag
-        </span>
-      </div>
     </div>
   </div>
 </div>
@@ -499,6 +498,16 @@ exports[`<RuleRecipeCard/> render should render cards for the library 1`] = `
   class="card"
 >
   <div
+    class="header"
+  >
+    <span
+      class="badge badge-secondary"
+      style="color: rgb(0, 121, 107); background-color: rgb(234, 255, 239);"
+    >
+      Auto Tag
+    </span>
+  </div>
+  <div
     class="content"
   >
     <div
@@ -518,20 +527,55 @@ exports[`<RuleRecipeCard/> render should render cards for the library 1`] = `
     <div
       class="ticketCount"
     >
+      Target up to 
       0
        tickets/month
     </div>
-    <div
-      class="tags"
+  </div>
+</div>
+`;
+
+exports[`<RuleRecipeCard/> render should render install check mark on installed automation rule 1`] = `
+<div
+  class="card"
+>
+  <div
+    class="header"
+  >
+    <span
+      class="badge badge-secondary"
+      style="color: rgb(0, 121, 107); background-color: rgb(234, 255, 239);"
     >
-      <div>
-        <span
-          class="badge badge-secondary"
-          style="color: rgb(32, 192, 140); background-color: rgba(32, 192, 140, 0.05);"
-        >
-          Auto Tag
-        </span>
-      </div>
+      Auto Tag
+    </span>
+    <img
+      alt="installed"
+      src="test-file-stub"
+    />
+  </div>
+  <div
+    class="content"
+  >
+    <div
+      class="title"
+    >
+      my rule
+    </div>
+    <div
+      class="description"
+    >
+      foo
+    </div>
+  </div>
+  <div
+    class="footer"
+  >
+    <div
+      class="ticketCount"
+    >
+      Target up to 
+      0
+       tickets/month
     </div>
   </div>
 </div>

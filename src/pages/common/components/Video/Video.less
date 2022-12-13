@@ -3,60 +3,65 @@
 
 :local {
     .preview {
-        width: 200px;
-        height: 140px;
-        padding: 3px;
-        border: solid 1px @classic-neutral-grey-1;
-        box-shadow: 0 2px 3px 0 fade(@classic-neutral-grey-6, 20%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 228px;
+        height: 148px;
+        background: @classic-neutral-grey-1;
+        border: solid 1px @classic-neutral-grey-3;
+        border-radius: 4px;
         margin-bottom: 15px;
         cursor: pointer;
 
-        .screenshot {
-            width: 193px;
-            height: 110px;
-            border-radius: 2px;
-            background-color: @classic-main-primary;
-            margin-bottom: 5px;
-            overflow: hidden;
-            position: relative;
+        .screenshotWrapper {
+            width: 190px;
+            height: 104px;
+            background: @classic-neutral-grey-0;
+            border: solid 1px @classic-neutral-grey-3;
+            border-radius: 4px;
+            margin-bottom: 3px;
+            padding: 7px;
 
-            img {
-                object-fit: cover;
-                width: 100%;
+            .screenshot {
                 height: 100%;
-                opacity: 0.5;
-                transform: scale(1.2);
+                background: @classic-main-primary-3;
+                overflow: hidden;
+                position: relative;
+
+                > img {
+                    object-fit: cover;
+                    width: 100%;
+                    height: 100%;
+                    opacity: 0.5;
+                    transform: scale(1.2);
+                }
             }
 
             .playIcon {
                 position: absolute;
-                color: @classic-main-primary;
-                font-size: 50px;
-                width: 50px;
-                height: 50px;
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
-                z-index: 2;
-            }
+                background: @classic-main-primary-3;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
 
-            .iconBackground {
-                position: absolute;
-                width: 13px;
-                height: 20px;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background: @classic-neutral-grey-0;
-                z-index: 1;
+                img {
+                    margin-left: 3px;
+                }
             }
         }
 
         .title {
-            margin-left: 4px;
-            font-size: 12px;
-            font-weight: 500;
-            color: @classic-main-primary;
+            font-size: 14px;
+            font-weight: 400;
+            color: @classic-neutral-grey-6;
             text-align: left;
         }
     }

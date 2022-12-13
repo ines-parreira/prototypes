@@ -1,17 +1,15 @@
-import React, {useCallback, useEffect, useState} from 'react'
-import _noop from 'lodash/noop'
+import React, {useEffect, useState} from 'react'
 import {fromJS, List, Map} from 'immutable'
 import _getIn from 'lodash/get'
 import {Badge} from 'reactstrap'
+import classnames from 'classnames'
 
-import {toRGBA} from 'utils'
 import history from 'pages/history'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import {
     AnyManagedRuleSettings,
     ManagedRule,
-    Rule,
     RuleLimitStatus,
     RuleOperation,
     RuleType,
@@ -44,10 +42,14 @@ import {NotificationStatus} from 'state/notifications/types'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {RuleRecipe, RuleRecipeTag} from 'models/ruleRecipe/types'
+import {RuleRecipe} from 'models/ruleRecipe/types'
+
+import successIcon from 'assets/img/icons/success.svg'
 
 import {RuleDraft} from 'models/rule/types'
 import {CodeASTType} from '../../types'
+
+import {tagColors} from '../constants'
 
 import {RuleRecipeModal} from './RuleRecipeModal'
 
@@ -55,24 +57,18 @@ import css from './RuleRecipeCard.less'
 
 type Props = {
     recipe: RuleRecipe
-    onInstall: (rule: Rule) => void
+    isInstalled: boolean
     isModalOpenOnLoad?: boolean
     isReady: boolean
     autoInstall?: boolean
 }
 
-const tagColors: {[key: string]: string} = {
-    [RuleRecipeTag.AUTO_TAG]: '#20C08C',
-    [RuleRecipeTag.AUTO_CLOSE]: '#D6384D',
-    [RuleRecipeTag.AUTO_REPLY]: '#3373DB',
-}
-
 function RuleRecipeCard({
     recipe,
     isReady,
+    isInstalled,
     isModalOpenOnLoad = false,
     autoInstall,
-    onInstall = _noop,
 }: Props) {
     const dispatch = useAppDispatch()
 
@@ -196,45 +192,8 @@ function RuleRecipeCard({
         return Promise.all(promises)
     }
 
-    const renderTags = useCallback(() => {
-        const badges = []
-        if (!!recipe_tag) {
-            badges.push(
-                <Badge
-                    key={recipe_tag}
-                    cssModule={{badge: css.badge}}
-                    style={{
-                        color: tagColors[recipe_tag] || tagColors['default'],
-                        backgroundColor: toRGBA(
-                            tagColors[recipe_tag] || tagColors['default'],
-                            0.05
-                        ),
-                    }}
-                >
-                    {recipe_tag}
-                </Badge>
-            )
-        }
-        if (recipe.rule.type === 'managed') {
-            const text = managedRuleId ? 'Installed' : 'Managed'
-            badges.push(
-                <Badge
-                    color="light"
-                    key="managed-rule"
-                    cssModule={{badge: css.badge}}
-                >
-                    <i className="material-icons mr-2">auto_awesome</i>
-                    {text}
-                </Badge>
-            )
-        }
-        return <>{badges}</>
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [recipe_tag])
-
     const handleInstall = async (
         shouldCreateViews: boolean,
-        shouldGoToRule = false,
         installFromSuggestion = false
     ) => {
         void dispatch(
@@ -315,31 +274,17 @@ function RuleRecipeCard({
 
             const newRule = await createRule(newRuleDraft)
             void dispatch(ruleCreated(newRule))
-            onInstall(newRule)
             void dispatch(
                 notify({
                     status: NotificationStatus.Success,
                     message: 'Successfully installed rule',
-                    buttons: [
-                        {
-                            primary: false,
-                            name: 'Go!',
-                            onClick: () => {
-                                history.push(
-                                    `/app/settings/rules/${newRule.id}`
-                                )
-                            },
-                        },
-                    ],
                 })
             )
             logEvent(SegmentEvent.RuleLibraryItemInstalled, {
                 ...segmentEventProps,
                 views_installed: shouldCreateViews,
             })
-            if (shouldGoToRule) {
-                history.push(`/app/settings/rules/${newRule.id}`)
-            }
+            history.push(`/app/settings/rules/${newRule.id}`)
         } catch (error) {
             void dispatch(
                 notify({
@@ -370,12 +315,30 @@ function RuleRecipeCard({
         }
     }
     if (isModalOpen && shouldInstall && autoInstall && !isBehindPaywall) {
-        void handleInstall(true, true, true)
+        void handleInstall(true, true)
+        logEvent(SegmentEvent.RuleSuggestion, {
+            rule: rule.name,
+            event_type: 'installed',
+        })
         setModalOpen(false)
     }
 
     return (
         <div className={css.card} onClick={handleClick}>
+            <div className={css.header}>
+                {recipe.recipe_tag && (
+                    <Badge
+                        key={recipe_tag}
+                        cssModule={{badge: css.badge}}
+                        style={tagColors[recipe_tag]}
+                    >
+                        {recipe_tag}
+                    </Badge>
+                )}
+                {isInstalled && rule?.type === RuleType.Managed && (
+                    <img src={successIcon} alt="installed" />
+                )}
+            </div>
             <div className={css.content}>
                 <div className={css.title}>{rule.name}</div>
                 <div className={css.description}>
@@ -383,16 +346,16 @@ function RuleRecipeCard({
                 </div>
             </div>
             <div className={css.footer}>
-                <div className={css.ticketCount}>
-                    {recipe.triggered_count} tickets/month
-                </div>
-                <div className={css.tags}>
-                    {recipe.recipe_tag && <div>{renderTags()}</div>}
+                <div
+                    className={classnames(css.ticketCount, {
+                        [css.important]: recipe.triggered_count >= 20,
+                    })}
+                >
+                    Target up to {recipe.triggered_count} tickets/month
                 </div>
                 <RuleRecipeModal
                     recipe={recipe}
                     handleInstall={handleInstall}
-                    renderTags={renderTags}
                     handleRule={handleRule}
                     isOpen={isModalOpen}
                     onToggle={handleModalToggle}

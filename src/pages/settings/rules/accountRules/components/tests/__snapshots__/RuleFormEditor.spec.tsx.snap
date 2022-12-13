@@ -1,0 +1,667 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<RuleFormEditor /> should render editor for creating rule 1`] = `
+<div>
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/rules"
+          >
+            Rules
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          Add rule
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <div
+    class="pageContainer"
+  >
+    <div
+      class="container"
+    >
+      <div
+        class="form"
+        id="rule-form"
+      >
+        <div
+          class="form-group"
+        >
+          <label
+            class="label labelName"
+            for="ruleName"
+          >
+            Rule name
+          </label>
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="ruleName"
+              name="ruleName"
+              type="text"
+              value="New rule"
+            />
+          </div>
+        </div>
+        <div
+          class="form-group"
+        >
+          <label
+            class="label"
+            for="ruleDescription"
+          >
+            Rule description
+          </label>
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="ruleDescription"
+              name="ruleDescription"
+              type="textarea"
+              value=""
+            />
+          </div>
+        </div>
+        <label
+          class="label"
+          for="ruleContainer"
+        >
+          Rule conditions
+        </label>
+        <div
+          class="ruleContainer form-group"
+          id="ruleContainer"
+        >
+          <div
+            class="container"
+          >
+            <div
+              class="whenBtn"
+            >
+              WHEN
+            </div>
+            <div
+              class="MultiSelectField whenEvents"
+            >
+              <div
+                class="container"
+              >
+                <span
+                  class="tag badge badge-secondary"
+                >
+                  <span
+                    class="tagText"
+                  >
+                    ticket created
+                  </span>
+                  <i
+                    class="material-icons ml-1 closeIcon"
+                  >
+                    close
+                  </i>
+                </span>
+                <div
+                  class="inputContainer multiSelectOptionField-dropdown"
+                >
+                  <div
+                    class="dropdown"
+                  >
+                    <div
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      class=""
+                      data-toggle="dropdown"
+                    >
+                      <input
+                        autocomplete="off"
+                        class="input"
+                        placeholder="Add events..."
+                        value=""
+                      />
+                    </div>
+                    <div
+                      aria-hidden="true"
+                      class="options dropdown-menu"
+                      role="menu"
+                      tabindex="-1"
+                    >
+                      <button
+                        class="option option--focused dropdown-item"
+                        role="menuitem"
+                        tabindex="0"
+                        type="button"
+                      >
+                        <span>
+                          ticket updated
+                        </span>
+                      </button>
+                      <button
+                        class="option dropdown-item"
+                        role="menuitem"
+                        tabindex="0"
+                        type="button"
+                      >
+                        <span>
+                          ticket assigned to user
+                        </span>
+                      </button>
+                      <button
+                        class="option dropdown-item"
+                        role="menuitem"
+                        tabindex="0"
+                        type="button"
+                      >
+                        <span>
+                          ticket snooze delay ends
+                        </span>
+                      </button>
+                      <button
+                        class="option dropdown-item"
+                        role="menuitem"
+                        tabindex="0"
+                        type="button"
+                      >
+                        <span>
+                          new message in ticket
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="Program-wrapper"
+          >
+            <div
+              class="consequent"
+            >
+              <span
+                class=""
+              >
+                <div
+                  class="AddActionOrIfStatement btn-group"
+                  style="padding-left: 0px;"
+                >
+                  <button
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    class="ControlStructureButton dropdown-toggle btn btn-secondary"
+                    type="button"
+                  >
+                    THEN
+                  </button>
+                  <div
+                    class="d-inline-block text-danger ml-2"
+                  >
+                    THEN
+                     cannot be empty
+                  </div>
+                  <div
+                    aria-hidden="true"
+                    class="dropdown-menu"
+                    role="menu"
+                    tabindex="-1"
+                  >
+                    <button
+                      class="dropdown-item"
+                      role="menuitem"
+                      tabindex="0"
+                      type="button"
+                    >
+                      Action
+                    </button>
+                    <button
+                      class="dropdown-item"
+                      role="menuitem"
+                      tabindex="0"
+                      type="button"
+                    >
+                      "IF" statement
+                    </button>
+                  </div>
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="toggleButtonContainer"
+        >
+          <span>
+            <div>
+              <label
+                aria-checked="true"
+                class="label label"
+                for="toggle-button-10"
+                role="switch"
+              >
+                <input
+                  checked=""
+                  class="input"
+                  disabled=""
+                  id="toggle-button-10"
+                  name="toggle-button-10"
+                  type="checkbox"
+                />
+                <div
+                  class="slider"
+                />
+              </label>
+            </div>
+          </span>
+          <span>
+            <label
+              class="toggleLabel mr-2 mb-0"
+            >
+              Enable rule
+            </label>
+          </span>
+        </div>
+        <div
+          class="buttons-container"
+        >
+          <div>
+            <button
+              class="wrapper fill primary medium isDisabled"
+              disabled=""
+              form="rule-form"
+              id="rule-item-save"
+              type="button"
+            >
+              Create rule
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        class="cardContainer"
+      >
+        <div
+          class="card"
+        >
+          <p
+            class="cardTitle mb-1"
+          >
+            Need some inspiration?
+          </p>
+          <p>
+            Start with a pre-made rule template and adapt it to fit your needs.
+          </p>
+          <a
+            to="/app/settings/rules/library"
+          >
+            <button
+              class="wrapper cardButton fill primary medium"
+              type="button"
+            >
+              Browse Templates
+            </button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<RuleFormEditor /> should render editor for rule 1`] = `
+<div>
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/rules"
+          >
+            Rules
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          my rule
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <nav
+    class="navbar navbar"
+  >
+    <ul
+      class="item active nav"
+    >
+      Rule settings
+    </ul>
+    <ul
+      class="item nav"
+    >
+      Affected tickets
+    </ul>
+  </nav>
+  <div
+    class="pageContainer"
+  >
+    <div
+      class="container"
+    >
+      <div
+        class="form"
+        id="rule-form"
+      >
+        <div
+          class="form-group"
+        >
+          <label
+            class="label labelName"
+            for="ruleName"
+          >
+            Rule name
+          </label>
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="ruleName"
+              name="ruleName"
+              type="text"
+              value="my rule"
+            />
+          </div>
+        </div>
+        <div
+          class="form-group"
+        >
+          <label
+            class="label"
+            for="ruleDescription"
+          >
+            Rule description
+          </label>
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="ruleDescription"
+              name="ruleDescription"
+              type="textarea"
+              value="foo"
+            />
+          </div>
+        </div>
+        <label
+          class="label"
+          for="ruleContainer"
+        >
+          Rule conditions
+        </label>
+        <div
+          class="ruleContainer form-group"
+          id="ruleContainer"
+        >
+          <div
+            class="container"
+          >
+            <div
+              class="whenBtn"
+            >
+              WHEN
+            </div>
+            <div
+              class="MultiSelectField whenEvents"
+            >
+              <div
+                class="container"
+              >
+                <span
+                  class="tag badge badge-secondary"
+                >
+                  <span
+                    class="tagText"
+                  >
+                    ticket created
+                  </span>
+                  <i
+                    class="material-icons ml-1 closeIcon"
+                  >
+                    close
+                  </i>
+                </span>
+                <div
+                  class="inputContainer multiSelectOptionField-dropdown"
+                >
+                  <div
+                    class="dropdown"
+                  >
+                    <div
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      class=""
+                      data-toggle="dropdown"
+                    >
+                      <input
+                        autocomplete="off"
+                        class="input"
+                        placeholder="Add events..."
+                        value=""
+                      />
+                    </div>
+                    <div
+                      aria-hidden="true"
+                      class="options dropdown-menu"
+                      role="menu"
+                      tabindex="-1"
+                    >
+                      <button
+                        class="option option--focused dropdown-item"
+                        role="menuitem"
+                        tabindex="0"
+                        type="button"
+                      >
+                        <span>
+                          ticket updated
+                        </span>
+                      </button>
+                      <button
+                        class="option dropdown-item"
+                        role="menuitem"
+                        tabindex="0"
+                        type="button"
+                      >
+                        <span>
+                          ticket assigned to user
+                        </span>
+                      </button>
+                      <button
+                        class="option dropdown-item"
+                        role="menuitem"
+                        tabindex="0"
+                        type="button"
+                      >
+                        <span>
+                          ticket snooze delay ends
+                        </span>
+                      </button>
+                      <button
+                        class="option dropdown-item"
+                        role="menuitem"
+                        tabindex="0"
+                        type="button"
+                      >
+                        <span>
+                          new message in ticket
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="Program-wrapper"
+          >
+            <div
+              class="consequent"
+            >
+              <span
+                class=""
+              >
+                <div
+                  class="AddActionOrIfStatement btn-group"
+                  style="padding-left: 0px;"
+                >
+                  <button
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    class="ControlStructureButton dropdown-toggle btn btn-secondary"
+                    type="button"
+                  >
+                    THEN
+                  </button>
+                  <div
+                    class="d-inline-block text-danger ml-2"
+                  >
+                    THEN
+                     cannot be empty
+                  </div>
+                  <div
+                    aria-hidden="true"
+                    class="dropdown-menu"
+                    role="menu"
+                    tabindex="-1"
+                  >
+                    <button
+                      class="dropdown-item"
+                      role="menuitem"
+                      tabindex="0"
+                      type="button"
+                    >
+                      Action
+                    </button>
+                    <button
+                      class="dropdown-item"
+                      role="menuitem"
+                      tabindex="0"
+                      type="button"
+                    >
+                      "IF" statement
+                    </button>
+                  </div>
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="toggleButtonContainer"
+        >
+          <span>
+            <div>
+              <label
+                aria-checked="true"
+                class="label label"
+                for="toggle-button-5"
+                role="switch"
+              >
+                <input
+                  checked=""
+                  class="input"
+                  disabled=""
+                  id="toggle-button-5"
+                  name="toggle-button-5"
+                  type="checkbox"
+                />
+                <div
+                  class="slider"
+                />
+              </label>
+            </div>
+          </span>
+          <span>
+            <label
+              class="toggleLabel mr-2 mb-0"
+            >
+              Enable rule
+            </label>
+          </span>
+        </div>
+        <div
+          class="buttons-container"
+        >
+          <div>
+            <button
+              class="wrapper fill primary medium isDisabled"
+              disabled=""
+              form="rule-form"
+              id="rule-item-save"
+              type="button"
+            >
+              Update rule
+            </button>
+            <button
+              class="wrapper ml-3 fill secondary medium isDisabled"
+              disabled=""
+              id="rule-item-duplicate"
+              type="submit"
+            >
+              Duplicate rule
+            </button>
+          </div>
+          <div>
+            <button
+              class="wrapper fill destructive medium"
+              id="rule-item-delete"
+              type="button"
+            >
+              <span
+                class="wrapper"
+              >
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  delete
+                </i>
+                Delete rule
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

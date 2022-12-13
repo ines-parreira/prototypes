@@ -44,28 +44,20 @@ exports[`<RuleRow /> should render a row with a managed rule tab 1`] = `
     />
   </td>
   <td
-    class="link-full-td align-middle middle-column"
+    class="link-full-td align-middle middleColumn"
     id="rule-name-1"
   >
     <a
       to="/app/settings/rules/1"
     >
-      <div>
+      <div
+        class="middleColumnContent"
+      >
         <span
-          class="mr-2 name"
+          class="mr-3 name"
         >
           my rule
         </span>
-        <div
-          class="badge ml-2 fromLibraryBadge"
-        >
-          <i
-            class="material-icons mr-1"
-          >
-            auto_awesome
-          </i>
-          Managed Rule
-        </div>
       </div>
     </a>
   </td>
@@ -157,15 +149,17 @@ exports[`<RuleRow /> should render a row with a rule 1`] = `
     />
   </td>
   <td
-    class="link-full-td align-middle middle-column"
+    class="link-full-td align-middle middleColumn"
     id="rule-name-1"
   >
     <a
       to="/app/settings/rules/1"
     >
-      <div>
+      <div
+        class="middleColumnContent"
+      >
         <span
-          class="mr-2 name"
+          class="mr-3 name"
         >
           my rule
         </span>
@@ -259,28 +253,20 @@ exports[`<RuleRow /> should render a row with an error 1`] = `
     />
   </td>
   <td
-    class="link-full-td align-middle middle-column"
+    class="link-full-td align-middle middleColumn"
     id="rule-name-1"
   >
     <a
       to="/app/settings/rules/1"
     >
-      <div>
+      <div
+        class="middleColumnContent"
+      >
         <span
-          class="mr-2 name"
+          class="mr-3 name"
         >
           my rule
         </span>
-        <div
-          class="badge ml-2 fromLibraryBadge"
-        >
-          <i
-            class="material-icons mr-1"
-          >
-            auto_awesome
-          </i>
-          Managed Rule
-        </div>
         <span
           class="ml-2 error"
         >

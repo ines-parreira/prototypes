@@ -35,6 +35,7 @@ declare module 'sortablejs' {
         }
 
         export interface SortableOptions {
+            disabled?: boolean
             animation?: number
             chosenClass?: string
             draggable?: string

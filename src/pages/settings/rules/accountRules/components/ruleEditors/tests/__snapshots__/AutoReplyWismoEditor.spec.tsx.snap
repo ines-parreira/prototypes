@@ -28,729 +28,55 @@ exports[`<AutoReplyWismoEditor/> should render correctly 1`] = `
 <div
   class="container autoReplyWismo"
 >
+  <p>
+    This rule detects emails related to order status or tracking, replies with tracking links for the shopper’s last 3 orders, and auto-closes the ticket. If shoppers reply, the ticket will reopen so you never miss a response.
+  </p>
   <div
-    class="descriptionWrapper"
+    class="listWrapper"
   >
-    <h3>
-      Rule description
-    </h3>
+    <h4>
+      Exclusion email list
+    </h4>
     <p>
-      Automatically respond to the common
-       
-      <em>
-        "Where is my order?"
-      </em>
-       email with tracking links for the shopper's last 3 orders.
-    </p>
-    <p>
-      Link
+      This rule will never trigger on incoming emails from the addresses below.
     </p>
     <div
-      class="listWrapper"
+      class="MultiSelectField blockList"
     >
-      <h4>
-        Exclusion email list
-      </h4>
-      <p>
-        Emails in the following list will never be replied to by this auto reply rule.
-      </p>
       <div
-        class="MultiSelectField blockList"
+        class="container"
       >
         <div
-          class="container"
+          class="inputContainer multiSelectOptionField-dropdown"
         >
           <div
-            class="inputContainer multiSelectOptionField-dropdown"
+            class="dropdown"
           >
             <div
-              class="dropdown"
+              aria-expanded="false"
+              aria-haspopup="true"
+              class=""
+              data-toggle="dropdown"
             >
-              <div
-                aria-expanded="false"
-                aria-haspopup="true"
-                class=""
-                data-toggle="dropdown"
-              >
-                <input
-                  autocomplete="off"
-                  class="input"
-                  placeholder="Add emails..."
-                  value=""
-                />
-              </div>
-              <div
-                aria-hidden="true"
-                class="options dropdown-menu"
-                role="menu"
+              <input
+                autocomplete="off"
+                class="input"
+                placeholder="Add emails..."
+                value=""
+              />
+            </div>
+            <div
+              aria-hidden="true"
+              class="options dropdown-menu"
+              role="menu"
+              tabindex="-1"
+            >
+              <h6
+                class="dropdown-header"
                 tabindex="-1"
               >
-                <h6
-                  class="dropdown-header"
-                  tabindex="-1"
-                >
-                  No result
-                </h6>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      class="listWrapper"
-    >
-      <h4>
-        Message body
-      </h4>
-      <div
-        class="field"
-      >
-        <div
-          class="textarea-toolbar"
-        >
-          <div
-            class="btn-group"
-          >
-            <button
-              aria-expanded="false"
-              aria-haspopup="true"
-              class="dropdown-toggle btn-sm mr-2 dropdown-toggle btn btn-secondary"
-              type="button"
-            >
-              Ticket customer
-            </button>
-            <div
-              aria-hidden="true"
-              class="dropdown-menu"
-              role="menu"
-              tabindex="-1"
-            >
-              <button
-                class="dropdown-item"
-                role="menuitem"
-                tabindex="0"
-                type="button"
-              >
-                First name
-              </button>
-              <button
-                class="dropdown-item"
-                role="menuitem"
-                tabindex="0"
-                type="button"
-              >
-                Last name
-              </button>
-              <button
-                class="dropdown-item"
-                role="menuitem"
-                tabindex="0"
-                type="button"
-              >
-                Full name
-              </button>
-              <button
-                class="dropdown-item"
-                role="menuitem"
-                tabindex="0"
-                type="button"
-              >
-                Email
-              </button>
-            </div>
-          </div>
-          <div
-            class="btn-group"
-          >
-            <button
-              aria-expanded="false"
-              aria-haspopup="true"
-              class="dropdown-toggle btn-sm mr-2 dropdown-toggle btn btn-secondary"
-              type="button"
-            >
-              Current agent
-            </button>
-            <div
-              aria-hidden="true"
-              class="dropdown-menu"
-              role="menu"
-              tabindex="-1"
-            >
-              <button
-                class="dropdown-item"
-                role="menuitem"
-                tabindex="0"
-                type="button"
-              >
-                First name
-              </button>
-              <button
-                class="dropdown-item"
-                role="menuitem"
-                tabindex="0"
-                type="button"
-              >
-                Last name
-              </button>
-              <button
-                class="dropdown-item"
-                role="menuitem"
-                tabindex="0"
-                type="button"
-              >
-                Full name
-              </button>
-              <button
-                class="dropdown-item"
-                role="menuitem"
-                tabindex="0"
-                type="button"
-              >
-                Email
-              </button>
-              <button
-                class="dropdown-item"
-                role="menuitem"
-                tabindex="0"
-                type="button"
-              >
-                Bio
-              </button>
-            </div>
-          </div>
-        </div>
-        <div
-          class="rich-textarea-wrapper"
-        >
-          <div
-            class="editor-wrapper"
-          >
-            <div
-              class="withMinHeight"
-            >
-              <div
-                class="DraftEditor-root"
-              >
-                <div
-                  class="DraftEditor-editorContainer"
-                >
-                  <div
-                    aria-autocomplete="list"
-                    aria-describedby="placeholder-123"
-                    aria-expanded="true"
-                    class="notranslate public-DraftEditor-content"
-                    contenteditable="true"
-                    role="combobox"
-                    spellcheck="true"
-                    style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
-                  >
-                    <div
-                      data-contents="true"
-                    >
-                      <div
-                        class=""
-                        data-block="true"
-                        data-editor="123"
-                        data-offset-key="123-0-0"
-                      >
-                        <div
-                          class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
-                          data-offset-key="123-0-0"
-                        >
-                          <span
-                            data-offset-key="123-0-0"
-                          >
-                            <span
-                              data-text="true"
-                            >
-                              {{tracking_link_url}}
-                            </span>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="editor-toolbar page"
-          >
-            <div
-              class="actionsWrapper"
-            >
-              <div
-                class="actions"
-              >
-                <button
-                  class="wrapper button wrapper small fill secondary small"
-                  id="format_bold"
-                  type="button"
-                >
-                  <i
-                    class="material-icons icon"
-                  >
-                    format_bold
-                  </i>
-                </button>
-                <button
-                  class="wrapper button wrapper small fill secondary small"
-                  id="format_italic"
-                  type="button"
-                >
-                  <i
-                    class="material-icons icon"
-                  >
-                    format_italic
-                  </i>
-                </button>
-                <button
-                  class="wrapper button wrapper small fill secondary small"
-                  id="format_underline"
-                  type="button"
-                >
-                  <i
-                    class="material-icons icon"
-                  >
-                    format_underline
-                  </i>
-                </button>
-                <span
-                  class="popoverWrapper"
-                >
-                  <button
-                    class="wrapper button wrapper small fill secondary small"
-                    id="insert_link"
-                    type="button"
-                  >
-                    <i
-                      class="material-icons icon"
-                    >
-                      link
-                    </i>
-                  </button>
-                  <div
-                    class="popover top-left hidden"
-                  />
-                </span>
-                <span
-                  class="popoverWrapper"
-                >
-                  <button
-                    class="wrapper button wrapper small fill secondary small"
-                    id="insert_photo"
-                    type="button"
-                  >
-                    <i
-                      class="material-icons icon"
-                    >
-                      insert_photo
-                    </i>
-                  </button>
-                  <div
-                    class="popover top-left hidden"
-                  />
-                </span>
-                <span
-                  class="popoverWrapper"
-                >
-                  <button
-                    class="wrapper button wrapper small fill secondary small"
-                    id="insert_emoticon"
-                    type="button"
-                  >
-                    <i
-                      class="material-icons icon"
-                    >
-                      insert_emoticon
-                    </i>
-                  </button>
-                  <div
-                    class="p-0 d-flex popover top-left hidden"
-                  />
-                </span>
-                <span
-                  class="popoverWrapper"
-                >
-                  <button
-                    class="wrapper button wrapper small fill secondary small"
-                    id="insert_shopify_product"
-                    type="button"
-                  >
-                    <i
-                      class="material-icons icon"
-                    >
-                      shopify
-                    </i>
-                  </button>
-                  <div
-                    class="productLinkToolTip p-0 d-flex popover top-left hidden"
-                  />
-                </span>
-              </div>
-              <div
-                class="hoverOverlay"
-              >
-                Add files as attachments
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      class="listWrapper trackingBlock"
-    >
-      <div
-        class="title"
-      >
-        <div>
-          <img
-            alt="shopify logo"
-            class="shopifyIcon"
-            src="test-file-stub"
-          />
-        </div>
-        <div>
-          Tracking number information
-        </div>
-      </div>
-      <div>
-        Order tracking link and information will be added here
-      </div>
-    </div>
-    <div
-      class="listWrapper"
-    >
-      <h4>
-        Signature
-      </h4>
-      <div
-        class="field"
-      >
-        <div
-          class="textarea-toolbar"
-        >
-          <div
-            class="btn-group"
-          >
-            <button
-              aria-expanded="false"
-              aria-haspopup="true"
-              class="dropdown-toggle btn-sm mr-2 dropdown-toggle btn btn-secondary"
-              type="button"
-            >
-              Ticket customer
-            </button>
-            <div
-              aria-hidden="true"
-              class="dropdown-menu"
-              role="menu"
-              tabindex="-1"
-            >
-              <button
-                class="dropdown-item"
-                role="menuitem"
-                tabindex="0"
-                type="button"
-              >
-                First name
-              </button>
-              <button
-                class="dropdown-item"
-                role="menuitem"
-                tabindex="0"
-                type="button"
-              >
-                Last name
-              </button>
-              <button
-                class="dropdown-item"
-                role="menuitem"
-                tabindex="0"
-                type="button"
-              >
-                Full name
-              </button>
-              <button
-                class="dropdown-item"
-                role="menuitem"
-                tabindex="0"
-                type="button"
-              >
-                Email
-              </button>
-            </div>
-          </div>
-          <div
-            class="btn-group"
-          >
-            <button
-              aria-expanded="false"
-              aria-haspopup="true"
-              class="dropdown-toggle btn-sm mr-2 dropdown-toggle btn btn-secondary"
-              type="button"
-            >
-              Current agent
-            </button>
-            <div
-              aria-hidden="true"
-              class="dropdown-menu"
-              role="menu"
-              tabindex="-1"
-            >
-              <button
-                class="dropdown-item"
-                role="menuitem"
-                tabindex="0"
-                type="button"
-              >
-                First name
-              </button>
-              <button
-                class="dropdown-item"
-                role="menuitem"
-                tabindex="0"
-                type="button"
-              >
-                Last name
-              </button>
-              <button
-                class="dropdown-item"
-                role="menuitem"
-                tabindex="0"
-                type="button"
-              >
-                Full name
-              </button>
-              <button
-                class="dropdown-item"
-                role="menuitem"
-                tabindex="0"
-                type="button"
-              >
-                Email
-              </button>
-              <button
-                class="dropdown-item"
-                role="menuitem"
-                tabindex="0"
-                type="button"
-              >
-                Bio
-              </button>
-            </div>
-          </div>
-        </div>
-        <div
-          class="rich-textarea-wrapper"
-        >
-          <div
-            class="editor-wrapper"
-          >
-            <div
-              class="withMinHeight"
-            >
-              <div
-                class="DraftEditor-root"
-              >
-                <div
-                  class="DraftEditor-editorContainer"
-                >
-                  <div
-                    aria-autocomplete="list"
-                    aria-describedby="placeholder-123"
-                    aria-expanded="true"
-                    class="notranslate public-DraftEditor-content"
-                    contenteditable="true"
-                    role="combobox"
-                    spellcheck="true"
-                    style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
-                  >
-                    <div
-                      data-contents="true"
-                    >
-                      <div
-                        class=""
-                        data-block="true"
-                        data-editor="123"
-                        data-offset-key="123-0-0"
-                      >
-                        <div
-                          class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
-                          data-offset-key="123-0-0"
-                        >
-                          <div
-                            class="d-inline-block align-middle"
-                            title="Current agent full name"
-                          >
-                            <div
-                              class="badge-variable badge-variable-type-current_user"
-                              contenteditable="false"
-                            >
-                              <div>
-                                <span
-                                  class="badge-variable-content"
-                                >
-                                  Current agent full name
-                                </span>
-                              </div>
-                              <button
-                                class="variable-edit-btn btn btn-sm"
-                                title="Edit variable"
-                                type="button"
-                              >
-                                <i
-                                  class="material-icons"
-                                >
-                                  create
-                                </i>
-                              </button>
-                            </div>
-                            <div
-                              class="hidden"
-                            >
-                              <span
-                                data-offset-key="123-0-0"
-                              >
-                                <span
-                                  data-text="true"
-                                >
-                                  {{current_user.name}}
-                                </span>
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="editor-toolbar page"
-          >
-            <div
-              class="actionsWrapper"
-            >
-              <div
-                class="actions"
-              >
-                <button
-                  class="wrapper button wrapper small fill secondary small"
-                  id="format_bold"
-                  type="button"
-                >
-                  <i
-                    class="material-icons icon"
-                  >
-                    format_bold
-                  </i>
-                </button>
-                <button
-                  class="wrapper button wrapper small fill secondary small"
-                  id="format_italic"
-                  type="button"
-                >
-                  <i
-                    class="material-icons icon"
-                  >
-                    format_italic
-                  </i>
-                </button>
-                <button
-                  class="wrapper button wrapper small fill secondary small"
-                  id="format_underline"
-                  type="button"
-                >
-                  <i
-                    class="material-icons icon"
-                  >
-                    format_underline
-                  </i>
-                </button>
-                <span
-                  class="popoverWrapper"
-                >
-                  <button
-                    class="wrapper button wrapper small fill secondary small"
-                    id="insert_link"
-                    type="button"
-                  >
-                    <i
-                      class="material-icons icon"
-                    >
-                      link
-                    </i>
-                  </button>
-                  <div
-                    class="popover top-left hidden"
-                  />
-                </span>
-                <span
-                  class="popoverWrapper"
-                >
-                  <button
-                    class="wrapper button wrapper small fill secondary small"
-                    id="insert_photo"
-                    type="button"
-                  >
-                    <i
-                      class="material-icons icon"
-                    >
-                      insert_photo
-                    </i>
-                  </button>
-                  <div
-                    class="popover top-left hidden"
-                  />
-                </span>
-                <span
-                  class="popoverWrapper"
-                >
-                  <button
-                    class="wrapper button wrapper small fill secondary small"
-                    id="insert_emoticon"
-                    type="button"
-                  >
-                    <i
-                      class="material-icons icon"
-                    >
-                      insert_emoticon
-                    </i>
-                  </button>
-                  <div
-                    class="p-0 d-flex popover top-left hidden"
-                  />
-                </span>
-                <span
-                  class="popoverWrapper"
-                >
-                  <button
-                    class="wrapper button wrapper small fill secondary small"
-                    id="insert_shopify_product"
-                    type="button"
-                  >
-                    <i
-                      class="material-icons icon"
-                    >
-                      shopify
-                    </i>
-                  </button>
-                  <div
-                    class="productLinkToolTip p-0 d-flex popover top-left hidden"
-                  />
-                </span>
-              </div>
-              <div
-                class="hoverOverlay"
-              >
-                Add files as attachments
-              </div>
+                No result
+              </h6>
             </div>
           </div>
         </div>
@@ -758,207 +84,177 @@ exports[`<AutoReplyWismoEditor/> should render correctly 1`] = `
     </div>
   </div>
   <div
-    class="demo"
+    class="listWrapper"
   >
+    <h4>
+      Message above tracking links
+    </h4>
     <div
-      class="topbar"
+      class="field"
     >
       <div
-        class="circle"
-      />
-      <div
-        class="circle"
-      />
-      <div
-        class="circle"
-      />
-    </div>
-    <div
-      class="demoContent"
-    >
-      <div
-        class="textdata"
+        class="textarea-toolbar"
       >
-        <div>
-          <div
-            class="previewLegend"
+        <div
+          class="btn-group"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="dropdown-toggle btn-sm mr-2 dropdown-toggle btn btn-secondary"
+            type="button"
           >
-            Message body
-          </div>
+            Ticket customer
+          </button>
           <div
-            class="previewBodyWrapper"
+            aria-hidden="true"
+            class="dropdown-menu"
+            role="menu"
+            tabindex="-1"
+          >
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              First name
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Last name
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Full name
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Email
+            </button>
+          </div>
+        </div>
+        <div
+          class="btn-group"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="dropdown-toggle btn-sm mr-2 dropdown-toggle btn btn-secondary"
+            type="button"
+          >
+            Current agent
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown-menu"
+            role="menu"
+            tabindex="-1"
+          >
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              First name
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Last name
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Full name
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Email
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Bio
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        class="rich-textarea-wrapper"
+      >
+        <div
+          class="editor-wrapper"
+        >
+          <div
+            class="withMinHeight"
           >
             <div
-              class="rich-textarea-wrapper display-only"
+              class="DraftEditor-root"
             >
               <div
-                class="editor-wrapper"
+                class="DraftEditor-editorContainer"
               >
                 <div
-                  class="withMinHeight"
+                  aria-autocomplete="list"
+                  aria-describedby="placeholder-123"
+                  aria-expanded="true"
+                  class="notranslate public-DraftEditor-content"
+                  contenteditable="true"
+                  role="combobox"
+                  spellcheck="true"
+                  style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
                 >
                   <div
-                    class="DraftEditor-root"
+                    data-contents="true"
                   >
                     <div
-                      class="DraftEditor-editorContainer"
+                      class=""
+                      data-block="true"
+                      data-editor="123"
+                      data-offset-key="123-0-0"
                     >
                       <div
-                        aria-describedby="placeholder-123"
-                        class="public-DraftEditor-content"
-                        contenteditable="false"
-                        spellcheck="false"
-                        style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
+                        class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                        data-offset-key="123-0-0"
                       >
-                        <div
-                          data-contents="true"
+                        <span
+                          data-offset-key="123-0-0"
                         >
-                          <div
-                            class=""
-                            data-block="true"
-                            data-editor="123"
-                            data-offset-key="123-0-0"
+                          <span
+                            data-text="true"
                           >
-                            <div
-                              class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
-                              data-offset-key="123-0-0"
-                            >
-                              <span
-                                data-offset-key="123-0-0"
-                              >
-                                <span
-                                  data-text="true"
-                                >
-                                  {{tracking_link_url}}
-                                </span>
-                              </span>
-                            </div>
-                          </div>
-                        </div>
+                            {{tracking_link_url}}
+                          </span>
+                        </span>
                       </div>
                     </div>
-                  </div>
-                </div>
-              </div>
-              <div
-                class="editor-toolbar page"
-              >
-                <div
-                  class="actionsWrapper"
-                >
-                  <div
-                    class="actions"
-                  >
-                    <button
-                      class="wrapper button wrapper small fill secondary small"
-                      id="format_bold"
-                      type="button"
-                    >
-                      <i
-                        class="material-icons icon"
-                      >
-                        format_bold
-                      </i>
-                    </button>
-                    <button
-                      class="wrapper button wrapper small fill secondary small"
-                      id="format_italic"
-                      type="button"
-                    >
-                      <i
-                        class="material-icons icon"
-                      >
-                        format_italic
-                      </i>
-                    </button>
-                    <button
-                      class="wrapper button wrapper small fill secondary small"
-                      id="format_underline"
-                      type="button"
-                    >
-                      <i
-                        class="material-icons icon"
-                      >
-                        format_underline
-                      </i>
-                    </button>
-                    <span
-                      class="popoverWrapper"
-                    >
-                      <button
-                        class="wrapper button wrapper small fill secondary small"
-                        id="insert_link"
-                        type="button"
-                      >
-                        <i
-                          class="material-icons icon"
-                        >
-                          link
-                        </i>
-                      </button>
-                      <div
-                        class="popover top-left hidden"
-                      />
-                    </span>
-                    <span
-                      class="popoverWrapper"
-                    >
-                      <button
-                        class="wrapper button wrapper small fill secondary small"
-                        id="insert_photo"
-                        type="button"
-                      >
-                        <i
-                          class="material-icons icon"
-                        >
-                          insert_photo
-                        </i>
-                      </button>
-                      <div
-                        class="popover top-left hidden"
-                      />
-                    </span>
-                    <span
-                      class="popoverWrapper"
-                    >
-                      <button
-                        class="wrapper button wrapper small fill secondary small"
-                        id="insert_emoticon"
-                        type="button"
-                      >
-                        <i
-                          class="material-icons icon"
-                        >
-                          insert_emoticon
-                        </i>
-                      </button>
-                      <div
-                        class="p-0 d-flex popover top-left hidden"
-                      />
-                    </span>
-                    <span
-                      class="popoverWrapper"
-                    >
-                      <button
-                        class="wrapper button wrapper small fill secondary small"
-                        id="insert_shopify_product"
-                        type="button"
-                      >
-                        <i
-                          class="material-icons icon"
-                        >
-                          shopify
-                        </i>
-                      </button>
-                      <div
-                        class="productLinkToolTip p-0 d-flex popover top-left hidden"
-                      />
-                    </span>
-                  </div>
-                  <div
-                    class="hoverOverlay"
-                  >
-                    Add files as attachments
                   </div>
                 </div>
               </div>
@@ -966,169 +262,330 @@ exports[`<AutoReplyWismoEditor/> should render correctly 1`] = `
           </div>
         </div>
         <div
-          class="container orderTracking"
+          class="editor-toolbar page"
         >
           <div
-            class="orderTitleContainer"
+            class="actionsWrapper"
           >
             <div
-              class="orderTitle"
+              class="actions"
             >
-              Order number
+              <button
+                class="wrapper button wrapper small fill secondary small"
+                id="format_bold"
+                type="button"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  format_bold
+                </i>
+              </button>
+              <button
+                class="wrapper button wrapper small fill secondary small"
+                id="format_italic"
+                type="button"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  format_italic
+                </i>
+              </button>
+              <button
+                class="wrapper button wrapper small fill secondary small"
+                id="format_underline"
+                type="button"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  format_underline
+                </i>
+              </button>
+              <span
+                class="popoverWrapper"
+              >
+                <button
+                  class="wrapper button wrapper small fill secondary small"
+                  id="insert_link"
+                  type="button"
+                >
+                  <i
+                    class="material-icons icon"
+                  >
+                    link
+                  </i>
+                </button>
+                <div
+                  class="popover top-left hidden"
+                />
+              </span>
+              <span
+                class="popoverWrapper"
+              >
+                <button
+                  class="wrapper button wrapper small fill secondary small"
+                  id="insert_photo"
+                  type="button"
+                >
+                  <i
+                    class="material-icons icon"
+                  >
+                    insert_photo
+                  </i>
+                </button>
+                <div
+                  class="popover top-left hidden"
+                />
+              </span>
+              <span
+                class="popoverWrapper"
+              >
+                <button
+                  class="wrapper button wrapper small fill secondary small"
+                  id="insert_emoticon"
+                  type="button"
+                >
+                  <i
+                    class="material-icons icon"
+                  >
+                    insert_emoticon
+                  </i>
+                </button>
+                <div
+                  class="p-0 d-flex popover top-left hidden"
+                />
+              </span>
+              <span
+                class="popoverWrapper"
+              >
+                <button
+                  class="wrapper button wrapper small fill secondary small"
+                  id="insert_shopify_product"
+                  type="button"
+                >
+                  <i
+                    class="material-icons icon"
+                  >
+                    shopify
+                  </i>
+                </button>
+                <div
+                  class="productLinkToolTip p-0 d-flex popover top-left hidden"
+                />
+              </span>
             </div>
             <div
-              class="orderPrice"
+              class="hoverOverlay"
             >
-              Price
-            </div>
-          </div>
-          <div
-            class="fulfillmentContainer"
-          >
-            <div
-              class="product"
-            >
-              <div
-                class="productTitle"
-              >
-                Product 1
-              </div>
-              <div
-                class="productPrice"
-              >
-                Price x1
-              </div>
-            </div>
-            <div
-              class="product"
-            >
-              <div
-                class="productTitle"
-              >
-                Product 2
-              </div>
-              <div
-                class="productPrice"
-              >
-                Price x2
-              </div>
-            </div>
-            <div
-              class="trackingLink"
-            >
-              loremipsum.com/tracking-1234
-            </div>
-          </div>
-          <div
-            class="fulfillmentContainer"
-          >
-            <div
-              class="product"
-            >
-              <div
-                class="productTitle"
-              >
-                Product 3
-              </div>
-              <div
-                class="productPrice"
-              >
-                Price x1
-              </div>
-            </div>
-            <div
-              class="trackingLink"
-            >
-              loremipsum.com/tracking-4321
+              Add files as attachments
             </div>
           </div>
         </div>
-        <div>
-          <div
-            class="previewLegend"
+      </div>
+    </div>
+  </div>
+  <div
+    class="listWrapper"
+  >
+    <h4>
+      Message below tracking links
+    </h4>
+    <div
+      class="field"
+    >
+      <div
+        class="textarea-toolbar"
+      >
+        <div
+          class="btn-group"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="dropdown-toggle btn-sm mr-2 dropdown-toggle btn btn-secondary"
+            type="button"
           >
-            Signature
-          </div>
+            Ticket customer
+          </button>
           <div
-            class="previewBodyWrapper"
+            aria-hidden="true"
+            class="dropdown-menu"
+            role="menu"
+            tabindex="-1"
+          >
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              First name
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Last name
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Full name
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Email
+            </button>
+          </div>
+        </div>
+        <div
+          class="btn-group"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="dropdown-toggle btn-sm mr-2 dropdown-toggle btn btn-secondary"
+            type="button"
+          >
+            Current agent
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown-menu"
+            role="menu"
+            tabindex="-1"
+          >
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              First name
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Last name
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Full name
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Email
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Bio
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        class="rich-textarea-wrapper"
+      >
+        <div
+          class="editor-wrapper"
+        >
+          <div
+            class="withMinHeight"
           >
             <div
-              class="rich-textarea-wrapper display-only"
+              class="DraftEditor-root"
             >
               <div
-                class="editor-wrapper"
+                class="DraftEditor-editorContainer"
               >
                 <div
-                  class="withMinHeight"
+                  aria-autocomplete="list"
+                  aria-describedby="placeholder-123"
+                  aria-expanded="true"
+                  class="notranslate public-DraftEditor-content"
+                  contenteditable="true"
+                  role="combobox"
+                  spellcheck="true"
+                  style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
                 >
                   <div
-                    class="DraftEditor-root"
+                    data-contents="true"
                   >
                     <div
-                      class="DraftEditor-editorContainer"
+                      class=""
+                      data-block="true"
+                      data-editor="123"
+                      data-offset-key="123-0-0"
                     >
                       <div
-                        aria-describedby="placeholder-123"
-                        class="public-DraftEditor-content"
-                        contenteditable="false"
-                        spellcheck="false"
-                        style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
+                        class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                        data-offset-key="123-0-0"
                       >
                         <div
-                          data-contents="true"
+                          class="d-inline-block align-middle"
+                          title="Current agent full name"
                         >
                           <div
-                            class=""
-                            data-block="true"
-                            data-editor="123"
-                            data-offset-key="123-0-0"
+                            class="badge-variable badge-variable-type-current_user"
+                            contenteditable="false"
                           >
-                            <div
-                              class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                            <div>
+                              <span
+                                class="badge-variable-content"
+                              >
+                                Current agent full name
+                              </span>
+                            </div>
+                            <button
+                              class="variable-edit-btn btn btn-sm"
+                              title="Edit variable"
+                              type="button"
+                            >
+                              <i
+                                class="material-icons"
+                              >
+                                create
+                              </i>
+                            </button>
+                          </div>
+                          <div
+                            class="hidden"
+                          >
+                            <span
                               data-offset-key="123-0-0"
                             >
-                              <div
-                                class="d-inline-block align-middle"
-                                title="Current agent full name"
+                              <span
+                                data-text="true"
                               >
-                                <div
-                                  class="badge-variable badge-variable-type-current_user"
-                                  contenteditable="false"
-                                >
-                                  <div>
-                                    <span
-                                      class="badge-variable-content"
-                                    >
-                                      Current agent full name
-                                    </span>
-                                  </div>
-                                  <button
-                                    class="variable-edit-btn btn btn-sm"
-                                    title="Edit variable"
-                                    type="button"
-                                  >
-                                    <i
-                                      class="material-icons"
-                                    >
-                                      create
-                                    </i>
-                                  </button>
-                                </div>
-                                <div
-                                  class="hidden"
-                                >
-                                  <span
-                                    data-offset-key="123-0-0"
-                                  >
-                                    <span
-                                      data-text="true"
-                                    >
-                                      {{current_user.name}}
-                                    </span>
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
+                                {{current_user.name}}
+                              </span>
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -1136,128 +593,128 @@ exports[`<AutoReplyWismoEditor/> should render correctly 1`] = `
                   </div>
                 </div>
               </div>
-              <div
-                class="editor-toolbar page"
+            </div>
+          </div>
+        </div>
+        <div
+          class="editor-toolbar page"
+        >
+          <div
+            class="actionsWrapper"
+          >
+            <div
+              class="actions"
+            >
+              <button
+                class="wrapper button wrapper small fill secondary small"
+                id="format_bold"
+                type="button"
               >
-                <div
-                  class="actionsWrapper"
+                <i
+                  class="material-icons icon"
                 >
-                  <div
-                    class="actions"
+                  format_bold
+                </i>
+              </button>
+              <button
+                class="wrapper button wrapper small fill secondary small"
+                id="format_italic"
+                type="button"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  format_italic
+                </i>
+              </button>
+              <button
+                class="wrapper button wrapper small fill secondary small"
+                id="format_underline"
+                type="button"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  format_underline
+                </i>
+              </button>
+              <span
+                class="popoverWrapper"
+              >
+                <button
+                  class="wrapper button wrapper small fill secondary small"
+                  id="insert_link"
+                  type="button"
+                >
+                  <i
+                    class="material-icons icon"
                   >
-                    <button
-                      class="wrapper button wrapper small fill secondary small"
-                      id="format_bold"
-                      type="button"
-                    >
-                      <i
-                        class="material-icons icon"
-                      >
-                        format_bold
-                      </i>
-                    </button>
-                    <button
-                      class="wrapper button wrapper small fill secondary small"
-                      id="format_italic"
-                      type="button"
-                    >
-                      <i
-                        class="material-icons icon"
-                      >
-                        format_italic
-                      </i>
-                    </button>
-                    <button
-                      class="wrapper button wrapper small fill secondary small"
-                      id="format_underline"
-                      type="button"
-                    >
-                      <i
-                        class="material-icons icon"
-                      >
-                        format_underline
-                      </i>
-                    </button>
-                    <span
-                      class="popoverWrapper"
-                    >
-                      <button
-                        class="wrapper button wrapper small fill secondary small"
-                        id="insert_link"
-                        type="button"
-                      >
-                        <i
-                          class="material-icons icon"
-                        >
-                          link
-                        </i>
-                      </button>
-                      <div
-                        class="popover top-left hidden"
-                      />
-                    </span>
-                    <span
-                      class="popoverWrapper"
-                    >
-                      <button
-                        class="wrapper button wrapper small fill secondary small"
-                        id="insert_photo"
-                        type="button"
-                      >
-                        <i
-                          class="material-icons icon"
-                        >
-                          insert_photo
-                        </i>
-                      </button>
-                      <div
-                        class="popover top-left hidden"
-                      />
-                    </span>
-                    <span
-                      class="popoverWrapper"
-                    >
-                      <button
-                        class="wrapper button wrapper small fill secondary small"
-                        id="insert_emoticon"
-                        type="button"
-                      >
-                        <i
-                          class="material-icons icon"
-                        >
-                          insert_emoticon
-                        </i>
-                      </button>
-                      <div
-                        class="p-0 d-flex popover top-left hidden"
-                      />
-                    </span>
-                    <span
-                      class="popoverWrapper"
-                    >
-                      <button
-                        class="wrapper button wrapper small fill secondary small"
-                        id="insert_shopify_product"
-                        type="button"
-                      >
-                        <i
-                          class="material-icons icon"
-                        >
-                          shopify
-                        </i>
-                      </button>
-                      <div
-                        class="productLinkToolTip p-0 d-flex popover top-left hidden"
-                      />
-                    </span>
-                  </div>
-                  <div
-                    class="hoverOverlay"
+                    link
+                  </i>
+                </button>
+                <div
+                  class="popover top-left hidden"
+                />
+              </span>
+              <span
+                class="popoverWrapper"
+              >
+                <button
+                  class="wrapper button wrapper small fill secondary small"
+                  id="insert_photo"
+                  type="button"
+                >
+                  <i
+                    class="material-icons icon"
                   >
-                    Add files as attachments
-                  </div>
-                </div>
-              </div>
+                    insert_photo
+                  </i>
+                </button>
+                <div
+                  class="popover top-left hidden"
+                />
+              </span>
+              <span
+                class="popoverWrapper"
+              >
+                <button
+                  class="wrapper button wrapper small fill secondary small"
+                  id="insert_emoticon"
+                  type="button"
+                >
+                  <i
+                    class="material-icons icon"
+                  >
+                    insert_emoticon
+                  </i>
+                </button>
+                <div
+                  class="p-0 d-flex popover top-left hidden"
+                />
+              </span>
+              <span
+                class="popoverWrapper"
+              >
+                <button
+                  class="wrapper button wrapper small fill secondary small"
+                  id="insert_shopify_product"
+                  type="button"
+                >
+                  <i
+                    class="material-icons icon"
+                  >
+                    shopify
+                  </i>
+                </button>
+                <div
+                  class="productLinkToolTip p-0 d-flex popover top-left hidden"
+                />
+              </span>
+            </div>
+            <div
+              class="hoverOverlay"
+            >
+              Add files as attachments
             </div>
           </div>
         </div>

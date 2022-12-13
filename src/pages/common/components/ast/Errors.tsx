@@ -1,5 +1,49 @@
+import React, {
+    useRef,
+    useContext,
+    createContext,
+    ReactNode,
+    FunctionComponent,
+    CSSProperties,
+    useEffect,
+    useState,
+    useCallback,
+} from 'react'
 import classnames from 'classnames'
-import React, {ReactNode, FunctionComponent, CSSProperties} from 'react'
+import useId from 'hooks/useId'
+
+export const ErrorsCollector: React.FC = ({children}) => {
+    const currentErrors = useRef<Set<string>>(new Set())
+    const [errors, setErrors] = useState<Set<string>>(currentErrors.current)
+
+    const addError = useCallback((key: string) => {
+        currentErrors.current.add(key)
+        setErrors(new Set(currentErrors.current))
+    }, [])
+
+    const removeError = useCallback((key: string) => {
+        currentErrors.current.delete(key)
+        setErrors(new Set(currentErrors.current))
+    }, [])
+
+    return (
+        <ErrorsContext.Provider value={{errors, addError, removeError}}>
+            {children}
+        </ErrorsContext.Provider>
+    )
+}
+
+type Context = {
+    errors: Set<string>
+    addError: (key: string) => void
+    removeError: (key: string) => void
+}
+
+export const ErrorsContext = createContext<Context>({
+    errors: new Set(),
+    addError: () => ({}),
+    removeError: () => ({}),
+})
 
 type Props = {
     belowInput?: boolean
@@ -17,6 +61,18 @@ export default function Errors({
     tag: Tag = 'div',
     ...rest
 }: Props) {
+    const id = useId()
+    const {addError, removeError} = useContext(ErrorsContext)
+
+    useEffect(() => {
+        addError(id)
+
+        return () => {
+            removeError(id)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
     if (!children) {
         return null
     }

@@ -1,0 +1,193 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<RulesList/> should render the rules list 1`] = `
+<div
+  class="full-width overflow-auto"
+>
+  <div
+    class="pageHeaderContainer"
+  >
+    <div
+      class="page-header pageHeader"
+    >
+      <h1
+        class="d-flex align-items-center"
+      >
+        Rules
+      </h1>
+      <div>
+        <div
+          class="headerContainer"
+        >
+          <div
+            class="component mr-2"
+          >
+            <div
+              class="wrapper input"
+            >
+              <span
+                class="prefix"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  search
+                </i>
+              </span>
+              <input
+                class="input"
+                id="input-text-5"
+                name="input-text-5"
+                placeholder="Search rules..."
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <a
+            to="/app/settings/rules/library"
+          >
+            <button
+              class="wrapper float-right fill primary medium"
+              type="button"
+            >
+              Create rule
+            </button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="info pageContainer container-fluid"
+  >
+    <div
+      class="infoContainer"
+    >
+      <div
+        class="description"
+        data-candu-id="rules-list-description"
+      >
+        <p
+          class="mb-2"
+        >
+          Automate tasks to streamline support with rules.
+        </p>
+        <a
+          class="link d-block mb-2"
+          href="https://docs.gorgias.com/en-US/articles/rules-18380"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <i
+            class="material-icons"
+          >
+            menu_book
+          </i>
+           
+          <span>
+            How To Set Up Rules
+          </span>
+        </a>
+        <a
+          class="link"
+          href="https://docs.gorgias.com/en-US/rules-faq-82011"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <i
+            class="material-icons"
+          >
+            menu_book
+          </i>
+           
+          <span>
+            Learn How To Prioritize Rules
+          </span>
+        </a>
+      </div>
+      <div
+        class="d-flex"
+      >
+        <div>
+          <div
+            class="preview"
+          >
+            <div>
+              <div
+                class="screenshotWrapper"
+              >
+                <div
+                  class="screenshot"
+                >
+                  <img
+                    alt="video preview"
+                    src="https://img.youtube.com/vi/HFylY2x3T_Y/0.jpg"
+                  />
+                  <div
+                    class="playIcon"
+                  >
+                    <img
+                      alt="play"
+                      src="test-file-stub"
+                      width="11"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                class="title"
+              >
+                Working with rules
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="card ml-3"
+        >
+          <img
+            alt="Academy"
+            src="test-file-stub"
+            width="97"
+          />
+          <div
+            class="mb-2"
+          >
+            Take our Gorgias
+            <br />
+            Academy course on rules
+          </div>
+          <a
+            class="link"
+            href="https://academy.gorgias.com/training/2787d4b6-9ddf-11ec-8074-020df940d6b7/overview"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Start Learning
+             
+            <i
+              class="material-icons"
+            >
+              arrow_forward_ios
+            </i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="container"
+  >
+    <div
+      class="inner"
+      style="min-height: 500px;"
+    >
+      <i
+        class="icon-custom icon-circle-o-notch md-spin"
+        style="font-size: 40px;"
+      />
+    </div>
+  </div>
+</div>
+`;

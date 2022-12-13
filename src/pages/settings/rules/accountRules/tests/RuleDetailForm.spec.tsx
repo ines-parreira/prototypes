@@ -1,8 +1,9 @@
 import React, {ComponentProps} from 'react'
+import {Router} from 'react-router-dom'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import {render, waitFor} from '@testing-library/react'
+import {fireEvent, render, waitFor} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
 import {
@@ -33,7 +34,7 @@ const defaultStore: Partial<RootState> = {
     entities: {rules: {'1': rules[0]}} as any,
 }
 
-describe('<RuleSettingsForm />', () => {
+describe('<RuleDetailForm />', () => {
     const mockDate = jest.spyOn(global.Date, 'now').mockImplementation(() => 0)
 
     const ruleUpdatedMock = ruleUpdated as jest.MockedFunction<
@@ -83,18 +84,22 @@ describe('<RuleSettingsForm />', () => {
     describe('rendering', () => {
         it('should render an empty form when no rule id', async () => {
             const {container} = render(
-                <Provider store={mockStore(defaultStore)}>
-                    <RuleDetailForm {...minProps} />
-                </Provider>
+                <Router history={history}>
+                    <Provider store={mockStore(defaultStore)}>
+                        <RuleDetailForm {...minProps} />
+                    </Provider>
+                </Router>
             )
             await waitFor(() => expect(container.firstChild).toMatchSnapshot())
         })
 
         it('should render a loader when rule id before fetched', () => {
             const {container} = render(
-                <Provider store={mockStore(defaultStore)}>
-                    <RuleDetailForm {...minProps} match={matchProp} />
-                </Provider>
+                <Router history={history}>
+                    <Provider store={mockStore(defaultStore)}>
+                        <RuleDetailForm {...minProps} match={matchProp} />
+                    </Provider>
+                </Router>
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -104,9 +109,11 @@ describe('<RuleSettingsForm />', () => {
                 data: [emptyRule],
             } as unknown as ApiListResponsePagination<Rule[]>)
             const {container} = render(
-                <Provider store={mockStore(defaultStore)}>
-                    <RuleDetailForm {...minProps} match={matchProp} />
-                </Provider>
+                <Router history={history}>
+                    <Provider store={mockStore(defaultStore)}>
+                        <RuleDetailForm {...minProps} match={matchProp} />
+                    </Provider>
+                </Router>
             )
 
             await waitFor(() => {
@@ -120,12 +127,14 @@ describe('<RuleSettingsForm />', () => {
         it('should notify user and send them back to rules on failed fetch', async () => {
             fetchRulesMock.mockRejectedValue('error')
             render(
-                <Provider store={mockStore(defaultStore)}>
-                    <RuleDetailForm
-                        {...minProps}
-                        match={{...matchProp, params: {ruleId: '404'}}}
-                    />
-                </Provider>
+                <Router history={history}>
+                    <Provider store={mockStore(defaultStore)}>
+                        <RuleDetailForm
+                            {...minProps}
+                            match={{...matchProp, params: {ruleId: '404'}}}
+                        />
+                    </Provider>
+                </Router>
             )
             await waitFor(() => {
                 expect(notifyMock).toHaveBeenNthCalledWith(1, {
@@ -137,6 +146,20 @@ describe('<RuleSettingsForm />', () => {
                 1,
                 '/app/settings/rules'
             )
+        })
+    })
+
+    describe('navbar', () => {
+        it('should navigate to ticket list on click', () => {
+            const {getByText} = render(
+                <Router history={history}>
+                    <Provider store={mockStore(defaultStore)}>
+                        <RuleDetailForm {...minProps} match={matchProp} />
+                    </Provider>
+                </Router>
+            )
+            fireEvent.click(getByText('Affected tickets'))
+            getByText("This rule hasn't fired yet.")
         })
     })
 })

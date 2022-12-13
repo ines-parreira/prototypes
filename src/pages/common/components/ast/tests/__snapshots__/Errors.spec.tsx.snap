@@ -2,8 +2,7 @@
 
 exports[`Errors component should render block errors 1`] = `
 <div
-  className="text-danger"
-  style={Object {}}
+  class="text-danger"
 >
   Foo
 </div>
@@ -11,13 +10,8 @@ exports[`Errors component should render block errors 1`] = `
 
 exports[`Errors component should render block errors with display adjustements to display it below an input 1`] = `
 <div
-  className="text-danger"
-  style={
-    Object {
-      "marginBottom": ".5rem",
-      "marginTop": "-8px",
-    }
-  }
+  class="text-danger"
+  style="margin-top: -8px; margin-bottom: .5rem;"
 >
   Foo
 </div>
@@ -25,7 +19,7 @@ exports[`Errors component should render block errors with display adjustements t
 
 exports[`Errors component should render inline errors 1`] = `
 <div
-  className="d-inline-block text-danger ml-2"
+  class="d-inline-block text-danger ml-2"
 >
   Foo
 </div>
@@ -33,11 +27,10 @@ exports[`Errors component should render inline errors 1`] = `
 
 exports[`Errors component should render using passed tag 1`] = `
 <pre
-  className="text-danger"
-  style={Object {}}
+  class="text-danger"
 >
   Foo
 </pre>
 `;
 
-exports[`Errors component should return null if there is no errors 1`] = `""`;
+exports[`Errors component should return null if there is no errors 1`] = `null`;

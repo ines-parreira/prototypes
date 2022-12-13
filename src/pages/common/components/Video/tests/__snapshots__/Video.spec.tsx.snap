@@ -6,26 +6,33 @@ exports[`Video component should render with default videoPreviewIndex 1`] = `
     <div
       class="preview"
     >
-      <div
-        class="screenshot"
-      >
-        <img
-          alt="video preview"
-          src="https://img.youtube.com/vi/8fDF546/0.jpg"
-        />
-        <i
-          class="material-icons playIcon"
-        >
-          play_circle_filled_white
-        </i>
+      <div>
         <div
-          class="iconBackground"
-        />
-      </div>
-      <div
-        class="title"
-      >
-        foo
+          class="screenshotWrapper"
+        >
+          <div
+            class="screenshot"
+          >
+            <img
+              alt="video preview"
+              src="https://img.youtube.com/vi/8fDF546/0.jpg"
+            />
+            <div
+              class="playIcon"
+            >
+              <img
+                alt="play"
+                src="test-file-stub"
+                width="11"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="title"
+        >
+          foo
+        </div>
       </div>
     </div>
   </div>
@@ -38,26 +45,33 @@ exports[`Video component should render with passed videoPreviewIndex 1`] = `
     <div
       class="preview"
     >
-      <div
-        class="screenshot"
-      >
-        <img
-          alt="video preview"
-          src="https://img.youtube.com/vi/8fDF546/2.jpg"
-        />
-        <i
-          class="material-icons playIcon"
-        >
-          play_circle_filled_white
-        </i>
+      <div>
         <div
-          class="iconBackground"
-        />
-      </div>
-      <div
-        class="title"
-      >
-        foo
+          class="screenshotWrapper"
+        >
+          <div
+            class="screenshot"
+          >
+            <img
+              alt="video preview"
+              src="https://img.youtube.com/vi/8fDF546/2.jpg"
+            />
+            <div
+              class="playIcon"
+            >
+              <img
+                alt="play"
+                src="test-file-stub"
+                width="11"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="title"
+        >
+          foo
+        </div>
       </div>
     </div>
   </div>

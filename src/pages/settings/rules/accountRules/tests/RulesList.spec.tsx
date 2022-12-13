@@ -39,7 +39,6 @@ describe('<RulesList/>', () => {
     const minProps: ComponentProps<typeof RulesList> = {
         limitStatus: RuleLimitStatus.NonReaching,
         rules: [],
-        handleGoToLibrary: () => null,
     }
 
     beforeEach(() => {
@@ -48,15 +47,6 @@ describe('<RulesList/>', () => {
 
     it('should render the rule views', () => {
         const rules = createRuleFixtures(5)
-        const {container} = render(
-            <Provider store={store}>
-                <RulesList {...minProps} rules={rules} />
-            </Provider>
-        )
-        expect(container.firstChild).toMatchSnapshot()
-    })
-    it('should render the upsell component', () => {
-        const rules = createRuleFixtures(0)
         const {container} = render(
             <Provider store={store}>
                 <RulesList {...minProps} rules={rules} />

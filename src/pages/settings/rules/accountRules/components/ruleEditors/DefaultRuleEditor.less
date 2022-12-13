@@ -1,30 +1,37 @@
 @import '~css/new/colorTokens';
 
 :local {
-    .container {
+    .form {
+        width: 100%;
+        max-width: 680px;
+        margin-right: 24px;
+    }
+
+    .label {
+        color: @classic-neutral-grey-6;
+        font-weight: 500;
+        font-size: 14px;
+    }
+
+    .labelName::after {
+        content: '*';
+        color: @classic-feedback-error;
+        margin-left: 4px;
+    }
+
+    .ruleContainer {
+        background-color: #f8f9fc;
+        border-radius: 4px;
+        padding: 16px 16px 8px 16px;
+        border: 1px solid @classic-neutral-grey-3;
+        input::placeholder {
+            color: @classic-neutral-grey-5 !important;
+        }
+    }
+    .container.customRule {
+        max-width: 680px;
+    }
+    .container.managedRule {
         max-width: 1200px;
-        margin-left: 0px;
-
-        .label {
-            color: @classic-neutral-grey-6;
-            font-weight: 500;
-            font-size: 14px;
-        }
-
-        .labelName::after {
-            content: '*';
-            color: @classic-feedback-error;
-            margin-left: 4px;
-        }
-
-        .ruleContainer {
-            background-color: #f8f9fc;
-            border-radius: 4px;
-            padding: 16px 16px 8px 16px;
-            border: 1px solid @classic-neutral-grey-3;
-            input::placeholder {
-                color: @classic-neutral-grey-5 !important;
-            }
-        }
     }
 }

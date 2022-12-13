@@ -1,28 +1,21 @@
 @import '~css/new/colorTokens';
 
 :local {
-    .modalBody {
-        display: flex;
-        gap: 16px;
-        justify-content: space-between;
-        padding: 8px;
-    }
-    .modalDescription {
-        min-width: 70%;
-        max-width: 70%;
-        margin-bottom: 8px;
-    }
     .targetTitle {
         text-transform: uppercase;
         font-size: 11px;
         font-weight: 600;
-        color: @classic-neutral-grey-4;
+        color: @classic-neutral-grey-6;
+        letter-spacing: 0.05em;
     }
     .targetValue {
         font-size: 20px;
         .bold {
             font-weight: 600;
         }
+    }
+    .ticketsPerMonth {
+        font-size: 16px;
     }
     .ruleEditorContainer {
         height: 250px;
@@ -55,5 +48,38 @@
     .tooltip {
         position: relative;
         z-index: 9999 !important;
+    }
+    .badge {
+        border-radius: 3px;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 4px 8px;
+    }
+    .header {
+        display: flex;
+        align-items: center;
+    }
+    .name {
+        font-weight: 600;
+    }
+    .viewsLabel {
+        margin-top: -4px;
+        margin-bottom: 4px;
+    }
+    .viewsSecondaryLabel {
+        font-size: 12px;
+        font-weight: 400;
+        color: @classic-neutral-grey-4;
+    }
+    .count {
+        margin-bottom: 24px;
+    }
+    .descriptionBlock {
+        margin-bottom: 24px;
+        p {
+            letter-spacing: -0.01em;
+            color: @classic-neutral-grey-5;
+        }
+        line-height: 20px;
     }
 }

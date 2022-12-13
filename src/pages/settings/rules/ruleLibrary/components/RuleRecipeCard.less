@@ -34,18 +34,24 @@
         overflow: hidden;
         height: 42px;
     }
+    .header {
+        padding: 12px;
+        display: flex;
+        justify-content: space-between;
+    }
     .tags {
         padding: 16px;
     }
     .ticketCount {
         color: @classic-neutral-grey-4;
-        padding: 16px;
+        padding: 2px 0px 16px 16px;
         font-size: 12px;
-        line-height: 21px;
+        &.important {
+            font-weight: 600;
+        }
     }
 
     .footer {
-        border-top: 1px solid @classic-neutral-grey-3;
         display: flex;
         justify-content: space-between;
     }
@@ -57,6 +63,5 @@
         font-size: 12px;
         font-weight: 600;
         padding: 4px 8px;
-        margin-left: 8px;
     }
 }

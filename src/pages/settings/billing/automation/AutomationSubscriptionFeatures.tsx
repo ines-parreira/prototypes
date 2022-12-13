@@ -21,7 +21,7 @@ export const AutomationSubscriptionFeatures = () => {
                     icon: 'slow_motion_video',
                     label: (
                         <>
-                            Self-service portal in <b>chat</b> and{' '}
+                            Self-service features in <b>chat</b> and{' '}
                             <b>help center</b>
                         </>
                     ),

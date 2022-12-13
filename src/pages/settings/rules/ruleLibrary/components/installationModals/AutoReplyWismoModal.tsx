@@ -4,92 +4,49 @@ import classnames from 'classnames'
 import {assetsUrl} from 'utils'
 
 import Avatar from 'pages/common/components/Avatar/Avatar'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import useAppSelector from 'hooks/useAppSelector'
-import {getIntegrationsByType} from 'state/integrations/selectors'
-import {IntegrationType} from 'models/integration/constants'
 import {FakeOrderTracking} from 'pages/settings/rules/components/FakeOrderTracking'
 import {ManagedRuleModalProps} from '../InstallRuleModalBody'
+
 import defaultModalCss from '../RuleRecipeModal.less'
 
-import {ShopifyIntegration} from '../../../../../../models/integration/types'
+import TargetCount from './components/TargetCount'
+
 import css from './ManagedRuleModal.less'
 
 export const AutoReplyWismoModal = ({
-    rule,
     triggeredCount,
-    isBehindPaywall,
-    renderTags,
     viewCreationCheckbox,
 }: ManagedRuleModalProps) => {
     const icon = assetsUrl('/img/icons/logo.png')
 
-    const integrations = useAppSelector(
-        getIntegrationsByType<ShopifyIntegration>(IntegrationType.Shopify)
-    )
-
     return (
-        <div
-            className={classnames(css.managedRule, css.autoReplyWismo, {
-                [css.bordered]: isBehindPaywall,
-            })}
-        >
-            {isBehindPaywall && (
-                <div className={css.titleWrapper}>
-                    <span className={css.title}>{rule.name}</span>
-                    {renderTags()}
-                </div>
-            )}
-            {integrations.length === 0 && (
-                <Alert icon={true} type={AlertType.Warning} className="mb-2">
-                    This rule requires a Shopify integration to run.
-                </Alert>
-            )}
+        <div className={classnames(css.managedRule, css.autoReplyWismo)}>
             <div className={css.container}>
                 <div className={css.description}>
-                    <div className={css.count}>
-                        <div className={defaultModalCss.targetTitle}>
-                            target up to
-                        </div>
-                        <div className={defaultModalCss.targetValue}>
-                            <span className={defaultModalCss.bold}>
-                                {triggeredCount}
-                            </span>{' '}
-                            tickets/month
-                        </div>
-                    </div>
-                    <div className={css.descriptionBlock}>
-                        <h4>
-                            Answer "Where is my order" request automatically
-                        </h4>
+                    <TargetCount count={triggeredCount} />
+                    <div className={defaultModalCss.descriptionBlock}>
+                        <h4>How it works</h4>
                         <p>
-                            This rule leverages AI to automatically detect if
-                            incoming emails from shoppers are related{' '}
-                            <strong>
-                                to tracking or “where is my order” requests
-                            </strong>
-                            . When such a message is detected, the rule sends an
-                            automated message providing shoppers with the
-                            tracking link for their three last orders and closes
-                            the ticket.
+                            This rule detects emails related to order status or
+                            tracking, replies with tracking links for the
+                            shopper’s last 3 orders, and auto-closes the ticket.
+                            If shoppers reply, the ticket will reopen so you
+                            never miss a response.
                         </p>
                     </div>
-                    <div className={css.descriptionBlock}>
-                        <h4>Customize your message</h4>
-                        <p>
-                            You can personalize your message to make it your
-                            own.
-                        </p>
-                    </div>
-                    <div className={css.descriptionBlock}>
+                    <div className={defaultModalCss.descriptionBlock}>
                         <p className={css.addendum}>
-                            If your customer replies to the automated message,
-                            the ticket will be reopened in your backend. This
-                            rule requires an active Shopify integration to work
-                            correctly.
+                            This rule requires an active Shopify integration.
                         </p>
                     </div>
-                    <div className={css.descriptionBlock}>
+                    <div className={defaultModalCss.descriptionBlock}>
+                        <h4>Customize it</h4>
+                        <p>
+                            Personalize the message and exclude email addresses
+                            from this rule.
+                        </p>
+                    </div>
+                    <div className={defaultModalCss.descriptionBlock}>
                         {viewCreationCheckbox()}
                     </div>
                 </div>
@@ -101,7 +58,11 @@ export const AutoReplyWismoModal = ({
                         )}
                     >
                         <div className={css.fakeMessage}>
-                            <Avatar name="Client name" size={28} />
+                            <Avatar
+                                name="Client name"
+                                size={28}
+                                className={css.clientAvatar}
+                            />
                             <div className="ml-3">
                                 <div className={css.name}>Client Name</div>
                                 <div>
@@ -112,7 +73,11 @@ export const AutoReplyWismoModal = ({
                         </div>
                         <div className={css.fakeMessage}>
                             <div>
-                                <Avatar url={icon} size={28} />
+                                <Avatar
+                                    url={icon}
+                                    size={28}
+                                    className={css.autoResponderAvatar}
+                                />
                             </div>
                             <div className="ml-3">
                                 <div
@@ -121,17 +86,14 @@ export const AutoReplyWismoModal = ({
                                         css.autoResponder
                                     )}
                                 >
-                                    <i className="material-icons mr-1">
-                                        auto_awesome
-                                    </i>
-                                    Auto Responder
+                                    Autoresponder
                                 </div>
                                 <div>
                                     <p>Hi Client Name,</p>
                                     <p>
-                                        We detected that your request might be
-                                        about tracking an order status. Is that
-                                        tracking information useful?
+                                        It looks like you’re reaching out about
+                                        your order status. Is this tracking
+                                        information helpful?
                                     </p>
                                     <FakeOrderTracking />
                                     <p>
@@ -144,8 +106,10 @@ export const AutoReplyWismoModal = ({
                             </div>
                         </div>
                     </div>
-                    <div className={css.descriptionBlock}>
-                        <p className={css.legend}>see example above</p>
+                    <div className={defaultModalCss.descriptionBlock}>
+                        <p className={css.legend}>
+                            See auto-response example above
+                        </p>
                     </div>
                 </div>
             </div>

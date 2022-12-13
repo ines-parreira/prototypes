@@ -2,6 +2,7 @@
 
 exports[`<DefaultRuleEditor/> should render correctly 1`] = `
 <div
+  class="form"
   id="rule-form"
 >
   <div
@@ -218,15 +219,15 @@ exports[`<DefaultRuleEditor/> should render correctly 1`] = `
         <label
           aria-checked="true"
           class="label label"
-          for="toggle-button-3"
+          for="toggle-button-4"
           role="switch"
         >
           <input
             checked=""
             class="input"
             disabled=""
-            id="toggle-button-3"
-            name="toggle-button-3"
+            id="toggle-button-4"
+            name="toggle-button-4"
             type="checkbox"
           />
           <div
@@ -237,7 +238,7 @@ exports[`<DefaultRuleEditor/> should render correctly 1`] = `
     </span>
     <span>
       <label
-        class="toggleLabel mr-2"
+        class="toggleLabel mr-2 mb-0"
       >
         Enable rule
       </label>

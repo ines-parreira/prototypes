@@ -1,75 +1,30 @@
 @import '~css/new/colorTokens';
 
 :local .managedRule {
-    .bordered,
-    &.bordered {
+    display: flex;
+    min-height: 492px;
+
+    .bordered {
         border: 1px solid @classic-neutral-grey-3;
         border-radius: 4px;
         padding: 16px;
     }
-
-    .titleWrapper {
-        margin-bottom: 8px;
-        .title {
-            font-weight: 600;
-            font-size: 20px;
-            line-height: 28px;
-        }
-    }
-    .count {
-        margin-top: 8px;
-        margin-bottom: 8px;
-    }
     .container {
         display: flex;
-        gap: 16px;
+        gap: 24px;
     }
     .description {
-        flex-basis: 50%;
-    }
-    .descriptionBlock {
-        margin-top: 8px;
-        margin-bottom: 16px;
-        p {
-            color: @classic-neutral-grey-5;
-        }
-        line-height: 20px;
+        flex-basis: 43.7%;
     }
 
     .example {
-        flex-basis: 50%;
+        flex-basis: 56.3%;
         justify-content: center;
         gap: 16px;
         flex-direction: column;
     }
 
     &.autoCloseSpam {
-        .fakeTicket {
-            padding: 16px;
-            height: 80px;
-            display: flex;
-            margin-left: auto;
-            margin-right: auto;
-            flex-direction: column;
-            box-shadow: 1px 1px 8px rgba(22, 22, 22, 0.24);
-            border-radius: 10px;
-            background-color: white;
-            width: 300px;
-            .fakeTicketTitleWrapper {
-                display: flex;
-                justify-content: space-between;
-            }
-            .fakeTicketTitle {
-                font-weight: 600;
-                font-size: 16px;
-            }
-            .fakeTicketDescription {
-                color: @classic-neutral-grey-5;
-            }
-            .fakeTicketClosed {
-                height: 18px;
-            }
-        }
         .example {
             display: flex;
             background-color: @classic-neutral-grey-1;
@@ -81,18 +36,14 @@
         .addendum {
             &::before {
                 content: '*';
-                padding-right: 0.4em;
             }
             font-style: italic;
             color: @classic-neutral-grey-4;
         }
         .legend {
+            margin-top: 8px;
             color: @classic-neutral-grey-4;
             text-align: center;
-            &::after {
-                content: '↑';
-                padding-left: 0.4em;
-            }
         }
         .exampleContainer {
             background-color: @classic-neutral-grey-1;
@@ -110,9 +61,22 @@
 
                 .name {
                     font-weight: 600;
+                    margin-bottom: 6px;
                 }
                 .autoResponder {
                     color: @modern-main-primary;
+                }
+
+                .clientAvatar {
+                    background: @classic-neutral-grey-2;
+
+                    span {
+                        color: @classic-neutral-grey-4;
+                    }
+                }
+
+                .autoResponderAvatar {
+                    background: #fff8f3;
                 }
             }
         }

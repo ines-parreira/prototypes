@@ -1,6 +1,41 @@
 @import '~css/new/colorTokens';
+@import '~css/new/mixins';
 
 :local {
+    .container {
+        display: flex;
+    }
+
+    .cardContainer {
+        width: 272px;
+        min-width: 272px;
+        display: none;
+
+        @media @large-desktops {
+            display: block;
+        }
+    }
+
+    .card {
+        letter-spacing: -0.01em;
+        padding: 18px;
+        border: 1px solid @classic-neutral-grey-3;
+        border-radius: 4px;
+
+        // ADD TOKEN FIRST. DO NOT MERGE.
+        background: #eaf1ff;
+    }
+
+    .cardTitle {
+        font-size: 20px;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+    }
+
+    .cardButton {
+        font-size: 12px;
+    }
+
     .navbar {
         background-color: @classic-neutral-grey-2;
         border-bottom: 1px solid @classic-neutral-grey-3;
@@ -26,11 +61,5 @@
         border-bottom: 2px solid @classic-main-primary;
         color: @classic-neutral-grey-6;
         padding: 16px 0 14px 0;
-    }
-
-    .newRules::after {
-        content: '•';
-        color: @classic-main-secondary-1;
-        margin-left: 2px;
     }
 }

@@ -3,11 +3,13 @@ import {RouteComponentProps, Router} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
-import {render} from '@testing-library/react'
+import {screen, render, waitFor} from '@testing-library/react'
 import {createMemoryHistory} from 'history'
+import {fromJS} from 'immutable'
+
+import {billingState} from 'fixtures/billing'
 
 import {RulesState} from '../../../../state/entities/rules/types'
-import {RULE_MAX_NUMBER} from '../../../../state/entities/rules/selectors'
 import {fetchRules} from '../../../../models/rule/resources'
 import {fetchRuleRecipes} from '../../../../models/ruleRecipe/resources'
 import {
@@ -16,15 +18,11 @@ import {
 } from '../../../../fixtures/rule'
 import {RootState, StoreDispatch} from '../../../../state/types'
 
-import {RulesViewContainer} from '../RulesView'
+import {RulesLibraryContainer} from '../RulesLibrary'
 
 jest.mock('../../../../models/rule/resources')
 jest.mock('../../../../models/ruleRecipe/resources')
-jest.mock('../../../../state/entities/rules/actions')
 jest.mock('../../../../state/entities/ruleRecipes/actions')
-jest.mock('../accountRules/RulesList', () => () => {
-    return <div></div>
-})
 
 const createRuleFixtures = (length: number) => {
     return Array.from({length}, (_, i) => ({
@@ -46,17 +44,18 @@ const populateStore = (length: number): RootState => {
                 helpCenters: {},
             },
         },
+        billing: fromJS(billingState),
     } as any
     return defaultState
 }
 
 const minProps = {
     location: {
-        hash: '#',
+        hash: '',
     },
 } as unknown as RouteComponentProps
 
-describe('<RulesView/>', () => {
+describe('<RulesLibrary/>', () => {
     const fetchRulesMock = fetchRules as jest.MockedFunction<typeof fetchRules>
     const fetchRuleRecipesMock = fetchRuleRecipes as jest.MockedFunction<
         typeof fetchRuleRecipes
@@ -66,10 +65,10 @@ describe('<RulesView/>', () => {
         jest.clearAllMocks()
     })
 
-    it('should render the rule views', () => {
+    it('should render the rules library view', () => {
         const {container} = render(
             <Provider store={mockStore(populateStore(5))}>
-                <RulesViewContainer {...minProps} />
+                <RulesLibraryContainer {...minProps} />
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
@@ -83,16 +82,34 @@ describe('<RulesView/>', () => {
         } as unknown as RouteComponentProps
         const {container} = render(
             <Provider store={mockStore(populateStore(5))}>
-                <RulesViewContainer {...props} />
+                <RulesLibraryContainer {...props} />
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
+    it('should render create custom rule footer', async () => {
+        const props = {
+            location: {
+                hash: '#rule-library',
+            },
+        } as unknown as RouteComponentProps
+
+        render(
+            <Provider store={mockStore(populateStore(5))}>
+                <RulesLibraryContainer {...props} />
+            </Provider>
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText(/Create Custom Rule/i)).toBeDefined()
+        })
+    })
+
     it('should fetch rules', () => {
         render(
             <Provider store={mockStore(populateStore(1))}>
-                <RulesViewContainer {...minProps} />
+                <RulesLibraryContainer {...minProps} />
             </Provider>
         )
         expect(fetchRulesMock).toHaveBeenCalled()
@@ -101,28 +118,10 @@ describe('<RulesView/>', () => {
     it('should fetch rule recipes', () => {
         render(
             <Provider store={mockStore(populateStore(1))}>
-                <RulesViewContainer {...minProps} />
+                <RulesLibraryContainer {...minProps} />
             </Provider>
         )
         expect(fetchRuleRecipesMock).toHaveBeenCalled()
-    })
-
-    it('should render a warning when reaching the rule limit', () => {
-        const {getByText} = render(
-            <Provider store={mockStore(populateStore(65))}>
-                <RulesViewContainer {...minProps} />
-            </Provider>
-        )
-        expect(getByText(/65 out of 70/)).not.toBe(null)
-    })
-
-    it('should render an error when reached the rule limit', () => {
-        const {getByText} = render(
-            <Provider store={mockStore(populateStore(RULE_MAX_NUMBER))}>
-                <RulesViewContainer {...minProps} />
-            </Provider>
-        )
-        expect(getByText(/you have reached the 70 rule limit/i)).not.toBe(null)
     })
 
     it('it should redirect to rule page if managed rule installed', () => {
@@ -131,7 +130,7 @@ describe('<RulesView/>', () => {
         }
         const props = {
             location: {
-                hash: `#rule-library?${emptyManagedRule.settings.slug}`,
+                search: `?${emptyManagedRule.settings.slug}`,
             },
         } as unknown as RouteComponentProps
 
@@ -142,6 +141,7 @@ describe('<RulesView/>', () => {
                     helpCenters: {},
                 },
             },
+            billing: fromJS(billingState),
         } as any
 
         const history = createMemoryHistory()
@@ -149,7 +149,7 @@ describe('<RulesView/>', () => {
         render(
             <Router history={history}>
                 <Provider store={mockStore(store)}>
-                    <RulesViewContainer {...props} />
+                    <RulesLibraryContainer {...props} />
                 </Provider>
             </Router>
         )

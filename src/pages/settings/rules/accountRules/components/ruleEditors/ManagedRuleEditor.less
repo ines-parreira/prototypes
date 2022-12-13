@@ -1,52 +1,57 @@
 @import '~css/new/colorTokens';
-:local .container {
-    h3 {
-        height: 28px;
-        font-weight: 600;
-        font-size: 20px;
-        line-height: 28px;
-        margin-bottom: 4px;
-    }
-    h4 {
-        font-weight: 600;
-        font-size: 16px;
-        line-height: 24px;
-    }
-
-    .listWrapper {
-        :global(.badge-secondary) {
-            padding: 4px 6px !important;
+:local {
+    .container {
+        h3 {
+            height: 28px;
+            font-weight: 600;
+            font-size: 20px;
+            line-height: 28px;
+            margin-bottom: 4px;
         }
-        .allowList {
+        h4 {
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 24px;
+        }
+
+        .listWrapper {
             :global(.badge-secondary) {
-                background-color: @classic-neutral-grey-2 !important;
-                color: @classic-neutral-grey-6 !important;
                 padding: 4px 6px !important;
             }
-        }
-        .blockList {
-            :global(.badge-secondary) {
-                background-color: @classic-feedback-error-0 !important;
-                color: @classic-feedback-error-3 !important;
-                padding: 4px 6px !important;
+            .allowList {
+                :global(.badge-secondary) {
+                    background-color: @classic-neutral-grey-2 !important;
+                    color: @classic-neutral-grey-6 !important;
+                    padding: 4px 6px !important;
+                }
             }
+            .blockList {
+                :global(.badge-secondary) {
+                    background-color: @classic-feedback-error-0 !important;
+                    color: @classic-feedback-error-3 !important;
+                    padding: 4px 6px !important;
+                }
+            }
+            margin-top: 24px;
+            margin-bottom: 24px;
         }
-        margin-top: 26px;
-        margin-bottom: 26px;
-    }
-    &.autoReplyWismo,
-    &.autoReplyFAQ {
-        display: flex;
-        gap: 20px;
 
-        .listWrapper :global(.editor-wrapper) {
-            min-height: 92px;
-            max-height: 200px;
-            overflow-y: scroll;
-            & * {
-                min-height: 0px;
+        &.autoReplyWismo,
+        &.autoReplyFAQ {
+            .listWrapper :global(.editor-wrapper) {
+                min-height: 92px;
+                max-height: 200px;
+                overflow-y: scroll;
+                & * {
+                    min-height: 0px;
+                }
             }
         }
+    }
+
+    .demo {
+        height: 100%;
+
         .previewBodyWrapper {
             border: 1px dashed @classic-neutral-grey-3;
             border-radius: 4px;
@@ -55,79 +60,48 @@
                 min-height: 0px;
             }
         }
+
         .previewLegend {
             color: @classic-neutral-grey-4;
             font-style: italic;
         }
 
-        .descriptionWrapper {
-            flex-basis: 60%;
-        }
-
-        .trackingBlock {
-            & .title {
-                font-weight: 600;
-                color: @classic-neutral-grey-6;
-                font-size: 14px;
-                display: flex;
-                line-height: 14px;
-                align-items: center;
-                flex-direction: row;
-            }
+        .topbar {
             background-color: @classic-neutral-grey-1;
-            border: 1px solid @classic-neutral-grey-3;
-            border-radius: 4px;
-            padding: 8px 16px;
+            height: 27px;
+            border-radius: 8px 8px 0px 0px;
+            display: flex;
+            align-items: center;
+            .circle {
+                border-radius: 50%;
+                background-color: @classic-neutral-grey-3;
+                height: 14px;
+                width: 14px;
+                display: inline-block;
+                margin-left: 8px;
+            }
         }
 
-        .demo {
-            flex-basis: 40%;
-            .topbar {
-                background-color: @classic-neutral-grey-1;
-                height: 27px;
-                border-radius: 8px 8px 0px 0px;
-                display: flex;
-                align-items: center;
-                .circle {
-                    border-radius: 50%;
-                    background-color: @classic-neutral-grey-3;
-                    height: 14px;
-                    width: 14px;
-                    display: inline-block;
-                    margin-left: 8px;
-                }
+        .demoContent {
+            background-color: @classic-neutral-grey-2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0px 0px 4px 4px;
+            .textdata {
+                background-color: white;
+                overflow-y: scroll;
+                height: 95%;
+                width: 90%;
+                padding: 18px;
             }
+        }
+
+        &.autoReplyWismo,
+        &.autoReplyFAQ {
             .demoContent {
-                background-color: @classic-neutral-grey-2;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                border-radius: 0px 0px 4px 4px;
-                .textdata {
-                    background-color: white;
-                    overflow-y: scroll;
-                    height: 95%;
-                    width: 90%;
-                    padding: 18px;
-                }
+                height: calc(~'100% - 27px');
             }
-        }
-    }
-
-    &.autoReplyFAQ {
-        .demo .demoContent {
-            height: fit-content;
-            padding: 16px 0px;
-        }
-    }
-
-    &.autoReplyWismo {
-        .demo .demoContent {
-            height: 735px;
-        }
-        .shopifyIcon {
-            width: 14px;
-            margin-right: 10px;
         }
     }
 }

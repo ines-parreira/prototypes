@@ -18,14 +18,16 @@ type Props = {
     handleRule: RuleItemActions
     triggeredCount: number
     rule: RuleDraft | ManagedRule
-    isBehindPaywall: boolean
-    renderTags: () => React.ReactNode
+    recipeSlug: string
     viewCreationCheckbox: () => React.ReactNode
     handleInstallationError: (errors: InstallationError) => void
     handleDefaultSettings: (settings: Partial<AnyManagedRuleSettings>) => void
 }
 
-export type DefaultModalProps = Omit<Props, 'isBehindPaywall' & 'renderTags'>
+export type DefaultModalProps = Pick<
+    Props,
+    'recipeSlug' | 'triggeredCount' | 'viewCreationCheckbox'
+>
 
 export type ManagedRuleModalProps = Omit<Props, 'handleRule'>
 

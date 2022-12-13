@@ -34,7 +34,6 @@ describe('RuleRecipeModal', () => {
             rule: emptyManagedRule,
         },
         handleInstall: jest.fn(),
-        renderTags: jest.fn(),
         handleRule: {
             modifyCodeAST: jest.fn(),
             getCondition: jest.fn(),

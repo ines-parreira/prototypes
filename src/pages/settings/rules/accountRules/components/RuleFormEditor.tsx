@@ -1,7 +1,7 @@
 import classnames from 'classnames'
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
+import React, {useCallback, useMemo, useRef, useState} from 'react'
 import {Link} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem, Navbar, Nav} from 'reactstrap'
 import {useAsyncFn} from 'react-use'
 import {
     ManagedRule,
@@ -12,6 +12,9 @@ import {
 } from 'state/rules/types'
 import settingsCss from 'pages/settings/settings.less'
 
+import {ErrorsCollector} from 'pages/common/components/ast/Errors'
+import Button from 'pages/common/components/button/Button'
+import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import PageHeader from 'pages/common/components/PageHeader'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
@@ -25,19 +28,34 @@ import history from 'pages/history'
 import {NotificationStatus} from 'state/notifications/types'
 
 import {ManagedRuleDisplayName} from 'state/rules/constants'
+
+import TrackedRuleLibraryLink, {
+    Source,
+} from '../../components/TrackedRuleLibraryLink'
+import AutoresponderViewButton from '../../components/AutoresponderViewButton'
+
 import {RuleTicketList} from './RuleTicketList'
 import ManagedRuleEditor from './ruleEditors/ManagedRuleEditor'
 import DefaultRuleEditor from './ruleEditors/DefaultRuleEditor'
 
-import css from './ruleEditors/DefaultRuleEditor.less'
+import css from './RuleFormEditor.less'
 
 type Props = {
     rule?: Rule | ManagedRule
 }
 
+type NavbarProps = {
+    activeTab: string
+    handleTabChange: (tab: string) => void
+}
+
+export type EditorHandle = {
+    submit: () => void
+}
+
 export type RuleEditorProps = {
     rule?: Rule
-    handleSubmit: (rule: Partial<RuleDraft>) => void
+    handleSubmit: (rule: Partial<RuleDraft>, hasMissingFields?: boolean) => void
     handleDelete: () => void
     handleDirtyForm: (isFormDirty: boolean) => void
     isSubmitting: boolean
@@ -50,11 +68,46 @@ export type ManagedRuleEditorProps<T = ManagedRuleEmptySettings> =
         handleSubmit: (rule: Partial<ManagedRule<T>>) => void
     }
 
-export const RuleFormEditor = ({rule}: Props) => {
-    const dispatch = useAppDispatch()
+const RuleNavbar = ({activeTab, handleTabChange}: NavbarProps) => (
+    <Navbar className={css.navbar}>
+        <Nav
+            key={'settings'}
+            onClick={() => handleTabChange('settings')}
+            className={classnames(css.item, {
+                [css.active]: activeTab === 'settings',
+            })}
+        >
+            Rule settings
+        </Nav>
+        <Nav
+            key={'tickets'}
+            onClick={() => handleTabChange('tickets')}
+            className={classnames(css.item, {
+                [css.active]: activeTab === 'tickets',
+            })}
+        >
+            Affected tickets
+        </Nav>
+    </Navbar>
+)
 
+export const RuleFormEditor = ({rule}: Props) => {
+    const editor = useRef<EditorHandle>(null)
+
+    const dispatch = useAppDispatch()
+    const [activeTab, setActiveTab] = useState('settings')
     const [{loading: isSubmitting}, handleSubmit] = useAsyncFn(
-        async (ruleDraft: Partial<RuleDraft>) => {
+        async (ruleDraft: Partial<RuleDraft>, hasMissingFields = false) => {
+            if (hasMissingFields) {
+                void dispatch(
+                    notify({
+                        status: NotificationStatus.Error,
+                        message: 'Complete required fields in order to save',
+                    })
+                )
+                return
+            }
+
             let newRule
             if (rule) {
                 try {
@@ -103,17 +156,6 @@ export const RuleFormEditor = ({rule}: Props) => {
     )
     const [isFormDirty, setIsFormDirty] = useState(false)
 
-    const beforeLoad = useCallback(
-        (e: BeforeUnloadEvent) => {
-            if (isFormDirty) {
-                e.preventDefault()
-                e.returnValue = ''
-            }
-            return
-        },
-        [isFormDirty]
-    )
-
     const [{loading: isDeleting}, handleDelete] = useAsyncFn(async () => {
         if (!rule) {
             return
@@ -150,31 +192,21 @@ export const RuleFormEditor = ({rule}: Props) => {
         return rule.name
     }, [rule])
 
-    useEffect(() => {
-        const unblock = history.block((loc, action) => {
-            if (isFormDirty && action !== 'POP') {
-                return 'Any unsaved changes will be lost. Proceed anyway?'
-            }
-        })
-        window.addEventListener('beforeunload', beforeLoad)
-
-        if (isDeleting || isSubmitting) {
-            unblock()
-            window.removeEventListener('beforeunload', beforeLoad)
-        }
-        return () => {
-            unblock()
-            window.removeEventListener('beforeunload', beforeLoad)
-        }
-    }, [isFormDirty, isDeleting, beforeLoad, isSubmitting])
-
     const Editor = useCallback(
         (props: RuleEditorProps | ManagedRuleEditorProps) => {
             if (!rule || !(rule.type === RuleType.Managed)) {
-                return <DefaultRuleEditor {...(props as RuleEditorProps)} />
+                return (
+                    <ErrorsCollector>
+                        <DefaultRuleEditor
+                            ref={editor}
+                            {...(props as RuleEditorProps)}
+                        />
+                    </ErrorsCollector>
+                )
             }
             return (
                 <ManagedRuleEditor
+                    ref={editor}
                     slug={(rule as ManagedRule).settings.slug}
                     {...(props as ManagedRuleEditorProps)}
                 />
@@ -186,6 +218,10 @@ export const RuleFormEditor = ({rule}: Props) => {
 
     return (
         <>
+            <UnsavedChangesPrompt
+                onSave={() => editor.current?.submit()}
+                when={isFormDirty && !isSubmitting && !isDeleting}
+            />
             <PageHeader
                 title={
                     <Breadcrumb>
@@ -195,22 +231,61 @@ export const RuleFormEditor = ({rule}: Props) => {
                         <BreadcrumbItem active>{title}</BreadcrumbItem>
                     </Breadcrumb>
                 }
-            />
-
-            <Container
-                fluid
-                className={classnames(css.container, settingsCss.pageContainer)}
             >
-                <Editor
-                    rule={rule}
-                    isSubmitting={isSubmitting}
-                    isDeleting={isDeleting}
-                    handleSubmit={handleSubmit}
-                    handleDelete={handleDelete}
-                    handleDirtyForm={setIsFormDirty}
+                {rule?.type === RuleType.Managed && (
+                    <AutoresponderViewButton
+                        recipeSlug={(rule as ManagedRule).settings.slug}
+                    />
+                )}
+            </PageHeader>
+            {rule && (
+                <RuleNavbar
+                    activeTab={activeTab}
+                    handleTabChange={setActiveTab}
                 />
-                {!!rule && <RuleTicketList ruleId={rule.id} />}
-            </Container>
+            )}
+
+            {activeTab === 'settings' || !rule ? (
+                <div className={settingsCss.pageContainer}>
+                    <div className={css.container}>
+                        <Editor
+                            rule={rule}
+                            isSubmitting={isSubmitting}
+                            isDeleting={isDeleting}
+                            handleSubmit={handleSubmit}
+                            handleDelete={handleDelete}
+                            handleDirtyForm={setIsFormDirty}
+                        />
+                        {!rule && (
+                            <div className={css.cardContainer}>
+                                <div className={css.card}>
+                                    <p
+                                        className={classnames(
+                                            css.cardTitle,
+                                            'mb-1'
+                                        )}
+                                    >
+                                        Need some inspiration?
+                                    </p>
+                                    <p>
+                                        Start with a pre-made rule template and
+                                        adapt it to fit your needs.
+                                    </p>
+                                    <TrackedRuleLibraryLink
+                                        from={Source.BrowseTemplatesCard}
+                                    >
+                                        <Button className={css.cardButton}>
+                                            Browse Templates
+                                        </Button>
+                                    </TrackedRuleLibraryLink>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            ) : (
+                <RuleTicketList ruleId={rule.id} />
+            )}
         </>
     )
 }

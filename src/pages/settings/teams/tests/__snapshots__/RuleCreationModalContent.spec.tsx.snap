@@ -17,11 +17,6 @@ exports[`<RuleCreationModalContent /> should render 1`] = `
         Create a rule to assign new tickets to this team. You will be able to edit it later in the 'Rules' settings page
       </div>
     </div>
-    <i
-      class="material-icons icon"
-    >
-      close
-    </i>
   </div>
   <div
     class="wrapper"

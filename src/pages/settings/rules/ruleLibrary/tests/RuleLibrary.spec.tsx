@@ -3,10 +3,10 @@ import {fromJS} from 'immutable'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {render} from '@testing-library/react'
-import _noop from 'lodash/noop'
+import {render, screen} from '@testing-library/react'
 
 import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
+import {rule as ruleFixture} from 'fixtures/rule'
 import {billingState} from 'fixtures/billing'
 import {RuleRecipeTag} from 'models/ruleRecipe/types'
 import {account} from 'fixtures/account'
@@ -34,8 +34,8 @@ describe('<RuleLibrary/>', () => {
         ],
         selectedTags: [],
         searchTerm: '',
-        onInstall: _noop,
         isReady: true,
+        rules: [ruleFixture],
     }
     describe('render', () => {
         it('should render cards for the library', () => {
@@ -56,6 +56,15 @@ describe('<RuleLibrary/>', () => {
                 </Provider>
             )
             expect(container.firstChild).toMatchSnapshot()
+        })
+
+        it('should render automation subscribe button', () => {
+            render(
+                <Provider store={defaultStore}>
+                    <RuleLibrary {...minProps} />
+                </Provider>
+            )
+            expect(screen.queryByText(/Get Automation Features/)).toBeTruthy()
         })
     })
 })

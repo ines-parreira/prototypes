@@ -218,27 +218,29 @@ exports[`<AutomationSubscriptionModal /> should render the modal 1`] = `
                 class="description"
               >
                 <div
+                  class="badge"
+                >
+                  <i
+                    class="icon material-icons"
+                  >
+                    auto_awesome
+                  </i>
+                  <span>
+                    Access these features and more with the Automation Add-on!
+                  </span>
+                </div>
+                <div
                   class="flex"
                 >
                   <div>
-                    Unlock the 
-                    <b>
-                      self-service
-                    </b>
-                     features, to answer customers 
-                    <b>
-                      quickly, 24/7
-                    </b>
-                    !
+                    Add advanced automation features and automate up to 20% of all interactions.
                     <br />
-                    Questions?
-                     
                     <a
-                      href="mailto:undefined"
+                      href="https://app.livestorm.co/gorgias-1/automaton-add-on-workshop?utm_source=candu&utm_medium=in_product&utm_campaign=homepage_addon"
+                      rel="noopener noreferrer"
+                      target="_blank"
                     >
-                      <b>
-                        Get in touch!
-                      </b>
+                      Learn more.
                     </a>
                   </div>
                   <div
@@ -291,7 +293,7 @@ exports[`<AutomationSubscriptionModal /> should render the modal 1`] = `
                       </i>
                     </span>
                     <span>
-                      Self-service portal in 
+                      Self-service features in 
                       <b>
                         chat
                       </b>
@@ -333,12 +335,14 @@ exports[`<AutomationSubscriptionModal /> should render the modal 1`] = `
               >
                 Cancel
               </button>
-              <button
-                class="wrapper fill primary medium"
-                type="button"
-              >
-                I am sure
-              </button>
+              <div>
+                <button
+                  class="wrapper fill primary medium"
+                  type="button"
+                >
+                  I am sure
+                </button>
+              </div>
             </div>
           </div>
         </div>

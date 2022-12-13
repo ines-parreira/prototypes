@@ -1,5 +1,10 @@
 @import '~css/new/colorTokens.less';
 :local {
+    .link span {
+        font-size: 12px;
+        font-weight: 500;
+    }
+
     .info {
         padding-left: 30px;
         padding-bottom: 16px;
@@ -29,29 +34,6 @@
     .headerContainer {
         display: flex;
         flex-direction: row;
-    }
-    .libraryHeader {
-        h1,
-        .searchHeader {
-            margin-bottom: 4px;
-            margin-top: 4px;
-            font-size: 24px;
-        }
-        h1 {
-            font-weight: 600;
-        }
-        p {
-            font-size: 16px;
-            color: @classic-neutral-grey-6;
-        }
-        p.searchHeader {
-            font-size: 24px;
-            span.searchTerm {
-                font-weight: 600;
-            }
-        }
-        &.hasWarning {
-            margin-bottom: 24px;
-        }
+        min-height: 39px;
     }
 }

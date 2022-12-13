@@ -1,7 +1,10 @@
-import React, {ElementType} from 'react'
+import React, {ElementType, useRef} from 'react'
 import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
 import classnames from 'classnames'
 import {useAsyncFn} from 'react-use'
+
+import {hasRole} from 'utils'
+import {UserRole} from 'config/types/user'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
@@ -11,7 +14,9 @@ import {
 import {updateSubscription} from 'state/currentAccount/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
+import {getCurrentUser} from 'state/currentUser/selectors'
 import Button from 'pages/common/components/button/Button'
+import Tooltip from 'pages/common/components/Tooltip'
 import useAppSelector from 'hooks/useAppSelector'
 
 import AutomationSubscriptionDescription from './AutomationSubscriptionDescription'
@@ -37,16 +42,33 @@ const DefaultFooter = ({
     isUpdating,
     onClose,
     onConfirm,
-}: Pick<Props, 'confirmLabel' | 'onClose'> & FooterProps) => (
-    <ModalFooter className={css.footer}>
-        <Button intent="secondary" onClick={onClose}>
-            Cancel
-        </Button>
-        <Button isLoading={isUpdating} onClick={onConfirm}>
-            {confirmLabel}
-        </Button>
-    </ModalFooter>
-)
+}: Pick<Props, 'confirmLabel' | 'onClose'> & FooterProps) => {
+    const buttonWrapper = useRef<HTMLDivElement>(null)
+    const currentUser = useAppSelector(getCurrentUser)
+    const userIsAdmin = hasRole(currentUser, UserRole.Admin)
+
+    return (
+        <ModalFooter className={css.footer}>
+            <Button intent="secondary" onClick={onClose}>
+                Cancel
+            </Button>
+            <div ref={buttonWrapper}>
+                <Button
+                    isLoading={isUpdating}
+                    onClick={onConfirm}
+                    isDisabled={!userIsAdmin}
+                >
+                    {confirmLabel}
+                </Button>
+            </div>
+            {!userIsAdmin && (
+                <Tooltip target={buttonWrapper}>
+                    Reach out to an admin to upgrade.
+                </Tooltip>
+            )}
+        </ModalFooter>
+    )
+}
 
 const AutomationSubscriptionModal = ({
     confirmLabel,

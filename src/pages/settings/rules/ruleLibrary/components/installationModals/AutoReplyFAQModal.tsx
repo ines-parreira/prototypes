@@ -6,16 +6,18 @@ import Avatar from 'pages/common/components/Avatar/Avatar'
 import FakeFAQArticlePreview from 'pages/settings/rules/components/FakeFAQArticlePreview'
 import {getActiveHelpCenterList} from 'state/entities/helpCenter/helpCenters'
 import useAppSelector from 'hooks/useAppSelector'
-import defaultModalCss from '../RuleRecipeModal.less'
+
 import type {ManagedRuleModalProps} from '../InstallRuleModalBody'
 import {InstallationError} from '../../constants'
+
+import defaultModalCss from '../RuleRecipeModal.less'
+
+import TargetCount from './components/TargetCount'
+
 import css from './ManagedRuleModal.less'
 
 export const AutoReplyFAQModal = ({
-    rule,
     triggeredCount,
-    isBehindPaywall,
-    renderTags,
     viewCreationCheckbox,
     handleInstallationError,
     handleDefaultSettings,
@@ -32,51 +34,25 @@ export const AutoReplyFAQModal = ({
     }, [helpCenters, handleDefaultSettings, handleInstallationError])
 
     return (
-        <div
-            className={classnames(css.managedRule, css.autoReplyFAQ, {
-                [css.bordered]: isBehindPaywall,
-            })}
-        >
-            {isBehindPaywall && (
-                <div className={css.titleWrapper}>
-                    <span className={css.title}>{rule.name}</span>
-                    {renderTags()}
-                </div>
-            )}
+        <div className={classnames(css.managedRule, css.autoReplyFAQ)}>
             <div className={css.container}>
                 <div className={css.description}>
-                    <div className={css.count}>
-                        <div className={defaultModalCss.targetTitle}>
-                            target up to
-                        </div>
-                        <div className={defaultModalCss.targetValue}>
-                            <span className={defaultModalCss.bold}>
-                                {triggeredCount}
-                            </span>{' '}
-                            tickets/month
-                        </div>
-                    </div>
-                    <div className={css.descriptionBlock}>
-                        <h4>Help shoppers find answers faster</h4>
+                    <TargetCount count={triggeredCount} />
+                    <div className={defaultModalCss.descriptionBlock}>
+                        <h4>How it works</h4>
                         <p>
-                            This rule automatically identifies incoming
-                            questions via email and replies with relevant
-                            article suggestions from your help center.
+                            This rule detects shopper questions in incoming
+                            emails, replies with relevant articles from your
+                            help center, and closes the ticket. If shoppers
+                            reply, the ticket will reopen so you never miss a
+                            response.
                         </p>
                     </div>
-                    <div className={css.descriptionBlock}>
-                        <h4>Customize the message</h4>
-                        <p>
-                            Personalize your message to align with your brand.
-                        </p>
+                    <div className={defaultModalCss.descriptionBlock}>
+                        <h4>Customize it</h4>
+                        <p>Personailze the message body and signature.</p>
                     </div>
-                    <div className={css.descriptionBlock}>
-                        <p className={css.addendum}>
-                            If your customer replies to this message, it will
-                            reappear as a regular ticket.
-                        </p>
-                    </div>
-                    <div className={css.descriptionBlock}>
+                    <div className={defaultModalCss.descriptionBlock}>
                         {viewCreationCheckbox()}
                     </div>
                 </div>
@@ -88,7 +64,11 @@ export const AutoReplyFAQModal = ({
                         )}
                     >
                         <div className={css.fakeMessage}>
-                            <Avatar name="Client name" size={28} />
+                            <Avatar
+                                name="Client name"
+                                size={28}
+                                className={css.clientAvatar}
+                            />
                             <div className="ml-3">
                                 <div className={css.name}>Client Name</div>
                                 <div>
@@ -99,7 +79,11 @@ export const AutoReplyFAQModal = ({
                         </div>
                         <div className={css.fakeMessage}>
                             <div>
-                                <Avatar url={icon} size={28} />
+                                <Avatar
+                                    url={icon}
+                                    size={28}
+                                    className={css.autoResponderAvatar}
+                                />
                             </div>
                             <div className="ml-3">
                                 <div
@@ -108,19 +92,16 @@ export const AutoReplyFAQModal = ({
                                         css.autoResponder
                                     )}
                                 >
-                                    <i className="material-icons mr-1">
-                                        auto_awesome
-                                    </i>
-                                    Auto Responder
+                                    Autoresponder
                                 </div>
                                 <div>
                                     <p>Hi Client Name,</p>
                                     <p>Thank you for contacting us!</p>
                                     <p>
-                                        We found an article from our help center
-                                        that might provide the information
-                                        you’re looking for. Click the preview
-                                        below to open and read more.
+                                        We found some articles from our help
+                                        center that might provide the
+                                        information you’re looking for. Click a
+                                        preview below to open and read more.
                                     </p>
                                     <FakeFAQArticlePreview />
                                     <p>

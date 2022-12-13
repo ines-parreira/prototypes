@@ -1,0 +1,30 @@
+@import '~css/new/colorTokens';
+@import '~css/new/mixins';
+
+:local .card {
+    position: relative;
+    width: 228px;
+    height: 148px;
+    border: solid 1px @classic-neutral-grey-3;
+    border-radius: 4px;
+    background: @modern-main-human;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    @media @mobiles {
+        display: none;
+    }
+
+    img {
+        position: absolute;
+        right: 10px;
+        top: 6px;
+    }
+
+    .link {
+        font-weight: 500;
+        font-size: 12px;
+    }
+}

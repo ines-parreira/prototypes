@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AutoresponderViewButton/> should render correctly 1`] = `
+<button
+  class="wrapper fill secondary medium"
+  type="button"
+>
+  View Tickets Closed By Rule
+</button>
+`;

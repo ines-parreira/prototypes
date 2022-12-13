@@ -5,6 +5,7 @@ import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 
+import {UserRole} from 'config/types/user'
 import {RootState, StoreDispatch} from 'state/types'
 import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
@@ -15,6 +16,9 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('GorgiasChatIntegrationSelfServicePaywall', () => {
     const defaultState = {
+        currentUser: fromJS({
+            role: {name: UserRole.Admin},
+        }),
         currentAccount: fromJS({
             ...account,
             current_subscription: {

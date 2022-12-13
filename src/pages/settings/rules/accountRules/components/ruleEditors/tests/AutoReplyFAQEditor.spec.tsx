@@ -11,10 +11,6 @@ import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
 import AutoReplyFAQEditor from '../AutoReplyFAQEditor'
 
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
-jest.mock(
-    'pages/settings/rules/accountRules/components/ruleEditors/LinkToRecipeView',
-    () => () => <p>Link to view</p>
-)
 
 describe('<AutoReplyFAQEditor/>', () => {
     const minProps: ComponentProps<typeof AutoReplyFAQEditor> = {

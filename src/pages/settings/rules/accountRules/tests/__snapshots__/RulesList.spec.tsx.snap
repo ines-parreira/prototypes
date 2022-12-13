@@ -5,17 +5,24 @@ exports[`<RulesList/> should render the rule views 1`] = `
   class="rule-category"
 >
   <table
-    class="table table-hover"
+    class="mb-0 table table-hover"
   >
     <thead
       class="border-0"
     >
       <tr>
-        <td />
         <td>
-          rule
+          <i
+            class="material-icons arrowIcon"
+          >
+            arrow_downward
+          </i>
         </td>
-        <td />
+        <td
+          colspan="2"
+        >
+          rules trigger in the order below
+        </td>
         <td
           class="text-nowrap"
         >
@@ -77,44 +84,5 @@ exports[`<RulesList/> should render the rule views 1`] = `
       </tr>
     </tbody>
   </table>
-</div>
-`;
-
-exports[`<RulesList/> should render the upsell component 1`] = `
-<div
-  class="rule-category"
->
-  <div
-    class="container"
-  >
-    <img
-      alt="Empty rules"
-      src="test-file-stub"
-    />
-    <div>
-      <h2>
-        Start by installing a template
-      </h2>
-      <p>
-        Automate your workflow with rules
-      </p>
-      <div
-        class="buttonWrapper"
-      >
-        <button
-          class="wrapper fill primary medium"
-          type="button"
-        >
-          Visit rule library
-        </button>
-        <button
-          class="wrapper ml-2 fill secondary medium"
-          type="button"
-        >
-          Create rule
-        </button>
-      </div>
-    </div>
-  </div>
 </div>
 `;

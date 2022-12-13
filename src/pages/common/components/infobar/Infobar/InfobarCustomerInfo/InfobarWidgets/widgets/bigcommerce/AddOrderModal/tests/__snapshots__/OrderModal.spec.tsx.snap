@@ -30,11 +30,6 @@ exports[`OrderModal should render 1`] = `
               class="subtitle"
             />
           </div>
-          <i
-            class="material-icons icon"
-          >
-            close
-          </i>
         </div>
         <div
           class="scrollable"

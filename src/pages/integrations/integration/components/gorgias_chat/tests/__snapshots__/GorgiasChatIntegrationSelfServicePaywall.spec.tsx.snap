@@ -1,8 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[
-    `GorgiasChatIntegrationSelfServicePaywall should render the paywall 1`
-] = `
+exports[`GorgiasChatIntegrationSelfServicePaywall should render the paywall 1`] = `
 <div
   class="full-width pageWrapper"
 >
@@ -90,11 +88,9 @@ exports[
     </div>
   </div>
 </div>
-`
+`;
 
-exports[
-    `GorgiasChatIntegrationSelfServicePaywall should show modal on button click 1`
-] = `
+exports[`GorgiasChatIntegrationSelfServicePaywall should show modal on button click 1`] = `
 <div
   class="modal fade"
   role="dialog"
@@ -136,27 +132,29 @@ exports[
           class="description"
         >
           <div
+            class="badge"
+          >
+            <i
+              class="icon material-icons"
+            >
+              auto_awesome
+            </i>
+            <span>
+              Access these features and more with the Automation Add-on!
+            </span>
+          </div>
+          <div
             class="flex"
           >
             <div>
-              Unlock the 
-              <b>
-                self-service
-              </b>
-               features, to answer customers 
-              <b>
-                quickly, 24/7
-              </b>
-              !
+              Add advanced automation features and automate up to 20% of all interactions.
               <br />
-              Questions?
-               
               <a
-                href="mailto:undefined"
+                href="https://app.livestorm.co/gorgias-1/automaton-add-on-workshop?utm_source=candu&utm_medium=in_product&utm_campaign=homepage_addon"
+                rel="noopener noreferrer"
+                target="_blank"
               >
-                <b>
-                  Get in touch!
-                </b>
+                Learn more.
               </a>
             </div>
             <div
@@ -209,7 +207,7 @@ exports[
                 </i>
               </span>
               <span>
-                Self-service portal in 
+                Self-service features in 
                 <b>
                   chat
                 </b>
@@ -251,14 +249,16 @@ exports[
         >
           Cancel
         </button>
-        <button
-          class="wrapper fill primary medium"
-          type="button"
-        >
-          Confirm
-        </button>
+        <div>
+          <button
+            class="wrapper fill primary medium"
+            type="button"
+          >
+            Confirm
+          </button>
+        </div>
       </div>
     </div>
   </div>
 </div>
-`
+`;

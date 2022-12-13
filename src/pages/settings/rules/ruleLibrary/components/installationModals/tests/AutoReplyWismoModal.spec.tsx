@@ -14,9 +14,8 @@ import {AutoReplyWismoModal} from '../AutoReplyWismoModal'
 describe('<AutoReplyWismoModal/>', () => {
     const minProps: ComponentProps<typeof AutoReplyWismoModal> = {
         rule: emptyManagedRule,
+        recipeSlug: 'auto-reply-wismo',
         triggeredCount: 10,
-        isBehindPaywall: false,
-        renderTags: () => <></>,
         viewCreationCheckbox: () => <></>,
         handleInstallationError: _noop,
         handleDefaultSettings: _noop,
@@ -40,20 +39,10 @@ describe('<AutoReplyWismoModal/>', () => {
         )
         expect(container.firstChild).toMatchSnapshot()
     })
-    it('should render an alert when there are no shopify integrations', () => {
-        const {container} = render(
-            <Provider
-                store={mockStore({integrations: fromJS({integrations: []})})}
-            >
-                <AutoReplyWismoModal {...minProps} />
-            </Provider>
-        )
-        expect(container.firstChild).toMatchSnapshot()
-    })
     it('should render the autoclose spam body when automation add-on is not subscribed', () => {
         const {container} = render(
             <Provider store={store}>
-                <AutoReplyWismoModal {...minProps} isBehindPaywall={true} />
+                <AutoReplyWismoModal {...minProps} />
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()

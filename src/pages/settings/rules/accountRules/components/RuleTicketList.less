@@ -2,31 +2,6 @@
 
 :local {
     .wrapper {
-        margin-top: 24px;
-    }
-    .header {
-        display: flex;
-        justify-content: space-between;
-        vertical-align: middle;
-        background: none;
-        line-height: 1.2rem;
-        padding: 1rem;
-        border: none;
-        .title {
-            font-size: 1.2rem;
-            color: @classic-neutral-grey-6;
-            font-weight: 600;
-        }
-        .toggle {
-            font-size: 0.8rem;
-            color: @classic-neutral-grey-4;
-            font-weight: 400;
-        }
-    }
-    .body {
-        padding: 0;
-        max-height: 600px;
-        overflow-y: scroll;
         thead {
             th {
                 text-transform: uppercase;
@@ -41,19 +16,23 @@
         td {
             vertical-align: middle;
             border-bottom: 1px solid @classic-neutral-grey-2;
-            padding: 0;
+            padding: 16px 12px;
             a {
                 color: inherit;
             }
             .cellWrapper {
                 width: 100%;
+                height: 100%;
                 cursor: pointer;
-                padding: 0.75rem;
                 align-items: center;
+                vertical-align: middle;
             }
         }
         td.ticketInfo {
             width: 60%;
+        }
+        td.avatar {
+            width: 10px;
         }
         .ticketSubject {
             font-weight: 600;
@@ -62,14 +41,12 @@
             font-weight: 400;
             color: @classic-neutral-grey-4;
         }
-        tr:last-child {
-            td {
-                border-bottom: none;
-            }
-        }
     }
     .navigation {
-        text-align: right;
-        margin-top: 8px;
+        text-align: left;
+        margin: 0px 24px;
+    }
+    .noTrigger {
+        margin: 24px;
     }
 }

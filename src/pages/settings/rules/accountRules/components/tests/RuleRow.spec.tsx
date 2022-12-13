@@ -6,10 +6,7 @@ import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 
 import {emptyManagedRule, emptyRule as ruleFixture} from 'fixtures/rule'
-import {
-    emptyRuleRecipeFixture,
-    emptyRuleRecipeFixture as ruleRecipeFixture,
-} from 'fixtures/ruleRecipe'
+import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
 
 import {createRule, deleteRule} from 'models/rule/resources'
 
@@ -49,6 +46,7 @@ describe('<RuleRow />', () => {
         handleUpgrade: jest.fn(),
         onActivate: jest.fn(),
         shouldDisplayError: false,
+        isSearching: false,
     }
 
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
@@ -185,18 +183,5 @@ describe('<RuleRow />', () => {
         await waitFor(() => {
             expect(minProps.onActivate).toHaveBeenCalled()
         })
-    })
-    it('should display a badge if the rule comes from the library', () => {
-        const rule = {
-            ...ruleFixture,
-            ...ruleRecipeFixture.rule,
-            name: `[${ruleRecipeFixture.recipe_tag}] ${ruleRecipeFixture.rule.name}`,
-        }
-        const {getByText} = render(
-            <Provider store={store}>
-                <RuleRow {...minProps} rule={rule} />)
-            </Provider>
-        )
-        expect(getByText(/rule library/gi)).toBeTruthy()
     })
 })

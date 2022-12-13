@@ -11,7 +11,7 @@ import history from 'pages/history'
 
 import {RuleRecipe} from 'models/ruleRecipe/types'
 import {view} from 'fixtures/views'
-import LinkToRecipeView from '../LinkToRecipeView'
+import AutoresponderViewButton from '../AutoresponderViewButton'
 
 const fetchTagsMock = fetchTags as jest.MockedFunction<typeof fetchTags>
 const createTagMock = createTag as jest.MockedFunction<typeof createTag>
@@ -27,10 +27,9 @@ jest.mock('models/tag/resources', () => {
 
 jest.mock('pages/history')
 
-describe('<LinkToRecipeView/>', () => {
-    const minProps: ComponentProps<typeof LinkToRecipeView> = {
+describe('<AutoresponderViewButton/>', () => {
+    const minProps: ComponentProps<typeof AutoresponderViewButton> = {
         recipeSlug: emptyRuleRecipeFixture.slug,
-        children: <p>test</p>,
     }
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
         thunk,
@@ -52,10 +51,10 @@ describe('<LinkToRecipeView/>', () => {
     it('should render correctly', async () => {
         const {container, getByText} = render(
             <Provider store={store}>
-                <LinkToRecipeView {...minProps} />
+                <AutoresponderViewButton {...minProps} />
             </Provider>
         )
-        await waitFor(() => getByText(/test/))
+        await waitFor(() => getByText(/View Tickets Closed By Rule/))
         expect(container.firstChild).toMatchSnapshot()
     })
 
@@ -69,13 +68,12 @@ describe('<LinkToRecipeView/>', () => {
         } as RootState)
         const {getByText} = render(
             <Provider store={store}>
-                <LinkToRecipeView {...minProps} />
+                <AutoresponderViewButton {...minProps} />
             </Provider>
         )
-        const link = getByText(/test/i).parentElement!
+        const link = getByText(/View Tickets Closed By Rule/i)
         await waitFor(() => {
             expect(fetchTagsMock).toHaveBeenCalled()
-            expect(link.className).toBe('link')
         })
         await waitFor(() => {
             fireEvent.click(link)
@@ -104,13 +102,10 @@ describe('<LinkToRecipeView/>', () => {
         } as RootState)
         const {getByText} = render(
             <Provider store={store}>
-                <LinkToRecipeView {...minProps} />
+                <AutoresponderViewButton {...minProps} />
             </Provider>
         )
-        const link = getByText(/test/i).parentElement!
-        await waitFor(() => {
-            expect(link.className).toBe('link')
-        })
+        const link = getByText(/View Tickets Closed By Rule/i)
         await waitFor(() => {
             fireEvent.click(link)
             expect(history.push).toHaveBeenNthCalledWith(1, {

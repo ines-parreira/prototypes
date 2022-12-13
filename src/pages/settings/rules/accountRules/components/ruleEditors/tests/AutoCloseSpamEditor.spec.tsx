@@ -9,10 +9,6 @@ import {ManagedRulesSlugs} from 'state/rules/types'
 import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
 
 import AutoCloseSpamEditor from '../AutoCloseSpamEditor'
-jest.mock(
-    'pages/settings/rules/accountRules/components/ruleEditors/LinkToRecipeView',
-    () => () => <>Link</>
-)
 
 describe('<AutoCloseSpamEditor/>', () => {
     const minProps: ComponentProps<typeof AutoCloseSpamEditor> = {

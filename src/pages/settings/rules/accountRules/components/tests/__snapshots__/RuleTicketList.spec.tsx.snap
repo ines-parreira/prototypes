@@ -1,32 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<RuleTicketList/> should collapse the element when clicking the header 1`] = `
-<div>
-  <div
-    class="wrapper card"
-  >
-    <div
-      class="header card-header"
-    >
-      <div
-        class="title"
-      >
-        List of tickets triggering the rule
-      </div>
-      <div
-        class="toggle"
-      >
-        <span
-          class="material-icons ml-2"
-        >
-          keyboard_arrow_up
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
 exports[`<RuleTicketList/> should fetch the tickets on render 1`] = `
 Array [
   Array [
@@ -41,286 +14,229 @@ Array [
 
 exports[`<RuleTicketList/> should render the rule ticket list 1`] = `
 <div>
-  <div
-    class="wrapper card"
+  <table
+    class="wrapper table"
   >
-    <div
-      class="header card-header"
-    >
-      <div
-        class="title"
-      >
-        List of tickets triggering the rule
-      </div>
-      <div
-        class="toggle"
-      >
-        <span
-          class="material-icons ml-2"
+    <thead>
+      <tr>
+        <th
+          colspan="2"
         >
-          keyboard_arrow_down
-        </span>
-      </div>
-    </div>
-    <div
-      class="body card-body"
-    >
-      <table
-        class="table"
-      >
-        <thead>
-          <tr>
-            <th
-              class="avatar"
-            />
-            <th>
-              ticket information
-            </th>
-            <th>
-              created
-            </th>
-            <th>
-              channel
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <a
-                to="/app/ticket/152"
-              >
-                <div
-                  class="cellWrapper"
-                >
-                  <div
-                    class="component"
-                    style="width: 30px; height: 30px;"
-                  >
-                    <div
-                      class="initials"
-                      style="width: 30px; height: 30px; font-size: 12.5px;"
-                    >
-                      <span
-                        style="line-height: 32px;"
-                      >
-                        AP
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </a>
-            </td>
-            <td
-              class="ticketInfo"
+          ticket information
+        </th>
+        <th>
+          created
+        </th>
+        <th>
+          channel
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td
+          class="avatar"
+        >
+          <a
+            to="/app/ticket/152"
+          >
+            <div
+              class="cellWrapper"
             >
-              <a
-                to="/app/ticket/152"
+              <div
+                class="component"
+                style="width: 30px; height: 30px;"
               >
                 <div
-                  class="cellWrapper"
+                  class="initials"
+                  style="width: 30px; height: 30px; font-size: 12.5px;"
                 >
-                  <div
-                    class="ticketSubject"
+                  <span
+                    style="line-height: 32px;"
                   >
-                    Great ticket
-                  </div>
-                  <div
-                    class="ticketDescription"
-                  />
+                    AP
+                  </span>
                 </div>
-              </a>
-            </td>
-            <td>
-              <a
-                to="/app/ticket/152"
+              </div>
+            </div>
+          </a>
+        </td>
+        <td
+          class="ticketInfo"
+        >
+          <a
+            to="/app/ticket/152"
+          >
+            <div
+              class="cellWrapper"
+            >
+              <div
+                class="ticketSubject"
               >
-                <div
-                  class="cellWrapper"
-                >
-                  31/07/2017
-                </div>
-              </a>
-            </td>
-            <td>
-              <a
-                to="/app/ticket/152"
+                Great ticket
+              </div>
+              <div
+                class="ticketDescription"
+              />
+            </div>
+          </a>
+        </td>
+        <td>
+          <a
+            to="/app/ticket/152"
+          >
+            <div
+              class="cellWrapper"
+            >
+              31/07/2017
+            </div>
+          </a>
+        </td>
+        <td>
+          <a
+            to="/app/ticket/152"
+          >
+            <div
+              class="cellWrapper"
+            >
+              <i
+                class="icon d-inline-block material-icons text-secondary"
               >
-                <div
-                  class="cellWrapper"
-                >
-                  <i
-                    class="icon d-inline-block material-icons text-secondary"
-                  >
-                    email
-                  </i>
-                </div>
-              </a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-  <div
-    class="navigation"
-  />
+                email
+              </i>
+            </div>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 `;
 
 exports[`<RuleTicketList/> should show navigation if response has cursor 1`] = `
 <div>
-  <div
-    class="wrapper card"
+  <table
+    class="wrapper table"
   >
-    <div
-      class="header card-header"
-    >
-      <div
-        class="title"
-      >
-        List of tickets triggering the rule
-      </div>
-      <div
-        class="toggle"
-      >
-        <span
-          class="material-icons ml-2"
+    <thead>
+      <tr>
+        <th
+          colspan="2"
         >
-          keyboard_arrow_down
-        </span>
-      </div>
-    </div>
-    <div
-      class="body card-body"
-    >
-      <table
-        class="table"
-      >
-        <thead>
-          <tr>
-            <th
-              class="avatar"
-            />
-            <th>
-              ticket information
-            </th>
-            <th>
-              created
-            </th>
-            <th>
-              channel
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <a
-                to="/app/ticket/152"
-              >
-                <div
-                  class="cellWrapper"
-                >
-                  <div
-                    class="component"
-                    style="width: 30px; height: 30px;"
-                  >
-                    <div
-                      class="initials"
-                      style="width: 30px; height: 30px; font-size: 12.5px;"
-                    >
-                      <span
-                        style="line-height: 32px;"
-                      >
-                        AP
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </a>
-            </td>
-            <td
-              class="ticketInfo"
+          ticket information
+        </th>
+        <th>
+          created
+        </th>
+        <th>
+          channel
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td
+          class="avatar"
+        >
+          <a
+            to="/app/ticket/152"
+          >
+            <div
+              class="cellWrapper"
             >
-              <a
-                to="/app/ticket/152"
+              <div
+                class="component"
+                style="width: 30px; height: 30px;"
               >
                 <div
-                  class="cellWrapper"
+                  class="initials"
+                  style="width: 30px; height: 30px; font-size: 12.5px;"
                 >
-                  <div
-                    class="ticketSubject"
+                  <span
+                    style="line-height: 32px;"
                   >
-                    Great ticket
-                  </div>
-                  <div
-                    class="ticketDescription"
-                  />
+                    AP
+                  </span>
                 </div>
-              </a>
-            </td>
-            <td>
-              <a
-                to="/app/ticket/152"
+              </div>
+            </div>
+          </a>
+        </td>
+        <td
+          class="ticketInfo"
+        >
+          <a
+            to="/app/ticket/152"
+          >
+            <div
+              class="cellWrapper"
+            >
+              <div
+                class="ticketSubject"
               >
-                <div
-                  class="cellWrapper"
-                >
-                  31/07/2017
-                </div>
-              </a>
-            </td>
-            <td>
-              <a
-                to="/app/ticket/152"
+                Great ticket
+              </div>
+              <div
+                class="ticketDescription"
+              />
+            </div>
+          </a>
+        </td>
+        <td>
+          <a
+            to="/app/ticket/152"
+          >
+            <div
+              class="cellWrapper"
+            >
+              31/07/2017
+            </div>
+          </a>
+        </td>
+        <td>
+          <a
+            to="/app/ticket/152"
+          >
+            <div
+              class="cellWrapper"
+            >
+              <i
+                class="icon d-inline-block material-icons text-secondary"
               >
-                <div
-                  class="cellWrapper"
-                >
-                  <i
-                    class="icon d-inline-block material-icons text-secondary"
-                  >
-                    email
-                  </i>
-                </div>
-              </a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-  <div
-    class="navigation"
+                email
+              </i>
+            </div>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <span
+    class="navigation group horizontal"
   >
-    <span
-      class="group horizontal"
+    <button
+      class="wrapper wrapper fill secondary medium left isDisabled"
+      disabled=""
+      id="prev-btn"
+      type="button"
     >
-      <button
-        class="wrapper wrapper fill secondary medium left isDisabled"
-        disabled=""
-        id="prev-btn"
-        type="button"
+      <i
+        class="material-icons icon"
       >
-        <i
-          class="material-icons icon"
-        >
-          keyboard_arrow_left
-        </i>
-      </button>
-      <button
-        class="wrapper wrapper fill secondary medium right"
-        id="next-btn"
-        type="button"
+        keyboard_arrow_left
+      </i>
+    </button>
+    <button
+      class="wrapper wrapper fill secondary medium right"
+      id="next-btn"
+      type="button"
+    >
+      <i
+        class="material-icons icon"
       >
-        <i
-          class="material-icons icon"
-        >
-          keyboard_arrow_right
-        </i>
-      </button>
-    </span>
-  </div>
+        keyboard_arrow_right
+      </i>
+    </button>
+  </span>
 </div>
 `;

@@ -12,7 +12,7 @@ type Props = {
 }
 
 const ModalHeader = ({className, subtitle, title}: Props) => {
-    const {labelId, onClose} = useContext(ModalContext)
+    const {labelId, onClose, isClosable} = useContext(ModalContext)
 
     return (
         <div className={classnames(css.wrapper, className)}>
@@ -22,12 +22,14 @@ const ModalHeader = ({className, subtitle, title}: Props) => {
                 </div>
                 <div className={css.subtitle}>{subtitle}</div>
             </div>
-            <i
-                className={classnames('material-icons', css.icon)}
-                onClick={onClose}
-            >
-                close
-            </i>
+            {isClosable && (
+                <i
+                    className={classnames('material-icons', css.icon)}
+                    onClick={onClose}
+                >
+                    close
+                </i>
+            )}
         </div>
     )
 }

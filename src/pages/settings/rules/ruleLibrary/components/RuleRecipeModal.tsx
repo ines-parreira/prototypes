@@ -1,6 +1,8 @@
-import React, {ReactNode, useCallback, useState} from 'react'
-import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
+import React, {useCallback, useState} from 'react'
+import {Badge, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
 import classnames from 'classnames'
+import pluralize from 'pluralize'
+import _flatten from 'lodash/flatten'
 
 import Button from 'pages/common/components/button/Button'
 import useAppSelector from 'hooks/useAppSelector'
@@ -8,33 +10,33 @@ import {RuleRecipe} from 'models/ruleRecipe/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import CheckBox from 'pages/common/forms/CheckBox'
 import history from 'pages/history'
-import Alert from 'pages/common/components/Alert/Alert'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {
     AnyManagedRuleSettings,
     RuleLimitStatus,
     RuleType,
 } from 'state/rules/types'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import AutomationSubscriptionModal from 'pages/settings/billing/automation/AutomationSubscriptionModal'
-import AutomationSubscriptionFeatures from 'pages/settings/billing/automation/AutomationSubscriptionFeatures'
 import AutomationSubscriptionButton from 'pages/settings/billing/automation/AutomationSubscriptionButton'
 
 import Tooltip from 'pages/common/components/Tooltip'
 import {getRulesLimitStatus} from 'state/entities/rules/selectors'
 import {RuleItemActions} from '../../types'
 
-import {InstallationError, InstallationErrorMessage} from '../constants'
+import {
+    InstallationError,
+    InstallationErrorMessage,
+    tagColors,
+} from '../constants'
 import InstallRuleModalBody from './InstallRuleModalBody'
 
 import css from './RuleRecipeModal.less'
 
 type Props = {
     recipe: RuleRecipe
-    handleInstall: (
-        shouldCreateViews: boolean,
-        shouldGoToRule?: boolean
-    ) => Promise<void>
-    renderTags: () => ReactNode
+    handleInstall: (shouldCreateViews: boolean) => Promise<void>
     handleRule: RuleItemActions
     isOpen: boolean
     onToggle: () => void
@@ -47,7 +49,6 @@ type Props = {
 export const RuleRecipeModal = ({
     recipe,
     handleInstall,
-    renderTags,
     handleRule,
     isOpen,
     onToggle,
@@ -56,6 +57,7 @@ export const RuleRecipeModal = ({
     handleDefaultSettings,
     shouldHandleError,
 }: Props) => {
+    const currentAccount = useAppSelector(getCurrentAccountState)
     const {rule, slug, triggered_count, views_per_section} = recipe
     const [shouldCreateviews, setShouldCreateViews] = useState(true)
     const [showAutomationModal, setShowAutomationModal] = useState(false)
@@ -75,7 +77,11 @@ export const RuleRecipeModal = ({
 
     const handleSubscription = () => {
         if (!managedRuleId) {
-            void handleInstall(shouldCreateviews, true).then(() => {
+            logEvent(SegmentEvent.RuleAutomationAddOnSubscription, {
+                from: 'managed-rule',
+                domain: currentAccount?.get('domain'),
+            })
+            void handleInstall(shouldCreateviews).then(() => {
                 setIsSubscribing(false)
             })
         } else {
@@ -117,13 +123,19 @@ export const RuleRecipeModal = ({
                 <span id={installButtonId}>
                     <AutomationSubscriptionButton
                         id={installButtonId}
-                        onClick={() => setShowAutomationModal(true)}
+                        onClick={() => {
+                            logEvent(SegmentEvent.RuleAutomationAddOnUpsell, {
+                                from: 'managed-rule',
+                                domain: currentAccount?.get('domain'),
+                            })
+                            setShowAutomationModal(true)
+                        }}
                         isDisabled={isInstallationDisabled}
                         className={classnames({
                             [css.disabledButton]: isInstallationDisabled,
                         })}
                         position="left"
-                        label="Subscribe to automation add-on"
+                        label="Add Automation Features to Install"
                     />
                 </span>
                 {!!installationErrors.length && <ErrorTooltip />}
@@ -134,10 +146,7 @@ export const RuleRecipeModal = ({
                     <Button
                         intent="primary"
                         onClick={() => {
-                            void handleInstall(
-                                shouldCreateviews,
-                                rule.type === 'managed'
-                            )
+                            void handleInstall(shouldCreateviews)
                             onToggle()
                         }}
                         isDisabled={isInstallationDisabled}
@@ -154,14 +163,67 @@ export const RuleRecipeModal = ({
 
     const ViewsCreationCheckbox = () => {
         if (!views_per_section) return <></>
+
+        const viewNames = _flatten(Object.values(views_per_section)).map(
+            ({name}) => name
+        )
+
+        const viewDescriptions: Record<string, string> = {
+            'Order status': 'if tickets contain a shipping-related intent',
+            Returns: 'if tickets contain a return or exchange-related intent',
+            'Order updates':
+                'if tickets contain order change or cancel-related intents',
+            Product: 'if the tickets contain a product-related intent',
+        }
+
+        const allViewsHaveDescriptions = viewNames.every(
+            (name) => viewDescriptions[name]
+        )
+
         return (
-            <CheckBox
-                className="mb-1 mt-3"
-                isChecked={shouldCreateviews}
-                onChange={(newValue: boolean) => setShouldCreateViews(newValue)}
-            >
-                Create the views related to this rule.
-            </CheckBox>
+            <>
+                {allViewsHaveDescriptions ? (
+                    <div className={css.descriptionBlock}>
+                        <h4>Ticket views</h4>
+                        <p className="mb-1">
+                            The views created by this rule include:
+                        </p>
+                        {viewNames.map((name) => (
+                            <p className="mb-1" key={name}>
+                                - {name}: {viewDescriptions[name]}
+                            </p>
+                        ))}
+                    </div>
+                ) : (
+                    ''
+                )}
+                <CheckBox
+                    labelClassName="align-items-start"
+                    isChecked={shouldCreateviews}
+                    onChange={(newValue: boolean) =>
+                        setShouldCreateViews(newValue)
+                    }
+                >
+                    <div>
+                        <div className={css.viewsLabel}>
+                            {allViewsHaveDescriptions
+                                ? 'Create the ticket views listed above to see tickets that trigger this rule.'
+                                : `Create the ticket ${pluralize(
+                                      'view',
+                                      viewNames.length
+                                  )} ${viewNames
+                                      .map((name) => `"${name}"`)
+                                      .join(
+                                          ' and '
+                                      )} to see tickets that trigger this rule.`}
+                        </div>
+                        <div className={css.viewsSecondaryLabel}>
+                            You can always edit ticket view names after
+                            installing.
+                        </div>
+                    </div>
+                </CheckBox>
+            </>
         )
     }
 
@@ -175,14 +237,18 @@ export const RuleRecipeModal = ({
             centered
         >
             <ModalHeader toggle={onToggle}>
-                {isBehindPaywall ? (
-                    <>Access to next level automation features 🤖</>
-                ) : (
-                    <>
-                        <span>{rule.name}</span>
-                        <span className={css.tags}>{renderTags()}</span>
-                    </>
-                )}
+                <div className={css.header}>
+                    <span className={classnames(css.name, 'mr-2')}>
+                        {rule.name}
+                    </span>
+                    <Badge
+                        key={recipe.recipe_tag}
+                        cssModule={{badge: css.badge}}
+                        style={tagColors[recipe.recipe_tag]}
+                    >
+                        {recipe.recipe_tag}
+                    </Badge>
+                </div>
             </ModalHeader>
             {isSubscribing ? (
                 <ModalBody>
@@ -190,32 +256,11 @@ export const RuleRecipeModal = ({
                 </ModalBody>
             ) : (
                 <ModalBody>
-                    {isBehindPaywall && (
-                        <div className={css.automationHeader}>
-                            <Alert
-                                icon={
-                                    <i
-                                        className={classnames(
-                                            css.icon,
-                                            'material-icons'
-                                        )}
-                                    >
-                                        auto_awesome
-                                    </i>
-                                }
-                            >
-                                Customers automate up to 5% of all interactions
-                                with our new automation add-on!
-                            </Alert>
-                            <AutomationSubscriptionFeatures />
-                        </div>
-                    )}
                     <InstallRuleModalBody
                         handleRule={handleRule}
                         triggeredCount={triggered_count}
                         rule={rule}
-                        isBehindPaywall={isBehindPaywall}
-                        renderTags={renderTags}
+                        recipeSlug={recipe.slug}
                         viewCreationCheckbox={ViewsCreationCheckbox}
                         handleInstallationError={handleInstallationErrors}
                         handleDefaultSettings={handleDefaultSettings}
@@ -231,7 +276,7 @@ export const RuleRecipeModal = ({
         </Modal>
     ) : (
         <AutomationSubscriptionModal
-            confirmLabel="Confirm"
+            confirmLabel="Subscribe &amp; Install Rule"
             isOpen={showAutomationModal}
             onClose={() => setShowAutomationModal(false)}
             onSubscribe={handleSubscription}

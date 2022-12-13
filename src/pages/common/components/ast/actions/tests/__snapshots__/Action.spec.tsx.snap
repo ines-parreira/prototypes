@@ -74,11 +74,6 @@ exports[`Action render() should render a warning regarding team assignment 1`] =
      
     page
   </ActionWarning>
-  <Errors
-    className="inlineErrors"
-    inline={true}
-    key="errors"
-  />
 </div>
 `;
 

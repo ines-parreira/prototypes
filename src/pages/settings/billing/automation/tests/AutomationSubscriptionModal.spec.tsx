@@ -5,6 +5,7 @@ import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 
+import {UserRole} from 'config/types/user'
 import {account, automationSubscriptionProductPrices} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {RootState, StoreDispatch} from 'state/types'
@@ -15,6 +16,9 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('<AutomationSubscriptionModal />', () => {
     const defaultState: Partial<RootState> = {
+        currentUser: fromJS({
+            role: {name: UserRole.Admin},
+        }),
         currentAccount: fromJS({
             ...account,
             current_subscription: {

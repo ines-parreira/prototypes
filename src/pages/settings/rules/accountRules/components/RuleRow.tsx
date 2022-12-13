@@ -17,12 +17,11 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 
 import {deactivateRule, createRule, deleteRule} from 'models/rule/resources'
-import {RuleRecipe} from 'models/ruleRecipe/types'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import history from 'pages/history'
+import {ManagedRuleDisplayName} from 'state/rules/constants'
 import {
     ruleCreated,
     ruleUpdated,
@@ -50,6 +49,7 @@ type Props = {
     handleUpgrade: (id: number) => void
     onActivate: (id: number) => Promise<void>
     shouldDisplayError?: boolean
+    isSearching?: boolean
 }
 
 export function RuleRow({
@@ -57,6 +57,7 @@ export function RuleRow({
     canDuplicate,
     handleUpgrade,
     onActivate,
+    isSearching = false,
     shouldDisplayError = false,
 }: Props) {
     const dispatch = useAppDispatch()
@@ -66,18 +67,6 @@ export function RuleRow({
     const helpCenters = useAppSelector(getActiveHelpCenterList)
 
     const [isDescriptionOpen, setDescriptionOpen] = useState(false)
-    const isFromLibrary = useMemo(() => {
-        return !!Object.values(ruleRecipes).find((recipe: RuleRecipe) => {
-            const formattedName = recipe.recipe_tag
-                ? `[${recipe.recipe_tag}] ${recipe.rule.name}`
-                : `${recipe.rule.name}`
-            return (
-                formattedName === rule.name &&
-                recipe.rule.code === rule.code &&
-                rule.event_types === recipe.rule.event_types
-            )
-        })
-    }, [rule, ruleRecipes])
 
     useEffect(() => {
         if (rule.type === RuleType.Managed && shouldDisplayError) {
@@ -214,7 +203,9 @@ export function RuleRow({
             )
             return recipe
                 ? [
-                      `[${recipe.recipe_tag}] ${recipe.rule.name}`,
+                      ManagedRuleDisplayName.get(
+                          recipe.slug as ManagedRulesSlugs
+                      ),
                       recipe.rule.description,
                   ]
                 : [rule.name, rule.description]
@@ -238,7 +229,8 @@ export function RuleRow({
                 <i
                     className={classnames(
                         'material-icons text-faded drag-handle',
-                        css.dragHandle
+                        css.dragHandle,
+                        {invisible: isSearching}
                     )}
                 >
                     drag_indicator
@@ -273,43 +265,15 @@ export function RuleRow({
                 className={classnames(
                     'link-full-td',
                     'align-middle',
-                    css['middle-column']
+                    css.middleColumn
                 )}
                 id={`rule-name-${rule.id}`}
             >
                 <Link to={link}>
-                    <div>
-                        <span className={classnames('mr-2', css.name)}>
+                    <div className={css.middleColumnContent}>
+                        <span className={classnames('mr-3', css.name)}>
                             {ruleName}
                         </span>
-                        {isFromLibrary && (
-                            <Badge
-                                className={classnames(
-                                    'ml-2',
-                                    css.fromLibraryBadge
-                                )}
-                                type={ColorType.Light}
-                            >
-                                <i className="material-icons mr-1">
-                                    auto_fix_high
-                                </i>
-                                Rule Library
-                            </Badge>
-                        )}
-                        {rule.type === 'managed' && (
-                            <Badge
-                                className={classnames(
-                                    'ml-2',
-                                    css.fromLibraryBadge
-                                )}
-                                type={ColorType.Grey}
-                            >
-                                <i className="material-icons mr-1">
-                                    auto_awesome
-                                </i>
-                                Managed Rule
-                            </Badge>
-                        )}
                         {error && (
                             <span className={classnames('ml-2', css.error)}>
                                 <span className="material-icons mr-1">

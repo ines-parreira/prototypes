@@ -1,21 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render correctly 1`] = `
-<div>
+<div
+  class="container"
+>
   <div
-    class="container autoReplyFAQ"
+    class="editorContainer"
   >
     <div
-      class="descriptionWrapper"
+      class="container autoReplyFAQ"
     >
-      <h3>
-        Rule description
-      </h3>
       <p>
-        Automatically reply to common shopper questions with relevant help center article suggestions.
-      </p>
-      <p>
-        Link
+        This rule detects shopper questions in incoming emails, replies with relevant articles from your help center, and closes the ticket. If shoppers reply, the ticket will reopen so you never miss a response.
       </p>
       <div
         class="alert error"
@@ -48,7 +44,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
           Exclusion email list
         </h4>
         <p>
-          Emails in the following list will never be replied to by this auto reply rule.
+          Emails in the following list will never be replied to by this rule.
         </p>
         <div
           class="MultiSelectField blockList"
@@ -719,7 +715,78 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
       </div>
     </div>
     <div
-      class="demo"
+      class="toggleButtonContainer"
+    >
+      <span>
+        <div>
+          <label
+            aria-checked="true"
+            class="label label"
+            for="toggle-button-3"
+            role="switch"
+          >
+            <input
+              checked=""
+              class="input"
+              disabled=""
+              id="toggle-button-3"
+              name="toggle-button-3"
+              type="checkbox"
+            />
+            <div
+              class="slider"
+            />
+          </label>
+        </div>
+      </span>
+      <span>
+        <label
+          class="toggleLabel mr-2 mb-0"
+        >
+          Enable rule
+        </label>
+      </span>
+    </div>
+    <div
+      class="buttons-container"
+    >
+      <div>
+        <button
+          class="wrapper fill primary medium isDisabled"
+          disabled=""
+          form="rule-form"
+          id="rule-item-save"
+          type="button"
+        >
+          Update rule
+        </button>
+      </div>
+      <div>
+        <button
+          class="wrapper fill destructive medium"
+          id="rule-item-delete"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              delete
+            </i>
+            Delete rule
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    class="demoContainer"
+    style="height: 0px;"
+  >
+    <div
+      class="demo autoReplyFAQ"
     >
       <div
         class="topbar"
@@ -930,20 +997,56 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
             <div
               class="articleTitle"
             >
-              What size should I order
+              What size should I order?
             </div>
-            <div
+            <p
               class="articleDescription"
             >
-              <p>
-                Unsure what size will work? Check out our sizing guide located above the sizes offered on each product page for exact measure...
-              </p>
-              <p
-                class="articleLink"
-              >
-                Read more
-              </p>
+              Unsure what size will work? Check out our sizing guide located above the sizes offered on each product page for exact measure...
+            </p>
+            <span
+              class="articleLink"
+            >
+              Read More
+            </span>
+          </div>
+          <div
+            class="container FAQArticle"
+          >
+            <div
+              class="articleTitle"
+            >
+              What shoe size should I buy?
             </div>
+            <p
+              class="articleDescription"
+            >
+              We recommend looking at the product details on the product page for each item for specific fit information. Each style will have...
+            </p>
+            <span
+              class="articleLink"
+            >
+              Read More
+            </span>
+          </div>
+          <div
+            class="container FAQArticle"
+          >
+            <div
+              class="articleTitle"
+            >
+              What size am I in your denim?
+            </div>
+            <p
+              class="articleDescription"
+            >
+              Take a look at our denim size guide for measurement instructions and keep in mind that the fabric will relax during the first...
+            </p>
+            <span
+              class="articleLink"
+            >
+              Read More
+            </span>
           </div>
           <div>
             <div
@@ -1133,96 +1236,21 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
       </div>
     </div>
   </div>
-  <div
-    class="toggleButtonContainer"
-  >
-    <span>
-      <div>
-        <label
-          aria-checked="true"
-          class="label label"
-          for="toggle-button-3"
-          role="switch"
-        >
-          <input
-            checked=""
-            class="input"
-            disabled=""
-            id="toggle-button-3"
-            name="toggle-button-3"
-            type="checkbox"
-          />
-          <div
-            class="slider"
-          />
-        </label>
-      </div>
-    </span>
-    <span>
-      <label
-        class="toggleLabel mr-2"
-      >
-        Enable rule
-      </label>
-    </span>
-  </div>
-  <div
-    class="buttons-container"
-  >
-    <div>
-      <button
-        class="wrapper fill primary medium isDisabled"
-        disabled=""
-        form="rule-form"
-        id="rule-item-save"
-        type="button"
-      >
-        Update rule
-      </button>
-    </div>
-    <div>
-      <button
-        class="wrapper fill destructive medium"
-        id="rule-item-delete"
-        type="button"
-      >
-        <span
-          class="wrapper"
-        >
-          <i
-            class="material-icons icon isLeft medium"
-          >
-            delete
-          </i>
-          Delete rule
-        </span>
-      </button>
-    </div>
-  </div>
 </div>
 `;
 
 exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`] = `
-<div>
+<div
+  class="container"
+>
   <div
-    class="container autoReplyWismo"
+    class="editorContainer"
   >
     <div
-      class="descriptionWrapper"
+      class="container autoReplyWismo"
     >
-      <h3>
-        Rule description
-      </h3>
       <p>
-        Automatically respond to the common
-         
-        <em>
-          "Where is my order?"
-        </em>
-         email with tracking links for the shopper's last 3 orders.
-      </p>
-      <p>
-        Link
+        This rule detects emails related to order status or tracking, replies with tracking links for the shopper’s last 3 orders, and auto-closes the ticket. If shoppers reply, the ticket will reopen so you never miss a response.
       </p>
       <div
         class="listWrapper"
@@ -1231,7 +1259,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
           Exclusion email list
         </h4>
         <p>
-          Emails in the following list will never be replied to by this auto reply rule.
+          This rule will never trigger on incoming emails from the addresses below.
         </p>
         <div
           class="MultiSelectField blockList"
@@ -1280,7 +1308,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
         class="listWrapper"
       >
         <h4>
-          Message body
+          Message above tracking links
         </h4>
         <div
           class="field"
@@ -1589,31 +1617,10 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
         </div>
       </div>
       <div
-        class="listWrapper trackingBlock"
-      >
-        <div
-          class="title"
-        >
-          <div>
-            <img
-              alt="shopify logo"
-              class="shopifyIcon"
-              src="test-file-stub"
-            />
-          </div>
-          <div>
-            Tracking number information
-          </div>
-        </div>
-        <div>
-          Order tracking link and information will be added here
-        </div>
-      </div>
-      <div
         class="listWrapper"
       >
         <h4>
-          Signature
+          Message below tracking links
         </h4>
         <div
           class="field"
@@ -1923,7 +1930,78 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
       </div>
     </div>
     <div
-      class="demo"
+      class="toggleButtonContainer"
+    >
+      <span>
+        <div>
+          <label
+            aria-checked="true"
+            class="label label"
+            for="toggle-button-2"
+            role="switch"
+          >
+            <input
+              checked=""
+              class="input"
+              disabled=""
+              id="toggle-button-2"
+              name="toggle-button-2"
+              type="checkbox"
+            />
+            <div
+              class="slider"
+            />
+          </label>
+        </div>
+      </span>
+      <span>
+        <label
+          class="toggleLabel mr-2 mb-0"
+        >
+          Enable rule
+        </label>
+      </span>
+    </div>
+    <div
+      class="buttons-container"
+    >
+      <div>
+        <button
+          class="wrapper fill primary medium isDisabled"
+          disabled=""
+          form="rule-form"
+          id="rule-item-save"
+          type="button"
+        >
+          Update rule
+        </button>
+      </div>
+      <div>
+        <button
+          class="wrapper fill destructive medium"
+          id="rule-item-delete"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              delete
+            </i>
+            Delete rule
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    class="demoContainer"
+    style="height: 0px;"
+  >
+    <div
+      class="demo autoReplyWismo"
     >
       <div
         class="topbar"
@@ -1948,7 +2026,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
             <div
               class="previewLegend"
             >
-              Message body
+              Message above tracking links
             </div>
             <div
               class="previewBodyWrapper"
@@ -2210,7 +2288,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
             <div
               class="previewLegend"
             >
-              Signature
+              Message below tracking links
             </div>
             <div
               class="previewBodyWrapper"
@@ -2394,138 +2472,148 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
       </div>
     </div>
   </div>
-  <div
-    class="toggleButtonContainer"
-  >
-    <span>
-      <div>
-        <label
-          aria-checked="true"
-          class="label label"
-          for="toggle-button-2"
-          role="switch"
-        >
-          <input
-            checked=""
-            class="input"
-            disabled=""
-            id="toggle-button-2"
-            name="toggle-button-2"
-            type="checkbox"
-          />
-          <div
-            class="slider"
-          />
-        </label>
-      </div>
-    </span>
-    <span>
-      <label
-        class="toggleLabel mr-2"
-      >
-        Enable rule
-      </label>
-    </span>
-  </div>
-  <div
-    class="buttons-container"
-  >
-    <div>
-      <button
-        class="wrapper fill primary medium isDisabled"
-        disabled=""
-        form="rule-form"
-        id="rule-item-save"
-        type="button"
-      >
-        Update rule
-      </button>
-    </div>
-    <div>
-      <button
-        class="wrapper fill destructive medium"
-        id="rule-item-delete"
-        type="button"
-      >
-        <span
-          class="wrapper"
-        >
-          <i
-            class="material-icons icon isLeft medium"
-          >
-            delete
-          </i>
-          Delete rule
-        </span>
-      </button>
-    </div>
-  </div>
 </div>
 `;
 
 exports[`<ManagedRuleEditor/> non-support-related-emails editor should render correctly 1`] = `
-<div>
+<div
+  class="container"
+>
   <div
-    class="container"
+    class="editorContainer"
   >
-    <h3>
-      Rule description
-    </h3>
-    <p>
-      This rules leverages machine learning to auto-close tickets unrelated to a customer support request.
-    </p>
-    <p>
-      For best results, make sure that this rule is triggering before all other rules by putting it at the top of your rule list.
-    </p>
-    <p>
-      Link
-    </p>
     <div
-      class="listWrapper"
+      class="container"
     >
-      <h4>
-        Accept list
-      </h4>
-      <p>
-        Emails in the following list will never be closed by this auto close rule.
+      <p
+        class="mb-4"
+      >
+        This rule detects and closes irrelevant emails that don’t require a response such as newsletters and spam to save you time filtering through tickets.
       </p>
       <div
-        class="MultiSelectField allowList"
+        class="alert info"
       >
         <div
-          class="container"
+          class="iconContainer"
+        >
+          <img
+            alt="icon"
+            src="test-file-stub"
+          />
+        </div>
+        <div
+          class="content"
+        >
+          <span
+            class="label"
+          >
+            Keep this rule at the top of your rules to ensure it triggers first, preventing irrelevant billable tickets.
+          </span>
+        </div>
+      </div>
+      <div
+        class="listWrapper"
+      >
+        <h4>
+          Email exclusion list
+        </h4>
+        <p>
+          This rule will never trigger on incoming emails from the addresses below.
+        </p>
+        <div
+          class="MultiSelectField allowList"
         >
           <div
-            class="inputContainer multiSelectOptionField-dropdown"
+            class="container"
           >
             <div
-              class="dropdown"
+              class="inputContainer multiSelectOptionField-dropdown"
             >
               <div
-                aria-expanded="false"
-                aria-haspopup="true"
-                class=""
-                data-toggle="dropdown"
+                class="dropdown"
               >
-                <input
-                  autocomplete="off"
-                  class="input"
-                  placeholder="Add emails..."
-                  value=""
-                />
-              </div>
-              <div
-                aria-hidden="true"
-                class="options dropdown-menu"
-                role="menu"
-                tabindex="-1"
-              >
-                <h6
-                  class="dropdown-header"
+                <div
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  class=""
+                  data-toggle="dropdown"
+                >
+                  <input
+                    autocomplete="off"
+                    class="input"
+                    placeholder="Add emails..."
+                    value=""
+                  />
+                </div>
+                <div
+                  aria-hidden="true"
+                  class="options dropdown-menu"
+                  role="menu"
                   tabindex="-1"
                 >
-                  No result
-                </h6>
+                  <h6
+                    class="dropdown-header"
+                    tabindex="-1"
+                  >
+                    No result
+                  </h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="listWrapper"
+      >
+        <h4>
+          Always apply list
+        </h4>
+        <p>
+          Emails in the following list will 
+          <b>
+            always be closed
+          </b>
+           by this rule.
+        </p>
+        <div
+          class="MultiSelectField blockList"
+        >
+          <div
+            class="container"
+          >
+            <div
+              class="inputContainer multiSelectOptionField-dropdown"
+            >
+              <div
+                class="dropdown"
+              >
+                <div
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  class=""
+                  data-toggle="dropdown"
+                >
+                  <input
+                    autocomplete="off"
+                    class="input"
+                    placeholder="Add emails..."
+                    value=""
+                  />
+                </div>
+                <div
+                  aria-hidden="true"
+                  class="options dropdown-menu"
+                  role="menu"
+                  tabindex="-1"
+                >
+                  <h6
+                    class="dropdown-header"
+                    tabindex="-1"
+                  >
+                    No result
+                  </h6>
+                </div>
               </div>
             </div>
           </div>
@@ -2533,122 +2621,145 @@ exports[`<ManagedRuleEditor/> non-support-related-emails editor should render co
       </div>
     </div>
     <div
-      class="listWrapper"
+      class="toggleButtonContainer"
     >
-      <h4>
-        Block list
-      </h4>
-      <p>
-        Emails in the following list will always be closed by this auto close rule.
-      </p>
-      <div
-        class="MultiSelectField blockList"
-      >
-        <div
-          class="container"
-        >
-          <div
-            class="inputContainer multiSelectOptionField-dropdown"
+      <span>
+        <div>
+          <label
+            aria-checked="true"
+            class="label label"
+            for="toggle-button-1"
+            role="switch"
           >
+            <input
+              checked=""
+              class="input"
+              disabled=""
+              id="toggle-button-1"
+              name="toggle-button-1"
+              type="checkbox"
+            />
             <div
-              class="dropdown"
-            >
-              <div
-                aria-expanded="false"
-                aria-haspopup="true"
-                class=""
-                data-toggle="dropdown"
-              >
-                <input
-                  autocomplete="off"
-                  class="input"
-                  placeholder="Add emails..."
-                  value=""
-                />
-              </div>
-              <div
-                aria-hidden="true"
-                class="options dropdown-menu"
-                role="menu"
-                tabindex="-1"
-              >
-                <h6
-                  class="dropdown-header"
-                  tabindex="-1"
-                >
-                  No result
-                </h6>
-              </div>
-            </div>
-          </div>
+              class="slider"
+            />
+          </label>
         </div>
-      </div>
-    </div>
-  </div>
-  <div
-    class="toggleButtonContainer"
-  >
-    <span>
-      <div>
+      </span>
+      <span>
         <label
-          aria-checked="true"
-          class="label label"
-          for="toggle-button-1"
-          role="switch"
+          class="toggleLabel mr-2 mb-0"
         >
-          <input
-            checked=""
-            class="input"
-            disabled=""
-            id="toggle-button-1"
-            name="toggle-button-1"
-            type="checkbox"
-          />
-          <div
-            class="slider"
-          />
+          Enable rule
         </label>
+      </span>
+    </div>
+    <div
+      class="buttons-container"
+    >
+      <div>
+        <button
+          class="wrapper fill primary medium isDisabled"
+          disabled=""
+          form="rule-form"
+          id="rule-item-save"
+          type="button"
+        >
+          Update rule
+        </button>
       </div>
-    </span>
-    <span>
-      <label
-        class="toggleLabel mr-2"
-      >
-        Enable rule
-      </label>
-    </span>
+      <div>
+        <button
+          class="wrapper fill destructive medium"
+          id="rule-item-delete"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              delete
+            </i>
+            Delete rule
+          </span>
+        </button>
+      </div>
+    </div>
   </div>
   <div
-    class="buttons-container"
+    class="demoContainer"
+    style="height: 0px;"
   >
-    <div>
-      <button
-        class="wrapper fill primary medium isDisabled"
-        disabled=""
-        form="rule-form"
-        id="rule-item-save"
-        type="button"
+    <div
+      class="container"
+    >
+      <div
+        class="fakeTicket"
       >
-        Update rule
-      </button>
-    </div>
-    <div>
-      <button
-        class="wrapper fill destructive medium"
-        id="rule-item-delete"
-        type="button"
-      >
-        <span
-          class="wrapper"
+        <div
+          class="fakeTicketTitleWrapper"
         >
-          <i
-            class="material-icons icon isLeft medium"
+          <span
+            class="fakeTicketTitle"
           >
-            delete
-          </i>
-          Delete rule
-        </span>
-      </button>
+            Newsletter
+          </span>
+          <div
+            class="badge fakeTicketClosed"
+            style="background-color: rgb(255, 234, 234); color: rgb(163, 46, 46);"
+          >
+            closed
+          </div>
+        </div>
+        <div
+          class="fakeTicketDescription"
+        >
+          Check out our new product!
+        </div>
+      </div>
+      <div
+        class="fakeTicket"
+      >
+        <div
+          class="fakeTicketTitleWrapper"
+        >
+          <span
+            class="fakeTicketTitle"
+          >
+            Product question
+          </span>
+        </div>
+        <div
+          class="fakeTicketDescription"
+        >
+          I have ordered...
+        </div>
+      </div>
+      <div
+        class="fakeTicket"
+      >
+        <div
+          class="fakeTicketTitleWrapper"
+        >
+          <span
+            class="fakeTicketTitle"
+          >
+            Promotion! -50%...
+          </span>
+          <div
+            class="badge fakeTicketClosed"
+            style="background-color: rgb(255, 234, 234); color: rgb(163, 46, 46);"
+          >
+            closed
+          </div>
+        </div>
+        <div
+          class="fakeTicketDescription"
+        >
+          Until Monday all of our products...
+        </div>
+      </div>
     </div>
   </div>
 </div>

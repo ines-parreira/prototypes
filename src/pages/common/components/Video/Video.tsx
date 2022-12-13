@@ -1,10 +1,11 @@
 import React from 'react'
-import classnames from 'classnames'
 
 import {useToggle} from 'react-use'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
+
+import arrow from 'assets/img/icons/arrow.svg'
 
 import css from './Video.less'
 
@@ -22,17 +23,20 @@ export default function Video({videoId, videoPreviewIndex, legend}: Props) {
     return (
         <div>
             <div className={css.preview} onClick={toggleIsOpen}>
-                <div className={css.screenshot}>
-                    <img
-                        alt="video preview"
-                        src={`https://img.youtube.com/vi/${videoId}/${previewIndex}.jpg`}
-                    />
-                    <i className={classnames('material-icons', css.playIcon)}>
-                        play_circle_filled_white
-                    </i>
-                    <div className={css.iconBackground} />
+                <div>
+                    <div className={css.screenshotWrapper}>
+                        <div className={css.screenshot}>
+                            <img
+                                alt="video preview"
+                                src={`https://img.youtube.com/vi/${videoId}/${previewIndex}.jpg`}
+                            />
+                            <div className={css.playIcon}>
+                                <img src={arrow} alt="play" width="11" />
+                            </div>
+                        </div>
+                    </div>
+                    <div className={css.title}>{legend}</div>
                 </div>
-                <div className={css.title}>{legend}</div>
             </div>
             <Modal isOpen={isOpen} onClose={toggleIsOpen} size="huge">
                 <ModalHeader title={legend} />

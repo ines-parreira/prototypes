@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import classnames from 'classnames'
+import _isArray from 'lodash/isArray'
 import _isFunction from 'lodash/isFunction'
 import {List, Map} from 'immutable'
 
@@ -37,6 +38,12 @@ export default class Property extends Component<Props> {
             errors = config.validate(value.value, schemas)
         }
 
+        if (!_isArray(errors)) {
+            errors = [errors]
+        }
+
+        errors = errors.filter((error) => !!error)
+
         return (
             <div
                 className={classnames({
@@ -49,7 +56,7 @@ export default class Property extends Component<Props> {
                     config={config}
                     parent={parent.push('value', 'value')}
                 />
-                {errors ? <Errors belowInput>{errors}</Errors> : null}
+                {errors.length ? <Errors belowInput>{errors}</Errors> : null}
             </div>
         )
     }

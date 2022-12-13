@@ -1,7 +1,34 @@
+@import '~css/new/colorTokens.less';
+
 :local .container {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-    margin-bottom: 64px;
-    padding-bottom: 24px;
+    .autoResponders,
+    .ruleTemplates {
+        gap: 16px;
+        flex-wrap: wrap;
+    }
+
+    .autoResponders {
+        margin-bottom: 32px;
+    }
+
+    .libraryHeader {
+        h1,
+        .searchHeader {
+            margin-bottom: 4px;
+            margin-top: 4px;
+            font-size: 24px;
+        }
+        h1 {
+            font-weight: 600;
+            i {
+                color: @modern-main-secondary;
+            }
+        }
+        p {
+            font-size: 14px;
+            color: @classic-neutral-grey-6;
+            margin-bottom: 6px;
+        }
+        margin-bottom: 18px;
+    }
 }

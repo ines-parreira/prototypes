@@ -1,10 +1,8 @@
-import React, {ReactNode, useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 
 import {useAsyncFn} from 'react-use'
-import classnames from 'classnames'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {ruleRecipes} from 'state/entities/ruleRecipes/selectors'
 import {getTicketViews} from 'state/entities/views/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -12,21 +10,19 @@ import {createTag, fetchTags} from 'models/tag/resources'
 import history from 'pages/history'
 import {TagDraft} from 'models/tag/types'
 import {tagCreated} from 'state/entities/tags/actions'
-
-import css from './LinkToRecipeView.less'
+import Button from 'pages/common/components/button/Button'
+import {useRuleRecipes} from 'state/entities/ruleRecipes/hooks'
 
 type Props = {
     recipeSlug: string
-    children: ReactNode
 }
-export const LinkToRecipeView = ({recipeSlug, children}: Props) => {
-    const recipes = useAppSelector(ruleRecipes)
+export const AutoresponderViewButton = ({recipeSlug}: Props) => {
     const allViews = useAppSelector(getTicketViews)
     const dispatch = useAppDispatch()
-    const [isFetchingRecipes, setIsFetchingRecipe] = useState(true)
+    const recipes = useRuleRecipes()
     const [hasErrors, setHasErrors] = useState(false)
 
-    const recipe = recipes[recipeSlug]
+    const recipe = recipes![recipeSlug]
 
     const checkMissingTags = (tag: TagDraft): Promise<TagDraft | null> =>
         new Promise((resolve, reject) => {
@@ -43,7 +39,6 @@ export const LinkToRecipeView = ({recipeSlug, children}: Props) => {
     const [{loading: isFetchingTags, value: missingTags}, handleFetchTags] =
         useAsyncFn(async () => {
             if (!recipe) return
-            setIsFetchingRecipe(false)
             try {
                 const tags = (
                     await Promise.all(
@@ -77,10 +72,7 @@ export const LinkToRecipeView = ({recipeSlug, children}: Props) => {
         })
 
     const handleClick = async () => {
-        if (isFetchingTags || isFetchingRecipes || hasErrors) {
-            return
-        }
-        const recipeView = recipes[recipeSlug]?.views_per_section['none'][0]
+        const recipeView = recipe?.views_per_section['none'][0]
         const existingView = allViews.filter(
             (view) =>
                 view.slug === recipeView.slug ||
@@ -119,20 +111,14 @@ export const LinkToRecipeView = ({recipeSlug, children}: Props) => {
     }
 
     return (
-        <a
-            href="#"
-            className={classnames(
-                {
-                    [css.disabled]:
-                        isFetchingRecipes || isFetchingTags || hasErrors,
-                },
-                css.link
-            )}
+        <Button
             onClick={handleClick}
+            intent="secondary"
+            disabled={isFetchingTags || hasErrors}
         >
-            {children}
-        </a>
+            View Tickets Closed By Rule
+        </Button>
     )
 }
 
-export default LinkToRecipeView
+export default AutoresponderViewButton

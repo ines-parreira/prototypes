@@ -80,26 +80,33 @@ exports[`ManageTags component should render a loader while fetching data 1`] = `
         <div
           class="preview"
         >
-          <div
-            class="screenshot"
-          >
-            <img
-              alt="video preview"
-              src="https://img.youtube.com/vi/MHwrVTk6SNQ/0.jpg"
-            />
-            <i
-              class="material-icons playIcon"
-            >
-              play_circle_filled_white
-            </i>
+          <div>
             <div
-              class="iconBackground"
-            />
-          </div>
-          <div
-            class="title"
-          >
-            Working with tags
+              class="screenshotWrapper"
+            >
+              <div
+                class="screenshot"
+              >
+                <img
+                  alt="video preview"
+                  src="https://img.youtube.com/vi/MHwrVTk6SNQ/0.jpg"
+                />
+                <div
+                  class="playIcon"
+                >
+                  <img
+                    alt="play"
+                    src="test-file-stub"
+                    width="11"
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              class="title"
+            >
+              Working with tags
+            </div>
           </div>
         </div>
       </div>

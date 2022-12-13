@@ -3,8 +3,8 @@ import moment from 'moment'
 import _truncate from 'lodash/truncate'
 import _uniqueId from 'lodash/uniqueId'
 import {useAsyncFn} from 'react-use'
-import {Card, CardBody, CardHeader, Table} from 'reactstrap'
 import {Link} from 'react-router-dom'
+import {Table} from 'reactstrap'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -30,7 +30,6 @@ type Props = {
 
 export const RuleTicketList = ({ruleId, numTickets = 10}: Props) => {
     const dispatch = useAppDispatch()
-    const [shouldShowList, setShouldShowList] = useState(true)
     const [paginationMeta, setPaginationMeta] = useState<CursorMeta | null>(
         null
     )
@@ -68,18 +67,6 @@ export const RuleTicketList = ({ruleId, numTickets = 10}: Props) => {
         }
     }
 
-    const toggleVisibility = (visibility: boolean) => {
-        setShouldShowList(visibility)
-        logEvent(
-            visibility
-                ? SegmentEvent.RuleDebbugingExpanded
-                : SegmentEvent.RuleDebbugingExpanded,
-            {
-                account_domain: currentAccount.get('domain'),
-            }
-        )
-    }
-
     const LinkedCell = ({
         ticketId,
         children,
@@ -104,107 +91,85 @@ export const RuleTicketList = ({ruleId, numTickets = 10}: Props) => {
     }
 
     const renderTable = (tickets: Ticket[]) => (
-        <Table>
-            <thead>
-                <tr>
-                    <th className={css.avatar}></th>
-                    <th>ticket information</th>
-                    <th>created</th>
-                    <th>channel</th>
-                </tr>
-            </thead>
-            <tbody>
-                {tickets.map((ticket) => (
-                    <tr key={_uniqueId(`${ticket.id}-`)}>
-                        <LinkedCell ticketId={ticket.id}>
-                            {ticket.assignee_user && (
-                                <Avatar
-                                    email={ticket.assignee_user.email}
-                                    url={
-                                        ticket.assignee_user?.meta
-                                            ?.profile_picture_url
-                                    }
-                                    name={ticket.assignee_user.name}
-                                    size={30}
-                                />
-                            )}
-                        </LinkedCell>
-                        <LinkedCell
-                            ticketId={ticket.id}
-                            className={css.ticketInfo}
-                        >
-                            <div className={css.ticketSubject}>
-                                {ticket.subject}
-                            </div>
-                            <div className={css.ticketDescription}>
-                                {_truncate(ticket.excerpt, {length: 100})}
-                            </div>
-                        </LinkedCell>
-                        <LinkedCell ticketId={ticket.id}>
-                            {moment(ticket.created_datetime).format(
-                                'DD/MM/YYYY'
-                            )}
-                        </LinkedCell>
-                        <LinkedCell ticketId={ticket.id}>
-                            <ChannelLabel
-                                channel={
-                                    ticket.channel as unknown as TicketMessageSourceType
-                                }
-                            />
-                        </LinkedCell>
+        <>
+            <Table className={css.wrapper}>
+                <thead>
+                    <tr>
+                        <th colSpan={2}>ticket information</th>
+                        <th>created</th>
+                        <th>channel</th>
                     </tr>
-                ))}
-            </tbody>
-        </Table>
+                </thead>
+                <tbody>
+                    {!!tickets.length &&
+                        tickets.map((ticket) => (
+                            <tr key={_uniqueId(`${ticket.id}-`)}>
+                                <LinkedCell
+                                    ticketId={ticket.id}
+                                    className={css.avatar}
+                                >
+                                    {ticket.assignee_user && (
+                                        <Avatar
+                                            email={ticket.assignee_user.email}
+                                            url={
+                                                ticket.assignee_user?.meta
+                                                    ?.profile_picture_url
+                                            }
+                                            name={ticket.assignee_user.name}
+                                            size={30}
+                                        />
+                                    )}
+                                </LinkedCell>
+                                <LinkedCell
+                                    ticketId={ticket.id}
+                                    className={css.ticketInfo}
+                                >
+                                    <div className={css.ticketSubject}>
+                                        {ticket.subject}
+                                    </div>
+                                    <div className={css.ticketDescription}>
+                                        {_truncate(ticket.excerpt, {
+                                            length: 100,
+                                        })}
+                                    </div>
+                                </LinkedCell>
+                                <LinkedCell ticketId={ticket.id}>
+                                    {moment(ticket.created_datetime).format(
+                                        'DD/MM/YYYY'
+                                    )}
+                                </LinkedCell>
+                                <LinkedCell ticketId={ticket.id}>
+                                    <ChannelLabel
+                                        channel={
+                                            ticket.channel as unknown as TicketMessageSourceType
+                                        }
+                                    />
+                                </LinkedCell>
+                            </tr>
+                        ))}
+                </tbody>
+            </Table>
+        </>
     )
 
     return (
         <>
-            <Card className={css.wrapper}>
-                <CardHeader
-                    className={css.header}
-                    onClick={() => toggleVisibility(!shouldShowList)}
-                >
-                    <div className={css.title}>
-                        List of tickets triggering the rule
-                    </div>
-                    <div className={css.toggle}>
-                        <span className="material-icons ml-2">
-                            {shouldShowList
-                                ? 'keyboard_arrow_down'
-                                : 'keyboard_arrow_up'}
-                        </span>
-                    </div>
-                </CardHeader>
-                {shouldShowList && (
-                    <CardBody className={css.body}>
-                        {loading ? (
-                            <Loader minHeight="60px" />
-                        ) : !!ticketList.length ? (
-                            renderTable(ticketList)
-                        ) : (
-                            <h5 className="ml-3">
-                                This rule has not run on any tickets.
-                            </h5>
-                        )}
-                    </CardBody>
-                )}
-            </Card>
-            {shouldShowList && (
-                <div className={css.navigation}>
-                    <Navigation
-                        hasNextItems={!!paginationMeta?.next_cursor}
-                        hasPrevItems={!!paginationMeta?.prev_cursor}
-                        fetchNextItems={() =>
-                            paginationMeta?.next_cursor &&
-                            handleFetchData(paginationMeta.next_cursor)
-                        }
-                        fetchPrevItems={() =>
-                            paginationMeta?.prev_cursor &&
-                            handleFetchData(paginationMeta.prev_cursor)
-                        }
-                    />
-                </div>
+            {loading ? <Loader minHeight="60px" /> : renderTable(ticketList)}
+            <Navigation
+                className={css.navigation}
+                hasNextItems={!!paginationMeta?.next_cursor}
+                hasPrevItems={!!paginationMeta?.prev_cursor}
+                fetchNextItems={() =>
+                    paginationMeta?.next_cursor &&
+                    handleFetchData(paginationMeta.next_cursor)
+                }
+                fetchPrevItems={() =>
+                    paginationMeta?.prev_cursor &&
+                    handleFetchData(paginationMeta.prev_cursor)
+                }
+            />
+            {!ticketList.length && (
+                <div className={css.noTrigger}>This rule hasn't fired yet.</div>
             )}
         </>
     )

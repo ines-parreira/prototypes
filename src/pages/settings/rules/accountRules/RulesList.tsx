@@ -1,5 +1,6 @@
-import React, {useMemo, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Table} from 'reactstrap'
+import classnames from 'classnames'
 
 import AutomationSubscriptionModal from 'pages/settings/billing/automation/AutomationSubscriptionModal'
 
@@ -19,19 +20,20 @@ import {
 } from '../../../../state/entities/rules/actions'
 
 import RuleRow from './components/RuleRow'
-import UpsellComponent from './components/RuleGettingStarted'
+
+import css from './RulesList.less'
 
 type Props = {
     rules: Rule[]
     limitStatus: RuleLimitStatus
-    handleGoToLibrary: () => void
     shouldDisplayError?: boolean
+    searchTerm?: string
 }
 
 export function RulesList({
     rules,
     limitStatus,
-    handleGoToLibrary,
+    searchTerm = '',
     shouldDisplayError = false,
 }: Props) {
     const dispatch = useAppDispatch()
@@ -68,6 +70,16 @@ export function RulesList({
         number | undefined
     >()
 
+    const [filteredRules, setFilteredRules] = useState(rules)
+    const filterRules = (ruleList: Rule[], searchTerm: string) =>
+        ruleList.filter((rule) =>
+            rule.name.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+
+    useEffect(() => {
+        setFilteredRules(filterRules(rules, searchTerm))
+    }, [rules, searchTerm])
+
     const handleActivate = async (id: number) => {
         try {
             const res = await activateRule(id)
@@ -93,25 +105,25 @@ export function RulesList({
         setManagedRuleUpgradeID(undefined)
     }
 
-    const hasOnlyDefaultRules = useMemo(
-        () =>
-            !rules.some(
-                (rule) =>
-                    rule.name !== '[Auto Tag] Primary Categories' &&
-                    rule.name !== '[Auto Tag] Social'
-            ),
-        [rules]
-    )
-
     return (
         <div className="rule-category">
             {!!rules.length && (
-                <Table hover>
+                <Table hover className="mb-0">
                     <thead className="border-0">
                         <tr>
-                            <td></td>
-                            <td>rule</td>
-                            <td></td>
+                            <td>
+                                <i
+                                    className={classnames(
+                                        'material-icons',
+                                        css.arrowIcon
+                                    )}
+                                >
+                                    arrow_downward
+                                </i>
+                            </td>
+                            <td colSpan={2}>
+                                rules trigger in the order below
+                            </td>
                             <td className="text-nowrap">last updated</td>
                             <td></td>
                         </tr>
@@ -123,10 +135,11 @@ export function RulesList({
                             draggable: '.draggable',
                             handle: '.drag-handle',
                             animation: 150,
+                            disabled: !!searchTerm,
                         }}
                         onChange={handleReordering}
                     >
-                        {rules.map((rule) => (
+                        {filteredRules.map((rule) => (
                             <RuleRow
                                 key={rule.id}
                                 rule={rule}
@@ -136,6 +149,7 @@ export function RulesList({
                                 handleUpgrade={setManagedRuleUpgradeID}
                                 onActivate={handleActivate}
                                 shouldDisplayError={shouldDisplayError}
+                                isSearching={!!searchTerm}
                             />
                         ))}
                     </ReactSortable>
@@ -147,9 +161,6 @@ export function RulesList({
                 onSubscribe={handleUpgrade}
                 isOpen={!!managedRuleUpgradeID}
             />
-            {hasOnlyDefaultRules && (
-                <UpsellComponent goToLibrary={handleGoToLibrary} />
-            )}
         </div>
     )
 }
