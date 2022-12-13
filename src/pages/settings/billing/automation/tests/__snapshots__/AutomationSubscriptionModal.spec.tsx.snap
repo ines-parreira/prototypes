@@ -84,7 +84,7 @@ exports[`<AutomationSubscriptionModal /> should render for customers already wit
               <h5
                 class="modal-title"
               >
-                Manage automation add-on
+                Manage Automation Add-on
               </h5>
               <button
                 aria-label="Close"
@@ -196,7 +196,7 @@ exports[`<AutomationSubscriptionModal /> should render the modal 1`] = `
               <h5
                 class="modal-title"
               >
-                Confirm automation add-on subscription
+                Subscribe to the Automation Add-on
               </h5>
               <button
                 aria-label="Close"
@@ -259,16 +259,16 @@ exports[`<AutomationSubscriptionModal /> should render the modal 1`] = `
                   </div>
                 </div>
                 <div
-                  class="features"
+                  class="features oldFeatures"
                 >
                   <li
-                    class="d-flex align-items-center featureListItem"
+                    class="d-flex align-items-center oldFeatureListItem"
                   >
                     <span
                       class="featureIcon mr-3"
                     >
                       <i
-                        class="icon material-icons"
+                        class="material-icons"
                       >
                         low_priority
                       </i>
@@ -281,13 +281,13 @@ exports[`<AutomationSubscriptionModal /> should render the modal 1`] = `
                     </span>
                   </li>
                   <li
-                    class="d-flex align-items-center featureListItem"
+                    class="d-flex align-items-center oldFeatureListItem"
                   >
                     <span
                       class="featureIcon mr-3"
                     >
                       <i
-                        class="icon material-icons"
+                        class="material-icons"
                       >
                         slow_motion_video
                       </i>
@@ -297,21 +297,20 @@ exports[`<AutomationSubscriptionModal /> should render the modal 1`] = `
                       <b>
                         chat
                       </b>
-                       and
-                       
+                       and 
                       <b>
                         help center
                       </b>
                     </span>
                   </li>
                   <li
-                    class="d-flex align-items-center featureListItem"
+                    class="d-flex align-items-center oldFeatureListItem"
                   >
                     <span
                       class="featureIcon mr-3"
                     >
                       <i
-                        class="icon material-icons"
+                        class="material-icons"
                       >
                         insights
                       </i>

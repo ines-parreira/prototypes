@@ -20,12 +20,14 @@ type Props = {
     shopifyIntegration: ShopifyIntegration
     selfServiceIntegration?: SelfServiceIntegration
     onToggle: () => void
+    onSubscribeToAutomationAddOnClick: () => void
     isExpanded: boolean
 }
 
 const AutomationNavbarAddOnSectionBlock = ({
     shopifyIntegration,
     selfServiceIntegration,
+    onSubscribeToAutomationAddOnClick,
     ...props
 }: Props) => {
     const dispatch = useAppDispatch()
@@ -69,7 +71,12 @@ const AutomationNavbarAddOnSectionBlock = ({
                     Quick responses
                 </NavbarLink>
             ) : (
-                <AutomationNavbarAddOnPaywallViewItem isNested>
+                <AutomationNavbarAddOnPaywallViewItem
+                    onSubscribeToAutomationAddOnClick={
+                        onSubscribeToAutomationAddOnClick
+                    }
+                    isNested
+                >
                     Quick responses
                 </AutomationNavbarAddOnPaywallViewItem>
             )}

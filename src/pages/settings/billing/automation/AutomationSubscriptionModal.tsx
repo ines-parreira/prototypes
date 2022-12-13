@@ -102,8 +102,8 @@ const AutomationSubscriptionModal = ({
     const header = headerDescription
         ? headerDescription
         : hasAutomationAddOn
-        ? 'Manage automation add-on'
-        : 'Confirm automation add-on subscription'
+        ? 'Manage Automation Add-on'
+        : 'Subscribe to the Automation Add-on'
 
     const onConfirm = () => {
         helpdeskPrice?.addons &&

@@ -118,16 +118,16 @@ exports[`<AutomationSubscriptionDescription /> should render for customers with 
     </div>
   </div>
   <div
-    class="features"
+    class="features oldFeatures"
   >
     <li
-      class="d-flex align-items-center featureListItem"
+      class="d-flex align-items-center oldFeatureListItem"
     >
       <span
         class="featureIcon mr-3"
       >
         <i
-          class="icon material-icons"
+          class="material-icons"
         >
           low_priority
         </i>
@@ -140,13 +140,13 @@ exports[`<AutomationSubscriptionDescription /> should render for customers with 
       </span>
     </li>
     <li
-      class="d-flex align-items-center featureListItem"
+      class="d-flex align-items-center oldFeatureListItem"
     >
       <span
         class="featureIcon mr-3"
       >
         <i
-          class="icon material-icons"
+          class="material-icons"
         >
           slow_motion_video
         </i>
@@ -156,21 +156,20 @@ exports[`<AutomationSubscriptionDescription /> should render for customers with 
         <b>
           chat
         </b>
-         and
-         
+         and 
         <b>
           help center
         </b>
       </span>
     </li>
     <li
-      class="d-flex align-items-center featureListItem"
+      class="d-flex align-items-center oldFeatureListItem"
     >
       <span
         class="featureIcon mr-3"
       >
         <i
-          class="icon material-icons"
+          class="material-icons"
         >
           insights
         </i>
@@ -232,16 +231,16 @@ exports[`<AutomationSubscriptionDescription /> should render for customers witho
     </div>
   </div>
   <div
-    class="features"
+    class="features oldFeatures"
   >
     <li
-      class="d-flex align-items-center featureListItem"
+      class="d-flex align-items-center oldFeatureListItem"
     >
       <span
         class="featureIcon mr-3"
       >
         <i
-          class="icon material-icons"
+          class="material-icons"
         >
           low_priority
         </i>
@@ -254,13 +253,13 @@ exports[`<AutomationSubscriptionDescription /> should render for customers witho
       </span>
     </li>
     <li
-      class="d-flex align-items-center featureListItem"
+      class="d-flex align-items-center oldFeatureListItem"
     >
       <span
         class="featureIcon mr-3"
       >
         <i
-          class="icon material-icons"
+          class="material-icons"
         >
           slow_motion_video
         </i>
@@ -270,21 +269,20 @@ exports[`<AutomationSubscriptionDescription /> should render for customers witho
         <b>
           chat
         </b>
-         and
-         
+         and 
         <b>
           help center
         </b>
       </span>
     </li>
     <li
-      class="d-flex align-items-center featureListItem"
+      class="d-flex align-items-center oldFeatureListItem"
     >
       <span
         class="featureIcon mr-3"
       >
         <i
-          class="icon material-icons"
+          class="material-icons"
         >
           insights
         </i>
