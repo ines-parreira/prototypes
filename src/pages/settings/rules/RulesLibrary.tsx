@@ -114,10 +114,13 @@ export function RulesLibraryContainer({
     const history = useHistory()
 
     useEffect(() => {
-        const {install} = parse(location.search, {ignoreQueryPrefix: true})
+        const {install, ...restSearch} = parse(location.search, {
+            ignoreQueryPrefix: true,
+        })
         if (install !== undefined) setAutoInstall(true)
 
-        const searchSlug = location.search?.substring(1)
+        const [searchSlug] = Object.keys(restSearch)
+
         if (searchSlug) {
             const rule = rules.find(
                 (rule) => rule.settings?.slug === searchSlug

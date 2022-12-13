@@ -75,7 +75,7 @@ const RuleSuggestionEvent = ({
                 : 'Rule'}
             {' "'}
             <Link
-                to={`/app/settings/rules#rule-library?${slug}`}
+                to={`/app/settings/rules/library?${slug}`}
                 title="Rule"
                 target="_blank"
                 rel="noreferrer"

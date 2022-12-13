@@ -137,7 +137,7 @@ export default function SuggestionHeader({
                         <a
                             target="_blank"
                             rel="noreferrer"
-                            href={`/app/settings/rules#rule-library?${slug}`}
+                            href={`/app/settings/rules/library?${slug}`}
                         >
                             {ruleName}
                         </a>{' '}
@@ -158,7 +158,7 @@ export default function SuggestionHeader({
                                     size="small"
                                     onClick={() =>
                                         window.open(
-                                            `/app/settings/rules?install#rule-library?${slug}`,
+                                            `/app/settings/rules/library?${slug}&install`,
                                             '_blank'
                                         )
                                     }

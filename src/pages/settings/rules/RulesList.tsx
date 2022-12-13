@@ -1,5 +1,6 @@
 import React, {useCallback, useMemo, useState} from 'react'
 import {useAsyncFn, useEffectOnce} from 'react-use'
+import {useHistory} from 'react-router-dom'
 import classnames from 'classnames'
 import {Container} from 'reactstrap'
 import _debounce from 'lodash/debounce'
@@ -40,6 +41,7 @@ import css from './RulesView.less'
 const customRuleBreakpoint = 3
 
 export function RulesList() {
+    const history = useHistory()
     const currentAccount = useAppSelector(getCurrentAccountState)
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -80,6 +82,19 @@ export function RulesList() {
     const [searchTerm, setSearchTerm] = useState('')
 
     useEffectOnce(() => {
+        const {
+            location: {hash},
+        } = history
+
+        if (hash.includes('#rule-library')) {
+            history.replace(
+                `/app/settings/rules/library${hash.replace(
+                    '#rule-library',
+                    ''
+                )}`
+            )
+        }
+
         void handleFetchRules()
     })
 

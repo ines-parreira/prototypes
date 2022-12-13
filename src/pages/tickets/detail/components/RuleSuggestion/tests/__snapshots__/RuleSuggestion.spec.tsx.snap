@@ -52,7 +52,7 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
             Automate this ticket with the
              
             <a
-              href="/app/settings/rules#rule-library?rule-recipe-fixture"
+              href="/app/settings/rules/library?rule-recipe-fixture"
               rel="noreferrer"
               target="_blank"
             >
@@ -241,7 +241,7 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
             Automate this ticket with the
              
             <a
-              href="/app/settings/rules#rule-library?rule-recipe-fixture"
+              href="/app/settings/rules/library?rule-recipe-fixture"
               rel="noreferrer"
               target="_blank"
             >
