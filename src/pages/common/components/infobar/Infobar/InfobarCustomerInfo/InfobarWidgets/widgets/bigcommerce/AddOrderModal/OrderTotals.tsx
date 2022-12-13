@@ -1,33 +1,39 @@
 import React from 'react'
 import {
     BigCommerceIntegration,
-    BigCommerceCart,
-    BigCommerceCustomerAddress,
+    BigCommerceConsignment,
 } from 'models/integration/types'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import {ShippingMethod} from './ShippingMethod'
 
 type Props = {
-    cart: Maybe<BigCommerceCart>
-    shippingAddress: Maybe<BigCommerceCustomerAddress>
+    consignment: Maybe<BigCommerceConsignment>
     integration: BigCommerceIntegration
+    onUpdateConsignmentShippingMethod: (
+        selectedShippingMethodId: Maybe<string>
+    ) => Promise<void>
+
+    totals: {
+        subTotal: number
+        shipping: number
+        taxes: number
+        total: number
+    }
 }
+
+const dtStyle = {fontWeight: 400}
 
 export default function OrderTotals({
     integration,
-    cart,
-    shippingAddress,
+    consignment,
+    onUpdateConsignmentShippingMethod,
+    totals: {subTotal, shipping, taxes, total},
 }: Props) {
-    const subTotal = cart ? cart.base_amount : 0
-    const total = cart ? cart.cart_amount : 0
-    const taxes = total && subTotal ? total - subTotal : 0
-
     const currencyCode =
-        integration && integration.meta && integration.meta.currency
+        integration.meta && integration.meta.currency
             ? integration.meta.currency
             : null
 
-    const dtStyle = {fontWeight: 400}
     return (
         <div>
             <dl className="row text-left mb-0">
@@ -53,10 +59,12 @@ export default function OrderTotals({
                 </dd>
 
                 <ShippingMethod
-                    integrationId={integration.id}
                     currencyCode={currencyCode}
-                    cart={cart}
-                    shippingAddress={shippingAddress}
+                    consignment={consignment}
+                    shippingCost={shipping}
+                    onUpdateConsignmentShippingMethod={
+                        onUpdateConsignmentShippingMethod
+                    }
                 />
 
                 <dt className="col-9 mb-2" style={dtStyle}>

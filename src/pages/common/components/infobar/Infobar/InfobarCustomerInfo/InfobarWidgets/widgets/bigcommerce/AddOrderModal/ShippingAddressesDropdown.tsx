@@ -1,22 +1,13 @@
-import React, {useContext, useRef, useState} from 'react'
+import React, {useRef, useState} from 'react'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import Label from 'pages/common/forms/Label/Label'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
-import {
-    BigCommerceCart,
-    BigCommerceCustomerAddress,
-    BigCommerceCheckout,
-} from 'models/integration/types'
-import {
-    addCheckoutBillingAddress,
-    buildAddressComponent,
-    getOneLineAddress,
-} from './utils'
+import {BigCommerceCustomerAddress} from 'models/integration/types'
+import {buildAddressComponent, getOneLineAddress} from './utils'
 
 import css from './ShippingAddressesDropdown.less'
 import cssOrderModal from './OrderModal.less'
@@ -24,33 +15,19 @@ import cssOrderModal from './OrderModal.less'
 type Props = {
     shippingAddress: Maybe<BigCommerceCustomerAddress>
     shippingAddresses: BigCommerceCustomerAddress[]
-    setShippingAddress: (shippingAddress: BigCommerceCustomerAddress) => void
-    cart: Maybe<BigCommerceCart>
-    setCheckout: (checkout: Maybe<BigCommerceCheckout>) => void
+    onSelectAddress: (
+        selectedAddress: BigCommerceCustomerAddress
+    ) => Promise<void>
 }
 
 export function ShippingAddressesDropdown({
     shippingAddress,
     shippingAddresses,
-    setShippingAddress,
-    cart,
-    setCheckout,
+    onSelectAddress,
 }: Props) {
     const selectRef = useRef(null)
     const floatingSelectRef = useRef(null)
     const [isSelectOpen, setIsSelectOpen] = useState(false)
-
-    const {integrationId} = useContext(IntegrationContext)
-
-    const onDropDownClick = (selectedAddress: BigCommerceCustomerAddress) => {
-        void addCheckoutBillingAddress({
-            integrationId,
-            selectedAddress,
-            cart,
-            setCheckout,
-        })
-        setShippingAddress(selectedAddress)
-    }
 
     return (
         <div>
@@ -100,7 +77,9 @@ export function ShippingAddressesDropdown({
                                                         value: address.address1,
                                                     }}
                                                     onClick={() => {
-                                                        onDropDownClick(address)
+                                                        void onSelectAddress(
+                                                            address
+                                                        )
                                                     }}
                                                 >
                                                     <div

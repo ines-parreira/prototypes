@@ -14,7 +14,6 @@ import {
     BigCommerceCart,
     BigCommerceCartLineItem,
     BigCommerceCustomerAddress,
-    BigCommerceCheckout,
     BigCommerceCustomer,
     BigCommerceProduct,
     BigCommerceProductVariant,
@@ -65,19 +64,16 @@ export const onReset = _debounce(
         setProducts,
         setComment,
         setNote,
-        setShippingAddress,
     }: {
         setCart: (cart: Maybe<BigCommerceCart>) => void
         setProducts: (products: Map<number, BigCommerceProduct>) => void
         setComment: (value: string) => void
         setNote: (value: string) => void
-        setShippingAddress: (address: Maybe<BigCommerceCustomerAddress>) => void
     }) => {
         setCart(null)
         setProducts(new Map())
         setComment('')
         setNote('')
-        setShippingAddress(null)
         const eventName = SegmentEvent.BigCommerceCreateOrderResetModal
         logEvent(eventName)
     },
@@ -312,28 +308,16 @@ export const addCheckoutBillingAddress = async ({
     integrationId,
     selectedAddress,
     cart,
-    setCheckout,
 }: {
-    integrationId: Maybe<number>
-    selectedAddress: Maybe<BigCommerceCustomerAddress>
-    cart: Maybe<BigCommerceCart>
-    setCheckout: (cart: Maybe<BigCommerceCheckout>) => void
+    integrationId: number
+    selectedAddress: BigCommerceCustomerAddress
+    cart: BigCommerceCart
 }) => {
-    if (!cart) {
-        return
-    }
-
-    if (integrationId && selectedAddress) {
-        const cartId = cart.id
-        if (cartId) {
-            const checkout = await addBigCommerceCheckoutBillingAddress(
-                integrationId,
-                cartId,
-                selectedAddress
-            )
-            setCheckout(checkout)
-        }
-    }
+    return addBigCommerceCheckoutBillingAddress(
+        integrationId,
+        cart.id,
+        selectedAddress
+    )
 }
 
 export async function upsertCheckoutConsignment({
@@ -347,6 +331,15 @@ export async function upsertCheckoutConsignment({
     shippingAddress: BigCommerceCustomerAddress
     consignmentId: Maybe<string>
 }) {
+    const lineItems = cart.line_items.physical_items.map(({id, quantity}) => ({
+        item_id: id,
+        quantity,
+    }))
+
+    if (!lineItems.length) {
+        return null
+    }
+
     if (!consignmentId) {
         return createBigCommerceCheckoutConsignment({
             cartId: cart.id,
@@ -354,9 +347,7 @@ export async function upsertCheckoutConsignment({
             payload: [
                 {
                     address: shippingAddress,
-                    line_items: cart.line_items.physical_items.map(
-                        ({id, quantity}) => ({item_id: id, quantity})
-                    ),
+                    line_items: lineItems,
                 },
             ],
         })
@@ -368,9 +359,7 @@ export async function upsertCheckoutConsignment({
         consignmentId,
         payload: {
             address: shippingAddress,
-            line_items: cart.line_items.physical_items.map(
-                ({id, quantity}) => ({item_id: id, quantity})
-            ),
+            line_items: lineItems,
         },
     })
 }

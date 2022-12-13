@@ -134,7 +134,9 @@ exports[`ShippingMethod create/update consignment and change shipping method: in
     <dd
       class="col-3 mb-2"
     >
-      —
+      <span>
+        $77.00
+      </span>
     </dd>
   </div>
   <div

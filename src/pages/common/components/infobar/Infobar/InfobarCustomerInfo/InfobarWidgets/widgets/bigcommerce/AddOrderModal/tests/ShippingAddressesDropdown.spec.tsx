@@ -1,5 +1,5 @@
 import {render, fireEvent} from '@testing-library/react'
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -7,11 +7,7 @@ import thunk from 'redux-thunk'
 import * as utils from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/utils'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {integrationsState} from 'fixtures/integrations'
-import {bigCommerceCartFixture} from 'fixtures/bigcommerce'
-import {
-    BigCommerceCustomerAddress,
-    BigCommerceCustomerAddressType,
-} from 'models/integration/types'
+import {bigCommerceShippingAddressesFixture} from 'fixtures/bigcommerce'
 import {ShippingAddressesDropdown} from '../ShippingAddressesDropdown'
 
 const integrationContextValue = {integration: fromJS({}), integrationId: 1}
@@ -19,74 +15,30 @@ const integrationContextValue = {integration: fromJS({}), integrationId: 1}
 jest.spyOn(utils, 'addCheckoutBillingAddress')
 const addCheckoutBillingAddress = utils.addCheckoutBillingAddress as jest.Mock
 
-const shippingAddresses: BigCommerceCustomerAddress[] = [
-    {
-        postal_code: '507050',
-        address_type: BigCommerceCustomerAddressType.Residential,
-        city: 'Paris',
-        phone: '',
-        last_name: 'Test 1',
-        country_code: 'FR',
-        country: 'France',
-        first_name: 'A',
-        id: 5,
-        customer_id: 160,
-        company: '',
-        address1: 'Random Street 19',
-        address2: '',
-        state_or_province: 'Paris',
-        email: 'test2@gorgias.com',
-    },
-    {
-        postal_code: '507051',
-        address_type: BigCommerceCustomerAddressType.Residential,
-        city: 'Paris',
-        phone: '',
-        last_name: 'Test 2',
-        country_code: 'FR',
-        country: 'France',
-        first_name: 'A',
-        id: 13,
-        customer_id: 160,
-        company: 'test',
-        address1: 'Random Street 19',
-        address2: '',
-        state_or_province: 'Paris',
-        email: 'test2@gorgias.com',
-    },
-]
-
 const defaultState = {
     integrations: fromJS(integrationsState),
 }
 const mockStore = configureMockStore([thunk])
 const store = mockStore(defaultState)
 
-const cart = bigCommerceCartFixture()
-const setCheckout = jest.fn()
+type Props = ComponentProps<typeof ShippingAddressesDropdown>
 
-const emptyProps = {
+const emptyProps: Props = {
     shippingAddress: null,
     shippingAddresses: [],
-    setShippingAddress: jest.fn(),
-    cart: cart,
-    setCheckout: setCheckout,
+    onSelectAddress: jest.fn(),
 }
 
-const shippingAddressesProps = {
+const shippingAddressesProps: Props = {
     shippingAddress: null,
-    shippingAddresses: shippingAddresses,
-    setShippingAddress: jest.fn(),
-    cart: cart,
-    setCheckout: setCheckout,
+    shippingAddresses: bigCommerceShippingAddressesFixture,
+    onSelectAddress: jest.fn(),
 }
 
-const selectedShippingAddressProps = {
-    shippingAddress: shippingAddresses[1],
-    shippingAddresses: shippingAddresses,
-    setShippingAddress: jest.fn(),
-    cart: cart,
-    setCheckout: setCheckout,
+const selectedShippingAddressProps: Props = {
+    shippingAddress: bigCommerceShippingAddressesFixture[1],
+    shippingAddresses: bigCommerceShippingAddressesFixture,
+    onSelectAddress: jest.fn(),
 }
 
 describe('<ShippingAddressesDropdown/>', () => {
@@ -140,11 +92,16 @@ describe('<ShippingAddressesDropdown/>', () => {
         expect(container).toMatchSnapshot()
     })
 
-    it('should call addCheckoutBillingAddress when address option is selected', () => {
+    it('should call onSelectAddress when address option is selected', () => {
+        const onSelectAddress = jest.fn()
+
         const {getByText} = render(
             <Provider store={store}>
                 <IntegrationContext.Provider value={integrationContextValue}>
-                    <ShippingAddressesDropdown {...shippingAddressesProps} />
+                    <ShippingAddressesDropdown
+                        {...shippingAddressesProps}
+                        onSelectAddress={onSelectAddress}
+                    />
                 </IntegrationContext.Provider>
             </Provider>
         )
@@ -153,6 +110,8 @@ describe('<ShippingAddressesDropdown/>', () => {
         // select the second address from list
         fireEvent.click(getByText(/.*507051.*/))
 
-        expect(addCheckoutBillingAddress.mock.calls).toMatchSnapshot()
+        expect(onSelectAddress).toHaveBeenCalledWith(
+            bigCommerceShippingAddressesFixture[1]
+        )
     })
 })

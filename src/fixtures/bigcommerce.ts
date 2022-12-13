@@ -199,23 +199,43 @@ export const bigCommerceLineItemFixture = (): BigCommerceCartLineItem => ({
     is_mutable: true,
 })
 
-export const bigCommerceShippingAddress: BigCommerceCustomerAddress = {
-    address1: 'Stradela Perju 6',
-    address2: '',
-    address_type: BigCommerceCustomerAddressType.Residential,
-    city: 'Iasi',
-    company: '',
-    country: 'Romania',
-    country_code: 'RO',
-    customer_id: 6710,
-    email: 'john.pearson@email.com',
-    first_name: 'Ionut',
-    id: 35,
-    last_name: 'Persanu',
-    phone: '',
-    postal_code: '70000',
-    state_or_province: 'Iasi',
-}
+export const bigCommerceShippingAddressesFixture: BigCommerceCustomerAddress[] =
+    [
+        {
+            postal_code: '507050',
+            address_type: BigCommerceCustomerAddressType.Residential,
+            city: 'Paris',
+            phone: '',
+            last_name: 'Test 1',
+            country_code: 'FR',
+            country: 'France',
+            first_name: 'A',
+            id: 5,
+            customer_id: 160,
+            company: '',
+            address1: 'Random Street 19',
+            address2: '',
+            state_or_province: 'Paris',
+            email: 'test2@gorgias.com',
+        },
+        {
+            postal_code: '507051',
+            address_type: BigCommerceCustomerAddressType.Residential,
+            city: 'Paris',
+            phone: '',
+            last_name: 'Test 2',
+            country_code: 'FR',
+            country: 'France',
+            first_name: 'A',
+            id: 13,
+            customer_id: 160,
+            company: 'test',
+            address1: 'Random Street 19',
+            address2: '',
+            state_or_province: 'Paris',
+            email: 'test2@gorgias.com',
+        },
+    ]
 
 export const bigCommerceCartFixture = (): BigCommerceCart => ({
     id: 'c58d3aac-244c-4405-bad5-638b555bc31b',
@@ -297,5 +317,4 @@ export const bigCommerceConsignmentFixture: BigCommerceConsignment = {
         },
     ],
     selected_shipping_option: undefined,
-    shipping_cost_inc_tax: 77,
 }

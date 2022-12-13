@@ -7,88 +7,22 @@ import RadioFieldSet, {RadioFieldOption} from 'pages/common/forms/RadioFieldSet'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 
 import {
-    BigCommerceCart,
-    BigCommerceCustomerAddress,
     BigCommerceConsignment,
     BigCommerceShippingOption,
 } from 'models/integration/types'
 
-import {
-    updateCheckoutConsignmentShippingMethod,
-    upsertCheckoutConsignment,
-} from './utils'
-
 import css from './OrderTotals.less'
 
-export const useConsignment = ({
-    shippingAddress,
-    cart,
-    integrationId,
-}: {
-    integrationId: number
-    cart: Maybe<BigCommerceCart>
-    shippingAddress: Maybe<BigCommerceCustomerAddress>
-}) => {
-    const [consignment, setConsignment] = useState<BigCommerceConsignment>()
-
-    useEffect(() => {
-        const updateConsignment = async () => {
-            if (
-                !cart ||
-                !shippingAddress ||
-                cart.line_items.physical_items.length === 0
-            ) {
-                return
-            }
-
-            try {
-                const {consignments} = await upsertCheckoutConsignment({
-                    integrationId,
-                    cart,
-                    shippingAddress,
-                    consignmentId: consignment?.id,
-                })
-
-                setConsignment(consignments[0])
-            } catch (error) {
-                console.error(error)
-            }
-        }
-
-        void updateConsignment()
-    }, [cart, shippingAddress, integrationId, consignment?.id])
-
-    const updateConsignmentShippingMethod = async (
-        selectedShippingMethodId: Maybe<string>
-    ) => {
-        if (!cart || !consignment || !selectedShippingMethodId) {
-            return
-        }
-
-        try {
-            const updateResult = await updateCheckoutConsignmentShippingMethod({
-                cart,
-                shippingMethodId: selectedShippingMethodId,
-                consignmentId: consignment.id,
-                integrationId,
-            })
-
-            setConsignment(updateResult.consignments[0])
-        } catch (error) {
-            console.error(error)
-        }
-    }
-
-    return {consignment, updateConsignmentShippingMethod}
-}
 export const useShippingMethods = ({
     consignment,
     currencyCode,
-    updateConsignmentShippingMethod,
+    onUpdateConsignmentShippingMethod,
 }: {
     consignment: Maybe<BigCommerceConsignment>
     currencyCode: string | null
-    updateConsignmentShippingMethod: (shippingMethodId: string) => Promise<void>
+    onUpdateConsignmentShippingMethod: (
+        shippingMethodId: string
+    ) => Promise<void>
 }) => {
     const [selectedShippingMethod, setSelectedShippingMethod] =
         useState<BigCommerceShippingOption | null>(null)
@@ -117,7 +51,7 @@ export const useShippingMethods = ({
                 )
 
             if (hasAvailableSelectedShippingMethod) {
-                return void updateConsignmentShippingMethod(
+                return void onUpdateConsignmentShippingMethod(
                     selectedShippingMethod.id
                 )
             }
@@ -132,7 +66,7 @@ export const useShippingMethods = ({
             // Update consignment and set local shipping method _only_ if we have single match
             // based on type and description
             if (similarShippingOptions.length === 1) {
-                void updateConsignmentShippingMethod(
+                void onUpdateConsignmentShippingMethod(
                     similarShippingOptions[0].id
                 )
                 return setSelectedShippingMethod(similarShippingOptions[0])
@@ -146,9 +80,9 @@ export const useShippingMethods = ({
             consignment.selected_shipping_option.id !==
                 selectedShippingMethod?.id
         ) {
-            void updateConsignmentShippingMethod(selectedShippingMethod.id)
+            void onUpdateConsignmentShippingMethod(selectedShippingMethod.id)
         }
-    }, [consignment, selectedShippingMethod, updateConsignmentShippingMethod])
+    }, [consignment, selectedShippingMethod, onUpdateConsignmentShippingMethod])
 
     const shippingMethodOptions: Array<RadioFieldOption> = useMemo(
         () =>
@@ -187,17 +121,19 @@ export const useShippingMethods = ({
 }
 
 type Props = {
-    integrationId: number
-    cart: Maybe<BigCommerceCart>
-    shippingAddress: Maybe<BigCommerceCustomerAddress>
+    consignment: Maybe<BigCommerceConsignment>
     currencyCode: string | null
+    shippingCost: number
+    onUpdateConsignmentShippingMethod: (
+        selectedShippingMethodId: Maybe<string>
+    ) => Promise<void>
 }
 
 export function ShippingMethod({
-    integrationId,
-    cart,
-    shippingAddress,
+    consignment,
+    shippingCost,
     currencyCode,
+    onUpdateConsignmentShippingMethod,
 }: Props) {
     const buttonRef = useRef<HTMLButtonElement>(null)
 
@@ -206,19 +142,13 @@ export function ShippingMethod({
     const onToggle = () =>
         setIsDropdownOpen((isDropdownOpen) => !isDropdownOpen)
 
-    const {consignment, updateConsignmentShippingMethod} = useConsignment({
-        integrationId,
-        cart,
-        shippingAddress,
-    })
-
     const {
         selectedShippingMethod,
         shippingMethodOptions,
         onSelectShippingMethod,
     } = useShippingMethods({
         consignment,
-        updateConsignmentShippingMethod,
+        onUpdateConsignmentShippingMethod,
         currencyCode,
     })
 
@@ -235,7 +165,7 @@ export function ShippingMethod({
             </dt>
             <dd className="col-3 mb-2">
                 <MoneyAmount
-                    amount={String(consignment?.shipping_cost_inc_tax ?? 0)}
+                    amount={String(shippingCost)}
                     currencyCode={currencyCode}
                 />
             </dd>

@@ -119,8 +119,11 @@ export type BigCommerceCheckout = {
     id: string
     cart: BigCommerceCart
     billing_address: BigCommerceBillingAddress
-    consignments: Array<any>
-    taxes: Array<any>
+    // The response may return array of consignments, if we have multiple shipping addresses
+    // but as we're only allowing to add single shipping address, we are only interested in the
+    // 0th index of `consignments` array
+    consignments: [BigCommerceConsignment]
+    taxes: Array<{name: string; amount: number}>
     coupons: Array<any>
     order_id: any
     shipping_cost_total_inc_tax: number
@@ -195,7 +198,6 @@ export type BigCommerceConsignment = {
     id: string
     available_shipping_options: Array<BigCommerceShippingOption>
     selected_shipping_option: Maybe<BigCommerceShippingOption>
-    shipping_cost_inc_tax: number // The shipping cost for this consignment including tax.
 }
 
 /**
@@ -216,13 +218,7 @@ export type BigCommerceUpsertConsignmentPayload =
 /**
  * @url https://developer.bigcommerce.com/api-reference/dfbf31248722d-add-consignment-to-checkout#response-body
  */
-export type BigCommerceCreateConsignmentResponse = {
-    id: string
-    // The response may return array of consignments, if we have multiple shipping addresses
-    // but as we're only allowing to add single shipping address, we are only interested in the
-    // 0th index of `consignments` array
-    consignments: [BigCommerceConsignment]
-}
+export type BigCommerceCreateConsignmentResponse = BigCommerceCheckout
 
 export type BigCommerceUpdateConsignmentResponse = {
     data: BigCommerceCreateConsignmentResponse

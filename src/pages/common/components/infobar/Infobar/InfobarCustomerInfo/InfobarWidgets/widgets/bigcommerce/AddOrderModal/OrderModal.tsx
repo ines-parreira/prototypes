@@ -8,6 +8,7 @@ import React, {
 } from 'react'
 import classnames from 'classnames'
 
+import produce from 'immer'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
@@ -38,37 +39,188 @@ import {getCustomerAddresses} from 'state/infobarActions/bigcommerce/createOrder
 import Tip from 'pages/common/components/tip/Tip'
 import OrderTable from './OrderTable'
 import OrderTotals from './OrderTotals'
-import {addRow, onCancel, onInit, onReset, removeRow, updateRow} from './utils'
+import {
+    addCheckoutBillingAddress,
+    addRow,
+    onCancel,
+    onInit,
+    onReset,
+    removeRow,
+    updateCheckoutConsignmentShippingMethod,
+    updateRow,
+    upsertCheckoutConsignment,
+} from './utils'
 
 import css from './OrderModal.less'
 import {ShippingAddressesDropdown} from './ShippingAddressesDropdown'
 
 type Props = {
-    integrationId: number
+    integration: BigCommerceIntegration
+    shippingAddresses: BigCommerceCustomerAddress[]
 } & ConnectedProps
 
+export const useCheckout = ({integrationId}: {integrationId: number}) => {
+    const [shippingAddress, setShippingAddress] =
+        useState<Maybe<BigCommerceCustomerAddress>>(null)
+    const [cart, setCart] = useState<Maybe<BigCommerceCart>>(null)
+    const [checkout, setCheckout] = useState<Maybe<BigCommerceCheckout>>(null)
+
+    const consignment = checkout?.consignments[0] ?? null
+
+    const updateConsignment = async ({
+        cart,
+        address,
+    }: {
+        cart: BigCommerceCart
+        address: BigCommerceCustomerAddress
+    }) => {
+        try {
+            const checkout = await upsertCheckoutConsignment({
+                integrationId,
+                cart,
+                shippingAddress: address,
+                consignmentId: consignment?.id,
+            })
+
+            if (!checkout) {
+                return
+            }
+
+            setCheckout(checkout)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    const setCartExposed = (newCart: Maybe<BigCommerceCart>) => {
+        setCart(newCart)
+
+        setCheckout((checkout) => {
+            if (!newCart) {
+                return checkout
+            }
+
+            return produce(checkout, (draft) => {
+                if (!draft) {
+                    return draft
+                }
+
+                draft.cart = newCart
+            })
+        })
+
+        if (newCart && shippingAddress) {
+            void updateConsignment({cart: newCart, address: shippingAddress})
+        }
+    }
+
+    const onSelectAddress = async (
+        newSelectedAddress: BigCommerceCustomerAddress
+    ) => {
+        setShippingAddress(newSelectedAddress)
+
+        if (cart) {
+            const checkout = await addCheckoutBillingAddress({
+                integrationId,
+                selectedAddress: newSelectedAddress,
+                cart,
+            })
+
+            void updateConsignment({
+                cart: checkout.cart,
+                address: newSelectedAddress,
+            })
+        }
+    }
+
+    const onUpdateConsignmentShippingMethod = async (
+        selectedShippingMethodId: Maybe<string>
+    ) => {
+        if (!cart || !consignment || !selectedShippingMethodId) {
+            return
+        }
+
+        try {
+            const checkout = await updateCheckoutConsignmentShippingMethod({
+                cart,
+                shippingMethodId: selectedShippingMethodId,
+                consignmentId: consignment.id,
+                integrationId,
+            })
+
+            setCheckout(checkout)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    const totals = useMemo(() => {
+        if (checkout) {
+            return {
+                subTotal: checkout.subtotal_ex_tax ?? 0,
+                shipping: checkout.shipping_cost_total_ex_tax ?? 0,
+                taxes: checkout.tax_total ?? 0,
+                total: checkout.grand_total,
+            }
+        }
+
+        if (cart) {
+            const subTotal = cart.base_amount ?? 0
+            const total = cart.cart_amount ?? 0
+
+            const taxes = total - subTotal
+
+            return {
+                subTotal,
+                shipping: 0,
+                taxes,
+                total,
+            }
+        }
+
+        return {
+            subTotal: 0,
+            shipping: 0,
+            taxes: 0,
+            total: 0,
+        }
+    }, [cart, checkout])
+
+    return {
+        cart: checkout ? checkout.cart : cart,
+        consignment,
+        totals,
+        shippingAddress,
+        setCart: setCartExposed,
+        onSelectAddress,
+        onUpdateConsignmentShippingMethod,
+    }
+}
+
 export function OrderModal({
-    integrationId,
+    integration,
+    shippingAddresses,
     data = {actionName: null, customer: null},
     onClose,
 }: Props) {
-    const shippingAddresses: BigCommerceCustomerAddress[] = useAppSelector(
-        getCustomerAddresses(integrationId)
-    )
-
-    const integrations = useAppSelector(
-        getIntegrationsByType(IntegrationType.BigCommerce)
-    )
-
     const [isLoading, setIsLoading] = useState(false)
 
-    const [cart, setCart] = useState<Maybe<BigCommerceCart>>(null)
-    const [, setCheckout] = useState<Maybe<BigCommerceCheckout>>(null)
+    const {
+        cart,
+        consignment,
+        totals,
+        shippingAddress,
+        setCart,
+        onSelectAddress,
+        onUpdateConsignmentShippingMethod,
+    } = useCheckout({
+        integrationId: integration.id,
+    })
+
     const [products, setProducts] = useState<Map<number, BigCommerceProduct>>(
         new Map()
     )
-    const [shippingAddress, setShippingAddress] =
-        useState<Maybe<BigCommerceCustomerAddress>>(null)
+
     const [note, setNote] = useState('')
     const [comment, setComment] = useState('')
 
@@ -80,36 +232,30 @@ export function OrderModal({
         setComment(event.currentTarget.value)
     }
 
-    const currentIntegration = useMemo(
-        () =>
-            integrations.find(
-                (integration) => integration.id === integrationId
-            ) as BigCommerceIntegration,
-        [integrations, integrationId]
-    )
-
     const lineItems = cart
         ? cart.line_items.physical_items.concat(cart.line_items.digital_items)
         : []
 
+    const hasItemsInCart = Boolean(lineItems.length)
+
     const handleReset = useCallback(() => {
-        onReset({setCart, setProducts, setComment, setNote, setShippingAddress})
-    }, [])
+        onReset({setCart, setProducts, setComment, setNote})
+    }, [setCart])
 
     const handleCancel = useCallback(
         (via: string) => () => {
             onClose()
-            onCancel({integrationId, via, cart, setCart})
+            onCancel({integrationId: integration.id, via, cart, setCart})
             handleReset()
         },
-        [cart, handleReset, integrationId, onClose]
+        [cart, handleReset, integration.id, onClose, setCart]
     )
 
     useEffect(() => {
         if (data.customer) {
             void onInit({
                 customer: data.customer,
-                integrationId,
+                integrationId: integration.id,
                 setIsLoading,
                 setCart,
             })
@@ -164,87 +310,76 @@ export function OrderModal({
                                 item: IntegrationDataItem<BigCommerceProduct>,
                                 variant: BigCommerceProductVariant
                             ) => {
-                                if (integrationId) {
-                                    void addRow({
-                                        integrationId,
-                                        product: item.data,
-                                        variant,
-                                        setIsLoading,
-                                        cart,
-                                        setCart,
-                                        products,
-                                        setProducts,
-                                    })
-                                }
+                                void addRow({
+                                    integrationId: integration.id,
+                                    product: item.data,
+                                    variant,
+                                    setIsLoading,
+                                    cart,
+                                    setCart,
+                                    products,
+                                    setProducts,
+                                })
                             }}
                         />
-                        {!lineItems.length && (
+                        {!hasItemsInCart && (
                             <p className={css.searchbarInfo}>
                                 This order is currently empty. Add products
                                 using the search above.
                             </p>
                         )}
-                        {currentIntegration &&
-                            currentIntegration.meta &&
-                            !!lineItems.length && (
-                                <OrderTable
-                                    storeHash={
-                                        currentIntegration.meta.store_hash
-                                    }
-                                    currencyCode={
-                                        currentIntegration.meta.currency
-                                    }
-                                    lineItems={lineItems}
-                                    products={products}
-                                    onLineItemUpdate={(
-                                        index: number,
-                                        newQuantity: number,
-                                        setQuantity: (quantity: number) => void
-                                    ) => {
-                                        if (integrationId) {
-                                            void updateRow({
-                                                integrationId,
-                                                index,
-                                                newQuantity,
-                                                setIsLoading,
-                                                cart,
-                                                setCart,
-                                                setQuantity,
-                                            })
-                                        }
-                                    }}
-                                    onLineItemDelete={(index: number) => {
-                                        if (integrationId) {
-                                            void removeRow({
-                                                integrationId,
-                                                index,
-                                                setIsLoading,
-                                                cart,
-                                                setCart,
-                                            })
-                                        }
-                                    }}
-                                />
-                            )}
+                        {integration.meta && hasItemsInCart && (
+                            <OrderTable
+                                storeHash={integration.meta.store_hash}
+                                currencyCode={integration.meta.currency}
+                                lineItems={lineItems}
+                                products={products}
+                                onLineItemUpdate={(
+                                    index: number,
+                                    newQuantity: number,
+                                    setQuantity: (quantity: number) => void
+                                ) => {
+                                    void updateRow({
+                                        integrationId: integration.id,
+                                        index,
+                                        newQuantity,
+                                        setIsLoading,
+                                        cart,
+                                        setCart,
+                                        setQuantity,
+                                    })
+                                }}
+                                onLineItemDelete={(index: number) => {
+                                    void removeRow({
+                                        integrationId: integration.id,
+                                        index,
+                                        setIsLoading,
+                                        cart,
+                                        setCart,
+                                    })
+                                }}
+                            />
+                        )}
                         {isLoading && (
                             <div className={css.loader}>
                                 <Loader minHeight={'50px'} />
                             </div>
                         )}
                     </div>
-                    {!!lineItems.length && (
+                    {hasItemsInCart && (
                         <OrderTotals
-                            integration={currentIntegration}
-                            cart={cart}
-                            shippingAddress={shippingAddress}
+                            integration={integration}
+                            consignment={consignment}
+                            totals={totals}
+                            onUpdateConsignmentShippingMethod={
+                                onUpdateConsignmentShippingMethod
+                            }
                         />
                     )}
                     <ShippingAddressesDropdown
                         shippingAddress={shippingAddress}
-                        setShippingAddress={setShippingAddress}
                         shippingAddresses={shippingAddresses}
-                        cart={cart}
-                        setCheckout={setCheckout}
+                        onSelectAddress={onSelectAddress}
                     />
                     <p className={css.subsection}>Comments & Notes</p>
                     <div>
@@ -299,9 +434,31 @@ type ConnectedProps = {
 export default function OrderModalRenderWrapper(props: ConnectedProps) {
     const {integrationId} = useContext(IntegrationContext)
 
-    if (!integrationId || !props.isOpen) {
+    const integrations = useAppSelector(
+        getIntegrationsByType(IntegrationType.BigCommerce)
+    )
+
+    const integration = useMemo(
+        () =>
+            integrations.find(
+                (integration) => integration.id === integrationId
+            ),
+        [integrations, integrationId]
+    )
+
+    const shippingAddresses: BigCommerceCustomerAddress[] = useAppSelector(
+        getCustomerAddresses(integrationId)
+    )
+
+    if (!integration || !props.isOpen) {
         return null
     }
 
-    return <OrderModal integrationId={integrationId} {...props} />
+    return (
+        <OrderModal
+            {...props}
+            integration={integration as BigCommerceIntegration}
+            shippingAddresses={shippingAddresses}
+        />
+    )
 }
