@@ -1,0 +1,26 @@
+@import '~css/new/colorTokens.less';
+@import '~css/typography.less';
+
+:local {
+    .item {
+        .body-regular();
+        display: flex;
+        position: relative;
+        vertical-align: middle;
+        user-select: none;
+        color: @classic-neutral-grey-4;
+        height: 28px;
+        line-height: 28px;
+        padding: 0 20px;
+        justify-content: space-between;
+        align-items: center;
+
+        &.isNested {
+            padding-left: 42px;
+        }
+    }
+
+    .icon {
+        color: @modern-main-secondary;
+    }
+}

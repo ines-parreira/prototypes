@@ -579,6 +579,13 @@ export const isAdmin = (user: Map<any, any>): boolean => {
     return hasRole(user, UserRole.Admin)
 }
 
+/**
+ * Test if user has agent privileges
+ */
+export const hasAgentPrivileges = (user: Map<any, any>): boolean => {
+    return hasRole(user, UserRole.Agent)
+}
+
 // Check if a user has a role
 export function hasRole(user: Map<any, any>, requiredRole: UserRole): boolean {
     const userRole = user.getIn(['role', 'name'])

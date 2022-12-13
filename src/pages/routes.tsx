@@ -9,6 +9,7 @@ import {
 import {useUpdateEffect} from 'react-use'
 import _memoize from 'lodash/memoize'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {assetsUrl} from 'utils'
 import {ADMIN_ROLE, AGENT_ROLE} from 'config/user'
 import {PageSection} from 'config/pages'
@@ -18,6 +19,7 @@ import {AccountFeature} from 'state/currentAccount/types'
 import {logPageChange} from 'store/middlewares/segmentTracker'
 import useAppSelector from 'hooks/useAppSelector'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     PaywallConfig,
     paywallConfigs as defaultPaywallConfigs,
@@ -71,6 +73,7 @@ import TeamForm from './settings/users/Form'
 import TeamsList from './settings/teams/List'
 import TeamsForm from './settings/teams/Form'
 import List from './settings/teams/members/List'
+import AutomationNavbar from './automation/common/components/AutomationNavbar'
 
 import UserAuditList from './settings/audit/UserAuditList'
 import BusinessHours from './settings/businessHours/BusinessHours'
@@ -111,6 +114,7 @@ import AutomationIntents from './stats/AutomationIntents'
 import SelfServiceStatsPage from './stats/self-service/SelfServiceStatsPage'
 import TwilioSubaccountStatusForm from './tasks/detail/TwilioSubaccountStatusForm'
 import EditTicketField from './settings/ticketFields/EditTicketField'
+import MaybeDeprecatedRoute from './common/components/MaybeDeprecatedRoute'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -139,7 +143,14 @@ export default function Routes() {
     return <Route path="/app" component={AppRoutes} />
 }
 
+type RouteComponentPropsWithNavbar = RouteComponentProps & {
+    navbar?: ComponentType<any>
+}
+
 export function AppRoutes({match: {path}}: RouteComponentProps) {
+    const isAutomationSettingsRevampEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
+
     return (
         <Switch>
             <Route
@@ -162,8 +173,20 @@ export function AppRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/stats`}
                 render={(props) => <StatsRoutes {...props} />}
             />
-            <Route path={`${path}/settings`} render={SettingsRoutes} />
-            <Route path={`${path}/home`} render={HomepageRoutes} />
+            {isAutomationSettingsRevampEnabled && (
+                <Route
+                    path={`${path}/automation`}
+                    render={(props) => <AutomationRoutes {...props} />}
+                />
+            )}
+            <Route
+                path={`${path}/settings`}
+                render={(props) => <SettingsRoutes {...props} />}
+            />
+            <Route
+                path={`${path}/home`}
+                render={(props) => <HomepageRoutes {...props} />}
+            />
             <Route
                 path={`${path}/referral-program`}
                 exact
@@ -534,6 +557,8 @@ export function StatsRoutes({match: {path}}: RouteComponentProps) {
 }
 
 export function SettingsRoutes({match: {path}}: RouteComponentProps) {
+    const isAutomationSettingsRevampEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
     const satisfactionPaywallConfig = {
         [AccountFeature.SatisfactionSurveys]: {
             ...defaultPaywallConfigs[AccountFeature.SatisfactionSurveys],
@@ -575,11 +600,23 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                     render={HelpCenterSettingsRoutes}
                 />
             )}
-            <Route path={`${path}/macros`} render={MacrosSettingsRoutes} />
-            <Route path={`${path}/rules`} render={RulesSettingsRoute} />
-            <Route
+            <MaybeDeprecatedRoute
+                path={`${path}/macros`}
+                render={(props) => <MacrosSettingsRoutes {...props} />}
+                isDeprecated={isAutomationSettingsRevampEnabled}
+                redirectTo="/app/automation/macros"
+            />
+            <MaybeDeprecatedRoute
+                path={`${path}/rules`}
+                render={(props) => <RulesSettingsRoute {...props} />}
+                isDeprecated={isAutomationSettingsRevampEnabled}
+                redirectTo="/app/automation/rules"
+            />
+            <MaybeDeprecatedRoute
                 path={`${path}/self-service`}
                 render={(props) => <SelfServiceSettingsRoutes {...props} />}
+                isDeprecated={isAutomationSettingsRevampEnabled}
+                redirectTo="/app/automation/self-service"
             />
             <Route
                 path={`${path}/profile`}
@@ -679,7 +716,7 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                 })}
                 exact
             />
-            <Route
+            <MaybeDeprecatedRoute
                 path={`${path}/ticket-assignment`}
                 exact
                 render={appRender({
@@ -690,6 +727,8 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                     ),
                     navbar: SettingsNavbar,
                 })}
+                isDeprecated={isAutomationSettingsRevampEnabled}
+                redirectTo="/app/automation/ticket-assignment"
             />
             <Route path={`${path}/ticket-fields`} render={TicketFieldsRoutes} />
         </Switch>
@@ -908,13 +947,15 @@ export function HelpCenterSettingsRoutes({match: {path}}: RouteComponentProps) {
 
 export function SelfServiceSettingsRoutes({
     match: {path},
-}: RouteComponentProps) {
+    navbar = SettingsNavbar,
+    isDeprecated = false,
+}: RouteComponentPropsWithNavbar & {isDeprecated?: boolean}) {
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
 
     return (
         <HelpCenterApiClientProvider>
             <Switch>
-                <Route
+                <MaybeDeprecatedRoute
                     path={`${path}/`}
                     exact
                     render={appRender({
@@ -923,8 +964,10 @@ export function SelfServiceSettingsRoutes({
                             ADMIN_ROLE,
                             PageSection.SelfService
                         ),
-                        navbar: SettingsNavbar,
+                        navbar,
                     })}
+                    isDeprecated={isDeprecated}
+                    redirectTo="/app/automation"
                 />
                 <Redirect
                     exact
@@ -944,7 +987,7 @@ export function SelfServiceSettingsRoutes({
                             ADMIN_ROLE,
                             PageSection.SelfService
                         ),
-                        navbar: SettingsNavbar,
+                        navbar,
                     })}
                 />
                 <Route
@@ -956,7 +999,7 @@ export function SelfServiceSettingsRoutes({
                             ADMIN_ROLE,
                             PageSection.SelfService
                         ),
-                        navbar: SettingsNavbar,
+                        navbar,
                     })}
                 />
                 <Route
@@ -968,7 +1011,7 @@ export function SelfServiceSettingsRoutes({
                             ADMIN_ROLE,
                             PageSection.SelfService
                         ),
-                        navbar: SettingsNavbar,
+                        navbar,
                     })}
                 />
                 <Route
@@ -980,7 +1023,7 @@ export function SelfServiceSettingsRoutes({
                             ADMIN_ROLE,
                             PageSection.SelfService
                         ),
-                        navbar: SettingsNavbar,
+                        navbar,
                     })}
                 />
                 <Route
@@ -992,7 +1035,7 @@ export function SelfServiceSettingsRoutes({
                             ADMIN_ROLE,
                             PageSection.SelfService
                         ),
-                        navbar: SettingsNavbar,
+                        navbar,
                     })}
                 />
                 <Route
@@ -1004,7 +1047,7 @@ export function SelfServiceSettingsRoutes({
                             ADMIN_ROLE,
                             PageSection.SelfService
                         ),
-                        navbar: SettingsNavbar,
+                        navbar,
                     })}
                 />
                 <Route
@@ -1016,7 +1059,7 @@ export function SelfServiceSettingsRoutes({
                             ADMIN_ROLE,
                             PageSection.SelfService
                         ),
-                        navbar: SettingsNavbar,
+                        navbar,
                     })}
                 />
                 <Route
@@ -1028,7 +1071,7 @@ export function SelfServiceSettingsRoutes({
                             ADMIN_ROLE,
                             PageSection.SelfService
                         ),
-                        navbar: SettingsNavbar,
+                        navbar,
                     })}
                 />
             </Switch>
@@ -1036,7 +1079,10 @@ export function SelfServiceSettingsRoutes({
     )
 }
 
-export function MacrosSettingsRoutes({match: {path}}: RouteComponentProps) {
+export function MacrosSettingsRoutes({
+    match: {path},
+    navbar = SettingsNavbar,
+}: RouteComponentPropsWithNavbar) {
     return (
         <Switch>
             <Route
@@ -1048,7 +1094,7 @@ export function MacrosSettingsRoutes({match: {path}}: RouteComponentProps) {
                         AGENT_ROLE,
                         PageSection.Macros
                     ),
-                    navbar: SettingsNavbar,
+                    navbar,
                 })}
             />
             <Route
@@ -1060,7 +1106,7 @@ export function MacrosSettingsRoutes({match: {path}}: RouteComponentProps) {
                         AGENT_ROLE,
                         PageSection.Macros
                     ),
-                    navbar: SettingsNavbar,
+                    navbar,
                 })}
             />
             <Route
@@ -1072,14 +1118,17 @@ export function MacrosSettingsRoutes({match: {path}}: RouteComponentProps) {
                         AGENT_ROLE,
                         PageSection.Macros
                     ),
-                    navbar: SettingsNavbar,
+                    navbar,
                 })}
             />
         </Switch>
     )
 }
 
-export function RulesSettingsRoute({match: {path}}: RouteComponentProps) {
+export function RulesSettingsRoute({
+    match: {path},
+    navbar = SettingsNavbar,
+}: RouteComponentPropsWithNavbar) {
     return (
         <HelpCenterApiClientProvider>
             <Switch>
@@ -1104,7 +1153,7 @@ export function RulesSettingsRoute({match: {path}}: RouteComponentProps) {
                             AGENT_ROLE,
                             PageSection.Rules
                         ),
-                        navbar: SettingsNavbar,
+                        navbar,
                     })}
                 />
                 <Route
@@ -1116,7 +1165,7 @@ export function RulesSettingsRoute({match: {path}}: RouteComponentProps) {
                             AGENT_ROLE,
                             PageSection.Rules
                         ),
-                        navbar: SettingsNavbar,
+                        navbar,
                     })}
                 />
                 <Route
@@ -1128,11 +1177,68 @@ export function RulesSettingsRoute({match: {path}}: RouteComponentProps) {
                             AGENT_ROLE,
                             PageSection.Rules
                         ),
-                        navbar: SettingsNavbar,
+                        navbar,
                     })}
                 />
             </Switch>
         </HelpCenterApiClientProvider>
+    )
+}
+
+export function AutomationRoutes({match: {path}}: RouteComponentProps) {
+    return (
+        <Switch>
+            <Route
+                path={`${path}/`}
+                exact
+                render={appRender({
+                    children: (
+                        <CanduContent
+                            containerId="candu-automation"
+                            title="Overview"
+                        />
+                    ),
+                    navbar: AutomationNavbar,
+                })}
+            />
+            <Route
+                path={`${path}/macros`}
+                render={(props) => (
+                    <MacrosSettingsRoutes
+                        {...props}
+                        navbar={AutomationNavbar}
+                    />
+                )}
+            />
+            <Route
+                path={`${path}/rules`}
+                render={(props) => (
+                    <RulesSettingsRoute {...props} navbar={AutomationNavbar} />
+                )}
+            />
+            <Route
+                path={`${path}/ticket-assignment`}
+                exact
+                render={appRender({
+                    content: memoizedWithUserRoleRequired(
+                        TicketAssignment,
+                        ADMIN_ROLE,
+                        PageSection.TicketAssignment
+                    ),
+                    navbar: AutomationNavbar,
+                })}
+            />
+            <Route
+                path={`${path}/self-service`}
+                render={(props) => (
+                    <SelfServiceSettingsRoutes
+                        {...props}
+                        navbar={AutomationNavbar}
+                        isDeprecated
+                    />
+                )}
+            />
+        </Switch>
     )
 }
 
@@ -1364,6 +1470,9 @@ export function AdminTasksRoutes({match: {path}}: RouteComponentProps) {
 }
 
 export function HomepageRoutes({match: {path}}: RouteComponentProps) {
+    const isAutomationSettingsRevampEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
+
     return (
         <Switch>
             <Route
@@ -1376,7 +1485,7 @@ export function HomepageRoutes({match: {path}}: RouteComponentProps) {
                     navbar: TicketNavbar,
                 })}
             />
-            <Route
+            <MaybeDeprecatedRoute
                 path={`${path}/automation`}
                 exact
                 render={appRender({
@@ -1388,6 +1497,8 @@ export function HomepageRoutes({match: {path}}: RouteComponentProps) {
                     ),
                     navbar: TicketNavbar,
                 })}
+                isDeprecated={isAutomationSettingsRevampEnabled}
+                redirectTo="/app/automation"
             />
         </Switch>
     )

@@ -1,0 +1,50 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .toggleSectionIconWrapper {
+        min-width: 12px;
+        height: 12px;
+        overflow: hidden;
+        position: relative;
+        margin-right: 10px;
+    }
+
+    .toggleSectionIcon {
+        font-size: 16px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .nameWrapper {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .iconWrapper {
+        display: flex;
+        height: 16px;
+        width: 16px;
+        margin-right: 8px;
+    }
+
+    .name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .section {
+        color: @classic-neutral-grey-4;
+        font-weight: 600;
+        cursor: pointer;
+        height: 28px;
+        margin-right: 6px;
+        padding: 0 20px;
+
+        &:hover {
+            color: @classic-neutral-grey-4;
+        }
+    }
+}

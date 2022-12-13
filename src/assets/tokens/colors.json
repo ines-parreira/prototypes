@@ -34,7 +34,8 @@
                 "Secondary_2": {"value": "#dc630d"}
             },
             "Primary": {"value": "#4a8df9"},
-            "Secondary": {"value": "#ef6c0e"}
+            "Secondary": {"value": "#ef6c0e"},
+            "Tertiary": {"value": "#8088d6"}
         },
         "Neutral": {
             "Grey_0": {"value": "#ffffff"},
@@ -44,6 +45,73 @@
             "Grey_4": {"value": "#99a5b6"},
             "Grey_5": {"value": "#556885"},
             "Grey_6": {"value": "#1d365c"}
+        },
+        "Accessory": {
+            "Blue_bg": {"value": "#eaf1ff"},
+            "Blue_text": {"value": "#004d79"},
+            "Brown_text": {"value": "#793a00"},
+            "Green_bg": {"value": "#eaffef"},
+            "Green_text": {"value": "#00796b"},
+            "Navy_text": {"value": "#000c79"},
+            "Orange_bg": {"value": "#fff3ea"},
+            "Pink_bg": {"value": "#faeaff"},
+            "Purple_bg": {"value": "#edeaff"},
+            "Purple_text": {"value": "#9411b5"},
+            "Red_bg": {"value": "#ffeaea"},
+            "Teal_bg": {"value": "#eafffe"},
+            "Yellow_bg": {"value": "#fffdea"},
+            "Yellow_text": {"value": "#8a6800"}
+        }
+    },
+    "🖤 Dark": {
+        "Feedback": {
+            "Variations": {
+                "Error_0": {"value": "#a32e2e"},
+                "Error_1": {"value": "#d6384d"},
+                "Error_2": {"value": "#f4697d"},
+                "Error_3": {"value": "#f89eab"},
+                "Error_4": {"value": "#fef6f7"},
+                "Success_0": {"value": "#1a9970"},
+                "Success_1": {"value": "#20c08c"},
+                "Success_2": {"value": "#3adaa7"},
+                "Success_3": {"value": "#87e8c9"},
+                "Success_4": {"value": "#f4fdfa"},
+                "Warning_0": {"value": "#d89238"},
+                "Warning_1": {"value": "#fdab40"},
+                "Warning_2": {"value": "#ffc476"},
+                "Warning_3": {"value": "#fed7a3"},
+                "Warning_4": {"value": "#fffbf7"}
+            },
+            "Error": {"value": "#f24f66"},
+            "Success": {"value": "#24d69d"},
+            "Warning": {"value": "#fd9b5a"}
+        },
+        "Main": {
+            "Variations": {
+                "Primary_0": {"value": "#115cb5"},
+                "Primary_1": {"value": "#156fda"},
+                "Primary_2": {"value": "#4f97eb"},
+                "Primary_3": {"value": "#9ac8ff"},
+                "Primary_4": {"value": "#f6faff"},
+                "Secondary_0": {"value": "#f58d86"},
+                "Secondary_1": {"value": "#ffb6b1"},
+                "Secondary_2": {"value": "#fff4f3"}
+            },
+            "Gradient": {
+                "value": "linear-gradient(90.0deg, rgba(245, 141, 134, 1.0) 0%, rgba(0, 117, 255, 1.0) 100%)"
+            },
+            "Latte": {"value": "#fff9f4"},
+            "Primary": {"value": "#0075ff"},
+            "Secondary": {"value": "#f58d86"}
+        },
+        "Neutral": {
+            "Grey_0": {"value": "#161616"},
+            "Grey_1": {"value": "#262626"},
+            "Grey_2": {"value": "#363636"},
+            "Grey_3": {"value": "#464646"},
+            "Grey_4": {"value": "#565656"},
+            "Grey_5": {"value": "#afafaf"},
+            "Grey_6": {"value": "#ffffff"}
         }
     },
     "🖥 Modern": {
@@ -65,34 +133,87 @@
                 "Warning_3": {"value": "#fdab40"},
                 "Warning_4": {"value": "#d89238"}
             },
-            "Success": {"value": "#24d69d"}
+            "Error": {"value": "#f24f66"},
+            "Success": {"value": "#24d69d"},
+            "Warning": {"value": "#fd9b5a"}
         },
         "Main": {
             "Variations": {
-                "Secondary_0": {"value": "#fff4f3"},
-                "Secondary_1": {"value": "#ffb6b1"},
-                "Secondary_2": {"value": "#f58d86"},
                 "Primary_0": {"value": "#f6faff"},
                 "Primary_1": {"value": "#9ac8ff"},
                 "Primary_2": {"value": "#4f97eb"},
                 "Primary_3": {"value": "#156fda"},
-                "Primary_4": {"value": "#115cb5"}
+                "Primary_4": {"value": "#115cb5"},
+                "Secondary_0": {"value": "#fff4f3"},
+                "Secondary_1": {"value": "#ffb6b1"},
+                "Secondary_2": {"value": "#f58d86"}
             },
             "Gradient": {
-                "value": " linear-gradient(90.0deg, rgba(245, 141, 134, 1.0) 0%, rgba(0, 117, 255, 1.0) 100%)"
+                "value": "linear-gradient(90.0deg, rgba(245, 141, 134, 1.0) 0%, rgba(0, 117, 255, 1.0) 100%)"
             },
-            "Human": {"value": "#fff9f4"},
+            "Latte": {"value": "#fff9f4"},
             "Primary": {"value": "#0075ff"},
             "Secondary": {"value": "#f58d86"}
         },
         "Neutral": {
-            "Neutral_0": {"value": "#ffffff"},
-            "Neutral_1": {"value": "#f9f9f9"},
-            "Neutral_2": {"value": "#eeeeee"},
-            "Neutral_3": {"value": "#dddddd"},
-            "Neutral_4": {"value": "#afafaf"},
-            "Neutral_5": {"value": "#6a6a6a"},
-            "Neutral_6": {"value": "#161616"}
+            "Grey_0": {"value": "#ffffff"},
+            "Grey_1": {"value": "#f9f9f9"},
+            "Grey_2": {"value": "#eeeeee"},
+            "Grey_3": {"value": "#dddddd"},
+            "Grey_4": {"value": "#afafaf"},
+            "Grey_5": {"value": "#6a6a6a"},
+            "Grey_6": {"value": "#161616"}
+        }
+    },
+    "🤍 Light": {
+        "Feedback": {
+            "Variations": {
+                "Error_0": {"value": "#fef6f7"},
+                "Error_1": {"value": "#f89eab"},
+                "Error_2": {"value": "#f4697d"},
+                "Error_3": {"value": "#d6384d"},
+                "Error_4": {"value": "#a32e2e"},
+                "Success_0": {"value": "#f4fdfa"},
+                "Success_1": {"value": "#87e8c9"},
+                "Success_2": {"value": "#3adaa7"},
+                "Success_3": {"value": "#20c08c"},
+                "Success_4": {"value": "#1a9970"},
+                "Warning_0": {"value": "#fffbf7"},
+                "Warning_1": {"value": "#fed7a3"},
+                "Warning_2": {"value": "#ffc476"},
+                "Warning_3": {"value": "#fdab40"},
+                "Warning_4": {"value": "#d89238"}
+            },
+            "Error": {"value": "#f24f66"},
+            "Success": {"value": "#24d69d"},
+            "Warning": {"value": "#fd9b5a"}
+        },
+        "Main": {
+            "Variations": {
+                "Primary_0": {"value": "#f6faff"},
+                "Primary_1": {"value": "#9ac8ff"},
+                "Primary_2": {"value": "#4f97eb"},
+                "Primary_3": {"value": "#156fda"},
+                "Primary_4": {"value": "#115cb5"},
+                "Secondary_0": {"value": "#fff4f3"},
+                "Secondary_1": {"value": "#ffb6b1"},
+                "Secondary_2": {"value": "#f58d86"}
+            },
+            "Gradient": {
+                "value": "linear-gradient(90.0deg, rgba(245, 141, 134, 1.0) 0%, rgba(0, 117, 255, 1.0) 100%)"
+            },
+            "Latte": {"value": "#fff9f4"},
+            "Primary": {"value": "#0075ff"},
+            "Secondary": {"value": "#f58d86"}
+        },
+        "Neutral": {
+            "Grey_0": {"value": "#ffffff"},
+            "Grey_1": {"value": "#f9f9f9"},
+            "Grey_2": {"value": "#eeeeee"},
+            "Grey_3": {"value": "#dddddd"},
+            "Grey_4": {"value": "#afafaf"},
+            "Grey_5": {"value": "#6a6a6a"},
+            "Grey_6": {"value": "#161616"}
         }
     }
 }

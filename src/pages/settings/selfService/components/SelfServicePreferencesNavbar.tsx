@@ -1,17 +1,13 @@
 import React from 'react'
-import {NavLink} from 'react-router-dom'
+import {NavLink, useLocation} from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 
-import {useConfigurationData} from './hooks'
-
 const SelfServicePreferencesNavbar = () => {
-    const {integration} = useConfigurationData()
-    const baseURL = `/app/settings/self-service/shopify/${
-        integration.getIn(['meta', 'shop_name']) as string
-    }/preferences`
+    const {pathname} = useLocation()
+    const baseURL = pathname.substring(0, pathname.lastIndexOf('/'))
 
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
 

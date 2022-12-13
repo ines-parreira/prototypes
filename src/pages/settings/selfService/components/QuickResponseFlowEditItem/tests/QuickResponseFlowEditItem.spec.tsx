@@ -1,6 +1,6 @@
 import React from 'react'
 import {Provider} from 'react-redux'
-import {useParams, useRouteMatch} from 'react-router-dom'
+import {useLocation, useParams, useRouteMatch} from 'react-router-dom'
 import {render, screen, fireEvent, waitFor} from '@testing-library/react'
 import thunk from 'redux-thunk'
 import MockDate from 'mockdate'
@@ -32,6 +32,7 @@ const useParamsMock = useParams as jest.MockedFunction<typeof useParams>
 const useRouteMatchMock = useRouteMatch as jest.MockedFunction<
     typeof useRouteMatch
 >
+const useLocationMock = useLocation as jest.MockedFunction<typeof useLocation>
 jest.mock('react-router')
 
 jest.mock('models/selfServiceConfiguration/resources')
@@ -85,6 +86,13 @@ describe('<QuickResponseFlowEditItem />', () => {
             isExact: true,
             path: '',
             url: '',
+        })
+        useLocationMock.mockReturnValue({
+            pathname:
+                '/app/settings/self-service/shopify/mystore1/preferences/quick-response/some-id',
+            search: '',
+            state: {},
+            hash: '',
         })
         MockDate.set(date)
         jest.clearAllMocks()

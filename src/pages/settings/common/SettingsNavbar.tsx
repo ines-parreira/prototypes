@@ -8,6 +8,7 @@ import css from 'assets/css/navbar.less'
 import {hasRole} from 'utils'
 import {ADMIN_ROLE, AGENT_ROLE} from 'config/user'
 import {UserRole} from 'config/types/user'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {IntegrationType} from 'models/integration/types'
 import {closePanels} from 'state/layout/actions'
 import {getCurrentUser} from 'state/currentUser/selectors'
@@ -17,7 +18,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import Navbar from 'pages/common/components/Navbar'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {buildPasswordAnd2FaText} from '../yourProfile/twoFactorAuthentication/utils'
 
 type CategoryLink = {
@@ -203,10 +203,30 @@ const SettingsNavbar = () => {
     const account = useAppSelector(getCurrentAccountState)
     const pathname = useLocation().pathname
     const featureFlags = useFlags()
+    const isAutomationSettingsRevampEnabled: boolean | undefined =
+        featureFlags[FeatureFlagKey.AutomationSettingsRevamp]
+
+    const getCategories = () => {
+        if (isAutomationSettingsRevampEnabled) {
+            const automationIndex = CATEGORIES.findIndex(
+                (category) => category.name === 'Automation'
+            )
+
+            if (automationIndex !== -1) {
+                const categories = [...CATEGORIES]
+
+                categories.splice(automationIndex, 1)
+
+                return categories
+            }
+        }
+
+        return CATEGORIES
+    }
 
     return (
         <Navbar activeContent="settings">
-            {CATEGORIES.map(({name, icon, links}, index) => {
+            {getCategories().map(({name, icon, links}, index) => {
                 const displayedLinks = links
                     .filter((link) => !link.isHidden)
                     .map(({to, text, requiredRole, requiredFeatureFlag}) => {

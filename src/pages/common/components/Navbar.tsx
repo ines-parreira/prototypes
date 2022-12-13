@@ -14,6 +14,9 @@ import * as Sentry from '@sentry/react'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import HomePageLink from 'pages/common/components/HomePageLink'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import {getLDClient} from 'utils/launchDarkly'
+import {FeatureFlagKey} from 'config/featureFlags'
 import shortcutManager from '../../../services/shortcutManager/index'
 import {getCurrentHelpdeskProduct} from '../../../state/billing/selectors'
 import {isTrialing} from '../../../state/currentAccount/selectors'
@@ -71,7 +74,16 @@ class NavLink extends Component<NavLinkProps> {
     }
 }
 
-const mainMenu = [
+type MenuItem = {
+    url: string
+    label: string
+    className?: string
+    icon: string
+    segmentProp: {link: string}
+    content?: ReactNode
+}
+
+const mainMenu: MenuItem[] = [
     {
         url: '/app/tickets',
         label: 'Tickets',
@@ -98,6 +110,32 @@ const mainMenu = [
         segmentProp: {link: 'settings'},
     },
 ]
+
+const getMainMenu = () => {
+    const isAutomationSettingsRevampEnabled: boolean | undefined =
+        getLDClient().allFlags()[FeatureFlagKey.AutomationSettingsRevamp]
+
+    if (!isAutomationSettingsRevampEnabled) {
+        return mainMenu
+    }
+
+    return [
+        ...mainMenu.slice(0, 1),
+        {
+            url: '/app/automation',
+            label: 'Automation',
+            content: (
+                <div className="d-flex flex-fill justify-content-between">
+                    Automation
+                    <Badge type={ColorType.Blue}>NEW</Badge>
+                </div>
+            ),
+            icon: 'bolt',
+            segmentProp: {link: 'automation'},
+        },
+        ...mainMenu.slice(1),
+    ]
+}
 
 type OwnProps = {
     activeContent: Maybe<string>
@@ -263,7 +301,7 @@ export class Navbar extends Component<Props, State> {
                     <div data-candu-id="navbar-home-spacer" />
 
                     <DropdownMenu className={css['dropdown-menu']}>
-                        {mainMenu.map((item) => {
+                        {getMainMenu().map((item) => {
                             return (
                                 <DropdownItem
                                     key={item.label}
@@ -287,7 +325,7 @@ export class Navbar extends Component<Props, State> {
                                     >
                                         {item.icon}
                                     </i>
-                                    {item.label}
+                                    {item.content ?? item.label}
                                 </DropdownItem>
                             )
                         })}

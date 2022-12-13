@@ -25,4 +25,5 @@ export enum FeatureFlagKey {
     AgentsAvailabilityStatus = 'agents-availability-status',
     ChatVideoSharingConversations = 'chat-video-sharing-conversations',
     ChatVideoSharingCampaigns = 'chat-video-sharing-campaigns',
+    AutomationSettingsRevamp = 'automation-settings-revamp',
 }

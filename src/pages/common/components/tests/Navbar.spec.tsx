@@ -7,6 +7,7 @@ import {within} from '@testing-library/dom'
 import {DEFAULT_PREFERENCES} from 'config'
 import {user} from 'fixtures/users'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {getLDClient} from 'utils/launchDarkly'
 
 import {
     advancedMonthlyHelpdeskPrice,
@@ -17,6 +18,10 @@ import {Navbar} from '../Navbar'
 
 jest.mock('lodash/uniqueId', () => (id?: string) => `${id || ''}42`)
 jest.mock('store/middlewares/segmentTracker')
+jest.mock('utils/launchDarkly')
+const allFlagsMock = getLDClient().allFlags as jest.Mock
+allFlagsMock.mockReturnValue({})
+
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
 describe('<Navbar />', () => {

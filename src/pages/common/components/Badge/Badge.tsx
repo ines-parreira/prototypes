@@ -21,6 +21,7 @@ export enum ColorType {
     Purple = 'purple',
     Dark = 'dark',
     Light = 'light',
+    Blue = 'blue',
 }
 
 const Badge = ({
@@ -35,7 +36,9 @@ const Badge = ({
             className={classnames(css.badge, className)}
             style={{
                 backgroundColor: `var(--background-${type})`,
-                ...(type === 'light' ? {color: `var(--text-${type})`} : {}),
+                ...(type === 'light' || type === 'blue'
+                    ? {color: `var(--text-${type})`}
+                    : {}),
                 ...style,
             }}
             {...props}
