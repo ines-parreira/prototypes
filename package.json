@@ -19,7 +19,7 @@
         "test:update": "yarn jest -u",
         "test:watch": "yarn jest --watch",
         "test:ci": "run-s quality test:ci:cover",
-        "test:ci:cover": "yarn run jest --coverage --no-cache --ci --runInBand",
+        "test:ci:cover": "yarn run jest --coverage --ci --runInBand",
         "chromatic": "chromatic",
         "build-storybook": "build-storybook",
         "dll": "node --max_old_space_size=2048 ./node_modules/.bin/webpack --env.dll",

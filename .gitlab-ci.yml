@@ -79,11 +79,16 @@ Jest:
   stage: test
   variables:
     COVERAGE_DIR: ${CI_PROJECT_DIR}/coverage/
+    CACHE_FALLBACK_KEY: ${CI_JOB_NAME}
   artifacts:
     paths:
       - coverage/
   script:
     - yarn test:ci:cover
+  cache:
+    key: '$CI_JOB_NAME-$CI_COMMIT_REF_SLUG'
+    paths:
+      - src/.cache/jest
 
 .build:
   extends: .yarn cache
