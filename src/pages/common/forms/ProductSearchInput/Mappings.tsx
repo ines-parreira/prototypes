@@ -87,7 +87,9 @@ export const bigcommerceDataMappers = {
             title: product.name,
             subtitle: product.sku,
             stock: {
-                tracked: true,
+                tracked: ['variant', 'product'].includes(
+                    product.inventory_tracking
+                ),
                 quantity: product.inventory_level,
                 totalVariants: product.variants ? product.variants.length : 0,
             },
@@ -108,7 +110,7 @@ export const bigcommerceDataMappers = {
             title: product.name,
             subtitle: variant.sku ? `SKU: ${variant.sku}` : null,
             stock: {
-                tracked: true,
+                tracked: product.inventory_tracking === 'variant',
                 quantity: variant.inventory_level,
             },
         }
