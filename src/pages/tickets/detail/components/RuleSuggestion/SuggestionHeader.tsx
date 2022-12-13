@@ -95,7 +95,7 @@ export default function SuggestionHeader({
             const {newMessage, newActions} = transformToInternalNote(
                 message,
                 fromJS(actions),
-                `Sent via suggested rule: <a target="_blank" href="/app/settings/rules#rule-library?${slug}">${ruleName}</a>`
+                `Sent via suggested rule: <a target="_blank" href="/app/settings/rules/library?${slug}">${ruleName}</a>`
             )
             message = {...newMessage, actions: newActions ?? fromJS([])}
         }
