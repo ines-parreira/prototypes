@@ -22,7 +22,7 @@ export const AutoresponderViewButton = ({recipeSlug}: Props) => {
     const recipes = useRuleRecipes()
     const [hasErrors, setHasErrors] = useState(false)
 
-    const recipe = recipes![recipeSlug]
+    const recipe = recipes?.[recipeSlug]
 
     const checkMissingTags = (tag: TagDraft): Promise<TagDraft | null> =>
         new Promise((resolve, reject) => {
@@ -73,6 +73,9 @@ export const AutoresponderViewButton = ({recipeSlug}: Props) => {
 
     const handleClick = async () => {
         const recipeView = recipe?.views_per_section['none'][0]
+
+        if (!recipeView) return
+
         const existingView = allViews.filter(
             (view) =>
                 view.slug === recipeView.slug ||
