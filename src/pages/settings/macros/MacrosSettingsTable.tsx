@@ -10,6 +10,7 @@ import {MACRO_ACTION_NAME} from 'models/macroAction/constants'
 import {TagLabel} from 'pages/common/utils/labels'
 import Tooltip from 'pages/common/components/Tooltip'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import {OrderDirection, GorgiasApiError} from '../../../models/api/types'
 import {createMacro, deleteMacro} from '../../../models/macro/resources'
 import {
@@ -66,6 +67,8 @@ export function MacrosSettingsTableContainer({
         () => options.orderBy?.split(':')[1] as OrderDirection,
         [options.orderBy]
     )
+
+    const hasAgentPrivileges = useHasAgentPrivileges()
 
     const handleMacroDelete = async (macroId: number) => {
         try {
@@ -299,6 +302,7 @@ export function MacrosSettingsTableContainer({
                                                 )
                                             }}
                                             title="Duplicate macro"
+                                            isDisabled={!hasAgentPrivileges}
                                         >
                                             file_copy
                                         </IconButton>
@@ -329,6 +333,9 @@ export function MacrosSettingsTableContainer({
                                                         onDisplayConfirmation
                                                     }
                                                     title="Delete macro"
+                                                    isDisabled={
+                                                        !hasAgentPrivileges
+                                                    }
                                                 >
                                                     delete
                                                 </IconButton>

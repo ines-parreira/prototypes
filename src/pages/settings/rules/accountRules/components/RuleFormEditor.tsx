@@ -17,6 +17,7 @@ import Button from 'pages/common/components/button/Button'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import PageHeader from 'pages/common/components/PageHeader'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import {
     ruleCreated,
     ruleDeleted,
@@ -96,6 +97,8 @@ export const RuleFormEditor = ({rule}: Props) => {
 
     const dispatch = useAppDispatch()
     const [activeTab, setActiveTab] = useState('settings')
+    const hasAgentPrivileges = useHasAgentPrivileges()
+
     const [{loading: isSubmitting}, handleSubmit] = useAsyncFn(
         async (ruleDraft: Partial<RuleDraft>, hasMissingFields = false) => {
             if (hasMissingFields) {
@@ -220,7 +223,12 @@ export const RuleFormEditor = ({rule}: Props) => {
         <>
             <UnsavedChangesPrompt
                 onSave={() => editor.current?.submit()}
-                when={isFormDirty && !isSubmitting && !isDeleting}
+                when={
+                    hasAgentPrivileges &&
+                    isFormDirty &&
+                    !isSubmitting &&
+                    !isDeleting
+                }
             />
             <PageHeader
                 title={

@@ -5,6 +5,7 @@ import {Col, Container, Form, FormGroup, Row} from 'reactstrap'
 import _isEqual from 'lodash/isEqual'
 import classNames from 'classnames'
 
+import {isAdmin} from 'utils'
 import {TicketChannel} from 'business/types/ticket'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -24,6 +25,7 @@ import Alert from 'pages/common/components/Alert/Alert'
 import Tooltip from 'pages/common/components/Tooltip'
 import TeamCreationModal from 'pages/settings/teams/TeamCreationModal'
 import {getTeams} from 'state/teams/selectors'
+import {getCurrentUser} from 'state/currentUser/selectors'
 
 import css from './TicketAssignment.less'
 
@@ -153,7 +155,7 @@ export class TicketAssignmentContainer extends Component<Props, State> {
     }
 
     render() {
-        const {teams} = this.props
+        const {teams, currentUser} = this.props
         const {
             unassignOnReply,
             assignmentChannels,
@@ -190,7 +192,7 @@ export class TicketAssignmentContainer extends Component<Props, State> {
                                     Team auto-assignment settings
                                 </h3>
 
-                                {teams.size === 0 ? (
+                                {teams.size === 0 && isAdmin(currentUser) ? (
                                     <Alert
                                         className={css.missingTeamAlert}
                                         customActions={
@@ -439,7 +441,11 @@ export class TicketAssignmentContainer extends Component<Props, State> {
                             </Col>
                         </Row>
 
-                        <Button type="submit" isLoading={isLoading}>
+                        <Button
+                            type="submit"
+                            isLoading={isLoading}
+                            isDisabled={!isAdmin(currentUser)}
+                        >
                             Save changes
                         </Button>
                     </Form>
@@ -460,6 +466,7 @@ const connector = connect(
     (state: RootState) => ({
         teams: getTeams(state),
         ticketAssignmentSettings: getTicketAssignmentSettings(state),
+        currentUser: getCurrentUser(state),
     }),
     {
         submitSetting,

@@ -16,6 +16,7 @@ import {
     emptyRule as ruleFixture,
     emptyManagedRule,
 } from '../../../../fixtures/rule'
+import {user} from '../../../../fixtures/users'
 import {RootState, StoreDispatch} from '../../../../state/types'
 
 import {RulesLibraryContainer} from '../RulesLibrary'
@@ -45,6 +46,7 @@ const populateStore = (length: number): RootState => {
             },
         },
         billing: fromJS(billingState),
+        currentUser: fromJS(user),
     } as any
     return defaultState
 }

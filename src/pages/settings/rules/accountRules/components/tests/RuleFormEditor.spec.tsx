@@ -5,8 +5,10 @@ import {Provider} from 'react-redux'
 import {render} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import {createMemoryHistory} from 'history'
+import {fromJS} from 'immutable'
 
 import {emptyRule as ruleFixture} from 'fixtures/rule'
+import {user} from 'fixtures/users'
 
 import {RootState, StoreDispatch} from 'state/types'
 
@@ -22,6 +24,7 @@ describe('<RuleFormEditor />', () => {
     ])
     const store = mockStore({
         entities: {},
+        currentUser: fromJS(user),
     } as RootState)
 
     const history = createMemoryHistory()

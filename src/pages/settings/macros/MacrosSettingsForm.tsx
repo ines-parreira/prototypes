@@ -42,8 +42,9 @@ import history from 'pages/history'
 import {errorToChildren} from 'utils'
 import settingsCss from 'pages/settings/settings.less'
 import {MacroApiError} from 'state/macro/types'
-
+import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import {MacroActionName} from 'models/macroAction/types'
+
 import css from './MacrosSettingsForm.less'
 
 type OwnProps = RouteComponentProps<{macroId?: string}>
@@ -60,6 +61,8 @@ export function MacrosSettingsFormContainer({
         params: {macroId},
     },
 }: OwnProps & ConnectedProps<typeof connector>) {
+    const hasAgentPrivileges = useHasAgentPrivileges()
+
     const [macroForm, setMacroForm] = useState<MacroDraft>(
         getDefaultMacro().toJS()
     )
@@ -265,7 +268,11 @@ export function MacrosSettingsFormContainer({
                                 type="submit"
                                 className="mr-2"
                                 isLoading={isSubmitPending}
-                                isDisabled={isActionDisabled || hasInputError}
+                                isDisabled={
+                                    !hasAgentPrivileges ||
+                                    isActionDisabled ||
+                                    hasInputError
+                                }
                             >
                                 {macroId ? 'Update macro' : 'Create macro'}
                             </Button>
@@ -273,7 +280,9 @@ export function MacrosSettingsFormContainer({
                                 <Button
                                     intent="secondary"
                                     isLoading={isDuplicatePending}
-                                    isDisabled={isActionDisabled}
+                                    isDisabled={
+                                        !hasAgentPrivileges || isActionDisabled
+                                    }
                                     onClick={handleMacroDuplicate}
                                 >
                                     Duplicate macro
@@ -286,6 +295,7 @@ export function MacrosSettingsFormContainer({
                                     confirmationContent="You are about to delete this macro."
                                     onConfirm={handleDelete}
                                     isLoading={isDeletePending}
+                                    isDisabled={!hasAgentPrivileges}
                                 >
                                     <ButtonIconLabel icon="delete">
                                         Delete macro

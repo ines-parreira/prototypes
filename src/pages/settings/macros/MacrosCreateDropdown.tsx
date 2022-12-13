@@ -11,6 +11,7 @@ import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {createJob} from 'models/job/resources'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import {JobType} from 'models/job/types'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -23,6 +24,7 @@ export function MacrosCreateDropdown(): JSX.Element {
     const dispatch = useAppDispatch()
     const [isImportOpen, setImportOpen] = useState(false)
     const currentAccount = useAppSelector(getCurrentAccountState)
+    const hasAgentPrivileges = useHasAgentPrivileges()
 
     const _downloadMacros = () => {
         logEvent(SegmentEvent.MacrosExportClicked, {
@@ -55,17 +57,25 @@ export function MacrosCreateDropdown(): JSX.Element {
 
     return (
         <>
-            <UncontrolledButtonDropdown className="mr-2 h-100">
+            <UncontrolledButtonDropdown
+                className="mr-2 h-100"
+                disabled={!hasAgentPrivileges}
+            >
                 <Button
                     color="primary"
                     onClick={() => {
                         history.push('/app/settings/macros/new')
                     }}
                     type="button"
+                    disabled={!hasAgentPrivileges}
                 >
                     Create macro
                 </Button>
-                <DropdownToggle caret color="primary" />
+                <DropdownToggle
+                    caret
+                    color="primary"
+                    disabled={!hasAgentPrivileges}
+                />
                 <DropdownMenu>
                     <DropdownItem onClick={() => setImportOpen(true)}>
                         <i className="icon material-icons md-2 align-text-bottom">

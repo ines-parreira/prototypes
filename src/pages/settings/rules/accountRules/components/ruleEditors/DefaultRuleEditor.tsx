@@ -37,6 +37,7 @@ import TextInput from 'pages/common/forms/input/TextInput'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 
 import {CodeASTType} from '../../../types'
 import RuleItemButtons from '../../../components/RuleItemButtons'
@@ -66,6 +67,7 @@ export const DefaultRuleEditor = forwardRef<EditorHandle, RuleEditorProps>(
         const dispatch = useAppDispatch()
         const limitStatus = useAppSelector(getRulesLimitStatus)
         const schemas = useAppSelector(getSchemas)
+        const hasAgentPrivileges = useHasAgentPrivileges()
 
         const [{loading: isDuplicatePending}, handleRuleDuplicate] =
             useAsyncFn(async () => {
@@ -163,11 +165,18 @@ export const DefaultRuleEditor = forwardRef<EditorHandle, RuleEditorProps>(
 
         const canSubmit = useMemo(
             () =>
+                hasAgentPrivileges &&
                 !hasMissingFields &&
                 !!eventTypes.length &&
                 !isSubmitting &&
                 !isDuplicatePending,
-            [hasMissingFields, eventTypes, isSubmitting, isDuplicatePending]
+            [
+                hasAgentPrivileges,
+                hasMissingFields,
+                eventTypes,
+                isSubmitting,
+                isDuplicatePending,
+            ]
         )
 
         const canDuplicate = useMemo(
@@ -267,6 +276,7 @@ export const DefaultRuleEditor = forwardRef<EditorHandle, RuleEditorProps>(
                         <ToggleInput
                             isToggled={!ruleDraft.deactivated_datetime}
                             onClick={toggleActivation}
+                            isDisabled={!hasAgentPrivileges}
                         />
                     </span>
                     <span>
@@ -285,6 +295,7 @@ export const DefaultRuleEditor = forwardRef<EditorHandle, RuleEditorProps>(
                     ruleId={rule ? rule.id : undefined}
                     canSubmit={canSubmit}
                     canDuplicate={canDuplicate}
+                    canDelete={hasAgentPrivileges}
                     isDeleting={isDeleting}
                     onDuplicate={handleRuleDuplicate}
                     onDelete={handleDelete}

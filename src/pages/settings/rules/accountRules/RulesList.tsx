@@ -1,10 +1,12 @@
-import React, {useEffect, useState} from 'react'
+import React, {ReactNode, useEffect, useState} from 'react'
 import {Table} from 'reactstrap'
 import classnames from 'classnames'
 
 import AutomationSubscriptionModal from 'pages/settings/billing/automation/AutomationSubscriptionModal'
 
-import useAppDispatch from '../../../../hooks/useAppDispatch'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
+
 import ReactSortable from '../../../common/components/dragging/ReactSortable'
 import {
     Rule,
@@ -37,6 +39,8 @@ export function RulesList({
     shouldDisplayError = false,
 }: Props) {
     const dispatch = useAppDispatch()
+    const hasAgentPrivileges = useHasAgentPrivileges()
+
     const handleReordering = async (orders: string[]) => {
         const priorities = orders.map(
             (id, index) =>
@@ -105,6 +109,28 @@ export function RulesList({
         setManagedRuleUpgradeID(undefined)
     }
 
+    const TableBodyComponent = ({children}: {children: ReactNode}) => {
+        if (!hasAgentPrivileges) {
+            return <tbody>{children}</tbody>
+        }
+
+        return (
+            <ReactSortable
+                tag="tbody"
+                options={{
+                    sort: true,
+                    draggable: '.draggable',
+                    handle: '.drag-handle',
+                    animation: 150,
+                    disabled: !!searchTerm,
+                }}
+                onChange={handleReordering}
+            >
+                {children}
+            </ReactSortable>
+        )
+    }
+
     return (
         <div className="rule-category">
             {!!rules.length && (
@@ -128,17 +154,7 @@ export function RulesList({
                             <td></td>
                         </tr>
                     </thead>
-                    <ReactSortable
-                        tag="tbody"
-                        options={{
-                            sort: true,
-                            draggable: '.draggable',
-                            handle: '.drag-handle',
-                            animation: 150,
-                            disabled: !!searchTerm,
-                        }}
-                        onChange={handleReordering}
-                    >
+                    <TableBodyComponent>
                         {filteredRules.map((rule) => (
                             <RuleRow
                                 key={rule.id}
@@ -152,15 +168,17 @@ export function RulesList({
                                 isSearching={!!searchTerm}
                             />
                         ))}
-                    </ReactSortable>
+                    </TableBodyComponent>
                 </Table>
             )}
-            <AutomationSubscriptionModal
-                onClose={() => setManagedRuleUpgradeID(undefined)}
-                confirmLabel="Upgrade and reactivate"
-                onSubscribe={handleUpgrade}
-                isOpen={!!managedRuleUpgradeID}
-            />
+            {hasAgentPrivileges && (
+                <AutomationSubscriptionModal
+                    onClose={() => setManagedRuleUpgradeID(undefined)}
+                    confirmLabel="Upgrade and reactivate"
+                    onSubscribe={handleUpgrade}
+                    isOpen={!!managedRuleUpgradeID}
+                />
+            )}
         </div>
     )
 }

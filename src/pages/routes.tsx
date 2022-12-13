@@ -1082,18 +1082,21 @@ export function SelfServiceSettingsRoutes({
 export function MacrosSettingsRoutes({
     match: {path},
     navbar = SettingsNavbar,
-}: RouteComponentPropsWithNavbar) {
+    isReadonlyForAll,
+}: RouteComponentPropsWithNavbar & {isReadonlyForAll?: boolean}) {
     return (
         <Switch>
             <Route
                 path={`${path}/`}
                 exact
                 render={appRender({
-                    content: memoizedWithUserRoleRequired(
-                        MacrosSettingsContent,
-                        AGENT_ROLE,
-                        PageSection.Macros
-                    ),
+                    content: isReadonlyForAll
+                        ? MacrosSettingsContent
+                        : memoizedWithUserRoleRequired(
+                              MacrosSettingsContent,
+                              AGENT_ROLE,
+                              PageSection.Macros
+                          ),
                     navbar,
                 })}
             />
@@ -1113,11 +1116,13 @@ export function MacrosSettingsRoutes({
                 path={`${path}/:macroId`}
                 exact
                 render={appRender({
-                    content: memoizedWithUserRoleRequired(
-                        MacrosSettingsForm,
-                        AGENT_ROLE,
-                        PageSection.Macros
-                    ),
+                    content: isReadonlyForAll
+                        ? MacrosSettingsForm
+                        : memoizedWithUserRoleRequired(
+                              MacrosSettingsForm,
+                              AGENT_ROLE,
+                              PageSection.Macros
+                          ),
                     navbar,
                 })}
             />
@@ -1128,7 +1133,8 @@ export function MacrosSettingsRoutes({
 export function RulesSettingsRoute({
     match: {path},
     navbar = SettingsNavbar,
-}: RouteComponentPropsWithNavbar) {
+    isReadonlyForAll,
+}: RouteComponentPropsWithNavbar & {isReadonlyForAll?: boolean}) {
     return (
         <HelpCenterApiClientProvider>
             <Switch>
@@ -1136,23 +1142,27 @@ export function RulesSettingsRoute({
                     path={`${path}/`}
                     exact
                     render={appRender({
-                        content: memoizedWithUserRoleRequired(
-                            RulesView,
-                            AGENT_ROLE,
-                            PageSection.Rules
-                        ),
-                        navbar: SettingsNavbar,
+                        content: isReadonlyForAll
+                            ? RulesView
+                            : memoizedWithUserRoleRequired(
+                                  RulesView,
+                                  AGENT_ROLE,
+                                  PageSection.Rules
+                              ),
+                        navbar,
                     })}
                 />
                 <Route
                     path={`${path}/library`}
                     exact
                     render={appRender({
-                        content: memoizedWithUserRoleRequired(
-                            RulesLibrary,
-                            AGENT_ROLE,
-                            PageSection.Rules
-                        ),
+                        content: isReadonlyForAll
+                            ? RulesLibrary
+                            : memoizedWithUserRoleRequired(
+                                  RulesLibrary,
+                                  AGENT_ROLE,
+                                  PageSection.Rules
+                              ),
                         navbar,
                     })}
                 />
@@ -1172,11 +1182,13 @@ export function RulesSettingsRoute({
                     path={`${path}/:ruleId`}
                     exact
                     render={appRender({
-                        content: memoizedWithUserRoleRequired(
-                            RuleDetailForm,
-                            AGENT_ROLE,
-                            PageSection.Rules
-                        ),
+                        content: isReadonlyForAll
+                            ? RuleDetailForm
+                            : memoizedWithUserRoleRequired(
+                                  RuleDetailForm,
+                                  AGENT_ROLE,
+                                  PageSection.Rules
+                              ),
                         navbar,
                     })}
                 />
@@ -1207,24 +1219,25 @@ export function AutomationRoutes({match: {path}}: RouteComponentProps) {
                     <MacrosSettingsRoutes
                         {...props}
                         navbar={AutomationNavbar}
+                        isReadonlyForAll
                     />
                 )}
             />
             <Route
                 path={`${path}/rules`}
                 render={(props) => (
-                    <RulesSettingsRoute {...props} navbar={AutomationNavbar} />
+                    <RulesSettingsRoute
+                        {...props}
+                        navbar={AutomationNavbar}
+                        isReadonlyForAll
+                    />
                 )}
             />
             <Route
                 path={`${path}/ticket-assignment`}
                 exact
                 render={appRender({
-                    content: memoizedWithUserRoleRequired(
-                        TicketAssignment,
-                        ADMIN_ROLE,
-                        PageSection.TicketAssignment
-                    ),
+                    content: TicketAssignment,
                     navbar: AutomationNavbar,
                 })}
             />

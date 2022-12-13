@@ -15,6 +15,7 @@ import classnames from 'classnames'
 import {convertFromHTML, convertToHTML} from 'utils/editor'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import {activateRule} from 'models/rule/resources'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import AutomationSubscriptionModal from 'pages/settings/billing/automation/AutomationSubscriptionModal'
@@ -95,6 +96,7 @@ export const ManagedRuleEditor = forwardRef<EditorHandle, Props>(
 
         const dispatch = useAppDispatch()
         const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+        const hasAgentPrivileges = useHasAgentPrivileges()
         const [
             showAutomationSubscriptionModal,
             setShowAutomationSubscriptionModal,
@@ -195,6 +197,7 @@ export const ManagedRuleEditor = forwardRef<EditorHandle, Props>(
                             <ToggleInput
                                 isToggled={!deactivatedDatetime}
                                 onClick={toggleActivation}
+                                isDisabled={!hasAgentPrivileges}
                             />
                         </span>
                         <span>
@@ -212,24 +215,28 @@ export const ManagedRuleEditor = forwardRef<EditorHandle, Props>(
                     <RuleItemButtons
                         ruleId={rule.id}
                         canSubmit={
+                            hasAgentPrivileges &&
                             !isSubmitting &&
                             hasAutomationAddOn &&
                             !installationError
                         }
                         canDuplicate={false}
+                        canDelete={hasAgentPrivileges}
                         isDeleting={isDeleting}
                         onDelete={handleDelete}
                         onSubmit={submit}
                     />
 
-                    <AutomationSubscriptionModal
-                        onClose={() =>
-                            setShowAutomationSubscriptionModal(false)
-                        }
-                        confirmLabel="Upgrade and reactivate"
-                        onSubscribe={handleResubscribe}
-                        isOpen={showAutomationSubscriptionModal}
-                    />
+                    {hasAgentPrivileges && (
+                        <AutomationSubscriptionModal
+                            onClose={() =>
+                                setShowAutomationSubscriptionModal(false)
+                            }
+                            confirmLabel="Upgrade and reactivate"
+                            onSubscribe={handleResubscribe}
+                            isOpen={showAutomationSubscriptionModal}
+                        />
+                    )}
                 </div>
                 <div
                     className={css.demoContainer}

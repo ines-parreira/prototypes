@@ -20,6 +20,7 @@ import {Rule} from '../../../../../state/rules/types'
 import {ApiListResponsePagination} from '../../../../../models/api/types'
 import history from '../../../../history'
 import {billingState} from '../../../../../fixtures/billing'
+import {user} from '../../../../../fixtures/users'
 
 import {RootState} from '../../../../../state/types'
 
@@ -31,6 +32,7 @@ jest.mock('../../../../../models/rule/resources')
 const mockStore = configureMockStore([thunk])
 const defaultStore: Partial<RootState> = {
     billing: fromJS(billingState),
+    currentUser: fromJS(user),
     entities: {rules: {'1': rules[0]}} as any,
 }
 

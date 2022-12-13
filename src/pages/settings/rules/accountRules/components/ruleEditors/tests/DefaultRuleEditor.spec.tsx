@@ -1,10 +1,12 @@
 import React from 'react'
+import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import {render} from '@testing-library/react'
 
 import {emptyRule} from 'fixtures/rule'
+import {user} from 'fixtures/users'
 import {RootState, StoreDispatch} from 'state/types'
 
 import {DefaultRuleEditor} from '../DefaultRuleEditor'
@@ -21,7 +23,10 @@ describe('<DefaultRuleEditor/>', () => {
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
         thunk,
     ])
-    const store = mockStore({entities: {}} as RootState)
+    const store = mockStore({
+        entities: {},
+        currentUser: fromJS(user),
+    } as RootState)
 
     beforeEach(() => {
         jest.clearAllMocks()

@@ -11,6 +11,7 @@ import Loader from 'pages/common/components/Loader/Loader'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import history from 'pages/history'
 import {OrderDirection} from 'models/api/types'
+import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 
 import {MacrosSettingsTableContainer} from '../MacrosSettingsTable'
 
@@ -28,8 +29,15 @@ jest.mock('reactstrap', () => {
         },
     }
 })
+jest.mock('hooks/useHasAgentPrivileges')
+
+const useHasAgentPrivilegesMock = useHasAgentPrivileges as jest.MockedFunction<
+    typeof useHasAgentPrivileges
+>
 
 describe('<MacrosSettingsTable/>', () => {
+    useHasAgentPrivilegesMock.mockReturnValue(true)
+
     const macrosState: MacrosState = macrosFixtures.reduce(
         (acc: MacrosState, macro: Macro) => ({
             ...acc,

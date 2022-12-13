@@ -893,6 +893,13 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
       >
         Rules
       </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/automation/ticket-assignment"
+      >
+        Ticket assignment
+      </a>
       <div
         class="category"
       >
@@ -1140,6 +1147,13 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
         to="/app/automation/rules"
       >
         Rules
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/automation/ticket-assignment"
+      >
+        Ticket assignment
       </a>
       <div
         class="category"
@@ -1392,6 +1406,13 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
       >
         Rules
       </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/automation/ticket-assignment"
+      >
+        Ticket assignment
+      </a>
       <div
         class="category"
       >
@@ -1610,6 +1631,27 @@ exports[`<AutomationNavbar /> render() should render automation navbar for non-a
           Overview
         </a>
       </div>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/automation/macros"
+      >
+        Macros
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/automation/rules"
+      >
+        Rules
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/automation/ticket-assignment"
+      >
+        Ticket assignment
+      </a>
     </div>
     <div
       data-candu-id="navbar-menu-spacer"
@@ -1776,6 +1818,27 @@ exports[`<AutomationNavbar /> render() should render automation navbar for non-a
           Overview
         </a>
       </div>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/automation/macros"
+      >
+        Macros
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/automation/rules"
+      >
+        Rules
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/automation/ticket-assignment"
+      >
+        Ticket assignment
+      </a>
     </div>
     <div
       data-candu-id="navbar-menu-spacer"

@@ -40,6 +40,7 @@ import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import settingsCss from 'pages/settings/settings.less'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import SelectFilter from 'pages/stats/common/SelectFilter'
 import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 
@@ -52,6 +53,7 @@ export function RulesLibraryContainer({
     location,
 }: Pick<RouteComponentProps, 'location'>) {
     const currentAccount = useAppSelector(getCurrentAccountState)
+    const hasAgentPrivileges = useHasAgentPrivileges()
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const logSearch = useCallback(
@@ -179,16 +181,18 @@ export function RulesLibraryContainer({
                                 setSearchTerm(query)
                             }}
                         />
-                        <Link to="/app/settings/rules/new">
-                            <Button
-                                className="float-right"
-                                isDisabled={
-                                    limitStatus === RuleLimitStatus.Reached
-                                }
-                            >
-                                Create Custom Rule
-                            </Button>
-                        </Link>
+                        <Button
+                            className="float-right"
+                            isDisabled={
+                                limitStatus === RuleLimitStatus.Reached ||
+                                !hasAgentPrivileges
+                            }
+                            onClick={() => {
+                                history.push('/app/settings/rules/new')
+                            }}
+                        >
+                            Create Custom Rule
+                        </Button>
                     </div>
                 </PageHeader>
             </div>
@@ -220,7 +224,7 @@ export function RulesLibraryContainer({
                             rules={rules}
                             autoInstall={autoInstall}
                         />
-                        <CreateCustomRuleFooter />
+                        {hasAgentPrivileges && <CreateCustomRuleFooter />}
                     </>
                 )}
             </Container>

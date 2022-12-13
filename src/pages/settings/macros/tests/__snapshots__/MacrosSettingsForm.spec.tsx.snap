@@ -702,6 +702,7 @@ Sincerely,
                   className="float-right"
                   confirmationContent="You are about to delete this macro."
                   intent="destructive"
+                  isDisabled={false}
                   isLoading={false}
                   onConfirm={[Function]}
                 >

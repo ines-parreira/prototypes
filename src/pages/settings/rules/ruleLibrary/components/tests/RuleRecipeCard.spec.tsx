@@ -18,6 +18,7 @@ import {
 import {emptyManagedRule} from 'fixtures/rule'
 import {billingState} from 'fixtures/billing'
 import {account} from 'fixtures/account'
+import {user} from 'fixtures/users'
 
 import RuleRecipeCard from '../RuleRecipeCard'
 
@@ -74,6 +75,7 @@ describe('<RuleRecipeCard/>', () => {
             entities: {},
             billing: fromJS(billingState),
             currentAccount: fromJS(account),
+            currentUser: fromJS(user),
         })
         createRuleMock.mockReset()
         createViewMock.mockReset()

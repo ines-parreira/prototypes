@@ -14,6 +14,7 @@ import {
 import {getDefaultMacro} from 'state/macro/utils'
 import {NotificationStatus} from 'state/notifications/types'
 import history from 'pages/history'
+import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 
 import {MacrosSettingsFormContainer} from '../MacrosSettingsForm'
 
@@ -29,8 +30,15 @@ jest.mock(
     '../../../tickets/common/macros/components/MacroEdit',
     () => () => 'MacroEdit'
 )
+jest.mock('hooks/useHasAgentPrivileges')
+
+const useHasAgentPrivilegesMock = useHasAgentPrivileges as jest.MockedFunction<
+    typeof useHasAgentPrivileges
+>
 
 describe('<MacrosSettingsForm/>', () => {
+    useHasAgentPrivilegesMock.mockReturnValue(true)
+
     const newMacroFixture = {
         actions: [],
         id: 5,

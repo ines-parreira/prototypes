@@ -20,6 +20,7 @@ import {ManagedRulesSlugs} from 'state/rules/types'
 import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
 import {billingState} from 'fixtures/billing'
 import {account} from 'fixtures/account'
+import {user} from 'fixtures/users'
 import {RuleRow} from '../RuleRow'
 
 jest.mock('models/rule/resources')
@@ -54,6 +55,7 @@ describe('<RuleRow />', () => {
     ])
     const store = mockStore({
         currentAccount: fromJS(account),
+        currentUser: fromJS(user),
         billing: fromJS(billingState),
         entities: {
             ruleRecipes: {

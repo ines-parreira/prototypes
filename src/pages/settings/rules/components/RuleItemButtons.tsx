@@ -10,6 +10,7 @@ type Props = {
     ruleId?: number
     canSubmit: boolean
     canDuplicate: boolean
+    canDelete: boolean
     isDeleting: boolean
     onDuplicate?: () => void
     onDelete: () => void
@@ -20,6 +21,7 @@ export const RuleItemButtons = ({
     ruleId,
     canSubmit,
     canDuplicate,
+    canDelete,
     isDeleting,
     onDuplicate,
     onDelete,
@@ -57,6 +59,7 @@ export const RuleItemButtons = ({
                         isLoading={isDeleting}
                         onConfirm={onDelete}
                         confirmationContent="Are you sure you want to delete this rule?"
+                        isDisabled={!canDelete}
                     >
                         <ButtonIconLabel icon="delete">
                             Delete rule

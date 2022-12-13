@@ -1,10 +1,13 @@
 import React from 'react'
 import thunk from 'redux-thunk'
+import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
-import {fireEvent, render, waitFor, screen} from '@testing-library/react'
+import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 
 import {createJob} from 'models/job/resources'
+import {RootState} from 'state/types'
+import {user} from 'fixtures/users'
 import {MacrosCreateDropdown} from '../MacrosCreateDropdown'
 import history from '../../../history'
 
@@ -13,7 +16,9 @@ jest.mock('models/job/resources', () => ({
 }))
 
 describe('<MacrosCreateDropdown/>', () => {
-    const defaultStore = configureMockStore([thunk])()
+    const defaultStore = configureMockStore([thunk])({
+        currentUser: fromJS(user),
+    } as RootState)
 
     it('should render', () => {
         const {container} = render(

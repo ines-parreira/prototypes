@@ -2,7 +2,7 @@ import React from 'react'
 
 import css from 'assets/css/navbar.less'
 
-import {hasAgentPrivileges, isAdmin} from 'utils'
+import {hasAgentPrivileges} from 'utils'
 import Navbar from 'pages/common/components/Navbar'
 import NavbarLink from 'pages/common/components/navbar/NavbarLink'
 import NavbarBlock from 'pages/common/components/navbar/NavbarBlock'
@@ -30,17 +30,11 @@ const AutomationNavbar = () => {
                     Overview
                 </NavbarLink>
             </div>
-            {hasAgentPrivileges(currentUser) && (
-                <NavbarLink to="/app/automation/macros">Macros</NavbarLink>
-            )}
-            {hasAgentPrivileges(currentUser) && (
-                <NavbarLink to="/app/automation/rules">Rules</NavbarLink>
-            )}
-            {isAdmin(currentUser) && (
-                <NavbarLink to="/app/automation/ticket-assignment">
-                    Ticket assignment
-                </NavbarLink>
-            )}
+            <NavbarLink to="/app/automation/macros">Macros</NavbarLink>
+            <NavbarLink to="/app/automation/rules">Rules</NavbarLink>
+            <NavbarLink to="/app/automation/ticket-assignment">
+                Ticket assignment
+            </NavbarLink>
             {hasAgentPrivileges(currentUser) && (
                 <NavbarBlock icon="auto_awesome" title="automation add-on">
                     {hasAutomationAddOn || hasLegacyAutomationAddOnFeatures ? (

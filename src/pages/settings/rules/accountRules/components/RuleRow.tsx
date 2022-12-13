@@ -13,6 +13,7 @@ import {Link} from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 
@@ -65,6 +66,7 @@ export function RuleRow({
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
     const ruleRecipes = useAppSelector(getSortedRuleRecipes)
     const helpCenters = useAppSelector(getActiveHelpCenterList)
+    const hasAgentPrivileges = useHasAgentPrivileges()
 
     const [isDescriptionOpen, setDescriptionOpen] = useState(false)
 
@@ -254,6 +256,7 @@ export function RuleRow({
                                 onClick={handleToggleClick(
                                     onDisplayConfirmation
                                 )}
+                                isDisabled={!hasAgentPrivileges}
                             />
                             <div id={uid} className={css.toggleActivation} />
                         </>
@@ -299,7 +302,9 @@ export function RuleRow({
                     className={classnames(css.actionButton, 'mr-1')}
                     fillStyle="ghost"
                     intent="secondary"
-                    isDisabled={rule.type === RuleType.Managed}
+                    isDisabled={
+                        !hasAgentPrivileges || rule.type === RuleType.Managed
+                    }
                     onClick={(e) => {
                         e.stopPropagation()
                         void handleDuplicate()
@@ -330,6 +335,7 @@ export function RuleRow({
                             isLoading={isDeleting}
                             title="Delete rule"
                             id={uid}
+                            isDisabled={!hasAgentPrivileges}
                         >
                             delete
                         </IconButton>
@@ -356,4 +362,5 @@ export function RuleRow({
         </tr>
     )
 }
+
 export default RuleRow

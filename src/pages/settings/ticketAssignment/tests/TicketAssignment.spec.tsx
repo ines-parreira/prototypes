@@ -10,6 +10,7 @@ import thunk from 'redux-thunk'
 import {RootState} from 'state/types'
 import {account} from 'fixtures/account'
 import {teams} from 'fixtures/teams'
+import {user} from 'fixtures/users'
 import {
     AccountSettingTicketAssignment,
     AccountSettingType,
@@ -84,6 +85,7 @@ const defaultState = {
         ...account,
         settings: [ticketAssignmentSetting],
     }) as Map<any, any>,
+    currentUser: fromJS(user),
     teams: fromJS({all: _keyBy(teams, 'id')}),
 } as RootState
 

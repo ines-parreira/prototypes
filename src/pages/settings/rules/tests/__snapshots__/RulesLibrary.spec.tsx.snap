@@ -178,16 +178,12 @@ exports[`<RulesLibrary/> should render the rule library view 1`] = `
               />
             </div>
           </div>
-          <a
-            to="/app/settings/rules/new"
+          <button
+            class="wrapper float-right fill primary medium"
+            type="button"
           >
-            <button
-              class="wrapper float-right fill primary medium"
-              type="button"
-            >
-              Create Custom Rule
-            </button>
-          </a>
+            Create Custom Rule
+          </button>
         </div>
       </div>
     </div>
@@ -390,16 +386,12 @@ exports[`<RulesLibrary/> should render the rules library view 1`] = `
               />
             </div>
           </div>
-          <a
-            to="/app/settings/rules/new"
+          <button
+            class="wrapper float-right fill primary medium"
+            type="button"
           >
-            <button
-              class="wrapper float-right fill primary medium"
-              type="button"
-            >
-              Create Custom Rule
-            </button>
-          </a>
+            Create Custom Rule
+          </button>
         </div>
       </div>
     </div>

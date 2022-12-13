@@ -42,6 +42,7 @@ import {NotificationStatus} from 'state/notifications/types'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import {RuleRecipe} from 'models/ruleRecipe/types'
 
 import successIcon from 'assets/img/icons/success.svg'
@@ -77,6 +78,7 @@ function RuleRecipeCard({
     const limitStatus = useAppSelector(getRulesLimitStatus)
     const currentAccount = useAppSelector(getCurrentAccountState)
     const rules = useAppSelector(getSortedRules)
+    const hasAgentPrivileges = useHasAgentPrivileges()
     const [extraDefaultSettings, setExtraDefaultSettings] = useState<
         Partial<AnyManagedRuleSettings>
     >({})
@@ -305,7 +307,9 @@ function RuleRecipeCard({
     )?.id
 
     const shouldInstall =
-        !managedRuleId && limitStatus !== RuleLimitStatus.Reached
+        !managedRuleId &&
+        limitStatus !== RuleLimitStatus.Reached &&
+        hasAgentPrivileges
 
     const handleClick = () => {
         if (managedRuleId) {

@@ -10,6 +10,7 @@ import {RuleLimitStatus} from 'state/rules/types'
 import {billingState} from 'fixtures/billing'
 import {emptyRule as ruleFixture} from 'fixtures/rule'
 import {account} from 'fixtures/account'
+import {user} from 'fixtures/users'
 import {RulesList} from '../RulesList'
 
 jest.mock('../../../../../state/entities/rules/actions')
@@ -32,6 +33,7 @@ const createRuleFixtures = (length: number) => {
 const mockStore = configureMockStore([thunk])
 const store = mockStore({
     currentAccount: fromJS(account),
+    currentUser: fromJS(user),
     billing: fromJS(billingState),
 } as RootState)
 

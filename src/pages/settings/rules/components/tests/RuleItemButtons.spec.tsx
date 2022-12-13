@@ -8,6 +8,7 @@ describe('<RuleItemButtons />', () => {
         ruleId: 1,
         canSubmit: true,
         canDuplicate: true,
+        canDelete: true,
         isDeleting: false,
         onDuplicate: jest.fn(),
         onDelete: jest.fn(),
