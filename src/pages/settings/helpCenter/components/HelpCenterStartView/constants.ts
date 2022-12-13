@@ -1,5 +1,6 @@
 import {IntegrationType} from 'models/integration/constants'
 import {AppDetail, PricingPlan} from 'models/integration/types/app'
+import {assetsUrl} from 'utils'
 
 export const ABOUT_PAGE: AppDetail = {
     type: IntegrationType.App,
@@ -13,7 +14,10 @@ export const ABOUT_PAGE: AppDetail = {
     company: 'Gorgias',
     companyUrl: 'https://gorgias.com',
     icon: 'live_help',
-    screenshots: ['helpcenter-1.png'],
+    // For the screenshots the correct approach would be to use the relative path and just set it as 'helpcenter-1.png'.
+    // However, because of the way we use Details.tsx in HelpCenter, we need the absolute path.
+    // TODO: Fix this, once the Detail component is refactored.
+    screenshots: [assetsUrl('/img/integrations/screenshots/helpcenter-1.png')],
     setupGuide: 'https://docs.gorgias.com/en-US/articles/help-center-18396',
     supportEmail: 'support@gorgias.com',
     pricingPlan: PricingPlan.FREE,

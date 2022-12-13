@@ -127,7 +127,7 @@ exports[`<HelpCenterStartView /> should render the About component 1`] = `
             <img
               alt="Screenshot number 1 of things this app allows you to do in Gorgias"
               class="screenshot"
-              src="helpcenter-1.png"
+              src="/assets/img/integrations/screenshots/helpcenter-1.png"
             />
           </li>
         </ul>
