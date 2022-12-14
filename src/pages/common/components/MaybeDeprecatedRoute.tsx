@@ -20,16 +20,19 @@ const MaybeDeprecatedRoute = ({
 }: Props) => {
     const {path, exact} = props
 
-    const {pathname} = useLocation()
+    const {pathname, search} = useLocation()
     const match = useRouteMatch(path)
 
     const redirectTo = useMemo(() => {
         if (match && !exact) {
-            return redirectToProp.concat(pathname.substring(match.path.length))
+            return redirectToProp.concat(
+                pathname.substring(match.path.length),
+                search
+            )
         }
 
-        return redirectToProp
-    }, [match, exact, pathname, redirectToProp])
+        return redirectToProp.concat(search)
+    }, [match, exact, pathname, search, redirectToProp])
 
     if (isDeprecated) {
         return <Redirect exact to={redirectTo} from={path} />
