@@ -36,16 +36,18 @@ exports[`<CancellationsPolicyView/> onSubmit() should set the eligibility option
       class="navbar navbar"
     >
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/self-service/shopify/myStore1/preferences/quick-response"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/self-service/shopify/myStore1/preferences/quick-response"
       >
         Quick Response Flows
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/self-service/shopify/myStore1/preferences/order-management"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/self-service/shopify/myStore1/preferences/order-management"
       >
         Order Management Flows
       </a>
@@ -251,16 +253,18 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
       class="navbar navbar"
     >
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/self-service/shopify/myStore1/preferences/quick-response"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/self-service/shopify/myStore1/preferences/quick-response"
       >
         Quick Response Flows
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/self-service/shopify/myStore1/preferences/order-management"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/self-service/shopify/myStore1/preferences/order-management"
       >
         Order Management Flows
       </a>
@@ -466,16 +470,18 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
       class="navbar navbar"
     >
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/self-service/shopify/myStore1/preferences/quick-response"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/self-service/shopify/myStore1/preferences/quick-response"
       >
         Quick Response Flows
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/self-service/shopify/myStore1/preferences/order-management"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/self-service/shopify/myStore1/preferences/order-management"
       >
         Order Management Flows
       </a>

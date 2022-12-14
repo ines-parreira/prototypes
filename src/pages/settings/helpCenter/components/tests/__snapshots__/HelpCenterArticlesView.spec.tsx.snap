@@ -57,51 +57,56 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
       class="navbar navbar"
     >
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/help-center/1/articles"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/help-center/1/articles"
       >
         Articles
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/help-center/1/contact"
+        data-active-class-name="active"
+        href="/app/settings/help-center/1/contact"
       >
         Contact
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/help-center/1/appearance"
+        data-active-class-name="active"
+        href="/app/settings/help-center/1/appearance"
       >
         Appearance
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/help-center/1/preferences"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/help-center/1/preferences"
       >
         Preferences
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/help-center/1/customization"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/help-center/1/customization"
       >
         Customization
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/help-center/1/automation"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/help-center/1/automation"
       >
         Automation
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/help-center/1/publish-track"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/help-center/1/publish-track"
       >
         Publish & Track
       </a>

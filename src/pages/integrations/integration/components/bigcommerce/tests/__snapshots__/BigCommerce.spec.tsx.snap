@@ -36,16 +36,18 @@ exports[`<BigCommerce/> Detail should render a detail view 1`] = `
     class="navbar navbar"
   >
     <a
-      activeclassname="active"
       class="link"
-      to="/app/settings/integrations/bigcommerce/"
+      data-active-class-name="active"
+      data-exact="true"
+      href="/app/settings/integrations/bigcommerce/"
     >
       App Details
     </a>
     <a
-      activeclassname="active"
       class="link"
-      to="/app/settings/integrations/bigcommerce/connections"
+      data-active-class-name="active"
+      data-exact="true"
+      href="/app/settings/integrations/bigcommerce/connections"
     >
       Connections
     </a>
@@ -432,16 +434,18 @@ exports[`<BigCommerce/> List should render 1`] = `
     class="navbar navbar"
   >
     <a
-      activeclassname="active"
       class="link"
-      to="/app/settings/integrations/bigcommerce/"
+      data-active-class-name="active"
+      data-exact="true"
+      href="/app/settings/integrations/bigcommerce/"
     >
       App Details
     </a>
     <a
-      activeclassname="active"
       class="link"
-      to="/app/settings/integrations/bigcommerce/connections"
+      data-active-class-name="active"
+      data-exact="true"
+      href="/app/settings/integrations/bigcommerce/connections"
     >
       Connections
     </a>

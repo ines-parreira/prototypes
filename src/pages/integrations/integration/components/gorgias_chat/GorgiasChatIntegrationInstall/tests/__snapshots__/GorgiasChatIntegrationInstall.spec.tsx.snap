@@ -185,9 +185,9 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                 to="/app/settings/channels/gorgias_chat/2/campaigns"
               >
                 <a
-                  activeClassName="active"
                   className="link"
-                  to="/app/settings/channels/gorgias_chat/2/campaigns"
+                  data-active-class-name="active"
+                  href="/app/settings/channels/gorgias_chat/2/campaigns"
                 >
                   Campaigns
                 </a>
@@ -200,10 +200,10 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                 to="/app/settings/channels/gorgias_chat/2/quick_replies"
               >
                 <a
-                  activeClassName="active"
                   className="link"
-                  exact={true}
-                  to="/app/settings/channels/gorgias_chat/2/quick_replies"
+                  data-active-class-name="active"
+                  data-exact={true}
+                  href="/app/settings/channels/gorgias_chat/2/quick_replies"
                 >
                   Quick replies
                 </a>
@@ -216,10 +216,10 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                 to="/app/settings/channels/gorgias_chat/2/appearance"
               >
                 <a
-                  activeClassName="active"
                   className="link"
-                  exact={true}
-                  to="/app/settings/channels/gorgias_chat/2/appearance"
+                  data-active-class-name="active"
+                  data-exact={true}
+                  href="/app/settings/channels/gorgias_chat/2/appearance"
                 >
                   Appearance
                 </a>
@@ -232,10 +232,10 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                 to="/app/settings/channels/gorgias_chat/2/preferences"
               >
                 <a
-                  activeClassName="active"
                   className="link"
-                  exact={true}
-                  to="/app/settings/channels/gorgias_chat/2/preferences"
+                  data-active-class-name="active"
+                  data-exact={true}
+                  href="/app/settings/channels/gorgias_chat/2/preferences"
                 >
                   Preferences
                 </a>
@@ -248,10 +248,10 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                 to="/app/settings/channels/gorgias_chat/2/installation"
               >
                 <a
-                  activeClassName="active"
                   className="link"
-                  exact={true}
-                  to="/app/settings/channels/gorgias_chat/2/installation"
+                  data-active-class-name="active"
+                  data-exact={true}
+                  href="/app/settings/channels/gorgias_chat/2/installation"
                 >
                   Installation
                 </a>
@@ -2210,9 +2210,9 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                 to="/app/settings/channels/gorgias_chat/2/campaigns"
               >
                 <a
-                  activeClassName="active"
                   className="link"
-                  to="/app/settings/channels/gorgias_chat/2/campaigns"
+                  data-active-class-name="active"
+                  href="/app/settings/channels/gorgias_chat/2/campaigns"
                 >
                   Campaigns
                 </a>
@@ -2225,10 +2225,10 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                 to="/app/settings/channels/gorgias_chat/2/quick_replies"
               >
                 <a
-                  activeClassName="active"
                   className="link"
-                  exact={true}
-                  to="/app/settings/channels/gorgias_chat/2/quick_replies"
+                  data-active-class-name="active"
+                  data-exact={true}
+                  href="/app/settings/channels/gorgias_chat/2/quick_replies"
                 >
                   Quick replies
                 </a>
@@ -2241,10 +2241,10 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                 to="/app/settings/channels/gorgias_chat/2/appearance"
               >
                 <a
-                  activeClassName="active"
                   className="link"
-                  exact={true}
-                  to="/app/settings/channels/gorgias_chat/2/appearance"
+                  data-active-class-name="active"
+                  data-exact={true}
+                  href="/app/settings/channels/gorgias_chat/2/appearance"
                 >
                   Appearance
                 </a>
@@ -2257,10 +2257,10 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                 to="/app/settings/channels/gorgias_chat/2/preferences"
               >
                 <a
-                  activeClassName="active"
                   className="link"
-                  exact={true}
-                  to="/app/settings/channels/gorgias_chat/2/preferences"
+                  data-active-class-name="active"
+                  data-exact={true}
+                  href="/app/settings/channels/gorgias_chat/2/preferences"
                 >
                   Preferences
                 </a>
@@ -2273,10 +2273,10 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                 to="/app/settings/channels/gorgias_chat/2/installation"
               >
                 <a
-                  activeClassName="active"
                   className="link"
-                  exact={true}
-                  to="/app/settings/channels/gorgias_chat/2/installation"
+                  data-active-class-name="active"
+                  data-exact={true}
+                  href="/app/settings/channels/gorgias_chat/2/installation"
                 >
                   Installation
                 </a>
@@ -3258,9 +3258,9 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                 to="/app/settings/channels/gorgias_chat/2/campaigns"
               >
                 <a
-                  activeClassName="active"
                   className="link"
-                  to="/app/settings/channels/gorgias_chat/2/campaigns"
+                  data-active-class-name="active"
+                  href="/app/settings/channels/gorgias_chat/2/campaigns"
                 >
                   Campaigns
                 </a>
@@ -3273,10 +3273,10 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                 to="/app/settings/channels/gorgias_chat/2/quick_replies"
               >
                 <a
-                  activeClassName="active"
                   className="link"
-                  exact={true}
-                  to="/app/settings/channels/gorgias_chat/2/quick_replies"
+                  data-active-class-name="active"
+                  data-exact={true}
+                  href="/app/settings/channels/gorgias_chat/2/quick_replies"
                 >
                   Quick replies
                 </a>
@@ -3289,10 +3289,10 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                 to="/app/settings/channels/gorgias_chat/2/appearance"
               >
                 <a
-                  activeClassName="active"
                   className="link"
-                  exact={true}
-                  to="/app/settings/channels/gorgias_chat/2/appearance"
+                  data-active-class-name="active"
+                  data-exact={true}
+                  href="/app/settings/channels/gorgias_chat/2/appearance"
                 >
                   Appearance
                 </a>
@@ -3305,10 +3305,10 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                 to="/app/settings/channels/gorgias_chat/2/preferences"
               >
                 <a
-                  activeClassName="active"
                   className="link"
-                  exact={true}
-                  to="/app/settings/channels/gorgias_chat/2/preferences"
+                  data-active-class-name="active"
+                  data-exact={true}
+                  href="/app/settings/channels/gorgias_chat/2/preferences"
                 >
                   Preferences
                 </a>
@@ -3321,10 +3321,10 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                 to="/app/settings/channels/gorgias_chat/2/automation"
               >
                 <a
-                  activeClassName="active"
                   className="link"
-                  exact={true}
-                  to="/app/settings/channels/gorgias_chat/2/automation"
+                  data-active-class-name="active"
+                  data-exact={true}
+                  href="/app/settings/channels/gorgias_chat/2/automation"
                 >
                   Automation
                 </a>
@@ -3337,10 +3337,10 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                 to="/app/settings/channels/gorgias_chat/2/installation"
               >
                 <a
-                  activeClassName="active"
                   className="link"
-                  exact={true}
-                  to="/app/settings/channels/gorgias_chat/2/installation"
+                  data-active-class-name="active"
+                  data-exact={true}
+                  href="/app/settings/channels/gorgias_chat/2/installation"
                 >
                   Installation
                 </a>

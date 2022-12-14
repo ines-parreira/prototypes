@@ -866,37 +866,41 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
       class="navbar navbar"
     >
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/channels/gorgias_chat/2/campaigns"
+        data-active-class-name="active"
+        href="/app/settings/channels/gorgias_chat/2/campaigns"
       >
         Campaigns
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/channels/gorgias_chat/2/quick_replies"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/channels/gorgias_chat/2/quick_replies"
       >
         Quick replies
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/channels/gorgias_chat/2/appearance"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/channels/gorgias_chat/2/appearance"
       >
         Appearance
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/channels/gorgias_chat/2/preferences"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/channels/gorgias_chat/2/preferences"
       >
         Preferences
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/channels/gorgias_chat/2/installation"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/channels/gorgias_chat/2/installation"
       >
         Installation
       </a>
@@ -1651,37 +1655,41 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
       class="navbar navbar"
     >
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/channels/gorgias_chat/2/campaigns"
+        data-active-class-name="active"
+        href="/app/settings/channels/gorgias_chat/2/campaigns"
       >
         Campaigns
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/channels/gorgias_chat/2/quick_replies"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/channels/gorgias_chat/2/quick_replies"
       >
         Quick replies
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/channels/gorgias_chat/2/appearance"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/channels/gorgias_chat/2/appearance"
       >
         Appearance
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/channels/gorgias_chat/2/preferences"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/channels/gorgias_chat/2/preferences"
       >
         Preferences
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/channels/gorgias_chat/2/installation"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/channels/gorgias_chat/2/installation"
       >
         Installation
       </a>
@@ -2406,37 +2414,41 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
       class="navbar navbar"
     >
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/channels/gorgias_chat/2/campaigns"
+        data-active-class-name="active"
+        href="/app/settings/channels/gorgias_chat/2/campaigns"
       >
         Campaigns
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/channels/gorgias_chat/2/quick_replies"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/channels/gorgias_chat/2/quick_replies"
       >
         Quick replies
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/channels/gorgias_chat/2/appearance"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/channels/gorgias_chat/2/appearance"
       >
         Appearance
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/channels/gorgias_chat/2/preferences"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/channels/gorgias_chat/2/preferences"
       >
         Preferences
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/channels/gorgias_chat/2/installation"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/channels/gorgias_chat/2/installation"
       >
         Installation
       </a>
@@ -3169,37 +3181,41 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
       class="navbar navbar"
     >
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/channels/gorgias_chat/2/campaigns"
+        data-active-class-name="active"
+        href="/app/settings/channels/gorgias_chat/2/campaigns"
       >
         Campaigns
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/channels/gorgias_chat/2/quick_replies"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/channels/gorgias_chat/2/quick_replies"
       >
         Quick replies
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/channels/gorgias_chat/2/appearance"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/channels/gorgias_chat/2/appearance"
       >
         Appearance
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/channels/gorgias_chat/2/preferences"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/channels/gorgias_chat/2/preferences"
       >
         Preferences
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/channels/gorgias_chat/2/installation"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/channels/gorgias_chat/2/installation"
       >
         Installation
       </a>
@@ -3924,37 +3940,41 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
       class="navbar navbar"
     >
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/channels/gorgias_chat/2/campaigns"
+        data-active-class-name="active"
+        href="/app/settings/channels/gorgias_chat/2/campaigns"
       >
         Campaigns
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/channels/gorgias_chat/2/quick_replies"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/channels/gorgias_chat/2/quick_replies"
       >
         Quick replies
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/channels/gorgias_chat/2/appearance"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/channels/gorgias_chat/2/appearance"
       >
         Appearance
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/channels/gorgias_chat/2/preferences"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/channels/gorgias_chat/2/preferences"
       >
         Preferences
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/channels/gorgias_chat/2/installation"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/channels/gorgias_chat/2/installation"
       >
         Installation
       </a>
@@ -6346,44 +6366,49 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
       class="navbar navbar"
     >
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/channels/gorgias_chat/1/campaigns"
+        data-active-class-name="active"
+        href="/app/settings/channels/gorgias_chat/1/campaigns"
       >
         Campaigns
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/channels/gorgias_chat/1/quick_replies"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/channels/gorgias_chat/1/quick_replies"
       >
         Quick replies
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/channels/gorgias_chat/1/appearance"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/channels/gorgias_chat/1/appearance"
       >
         Appearance
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/channels/gorgias_chat/1/preferences"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/channels/gorgias_chat/1/preferences"
       >
         Preferences
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/channels/gorgias_chat/1/automation"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/channels/gorgias_chat/1/automation"
       >
         Automation
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/channels/gorgias_chat/1/installation"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/channels/gorgias_chat/1/installation"
       >
         Installation
       </a>

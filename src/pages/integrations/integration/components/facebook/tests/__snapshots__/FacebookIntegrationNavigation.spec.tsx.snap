@@ -31,10 +31,10 @@ exports[`<FacebookIntegrationNavigation/> should display the Ads tab when Instag
           to="/app/settings/integrations/facebook/1/overview"
         >
           <a
-            activeClassName="active"
             className="link"
-            exact={true}
-            to="/app/settings/integrations/facebook/1/overview"
+            data-active-class-name="active"
+            data-exact={true}
+            href="/app/settings/integrations/facebook/1/overview"
           >
             Overview
           </a>
@@ -47,10 +47,10 @@ exports[`<FacebookIntegrationNavigation/> should display the Ads tab when Instag
           to="/app/settings/integrations/facebook/1/customer_chat"
         >
           <a
-            activeClassName="active"
             className="link"
-            exact={true}
-            to="/app/settings/integrations/facebook/1/customer_chat"
+            data-active-class-name="active"
+            data-exact={true}
+            href="/app/settings/integrations/facebook/1/customer_chat"
           >
             Customer chat
           </a>
@@ -63,10 +63,10 @@ exports[`<FacebookIntegrationNavigation/> should display the Ads tab when Instag
           to="/app/settings/integrations/facebook/1/preferences"
         >
           <a
-            activeClassName="active"
             className="link"
-            exact={true}
-            to="/app/settings/integrations/facebook/1/preferences"
+            data-active-class-name="active"
+            data-exact={true}
+            href="/app/settings/integrations/facebook/1/preferences"
           >
             Preferences
           </a>
@@ -79,10 +79,10 @@ exports[`<FacebookIntegrationNavigation/> should display the Ads tab when Instag
           to="/app/settings/integrations/facebook/1/ads"
         >
           <a
-            activeClassName="active"
             className="link"
-            exact={true}
-            to="/app/settings/integrations/facebook/1/ads"
+            data-active-class-name="active"
+            data-exact={true}
+            href="/app/settings/integrations/facebook/1/ads"
           >
             Instagram ads
           </a>
@@ -119,10 +119,10 @@ exports[`<FacebookIntegrationNavigation/> should not display the Ads tab when ad
           to="/app/settings/integrations/facebook/1/overview"
         >
           <a
-            activeClassName="active"
             className="link"
-            exact={true}
-            to="/app/settings/integrations/facebook/1/overview"
+            data-active-class-name="active"
+            data-exact={true}
+            href="/app/settings/integrations/facebook/1/overview"
           >
             Overview
           </a>
@@ -135,10 +135,10 @@ exports[`<FacebookIntegrationNavigation/> should not display the Ads tab when ad
           to="/app/settings/integrations/facebook/1/customer_chat"
         >
           <a
-            activeClassName="active"
             className="link"
-            exact={true}
-            to="/app/settings/integrations/facebook/1/customer_chat"
+            data-active-class-name="active"
+            data-exact={true}
+            href="/app/settings/integrations/facebook/1/customer_chat"
           >
             Customer chat
           </a>
@@ -151,10 +151,10 @@ exports[`<FacebookIntegrationNavigation/> should not display the Ads tab when ad
           to="/app/settings/integrations/facebook/1/preferences"
         >
           <a
-            activeClassName="active"
             className="link"
-            exact={true}
-            to="/app/settings/integrations/facebook/1/preferences"
+            data-active-class-name="active"
+            data-exact={true}
+            href="/app/settings/integrations/facebook/1/preferences"
           >
             Preferences
           </a>

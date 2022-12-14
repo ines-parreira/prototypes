@@ -193,10 +193,10 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render a spinner 1`]
                   to="/app/settings/integrations/facebook/1/overview"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/integrations/facebook/1/overview"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/integrations/facebook/1/overview"
                   >
                     Overview
                   </a>
@@ -209,10 +209,10 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render a spinner 1`]
                   to="/app/settings/integrations/facebook/1/customer_chat"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/integrations/facebook/1/customer_chat"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/integrations/facebook/1/customer_chat"
                   >
                     Customer chat
                   </a>
@@ -225,10 +225,10 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render a spinner 1`]
                   to="/app/settings/integrations/facebook/1/preferences"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/integrations/facebook/1/preferences"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/integrations/facebook/1/preferences"
                   >
                     Preferences
                   </a>
@@ -557,10 +557,10 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                   to="/app/settings/integrations/facebook/1/overview"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/integrations/facebook/1/overview"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/integrations/facebook/1/overview"
                   >
                     Overview
                   </a>
@@ -573,10 +573,10 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                   to="/app/settings/integrations/facebook/1/customer_chat"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/integrations/facebook/1/customer_chat"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/integrations/facebook/1/customer_chat"
                   >
                     Customer chat
                   </a>
@@ -589,10 +589,10 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                   to="/app/settings/integrations/facebook/1/preferences"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/integrations/facebook/1/preferences"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/integrations/facebook/1/preferences"
                   >
                     Preferences
                   </a>
@@ -1583,10 +1583,10 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
                   to="/app/settings/integrations/facebook/1/overview"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/integrations/facebook/1/overview"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/integrations/facebook/1/overview"
                   >
                     Overview
                   </a>
@@ -1599,10 +1599,10 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
                   to="/app/settings/integrations/facebook/1/customer_chat"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/integrations/facebook/1/customer_chat"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/integrations/facebook/1/customer_chat"
                   >
                     Customer chat
                   </a>
@@ -1615,10 +1615,10 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
                   to="/app/settings/integrations/facebook/1/preferences"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/integrations/facebook/1/preferences"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/integrations/facebook/1/preferences"
                   >
                     Preferences
                   </a>
@@ -2099,10 +2099,10 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                   to="/app/settings/integrations/facebook/1/overview"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/integrations/facebook/1/overview"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/integrations/facebook/1/overview"
                   >
                     Overview
                   </a>
@@ -2115,10 +2115,10 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                   to="/app/settings/integrations/facebook/1/customer_chat"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/integrations/facebook/1/customer_chat"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/integrations/facebook/1/customer_chat"
                   >
                     Customer chat
                   </a>
@@ -2131,10 +2131,10 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                   to="/app/settings/integrations/facebook/1/preferences"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/integrations/facebook/1/preferences"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/integrations/facebook/1/preferences"
                   >
                     Preferences
                   </a>
@@ -2760,10 +2760,10 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render without ad 1`
                   to="/app/settings/integrations/facebook/1/overview"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/integrations/facebook/1/overview"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/integrations/facebook/1/overview"
                   >
                     Overview
                   </a>
@@ -2776,10 +2776,10 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render without ad 1`
                   to="/app/settings/integrations/facebook/1/customer_chat"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/integrations/facebook/1/customer_chat"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/integrations/facebook/1/customer_chat"
                   >
                     Customer chat
                   </a>
@@ -2792,10 +2792,10 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render without ad 1`
                   to="/app/settings/integrations/facebook/1/preferences"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/integrations/facebook/1/preferences"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/integrations/facebook/1/preferences"
                   >
                     Preferences
                   </a>

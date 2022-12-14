@@ -1,6 +1,5 @@
-import React from 'react'
-import {render} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import React, {ComponentProps} from 'react'
+import {render, fireEvent} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 
 import {
@@ -9,7 +8,11 @@ import {
 } from 'config/integrations/smooch_inside'
 import {CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES} from 'config/integrations/index'
 import {SMOOCH_INSIDE_INTEGRATION_TYPE} from 'constants/integration'
-import {FRENCH_LANGUAGE, SPANISH_LANGUAGE} from 'constants/languages'
+import {
+    FRENCH_LANGUAGE,
+    FRENCH_FR_LANGUAGE,
+    SPANISH_LANGUAGE,
+} from 'constants/languages'
 
 import {ChatIntegrationMigration} from '../ChatIntegrationMigration'
 
@@ -72,32 +75,29 @@ const integration: Map<any, any> = fromJS({
 })
 
 describe('ChatIntegrationMigration component', () => {
-    it('should display the migration page', () => {
-        const {container} = render(
-            <ChatIntegrationMigration
-                integration={integration}
-                updateOrCreateIntegration={jest.fn()}
-            />
-        )
+    const minProps: ComponentProps<typeof ChatIntegrationMigration> & {
+        updateOrCreateIntegration: jest.Mock
+    } = {
+        integration,
+        updateOrCreateIntegration: jest.fn().mockResolvedValue(undefined),
+    }
 
-        expect(container).toMatchSnapshot()
+    beforeEach(() => {
+        jest.clearAllMocks()
     })
 
-    it('should create a new gorgias_chat integration when clicking on the migration button', () => {
-        const updateOrCreateIntegration = jest.fn()
+    it('should display the migration page', () => {
+        const {container} = render(<ChatIntegrationMigration {...minProps} />)
 
-        const {container} = render(
-            <ChatIntegrationMigration
-                updateOrCreateIntegration={updateOrCreateIntegration}
-                integration={integration}
-            />
-        )
-        const btn = container.querySelector('button.btn-success')!
+        expect(container.firstChild).toMatchSnapshot()
+    })
 
-        userEvent.click(btn)
+    it('should create a new gorgias_chat integration when clicking on the migration button', async () => {
+        const {findByRole} = render(<ChatIntegrationMigration {...minProps} />)
+        fireEvent.click(await findByRole('button'))
 
         const parameters: Map<any, any> = (
-            updateOrCreateIntegration.mock.calls[0] as any[]
+            minProps.updateOrCreateIntegration.mock.calls[0] as any[]
         )[0]
         expect(parameters).not.toHaveProperty('meta.webhook')
         expect(parameters).not.toHaveProperty('meta.script_url')
@@ -131,27 +131,23 @@ describe('ChatIntegrationMigration component', () => {
         )
     })
 
-    it('should create a new gorgias_chat integration with the default french locale', () => {
-        const updateOrCreateIntegration = jest.fn()
-
-        const frenchIntegration: Map<any, any> = integration.setIn(
-            ['meta', 'language'],
-            FRENCH_LANGUAGE
-        )
-
-        const {container} = render(
+    it('should create a new gorgias_chat integration with the default french locale', async () => {
+        const {findByRole} = render(
             <ChatIntegrationMigration
-                updateOrCreateIntegration={updateOrCreateIntegration}
-                integration={frenchIntegration}
+                {...minProps}
+                integration={minProps.integration.setIn(
+                    ['meta', 'language'],
+                    FRENCH_LANGUAGE
+                )}
             />
         )
-        const btn = container.querySelector('button.btn-success')!
-
-        userEvent.click(btn)
+        fireEvent.click(await findByRole('button'))
 
         const parameters: Map<any, any> = (
-            updateOrCreateIntegration.mock.calls[0] as any[]
+            minProps.updateOrCreateIntegration.mock.calls[0] as any[]
         )[0]
-        expect(parameters.getIn(['meta', 'language'])).toEqual('fr-FR')
+        expect(parameters.getIn(['meta', 'language'])).toEqual(
+            FRENCH_FR_LANGUAGE
+        )
     })
 })

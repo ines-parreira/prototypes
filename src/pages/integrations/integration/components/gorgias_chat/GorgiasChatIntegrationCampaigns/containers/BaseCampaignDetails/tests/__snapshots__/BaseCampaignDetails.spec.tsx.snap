@@ -36,37 +36,41 @@ exports[`<BaseCampaignDetails /> matches snapshot 1`] = `
       class="navbar navbar"
     >
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/channels/gorgias_chat/1/campaigns"
+        data-active-class-name="active"
+        href="/app/settings/channels/gorgias_chat/1/campaigns"
       >
         Campaigns
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/channels/gorgias_chat/1/quick_replies"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/channels/gorgias_chat/1/quick_replies"
       >
         Quick replies
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/channels/gorgias_chat/1/appearance"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/channels/gorgias_chat/1/appearance"
       >
         Appearance
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/channels/gorgias_chat/1/preferences"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/channels/gorgias_chat/1/preferences"
       >
         Preferences
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/channels/gorgias_chat/1/installation"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/channels/gorgias_chat/1/installation"
       >
         Installation
       </a>

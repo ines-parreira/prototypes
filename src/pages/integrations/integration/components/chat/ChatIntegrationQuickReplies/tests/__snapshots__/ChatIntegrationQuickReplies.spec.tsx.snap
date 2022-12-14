@@ -172,10 +172,10 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                   to="/app/settings/integrations/smooch_inside/7/migration"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/integrations/smooch_inside/7/migration"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/integrations/smooch_inside/7/migration"
                   >
                     Migration
                   </a>
@@ -188,10 +188,10 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                   to="/app/settings/integrations/smooch_inside/7/appearance"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/integrations/smooch_inside/7/appearance"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/integrations/smooch_inside/7/appearance"
                   >
                     Appearance
                   </a>
@@ -204,10 +204,10 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                   to="/app/settings/integrations/smooch_inside/7/installation"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/integrations/smooch_inside/7/installation"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/integrations/smooch_inside/7/installation"
                   >
                     Installation
                   </a>
@@ -220,10 +220,10 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                   to="/app/settings/integrations/smooch_inside/7/preferences"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/integrations/smooch_inside/7/preferences"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/integrations/smooch_inside/7/preferences"
                   >
                     Preferences
                   </a>
@@ -236,10 +236,10 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                   to="/app/settings/integrations/smooch_inside/7/campaigns"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/integrations/smooch_inside/7/campaigns"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/integrations/smooch_inside/7/campaigns"
                   >
                     Campaigns
                   </a>
@@ -252,10 +252,10 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                   to="/app/settings/integrations/smooch_inside/7/quick_replies"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/integrations/smooch_inside/7/quick_replies"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/integrations/smooch_inside/7/quick_replies"
                   >
                     Quick replies
                   </a>
@@ -999,10 +999,10 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                   to="/app/settings/integrations/smooch_inside/7/migration"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/integrations/smooch_inside/7/migration"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/integrations/smooch_inside/7/migration"
                   >
                     Migration
                   </a>
@@ -1015,10 +1015,10 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                   to="/app/settings/integrations/smooch_inside/7/appearance"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/integrations/smooch_inside/7/appearance"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/integrations/smooch_inside/7/appearance"
                   >
                     Appearance
                   </a>
@@ -1031,10 +1031,10 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                   to="/app/settings/integrations/smooch_inside/7/installation"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/integrations/smooch_inside/7/installation"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/integrations/smooch_inside/7/installation"
                   >
                     Installation
                   </a>
@@ -1047,10 +1047,10 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                   to="/app/settings/integrations/smooch_inside/7/preferences"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/integrations/smooch_inside/7/preferences"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/integrations/smooch_inside/7/preferences"
                   >
                     Preferences
                   </a>
@@ -1063,10 +1063,10 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                   to="/app/settings/integrations/smooch_inside/7/campaigns"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/integrations/smooch_inside/7/campaigns"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/integrations/smooch_inside/7/campaigns"
                   >
                     Campaigns
                   </a>
@@ -1079,10 +1079,10 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                   to="/app/settings/integrations/smooch_inside/7/quick_replies"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/integrations/smooch_inside/7/quick_replies"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/integrations/smooch_inside/7/quick_replies"
                   >
                     Quick replies
                   </a>

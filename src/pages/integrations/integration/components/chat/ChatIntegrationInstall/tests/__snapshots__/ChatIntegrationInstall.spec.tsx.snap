@@ -178,10 +178,10 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                   to="/app/settings/integrations/smooch_inside/2/migration"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/integrations/smooch_inside/2/migration"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/integrations/smooch_inside/2/migration"
                   >
                     Migration
                   </a>
@@ -194,10 +194,10 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                   to="/app/settings/integrations/smooch_inside/2/appearance"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/integrations/smooch_inside/2/appearance"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/integrations/smooch_inside/2/appearance"
                   >
                     Appearance
                   </a>
@@ -210,10 +210,10 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                   to="/app/settings/integrations/smooch_inside/2/installation"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/integrations/smooch_inside/2/installation"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/integrations/smooch_inside/2/installation"
                   >
                     Installation
                   </a>
@@ -226,10 +226,10 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                   to="/app/settings/integrations/smooch_inside/2/preferences"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/integrations/smooch_inside/2/preferences"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/integrations/smooch_inside/2/preferences"
                   >
                     Preferences
                   </a>
@@ -242,10 +242,10 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                   to="/app/settings/integrations/smooch_inside/2/campaigns"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/integrations/smooch_inside/2/campaigns"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/integrations/smooch_inside/2/campaigns"
                   >
                     Campaigns
                   </a>
@@ -258,10 +258,10 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                   to="/app/settings/integrations/smooch_inside/2/quick_replies"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/integrations/smooch_inside/2/quick_replies"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/integrations/smooch_inside/2/quick_replies"
                   >
                     Quick replies
                   </a>

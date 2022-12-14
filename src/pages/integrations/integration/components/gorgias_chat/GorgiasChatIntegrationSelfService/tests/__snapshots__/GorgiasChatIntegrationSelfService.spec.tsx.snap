@@ -35,44 +35,49 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the self se
     class="navbar navbar"
   >
     <a
-      activeclassname="active"
       class="link"
-      to="/app/settings/channels/gorgias_chat/7/campaigns"
+      data-active-class-name="active"
+      href="/app/settings/channels/gorgias_chat/7/campaigns"
     >
       Campaigns
     </a>
     <a
-      activeclassname="active"
       class="link"
-      to="/app/settings/channels/gorgias_chat/7/quick_replies"
+      data-active-class-name="active"
+      data-exact="true"
+      href="/app/settings/channels/gorgias_chat/7/quick_replies"
     >
       Quick replies
     </a>
     <a
-      activeclassname="active"
       class="link"
-      to="/app/settings/channels/gorgias_chat/7/appearance"
+      data-active-class-name="active"
+      data-exact="true"
+      href="/app/settings/channels/gorgias_chat/7/appearance"
     >
       Appearance
     </a>
     <a
-      activeclassname="active"
       class="link"
-      to="/app/settings/channels/gorgias_chat/7/preferences"
+      data-active-class-name="active"
+      data-exact="true"
+      href="/app/settings/channels/gorgias_chat/7/preferences"
     >
       Preferences
     </a>
     <a
-      activeclassname="active"
       class="link"
-      to="/app/settings/channels/gorgias_chat/7/automation"
+      data-active-class-name="active"
+      data-exact="true"
+      href="/app/settings/channels/gorgias_chat/7/automation"
     >
       Automation
     </a>
     <a
-      activeclassname="active"
       class="link"
-      to="/app/settings/channels/gorgias_chat/7/installation"
+      data-active-class-name="active"
+      data-exact="true"
+      href="/app/settings/channels/gorgias_chat/7/installation"
     >
       Installation
     </a>

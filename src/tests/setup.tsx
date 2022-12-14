@@ -7,6 +7,7 @@ import Adapter from 'enzyme-adapter-react-16'
 import _noop from 'lodash/noop'
 import {MomentTimezone} from 'moment-timezone'
 import {mockFlags} from 'jest-launchdarkly-mock'
+import {NavLinkProps} from 'react-router-dom'
 
 import history from '../pages/history'
 
@@ -178,7 +179,14 @@ jest.mock(
             ...jest.requireActual('react-router-dom'),
             /* eslint-disable jsx-a11y/anchor-has-content */
             Link: (props: Record<string, unknown>) => <a {...props} />,
-            NavLink: (props: Record<string, unknown>) => <a {...props} />,
+            NavLink: ({to, activeClassName, exact, ...rest}: NavLinkProps) => (
+                <a
+                    href={to.toString()}
+                    data-active-class-name={activeClassName}
+                    data-exact={exact}
+                    {...rest}
+                />
+            ),
             /* eslint-enable */
         } as Record<string, unknown>)
 )

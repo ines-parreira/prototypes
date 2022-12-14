@@ -17,7 +17,8 @@ exports[`HTTPIntegrationLayout should render layout for a new HTTP integration 1
         <li>
           <div>
             <a
-              to="/app/settings/integrations/http"
+              data-exact="true"
+              href="/app/settings/integrations/http"
             >
               HTTP integration
             </a>
@@ -59,7 +60,8 @@ exports[`HTTPIntegrationLayout should render the layout of an event page of a HT
           <li>
             <div>
               <a
-                to="/app/settings/integrations/http"
+                data-exact="true"
+                href="/app/settings/integrations/http"
               >
                 HTTP integration
               </a>
@@ -91,16 +93,18 @@ exports[`HTTPIntegrationLayout should render the layout of an event page of a HT
       class="navbar navbar"
     >
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/integrations/http/1"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/integrations/http/1"
       >
         Settings
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/integrations/http/1/events"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/integrations/http/1/events"
       >
         Logs
       </a>
@@ -129,7 +133,8 @@ exports[`HTTPIntegrationLayout should render the layout of the events page of a 
         <li>
           <div>
             <a
-              to="/app/settings/integrations/http"
+              data-exact="true"
+              href="/app/settings/integrations/http"
             >
               HTTP integration
             </a>
@@ -151,16 +156,18 @@ exports[`HTTPIntegrationLayout should render the layout of the events page of a 
     class="navbar navbar"
   >
     <a
-      activeclassname="active"
       class="link"
-      to="/app/settings/integrations/http/1"
+      data-active-class-name="active"
+      data-exact="true"
+      href="/app/settings/integrations/http/1"
     >
       Settings
     </a>
     <a
-      activeclassname="active"
       class="link"
-      to="/app/settings/integrations/http/1/events"
+      data-active-class-name="active"
+      data-exact="true"
+      href="/app/settings/integrations/http/1/events"
     >
       Logs
     </a>
@@ -188,7 +195,8 @@ exports[`HTTPIntegrationLayout should render the layout of the settings page of 
         <li>
           <div>
             <a
-              to="/app/settings/integrations/http"
+              data-exact="true"
+              href="/app/settings/integrations/http"
             >
               HTTP integration
             </a>
@@ -210,16 +218,18 @@ exports[`HTTPIntegrationLayout should render the layout of the settings page of 
     class="navbar navbar"
   >
     <a
-      activeclassname="active"
       class="link"
-      to="/app/settings/integrations/http/1"
+      data-active-class-name="active"
+      data-exact="true"
+      href="/app/settings/integrations/http/1"
     >
       Settings
     </a>
     <a
-      activeclassname="active"
       class="link"
-      to="/app/settings/integrations/http/1/events"
+      data-active-class-name="active"
+      data-exact="true"
+      href="/app/settings/integrations/http/1/events"
     >
       Logs
     </a>

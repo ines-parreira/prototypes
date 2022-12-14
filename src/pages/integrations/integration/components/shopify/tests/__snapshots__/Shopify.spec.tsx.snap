@@ -36,16 +36,18 @@ exports[`<Shopify/> Detail should render a detail view 1`] = `
     class="navbar navbar"
   >
     <a
-      activeclassname="active"
       class="link"
-      to="/app/settings/integrations/shopify/"
+      data-active-class-name="active"
+      data-exact="true"
+      href="/app/settings/integrations/shopify/"
     >
       App Details
     </a>
     <a
-      activeclassname="active"
       class="link"
-      to="/app/settings/integrations/shopify/connections"
+      data-active-class-name="active"
+      data-exact="true"
+      href="/app/settings/integrations/shopify/connections"
     >
       Connections
     </a>
@@ -557,16 +559,18 @@ exports[`<Shopify/> List should render 1`] = `
     class="navbar navbar"
   >
     <a
-      activeclassname="active"
       class="link"
-      to="/app/settings/integrations/shopify/"
+      data-active-class-name="active"
+      data-exact="true"
+      href="/app/settings/integrations/shopify/"
     >
       App Details
     </a>
     <a
-      activeclassname="active"
       class="link"
-      to="/app/settings/integrations/shopify/connections"
+      data-active-class-name="active"
+      data-exact="true"
+      href="/app/settings/integrations/shopify/connections"
     >
       Connections
     </a>

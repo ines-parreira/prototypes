@@ -36,16 +36,18 @@ exports[`<Magento2/> Detail should render a detail view 1`] = `
     class="navbar navbar"
   >
     <a
-      activeclassname="active"
       class="link"
-      to="/app/settings/integrations/magento2/"
+      data-active-class-name="active"
+      data-exact="true"
+      href="/app/settings/integrations/magento2/"
     >
       App Details
     </a>
     <a
-      activeclassname="active"
       class="link"
-      to="/app/settings/integrations/magento2/connections"
+      data-active-class-name="active"
+      data-exact="true"
+      href="/app/settings/integrations/magento2/connections"
     >
       Connections
     </a>
@@ -485,16 +487,18 @@ exports[`<Magento2/> List should render 1`] = `
     class="navbar navbar"
   >
     <a
-      activeclassname="active"
       class="link"
-      to="/app/settings/integrations/magento2/"
+      data-active-class-name="active"
+      data-exact="true"
+      href="/app/settings/integrations/magento2/"
     >
       App Details
     </a>
     <a
-      activeclassname="active"
       class="link"
-      to="/app/settings/integrations/magento2/connections"
+      data-active-class-name="active"
+      data-exact="true"
+      href="/app/settings/integrations/magento2/connections"
     >
       Connections
     </a>

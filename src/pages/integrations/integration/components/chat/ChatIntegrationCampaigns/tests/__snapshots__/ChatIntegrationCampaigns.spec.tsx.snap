@@ -55,44 +55,50 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
       class="navbar navbar"
     >
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/integrations/smooch_inside/118/migration"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/integrations/smooch_inside/118/migration"
       >
         Migration
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/integrations/smooch_inside/118/appearance"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/integrations/smooch_inside/118/appearance"
       >
         Appearance
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/integrations/smooch_inside/118/installation"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/integrations/smooch_inside/118/installation"
       >
         Installation
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/integrations/smooch_inside/118/preferences"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/integrations/smooch_inside/118/preferences"
       >
         Preferences
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/integrations/smooch_inside/118/campaigns"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/integrations/smooch_inside/118/campaigns"
       >
         Campaigns
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/integrations/smooch_inside/118/quick_replies"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/integrations/smooch_inside/118/quick_replies"
       >
         Quick replies
       </a>
@@ -166,44 +172,50 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
       class="navbar navbar"
     >
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/integrations/smooch_inside/118/migration"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/integrations/smooch_inside/118/migration"
       >
         Migration
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/integrations/smooch_inside/118/appearance"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/integrations/smooch_inside/118/appearance"
       >
         Appearance
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/integrations/smooch_inside/118/installation"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/integrations/smooch_inside/118/installation"
       >
         Installation
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/integrations/smooch_inside/118/preferences"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/integrations/smooch_inside/118/preferences"
       >
         Preferences
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/integrations/smooch_inside/118/campaigns"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/integrations/smooch_inside/118/campaigns"
       >
         Campaigns
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/settings/integrations/smooch_inside/118/quick_replies"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/integrations/smooch_inside/118/quick_replies"
       >
         Quick replies
       </a>

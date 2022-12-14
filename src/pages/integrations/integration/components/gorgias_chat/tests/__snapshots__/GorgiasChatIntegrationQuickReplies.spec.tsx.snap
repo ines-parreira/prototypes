@@ -147,9 +147,9 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                   to="/app/settings/channels/gorgias_chat/7/campaigns"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    to="/app/settings/channels/gorgias_chat/7/campaigns"
+                    data-active-class-name="active"
+                    href="/app/settings/channels/gorgias_chat/7/campaigns"
                   >
                     Campaigns
                   </a>
@@ -162,10 +162,10 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                   to="/app/settings/channels/gorgias_chat/7/quick_replies"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/channels/gorgias_chat/7/quick_replies"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/channels/gorgias_chat/7/quick_replies"
                   >
                     Quick replies
                   </a>
@@ -178,10 +178,10 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                   to="/app/settings/channels/gorgias_chat/7/appearance"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/channels/gorgias_chat/7/appearance"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/channels/gorgias_chat/7/appearance"
                   >
                     Appearance
                   </a>
@@ -194,10 +194,10 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                   to="/app/settings/channels/gorgias_chat/7/preferences"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/channels/gorgias_chat/7/preferences"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/channels/gorgias_chat/7/preferences"
                   >
                     Preferences
                   </a>
@@ -210,10 +210,10 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                   to="/app/settings/channels/gorgias_chat/7/installation"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/channels/gorgias_chat/7/installation"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/channels/gorgias_chat/7/installation"
                   >
                     Installation
                   </a>
@@ -1061,9 +1061,9 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                   to="/app/settings/channels/gorgias_chat/7/campaigns"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    to="/app/settings/channels/gorgias_chat/7/campaigns"
+                    data-active-class-name="active"
+                    href="/app/settings/channels/gorgias_chat/7/campaigns"
                   >
                     Campaigns
                   </a>
@@ -1076,10 +1076,10 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                   to="/app/settings/channels/gorgias_chat/7/quick_replies"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/channels/gorgias_chat/7/quick_replies"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/channels/gorgias_chat/7/quick_replies"
                   >
                     Quick replies
                   </a>
@@ -1092,10 +1092,10 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                   to="/app/settings/channels/gorgias_chat/7/appearance"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/channels/gorgias_chat/7/appearance"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/channels/gorgias_chat/7/appearance"
                   >
                     Appearance
                   </a>
@@ -1108,10 +1108,10 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                   to="/app/settings/channels/gorgias_chat/7/preferences"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/channels/gorgias_chat/7/preferences"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/channels/gorgias_chat/7/preferences"
                   >
                     Preferences
                   </a>
@@ -1124,10 +1124,10 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                   to="/app/settings/channels/gorgias_chat/7/installation"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/channels/gorgias_chat/7/installation"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/channels/gorgias_chat/7/installation"
                   >
                     Installation
                   </a>

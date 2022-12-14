@@ -174,10 +174,10 @@ exports[`FacebookIntegrationCustomerChat component should display the list of Sh
                   to="/app/settings/integrations/facebook/2/overview"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/integrations/facebook/2/overview"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/integrations/facebook/2/overview"
                   >
                     Overview
                   </a>
@@ -190,10 +190,10 @@ exports[`FacebookIntegrationCustomerChat component should display the list of Sh
                   to="/app/settings/integrations/facebook/2/customer_chat"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/integrations/facebook/2/customer_chat"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/integrations/facebook/2/customer_chat"
                   >
                     Customer chat
                   </a>
@@ -206,10 +206,10 @@ exports[`FacebookIntegrationCustomerChat component should display the list of Sh
                   to="/app/settings/integrations/facebook/2/preferences"
                 >
                   <a
-                    activeClassName="active"
                     className="link"
-                    exact={true}
-                    to="/app/settings/integrations/facebook/2/preferences"
+                    data-active-class-name="active"
+                    data-exact={true}
+                    href="/app/settings/integrations/facebook/2/preferences"
                   >
                     Preferences
                   </a>

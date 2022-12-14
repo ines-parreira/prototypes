@@ -36,16 +36,18 @@ exports[`<Recharge/> Detail should render a detail view 1`] = `
     class="navbar navbar"
   >
     <a
-      activeclassname="active"
       class="link"
-      to="/app/settings/integrations/recharge/"
+      data-active-class-name="active"
+      data-exact="true"
+      href="/app/settings/integrations/recharge/"
     >
       App Details
     </a>
     <a
-      activeclassname="active"
       class="link"
-      to="/app/settings/integrations/recharge/connections"
+      data-active-class-name="active"
+      data-exact="true"
+      href="/app/settings/integrations/recharge/connections"
     >
       Connections
     </a>
@@ -463,16 +465,18 @@ exports[`<Recharge/> List should render 1`] = `
     class="navbar navbar"
   >
     <a
-      activeclassname="active"
       class="link"
-      to="/app/settings/integrations/recharge/"
+      data-active-class-name="active"
+      data-exact="true"
+      href="/app/settings/integrations/recharge/"
     >
       App Details
     </a>
     <a
-      activeclassname="active"
       class="link"
-      to="/app/settings/integrations/recharge/connections"
+      data-active-class-name="active"
+      data-exact="true"
+      href="/app/settings/integrations/recharge/connections"
     >
       Connections
     </a>
