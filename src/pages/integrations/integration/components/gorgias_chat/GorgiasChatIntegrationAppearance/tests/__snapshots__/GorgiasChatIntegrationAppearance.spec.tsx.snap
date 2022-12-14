@@ -355,6 +355,39 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   </div>
                 </div>
                 <div
+                  class="alert info mb-4"
+                >
+                  <div
+                    class="iconContainer"
+                  >
+                    <img
+                      alt="icon"
+                      src="test-file-stub"
+                    />
+                  </div>
+                  <div
+                    class="content"
+                  >
+                    <span
+                      class="label"
+                    >
+                      <div>
+                        Customize tone of voice by editing messages, contact form subjects, and more.
+                      </div>
+                    </span>
+                    <div
+                      class="customActions"
+                    >
+                      <a
+                        class="actionLink"
+                        to="/app/settings/channels/gorgias_chat/undefined/appearance/texts"
+                      >
+                        Customize tone of voice
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div
                   class="colorPickersWrapper formGroup"
                 >
                   <div
@@ -1027,6 +1060,39 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       type="text"
                       value="We'll be back tomorrow"
                     />
+                  </div>
+                </div>
+                <div
+                  class="alert info mb-4"
+                >
+                  <div
+                    class="iconContainer"
+                  >
+                    <img
+                      alt="icon"
+                      src="test-file-stub"
+                    />
+                  </div>
+                  <div
+                    class="content"
+                  >
+                    <span
+                      class="label"
+                    >
+                      <div>
+                        Customize tone of voice by editing messages, contact form subjects, and more.
+                      </div>
+                    </span>
+                    <div
+                      class="customActions"
+                    >
+                      <a
+                        class="actionLink"
+                        to="/app/settings/channels/gorgias_chat/2/appearance/texts"
+                      >
+                        Customize tone of voice
+                      </a>
+                    </div>
                   </div>
                 </div>
                 <fieldset
@@ -1781,6 +1847,39 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     />
                   </div>
                 </div>
+                <div
+                  class="alert info mb-4"
+                >
+                  <div
+                    class="iconContainer"
+                  >
+                    <img
+                      alt="icon"
+                      src="test-file-stub"
+                    />
+                  </div>
+                  <div
+                    class="content"
+                  >
+                    <span
+                      class="label"
+                    >
+                      <div>
+                        Customize tone of voice by editing messages, contact form subjects, and more.
+                      </div>
+                    </span>
+                    <div
+                      class="customActions"
+                    >
+                      <a
+                        class="actionLink"
+                        to="/app/settings/channels/gorgias_chat/2/appearance/texts"
+                      >
+                        Customize tone of voice
+                      </a>
+                    </div>
+                  </div>
+                </div>
                 <fieldset
                   class="mb-3"
                   name="type-field"
@@ -2501,6 +2600,39 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                       type="text"
                       value="We'll be back tomorrow"
                     />
+                  </div>
+                </div>
+                <div
+                  class="alert info mb-4"
+                >
+                  <div
+                    class="iconContainer"
+                  >
+                    <img
+                      alt="icon"
+                      src="test-file-stub"
+                    />
+                  </div>
+                  <div
+                    class="content"
+                  >
+                    <span
+                      class="label"
+                    >
+                      <div>
+                        Customize tone of voice by editing messages, contact form subjects, and more.
+                      </div>
+                    </span>
+                    <div
+                      class="customActions"
+                    >
+                      <a
+                        class="actionLink"
+                        to="/app/settings/channels/gorgias_chat/2/appearance/texts"
+                      >
+                        Customize tone of voice
+                      </a>
+                    </div>
                   </div>
                 </div>
                 <fieldset
@@ -3233,6 +3365,39 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     />
                   </div>
                 </div>
+                <div
+                  class="alert info mb-4"
+                >
+                  <div
+                    class="iconContainer"
+                  >
+                    <img
+                      alt="icon"
+                      src="test-file-stub"
+                    />
+                  </div>
+                  <div
+                    class="content"
+                  >
+                    <span
+                      class="label"
+                    >
+                      <div>
+                        Customize tone of voice by editing messages, contact form subjects, and more.
+                      </div>
+                    </span>
+                    <div
+                      class="customActions"
+                    >
+                      <a
+                        class="actionLink"
+                        to="/app/settings/channels/gorgias_chat/2/appearance/texts"
+                      >
+                        Customize tone of voice
+                      </a>
+                    </div>
+                  </div>
+                </div>
                 <fieldset
                   class="mb-3"
                   name="type-field"
@@ -3953,6 +4118,39 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       type="text"
                       value="We'll be back tomorrow"
                     />
+                  </div>
+                </div>
+                <div
+                  class="alert info mb-4"
+                >
+                  <div
+                    class="iconContainer"
+                  >
+                    <img
+                      alt="icon"
+                      src="test-file-stub"
+                    />
+                  </div>
+                  <div
+                    class="content"
+                  >
+                    <span
+                      class="label"
+                    >
+                      <div>
+                        Customize tone of voice by editing messages, contact form subjects, and more.
+                      </div>
+                    </span>
+                    <div
+                      class="customActions"
+                    >
+                      <a
+                        class="actionLink"
+                        to="/app/settings/channels/gorgias_chat/2/appearance/texts"
+                      >
+                        Customize tone of voice
+                      </a>
+                    </div>
                   </div>
                 </div>
                 <fieldset
@@ -4768,6 +4966,39 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                       type="text"
                       value="We'll be back tomorrow"
                     />
+                  </div>
+                </div>
+                <div
+                  class="alert info mb-4"
+                >
+                  <div
+                    class="iconContainer"
+                  >
+                    <img
+                      alt="icon"
+                      src="test-file-stub"
+                    />
+                  </div>
+                  <div
+                    class="content"
+                  >
+                    <span
+                      class="label"
+                    >
+                      <div>
+                        Customize tone of voice by editing messages, contact form subjects, and more.
+                      </div>
+                    </span>
+                    <div
+                      class="customActions"
+                    >
+                      <a
+                        class="actionLink"
+                        to="/app/settings/channels/gorgias_chat/undefined/appearance/texts"
+                      >
+                        Customize tone of voice
+                      </a>
+                    </div>
                   </div>
                 </div>
                 <div
@@ -5604,6 +5835,39 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   </div>
                 </div>
                 <div
+                  class="alert info mb-4"
+                >
+                  <div
+                    class="iconContainer"
+                  >
+                    <img
+                      alt="icon"
+                      src="test-file-stub"
+                    />
+                  </div>
+                  <div
+                    class="content"
+                  >
+                    <span
+                      class="label"
+                    >
+                      <div>
+                        Customize tone of voice by editing messages, contact form subjects, and more.
+                      </div>
+                    </span>
+                    <div
+                      class="customActions"
+                    >
+                      <a
+                        class="actionLink"
+                        to="/app/settings/channels/gorgias_chat/2/appearance/texts"
+                      >
+                        Customize tone of voice
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div
                   class="colorPickersWrapper formGroup"
                 >
                   <div
@@ -6283,6 +6547,39 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       type="text"
                       value="We'll be back tomorrow"
                     />
+                  </div>
+                </div>
+                <div
+                  class="alert info mb-4"
+                >
+                  <div
+                    class="iconContainer"
+                  >
+                    <img
+                      alt="icon"
+                      src="test-file-stub"
+                    />
+                  </div>
+                  <div
+                    class="content"
+                  >
+                    <span
+                      class="label"
+                    >
+                      <div>
+                        Customize tone of voice by editing messages, contact form subjects, and more.
+                      </div>
+                    </span>
+                    <div
+                      class="customActions"
+                    >
+                      <a
+                        class="actionLink"
+                        to="/app/settings/channels/gorgias_chat/1/appearance/texts"
+                      >
+                        Customize tone of voice
+                      </a>
+                    </div>
                   </div>
                 </div>
                 <fieldset

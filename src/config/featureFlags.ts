@@ -26,4 +26,5 @@ export enum FeatureFlagKey {
     ChatVideoSharingConversations = 'chat-video-sharing-conversations',
     ChatVideoSharingCampaigns = 'chat-video-sharing-campaigns',
     AutomationSettingsRevamp = 'automation-settings-revamp',
+    ChatEnableTranslationEdit = 'enable-translations-edit',
 }

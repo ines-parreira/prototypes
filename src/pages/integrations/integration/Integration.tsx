@@ -106,6 +106,7 @@ import WhatsAppIntegration from './components/whatsapp/WhatsAppIntegration'
 import TwitterIntegrationDetail from './components/twitter/TwitterIntegrationDetail'
 import TwitterIntegrationList from './components/twitter/TwitterIntegrationList'
 import WhatsAppSpike from './components/voice/WhatsAppSpike'
+import GorgiasTranslateText from './components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText'
 
 export enum Tab {
     EmailForwarding = 'forwarding',
@@ -411,6 +412,11 @@ export const IntegrationDetail = ({
                 }
 
                 if (extra === Tab.Appearance) {
+                    if (subId) {
+                        return (
+                            <GorgiasTranslateText integration={integration} />
+                        )
+                    }
                     return (
                         <GorgiasChatIntegrationAppearance
                             actions={actions}

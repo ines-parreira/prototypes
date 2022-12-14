@@ -1,6 +1,7 @@
 import React, {ComponentProps} from 'react'
 import {fireEvent, render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
+import {mockFlags} from 'jest-launchdarkly-mock'
 
 import * as IntegrationsActions from 'state/integrations/actions'
 import {
@@ -12,6 +13,7 @@ import {
     SHOPIFY_INTEGRATION_TYPE,
     GORGIAS_CHAT_INTEGRATION_TYPE,
 } from 'constants/integration'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import {GorgiasChatIntegrationAppearanceComponent} from '../GorgiasChatIntegrationAppearance'
 
@@ -79,6 +81,10 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
             supports: (): boolean => true,
             escape: realCSS?.escape,
         }
+
+        mockFlags({
+            [FeatureFlagKey.ChatEnableTranslationEdit]: true,
+        })
     })
 
     afterEach(() => {

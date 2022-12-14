@@ -6,6 +6,7 @@ import _defaults from 'lodash/defaults'
 import _merge from 'lodash/merge'
 import {Breadcrumb, BreadcrumbItem, Form, Label} from 'reactstrap'
 import classNames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import wrench from 'assets/img/icons/wrench.svg'
 import storefront from 'assets/img/icons/storefront.svg'
@@ -52,10 +53,12 @@ import GorgiasChatIntegrationNavigation from 'pages/integrations/integration/com
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import MessageContentPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/MessageContent'
 import GorgiasChatIntegrationPreviewContainer from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import css from './GorgiasChatIntegrationAppearance.less'
 import {StoreNameDropdown} from './StoreNameDropdown'
 import {StoreRadioButton} from './StoreRadioButton'
+import {CustomizeToneOfVoiceBlock} from './components/CustomizeToneOfVoiceBlock'
 
 export enum PositionAxis {
     AXIS_X = 'axis-x',
@@ -148,6 +151,8 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
             defaultContent
         )
     )
+    const viewTranslateEdit =
+        useFlags()[FeatureFlagKey.ChatEnableTranslationEdit]
 
     const [storeName, setStoreName] = useState(
         integration.getIn(['meta', 'shop_name'], null)
@@ -651,6 +656,13 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                     GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH
                                 }
                             />
+
+                            {viewTranslateEdit && (
+                                <CustomizeToneOfVoiceBlock
+                                    integrationId={integration.get('id')}
+                                />
+                            )}
+
                             {isUpdate && (
                                 <>
                                     <RadioFieldSet
