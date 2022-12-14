@@ -260,7 +260,7 @@ exports[`<OrderLineItemRow/> render() should render without quantity and without
           min="1"
           name="input-text-3"
           type="text"
-          value="1"
+          value="0"
         />
       </div>
       <button

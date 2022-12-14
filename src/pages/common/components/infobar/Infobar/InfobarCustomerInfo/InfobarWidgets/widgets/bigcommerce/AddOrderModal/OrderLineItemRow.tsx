@@ -1,4 +1,4 @@
-import React, {memo, useState} from 'react'
+import React, {memo, useEffect, useState} from 'react'
 
 import {
     BigCommerceCartLineItem,
@@ -46,6 +46,10 @@ function OrderLineItemRow({
     }
 
     const [quantity, setQuantity] = useState<number>(1)
+
+    useEffect(() => {
+        setQuantity(lineItem.quantity)
+    }, [lineItem.quantity])
 
     return (
         <tr>
