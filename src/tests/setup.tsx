@@ -265,7 +265,15 @@ delete window.location
 window.location = JSON.parse(windowLocation)
 window.location.reload = jest.fn()
 
-window.EMAIL_FORWARDING_DOMAIN = 'emails.gorgias.com'
+window.GORGIAS_STATE = {
+    integrations: {
+        authentication: {
+            email: {
+                forwarding_email_address: 'emails.gorgias.com',
+            },
+        },
+    },
+} as any
 
 // Mock analytics
 window.SEGMENT_ANALYTICS_USER_ID = '1_1'

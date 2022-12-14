@@ -19,6 +19,7 @@ import {RootState} from 'state/types'
 import {getCurrentUserState} from 'state/currentUser/selectors'
 import {getPhoneNumbers as getPhoneNumbersState} from 'state/entities/phoneNumbers/selectors'
 import {nestedReplace} from 'state/ticket/utils'
+import {isBaseEmailIntegration} from 'pages/integrations/integration/components/email/helpers'
 
 import {
     IntegrationsState,
@@ -317,9 +318,7 @@ export const getBaseEmailIntegration = createSelector<
     getEmailIntegrations,
     (state) =>
         (state.find((integration: Map<any, any>) =>
-            (integration.getIn(['meta', 'address'], '') as string).endsWith(
-                window.EMAIL_FORWARDING_DOMAIN
-            )
+            isBaseEmailIntegration(integration.toJS())
         ) as Map<any, any>) || fromJS({})
 )
 
@@ -641,9 +640,7 @@ export const getChatIntegrationCampaignById = (
 
 export const hasAtLeastOneEmailIntegration = (state: RootState) =>
     getEmailIntegrations(state).filter((integration: Map<any, any>) => {
-        const isBaseIntegration = (
-            integration.getIn(['meta', 'address'], '') as string
-        ).includes(window.EMAIL_FORWARDING_DOMAIN)
+        const isBaseIntegration = isBaseEmailIntegration(integration.toJS())
         const isDeactivated = !!integration.get('deactivated_datetime')
         const isNotVerified =
             integration.get('type') === IntegrationType.Email &&

@@ -5,6 +5,7 @@ import classnames from 'classnames'
 import moment from 'moment'
 import {Map} from 'immutable'
 
+import {isBaseEmailIntegration} from 'pages/integrations/integration/components/email/helpers'
 import {tryLocalStorage} from '../../../services/common/utils'
 import * as agentSelectors from '../../../state/agents/selectors'
 import * as currentUserSelectors from '../../../state/currentUser/selectors'
@@ -49,9 +50,7 @@ class TicketListInfobarContainer extends Component<Props> {
         const hasVerifiedEmailIntegration = emailIntegrations
             .filter(
                 (integration: Map<any, any>) =>
-                    !(
-                        integration.getIn(['meta', 'address']) as string
-                    ).endsWith(window.EMAIL_FORWARDING_DOMAIN)
+                    !isBaseEmailIntegration(integration.toJS())
             ) // remove generated gorgias addresses
             .some((integration: Map<any, any>) => {
                 // gmail or outlook is connected or forwarding is on

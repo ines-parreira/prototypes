@@ -51,6 +51,7 @@ import {search} from 'models/search/resources'
 import {CustomerChannel} from 'models/customerChannel/types'
 
 import {MacroActionName, MacroActionType} from 'models/macroAction/types'
+import {isBaseEmailAddress} from 'pages/integrations/integration/components/email/helpers'
 import * as responseUtils from './responseUtils'
 import * as selectors from './selectors'
 import * as constants from './constants'
@@ -363,11 +364,7 @@ export const setSender =
             _sender.get('type') === 'email' &&
             !_sender.get('verified')
         ) {
-            if (
-                !(_sender.get('address') as string).endsWith(
-                    window.EMAIL_FORWARDING_DOMAIN
-                )
-            ) {
+            if (!isBaseEmailAddress(_sender.get('address') as string)) {
                 void dispatch(
                     notify({
                         status: NotificationStatus.Error,

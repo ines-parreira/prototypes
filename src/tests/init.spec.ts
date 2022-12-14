@@ -47,7 +47,11 @@ describe('init', () => {
                             id: 1,
                             type: EMAIL_INTEGRATION_TYPE,
                             meta: {
-                                address: `asdasd@${window.EMAIL_FORWARDING_DOMAIN}`,
+                                address: `asdasd@${
+                                    window.GORGIAS_STATE?.integrations
+                                        ?.authentication?.email
+                                        ?.forwarding_email_address || ''
+                                }`,
                                 verified: true,
                             },
                         },
@@ -68,7 +72,11 @@ describe('init', () => {
                             id: 1,
                             type: EMAIL_INTEGRATION_TYPE,
                             meta: {
-                                address: `asdasd@${window.EMAIL_FORWARDING_DOMAIN}`,
+                                address: `asdasd@${
+                                    window.GORGIAS_STATE?.integrations
+                                        ?.authentication?.email
+                                        ?.forwarding_email_address || ''
+                                }`,
                                 verified: false,
                             },
                         },

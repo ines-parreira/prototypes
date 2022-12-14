@@ -140,7 +140,10 @@ describe('integrations selectors', () => {
                 id: 1,
                 type: IntegrationType.Email,
                 meta: {
-                    address: `asd48sa6d@${window.EMAIL_FORWARDING_DOMAIN}`,
+                    address: `asd48sa6d@${
+                        window.GORGIAS_STATE?.integrations?.authentication
+                            ?.email?.forwarding_email_address || ''
+                    }`,
                 },
             })
 
@@ -788,7 +791,11 @@ describe('integrations selectors', () => {
                         type: IntegrationType.Email,
                         meta: {
                             verified: true,
-                            address: `testadress@${window.EMAIL_FORWARDING_DOMAIN}`,
+                            address: `testadress@${
+                                window.GORGIAS_STATE?.integrations
+                                    ?.authentication?.email
+                                    ?.forwarding_email_address || ''
+                            }`,
                         },
                     },
                 ],
