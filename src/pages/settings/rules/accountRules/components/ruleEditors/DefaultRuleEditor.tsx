@@ -69,9 +69,25 @@ export const DefaultRuleEditor = forwardRef<EditorHandle, RuleEditorProps>(
         const schemas = useAppSelector(getSchemas)
         const hasAgentPrivileges = useHasAgentPrivileges()
 
+        const hasMissingFields = !!(errors.size || !ruleDraft.name)
+
+        const canSubmit = useMemo(
+            () =>
+                hasAgentPrivileges &&
+                !hasMissingFields &&
+                !!eventTypes.length &&
+                !isSubmitting,
+            [hasAgentPrivileges, hasMissingFields, eventTypes, isSubmitting]
+        )
+
+        const canDuplicate = useMemo(
+            () => canSubmit && limitStatus !== RuleLimitStatus.Reached,
+            [canSubmit, limitStatus]
+        )
+
         const [{loading: isDuplicatePending}, handleRuleDuplicate] =
             useAsyncFn(async () => {
-                if (!rule || !canDuplicate) {
+                if (!rule || !canDuplicate || isDuplicatePending) {
                     return
                 }
                 const newName =
@@ -99,7 +115,7 @@ export const DefaultRuleEditor = forwardRef<EditorHandle, RuleEditorProps>(
                         status: NotificationStatus.Error,
                     })
                 }
-            }, [rule, ruleDraft, eventTypes])
+            }, [rule, ruleDraft, eventTypes, canDuplicate])
 
         useEffect(() => {
             if (rule) {
@@ -160,29 +176,6 @@ export const DefaultRuleEditor = forwardRef<EditorHandle, RuleEditorProps>(
                 handleDeactivate()
             }
         }
-
-        const hasMissingFields = !!(errors.size || !ruleDraft.name)
-
-        const canSubmit = useMemo(
-            () =>
-                hasAgentPrivileges &&
-                !hasMissingFields &&
-                !!eventTypes.length &&
-                !isSubmitting &&
-                !isDuplicatePending,
-            [
-                hasAgentPrivileges,
-                hasMissingFields,
-                eventTypes,
-                isSubmitting,
-                isDuplicatePending,
-            ]
-        )
-
-        const canDuplicate = useMemo(
-            () => canSubmit && limitStatus !== RuleLimitStatus.Reached,
-            [canSubmit, limitStatus]
-        )
 
         useEffect(() => {
             if (limitStatus === RuleLimitStatus.Reached && !rule) {
@@ -290,11 +283,10 @@ export const DefaultRuleEditor = forwardRef<EditorHandle, RuleEditorProps>(
                         </Label>
                     </span>
                 </div>
-
                 <RuleItemButtons
                     ruleId={rule ? rule.id : undefined}
-                    canSubmit={canSubmit}
-                    canDuplicate={canDuplicate}
+                    canSubmit={canSubmit && !isDuplicatePending}
+                    canDuplicate={canDuplicate && !isDuplicatePending}
                     canDelete={hasAgentPrivileges}
                     isDeleting={isDeleting}
                     onDuplicate={handleRuleDuplicate}
