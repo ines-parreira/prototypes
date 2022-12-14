@@ -12,10 +12,19 @@ import {
 import foundUrl from './decorators/foundUrl'
 import link from './decorators/link'
 import Image from './components/Image'
+import Video from './components/Video'
 import {Config, ActionName} from './types'
 
 // documentation:
 // https://github.com/draft-js-plugins/draft-js-plugins/blob/master/HOW_TO_CREATE_A_PLUGIN.md
+
+/**
+ * Custom draft.js block renderer types we implemented.
+ */
+export enum draftjsGorgiasCustomBlockRenderers {
+    Img = 'img',
+    Video = 'video',
+}
 
 export const isDisplayedAction = (
     name: ActionName,
@@ -51,8 +60,23 @@ export default function toolbarPlugin(config: Config): Plugin {
             if (block.getType() === 'atomic' && entityKey) {
                 const entity = contetState.getEntity(entityKey)
                 const type = entity.getType()
-                if (type === 'img') {
+                if (type === draftjsGorgiasCustomBlockRenderers.Img) {
                     let component: ReactNode = Image
+                    const theme = config.theme ? config.theme : {}
+                    if (config.imageDecorator) {
+                        component = config.imageDecorator(component)
+                    }
+                    component = decorateComponentWithProps(
+                        component as ComponentType<any>,
+                        {theme}
+                    )
+                    return {
+                        component,
+                        editable: false,
+                    }
+                }
+                if (type === draftjsGorgiasCustomBlockRenderers.Video) {
+                    let component: ReactNode = Video
                     const theme = config.theme ? config.theme : {}
                     if (config.imageDecorator) {
                         component = config.imageDecorator(component)

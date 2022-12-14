@@ -104,6 +104,7 @@ export function sanitizeHtmlDefault(html: string): string {
                 'title',
                 'width',
                 'controls',
+                'data-src', // used for chat video sharing with ReactPlayer.
             ],
         },
         nonTextTags: [

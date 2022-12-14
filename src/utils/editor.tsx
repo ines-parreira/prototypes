@@ -17,12 +17,14 @@ import {
 } from 'draft-js'
 import {Map} from 'immutable'
 
-import {DEFAULT_IMAGE_WIDTH} from '../config/editor'
-import {availableVariables} from '../config/rules'
+import {draftjsGorgiasCustomBlockRenderers} from 'pages/common/draftjs/plugins/toolbar'
 import {
     getQuoteDepth,
     QUOTE_DEPTH_DATA_KEY,
-} from '../pages/common/draftjs/plugins/quotes/quotesEditorUtils'
+} from 'pages/common/draftjs/plugins/quotes/quotesEditorUtils'
+
+import {DEFAULT_IMAGE_WIDTH, DEFAULT_VIDEO_WIDTH} from '../config/editor'
+import {availableVariables} from '../config/rules'
 
 import {countWords, truncateWords} from './string'
 import {ComposedElements} from './react'
@@ -221,13 +223,20 @@ export function convertToHTML(contentState: ContentState): string {
                     }
                 }
 
-                if (entity.type === 'img') {
+                if (entity.type === draftjsGorgiasCustomBlockRenderers.Img) {
                     const width = entity.data.width || DEFAULT_IMAGE_WIDTH
 
                     // keep the start/end way of doing until https://github.com/HubSpot/draft-convert/issues/47 is fixed
                     return `<img src="${entity.data.src as string}" width="${
                         width as number
                     }" style="max-width: 100%" />`
+                }
+
+                if (entity.type === draftjsGorgiasCustomBlockRenderers.Video) {
+                    const width: number =
+                        (entity.data.width as number) || DEFAULT_VIDEO_WIDTH
+                    const url: string = (entity.data.url as string) || ''
+                    return `<div class="react-player-container" data-src="${url}" width="${width}" />`
                 }
 
                 if (entity.type === 'mention') {
@@ -346,11 +355,31 @@ export function convertFromHTML(html: string): ContentState {
             }
 
             if (nodeName === 'img') {
-                return createEntity('img', 'MUTABLE', {
-                    src: (node as HTMLImageElement).src,
-                    width:
-                        (node as HTMLImageElement).width || DEFAULT_IMAGE_WIDTH,
-                })
+                return createEntity(
+                    draftjsGorgiasCustomBlockRenderers.Img,
+                    'MUTABLE',
+                    {
+                        src: (node as HTMLImageElement).src,
+                        width:
+                            (node as HTMLImageElement).width ||
+                            DEFAULT_IMAGE_WIDTH,
+                    }
+                )
+            }
+
+            if (
+                nodeName === 'div' &&
+                node.classList.contains('react-player-container')
+            ) {
+                return createEntity(
+                    draftjsGorgiasCustomBlockRenderers.Video,
+                    'MUTABLE',
+                    {
+                        url: node.getAttribute('data-src'),
+                        width:
+                            node.getAttribute('width') || DEFAULT_VIDEO_WIDTH,
+                    }
+                )
             }
         },
     } as IConvertFromHTMLConfig)(wrapper.innerHTML)

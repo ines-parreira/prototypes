@@ -18,10 +18,14 @@ import {
     getFileTooLargeError,
     getMaxAttachmentSize,
 } from '../../../../utils/file'
-import {DEFAULT_IMAGE_WIDTH} from '../../../../config/editor'
+import {
+    DEFAULT_IMAGE_WIDTH,
+    DEFAULT_VIDEO_WIDTH,
+} from '../../../../config/editor'
 import {getEntitySelectionState, linkify} from '../../../../utils/editor'
 
 import {PluginMethods} from './types'
+import {draftjsGorgiasCustomBlockRenderers} from './toolbar'
 
 const uploadPicture = (file: File) => {
     return uploadFiles([file])
@@ -72,7 +76,7 @@ export const addImage = (
 ): EditorState => {
     const entityContentState = editorState
         .getCurrentContent()
-        .createEntity('img', 'IMMUTABLE', {
+        .createEntity(draftjsGorgiasCustomBlockRenderers.Img, 'IMMUTABLE', {
             src: url,
             width: DEFAULT_IMAGE_WIDTH,
             size,
@@ -180,6 +184,30 @@ export const insertInlineImages = (
     setEditorState(newEditorState)
 
     return Promise.all(uploaded)
+}
+
+export const addVideo = (
+    editorState: EditorState,
+    url: string
+): EditorState => {
+    const entityContentState = editorState
+        .getCurrentContent()
+        .createEntity(draftjsGorgiasCustomBlockRenderers.Video, 'IMMUTABLE', {
+            url: url,
+            width: DEFAULT_VIDEO_WIDTH,
+        })
+    const entityKey = entityContentState.getLastCreatedEntityKey()
+    const newEditorState = AtomicBlockUtils.insertAtomicBlock(
+        editorState,
+        entityKey,
+        ' '
+    )
+
+    // forcing the current selection ensures that it will be at it's right place
+    return EditorState.forceSelection(
+        newEditorState,
+        newEditorState.getSelection()
+    )
 }
 
 export const linkifyWithTemplate = (url: string) => {

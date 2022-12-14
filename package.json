@@ -125,6 +125,7 @@
         "react-list": "^0.8.16",
         "react-loading-skeleton": "3.1.0",
         "react-paginate": "6.3.0",
+        "react-player": "^2.11.0",
         "react-rating-stars-component": "2.2.0",
         "react-redux": "7.2.3",
         "react-router-dom": "5.2.0",

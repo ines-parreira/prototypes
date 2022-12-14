@@ -89,6 +89,10 @@ export const UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_DISCOUNT_CODES = [
     TicketChannel.Sms,
 ]
 
+export const UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_VIDEOS = [
+    ...UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_DISCOUNT_CODES,
+]
+
 export const MACRO_PREVIOUS_VARIABLES = {
     type: IntegrationType.Shopify,
     name: 'Shopify',

@@ -8,27 +8,28 @@ import React, {
 } from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 
+import {EditorState} from 'draft-js'
+import ReactPlayer from 'react-player'
+
+import {insertLink, insertText} from 'utils'
 import Button from 'pages/common/components/button/Button'
 import Popover from 'pages/common/draftjs/plugins/toolbar/components/ButtonPopover'
-
 import TextInput from 'pages/common/forms/input/TextInput'
+import {TicketChannel} from 'business/types/ticket'
+import {UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_VIDEOS} from 'config/integrations/shopify'
 
 import {
     logEvent,
     SegmentEvent,
 } from '../../../../../../store/middlewares/segmentTracker'
-
 import {RootState} from '../../../../../../state/types'
-
 import {
     getNewMessageChannel,
     isNewMessagePublic,
 } from '../../../../../../state/newMessage/selectors'
-
 import {getCurrentAccountState} from '../../../../../../state/currentAccount/selectors'
-
 import {EditorStateGetter, EditorStateSetter} from '../types'
-
+import {addVideo} from '../../utils'
 import css from './AddVideo.less'
 
 type OwnProps = {
@@ -72,9 +73,36 @@ export function AddVideo({
         return _url.protocol === 'http:' || _url.protocol === 'https:'
     }, [url])
 
-    const addVideo = useCallback(
+    const _addVideo = useCallback(
         () => {
-            // TODO. Implement me.
+            const editorState = getEditorState()
+
+            const canAddVideo =
+                newMessageChannel === (TicketChannel.Chat as string) ||
+                !isNewMessagePublic
+
+            const canPlay = ReactPlayer.canPlay(url)
+
+            let newEditorState
+            if (canAddVideo && canPlay) {
+                newEditorState = addVideo(editorState, url)
+            } else {
+                if (
+                    !UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_VIDEOS.includes(
+                        newMessageChannel
+                    )
+                ) {
+                    newEditorState = insertLink(editorState, url)
+                } else {
+                    newEditorState = insertText(editorState, url)
+                }
+            }
+
+            newEditorState = EditorState.forceSelection(
+                newEditorState,
+                newEditorState.getSelection()
+            )
+            setEditorState(newEditorState)
 
             logEvent(SegmentEvent.InsertVideoAdded, {
                 account_id: currentAccount?.get('domain'),
@@ -100,7 +128,7 @@ export function AddVideo({
             e.preventDefault()
 
             if (isValidUrl) {
-                addVideo()
+                _addVideo()
             }
         }
 
@@ -132,7 +160,7 @@ export function AddVideo({
                     autoFocus
                 />
                 <div className={css.buttons}>
-                    <Button isDisabled={!isValidUrl} onClick={addVideo}>
+                    <Button isDisabled={!isValidUrl} onClick={_addVideo}>
                         Insert Video
                     </Button>
                     <Button
