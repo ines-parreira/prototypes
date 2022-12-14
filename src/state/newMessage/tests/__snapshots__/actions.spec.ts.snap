@@ -754,6 +754,151 @@ Array [
 ]
 `;
 
+exports[`actions new message prepare() email-forward should cast chat react player videos content into hypertexts when newMessage source is not \`chat\` 1`] = `
+Array [
+  Object {
+    "subject": "",
+    "type": "NEW_MESSAGE_SET_SUBJECT",
+  },
+  Object {
+    "messages": Immutable.List [
+      Immutable.Map {
+        "source": Immutable.Map {
+          "from": Immutable.Map {
+            "address": "1232353100194770",
+            "name": "Paul Atréides",
+          },
+          "type": "chat",
+          "to": Immutable.List [
+            Immutable.Map {
+              "address": "8765645678",
+              "name": "Chani",
+            },
+          ],
+        },
+        "id": 153,
+        "from_agent": false,
+        "integration_id": 8,
+      },
+      Immutable.Map {
+        "source": Immutable.Map {
+          "from": Immutable.Map {
+            "address": "8765645678",
+            "name": "Chani",
+          },
+          "type": "chat",
+          "to": Immutable.List [
+            Immutable.Map {
+              "address": "1232353100194770",
+              "name": "Paul Atréides",
+            },
+          ],
+          "cc": Immutable.List [],
+        },
+        "id": 189,
+        "from_agent": true,
+        "integration_id": 8,
+      },
+    ],
+    "sourceType": "email",
+    "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
+  },
+  Object {
+    "extra": Object {},
+    "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
+  },
+  Object {
+    "receivers": Object {
+      "to": Array [
+        Object {
+          "address": "1232353100194770",
+          "name": "Paul Atréides",
+        },
+      ],
+    },
+    "replaceAll": true,
+    "type": "NEW_MESSAGE_SET_RECEIVERS",
+  },
+  Object {
+    "sender": Immutable.Map {
+      "name": "Chani",
+      "address": "8765645678",
+    },
+    "type": "NEW_MESSAGE_SET_SENDER",
+  },
+  Object {
+    "subject": "",
+    "type": "NEW_MESSAGE_SET_SUBJECT",
+  },
+  Object {
+    "messages": Immutable.List [
+      Immutable.Map {
+        "source": Immutable.Map {
+          "from": Immutable.Map {
+            "address": "1232353100194770",
+            "name": "Paul Atréides",
+          },
+          "type": "chat",
+          "to": Immutable.List [
+            Immutable.Map {
+              "address": "8765645678",
+              "name": "Chani",
+            },
+          ],
+        },
+        "id": 153,
+        "from_agent": false,
+        "integration_id": 8,
+      },
+      Immutable.Map {
+        "source": Immutable.Map {
+          "from": Immutable.Map {
+            "address": "8765645678",
+            "name": "Chani",
+          },
+          "type": "chat",
+          "to": Immutable.List [
+            Immutable.Map {
+              "address": "1232353100194770",
+              "name": "Paul Atréides",
+            },
+          ],
+          "cc": Immutable.List [],
+        },
+        "id": 189,
+        "from_agent": true,
+        "integration_id": 8,
+      },
+    ],
+    "sourceType": "sms",
+    "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
+  },
+  Object {
+    "extra": Object {},
+    "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
+  },
+  Object {
+    "receivers": Object {
+      "to": Array [
+        Object {
+          "address": "1232353100194770",
+          "name": "Paul Atréides",
+        },
+      ],
+    },
+    "replaceAll": true,
+    "type": "NEW_MESSAGE_SET_RECEIVERS",
+  },
+  Object {
+    "sender": Immutable.Map {
+      "name": "Chani",
+      "address": "8765645678",
+    },
+    "type": "NEW_MESSAGE_SET_SENDER",
+  },
+]
+`;
+
 exports[`actions new message prepare() email-forward should not set an attachment in the newMessage if it is already there 1`] = `
 Array [
   Object {

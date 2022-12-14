@@ -1057,3 +1057,30 @@ export function objKeys<T>(value: T): (keyof T)[] {
 export function notEmpty<T>(elem: T | null | undefined): elem is T {
     return elem !== null && elem !== undefined
 }
+
+/**
+ * Convert chat videos from html (HTML produced by draftjs) into hyperlinks or text.
+ * `<figure><div class="react-player-container" data-src="https://www.youtube.com/watch?v=4sLFpe-xbhk"></figure>` will be replaced by
+ * `<div><a href="https://www.youtube.com/watch?v=4sLFpe-xbhk">https://www.youtube.com/watch?v=4sLFpe-xbhk</a></div>
+ * or `<div>https://www.youtube.com/watch?v=4sLFpe-xbhk</div>`
+ */
+export function castReactPlayerContainersForUnsupportedSources({
+    html,
+    hyperlinksSupported: supportHyperLinks,
+}: {
+    html: string
+    hyperlinksSupported: boolean
+}) {
+    // Captures data-src attributes from `<figure><div style=...... class="react-player-container" data-src="https://www.youtube.com/watch?v=4sLFpe-xbhk"></figure>`
+    const regexVideoDraftJsFigure =
+        /<figure[^/]+?div class="react-player-container" data-src="(.+?)".+?<\/figure>/g
+
+    // NOTE. <figure> tag must be replaced by a <div> tag because all 'contents' are either in a <figure> or <div> tag in draft.js.
+    // NOTE. `class="linkified" target="_blank"` is not necessary here for hyperlinks, draftjs take cares of this.
+    return supportHyperLinks
+        ? html.replace(
+              regexVideoDraftJsFigure,
+              '<div><a href="$1">$1</a></div>'
+          )
+        : html.replace(regexVideoDraftJsFigure, '<div>$1</div>')
+}

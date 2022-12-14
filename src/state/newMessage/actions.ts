@@ -1,5 +1,5 @@
 import {fromJS, List, Map} from 'immutable'
-import {ContentState} from 'draft-js'
+import {ContentState, convertFromHTML} from 'draft-js'
 import {createAction} from '@reduxjs/toolkit'
 import _isNull from 'lodash/isNull'
 import _assign from 'lodash/assign'
@@ -12,7 +12,12 @@ import * as ticketConstants from 'state/ticket/constants'
 import {notify} from 'state/notifications/actions'
 import * as ticketActions from 'state/ticket/actions'
 import {Context, renderTemplate} from 'pages/common/utils/template'
-import {getActionTemplate, toJS, uploadFiles} from 'utils'
+import {
+    castReactPlayerContainersForUnsupportedSources,
+    getActionTemplate,
+    toJS,
+    uploadFiles,
+} from 'utils'
 import {ActionTemplateExecution} from 'config'
 import {Macro} from 'models/macro/types'
 
@@ -32,6 +37,7 @@ import socketManager from 'services/socketManager/socketManager'
 import {Attachment} from 'types'
 import type {CurrentUser, RootState, StoreDispatch} from 'state/types'
 import {getMomentNow} from 'utils/date'
+import {convertToHTML} from 'utils/editor'
 import {
     TicketChannel,
     TicketVia,
@@ -49,6 +55,7 @@ import {ShopifyProductCardContentType} from 'constants/integrations/shopify'
 import {SearchType, UserSearchResult} from 'models/search/types'
 import {search} from 'models/search/resources'
 import {CustomerChannel} from 'models/customerChannel/types'
+import {UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_VIDEOS} from 'config/integrations/shopify'
 
 import {MacroActionName, MacroActionType} from 'models/macroAction/types'
 import {isBaseEmailAddress} from 'pages/integrations/integration/components/email/helpers'
@@ -471,6 +478,58 @@ export const prepare =
                     ShopifyProductCardContentType
                 )
                     dispatch(deleteAttachment(index))
+            }
+        }
+
+        //Clean up videos for unsupported sources.
+        if (
+            sourceType !== TicketMessageSourceType.Chat &&
+            sourceType !== TicketMessageSourceType.InternalNote
+        ) {
+            const newMessageState = selectors.getNewMessageState(state)
+            const contentState = newMessageState.getIn([
+                'state',
+                'contentState',
+            ]) as ContentState
+
+            if (contentState) {
+                const contentHtml = convertToHTML(contentState)
+
+                // NOTE. TicketMessageSourceType includes TicketChannel values so casting to string to compare works.
+                const hyperlinksSupported =
+                    !UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_VIDEOS.map((x) =>
+                        x.toString()
+                    ).includes(sourceType as string)
+
+                const newHtmlContent =
+                    castReactPlayerContainersForUnsupportedSources({
+                        html: contentHtml,
+                        hyperlinksSupported: hyperlinksSupported,
+                    })
+
+                const changesFound = newHtmlContent !== contentHtml
+                const contentBlocks =
+                    convertFromHTML(newHtmlContent)?.contentBlocks ?? null
+                // Do not update if contentBlocks was empty or no changes.
+                if (changesFound && contentBlocks) {
+                    const newContentState =
+                        ContentState.createFromBlockArray(contentBlocks)
+                    const newSelectionState = responseUtils.selectionAfter(
+                        newContentState.getBlocksAsArray() as any
+                    )
+
+                    dispatch(
+                        setResponseText(
+                            fromJS({
+                                contentState: newContentState,
+                                selectionState: newSelectionState,
+                                dirty: true,
+                                forceFocus: true,
+                                forceUpdate: true,
+                            })
+                        )
+                    )
+                }
             }
         }
 

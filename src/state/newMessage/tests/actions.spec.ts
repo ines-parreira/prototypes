@@ -25,6 +25,7 @@ import * as integrationSelectors from 'state/integrations/selectors'
 import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
 import {getLastSenderChannel, getPreferredChannel} from 'state/ticket/utils'
 import {
+    chatTicket,
     emailTicket,
     instagramMedia,
     smoochTicket,
@@ -588,6 +589,49 @@ describe('actions', () => {
                     store.dispatch(
                         actions.prepare(TicketMessageSourceType.EmailForward)
                     )
+
+                    expect(store.getActions()).toMatchSnapshot()
+                })
+
+                it('should cast chat react player videos content into hypertexts when newMessage source is not `chat`', () => {
+                    const text = 'Hello, world!'
+                    const newContentState = ContentState.createFromText(text)
+
+                    let newMessage = initialState
+                    newMessage = newMessage
+                        .setIn(['newMessage', 'source', 'type'], 'chat')
+                        .setIn(['state', 'contentState'], newContentState)
+
+                    store = mockStore({
+                        ticket: chatTicket,
+                        newMessage,
+                    })
+
+                    const castReactPlayerContainersForUnsupportedSourcesSpy =
+                        jest.spyOn(
+                            utils,
+                            'castReactPlayerContainersForUnsupportedSources'
+                        )
+
+                    store.dispatch(
+                        actions.prepare(TicketMessageSourceType.Email)
+                    )
+
+                    expect(
+                        castReactPlayerContainersForUnsupportedSourcesSpy
+                    ).toHaveBeenCalledWith({
+                        html: '<div>Hello, world!</div>',
+                        hyperlinksSupported: true,
+                    })
+
+                    store.dispatch(actions.prepare(TicketMessageSourceType.Sms))
+
+                    expect(
+                        castReactPlayerContainersForUnsupportedSourcesSpy
+                    ).toHaveBeenCalledWith({
+                        html: '<div>Hello, world!</div>',
+                        hyperlinksSupported: false,
+                    })
 
                     expect(store.getActions()).toMatchSnapshot()
                 })
