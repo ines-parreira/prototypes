@@ -58,7 +58,7 @@ describe('<DropdownItem />', () => {
             })
         )
 
-        expect(getByText(/highlight/)).toBeTruthy()
+        expect(getByText(/highlight/)).toBeInTheDocument()
     })
 
     it('should render with custom children passed', () => {

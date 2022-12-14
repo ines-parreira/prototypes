@@ -219,6 +219,7 @@
         "@types/sanitize-html": "1.27.0",
         "@types/segment-analytics": "0.0.34",
         "@types/stripe-v2": "2.0.1",
+        "@types/testing-library__jest-dom": "5.14.1",
         "@types/urlsafe-base64": "1.0.28",
         "@types/validator": "13.6.3",
         "@types/webpack-env": "1.15.2",
