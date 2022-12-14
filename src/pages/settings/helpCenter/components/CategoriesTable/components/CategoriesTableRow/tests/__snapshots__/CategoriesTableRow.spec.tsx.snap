@@ -57,6 +57,14 @@ exports[`<CategoriesTableRow /> should render "Uncategorized articles" row when 
     >
       <div
         class="cellContent"
+        style="width: 104px;"
+      />
+    </td>
+    <td
+      class="wrapper normal"
+    >
+      <div
+        class="cellContent"
         style="width: 146px;"
       />
     </td>
@@ -155,6 +163,16 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Id
             />
           </div>
         </div>
+      </div>
+    </td>
+    <td
+      class="wrapper normal"
+      style="min-width: 104px; width: 104px;"
+    >
+      <div
+        class="cellContent no-click"
+      >
+         
       </div>
     </td>
     <td
@@ -290,6 +308,16 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Lo
     </td>
     <td
       class="wrapper normal"
+      style="min-width: 104px; width: 104px;"
+    >
+      <div
+        class="cellContent no-click"
+      >
+         
+      </div>
+    </td>
+    <td
+      class="wrapper normal"
       style="min-width: 120px; width: 120px;"
     >
       <div
@@ -417,6 +445,16 @@ exports[`<CategoriesTableRow /> should render category that has children 1`] = `
             />
           </div>
         </div>
+      </div>
+    </td>
+    <td
+      class="wrapper normal"
+      style="min-width: 104px; width: 104px;"
+    >
+      <div
+        class="cellContent no-click"
+      >
+         
       </div>
     </td>
     <td

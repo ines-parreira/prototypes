@@ -106,6 +106,7 @@ export const CategoriesTable = ({
                 <HeaderCell style={{width: 25}} className={css.headerCell} />
                 <HeaderCell className={css.headerCell} />
                 <HeaderCell style={{width: 124}} className={css.headerCell} />
+                <HeaderCell style={{width: 105}} className={css.headerCell} />
                 <HeaderCell style={{width: 160}} className={css.headerCell} />
             </TableHead>
             <TableBody className={css['main-table']}>

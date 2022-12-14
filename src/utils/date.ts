@@ -52,3 +52,17 @@ export const getMomentUtcISOString = () => {
 export const getMomentTimezoneNames = () => {
     return moment.tz.names()
 }
+
+export const getFormattedDate = (date: string, locale?: string) => {
+    return new Intl.DateTimeFormat(locale ?? 'en-US').format(new Date(date))
+}
+
+export const getDetailedFormattedDate = (date: string, locale?: string) => {
+    return new Intl.DateTimeFormat(locale ?? 'en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+    }).format(new Date(date))
+}

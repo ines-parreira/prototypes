@@ -50,6 +50,7 @@ import {useAbilityChecker} from 'pages/settings/helpCenter/hooks/useHelpCenterAp
 import VisibilityCell from '../../../VisibilityCell/VisibilityCell'
 
 import {useCategoryRowActions} from '../../../../hooks/useCategoryRowActions'
+import {CATEGORY_NR_OF_COLUMNS} from '../../constants'
 import css from './CategoriesTableRow.less'
 
 export type CategoriesTableRowProps = {
@@ -83,6 +84,8 @@ const FixedCategoriesTableRow = ({
     <TableBodyRow className={css.row}>
         <BodyCell>{''}</BodyCell>
         {headerCell}
+        <BodyCell innerClassName={bodyInnerClass}>{''}</BodyCell>
+        <BodyCell innerClassName={bodyInnerClass}>{''}</BodyCell>
         <BodyCell innerClassName={bodyInnerClass}>{''}</BodyCell>
         <BodyCell width={120} innerClassName={bodyInnerClass}>
             {''}
@@ -211,6 +214,13 @@ const DroppableCategoriesTableRow = ({
                 />
             </BodyCell>
             <BodyCell
+                style={{minWidth: 104, width: 104}}
+                innerClassName={bodyInnerClass}
+                onClick={onClick}
+            >
+                {' '}
+            </BodyCell>
+            <BodyCell
                 style={{minWidth: 120, width: 120}}
                 innerClassName={classNames(css.actions, bodyInnerClass)}
             >
@@ -294,7 +304,7 @@ export const CategoriesTableRow = ({
                 {childCategories.length > 0 && (
                     <TableBodyRow>
                         <BodyCell
-                            colSpan={5}
+                            colSpan={CATEGORY_NR_OF_COLUMNS}
                             className={css['subCategory-cell']}
                         >
                             <TableWrapper
@@ -352,7 +362,10 @@ export const CategoriesTableRow = ({
                 )}
                 {articles.length > 0 && (
                     <TableBodyRow>
-                        <BodyCell colSpan={5} className={css['parent-cell']}>
+                        <BodyCell
+                            colSpan={CATEGORY_NR_OF_COLUMNS}
+                            className={css['parent-cell']}
+                        >
                             {renderArticleList(
                                 categoryId,
                                 articles,
@@ -365,7 +378,7 @@ export const CategoriesTableRow = ({
                 {hasMore && (
                     <TableBodyRow>
                         <BodyCell
-                            colSpan={5}
+                            colSpan={CATEGORY_NR_OF_COLUMNS}
                             innerClassName={classNames(
                                 css['no-click'],
                                 css['load-more']

@@ -1,6 +1,6 @@
-import React, {useCallback} from 'react'
+import React, {useCallback, useMemo} from 'react'
 
-import {Article, LocaleCode} from 'models/helpCenter/types'
+import {Article, isArticle, LocaleCode} from 'models/helpCenter/types'
 import {Components} from 'rest_api/help_center_api/client.generated'
 import {SCREEN_SIZE, useScreenSize} from 'hooks/useScreenSize'
 
@@ -14,6 +14,7 @@ import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentH
 import {useEditionManager} from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import {ArticleMode} from 'pages/settings/helpCenter/types/articleMode'
 import IconButton from 'pages/common/components/button/IconButton'
+import {getDetailedFormattedDate, getFormattedDate} from 'utils/date'
 import {ActionType, OptionItem} from '../../ArticleLanguageSelect'
 import HelpCenterEditModalFooter from '../../HelpCenterEditModalFooter'
 import HelpCenterEditModalHeader from '../../HelpCenterEditModalHeader'
@@ -90,6 +91,22 @@ const HelpCenterArticleModalBasicViewContent = ({
         setIsFullscreenEditModal,
     } = useEditionManager()
 
+    const {lastUpdate, lastUpdateDetailed} = useMemo(() => {
+        return selectedArticle && isArticle(selectedArticle)
+            ? {
+                  lastUpdate: getFormattedDate(
+                      selectedArticle.translation.updated_datetime
+                  ),
+                  lastUpdateDetailed: getDetailedFormattedDate(
+                      selectedArticle.translation.updated_datetime
+                  ),
+              }
+            : {
+                  lastUpdate: '',
+                  lastUpdateDetailed: '',
+              }
+    }, [selectedArticle])
+
     const onArticleContentEdit = useCallback(
         (content: string, charCount?: number) => {
             onArticleChange(
@@ -124,6 +141,8 @@ const HelpCenterArticleModalBasicViewContent = ({
                 showCategorySelect
                 showVisibilitySelect
                 title={selectedArticle.translation.title}
+                lastUpdate={lastUpdate}
+                lastUpdateDetailed={lastUpdateDetailed}
                 isFullscreen={isFullscreenEditModal}
                 supportedLocales={helpCenter.supported_locales}
                 onLanguageSelect={onArticleLanguageSelect}

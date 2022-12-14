@@ -102,6 +102,7 @@ export const ArticlesTable = ({
                 <HeaderCell style={{width: 25}} />
                 <HeaderCell />
                 <HeaderCell style={{width: 124}} />
+                <HeaderCell style={{width: 131}} />
                 <HeaderCell style={{width: 160}} />
             </TableHead>
             <TableBody>

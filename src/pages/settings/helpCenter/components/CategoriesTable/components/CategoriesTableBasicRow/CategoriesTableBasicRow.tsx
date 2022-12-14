@@ -18,6 +18,7 @@ import Tooltip from 'pages/common/components/Tooltip'
 import {useArticlesActions} from 'pages/settings/helpCenter/hooks/useArticlesActions'
 import {ARTICLES_PER_PAGE} from 'pages/settings/helpCenter/constants'
 
+import {CATEGORY_NR_OF_COLUMNS} from '../../constants'
 import css from './CategoriesTableBasicRow.less'
 
 export type BaseCategoriesTableRowProps = {
@@ -45,6 +46,9 @@ const FixedCategoriesTableRow = ({
         <BodyCell>{''}</BodyCell>
         {headerCell}
         <BodyCell innerClassName={bodyInnerClass}>{''}</BodyCell>
+        <BodyCell width={104} innerClassName={bodyInnerClass}>
+            {''}
+        </BodyCell>
         <BodyCell width={104} innerClassName={bodyInnerClass}>
             {''}
         </BodyCell>
@@ -100,7 +104,10 @@ export const CategoriesTableBasicRow = ({
             <>
                 {articles.length > 0 && (
                     <TableBodyRow>
-                        <BodyCell colSpan={5} className={css['parent-cell']}>
+                        <BodyCell
+                            colSpan={CATEGORY_NR_OF_COLUMNS}
+                            className={css['parent-cell']}
+                        >
                             {renderArticleList(null, articles, -1, false)}
                         </BodyCell>
                     </TableBodyRow>
@@ -108,7 +115,7 @@ export const CategoriesTableBasicRow = ({
                 {hasMore && (
                     <TableBodyRow>
                         <BodyCell
-                            colSpan={5}
+                            colSpan={CATEGORY_NR_OF_COLUMNS}
                             innerClassName={classNames(
                                 css['no-click'],
                                 css['load-more']

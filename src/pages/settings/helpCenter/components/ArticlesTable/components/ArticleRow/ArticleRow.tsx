@@ -18,6 +18,7 @@ import {
     Callbacks,
     useReorderDnD,
 } from 'pages/settings/helpCenter/hooks/useReorderDnD'
+import {getDetailedFormattedDate, getFormattedDate} from 'utils/date'
 import {TableActions} from '../../../TableActions'
 
 import VisibilityCell from '../../../VisibilityCell/VisibilityCell'
@@ -85,6 +86,16 @@ export const ArticleRow = ({
     }, [article, localesByCode])
 
     const ratingScore = useRatingScore(article.rating)
+
+    const {lastUpdate, lastUpdateDetailed} = useMemo(
+        () => ({
+            lastUpdate: getFormattedDate(article.translation.updated_datetime),
+            lastUpdateDetailed: getDetailedFormattedDate(
+                article.translation.updated_datetime
+            ),
+        }),
+        [article]
+    )
 
     const handleOnActionsClick = (
         ev: React.MouseEvent,
@@ -186,6 +197,19 @@ export const ArticleRow = ({
                         languageList={languageList}
                     />
                 )}
+            </BodyCell>
+            <BodyCell style={{width: 105, minWidth: 105}}>
+                <div id={`last-update-${article.id}`}>{lastUpdate}</div>
+                <Tooltip
+                    delay={100}
+                    target={`last-update-${article.id}`}
+                    placement="top"
+                    popperClassName={css.tooltip}
+                    innerClassName={css['tooltip-inner']}
+                    arrowClassName={css['tooltip-arrow']}
+                >
+                    {lastUpdateDetailed}
+                </Tooltip>
             </BodyCell>
             <BodyCell style={{width: 120}} innerClassName={css.actions}>
                 <TableActions

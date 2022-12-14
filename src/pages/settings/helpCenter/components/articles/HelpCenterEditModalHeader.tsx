@@ -11,6 +11,7 @@ import {Article, LocaleCode, VisibilityStatus} from 'models/helpCenter/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCategories} from 'state/entities/helpCenter/categories'
+import Tooltip from 'pages/common/components/Tooltip'
 import EditingState from '../EditingState/EditingState'
 
 import SelectVisibilityStatus from '../SelectVisibilityStatus/SelectVisibilityStatus'
@@ -55,6 +56,8 @@ export type Props = {
     showInlineLanguageSelect?: boolean
     showVisibilitySelect?: boolean
     visibilityStatus?: VisibilityStatus
+    lastUpdate?: string
+    lastUpdateDetailed?: string
     domain: string
     articleMode: ArticleMode
 }
@@ -77,6 +80,8 @@ export const HelpCenterEditModalHeader = ({
     domain,
     articleMode,
     visibilityStatus = 'PUBLIC',
+    lastUpdate,
+    lastUpdateDetailed,
 }: Props) => {
     const locales = useSupportedLocales()
     const titleInputRef = useRef<HTMLInputElement | null>(null)
@@ -193,18 +198,38 @@ export const HelpCenterEditModalHeader = ({
         <header className={css.header}>
             <div className={css.headerTopContainer}>
                 {onTitleChange ? (
-                    <input
-                        type="text"
-                        value={title}
-                        placeholder="Title"
-                        onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                            onTitleChange(event.target.value)
-                        }
-                        className={css.titleInput}
-                        maxLength={HELP_CENTER_TITLE_MAX_LENGTH}
-                        ref={titleInputRef}
-                        disabled={!canUpdateArticle}
-                    />
+                    <div>
+                        <input
+                            type="text"
+                            value={title}
+                            placeholder="Title"
+                            onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                                onTitleChange(event.target.value)
+                            }
+                            className={css.titleInput}
+                            maxLength={HELP_CENTER_TITLE_MAX_LENGTH}
+                            ref={titleInputRef}
+                            disabled={!canUpdateArticle}
+                        />
+                        {lastUpdate && (
+                            <>
+                                <div className={css.lastUpdateTime}>
+                                    Last updated on{' '}
+                                    <span id="last-update">{lastUpdate}</span>
+                                </div>
+                                <Tooltip
+                                    delay={100}
+                                    target={`last-update`}
+                                    placement="bottom"
+                                    popperClassName={css.tooltip}
+                                    innerClassName={css['tooltip-inner']}
+                                    arrowClassName={css['tooltip-arrow']}
+                                >
+                                    {lastUpdateDetailed}
+                                </Tooltip>
+                            </>
+                        )}
+                    </div>
                 ) : (
                     <span className={css.titleInput}>{title}</span>
                 )}
