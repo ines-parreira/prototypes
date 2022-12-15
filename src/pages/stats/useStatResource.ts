@@ -36,6 +36,9 @@ export default function useStatResource<T>({
     const statsFetchingState = useAppSelector<StatsUIState['fetchingMap']>(
         (state) => state.ui.stats.fetchingMap
     )
+    const isFilterDirty = useAppSelector<boolean>(
+        (state) => state.ui.stats.isFilterDirty
+    )
     const statKey = `${statName}/${resourceName}`
     const [fetchParams, setFetchParams] = useState<{
         filters: StatsFilters
@@ -94,12 +97,16 @@ export default function useStatResource<T>({
 
     useDebounce(
         () => {
-            if (statsFilters && !_isEqual(statsFilters, fetchParams.filters)) {
+            if (
+                !isFilterDirty &&
+                statsFilters &&
+                !_isEqual(statsFilters, fetchParams.filters)
+            ) {
                 setFetchParams({filters: statsFilters})
             }
         },
         fetchDebounceDelay,
-        [statsFilters, fetchParams]
+        [statsFilters, fetchParams, isFilterDirty]
     )
 
     const fetchPage = useCallback((cursor: string) => {

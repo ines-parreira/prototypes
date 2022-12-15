@@ -64,6 +64,7 @@ const defaultState: Partial<RootState> = {
         },
         stats: {
             fetchingMap: {},
+            isFilterDirty: false,
         },
         ticketNavbar: {
             optimisticAccountSettings: {

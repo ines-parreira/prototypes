@@ -5,6 +5,7 @@ Object {
   "fetchingMap": Object {
     "overview/total-tickets-replied": false,
   },
+  "isFilterDirty": false,
 }
 `;
 
@@ -13,5 +14,6 @@ Object {
   "fetchingMap": Object {
     "overview/total-tickets-replied": true,
   },
+  "isFilterDirty": false,
 }
 `;

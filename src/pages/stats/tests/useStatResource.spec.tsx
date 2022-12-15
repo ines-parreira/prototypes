@@ -303,5 +303,41 @@ describe('useStatResource', () => {
 
             expect(serverMock.history.post).toHaveLength(0)
         })
+
+        it('should not fetch the stat when statsFilters is dirty changed to the same value', async () => {
+            const store = mockStore({
+                ...defaultState,
+                ui: {
+                    ...defaultState.ui,
+                    stats: {...defaultState.ui.stats, isFilterDirty: true},
+                },
+            })
+
+            const {rerender} = render(
+                <Provider store={store}>
+                    <TestComponent statsFilters={defaultStatsFilters} />
+                </Provider>
+            )
+            await flushPromises()
+            store.clearActions()
+            serverMock.resetHistory()
+
+            rerender(
+                <Provider store={store}>
+                    <TestComponent
+                        statsFilters={{
+                            ...defaultStatsFilters,
+                            tags: [2],
+                        }}
+                    />
+                </Provider>
+            )
+            act(() => {
+                jest.runAllTimers()
+            })
+            await flushPromises()
+
+            expect(serverMock.history.post).toHaveLength(0)
+        })
     })
 })

@@ -1,6 +1,9 @@
 import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 import {fireEvent, render, waitFor, within} from '@testing-library/react'
 import _noop from 'lodash/noop'
+import thunk from 'redux-thunk'
 import * as hooks from '../../../hooks'
 
 import {
@@ -9,6 +12,8 @@ import {
     getMultipleFontLink,
 } from '../FontCatalogueModal'
 import {AGENT_ADDED_FONTS} from '../../../constants'
+
+const mockStore = configureMockStore([thunk])
 
 describe('getMultipleFontLink', () => {
     it('should return link with one font', () => {
@@ -151,11 +156,13 @@ describe('<FontCatalogueModal />', () => {
 
     it('should display already added fonts in selected font list', () => {
         const {getByText} = render(
-            <FontCatalogueModal
-                {...defaultProps}
-                isModalOpen
-                recentlyAddedFonts={['Roboto', 'Adriana']}
-            />
+            <Provider store={mockStore({})}>
+                <FontCatalogueModal
+                    {...defaultProps}
+                    isModalOpen
+                    recentlyAddedFonts={['Roboto', 'Adriana']}
+                />
+            </Provider>
         )
 
         const selectedFontsContainer = (
@@ -167,7 +174,11 @@ describe('<FontCatalogueModal />', () => {
     })
 
     it('should download google fonts on opening', () => {
-        render(<FontCatalogueModal {...defaultProps} isModalOpen />)
+        render(
+            <Provider store={mockStore({})}>
+                <FontCatalogueModal {...defaultProps} isModalOpen />
+            </Provider>
+        )
 
         const link = document.querySelector('link') as HTMLLinkElement
         expect(link.href).toStrictEqual(
@@ -177,7 +188,9 @@ describe('<FontCatalogueModal />', () => {
 
     it('should show filtered fonts', async () => {
         const {getByTestId, getByText, queryByText} = render(
-            <FontCatalogueModal {...defaultProps} isModalOpen />
+            <Provider store={mockStore({})}>
+                <FontCatalogueModal {...defaultProps} isModalOpen />
+            </Provider>
         )
 
         getByText('Roboto')
@@ -195,7 +208,9 @@ describe('<FontCatalogueModal />', () => {
 
     it('should select font on click from the list, and remove it with another click', async () => {
         const {getByText} = render(
-            <FontCatalogueModal {...defaultProps} isModalOpen />
+            <Provider store={mockStore({})}>
+                <FontCatalogueModal {...defaultProps} isModalOpen />
+            </Provider>
         )
 
         const selectedFontsContainer = (
@@ -217,12 +232,14 @@ describe('<FontCatalogueModal />', () => {
 
     it('should not remove current primary font on click from the list', () => {
         const {getByText, getByTestId} = render(
-            <FontCatalogueModal
-                {...defaultProps}
-                isModalOpen
-                currentPrimaryFont="Roboto"
-                recentlyAddedFonts={['Roboto', 'Adriana']}
-            />
+            <Provider store={mockStore({})}>
+                <FontCatalogueModal
+                    {...defaultProps}
+                    isModalOpen
+                    currentPrimaryFont="Roboto"
+                    recentlyAddedFonts={['Roboto', 'Adriana']}
+                />
+            </Provider>
         )
 
         const selectedFontsContainer = (
@@ -239,7 +256,9 @@ describe('<FontCatalogueModal />', () => {
 
     it('should select font on click from the list, and remove it with a click from selected font list', async () => {
         const {getByText} = render(
-            <FontCatalogueModal {...defaultProps} isModalOpen />
+            <Provider store={mockStore({})}>
+                <FontCatalogueModal {...defaultProps} isModalOpen />
+            </Provider>
         )
 
         const selectedFontsContainer = (
@@ -264,12 +283,14 @@ describe('<FontCatalogueModal />', () => {
 
     it('should should not show cross to remove current primary font in selected font list', () => {
         const {getByText} = render(
-            <FontCatalogueModal
-                {...defaultProps}
-                isModalOpen
-                currentPrimaryFont="Roboto"
-                recentlyAddedFonts={['Roboto', 'Adriana']}
-            />
+            <Provider store={mockStore({})}>
+                <FontCatalogueModal
+                    {...defaultProps}
+                    isModalOpen
+                    currentPrimaryFont="Roboto"
+                    recentlyAddedFonts={['Roboto', 'Adriana']}
+                />
+            </Provider>
         )
 
         const selectedFontsContainer = (
@@ -288,7 +309,9 @@ describe('<FontCatalogueModal />', () => {
         const setItem = jest.spyOn(window.localStorage.__proto__, 'setItem')
 
         const {getByText} = render(
-            <FontCatalogueModal {...defaultProps} isModalOpen />
+            <Provider store={mockStore({})}>
+                <FontCatalogueModal {...defaultProps} isModalOpen />
+            </Provider>
         )
 
         fireEvent.click(getByText('Roboto'))
@@ -305,7 +328,9 @@ describe('<FontCatalogueModal />', () => {
         const setItem = jest.spyOn(window.localStorage.__proto__, 'setItem')
 
         const {getByText} = render(
-            <FontCatalogueModal {...defaultProps} isModalOpen />
+            <Provider store={mockStore({})}>
+                <FontCatalogueModal {...defaultProps} isModalOpen />
+            </Provider>
         )
 
         const submitButton = getByText(

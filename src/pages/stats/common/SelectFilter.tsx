@@ -9,12 +9,15 @@ import React, {
     ComponentProps,
     ComponentType,
     createContext,
+    KeyboardEvent,
+    MouseEvent,
     ReactElement,
     ReactNode,
     useCallback,
     useContext,
     useEffect,
     useMemo,
+    useRef,
     useState,
 } from 'react'
 import {
@@ -25,7 +28,9 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
+import useAppDispatch from 'hooks/useAppDispatch'
 import CheckBox from 'pages/common/forms/CheckBox'
+import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
 
 import QuickSelectionOption from './QuickSelectionOption'
 import css from './SelectFilter.less'
@@ -188,8 +193,10 @@ const SelectFilter = ({
     toggleClassName = 'mr-2',
     size,
 }: Props) => {
+    const dispatch = useAppDispatch()
     const [search, setSearch] = useState('')
     const [selectedGroupIds, setSelectedGroupIds] = useState<Value[]>([])
+    const toggleRef = useRef<HTMLButtonElement>()
 
     useEffect(() => {
         onSearch?.(search)
@@ -294,6 +301,20 @@ const SelectFilter = ({
         [isDisabled, isMultiple, isRequired, value, onChange]
     )
 
+    const handleToggle = useCallback(
+        (
+            event: KeyboardEvent<Element> | MouseEvent<Element>,
+            isOpen: boolean
+        ) => {
+            if (isOpen && event.currentTarget === toggleRef.current) {
+                dispatch(statFiltersDirty())
+            } else {
+                dispatch(statFiltersClean())
+            }
+        },
+        [dispatch]
+    )
+
     const handleGroupChange = useCallback(
         (groupId: Value, items: Value[]) => {
             if (isDisabled || !selectedGroupIds) {
@@ -367,6 +388,7 @@ const SelectFilter = ({
                 <UncontrolledDropdown
                     disabled={isDisabled}
                     className={className}
+                    onToggle={handleToggle}
                     size={size}
                 >
                     <DropdownToggle
@@ -378,6 +400,7 @@ const SelectFilter = ({
                         color="secondary"
                         type="button"
                         disabled={isDisabled}
+                        innerRef={toggleRef}
                     >
                         <span>{toggleLabel}</span>
                     </DropdownToggle>

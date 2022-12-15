@@ -1,4 +1,9 @@
-import {fetchStatStarted, fetchStatEnded} from '../actions'
+import {
+    fetchStatStarted,
+    fetchStatEnded,
+    statFiltersDirty,
+    statFiltersClean,
+} from '../actions'
 import reducer, {initialState} from '../reducer'
 
 describe('stats reducer', () => {
@@ -27,6 +32,22 @@ describe('stats reducer', () => {
             )
 
             expect(newState).toMatchSnapshot()
+        })
+    })
+
+    describe('statFiltersDirty action', () => {
+        it('should set the isDirty flag to true', () => {
+            const newState = reducer(initialState, statFiltersDirty())
+
+            expect(newState.isFilterDirty).toBe(true)
+        })
+    })
+
+    describe('statFiltersClean action', () => {
+        it('should set the isDirty flag to false', () => {
+            const newState = reducer(initialState, statFiltersClean())
+
+            expect(newState.isFilterDirty).toBe(false)
         })
     })
 })

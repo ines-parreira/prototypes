@@ -6,6 +6,7 @@ export type StatsState = {
     fetchingMap: {
         [key: string]: boolean | undefined
     }
+    isFilterDirty: boolean
 }
 
 export type StatsAction = FetchStatEndedAction | FetchStatStartedAction
