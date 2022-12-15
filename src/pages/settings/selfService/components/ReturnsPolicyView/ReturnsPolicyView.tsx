@@ -461,117 +461,133 @@ export const ReturnsPolicyView = () => {
                                             </>
                                         ) : null}
                                     </div>
-
-                                    <h5 className={css.returnMethodTitle}>
-                                        Return method
-                                    </h5>
-                                    <div className="d-inline-flex align-items-center w-100">
-                                        <ReturnActionSelectField
-                                            loopReturnsIntegrations={
-                                                loopReturnsIntegrations
-                                            }
-                                            value={returnAction}
-                                            onChange={setReturnAction}
-                                            onCreateNewLoopReturnsIntegrationClick={
-                                                handleCreateNewLoopReturnsIntegrationClick
-                                            }
-                                        />
-
-                                        {showReturnActionDeleteButton && (
-                                            <div
-                                                onClick={onReturnActionDelete}
-                                                className={css.deleteButton}
+                                    {hasAutomationAddOn && (
+                                        <>
+                                            <h5
+                                                className={
+                                                    css.returnMethodTitle
+                                                }
                                             >
-                                                <i className="material-icons red mr-1">
-                                                    clear
-                                                </i>
+                                                Return method
+                                            </h5>
+                                            <div className="d-inline-flex align-items-center w-100">
+                                                <ReturnActionSelectField
+                                                    loopReturnsIntegrations={
+                                                        loopReturnsIntegrations
+                                                    }
+                                                    value={returnAction}
+                                                    onChange={setReturnAction}
+                                                    onCreateNewLoopReturnsIntegrationClick={
+                                                        handleCreateNewLoopReturnsIntegrationClick
+                                                    }
+                                                />
+
+                                                {showReturnActionDeleteButton && (
+                                                    <div
+                                                        onClick={
+                                                            onReturnActionDelete
+                                                        }
+                                                        className={
+                                                            css.deleteButton
+                                                        }
+                                                    >
+                                                        <i className="material-icons red mr-1">
+                                                            clear
+                                                        </i>
+                                                    </div>
+                                                )}
                                             </div>
-                                        )}
-                                    </div>
-
-                                    {isLoopReturnsIntegrationMissing && (
-                                        <Alert
-                                            icon
-                                            className={
-                                                css.missingLoopReturnsIntegrationAlert
-                                            }
-                                            type={AlertType.Error}
-                                        >
-                                            You must have a
-                                            <a
-                                                href="https://www.loopreturns.com/"
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                            >
-                                                &nbsp;Loop Returns&nbsp;
-                                            </a>
-                                            account and
-                                            <Link to="/app/settings/integrations/app/6193aad6661a2903d5fb9bff">
-                                                &nbsp;HTTP integration&nbsp;
-                                            </Link>
-                                            to use this feature
-                                        </Alert>
+                                            {isLoopReturnsIntegrationMissing && (
+                                                <Alert
+                                                    icon
+                                                    className={
+                                                        css.missingLoopReturnsIntegrationAlert
+                                                    }
+                                                    type={AlertType.Error}
+                                                >
+                                                    You must have a
+                                                    <a
+                                                        href="https://www.loopreturns.com/"
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                    >
+                                                        &nbsp;Loop Returns&nbsp;
+                                                    </a>
+                                                    account and
+                                                    <Link to="/app/settings/integrations/app/6193aad6661a2903d5fb9bff">
+                                                        &nbsp;HTTP
+                                                        integration&nbsp;
+                                                    </Link>
+                                                    to use this feature
+                                                </Alert>
+                                            )}
+                                            <NewReturnIntegrationModal
+                                                isOpen={
+                                                    isNewReturnIntegrationModalOpen
+                                                }
+                                                onClose={
+                                                    handleNewReturnIntegrationModalClose
+                                                }
+                                                onCreate={
+                                                    handleNewReturnIntegration
+                                                }
+                                            />
+                                            {hasAutomatedResponseOrderManagementFlag &&
+                                                returnAction?.type ===
+                                                    ReturnActionType.AutomatedResponse && (
+                                                    <FormGroup>
+                                                        <Label
+                                                            for="responseText"
+                                                            className="control-label"
+                                                        >
+                                                            Response text
+                                                        </Label>
+                                                        <p>
+                                                            After customers
+                                                            request a return in
+                                                            chat, reply with an
+                                                            automated message.
+                                                        </p>
+                                                        <DEPRECATED_RichField
+                                                            value={{
+                                                                html: returnAction
+                                                                    .response_message_content
+                                                                    ?.html,
+                                                            }}
+                                                            onChange={
+                                                                handleAutomatedResponseChange
+                                                            }
+                                                            placeholder="Add a response"
+                                                        />
+                                                        <FormText
+                                                            color={
+                                                                isResponseTooLong
+                                                                    ? 'danger'
+                                                                    : 'muted'
+                                                            }
+                                                        >
+                                                            {`${
+                                                                returnAction
+                                                                    .response_message_content
+                                                                    ?.text
+                                                                    ?.length ??
+                                                                0
+                                                            }/${MAX_AUTOMATED_RESPONSE_LENGTH} characters`}
+                                                        </FormText>
+                                                        <TicketAttachments
+                                                            removable
+                                                            attachments={
+                                                                newMessageAttachments
+                                                            }
+                                                            deleteAttachment={
+                                                                deleteAttachment
+                                                            }
+                                                            className="p-2 d-flex flex-wrap"
+                                                        />
+                                                    </FormGroup>
+                                                )}
+                                        </>
                                     )}
-
-                                    <NewReturnIntegrationModal
-                                        isOpen={isNewReturnIntegrationModalOpen}
-                                        onClose={
-                                            handleNewReturnIntegrationModalClose
-                                        }
-                                        onCreate={handleNewReturnIntegration}
-                                    />
-
-                                    {hasAutomatedResponseOrderManagementFlag &&
-                                        returnAction?.type ===
-                                            ReturnActionType.AutomatedResponse && (
-                                            <FormGroup>
-                                                <Label
-                                                    for="responseText"
-                                                    className="control-label"
-                                                >
-                                                    Response text
-                                                </Label>
-                                                <p>
-                                                    After customers request a
-                                                    return in chat, reply with
-                                                    an automated message.
-                                                </p>
-                                                <DEPRECATED_RichField
-                                                    value={{
-                                                        html: returnAction
-                                                            .response_message_content
-                                                            ?.html,
-                                                    }}
-                                                    onChange={
-                                                        handleAutomatedResponseChange
-                                                    }
-                                                    placeholder="Add a response"
-                                                />
-                                                <FormText
-                                                    color={
-                                                        isResponseTooLong
-                                                            ? 'danger'
-                                                            : 'muted'
-                                                    }
-                                                >
-                                                    {`${
-                                                        returnAction
-                                                            .response_message_content
-                                                            ?.text?.length ?? 0
-                                                    }/${MAX_AUTOMATED_RESPONSE_LENGTH} characters`}
-                                                </FormText>
-                                                <TicketAttachments
-                                                    removable
-                                                    attachments={
-                                                        newMessageAttachments
-                                                    }
-                                                    deleteAttachment={
-                                                        deleteAttachment
-                                                    }
-                                                    className="p-2 d-flex flex-wrap"
-                                                />
-                                            </FormGroup>
-                                        )}
 
                                     <div className={css.formButtonsContainer}>
                                         <Button
