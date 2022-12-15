@@ -7,7 +7,7 @@ import ReactPlayer from 'react-player'
 import {MessageQuoteContext} from 'pages/tickets/detail/components/TicketBodyVirtualized'
 import Ellipsis from 'pages/common/components/Ellipsis'
 import {linkifyHtml, linkifyString, sanitizeHtmlDefault} from 'utils/html'
-import {extractReactPlayerDivFromHtmlContent, proxifyImages} from 'utils'
+import {extractGorgiasVideoDivFromHtmlContent, proxifyImages} from 'utils'
 
 import css from './Content.less'
 
@@ -85,10 +85,10 @@ export class ContentComponent extends Component<Props, State> {
             return null
         }
 
-        let reactPlayerVideoUrls: string[] = []
+        let videoUrls: string[] = []
         if (displayContent && isHtml) {
-            const data = extractReactPlayerDivFromHtmlContent(displayContent)
-            reactPlayerVideoUrls = data.reactPlayerVideoUrls
+            const data = extractGorgiasVideoDivFromHtmlContent(displayContent)
+            videoUrls = data.videoUrls
             displayContent = data.htmlCleaned
         }
 
@@ -107,8 +107,8 @@ export class ContentComponent extends Component<Props, State> {
                     />
                 )}
 
-                {reactPlayerVideoUrls.length > 0 &&
-                    reactPlayerVideoUrls.map((url, idx) => (
+                {videoUrls.length > 0 &&
+                    videoUrls.map((url, idx) => (
                         <div key={idx} className={classNames(css.content)}>
                             <ReactPlayer
                                 url={url}

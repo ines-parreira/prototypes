@@ -91,7 +91,7 @@ describe('<AddVideo/>', () => {
         fireEvent.click(screen.getByText(/video/i))
 
         fireEvent.change(screen.getByPlaceholderText('External video URL'), {
-            target: {value: 'https://www.youtube.com/watch?v=4sLFpe-xbhk'}, // URL is valid, but ReactPlayer will canPlay: false.
+            target: {value: 'https://www.youtube.com/watch?v=4sLFpe-xbhk'}, // URL is valid and ReactPlayer.canPlay: true.
         })
 
         fireEvent.click(screen.getByText(/Insert Video/i))
@@ -111,7 +111,7 @@ describe('<AddVideo/>', () => {
         fireEvent.click(screen.getByText(/video/i))
 
         fireEvent.change(screen.getByPlaceholderText('External video URL'), {
-            target: {value: 'https://gorgias.com'}, // URL is valid, and ReactPlayer will canPlay: true.
+            target: {value: 'https://gorgias.com'}, // URL is valid and ReactPlayer.canPlay: false.
         })
 
         fireEvent.click(screen.getByText(/Insert Video/i))
@@ -136,7 +136,7 @@ describe('<AddVideo/>', () => {
         fireEvent.click(screen.getByText(/video/i))
 
         fireEvent.change(screen.getByPlaceholderText('External video URL'), {
-            target: {value: 'https://gorgias.com'}, // URL is valid, but ReactPlayer will canPlay: false.
+            target: {value: 'https://gorgias.com'}, // URL is valid and ReactPlayer.canPlay: false.
         })
 
         fireEvent.click(screen.getByText(/Insert Video/i))

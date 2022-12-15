@@ -13,7 +13,7 @@ import {notify} from 'state/notifications/actions'
 import * as ticketActions from 'state/ticket/actions'
 import {Context, renderTemplate} from 'pages/common/utils/template'
 import {
-    castReactPlayerContainersForUnsupportedSources,
+    castGorgiasVideosForUnsupportedSources,
     getActionTemplate,
     toJS,
     uploadFiles,
@@ -501,11 +501,10 @@ export const prepare =
                         x.toString()
                     ).includes(sourceType as string)
 
-                const newHtmlContent =
-                    castReactPlayerContainersForUnsupportedSources({
-                        html: contentHtml,
-                        hyperlinksSupported: hyperlinksSupported,
-                    })
+                const newHtmlContent = castGorgiasVideosForUnsupportedSources({
+                    html: contentHtml,
+                    hyperlinksSupported: hyperlinksSupported,
+                })
 
                 const changesFound = newHtmlContent !== contentHtml
                 const contentBlocks =

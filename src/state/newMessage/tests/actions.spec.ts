@@ -607,10 +607,10 @@ describe('actions', () => {
                         newMessage,
                     })
 
-                    const castReactPlayerContainersForUnsupportedSourcesSpy =
+                    const castGorgiasVideosForUnsupportedSourcesSpy =
                         jest.spyOn(
                             utils,
-                            'castReactPlayerContainersForUnsupportedSources'
+                            'castGorgiasVideosForUnsupportedSources'
                         )
 
                     store.dispatch(
@@ -618,7 +618,7 @@ describe('actions', () => {
                     )
 
                     expect(
-                        castReactPlayerContainersForUnsupportedSourcesSpy
+                        castGorgiasVideosForUnsupportedSourcesSpy
                     ).toHaveBeenCalledWith({
                         html: '<div>Hello, world!</div>',
                         hyperlinksSupported: true,
@@ -627,7 +627,7 @@ describe('actions', () => {
                     store.dispatch(actions.prepare(TicketMessageSourceType.Sms))
 
                     expect(
-                        castReactPlayerContainersForUnsupportedSourcesSpy
+                        castGorgiasVideosForUnsupportedSourcesSpy
                     ).toHaveBeenCalledWith({
                         html: '<div>Hello, world!</div>',
                         hyperlinksSupported: false,

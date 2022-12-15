@@ -216,7 +216,7 @@ describe('Content', () => {
                 html={`
                 <div>text before video</div>
                 <div><br /></div>
-                <div class="react-player-container" data-src="https://www.youtube.com/watch?v=4sLFpe-xbhk" width="600"></div>
+                <div class="gorgias-video-container" data-video-src="https://www.youtube.com/watch?v=4sLFpe-xbhk" width="600"></div>
                 <div>text after video</div>
                 `}
             />

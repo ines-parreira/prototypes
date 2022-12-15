@@ -236,7 +236,7 @@ export function convertToHTML(contentState: ContentState): string {
                     const width: number =
                         (entity.data.width as number) || DEFAULT_VIDEO_WIDTH
                     const url: string = (entity.data.url as string) || ''
-                    return `<div class="react-player-container" data-src="${url}" width="${width}" />`
+                    return `<div class="gorgias-video-container" data-video-src="${url}" width="${width}" />`
                 }
 
                 if (entity.type === 'mention') {
@@ -369,13 +369,13 @@ export function convertFromHTML(html: string): ContentState {
 
             if (
                 nodeName === 'div' &&
-                node.classList.contains('react-player-container')
+                node.classList.contains('gorgias-video-container')
             ) {
                 return createEntity(
                     draftjsGorgiasCustomBlockRenderers.Video,
                     'MUTABLE',
                     {
-                        url: node.getAttribute('data-src'),
+                        url: node.getAttribute('data-video-src'),
                         width:
                             node.getAttribute('width') || DEFAULT_VIDEO_WIDTH,
                     }

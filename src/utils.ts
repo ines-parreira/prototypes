@@ -1060,20 +1060,20 @@ export function notEmpty<T>(elem: T | null | undefined): elem is T {
 
 /**
  * Convert chat videos from html (HTML produced by draftjs) into hyperlinks or text.
- * `<figure><div class="react-player-container" data-src="https://www.youtube.com/watch?v=4sLFpe-xbhk"></figure>` will be replaced by
+ * `<figure><div class="gorgias-video-container" data-video-src="https://www.youtube.com/watch?v=4sLFpe-xbhk"></figure>` will be replaced by
  * `<div><a href="https://www.youtube.com/watch?v=4sLFpe-xbhk">https://www.youtube.com/watch?v=4sLFpe-xbhk</a></div>
  * or `<div>https://www.youtube.com/watch?v=4sLFpe-xbhk</div>`
  */
-export function castReactPlayerContainersForUnsupportedSources({
+export function castGorgiasVideosForUnsupportedSources({
     html,
     hyperlinksSupported: supportHyperLinks,
 }: {
     html: string
     hyperlinksSupported: boolean
 }) {
-    // Captures data-src attributes from `<figure><div style=...... class="react-player-container" data-src="https://www.youtube.com/watch?v=4sLFpe-xbhk"></figure>`
+    // Captures data-video-src attributes from `<figure><div style=...... class="gorgias-video-container" data-video-src="https://www.youtube.com/watch?v=4sLFpe-xbhk"></figure>`
     const regexVideoDraftJsFigure =
-        /<figure[^/]+?div class="react-player-container" data-src="(.+?)".+?<\/figure>/g
+        /<figure[^/]+?div class="gorgias-video-container" data-video-src="(.+?)".+?<\/figure>/g
 
     // NOTE. <figure> tag must be replaced by a <div> tag because all 'contents' are either in a <figure> or <div> tag in draft.js.
     // NOTE. `class="linkified" target="_blank"` is not necessary here for hyperlinks, draftjs take cares of this.
@@ -1086,14 +1086,14 @@ export function castReactPlayerContainersForUnsupportedSources({
 }
 
 /**
- * Extract `<div class="react-player-container" data-src="https://www.youtube.com/watch?v=4sLFpe-xbhk" width="600"></div>` elements from html, and return `data-src` urls separately.
+ * Extract `<div class="gorgias-video-container" data-video-src="https://www.youtube.com/watch?v=4sLFpe-xbhk" width="600"></div>` elements from html, and return `data-video-src` urls separately.
  */
-export function extractReactPlayerDivFromHtmlContent(html: string): {
+export function extractGorgiasVideoDivFromHtmlContent(html: string): {
     htmlCleaned: string
-    reactPlayerVideoUrls: string[]
+    videoUrls: string[]
 } {
     const regex = new RegExp(
-        '<div class="react-player-container" data-src="(.+?)".+?></div>',
+        '<div class="gorgias-video-container" data-video-src="(.+?)".+?></div>',
         'g'
     )
 
@@ -1105,6 +1105,6 @@ export function extractReactPlayerDivFromHtmlContent(html: string): {
 
     return {
         htmlCleaned: html.replace(regex, ''),
-        reactPlayerVideoUrls: urls,
+        videoUrls: urls,
     }
 }
