@@ -12,6 +12,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {fetchIntegrations} from 'state/integrations/actions'
+import {GorgiasApiError} from 'models/api/types'
 
 async function submitAccessToken(accessToken: string) {
     await client.post('/integrations/whatsapp/onboard', {
@@ -97,12 +98,17 @@ export default function WhatsAppIntegrationOnboarding(): JSX.Element | null {
             )
             history.push('/app/settings/integrations/whatsapp/integrations')
         } catch (error) {
+            const message =
+                (error as GorgiasApiError)?.response?.data?.error?.msg ??
+                'Failed to onboard integration'
+
             void dispatch(
                 notify({
-                    message: 'Failed to onboard integration',
+                    message,
                     status: NotificationStatus.Error,
                 })
             )
+
             if (error instanceof Error) {
                 reportError(error)
             }
