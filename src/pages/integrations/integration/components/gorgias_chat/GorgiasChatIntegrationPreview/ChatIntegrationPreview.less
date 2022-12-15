@@ -9,6 +9,8 @@
     @active-bluegreen: #06d79c;
     @offlineColor: #a1a9b6;
     @textColor: #545454;
+    @light-contrast-color: 'FFFFFF';
+    @dark-contrast-color: '161616';
 
     .preview {
         position: relative;
@@ -561,7 +563,14 @@
                 position: absolute;
                 width: 55%;
                 height: 55%;
-                background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="overflow: visible; shape-rendering: geometricPrecision;"><filter id="dots"><feGaussianBlur stdDeviation="0,4" in="SourceAlpha"></feGaussianBlur><feOffset dx="0" dy="4" result="offsetblur"></feOffset><feComponentTransfer><feFuncA type="linear" slope="0.4"></feFuncA></feComponentTransfer><feComposite operator="in" in2="offsetblur"></feComposite><feMerge><feMergeNode></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge></filter><path fill="%23fff" filter="url(%23dots)" d="M50,0C22.4,0,0,22.4,0,50s22.4,50,50,50h30.8l0-10.6C92.5,80.2,100,66,100,50C100,22.4,77.6,0,50,0z M32,54.5 c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5C36.5,52.5,34.5,54.5,32,54.5z M50,54.5c-2.5,0-4.5-2-4.5-4.5 c0-2.5,2-4.5,4.5-4.5c2.5,0,4.5,2,4.5,4.5C54.5,52.5,52.5,54.5,50,54.5z M68,54.5c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5 s4.5,2,4.5,4.5C72.5,52.5,70.5,54.5,68,54.5z"></path></svg>');
+                background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="overflow: visible; shape-rendering: geometricPrecision;"><filter id="dots"><feGaussianBlur stdDeviation="0,4" in="SourceAlpha"></feGaussianBlur><feOffset dx="0" dy="4" result="offsetblur"></feOffset><feComponentTransfer><feFuncA type="linear" slope="0.4"></feFuncA></feComponentTransfer><feComposite operator="in" in2="offsetblur"></feComposite><feMerge><feMergeNode></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge></filter><path fill="%23@{light-contrast-color}" filter="url(%23dots)" d="M50,0C22.4,0,0,22.4,0,50s22.4,50,50,50h30.8l0-10.6C92.5,80.2,100,66,100,50C100,22.4,77.6,0,50,0z M32,54.5 c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5C36.5,52.5,34.5,54.5,32,54.5z M50,54.5c-2.5,0-4.5-2-4.5-4.5 c0-2.5,2-4.5,4.5-4.5c2.5,0,4.5,2,4.5,4.5C54.5,52.5,52.5,54.5,50,54.5z M68,54.5c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5 s4.5,2,4.5,4.5C72.5,52.5,70.5,54.5,68,54.5z"></path></svg>');
+            }
+            .iconDark {
+                z-index: 1;
+                position: absolute;
+                width: 55%;
+                height: 55%;
+                background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="overflow: visible; shape-rendering: geometricPrecision;"><filter id="dots"><feGaussianBlur stdDeviation="0,4" in="SourceAlpha"></feGaussianBlur><feOffset dx="0" dy="4" result="offsetblur"></feOffset><feComponentTransfer><feFuncA type="linear" slope="0.4"></feFuncA></feComponentTransfer><feComposite operator="in" in2="offsetblur"></feComposite><feMerge><feMergeNode></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge></filter><path fill="%23@{dark-contrast-color}" filter="url(%23dots)" d="M50,0C22.4,0,0,22.4,0,50s22.4,50,50,50h30.8l0-10.6C92.5,80.2,100,66,100,50C100,22.4,77.6,0,50,0z M32,54.5 c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5C36.5,52.5,34.5,54.5,32,54.5z M50,54.5c-2.5,0-4.5-2-4.5-4.5 c0-2.5,2-4.5,4.5-4.5c2.5,0,4.5,2,4.5,4.5C54.5,52.5,52.5,54.5,50,54.5z M68,54.5c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5 s4.5,2,4.5,4.5C72.5,52.5,70.5,54.5,68,54.5z"></path></svg>');
             }
 
             .shadow {

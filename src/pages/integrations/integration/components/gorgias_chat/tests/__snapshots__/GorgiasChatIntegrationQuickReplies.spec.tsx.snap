@@ -660,7 +660,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                                 <ChatIntegrationAvatar
                                   isOnline={true}
                                   mainColor="#123456"
-                                  offlineColor="#A1A9B6"
+                                  offlineColor="#EBEBEB"
                                 >
                                   <div
                                     className="agents"
@@ -717,6 +717,11 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                                 </ChatIntegrationAvatar>
                                 <div
                                   className="details"
+                                  style={
+                                    Object {
+                                      "color": "#FFFFFF",
+                                    }
+                                  }
                                 >
                                   <div
                                     className="appName"
@@ -1574,7 +1579,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                                 <ChatIntegrationAvatar
                                   isOnline={true}
                                   mainColor="#123456"
-                                  offlineColor="#A1A9B6"
+                                  offlineColor="#EBEBEB"
                                 >
                                   <div
                                     className="agents"
@@ -1631,6 +1636,11 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                                 </ChatIntegrationAvatar>
                                 <div
                                   className="details"
+                                  style={
+                                    Object {
+                                      "color": "#FFFFFF",
+                                    }
+                                  }
                                 >
                                   <div
                                     className="appName"

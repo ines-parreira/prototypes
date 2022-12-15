@@ -7,6 +7,7 @@ import {
     SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
     SMOOCH_INSIDE_WIDGET_TEXTS,
 } from '../../../../../../config/integrations/smooch_inside'
+import {getTextColorBasedOnBackground} from '../../gorgias_chat/GorgiasChatIntegrationPreview/color-utils'
 
 import css from './ChatIntegrationPreview.less'
 import CustomerInitialMessages from './CustomerInitialMessages'
@@ -25,6 +26,8 @@ export default class OptionalEmailCapture extends Component<Props> {
             SMOOCH_INSIDE_WIDGET_TEXTS[
                 language || SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
             ]
+
+        const contrastColor = getTextColorBasedOnBackground(conversationColor)
 
         return (
             <div className={css.content}>
@@ -69,7 +72,10 @@ export default class OptionalEmailCapture extends Component<Props> {
                                 <button
                                     style={{backgroundColor: conversationColor}}
                                 >
-                                    <i className="material-icons">
+                                    <i
+                                        className="material-icons"
+                                        style={{color: contrastColor}}
+                                    >
                                         chevron_right
                                     </i>
                                 </button>

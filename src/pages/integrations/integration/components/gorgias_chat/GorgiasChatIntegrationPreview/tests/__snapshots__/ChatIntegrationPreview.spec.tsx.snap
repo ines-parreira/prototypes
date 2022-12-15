@@ -19,10 +19,15 @@ exports[`<ChatIntegrationPreview/> render() should display auto responder 1`] = 
       <ChatIntegrationAvatar
         isOnline={true}
         mainColor="#123456"
-        offlineColor="#A1A9B6"
+        offlineColor="#EBEBEB"
       />
       <div
         className="details"
+        style={
+          Object {
+            "color": "#FFFFFF",
+          }
+        }
       >
         <div
           className="appName"
@@ -142,10 +147,15 @@ exports[`<ChatIntegrationPreview/> render() should display display the offsets w
       <ChatIntegrationAvatar
         isOnline={true}
         mainColor="#123456"
-        offlineColor="#A1A9B6"
+        offlineColor="#EBEBEB"
       />
       <div
         className="details"
+        style={
+          Object {
+            "color": "#FFFFFF",
+          }
+        }
       >
         <div
           className="appName"
@@ -290,10 +300,15 @@ exports[`<ChatIntegrationPreview/> render() should display display the offsets w
       <ChatIntegrationAvatar
         isOnline={true}
         mainColor="#123456"
-        offlineColor="#A1A9B6"
+        offlineColor="#EBEBEB"
       />
       <div
         className="details"
+        style={
+          Object {
+            "color": "#FFFFFF",
+          }
+        }
       >
         <div
           className="appName"
@@ -432,10 +447,15 @@ exports[`<ChatIntegrationPreview/> render() should display optional email captur
       <ChatIntegrationAvatar
         isOnline={true}
         mainColor="#123456"
-        offlineColor="#A1A9B6"
+        offlineColor="#EBEBEB"
       />
       <div
         className="details"
+        style={
+          Object {
+            "color": "#FFFFFF",
+          }
+        }
       >
         <div
           className="appName"
@@ -561,10 +581,15 @@ exports[`<ChatIntegrationPreview/> render() should display required email captur
       <ChatIntegrationAvatar
         isOnline={true}
         mainColor="#123456"
-        offlineColor="#A1A9B6"
+        offlineColor="#EBEBEB"
       />
       <div
         className="details"
+        style={
+          Object {
+            "color": "#FFFFFF",
+          }
+        }
       >
         <div
           className="appName"
@@ -680,10 +705,15 @@ exports[`<ChatIntegrationPreview/> render() should display the avatar team pictu
         avatarType="team-picture"
         isOnline={true}
         mainColor="#123456"
-        offlineColor="#A1A9B6"
+        offlineColor="#EBEBEB"
       />
       <div
         className="details"
+        style={
+          Object {
+            "color": "#FFFFFF",
+          }
+        }
       >
         <div
           className="appName"
@@ -815,17 +845,22 @@ exports[`<ChatIntegrationPreview/> render() should display the offline status be
       className="header"
       style={
         Object {
-          "backgroundColor": "#A1A9B6",
+          "backgroundColor": "#EBEBEB",
         }
       }
     >
       <ChatIntegrationAvatar
         isOnline={false}
         mainColor="#123456"
-        offlineColor="#A1A9B6"
+        offlineColor="#EBEBEB"
       />
       <div
         className="details"
+        style={
+          Object {
+            "color": "#161616",
+          }
+        }
       >
         <div
           className="appName"
@@ -840,10 +875,16 @@ exports[`<ChatIntegrationPreview/> render() should display the offline status be
         <div
           className="replyTime"
         >
-          <img
-            alt="Back online time"
-            src="test-file-stub"
-          />
+          <i
+            className="material-icons md-2"
+            style={
+              Object {
+                "color": "#161616",
+              }
+            }
+          >
+            schedule
+          </i>
           Back online at 9:00 AM
         </div>
       </div>
@@ -936,7 +977,7 @@ exports[`<ChatIntegrationPreview/> render() should display the offline status be
     className="button bottom-right"
     style={
       Object {
-        "backgroundColor": "#123456",
+        "backgroundColor": "#EBEBEB",
       }
     }
   >
@@ -944,7 +985,7 @@ exports[`<ChatIntegrationPreview/> render() should display the offline status be
       className="iconWrapper"
     >
       <i
-        className="icon"
+        className="iconDark"
       />
       <div
         className="shadow"
@@ -973,10 +1014,15 @@ exports[`<ChatIntegrationPreview/> render() should display the online status bec
       <ChatIntegrationAvatar
         isOnline={true}
         mainColor="#123456"
-        offlineColor="#A1A9B6"
+        offlineColor="#EBEBEB"
       />
       <div
         className="details"
+        style={
+          Object {
+            "color": "#FFFFFF",
+          }
+        }
       >
         <div
           className="appName"
@@ -1115,10 +1161,15 @@ exports[`<ChatIntegrationPreview/> render() should display the sliders when edit
       <ChatIntegrationAvatar
         isOnline={true}
         mainColor="#123456"
-        offlineColor="#A1A9B6"
+        offlineColor="#EBEBEB"
       />
       <div
         className="details"
+        style={
+          Object {
+            "color": "#FFFFFF",
+          }
+        }
       >
         <div
           className="appName"
@@ -1257,10 +1308,15 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
       <ChatIntegrationAvatar
         isOnline={true}
         mainColor="#123456"
-        offlineColor="#A1A9B6"
+        offlineColor="#EBEBEB"
       />
       <div
         className="details"
+        style={
+          Object {
+            "color": "#FFFFFF",
+          }
+        }
       >
         <div
           className="appName"
@@ -1275,10 +1331,16 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
         <div
           className="replyTime"
         >
-          <img
-            alt="Typical reply time"
-            src="test-file-stub"
-          />
+          <i
+            className="material-icons md-2"
+            style={
+              Object {
+                "color": "#FFFFFF",
+              }
+            }
+          >
+            schedule
+          </i>
           Typically replies within a day
         </div>
       </div>
@@ -1408,10 +1470,15 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
       <ChatIntegrationAvatar
         isOnline={true}
         mainColor="#123456"
-        offlineColor="#A1A9B6"
+        offlineColor="#EBEBEB"
       />
       <div
         className="details"
+        style={
+          Object {
+            "color": "#FFFFFF",
+          }
+        }
       >
         <div
           className="appName"
@@ -1426,10 +1493,16 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
         <div
           className="replyTime"
         >
-          <img
-            alt="Typical reply time"
-            src="test-file-stub"
-          />
+          <i
+            className="material-icons md-2"
+            style={
+              Object {
+                "color": "#FFFFFF",
+              }
+            }
+          >
+            schedule
+          </i>
           Typically replies in a few hours
         </div>
       </div>
@@ -1559,10 +1632,15 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
       <ChatIntegrationAvatar
         isOnline={true}
         mainColor="#123456"
-        offlineColor="#A1A9B6"
+        offlineColor="#EBEBEB"
       />
       <div
         className="details"
+        style={
+          Object {
+            "color": "#FFFFFF",
+          }
+        }
       >
         <div
           className="appName"
@@ -1577,10 +1655,16 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
         <div
           className="replyTime"
         >
-          <img
-            alt="Typical reply time"
-            src="test-file-stub"
-          />
+          <i
+            className="material-icons md-2"
+            style={
+              Object {
+                "color": "#FFFFFF",
+              }
+            }
+          >
+            schedule
+          </i>
           Typically replies in a few minutes
         </div>
       </div>
@@ -1710,10 +1794,15 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
       <ChatIntegrationAvatar
         isOnline={true}
         mainColor="#123456"
-        offlineColor="#A1A9B6"
+        offlineColor="#EBEBEB"
       />
       <div
         className="details"
+        style={
+          Object {
+            "color": "#FFFFFF",
+          }
+        }
       >
         <div
           className="appName"
@@ -1728,10 +1817,16 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
         <div
           className="replyTime"
         >
-          <img
-            alt="Typical reply time"
-            src="test-file-stub"
-          />
+          <i
+            className="material-icons md-2"
+            style={
+              Object {
+                "color": "#FFFFFF",
+              }
+            }
+          >
+            schedule
+          </i>
           Typically replies in a few minutes
         </div>
       </div>
@@ -1861,10 +1956,15 @@ exports[`<ChatIntegrationPreview/> render() should not display button if hideBut
       <ChatIntegrationAvatar
         isOnline={true}
         mainColor="#123456"
-        offlineColor="#A1A9B6"
+        offlineColor="#EBEBEB"
       />
       <div
         className="details"
+        style={
+          Object {
+            "color": "#FFFFFF",
+          }
+        }
       >
         <div
           className="appName"

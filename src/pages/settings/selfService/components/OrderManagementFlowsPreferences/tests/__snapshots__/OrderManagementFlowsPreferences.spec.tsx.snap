@@ -437,6 +437,7 @@ exports[`<OrderManagementFlowsPreferences/> ToggleInput.onChange() should deacti
                     </div>
                     <div
                       class="details"
+                      style="color: rgb(255, 255, 255);"
                     >
                       <div
                         class="appName"
@@ -951,6 +952,7 @@ exports[`<OrderManagementFlowsPreferences/> render() should render the 4 policy 
                     </div>
                     <div
                       class="details"
+                      style="color: rgb(255, 255, 255);"
                     >
                       <div
                         class="appName"

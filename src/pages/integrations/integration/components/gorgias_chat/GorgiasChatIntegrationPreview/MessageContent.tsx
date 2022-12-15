@@ -1,16 +1,16 @@
-import React, {Component, Fragment} from 'react'
 import classnames from 'classnames'
 import {Map} from 'immutable'
+import React, {Component} from 'react'
 
 import Avatar from '../../../../../common/components/Avatar/Avatar'
 
-import CustomerInitialMessages from './CustomerInitialMessages'
-import ProductCardAttachment, {ProductAttachment} from './ProductCardAttachment'
 import ArticleAttachment, {
     ArticleAttachmentSchema,
     isArticleAttachment,
 } from './ArticleAttachment'
 import css from './ChatIntegrationPreview.less'
+import CustomerInitialMessages from './CustomerInitialMessages'
+import ProductCardAttachment, {ProductAttachment} from './ProductCardAttachment'
 
 export type AgentMessages = {
     content: string

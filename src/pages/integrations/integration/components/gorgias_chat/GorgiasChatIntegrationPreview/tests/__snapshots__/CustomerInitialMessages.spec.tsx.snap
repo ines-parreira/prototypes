@@ -25,6 +25,7 @@ exports[`<CustomerInitialMessages/> should render timestamps and messages 1`] = 
       style={
         Object {
           "backgroundColor": "red",
+          "color": "#FFFFFF",
         }
       }
     >
@@ -36,6 +37,7 @@ exports[`<CustomerInitialMessages/> should render timestamps and messages 1`] = 
       style={
         Object {
           "backgroundColor": "red",
+          "color": "#FFFFFF",
         }
       }
     >
@@ -47,6 +49,7 @@ exports[`<CustomerInitialMessages/> should render timestamps and messages 1`] = 
       style={
         Object {
           "backgroundColor": "red",
+          "color": "#FFFFFF",
         }
       }
     >

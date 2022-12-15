@@ -9,6 +9,7 @@ import {
 } from '../../../../../../config/integrations/gorgias_chat'
 
 import css from './ChatIntegrationPreview.less'
+import {getTextColorBasedOnBackground} from './color-utils'
 
 type Props = {
     name: Maybe<string>
@@ -23,6 +24,7 @@ export default class RequiredEmailCapture extends React.Component<Props> {
 
     render() {
         const {conversationColor, name, language} = this.props
+        const contrastColor = getTextColorBasedOnBackground(conversationColor)
 
         const translatedTexts =
             GORGIAS_CHAT_WIDGET_TEXTS[
@@ -72,7 +74,10 @@ export default class RequiredEmailCapture extends React.Component<Props> {
                                 <button
                                     style={{backgroundColor: conversationColor}}
                                 >
-                                    <i className="material-icons">
+                                    <i
+                                        className="material-icons"
+                                        style={{color: contrastColor}}
+                                    >
                                         chevron_right
                                     </i>
                                 </button>

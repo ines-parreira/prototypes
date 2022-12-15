@@ -9,6 +9,7 @@ import {
 
 import css from './ChatIntegrationPreview.less'
 import CustomerInitialMessages from './CustomerInitialMessages'
+import {getTextColorBasedOnBackground} from './color-utils'
 
 type Props = {
     conversationColor: string
@@ -24,6 +25,7 @@ export default class OptionalEmailCapture extends Component<Props> {
             GORGIAS_CHAT_WIDGET_TEXTS[
                 language || GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT
             ]
+        const contrastColor = getTextColorBasedOnBackground(conversationColor)
 
         return (
             <div className={css.content}>
@@ -68,7 +70,10 @@ export default class OptionalEmailCapture extends Component<Props> {
                                 <button
                                     style={{backgroundColor: conversationColor}}
                                 >
-                                    <i className="material-icons">
+                                    <i
+                                        className="material-icons"
+                                        style={{color: contrastColor}}
+                                    >
                                         chevron_right
                                     </i>
                                 </button>

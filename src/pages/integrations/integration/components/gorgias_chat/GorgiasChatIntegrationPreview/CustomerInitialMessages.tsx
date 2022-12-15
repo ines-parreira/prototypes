@@ -2,6 +2,7 @@ import classnames from 'classnames'
 import React from 'react'
 
 import css from './ChatIntegrationPreview.less'
+import {getTextColorBasedOnBackground} from './color-utils'
 import ConversationTimestamp from './ConversationTimestamp'
 import MessageTimestamp from './MessageTimestamp'
 
@@ -11,27 +12,35 @@ type Props = {
     hideMessageTimestamp?: boolean
 }
 
-const CustomerInitialMessages = (props: Props) => (
-    <div>
-        <ConversationTimestamp />
+const CustomerInitialMessages = (props: Props) => {
+    const contrastColor = getTextColorBasedOnBackground(props.conversationColor)
+    return (
+        <div>
+            <ConversationTimestamp />
 
-        {props.messages.map((message, index) => (
-            <div
-                className={classnames(
-                    css.bubble,
-                    css.primary,
-                    index === 0 ? css.firstMessageOfAppUser : null,
-                    index === props.messages.length - 1 ? css.lastMessage : null
-                )}
-                key={index}
-                style={{backgroundColor: props.conversationColor}}
-            >
-                {message}
-            </div>
-        ))}
+            {props.messages.map((message, index) => (
+                <div
+                    className={classnames(
+                        css.bubble,
+                        css.primary,
+                        index === 0 ? css.firstMessageOfAppUser : null,
+                        index === props.messages.length - 1
+                            ? css.lastMessage
+                            : null
+                    )}
+                    key={index}
+                    style={{
+                        backgroundColor: props.conversationColor,
+                        color: contrastColor,
+                    }}
+                >
+                    {message}
+                </div>
+            ))}
 
-        {!props.hideMessageTimestamp && <MessageTimestamp />}
-    </div>
-)
+            {!props.hideMessageTimestamp && <MessageTimestamp />}
+        </div>
+    )
+}
 
 export default CustomerInitialMessages

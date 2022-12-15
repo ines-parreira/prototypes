@@ -1,14 +1,8 @@
-import React, {ReactNode} from 'react'
-import {Map} from 'immutable'
 import classnames from 'classnames'
+import {Map} from 'immutable'
 import moment from 'moment'
+import React, {ReactNode} from 'react'
 
-import clockIcon from 'assets/img/icons/clock.svg'
-import {
-    GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
-    GORGIAS_CHAT_WIDGET_TEXTS,
-    GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
-} from '../../../../../../config/integrations/gorgias_chat'
 import {
     CHAT_AUTO_RESPONDER_REPLY_IN_DAY,
     CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
@@ -17,6 +11,11 @@ import {
     isAutoresponderReply,
 } from '../../../../../../config/integrations'
 import {
+    GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
+    GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
+    GORGIAS_CHAT_WIDGET_TEXTS,
+} from '../../../../../../config/integrations/gorgias_chat'
+import {
     GorgiasChatPosition,
     GorgiasChatPositionAlignmentEnum,
 } from '../../../../../../models/integration/types'
@@ -24,6 +23,7 @@ import {PositionAxis} from '../GorgiasChatIntegrationAppearance/GorgiasChatInteg
 
 import ChatIntegrationAvatar from './ChatIntegrationAvatar'
 import css from './ChatIntegrationPreview.less'
+import {getTextColorBasedOnBackground, CONSTRAST_COLORS} from './color-utils'
 import GorgiasChatPoweredBy from './GorgiasChatPoweredBy'
 
 type Props = {
@@ -80,7 +80,7 @@ const ChatIntegrationPreview = (props: Props) => {
         position.alignment === GorgiasChatPositionAlignmentEnum.TOP_RIGHT ||
         position.alignment === GorgiasChatPositionAlignmentEnum.TOP_LEFT
 
-    const offlineColor = '#A1A9B6'
+    const offlineColor = '#EBEBEB' // Colors.LightGrey in chat client
 
     const translatedTexts = GORGIAS_CHAT_WIDGET_TEXTS[language]
 
@@ -138,6 +138,23 @@ const ChatIntegrationPreview = (props: Props) => {
         }[autoResponderReply]
     }
 
+    const contrastColor = getTextColorBasedOnBackground(
+        isOnline ? mainColor : offlineColor
+    )
+
+    const BubbleIcon =
+        contrastColor === CONSTRAST_COLORS.DARK ? (
+            <i className={css.iconDark} />
+        ) : (
+            <i className={css.icon} />
+        )
+
+    const ClockIcon = (
+        <i className="material-icons md-2" style={{color: contrastColor}}>
+            schedule
+        </i>
+    )
+
     return (
         <div className={css.preview} style={{...getPreviewCustomStyle()}}>
             {isButtonOnTop && !hideButton && (
@@ -146,7 +163,7 @@ const ChatIntegrationPreview = (props: Props) => {
                     style={{backgroundColor: mainColor}}
                 >
                     <div className={css.iconWrapper}>
-                        <i className={css.icon} />
+                        {BubbleIcon}
                         <div className={css.shadow} />
                     </div>
                     {editedPositionAxis === PositionAxis.AXIS_X && (
@@ -185,7 +202,7 @@ const ChatIntegrationPreview = (props: Props) => {
                         offlineColor={offlineColor}
                     />
 
-                    <div className={css.details}>
+                    <div className={css.details} style={{color: contrastColor}}>
                         <div className={css.appName}>{nonbreak(name)}</div>
                         <div className={css.introductionText}>
                             {nonbreak(
@@ -196,7 +213,7 @@ const ChatIntegrationPreview = (props: Props) => {
                         </div>
                         {!isOnline && (
                             <div className={css.replyTime}>
-                                <img src={clockIcon} alt="Back online time" />
+                                {ClockIcon}
                                 {translatedTexts.backLabelBackAt.replace(
                                     '{time}',
                                     moment()
@@ -213,10 +230,7 @@ const ChatIntegrationPreview = (props: Props) => {
                             autoResponderReply !==
                                 GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC && (
                                 <div className={css.replyTime}>
-                                    <img
-                                        src={clockIcon}
-                                        alt="Typical reply time"
-                                    />
+                                    {ClockIcon}
                                     {getTypicalResponseText()}
                                 </div>
                             )}
@@ -243,10 +257,12 @@ const ChatIntegrationPreview = (props: Props) => {
             {!isButtonOnTop && !hideButton && (
                 <div
                     className={classnames(css.button, css[position.alignment])}
-                    style={{backgroundColor: mainColor}}
+                    style={{
+                        backgroundColor: isOnline ? mainColor : offlineColor,
+                    }}
                 >
                     <div className={css.iconWrapper}>
-                        <i className={css.icon} />
+                        {BubbleIcon}
                         <div className={css.shadow} />
                     </div>
                     {editedPositionAxis === PositionAxis.AXIS_X && (

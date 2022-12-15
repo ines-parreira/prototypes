@@ -71,6 +71,7 @@ exports[`<ChatIntegrationPreview/> render() displays landing page 1`] = `
           </div>
           <div
             class="details"
+            style="color: rgb(255, 255, 255);"
           >
             <div
               class="appName"
@@ -253,6 +254,7 @@ exports[`<ChatIntegrationPreview/> render() displays landing page with the merge
           </div>
           <div
             class="details"
+            style="color: rgb(255, 255, 255);"
           >
             <div
               class="appName"
@@ -400,6 +402,7 @@ exports[`<ChatIntegrationPreview/> render() displays thread page with answer 1`]
           </div>
           <div
             class="details"
+            style="color: rgb(255, 255, 255);"
           >
             <div
               class="appName"
@@ -424,7 +427,7 @@ exports[`<ChatIntegrationPreview/> render() displays thread page with answer 1`]
             </div>
             <div
               class="bubble primary firstMessageOfAppUser lastMessage"
-              style="background-color: rgb(13, 135, 221);"
+              style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
             >
               question
             </div>
@@ -583,6 +586,7 @@ exports[`<ChatIntegrationPreview/> render() displays thread page with answer wit
           </div>
           <div
             class="details"
+            style="color: rgb(255, 255, 255);"
           >
             <div
               class="appName"
@@ -607,7 +611,7 @@ exports[`<ChatIntegrationPreview/> render() displays thread page with answer wit
             </div>
             <div
               class="bubble primary firstMessageOfAppUser lastMessage"
-              style="background-color: rgb(13, 135, 221);"
+              style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
             >
               question
             </div>
@@ -753,6 +757,7 @@ exports[`<ChatIntegrationPreview/> render() displays thread page without answer 
           </div>
           <div
             class="details"
+            style="color: rgb(255, 255, 255);"
           >
             <div
               class="appName"
@@ -777,7 +782,7 @@ exports[`<ChatIntegrationPreview/> render() displays thread page without answer 
             </div>
             <div
               class="bubble primary firstMessageOfAppUser lastMessage"
-              style="background-color: rgb(13, 135, 221);"
+              style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
             >
               question
             </div>

@@ -703,6 +703,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     </div>
                     <div
                       class="details"
+                      style="color: rgb(255, 255, 255);"
                     >
                       <div
                         class="appName"
@@ -727,13 +728,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       </div>
                       <div
                         class="bubble primary firstMessageOfAppUser"
-                        style="background-color: rgb(13, 135, 221);"
+                        style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
                       >
                         Hey there
                       </div>
                       <div
                         class="bubble primary lastMessage"
-                        style="background-color: rgb(13, 135, 221);"
+                        style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
                       >
                         I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
                       </div>
@@ -1492,6 +1493,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     </div>
                     <div
                       class="details"
+                      style="color: rgb(255, 255, 255);"
                     >
                       <div
                         class="appName"
@@ -1516,13 +1518,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       </div>
                       <div
                         class="bubble primary firstMessageOfAppUser"
-                        style="background-color: rgb(13, 135, 221);"
+                        style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
                       >
                         Hey there
                       </div>
                       <div
                         class="bubble primary lastMessage"
-                        style="background-color: rgb(13, 135, 221);"
+                        style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
                       >
                         I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
                       </div>
@@ -2251,6 +2253,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     </div>
                     <div
                       class="details"
+                      style="color: rgb(255, 255, 255);"
                     >
                       <div
                         class="appName"
@@ -2275,13 +2278,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       </div>
                       <div
                         class="bubble primary firstMessageOfAppUser"
-                        style="background-color: rgb(13, 135, 221);"
+                        style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
                       >
                         Hey there
                       </div>
                       <div
                         class="bubble primary lastMessage"
-                        style="background-color: rgb(13, 135, 221);"
+                        style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
                       >
                         I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
                       </div>
@@ -3018,6 +3021,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                     </div>
                     <div
                       class="details"
+                      style="color: rgb(255, 255, 255);"
                     >
                       <div
                         class="appName"
@@ -3042,13 +3046,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                       </div>
                       <div
                         class="bubble primary firstMessageOfAppUser"
-                        style="background-color: rgb(13, 135, 221);"
+                        style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
                       >
                         Hey there
                       </div>
                       <div
                         class="bubble primary lastMessage"
-                        style="background-color: rgb(13, 135, 221);"
+                        style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
                       >
                         I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
                       </div>
@@ -3777,6 +3781,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     </div>
                     <div
                       class="details"
+                      style="color: rgb(255, 255, 255);"
                     >
                       <div
                         class="appName"
@@ -3801,13 +3806,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       </div>
                       <div
                         class="bubble primary firstMessageOfAppUser"
-                        style="background-color: rgb(13, 135, 221);"
+                        style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
                       >
                         Hey there
                       </div>
                       <div
                         class="bubble primary lastMessage"
-                        style="background-color: rgb(13, 135, 221);"
+                        style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
                       >
                         I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
                       </div>
@@ -4529,6 +4534,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     </div>
                     <div
                       class="details"
+                      style="color: rgb(255, 255, 255);"
                     >
                       <div
                         class="appName"
@@ -4553,13 +4559,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       </div>
                       <div
                         class="bubble primary firstMessageOfAppUser"
-                        style="background-color: rgb(13, 135, 221);"
+                        style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
                       >
                         Hey there
                       </div>
                       <div
                         class="bubble primary lastMessage"
-                        style="background-color: rgb(13, 135, 221);"
+                        style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
                       >
                         I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
                       </div>
@@ -5336,6 +5342,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                     </div>
                     <div
                       class="details"
+                      style="color: rgb(255, 255, 255);"
                     >
                       <div
                         class="appName"
@@ -5360,13 +5367,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                       </div>
                       <div
                         class="bubble primary firstMessageOfAppUser"
-                        style="background-color: rgb(13, 135, 221);"
+                        style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
                       >
                         Hey there
                       </div>
                       <div
                         class="bubble primary lastMessage"
-                        style="background-color: rgb(13, 135, 221);"
+                        style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
                       >
                         I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
                       </div>
@@ -6203,6 +6210,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     </div>
                     <div
                       class="details"
+                      style="color: rgb(255, 255, 255);"
                     >
                       <div
                         class="appName"
@@ -6227,13 +6235,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       </div>
                       <div
                         class="bubble primary firstMessageOfAppUser"
-                        style="background-color: rgb(13, 135, 221);"
+                        style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
                       >
                         Hey there
                       </div>
                       <div
                         class="bubble primary lastMessage"
-                        style="background-color: rgb(13, 135, 221);"
+                        style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
                       >
                         I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
                       </div>
@@ -6970,6 +6978,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     </div>
                     <div
                       class="details"
+                      style="color: rgb(255, 255, 255);"
                     >
                       <div
                         class="appName"
@@ -6994,13 +7003,13 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       </div>
                       <div
                         class="bubble primary firstMessageOfAppUser"
-                        style="background-color: rgb(13, 135, 221);"
+                        style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
                       >
                         Hey there
                       </div>
                       <div
                         class="bubble primary lastMessage"
-                        style="background-color: rgb(13, 135, 221);"
+                        style="background-color: rgb(13, 135, 221); color: rgb(255, 255, 255);"
                       >
                         I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
                       </div>
