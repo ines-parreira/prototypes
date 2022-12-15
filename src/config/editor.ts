@@ -6,7 +6,7 @@ export const DEFAULT_IMAGE_WIDTH = 400
 /**
  * default video width in the editor
  */
-export const DEFAULT_VIDEO_WIDTH = 600
+export const DEFAULT_VIDEO_WIDTH = 400
 
 /**
  * Maximum attachments size, in bytes

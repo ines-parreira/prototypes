@@ -879,4 +879,44 @@ describe('global utils', () => {
             }
         })
     })
+
+    describe('extractReactPlayerDivFromHtmlContent()', () => {
+        it('should properly extract', () => {
+            const dataset: {
+                rawHtml: string
+                expectedHtmlFinal: string
+                expectedVideoUrls: string[]
+            }[] = [
+                {
+                    rawHtml: `<p>hello</p><a href="#">here</a>`,
+                    expectedHtmlFinal: `<p>hello</p><a href="#">here</a>`,
+                    expectedVideoUrls: [],
+                },
+                {
+                    rawHtml: `<p>hello<div class="react-player-container" data-src="https://www.youtube.com/watch?v=4sLFpe-xbhk" width="600"></div></p><a href="#">here</a>`,
+                    expectedHtmlFinal: `<p>hello</p><a href="#">here</a>`,
+                    expectedVideoUrls: [
+                        'https://www.youtube.com/watch?v=4sLFpe-xbhk',
+                    ],
+                },
+                {
+                    rawHtml: `<p>hello<div class="react-player-container" data-src="https://www.youtube.com/watch?v=4sLFpe-xbhk" width="600"></div></p><a href="#">here</a><div class="react-player-container" data-src="https://www.youtube.com/watch?v=4sLFpe-xbhk2" width="600"></div>`,
+                    expectedHtmlFinal: `<p>hello</p><a href="#">here</a>`,
+                    expectedVideoUrls: [
+                        'https://www.youtube.com/watch?v=4sLFpe-xbhk',
+                        'https://www.youtube.com/watch?v=4sLFpe-xbhk2',
+                    ],
+                },
+            ]
+
+            for (const data of dataset) {
+                expect(
+                    utils.extractReactPlayerDivFromHtmlContent(data.rawHtml)
+                ).toEqual({
+                    htmlCleaned: data.expectedHtmlFinal,
+                    reactPlayerVideoUrls: data.expectedVideoUrls,
+                })
+            }
+        })
+    })
 })

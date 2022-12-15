@@ -2,10 +2,12 @@ import React, {Component, useContext, useMemo} from 'react'
 import classNames from 'classnames'
 import _trim from 'lodash/trim'
 
+import ReactPlayer from 'react-player'
+
 import {MessageQuoteContext} from 'pages/tickets/detail/components/TicketBodyVirtualized'
 import Ellipsis from 'pages/common/components/Ellipsis'
 import {linkifyHtml, linkifyString, sanitizeHtmlDefault} from 'utils/html'
-import {proxifyImages} from 'utils'
+import {extractReactPlayerDivFromHtmlContent, proxifyImages} from 'utils'
 
 import css from './Content.less'
 
@@ -72,15 +74,22 @@ export class ContentComponent extends Component<Props, State> {
             strippedContent &&
             strippedContent.replace(/\s+/g, '') !== content.replace(/\s+/g, '')
 
-        const displayContent = this._getDisplayContent(
+        const contentToRender =
             isStripped && !this.props.isMessageExpanded
                 ? strippedContent || ''
-                : content,
-            isHtml
-        )
+                : content
+
+        let displayContent = this._getDisplayContent(contentToRender, isHtml)
 
         if (!displayContent && !isStripped) {
             return null
+        }
+
+        let reactPlayerVideoUrls: string[] = []
+        if (displayContent && isHtml) {
+            const data = extractReactPlayerDivFromHtmlContent(displayContent)
+            reactPlayerVideoUrls = data.reactPlayerVideoUrls
+            displayContent = data.htmlCleaned
         }
 
         return (
@@ -97,6 +106,19 @@ export class ContentComponent extends Component<Props, State> {
                         onClick={this._onQuoteButtonClick}
                     />
                 )}
+
+                {reactPlayerVideoUrls.length > 0 &&
+                    reactPlayerVideoUrls.map((url, idx) => (
+                        <div key={idx} className={classNames(css.content)}>
+                            <ReactPlayer
+                                url={url}
+                                controls={true}
+                                light={true}
+                                width={400}
+                                height={(400 * 9) / 16}
+                            />
+                        </div>
+                    ))}
             </div>
         )
     }

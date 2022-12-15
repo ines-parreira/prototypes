@@ -63,7 +63,13 @@ class Video extends React.Component<Props> {
                 role="presentation"
                 className={classnames(theme.image, className)}
             >
-                <ReactPlayer url={url} width={width} controls={true} />
+                <ReactPlayer
+                    url={url}
+                    controls={true}
+                    light={true}
+                    width={width}
+                    height={(width * 9) / 16}
+                />
             </div>
         )
     }

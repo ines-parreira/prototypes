@@ -1,7 +1,36 @@
 import React, {ComponentProps} from 'react'
+import {render} from '@testing-library/react'
 import {mount} from 'enzyme'
 
 import {ContentComponent} from '../Content'
+
+jest.mock(
+    'react-player',
+    () =>
+        ({
+            url,
+            controls,
+            light,
+            width,
+            height,
+        }: {
+            url: string
+            controls: boolean
+            light: boolean
+            width: number | string
+            height: number | string
+        }) =>
+            (
+                <div
+                    data-mocked-react-player-here
+                    data-url={url}
+                    data-controls={controls}
+                    data-light={light}
+                    data-width={width}
+                    data-height={height}
+                />
+            )
+)
 
 const sharedProps: ComponentProps<typeof ContentComponent> = {
     toggleQuote: jest.fn(),
@@ -10,6 +39,9 @@ const sharedProps: ComponentProps<typeof ContentComponent> = {
 }
 
 describe('Content', () => {
+    afterAll(() => {
+        jest.resetAllMocks()
+    })
     it('should render empty if empty props', () => {
         const component = mount(<ContentComponent {...sharedProps} />)
 
@@ -175,5 +207,56 @@ describe('Content', () => {
             />
         )
         expect(component.render().text()).toBe('text')
+    })
+
+    it('should render react player video after the content', () => {
+        const {container} = render(
+            <ContentComponent
+                {...sharedProps}
+                html={`
+                <div>text before video</div>
+                <div><br /></div>
+                <div class="react-player-container" data-src="https://www.youtube.com/watch?v=4sLFpe-xbhk" width="600"></div>
+                <div>text after video</div>
+                `}
+            />
+        )
+        expect(container).toMatchInlineSnapshot(`
+            <div>
+              <div>
+                <div
+                  class="content"
+                >
+                  <div>
+                    text before video
+                  </div>
+                  
+                            
+                  <div>
+                    <br />
+                  </div>
+                  
+                            
+                            
+                  <div>
+                    text after video
+                  </div>
+                </div>
+                
+                <div
+                  class="content"
+                >
+                  <div
+                    data-controls="true"
+                    data-height="225"
+                    data-light="true"
+                    data-mocked-react-player-here="true"
+                    data-url="https://www.youtube.com/watch?v=4sLFpe-xbhk"
+                    data-width="400"
+                  />
+                </div>
+              </div>
+            </div>
+        `)
     })
 })

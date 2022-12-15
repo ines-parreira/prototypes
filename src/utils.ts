@@ -1084,3 +1084,27 @@ export function castReactPlayerContainersForUnsupportedSources({
           )
         : html.replace(regexVideoDraftJsFigure, '<div>$1</div>')
 }
+
+/**
+ * Extract `<div class="react-player-container" data-src="https://www.youtube.com/watch?v=4sLFpe-xbhk" width="600"></div>` elements from html, and return `data-src` urls separately.
+ */
+export function extractReactPlayerDivFromHtmlContent(html: string): {
+    htmlCleaned: string
+    reactPlayerVideoUrls: string[]
+} {
+    const regex = new RegExp(
+        '<div class="react-player-container" data-src="(.+?)".+?></div>',
+        'g'
+    )
+
+    const urls = []
+    let result: RegExpExecArray | null
+    while ((result = regex.exec(html)) !== null) {
+        urls.push(result[1])
+    }
+
+    return {
+        htmlCleaned: html.replace(regex, ''),
+        reactPlayerVideoUrls: urls,
+    }
+}
