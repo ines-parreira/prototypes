@@ -54,15 +54,23 @@ export const getMomentTimezoneNames = () => {
 }
 
 export const getFormattedDate = (date: string, locale?: string) => {
-    return new Intl.DateTimeFormat(locale ?? 'en-US').format(new Date(date))
+    try {
+        return new Intl.DateTimeFormat(locale ?? 'en-US').format(new Date(date))
+    } catch (e) {
+        return ''
+    }
 }
 
 export const getDetailedFormattedDate = (date: string, locale?: string) => {
-    return new Intl.DateTimeFormat(locale ?? 'en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-    }).format(new Date(date))
+    try {
+        return new Intl.DateTimeFormat(locale ?? 'en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+        }).format(new Date(date))
+    } catch (e) {
+        return ''
+    }
 }
