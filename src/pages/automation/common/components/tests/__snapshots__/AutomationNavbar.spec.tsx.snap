@@ -120,31 +120,31 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
         class="category"
       >
         <a
-          activeclassname="active"
           class="link"
-          to="/app/automation"
+          data-active-class-name="active"
+          href="/app/automation"
         >
           Overview
         </a>
       </div>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/automation/macros"
+        data-active-class-name="active"
+        href="/app/automation/macros"
       >
         Macros
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/automation/rules"
+        data-active-class-name="active"
+        href="/app/automation/rules"
       >
         Rules
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/automation/ticket-assignment"
+        data-active-class-name="active"
+        href="/app/automation/ticket-assignment"
       >
         Ticket assignment
       </a>
@@ -201,16 +201,16 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
             </div>
           </div>
           <a
-            activeclassname="active"
             class="link isNested"
-            to="/app/automation/self-service/shopify/My shop/preferences/quick-response"
+            data-active-class-name="active"
+            href="/app/automation/self-service/shopify/My shop/preferences/quick-response"
           >
             Quick responses
           </a>
           <a
-            activeclassname="active"
             class="link isNested"
-            to="/app/automation/self-service/shopify/My shop/preferences/order-management"
+            data-active-class-name="active"
+            href="/app/automation/self-service/shopify/My shop/preferences/order-management"
           >
             Order management
           </a>
@@ -375,31 +375,31 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
         class="category"
       >
         <a
-          activeclassname="active"
           class="link"
-          to="/app/automation"
+          data-active-class-name="active"
+          href="/app/automation"
         >
           Overview
         </a>
       </div>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/automation/macros"
+        data-active-class-name="active"
+        href="/app/automation/macros"
       >
         Macros
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/automation/rules"
+        data-active-class-name="active"
+        href="/app/automation/rules"
       >
         Rules
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/automation/ticket-assignment"
+        data-active-class-name="active"
+        href="/app/automation/ticket-assignment"
       >
         Ticket assignment
       </a>
@@ -466,9 +466,9 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
             </i>
           </span>
           <a
-            activeclassname="active"
             class="link isNested"
-            to="/app/automation/self-service/shopify/My shop/preferences/order-management"
+            data-active-class-name="active"
+            href="/app/automation/self-service/shopify/My shop/preferences/order-management"
           >
             Order management
           </a>
@@ -633,31 +633,31 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
         class="category"
       >
         <a
-          activeclassname="active"
           class="link"
-          to="/app/automation"
+          data-active-class-name="active"
+          href="/app/automation"
         >
           Overview
         </a>
       </div>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/automation/macros"
+        data-active-class-name="active"
+        href="/app/automation/macros"
       >
         Macros
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/automation/rules"
+        data-active-class-name="active"
+        href="/app/automation/rules"
       >
         Rules
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/automation/ticket-assignment"
+        data-active-class-name="active"
+        href="/app/automation/ticket-assignment"
       >
         Ticket assignment
       </a>
@@ -872,31 +872,31 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
         class="category"
       >
         <a
-          activeclassname="active"
           class="link"
-          to="/app/automation"
+          data-active-class-name="active"
+          href="/app/automation"
         >
           Overview
         </a>
       </div>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/automation/macros"
+        data-active-class-name="active"
+        href="/app/automation/macros"
       >
         Macros
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/automation/rules"
+        data-active-class-name="active"
+        href="/app/automation/rules"
       >
         Rules
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/automation/ticket-assignment"
+        data-active-class-name="active"
+        href="/app/automation/ticket-assignment"
       >
         Ticket assignment
       </a>
@@ -953,16 +953,16 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
             </div>
           </div>
           <a
-            activeclassname="active"
             class="link isNested"
-            to="/app/automation/self-service/shopify/My shop/preferences/quick-response"
+            data-active-class-name="active"
+            href="/app/automation/self-service/shopify/My shop/preferences/quick-response"
           >
             Quick responses
           </a>
           <a
-            activeclassname="active"
             class="link isNested"
-            to="/app/automation/self-service/shopify/My shop/preferences/order-management"
+            data-active-class-name="active"
+            href="/app/automation/self-service/shopify/My shop/preferences/order-management"
           >
             Order management
           </a>
@@ -1127,31 +1127,31 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
         class="category"
       >
         <a
-          activeclassname="active"
           class="link"
-          to="/app/automation"
+          data-active-class-name="active"
+          href="/app/automation"
         >
           Overview
         </a>
       </div>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/automation/macros"
+        data-active-class-name="active"
+        href="/app/automation/macros"
       >
         Macros
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/automation/rules"
+        data-active-class-name="active"
+        href="/app/automation/rules"
       >
         Rules
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/automation/ticket-assignment"
+        data-active-class-name="active"
+        href="/app/automation/ticket-assignment"
       >
         Ticket assignment
       </a>
@@ -1218,9 +1218,9 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
             </i>
           </span>
           <a
-            activeclassname="active"
             class="link isNested"
-            to="/app/automation/self-service/shopify/My shop/preferences/order-management"
+            data-active-class-name="active"
+            href="/app/automation/self-service/shopify/My shop/preferences/order-management"
           >
             Order management
           </a>
@@ -1385,31 +1385,31 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
         class="category"
       >
         <a
-          activeclassname="active"
           class="link"
-          to="/app/automation"
+          data-active-class-name="active"
+          href="/app/automation"
         >
           Overview
         </a>
       </div>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/automation/macros"
+        data-active-class-name="active"
+        href="/app/automation/macros"
       >
         Macros
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/automation/rules"
+        data-active-class-name="active"
+        href="/app/automation/rules"
       >
         Rules
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/automation/ticket-assignment"
+        data-active-class-name="active"
+        href="/app/automation/ticket-assignment"
       >
         Ticket assignment
       </a>
@@ -1624,31 +1624,31 @@ exports[`<AutomationNavbar /> render() should render automation navbar for non-a
         class="category"
       >
         <a
-          activeclassname="active"
           class="link"
-          to="/app/automation"
+          data-active-class-name="active"
+          href="/app/automation"
         >
           Overview
         </a>
       </div>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/automation/macros"
+        data-active-class-name="active"
+        href="/app/automation/macros"
       >
         Macros
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/automation/rules"
+        data-active-class-name="active"
+        href="/app/automation/rules"
       >
         Rules
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/automation/ticket-assignment"
+        data-active-class-name="active"
+        href="/app/automation/ticket-assignment"
       >
         Ticket assignment
       </a>
@@ -1811,31 +1811,31 @@ exports[`<AutomationNavbar /> render() should render automation navbar for non-a
         class="category"
       >
         <a
-          activeclassname="active"
           class="link"
-          to="/app/automation"
+          data-active-class-name="active"
+          href="/app/automation"
         >
           Overview
         </a>
       </div>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/automation/macros"
+        data-active-class-name="active"
+        href="/app/automation/macros"
       >
         Macros
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/automation/rules"
+        data-active-class-name="active"
+        href="/app/automation/rules"
       >
         Rules
       </a>
       <a
-        activeclassname="active"
         class="link"
-        to="/app/automation/ticket-assignment"
+        data-active-class-name="active"
+        href="/app/automation/ticket-assignment"
       >
         Ticket assignment
       </a>
