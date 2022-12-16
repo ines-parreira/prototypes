@@ -10,7 +10,7 @@ Object {
   "patch": Array [],
   "post": Array [
     Object {
-      "data": "{\\"entity_type\\":\\"ticket\\",\\"name\\":\\"Test name\\",\\"order\\":1,\\"value_required\\":false,\\"value_type_settings\\":{\\"type\\":\\"text\\"}}",
+      "data": "{\\"object_type\\":\\"Ticket\\",\\"label\\":\\"Test name\\",\\"priority\\":1,\\"required\\":false,\\"definition\\":{\\"data_type\\":\\"text\\",\\"input_settings\\":{\\"input_type\\":\\"input\\"}}}",
       "headers": Object {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
@@ -61,7 +61,7 @@ exports[`<AddFieldForm/> should render correctly 1`] = `
       <input
         class="input"
         id="input-text-1"
-        name="name"
+        name="label"
         required=""
         type="text"
         value=""

@@ -24,7 +24,7 @@ describe('<AddFieldForm/>', () => {
     it('should render correctly', () => {
         const {container} = render(
             <Provider store={mockStore}>
-                <AddFieldForm entityType="ticket" order={1} />
+                <AddFieldForm objectType="Ticket" priority={1} />
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
@@ -35,7 +35,7 @@ describe('<AddFieldForm/>', () => {
 
         const {findByText, findByLabelText} = render(
             <Provider store={mockStore}>
-                <AddFieldForm entityType="ticket" order={1} />
+                <AddFieldForm objectType="Ticket" priority={1} />
             </Provider>
         )
 
@@ -59,7 +59,7 @@ describe('<AddFieldForm/>', () => {
     it('should go back to listing if the cancel button is clicked', async () => {
         const {findByText} = render(
             <Provider store={mockStore}>
-                <AddFieldForm entityType="ticket" order={1} />
+                <AddFieldForm objectType="Ticket" priority={1} />
             </Provider>
         )
 

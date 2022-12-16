@@ -11,7 +11,7 @@ Object {
   "post": Array [],
   "put": Array [
     Object {
-      "data": "{\\"entity_type\\":\\"ticket\\",\\"name\\":\\"Updated name\\",\\"order\\":123,\\"value_required\\":false,\\"value_type_settings\\":{\\"type\\":\\"text\\",\\"placeholder\\":\\"Test placeholder\\"},\\"id\\":123,\\"created_datetime\\":\\"2022-01-02T03:04:05.123456+00:00\\",\\"updated_datetime\\":\\"2022-01-02T03:04:05.123456+00:00\\",\\"deactivated_datetime\\":null}",
+      "data": "{\\"object_type\\":\\"Ticket\\",\\"label\\":\\"Updated name\\",\\"priority\\":123,\\"required\\":false,\\"definition\\":{\\"data_type\\":\\"text\\",\\"input_settings\\":{\\"input_type\\":\\"input\\",\\"placeholder\\":\\"Test placeholder\\"}},\\"id\\":123,\\"created_datetime\\":\\"2022-01-02T03:04:05.123456+00:00\\",\\"updated_datetime\\":\\"2022-01-02T03:04:05.123456+00:00\\",\\"deactivated_datetime\\":null}",
       "headers": Object {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
@@ -75,7 +75,7 @@ exports[`<EditFieldForm/> should render correctly 1`] = `
       <input
         class="input"
         id="input-text-1"
-        name="name"
+        name="label"
         required=""
         type="text"
         value="Test field"

@@ -71,10 +71,10 @@ export default function FieldForm(props: FieldFormProps) {
                 </div>
             )}
             <InputField
-                name="name"
+                name="label"
                 label="Name"
-                value={form.name}
-                onChange={(val) => setValue('name', val)}
+                value={form.label}
+                onChange={(val) => setValue('label', val)}
                 className={css.formRow}
                 isRequired
             />
@@ -88,8 +88,8 @@ export default function FieldForm(props: FieldFormProps) {
                 className={css.formRow}
             />
             <CheckBox
-                isChecked={form.value_required}
-                onChange={(val) => setValue('value_required', val)}
+                isChecked={form.required}
+                onChange={(val) => setValue('required', val)}
                 className={css.formRow}
             >
                 Required to close ticket
@@ -99,9 +99,9 @@ export default function FieldForm(props: FieldFormProps) {
                     Type
                 </Label>
                 <TypeSelectInput
-                    value={form.value_type_settings.type}
+                    value={form.definition.input_settings.input_type}
                     onChange={(val) =>
-                        setValue('value_type_settings.type', val)
+                        setValue('definition.input_settings.input_type', val)
                     }
                     isDisabled={isCustomField(props.field)}
                 />
@@ -109,13 +109,13 @@ export default function FieldForm(props: FieldFormProps) {
                     Field type can't be changed once it's been saved.
                 </Caption>
             </div>
-            {form.value_type_settings.type === 'text' && (
+            {form.definition.input_settings.input_type === 'input' && (
                 <InputField
                     name="settings.placeholder"
                     label="Placeholder"
-                    value={form.value_type_settings.placeholder}
+                    value={form.definition.input_settings.placeholder}
                     onChange={(val) =>
-                        setValue('value_type_settings.placeholder', val)
+                        setValue('definition.input_settings.placeholder', val)
                     }
                     className={css.formRow}
                 />

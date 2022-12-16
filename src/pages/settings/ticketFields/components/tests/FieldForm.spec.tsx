@@ -30,7 +30,7 @@ describe('<FieldForm/>', () => {
 
     it('should disable the save button if the form is not valid', async () => {
         const props = {
-            field: {...customFieldInput, name: ''},
+            field: {...customFieldInput, label: ''},
             onSubmit: jest.fn(),
             onCancel: jest.fn(),
         }

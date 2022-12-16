@@ -4,16 +4,19 @@ exports[`custom field resources createCustomField should resolve with a new Cust
 Object {
   "created_datetime": "2022-01-02T03:04:05.123456+00:00",
   "deactivated_datetime": null,
-  "entity_type": "ticket",
-  "id": 123,
-  "name": "Test field",
-  "order": 123,
-  "updated_datetime": "2022-01-02T03:04:05.123456+00:00",
-  "value_required": false,
-  "value_type_settings": Object {
-    "placeholder": "Test placeholder",
-    "type": "text",
+  "definition": Object {
+    "data_type": "text",
+    "input_settings": Object {
+      "input_type": "input",
+      "placeholder": "Test placeholder",
+    },
   },
+  "id": 123,
+  "label": "Test field",
+  "object_type": "Ticket",
+  "priority": 123,
+  "required": false,
+  "updated_datetime": "2022-01-02T03:04:05.123456+00:00",
 }
 `;
 
@@ -27,7 +30,7 @@ Object {
   "patch": Array [],
   "post": Array [
     Object {
-      "data": "{\\"entity_type\\":\\"ticket\\",\\"name\\":\\"Test field\\",\\"order\\":123,\\"value_required\\":false,\\"value_type_settings\\":{\\"type\\":\\"text\\",\\"placeholder\\":\\"Test placeholder\\"}}",
+      "data": "{\\"object_type\\":\\"Ticket\\",\\"label\\":\\"Test field\\",\\"priority\\":123,\\"required\\":false,\\"definition\\":{\\"data_type\\":\\"text\\",\\"input_settings\\":{\\"input_type\\":\\"input\\",\\"placeholder\\":\\"Test placeholder\\"}}}",
       "headers": Object {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
@@ -58,16 +61,19 @@ exports[`custom field resources getCustomField should resolve with an existing C
 Object {
   "created_datetime": "2022-01-02T03:04:05.123456+00:00",
   "deactivated_datetime": null,
-  "entity_type": "ticket",
-  "id": 123,
-  "name": "Test field",
-  "order": 123,
-  "updated_datetime": "2022-01-02T03:04:05.123456+00:00",
-  "value_required": false,
-  "value_type_settings": Object {
-    "placeholder": "Test placeholder",
-    "type": "text",
+  "definition": Object {
+    "data_type": "text",
+    "input_settings": Object {
+      "input_type": "input",
+      "placeholder": "Test placeholder",
+    },
   },
+  "id": 123,
+  "label": "Test field",
+  "object_type": "Ticket",
+  "priority": 123,
+  "required": false,
+  "updated_datetime": "2022-01-02T03:04:05.123456+00:00",
 }
 `;
 
@@ -111,16 +117,19 @@ exports[`custom field resources updateCustomField should resolve with an updated
 Object {
   "created_datetime": "2022-01-02T03:04:05.123456+00:00",
   "deactivated_datetime": null,
-  "entity_type": "ticket",
-  "id": 123,
-  "name": "Test field",
-  "order": 123,
-  "updated_datetime": "2022-01-02T03:04:05.123456+00:00",
-  "value_required": false,
-  "value_type_settings": Object {
-    "placeholder": "Test placeholder",
-    "type": "text",
+  "definition": Object {
+    "data_type": "text",
+    "input_settings": Object {
+      "input_type": "input",
+      "placeholder": "Test placeholder",
+    },
   },
+  "id": 123,
+  "label": "Test field",
+  "object_type": "Ticket",
+  "priority": 123,
+  "required": false,
+  "updated_datetime": "2022-01-02T03:04:05.123456+00:00",
 }
 `;
 
@@ -135,7 +144,7 @@ Object {
   "post": Array [],
   "put": Array [
     Object {
-      "data": "{\\"entity_type\\":\\"ticket\\",\\"name\\":\\"Test field\\",\\"order\\":123,\\"value_required\\":false,\\"value_type_settings\\":{\\"type\\":\\"text\\",\\"placeholder\\":\\"Test placeholder\\"}}",
+      "data": "{\\"object_type\\":\\"Ticket\\",\\"label\\":\\"Test field\\",\\"priority\\":123,\\"required\\":false,\\"definition\\":{\\"data_type\\":\\"text\\",\\"input_settings\\":{\\"input_type\\":\\"input\\",\\"placeholder\\":\\"Test placeholder\\"}}}",
       "headers": Object {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",

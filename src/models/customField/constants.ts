@@ -1,6 +1,6 @@
 export const VALUE_TYPES = [
     {
-        value: 'text',
+        value: 'input',
         icon: 'title',
         name: 'Text',
         description: 'Add descriptions, notes, or other text',

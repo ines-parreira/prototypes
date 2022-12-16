@@ -26,7 +26,7 @@ export default function EditTicketField() {
             })
     }, [id])
 
-    useTitle(field?.name)
+    useTitle(field?.label)
 
     // Only show this page if the ticket fields feature flag is on
     const ticketFieldsEnabled = useFlags()[FeatureFlagKey.TicketFields]
@@ -48,7 +48,7 @@ export default function EditTicketField() {
                                 Ticket fields
                             </Link>
                         </BreadcrumbItem>
-                        <BreadcrumbItem active>{field.name}</BreadcrumbItem>
+                        <BreadcrumbItem active>{field.label}</BreadcrumbItem>
                     </Breadcrumb>
                 }
             />

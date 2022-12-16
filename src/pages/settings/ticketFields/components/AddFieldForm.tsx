@@ -9,20 +9,23 @@ import history from 'pages/history'
 import FieldForm from './FieldForm'
 
 interface AddFieldFormProps {
-    entityType: CustomFieldInput['entity_type']
-    order: number
+    objectType: CustomFieldInput['object_type']
+    priority: number
 }
 
 export default function AddFieldForm(props: AddFieldFormProps) {
     const dispatch = useDispatch()
 
     const newField: CustomFieldInput = {
-        entity_type: props.entityType,
-        name: '',
-        order: props.order,
-        value_required: false,
-        value_type_settings: {
-            type: 'text',
+        object_type: props.objectType,
+        label: '',
+        priority: props.priority,
+        required: false,
+        definition: {
+            data_type: 'text',
+            input_settings: {
+                input_type: 'input',
+            },
         },
     }
 

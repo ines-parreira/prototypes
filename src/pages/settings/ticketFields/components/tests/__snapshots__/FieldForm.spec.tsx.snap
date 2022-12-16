@@ -24,7 +24,7 @@ exports[`<FieldForm/> should render correctly 1`] = `
       <input
         class="input"
         id="input-text-1"
-        name="name"
+        name="label"
         required=""
         type="text"
         value="Test field"
@@ -190,7 +190,7 @@ exports[`<FieldForm/> should show archiving status and disable type change on ed
       <input
         class="input"
         id="input-text-7"
-        name="name"
+        name="label"
         required=""
         type="text"
         value="Test field"

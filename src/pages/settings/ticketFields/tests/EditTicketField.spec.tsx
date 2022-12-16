@@ -52,7 +52,7 @@ describe('<EditTicketField/>', () => {
         )
         expect(container.firstChild).toMatchSnapshot()
 
-        await findByText(customField.name)
+        await findByText(customField.label)
         expect(container.firstChild).toMatchSnapshot()
     })
 })

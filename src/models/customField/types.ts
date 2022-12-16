@@ -1,15 +1,20 @@
-interface CustomFieldSettingsText {
-    type: 'text'
+interface CustomFieldInputSettingsText {
+    input_type: 'input'
     placeholder?: string
 }
 
+interface CustomTypeDefinitionText {
+    data_type: 'text'
+    input_settings: CustomFieldInputSettingsText
+}
+
 export interface CustomFieldInput {
-    entity_type: 'ticket'
-    name: string
+    object_type: 'Ticket'
+    label: string
     description?: string
-    order: number
-    value_required: boolean
-    value_type_settings: CustomFieldSettingsText
+    priority: number
+    required: boolean
+    definition: CustomTypeDefinitionText
 }
 
 export interface CustomField extends CustomFieldInput {

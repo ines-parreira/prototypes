@@ -1,13 +1,16 @@
 import {CustomField, CustomFieldInput} from 'models/customField/types'
 
 export const customFieldInput: CustomFieldInput = {
-    entity_type: 'ticket',
-    name: 'Test field',
-    order: 123,
-    value_required: false,
-    value_type_settings: {
-        type: 'text',
-        placeholder: 'Test placeholder',
+    object_type: 'Ticket',
+    label: 'Test field',
+    priority: 123,
+    required: false,
+    definition: {
+        data_type: 'text',
+        input_settings: {
+            input_type: 'input',
+            placeholder: 'Test placeholder',
+        },
     },
 }
 

@@ -61,7 +61,7 @@ exports[`<AddTicketField/> should render if the account has the feature flag 1`]
             <input
               class="input"
               id="input-text-1"
-              name="name"
+              name="label"
               required=""
               type="text"
               value=""
