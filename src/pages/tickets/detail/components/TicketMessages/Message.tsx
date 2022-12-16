@@ -51,6 +51,7 @@ export default function Message(props: Props) {
                         isOver || props.showMessageStatusIndicator
                     }
                     hideTimestamp={!isOver}
+                    showIntents={isOver}
                 />
             )}
             <Body message={message} hasError={hasError} />

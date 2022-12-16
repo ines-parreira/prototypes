@@ -46,6 +46,7 @@ export default function SourceDetailsHeader(props: Props) {
         isMessageDeleted,
         displayMessageStatusIndicator = false,
         hideTimestamp = false,
+        showIntents = true,
     } = props
 
     const actionHeader = useMemo(() => {
@@ -56,6 +57,7 @@ export default function SourceDetailsHeader(props: Props) {
             return (
                 <SourceDetailsContext.Provider value={{setFocus}}>
                     <SourceActionsHeader
+                        showIntents={showIntents}
                         message={message}
                         collapseActions={collapseActions}
                         collapseIntents={collapseIntents}
@@ -65,7 +67,7 @@ export default function SourceDetailsHeader(props: Props) {
         }
 
         return null
-    }, [isMessageDeleted, message, debouncedWidth])
+    }, [isMessageDeleted, message, debouncedWidth, showIntents])
 
     const infoWidget = useMemo(() => {
         if (message?.meta?.is_duplicated) {

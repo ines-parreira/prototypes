@@ -22,6 +22,7 @@ type Props = {
     message: TicketMessage
     collapseActions?: boolean
     collapseIntents?: boolean
+    showIntents?: boolean
 } & ConnectedProps<typeof connector>
 
 export class SourceActionsHeader extends Component<Props> {
@@ -71,6 +72,7 @@ export class SourceActionsHeader extends Component<Props> {
             collapseActions,
             collapseIntents,
             isCurrentHelpdeskLegacy,
+            showIntents,
         } = this.props
 
         if (!source || !source.type || meta?.is_duplicated) {
@@ -104,11 +106,9 @@ export class SourceActionsHeader extends Component<Props> {
                 ? this._toggleInstagramHideComment(shouldHide)
                 : this._toggleFacebookHideComment(shouldHide)
 
-        const showIntents = !fromAgent
-
         return (
             <div className={css.widgets}>
-                {showIntents && !collapseIntents && (
+                {!fromAgent && showIntents && !collapseIntents && (
                     <IntentsFeedback message={this.props.message} />
                 )}
                 {collapseActions ? (
@@ -117,7 +117,7 @@ export class SourceActionsHeader extends Component<Props> {
                         message={this.props.message}
                         showPrivateReplyAction={showPrivateReplyAction}
                         showHideAction={showHideAction}
-                        showIntentsAction={showIntents}
+                        showIntentsAction={!fromAgent}
                         shouldHide={shouldHide}
                         isFacebookComment={isFacebookComment}
                         toggleHideComment={toggleHideComment}

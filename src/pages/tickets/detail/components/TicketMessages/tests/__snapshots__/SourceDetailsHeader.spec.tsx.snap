@@ -89,6 +89,7 @@ exports[`<SourceDetailsHeader/> should render a \`go to ticket\` link instead of
             "via": "facebook",
           }
         }
+        showIntents={true}
       />
     </ContextProvider>
     <From
@@ -177,6 +178,7 @@ exports[`<SourceDetailsHeader/> should render a DatetimeLabel and the SourceActi
             "via": "facebook",
           }
         }
+        showIntents={true}
       />
     </ContextProvider>
     <Connect(DatetimeLabelContainer)
