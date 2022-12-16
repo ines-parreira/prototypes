@@ -19,7 +19,8 @@ import {SelfServiceConfigurationsState} from './selfServiceConfigurations/types'
 import rules from './rules/reducer'
 import {RulesState} from './rules/types'
 import phoneNumbers from './phoneNumbers/reducer'
-import {PhoneNumbersState} from './phoneNumbers/types'
+import newPhoneNumbers from './phoneNumbers/newReducer'
+import {NewPhoneNumbersState, PhoneNumbersState} from './phoneNumbers/types'
 import ruleRecipes from './ruleRecipes/reducer'
 import {RuleRecipesState} from './ruleRecipes/types'
 import auditLogEvents from './auditLogEvents/reducer'
@@ -36,6 +37,7 @@ const entitiesReducers = combineReducers<{
     selfServiceConfigurations: SelfServiceConfigurationsState
     rules: RulesState
     phoneNumbers: PhoneNumbersState
+    newPhoneNumbers: NewPhoneNumbersState
     ruleRecipes: RuleRecipesState
     auditLogEvents: AuditLogEventsState
 }>({
@@ -50,6 +52,7 @@ const entitiesReducers = combineReducers<{
     helpCenter,
     selfServiceConfigurations,
     phoneNumbers,
+    newPhoneNumbers,
     auditLogEvents,
 })
 

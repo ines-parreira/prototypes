@@ -14,4 +14,5 @@ export const entitiesInitialState: RootState['entities'] = {
     helpCenter: helpCenterInitialState,
     selfServiceConfigurations: {},
     phoneNumbers: {},
+    newPhoneNumbers: {},
 }

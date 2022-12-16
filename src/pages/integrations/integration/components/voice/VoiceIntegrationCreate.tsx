@@ -7,7 +7,7 @@ import {
     DEFAULT_IVR_SETTINGS,
     DEFAULT_VOICE_MESSAGE,
 } from 'models/integration/constants'
-import {getOldPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
+import {getPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
 import {IntegrationType, VoiceMessageType} from 'models/integration/types'
 import {PhoneFunction} from 'business/twilio'
 import {updateOrCreateIntegration} from 'state/integrations/actions'
@@ -35,7 +35,7 @@ function VoiceIntegrationCreate({
     selectedPhoneNumberId,
     pricingLink,
 }: Props): JSX.Element {
-    const phoneNumbers = useAppSelector(getOldPhoneNumbers)
+    const phoneNumbers = useAppSelector(getPhoneNumbers)
     const [title, setTitle] = useState('')
     const [phoneNumber, setPhoneNumber] = useState<Maybe<OldPhoneNumber>>(null)
     const [emoji, setEmoji] = useState<string | null>(null)

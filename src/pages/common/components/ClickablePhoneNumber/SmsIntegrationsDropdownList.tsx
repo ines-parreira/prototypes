@@ -4,7 +4,7 @@ import parsePhoneNumber from 'libphonenumber-js'
 
 import {OldPhoneNumber} from 'models/phoneNumber/types'
 import {SmsIntegration} from 'models/integration/types'
-import {getOldPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
+import {getPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
 import {TicketMessageSourceType} from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
 import history from 'pages/history'
@@ -22,7 +22,7 @@ const SmsIntegrationsDropdownList = ({
     customerId,
     integrations,
 }: Props) => {
-    const phoneNumbers = useAppSelector(getOldPhoneNumbers)
+    const phoneNumbers = useAppSelector(getPhoneNumbers)
     const toAddress = parsePhoneNumber(address)?.format('E.164') || ''
     const onClick = useCallback(
         (integration: SmsIntegration, phoneNumber: OldPhoneNumber) => {

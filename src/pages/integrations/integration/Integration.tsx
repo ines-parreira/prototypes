@@ -25,7 +25,10 @@ import {
     fetchNewPhoneNumbers,
     fetchPhoneNumbers,
 } from 'models/phoneNumber/resources'
-import {phoneNumbersFetched} from 'state/entities/phoneNumbers/actions'
+import {
+    newPhoneNumbersFetched,
+    phoneNumbersFetched,
+} from 'state/entities/phoneNumbers/actions'
 import {AccountFeature} from 'state/currentAccount/types'
 import {compare} from 'utils'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -231,7 +234,7 @@ export const IntegrationDetail = ({
             }
             const newNumbers = await fetchNewPhoneNumbers()
             if (newNumbers) {
-                dispatch(phoneNumbersFetched(newNumbers.data))
+                dispatch(newPhoneNumbersFetched(newNumbers.data))
             }
         } catch (error) {
             void dispatch(

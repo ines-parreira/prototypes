@@ -1,14 +1,15 @@
 import {createReducer} from '@reduxjs/toolkit'
 
-import {PhoneNumber} from 'models/phoneNumber/types'
+import {NewPhoneNumber, OldPhoneNumber} from 'models/phoneNumber/types'
 
-import {PhoneNumbersState} from './types'
+import {NewPhoneNumbersState, PhoneNumbersState} from './types'
 import {
     phoneNumberCreated,
     phoneNumberDeleted,
     phoneNumberFetched,
     phoneNumberUpdated,
     phoneNumbersFetched,
+    newPhoneNumbersFetched,
 } from './actions'
 
 const initialState: PhoneNumbersState = {}
@@ -30,10 +31,22 @@ const phoneNumbersReducer = createReducer<PhoneNumbersState>(
                 state[payload.id] = payload
             })
             .addCase(phoneNumbersFetched, (state, {payload}) => {
-                payload.map((phoneNumber: PhoneNumber) => {
+                payload.map((phoneNumber: OldPhoneNumber) => {
                     state[phoneNumber.id] = phoneNumber
                 })
             })
+)
+
+const newInitialState: NewPhoneNumbersState = {}
+
+export const newPhoneNumbersReducer = createReducer<NewPhoneNumbersState>(
+    newInitialState,
+    (builder) =>
+        builder.addCase(newPhoneNumbersFetched, (state, {payload}) => {
+            payload.map((phoneNumber: NewPhoneNumber) => {
+                state[phoneNumber.id] = phoneNumber
+            })
+        })
 )
 
 export default phoneNumbersReducer

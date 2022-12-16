@@ -8,7 +8,7 @@ import {
     WhatsAppIntegration,
     isWhatsAppIntegration,
 } from 'models/integration/types'
-import {getPhoneNumber} from 'state/entities/phoneNumbers/selectors'
+import {getNewPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
 import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
@@ -36,7 +36,8 @@ export default function WhatsAppIntegrationPreferences({
     const [title, setTitle] = useState('')
     const [emoji, setEmoji] = useState<string | null>(null)
     const phoneNumberId = integration?.meta?.phone_number_id
-    const phoneNumber = useAppSelector(getPhoneNumber(phoneNumberId))
+    const phoneNumbers = useAppSelector(getNewPhoneNumbers)
+    const phoneNumber = phoneNumbers[phoneNumberId]
     const dispatch = useAppDispatch()
 
     const [{loading: isLoading}, handleSubmit] = useAsyncFn(

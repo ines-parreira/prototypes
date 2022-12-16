@@ -4,8 +4,7 @@ import {sortBy, reverse, startCase} from 'lodash'
 import {OrderDirection} from 'models/api/types'
 import {OldPhoneNumber, PhoneNumber} from 'models/phoneNumber/types'
 import {IntegrationType} from 'models/integration/types'
-import {getOldPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
-import {PhoneNumbersState} from 'state/entities/phoneNumbers/types'
+import {getPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
 import history from 'pages/history'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
@@ -22,8 +21,7 @@ import PhoneNumberTitle from './PhoneNumberTitle'
 import css from './PhoneNumbersList.less'
 
 export function PhoneNumbersList(): JSX.Element | null {
-    const phoneNumbers: PhoneNumbersState<OldPhoneNumber> =
-        useAppSelector(getOldPhoneNumbers)
+    const phoneNumbers = useAppSelector(getPhoneNumbers)
 
     const [orderBy, setOrderBy] = useState<string>('id')
     const [orderDirection, setOrderDirection] = useState<OrderDirection>(

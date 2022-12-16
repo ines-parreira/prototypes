@@ -2,7 +2,7 @@ import React, {useCallback, useState} from 'react'
 import CountryFlag from 'react-country-flag'
 
 import {OldPhoneNumber} from 'models/phoneNumber/types'
-import {getOldPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
+import {getPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
 import {IntegrationType} from 'models/integration/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import SelectFieldDropdownAction from 'pages/common/forms/SelectField/SelectFieldDropdownAction'
@@ -23,7 +23,7 @@ function PhoneNumberSelectField({
     onCreate,
     integrationType,
 }: Props): JSX.Element {
-    const phoneNumbers = useAppSelector(getOldPhoneNumbers)
+    const phoneNumbers = useAppSelector(getPhoneNumbers)
 
     const [isCreateFormVisible, setIsCreateFormVisible] = useState(
         value === '_new'

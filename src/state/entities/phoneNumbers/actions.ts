@@ -1,6 +1,6 @@
 import {createAction} from '@reduxjs/toolkit'
 
-import {PhoneNumber} from 'models/phoneNumber/types'
+import {NewPhoneNumber, OldPhoneNumber} from 'models/phoneNumber/types'
 
 import {
     PHONE_NUMBER_CREATED,
@@ -8,19 +8,23 @@ import {
     PHONE_NUMBER_FETCHED,
     PHONE_NUMBER_UPDATED,
     PHONE_NUMBERS_FETCHED,
+    MEW_PHONE_NUMBERS_FETCHED,
 } from './constants'
 
 export const phoneNumberCreated =
-    createAction<PhoneNumber>(PHONE_NUMBER_CREATED)
+    createAction<OldPhoneNumber>(PHONE_NUMBER_CREATED)
 
 export const phoneNumberDeleted = createAction<number>(PHONE_NUMBER_DELETED)
 
 export const phoneNumberFetched =
-    createAction<PhoneNumber>(PHONE_NUMBER_FETCHED)
+    createAction<OldPhoneNumber>(PHONE_NUMBER_FETCHED)
 
 export const phoneNumberUpdated =
-    createAction<PhoneNumber>(PHONE_NUMBER_UPDATED)
+    createAction<OldPhoneNumber>(PHONE_NUMBER_UPDATED)
 
-export const phoneNumbersFetched = createAction<PhoneNumber[]>(
+export const phoneNumbersFetched = createAction<OldPhoneNumber[]>(
     PHONE_NUMBERS_FETCHED
+)
+export const newPhoneNumbersFetched = createAction<NewPhoneNumber[]>(
+    MEW_PHONE_NUMBERS_FETCHED
 )

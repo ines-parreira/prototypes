@@ -8,7 +8,11 @@ import {
     IntegrationExtra,
     Integration,
 } from 'models/integration/types'
-import {PhoneNumber} from 'models/phoneNumber/types'
+import {
+    NewPhoneNumber,
+    OldPhoneNumber,
+    PhoneNumber,
+} from 'models/phoneNumber/types'
 import {Section} from 'models/section/types'
 import {View} from 'models/view/types'
 import {Account} from 'state/currentAccount/types'
@@ -96,7 +100,8 @@ export type InitialRootState = {
         sections: {[key: string]: Section}
         tags: {[key: string]: Tag}
         views: {[key: string]: View}
-        phoneNumbers: {[key: number]: PhoneNumber}
+        phoneNumbers: {[key: number]: OldPhoneNumber}
+        newPhoneNumbers: {[key: number]: NewPhoneNumber}
     }
     integrations: Map<any, any>
     schemas: Map<any, any>

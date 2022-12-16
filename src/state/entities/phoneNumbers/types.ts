@@ -1,6 +1,10 @@
 import {PayloadActionCreator} from '@reduxjs/toolkit'
 
-import {PhoneNumber} from '../../../models/phoneNumber/types'
+import {
+    NewPhoneNumber,
+    OldPhoneNumber,
+    PhoneNumber,
+} from '../../../models/phoneNumber/types'
 
 import {
     PHONE_NUMBER_CREATED,
@@ -8,13 +12,18 @@ import {
     PHONE_NUMBERS_FETCHED,
 } from './constants'
 
-export type PhoneNumbersState<N extends PhoneNumber = PhoneNumber> = {
-    [key: number]: N
+export type PhoneNumbersState = {
+    [key: number]: OldPhoneNumber
+}
+
+export type NewPhoneNumbersState = {
+    [key: number]: NewPhoneNumber
 }
 
 export type PhoneNumbersAction =
     | PhoneNumberCreatedAction
     | PhoneNumberFetchedAction
+    | PhoneNumbersFetchedAction
     | PhoneNumbersFetchedAction
 
 export type PhoneNumberCreatedAction = PayloadActionCreator<
