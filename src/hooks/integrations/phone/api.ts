@@ -18,6 +18,9 @@ export async function acceptCall(call: Call) {
         const customerName = call.customParameters.get(
             'customer_name'
         ) as string
+        const customerId = parseInt(
+            call.customParameters.get('customer_id') as string
+        )
         const ticketId = parseInt(
             call.customParameters.get('ticket_id') as string
         )
@@ -28,6 +31,7 @@ export async function acceptCall(call: Call) {
             ticket_id: ticketId,
             call_sid: callSid,
             customer: {
+                id: customerId,
                 phone_number: customerPhoneNumber,
                 name: customerName,
             },
