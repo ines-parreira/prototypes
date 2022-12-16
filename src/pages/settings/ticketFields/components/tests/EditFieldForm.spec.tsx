@@ -1,6 +1,8 @@
 import React from 'react'
 import {fireEvent, render, waitFor} from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
+import {DndProvider} from 'react-dnd'
+import {HTML5Backend} from 'react-dnd-html5-backend'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -24,7 +26,9 @@ describe('<EditFieldForm/>', () => {
     it('should render correctly', () => {
         const {container} = render(
             <Provider store={mockStore}>
-                <EditFieldForm field={customField} />
+                <DndProvider backend={HTML5Backend}>
+                    <EditFieldForm field={customField} />
+                </DndProvider>
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
@@ -37,7 +41,9 @@ describe('<EditFieldForm/>', () => {
 
         const {findByText, findByLabelText} = render(
             <Provider store={mockStore}>
-                <EditFieldForm field={customField} />
+                <DndProvider backend={HTML5Backend}>
+                    <EditFieldForm field={customField} />
+                </DndProvider>
             </Provider>
         )
 
@@ -61,7 +67,9 @@ describe('<EditFieldForm/>', () => {
     it('should go back to listing if the cancel button is clicked', async () => {
         const {findByText} = render(
             <Provider store={mockStore}>
-                <EditFieldForm field={customField} />
+                <DndProvider backend={HTML5Backend}>
+                    <EditFieldForm field={customField} />
+                </DndProvider>
             </Provider>
         )
 

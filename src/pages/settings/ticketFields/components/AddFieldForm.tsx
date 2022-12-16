@@ -24,7 +24,8 @@ export default function AddFieldForm(props: AddFieldFormProps) {
         definition: {
             data_type: 'text',
             input_settings: {
-                input_type: 'input',
+                input_type: 'dropdown',
+                choices: [],
             },
         },
     }

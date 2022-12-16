@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DropdownInputRow/> should render correctly 1`] = `
+<div
+  class="input"
+  data-handler-id="T0"
+  style="opacity: 1;"
+>
+  <div
+    class="material-icons dragIndicator"
+    data-testid="dropdown-choice-123-handle"
+    draggable="true"
+  >
+    drag_indicator
+  </div>
+  <div
+    class="wrapper"
+  >
+    <input
+      class="input"
+      data-testid="dropdown-choice-123"
+      id="dropdown-choice-123"
+      name="dropdown-choice-123"
+      type="text"
+      value="Test value"
+    />
+  </div>
+  <button
+    class="wrapper deleteButton wrapper ghost ghost destructive medium"
+    data-testid="dropdown-choice-123-remove"
+    type="button"
+  >
+    <i
+      class="material-icons icon"
+    >
+      clear
+    </i>
+  </button>
+</div>
+`;

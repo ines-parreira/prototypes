@@ -1,5 +1,5 @@
 import React, {FormEvent, useEffect, useRef, useState} from 'react'
-import {set} from 'lodash'
+import {set, pick} from 'lodash'
 
 import {
     CustomField,
@@ -16,11 +16,26 @@ import TextArea from 'pages/common/forms/TextArea'
 
 import css from './FieldForm.less'
 import TypeSelectInput from './TypeSelectInput'
+import DropdownInput from './DropdownInput'
 
 interface FieldFormProps {
     field: CustomField | CustomFieldInput
     onSubmit: (field: CustomFieldInput) => Promise<void>
     onCancel: () => void
+}
+
+const pickMap = {
+    input: ['placeholder'],
+    dropdown: ['choices', 'default'],
+}
+function sanitizeInput(input: CustomFieldInput): CustomFieldInput {
+    input.definition.input_settings = pick(
+        input.definition.input_settings,
+        ['input_type'].concat(
+            pickMap[input.definition.input_settings.input_type]
+        )
+    ) as CustomFieldInput['definition']['input_settings']
+    return input
 }
 
 export default function FieldForm(props: FieldFormProps) {
@@ -44,7 +59,7 @@ export default function FieldForm(props: FieldFormProps) {
 
         setIsLoading(true)
         try {
-            await props.onSubmit(form)
+            await props.onSubmit(sanitizeInput(form))
         } catch (e) {
             console.error('Custom field error', e)
         } finally {
@@ -119,6 +134,23 @@ export default function FieldForm(props: FieldFormProps) {
                     }
                     className={css.formRow}
                 />
+            )}
+            {form.definition.input_settings.input_type === 'dropdown' && (
+                <div className={css.formRow}>
+                    <Label
+                        htmlFor="settings.choices"
+                        className={css.formLabel}
+                        isRequired
+                    >
+                        Dropdown choices
+                    </Label>
+                    <DropdownInput
+                        value={form.definition.input_settings.choices}
+                        onChange={(val) =>
+                            setValue('definition.input_settings.choices', val)
+                        }
+                    />
+                </div>
             )}
 
             <div className={css.buttons}>

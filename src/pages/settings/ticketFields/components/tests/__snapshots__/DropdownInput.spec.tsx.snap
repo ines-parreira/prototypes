@@ -1,0 +1,137 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DropdownInput/> should render correctly 1`] = `
+<div>
+  <div
+    class="input"
+    data-handler-id="T0"
+    style="opacity: 1;"
+  >
+    <div
+      class="material-icons dragIndicator"
+      data-testid="dropdown-choice-1-handle"
+      draggable="true"
+    >
+      drag_indicator
+    </div>
+    <div
+      class="wrapper"
+    >
+      <input
+        class="input"
+        data-testid="dropdown-choice-1"
+        id="dropdown-choice-1"
+        name="dropdown-choice-1"
+        type="text"
+        value="Option 1"
+      />
+    </div>
+    <button
+      class="wrapper deleteButton wrapper ghost ghost destructive medium"
+      data-testid="dropdown-choice-1-remove"
+      type="button"
+    >
+      <i
+        class="material-icons icon"
+      >
+        clear
+      </i>
+    </button>
+  </div>
+  <div
+    class="input"
+    data-handler-id="T2"
+    style="opacity: 1;"
+  >
+    <div
+      class="material-icons dragIndicator"
+      data-testid="dropdown-choice-2-handle"
+      draggable="true"
+    >
+      drag_indicator
+    </div>
+    <div
+      class="wrapper"
+    >
+      <input
+        class="input"
+        data-testid="dropdown-choice-2"
+        id="dropdown-choice-2"
+        name="dropdown-choice-2"
+        type="text"
+        value="Option 2"
+      />
+    </div>
+    <button
+      class="wrapper deleteButton wrapper ghost ghost destructive medium"
+      data-testid="dropdown-choice-2-remove"
+      type="button"
+    >
+      <i
+        class="material-icons icon"
+      >
+        clear
+      </i>
+    </button>
+  </div>
+  <div
+    class="input"
+    data-handler-id="T4"
+    style="opacity: 1;"
+  >
+    <div
+      class="material-icons dragIndicator"
+      data-testid="dropdown-choice-3-handle"
+      draggable="true"
+    >
+      drag_indicator
+    </div>
+    <div
+      class="wrapper"
+    >
+      <input
+        class="input"
+        data-testid="dropdown-choice-3"
+        id="dropdown-choice-3"
+        name="dropdown-choice-3"
+        type="text"
+        value="Option 3"
+      />
+    </div>
+    <button
+      class="wrapper deleteButton wrapper ghost ghost destructive medium"
+      data-testid="dropdown-choice-3-remove"
+      type="button"
+    >
+      <i
+        class="material-icons icon"
+      >
+        clear
+      </i>
+    </button>
+  </div>
+  <div
+    class="lastInput"
+    data-handler-id="T6"
+    style="opacity: 1;"
+  >
+    <div
+      class="wrapper"
+    >
+      <input
+        class="input"
+        data-testid="dropdown-choice-4"
+        id="dropdown-choice-4"
+        name="dropdown-choice-4"
+        type="text"
+        value=""
+      />
+    </div>
+  </div>
+  <div
+    class="caption lastInput"
+  >
+    Use :: to separate nesting levels (e.g. Category::Subcategory::Item). Max 5 nesting levels allowed.
+  </div>
+</div>
+`;

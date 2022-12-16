@@ -1,0 +1,33 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .input {
+        display: flex;
+        flex-direction: row;
+        padding-bottom: 8px;
+    }
+
+    .lastInput {
+        margin-left: 20px;
+        margin-right: 36px;
+    }
+
+    .dragIndicator {
+        margin-right: 4px;
+        font-size: 16px;
+        padding: 8px 0;
+        color: @classic-neutral-grey-3;
+
+        &:hover {
+            cursor: grab;
+        }
+
+        &:active {
+            cursor: grabbing;
+        }
+    }
+
+    .deleteButton {
+        margin-left: 4px;
+    }
+}

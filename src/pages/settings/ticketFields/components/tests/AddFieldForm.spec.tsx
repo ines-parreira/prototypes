@@ -1,5 +1,7 @@
 import React from 'react'
 import {fireEvent, render, waitFor} from '@testing-library/react'
+import {DndProvider} from 'react-dnd'
+import {HTML5Backend} from 'react-dnd-html5-backend'
 import MockAdapter from 'axios-mock-adapter'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -24,7 +26,9 @@ describe('<AddFieldForm/>', () => {
     it('should render correctly', () => {
         const {container} = render(
             <Provider store={mockStore}>
-                <AddFieldForm objectType="Ticket" priority={1} />
+                <DndProvider backend={HTML5Backend}>
+                    <AddFieldForm objectType="Ticket" priority={1} />
+                </DndProvider>
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
@@ -35,7 +39,9 @@ describe('<AddFieldForm/>', () => {
 
         const {findByText, findByLabelText} = render(
             <Provider store={mockStore}>
-                <AddFieldForm objectType="Ticket" priority={1} />
+                <DndProvider backend={HTML5Backend}>
+                    <AddFieldForm objectType="Ticket" priority={1} />
+                </DndProvider>
             </Provider>
         )
 
@@ -59,7 +65,9 @@ describe('<AddFieldForm/>', () => {
     it('should go back to listing if the cancel button is clicked', async () => {
         const {findByText} = render(
             <Provider store={mockStore}>
-                <AddFieldForm objectType="Ticket" priority={1} />
+                <DndProvider backend={HTML5Backend}>
+                    <AddFieldForm objectType="Ticket" priority={1} />
+                </DndProvider>
             </Provider>
         )
 

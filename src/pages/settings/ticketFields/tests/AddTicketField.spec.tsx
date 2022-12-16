@@ -1,5 +1,7 @@
 import React from 'react'
 import {render} from '@testing-library/react'
+import {DndProvider} from 'react-dnd'
+import {HTML5Backend} from 'react-dnd-html5-backend'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -17,7 +19,9 @@ describe('<AddTicketField/>', () => {
 
         const {container} = render(
             <Provider store={mockStore}>
-                <AddTicketField />
+                <DndProvider backend={HTML5Backend}>
+                    <AddTicketField />
+                </DndProvider>
             </Provider>
         )
         expect(container.firstChild).toBeNull()
@@ -30,7 +34,9 @@ describe('<AddTicketField/>', () => {
 
         const {container} = render(
             <Provider store={mockStore}>
-                <AddTicketField />
+                <DndProvider backend={HTML5Backend}>
+                    <AddTicketField />
+                </DndProvider>
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()

@@ -3,9 +3,17 @@ interface CustomFieldInputSettingsText {
     placeholder?: string
 }
 
+interface CustomFieldInputSettingsDropdown {
+    input_type: 'dropdown'
+    choices: string[]
+    default?: string
+}
+
 interface CustomTypeDefinitionText {
     data_type: 'text'
-    input_settings: CustomFieldInputSettingsText
+    input_settings:
+        | CustomFieldInputSettingsText
+        | CustomFieldInputSettingsDropdown
 }
 
 export interface CustomFieldInput {
