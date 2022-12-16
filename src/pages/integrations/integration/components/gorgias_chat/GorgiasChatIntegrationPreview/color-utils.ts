@@ -14,9 +14,16 @@ export function getTextColorBasedOnBackground(
         return CONSTRAST_COLORS.LIGHT
     }
 
-    const lightTextContrast = getContrast(mainColor, CONSTRAST_COLORS.LIGHT)
+    try {
+        const lightTextContrast = getContrast(
+            mainColor.trim(),
+            CONSTRAST_COLORS.LIGHT
+        )
 
-    return lightTextContrast >= contrastLevel
-        ? CONSTRAST_COLORS.LIGHT
-        : CONSTRAST_COLORS.DARK
+        return lightTextContrast >= contrastLevel
+            ? CONSTRAST_COLORS.LIGHT
+            : CONSTRAST_COLORS.DARK
+    } catch (err) {
+        return CONSTRAST_COLORS.LIGHT
+    }
 }
