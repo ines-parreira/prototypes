@@ -170,7 +170,12 @@ export function AddVideo({
                     >
                         Cancel
                     </Button>
-                    <a className={css.helpLink} href="#">
+                    <a
+                        className={css.helpLink}
+                        href="https://docs.gorgias.com/en-US/gorgias-chat---video-171049"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
                         See supported providers
                     </a>
                 </div>

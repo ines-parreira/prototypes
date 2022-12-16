@@ -78,7 +78,9 @@ exports[`<AddVideo/> should render the popover when the button is clicked 1`] = 
           </button>
           <a
             class="helpLink"
-            href="#"
+            href="https://docs.gorgias.com/en-US/gorgias-chat---video-171049"
+            rel="noopener noreferrer"
+            target="_blank"
           >
             See supported providers
           </a>
