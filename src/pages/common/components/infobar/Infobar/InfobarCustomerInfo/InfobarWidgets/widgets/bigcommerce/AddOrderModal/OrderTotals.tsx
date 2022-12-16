@@ -19,6 +19,7 @@ type Props = {
         taxes: number
         total: number
     }
+    hasError?: boolean
 }
 
 const dtStyle = {fontWeight: 400}
@@ -28,6 +29,7 @@ export default function OrderTotals({
     consignment,
     onUpdateConsignmentShippingMethod,
     totals: {subTotal, shipping, taxes, total},
+    hasError = false,
 }: Props) {
     const currencyCode =
         integration.meta && integration.meta.currency
@@ -65,6 +67,7 @@ export default function OrderTotals({
                     onUpdateConsignmentShippingMethod={
                         onUpdateConsignmentShippingMethod
                     }
+                    hasError={hasError}
                 />
 
                 <dt className="col-9 mb-2" style={dtStyle}>

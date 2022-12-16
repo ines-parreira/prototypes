@@ -22,6 +22,7 @@ export default function ProductSearchInput<
     searchOnFocus = false,
     onVariantClicked = _noop,
     dataMappers,
+    hasError = false,
 }: {
     className?: string
     autoFocus?: boolean
@@ -32,6 +33,7 @@ export default function ProductSearchInput<
         product: (item: ItemType) => ResultProps
         variants: (item: ItemType, variant: Variant) => ResultProps
     }
+    hasError?: boolean
 }) {
     const {integrationId} = useContext(IntegrationContext)
 
@@ -76,6 +78,7 @@ export default function ProductSearchInput<
             resultLabelPlural="products"
             subResultLabel="variant"
             subResultLabelPlural="variants"
+            hasError={hasError}
         />
     )
 }

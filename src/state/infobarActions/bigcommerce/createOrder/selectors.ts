@@ -23,12 +23,15 @@ export const getCustomerAddresses = (integrationId: Maybe<number>) =>
             }
             if (data && data.size) {
                 const email = data.getIn(['customer', 'email'])
-                const addresses: BigCommerceCustomerAddress[] = toJS(
+                let addresses: BigCommerceCustomerAddress[] = toJS(
                     data.getIn(['customer', 'addresses'], [])
                 )
                 addresses.forEach((address: BigCommerceCustomerAddress) => {
                     address.email = email
                 })
+                addresses = addresses.filter(
+                    (addr) => addr.email && addr.country_code
+                )
                 return addresses
             }
             return []

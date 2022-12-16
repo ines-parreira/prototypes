@@ -1,5 +1,6 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react'
 
+import classnames from 'classnames'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import Button from 'pages/common/components/button/Button'
@@ -127,6 +128,7 @@ type Props = {
     onUpdateConsignmentShippingMethod: (
         selectedShippingMethodId: Maybe<string>
     ) => Promise<void>
+    hasError?: boolean
 }
 
 export function ShippingMethod({
@@ -134,6 +136,7 @@ export function ShippingMethod({
     shippingCost,
     currencyCode,
     onUpdateConsignmentShippingMethod,
+    hasError = false,
 }: Props) {
     const buttonRef = useRef<HTMLButtonElement>(null)
 
@@ -157,7 +160,9 @@ export function ShippingMethod({
             <dt className="col-9 mb-2">
                 <button
                     onClick={onToggle}
-                    className={css.actionButton}
+                    className={classnames(css.actionButton, {
+                        [css.hasError]: hasError,
+                    })}
                     ref={buttonRef}
                 >
                     Add shipping

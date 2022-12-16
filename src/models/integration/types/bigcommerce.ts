@@ -8,6 +8,15 @@ export type BigCommerceIntegration = IntegrationBase & {
     meta: BigCommerceIntegrationMeta
 }
 
+export type CreateOrderValidationResult =
+    | null
+    | undefined
+    | {
+          products?: boolean
+          shippingAddress?: boolean
+          checkout?: boolean
+      }
+
 export type BigCommerceIntegrationMeta = {
     oauth: OAuth2
     store_hash: string
@@ -115,12 +124,15 @@ type BigCommerceBillingAddress = {
     custom_fields: Array<any>
 }
 
+/**
+ * @url https://developer.bigcommerce.com/api-reference/dfbf31248722d-add-consignment-to-checkout#response-body
+ */
 export type BigCommerceCheckout = {
     id: string
     cart: BigCommerceCart
     billing_address: BigCommerceBillingAddress
-    // The response may return array of consignments, if we have multiple shipping addresses
-    // but as we're only allowing to add single shipping address, we are only interested in the
+    // The response returns an array of consignments if we have multiple shipping addresses,
+    // but as we're only allowing to add a single shipping address, we are only interested in the
     // 0th index of `consignments` array
     consignments: [BigCommerceConsignment]
     taxes: Array<{name: string; amount: number}>
@@ -137,6 +149,10 @@ export type BigCommerceCheckout = {
     created_time: string
     updated_time: string
     customer_message: string
+}
+
+export type BigCommerceNestedCheckout = {
+    data: BigCommerceCheckout
 }
 
 export type BigCommerceProduct = {
@@ -196,6 +212,8 @@ export type BigCommerceShippingOption = {
 
 export type BigCommerceConsignment = {
     id: string
+    address: BigCommerceBillingAddress
+    line_item_ids: Array<string>
     available_shipping_options: Array<BigCommerceShippingOption>
     selected_shipping_option: Maybe<BigCommerceShippingOption>
 }
@@ -215,15 +233,31 @@ export type BigCommerceUpsertConsignmentPayload =
     | BigCommerceCreateConsignmentPayload
     | {shipping_option_id: string}
 
-/**
- * @url https://developer.bigcommerce.com/api-reference/dfbf31248722d-add-consignment-to-checkout#response-body
- */
-export type BigCommerceCreateConsignmentResponse = BigCommerceCheckout
-
-export type BigCommerceUpdateConsignmentResponse = {
-    data: BigCommerceCreateConsignmentResponse
+export enum BigCommerceActionType {
+    CreateOrder = 'bigcommerceCreateOrder',
 }
 
-export enum BigCommerceActionType {
-    CreateOrder = 'bigCommerceCreateOrder',
+export enum OrderStatusIDType {
+    incomplete = 0,
+    pending = 1,
+    shipped = 2,
+    partially_shipped = 3,
+    refunded = 4,
+    cancelled = 5,
+    declined = 6,
+    awaiting_payment = 7,
+    awaiting_pickup = 8,
+    awaiting_shipment = 9,
+    completed = 10,
+    awaiting_fulfillment = 11,
+    manual_verification_required = 12,
+    disputed = 13,
+    partially_refunded = 14,
+}
+
+export enum OrderPaymentMethodType {
+    credit_card = 'Credit Card',
+    cash = 'Cash',
+    test_payment_gateway = 'Test Payment Gateway',
+    manual = 'Manual',
 }

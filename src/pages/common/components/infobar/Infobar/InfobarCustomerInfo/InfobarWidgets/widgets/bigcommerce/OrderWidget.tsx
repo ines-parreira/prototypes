@@ -60,6 +60,7 @@ const statusColors: Record<string, ColorType> = {
     declined: ColorType.Error,
     awaiting_payment: ColorType.Warning,
     awaiting_pickup: ColorType.Warning,
+    awaiting_shipment: ColorType.Warning,
     completed: ColorType.Success,
     awaiting_fulfillment: ColorType.Warning,
     manual_verification_required: ColorType.Warning,

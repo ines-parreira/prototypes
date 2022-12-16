@@ -9,6 +9,7 @@ import React, {
 import classnames from 'classnames'
 
 import produce from 'immer'
+import {useUpdateEffect} from 'react-use'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
@@ -29,6 +30,7 @@ import {
     BigCommerceCheckout,
     BigCommerceCustomer,
     BigCommerceActionType,
+    CreateOrderValidationResult,
 } from 'models/integration/types'
 import {getIntegrationsByType} from 'state/integrations/selectors'
 import useAppSelector from 'hooks/useAppSelector'
@@ -37,9 +39,13 @@ import Loader from 'pages/common/components/Loader/Loader'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import {getCustomerAddresses} from 'state/infobarActions/bigcommerce/createOrder/selectors'
 import Tip from 'pages/common/components/tip/Tip'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {CustomerContext} from 'providers/infobar/CustomerContext'
 import OrderTable from './OrderTable'
 import OrderTotals from './OrderTotals'
 import {
+    checkShippingAddressValidity,
+    checkCheckoutValidity,
     addCheckoutBillingAddress,
     addRow,
     onCancel,
@@ -49,6 +55,8 @@ import {
     updateCheckoutConsignmentShippingMethod,
     updateRow,
     upsertCheckoutConsignment,
+    bigcommerceCreateOrder,
+    checkProductsValidity,
 } from './utils'
 
 import css from './OrderModal.less'
@@ -56,15 +64,48 @@ import {ShippingAddressesDropdown} from './ShippingAddressesDropdown'
 
 type Props = {
     integration: BigCommerceIntegration
+    customerId?: Maybe<number>
     shippingAddresses: BigCommerceCustomerAddress[]
 } & ConnectedProps
+
+const useValidationStatus = (
+    products: Maybe<Map<number, BigCommerceProduct>>,
+    shippingAddress: Maybe<BigCommerceCustomerAddress>,
+    cart: Maybe<BigCommerceCart>,
+    checkout: Maybe<BigCommerceCheckout>
+) => {
+    const [validationStatus, setvalidationStatus] =
+        useState<CreateOrderValidationResult>(undefined)
+
+    useUpdateEffect(() => {
+        setvalidationStatus((errors) => ({
+            ...errors,
+            products: checkProductsValidity(products),
+        }))
+    }, [products])
+
+    useUpdateEffect(() => {
+        setvalidationStatus((errors) => ({
+            ...errors,
+            shippingAddress: checkShippingAddressValidity(shippingAddress),
+        }))
+    }, [shippingAddress])
+
+    useUpdateEffect(() => {
+        setvalidationStatus((errors) => ({
+            ...errors,
+            checkout: checkCheckoutValidity(checkout),
+        }))
+    }, [checkout])
+
+    return {validationStatus, setvalidationStatus}
+}
 
 export const useCheckout = ({integrationId}: {integrationId: number}) => {
     const [shippingAddress, setShippingAddress] =
         useState<Maybe<BigCommerceCustomerAddress>>(null)
     const [cart, setCart] = useState<Maybe<BigCommerceCart>>(null)
     const [checkout, setCheckout] = useState<Maybe<BigCommerceCheckout>>(null)
-
     const consignment = checkout?.consignments[0] ?? null
 
     const updateConsignment = async ({
@@ -130,6 +171,8 @@ export const useCheckout = ({integrationId}: {integrationId: number}) => {
                 cart: checkout.cart,
                 address: newSelectedAddress,
             })
+
+            setCheckout(checkout)
         }
     }
 
@@ -188,6 +231,7 @@ export const useCheckout = ({integrationId}: {integrationId: number}) => {
 
     return {
         cart: checkout ? checkout.cart : cart,
+        checkout,
         consignment,
         totals,
         shippingAddress,
@@ -199,14 +243,18 @@ export const useCheckout = ({integrationId}: {integrationId: number}) => {
 
 export function OrderModal({
     integration,
+    customerId,
     shippingAddresses,
     data = {actionName: null, customer: null},
     onClose,
 }: Props) {
+    const dispatch = useAppDispatch()
+
     const [isLoading, setIsLoading] = useState(false)
 
     const {
         cart,
+        checkout,
         consignment,
         totals,
         shippingAddress,
@@ -219,6 +267,13 @@ export function OrderModal({
 
     const [products, setProducts] = useState<Map<number, BigCommerceProduct>>(
         new Map()
+    )
+
+    const {validationStatus, setvalidationStatus} = useValidationStatus(
+        products,
+        shippingAddress,
+        cart,
+        checkout
     )
 
     const [note, setNote] = useState('')
@@ -242,14 +297,66 @@ export function OrderModal({
         onReset({setCart, setProducts, setComment, setNote})
     }, [setCart])
 
-    const handleCancel = useCallback(
-        (via: string) => () => {
-            onClose()
+    const handleCancel = (via: string, deleteCart = true) => {
+        onClose()
+        if (deleteCart) {
             onCancel({integrationId: integration.id, via, cart, setCart})
-            handleReset()
-        },
-        [cart, handleReset, integration.id, onClose, setCart]
-    )
+        }
+        handleReset()
+    }
+
+    const handleAddOrder = () => {
+        let orderIsValid = true
+
+        if (validationStatus?.checkout) {
+            bigcommerceCreateOrder(
+                dispatch,
+                integration,
+                customerId?.toString(),
+                cart,
+                note,
+                comment
+            )
+
+            handleCancel('create-order', false)
+            return
+        }
+
+        if (
+            validationStatus?.products === undefined ||
+            !validationStatus.products
+        ) {
+            setvalidationStatus((errors) => ({
+                ...errors,
+                products: false,
+            }))
+            orderIsValid = false
+        }
+        if (
+            validationStatus?.shippingAddress === undefined ||
+            !validationStatus.shippingAddress
+        ) {
+            setvalidationStatus((errors) => ({
+                ...errors,
+                shippingAddress: false,
+            }))
+            orderIsValid = false
+        }
+        if (
+            validationStatus?.checkout === undefined ||
+            !validationStatus.checkout
+        ) {
+            setvalidationStatus((errors) => ({
+                ...errors,
+                checkout: false,
+            }))
+            orderIsValid = false
+        }
+
+        if (!orderIsValid) {
+            return
+        }
+    }
 
     useEffect(() => {
         if (data.customer) {
@@ -275,7 +382,7 @@ export function OrderModal({
             isOpen
             isScrollable={true}
             isClosable={false}
-            onClose={handleCancel('header')}
+            onClose={() => handleCancel('header')}
             size="medium"
         >
             <ModalHeader title="Add order" />
@@ -305,6 +412,7 @@ export function OrderModal({
                     <div className={css.relative}>
                         <ProductSearchInput
                             className={css.searchInput}
+                            hasError={validationStatus?.products === false}
                             dataMappers={bigcommerceDataMappers}
                             onVariantClicked={(
                                 item: IntegrationDataItem<BigCommerceProduct>,
@@ -323,7 +431,12 @@ export function OrderModal({
                             }}
                         />
                         {!hasItemsInCart && (
-                            <p className={css.searchbarInfo}>
+                            <p
+                                className={classnames(css.searchbarInfo, {
+                                    [css.hasError]:
+                                        validationStatus?.products === false,
+                                })}
+                            >
                                 This order is currently empty. Add products
                                 using the search above.
                             </p>
@@ -374,12 +487,14 @@ export function OrderModal({
                             onUpdateConsignmentShippingMethod={
                                 onUpdateConsignmentShippingMethod
                             }
+                            hasError={validationStatus?.checkout === false}
                         />
                     )}
                     <ShippingAddressesDropdown
                         shippingAddress={shippingAddress}
                         shippingAddresses={shippingAddresses}
                         onSelectAddress={onSelectAddress}
+                        hasError={validationStatus?.shippingAddress === false}
                     />
                     <p className={css.subsection}>Comments & Notes</p>
                     <div>
@@ -408,13 +523,17 @@ export function OrderModal({
             </div>
             <ModalFooter className={css.wrapper}>
                 <div className={css.actions}>
-                    <Button intent="primary" tabIndex={0}>
+                    <Button
+                        intent="primary"
+                        tabIndex={0}
+                        onClick={handleAddOrder}
+                    >
                         Add order
                     </Button>
                     <Button
                         tabIndex={0}
                         intent="secondary"
-                        onClick={handleCancel('footer')}
+                        onClick={() => handleCancel('footer')}
                     >
                         Cancel
                     </Button>
@@ -433,6 +552,7 @@ type ConnectedProps = {
 
 export default function OrderModalRenderWrapper(props: ConnectedProps) {
     const {integrationId} = useContext(IntegrationContext)
+    const {customerId} = useContext(CustomerContext)
 
     const integrations = useAppSelector(
         getIntegrationsByType(IntegrationType.BigCommerce)
@@ -458,6 +578,7 @@ export default function OrderModalRenderWrapper(props: ConnectedProps) {
         <OrderModal
             {...props}
             integration={integration as BigCommerceIntegration}
+            customerId={customerId}
             shippingAddresses={shippingAddresses}
         />
     )

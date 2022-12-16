@@ -17,7 +17,14 @@ import {
     BigCommerceCustomer,
     BigCommerceProduct,
     BigCommerceProductVariant,
+    BigCommerceCheckout,
+    BigCommerceIntegration,
+    BigCommerceActionType,
+    OrderStatusIDType,
+    OrderPaymentMethodType,
 } from 'models/integration/types'
+import {StoreDispatch} from 'state/types'
+import {executeAction} from 'state/infobar/actions'
 
 export const onInit = async ({
     customer,
@@ -383,6 +390,84 @@ export const updateCheckoutConsignmentShippingMethod = async ({
             shipping_option_id: shippingMethodId,
         },
     })
+}
+
+export function checkProductsValidity(
+    products: Maybe<Map<number, BigCommerceProduct>>
+) {
+    if (!products) {
+        return false
+    }
+
+    return !!products?.size
+}
+
+export function checkShippingAddressValidity(
+    shippingAddress: Maybe<BigCommerceCustomerAddress>
+) {
+    return !!(shippingAddress?.email && shippingAddress?.country_code)
+}
+
+export function checkCheckoutValidity(checkout: Maybe<BigCommerceCheckout>) {
+    if (
+        !(
+            checkout &&
+            checkout.cart?.line_items &&
+            checkout.billing_address?.email &&
+            checkout.billing_address?.country_code
+        )
+    ) {
+        return false
+    }
+
+    if (
+        checkout.cart.line_items?.digital_items?.length &&
+        !checkout.cart.line_items?.physical_items?.length
+    ) {
+        // Cart contains only digital products -> there are no consignments in checkout
+        return true
+    }
+
+    return !!(
+        (checkout.cart.line_items?.physical_items?.length ||
+            checkout.cart.line_items?.digital_items?.length) &&
+        checkout.consignments?.length &&
+        checkout.consignments[0].line_item_ids?.length &&
+        checkout.consignments[0].address?.email &&
+        checkout.consignments[0].address?.country_code &&
+        checkout.consignments[0].selected_shipping_option
+    )
+}
+
+/**
+ * Send a bigcommerceCreateAction that will result in creating an order in BigCommerce
+ * Note: The BigCommerce cart ID and checkout ID are the same.
+ * @url https://developer.bigcommerce.com/api-reference/07d6082e99052-get-a-checkout
+ */
+export function bigcommerceCreateOrder(
+    dispatch: StoreDispatch,
+    integration: BigCommerceIntegration,
+    customerId: Maybe<string>,
+    cart: Maybe<BigCommerceCart>,
+    note: string,
+    comment: string
+) {
+    dispatch(
+        executeAction({
+            actionName: BigCommerceActionType.CreateOrder,
+            integrationId: integration.id,
+            customerId: customerId?.toString(),
+            payload: {
+                bigcommerce_checkout_id: cart?.id,
+                bigcommerce_order_payload: {
+                    status_id: OrderStatusIDType.awaiting_fulfillment,
+                    staff_notes: note,
+                    customer_message: comment,
+                    payment_method: OrderPaymentMethodType.manual,
+                },
+            },
+        })
+    )
 }
 
 export const exportedForTesting = {

@@ -35,6 +35,7 @@ type Props<ResultType, SubResultType> = {
     resultLabelPlural: string
     subResultLabel: string
     subResultLabelPlural: string
+    hasError?: boolean
 }
 
 type State<ResultType extends SearchResultType, SubResultType> = {
@@ -64,6 +65,7 @@ export default class SearchInput<
         resultLabelPlural: 'results',
         subResultLabel: 'sub result',
         subResultLabelPlural: 'sub results',
+        hasError: false,
     }
 
     state: State<ResultType, SubResultType> = {
@@ -342,7 +344,7 @@ export default class SearchInput<
     }
 
     render() {
-        const {className, placeholder, renderSubResult} = this.props
+        const {className, placeholder, renderSubResult, hasError} = this.props
         const {filter, isLoading, isOpen, subResults} = this.state
 
         return (
@@ -364,6 +366,7 @@ export default class SearchInput<
                         onFocus={this._onFocus}
                         placeholder={placeholder}
                         ref={this._saveInputRef}
+                        hasError={hasError}
                         suffix={
                             <IconInput
                                 icon={isLoading ? 'more_horiz' : 'search'}

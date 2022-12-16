@@ -8,8 +8,7 @@ import {
     BigCommerceCheckout,
     BigCommerceCreateConsignmentPayload,
     BigCommerceUpsertConsignmentPayload,
-    BigCommerceCreateConsignmentResponse,
-    BigCommerceUpdateConsignmentResponse,
+    BigCommerceNestedCheckout,
 } from '../types'
 
 export async function createBigCommerceCart(
@@ -145,19 +144,15 @@ export async function createBigCommerceCheckoutConsignment({
     integrationId: number
     cartId: string
     payload: Array<BigCommerceCreateConsignmentPayload>
-}) {
+}): Promise<BigCommerceCheckout> {
     const url = '/integrations/bigcommerce/order/checkout-consignment/'
 
-    const response = await client.post<BigCommerceCreateConsignmentResponse>(
-        url,
-        payload,
-        {
-            params: {
-                integration_id: integrationId,
-                checkout_id: cartId,
-            },
-        }
-    )
+    const response = await client.post<BigCommerceCheckout>(url, payload, {
+        params: {
+            integration_id: integrationId,
+            checkout_id: cartId,
+        },
+    })
 
     return response.data
 }
@@ -172,20 +167,16 @@ export async function updateBigCommerceCheckoutConsignment({
     cartId: string
     consignmentId: string
     payload: BigCommerceUpsertConsignmentPayload
-}) {
+}): Promise<BigCommerceCheckout> {
     const url = '/integrations/bigcommerce/order/checkout-consignment/'
 
-    const response = await client.put<BigCommerceUpdateConsignmentResponse>(
-        url,
-        payload,
-        {
-            params: {
-                integration_id: integrationId,
-                checkout_id: cartId,
-                consignment_id: consignmentId,
-            },
-        }
-    )
+    const response = await client.put<BigCommerceNestedCheckout>(url, payload, {
+        params: {
+            integration_id: integrationId,
+            checkout_id: cartId,
+            consignment_id: consignmentId,
+        },
+    })
 
     return response.data.data
 }

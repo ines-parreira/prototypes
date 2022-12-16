@@ -1,4 +1,5 @@
 import React, {useRef, useState} from 'react'
+import classnames from 'classnames'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import Label from 'pages/common/forms/Label/Label'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
@@ -18,12 +19,14 @@ type Props = {
     onSelectAddress: (
         selectedAddress: BigCommerceCustomerAddress
     ) => Promise<void>
+    hasError?: boolean
 }
 
 export function ShippingAddressesDropdown({
     shippingAddress,
     shippingAddresses,
     onSelectAddress,
+    hasError = false,
 }: Props) {
     const selectRef = useRef(null)
     const floatingSelectRef = useRef(null)
@@ -40,6 +43,7 @@ export function ShippingAddressesDropdown({
             </Label>
             <SelectInputBox
                 ref={selectRef}
+                hasError={hasError}
                 floating={floatingSelectRef}
                 onToggle={setIsSelectOpen}
                 placeholder={'Select from address book...'}
@@ -124,8 +128,14 @@ export function ShippingAddressesDropdown({
                     )}
                 </SelectInputBoxContext.Consumer>
             </SelectInputBox>
-            <p className={cssOrderModal.infoText}>
-                Same address will be used for billing address.
+            <p
+                className={classnames(cssOrderModal.infoText, {
+                    [cssOrderModal.hasError]: hasError,
+                })}
+            >
+                {hasError
+                    ? 'Please fill out this field.'
+                    : 'Same address will be used for billing address.'}
             </p>
         </div>
     )

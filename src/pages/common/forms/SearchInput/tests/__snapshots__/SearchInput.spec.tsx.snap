@@ -21,6 +21,7 @@ exports[`<SearchInput/> render() should render a closed dropdown because input i
     tag="div"
   >
     <ForwardRef(TextInput)
+      hasError={false}
       onChange={[Function]}
       onFocus={[Function]}
       onKeyDown={[Function]}
@@ -71,6 +72,7 @@ exports[`<SearchInput/> render() should render a closed dropdown because input i
     tag="div"
   >
     <ForwardRef(TextInput)
+      hasError={false}
       onChange={[Function]}
       onFocus={[Function]}
       onKeyDown={[Function]}
@@ -121,6 +123,7 @@ exports[`<SearchInput/> render() should render an open dropdown because input is
     tag="div"
   >
     <ForwardRef(TextInput)
+      hasError={false}
       onChange={[Function]}
       onFocus={[Function]}
       onKeyDown={[Function]}
@@ -222,6 +225,7 @@ exports[`<SearchInput/> render() should render sub results 1`] = `
     tag="div"
   >
     <ForwardRef(TextInput)
+      hasError={false}
       onChange={[Function]}
       onFocus={[Function]}
       onKeyDown={[Function]}
