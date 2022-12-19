@@ -32,6 +32,7 @@ describe('ShippingMethod', () => {
                 }
                 currencyCode="USD"
                 shippingCost={77}
+                hasShippingAddress={false}
             />
         )
 
@@ -48,6 +49,7 @@ describe('ShippingMethod', () => {
                 }
                 currencyCode="USD"
                 shippingCost={77}
+                hasShippingAddress
             />
         )
 

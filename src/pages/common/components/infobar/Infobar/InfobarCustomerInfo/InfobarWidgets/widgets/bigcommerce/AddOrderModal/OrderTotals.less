@@ -11,9 +11,18 @@
         background: none;
         padding: 0;
 
+        &:disabled {
+            color: @classic-neutral-grey-3;
+            cursor: default;
+        }
+
         &.hasError {
             color: @classic-feedback-error;
         }
+    }
+
+    .tooltipBoldText {
+        font-weight: 700;
     }
 
     .dropdownBody {
@@ -54,5 +63,34 @@
         color: @classic-neutral-grey-4;
         text-align: center;
         font-weight: 500;
+    }
+
+    .descriptionLineContainer {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+    }
+
+    .descriptionTitle {
+        .body-medium();
+        font-weight: 500;
+    }
+
+    .descriptionValue {
+        .body-semibold();
+        margin-bottom: 0;
+
+        &.descriptionValueDisabled {
+            color: @classic-neutral-grey-3;
+        }
+
+        &.descriptionValueZero {
+            color: @classic-neutral-grey-4;
+        }
+    }
+
+    .totalLineContainer {
+        border-top: 1px solid @classic-neutral-grey-3;
+        padding-top: 0.5rem;
     }
 }

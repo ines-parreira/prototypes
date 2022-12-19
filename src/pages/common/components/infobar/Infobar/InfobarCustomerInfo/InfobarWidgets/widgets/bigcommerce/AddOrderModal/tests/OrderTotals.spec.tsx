@@ -22,6 +22,7 @@ describe('<OrderTotals/>', () => {
                         taxes: 15.6,
                         total: 93.6,
                     }}
+                    hasShippingAddress
                 />
             )
 

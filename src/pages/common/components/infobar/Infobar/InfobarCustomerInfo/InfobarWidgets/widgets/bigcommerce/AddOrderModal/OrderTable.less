@@ -12,18 +12,36 @@
                 color: @classic-neutral-grey-4;
                 border-bottom: 0;
                 box-shadow: inset 0px -1px 0px @classic-neutral-grey-2;
+
+                &:first-of-type {
+                    padding-left: 0;
+                }
+
+                &:last-of-type {
+                    padding-right: 0;
+                }
             }
         }
 
         tbody {
-            td {
-                font-weight: 500;
-                font-size: 14px;
-                color: @classic-neutral-grey-6;
-                padding-top: 5px;
-                padding-bottom: 5px;
-                vertical-align: middle;
-                min-height: 66px;
+            tr {
+                td {
+                    font-weight: 500;
+                    font-size: 14px;
+                    color: @classic-neutral-grey-6;
+                    padding-top: 5px;
+                    padding-bottom: 5px;
+                    vertical-align: middle;
+                    min-height: 66px;
+
+                    &:first-of-type {
+                        padding-left: 0;
+                    }
+
+                    &:last-of-type {
+                        padding-right: 0;
+                    }
+                }
             }
         }
 

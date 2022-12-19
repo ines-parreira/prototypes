@@ -3,7 +3,7 @@
 exports[`<OrderLineItemRow/> render() should render 1`] = `
 <tr>
   <td
-    class="container"
+    class="descriptionCol"
   >
     <div
       class="imgContainer"
@@ -30,15 +30,11 @@ exports[`<OrderLineItemRow/> render() should render 1`] = `
       <div
         class="subtitle"
       >
-        <div
-          class="numberCol"
+        <span
+          class="text-muted"
         >
-          <span
-            class="text-muted"
-          >
-            N/A
-          </span>
-        </div>
+          N/A
+        </span>
       </div>
     </div>
   </td>
@@ -83,17 +79,9 @@ exports[`<OrderLineItemRow/> render() should render 1`] = `
   <td
     class="numberCol"
   >
-    <div
-      class="d-flex"
-    >
-      <strong
-        class="mt-auto mb-auto mr-auto"
-      >
-        <span>
-          $78.00
-        </span>
-      </strong>
-    </div>
+    <span>
+      $78.00
+    </span>
   </td>
 </tr>
 `;
@@ -101,7 +89,7 @@ exports[`<OrderLineItemRow/> render() should render 1`] = `
 exports[`<OrderLineItemRow/> render() should render with the default image 1`] = `
 <tr>
   <td
-    class="container"
+    class="descriptionCol"
   >
     <div
       class="imgContainer"
@@ -128,15 +116,11 @@ exports[`<OrderLineItemRow/> render() should render with the default image 1`] =
       <div
         class="subtitle"
       >
-        <div
-          class="numberCol"
+        <span
+          class="text-muted"
         >
-          <span
-            class="text-muted"
-          >
-            N/A
-          </span>
-        </div>
+          N/A
+        </span>
       </div>
     </div>
   </td>
@@ -181,17 +165,9 @@ exports[`<OrderLineItemRow/> render() should render with the default image 1`] =
   <td
     class="numberCol"
   >
-    <div
-      class="d-flex"
-    >
-      <strong
-        class="mt-auto mb-auto mr-auto"
-      >
-        <span>
-          $78.00
-        </span>
-      </strong>
-    </div>
+    <span>
+      $78.00
+    </span>
   </td>
 </tr>
 `;
@@ -199,7 +175,7 @@ exports[`<OrderLineItemRow/> render() should render with the default image 1`] =
 exports[`<OrderLineItemRow/> render() should render without quantity and without price 1`] = `
 <tr>
   <td
-    class="container"
+    class="descriptionCol"
   >
     <div
       class="imgContainer"
@@ -226,15 +202,11 @@ exports[`<OrderLineItemRow/> render() should render without quantity and without
       <div
         class="subtitle"
       >
-        <div
-          class="numberCol"
+        <span
+          class="text-muted"
         >
-          <span
-            class="text-muted"
-          >
-            N/A
-          </span>
-        </div>
+          N/A
+        </span>
       </div>
     </div>
   </td>
@@ -279,17 +251,9 @@ exports[`<OrderLineItemRow/> render() should render without quantity and without
   <td
     class="numberCol"
   >
-    <div
-      class="d-flex"
-    >
-      <strong
-        class="mt-auto mb-auto mr-auto"
-      >
-        <span>
-          $78.00
-        </span>
-      </strong>
-    </div>
+    <span>
+      $78.00
+    </span>
   </td>
 </tr>
 `;

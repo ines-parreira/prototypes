@@ -13,11 +13,7 @@ type Props = {
     lineItem: BigCommerceCartLineItem
     storeHash: string
 }
-const StockNotAvailable = () => (
-    <div className={css.numberCol}>
-        <span className="text-muted">N/A</span>
-    </div>
-)
+const StockNotAvailable = () => <span className="text-muted">N/A</span>
 
 export default function ProductComponent({
     product,
@@ -86,7 +82,7 @@ export default function ProductComponent({
         }
 
         return (
-            <div className={css.numberCol}>
+            <div>
                 <ProductStockQuantity
                     value={
                         product.inventory_tracking === 'variant'
@@ -99,7 +95,7 @@ export default function ProductComponent({
     }, [product, lineItem])
 
     return (
-        <td className={css.container}>
+        <td className={css.descriptionCol}>
             <div className={css.imgContainer}>{renderImage()}</div>
             <div className={css.legend}>
                 {renderTitle()}

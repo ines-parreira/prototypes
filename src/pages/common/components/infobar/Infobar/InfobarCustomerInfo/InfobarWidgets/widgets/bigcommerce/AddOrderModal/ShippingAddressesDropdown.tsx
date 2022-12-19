@@ -34,11 +34,8 @@ export function ShippingAddressesDropdown({
 
     return (
         <div>
-            <p className={`${cssOrderModal.subsection} mt-4`}>Fulfillment</p>
-            <Label
-                className={`${cssOrderModal.subsectionSmall} mb-2`}
-                isRequired
-            >
+            <p className="heading-section-semibold mt-4">Fulfillment</p>
+            <Label className={cssOrderModal.label} isRequired>
                 Shipping address
             </Label>
             <SelectInputBox
@@ -129,7 +126,7 @@ export function ShippingAddressesDropdown({
                 </SelectInputBoxContext.Consumer>
             </SelectInputBox>
             <p
-                className={classnames(cssOrderModal.infoText, {
+                className={classnames(cssOrderModal.caption, {
                     [cssOrderModal.hasError]: hasError,
                 })}
             >

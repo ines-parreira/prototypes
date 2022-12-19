@@ -1,4 +1,5 @@
 import React from 'react'
+import classnames from 'classnames'
 import {
     BigCommerceIntegration,
     BigCommerceConsignment,
@@ -6,13 +7,15 @@ import {
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import {ShippingMethod} from './ShippingMethod'
 
+import css from './OrderTotals.less'
+
 type Props = {
     consignment: Maybe<BigCommerceConsignment>
     integration: BigCommerceIntegration
+    hasShippingAddress: boolean
     onUpdateConsignmentShippingMethod: (
         selectedShippingMethodId: Maybe<string>
     ) => Promise<void>
-
     totals: {
         subTotal: number
         shipping: number
@@ -22,11 +25,35 @@ type Props = {
     hasError?: boolean
 }
 
-const dtStyle = {fontWeight: 400}
+const TotalLine = ({
+    label,
+    value,
+    currencyCode,
+}: {
+    label: string
+    value: number
+    currencyCode: string | null
+}) => (
+    <div className={css.descriptionLineContainer}>
+        <dt className={css.descriptionTitle}>{label}</dt>
+        <dd
+            className={classnames(css.descriptionValue, {
+                [css.descriptionValueZero]: value === 0,
+            })}
+        >
+            <MoneyAmount
+                amount={String(value)}
+                currencyCode={currencyCode}
+                renderIfZero
+            />
+        </dd>
+    </div>
+)
 
 export default function OrderTotals({
     integration,
     consignment,
+    hasShippingAddress,
     onUpdateConsignmentShippingMethod,
     totals: {subTotal, shipping, taxes, total},
     hasError = false,
@@ -37,54 +64,50 @@ export default function OrderTotals({
             : null
 
     return (
-        <div>
-            <dl className="row text-left mb-0">
-                <dt className="col-9 mb-2" style={dtStyle}>
-                    Add discount
-                </dt>
-                <dd className="col-3 mb-2">-</dd>
+        <dl>
+            <TotalLine
+                label="Add discount"
+                value={0}
+                currencyCode={currencyCode}
+            />
 
-                <dt className="col-9 mb-2" style={dtStyle}>
-                    Apply coupon or gift certificate
-                </dt>
-                <dd className="col-3 mb-2">-</dd>
+            <TotalLine
+                label="Apply coupon or gift certificate"
+                value={0}
+                currencyCode={currencyCode}
+            />
 
-                <dt className="col-9 mb-2" style={dtStyle}>
-                    Subtotal
-                </dt>
-                <dd className="col-3 mb-2">
-                    <MoneyAmount
-                        renderIfZero={true}
-                        amount={String(subTotal)}
-                        currencyCode={currencyCode}
-                    />
-                </dd>
+            <TotalLine
+                label="Subtotal"
+                value={subTotal}
+                currencyCode={currencyCode}
+            />
 
-                <ShippingMethod
-                    currencyCode={currencyCode}
-                    consignment={consignment}
-                    shippingCost={shipping}
-                    onUpdateConsignmentShippingMethod={
-                        onUpdateConsignmentShippingMethod
-                    }
-                    hasError={hasError}
-                />
+            <ShippingMethod
+                currencyCode={currencyCode}
+                consignment={consignment}
+                hasShippingAddress={hasShippingAddress}
+                shippingCost={shipping}
+                onUpdateConsignmentShippingMethod={
+                    onUpdateConsignmentShippingMethod
+                }
+                hasError={hasError}
+            />
 
-                <dt className="col-9 mb-2" style={dtStyle}>
-                    Taxes
-                </dt>
-                <dd className="col-3 mb-2">
-                    <MoneyAmount
-                        renderIfZero={true}
-                        amount={String(taxes)}
-                        currencyCode={currencyCode}
-                    />
-                </dd>
-            </dl>
-            <hr />
-            <dl className="row text-left mb-0">
-                <dt className="col-9 mb-2">Total</dt>
-                <dd className="col-3 mb-2">
+            <TotalLine
+                label="Taxes"
+                value={taxes}
+                currencyCode={currencyCode}
+            />
+
+            <div
+                className={classnames(
+                    css.descriptionLineContainer,
+                    css.totalLineContainer
+                )}
+            >
+                <dt>Total</dt>
+                <dd>
                     <strong>
                         <MoneyAmount
                             renderIfZero={true}
@@ -93,8 +116,7 @@ export default function OrderTotals({
                         />
                     </strong>
                 </dd>
-            </dl>
-            <br />
-        </div>
+            </div>
+        </dl>
     )
 }

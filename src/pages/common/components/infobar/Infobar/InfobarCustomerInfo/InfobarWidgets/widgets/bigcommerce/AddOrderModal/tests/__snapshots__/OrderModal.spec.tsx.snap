@@ -30,6 +30,11 @@ exports[`OrderModal should render 1`] = `
               class="subtitle"
             />
           </div>
+          <i
+            class="material-icons icon"
+          >
+            close
+          </i>
         </div>
         <div
           class="scrollable"
@@ -38,7 +43,7 @@ exports[`OrderModal should render 1`] = `
             class="formBody"
           >
             <div
-              class="alert info"
+              class="alert info tip"
             >
               <div
                 class="iconContainer"
@@ -81,7 +86,7 @@ exports[`OrderModal should render 1`] = `
             </div>
             <div>
               <p
-                class="paddedVertical subsection inline"
+                class="heading-section-semibold"
               >
                 Products
               </p>
@@ -142,12 +147,12 @@ exports[`OrderModal should render 1`] = `
             </div>
             <div>
               <p
-                class="subsection mt-4"
+                class="heading-section-semibold mt-4"
               >
                 Fulfillment
               </p>
               <label
-                class="label subsectionSmall mb-2"
+                class="label label"
               >
                 Shipping address
                 <abbr
@@ -179,46 +184,54 @@ exports[`OrderModal should render 1`] = `
                 </div>
               </div>
               <p
-                class="infoText"
+                class="caption"
               >
                 Same address will be used for billing address.
               </p>
             </div>
             <p
-              class="subsection"
+              class="heading-section-semibold"
             >
               Comments & Notes
             </p>
             <div>
-              <h5
-                class="subsectionSmall"
+              <label
+                class="label label"
+                for="comment"
               >
                 Comment
-              </h5>
+              </label>
               <textarea
+                aria-describedby="comment-desc"
                 class="form-control"
+                id="comment"
                 placeholder="Add comment..."
                 rows="1"
               />
               <p
-                class="infoText"
+                class="caption"
+                id="comment-desc"
               >
                 Visible to customer
               </p>
             </div>
             <div>
-              <h5
-                class="subsectionSmall"
+              <label
+                class="label label"
+                for="note"
               >
                 Staff note
-              </h5>
+              </label>
               <textarea
+                aria-describedby="note-desc"
                 class="form-control"
+                id="note"
                 placeholder="Add note..."
                 rows="1"
               />
               <p
-                class="infoText"
+                class="caption"
+                id="note-desc"
               >
                 Not visible to customer
               </p>

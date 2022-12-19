@@ -1,4 +1,5 @@
 @import '~css/new/colorTokens';
+@import (reference) '~css/typography';
 
 :local {
     .focusable {
@@ -12,24 +13,26 @@
     }
 
     .formBody {
-        padding: 1rem;
+        padding: 1.5rem 1rem 1rem;
     }
 
-    .paddedVertical {
-        margin-top: 1rem;
-        margin-bottom: 1rem;
+    .label {
+        .body-semibold();
+        margin-bottom: 0.5rem;
     }
 
-    .infoIcon {
-        font-size: 20px;
-        color: @classic-main-primary;
-        padding-right: 1rem;
+    .caption {
+        .caption-regular();
+        color: @classic-neutral-grey-4;
+        margin: 0.25rem 0 1rem;
+
+        &.hasError {
+            color: @classic-feedback-error;
+        }
     }
 
-    .infoText {
-        color: @classic-neutral-grey-5;
-        font-size: 12px;
-        margin-top: 5px;
+    .tip {
+        margin-bottom: 1.5rem;
 
         &.hasError {
             color: @classic-feedback-error;
@@ -44,16 +47,6 @@
         &.hasError {
             color: @classic-feedback-error;
         }
-    }
-
-    .subsection {
-        font-size: 20px;
-        font-weight: 600;
-    }
-
-    .subsectionSmall {
-        font-size: 14px;
-        font-weight: 600;
     }
 
     .wrapper {

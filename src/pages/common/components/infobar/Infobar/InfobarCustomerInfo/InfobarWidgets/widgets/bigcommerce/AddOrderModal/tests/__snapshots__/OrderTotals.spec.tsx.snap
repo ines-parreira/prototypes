@@ -2,95 +2,106 @@
 
 exports[`<OrderTotals/> rendering should render 1`] = `
 <div>
-  <div>
-    <dl
-      class="row text-left mb-0"
+  <dl>
+    <div
+      class="descriptionLineContainer"
     >
       <dt
-        class="col-9 mb-2"
-        style="font-weight: 400;"
+        class="descriptionTitle"
       >
         Add discount
       </dt>
       <dd
-        class="col-3 mb-2"
+        class="descriptionValue descriptionValueZero"
       >
-        -
+        <span>
+          €0.00
+        </span>
       </dd>
+    </div>
+    <div
+      class="descriptionLineContainer"
+    >
       <dt
-        class="col-9 mb-2"
-        style="font-weight: 400;"
+        class="descriptionTitle"
       >
         Apply coupon or gift certificate
       </dt>
       <dd
-        class="col-3 mb-2"
+        class="descriptionValue descriptionValueZero"
       >
-        -
+        <span>
+          €0.00
+        </span>
       </dd>
+    </div>
+    <div
+      class="descriptionLineContainer"
+    >
       <dt
-        class="col-9 mb-2"
-        style="font-weight: 400;"
+        class="descriptionTitle"
       >
         Subtotal
       </dt>
       <dd
-        class="col-3 mb-2"
+        class="descriptionValue"
       >
         <span>
           €78.00
         </span>
       </dd>
+    </div>
+    <div
+      class="descriptionLineContainer"
+    >
       <dt
-        class="col-9 mb-2"
+        class="descriptionTitle"
       >
         <button
           class="actionButton"
+          id="shipping-method-button"
         >
           Add shipping
         </button>
       </dt>
       <dd
-        class="col-3 mb-2"
+        class="descriptionValue"
       >
         <span>
           €50.00
         </span>
       </dd>
+    </div>
+    <div
+      class="descriptionLineContainer"
+    >
       <dt
-        class="col-9 mb-2"
-        style="font-weight: 400;"
+        class="descriptionTitle"
       >
         Taxes
       </dt>
       <dd
-        class="col-3 mb-2"
+        class="descriptionValue"
       >
         <span>
           €15.60
         </span>
       </dd>
-    </dl>
-    <hr />
-    <dl
-      class="row text-left mb-0"
+    </div>
+    <div
+      class="descriptionLineContainer totalLineContainer"
     >
-      <dt
-        class="col-9 mb-2"
-      >
+      <dt>
         Total
       </dt>
-      <dd
-        class="col-3 mb-2"
-      >
+      <dd>
         <strong>
           <span>
             €93.60
           </span>
         </strong>
       </dd>
-    </dl>
-    <br />
-  </div>
+    </div>
+  </dl>
 </div>
 `;

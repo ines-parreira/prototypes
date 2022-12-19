@@ -3,22 +3,27 @@
 exports[`ShippingMethod create/update consignment and change shipping method: dropdown open 1`] = `
 <body>
   <div>
-    <dt
-      class="col-9 mb-2"
+    <div
+      class="descriptionLineContainer"
     >
-      <button
-        class="actionButton"
+      <dt
+        class="descriptionTitle"
       >
-        Add shipping
-      </button>
-    </dt>
-    <dd
-      class="col-3 mb-2"
-    >
-      <span>
-        $77.00
-      </span>
-    </dd>
+        <button
+          class="actionButton"
+          id="shipping-method-button"
+        >
+          Add shipping
+        </button>
+      </dt>
+      <dd
+        class="descriptionValue"
+      >
+        <span>
+          $77.00
+        </span>
+      </dd>
+    </div>
   </div>
   <div
     id="floating-ui-root"
@@ -122,22 +127,28 @@ exports[`ShippingMethod create/update consignment and change shipping method: dr
 exports[`ShippingMethod create/update consignment and change shipping method: initial 1`] = `
 <body>
   <div>
-    <dt
-      class="col-9 mb-2"
+    <div
+      class="descriptionLineContainer"
     >
-      <button
-        class="actionButton"
+      <dt
+        class="descriptionTitle"
       >
-        Add shipping
-      </button>
-    </dt>
-    <dd
-      class="col-3 mb-2"
-    >
-      <span>
-        $77.00
-      </span>
-    </dd>
+        <button
+          class="actionButton"
+          disabled=""
+          id="shipping-method-button"
+        >
+          Add shipping
+        </button>
+      </dt>
+      <dd
+        class="descriptionValue descriptionValueDisabled"
+      >
+        <span>
+          $77.00
+        </span>
+      </dd>
+    </div>
   </div>
   <div
     id="floating-ui-root"
@@ -148,22 +159,27 @@ exports[`ShippingMethod create/update consignment and change shipping method: in
 exports[`ShippingMethod create/update consignment and change shipping method: shipping method selected 1`] = `
 <body>
   <div>
-    <dt
-      class="col-9 mb-2"
+    <div
+      class="descriptionLineContainer"
     >
-      <button
-        class="actionButton"
+      <dt
+        class="descriptionTitle"
       >
-        Add shipping
-      </button>
-    </dt>
-    <dd
-      class="col-3 mb-2"
-    >
-      <span>
-        $77.00
-      </span>
-    </dd>
+        <button
+          class="actionButton"
+          id="shipping-method-button"
+        >
+          Add shipping
+        </button>
+      </dt>
+      <dd
+        class="descriptionValue"
+      >
+        <span>
+          $77.00
+        </span>
+      </dd>
+    </div>
   </div>
   <div
     id="floating-ui-root"

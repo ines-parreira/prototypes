@@ -6,6 +6,7 @@ import React, {
     useMemo,
     useState,
 } from 'react'
+
 import classnames from 'classnames'
 
 import produce from 'immer'
@@ -15,6 +16,7 @@ import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
 import {InfobarModalProps} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 
+import Label from 'pages/common/forms/Label/Label'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
@@ -380,8 +382,8 @@ export function OrderModal({
     return (
         <Modal
             isOpen
-            isScrollable={true}
-            isClosable={false}
+            isScrollable
+            isClosable
             onClose={() => handleCancel('header')}
             size="medium"
         >
@@ -392,6 +394,7 @@ export function OrderModal({
                         actionLabel="X"
                         icon={true}
                         storageKey="infobar-bigcommerce-create-order-tip"
+                        className={css.tip}
                     >
                         <span>
                             Add an order with status <strong>Paid</strong> and{' '}
@@ -399,15 +402,7 @@ export function OrderModal({
                         </span>
                     </Tip>
                     <div>
-                        <p
-                            className={classnames(
-                                css.paddedVertical,
-                                css.subsection,
-                                css.inline
-                            )}
-                        >
-                            Products
-                        </p>
+                        <p className="heading-section-semibold">Products</p>
                     </div>
                     <div className={css.relative}>
                         <ProductSearchInput
@@ -484,6 +479,7 @@ export function OrderModal({
                             integration={integration}
                             consignment={consignment}
                             totals={totals}
+                            hasShippingAddress={Boolean(shippingAddress)}
                             onUpdateConsignmentShippingMethod={
                                 onUpdateConsignmentShippingMethod
                             }
@@ -496,28 +492,40 @@ export function OrderModal({
                         onSelectAddress={onSelectAddress}
                         hasError={validationStatus?.shippingAddress === false}
                     />
-                    <p className={css.subsection}>Comments & Notes</p>
+                    <p className="heading-section-semibold">Comments & Notes</p>
                     <div>
-                        <h5 className={css.subsectionSmall}>Comment</h5>
+                        <Label className={css.label} htmlFor="comment">
+                            Comment
+                        </Label>
                         <textarea
                             rows={1}
                             className="form-control"
                             placeholder="Add comment..."
                             value={comment}
                             onChange={onUpdateComment}
+                            id="comment"
+                            aria-describedby="comment-desc"
                         />
-                        <p className={css.infoText}>Visible to customer</p>
+                        <p className={css.caption} id="comment-desc">
+                            Visible to customer
+                        </p>
                     </div>
                     <div>
-                        <h5 className={css.subsectionSmall}>Staff note</h5>
+                        <Label className={css.label} htmlFor="note">
+                            Staff note
+                        </Label>
                         <textarea
                             rows={1}
                             className={classnames('form-control')}
                             placeholder="Add note..."
                             value={note}
                             onChange={onUpdateNote}
+                            id="note"
+                            aria-describedby="note-desc"
                         />
-                        <p className={css.infoText}>Not visible to customer</p>
+                        <p className={css.caption} id="note-desc">
+                            Not visible to customer
+                        </p>
                     </div>
                 </div>
             </div>

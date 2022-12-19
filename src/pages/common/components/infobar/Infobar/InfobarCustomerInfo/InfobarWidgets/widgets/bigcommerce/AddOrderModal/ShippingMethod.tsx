@@ -4,6 +4,7 @@ import classnames from 'classnames'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import Button from 'pages/common/components/button/Button'
+import Tooltip from 'pages/common/components/Tooltip'
 import RadioFieldSet, {RadioFieldOption} from 'pages/common/forms/RadioFieldSet'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 
@@ -11,7 +12,6 @@ import {
     BigCommerceConsignment,
     BigCommerceShippingOption,
 } from 'models/integration/types'
-
 import css from './OrderTotals.less'
 
 export const useShippingMethods = ({
@@ -125,6 +125,7 @@ type Props = {
     consignment: Maybe<BigCommerceConsignment>
     currencyCode: string | null
     shippingCost: number
+    hasShippingAddress: boolean
     onUpdateConsignmentShippingMethod: (
         selectedShippingMethodId: Maybe<string>
     ) => Promise<void>
@@ -133,17 +134,25 @@ type Props = {
 
 export function ShippingMethod({
     consignment,
+    hasShippingAddress,
     shippingCost,
     currencyCode,
     onUpdateConsignmentShippingMethod,
     hasError = false,
 }: Props) {
+    const isDisabled = !hasShippingAddress
+
     const buttonRef = useRef<HTMLButtonElement>(null)
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
     const onClose = () => setIsDropdownOpen(false)
-    const onToggle = () =>
+    const onToggle = () => {
+        if (isDisabled) {
+            return
+        }
+
         setIsDropdownOpen((isDropdownOpen) => !isDropdownOpen)
+    }
 
     const {
         selectedShippingMethod,
@@ -157,23 +166,45 @@ export function ShippingMethod({
 
     return (
         <>
-            <dt className="col-9 mb-2">
-                <button
-                    onClick={onToggle}
-                    className={classnames(css.actionButton, {
-                        [css.hasError]: hasError,
+            <div className={css.descriptionLineContainer}>
+                <dt className={css.descriptionTitle}>
+                    <button
+                        onClick={onToggle}
+                        className={classnames(css.actionButton, {
+                            [css.hasError]: hasError,
+                        })}
+                        ref={buttonRef}
+                        disabled={isDisabled}
+                        id="shipping-method-button"
+                    >
+                        Add shipping
+                    </button>
+                    <Tooltip
+                        placement="top"
+                        target="shipping-method-button"
+                        disabled={!isDisabled}
+                    >
+                        Please select{' '}
+                        <span className={css.tooltipBoldText}>
+                            Shipping address
+                        </span>{' '}
+                        to see shipping rates.
+                    </Tooltip>
+                </dt>
+                <dd
+                    className={classnames(css.descriptionValue, {
+                        [css.descriptionValueDisabled]: isDisabled,
+                        [css.descriptionValueZero]:
+                            !isDisabled && shippingCost === 0,
                     })}
-                    ref={buttonRef}
                 >
-                    Add shipping
-                </button>
-            </dt>
-            <dd className="col-3 mb-2">
-                <MoneyAmount
-                    amount={String(shippingCost)}
-                    currencyCode={currencyCode}
-                />
-            </dd>
+                    <MoneyAmount
+                        amount={String(shippingCost)}
+                        currencyCode={currencyCode}
+                        renderIfZero
+                    />
+                </dd>
+            </div>
             <Dropdown
                 isOpen={isDropdownOpen}
                 onToggle={onToggle}

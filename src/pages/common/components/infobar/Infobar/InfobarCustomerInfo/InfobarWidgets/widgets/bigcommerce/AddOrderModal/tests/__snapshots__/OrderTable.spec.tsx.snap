@@ -10,13 +10,17 @@ exports[`<OrderTable/> rendering should render with items 1`] = `
         <th>
           Product
         </th>
-        <th>
+        <th
+          class="text-right"
+        >
           Price
         </th>
         <th>
           Qty
         </th>
-        <th>
+        <th
+          class="text-right"
+        >
           Total
         </th>
       </tr>
@@ -24,7 +28,7 @@ exports[`<OrderTable/> rendering should render with items 1`] = `
     <tbody>
       <tr>
         <td
-          class="container"
+          class="descriptionCol"
         >
           <div
             class="imgContainer"
@@ -51,15 +55,11 @@ exports[`<OrderTable/> rendering should render with items 1`] = `
             <div
               class="subtitle"
             >
-              <div
-                class="numberCol"
+              <span
+                class="text-muted"
               >
-                <span
-                  class="text-muted"
-                >
-                  N/A
-                </span>
-              </div>
+                N/A
+              </span>
             </div>
           </div>
         </td>
@@ -93,17 +93,9 @@ exports[`<OrderTable/> rendering should render with items 1`] = `
         <td
           class="numberCol"
         >
-          <div
-            class="d-flex"
-          >
-            <strong
-              class="mt-auto mb-auto mr-auto"
-            >
-              <span>
-                $78.00
-              </span>
-            </strong>
-          </div>
+          <span>
+            $78.00
+          </span>
         </td>
       </tr>
     </tbody>
@@ -121,13 +113,17 @@ exports[`<OrderTable/> rendering should render without items 1`] = `
         <th>
           Product
         </th>
-        <th>
+        <th
+          class="text-right"
+        >
           Price
         </th>
         <th>
           Qty
         </th>
-        <th>
+        <th
+          class="text-right"
+        >
           Total
         </th>
       </tr>

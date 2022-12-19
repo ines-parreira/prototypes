@@ -31,9 +31,9 @@ function OrderTable({
             <thead>
                 <tr>
                     <th>Product</th>
-                    <th>Price</th>
+                    <th className="text-right">Price</th>
                     <th>Qty</th>
-                    <th>Total</th>
+                    <th className="text-right">Total</th>
                 </tr>
             </thead>
             <tbody>

@@ -4,12 +4,12 @@ exports[`<ShippingAddressesDropdown/> should display \`No results\` when shippin
 <div>
   <div>
     <p
-      class="subsection mt-4"
+      class="heading-section-semibold mt-4"
     >
       Fulfillment
     </p>
     <label
-      class="label subsectionSmall mb-2"
+      class="label label"
     >
       Shipping address
       <abbr
@@ -41,7 +41,7 @@ exports[`<ShippingAddressesDropdown/> should display \`No results\` when shippin
       </div>
     </div>
     <p
-      class="infoText"
+      class="caption"
     >
       Same address will be used for billing address.
     </p>
@@ -53,12 +53,12 @@ exports[`<ShippingAddressesDropdown/> snapshot renders the selected shipping add
 <div>
   <div>
     <p
-      class="subsection mt-4"
+      class="heading-section-semibold mt-4"
     >
       Fulfillment
     </p>
     <label
-      class="label subsectionSmall mb-2"
+      class="label label"
     >
       Shipping address
       <abbr
@@ -90,7 +90,7 @@ exports[`<ShippingAddressesDropdown/> snapshot renders the selected shipping add
       </div>
     </div>
     <p
-      class="infoText"
+      class="caption"
     >
       Same address will be used for billing address.
     </p>
