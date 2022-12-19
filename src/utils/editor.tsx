@@ -236,7 +236,7 @@ export function convertToHTML(contentState: ContentState): string {
                     const width: number =
                         (entity.data.width as number) || DEFAULT_VIDEO_WIDTH
                     const url: string = (entity.data.url as string) || ''
-                    return `<div class="gorgias-video-container" data-video-src="${url}" width="${width}" />`
+                    return `<div class="gorgias-video-container" data-video-src="${url}" width="${width}"></div>`
                 }
 
                 if (entity.type === 'mention') {
