@@ -54,23 +54,21 @@ export const getMomentTimezoneNames = () => {
 }
 
 export const getFormattedDate = (date: string, locale?: string) => {
-    try {
-        return new Intl.DateTimeFormat(locale ?? 'en-US').format(new Date(date))
-    } catch (e) {
-        return ''
+    if (isNaN(Date.parse(date))) {
+        throw new Error('Invalid date')
     }
+    return new Intl.DateTimeFormat(locale ?? 'en-US').format(new Date(date))
 }
 
 export const getDetailedFormattedDate = (date: string, locale?: string) => {
-    try {
-        return new Intl.DateTimeFormat(locale ?? 'en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
-        }).format(new Date(date))
-    } catch (e) {
-        return ''
+    if (isNaN(Date.parse(date))) {
+        throw new Error('Invalid date')
     }
+    return new Intl.DateTimeFormat(locale ?? 'en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+    }).format(new Date(date))
 }

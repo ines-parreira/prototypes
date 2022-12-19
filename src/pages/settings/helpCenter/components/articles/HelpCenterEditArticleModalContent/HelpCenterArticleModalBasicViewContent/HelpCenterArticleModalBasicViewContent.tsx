@@ -1,6 +1,10 @@
 import React, {useCallback, useMemo} from 'react'
 
-import {Article, isArticle, LocaleCode} from 'models/helpCenter/types'
+import {
+    Article,
+    isArticleWithExistingTranslation,
+    LocaleCode,
+} from 'models/helpCenter/types'
 import {Components} from 'rest_api/help_center_api/client.generated'
 import {SCREEN_SIZE, useScreenSize} from 'hooks/useScreenSize'
 
@@ -92,7 +96,8 @@ const HelpCenterArticleModalBasicViewContent = ({
     } = useEditionManager()
 
     const {lastUpdate, lastUpdateDetailed} = useMemo(() => {
-        return selectedArticle && isArticle(selectedArticle)
+        return selectedArticle &&
+            isArticleWithExistingTranslation(selectedArticle)
             ? {
                   lastUpdate: getFormattedDate(
                       selectedArticle.translation.updated_datetime
