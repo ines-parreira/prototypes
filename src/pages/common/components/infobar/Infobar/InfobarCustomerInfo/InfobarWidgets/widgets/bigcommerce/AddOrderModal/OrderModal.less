@@ -32,10 +32,18 @@
     }
 
     .tip {
-        margin-bottom: 1.5rem;
+        margin-bottom: 0.5rem;
 
         &.hasError {
             color: @classic-feedback-error;
+        }
+    }
+
+    .alerts {
+        margin-bottom: 1.5rem;
+
+        &:empty {
+            margin-bottom: 0;
         }
     }
 

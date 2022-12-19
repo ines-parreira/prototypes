@@ -11,6 +11,7 @@ type Props = {
     currencyCode: string | undefined
     lineItems: Array<any>
     products?: Map<number, any>
+    lineItemWithErrorId?: string
     onLineItemDelete: (index: number) => void
     onLineItemUpdate: (
         index: number,
@@ -21,6 +22,7 @@ type Props = {
 function OrderTable({
     lineItems = [],
     products = new Map(),
+    lineItemWithErrorId = '',
     storeHash,
     currencyCode,
     onLineItemUpdate,
@@ -45,6 +47,7 @@ function OrderTable({
                     </tr>
                 )}
                 {lineItems.map((lineItem: BigCommerceCartLineItem, index) => {
+                    const hasError = lineItemWithErrorId === lineItem.id
                     const productId = lineItem.product_id
                     const variantId = lineItem.variant_id
                     const uid = `${productId}${
@@ -62,6 +65,7 @@ function OrderTable({
                             removable={lineItems.length > 1}
                             onDelete={onLineItemDelete}
                             onChange={onLineItemUpdate}
+                            hasError={hasError}
                         />
                     )
                 })}

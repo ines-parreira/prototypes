@@ -43,44 +43,48 @@ exports[`OrderModal should render 1`] = `
             class="formBody"
           >
             <div
-              class="alert info tip"
+              class="alerts"
             >
               <div
-                class="iconContainer"
+                class="alert info tip"
               >
-                <img
-                  alt="icon"
-                  src="test-file-stub"
-                />
-              </div>
-              <div
-                class="content"
-              >
-                <span
-                  class="label"
-                >
-                  <span>
-                    Add an order with status 
-                    <strong>
-                      Paid
-                    </strong>
-                     and
-                     
-                    <strong>
-                      Awaiting Fulfillment
-                    </strong>
-                    .
-                  </span>
-                </span>
                 <div
-                  class="customActions"
+                  class="iconContainer"
                 >
-                  <a
-                    class="actionLink"
-                    to="#"
+                  <img
+                    alt="icon"
+                    src="test-file-stub"
+                  />
+                </div>
+                <div
+                  class="content"
+                >
+                  <span
+                    class="label"
                   >
-                    X
-                  </a>
+                    <span>
+                      Add an order with status 
+                      <strong>
+                        Paid
+                      </strong>
+                       
+                      and 
+                      <strong>
+                        Awaiting Fulfillment
+                      </strong>
+                      .
+                    </span>
+                  </span>
+                  <div
+                    class="customActions"
+                  >
+                    <a
+                      class="actionLink"
+                      to="#"
+                    >
+                      X
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>

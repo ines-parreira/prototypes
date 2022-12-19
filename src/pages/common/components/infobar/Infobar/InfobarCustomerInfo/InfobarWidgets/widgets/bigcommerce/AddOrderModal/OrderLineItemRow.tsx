@@ -24,6 +24,7 @@ type Props = {
         newQuantity: number,
         setQuantity: (quantity: number) => void
     ) => void
+    hasError: boolean
 }
 
 function OrderLineItemRow({
@@ -35,6 +36,7 @@ function OrderLineItemRow({
     removable,
     onDelete,
     onChange,
+    hasError,
 }: Props) {
     const handleQuantityChange = (value: string) => {
         let newQuantity = Number.parseInt(value, 10)
@@ -65,6 +67,7 @@ function OrderLineItemRow({
                 handleQuantityChange={handleQuantityChange}
                 onDelete={onDelete}
                 removable={removable}
+                hasError={hasError}
             />
             <TotalPriceComponent
                 currencyCode={currencyCode}

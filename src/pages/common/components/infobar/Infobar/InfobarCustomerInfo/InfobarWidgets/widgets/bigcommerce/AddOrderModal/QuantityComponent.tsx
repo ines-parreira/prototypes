@@ -9,6 +9,7 @@ type Props = {
     removable: boolean
     onDelete: (index: number) => void
     index: number
+    hasError: boolean
 }
 export function QuantityComponent({
     quantity,
@@ -16,6 +17,7 @@ export function QuantityComponent({
     removable,
     onDelete,
     index,
+    hasError,
 }: Props) {
     const min = 1
     return (
@@ -26,6 +28,7 @@ export function QuantityComponent({
                     value={quantity}
                     onChange={handleQuantityChange}
                     className={css.input}
+                    hasError={hasError}
                 />
                 {removable && (
                     <IconButton

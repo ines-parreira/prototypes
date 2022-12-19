@@ -44,6 +44,7 @@ describe('utils', () => {
     const setIsLoading = jest.fn()
     const setProducts = jest.fn()
     const setQuantity = jest.fn()
+    const setLineItemWithErrorId = jest.fn()
 
     describe('onInit', () => {
         it('should init the order modal', async () => {
@@ -90,21 +91,49 @@ describe('utils', () => {
                 setCart,
                 products,
                 setProducts,
+                setLineItemWithErrorId,
             })
 
             expect(setIsLoading).toHaveBeenCalled()
             expect(setProducts).toHaveBeenCalled()
             expect(setCart).toHaveBeenCalled()
         })
+
+        it('should set an error because quantity is more than stock', async () => {
+            apiMock.onAny().reply(422, cart)
+
+            await addRow({
+                integrationId,
+                product,
+                variant,
+                setIsLoading,
+                cart,
+                setCart,
+                products,
+                setProducts,
+                setLineItemWithErrorId,
+            })
+
+            expect(setIsLoading).toHaveBeenCalled()
+            expect(setLineItemWithErrorId).toHaveBeenCalled()
+        })
     })
 
     describe('removeRow', () => {
         it('should remove a row from the cart', async () => {
             apiMock.onAny().reply(200, nestedResponse)
-            await removeRow({integrationId, index, setIsLoading, cart, setCart})
+            await removeRow({
+                integrationId,
+                index,
+                setIsLoading,
+                cart,
+                setCart,
+                setLineItemWithErrorId,
+            })
 
             expect(setIsLoading).toHaveBeenCalled()
             expect(setCart).toHaveBeenCalled()
+            expect(setLineItemWithErrorId).toHaveBeenCalledWith('')
         })
     })
 
@@ -119,10 +148,28 @@ describe('utils', () => {
                 cart,
                 setCart,
                 setQuantity,
+                setLineItemWithErrorId,
             })
 
             expect(setIsLoading).toHaveBeenCalled()
             expect(setCart).toHaveBeenCalled()
+        })
+
+        it('should set an error because quantity is more than stock', async () => {
+            apiMock.onAny().reply(422, nestedResponse)
+            await updateRow({
+                integrationId,
+                index,
+                newQuantity,
+                setIsLoading,
+                cart,
+                setCart,
+                setQuantity,
+                setLineItemWithErrorId,
+            })
+
+            expect(setIsLoading).toHaveBeenCalled()
+            expect(setLineItemWithErrorId).toHaveBeenCalled()
         })
     })
 })

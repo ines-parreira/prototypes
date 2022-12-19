@@ -41,6 +41,7 @@ import Loader from 'pages/common/components/Loader/Loader'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import {getCustomerAddresses} from 'state/infobarActions/bigcommerce/createOrder/selectors'
 import Tip from 'pages/common/components/tip/Tip'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {CustomerContext} from 'providers/infobar/CustomerContext'
 import OrderTable from './OrderTable'
@@ -253,6 +254,7 @@ export function OrderModal({
     const dispatch = useAppDispatch()
 
     const [isLoading, setIsLoading] = useState(false)
+    const [lineItemWithErrorId, setLineItemWithErrorId] = useState('')
 
     const {
         cart,
@@ -390,17 +392,25 @@ export function OrderModal({
             <ModalHeader title="Add order" />
             <div className={css.scrollable}>
                 <div className={css.formBody}>
-                    <Tip
-                        actionLabel="X"
-                        icon={true}
-                        storageKey="infobar-bigcommerce-create-order-tip"
-                        className={css.tip}
-                    >
-                        <span>
-                            Add an order with status <strong>Paid</strong> and{' '}
-                            <strong>Awaiting Fulfillment</strong>.
-                        </span>
-                    </Tip>
+                    <div className={css.alerts}>
+                        <Tip
+                            actionLabel="X"
+                            icon={true}
+                            storageKey="infobar-bigcommerce-create-order-tip"
+                            className={css.tip}
+                        >
+                            <span>
+                                Add an order with status <strong>Paid</strong>{' '}
+                                and <strong>Awaiting Fulfillment</strong>.
+                            </span>
+                        </Tip>
+                        {!!lineItemWithErrorId && (
+                            <Alert type={AlertType.Error} icon={true}>
+                                Insufficient inventory. Please adjust product
+                                quantity.
+                            </Alert>
+                        )}
+                    </div>
                     <div>
                         <p className="heading-section-semibold">Products</p>
                     </div>
@@ -422,6 +432,7 @@ export function OrderModal({
                                     setCart,
                                     products,
                                     setProducts,
+                                    setLineItemWithErrorId,
                                 })
                             }}
                         />
@@ -442,6 +453,7 @@ export function OrderModal({
                                 currencyCode={integration.meta.currency}
                                 lineItems={lineItems}
                                 products={products}
+                                lineItemWithErrorId={lineItemWithErrorId}
                                 onLineItemUpdate={(
                                     index: number,
                                     newQuantity: number,
@@ -455,6 +467,7 @@ export function OrderModal({
                                         cart,
                                         setCart,
                                         setQuantity,
+                                        setLineItemWithErrorId,
                                     })
                                 }}
                                 onLineItemDelete={(index: number) => {
@@ -464,6 +477,7 @@ export function OrderModal({
                                         setIsLoading,
                                         cart,
                                         setCart,
+                                        setLineItemWithErrorId,
                                     })
                                 }}
                             />

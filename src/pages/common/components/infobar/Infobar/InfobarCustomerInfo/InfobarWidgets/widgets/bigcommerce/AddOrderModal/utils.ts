@@ -123,6 +123,7 @@ export const addRow = async ({
     setCart,
     products,
     setProducts,
+    setLineItemWithErrorId,
 }: {
     integrationId: number
     product: BigCommerceProduct
@@ -132,40 +133,54 @@ export const addRow = async ({
     setCart: (cart: BigCommerceCart) => void
     products: Map<number, BigCommerceProduct>
     setProducts: (products: Map<number, BigCommerceProduct>) => void
+    setLineItemWithErrorId: (value: string) => void
 }) => {
     setIsLoading(true)
     const newProducts = new Map(products)
     const cartId = cart ? cart.id : null
-    if (!cartId) {
+    if (!cartId || !cart) {
         return
     }
-    const newCart = await addBigCommerceLineItem(
-        integrationId,
-        cartId,
-        product.id,
-        variant.id
-    )
+    try {
+        const newCart = await addBigCommerceLineItem(
+            integrationId,
+            cartId,
+            product.id,
+            variant.id
+        )
 
-    if (!newProducts.has(product.id)) {
-        newProducts.set(product.id, product)
+        if (!newProducts.has(product.id)) {
+            newProducts.set(product.id, product)
+        }
+        let eventName = SegmentEvent.BigCommerceCreateOrderSetProducts
+
+        logEvent(eventName, {
+            productId: product.id,
+            variantId: variant.id,
+        })
+        setIsLoading(false)
+        setProducts(newProducts)
+        setCart(newCart)
+
+        eventName = SegmentEvent.BigCommerceCreateOrderAddRow
+        logEvent(eventName, {
+            integrationId: integrationId,
+            product: product,
+            variant: variant,
+            newCart: newCart,
+        })
+        setLineItemWithErrorId('')
+    } catch (error) {
+        const lineItems = cart.line_items.physical_items.concat(
+            cart.line_items.physical_items
+        )
+        const lineItem = lineItems.find(
+            (l) => l.product_id === product.id && l.variant_id === variant.id
+        )
+        setLineItemWithErrorId(lineItem ? lineItem.id : ' ')
+    } finally {
+        setIsLoading(false)
     }
-    let eventName = SegmentEvent.BigCommerceCreateOrderSetProducts
-
-    logEvent(eventName, {
-        productId: product.id,
-        variantId: variant.id,
-    })
-    setIsLoading(false)
-    setProducts(newProducts)
-    setCart(newCart)
-
-    eventName = SegmentEvent.BigCommerceCreateOrderAddRow
-    logEvent(eventName, {
-        integrationId: integrationId,
-        product: product,
-        variant: variant,
-        newCart: newCart,
-    })
 }
 
 export const removeRow = async ({
@@ -174,12 +189,14 @@ export const removeRow = async ({
     setIsLoading,
     cart,
     setCart,
+    setLineItemWithErrorId,
 }: {
     integrationId: number
     index: number
     setIsLoading: (state: boolean) => void
     cart: Maybe<BigCommerceCart>
     setCart: (cart: BigCommerceCart) => void
+    setLineItemWithErrorId: (value: string) => void
 }) => {
     setIsLoading(true)
     if (!cart) {
@@ -203,6 +220,7 @@ export const removeRow = async ({
         index: index,
         newCart: newCart,
     })
+    setLineItemWithErrorId('')
 }
 
 export const updateRow = _debounce(
@@ -210,18 +228,20 @@ export const updateRow = _debounce(
         integrationId,
         index,
         newQuantity,
+        setQuantity,
         setIsLoading,
         cart,
         setCart,
-        setQuantity,
+        setLineItemWithErrorId,
     }: {
         integrationId: number
         index: number
         newQuantity: number
+        setQuantity: (value: number) => void
         setIsLoading: (state: boolean) => void
         cart: Maybe<BigCommerceCart>
         setCart: (cart: BigCommerceCart) => void
-        setQuantity: (quantity: number) => void
+        setLineItemWithErrorId: (value: string) => void
     }) => {
         setIsLoading(true)
         if (!cart) {
@@ -248,8 +268,10 @@ export const updateRow = _debounce(
                 newQuantity: newQuantity,
                 newCart: newCart,
             })
+            setLineItemWithErrorId('')
         } catch (error) {
             setQuantity(lineItem.quantity)
+            setLineItemWithErrorId(lineItem.id)
         } finally {
             setIsLoading(false)
         }
