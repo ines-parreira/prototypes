@@ -95,11 +95,19 @@ exports[`<OrderTotals/> rendering should render 1`] = `
         Total
       </dt>
       <dd>
-        <strong>
-          <span>
-            €93.60
-          </span>
-        </strong>
+        <div
+          class="totalPriceContainer"
+        >
+          <div
+            class="ml-3"
+          >
+            <strong>
+              <span>
+                €93.60
+              </span>
+            </strong>
+          </div>
+        </div>
       </dd>
     </div>
   </dl>

@@ -130,23 +130,23 @@ describe('OrderModalConnected', () => {
     it('renders when `isOpen` is `true` and IntegrationContext has value', () => {
         renderSubject({orderModalProps: {...defaultProps, isOpen: true}})
 
-        expect(screen.getByRole('button', {name: /Add order/i})).toBeTruthy()
+        expect(screen.getByRole('button', {name: /Create order/i})).toBeTruthy()
     })
 
-    it('`Add order` button does not send a create BigCommerce order action', () => {
+    it('`Create order` button does not send a create BigCommerce order action', () => {
         const bigcommerceCreateOrderSpy = jest.spyOn(
             utils,
             'bigcommerceCreateOrder'
         )
         renderSubject({orderModalProps: {...defaultProps, isOpen: true}})
 
-        screen.getByRole('button', {name: /Add order/i}).click()
+        screen.getByRole('button', {name: /Create order/i}).click()
 
         expect(bigcommerceCreateOrderSpy).toHaveBeenCalledTimes(0)
     })
 
     // @todo: Fix test
-    test.skip('`Add order` button sends a create BigCommerce order action', () => {
+    test.skip('`Create order` button sends a create BigCommerce order action', () => {
         const bigcommerceCreateOrderSpy = jest.spyOn(
             utils,
             'bigcommerceCreateOrder'
@@ -168,7 +168,7 @@ describe('OrderModalConnected', () => {
         ).mockReturnValue(true)
         renderSubject({orderModalProps: {...defaultProps, isOpen: true}})
 
-        screen.getByRole('button', {name: /Add order/i}).click()
+        screen.getByRole('button', {name: /Create order/i}).click()
 
         expect(bigcommerceCreateOrderSpy).toHaveBeenCalled()
     })
@@ -186,7 +186,10 @@ describe('useCheckout', () => {
             tax_total: 111,
             grand_total: 888,
         } as BigCommerceCheckout
-        const defaultProps = {integrationId: 188}
+        const defaultProps = {
+            integrationId: 188,
+            setIsTotalPriceLoading: jest.fn(),
+        }
 
         const {result} = renderHook(() => useCheckout(defaultProps))
 

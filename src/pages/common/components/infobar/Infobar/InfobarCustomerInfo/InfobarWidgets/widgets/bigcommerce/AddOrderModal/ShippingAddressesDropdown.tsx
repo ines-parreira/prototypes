@@ -90,12 +90,6 @@ export function ShippingAddressesDropdown({
                                                     >
                                                         <b>{`${address.first_name} ${address.last_name}`}</b>
                                                         <br />
-                                                        {address.phone && (
-                                                            <>
-                                                                {address.phone}
-                                                                <br />
-                                                            </>
-                                                        )}
                                                         <>
                                                             {address.address2
                                                                 ? `${address.address1}, ${address.address2}`
@@ -113,6 +107,15 @@ export function ShippingAddressesDropdown({
                                                             )}
                                                             <br />
                                                             {address.country}
+                                                            <br />
+                                                            {address.phone && (
+                                                                <>
+                                                                    {
+                                                                        address.phone
+                                                                    }
+                                                                    <br />
+                                                                </>
+                                                            )}
                                                         </>
                                                     </div>
                                                 </DropdownItem>

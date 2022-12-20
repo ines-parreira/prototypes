@@ -22,17 +22,17 @@ import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
 import {bigcommerceDataMappers} from 'pages/common/forms/ProductSearchInput/Mappings'
 import {
-    BigCommerceIntegration,
+    BigCommerceActionType,
     BigCommerceCart,
-    IntegrationDataItem,
-    IntegrationType,
-    BigCommerceCustomerAddress,
-    BigCommerceProductVariant,
-    BigCommerceProduct,
     BigCommerceCheckout,
     BigCommerceCustomer,
-    BigCommerceActionType,
+    BigCommerceCustomerAddress,
+    BigCommerceIntegration,
+    BigCommerceProduct,
+    BigCommerceProductVariant,
     CreateOrderValidationResult,
+    IntegrationDataItem,
+    IntegrationType,
 } from 'models/integration/types'
 import {getIntegrationsByType} from 'state/integrations/selectors'
 import useAppSelector from 'hooks/useAppSelector'
@@ -47,10 +47,12 @@ import {CustomerContext} from 'providers/infobar/CustomerContext'
 import OrderTable from './OrderTable'
 import OrderTotals from './OrderTotals'
 import {
-    checkShippingAddressValidity,
-    checkCheckoutValidity,
     addCheckoutBillingAddress,
     addRow,
+    bigcommerceCreateOrder,
+    checkCheckoutValidity,
+    checkProductsValidity,
+    checkShippingAddressValidity,
     onCancel,
     onInit,
     onReset,
@@ -58,12 +60,10 @@ import {
     updateCheckoutConsignmentShippingMethod,
     updateRow,
     upsertCheckoutConsignment,
-    bigcommerceCreateOrder,
-    checkProductsValidity,
 } from './utils'
+import {ShippingAddressesDropdown} from './ShippingAddressesDropdown'
 
 import css from './OrderModal.less'
-import {ShippingAddressesDropdown} from './ShippingAddressesDropdown'
 
 type Props = {
     integration: BigCommerceIntegration
@@ -136,6 +136,7 @@ export const useCheckout = ({integrationId}: {integrationId: number}) => {
         useState<Maybe<BigCommerceCustomerAddress>>(null)
     const [cart, setCart] = useState<Maybe<BigCommerceCart>>(null)
     const [checkout, setCheckout] = useState<Maybe<BigCommerceCheckout>>(null)
+    const [isTotalPriceLoading, setIsTotalPriceLoading] = useState(false)
     const consignment = checkout?.consignments[0] ?? null
 
     const updateConsignment = async ({
@@ -146,6 +147,7 @@ export const useCheckout = ({integrationId}: {integrationId: number}) => {
         address: BigCommerceCustomerAddress
     }) => {
         try {
+            setIsTotalPriceLoading(true)
             const checkout = await upsertCheckoutConsignment({
                 integrationId,
                 cart,
@@ -160,6 +162,8 @@ export const useCheckout = ({integrationId}: {integrationId: number}) => {
             setCheckout(checkout)
         } catch (error) {
             console.error(error)
+        } finally {
+            setIsTotalPriceLoading(false)
         }
     }
 
@@ -191,6 +195,7 @@ export const useCheckout = ({integrationId}: {integrationId: number}) => {
         setShippingAddress(newSelectedAddress)
 
         if (cart) {
+            setIsTotalPriceLoading(true)
             const checkout = await addCheckoutBillingAddress({
                 integrationId,
                 selectedAddress: newSelectedAddress,
@@ -203,6 +208,7 @@ export const useCheckout = ({integrationId}: {integrationId: number}) => {
             })
 
             setCheckout(checkout)
+            setIsTotalPriceLoading(false)
         }
     }
 
@@ -214,6 +220,7 @@ export const useCheckout = ({integrationId}: {integrationId: number}) => {
         }
 
         try {
+            setIsTotalPriceLoading(true)
             const checkout = await updateCheckoutConsignmentShippingMethod({
                 cart,
                 shippingMethodId: selectedShippingMethodId,
@@ -224,6 +231,8 @@ export const useCheckout = ({integrationId}: {integrationId: number}) => {
             setCheckout(checkout)
         } catch (error) {
             console.error(error)
+        } finally {
+            setIsTotalPriceLoading(false)
         }
     }
 
@@ -265,6 +274,7 @@ export const useCheckout = ({integrationId}: {integrationId: number}) => {
         consignment,
         totals,
         shippingAddress,
+        isTotalPriceLoading,
         setCart: setCartExposed,
         onSelectAddress,
         onUpdateConsignmentShippingMethod,
@@ -293,6 +303,7 @@ export function OrderModal({
         consignment,
         totals,
         shippingAddress,
+        isTotalPriceLoading,
         setCart,
         onSelectAddress,
         onUpdateConsignmentShippingMethod,
@@ -385,19 +396,20 @@ export function OrderModal({
             onClose={() => handleCancel('header')}
             size="medium"
         >
-            <ModalHeader title="Add order" />
+            <ModalHeader title="Create order" />
             <div className={css.scrollable}>
                 <div className={css.formBody}>
                     <div className={css.alerts}>
                         <Tip
-                            actionLabel="X"
+                            actionLabel="✕"
                             icon={true}
                             storageKey="infobar-bigcommerce-create-order-tip"
                             className={css.tip}
                         >
                             <span>
-                                Add an order with status <strong>Paid</strong>{' '}
-                                and <strong>Awaiting Fulfillment</strong>.
+                                Create an order with status{' '}
+                                <strong>Paid</strong> and{' '}
+                                <strong>Awaiting Fulfillment</strong>.
                             </span>
                         </Tip>
                         {!!lineItemWithErrorId && (
@@ -415,6 +427,7 @@ export function OrderModal({
                             className={css.searchInput}
                             hasError={!validationStatus.products}
                             dataMappers={bigcommerceDataMappers}
+                            searchOnFocus={true}
                             onVariantClicked={(
                                 item: IntegrationDataItem<BigCommerceProduct>,
                                 variant: BigCommerceProductVariant
@@ -432,12 +445,18 @@ export function OrderModal({
                                 })
                             }}
                         />
-                        {!hasItemsInCart && (
+                        {validationStatus?.products === false && (
                             <p
-                                className={classnames(css.searchbarInfo, {
-                                    [css.hasError]: !validationStatus.products,
-                                })}
+                                className={classnames(
+                                    css.caption,
+                                    css.hasError
+                                )}
                             >
+                                Select at least one product.
+                            </p>
+                        )}
+                        {!hasItemsInCart && (
+                            <p className={css.searchbarInfo}>
                                 This order is currently empty. Add products
                                 using the search above.
                             </p>
@@ -494,6 +513,7 @@ export function OrderModal({
                                 onUpdateConsignmentShippingMethod
                             }
                             hasError={!validationStatus.checkout}
+                            isTotalPriceLoading={isTotalPriceLoading}
                         />
                     )}
                     <ShippingAddressesDropdown
@@ -545,8 +565,9 @@ export function OrderModal({
                         intent="primary"
                         tabIndex={0}
                         onClick={handleAddOrder}
+                        isDisabled={isTotalPriceLoading}
                     >
-                        Add order
+                        Create order
                     </Button>
                     <Button
                         tabIndex={0}

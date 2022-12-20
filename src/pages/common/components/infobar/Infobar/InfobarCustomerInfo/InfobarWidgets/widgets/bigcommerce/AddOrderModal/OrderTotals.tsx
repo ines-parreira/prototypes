@@ -6,6 +6,7 @@ import {
     BigCommerceCart,
 } from 'models/integration/types'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
+import Loader from 'pages/common/components/Loader/Loader'
 import {ShippingMethod} from './ShippingMethod'
 
 import css from './OrderTotals.less'
@@ -25,6 +26,7 @@ type Props = {
         total: number
     }
     hasError?: boolean
+    isTotalPriceLoading: boolean
 }
 
 const TotalLine = ({
@@ -60,6 +62,7 @@ export default function OrderTotals({
     onUpdateConsignmentShippingMethod,
     totals: {subTotal, shipping, taxes, total},
     hasError = false,
+    isTotalPriceLoading,
 }: Props) {
     const currencyCode =
         integration.meta && integration.meta.currency
@@ -112,13 +115,22 @@ export default function OrderTotals({
             >
                 <dt>Total</dt>
                 <dd>
-                    <strong>
-                        <MoneyAmount
-                            renderIfZero={true}
-                            amount={String(total)}
-                            currencyCode={currencyCode}
-                        />
-                    </strong>
+                    <div className={css.totalPriceContainer}>
+                        {isTotalPriceLoading && (
+                            <div className="ml-3">
+                                <Loader minHeight="20px" size="20px" />
+                            </div>
+                        )}
+                        <div className="ml-3">
+                            <strong>
+                                <MoneyAmount
+                                    renderIfZero={true}
+                                    amount={String(total)}
+                                    currencyCode={currencyCode}
+                                />
+                            </strong>
+                        </div>
+                    </div>
                 </dd>
             </div>
         </dl>

@@ -25,6 +25,7 @@ describe('<OrderTotals/>', () => {
                         total: 93.6,
                     }}
                     hasShippingAddress
+                    isTotalPriceLoading={false}
                 />
             )
 

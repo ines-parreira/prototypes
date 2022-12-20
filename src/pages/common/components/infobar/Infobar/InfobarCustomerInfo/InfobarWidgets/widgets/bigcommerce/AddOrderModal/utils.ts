@@ -322,13 +322,13 @@ export const getOneLineAddress = ({
     if (addressObj.address2) {
         address = `${address} ${addressObj.address2}`
     }
-    if (addressObj.phone) {
-        address = `${address}, ${addressObj.phone}`
-    }
     address = `${address}, ${buildAddressComponent({
         addressObj,
         includeCountry: true,
     })}`
+    if (addressObj.phone) {
+        address = `${address}, ${addressObj.phone}`
+    }
 
     return address
 }

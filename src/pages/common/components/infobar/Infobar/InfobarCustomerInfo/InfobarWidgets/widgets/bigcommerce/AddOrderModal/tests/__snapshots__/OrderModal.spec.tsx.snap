@@ -24,7 +24,7 @@ exports[`OrderModal should render 1`] = `
               class="title"
               id="modal-1-title"
             >
-              Add order
+              Create order
             </div>
             <div
               class="subtitle"
@@ -63,12 +63,13 @@ exports[`OrderModal should render 1`] = `
                     class="label"
                   >
                     <span>
-                      Add an order with status 
+                      Create an order with status
+                       
                       <strong>
                         Paid
                       </strong>
+                       and
                        
-                      and 
                       <strong>
                         Awaiting Fulfillment
                       </strong>
@@ -82,7 +83,7 @@ exports[`OrderModal should render 1`] = `
                       class="actionLink"
                       to="#"
                     >
-                      X
+                      ✕
                     </a>
                   </div>
                 </div>
@@ -253,7 +254,7 @@ exports[`OrderModal should render 1`] = `
               tabindex="0"
               type="button"
             >
-              Add order
+              Create order
             </button>
             <button
               class="wrapper fill secondary medium"

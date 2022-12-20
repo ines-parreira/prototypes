@@ -63,17 +63,20 @@ exports[`<OrderLineItemRow/> render() should render 1`] = `
           value="1"
         />
       </div>
-      <button
-        class="wrapper wrapper ghost ghost destructive medium"
-        tabindex="0"
-        type="button"
-      >
-        <i
-          class="material-icons icon"
+      <span>
+        <button
+          class="wrapper wrapper ghost ghost destructive medium"
+          id="tooltip-0"
+          tabindex="0"
+          type="button"
         >
-          close
-        </i>
-      </button>
+          <i
+            class="material-icons icon"
+          >
+            close
+          </i>
+        </button>
+      </span>
     </div>
   </td>
   <td
@@ -149,17 +152,20 @@ exports[`<OrderLineItemRow/> render() should render with the default image 1`] =
           value="1"
         />
       </div>
-      <button
-        class="wrapper wrapper ghost ghost destructive medium"
-        tabindex="0"
-        type="button"
-      >
-        <i
-          class="material-icons icon"
+      <span>
+        <button
+          class="wrapper wrapper ghost ghost destructive medium"
+          id="tooltip-0"
+          tabindex="0"
+          type="button"
         >
-          close
-        </i>
-      </button>
+          <i
+            class="material-icons icon"
+          >
+            close
+          </i>
+        </button>
+      </span>
     </div>
   </td>
   <td
@@ -235,17 +241,20 @@ exports[`<OrderLineItemRow/> render() should render without quantity and without
           value="0"
         />
       </div>
-      <button
-        class="wrapper wrapper ghost ghost destructive medium"
-        tabindex="0"
-        type="button"
-      >
-        <i
-          class="material-icons icon"
+      <span>
+        <button
+          class="wrapper wrapper ghost ghost destructive medium"
+          id="tooltip-0"
+          tabindex="0"
+          type="button"
         >
-          close
-        </i>
-      </button>
+          <i
+            class="material-icons icon"
+          >
+            close
+          </i>
+        </button>
+      </span>
     </div>
   </td>
   <td

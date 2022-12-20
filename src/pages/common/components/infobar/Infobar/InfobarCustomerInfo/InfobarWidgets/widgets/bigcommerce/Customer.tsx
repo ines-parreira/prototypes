@@ -32,12 +32,56 @@ export default function Customer() {
     }
 }
 
-function AfterTitle() {
+type AfterTitleProps = {
+    children?: ReactNode
+    source: Map<any, any>
+}
+
+function AfterTitle({source}: AfterTitleProps) {
     const {integration} = useContext(IntegrationContext)
     const storeName = integration.getIn(['meta', 'shop_display_name']) as string
 
+    const bigCommerceCustomer: BigCommerceCustomer = {
+        id: source.get('id'),
+        email: source.get('email'),
+    }
+
+    let actions: Array<InfobarAction> = []
+    const bigcommerceCreateOrderAccessFlags =
+        useFlags()[FeatureFlagKey.BigCommerceCreateOrder]
+    if (bigcommerceCreateOrderAccessFlags) {
+        actions = [
+            {
+                key: 'createOrder',
+                options: [
+                    {
+                        value: BigCommerceActionType.CreateOrder,
+                        label: 'Create order',
+                        parameters: [{name: 'cart_id', type: 'hidden'}],
+                    },
+                ],
+                title: 'Create order',
+                child: (
+                    <>
+                        <ButtonIconLabel icon="add" /> Create order
+                    </>
+                ),
+                modal: OrderModal,
+                modalData: {
+                    actionName: BigCommerceActionType.CreateOrder,
+                    customer: bigCommerceCustomer,
+                },
+            },
+        ]
+    }
+    const payload = {
+        customer_id: source.get('id'),
+    }
     return (
         <>
+            {actions && (
+                <ActionButtonsGroup actions={actions} payload={payload} />
+            )}
             <StaticField label="Store">{storeName}</StaticField>
         </>
     )
@@ -57,44 +101,6 @@ export function TitleWrapper({children, source}: TitleWrapperProps) {
     if (customerId) {
         customerLink = `https://store-${storeHash}.mybigcommerce.com/manage/customers/${customerId}/edit`
     }
-
-    const bigCommerceCustomer: BigCommerceCustomer = {
-        id: source.get('id'),
-        email: source.get('email'),
-    }
-
-    let actions: Array<InfobarAction> = []
-    const bigcommerceCreateOrderAccessFlags =
-        useFlags()[FeatureFlagKey.BigCommerceCreateOrder]
-    if (bigcommerceCreateOrderAccessFlags) {
-        actions = [
-            {
-                key: 'createOrder',
-                options: [
-                    {
-                        value: BigCommerceActionType.CreateOrder,
-                        label: 'Add order',
-                        parameters: [{name: 'cart_id', type: 'hidden'}],
-                    },
-                ],
-                title: 'Add order',
-                child: (
-                    <>
-                        <ButtonIconLabel icon="add" /> Create order
-                    </>
-                ),
-                modal: OrderModal,
-                modalData: {
-                    actionName: BigCommerceActionType.CreateOrder,
-                    customer: bigCommerceCustomer,
-                },
-            },
-        ]
-    }
-    const payload = {
-        customer_id: source.get('id'),
-    }
-
     return (
         <>
             <ExpandAllButton />
@@ -116,9 +122,6 @@ export function TitleWrapper({children, source}: TitleWrapperProps) {
                     </a>
                 </CardHeaderSubtitle>
             </CardHeaderTitle>
-            {actions && (
-                <ActionButtonsGroup actions={actions} payload={payload} />
-            )}
         </>
     )
 }
