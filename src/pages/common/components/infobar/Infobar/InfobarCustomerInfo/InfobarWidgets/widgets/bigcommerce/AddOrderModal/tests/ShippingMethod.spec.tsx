@@ -1,13 +1,26 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 
 import {render, screen} from '@testing-library/react'
 import {renderHook, act} from 'react-hooks-testing-library'
 import userEvent from '@testing-library/user-event'
 
 import MockAdapter from 'axios-mock-adapter'
-import {bigCommerceConsignmentFixture} from 'fixtures/bigcommerce'
+import {
+    bigCommerceCartFixture,
+    bigCommerceConsignmentFixture,
+    bigCommerceLineItemFixture,
+} from 'fixtures/bigcommerce'
 import client from 'models/api/resources'
+import Tooltip from 'pages/common/components/Tooltip'
 import {ShippingMethod, useShippingMethods} from '../ShippingMethod'
+
+// Mocking to check what text is provided to `Tooltip`
+jest.mock(
+    'pages/common/components/Tooltip',
+    () =>
+        ({children}: ComponentProps<typeof Tooltip>) =>
+            <div>{children}</div>
+)
 
 describe('ShippingMethod', () => {
     let apiMock: MockAdapter
@@ -26,6 +39,7 @@ describe('ShippingMethod', () => {
 
         const {rerender, baseElement} = render(
             <ShippingMethod
+                cart={null}
                 consignment={null}
                 onUpdateConsignmentShippingMethod={
                     onUpdateConsignmentShippingMethodMock
@@ -43,6 +57,7 @@ describe('ShippingMethod', () => {
 
         rerender(
             <ShippingMethod
+                cart={bigCommerceCartFixture()}
                 consignment={bigCommerceConsignmentFixture}
                 onUpdateConsignmentShippingMethod={
                     onUpdateConsignmentShippingMethodMock
@@ -70,9 +85,95 @@ describe('ShippingMethod', () => {
 
         expect(baseElement).toMatchSnapshot('shipping method selected')
     })
+
+    it('disables "Add Shipping" button when conditions match', () => {
+        const cartFixture = bigCommerceCartFixture()
+
+        const {rerender} = render(
+            <ShippingMethod
+                cart={null}
+                consignment={null}
+                onUpdateConsignmentShippingMethod={jest.fn()}
+                currencyCode="USD"
+                shippingCost={77}
+                hasShippingAddress={false}
+            />
+        )
+
+        // Has no products
+        expect(screen.getByRole('button', {name: /Add shipping/i})).toHaveClass(
+            'isDisabled'
+        )
+        expect(
+            screen.getByText(
+                /Your cart contains no products, please select some first/i
+            )
+        ).toBeInTheDocument()
+
+        // Has no physical products
+        rerender(
+            <ShippingMethod
+                cart={{
+                    ...cartFixture,
+                    line_items: {
+                        ...cartFixture.line_items,
+                        physical_items: [],
+                        digital_items: [bigCommerceLineItemFixture()],
+                    },
+                }}
+                consignment={bigCommerceConsignmentFixture}
+                onUpdateConsignmentShippingMethod={jest.fn()}
+                currencyCode="USD"
+                shippingCost={77}
+                hasShippingAddress={false}
+            />
+        )
+
+        expect(screen.getByRole('button', {name: /Add shipping/i})).toHaveClass(
+            'isDisabled'
+        )
+        expect(
+            screen.getByText(
+                /Your cart contains only digital products, no shipping is required/i
+            )
+        ).toBeInTheDocument()
+
+        // Still has no shipping address
+        rerender(
+            <ShippingMethod
+                cart={cartFixture}
+                consignment={bigCommerceConsignmentFixture}
+                onUpdateConsignmentShippingMethod={jest.fn()}
+                currencyCode="USD"
+                shippingCost={77}
+                hasShippingAddress={false}
+            />
+        )
+
+        expect(screen.getByRole('button', {name: /Add shipping/i})).toHaveClass(
+            'isDisabled'
+        )
+        expect(screen.getByText(/to see shipping rates/i)).toBeInTheDocument()
+
+        // Has it all
+        rerender(
+            <ShippingMethod
+                cart={cartFixture}
+                consignment={bigCommerceConsignmentFixture}
+                onUpdateConsignmentShippingMethod={jest.fn()}
+                currencyCode="USD"
+                shippingCost={77}
+                hasShippingAddress
+            />
+        )
+
+        expect(
+            screen.getByRole('button', {name: /Add shipping/i})
+        ).not.toHaveClass('isDisabled')
+    })
 })
 
-describe('useConsignment', () => {
+describe('useShippingMethods', () => {
     it('works as expected', () => {
         const onUpdateConsignmentShippingMethodMock = jest.fn()
 

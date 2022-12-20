@@ -4,13 +4,13 @@ import React, {
     useContext,
     useEffect,
     useMemo,
+    useReducer,
     useState,
 } from 'react'
 
 import classnames from 'classnames'
 
 import produce from 'immer'
-import {useUpdateEffect} from 'react-use'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
@@ -71,37 +71,64 @@ type Props = {
     shippingAddresses: BigCommerceCustomerAddress[]
 } & ConnectedProps
 
-const useValidationStatus = (
-    products: Maybe<Map<number, BigCommerceProduct>>,
-    shippingAddress: Maybe<BigCommerceCustomerAddress>,
-    cart: Maybe<BigCommerceCart>,
+const useValidationStatus = ({
+    products,
+    shippingAddress,
+    checkout,
+    cart,
+}: {
+    products: Maybe<Map<number, BigCommerceProduct>>
+    shippingAddress: Maybe<BigCommerceCustomerAddress>
     checkout: Maybe<BigCommerceCheckout>
-) => {
-    const [validationStatus, setvalidationStatus] =
-        useState<CreateOrderValidationResult>(undefined)
+    cart: Maybe<BigCommerceCart>
+}) => {
+    const [onSubmitValidationDone, setOnSubmitValidationDone] = useReducer(
+        () => true,
+        false
+    )
 
-    useUpdateEffect(() => {
-        setvalidationStatus((errors) => ({
-            ...errors,
-            products: checkProductsValidity(products),
-        }))
-    }, [products])
+    const [validationStatus, setValidationStatus] =
+        useState<CreateOrderValidationResult>({
+            products: true,
+            shippingAddress: true,
+            checkout: true,
+        })
 
-    useUpdateEffect(() => {
-        setvalidationStatus((errors) => ({
-            ...errors,
-            shippingAddress: checkShippingAddressValidity(shippingAddress),
-        }))
-    }, [shippingAddress])
+    /**
+     * @param forceValidation used to force validation, even if `onSubmitValidationDone` is false, to be used
+     * in `onSubmit` handler
+     */
+    const performValidations = useCallback(
+        (forceValidation = false) => {
+            // If we are not forcing validation, and `onSubmitValidationDone` is not true yet - bail out of validation
+            // This is similar to `onSubmit` `mode` of `react-hook-form` - https://react-hook-form.com/api/useform
+            if (!forceValidation && !onSubmitValidationDone) {
+                return
+            }
 
-    useUpdateEffect(() => {
-        setvalidationStatus((errors) => ({
-            ...errors,
-            checkout: checkCheckoutValidity(checkout),
-        }))
-    }, [checkout])
+            if (forceValidation) {
+                setOnSubmitValidationDone()
+            }
 
-    return {validationStatus, setvalidationStatus}
+            const validationResult = {
+                products: checkProductsValidity(products),
+                shippingAddress: checkShippingAddressValidity(shippingAddress),
+                checkout: checkCheckoutValidity({checkout, cart}),
+            }
+
+            setValidationStatus(validationResult)
+
+            return validationResult
+        },
+        [cart, checkout, onSubmitValidationDone, products, shippingAddress]
+    )
+
+    // performValidations will change identity every time `checkout`, `product` or `shippingAddress` is updated
+    useEffect(() => {
+        performValidations()
+    }, [performValidations])
+
+    return {validationStatus, performValidations}
 }
 
 export const useCheckout = ({integrationId}: {integrationId: number}) => {
@@ -256,6 +283,10 @@ export function OrderModal({
     const [isLoading, setIsLoading] = useState(false)
     const [lineItemWithErrorId, setLineItemWithErrorId] = useState('')
 
+    const [products, setProducts] = useState<Map<number, BigCommerceProduct>>(
+        new Map()
+    )
+
     const {
         cart,
         checkout,
@@ -269,16 +300,12 @@ export function OrderModal({
         integrationId: integration.id,
     })
 
-    const [products, setProducts] = useState<Map<number, BigCommerceProduct>>(
-        new Map()
-    )
-
-    const {validationStatus, setvalidationStatus} = useValidationStatus(
+    const {validationStatus, performValidations} = useValidationStatus({
         products,
         shippingAddress,
+        checkout,
         cart,
-        checkout
-    )
+    })
 
     const [note, setNote] = useState('')
     const [comment, setComment] = useState('')
@@ -310,56 +337,25 @@ export function OrderModal({
     }
 
     const handleAddOrder = () => {
-        let orderIsValid = true
-
-        if (validationStatus?.checkout) {
-            bigcommerceCreateOrder(
-                dispatch,
-                integration,
-                customerId?.toString(),
-                cart,
-                note,
-                comment
-            )
-
-            handleCancel('create-order', false)
-            return
-        }
-
-        if (
-            validationStatus?.products === undefined ||
-            !validationStatus.products
-        ) {
-            setvalidationStatus((errors) => ({
-                ...errors,
-                products: false,
-            }))
-            orderIsValid = false
-        }
-        if (
-            validationStatus?.shippingAddress === undefined ||
-            !validationStatus.shippingAddress
-        ) {
-            setvalidationStatus((errors) => ({
-                ...errors,
-                shippingAddress: false,
-            }))
-            orderIsValid = false
-        }
-        if (
-            validationStatus?.checkout === undefined ||
-            !validationStatus.checkout
-        ) {
-            setvalidationStatus((errors) => ({
-                ...errors,
-                checkout: false,
-            }))
-            orderIsValid = false
-        }
+        const validationResult = performValidations(true)
+        const orderIsValid = validationResult
+            ? Object.values(validationResult).every(Boolean)
+            : false
 
         if (!orderIsValid) {
             return
         }
+
+        bigcommerceCreateOrder(
+            dispatch,
+            integration,
+            customerId?.toString(),
+            cart,
+            note,
+            comment
+        )
+
+        handleCancel('create-order', false)
     }
 
     useEffect(() => {
@@ -417,7 +413,7 @@ export function OrderModal({
                     <div className={css.relative}>
                         <ProductSearchInput
                             className={css.searchInput}
-                            hasError={validationStatus?.products === false}
+                            hasError={!validationStatus.products}
                             dataMappers={bigcommerceDataMappers}
                             onVariantClicked={(
                                 item: IntegrationDataItem<BigCommerceProduct>,
@@ -439,8 +435,7 @@ export function OrderModal({
                         {!hasItemsInCart && (
                             <p
                                 className={classnames(css.searchbarInfo, {
-                                    [css.hasError]:
-                                        validationStatus?.products === false,
+                                    [css.hasError]: !validationStatus.products,
                                 })}
                             >
                                 This order is currently empty. Add products
@@ -491,20 +486,21 @@ export function OrderModal({
                     {hasItemsInCart && (
                         <OrderTotals
                             integration={integration}
+                            cart={cart}
                             consignment={consignment}
                             totals={totals}
                             hasShippingAddress={Boolean(shippingAddress)}
                             onUpdateConsignmentShippingMethod={
                                 onUpdateConsignmentShippingMethod
                             }
-                            hasError={validationStatus?.checkout === false}
+                            hasError={!validationStatus.checkout}
                         />
                     )}
                     <ShippingAddressesDropdown
                         shippingAddress={shippingAddress}
                         shippingAddresses={shippingAddresses}
                         onSelectAddress={onSelectAddress}
-                        hasError={validationStatus?.shippingAddress === false}
+                        hasError={!validationStatus.shippingAddress}
                     />
                     <p className="heading-section-semibold">Comments & Notes</p>
                     <div>

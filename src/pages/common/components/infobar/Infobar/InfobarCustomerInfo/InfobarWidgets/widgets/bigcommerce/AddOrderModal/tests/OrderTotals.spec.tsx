@@ -1,6 +1,7 @@
 import React from 'react'
 import {render} from '@testing-library/react'
 import {
+    bigCommerceCartFixture,
     bigCommerceConsignmentFixture,
     bigCommerceIntegrationFixture,
 } from 'fixtures/bigcommerce'
@@ -13,6 +14,7 @@ describe('<OrderTotals/>', () => {
 
             const {container} = render(
                 <OrderTotals
+                    cart={bigCommerceCartFixture()}
                     integration={integration}
                     consignment={bigCommerceConsignmentFixture}
                     onUpdateConsignmentShippingMethod={jest.fn()}

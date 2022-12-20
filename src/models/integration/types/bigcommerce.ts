@@ -8,14 +8,11 @@ export type BigCommerceIntegration = IntegrationBase & {
     meta: BigCommerceIntegrationMeta
 }
 
-export type CreateOrderValidationResult =
-    | null
-    | undefined
-    | {
-          products?: boolean
-          shippingAddress?: boolean
-          checkout?: boolean
-      }
+export type CreateOrderValidationResult = {
+    products: boolean
+    shippingAddress: boolean
+    checkout: boolean
+}
 
 export type BigCommerceIntegrationMeta = {
     oauth: OAuth2

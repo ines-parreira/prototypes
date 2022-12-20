@@ -15,6 +15,7 @@ exports[`ShippingMethod create/update consignment and change shipping method: dr
         >
           Add shipping
         </button>
+        <div />
       </dt>
       <dd
         class="descriptionValue"
@@ -134,12 +135,14 @@ exports[`ShippingMethod create/update consignment and change shipping method: in
         class="descriptionTitle"
       >
         <button
-          class="actionButton"
-          disabled=""
+          class="actionButton isDisabled"
           id="shipping-method-button"
         >
           Add shipping
         </button>
+        <div>
+          Your cart contains no products, please select some first.
+        </div>
       </dt>
       <dd
         class="descriptionValue descriptionValueDisabled"
@@ -171,6 +174,7 @@ exports[`ShippingMethod create/update consignment and change shipping method: sh
         >
           Add shipping
         </button>
+        <div />
       </dt>
       <dd
         class="descriptionValue"

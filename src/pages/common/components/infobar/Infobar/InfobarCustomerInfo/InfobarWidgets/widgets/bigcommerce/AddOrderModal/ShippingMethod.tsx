@@ -9,6 +9,7 @@ import RadioFieldSet, {RadioFieldOption} from 'pages/common/forms/RadioFieldSet'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 
 import {
+    BigCommerceCart,
     BigCommerceConsignment,
     BigCommerceShippingOption,
 } from 'models/integration/types'
@@ -123,6 +124,7 @@ export const useShippingMethods = ({
 
 type Props = {
     consignment: Maybe<BigCommerceConsignment>
+    cart: Maybe<BigCommerceCart>
     currencyCode: string | null
     shippingCost: number
     hasShippingAddress: boolean
@@ -132,7 +134,54 @@ type Props = {
     hasError?: boolean
 }
 
+const getDisabledStatus = ({
+    cart,
+    hasShippingAddress,
+}: {
+    cart: Maybe<BigCommerceCart>
+    hasShippingAddress: boolean
+}) => {
+    const countOfPhysicalItemsInCart =
+        cart?.line_items.physical_items.length ?? 0
+    const countOfDigitalItemsInCart = cart?.line_items.digital_items.length ?? 0
+
+    const countOfPhysicalAndDigitalItemsInCart =
+        countOfPhysicalItemsInCart + countOfDigitalItemsInCart
+
+    if (!cart || !countOfPhysicalAndDigitalItemsInCart) {
+        return {
+            disabled: true,
+            reason: 'Your cart contains no products, please select some first.',
+        }
+    }
+
+    if (countOfPhysicalItemsInCart === 0 && countOfDigitalItemsInCart >= 1) {
+        return {
+            disabled: true,
+            reason: 'Your cart contains only digital products, no shipping is required.',
+        }
+    }
+
+    if (!hasShippingAddress) {
+        return {
+            disabled: true,
+            reason: (
+                <>
+                    Please select{' '}
+                    <span className={css.tooltipBoldText}>
+                        Shipping address
+                    </span>{' '}
+                    to see shipping rates.
+                </>
+            ),
+        }
+    }
+
+    return {disabled: false}
+}
+
 export function ShippingMethod({
+    cart,
     consignment,
     hasShippingAddress,
     shippingCost,
@@ -140,7 +189,10 @@ export function ShippingMethod({
     onUpdateConsignmentShippingMethod,
     hasError = false,
 }: Props) {
-    const isDisabled = !hasShippingAddress
+    const {disabled: isDisabled, reason: disabledReason} = getDisabledStatus({
+        hasShippingAddress,
+        cart,
+    })
 
     const buttonRef = useRef<HTMLButtonElement>(null)
 
@@ -172,9 +224,9 @@ export function ShippingMethod({
                         onClick={onToggle}
                         className={classnames(css.actionButton, {
                             [css.hasError]: hasError,
+                            [css.isDisabled]: isDisabled,
                         })}
                         ref={buttonRef}
-                        disabled={isDisabled}
                         id="shipping-method-button"
                     >
                         Add shipping
@@ -184,11 +236,7 @@ export function ShippingMethod({
                         target="shipping-method-button"
                         disabled={!isDisabled}
                     >
-                        Please select{' '}
-                        <span className={css.tooltipBoldText}>
-                            Shipping address
-                        </span>{' '}
-                        to see shipping rates.
+                        {disabledReason}
                     </Tooltip>
                 </dt>
                 <dd

@@ -3,6 +3,7 @@ import classnames from 'classnames'
 import {
     BigCommerceIntegration,
     BigCommerceConsignment,
+    BigCommerceCart,
 } from 'models/integration/types'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import {ShippingMethod} from './ShippingMethod'
@@ -10,6 +11,7 @@ import {ShippingMethod} from './ShippingMethod'
 import css from './OrderTotals.less'
 
 type Props = {
+    cart: Maybe<BigCommerceCart>
     consignment: Maybe<BigCommerceConsignment>
     integration: BigCommerceIntegration
     hasShippingAddress: boolean
@@ -52,6 +54,7 @@ const TotalLine = ({
 
 export default function OrderTotals({
     integration,
+    cart,
     consignment,
     hasShippingAddress,
     onUpdateConsignmentShippingMethod,
@@ -85,6 +88,7 @@ export default function OrderTotals({
 
             <ShippingMethod
                 currencyCode={currencyCode}
+                cart={cart}
                 consignment={consignment}
                 hasShippingAddress={hasShippingAddress}
                 shippingCost={shipping}

@@ -360,7 +360,10 @@ export async function upsertCheckoutConsignment({
     shippingAddress: BigCommerceCustomerAddress
     consignmentId: Maybe<string>
 }) {
-    const lineItems = cart.line_items.physical_items.map(({id, quantity}) => ({
+    const lineItems = [
+        ...cart.line_items.physical_items,
+        ...cart.line_items.digital_items,
+    ].map(({id, quantity}) => ({
         item_id: id,
         quantity,
     }))
@@ -430,7 +433,22 @@ export function checkShippingAddressValidity(
     return !!(shippingAddress?.email && shippingAddress?.country_code)
 }
 
-export function checkCheckoutValidity(checkout: Maybe<BigCommerceCheckout>) {
+export function checkCheckoutValidity({
+    checkout,
+    cart,
+}: {
+    checkout: Maybe<BigCommerceCheckout>
+    cart: Maybe<BigCommerceCart>
+}) {
+    if (
+        cart &&
+        cart.line_items?.digital_items?.length &&
+        !cart.line_items?.physical_items?.length
+    ) {
+        // Cart contains only digital products -> there are no consignments in checkout
+        return true
+    }
+
     if (
         !(
             checkout &&
@@ -440,14 +458,6 @@ export function checkCheckoutValidity(checkout: Maybe<BigCommerceCheckout>) {
         )
     ) {
         return false
-    }
-
-    if (
-        checkout.cart.line_items?.digital_items?.length &&
-        !checkout.cart.line_items?.physical_items?.length
-    ) {
-        // Cart contains only digital products -> there are no consignments in checkout
-        return true
     }
 
     return !!(
