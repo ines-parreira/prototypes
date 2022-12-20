@@ -77,4 +77,9 @@ WithProducts.args = {
     ],
 }
 
+export const VideoEmbedded = Template.bind({})
+VideoEmbedded.args = {
+    html: `<div>here is an image below</div><div><br /></div><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmcdHNojpj5mzs9E-WWvoyLJ6Bqul4t8zlxVS5Kwa3X0Vgy6jLr8VUaxVMIWE1ain5ttk&amp;usqp=CAU" width="400" style="max-width: 100%" /><div><br /></div><div>Then a video</div><div class="gorgias-video-container" data-video-src="https://www.youtube.com/watch?v=4sLFpe-xbhk" width="400"></div><div><br /></div><div>And a href <a href="https://gorgias.com/" target="_blank" rel="noreferrer noopener">HERE</a></div><div><br /></div>`,
+}
+
 export default storyConfig

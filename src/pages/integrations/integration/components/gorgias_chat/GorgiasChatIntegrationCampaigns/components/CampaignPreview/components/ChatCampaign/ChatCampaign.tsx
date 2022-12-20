@@ -1,5 +1,8 @@
 import React from 'react'
 
+import ReactPlayer from 'react-player'
+
+import {extractGorgiasVideoDivFromHtmlContent} from 'utils'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import GorgiasChatPoweredBy from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/GorgiasChatPoweredBy'
 
@@ -24,6 +27,8 @@ export const ChatCampaign = ({
     products = [],
     translatedTexts,
 }: Props) => {
+    const {videoUrls, htmlCleaned} = extractGorgiasVideoDivFromHtmlContent(html)
+
     return (
         <div className={css.campaign}>
             <div className={css.content}>
@@ -42,8 +47,29 @@ export const ChatCampaign = ({
                         </div>
                         <div
                             className={css.messageText}
-                            dangerouslySetInnerHTML={{__html: html}}
+                            dangerouslySetInnerHTML={{
+                                __html: htmlCleaned,
+                            }}
                         />
+                        {videoUrls.length > 0 &&
+                            videoUrls.map((url, idx) => (
+                                <div
+                                    key={idx}
+                                    className={css.messageText}
+                                    style={{
+                                        width: '100%',
+                                        aspectRatio: '16/9',
+                                    }}
+                                >
+                                    <ReactPlayer
+                                        url={url}
+                                        controls={true}
+                                        light={true}
+                                        width="100%"
+                                        height="100%"
+                                    />
+                                </div>
+                            ))}
                     </div>
                 </div>
             </div>
