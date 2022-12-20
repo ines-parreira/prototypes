@@ -45,6 +45,7 @@
         "@casl/ability": "6.0.0",
         "@casl/react": "3.0.1",
         "@datadog/browser-logs": "2.0.3",
+        "@datadog/browser-rum": "4.26.0",
         "@floating-ui/react-dom-interactions": "0.4.0",
         "@formatjs/intl-displaynames": "5.4.3",
         "@formatjs/intl-locale": "2.4.47",

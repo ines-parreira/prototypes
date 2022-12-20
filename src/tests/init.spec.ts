@@ -5,6 +5,8 @@ import thunk from 'redux-thunk'
 import {EMAIL_INTEGRATION_TYPE} from 'constants/integration'
 import {initialState} from 'fixtures/initialState'
 import {
+    initApp,
+    InitAppParams,
     notifyAccountNotVerified,
     notifyDeprecatedTld,
     notifyUserImpersonated,
@@ -12,8 +14,14 @@ import {
 } from 'init'
 import {RootState} from 'state/types'
 import {user} from 'fixtures/users'
+import {mockProductionEnvironment, mockStagingEnvironment} from 'utils/testing'
+import {GorgiasInitialState} from 'types'
+import {account} from 'fixtures/account'
+import {initDatadogRum} from 'utils/datadog'
 
 const mockStore = configureMockStore([thunk])
+
+jest.mock('utils/datadog')
 
 describe('init', () => {
     let reduxStore: MockStoreEnhanced<unknown>
@@ -113,6 +121,41 @@ describe('init', () => {
     describe('toInitialStoreState()', () => {
         it('should return the expected store state', () => {
             expect(toInitialStoreState(initialState)).toMatchSnapshot()
+        })
+    })
+
+    describe('initApp()', () => {
+        const defaultParams: InitAppParams = {
+            sentry: false,
+            datadog: false,
+        }
+
+        beforeEach(() => {
+            mockStagingEnvironment()
+            window.GORGIAS_STATE = {
+                currentAccount: account,
+                currentUser: user,
+            } as GorgiasInitialState
+        })
+
+        describe.each([
+            ['staging', mockStagingEnvironment],
+            ['production', mockProductionEnvironment],
+        ])('%s environment', () => {
+            it('should not init datadog rum when datadog is disabled', () => {
+                initApp(defaultParams)
+
+                expect(initDatadogRum).not.toHaveBeenCalled()
+            })
+            it('should init datadog rum when datadog is enabled', () => {
+                initApp({...defaultParams, datadog: true})
+
+                expect(initDatadogRum).toHaveBeenLastCalledWith(
+                    account,
+                    user,
+                    window.GORGIAS_RELEASE
+                )
+            })
         })
     })
 })

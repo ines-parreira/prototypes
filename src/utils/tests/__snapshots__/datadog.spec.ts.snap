@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`initDatadogLogger() should init datadog logger 1`] = `
+exports[`datadog initDatadogLogger should init datadog logger 1`] = `
 Array [
   Array [
     Object {
@@ -16,7 +16,7 @@ Array [
 ]
 `;
 
-exports[`initDatadogLogger() should init datadog logger 2`] = `
+exports[`datadog initDatadogLogger should init datadog logger 2`] = `
 Array [
   Array [
     Object {
@@ -27,6 +27,24 @@ Array [
         "email": "alex@gorgias.io",
         "id": 2,
       },
+    },
+  ],
+]
+`;
+
+exports[`datadog initDatadogRum should init datadog rum 1`] = `
+Array [
+  Array [
+    Object {
+      "applicationId": "a9fcd4e9-2ebd-47e7-92c2-9438dd12c9df",
+      "clientToken": "pube64f1e4ec3c5172711f0a2d03cb1a0ff",
+      "sampleRate": 0.1,
+      "service": "helpdesk-web-app",
+      "sessionReplaySampleRate": 0,
+      "site": "datadoghq.com",
+      "trackLongTasks": true,
+      "trackResources": true,
+      "version": "v1.4.5",
     },
   ],
 ]

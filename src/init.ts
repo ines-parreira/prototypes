@@ -20,7 +20,7 @@ import {transformSystemMessagesToNotifications} from 'utils'
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {GorgiasInitialState, InitialRootState} from 'types'
-import {initDatadogLogger} from 'utils/datadog'
+import {initDatadogLogger, initDatadogRum} from 'utils/datadog'
 import {initializeNewReleaseHandler} from 'models/api/resources'
 import {Tag} from 'models/tag/types'
 import {View} from 'models/view/types'
@@ -200,6 +200,11 @@ export type InitAppParams = {
 export function initApp({datadog, sentry}: InitAppParams) {
     if (datadog && (isStaging() || isProduction())) {
         initDatadogLogger(
+            window.GORGIAS_STATE.currentAccount,
+            window.GORGIAS_STATE.currentUser,
+            window.GORGIAS_RELEASE
+        )
+        initDatadogRum(
             window.GORGIAS_STATE.currentAccount,
             window.GORGIAS_STATE.currentUser,
             window.GORGIAS_RELEASE

@@ -1665,6 +1665,11 @@
   dependencies:
     tslib "^1.10.0"
 
+"@datadog/browser-core@4.26.0":
+  version "4.26.0"
+  resolved "https://registry.yarnpkg.com/@datadog/browser-core/-/browser-core-4.26.0.tgz#ada776c93354f8ffebb2914ae9cd4107385e5bd6"
+  integrity sha512-Zm5P+MA6B/LpKvH6Xw1CMUOSrOLodLJ3UG/SDwndVW/0ALx9l70vpH4+/MaW3BiBDLKPriTZ6rQIovyv0k19fw==
+
 "@datadog/browser-logs@2.0.3":
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/@datadog/browser-logs/-/browser-logs-2.0.3.tgz#71f0c6ad911eb4700b4c86800100dd8aa32fbc56"
@@ -1672,6 +1677,21 @@
   dependencies:
     "@datadog/browser-core" "2.0.3"
     tslib "^1.10.0"
+
+"@datadog/browser-rum-core@4.26.0":
+  version "4.26.0"
+  resolved "https://registry.yarnpkg.com/@datadog/browser-rum-core/-/browser-rum-core-4.26.0.tgz#3c573cc53bd626d98eaf358f8c93b7f02d96ab30"
+  integrity sha512-STn/DsQaSCAebfBk1ce5lGAmnM/0ZtQp+1hTEEpkcDQkNXJvMWNYMVAYCCKcqkWR/DD32hnOKKv+SmHWXwVMeg==
+  dependencies:
+    "@datadog/browser-core" "4.26.0"
+
+"@datadog/browser-rum@4.26.0":
+  version "4.26.0"
+  resolved "https://registry.yarnpkg.com/@datadog/browser-rum/-/browser-rum-4.26.0.tgz#7911fd7e6f7057eb501113e12259e88f646edc19"
+  integrity sha512-mcQwuL86h9hu5hyxnzyI91e/yfrtG1vDiIZL8APYw4foMMugDY5KMiJwEYu55FH5s6jA7l9D5ky7LY2oaZ7lbg==
+  dependencies:
+    "@datadog/browser-core" "4.26.0"
+    "@datadog/browser-rum-core" "4.26.0"
 
 "@discoveryjs/json-ext@^0.5.3":
   version "0.5.5"
