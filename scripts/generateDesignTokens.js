@@ -7,6 +7,7 @@ const outputPath = path.join(process.cwd(), 'src/assets/css/new/')
 const tokenTypes = {
     colors: 'colors',
     typography: 'typography',
+    layout: 'layout',
 }
 
 const StyleDictionary = require('style-dictionary').extend({
@@ -33,6 +34,16 @@ const StyleDictionary = require('style-dictionary').extend({
                         return (
                             path.parse(token.filePath).name ===
                             tokenTypes.typography
+                        )
+                    },
+                },
+                {
+                    destination: 'layout.less',
+                    format: 'less/variables',
+                    filter: (token) => {
+                        return (
+                            path.parse(token.filePath).name ===
+                            tokenTypes.layout
                         )
                     },
                 },

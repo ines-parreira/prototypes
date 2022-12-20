@@ -1,0 +1,12 @@
+{
+    "layout": {
+        "spacing": {
+            "xxs": {"value": "4px"},
+            "xs": {"value": "8px"},
+            "s": {"value": "16px"},
+            "m": {"value": "24px"},
+            "l": {"value": "32px"},
+            "xl": {"value": "48px"}
+        }
+    }
+}
