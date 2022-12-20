@@ -142,6 +142,33 @@ describe('<AddVideo/>', () => {
         fireEvent.click(screen.getByText(/Insert Video/i))
         expect(insertText).toHaveBeenCalled()
     })
+
+    it('should call `insertVideo` to the draftjs editorState when being in the campaign edit page', () => {
+        const addVideoSpy = jest
+            .spyOn(draftjsPluginsUtils, 'addVideo')
+            .mockImplementation(jest.fn())
+
+        jest.spyOn(
+            newMesageSelector,
+            'getNewMessageChannel'
+        ).mockImplementation(() => TicketChannel.Email) // The state has Email by default when being on a campaign edition page.
+        window.location.pathname =
+            '/app/settings/channels/gorgias_chat/69/campaigns/04c1b674-8800-4d22-9b8f-e93db01ef5de'
+
+        render(
+            <Provider store={store}>
+                <AddVideo {...minProps} />
+            </Provider>
+        )
+        fireEvent.click(screen.getByText(/video/i))
+
+        fireEvent.change(screen.getByPlaceholderText('External video URL'), {
+            target: {value: 'https://www.youtube.com/watch?v=4sLFpe-xbhk'}, // URL is valid and ReactPlayer.canPlay: true.
+        })
+
+        fireEvent.click(screen.getByText(/Insert Video/i))
+        expect(addVideoSpy).toHaveBeenCalled()
+    })
 })
 
 describe('ReactPlayer', () => {

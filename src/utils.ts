@@ -643,6 +643,16 @@ export const isCurrentlyOnView = (
 }
 
 /**
+ * Return true if user is currently on a chat campaign details page (edit page) .
+ */
+export const isCurrentlyOnChatCampaignDetailsPage = (): boolean => {
+    const regex =
+        /^\/app\/settings\/channels\/gorgias_chat\/\d+\/campaigns\/.+$/
+
+    return regex.test(window.location.pathname)
+}
+
+/**
  * return plural object name of a given view type
  */
 export function getPluralObjectName(viewType: string): string {

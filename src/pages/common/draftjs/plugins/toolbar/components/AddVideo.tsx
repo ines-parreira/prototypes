@@ -11,7 +11,11 @@ import {connect, ConnectedProps} from 'react-redux'
 import {EditorState} from 'draft-js'
 import ReactPlayer from 'react-player'
 
-import {insertLink, insertText} from 'utils'
+import {
+    insertLink,
+    insertText,
+    isCurrentlyOnChatCampaignDetailsPage,
+} from 'utils'
 import Button from 'pages/common/components/button/Button'
 import Popover from 'pages/common/draftjs/plugins/toolbar/components/ButtonPopover'
 import TextInput from 'pages/common/forms/input/TextInput'
@@ -77,14 +81,16 @@ export function AddVideo({
         () => {
             const editorState = getEditorState()
 
-            const canAddVideo =
+            const canAddVideoPlayer =
+                // If currently writting a chat ticket message.
                 newMessageChannel === (TicketChannel.Chat as string) ||
-                !isNewMessagePublic
-
-            const canPlay = ReactPlayer.canPlay(url)
+                // Or an internal note.
+                !isNewMessagePublic ||
+                // Or currently editing a chat campaign content.
+                isCurrentlyOnChatCampaignDetailsPage()
 
             let newEditorState
-            if (canAddVideo && canPlay) {
+            if (canAddVideoPlayer && ReactPlayer.canPlay(url)) {
                 newEditorState = addVideo(editorState, url)
             } else {
                 if (

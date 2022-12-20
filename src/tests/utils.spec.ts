@@ -201,6 +201,31 @@ describe('global utils', () => {
         })
     })
 
+    describe('isCurrentlyOnChatCampaignDetailsPage', () => {
+        it('should be true', () => {
+            window.location.pathname =
+                '/app/settings/channels/gorgias_chat/69/campaigns/04c1b674-8800-4d22-9b8f-e93db01ef5de'
+            expect(utils.isCurrentlyOnChatCampaignDetailsPage()).toBe(true)
+            window.location.pathname =
+                '/app/settings/channels/gorgias_chat/123213213/campaigns/1a9720a2-fdac-4cea-9864-d82860dcd3a3'
+            expect(utils.isCurrentlyOnChatCampaignDetailsPage()).toBe(true)
+        })
+
+        it('should be false', () => {
+            window.location.pathname = '/app/settings/channels/gorgias_chat'
+            expect(utils.isCurrentlyOnChatCampaignDetailsPage()).toBe(false)
+            window.location.pathname =
+                'app/settings/channels/gorgias_chat/67/campaigns'
+            expect(utils.isCurrentlyOnChatCampaignDetailsPage()).toBe(false)
+            window.location.pathname = '/app/rules'
+            expect(utils.isCurrentlyOnChatCampaignDetailsPage()).toBe(false)
+            window.location.pathname = '/app/settings/macros/2'
+            expect(utils.isCurrentlyOnChatCampaignDetailsPage()).toBe(false)
+            window.location.pathname = '/app/ticket/12'
+            expect(utils.isCurrentlyOnChatCampaignDetailsPage()).toBe(false)
+        })
+    })
+
     describe('isGorgiasSupportAddress', () => {
         it('should find our base gorgias address', () => {
             const gorgiasSupportAddresses = [
