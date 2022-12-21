@@ -128,10 +128,7 @@ export type BigCommerceCheckout = {
     id: string
     cart: BigCommerceCart
     billing_address: BigCommerceBillingAddress
-    // The response returns an array of consignments if we have multiple shipping addresses,
-    // but as we're only allowing to add a single shipping address, we are only interested in the
-    // 0th index of `consignments` array
-    consignments: [BigCommerceConsignment]
+    consignments: Array<BigCommerceConsignment>
     taxes: Array<{name: string; amount: number}>
     coupons: Array<any>
     order_id: any

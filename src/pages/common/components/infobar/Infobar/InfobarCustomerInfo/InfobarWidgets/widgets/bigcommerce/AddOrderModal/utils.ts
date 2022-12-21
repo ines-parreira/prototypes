@@ -1,4 +1,5 @@
 import _debounce from 'lodash/debounce'
+import axios from 'axios'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {
     addBigCommerceCheckoutBillingAddress,
@@ -7,6 +8,7 @@ import {
     createBigCommerceCheckoutConsignment,
     deleteBigCommerceCart,
     editBigCommerceLineItem,
+    getBigCommerceCheckout,
     removeBigCommerceLineItem,
     updateBigCommerceCheckoutConsignment,
 } from 'models/integration/resources/bigcommerce'
@@ -372,28 +374,43 @@ export async function upsertCheckoutConsignment({
         return null
     }
 
+    const singleConsignmentPayload = {
+        address: shippingAddress,
+        line_items: lineItems,
+    }
+
     if (!consignmentId) {
         return createBigCommerceCheckoutConsignment({
             cartId: cart.id,
             integrationId,
-            payload: [
-                {
-                    address: shippingAddress,
-                    line_items: lineItems,
-                },
-            ],
+            payload: [singleConsignmentPayload],
         })
     }
 
-    return updateBigCommerceCheckoutConsignment({
-        cartId: cart.id,
-        integrationId,
-        consignmentId,
-        payload: {
-            address: shippingAddress,
-            line_items: lineItems,
-        },
-    })
+    /**
+     * try...catch here to intercept 404 during consignment update.
+     *
+     * There are some corner cases, when consignment gets deleted on BC side without us knowing about that.
+     * In that case we will get 404 when trying to update that consignment. We "catch" this case and request
+     * an up-to-date `checkout` object from BC
+     */
+    try {
+        return await updateBigCommerceCheckoutConsignment({
+            cartId: cart.id,
+            integrationId,
+            consignmentId,
+            payload: singleConsignmentPayload,
+        })
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response?.status === 404) {
+            return await getBigCommerceCheckout({
+                integrationId,
+                checkoutId: cart.id,
+            })
+        }
+
+        throw error
+    }
 }
 
 export const updateCheckoutConsignmentShippingMethod = async ({

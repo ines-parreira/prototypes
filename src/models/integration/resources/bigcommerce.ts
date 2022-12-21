@@ -180,3 +180,22 @@ export async function updateBigCommerceCheckoutConsignment({
 
     return response.data.data
 }
+
+export async function getBigCommerceCheckout({
+    integrationId,
+    checkoutId,
+}: {
+    integrationId: number
+    checkoutId: string
+}): Promise<BigCommerceCheckout> {
+    const url = '/integrations/bigcommerce/order/checkout/'
+
+    const response = await client.get<BigCommerceNestedCheckout>(url, {
+        params: {
+            integration_id: integrationId,
+            checkout_id: checkoutId,
+        },
+    })
+
+    return response.data.data
+}
