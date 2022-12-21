@@ -7,6 +7,7 @@ import Button from 'pages/common/components/button/Button'
 import Tooltip from 'pages/common/components/Tooltip'
 import RadioFieldSet, {RadioFieldOption} from 'pages/common/forms/RadioFieldSet'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
+import Loader from 'pages/common/components/Loader/Loader'
 
 import {
     BigCommerceCart,
@@ -26,6 +27,8 @@ export const useShippingMethods = ({
         shippingMethodId: string
     ) => Promise<void>
 }) => {
+    const [isUpdatingConsignment, setIsUpdatingConsignment] = useState(false)
+
     const [selectedShippingMethod, setSelectedShippingMethod] =
         useState<BigCommerceShippingOption | null>(null)
 
@@ -38,52 +41,66 @@ export const useShippingMethods = ({
      * @url https://developer.bigcommerce.com/api-reference/fea1832a96623-update-checkout-consignment#request-body
      */
     useEffect(() => {
-        if (!consignment) {
-            return
-        }
-
-        if (!consignment.selected_shipping_option) {
-            if (!selectedShippingMethod) {
+        const consignmentSync = async () => {
+            if (!consignment) {
                 return
             }
 
-            const hasAvailableSelectedShippingMethod =
-                consignment.available_shipping_options.find(
-                    ({id}) => id === selectedShippingMethod.id
-                )
+            if (!consignment.selected_shipping_option) {
+                if (!selectedShippingMethod) {
+                    return
+                }
 
-            if (hasAvailableSelectedShippingMethod) {
-                return void onUpdateConsignmentShippingMethod(
+                const hasAvailableSelectedShippingMethod =
+                    consignment.available_shipping_options.find(
+                        ({id}) => id === selectedShippingMethod.id
+                    )
+
+                if (hasAvailableSelectedShippingMethod) {
+                    setIsUpdatingConsignment(true)
+
+                    await onUpdateConsignmentShippingMethod(
+                        selectedShippingMethod.id
+                    )
+
+                    return setIsUpdatingConsignment(false)
+                }
+
+                const similarShippingOptions =
+                    consignment.available_shipping_options.filter(
+                        ({type, description}) =>
+                            type === selectedShippingMethod.type &&
+                            description === selectedShippingMethod.description
+                    )
+
+                // Update consignment and set local shipping method _only_ if we have single match
+                // based on type and description
+                if (similarShippingOptions.length === 1) {
+                    setIsUpdatingConsignment(true)
+
+                    await onUpdateConsignmentShippingMethod(
+                        similarShippingOptions[0].id
+                    )
+
+                    setIsUpdatingConsignment(false)
+                    return setSelectedShippingMethod(similarShippingOptions[0])
+                }
+
+                return setSelectedShippingMethod(null)
+            }
+
+            if (
+                selectedShippingMethod &&
+                consignment.selected_shipping_option.id !==
+                    selectedShippingMethod?.id
+            ) {
+                void onUpdateConsignmentShippingMethod(
                     selectedShippingMethod.id
                 )
             }
-
-            const similarShippingOptions =
-                consignment.available_shipping_options.filter(
-                    ({type, description}) =>
-                        type === selectedShippingMethod.type &&
-                        description === selectedShippingMethod.description
-                )
-
-            // Update consignment and set local shipping method _only_ if we have single match
-            // based on type and description
-            if (similarShippingOptions.length === 1) {
-                void onUpdateConsignmentShippingMethod(
-                    similarShippingOptions[0].id
-                )
-                return setSelectedShippingMethod(similarShippingOptions[0])
-            }
-
-            return setSelectedShippingMethod(null)
         }
 
-        if (
-            selectedShippingMethod &&
-            consignment.selected_shipping_option.id !==
-                selectedShippingMethod?.id
-        ) {
-            void onUpdateConsignmentShippingMethod(selectedShippingMethod.id)
-        }
+        void consignmentSync()
     }, [consignment, selectedShippingMethod, onUpdateConsignmentShippingMethod])
 
     const shippingMethodOptions: Array<RadioFieldOption> = useMemo(
@@ -119,6 +136,7 @@ export const useShippingMethods = ({
         selectedShippingMethod,
         onSelectShippingMethod,
         shippingMethodOptions,
+        isUpdatingConsignment,
     }
 }
 
@@ -210,6 +228,7 @@ export function ShippingMethod({
         selectedShippingMethod,
         shippingMethodOptions,
         onSelectShippingMethod,
+        isUpdatingConsignment,
     } = useShippingMethods({
         consignment,
         onUpdateConsignmentShippingMethod,
@@ -223,7 +242,7 @@ export function ShippingMethod({
                     <button
                         onClick={onToggle}
                         className={classnames(css.actionButton, {
-                            [css.hasError]: hasError,
+                            [css.hasError]: hasError && !isUpdatingConsignment,
                             [css.isDisabled]: isDisabled,
                         })}
                         ref={buttonRef}
@@ -246,6 +265,11 @@ export function ShippingMethod({
                             !isDisabled && shippingCost === 0,
                     })}
                 >
+                    {isUpdatingConsignment && (
+                        <div className="mr-3">
+                            <Loader minHeight="20px" size="20px" />
+                        </div>
+                    )}
                     <MoneyAmount
                         amount={String(shippingCost)}
                         currencyCode={currencyCode}

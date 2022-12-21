@@ -1,6 +1,6 @@
 import React, {ComponentProps} from 'react'
 
-import {render, screen} from '@testing-library/react'
+import {render, screen, waitFor} from '@testing-library/react'
 import {renderHook, act} from 'react-hooks-testing-library'
 import userEvent from '@testing-library/user-event'
 
@@ -34,7 +34,7 @@ describe('ShippingMethod', () => {
         apiMock.restore()
     })
 
-    it('create/update consignment and change shipping method', () => {
+    it('create/update consignment and change shipping method', async () => {
         const onUpdateConsignmentShippingMethodMock = jest.fn()
 
         const {rerender, baseElement} = render(
@@ -78,12 +78,44 @@ describe('ShippingMethod', () => {
 
         userEvent.click(screen.getByRole('button', {name: /Apply/i}))
 
-        expect(onUpdateConsignmentShippingMethodMock).toHaveBeenNthCalledWith(
-            1,
-            'available-shipping-option-2'
-        )
+        await waitFor(() => {
+            expect(
+                onUpdateConsignmentShippingMethodMock
+            ).toHaveBeenNthCalledWith(1, 'available-shipping-option-2')
+        })
 
         expect(baseElement).toMatchSnapshot('shipping method selected')
+    })
+
+    it('shows error style correctly', () => {
+        const onUpdateConsignmentShippingMethodMock = jest.fn()
+
+        render(
+            <ShippingMethod
+                cart={bigCommerceCartFixture()}
+                consignment={bigCommerceConsignmentFixture}
+                onUpdateConsignmentShippingMethod={
+                    onUpdateConsignmentShippingMethodMock
+                }
+                currencyCode="USD"
+                shippingCost={77}
+                hasShippingAddress
+                hasError
+            />
+        )
+
+        // error class added to the button when `hasError` prop is passed
+        expect(screen.getByRole('button', {name: /Add shipping/i})).toHaveClass(
+            'hasError'
+        )
+
+        userEvent.click(screen.getByRole('button', {name: /Add shipping/i}))
+        userEvent.click(screen.getByRole('radio', {name: /Description Two/i}))
+
+        // error class not visible while the call to `onUpdateConsignmentShippingMethod` is running
+        expect(
+            screen.getByRole('button', {name: /Add shipping/i})
+        ).not.toHaveClass('hasError')
     })
 
     it('disables "Add Shipping" button when conditions match', () => {
@@ -174,7 +206,7 @@ describe('ShippingMethod', () => {
 })
 
 describe('useShippingMethods', () => {
-    it('works as expected', () => {
+    it('works as expected', async () => {
         const onUpdateConsignmentShippingMethodMock = jest.fn()
 
         const {result, rerender} = renderHook(
@@ -223,7 +255,7 @@ describe('useShippingMethods', () => {
         )
 
         /**
-         * Consignment with `selected_shipping_method` arrives, because it is the same
+         * Consignment with `selected_shipping_option` arrives, because it is the same
          * shipping method that is currently selected, there's no call to `updateConsignmentShippingMethod` triggered
          */
         rerender({
@@ -239,7 +271,7 @@ describe('useShippingMethods', () => {
         )
 
         /**
-         * Consignment with no `selected_shipping_method` arrives, but with `available_shipping_options`
+         * Consignment with no `selected_shipping_option` arrives, but with `available_shipping_options`
          * with `id` that matches current selected shipping method, call to `onUpdateConsignmentShippingMethodMock` is
          * triggered
          */
@@ -255,7 +287,7 @@ describe('useShippingMethods', () => {
         )
 
         /**
-         * Consignment with no `selected_shipping_method` arrives, but with `available_shipping_options`
+         * Consignment with no `selected_shipping_option` arrives, but with `available_shipping_options`
          * with `type` and `description` that matches current selected shipping method, call to `onUpdateConsignmentShippingMethodMock`
          * is triggered with new ID
          */
@@ -275,9 +307,12 @@ describe('useShippingMethods', () => {
             3,
             'modified-available-shipping-option-1'
         )
-        expect(result.current.selectedShippingMethod).toEqual({
-            ...bigCommerceConsignmentFixture.available_shipping_options[0],
-            id: 'modified-available-shipping-option-1',
+
+        await waitFor(() => {
+            expect(result.current.selectedShippingMethod).toEqual({
+                ...bigCommerceConsignmentFixture.available_shipping_options[0],
+                id: 'modified-available-shipping-option-1',
+            })
         })
     })
 })

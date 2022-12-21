@@ -20,6 +20,23 @@ exports[`ShippingMethod create/update consignment and change shipping method: dr
       <dd
         class="descriptionValue"
       >
+        <div
+          class="mr-3"
+        >
+          <div
+            class="container"
+          >
+            <div
+              class="inner"
+              style="min-height: 20px;"
+            >
+              <i
+                class="icon-custom icon-circle-o-notch md-spin"
+                style="font-size: 20px;"
+              />
+            </div>
+          </div>
+        </div>
         <span>
           $77.00
         </span>
