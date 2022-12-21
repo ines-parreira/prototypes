@@ -11,6 +11,10 @@ import EmailIntegrationList from '../EmailIntegrationList.tsx'
 import {fetchEmailDomains} from '../resources.ts'
 import {IntegrationType} from '../../../../../../models/integration/constants.ts'
 
+import {EmailProvider} from 'models/integration/constants'
+
+import {renderWithRouter} from 'utils/testing'
+
 jest.mock('../resources.ts')
 
 describe('<EmailIntegrationList/>', () => {
@@ -131,6 +135,45 @@ describe('<EmailIntegrationList/>', () => {
             await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
 
             expect(container).toMatchSnapshot()
+        })
+
+        it('should redirect to preferences tab when provider is not Sendgrid', async () => {
+            fetchEmailDomains.mockResolvedValueOnce([])
+            const integration = getEmailIntegration(1)
+
+            const component = renderWithRouter(
+                <Provider store={store}>
+                    <EmailIntegrationList
+                        {...commonProps}
+                        integrations={fromJS([integration])}
+                    />
+                </Provider>
+            )
+
+            await component.findByTestId('integration-link')
+            expect(
+                component.getByTestId('integration-link').getAttribute('to')
+            ).toBe(`/app/settings/channels/email/${integration.id}`)
+        })
+
+        it('should redirect to domain settings tab when provider is Sendgrid', async () => {
+            fetchEmailDomains.mockResolvedValueOnce([])
+            const integration = getEmailIntegration(1)
+            integration.meta.provider = EmailProvider.Sendgrid
+
+            const component = renderWithRouter(
+                <Provider store={store}>
+                    <EmailIntegrationList
+                        {...commonProps}
+                        integrations={fromJS([integration])}
+                    />
+                </Provider>
+            )
+
+            await component.findByTestId('integration-link')
+            expect(
+                component.getByTestId('integration-link').getAttribute('to')
+            ).toBe(`/app/settings/channels/email/${integration.id}/dns`)
         })
     })
 })

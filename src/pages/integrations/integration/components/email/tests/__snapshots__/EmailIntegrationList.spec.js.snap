@@ -119,6 +119,7 @@ exports[`<EmailIntegrationList/> render() should render the page with a warning 
             class="link-full-td"
           >
             <a
+              data-testid="integration-link"
               to="/app/settings/channels/email/1"
             >
               <div>
@@ -236,6 +237,7 @@ exports[`<EmailIntegrationList/> render() should render the page with a warning 
             class="link-full-td"
           >
             <a
+              data-testid="integration-link"
               to="/app/settings/channels/email/1"
             >
               <div>
@@ -353,6 +355,7 @@ exports[`<EmailIntegrationList/> render() should render the page without warning
             class="link-full-td"
           >
             <a
+              data-testid="integration-link"
               to="/app/settings/channels/email/1"
             >
               <div>
@@ -460,6 +463,7 @@ exports[`<EmailIntegrationList/> render() should render the page without warning
             class="link-full-td"
           >
             <a
+              data-testid="integration-link"
               to="/app/settings/channels/email/1"
             >
               <div>

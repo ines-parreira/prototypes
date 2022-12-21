@@ -94,16 +94,19 @@ export default function EmailDomainVerification({
                     )}
                     {!emailDomain.verified && (
                         <div>
-                            <Alert
-                                type={AlertType.Warning}
-                                className={settingsCss.mb16}
-                            >
-                                This domain has not yet been verified. You can
-                                still send emails from this address but you may
-                                be more susceptible to deliverability issues.
-                                Please verify your domain to ensure the best
-                                possible performance.
-                            </Alert>
+                            {!isSendgrid && (
+                                <Alert
+                                    type={AlertType.Warning}
+                                    className={settingsCss.mb16}
+                                >
+                                    This domain has not yet been verified. You
+                                    can still send emails from this address but
+                                    you may be more susceptible to
+                                    deliverability issues. Please verify your
+                                    domain to ensure the best possible
+                                    performance.
+                                </Alert>
+                            )}
                             <span>
                                 To enable DKIM signing for your domain, please
                                 add the information below to your DNS records

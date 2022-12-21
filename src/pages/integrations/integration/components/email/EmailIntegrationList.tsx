@@ -13,6 +13,7 @@ import {EmailDomain, IntegrationType} from 'models/integration/types'
 import history from 'pages/history'
 import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
 import {getIntegrationsByTypes} from 'state/integrations/helpers'
+import {EmailProvider} from 'models/integration/constants'
 import IntegrationList from '../IntegrationList'
 import {fetchEmailDomains} from './resources'
 import {getDomainFromEmailAddress, isBaseEmailIntegration} from './helpers'
@@ -69,6 +70,8 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
 
         const address = integration.getIn(['meta', 'address'], '') as string
         const domain = getDomainFromEmailAddress(address)
+        const isSendgridIntegration =
+            integration.getIn(['meta', 'provider']) === EmailProvider.Sendgrid
 
         const isBaseIntegration = isBaseEmailIntegration(integration.toJS())
 
@@ -91,9 +94,13 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
             !(isGmail && enableGmailSending) && // GMail only needs domain verification if email sending is disabled
             (isGmail || isVerified) // Email integrations must be verified before adding a domain configuration
 
-        const editLink = `/app/settings/channels/email/${integrationId}${
-            isVerified || isGmail ? '' : '/verification'
-        }`
+        const getTabURL = () => {
+            if (isSendgridIntegration && !isDomainVerified) return '/dns'
+
+            return isVerified || isGmail ? '' : '/verification'
+        }
+
+        const editLink = `/app/settings/channels/email/${integrationId}${getTabURL()}`
 
         let imgComponent = (
             <i
@@ -119,7 +126,7 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
             <tr key={integrationId}>
                 <td className="smallest align-middle">{imgComponent}</td>
                 <td className="link-full-td">
-                    <Link to={editLink}>
+                    <Link to={editLink} data-testid="integration-link">
                         <div>
                             <b className="mr-2">{integration.get('name')}</b>
                             <span className="text-faded">{address}</span>
