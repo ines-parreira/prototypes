@@ -271,578 +271,582 @@ exports[`<HelpCenterStartView /> should render the Manage component 1`] = `
       </a>
     </nav>
     <div
-      class="component"
+      class="infiniteScrollWrapper"
     >
       <div
-        class="container"
+        class="component infiniteScroll"
       >
         <div
-          class="tableHelpCenter"
+          class="container"
         >
-          <table
-            class="table tableWrapper"
+          <div
+            class="tableHelpCenter"
           >
-            <thead
-              class="tableHead"
+            <table
+              class="table tableWrapper"
             >
-              <tr
-                class="headerRow"
+              <thead
+                class="tableHead"
               >
-                <td
-                  class="wrapper smallest"
-                />
-                <td
-                  class="wrapper normal"
+                <tr
+                  class="headerRow"
                 >
-                  <div
-                    class="content"
-                  >
-                    <div>
-                      <span
-                        class="title"
-                      >
-                        Help Center name
-                      </span>
-                      <i
-                        class="material-icons md-1 directionIcon"
-                      >
-                        arrow_drop_up
-                      </i>
-                    </div>
-                  </div>
-                </td>
-                <td
-                  class="wrapper normal"
-                >
-                  <div
-                    class="content"
-                  >
-                    <div>
-                      <span
-                        class="title"
-                      >
-                        Languages
-                      </span>
-                      <i
-                        class="material-icons md-1 directionIcon"
-                      >
-                        arrow_drop_up
-                      </i>
-                    </div>
-                  </div>
-                </td>
-                <td
-                  class="wrapper normal"
-                >
-                  <div
-                    class="content"
-                  >
-                    <div>
-                      <span
-                        class="title"
-                      >
-                        Last updated
-                      </span>
-                      <i
-                        class="material-icons md-1 directionIcon"
-                      >
-                        arrow_drop_up
-                      </i>
-                    </div>
-                  </div>
-                </td>
-                <td
-                  class="wrapper normal"
-                />
-              </tr>
-            </thead>
-            <tbody
-              class="tableBody"
-            >
-              <tr
-                class="row tableBodyRow isClickable"
-              >
-                <td
-                  class="wrapper actions smallest"
-                >
-                  <div
-                    class="cellContent"
-                  >
-                    <div>
-                      <label
-                        aria-checked="true"
-                        class="label label"
-                        for="toggle-button-2"
-                        role="switch"
-                      >
-                        <input
-                          checked=""
-                          class="input"
-                          disabled=""
-                          id="toggle-button-2"
-                          name="toggle-button-2"
-                          type="checkbox"
-                        />
-                        <div
-                          class="slider"
-                        />
-                      </label>
-                    </div>
-                  </div>
-                </td>
-                <td
-                  class="wrapper helpCenterName normal"
-                >
-                  <div
-                    class="cellContent"
-                  >
-                    ACME Help Center
-                  </div>
-                </td>
-                <td
-                  class="wrapper small"
-                >
-                  <div
-                    class="cellContent"
+                  <td
+                    class="wrapper smallest"
+                  />
+                  <td
+                    class="wrapper normal"
                   >
                     <div
-                      class="language-bullet-list"
+                      class="content"
                     >
-                      <div
-                        class="language-bullet-item"
-                        data-testid="locale-bullet-en-US"
-                      >
-                        <img
-                          alt="en-US"
-                          class="flag-emoji"
-                          data-testid="flag-en-US"
-                          src="test-file-stub"
-                        />
+                      <div>
+                        <span
+                          class="title"
+                        >
+                          Help Center name
+                        </span>
+                        <i
+                          class="material-icons md-1 directionIcon"
+                        >
+                          arrow_drop_up
+                        </i>
                       </div>
                     </div>
-                  </div>
-                </td>
-                <td
-                  class="wrapper normal"
-                >
-                  <div
-                    class="cellContent"
-                  >
-                    05/17/2021
-                  </div>
-                </td>
-                <td
-                  class="wrapper lastBodyCell normal"
-                >
-                  <div
-                    class="cellContent"
-                  >
-                    <button
-                      class="wrapper mr-1 wrapper ghost ghost secondary medium"
-                      title="Duplicate Help Center"
-                      type="button"
-                    >
-                      <i
-                        class="material-icons icon"
-                      >
-                        file_copy
-                      </i>
-                    </button>
-                    <button
-                      class="wrapper mr-1 wrapper ghost ghost destructive medium"
-                      id="delete-button-1"
-                      title="Delete Help Center"
-                      type="button"
-                    >
-                      <i
-                        class="material-icons icon"
-                      >
-                        delete
-                      </i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <tr
-                class="row tableBodyRow isClickable"
-              >
-                <td
-                  class="wrapper actions smallest"
-                >
-                  <div
-                    class="cellContent"
-                  >
-                    <div>
-                      <label
-                        aria-checked="true"
-                        class="label label"
-                        for="toggle-button-3"
-                        role="switch"
-                      >
-                        <input
-                          checked=""
-                          class="input"
-                          disabled=""
-                          id="toggle-button-3"
-                          name="toggle-button-3"
-                          type="checkbox"
-                        />
-                        <div
-                          class="slider"
-                        />
-                      </label>
-                    </div>
-                  </div>
-                </td>
-                <td
-                  class="wrapper helpCenterName normal"
-                >
-                  <div
-                    class="cellContent"
-                  >
-                    ACME Help Center 2
-                  </div>
-                </td>
-                <td
-                  class="wrapper small"
-                >
-                  <div
-                    class="cellContent"
+                  </td>
+                  <td
+                    class="wrapper normal"
                   >
                     <div
-                      class="language-bullet-list"
+                      class="content"
                     >
-                      <div
-                        class="language-bullet-item"
-                        data-testid="locale-bullet-en-US"
-                      >
-                        <img
-                          alt="en-US"
-                          class="flag-emoji"
-                          data-testid="flag-en-US"
-                          src="test-file-stub"
-                        />
-                      </div>
-                      <div
-                        class="language-bullet-item"
-                        data-testid="locale-bullet-de-DE"
-                      >
-                        <img
-                          alt="de-DE"
-                          class="flag-emoji"
-                          data-testid="flag-de-DE"
-                          src="test-file-stub"
-                        />
+                      <div>
+                        <span
+                          class="title"
+                        >
+                          Languages
+                        </span>
+                        <i
+                          class="material-icons md-1 directionIcon"
+                        >
+                          arrow_drop_up
+                        </i>
                       </div>
                     </div>
-                  </div>
-                </td>
-                <td
-                  class="wrapper normal"
-                >
-                  <div
-                    class="cellContent"
-                  >
-                    05/17/2021
-                  </div>
-                </td>
-                <td
-                  class="wrapper lastBodyCell normal"
-                >
-                  <div
-                    class="cellContent"
-                  >
-                    <button
-                      class="wrapper mr-1 wrapper ghost ghost secondary medium"
-                      title="Duplicate Help Center"
-                      type="button"
-                    >
-                      <i
-                        class="material-icons icon"
-                      >
-                        file_copy
-                      </i>
-                    </button>
-                    <button
-                      class="wrapper mr-1 wrapper ghost ghost destructive medium"
-                      id="delete-button-2"
-                      title="Delete Help Center"
-                      type="button"
-                    >
-                      <i
-                        class="material-icons icon"
-                      >
-                        delete
-                      </i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <tr
-                class="row tableBodyRow isClickable"
-              >
-                <td
-                  class="wrapper actions smallest"
-                >
-                  <div
-                    class="cellContent"
-                  >
-                    <div>
-                      <label
-                        aria-checked="true"
-                        class="label label"
-                        for="toggle-button-4"
-                        role="switch"
-                      >
-                        <input
-                          checked=""
-                          class="input"
-                          disabled=""
-                          id="toggle-button-4"
-                          name="toggle-button-4"
-                          type="checkbox"
-                        />
-                        <div
-                          class="slider"
-                        />
-                      </label>
-                    </div>
-                  </div>
-                </td>
-                <td
-                  class="wrapper helpCenterName normal"
-                >
-                  <div
-                    class="cellContent"
-                  >
-                    ACME Help Center 3
-                  </div>
-                </td>
-                <td
-                  class="wrapper small"
-                >
-                  <div
-                    class="cellContent"
+                  </td>
+                  <td
+                    class="wrapper normal"
                   >
                     <div
-                      class="language-bullet-list"
+                      class="content"
                     >
-                      <div
-                        class="language-bullet-item"
-                        data-testid="locale-bullet-en-US"
-                      >
-                        <img
-                          alt="en-US"
-                          class="flag-emoji"
-                          data-testid="flag-en-US"
-                          src="test-file-stub"
-                        />
-                      </div>
-                      <div
-                        class="language-bullet-item"
-                        data-testid="locale-bullet-fr-FR"
-                      >
-                        <img
-                          alt="fr-FR"
-                          class="flag-emoji"
-                          data-testid="flag-fr-FR"
-                          src="test-file-stub"
-                        />
+                      <div>
+                        <span
+                          class="title"
+                        >
+                          Last updated
+                        </span>
+                        <i
+                          class="material-icons md-1 directionIcon"
+                        >
+                          arrow_drop_up
+                        </i>
                       </div>
                     </div>
-                  </div>
-                </td>
-                <td
-                  class="wrapper normal"
-                >
-                  <div
-                    class="cellContent"
-                  >
-                    05/17/2021
-                  </div>
-                </td>
-                <td
-                  class="wrapper lastBodyCell normal"
-                >
-                  <div
-                    class="cellContent"
-                  >
-                    <button
-                      class="wrapper mr-1 wrapper ghost ghost secondary medium"
-                      title="Duplicate Help Center"
-                      type="button"
-                    >
-                      <i
-                        class="material-icons icon"
-                      >
-                        file_copy
-                      </i>
-                    </button>
-                    <button
-                      class="wrapper mr-1 wrapper ghost ghost destructive medium"
-                      id="delete-button-3"
-                      title="Delete Help Center"
-                      type="button"
-                    >
-                      <i
-                        class="material-icons icon"
-                      >
-                        delete
-                      </i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-              <tr
-                class="row tableBodyRow isClickable"
+                  </td>
+                  <td
+                    class="wrapper normal"
+                  />
+                </tr>
+              </thead>
+              <tbody
+                class="tableBody"
               >
-                <td
-                  class="wrapper actions smallest"
+                <tr
+                  class="row tableBodyRow isClickable"
                 >
-                  <div
-                    class="cellContent"
-                  >
-                    <div>
-                      <label
-                        aria-checked="false"
-                        class="label label"
-                        for="toggle-button-5"
-                        role="switch"
-                      >
-                        <input
-                          class="input"
-                          disabled=""
-                          id="toggle-button-5"
-                          name="toggle-button-5"
-                          type="checkbox"
-                        />
-                        <div
-                          class="slider"
-                        />
-                      </label>
-                    </div>
-                  </div>
-                </td>
-                <td
-                  class="wrapper helpCenterName normal"
-                >
-                  <div
-                    class="cellContent"
-                  >
-                    ACME Help Center 4
-                  </div>
-                </td>
-                <td
-                  class="wrapper small"
-                >
-                  <div
-                    class="cellContent"
+                  <td
+                    class="wrapper actions smallest"
                   >
                     <div
-                      class="language-bullet-list"
+                      class="cellContent"
                     >
-                      <div
-                        class="language-bullet-item"
-                        data-testid="locale-bullet-en-US"
-                      >
-                        <img
-                          alt="en-US"
-                          class="flag-emoji"
-                          data-testid="flag-en-US"
-                          src="test-file-stub"
-                        />
-                      </div>
-                      <div
-                        class="language-bullet-item"
-                        data-testid="locale-bullet-fr-FR"
-                      >
-                        <img
-                          alt="fr-FR"
-                          class="flag-emoji"
-                          data-testid="flag-fr-FR"
-                          src="test-file-stub"
-                        />
+                      <div>
+                        <label
+                          aria-checked="true"
+                          class="label label"
+                          for="toggle-button-2"
+                          role="switch"
+                        >
+                          <input
+                            checked=""
+                            class="input"
+                            disabled=""
+                            id="toggle-button-2"
+                            name="toggle-button-2"
+                            type="checkbox"
+                          />
+                          <div
+                            class="slider"
+                          />
+                        </label>
                       </div>
                     </div>
-                  </div>
-                </td>
-                <td
-                  class="wrapper normal"
-                >
-                  <div
-                    class="cellContent"
+                  </td>
+                  <td
+                    class="wrapper helpCenterName normal"
                   >
-                    05/17/2021
-                  </div>
-                </td>
-                <td
-                  class="wrapper lastBodyCell normal"
-                >
-                  <div
-                    class="cellContent"
+                    <div
+                      class="cellContent"
+                    >
+                      ACME Help Center
+                    </div>
+                  </td>
+                  <td
+                    class="wrapper small"
                   >
-                    <button
-                      class="wrapper mr-1 wrapper ghost ghost secondary medium"
-                      title="Duplicate Help Center"
-                      type="button"
+                    <div
+                      class="cellContent"
                     >
-                      <i
-                        class="material-icons icon"
+                      <div
+                        class="language-bullet-list"
                       >
-                        file_copy
-                      </i>
-                    </button>
-                    <button
-                      class="wrapper mr-1 wrapper ghost ghost destructive medium"
-                      id="delete-button-4"
-                      title="Delete Help Center"
-                      type="button"
+                        <div
+                          class="language-bullet-item"
+                          data-testid="locale-bullet-en-US"
+                        >
+                          <img
+                            alt="en-US"
+                            class="flag-emoji"
+                            data-testid="flag-en-US"
+                            src="test-file-stub"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td
+                    class="wrapper normal"
+                  >
+                    <div
+                      class="cellContent"
                     >
-                      <i
-                        class="material-icons icon"
+                      05/17/2021
+                    </div>
+                  </td>
+                  <td
+                    class="wrapper lastBodyCell normal"
+                  >
+                    <div
+                      class="cellContent"
+                    >
+                      <button
+                        class="wrapper mr-1 wrapper ghost ghost secondary medium"
+                        title="Duplicate Help Center"
+                        type="button"
                       >
-                        delete
-                      </i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                        <i
+                          class="material-icons icon"
+                        >
+                          file_copy
+                        </i>
+                      </button>
+                      <button
+                        class="wrapper mr-1 wrapper ghost ghost destructive medium"
+                        id="delete-button-1"
+                        title="Delete Help Center"
+                        type="button"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          delete
+                        </i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  class="row tableBodyRow isClickable"
+                >
+                  <td
+                    class="wrapper actions smallest"
+                  >
+                    <div
+                      class="cellContent"
+                    >
+                      <div>
+                        <label
+                          aria-checked="true"
+                          class="label label"
+                          for="toggle-button-3"
+                          role="switch"
+                        >
+                          <input
+                            checked=""
+                            class="input"
+                            disabled=""
+                            id="toggle-button-3"
+                            name="toggle-button-3"
+                            type="checkbox"
+                          />
+                          <div
+                            class="slider"
+                          />
+                        </label>
+                      </div>
+                    </div>
+                  </td>
+                  <td
+                    class="wrapper helpCenterName normal"
+                  >
+                    <div
+                      class="cellContent"
+                    >
+                      ACME Help Center 2
+                    </div>
+                  </td>
+                  <td
+                    class="wrapper small"
+                  >
+                    <div
+                      class="cellContent"
+                    >
+                      <div
+                        class="language-bullet-list"
+                      >
+                        <div
+                          class="language-bullet-item"
+                          data-testid="locale-bullet-en-US"
+                        >
+                          <img
+                            alt="en-US"
+                            class="flag-emoji"
+                            data-testid="flag-en-US"
+                            src="test-file-stub"
+                          />
+                        </div>
+                        <div
+                          class="language-bullet-item"
+                          data-testid="locale-bullet-de-DE"
+                        >
+                          <img
+                            alt="de-DE"
+                            class="flag-emoji"
+                            data-testid="flag-de-DE"
+                            src="test-file-stub"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td
+                    class="wrapper normal"
+                  >
+                    <div
+                      class="cellContent"
+                    >
+                      05/17/2021
+                    </div>
+                  </td>
+                  <td
+                    class="wrapper lastBodyCell normal"
+                  >
+                    <div
+                      class="cellContent"
+                    >
+                      <button
+                        class="wrapper mr-1 wrapper ghost ghost secondary medium"
+                        title="Duplicate Help Center"
+                        type="button"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          file_copy
+                        </i>
+                      </button>
+                      <button
+                        class="wrapper mr-1 wrapper ghost ghost destructive medium"
+                        id="delete-button-2"
+                        title="Delete Help Center"
+                        type="button"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          delete
+                        </i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  class="row tableBodyRow isClickable"
+                >
+                  <td
+                    class="wrapper actions smallest"
+                  >
+                    <div
+                      class="cellContent"
+                    >
+                      <div>
+                        <label
+                          aria-checked="true"
+                          class="label label"
+                          for="toggle-button-4"
+                          role="switch"
+                        >
+                          <input
+                            checked=""
+                            class="input"
+                            disabled=""
+                            id="toggle-button-4"
+                            name="toggle-button-4"
+                            type="checkbox"
+                          />
+                          <div
+                            class="slider"
+                          />
+                        </label>
+                      </div>
+                    </div>
+                  </td>
+                  <td
+                    class="wrapper helpCenterName normal"
+                  >
+                    <div
+                      class="cellContent"
+                    >
+                      ACME Help Center 3
+                    </div>
+                  </td>
+                  <td
+                    class="wrapper small"
+                  >
+                    <div
+                      class="cellContent"
+                    >
+                      <div
+                        class="language-bullet-list"
+                      >
+                        <div
+                          class="language-bullet-item"
+                          data-testid="locale-bullet-en-US"
+                        >
+                          <img
+                            alt="en-US"
+                            class="flag-emoji"
+                            data-testid="flag-en-US"
+                            src="test-file-stub"
+                          />
+                        </div>
+                        <div
+                          class="language-bullet-item"
+                          data-testid="locale-bullet-fr-FR"
+                        >
+                          <img
+                            alt="fr-FR"
+                            class="flag-emoji"
+                            data-testid="flag-fr-FR"
+                            src="test-file-stub"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td
+                    class="wrapper normal"
+                  >
+                    <div
+                      class="cellContent"
+                    >
+                      05/17/2021
+                    </div>
+                  </td>
+                  <td
+                    class="wrapper lastBodyCell normal"
+                  >
+                    <div
+                      class="cellContent"
+                    >
+                      <button
+                        class="wrapper mr-1 wrapper ghost ghost secondary medium"
+                        title="Duplicate Help Center"
+                        type="button"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          file_copy
+                        </i>
+                      </button>
+                      <button
+                        class="wrapper mr-1 wrapper ghost ghost destructive medium"
+                        id="delete-button-3"
+                        title="Delete Help Center"
+                        type="button"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          delete
+                        </i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr
+                  class="row tableBodyRow isClickable"
+                >
+                  <td
+                    class="wrapper actions smallest"
+                  >
+                    <div
+                      class="cellContent"
+                    >
+                      <div>
+                        <label
+                          aria-checked="false"
+                          class="label label"
+                          for="toggle-button-5"
+                          role="switch"
+                        >
+                          <input
+                            class="input"
+                            disabled=""
+                            id="toggle-button-5"
+                            name="toggle-button-5"
+                            type="checkbox"
+                          />
+                          <div
+                            class="slider"
+                          />
+                        </label>
+                      </div>
+                    </div>
+                  </td>
+                  <td
+                    class="wrapper helpCenterName normal"
+                  >
+                    <div
+                      class="cellContent"
+                    >
+                      ACME Help Center 4
+                    </div>
+                  </td>
+                  <td
+                    class="wrapper small"
+                  >
+                    <div
+                      class="cellContent"
+                    >
+                      <div
+                        class="language-bullet-list"
+                      >
+                        <div
+                          class="language-bullet-item"
+                          data-testid="locale-bullet-en-US"
+                        >
+                          <img
+                            alt="en-US"
+                            class="flag-emoji"
+                            data-testid="flag-en-US"
+                            src="test-file-stub"
+                          />
+                        </div>
+                        <div
+                          class="language-bullet-item"
+                          data-testid="locale-bullet-fr-FR"
+                        >
+                          <img
+                            alt="fr-FR"
+                            class="flag-emoji"
+                            data-testid="flag-fr-FR"
+                            src="test-file-stub"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td
+                    class="wrapper normal"
+                  >
+                    <div
+                      class="cellContent"
+                    >
+                      05/17/2021
+                    </div>
+                  </td>
+                  <td
+                    class="wrapper lastBodyCell normal"
+                  >
+                    <div
+                      class="cellContent"
+                    >
+                      <button
+                        class="wrapper mr-1 wrapper ghost ghost secondary medium"
+                        title="Duplicate Help Center"
+                        type="button"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          file_copy
+                        </i>
+                      </button>
+                      <button
+                        class="wrapper mr-1 wrapper ghost ghost destructive medium"
+                        id="delete-button-4"
+                        title="Delete Help Center"
+                        type="button"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          delete
+                        </i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
         <div
-          class="addHelpCenter"
+          class="container loader"
         >
-          <button
-            class="wrapper fill primary medium"
-            id="add-new-help-center-button"
-            type="button"
+          <div
+            class="inner"
+            style="min-height: 0;"
           >
-            <div
-              class="createNewButton"
-            >
-              <i
-                class="material-icons mr-2"
-              >
-                add
-              </i>
-              Create New
-            </div>
-          </button>
+            <i
+              class="icon-custom icon-circle-o-notch md-spin"
+              style="font-size: 30px;"
+            />
+          </div>
         </div>
       </div>
       <div
-        class="container loader"
+        class="addHelpCenter"
       >
-        <div
-          class="inner"
-          style="min-height: 0;"
+        <button
+          class="wrapper fill primary medium"
+          id="add-new-help-center-button"
+          type="button"
         >
-          <i
-            class="icon-custom icon-circle-o-notch md-spin"
-            style="font-size: 30px;"
-          />
-        </div>
+          <div
+            class="createNewButton"
+          >
+            <i
+              class="material-icons mr-2"
+            >
+              add
+            </i>
+            Create New
+          </div>
+        </button>
       </div>
     </div>
   </div>

@@ -225,53 +225,56 @@ export const ManageHelpCenters = ({
         history.push(`${HELP_CENTER_BASE_PATH}/new`)
 
     return (
-        <InfiniteScroll
-            onLoad={fetchMore}
-            shouldLoadMore={!isLoading && hasMore}
-            loaderSize={HELP_CENTERS_PER_PAGE}
-        >
-            <div className={css.container}>
-                {shouldShowProductBanner && (
-                    <StandaloneBanner
-                        helpCenters={standaloneHelpCenters}
-                        onClose={handleCloseProductBanner}
-                    />
-                )}
-                <div className={css.tableHelpCenter}>
-                    <HelpCenterTable
-                        list={helpCenterList}
-                        isLoading={helpCenterList.length === 0 && isLoading}
-                        locales={localesByCode}
-                        onClick={navigateToArticles}
-                        duplicateHelpCenter={duplicateHelpCenter}
-                        deleteHelpCenter={deleteHelpCenter}
-                        onToggle={toggleActivation}
-                    />
+        <div className={css.infiniteScrollWrapper}>
+            <InfiniteScroll
+                onLoad={fetchMore}
+                shouldLoadMore={!isLoading && hasMore}
+                loaderSize={HELP_CENTERS_PER_PAGE}
+                className={css.infiniteScroll}
+            >
+                <div className={css.container}>
+                    {shouldShowProductBanner && (
+                        <StandaloneBanner
+                            helpCenters={standaloneHelpCenters}
+                            onClose={handleCloseProductBanner}
+                        />
+                    )}
+                    <div className={css.tableHelpCenter}>
+                        <HelpCenterTable
+                            list={helpCenterList}
+                            isLoading={helpCenterList.length === 0 && isLoading}
+                            locales={localesByCode}
+                            onClick={navigateToArticles}
+                            duplicateHelpCenter={duplicateHelpCenter}
+                            deleteHelpCenter={deleteHelpCenter}
+                            onToggle={toggleActivation}
+                        />
+                    </div>
                 </div>
-                <div className={css.addHelpCenter}>
-                    <Button
-                        id="add-new-help-center-button"
-                        isDisabled={isButtonDisabled}
-                        onClick={handleAddHelpCenter}
-                    >
-                        <div className={css.createNewButton}>
-                            <i className="material-icons mr-2">add</i>Create New
-                        </div>
-                    </Button>
-                </div>
-                <Tooltip
-                    disabled={!isHelpCenterLimitReached}
-                    placement="top-start"
-                    target="add-new-help-center-button"
-                    style={{
-                        textAlign: 'start',
-                        width: 180,
-                    }}
+            </InfiniteScroll>
+            <div className={css.addHelpCenter}>
+                <Button
+                    id="add-new-help-center-button"
+                    isDisabled={isButtonDisabled}
+                    onClick={handleAddHelpCenter}
                 >
-                    Please contact us to create more Help Centers.
-                </Tooltip>
+                    <div className={css.createNewButton}>
+                        <i className="material-icons mr-2">add</i>Create New
+                    </div>
+                </Button>
             </div>
-        </InfiniteScroll>
+            <Tooltip
+                disabled={!isHelpCenterLimitReached}
+                placement="top-start"
+                target="add-new-help-center-button"
+                style={{
+                    textAlign: 'start',
+                    width: 180,
+                }}
+            >
+                Please contact us to create more Help Centers.
+            </Tooltip>
+        </div>
     )
 }
 

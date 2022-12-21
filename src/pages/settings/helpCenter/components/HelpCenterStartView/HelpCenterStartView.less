@@ -5,9 +5,6 @@
     .container {
         display: flex;
         flex-direction: column;
-
-        // Deduct 112px, which is the height of the header and navbar
-        max-height: calc(~'100% - 112px');
     }
     .addHelpCenter {
         flex: 0 0 auto;
@@ -26,5 +23,14 @@
         i {
             font-size: 18px;
         }
+    }
+    .infiniteScrollWrapper {
+        // Deduct 112px, which is the height of the header and navbar
+        height: calc(~'100% - 112px');
+    }
+
+    .infiniteScroll {
+        // Deduct 56px, which is the height of the add button
+        height: calc(~'100% - 56px');
     }
 }
