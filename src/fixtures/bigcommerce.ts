@@ -10,6 +10,8 @@ import {
     BigCommerceProduct,
     BigCommerceNestedCart,
     BigCommerceConsignment,
+    BigCommerceCheckout,
+    BigCommerceBillingAddress,
 } from 'models/integration/types'
 
 export const bigCommerceCustomerFixture = () => ({
@@ -335,4 +337,36 @@ export const bigCommerceConsignmentFixture: BigCommerceConsignment = {
     },
     line_item_ids: [],
     selected_shipping_option: undefined,
+}
+
+export const bigCommerceCheckoutFixture: BigCommerceCheckout = {
+    id: 'checkout-yo',
+    created_time: '2022-01-28T22:19:15.604153+00:00',
+    updated_time: '2022-01-30T22:19:15.604153+00:00',
+    cart: bigCommerceCartFixture(),
+    taxes: [
+        {
+            amount: 222,
+            name: 'Some Tax',
+        },
+        {amount: 0, name: 'No tax'},
+    ],
+    coupons: [],
+    consignments: [bigCommerceConsignmentFixture],
+    billing_address: {
+        ...bigCommerceShippingAddressesFixture[0],
+        id: 'a-billing-address',
+        state_or_province_code: '',
+        custom_fields: [],
+    } as BigCommerceBillingAddress,
+    shipping_cost_total_ex_tax: 333,
+    shipping_cost_total_inc_tax: 444,
+    handling_cost_total_ex_tax: 555,
+    handling_cost_total_inc_tax: 666,
+    subtotal_ex_tax: 111,
+    subtotal_inc_tax: 222,
+    tax_total: 222,
+    grand_total: 999,
+    order_id: 'any',
+    customer_message: '',
 }

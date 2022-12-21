@@ -24,6 +24,7 @@ import {
     BigCommerceActionType,
     OrderStatusIDType,
     OrderPaymentMethodType,
+    BigCommerceTaxCheckout,
 } from 'models/integration/types'
 import {StoreDispatch} from 'state/types'
 import {executeAction} from 'state/infobar/actions'
@@ -280,6 +281,21 @@ export const updateRow = _debounce(
     },
     250
 )
+
+export const buildTaxExtraInfo = ({
+    taxes,
+}: {
+    taxes: Maybe<BigCommerceTaxCheckout[]>
+}): string => {
+    if (!taxes) {
+        return ''
+    }
+
+    return taxes
+        .filter(({amount}) => amount > 0)
+        .map(({name}) => name)
+        .join(', ')
+}
 
 export const buildAddressComponent = ({
     addressObj,

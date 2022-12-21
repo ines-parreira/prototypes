@@ -2,94 +2,63 @@
 
 exports[`<OrderTotals/> rendering should render 1`] = `
 <div>
-  <dl>
-    <div
-      class="descriptionLineContainer"
+  <dl
+    class="totalsContainer"
+  >
+    <dt
+      class="descriptionTitle"
     >
-      <dt
-        class="descriptionTitle"
-      >
-        Add discount
-      </dt>
-      <dd
-        class="descriptionValue descriptionValueZero"
-      >
-        <span>
-          €0.00
-        </span>
-      </dd>
-    </div>
-    <div
-      class="descriptionLineContainer"
+      Subtotal
+    </dt>
+    <div />
+    <dd
+      class="descriptionValue"
     >
-      <dt
-        class="descriptionTitle"
-      >
-        Apply coupon or gift certificate
-      </dt>
-      <dd
-        class="descriptionValue descriptionValueZero"
-      >
-        <span>
-          €0.00
-        </span>
-      </dd>
-    </div>
-    <div
-      class="descriptionLineContainer"
+      <span>
+        €78.00
+      </span>
+    </dd>
+    <dt
+      class="descriptionTitle"
     >
-      <dt
-        class="descriptionTitle"
+      <button
+        class="actionButton"
+        id="shipping-method-button"
       >
-        Subtotal
-      </dt>
-      <dd
-        class="descriptionValue"
-      >
-        <span>
-          €78.00
-        </span>
-      </dd>
-    </div>
-    <div
-      class="descriptionLineContainer"
+        Add shipping
+      </button>
+    </dt>
+    <dd
+      class="descriptionExtraInfo isDisabled"
     >
-      <dt
-        class="descriptionTitle"
-      >
-        <button
-          class="actionButton"
-          id="shipping-method-button"
-        >
-          Add shipping
-        </button>
-      </dt>
-      <dd
-        class="descriptionValue"
-      >
-        <span>
-          €50.00
-        </span>
-      </dd>
-    </div>
-    <div
-      class="descriptionLineContainer"
+      ⎯
+    </dd>
+    <dd
+      class="descriptionValue"
     >
-      <dt
-        class="descriptionTitle"
-      >
-        Taxes
-      </dt>
-      <dd
-        class="descriptionValue"
-      >
-        <span>
-          €15.60
-        </span>
-      </dd>
-    </div>
+      <span>
+        €50.00
+      </span>
+    </dd>
+    <dt
+      class="descriptionTitle"
+    >
+      Taxes
+    </dt>
+    <dd
+      class="descriptionExtraInfo"
+    >
+      Some Tax
+    </dd>
+    <dd
+      class="descriptionValue"
+    >
+      <span>
+        €15.60
+      </span>
+    </dd>
     <div
-      class="descriptionLineContainer totalLineContainer"
+      class="totalLineContainer"
     >
       <dt>
         Total

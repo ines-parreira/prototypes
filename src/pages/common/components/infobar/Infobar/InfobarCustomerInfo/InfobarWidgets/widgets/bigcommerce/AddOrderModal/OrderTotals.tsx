@@ -4,15 +4,18 @@ import {
     BigCommerceIntegration,
     BigCommerceConsignment,
     BigCommerceCart,
+    BigCommerceCheckout,
 } from 'models/integration/types'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import Loader from 'pages/common/components/Loader/Loader'
 import {ShippingMethod} from './ShippingMethod'
+import {buildTaxExtraInfo} from './utils'
 
 import css from './OrderTotals.less'
 
 type Props = {
     cart: Maybe<BigCommerceCart>
+    checkout: Maybe<BigCommerceCheckout>
     consignment: Maybe<BigCommerceConsignment>
     integration: BigCommerceIntegration
     hasShippingAddress: boolean
@@ -33,13 +36,28 @@ const TotalLine = ({
     label,
     value,
     currencyCode,
+    hasExtraInfo = false,
+    extraInfo,
 }: {
     label: string
     value: number
     currencyCode: string | null
+    hasExtraInfo?: boolean
+    extraInfo?: string | null
 }) => (
-    <div className={css.descriptionLineContainer}>
+    <>
         <dt className={css.descriptionTitle}>{label}</dt>
+        {hasExtraInfo ? (
+            <dd
+                className={classnames(css.descriptionExtraInfo, {
+                    [css.isDisabled]: !extraInfo,
+                })}
+            >
+                {extraInfo || '⎯'}
+            </dd>
+        ) : (
+            <div />
+        )}
         <dd
             className={classnames(css.descriptionValue, {
                 [css.descriptionValueZero]: value === 0,
@@ -51,11 +69,12 @@ const TotalLine = ({
                 renderIfZero
             />
         </dd>
-    </div>
+    </>
 )
 
 export default function OrderTotals({
     integration,
+    checkout,
     cart,
     consignment,
     hasShippingAddress,
@@ -70,19 +89,7 @@ export default function OrderTotals({
             : null
 
     return (
-        <dl>
-            <TotalLine
-                label="Add discount"
-                value={0}
-                currencyCode={currencyCode}
-            />
-
-            <TotalLine
-                label="Apply coupon or gift certificate"
-                value={0}
-                currencyCode={currencyCode}
-            />
-
+        <dl className={css.totalsContainer}>
             <TotalLine
                 label="Subtotal"
                 value={subTotal}
@@ -105,14 +112,11 @@ export default function OrderTotals({
                 label="Taxes"
                 value={taxes}
                 currencyCode={currencyCode}
+                hasExtraInfo
+                extraInfo={buildTaxExtraInfo({taxes: checkout?.taxes})}
             />
 
-            <div
-                className={classnames(
-                    css.descriptionLineContainer,
-                    css.totalLineContainer
-                )}
-            >
+            <div className={css.totalLineContainer}>
                 <dt>Total</dt>
                 <dd>
                     <div className={css.totalPriceContainer}>

@@ -237,7 +237,7 @@ export function ShippingMethod({
 
     return (
         <>
-            <div className={css.descriptionLineContainer}>
+            <>
                 <dt className={css.descriptionTitle}>
                     <button
                         onClick={onToggle}
@@ -259,6 +259,15 @@ export function ShippingMethod({
                     </Tooltip>
                 </dt>
                 <dd
+                    className={classnames(css.descriptionExtraInfo, {
+                        [css.isDisabled]: !selectedShippingMethod,
+                    })}
+                >
+                    {selectedShippingMethod
+                        ? selectedShippingMethod.description
+                        : '⎯'}
+                </dd>
+                <dd
                     className={classnames(css.descriptionValue, {
                         [css.descriptionValueDisabled]: isDisabled,
                         [css.descriptionValueZero]:
@@ -276,7 +285,7 @@ export function ShippingMethod({
                         renderIfZero
                     />
                 </dd>
-            </div>
+            </>
             <Dropdown
                 isOpen={isDropdownOpen}
                 onToggle={onToggle}

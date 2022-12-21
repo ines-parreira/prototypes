@@ -3,45 +3,46 @@
 exports[`ShippingMethod create/update consignment and change shipping method: dropdown open 1`] = `
 <body>
   <div>
-    <div
-      class="descriptionLineContainer"
+    <dt
+      class="descriptionTitle"
     >
-      <dt
-        class="descriptionTitle"
+      <button
+        class="actionButton"
+        id="shipping-method-button"
       >
-        <button
-          class="actionButton"
-          id="shipping-method-button"
-        >
-          Add shipping
-        </button>
-        <div />
-      </dt>
-      <dd
-        class="descriptionValue"
+        Add shipping
+      </button>
+      <div />
+    </dt>
+    <dd
+      class="descriptionExtraInfo"
+    >
+      Description Two
+    </dd>
+    <dd
+      class="descriptionValue"
+    >
+      <div
+        class="mr-3"
       >
         <div
-          class="mr-3"
+          class="container"
         >
           <div
-            class="container"
+            class="inner"
+            style="min-height: 20px;"
           >
-            <div
-              class="inner"
-              style="min-height: 20px;"
-            >
-              <i
-                class="icon-custom icon-circle-o-notch md-spin"
-                style="font-size: 20px;"
-              />
-            </div>
+            <i
+              class="icon-custom icon-circle-o-notch md-spin"
+              style="font-size: 20px;"
+            />
           </div>
         </div>
-        <span>
-          $77.00
-        </span>
-      </dd>
-    </div>
+      </div>
+      <span>
+        $77.00
+      </span>
+    </dd>
   </div>
   <div
     id="floating-ui-root"
@@ -145,30 +146,31 @@ exports[`ShippingMethod create/update consignment and change shipping method: dr
 exports[`ShippingMethod create/update consignment and change shipping method: initial 1`] = `
 <body>
   <div>
-    <div
-      class="descriptionLineContainer"
+    <dt
+      class="descriptionTitle"
     >
-      <dt
-        class="descriptionTitle"
+      <button
+        class="actionButton isDisabled"
+        id="shipping-method-button"
       >
-        <button
-          class="actionButton isDisabled"
-          id="shipping-method-button"
-        >
-          Add shipping
-        </button>
-        <div>
-          Your cart contains no products, please select some first.
-        </div>
-      </dt>
-      <dd
-        class="descriptionValue descriptionValueDisabled"
-      >
-        <span>
-          $77.00
-        </span>
-      </dd>
-    </div>
+        Add shipping
+      </button>
+      <div>
+        Your cart contains no products, please select some first.
+      </div>
+    </dt>
+    <dd
+      class="descriptionExtraInfo isDisabled"
+    >
+      ⎯
+    </dd>
+    <dd
+      class="descriptionValue descriptionValueDisabled"
+    >
+      <span>
+        $77.00
+      </span>
+    </dd>
   </div>
   <div
     id="floating-ui-root"
@@ -179,28 +181,29 @@ exports[`ShippingMethod create/update consignment and change shipping method: in
 exports[`ShippingMethod create/update consignment and change shipping method: shipping method selected 1`] = `
 <body>
   <div>
-    <div
-      class="descriptionLineContainer"
+    <dt
+      class="descriptionTitle"
     >
-      <dt
-        class="descriptionTitle"
+      <button
+        class="actionButton"
+        id="shipping-method-button"
       >
-        <button
-          class="actionButton"
-          id="shipping-method-button"
-        >
-          Add shipping
-        </button>
-        <div />
-      </dt>
-      <dd
-        class="descriptionValue"
-      >
-        <span>
-          $77.00
-        </span>
-      </dd>
-    </div>
+        Add shipping
+      </button>
+      <div />
+    </dt>
+    <dd
+      class="descriptionExtraInfo"
+    >
+      Description Two
+    </dd>
+    <dd
+      class="descriptionValue"
+    >
+      <span>
+        $77.00
+      </span>
+    </dd>
   </div>
   <div
     id="floating-ui-root"

@@ -2,6 +2,7 @@ import React from 'react'
 import {render} from '@testing-library/react'
 import {
     bigCommerceCartFixture,
+    bigCommerceCheckoutFixture,
     bigCommerceConsignmentFixture,
     bigCommerceIntegrationFixture,
 } from 'fixtures/bigcommerce'
@@ -14,6 +15,7 @@ describe('<OrderTotals/>', () => {
 
             const {container} = render(
                 <OrderTotals
+                    checkout={bigCommerceCheckoutFixture}
                     cart={bigCommerceCartFixture()}
                     integration={integration}
                     consignment={bigCommerceConsignmentFixture}

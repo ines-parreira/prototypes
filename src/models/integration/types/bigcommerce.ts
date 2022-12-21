@@ -103,7 +103,7 @@ export type BigCommerceCustomer = {
     email: string
 }
 
-type BigCommerceBillingAddress = {
+export type BigCommerceBillingAddress = {
     id: string
     first_name: string
     last_name: string
@@ -129,7 +129,7 @@ export type BigCommerceCheckout = {
     cart: BigCommerceCart
     billing_address: BigCommerceBillingAddress
     consignments: Array<BigCommerceConsignment>
-    taxes: Array<{name: string; amount: number}>
+    taxes: Array<BigCommerceTaxCheckout>
     coupons: Array<any>
     order_id: any
     shipping_cost_total_inc_tax: number
@@ -143,6 +143,11 @@ export type BigCommerceCheckout = {
     created_time: string
     updated_time: string
     customer_message: string
+}
+
+export type BigCommerceTaxCheckout = {
+    name: string
+    amount: number
 }
 
 export type BigCommerceNestedCheckout = {

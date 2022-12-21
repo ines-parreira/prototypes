@@ -65,21 +65,36 @@
         font-weight: 500;
     }
 
-    .descriptionLineContainer {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 0.5rem;
+    .totalsContainer {
+        display: grid;
+        grid-template-columns: 240px auto 100px;
+        gap: 0.5rem 0;
+        align-items: center;
     }
 
     .descriptionTitle {
         .body-medium();
+        margin-bottom: 0;
         font-weight: 500;
+    }
+
+    .descriptionExtraInfo {
+        color: @classic-neutral-grey-5;
+        margin-bottom: 0;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+
+        &.isDisabled {
+            color: @classic-neutral-grey-4;
+        }
     }
 
     .descriptionValue {
         .body-semibold();
         margin-bottom: 0;
         display: flex;
+        justify-self: flex-end;
 
         &.descriptionValueDisabled {
             color: @classic-neutral-grey-3;
@@ -91,8 +106,14 @@
     }
 
     .totalLineContainer {
-        border-top: 1px solid @classic-neutral-grey-3;
+        display: flex;
+        justify-content: space-between;
+        grid-column: span 3;
+
         padding-top: 0.5rem;
+        margin-bottom: 0.5rem;
+
+        border-top: 1px solid @classic-neutral-grey-3;
     }
 
     .totalPriceContainer {

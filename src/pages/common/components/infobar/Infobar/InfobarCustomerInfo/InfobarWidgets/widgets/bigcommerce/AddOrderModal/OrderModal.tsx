@@ -505,6 +505,7 @@ export function OrderModal({
                     {hasItemsInCart && (
                         <OrderTotals
                             integration={integration}
+                            checkout={checkout}
                             cart={cart}
                             consignment={consignment}
                             totals={totals}

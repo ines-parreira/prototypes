@@ -22,6 +22,11 @@ export function QuantityComponent({
 }: Props) {
     const min = 1
     const tooltipId = `tooltip-${index}`
+
+    const handleOnClick = (event: React.FormEvent<HTMLInputElement>) => {
+        event.currentTarget.select()
+    }
+
     return (
         <td className={css.quantityCol}>
             <div className="d-flex">
@@ -31,6 +36,8 @@ export function QuantityComponent({
                     onChange={handleQuantityChange}
                     className={css.input}
                     hasError={hasError}
+                    onFocus={handleOnClick}
+                    onClick={handleOnClick}
                 />
                 {removable && (
                     <span>
