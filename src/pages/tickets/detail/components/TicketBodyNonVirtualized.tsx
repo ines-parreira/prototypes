@@ -47,7 +47,6 @@ type HighlightedElements = {
 
 type OwnProps = {
     elements: List<any>
-    ticket: Map<any, any>
     setStatus?: (s: string) => void
     messageGroupingChannels: Channel[]
     messageGroupingDuration: string

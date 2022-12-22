@@ -45,7 +45,7 @@ type Props = {
     noContainerWidthLimit?: boolean
     children?: ReactNode
     // Navbar and Infobar containers can be changed depending on the route. See `routes.js`
-    navbar: ComponentType<any>
+    navbar?: ComponentType<any>
     infobar?: ComponentType<any>
     content?: ComponentType<any>
 } & ConnectedProps<typeof connector> &
@@ -144,7 +144,7 @@ class App extends React.Component<Props> {
                     <BannerNotifications notifications={bannerNotifications} />
 
                     <div id="app-root" className={css.app}>
-                        <Navbar />
+                        {Navbar && <Navbar />}
 
                         <div
                             className={classnames(

@@ -37,6 +37,8 @@ import {RootState} from 'state/types'
 import {NotificationStatus} from 'state/notifications/types'
 import {UserRole} from 'config/types/user'
 import shortcutManager from 'services/shortcutManager'
+import {getLDClient} from 'utils/launchDarkly'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {hasRole} from 'utils'
 
 import TicketTags from './TicketDetails/TicketTags'
@@ -222,6 +224,12 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
         const isUpdate = !!ticket.get('id')
         const isTrashed = !!ticket.get('trashed_datetime')
 
+        // TODO: refactor after Virtualization is rolled out
+        const isVirtualizationEnabled =
+            getLDClient().allFlags()[
+                FeatureFlagKey.TicketMessagesVirtualization
+            ]
+
         return (
             <div
                 className={classnames(css.component, className)}
@@ -379,7 +387,15 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
                                                 // setTimeout allows React to complete the current JS click event triggers
                                                 // before printing the page
                                                 setTimeout(() => {
-                                                    window.print()
+                                                    isVirtualizationEnabled
+                                                        ? window.open(
+                                                              `/app/ticket/${
+                                                                  ticket.get(
+                                                                      'id'
+                                                                  ) as number
+                                                              }/print`
+                                                          )
+                                                        : window.print()
                                                 }, 1)
                                             }}
                                         >

@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TicketPrintContainer/> should render loader 1`] = `
+<div>
+  <div>
+    <div
+      class="container loader"
+    >
+      <div
+        class="inner"
+        style="min-height: unset;"
+      >
+        <i
+          class="icon-custom icon-circle-o-notch md-spin"
+          style="font-size: 40px;"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<TicketPrintContainer/> should render ticket body and call window.print when loading stops 1`] = `
+<div>
+  <div>
+    TicketBodyNonVirtualized
+  </div>
+</div>
+`;

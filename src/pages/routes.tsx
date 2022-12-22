@@ -37,6 +37,7 @@ import TicketInfobarContainer from './tickets/detail/TicketInfobarContainer'
 import TicketSourceContainer from './tickets/detail/TicketSourceContainer'
 import TicketNavbar from './tickets/navbar/TicketNavbar'
 import TicketListContainer from './tickets/list/TicketListContainer'
+import TicketPrintContainer from './tickets/detail/TicketPrintContainer'
 import SelfServiceContainer from './settings/selfService/SelfServiceContainer'
 import CustomerListContainer from './customers/list/CustomerListContainer'
 import CustomerNavbarContainer from './customers/common/CustomerNavbarContainer'
@@ -120,7 +121,7 @@ const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
 const appRender =
     (props: {
-        navbar: ComponentType<any>
+        navbar?: ComponentType<any>
         content?: ComponentType<any>
         infobar?: ComponentType<any>
         containerPadding?: boolean
@@ -376,6 +377,13 @@ export function TicketRoutes({location, match: {path}}: RouteComponentProps) {
                     noContainerWidthLimit: true,
                     isEditingWidgets: true,
                     containerPadding: true,
+                })}
+            />
+            <Route
+                path={`${path}/:ticketId/print`}
+                exact
+                render={appRender({
+                    content: TicketPrintContainer,
                 })}
             />
         </Switch>
