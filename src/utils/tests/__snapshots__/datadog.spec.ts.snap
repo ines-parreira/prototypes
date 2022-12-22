@@ -38,13 +38,24 @@ Array [
     Object {
       "applicationId": "a9fcd4e9-2ebd-47e7-92c2-9438dd12c9df",
       "clientToken": "pube64f1e4ec3c5172711f0a2d03cb1a0ff",
-      "sampleRate": 0.1,
+      "sampleRate": 0.5,
       "service": "helpdesk-web-app",
       "sessionReplaySampleRate": 0,
       "site": "datadoghq.com",
       "trackLongTasks": true,
       "trackResources": true,
       "version": "v1.4.5",
+    },
+  ],
+]
+`;
+
+exports[`datadog initDatadogRum should report INP 1`] = `
+Array [
+  Array [
+    "customWebVital",
+    Object {
+      "inp": 123,
     },
   ],
 ]
