@@ -13,7 +13,6 @@ export type SubjectLineProps = {
     onDelete: () => void
     onChange: (nextValue: string) => void
     onMoveEntity: Callbacks['onHover']
-    onDropEntity?: Callbacks['onDrop']
     position: number
     value: string
 }
@@ -24,7 +23,6 @@ const SubjectLine = ({
     onChange,
     position,
     onMoveEntity,
-    onDropEntity,
 }: SubjectLineProps) => {
     const {dragRef, dropRef, handlerId, isDragging} = useReorderDnD(
         {
@@ -32,7 +30,7 @@ const SubjectLine = ({
             type: `SUBJECT_LINES`,
         },
         [`SUBJECT_LINES`],
-        {onHover: onMoveEntity, onDrop: onDropEntity}
+        {onHover: onMoveEntity}
     )
 
     const opacity = isDragging ? 0 : 1

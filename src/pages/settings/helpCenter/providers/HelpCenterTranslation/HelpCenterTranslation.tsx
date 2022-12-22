@@ -92,6 +92,27 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
     const updateHelpCenter = useCallback(async () => {
         if (!client) return
 
+        // Check if the subject lines are not empty
+        if (contactForm.subject_lines) {
+            const subjectLineObjects = Object.values(contactForm.subject_lines)
+
+            if (
+                subjectLineObjects.some((subjectLineObject) =>
+                    subjectLineObject.options.some(
+                        (option) => option.trim() === ''
+                    )
+                )
+            ) {
+                void dispatch(
+                    notify({
+                        message: `Could not update the Help Center: some subject lines are empty.`,
+                        status: NotificationStatus.Error,
+                    })
+                )
+                return
+            }
+        }
+
         try {
             const {chatApplicationId, contactInfo} = translation
 
@@ -211,6 +232,8 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
 
             draftSettings.card_enabled =
                 helpCenter.contact_form?.card_enabled !== false
+
+            draftSettings.subject_lines = helpCenter.contact_form?.subject_lines
         }
 
         updateTranslation(produce(translation, updateFn))

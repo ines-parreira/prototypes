@@ -39,6 +39,7 @@ import ContactCard from '../ContactCard'
 import helpCenterContactViewCss from '../../HelpCenterContactView.less'
 
 import {MAX_DESCRIPTION_LENGTH} from '../../constants'
+import SubjectLines from '../../../SubjectLines/SubjectLines'
 import ToggleInput from '../../../../../../common/forms/ToggleInput'
 import css from './ContactFormInfoSection.less'
 
@@ -76,8 +77,8 @@ const ContactFormInfoSection = ({helpCenter}: ContactFormInfoSectionProps) => {
         return `${getAbsoluteUrl({domain, locale: viewLanguage})}embed/contact`
     }, [helpCenter, viewLanguage])
 
-    const isEmbeddedContactFormAvailable =
-        useFlags()[FeatureFlagKey.HelpCenterEmbeddedContactForm]
+    const isSubjectLinesAvailable =
+        useFlags()[FeatureFlagKey.HelpCenterSubjectLines]
 
     const [isAlertAcknowledged, setIsAlertAcknowledged] = useLocalStorage(
         CONTACT_FORM_ALERT_ACKNOWLEDGED_LOCAL_STORAGE_KEY,
@@ -273,61 +274,61 @@ const ContactFormInfoSection = ({helpCenter}: ContactFormInfoSectionProps) => {
                                 : undefined
                         }
                     />
-                    {isEmbeddedContactFormAvailable && (
-                        <div
-                            className={css.embedWrapper}
-                            id="embedded-contact-form"
-                        >
-                            <h4>Embed contact form</h4>
-
-                            <p>
-                                Get the code to embed Gorgias contact form as
-                                part of your web site.
-                            </p>
-                            <div className={css.embedButtons}>
-                                <Button
-                                    intent="secondary"
-                                    className={css.embedButton}
-                                    onClick={handleGetCodeModal}
-                                    isDisabled={!isEmailIntegrationSelected}
-                                >
-                                    <i className="material-icons">code</i>Get
-                                    Code
-                                </Button>
-                                <a
-                                    className={classnames(css.embedPreview, {
-                                        [css.embedPreviewDisabled]:
-                                            !isEmailIntegrationSelected,
-                                    })}
-                                    onClick={() => {
-                                        window
-                                            .open(
-                                                embeddedContactFormUrl,
-                                                '_blank'
-                                            )!
-                                            .focus()
-                                    }}
-                                >
-                                    <i className="material-icons">
-                                        open_in_new
-                                    </i>
-                                    <span>Preview Contact Form</span>
-                                </a>
-                            </div>
-                            {!isEmailIntegrationSelected && (
-                                <Tooltip
-                                    target="embedded-contact-form"
-                                    placement="top-start"
-                                    className={css.embedTooltip}
-                                    arrowClassName={css.embedTooltipArrow}
-                                    autohide={false}
-                                >
-                                    Select an email integration to enable &
-                                    embed your contact form.
-                                </Tooltip>
-                            )}
-                        </div>
+                    {isSubjectLinesAvailable && (
+                        <SubjectLines
+                            helpCenter={helpCenter}
+                            contactForm={contactForm}
+                            currentLocale={viewLanguage}
+                            updateContactForm={updateContactForm}
+                        />
                     )}
+                    <div
+                        className={css.embedWrapper}
+                        id="embedded-contact-form"
+                    >
+                        <h4>Embed contact form</h4>
+
+                        <p>
+                            Get the code to embed Gorgias contact form as part
+                            of your web site.
+                        </p>
+                        <div className={css.embedButtons}>
+                            <Button
+                                intent="secondary"
+                                className={css.embedButton}
+                                onClick={handleGetCodeModal}
+                                isDisabled={!isEmailIntegrationSelected}
+                            >
+                                <i className="material-icons">code</i>Get Code
+                            </Button>
+                            <a
+                                className={classnames(css.embedPreview, {
+                                    [css.embedPreviewDisabled]:
+                                        !isEmailIntegrationSelected,
+                                })}
+                                onClick={() => {
+                                    window
+                                        .open(embeddedContactFormUrl, '_blank')!
+                                        .focus()
+                                }}
+                            >
+                                <i className="material-icons">open_in_new</i>
+                                <span>Preview Contact Form</span>
+                            </a>
+                        </div>
+                        {!isEmailIntegrationSelected && (
+                            <Tooltip
+                                target="embedded-contact-form"
+                                placement="top-start"
+                                className={css.embedTooltip}
+                                arrowClassName={css.embedTooltipArrow}
+                                autohide={false}
+                            >
+                                Select an email integration to enable & embed
+                                your contact form.
+                            </Tooltip>
+                        )}
+                    </div>
                 </div>
                 <ContactCard
                     icon="email"

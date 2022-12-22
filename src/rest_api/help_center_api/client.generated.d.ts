@@ -428,6 +428,9 @@ declare namespace Components {
       card_enabled: boolean;
       helpdesk_integration_email: string | null;
       helpdesk_integration_id: number | null;
+      subject_lines?: {
+        [name: string]: SubjectLineDto;
+      };
     }
     export interface ContactInfo {
       email: {
@@ -998,6 +1001,9 @@ declare namespace Components {
         card_enabled: boolean;
         helpdesk_integration_email: string | null;
         helpdesk_integration_id: number | null;
+        subject_lines?: {
+          [name: string]: SubjectLineDto;
+        };
       } | null;
       translations?: HelpCenterTranslationDto[];
       redirects?: RedirectDto[];
@@ -1032,6 +1038,9 @@ declare namespace Components {
         card_enabled: boolean;
         helpdesk_integration_email: string | null;
         helpdesk_integration_id: number | null;
+        subject_lines?: {
+          [name: string]: SubjectLineDto;
+        };
       } | null;
     }
     export interface HelpCenterTranslationDto {
@@ -1324,6 +1333,10 @@ declare namespace Components {
       fields: {
       };
     }
+    export interface SubjectLineDto {
+      allow_other: boolean;
+      options: string[];
+    }
     export interface SubmitContactFormDto {
       full_name: string;
       email: string;
@@ -1450,6 +1463,9 @@ declare namespace Components {
       card_enabled?: boolean;
       helpdesk_integration_email: string | null;
       helpdesk_integration_id: number | null;
+      subject_lines?: {
+        [name: string]: SubjectLineDto;
+      };
     }
     export interface UpdateContactFormIntegrationDto {
       /**

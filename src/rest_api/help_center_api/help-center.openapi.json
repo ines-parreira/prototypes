@@ -3316,6 +3316,14 @@
                 },
                 "required": ["name", "default_locale"]
             },
+            "SubjectLineDto": {
+                "type": "object",
+                "properties": {
+                    "allow_other": {"type": "boolean"},
+                    "options": {"type": "array", "items": {"type": "string"}}
+                },
+                "required": ["allow_other", "options"]
+            },
             "ContactFormDto": {
                 "type": "object",
                 "properties": {
@@ -3327,6 +3335,12 @@
                     "helpdesk_integration_id": {
                         "type": "number",
                         "nullable": true
+                    },
+                    "subject_lines": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "#/components/schemas/SubjectLineDto"
+                        }
                     }
                 },
                 "required": [

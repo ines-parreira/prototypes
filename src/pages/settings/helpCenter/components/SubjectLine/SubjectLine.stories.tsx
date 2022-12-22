@@ -15,7 +15,6 @@ const defaultProps: SubjectLineProps = {
     onDelete: _noop,
     onChange: _noop,
     onMoveEntity: _noop,
-    onDropEntity: _noop,
     position: 0,
     value: '',
 }

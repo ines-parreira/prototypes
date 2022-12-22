@@ -142,6 +142,45 @@ exports[`<ContactFormInfoSection /> should render the component 1`] = `
         rows="1"
       />
     </div>
+    <div
+      class="embedWrapper"
+      id="embedded-contact-form"
+    >
+      <h4>
+        Embed contact form
+      </h4>
+      <p>
+        Get the code to embed Gorgias contact form as part of your web site.
+      </p>
+      <div
+        class="embedButtons"
+      >
+        <button
+          class="wrapper embedButton fill secondary medium isDisabled"
+          disabled=""
+          type="button"
+        >
+          <i
+            class="material-icons"
+          >
+            code
+          </i>
+          Get Code
+        </button>
+        <a
+          class="embedPreview embedPreviewDisabled"
+        >
+          <i
+            class="material-icons"
+          >
+            open_in_new
+          </i>
+          <span>
+            Preview Contact Form
+          </span>
+        </a>
+      </div>
+    </div>
   </div>
   <div
     class="container card"

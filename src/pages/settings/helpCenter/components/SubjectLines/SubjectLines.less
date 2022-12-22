@@ -1,0 +1,53 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .wrapper {
+        margin-bottom: 16px;
+        margin-top: 16px;
+    }
+
+    .title {
+        font-weight: 600;
+        color: @classic-neutral-grey-6;
+        margin-bottom: 4px;
+    }
+
+    .description {
+        margin-bottom: 16px;
+    }
+
+    .checkbox {
+        margin-bottom: 16px;
+
+        label {
+            font-weight: 400;
+        }
+    }
+
+    .button {
+        display: flex;
+        gap: 4px;
+        i {
+            font-size: 20px;
+        }
+    }
+
+    .subjectLinesWrapper {
+        margin-bottom: 16px;
+        max-height: 240px;
+        overflow-y: hidden;
+        height: auto;
+        transition: max-height 0.3s ease-out;
+    }
+
+    .footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .textButton {
+        color: @classic-main-primary;
+        cursor: pointer;
+    }
+}

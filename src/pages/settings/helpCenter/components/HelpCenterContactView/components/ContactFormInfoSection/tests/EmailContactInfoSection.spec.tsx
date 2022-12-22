@@ -4,6 +4,8 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import {screen} from '@testing-library/react'
+import {HTML5Backend} from 'react-dnd-html5-backend'
+import {DndProvider} from 'react-dnd'
 
 import {fromJS} from 'immutable'
 import {RootState, StoreDispatch} from 'state/types'
@@ -98,7 +100,7 @@ describe('<ContactFormInfoSection />', () => {
     beforeEach(() => {
         resetLDMocks()
         mockFlags({
-            [FeatureFlagKey.HelpCenterEmbeddedContactForm]: false,
+            [FeatureFlagKey.HelpCenterSubjectLines]: false,
         })
     })
 
@@ -111,23 +113,26 @@ describe('<ContactFormInfoSection />', () => {
             </DefaultProviders>
         )
 
-        expect(screen.getAllByText('Embed contact form').length).toBe(1)
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should render the component with the embedded contact form', () => {
+    it('should render the component with the subject lines component', () => {
         mockFlags({
-            [FeatureFlagKey.HelpCenterEmbeddedContactForm]: true,
+            [FeatureFlagKey.HelpCenterSubjectLines]: true,
         })
 
         renderWithRouter(
             <DefaultProviders>
-                <ContactFormInfoSection
-                    helpCenter={getSingleHelpCenterResponseFixture}
-                />
+                <DndProvider backend={HTML5Backend}>
+                    <ContactFormInfoSection
+                        helpCenter={getSingleHelpCenterResponseFixture}
+                    />
+                </DndProvider>
             </DefaultProviders>
         )
 
-        expect(screen.getAllByText('Embed contact form').length).toBe(2)
+        expect(
+            screen.getAllByText('Edit the subject of the contact form').length
+        ).toBe(1)
     })
 })

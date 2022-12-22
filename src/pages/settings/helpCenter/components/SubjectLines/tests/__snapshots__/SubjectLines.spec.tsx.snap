@@ -1,0 +1,152 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ContactFormInfoSection /> should render the component 1`] = `
+<div>
+  <div
+    class="wrapper"
+  >
+    <div
+      class="title"
+    >
+      Edit the subject of the contact form
+    </div>
+    <div
+      class="description"
+    >
+      Here is a default list of subject lines. If there is no subject added, user can freely type any subject.
+    </div>
+    <div
+      class="checkbox"
+    >
+      <label
+        class="label label"
+        for="checkbox-uniqueId"
+      >
+        <input
+          checked=""
+          class="input"
+          id="checkbox-uniqueId"
+          name="checkbox-uniqueId"
+          type="checkbox"
+        />
+        Allow custom input using “Other”
+      </label>
+    </div>
+    <div
+      class="subjectLinesWrapper"
+      style="max-height: 240px;"
+    >
+      <div
+        class="wrapper"
+        data-handler-id="T0"
+        style="opacity: 1;"
+      >
+        <div
+          draggable="true"
+        >
+          <i
+            class="material-icons dragIndicator"
+          >
+            drag_indicator
+          </i>
+        </div>
+        <div
+          class="wrapper"
+        >
+          <input
+            class="input"
+            id="input-text-uniqueId"
+            name="input-text-uniqueId"
+            type="text"
+            value="Option 1"
+          />
+        </div>
+        <i
+          class="material-icons deleteIcon"
+        >
+          delete
+        </i>
+      </div>
+      <div
+        class="wrapper"
+        data-handler-id="T2"
+        style="opacity: 1;"
+      >
+        <div
+          draggable="true"
+        >
+          <i
+            class="material-icons dragIndicator"
+          >
+            drag_indicator
+          </i>
+        </div>
+        <div
+          class="wrapper"
+        >
+          <input
+            class="input"
+            id="input-text-uniqueId"
+            name="input-text-uniqueId"
+            type="text"
+            value="Option 2"
+          />
+        </div>
+        <i
+          class="material-icons deleteIcon"
+        >
+          delete
+        </i>
+      </div>
+      <div
+        class="wrapper"
+        data-handler-id="T4"
+        style="opacity: 1;"
+      >
+        <div
+          draggable="true"
+        >
+          <i
+            class="material-icons dragIndicator"
+          >
+            drag_indicator
+          </i>
+        </div>
+        <div
+          class="wrapper"
+        >
+          <input
+            class="input"
+            id="input-text-uniqueId"
+            name="input-text-uniqueId"
+            type="text"
+            value="Option 3"
+          />
+        </div>
+        <i
+          class="material-icons deleteIcon"
+        >
+          delete
+        </i>
+      </div>
+    </div>
+    <div
+      class="footer"
+    >
+      <button
+        class="wrapper button fill secondary medium"
+        type="button"
+      >
+        <i
+          class="material-icons"
+        >
+          add
+        </i>
+        <span>
+          Add Subject Line
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;
