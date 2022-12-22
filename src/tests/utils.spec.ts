@@ -932,6 +932,20 @@ describe('global utils', () => {
                         'https://www.youtube.com/watch?v=4sLFpe-xbhk2',
                     ],
                 },
+                // Extra space produced by draftjs because ending by a video should be removed.
+                {
+                    rawHtml: `<p>hello</p><div class="gorgias-video-container" data-video-src="https://www.youtube.com/watch?v=4sLFpe-xbhk" width="600"></div><div><br /></div>`,
+                    expectedHtmlFinal: `<p>hello</p>`,
+                    expectedVideoUrls: [
+                        'https://www.youtube.com/watch?v=4sLFpe-xbhk',
+                    ],
+                },
+                // Extra space made on purpose by the agent (not ending by a video) should NOT be removed.
+                {
+                    rawHtml: `<div>A</div><div><br /></div>`,
+                    expectedHtmlFinal: `<div>A</div><div><br /></div>`,
+                    expectedVideoUrls: [],
+                },
             ]
 
             for (const data of dataset) {

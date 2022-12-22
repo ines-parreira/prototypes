@@ -51,27 +51,28 @@ export const ChatCampaign = ({
                                 __html: htmlCleaned,
                             }}
                         />
-                        {videoUrls.length > 0 &&
-                            videoUrls.map((url, idx) => (
-                                <div
-                                    key={idx}
-                                    className={css.messageText}
-                                    style={{
-                                        width: '100%',
-                                        aspectRatio: '16/9',
-                                    }}
-                                >
-                                    <ReactPlayer
-                                        url={url}
-                                        controls={true}
-                                        light={true}
-                                        width="100%"
-                                        height="100%"
-                                    />
-                                </div>
-                            ))}
                     </div>
                 </div>
+            </div>
+            <div className={css.videos}>
+                {videoUrls.length > 0 &&
+                    videoUrls.map((url, idx) => (
+                        <div
+                            key={idx}
+                            style={{
+                                width: '100%',
+                                aspectRatio: '16/9',
+                            }}
+                        >
+                            <ReactPlayer
+                                url={url}
+                                controls={true}
+                                light={false}
+                                width="100%"
+                                height="100%"
+                            />
+                        </div>
+                    ))}
             </div>
             {products.length > 0 && (
                 <div>
