@@ -4,12 +4,13 @@ import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
-import {renderWithRouter} from '../../../../utils/testing'
-import {RootState, StoreDispatch} from '../../../../state/types'
-import {PaymentMethodType} from '../../../../state/billing/types'
+import {PaymentMethodType} from 'state/billing/types'
+import {RootState, StoreDispatch} from 'state/types'
+import {renderWithRouter} from 'utils/testing'
+
 import BillingContainer from '../BillingContainer'
 
-jest.mock('../BillingUsage', () => () => <div>Billing usage</div>)
+jest.mock('../BillingHelpdeskUsage', () => () => <div>Billing usage</div>)
 jest.mock('../BillingPaymentMethod', () => () => (
     <div>Billing payment method</div>
 ))

@@ -12,16 +12,16 @@ import {
     HELPDESK_PRODUCT_ID,
     proMonthlyHelpdeskPrice,
 } from 'fixtures/productPrices'
-import BillingUsage from '../BillingUsage'
+import BillingHelpdeskUsage from '../BillingHelpdeskUsage'
 
-jest.mock('../../../common/components/LegacyPlanBanner', () => () => (
+jest.mock('pages/common/components/LegacyPlanBanner', () => () => (
     <div>Legacy Plan Banner Mock</div>
 ))
-jest.mock('../../../../state/billing/actions.ts')
+jest.mock('state/billing/actions')
 
 const mockStore = configureMockStore([thunk])
 
-describe('<BillingUsage/>', () => {
+describe('<BillingHelpdeskUsage />', () => {
     const defaultState: Partial<RootState> = {
         currentAccount: fromJS({
             ...account,
@@ -57,7 +57,7 @@ describe('<BillingUsage/>', () => {
     it('should display loader', () => {
         const {container} = render(
             <Provider store={mockStore(defaultState)}>
-                <BillingUsage />
+                <BillingHelpdeskUsage />
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
@@ -66,7 +66,7 @@ describe('<BillingUsage/>', () => {
     it('should load with empty props', async () => {
         const {container, getByText} = render(
             <Provider store={mockStore(defaultState)}>
-                <BillingUsage />
+                <BillingHelpdeskUsage />
             </Provider>
         )
         await waitFor(() => getByText('Usage & Plans'))
@@ -76,7 +76,7 @@ describe('<BillingUsage/>', () => {
     it('should display price', async () => {
         const {container, getByText} = render(
             <Provider store={mockStore(defaultState)}>
-                <BillingUsage />
+                <BillingHelpdeskUsage />
             </Provider>
         )
         await waitFor(() => getByText('Usage & Plans'))
@@ -103,7 +103,7 @@ describe('<BillingUsage/>', () => {
                     }),
                 })}
             >
-                <BillingUsage />
+                <BillingHelpdeskUsage />
             </Provider>
         )
 
@@ -134,7 +134,7 @@ describe('<BillingUsage/>', () => {
                     }),
                 })}
             >
-                <BillingUsage />
+                <BillingHelpdeskUsage />
             </Provider>
         )
 
@@ -148,7 +148,7 @@ describe('<BillingUsage/>', () => {
     it('should display tooltip', async () => {
         const {findByText, getAllByText} = render(
             <Provider store={mockStore(defaultState)}>
-                <BillingUsage />
+                <BillingHelpdeskUsage />
             </Provider>
         )
         const tooltipTarget = await waitFor(

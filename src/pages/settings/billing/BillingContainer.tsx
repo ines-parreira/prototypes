@@ -4,19 +4,23 @@ import {RouteComponentProps, withRouter} from 'react-router-dom'
 import {Container} from 'reactstrap'
 import {parse} from 'qs'
 
-import {RootState} from 'state/types'
-import {NotificationStatus} from 'state/notifications/types'
 import PageHeader from 'pages/common/components/PageHeader'
+import history from 'pages/history'
+import {
+    getCurrentSubscription,
+    hasCreditCard,
+} from 'state/currentAccount/selectors'
 import {notify} from 'state/notifications/actions'
-import * as currentAccountSelectors from '../../../state/currentAccount/selectors'
-import history from '../../history'
-import {paymentMethod} from '../../../state/billing/selectors'
+import {NotificationStatus} from 'state/notifications/types'
+import {RootState} from 'state/types'
+import {paymentMethod} from 'state/billing/selectors'
+
 import css from '../settings.less'
 
-import BillingUsage from './BillingUsage'
-import BillingPaymentMethod from './BillingPaymentMethod'
 import BillingDetails from './details/BillingDetails'
 import BillingInvoices from './BillingInvoices'
+import BillingPaymentMethod from './BillingPaymentMethod'
+import BillingHelpdeskUsage from './BillingHelpdeskUsage'
 
 type Props = RouteComponentProps & ConnectedProps<typeof connector>
 
@@ -53,7 +57,7 @@ export class BillingContainer extends Component<Props> {
             <div className="full-width">
                 <PageHeader title="Billing & usage" />
                 <Container fluid className={css.pageContainer}>
-                    <BillingUsage />
+                    <BillingHelpdeskUsage />
                     <BillingPaymentMethod />
                     {(paymentMethod === 'shopify' || hasCreditCard) && (
                         <BillingDetails />
@@ -67,12 +71,11 @@ export class BillingContainer extends Component<Props> {
 
 const connector = connect(
     (state: RootState) => {
-        const currentSubscription =
-            currentAccountSelectors.getCurrentSubscription(state)
+        const currentSubscription = getCurrentSubscription(state)
         return {
             currentSubscription,
             paymentMethod: paymentMethod(state),
-            hasCreditCard: currentAccountSelectors.hasCreditCard(state),
+            hasCreditCard: hasCreditCard(state),
         }
     },
     {notify}

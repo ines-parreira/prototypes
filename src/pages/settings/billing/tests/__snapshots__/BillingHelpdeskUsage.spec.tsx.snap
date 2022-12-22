@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<BillingUsage/> should display danger progress bar 1`] = `
+exports[`<BillingHelpdeskUsage /> should display danger progress bar 1`] = `
 <div
   class="usage-progress progress"
 >
@@ -23,7 +23,7 @@ exports[`<BillingUsage/> should display danger progress bar 1`] = `
 </div>
 `;
 
-exports[`<BillingUsage/> should display loader 1`] = `
+exports[`<BillingHelpdeskUsage /> should display loader 1`] = `
 <div
   class="container"
 >
@@ -39,7 +39,7 @@ exports[`<BillingUsage/> should display loader 1`] = `
 </div>
 `;
 
-exports[`<BillingUsage/> should display price 1`] = `
+exports[`<BillingHelpdeskUsage /> should display price 1`] = `
 <div
   class="wrapper"
 >
@@ -77,7 +77,9 @@ exports[`<BillingUsage/> should display price 1`] = `
         class="card-body card-body"
         data-candu-id="billing-subscription-usage"
       >
-        <div>
+        <div
+          class="billableTickets"
+        >
           <div
             class="ticket-numbers"
           >
@@ -128,20 +130,18 @@ exports[`<BillingUsage/> should display price 1`] = `
         <div
           class="description"
         >
-          <div>
-            Your current subscription started on
-             
-            <strong>
-              Aug 23
-            </strong>
-          </div>
-          <button
-            class="wrapper fill primary medium"
-            type="button"
-          >
-            Update plan
-          </button>
+          Your current subscription started on
+           
+          <strong>
+            Aug 23
+          </strong>
         </div>
+        <button
+          class="wrapper action fill primary medium"
+          type="button"
+        >
+          Update plan
+        </button>
       </div>
     </div>
     <div
@@ -233,7 +233,7 @@ exports[`<BillingUsage/> should display price 1`] = `
 </div>
 `;
 
-exports[`<BillingUsage/> should display tooltip 1`] = `
+exports[`<BillingHelpdeskUsage /> should display tooltip 1`] = `
 <div
   class="tooltip-inner"
   role="tooltip"
@@ -246,7 +246,7 @@ exports[`<BillingUsage/> should display tooltip 1`] = `
 </div>
 `;
 
-exports[`<BillingUsage/> should display warning progress bar 1`] = `
+exports[`<BillingHelpdeskUsage /> should display warning progress bar 1`] = `
 <div
   class="usage-progress progress"
 >
@@ -261,7 +261,7 @@ exports[`<BillingUsage/> should display warning progress bar 1`] = `
 </div>
 `;
 
-exports[`<BillingUsage/> should load with empty props 1`] = `
+exports[`<BillingHelpdeskUsage /> should load with empty props 1`] = `
 <div
   class="wrapper"
 >
@@ -299,7 +299,9 @@ exports[`<BillingUsage/> should load with empty props 1`] = `
         class="card-body card-body"
         data-candu-id="billing-subscription-usage"
       >
-        <div>
+        <div
+          class="billableTickets"
+        >
           <div
             class="ticket-numbers"
           >
@@ -350,20 +352,18 @@ exports[`<BillingUsage/> should load with empty props 1`] = `
         <div
           class="description"
         >
-          <div>
-            Your current subscription started on
-             
-            <strong>
-              Aug 23
-            </strong>
-          </div>
-          <button
-            class="wrapper fill primary medium"
-            type="button"
-          >
-            Update plan
-          </button>
+          Your current subscription started on
+           
+          <strong>
+            Aug 23
+          </strong>
         </div>
+        <button
+          class="wrapper action fill primary medium"
+          type="button"
+        >
+          Update plan
+        </button>
       </div>
     </div>
     <div
