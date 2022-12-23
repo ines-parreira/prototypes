@@ -6,7 +6,7 @@ import {GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_PICTURE} from '../../../../../../co
 import css from './ChatIntegrationPreview.less'
 
 type Props = {
-    avatarTeamPictureUrl?: string
+    avatarTeamPictureUrl?: string | null
     avatarType?: string
     isOnline: boolean
     mainColor: string

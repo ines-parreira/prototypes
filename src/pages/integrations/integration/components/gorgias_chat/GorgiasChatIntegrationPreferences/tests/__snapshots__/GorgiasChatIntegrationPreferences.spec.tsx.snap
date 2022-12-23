@@ -4,6 +4,8 @@ exports[`<GorgiasChatIntegrationPreferences/> _setLinkedEmailIntegration() shoul
 Object {
   "autoResponderEnabled": true,
   "autoResponderReply": "reply-dynamic",
+  "avatarTeamPictureUrl": null,
+  "avatarType": "team-members",
   "emailCaptureEnforcement": "optional",
   "hideOnMobile": false,
   "hideOutsideBusinessHours": false,
@@ -20,6 +22,8 @@ exports[`<GorgiasChatIntegrationPreferences/> _setLinkedEmailIntegration() shoul
 Object {
   "autoResponderEnabled": true,
   "autoResponderReply": "reply-dynamic",
+  "avatarTeamPictureUrl": null,
+  "avatarType": "team-members",
   "emailCaptureEnforcement": "optional",
   "hideOnMobile": false,
   "hideOutsideBusinessHours": false,
@@ -102,6 +106,8 @@ exports[`<GorgiasChatIntegrationPreferences/> componentDidMount() should initial
 Object {
   "autoResponderEnabled": true,
   "autoResponderReply": "reply-in-minutes",
+  "avatarTeamPictureUrl": null,
+  "avatarType": "team-members",
   "emailCaptureEnforcement": "always-required",
   "hideOnMobile": false,
   "hideOutsideBusinessHours": false,
@@ -118,6 +124,8 @@ exports[`<GorgiasChatIntegrationPreferences/> componentDidUpdate() should initia
 Object {
   "autoResponderEnabled": true,
   "autoResponderReply": "reply-in-minutes",
+  "avatarTeamPictureUrl": null,
+  "avatarType": "team-members",
   "emailCaptureEnforcement": "always-required",
   "hideOnMobile": false,
   "hideOutsideBusinessHours": false,
@@ -176,6 +184,8 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
       <ChatIntegrationPreview
         autoResponderEnabled={true}
         autoResponderReply="reply-dynamic"
+        avatarTeamPictureUrl={null}
+        avatarType="team-members"
         isOnline={true}
         language="en-US"
         mainColor="#789c5d"
@@ -592,6 +602,8 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
       <ChatIntegrationPreview
         autoResponderEnabled={true}
         autoResponderReply="reply-dynamic"
+        avatarTeamPictureUrl={null}
+        avatarType="team-members"
         isOnline={true}
         language="en-US"
         mainColor="#789c5d"

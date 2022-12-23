@@ -25,6 +25,7 @@ import {
     GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS,
     GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
     GORGIAS_CHAT_LIVE_CHAT_OFFLINE,
+    GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_MEMBERS,
 } from '../../../../../../config/integrations/gorgias_chat'
 import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
 import {getIntegrationsByTypes} from '../../../../../../state/integrations/selectors'
@@ -104,6 +105,8 @@ type State = {
     linkedEmailIntegration: number | null
     offlineModeEnabledDatetime: Date | null
     liveChatAvailability: string
+    avatarType: string
+    avatarTeamPictureUrl: string | null
 }
 
 export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
@@ -127,6 +130,8 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         offlineModeEnabledDatetime: null,
         liveChatAvailability:
             GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
+        avatarType: GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_MEMBERS,
+        avatarTeamPictureUrl: null,
     }
 
     _initState = (integration: Map<any, any>) => {
@@ -185,6 +190,13 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                         'meta',
                         'preferences',
                         'live_chat_availability',
+                    ]),
+                    avatarType:
+                        integration.getIn(['decoration', 'avatar_type']) ||
+                        GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_MEMBERS,
+                    avatarTeamPictureUrl: integration.getIn([
+                        'decoration',
+                        'avatar_team_picture_url',
                     ]),
                 },
                 _isUndefined
@@ -306,6 +318,8 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             linkedEmailIntegration,
             offlineModeEnabledDatetime,
             liveChatAvailability,
+            avatarType,
+            avatarTeamPictureUrl,
         } = this.state
         const {integration, emailIntegrations: integrations} = this.props
         const emailIntegrations = integrations.filter(isGenericEmailIntegration)
@@ -375,6 +389,8 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         const chatPreview = (
             <ChatIntegrationPreview
                 name={integration.get('name')}
+                avatarType={avatarType}
+                avatarTeamPictureUrl={avatarTeamPictureUrl}
                 introductionText={integration.getIn([
                     'decoration',
                     'introduction_text',
@@ -467,7 +483,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                 />
 
                 <ChatIntegrationNavigation integration={integration} />
-
                 <GorgiasChatIntegrationPreviewContainer preview={chatPreview}>
                     <Form onSubmit={this._submitPreferences}>
                         <div>

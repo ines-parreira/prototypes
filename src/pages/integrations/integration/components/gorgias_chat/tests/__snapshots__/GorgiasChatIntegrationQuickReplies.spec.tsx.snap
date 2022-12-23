@@ -225,6 +225,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
         <GorgiasChatIntegrationPreviewContainer
           preview={
             <ChatIntegrationPreview
+              avatarType="team-members"
               introductionText="this is an intro"
               isOnline={true}
               mainColor="#123456"
@@ -630,6 +631,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                         className="preview"
                       >
                         <ChatIntegrationPreview
+                          avatarType="team-members"
                           introductionText="this is an intro"
                           isOnline={true}
                           mainColor="#123456"
@@ -658,6 +660,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                                 }
                               >
                                 <ChatIntegrationAvatar
+                                  avatarType="team-members"
                                   isOnline={true}
                                   mainColor="#123456"
                                   offlineColor="#EBEBEB"
@@ -1144,6 +1147,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
         <GorgiasChatIntegrationPreviewContainer
           preview={
             <ChatIntegrationPreview
+              avatarType="team-members"
               introductionText="this is an intro"
               isOnline={true}
               mainColor="#123456"
@@ -1549,6 +1553,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                         className="preview"
                       >
                         <ChatIntegrationPreview
+                          avatarType="team-members"
                           introductionText="this is an intro"
                           isOnline={true}
                           mainColor="#123456"
@@ -1577,6 +1582,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                                 }
                               >
                                 <ChatIntegrationAvatar
+                                  avatarType="team-members"
                                   isOnline={true}
                                   mainColor="#123456"
                                   offlineColor="#EBEBEB"

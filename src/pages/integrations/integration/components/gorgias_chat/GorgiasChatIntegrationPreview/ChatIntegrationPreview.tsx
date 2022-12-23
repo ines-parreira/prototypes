@@ -34,7 +34,7 @@ type Props = {
     headerText?: string
     mainColor: string
     avatarType?: string
-    avatarTeamPictureUrl?: string
+    avatarTeamPictureUrl?: string | null
     isOnline: boolean
     language?: string
     children: ReactNode
