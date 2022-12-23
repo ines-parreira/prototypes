@@ -46,6 +46,7 @@ WithProducts.args = {
             id: 1,
             title: `Gibson ES-335 Sunburst 1970`,
             price: 8289,
+            url: '',
             currency: 'usd',
             featured_image:
                 'https://cdn.shopify.com/s/files/1/0343/4368/2183/products/gibson-electric-guitars-semi-hollow-gibson-es-335-sunburst-1968-u3877433902-29229399769223_2000x.jpg?v=1652315363',
@@ -54,6 +55,7 @@ WithProducts.args = {
             id: 2,
             title: `Gator TSA ATA Molded Les Paul Electric Guitar Case`,
             price: 469.98,
+            url: '',
             currency: 'usd',
             featured_image:
                 'https://cdn.shopify.com/s/files/1/0343/4368/2183/products/gator-accessories-cases-and-gig-bags-guitar-cases-gator-tsa-ata-molded-les-paul-electric-guitar-case-gtsa-gtrlps-29364584382599_2000x.jpg?v=1657220180',
@@ -62,6 +64,7 @@ WithProducts.args = {
             id: 3,
             title: `Fender George Harrison All Things Must Pass Pick Tin Set of 6`,
             price: 11.99,
+            url: '',
             currency: 'usd',
             featured_image:
                 'https://cdn.shopify.com/s/files/1/0343/4368/2183/products/fender-accessories-picks-fender-george-harrison-all-things-must-pass-pick-tin-set-of-6-1980351046-29707897176199_2000x.jpg?v=1663347561',
@@ -69,6 +72,7 @@ WithProducts.args = {
         {
             id: 4,
             currency: 'usd',
+            url: '',
             featured_image:
                 'https://cdn.mos.cms.futurecdn.net/gPvyaz76tASn87RCGuSdDc.jpg',
             price: 1234.43,

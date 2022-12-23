@@ -1,5 +1,6 @@
 import React, {memo, useMemo} from 'react'
 import classnames from 'classnames'
+import {List} from 'immutable'
 
 import {EditorState} from 'draft-js'
 import {useFlags} from 'launchdarkly-react-client-sdk'
@@ -11,6 +12,7 @@ import {AgentLabel} from 'pages/common/utils/labels'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import DEPRECATED_RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'
 import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
+import TicketAttachments from 'pages/tickets/detail/components/ReplyArea/TicketAttachments'
 
 import {Option, Value} from 'pages/common/forms/SelectField/types'
 
@@ -18,21 +20,27 @@ import css from './CampaignMessage.less'
 
 type Props = {
     agents: User[]
+    attachments: List<any>
     html: string
+    isRevenueBetaTester?: boolean
     text: string
     selectedAgent: string
     onSelectAgent: (agent: Value) => void
     onChangeMessage: (value: EditorState) => void
+    onDeleteAttachment: (index: number) => void
 }
 
 export const CampaignMessage = memo(
     ({
         agents,
+        attachments,
         html,
+        isRevenueBetaTester = false,
         text,
         selectedAgent,
         onSelectAgent,
         onChangeMessage,
+        onDeleteAttachment,
     }: Props): JSX.Element => {
         const options = useMemo<Option[]>(() => {
             const initialArr: Option[] = [
@@ -89,15 +97,18 @@ export const CampaignMessage = memo(
                 ActionName.Link,
                 ActionName.Image,
                 ActionName.Emoji,
-                ActionName.ProductPicker,
             ]
+
+            if (attachments.size < 5) {
+                actions.push(ActionName.ProductPicker)
+            }
 
             if (allowVideoSharingForCampaigns) {
                 actions.push(ActionName.Video)
             }
 
             return actions
-        }, [allowVideoSharingForCampaigns])
+        }, [attachments, allowVideoSharingForCampaigns])
 
         return (
             <div className="mb-4">
@@ -113,14 +124,24 @@ export const CampaignMessage = memo(
                         onChange={onSelectAgent}
                     />
                 </div>
-                <DEPRECATED_RichField
-                    value={value}
-                    allowExternalChanges
-                    onChange={onChangeMessage}
-                    placeholder={'Write your message'}
-                    displayedActions={displayedActions}
-                    isRequired
-                />
+                <div className={css.textEditorWrapper}>
+                    <DEPRECATED_RichField
+                        value={value}
+                        attachments={attachments}
+                        allowExternalChanges
+                        productCardsEnabled={isRevenueBetaTester}
+                        onChange={onChangeMessage}
+                        placeholder={'Write your message'}
+                        displayedActions={displayedActions}
+                        isRequired
+                    />
+                    <TicketAttachments
+                        removable
+                        attachments={attachments}
+                        className="p-2 d-flex flex-wrap"
+                        deleteAttachment={onDeleteAttachment}
+                    />
+                </div>
             </div>
         )
     }

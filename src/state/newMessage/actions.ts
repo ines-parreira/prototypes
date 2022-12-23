@@ -201,10 +201,13 @@ export const addProductCardAttachments =
                 size: 0,
                 url: productCardDetails.imageUrl,
                 extra: {
+                    product_id: productCardDetails.productId,
+                    variant_id: productCardDetails.variantId,
                     price: productCardDetails.price,
                     variant_name: productCardDetails.variantTitle,
                     product_link: productCardDetails.link,
                     currency: productCardDetails.currency,
+                    featured_image: productCardDetails.imageUrl,
                 },
             },
         ]
@@ -1334,3 +1337,9 @@ export const newMessageQuickResponseFlow = createAction<{
 export const setShowConvertToForwardPopover = createAction<boolean>(
     constants.NEW_MESSAGE_SHOW_CONVERT_TO_FORWARD_POPOVER
 )
+
+export const setNewMessageForChatCampaign = createAction<{
+    attachments?: List<any>
+    channel?: TicketChannel
+    sourceType?: TicketMessageSourceType
+}>(constants.SET_NEW_MESSAGE_CHAT_CAMPAIGN)

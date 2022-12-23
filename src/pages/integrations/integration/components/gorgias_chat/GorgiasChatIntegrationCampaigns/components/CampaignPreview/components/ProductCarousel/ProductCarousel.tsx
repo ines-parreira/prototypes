@@ -2,6 +2,9 @@ import React, {useCallback, useEffect, useState} from 'react'
 import classnames from 'classnames'
 
 import {DEFAULT_CAROUSEL_CONFIGURATION} from '../../../../constants/visuals'
+
+import {useIsHeadlessShopifyStore} from '../../../../hooks/useIsHeadlessShopifyStore'
+
 import {CampaignProduct} from '../../../../types/CampaignProduct'
 
 import {ProductCard} from '../ProductCard'
@@ -26,6 +29,7 @@ export const ProductCarousel = ({
     const [translate, setTranslate] = useState(
         configuration.carouselNavigationPadding
     )
+    const isHeadlessStore = useIsHeadlessShopifyStore()
 
     const calculateNextTranslate = useCallback(
         (element: number, products: CampaignProduct[]): number => {
@@ -99,6 +103,7 @@ export const ProductCarousel = ({
                                 image={product.featured_image}
                                 price={product.price}
                                 title={product.title}
+                                isHeadlessStore={isHeadlessStore}
                             />
                         </div>
                     ))}

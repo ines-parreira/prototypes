@@ -569,6 +569,25 @@ export default function reducer(
                 )
         }
 
+        case types.SET_NEW_MESSAGE_CHAT_CAMPAIGN: {
+            const payload = action.payload as {
+                attachments?: List<any>
+                channel?: TicketChannel
+                sourceType?: TicketMessageSourceType
+            }
+
+            const {
+                attachments = fromJS([]),
+                channel = TicketChannel.Email,
+                sourceType = TicketMessageSourceType.Email,
+            } = payload
+
+            return state
+                .setIn(['newMessage', 'attachments'], attachments)
+                .setIn(['newMessage', 'channel'], channel)
+                .setIn(['newMessage', 'source', 'type'], sourceType)
+        }
+
         default:
             return state
     }

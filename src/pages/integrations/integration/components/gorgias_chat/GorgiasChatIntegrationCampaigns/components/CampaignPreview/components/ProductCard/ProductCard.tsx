@@ -16,18 +16,20 @@ function getBackgroundColorVariant(mainColor: string): string {
 
 type Props = {
     color?: string
-    currency: string
+    currency?: string
     image?: string
     price: number
     title: string
+    isHeadlessStore?: boolean
 }
 
 export const ProductCard = ({
     color = DEFAULT_COLOR,
-    currency,
+    currency = 'USD',
     image,
     price,
     title,
+    isHeadlessStore = false,
 }: Props) => {
     const productStyle = useMemo(() => {
         return image
@@ -65,7 +67,7 @@ export const ProductCard = ({
                         )}
                     </div>
                     <button className={css.addToCart} style={buttonStyle}>
-                        Add to cart
+                        {isHeadlessStore ? 'Show details' : 'Add to cart'}
                     </button>
                 </div>
             </div>

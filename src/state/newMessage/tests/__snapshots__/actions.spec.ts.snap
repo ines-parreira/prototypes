@@ -8,8 +8,11 @@ Array [
         "content_type": "application/productCard",
         "extra": Object {
           "currency": "USD",
+          "featured_image": "https://cdn.shopify.com/s/files/1/1781/7573/products/candy.jpg?v=1575311784",
           "price": "1.00",
+          "product_id": 1,
           "product_link": "https://storegorgias3.myshopify.com/products/bonbon-acidule?variant=31128766349335",
+          "variant_id": 2,
           "variant_name": "baz",
         },
         "name": "bar",

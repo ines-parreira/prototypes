@@ -1,13 +1,24 @@
-import React, {memo, useCallback, useEffect, useState} from 'react'
+import React, {memo, useCallback, useEffect, useMemo, useState} from 'react'
 import {fromJS, Map} from 'immutable'
 import produce from 'immer'
 import _uniqueId from 'lodash/uniqueId'
 import {EditorState} from 'draft-js'
 
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+
 import {convertToHTML} from 'utils/editor'
 import {sanitizeHtmlDefault} from 'utils/html'
 import {User} from 'config/types/user'
 import history from 'pages/history'
+
+import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
+
+import {
+    deleteAttachment,
+    setNewMessageForChatCampaign,
+} from 'state/newMessage/actions'
+import {getNewMessageAttachments} from 'state/newMessage/selectors'
 
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import InputField from 'pages/common/forms/input/InputField'
@@ -28,11 +39,11 @@ import {
 } from '../../types/AdvancedTriggerBaseProps'
 import {ChatCampaign} from '../../types/Campaign'
 import {CampaignAuthor} from '../../types/CampaignAgent'
+import {SingleCampaignInViewOperators} from '../../types/enums/SingleCampaignInViewOperators.enum'
+import {CampaignProduct} from '../../types/CampaignProduct'
 
 import {chatIsShopifyStore} from '../../utils/chatIsShopifyStore'
 import {isAllowedToUpdateTrigger} from '../../utils/isAllowedToUpdateTrigger'
-
-import {TriggersProvider} from '../TriggersProvider'
 
 import CampaignPreview from '../../components/CampaignPreview'
 import {CampaignMessage} from '../../components/CampaignMessage'
@@ -42,7 +53,10 @@ import {CampaignDetailsHeader} from '../../components/CampaignDetailsHeader'
 import {AdvancedTriggersSelect} from '../../components/AdvancedTriggersSelect'
 import {CampaignDisplaySettings} from '../../components/CampaignDisplaySettings'
 
-import {SingleCampaignInViewOperators} from '../../types/enums/SingleCampaignInViewOperators.enum'
+import {transformProductToAttachment} from '../../utils/transformProductToAttachment'
+import {transformAttachmentToProduct} from '../../utils/transformAttachmentToProduct'
+
+import {TriggersProvider} from '../TriggersProvider'
 
 import css from './AdvancedCampaignDetails.less'
 
@@ -69,8 +83,9 @@ export const AdvancedCampaignDetails = memo(
         deleteCampaign,
     }: Props): JSX.Element => {
         const isUpdate = id !== 'new'
+        const dispatch = useAppDispatch()
 
-        const [stateInitialized, setStateInitialialized] = useState(false)
+        const [stateInitialized, setStateInitialized] = useState(false)
         const [isActionInProgress, setIsActionInProgress] =
             useState<boolean>(false)
         const [triggers, updateTriggers] = useState<CampaignTriggerMap>({})
@@ -84,6 +99,11 @@ export const AdvancedCampaignDetails = memo(
         const [campaignMessageText, setCampaignMessageText] =
             useState<string>('')
         const chatPreviewProps = useChatPreviewProps(integration)
+        const attachments = useAppSelector(getNewMessageAttachments)
+
+        const shopifyProducts = useMemo<CampaignProduct[]>(() => {
+            return transformAttachmentToProduct(attachments)
+        }, [attachments])
 
         const handleAddTrigger = useCallback(
             (key: CampaignTriggerKey) => {
@@ -191,6 +211,10 @@ export const AdvancedCampaignDetails = memo(
             [agents, setCampaignAgent]
         )
 
+        const handleDeleteAttachment = (index: number) => {
+            dispatch(deleteAttachment(index))
+        }
+
         const handleToggleSingleCampaignInView = useCallback(
             (triggerId: string, value: boolean) => {
                 if (value === true) {
@@ -271,6 +295,14 @@ export const AdvancedCampaignDetails = memo(
                     }
                 }
 
+                if (shopifyProducts.length > 0) {
+                    payload['attachments'] = shopifyProducts.map((product) => {
+                        return transformProductToAttachment(product, {
+                            campaignName,
+                        })
+                    })
+                }
+
                 if (isUpdate) {
                     await updateCampaign(fromJS(payload), integration)
                 } else {
@@ -278,6 +310,12 @@ export const AdvancedCampaignDetails = memo(
                 }
             } finally {
                 setIsActionInProgress(false)
+
+                dispatch(
+                    setNewMessageForChatCampaign({
+                        attachments: fromJS(attachments),
+                    })
+                )
             }
         }
 
@@ -297,8 +335,18 @@ export const AdvancedCampaignDetails = memo(
             Object.keys(triggers).length !== 0
 
         useEffect(() => {
-            setStateInitialialized(true)
-        }, [])
+            setStateInitialized(true)
+            dispatch(
+                setNewMessageForChatCampaign({
+                    channel: TicketChannel.Chat,
+                    sourceType: TicketMessageSourceType.Chat,
+                })
+            )
+
+            return () => {
+                dispatch(setNewMessageForChatCampaign({}))
+            }
+        }, [dispatch])
 
         useEffect(() => {
             if (campaign) {
@@ -335,8 +383,40 @@ export const AdvancedCampaignDetails = memo(
                     setCampaignMessageText(campaign.message.text)
                     setCampaignAgent(campaign.message?.author ?? undefined)
                 }
+
+                if (
+                    Array.isArray(campaign.attachments) &&
+                    campaign.attachments.length > 0
+                ) {
+                    const attachments = campaign.attachments.map(
+                        (attachment) => {
+                            return {
+                                content_type: attachment.contentType,
+                                name: attachment.name,
+                                size: attachment.size,
+                                url: attachment.url,
+                                extra: {
+                                    product_id: attachment.extra.product_id,
+                                    product_link: attachment.extra.product_link,
+                                    price: attachment.extra.price,
+                                    featured_image: attachment.url,
+                                    variant_name:
+                                        attachment.extra?.variant_name,
+                                },
+                            }
+                        }
+                    )
+
+                    void dispatch(
+                        setNewMessageForChatCampaign({
+                            channel: TicketChannel.Chat,
+                            sourceType: TicketMessageSourceType.Chat,
+                            attachments: fromJS(attachments),
+                        })
+                    )
+                }
             }
-        }, [campaign, isRevenueBetaTester])
+        }, [campaign, dispatch, isRevenueBetaTester])
 
         const isShopifyStore = chatIsShopifyStore(integration)
         const shouldShowContactCsm = Object.values(triggers).some(
@@ -356,6 +436,7 @@ export const AdvancedCampaignDetails = memo(
                     preview={
                         <CampaignPreview
                             {...chatPreviewProps}
+                            products={shopifyProducts}
                             html={sanitizeHtmlDefault(campaignMessageHTML)}
                             authorName={campaignAgent?.name ?? ``}
                             authorAvatarUrl={campaignAgent?.avatar_url ?? ''}
@@ -413,11 +494,14 @@ export const AdvancedCampaignDetails = memo(
                         {stateInitialized && (
                             <CampaignMessage
                                 agents={agents}
+                                attachments={attachments}
                                 html={campaignMessageHTML}
                                 text={campaignMessageText}
+                                isRevenueBetaTester={isRevenueBetaTester}
                                 selectedAgent={campaignAgent?.email ?? ''}
                                 onSelectAgent={handleChangeAgent}
                                 onChangeMessage={handleChangeMessage}
+                                onDeleteAttachment={handleDeleteAttachment}
                             />
                         )}
 

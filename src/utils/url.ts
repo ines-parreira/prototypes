@@ -9,3 +9,22 @@ export function ensureHTTPS(url = ''): string {
     }
     return 'https://' + url
 }
+
+export function attachSearchParamsToUrl(
+    baseUrl: string,
+    params: Record<string, string> = {}
+): string {
+    try {
+        const url = new URL(baseUrl)
+
+        Object.entries(params).forEach(([key, value]) => {
+            url.searchParams.set(key, value)
+        })
+
+        return url.toString()
+    } catch (err) {
+        console.error(err)
+
+        return baseUrl
+    }
+}
