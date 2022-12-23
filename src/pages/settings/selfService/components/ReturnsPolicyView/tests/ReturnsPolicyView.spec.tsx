@@ -4,7 +4,7 @@ import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {useLocation, useParams} from 'react-router-dom'
+import {useParams} from 'react-router-dom'
 
 import {
     SelfServiceConfiguration,
@@ -20,7 +20,6 @@ import {ReturnsPolicyView} from '../ReturnsPolicyView'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const useParamsMock = useParams as jest.MockedFunction<typeof useParams>
-const useLocationMock = useLocation as jest.MockedFunction<typeof useLocation>
 
 jest.mock('models/selfServiceConfiguration/resources')
 jest.mock('react-router')
@@ -97,13 +96,6 @@ describe('<ReturnsPolicyView />', () => {
             useParamsMock.mockReturnValue({
                 shopName: 'myStore1',
                 integrationType: 'shopify',
-            })
-            useLocationMock.mockReturnValue({
-                pathname:
-                    '/app/settings/self-service/shopify/myStore1/preferences/order-management',
-                search: '',
-                state: {},
-                hash: '',
             })
 
             const {container} = render(

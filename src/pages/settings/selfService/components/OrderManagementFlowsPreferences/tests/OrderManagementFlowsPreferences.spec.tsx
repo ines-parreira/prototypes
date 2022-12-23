@@ -4,7 +4,7 @@ import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
-import {useLocation, useParams, useRouteMatch} from 'react-router-dom'
+import {useParams, useRouteMatch} from 'react-router-dom'
 
 import {
     SelfServiceConfiguration,
@@ -27,7 +27,6 @@ const useParamsMock = useParams as jest.MockedFunction<typeof useParams>
 const useRouteMatchMock = useRouteMatch as jest.MockedFunction<
     typeof useRouteMatch
 >
-const useLocationMock = useLocation as jest.MockedFunction<typeof useLocation>
 
 jest.mock('react-router')
 jest.mock('models/selfServiceConfiguration/resources')
@@ -113,12 +112,6 @@ describe('<OrderManagementFlowsPreferences/>', () => {
                 path: '',
                 url: '',
             })
-            useLocationMock.mockReturnValue({
-                pathname: `/app/settings/self-service/shopify/${shopifyIntegrations[0]['meta']['shop_name']}/preferences/order-management`,
-                search: '',
-                state: {},
-                hash: '',
-            })
 
             const {container} = render(
                 <Provider
@@ -169,12 +162,6 @@ describe('<OrderManagementFlowsPreferences/>', () => {
                 isExact: true,
                 path: '',
                 url: '',
-            })
-            useLocationMock.mockReturnValue({
-                pathname: `/app/settings/self-service/shopify/${shopifyIntegrations[2]['meta']['shop_name']}/preferences/order-management`,
-                search: '',
-                state: {},
-                hash: '',
             })
 
             const {container} = render(

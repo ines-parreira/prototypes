@@ -1,6 +1,6 @@
 import React from 'react'
 import {Provider} from 'react-redux'
-import {useParams, useRouteMatch, useLocation} from 'react-router-dom'
+import {useParams, useRouteMatch} from 'react-router-dom'
 import {render, screen, within} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import thunk from 'redux-thunk'
@@ -21,7 +21,6 @@ const useParamsMock = useParams as jest.MockedFunction<typeof useParams>
 const useRouteMatchMock = useRouteMatch as jest.MockedFunction<
     typeof useRouteMatch
 >
-const useLocationMock = useLocation as jest.MockedFunction<typeof useLocation>
 jest.mock('react-router')
 
 describe('<QuickResponseFlowsPreferences />', () => {
@@ -40,13 +39,6 @@ describe('<QuickResponseFlowsPreferences />', () => {
             isExact: true,
             path: '',
             url: '',
-        })
-        useLocationMock.mockReturnValue({
-            pathname:
-                '/app/settings/self-service/shopify/mystore1/preferences/quick-response',
-            search: '',
-            state: {},
-            hash: '',
         })
         MockDate.set(date)
         jest.clearAllMocks()
