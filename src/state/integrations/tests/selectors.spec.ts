@@ -96,7 +96,6 @@ describe('integrations selectors', () => {
                         IntegrationType.Phone,
                         IntegrationType.Twitter,
                         IntegrationType.GorgiasChat,
-                        IntegrationType.SelfService,
                     ].includes(integration.type)
             )
 

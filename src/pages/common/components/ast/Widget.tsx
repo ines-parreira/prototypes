@@ -41,6 +41,7 @@ import MacroSelect from './widget/MacroSelect'
 import StatusSelect from './widget/StatusSelect'
 import Select from './widget/ReactSelect'
 import SelfServiceFlowSelect from './widget/SelfServiceFlowSelect'
+import SelfServiceStoreIntegrationSelect from './widget/SelfServiceStoreIntegrationSelect'
 
 import css from './Widget.less'
 
@@ -472,6 +473,9 @@ export class Widget extends Component<Props, State> {
             if (left.includes('quick_response_flow')) {
                 widget.type = 'self-service-quick-response-flow-select'
             }
+            if (left.includes('store_integration_id')) {
+                widget.type = 'self-service-store-integration-select'
+            }
 
             if (right) {
                 widget.options = (
@@ -627,6 +631,14 @@ export class Widget extends Component<Props, State> {
                         className={className}
                         onChange={this._handleChange}
                         flowType={'quick-response'}
+                    />
+                )
+            case 'self-service-store-integration-select':
+                return (
+                    <SelfServiceStoreIntegrationSelect
+                        {...widget}
+                        className={className}
+                        onChange={this._handleChange}
                     />
                 )
             case 'snooze-picker':

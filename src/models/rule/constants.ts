@@ -493,6 +493,11 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
             text: 'quick response flow',
             value: 'message.self_service_flow.quick_response_flow',
         },
+        {
+            label: 'Self-service store',
+            text: 'self-service store',
+            value: 'message.self_service_flow.store_integration_id',
+        },
     ],
 }
 

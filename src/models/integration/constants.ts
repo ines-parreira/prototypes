@@ -57,7 +57,6 @@ export const MESSAGING_INTEGRATION_TYPES = Object.freeze([
     IntegrationType.WhatsApp,
     IntegrationType.Twitter,
     IntegrationType.Yotpo,
-    IntegrationType.SelfService,
 ])
 
 export const DEFAULT_VOICE_MESSAGE = {
