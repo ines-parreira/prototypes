@@ -58,6 +58,7 @@ const ContactFormInfoSection = ({helpCenter}: ContactFormInfoSectionProps) => {
         updateTranslation,
         updateContactForm,
         contactForm,
+        translationsLoaded,
     } = useHelpCenterTranslation()
 
     const integrations = useAppSelector(
@@ -280,6 +281,7 @@ const ContactFormInfoSection = ({helpCenter}: ContactFormInfoSectionProps) => {
                             contactForm={contactForm}
                             currentLocale={viewLanguage}
                             updateContactForm={updateContactForm}
+                            translationsLoaded={translationsLoaded}
                         />
                     )}
                     <div

@@ -29,7 +29,8 @@ type SubjectLinesProps = {
     helpCenter: HelpCenter
     contactForm: UpdateContactForm
     currentLocale: LocaleCode
-    updateContactForm: (payload: UpdateContactForm) => void
+    updateContactForm: React.Dispatch<React.SetStateAction<UpdateContactForm>>
+    translationsLoaded: boolean
 }
 
 const SubjectLines = ({
@@ -37,6 +38,7 @@ const SubjectLines = ({
     currentLocale,
     contactForm,
     updateContactForm,
+    translationsLoaded,
 }: SubjectLinesProps) => {
     const integrations = useAppSelector(
         getIntegrationsByType<ShopifyIntegration>(IntegrationType.Shopify)
@@ -74,8 +76,13 @@ const SubjectLines = ({
 
     // Set the subject lines. If they aren't present, use the SSP configuration to set the defaults.
     useEffect(() => {
-        // Wait for the contactFrom to be loaded
-        if (loadingSSP) {
+        // Wait for the contactFrom
+        if (!translationsLoaded) {
+            return
+        }
+
+        // Wait for the SSP configuration if the contact form doesn't have subject lines
+        if (!contactForm.subject_lines && loadingSSP) {
             return
         }
 
@@ -143,13 +150,13 @@ const SubjectLines = ({
             }
         })
 
-        updateContactForm({
-            ...contactForm,
+        updateContactForm((prevContactForm) => ({
+            ...prevContactForm,
             subject_lines: {
-                ...contactForm.subject_lines,
+                ...prevContactForm.subject_lines,
                 ...subjectLines,
             },
-        })
+        }))
 
         if (!subjectLines[currentLocale]) {
             return
@@ -158,38 +165,35 @@ const SubjectLines = ({
         setSubjectLinesWithId(
             subjectLines[currentLocale].options.map((option) => ({
                 id: _uniqueId('subject-line-'),
-
                 value: option,
             }))
         )
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [sspConfiguration, currentLocale, loadingSSP])
+    }, [translationsLoaded, currentLocale, loadingSSP])
 
     // Update the contact form when the subject lines change
     useEffect(() => {
-        const subjectLines: UpdateContactForm['subject_lines'] = {
-            ...contactForm.subject_lines,
-            [currentLocale]: {
-                allow_other:
-                    contactForm.subject_lines?.[currentLocale]?.allow_other ??
-                    true,
-                options: subjectLinesWithId.map(
-                    (subjectLine) => subjectLine.value
-                ),
-            },
+        if (!contactForm.subject_lines) {
+            return
         }
 
-        updateContactForm({
-            ...contactForm,
+        updateContactForm((prevContactForm) => ({
+            ...prevContactForm,
             subject_lines: {
-                ...contactForm.subject_lines,
-                ...subjectLines,
+                ...prevContactForm.subject_lines,
+                [currentLocale]: {
+                    allow_other:
+                        prevContactForm.subject_lines?.[currentLocale]
+                            ?.allow_other ?? true,
+                    options: subjectLinesWithId.map(
+                        (subjectLine) => subjectLine.value
+                    ),
+                },
             },
-        })
-
+        }))
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [subjectLinesWithId, currentLocale])
+    }, [subjectLinesWithId])
 
     const handleOnChange = (newValue: string, id: string) => {
         const subjectLines = [...subjectLinesWithId]
@@ -249,13 +253,13 @@ const SubjectLines = ({
             },
         }
 
-        updateContactForm({
-            ...contactForm,
+        updateContactForm((prevContactForm) => ({
+            ...prevContactForm,
             subject_lines: {
-                ...contactForm.subject_lines,
+                ...prevContactForm.subject_lines,
                 ...subjectLines,
             },
-        })
+        }))
     }
 
     return (

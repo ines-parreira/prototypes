@@ -75,6 +75,7 @@ describe('<ContactFormInfoSection />', () => {
                                 },
                             },
                         }}
+                        translationsLoaded={true}
                         helpCenter={getSingleHelpCenterResponseFixture}
                         currentLocale="en-US"
                         updateContactForm={jest.fn}

@@ -37,9 +37,10 @@ type HelpCenterTranslationContext = {
     translation: HelpCenterTranslationState
     contactForm: UpdateContactForm
     updateTranslation: (payload: Partial<HelpCenterTranslationState>) => void
-    updateContactForm: (payload: UpdateContactForm) => void
+    updateContactForm: React.Dispatch<React.SetStateAction<UpdateContactForm>>
     updateHelpCenter: () => Promise<void>
     resetTranslation: () => void
+    translationsLoaded: boolean
     isDirty: boolean
 }
 
@@ -88,6 +89,7 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
         defaultEmailIntegration
     )
     const [isDirty, setIsDirty] = useState(false)
+    const [translationsLoaded, setTranslationsLoaded] = useState(false)
 
     const updateHelpCenter = useCallback(async () => {
         if (!client) return
@@ -179,7 +181,7 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
     )
 
     const handleOnUpdateContactForm = useCallback(
-        (payload: UpdateContactForm) => {
+        (payload: React.SetStateAction<UpdateContactForm>) => {
             updateContactForm(payload)
             setIsDirty(true)
         },
@@ -233,7 +235,10 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
             draftSettings.card_enabled =
                 helpCenter.contact_form?.card_enabled !== false
 
-            draftSettings.subject_lines = helpCenter.contact_form?.subject_lines
+            if (helpCenter.contact_form?.subject_lines) {
+                draftSettings.subject_lines =
+                    helpCenter.contact_form?.subject_lines
+            }
         }
 
         updateTranslation(produce(translation, updateFn))
@@ -249,6 +254,9 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
 
     useEffect(() => {
         updateTranslationFromData()
+        if (helpCenter.translations) {
+            setTranslationsLoaded(true)
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [helpCenter.translations, viewLanguage])
 
@@ -267,6 +275,7 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
             updateContactForm: handleOnUpdateContactForm,
             updateHelpCenter,
             resetTranslation: updateTranslationFromData,
+            translationsLoaded,
             isDirty,
         }),
         [
@@ -276,6 +285,7 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
             handleOnUpdateContactForm,
             updateHelpCenter,
             updateTranslationFromData,
+            translationsLoaded,
             isDirty,
         ]
     )
