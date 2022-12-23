@@ -36,9 +36,11 @@
         "helpcenter:fetch-openapi": "curl http://localhost:4001/api/help-center/api-json > ./src/rest_api/help_center_api/help-center.openapi.json && prettier --write ./src/rest_api/help_center_api/help-center.openapi.json",
         "helpcenter:generate-types": "typegen ./src/rest_api/help_center_api/help-center.openapi.json > ./src/rest_api/help_center_api/client.generated.d.ts",
         "helpcenter:update-client": "yarn run helpcenter:fetch-openapi && yarn run helpcenter:generate-types",
-        "gorgiaschat:generate-openapi": "p2o ./src/rest_api/gorgias_chat_api/gorgias-chat-api.postman_collection.json -f ./src/rest_api/gorgias_chat_api/gorgias-chat-api.openapi.json -o ./src/rest_api/gorgias_chat_api/gorgias-chat-api.p2o_options.json",
-        "gorgiaschat:generate-types": "typegen ./src/rest_api/gorgias_chat_api/gorgias-chat-api.openapi.json > ./src/rest_api/gorgias_chat_api/client.generated.d.ts",
-        "gorgiaschat:update-client": "yarn run gorgiaschat:generate-openapi && yarn run gorgiaschat:generate-types"
+        "gorgiaschat:generate-openapi:public": "p2o ./src/rest_api/gorgias_chat_api/gorgias-chat-api.postman_collection.json -f ./src/rest_api/gorgias_chat_api/gorgias-chat-api.openapi.json -o ./src/rest_api/gorgias_chat_api/gorgias-chat-api.p2o_options.json",
+        "gorgiaschat:generate-types:public": "typegen ./src/rest_api/gorgias_chat_api/gorgias-chat-api.openapi.json > ./src/rest_api/gorgias_chat_api/client.generated.d.ts",
+        "gorgiaschat:generate-openapi:protected": "p2o ./src/rest_api/gorgias_chat_protected_api/gorgias-chat-protected-api.postman_collection.json -f ./src/rest_api/gorgias_chat_protected_api/gorgias-chat-protected-api.openapi.json -o ./src/rest_api/gorgias_chat_protected_api/gorgias-chat-protected-api.p2o_options.json",
+        "gorgiaschat:generate-types:protected": "typegen ./src/rest_api/gorgias_chat_protected_api/gorgias-chat-protected-api.openapi.json > ./src/rest_api/gorgias_chat_protected_api/client.generated.d.ts",
+        "gorgiaschat:update-client": "yarn run gorgiaschat:generate-openapi:public && yarn run gorgiaschat:generate-types:public && yarn run gorgiaschat:generate-openapi:protected && yarn run gorgiaschat:generate-types:protected"
     },
     "author": "Alex Plugaru <alex@gorgias.com>",
     "license": "UNLICENSED",

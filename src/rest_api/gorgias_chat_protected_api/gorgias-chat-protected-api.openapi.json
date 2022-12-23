@@ -1,0 +1,52 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "gorgias-chat-protected-api",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/applications/{applicationId}/texts": {
+            "get": {
+                "tags": [
+                    "gorgias-chat-api"
+                ],
+                "summary": "GET application texts",
+                "operationId": "getApplicationTexts",
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "application/json"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Bearer {{accessToken}}"
+                    },
+                    {
+                        "name": "applicationId",
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
