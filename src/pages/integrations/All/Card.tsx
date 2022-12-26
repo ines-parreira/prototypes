@@ -1,7 +1,7 @@
 import React, {ReactNode} from 'react'
 import {Link} from 'react-router-dom'
 import Skeleton from 'react-loading-skeleton'
-import classNames from 'classnames'
+import classnames from 'classnames'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
@@ -15,7 +15,6 @@ import UpgradeButton from 'pages/common/components/UpgradeButton'
 import {getIconFromUrl} from 'utils'
 import css from './Card.less'
 
-export const FEATURED_TEST_ID = 'card-featured'
 export const LOADING_TEST_ID = 'card-loading'
 
 type Item = IntegrationListItem | AppListItem
@@ -53,11 +52,10 @@ function LinkOrDiv({
     children: ReactNode
 }) {
     const domain = useAppSelector(getCurrentAccountState).get('domain')
-    const dataTestId = isFeatured ? FEATURED_TEST_ID : ''
 
     if (isLoading || item?.requiredPriceName)
         return (
-            <div className={css.card} data-testid={dataTestId}>
+            <div className={classnames(css.card, {[css.featured]: isFeatured})}>
                 {children}
             </div>
         )
@@ -66,7 +64,9 @@ function LinkOrDiv({
 
     return (
         <Link
-            className={`${css.card} ${css.interactive}`}
+            className={classnames(css.card, css.interactive, {
+                [css.featured]: isFeatured,
+            })}
             onClick={() => {
                 logEvent(SegmentEvent.IntegrationClicked, {
                     integration: item.title,
@@ -75,7 +75,7 @@ function LinkOrDiv({
                 })
             }}
             to={getUrl(item)}
-            data-testid={dataTestId}
+            role="link"
         >
             {children}
         </Link>
@@ -132,7 +132,7 @@ export default function Card({
     className = '',
 }: Props) {
     return (
-        <li className={classNames(className, css.listItem)}>
+        <li className={classnames(className, css.listItem)}>
             <LinkOrDiv
                 item={item}
                 isFeatured={isFeatured}

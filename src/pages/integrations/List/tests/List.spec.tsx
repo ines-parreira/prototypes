@@ -63,7 +63,7 @@ describe('<IntegrationsList />', () => {
         )
 
         expect(container.firstChild).toMatchSnapshot()
-        expect(screen.queryByText('Loading additionnal Apps...'))
+        expect(screen.queryByText('Loading additional Apps...'))
     })
 
     it('should fetch data and render a loaded app', async () => {

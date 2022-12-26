@@ -1,11 +1,12 @@
 import React from 'react'
 import {fromJS} from 'immutable'
-import {render, screen, waitFor} from '@testing-library/react'
+import {screen, waitFor} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import MockAdapter from 'axios-mock-adapter'
 import LD from 'launchdarkly-react-client-sdk'
+import {renderWithRouter} from 'utils/testing'
 
 import {INTEGRATION_TYPE_CONFIG} from 'config'
 import {dummyAppListData} from 'fixtures/apps'
@@ -120,7 +121,7 @@ describe('<All />', () => {
     })
 
     it('should show loading cards while fetching data', () => {
-        render(
+        renderWithRouter(
             <Provider store={store}>
                 <All />
             </Provider>
@@ -131,7 +132,7 @@ describe('<All />', () => {
     it('should show static integrations, loaded apps and request app', async () => {
         mockApi.onGet('/api/apps/').reply(200, {data: [dummyAppListData]})
 
-        render(
+        renderWithRouter(
             <Provider store={store}>
                 <All />
             </Provider>
@@ -143,6 +144,47 @@ describe('<All />', () => {
         expect(screen.getByText('My test app'))
         expect(screen.getByText('Can’t find what you need?'))
     })
-    // TODO(@Manuel): Add additional tests here once the
-    // filter / search feature are implemented
+
+    it('should show a message saying the category is empty when a category that has no apps is set', async () => {
+        mockApi.onGet('/api/apps/').reply(200, {data: []})
+
+        renderWithRouter(
+            <Provider store={store}>
+                <All />
+            </Provider>,
+            {
+                route: `?category=${encodeURIComponent(
+                    dummyAppListData.categories[0]
+                )}`,
+            }
+        )
+        await waitFor(() => {
+            expect(screen.queryByText(/Loading/)).toBe(null)
+        })
+        expect(screen.getByText(/They are no apps/))
+    })
+
+    it('should show as many cards as there is in a category when a category is set', async () => {
+        const dummyAppsNumber = 6
+        const dummyApps = []
+        for (let i = 0; i < dummyAppsNumber; i++) {
+            dummyApps.push(dummyAppListData)
+        }
+        mockApi.onGet('/api/apps/').reply(200, {data: dummyApps})
+
+        renderWithRouter(
+            <Provider store={store}>
+                <All />
+            </Provider>,
+            {
+                route: `?category=${encodeURIComponent(
+                    dummyAppListData.categories[0]
+                )}`,
+            }
+        )
+        await waitFor(() => {
+            expect(screen.queryByText(/Loading/)).toBe(null)
+        })
+        expect(screen.getAllByText(dummyAppListData.name).length).toBe(6)
+    })
 })

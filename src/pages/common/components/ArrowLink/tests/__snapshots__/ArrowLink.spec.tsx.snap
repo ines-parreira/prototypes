@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ArrowLink component should render with a to attribute 1`] = `
+<a
+  class="link "
+  role="link"
+  to="/here"
+>
+  Hello
+  <span
+    class="material-icons arrow"
+  >
+    arrow_forward
+  </span>
+</a>
+`;

@@ -1,25 +1,80 @@
 import {Category} from 'models/integration/types/app'
 
-export const ORDERED_CATEGORIES: {title: Category; subtitle?: string}[] = [
-    {
-        title: Category.FEATURED,
+export const CATEGORY_DATA: {
+    [key in Category]: {
+        title: string
+        subtitle?: string
+        skipNav?: boolean
+    }
+} = {
+    [Category.FEATURED]: {
+        title: 'Featured',
         subtitle:
             'Our trusted partners and other cool apps that we decided to feature. ',
+        skipNav: true,
     },
-    {title: Category.CHAT},
-    {title: Category.PHONE},
-    {title: Category.SMS},
-    {title: Category.SOCIAL},
-    {title: Category.ECOMMERCE},
-    {title: Category.SUBSCRIPTIONS},
-    {title: Category.SHIPPING},
-    {title: Category.RETURNS},
-    {title: Category.LOYALTY},
-    {title: Category.REVIEWS},
-    {title: Category.MARKETING},
-    {title: Category.ANALYTICS},
-    {title: Category.DATA},
-    {title: Category.QUALITY},
+    [Category.CHAT]: {
+        title: 'Chat',
+    },
+    [Category.PHONE]: {
+        title: 'Phone',
+    },
+    [Category.SMS]: {
+        title: 'SMS',
+    },
+    [Category.SOCIAL]: {
+        title: 'Social Media',
+    },
+    [Category.ECOMMERCE]: {
+        title: 'Ecommerce',
+    },
+    [Category.SUBSCRIPTIONS]: {
+        title: 'Subscriptions',
+    },
+    [Category.SHIPPING]: {
+        title: 'Shipping & Fulfillment',
+    },
+    [Category.RETURNS]: {
+        title: 'Returns & Exchanges',
+    },
+    [Category.LOYALTY]: {
+        title: 'Loyalty & Retention',
+    },
+    [Category.REVIEWS]: {
+        title: 'Reviews & UGC',
+    },
+    [Category.MARKETING]: {
+        title: 'Marketing',
+    },
+    [Category.ANALYTICS]: {
+        title: 'BI & Analytics',
+    },
+    [Category.DATA]: {
+        title: 'Data Management',
+    },
+    [Category.QUALITY]: {
+        title: 'Quality Assurance',
+    },
+}
+
+export const ORDERED_CATEGORIES: Category[] = [
+    Category.FEATURED,
+    Category.CHAT,
+    Category.PHONE,
+    Category.SMS,
+    Category.SOCIAL,
+    Category.ECOMMERCE,
+    Category.SUBSCRIPTIONS,
+    Category.SHIPPING,
+    Category.RETURNS,
+    Category.LOYALTY,
+    Category.REVIEWS,
+    Category.MARKETING,
+    Category.ANALYTICS,
+    Category.DATA,
+    Category.QUALITY,
 ]
 
 export const MAX_CARDS_DISPLAYED = 5
+
+export const CATEGORY_URL_PARAM = 'category'

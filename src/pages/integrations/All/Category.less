@@ -9,6 +9,12 @@
         margin-bottom: 14px;
     }
 
+    .titleWrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
     .title {
         margin-bottom: 4px;
         font-weight: 600;
@@ -21,17 +27,20 @@
 
     .cardWrapper {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(1, 1fr);
         gap: 16px;
         margin: 0 0 26px 0;
         padding: 0;
         @media @desktops {
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(2, 1fr);
         }
         @media @large-desktops {
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
         }
         @media @xlarge-desktops {
+            grid-template-columns: repeat(4, 1fr);
+        }
+        @media @xxlarge-desktops {
             grid-template-columns: repeat(5, 1fr);
         }
     }

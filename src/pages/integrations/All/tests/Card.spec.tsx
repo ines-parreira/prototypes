@@ -11,7 +11,7 @@ import {IntegrationType} from 'models/integration/constants'
 import {Category} from 'models/integration/types/app'
 import {dummyAppListItem} from 'fixtures/apps'
 
-import Card, {Pills, FEATURED_TEST_ID, LOADING_TEST_ID} from '../Card'
+import Card, {Pills, LOADING_TEST_ID} from '../Card'
 
 describe('<Pills />', () => {
     it('should render an empty div', () => {
@@ -91,7 +91,7 @@ describe('<Card />', () => {
                 />
             </Provider>
         )
-        expect(screen.getByTestId(FEATURED_TEST_ID))
+        expect(screen.getByRole('link')).toHaveClass('featured')
         expect(screen.getByText('Featured'))
     })
 
@@ -108,7 +108,7 @@ describe('<Card />', () => {
                 />
             </Provider>
         )
-        expect(screen.getByTestId(FEATURED_TEST_ID))
+        expect(screen.getByRole('link')).toHaveClass('featured')
         expect(screen.queryByText('Featured')).toBeNull()
     })
 

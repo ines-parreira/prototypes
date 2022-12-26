@@ -20,6 +20,11 @@ export enum Category {
     QUALITY = 'Quality Assurance',
 }
 
+export const isCategory = (
+    potentialCategory: string | null
+): potentialCategory is Category =>
+    Object.values<string>(Category).includes(potentialCategory || '')
+
 export enum PricingPlan {
     FREE = 'Free',
     RECURRING = 'Recurring Subscription',

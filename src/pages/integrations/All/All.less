@@ -2,8 +2,38 @@
 @import '~css/new/mixins';
 
 :local {
+    .container {
+        display: flex;
+        gap: 24px;
+        padding: 24px;
+        @media @mobiles {
+            flex-direction: column;
+        }
+    }
+
     .spacer {
         margin-bottom: 16px;
+    }
+
+    .cardContainer {
+        flex-grow: 1;
+    }
+
+    .noApps {
+        margin: 26px 0 30px 0;
+        font-size: 18px;
+    }
+
+    .spinnerWrapper {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        font-size: 18px;
+    }
+
+    .spinner {
+        width: 50px;
+        margin-right: 8px;
     }
 
     li.showDesktop {
@@ -23,6 +53,13 @@
     li.showXLargeDesktop {
         display: none;
         @media @xlarge-desktops {
+            display: block;
+        }
+    }
+
+    li.showXXLargeDesktop {
+        display: none;
+        @media @xxlarge-desktops {
             display: block;
         }
     }

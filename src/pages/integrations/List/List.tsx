@@ -268,7 +268,7 @@ export const List = ({
                 {isLoading && (
                     <Loader
                         minHeight="150px"
-                        message="Loading additionnal Apps..."
+                        message="Loading additional Apps..."
                     />
                 )}
             </Container>

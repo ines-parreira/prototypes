@@ -1,0 +1,200 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CategoryFilter /> should render correctly 1`] = `
+<div
+  class="container"
+>
+  <nav>
+    <ul
+      class="list"
+    >
+      <li
+        class="item"
+      >
+        <a
+          class="link active"
+          to="?"
+        >
+          All Categories
+        </a>
+      </li>
+      <li
+        class="delimiter item"
+      >
+        <a
+          class="link"
+          to="?category=Featured"
+        >
+          Featured
+        </a>
+      </li>
+      <li
+        class="item"
+      >
+        <a
+          class="link"
+          to="?category=Chat"
+        >
+          Chat
+        </a>
+      </li>
+      <li
+        class="item"
+      >
+        <a
+          class="link"
+          to="?category=Phone"
+        >
+          Phone
+        </a>
+      </li>
+      <li
+        class="item"
+      >
+        <a
+          class="link"
+          to="?category=SMS"
+        >
+          SMS
+        </a>
+      </li>
+      <li
+        class="item"
+      >
+        <a
+          class="link"
+          to="?category=Social%20Media"
+        >
+          Social Media
+        </a>
+      </li>
+      <li
+        class="item"
+      >
+        <a
+          class="link"
+          to="?category=Ecommerce"
+        >
+          Ecommerce
+        </a>
+      </li>
+      <li
+        class="item"
+      >
+        <a
+          class="link"
+          to="?category=Subscriptions"
+        >
+          Subscriptions
+        </a>
+      </li>
+      <li
+        class="item"
+      >
+        <a
+          class="link"
+          to="?category=Shipping%20%26%20Fulfillment"
+        >
+          Shipping & Fulfillment
+        </a>
+      </li>
+      <li
+        class="item"
+      >
+        <a
+          class="link"
+          to="?category=Returns%20%26%20Exchanges"
+        >
+          Returns & Exchanges
+        </a>
+      </li>
+      <li
+        class="item"
+      >
+        <a
+          class="link"
+          to="?category=Loyalty%20%26%20Retention"
+        >
+          Loyalty & Retention
+        </a>
+      </li>
+      <li
+        class="item"
+      >
+        <a
+          class="link"
+          to="?category=Reviews%20%26%20UGC"
+        >
+          Reviews & UGC
+        </a>
+      </li>
+      <li
+        class="item"
+      >
+        <a
+          class="link"
+          to="?category=Marketing"
+        >
+          Marketing
+        </a>
+      </li>
+      <li
+        class="item"
+      >
+        <a
+          class="link"
+          to="?category=BI%20%26%20Analytics"
+        >
+          BI & Analytics
+        </a>
+      </li>
+      <li
+        class="item"
+      >
+        <a
+          class="link"
+          to="?category=Data%20Management"
+        >
+          Data Management
+        </a>
+      </li>
+      <li
+        class="item"
+      >
+        <a
+          class="link"
+          to="?category=Quality%20Assurance"
+        >
+          Quality Assurance
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <aside
+    class="aside"
+  >
+    <h4
+      class="asideTitle"
+    >
+      Building an app?
+    </h4>
+    <p>
+      Improve your internal processes and put your data to work with Gorgias API.
+      <br />
+      <a
+        class="link asideLink"
+        href="https://developers.gorgias.com/"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Explore our API
+        <span
+          class="material-icons arrow"
+        >
+          arrow_forward
+        </span>
+      </a>
+    </p>
+  </aside>
+</div>
+`;

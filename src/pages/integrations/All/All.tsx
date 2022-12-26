@@ -1,4 +1,5 @@
 import React, {ReactNode, useEffect, useState} from 'react'
+import {useLocation} from 'react-router-dom'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -8,6 +9,7 @@ import {Integration, IntegrationType} from 'models/integration/types'
 import {
     AppListItem,
     Category as CategoryType,
+    isCategory,
 } from 'models/integration/types/app'
 import {AutomationPrice, HelpdeskPrice} from 'models/billing/types'
 import {fetchIntegrations} from 'state/integrations/actions'
@@ -26,10 +28,15 @@ import {
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import PageHeader from 'pages/common/components/PageHeader'
-import cssLayout from 'pages/settings/settings.less'
 
-import {ORDERED_CATEGORIES, MAX_CARDS_DISPLAYED} from './constants'
+import Spinner from 'pages/common/components/Spinner/Spinner'
+import {
+    ORDERED_CATEGORIES,
+    MAX_CARDS_DISPLAYED,
+    CATEGORY_URL_PARAM,
+} from './constants'
 import css from './All.less'
+import CategoryFilter from './CategoryFilter'
 import LimitWarning from './LimitWarning'
 import Category from './Category'
 import Card from './Card'
@@ -84,6 +91,11 @@ export default function All() {
     const features = useAppSelector(getCurrentProductsFeatures)
     const prices = useAppSelector(getPrices)
 
+    const {search} = useLocation()
+    const catagoryUrlParam = new URLSearchParams(search).get(CATEGORY_URL_PARAM)
+    const activeCategory = isCategory(catagoryUrlParam)
+        ? catagoryUrlParam
+        : null
     const [isLoading, setLoading] = useState(true)
     const [apps, setApps] = useState<AppListItem[]>([])
 
@@ -138,66 +150,110 @@ export default function All() {
     return (
         <main className="full-width">
             <PageHeader title="All Apps" />
-            <div className={cssLayout.pageContainer}>
-                <LimitWarning className={css.spacer} />
-                {ORDERED_CATEGORIES.map(({title, subtitle}) => {
-                    if (typeof itemsByCategory[title] === 'undefined')
-                        return null
-
-                    return (
-                        <Category key={title} title={title} subtitle={subtitle}>
-                            {buildCards(
-                                title,
-                                itemsByCategory[title],
-                                isLoading
+            <div className={css.container}>
+                <CategoryFilter />
+                <div className={css.cardContainer}>
+                    <LimitWarning className={css.spacer} />
+                    {activeCategory ? (
+                        <>
+                            <Category category={activeCategory}>
+                                {itemsByCategory[activeCategory]?.map(
+                                    (item, index) => (
+                                        <Card
+                                            key={`${index}-${item.title}`}
+                                            item={item}
+                                            isFeatured={item.categories.includes(
+                                                CategoryType.FEATURED
+                                            )}
+                                            hasNoFeaturedPill={
+                                                activeCategory ===
+                                                CategoryType.FEATURED
+                                            }
+                                        />
+                                    )
+                                )}
+                            </Category>
+                            {!isLoading && !itemsByCategory[activeCategory] && (
+                                <p className={css.noApps}>
+                                    They are no apps in this category yet.
+                                </p>
                             )}
-                        </Category>
-                    )
-                })}
+                            {isLoading && (
+                                <p className={`${css.spinnerWrapper}`}>
+                                    <Spinner
+                                        className={css.spinner}
+                                        color="gloom"
+                                    />
+                                    Loading more Apps
+                                </p>
+                            )}
+                        </>
+                    ) : (
+                        ORDERED_CATEGORIES.filter(
+                            (category) => category in itemsByCategory
+                        ).map((category) => {
+                            return (
+                                <Category
+                                    key={category}
+                                    category={category}
+                                    showCategoryLink
+                                >
+                                    {buildUnfilteredCards(
+                                        category,
+                                        itemsByCategory[category],
+                                        isLoading
+                                    )}
+                                </Category>
+                            )
+                        })
+                    )}
 
-                {!isLoading && <RequestApp />}
+                    {!isLoading && <RequestApp />}
+                </div>
             </div>
         </main>
     )
 }
 
-function buildCards(
-    categoryTitle: CategoryType,
+function buildUnfilteredCards(
+    category: CategoryType,
     items: Item[],
     isLoading: boolean
 ) {
     const cards: ReactNode[] = items
         .slice(0, MAX_CARDS_DISPLAYED)
-        .map((item, index) => buildCard(item, categoryTitle, index))
+        .map((item, index) => buildUnfilteredCard(item, category, index))
 
     if (isLoading) {
         for (let index = cards.length; index < MAX_CARDS_DISPLAYED; index++) {
-            cards.push(buildCard(null, categoryTitle, index))
+            cards.push(buildUnfilteredCard(null, category, index))
         }
     }
     return cards
 }
 
-function buildCard(
+function buildUnfilteredCard(
     item: Item | null,
-    categoryTitle: CategoryType,
+    category: CategoryType,
     index: number
 ) {
-    if (!item) return <Card isLoading />
-
     let additionalClasses = ''
-    if (index > 1) additionalClasses += css.showDesktop + ' '
-    if (index > 2) additionalClasses += css.showLargeDesktop + ' '
-    if (index > 3) additionalClasses += css.showXLargeDesktop
+    if (index > 0) additionalClasses += css.showDesktop + ' '
+    if (index > 1) additionalClasses += css.showLargeDesktop + ' '
+    if (index > 2) additionalClasses += css.showXLargeDesktop + ' '
+    if (index > 3) additionalClasses += css.showXXLargeDesktop + ' '
+
+    if (!item) return <Card isLoading className={additionalClasses} />
+
     const isFeatured = item.categories.includes(CategoryType.FEATURED)
 
     return (
         <Card
-            key={`${categoryTitle}-${item.title}`}
+            key={`${category}-${item.title}`}
             item={item}
             className={additionalClasses}
             isFeatured={isFeatured}
-            hasNoFeaturedPill={categoryTitle === CategoryType.FEATURED}
+            hasNoFeaturedPill={category === CategoryType.FEATURED}
         />
     )
 }

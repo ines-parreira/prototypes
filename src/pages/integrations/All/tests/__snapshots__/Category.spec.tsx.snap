@@ -7,19 +7,15 @@ exports[`<Category /> should render correctly 1`] = `
   <header
     class="header"
   >
-    <h2
-      class="title"
+    <div
+      class="titleWrapper"
     >
-      My 
-      <b>
-        Title
-      </b>
-    </h2>
-    <p
-      class="subtitle"
-    >
-      My subtitle
-    </p>
+      <h2
+        class="title"
+      >
+        Quality Assurance
+      </h2>
+    </div>
   </header>
   <ul
     class="cardWrapper"
