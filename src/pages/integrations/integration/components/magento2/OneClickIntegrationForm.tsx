@@ -13,6 +13,10 @@ import GroupAddon from 'pages/common/forms/input/GroupAddon'
 import Caption from 'pages/common/forms/Caption/Caption'
 
 import IntegrationActionButtons from './IntegrationActionButtons'
+import {
+    StoreAdminNewUrlInput,
+    STORE_ADMIN_URL_INPUT_ID,
+} from './StoreAdminNewUrlInput'
 
 type Props = {
     integration: Map<string, any>
@@ -89,7 +93,11 @@ const OneClickIntegrationForm = ({
                 }
             }}
         >
-            <Label htmlFor="store-field" className="mb-2" isRequired>
+            <Label
+                htmlFor={STORE_ADMIN_URL_INPUT_ID}
+                className="mb-2"
+                isRequired
+            >
                 Store admin URL
             </Label>
             {isUpdate ? (
@@ -111,26 +119,15 @@ const OneClickIntegrationForm = ({
                 </InputGroup>
             ) : (
                 <>
-                    <InputGroup className="mb-4">
-                        <GroupAddon>https://</GroupAddon>
-                        <TextInput
-                            id="store-field"
-                            name="admin-url"
-                            value={storeURL}
-                            placeholder={'ex: acme.com/admin_45f1c'}
-                            onChange={(value: string) =>
-                                setValues({
-                                    ...values,
-                                    storeURL: value
-                                        .replace('http://', '')
-                                        .replace('https://', '')
-                                        .trim(),
-                                })
-                            }
-                            pattern="^[a-z.0-9-]*\.[a-z0-9]*\/(index\.php)?[\/\w\d_-]*$"
-                            isRequired
-                        />
-                    </InputGroup>
+                    <StoreAdminNewUrlInput
+                        value={storeURL}
+                        onChange={(value) =>
+                            setValues({
+                                ...values,
+                                storeURL: value,
+                            })
+                        }
+                    />
                     {error && <Caption error={error} />}
                 </>
             )}
