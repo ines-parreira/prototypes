@@ -34,7 +34,7 @@ export const ProductCard = ({
     const productStyle = useMemo(() => {
         return image
             ? {
-                  backgroundImage: `url("${image}")`,
+                  backgroundImage: `url("${image}"), linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(22, 22, 22, 0.1) 100%)`,
               }
             : {}
     }, [image])
