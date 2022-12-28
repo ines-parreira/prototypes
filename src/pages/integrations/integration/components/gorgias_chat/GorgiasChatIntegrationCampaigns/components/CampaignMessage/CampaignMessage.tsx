@@ -16,6 +16,8 @@ import TicketAttachments from 'pages/tickets/detail/components/ReplyArea/TicketA
 
 import {Option, Value} from 'pages/common/forms/SelectField/types'
 
+import {useIsAllowedToAddDiscountCode} from '../../hooks/useIsAllowedToAddDiscountCode'
+
 import css from './CampaignMessage.less'
 
 type Props = {
@@ -42,6 +44,7 @@ export const CampaignMessage = memo(
         onChangeMessage,
         onDeleteAttachment,
     }: Props): JSX.Element => {
+        const isAllowedToAddDiscountCode = useIsAllowedToAddDiscountCode()
         const options = useMemo<Option[]>(() => {
             const initialArr: Option[] = [
                 {
@@ -99,6 +102,10 @@ export const CampaignMessage = memo(
                 ActionName.Emoji,
             ]
 
+            if (isAllowedToAddDiscountCode) {
+                actions.push(ActionName.DiscountCodePicker)
+            }
+
             if (attachments.size < 5) {
                 actions.push(ActionName.ProductPicker)
             }
@@ -108,7 +115,11 @@ export const CampaignMessage = memo(
             }
 
             return actions
-        }, [attachments, allowVideoSharingForCampaigns])
+        }, [
+            attachments,
+            isAllowedToAddDiscountCode,
+            allowVideoSharingForCampaigns,
+        ])
 
         return (
             <div className="mb-4">
