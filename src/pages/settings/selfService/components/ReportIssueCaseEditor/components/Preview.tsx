@@ -3,7 +3,6 @@ import {useRouteMatch} from 'react-router'
 import classNames from 'classnames'
 
 import ChatIntegrationPreview from 'pages/integrations/integration/components/chat/ChatIntegrationPreview/ChatIntegrationPreview'
-import {SelectableOption} from 'pages/common/forms/SelectField/types'
 import {
     Integration,
     isGorgiasChatIntegration,
@@ -12,14 +11,17 @@ import {
 import {DEPRECATED_getIntegrations} from 'state/integrations/selectors'
 import useAppSelector from 'hooks/useAppSelector'
 import {GORGIAS_CHAT_SSP_TEXTS} from 'config/integrations/gorgias_chat'
+import {ReportIssueCaseReason} from 'models/selfServiceConfiguration/types'
+
+import {SELECTABLE_REASONS_DROPDOWN_OPTIONS} from '../constants'
 
 import css from './Preview.less'
 
 interface PreviewProps {
-    reasonOptions: SelectableOption[]
+    reasons: ReportIssueCaseReason[]
 }
 
-const Preview = ({reasonOptions}: PreviewProps) => {
+const Preview = ({reasons}: PreviewProps) => {
     const immutableIntegrations = useAppSelector(DEPRECATED_getIntegrations)
     const {
         params: {shopName},
@@ -71,9 +73,14 @@ const Preview = ({reasonOptions}: PreviewProps) => {
             <span className={css.header}>{sspTexts.whatIsWrongWithOrder}</span>
 
             <ul className={css.list}>
-                {reasonOptions.map((reason) => (
-                    <li className={css.listItem} key={reason.value}>
-                        <span>{sspTexts[reason.value] ?? reason.label}</span>
+                {reasons.map(({reasonKey}) => (
+                    <li className={css.listItem} key={reasonKey}>
+                        <span>
+                            {sspTexts[reasonKey] ??
+                                SELECTABLE_REASONS_DROPDOWN_OPTIONS.find(
+                                    (option) => option.value === reasonKey
+                                )?.label}
+                        </span>
 
                         <span
                             className={classNames(

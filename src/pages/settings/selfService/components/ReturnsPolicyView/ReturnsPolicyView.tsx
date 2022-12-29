@@ -21,6 +21,7 @@ import {
 } from 'reactstrap'
 import classNames from 'classnames'
 import {EditorState} from 'draft-js'
+import {fromJS} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import _isEqual from 'lodash/isEqual'
 import Button from 'pages/common/components/button/Button'
@@ -61,6 +62,7 @@ import {useConfigurationData} from '../hooks'
 import SelfServicePreferencesNavbar from '../SelfServicePreferencesNavbar'
 import BackButton from '../BackButton'
 import {MAX_AUTOMATED_RESPONSE_LENGTH} from '../../constants'
+import FlowSelfServicePreview from '../FlowSelfServicePreview'
 import {ReturnActionSelectField} from './components/ReturnActionSelectField'
 import {NewReturnIntegrationModal} from './components/NewReturnIntegrationModal'
 import {LOOP_RETURNS_API_URL} from './constants'
@@ -618,6 +620,48 @@ export const ReturnsPolicyView = () => {
                             )}
                         </div>
                     </Col>
+
+                    {hasAutomatedResponseOrderManagementFlag &&
+                        returnAction?.type ===
+                            ReturnActionType.AutomatedResponse &&
+                        returnAction.response_message_content && (
+                            <Col data-testid="previewColumn">
+                                <FlowSelfServicePreview
+                                    message={
+                                        <>
+                                            <b>
+                                                I’d like to return the following
+                                                fulfillment:
+                                            </b>
+                                            <br />
+                                            <br />
+                                            Order number: <b>#3087</b>
+                                            <br />
+                                            Fulfillment: <b>#3087-F1</b>
+                                            <br />
+                                            Item names: <b>item name</b>
+                                            <br />
+                                            Tracking URL:{' '}
+                                            <b>jsjsj.tracking.com</b>
+                                            <br />
+                                            Order placed:{' '}
+                                            <b>06/07/2020 17:20</b>
+                                            <br />
+                                            Shipping address:{' '}
+                                            <b>52 Washburn, SF, CA, 94027</b>
+                                        </>
+                                    }
+                                    responseMessage={fromJS(
+                                        returnAction.response_message_content
+                                    )}
+                                    newMessageAttachments={
+                                        newMessageAttachments
+                                    }
+                                    isLandingPage={isLandingPage}
+                                    setIsLandingPage={setIsLandingPage}
+                                />
+                            </Col>
+                        )}
                 </Row>
             </Container>
         </div>

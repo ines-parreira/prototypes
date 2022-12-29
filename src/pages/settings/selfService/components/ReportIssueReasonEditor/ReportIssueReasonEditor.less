@@ -1,0 +1,73 @@
+@import '~css/new/colorTokens';
+@import '~css/new/mixins';
+
+:local {
+    .formGroup {
+        margin-bottom: 32px;
+    }
+
+    .buttonsWrapper {
+        margin-top: 40px;
+        display: flex;
+    }
+
+    .submitButtonWrapper {
+        margin-right: 5px;
+
+        > button:disabled {
+            pointer-events: none;
+        }
+    }
+
+    .backButton {
+        margin-bottom: 27px;
+        padding: 0 0.25em !important;
+    }
+
+    .option {
+        display: flex;
+    }
+
+    .deleteButton {
+        margin-left: auto;
+    }
+
+    .noResponseWarning {
+        margin-left: auto;
+
+        i {
+            color: #fdab40;
+            font-size: 16px;
+        }
+    }
+
+    .form {
+        margin-top: 5px;
+        padding-bottom: 12px;
+
+        @media @desktops {
+            min-width: 480px;
+        }
+    }
+
+    .helpfulToggle {
+        display: flex;
+
+        .helpfulToggleDescription {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            cursor: pointer;
+
+            .helpfulToggleName {
+                font-weight: 600;
+                color: @classic-neutral-grey-6;
+            }
+
+            .helpfulToggleSubscript {
+                color: @classic-neutral-grey-5;
+                margin-top: 8px;
+            }
+        }
+    }
+}

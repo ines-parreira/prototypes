@@ -31,7 +31,7 @@ export type ReturnAction =
     | LoopReturnsReturnAction
     | AutomatedResponseReturnAction
 
-type ResponseMessageContent = {
+export type ResponseMessageContent = {
     html: string
     text: string
 }
@@ -83,11 +83,32 @@ export type ReportIssueRulesLogic = {
     )[]
 }
 
+export type ReportIssueCaseReasonAction = {
+    type: typeof AUTOMATED_RESPONSE
+    responseMessageContent: ResponseMessageContent
+    showHelpfulPrompt: boolean
+}
+
+export type ReportIssueCaseReason = {
+    reasonKey: string
+    action?: ReportIssueCaseReasonAction
+}
+
 export type SelfServiceReportIssueCase = {
     title: string
     description: string
     conditions: ReportIssueRulesLogic | Record<string, never>
+    reasons: ReportIssueCaseReason[]
+}
+
+// GET configuration handler returns the legacy string array reasons fields, and the new newReasons field
+// PUT configuration handler accepts only reasons (string[] or ReportIssueCaseReason[])
+export type SelfServiceReportIssueCase_DEPRECATED = Omit<
+    SelfServiceReportIssueCase,
+    'reasons'
+> & {
     reasons: string[]
+    newReasons?: ReportIssueCaseReason[]
 }
 
 export type SelfServiceConfigurationReportIssuePolicy = {
@@ -118,6 +139,17 @@ export type SelfServiceConfiguration = {
     cancel_order_policy: SelfServiceConfigurationCancelOrderPolicy
     return_order_policy: SelfServiceConfigurationReturnOrderPolicy
     quick_response_policies: QuickReplyPolicy[]
+}
+
+// cf. comment on SelfServiceReportIssueCase_DEPRECATED
+export type SelfServiceConfiguration_DEPRECATED = Omit<
+    SelfServiceConfiguration,
+    'report_issue_policy'
+> & {
+    report_issue_policy: {
+        enabled: boolean
+        cases: SelfServiceReportIssueCase_DEPRECATED[]
+    }
 }
 
 export type PolicyKey =

@@ -3,6 +3,7 @@ import {
     ShopType,
     ReportIssueVariable,
     ShipmentStatuses,
+    ReportIssueReasons,
 } from '../../../../models/selfServiceConfiguration/types'
 
 export const generateConfiguration = (
@@ -40,10 +41,20 @@ export const generateConfiguration = (
                         ],
                     },
                     reasons: [
-                        'reasonIncorrectItems',
-                        'reasonPastExpectedDeliveryDate',
-                        'reasonOrderDamaged',
-                        'reasonOther',
+                        {
+                            reasonKey:
+                                ReportIssueReasons.REASON_INCORRECT_ITEMS,
+                        },
+                        {
+                            reasonKey:
+                                ReportIssueReasons.REASON_PAST_EXPECTED_DELIVERY_DATE,
+                        },
+                        {
+                            reasonKey: ReportIssueReasons.REASON_ORDER_DAMAGED,
+                        },
+                        {
+                            reasonKey: ReportIssueReasons.REASON_OTHER,
+                        },
                     ],
                 },
                 {
@@ -72,9 +83,17 @@ export const generateConfiguration = (
                         ],
                     },
                     reasons: [
-                        'reasonOrderStuckInTransit',
-                        'reasonChangeShippingAddress',
-                        'reasonOther',
+                        {
+                            reasonKey:
+                                ReportIssueReasons.REASON_ORDER_STUCK_IN_TRANSIT,
+                        },
+                        {
+                            reasonKey:
+                                ReportIssueReasons.REASON_CHANGE_SHIPPING_ADDRESS,
+                        },
+                        {
+                            reasonKey: ReportIssueReasons.REASON_OTHER,
+                        },
                     ],
                 },
                 {
@@ -83,11 +102,24 @@ export const generateConfiguration = (
                     description:
                         'Considered when no other conditions are met, for instance if the order status is unavailable or not listed in any of the cases above.',
                     reasons: [
-                        'reasonPastExpectedDeliveryDate',
-                        'reasonChangeShippingAddress',
-                        'reasonEditOrder',
-                        'reasonForgotToUseDiscount',
-                        'reasonOther',
+                        {
+                            reasonKey:
+                                ReportIssueReasons.REASON_PAST_EXPECTED_DELIVERY_DATE,
+                        },
+                        {
+                            reasonKey:
+                                ReportIssueReasons.REASON_CHANGE_SHIPPING_ADDRESS,
+                        },
+                        {
+                            reasonKey: ReportIssueReasons.REASON_EDIT_ORDER,
+                        },
+                        {
+                            reasonKey:
+                                ReportIssueReasons.REASON_FORGOT_TO_USE_DISCOUNT,
+                        },
+                        {
+                            reasonKey: ReportIssueReasons.REASON_OTHER,
+                        },
                     ],
                 },
             ],

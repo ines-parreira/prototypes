@@ -93,6 +93,7 @@ import SelfServiceCancellationsPolicyContainer from './settings/selfService/comp
 import SelfServiceReturnsPolicyContainer from './settings/selfService/components/ReturnsPolicyView'
 import SelfServiceReportIssuePolicyContainer from './settings/selfService/components/ReportIssuePolicyView/index'
 import SelfServiceReportIssueCaseEditorContainer from './settings/selfService/components/ReportIssueCaseEditor/index'
+import SelfServiceReportIssueReasonEditorContainer from './settings/selfService/components/ReportIssueReasonEditor/index'
 import HelpCenterStartView from './settings/helpCenter/components/HelpCenterStartView'
 import HelpCenterNewView from './settings/helpCenter/components/HelpCenterNewView'
 import {CurrentHelpCenter} from './settings/helpCenter/providers/CurrentHelpCenter/CurrentHelpCenter'
@@ -1080,6 +1081,18 @@ export function SelfServiceSettingsRoutes({
                             PageSection.SelfService
                         ),
                         navbar,
+                    })}
+                />
+                <Route
+                    path={`${path}/:integrationType/:shopName/preferences/report-issue/:caseIndex/reasons/:reasonIndex`}
+                    exact
+                    render={appRender({
+                        content: memoizedWithUserRoleRequired(
+                            SelfServiceReportIssueReasonEditorContainer,
+                            ADMIN_ROLE,
+                            PageSection.SelfService
+                        ),
+                        navbar: SettingsNavbar,
                     })}
                 />
             </Switch>

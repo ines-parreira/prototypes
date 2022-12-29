@@ -1,31 +1,46 @@
 import client from '../api/resources'
 
-import {ApiListResponse, SelfServiceConfiguration} from './types'
+import {
+    ApiListResponse,
+    SelfServiceConfiguration,
+    SelfServiceConfiguration_DEPRECATED,
+} from './types'
+import {selfServiceConfigurationFromDeprecated} from './utils'
 
-export const fetchSelfServiceConfigurations = async () => {
-    const res = await client.get<ApiListResponse<SelfServiceConfiguration[]>>(
-        `/api/self_service_configurations/`
-    )
-    return res.data
+export const fetchSelfServiceConfigurations = async (): Promise<
+    ApiListResponse<SelfServiceConfiguration[]>
+> => {
+    return client
+        .get<ApiListResponse<SelfServiceConfiguration_DEPRECATED[]>>(
+            `/api/self_service_configurations/`
+        )
+        .then(({data: apiListResponse}) => ({
+            ...apiListResponse,
+            data: apiListResponse.data.map(
+                selfServiceConfigurationFromDeprecated
+            ),
+        }))
 }
 
 export const fetchSelfServiceConfiguration = async (
     shopifyIntegrationId: string
-) => {
-    const res = await client.get<SelfServiceConfiguration>(
-        `/api/self_service_configurations/${shopifyIntegrationId}`
-    )
-    return res.data
+): Promise<SelfServiceConfiguration> => {
+    return client
+        .get<SelfServiceConfiguration_DEPRECATED>(
+            `/api/self_service_configurations/${shopifyIntegrationId}`
+        )
+        .then(({data}) => selfServiceConfigurationFromDeprecated(data))
 }
 
 export const updateSelfServiceConfiguration = async (
     configuration: SelfServiceConfiguration
-) => {
-    const res = await client.put<SelfServiceConfiguration>(
-        `/api/self_service_configurations/${configuration.id}`,
-        configuration
-    )
-    return res.data
+): Promise<SelfServiceConfiguration> => {
+    return client
+        .put<SelfServiceConfiguration_DEPRECATED>(
+            `/api/self_service_configurations/${configuration.id}`,
+            configuration
+        )
+        .then(({data}) => selfServiceConfigurationFromDeprecated(data))
 }
 
 export type ChatHelpCenterConfiguration = {

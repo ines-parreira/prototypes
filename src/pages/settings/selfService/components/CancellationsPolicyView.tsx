@@ -444,7 +444,10 @@ export const CancellationsPolicyView = () => {
                             <FlowSelfServicePreview
                                 message={
                                     <>
-                                        <b>I’d like to cancel the following</b>
+                                        <b>
+                                            I’d like to cancel the following
+                                            fulfillment:
+                                        </b>
                                         <br />
                                         <br />
                                         Fulfillment: <b>#3087-F1</b>

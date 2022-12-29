@@ -1,10 +1,4 @@
-import React, {
-    ComponentType,
-    useState,
-    useEffect,
-    FormEvent,
-    useMemo,
-} from 'react'
+import React, {ComponentType, useState, useEffect, useMemo, useRef} from 'react'
 import classNames from 'classnames'
 import {
     Breadcrumb,
@@ -16,17 +10,18 @@ import {
     UncontrolledTooltip,
 } from 'reactstrap'
 import {Link, useRouteMatch, useHistory} from 'react-router-dom'
+import {UnregisterCallback} from 'history'
 import produce from 'immer'
 
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import {
+    ReportIssueCaseReason,
     ReportIssueRulesLogic,
     SelfServiceReportIssueCase,
 } from 'models/selfServiceConfiguration/types'
 import {useConfigurationData} from 'pages/settings/selfService/components/hooks'
-import {SelectableOption} from 'pages/common/forms/SelectField/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {updateSelfServiceConfiguration} from 'models/selfServiceConfiguration/resources'
 import {selfServiceConfigurationUpdated} from 'state/entities/selfServiceConfigurations/actions'
@@ -35,10 +30,13 @@ import {NotificationStatus} from 'state/notifications/types'
 import settingsCss from 'pages/settings/settings.less'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import Modal from 'pages/common/components/modal/Modal'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 
 import SelfServicePreferencesNavbar from '../SelfServicePreferencesNavbar'
 import BackButton from '../BackButton'
-import {SELECTABLE_REASONS_DROPDOWN_OPTIONS} from './constants'
 import Reasons from './components/Reasons'
 import Conditions from './components/Conditions'
 import Preview from './components/Preview'
@@ -64,9 +62,14 @@ const ReportIssueCaseEditor: ComponentType = () => {
     }>()
     const history = useHistory()
 
+    const [modalNextUrl, setModalNextUrl] = useState<string | undefined>(
+        undefined
+    )
+
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
-    const [reasonOptions, setReasonOptions] = useState<SelectableOption[]>([])
+    const [reasons, setReasons] = useState<ReportIssueCaseReason[]>([])
+
     const [conditionsLogicExpession, setConditionsLogicExpression] =
         useState<ReportIssueRulesLogic>({and: []})
 
@@ -78,9 +81,19 @@ const ReportIssueCaseEditor: ComponentType = () => {
     const dispatch = useAppDispatch()
     const {isLoadingConfig, configuration} = useConfigurationData()
 
-    const reasons = useMemo(() => {
-        return reasonOptions.map((option) => option.value as string)
-    }, [reasonOptions])
+    const unblockRef = useRef<UnregisterCallback>()
+
+    useEffect(() => {
+        unblockRef.current = history.block((location) => {
+            if (isDirty) {
+                setModalNextUrl(location.pathname)
+                return false
+            }
+        })
+        return () => {
+            unblockRef.current && unblockRef.current()
+        }
+    }, [history, isDirty])
 
     const isFallbackCase = useMemo(() => {
         if (
@@ -106,13 +119,7 @@ const ReportIssueCaseEditor: ComponentType = () => {
 
             setTitle(caseData.title)
             setDescription(caseData.description)
-            setReasonOptions(
-                caseData.reasons.map((reason) => {
-                    return SELECTABLE_REASONS_DROPDOWN_OPTIONS.find(
-                        (option) => option.value === reason
-                    ) as SelectableOption
-                })
-            )
+            setReasons(caseData.reasons)
             if (isReportIssueRulesLogic(caseData.conditions)) {
                 setConditionsLogicExpression(caseData.conditions)
             }
@@ -140,18 +147,16 @@ const ReportIssueCaseEditor: ComponentType = () => {
     }, [title, reasons, conditionsLogicExpession, configuration, isDirty])
 
     const handleTitleChange = (newTitle: string) => {
-        setTitle(newTitle)
         setIsDirty(true)
+        setTitle(newTitle)
     }
 
     const handleDescriptionChange = (newDescription: string) => {
-        setDescription(newDescription)
         setIsDirty(true)
+        setDescription(newDescription)
     }
 
-    const handleSubmit = async (e: FormEvent) => {
-        e.preventDefault()
-
+    const handleSubmit = async () => {
         if (!configuration) {
             return
         }
@@ -189,6 +194,7 @@ const ReportIssueCaseEditor: ComponentType = () => {
 
         try {
             const res = await updateSelfServiceConfiguration(newConfiguration)
+            setIsDirty(false)
             void dispatch(selfServiceConfigurationUpdated(res))
             void (await dispatch(
                 notify({
@@ -256,6 +262,15 @@ const ReportIssueCaseEditor: ComponentType = () => {
         history.push(linkToIssueList)
     }
 
+    const handleDiscardChanges = () => {
+        if (modalNextUrl) {
+            setIsDirty(false)
+            setModalNextUrl(undefined)
+            unblockRef.current && unblockRef.current()
+            history.push(modalNextUrl)
+        }
+    }
+
     return (
         <div className="full-width">
             <PageHeader
@@ -272,6 +287,49 @@ const ReportIssueCaseEditor: ComponentType = () => {
             />
             <SelfServicePreferencesNavbar />
             <Container fluid className={settingsCss.pageContainer}>
+                <Modal
+                    isOpen={modalNextUrl !== undefined}
+                    onClose={() => setModalNextUrl(undefined)}
+                    size="medium"
+                >
+                    <ModalHeader title={'Save changes?'} />
+                    <ModalBody>
+                        Your changes to this page will be lost if you don’t save
+                        them.
+                    </ModalBody>
+                    <ModalActionsFooter
+                        extra={
+                            <Button
+                                intent="destructive"
+                                onClick={handleDiscardChanges}
+                            >
+                                Discard Changes
+                            </Button>
+                        }
+                    >
+                        <Button
+                            intent="secondary"
+                            onClick={() => setModalNextUrl(undefined)}
+                        >
+                            Back To Editing
+                        </Button>
+
+                        <Button
+                            intent="primary"
+                            onClick={() => {
+                                void handleSubmit().then(() => {
+                                    if (modalNextUrl) {
+                                        setModalNextUrl(undefined)
+                                        history.push(modalNextUrl)
+                                    }
+                                })
+                            }}
+                        >
+                            Save Changes
+                        </Button>
+                    </ModalActionsFooter>
+                </Modal>
+
                 <Row>
                     <Col>
                         <BackButton
@@ -279,11 +337,17 @@ const ReportIssueCaseEditor: ComponentType = () => {
                         >
                             Back to all scenarios
                         </BackButton>
-                        <Form onSubmit={handleSubmit} className={css.form}>
+                        <Form
+                            onSubmit={(e) => {
+                                e.preventDefault()
+                                void handleSubmit()
+                            }}
+                            className={css.form}
+                        >
                             <DEPRECATED_InputField
                                 name="title"
                                 label="Order scenario"
-                                placeholder="Condition title"
+                                placeholder="Order scenario"
                                 required
                                 value={title}
                                 onChange={handleTitleChange}
@@ -298,7 +362,7 @@ const ReportIssueCaseEditor: ComponentType = () => {
                             <DEPRECATED_InputField
                                 name="description"
                                 label="Description"
-                                placeholder='Ex. Condition Condition applied when status is "delivered"'
+                                placeholder='Ex: When order status is "delivered"'
                                 value={description}
                                 onChange={handleDescriptionChange}
                                 disabled={isFallbackCase}
@@ -311,8 +375,12 @@ const ReportIssueCaseEditor: ComponentType = () => {
                                 </legend>
 
                                 <Reasons
-                                    reasonsOptions={reasonOptions}
-                                    onChange={setReasonOptions}
+                                    reasons={reasons}
+                                    allowEdit={caseIndex !== 'new'}
+                                    onChange={(updatedReasons) => {
+                                        setIsDirty(true)
+                                        setReasons(updatedReasons)
+                                    }}
                                 />
                             </fieldset>
 
@@ -363,7 +431,7 @@ const ReportIssueCaseEditor: ComponentType = () => {
                                         type="submit"
                                     >
                                         {caseIndex === 'new'
-                                            ? 'Add new case'
+                                            ? 'Add new scenario'
                                             : 'Save changes'}
                                     </Button>
                                 </div>
@@ -401,7 +469,7 @@ const ReportIssueCaseEditor: ComponentType = () => {
                     </Col>
 
                     <Col xs="auto">
-                        <Preview reasonOptions={reasonOptions} />
+                        <Preview reasons={reasons} />
                     </Col>
                 </Row>
             </Container>

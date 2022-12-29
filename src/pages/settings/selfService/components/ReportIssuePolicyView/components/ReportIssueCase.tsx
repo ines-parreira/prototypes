@@ -87,7 +87,8 @@ const ReportIssueCase = ({
             <td
                 className={classNames(
                     bodyCellCss.wrapper,
-                    bodyCellCss.smallest
+                    bodyCellCss.smallest,
+                    css.titleCell
                 )}
             >
                 <Link to={linkToEditor}>

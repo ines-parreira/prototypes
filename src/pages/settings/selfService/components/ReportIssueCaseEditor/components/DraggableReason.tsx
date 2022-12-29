@@ -1,28 +1,45 @@
-import React, {ReactElement} from 'react'
+import React, {ReactElement, useMemo} from 'react'
 import classNames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import {Link, useRouteMatch} from 'react-router-dom'
+
+import {FeatureFlagKey} from 'config/featureFlags'
+import {ReportIssueCaseReason} from 'models/selfServiceConfiguration/types'
 
 import {
     useReorderDnD,
     Callbacks,
 } from '../../../../helpCenter/hooks/useReorderDnD'
 
+import {SELECTABLE_REASONS_DROPDOWN_OPTIONS} from '../constants'
 import css from './DraggableReason.less'
 
 interface ReportIssueCaseProps {
-    reasonKey: string
-    reasonLabel: string
+    reason: ReportIssueCaseReason
     position: number
     onMoveEntity: Callbacks['onHover']
     onDeleteEntity: () => void
+    allowEdit: boolean
 }
 
 const Reason = ({
-    reasonKey,
-    reasonLabel,
+    reason: {action, reasonKey},
     position,
     onMoveEntity,
     onDeleteEntity,
+    allowEdit,
 }: ReportIssueCaseProps): ReactElement => {
+    const {
+        params: {shopName, integrationType, caseIndex},
+    } = useRouteMatch<{
+        shopName: string
+        integrationType: string
+        caseIndex: string
+    }>()
+
+    const hasAutomatedResponseOrderManagementFlag =
+        useFlags()[FeatureFlagKey.SelfServiceAutomatedResponseOrderManagement]
+
     const {dragRef, dropRef, handlerId, isDragging} = useReorderDnD(
         {
             position,
@@ -32,6 +49,16 @@ const Reason = ({
         [`reason`],
         {onHover: onMoveEntity}
     )
+
+    const reasonLabel = useMemo(
+        () =>
+            SELECTABLE_REASONS_DROPDOWN_OPTIONS.find(
+                (opt) => opt.value === reasonKey
+            )?.label,
+        [reasonKey]
+    )
+
+    const noAutomatedResponse = !action?.responseMessageContent.text
 
     return (
         <li
@@ -52,13 +79,35 @@ const Reason = ({
                 {reasonLabel}
             </div>
 
-            <button
-                type="button"
-                className={css.deleteButton}
-                onClick={onDeleteEntity}
-            >
-                <span className="icon material-icons">clear</span>
-            </button>
+            {hasAutomatedResponseOrderManagementFlag && allowEdit ? (
+                <>
+                    {noAutomatedResponse && (
+                        <div className={css.noResponseWarning}>
+                            <i className="material-icons">error</i> No response
+                            configured
+                        </div>
+                    )}
+
+                    <div className={css.editResponse}>
+                        <Link
+                            to={`/app/settings/self-service/${integrationType}/${shopName}/preferences/report-issue/${caseIndex}/reasons/${position}`}
+                        >
+                            Edit Response
+                            <span className="material-icons chevron_right">
+                                chevron_right
+                            </span>
+                        </Link>
+                    </div>
+                </>
+            ) : (
+                <button
+                    type="button"
+                    className={css.deleteButton}
+                    onClick={onDeleteEntity}
+                >
+                    <span className="icon material-icons">clear</span>
+                </button>
+            )}
         </li>
     )
 }

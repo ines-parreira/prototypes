@@ -1,37 +1,42 @@
 import React, {ReactElement, useMemo, useRef} from 'react'
 import produce from 'immer'
 
+import {ReportIssueCaseReason} from 'models/selfServiceConfiguration/types'
+
 import SelectField from '../../../../../common/forms/SelectField/SelectField'
-import {SelectableOption} from '../../../../../common/forms/SelectField/types'
 import {Callbacks} from '../../../../../settings/helpCenter/hooks/useReorderDnD'
 
-import {
-    REASONS_DROPDOWN_OPTIONS,
-    SELECTABLE_REASONS_DROPDOWN_OPTIONS,
-} from '../constants'
+import {REASONS_DROPDOWN_OPTIONS} from '../constants'
 
 import DraggableReason from './DraggableReason'
 
 import css from './Reasons.less'
 
 interface ReasonsProps {
-    reasonsOptions: SelectableOption[]
-    onChange: (newReasons: SelectableOption[]) => void
+    reasons: ReportIssueCaseReason[]
+    allowEdit: boolean
+    onChange: (newReasons: ReportIssueCaseReason[]) => void
 }
 
-const Reasons = ({reasonsOptions, onChange}: ReasonsProps): ReactElement => {
+const Reasons = ({
+    allowEdit,
+    reasons,
+    onChange,
+}: ReasonsProps): ReactElement => {
     const selectRef = useRef<SelectField | null>(null)
 
-    const handleDropdownChange = (selectedValue: string | number) => {
-        const selectedOption = SELECTABLE_REASONS_DROPDOWN_OPTIONS.find(
-            ({value}) => value === selectedValue
-        ) as SelectableOption
-
-        onChange([...reasonsOptions, selectedOption])
+    const handleDropdownChange = (selectedValue: string) => {
+        onChange([
+            ...reasons,
+            {
+                reasonKey: selectedValue,
+                action: undefined,
+            },
+        ])
     }
 
     const handleMoveEntity: Callbacks['onHover'] = (dragIndex, hoverIndex) => {
-        const newSelectedReasons = produce(reasonsOptions, (reasonsDraft) => {
+        const newSelectedReasons = produce(reasons, (reasonsDraft) => {
             const dragReason = reasonsDraft[dragIndex]
 
             reasonsDraft.splice(dragIndex, 1)
@@ -42,7 +47,7 @@ const Reasons = ({reasonsOptions, onChange}: ReasonsProps): ReactElement => {
     }
 
     const handleDeleteEntity = (index: number) => () => {
-        const newSelectedReasons = produce(reasonsOptions, (reasonsDraft) => {
+        const newSelectedReasons = produce(reasons, (reasonsDraft) => {
             reasonsDraft.splice(index, 1)
         })
 
@@ -55,11 +60,7 @@ const Reasons = ({reasonsOptions, onChange}: ReasonsProps): ReactElement => {
                 return option
             }
 
-            if (
-                reasonsOptions.find(
-                    (selectedReason) => selectedReason.value === option.value
-                )
-            ) {
+            if (reasons.find(({reasonKey}) => reasonKey === option.value)) {
                 return {
                     ...option,
                     isDisabled: true,
@@ -75,27 +76,19 @@ const Reasons = ({reasonsOptions, onChange}: ReasonsProps): ReactElement => {
 
             return option
         })
-    }, [reasonsOptions])
-
-    const selectedReasons = useMemo(() => {
-        return reasonsOptions.map((selectedReason) => {
-            return SELECTABLE_REASONS_DROPDOWN_OPTIONS.find(
-                (option) => option.value === selectedReason.value
-            ) as SelectableOption
-        })
-    }, [reasonsOptions])
+    }, [reasons])
 
     return (
         <div>
             <ul className={css.reasonsWrapper}>
-                {selectedReasons.map((reason, index) => (
+                {reasons.map((reason, index) => (
                     <DraggableReason
                         position={index}
-                        key={reason.label as string}
-                        reasonKey={reason.value as string}
-                        reasonLabel={reason.label as string}
+                        key={reason.reasonKey}
+                        reason={reason}
                         onMoveEntity={handleMoveEntity}
                         onDeleteEntity={handleDeleteEntity(index)}
+                        allowEdit={allowEdit}
                     />
                 ))}
             </ul>
@@ -107,8 +100,8 @@ const Reasons = ({reasonsOptions, onChange}: ReasonsProps): ReactElement => {
                     ref={selectRef}
                     fullWidth
                     options={dropdownOptions}
-                    onChange={handleDropdownChange}
-                    placeholder="Search reasons"
+                    onChange={(v) => handleDropdownChange(v as string)}
+                    placeholder="Add Issue"
                     value={undefined}
                 />
             </div>

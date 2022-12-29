@@ -87,7 +87,7 @@ export function SelfServiceFlowSelect({
                             availableFlows.add(reason)
                             const reasonSpecs =
                                 SELECTABLE_REASONS_DROPDOWN_OPTIONS.find(
-                                    (opt) => opt.value === reason
+                                    (opt) => opt.value === reason.reasonKey
                                 )
                             if (reasonSpecs) {
                                 options = options.push({
