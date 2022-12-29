@@ -20,6 +20,7 @@ exports[`<ChatIntegrationPreview/> render() should display auto responder 1`] = 
         isOnline={true}
         mainColor="#123456"
         offlineColor="#EBEBEB"
+        shouldHideAvatarOnlineMarker={false}
       />
       <div
         className="details"
@@ -148,6 +149,7 @@ exports[`<ChatIntegrationPreview/> render() should display display the offsets w
         isOnline={true}
         mainColor="#123456"
         offlineColor="#EBEBEB"
+        shouldHideAvatarOnlineMarker={false}
       />
       <div
         className="details"
@@ -301,6 +303,7 @@ exports[`<ChatIntegrationPreview/> render() should display display the offsets w
         isOnline={true}
         mainColor="#123456"
         offlineColor="#EBEBEB"
+        shouldHideAvatarOnlineMarker={false}
       />
       <div
         className="details"
@@ -448,6 +451,7 @@ exports[`<ChatIntegrationPreview/> render() should display optional email captur
         isOnline={true}
         mainColor="#123456"
         offlineColor="#EBEBEB"
+        shouldHideAvatarOnlineMarker={false}
       />
       <div
         className="details"
@@ -582,6 +586,7 @@ exports[`<ChatIntegrationPreview/> render() should display required email captur
         isOnline={true}
         mainColor="#123456"
         offlineColor="#EBEBEB"
+        shouldHideAvatarOnlineMarker={false}
       />
       <div
         className="details"
@@ -706,6 +711,7 @@ exports[`<ChatIntegrationPreview/> render() should display the avatar team pictu
         isOnline={true}
         mainColor="#123456"
         offlineColor="#EBEBEB"
+        shouldHideAvatarOnlineMarker={false}
       />
       <div
         className="details"
@@ -853,6 +859,7 @@ exports[`<ChatIntegrationPreview/> render() should display the offline status be
         isOnline={false}
         mainColor="#123456"
         offlineColor="#EBEBEB"
+        shouldHideAvatarOnlineMarker={false}
       />
       <div
         className="details"
@@ -1015,6 +1022,7 @@ exports[`<ChatIntegrationPreview/> render() should display the online status bec
         isOnline={true}
         mainColor="#123456"
         offlineColor="#EBEBEB"
+        shouldHideAvatarOnlineMarker={false}
       />
       <div
         className="details"
@@ -1162,6 +1170,7 @@ exports[`<ChatIntegrationPreview/> render() should display the sliders when edit
         isOnline={true}
         mainColor="#123456"
         offlineColor="#EBEBEB"
+        shouldHideAvatarOnlineMarker={false}
       />
       <div
         className="details"
@@ -1309,6 +1318,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
         isOnline={true}
         mainColor="#123456"
         offlineColor="#EBEBEB"
+        shouldHideAvatarOnlineMarker={false}
       />
       <div
         className="details"
@@ -1471,6 +1481,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
         isOnline={true}
         mainColor="#123456"
         offlineColor="#EBEBEB"
+        shouldHideAvatarOnlineMarker={false}
       />
       <div
         className="details"
@@ -1633,6 +1644,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
         isOnline={true}
         mainColor="#123456"
         offlineColor="#EBEBEB"
+        shouldHideAvatarOnlineMarker={false}
       />
       <div
         className="details"
@@ -1795,6 +1807,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
         isOnline={true}
         mainColor="#123456"
         offlineColor="#EBEBEB"
+        shouldHideAvatarOnlineMarker={false}
       />
       <div
         className="details"
@@ -1957,6 +1970,7 @@ exports[`<ChatIntegrationPreview/> render() should not display button if hideBut
         isOnline={true}
         mainColor="#123456"
         offlineColor="#EBEBEB"
+        shouldHideAvatarOnlineMarker={false}
       />
       <div
         className="details"

@@ -11,6 +11,7 @@ type Props = {
     isOnline: boolean
     mainColor: string
     offlineColor: string
+    shouldHideAvatarOnlineMarker: boolean
 }
 
 const ChatIntegrationAvatar = (props: Props) => {
@@ -20,9 +21,10 @@ const ChatIntegrationAvatar = (props: Props) => {
         isOnline,
         mainColor,
         offlineColor,
+        shouldHideAvatarOnlineMarker,
     } = props
 
-    const statusMarker = (
+    const statusMarker = shouldHideAvatarOnlineMarker ? null : (
         <div
             className={classnames({
                 [css.onlineMarker]: isOnline,

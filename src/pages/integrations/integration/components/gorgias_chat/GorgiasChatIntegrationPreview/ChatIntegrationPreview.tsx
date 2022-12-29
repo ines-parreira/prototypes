@@ -45,6 +45,7 @@ type Props = {
     autoResponderEnabled?: boolean
     autoResponderReply?: string
     hideButton?: boolean
+    shouldHideAvatarOnlineMarker?: boolean
 }
 
 const ChatIntegrationPreview = (props: Props) => {
@@ -56,6 +57,7 @@ const ChatIntegrationPreview = (props: Props) => {
         avatarTeamPictureUrl,
         mainColor,
         isOnline,
+        shouldHideAvatarOnlineMarker = false,
         language = GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
         children,
         renderFooter = true,
@@ -198,6 +200,9 @@ const ChatIntegrationPreview = (props: Props) => {
                         avatarType={avatarType}
                         avatarTeamPictureUrl={avatarTeamPictureUrl}
                         isOnline={isOnline}
+                        shouldHideAvatarOnlineMarker={
+                            shouldHideAvatarOnlineMarker
+                        }
                         mainColor={mainColor}
                         offlineColor={offlineColor}
                     />

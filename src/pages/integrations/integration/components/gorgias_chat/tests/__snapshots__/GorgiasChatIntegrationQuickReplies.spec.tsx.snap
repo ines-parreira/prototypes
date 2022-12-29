@@ -664,6 +664,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                                   isOnline={true}
                                   mainColor="#123456"
                                   offlineColor="#EBEBEB"
+                                  shouldHideAvatarOnlineMarker={false}
                                 >
                                   <div
                                     className="agents"
@@ -1586,6 +1587,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                                   isOnline={true}
                                   mainColor="#123456"
                                   offlineColor="#EBEBEB"
+                                  shouldHideAvatarOnlineMarker={false}
                                 >
                                   <div
                                     className="agents"

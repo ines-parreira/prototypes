@@ -344,11 +344,6 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             ),
         }
 
-        const isPreviewOnline =
-            preview === PREVIEW_LIVE_CHAT_AVAILABILITY
-                ? liveChatAvailability !== GORGIAS_CHAT_LIVE_CHAT_OFFLINE
-                : true
-
         const renderPreviewFooter =
             preview === PREVIEW_AUTO_RESPONDER ||
             emailCaptureEnforcement ===
@@ -400,7 +395,11 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                     'offline_introduction_text',
                 ])}
                 mainColor={integration.getIn(['decoration', 'main_color'])}
-                isOnline={isPreviewOnline}
+                isOnline
+                shouldHideAvatarOnlineMarker={
+                    liveChatAvailability !==
+                    GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY
+                }
                 language={language}
                 position={position}
                 renderFooter={renderPreviewFooter}
