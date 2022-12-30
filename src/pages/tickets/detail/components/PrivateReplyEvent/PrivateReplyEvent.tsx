@@ -6,7 +6,7 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import facebookIcon from 'assets/img/integrations/facebook-dark-icon.svg'
 import facebookMessengerIcon from 'assets/img/integrations/facebook-messenger-dark-event-icon.svg'
-import InstagramDirectMessageIcon from 'assets/img/integrations/Instagram-direct-message-blue.svg'
+import InstagramDirectMessageIcon from 'assets/img/integrations/Instagram-direct-message-blue-filled.svg'
 import InstagramIcon from 'assets/img/integrations/instagram-icon-blue.svg'
 
 import TicketMessageEmbeddedCard from 'pages/common/components/TicketMessageEmbeddedCard/TicketMessageEmbeddedCard'
