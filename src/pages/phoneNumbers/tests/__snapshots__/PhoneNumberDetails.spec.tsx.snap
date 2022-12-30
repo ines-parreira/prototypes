@@ -52,7 +52,7 @@ exports[`<PhoneNumberDetails/> render() should not render a "Add Integration" li
               class="input-group-append"
             >
               <button
-                class="wrapper copy-phone-number-button fill primary medium"
+                class="wrapper copy-phone-number-button copyButton fill secondary medium"
                 data-clipboard-target="#phone-number"
                 style="height: 100%;"
                 type="button"
@@ -264,7 +264,7 @@ exports[`<PhoneNumberDetails/> render() should render a "Add Integration" link i
               class="input-group-append"
             >
               <button
-                class="wrapper copy-phone-number-button fill primary medium"
+                class="wrapper copy-phone-number-button copyButton fill secondary medium"
                 data-clipboard-target="#phone-number"
                 style="height: 100%;"
                 type="button"
@@ -506,7 +506,7 @@ exports[`<PhoneNumberDetails/> render() should render a "Manage Integration" lin
               class="input-group-append"
             >
               <button
-                class="wrapper copy-phone-number-button fill primary medium"
+                class="wrapper copy-phone-number-button copyButton fill secondary medium"
                 data-clipboard-target="#phone-number"
                 style="height: 100%;"
                 type="button"
@@ -743,7 +743,7 @@ exports[`<PhoneNumberDetails/> render() should render the link to an SMS integra
               class="input-group-append"
             >
               <button
-                class="wrapper copy-phone-number-button fill primary medium"
+                class="wrapper copy-phone-number-button copyButton fill secondary medium"
                 data-clipboard-target="#phone-number"
                 style="height: 100%;"
                 type="button"
@@ -985,7 +985,7 @@ exports[`<PhoneNumberDetails/> render() should render with a local US number 1`]
               class="input-group-append"
             >
               <button
-                class="wrapper copy-phone-number-button fill primary medium"
+                class="wrapper copy-phone-number-button copyButton fill secondary medium"
                 data-clipboard-target="#phone-number"
                 style="height: 100%;"
                 type="button"
@@ -1245,7 +1245,7 @@ exports[`<PhoneNumberDetails/> render() should render with a mobile GB number 1`
               class="input-group-append"
             >
               <button
-                class="wrapper copy-phone-number-button fill primary medium"
+                class="wrapper copy-phone-number-button copyButton fill secondary medium"
                 data-clipboard-target="#phone-number"
                 style="height: 100%;"
                 type="button"
@@ -1457,7 +1457,7 @@ exports[`<PhoneNumberDetails/> render() should render with a toll-free CA number
               class="input-group-append"
             >
               <button
-                class="wrapper copy-phone-number-button fill primary medium"
+                class="wrapper copy-phone-number-button copyButton fill secondary medium"
                 data-clipboard-target="#phone-number"
                 style="height: 100%;"
                 type="button"

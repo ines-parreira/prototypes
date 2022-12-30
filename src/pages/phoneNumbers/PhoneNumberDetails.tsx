@@ -181,8 +181,12 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
                             <InputGroupAddon addonType="append">
                                 <Button
                                     style={{height: '100%'}}
-                                    className="copy-phone-number-button"
+                                    className={classnames(
+                                        'copy-phone-number-button',
+                                        css.copyButton
+                                    )}
                                     data-clipboard-target="#phone-number"
+                                    intent="secondary"
                                 >
                                     <i className="material-icons mr-2">
                                         file_copy
