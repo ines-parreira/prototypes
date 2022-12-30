@@ -152,6 +152,7 @@ export const IntegrationDetail = ({
         'connections',
         'integrations',
         'setup',
+        'about',
         WHATSAPP_SPIKE_PATH,
     ].includes(integrationId)
 

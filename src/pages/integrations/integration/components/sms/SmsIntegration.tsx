@@ -2,7 +2,10 @@ import React from 'react'
 import {useParams, Switch, Route} from 'react-router-dom'
 
 import {getIntegrationConfig} from 'state/integrations/helpers'
-import {getIntegrationById} from 'state/integrations/selectors'
+import {
+    getIntegrationById,
+    getSmsIntegrations,
+} from 'state/integrations/selectors'
 import PageHeader from 'pages/common/components/PageHeader'
 
 import AppDetails from 'pages/integrations/components/Detail'
@@ -15,6 +18,7 @@ import SmsIntegrationSecondaryNavigation from 'pages/integrations/integration/co
 import {IntegrationType, isSmsIntegration} from 'models/integration/types'
 import useAppSelector from 'hooks/useAppSelector'
 import useSearch from 'hooks/useSearch'
+import {getDefaultRoutes} from '../../utils/defaultRoutes'
 
 export default function SmsIntegration() {
     const config = getIntegrationConfig(IntegrationType.Sms)
@@ -33,8 +37,10 @@ export default function SmsIntegration() {
             }
         }
     })
+    const smsIntegrations = useAppSelector(getSmsIntegrations)
 
     const baseURL = `/app/settings/channels/sms`
+    const routes = getDefaultRoutes(baseURL, smsIntegrations)
 
     return (
         <div className="full-width">
@@ -64,7 +70,7 @@ export default function SmsIntegration() {
                         </Route>
                     </>
                 )}
-                <Route path={`${baseURL}/integrations`} exact>
+                <Route path={routes.integrations} exact>
                     <PhoneIntegrationsList type={IntegrationType.Sms} />
                 </Route>
                 <Route path={`${baseURL}/new`} exact>
@@ -77,7 +83,7 @@ export default function SmsIntegration() {
                         pricingLink={config?.pricingLink}
                     />
                 </Route>
-                <Route path={baseURL} exact>
+                <Route path={routes.about} exact>
                     {config && (
                         <AppDetails
                             {...config}

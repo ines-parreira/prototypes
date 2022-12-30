@@ -17,7 +17,11 @@ import useAppSelector from 'hooks/useAppSelector'
 import useSearch from 'hooks/useSearch'
 
 import {getIntegrationConfig} from 'state/integrations/helpers'
-import {getIntegrationById} from 'state/integrations/selectors'
+import {
+    getIntegrationById,
+    getPhoneIntegrations,
+} from 'state/integrations/selectors'
+import {getDefaultRoutes} from '../../utils/defaultRoutes'
 
 export default function VoiceIntegration() {
     const config = getIntegrationConfig(IntegrationType.Phone)
@@ -36,8 +40,10 @@ export default function VoiceIntegration() {
             }
         }
     })
+    const phoneIntegrations = useAppSelector(getPhoneIntegrations)
 
     const baseURL = `/app/settings/channels/phone`
+    const routes = getDefaultRoutes(baseURL, phoneIntegrations)
 
     return (
         <div className="full-width">
@@ -88,7 +94,7 @@ export default function VoiceIntegration() {
                         </Route>
                     </>
                 )}
-                <Route path={`${baseURL}/integrations`} exact>
+                <Route path={routes.integrations} exact>
                     <PhoneIntegrationsList type={IntegrationType.Phone} />
                 </Route>
                 <Route path={`${baseURL}/new`} exact>
@@ -101,7 +107,7 @@ export default function VoiceIntegration() {
                         pricingLink={config?.pricingLink}
                     />
                 </Route>
-                <Route path={baseURL} exact>
+                <Route path={routes.about} exact>
                     {config && (
                         <AppDetails
                             {...config}
