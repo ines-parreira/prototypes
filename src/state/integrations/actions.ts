@@ -691,7 +691,7 @@ export function onVerify(
     void dispatch(
         notify({
             status: NotificationStatus.Success,
-            message: 'Integration verified successfully',
+            message: 'You can now receive emails using this integration',
         })
     )
     return dispatch({
