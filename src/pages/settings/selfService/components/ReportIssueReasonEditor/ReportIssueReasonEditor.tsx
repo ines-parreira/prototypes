@@ -556,7 +556,8 @@ const ReportIssueReasonEditor: ComponentType = () => {
                             }
                             newMessageAttachments={newMessageAttachments}
                             showHelpfulPrompt={
-                                reasonAction.showHelpfulPrompt === true
+                                reasonAction.showHelpfulPrompt === true &&
+                                !wasItHelpfulToggleDisabled
                             }
                         />
                     </Col>
