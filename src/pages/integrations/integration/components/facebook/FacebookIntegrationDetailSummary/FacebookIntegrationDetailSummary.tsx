@@ -1,7 +1,7 @@
 import React from 'react'
 import {truncate} from 'lodash'
 import classNames from 'classnames'
-import FacebookLoginButton from '../FacebookLoginButton/FacebookLoginButton'
+import FacebookIntegrationLoginButton from '../FacebookLoginButton/FacebookIntegrationLoginButton'
 
 import css from './FacebookIntegrationDetailSummary.less'
 
@@ -49,7 +49,7 @@ export default function FacebookIntegrationDetailSummary(props: Props) {
                     )}
                 </div>
             </div>
-            <FacebookLoginButton reconnect intent="secondary" />
+            <FacebookIntegrationLoginButton reconnect intent="secondary" />
         </div>
     )
 }

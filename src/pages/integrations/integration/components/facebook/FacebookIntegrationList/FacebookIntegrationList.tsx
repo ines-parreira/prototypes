@@ -4,12 +4,11 @@ import {connect} from 'react-redux'
 
 import {IntegrationType} from 'models/integration/constants'
 import {RootState} from 'state/types'
-import facebookLogo from 'assets/img/integrations/facebook-icon.svg'
 import * as integrationsSelectors from 'state/integrations/selectors'
 
 import IntegrationList from '../../IntegrationList'
 
-import css from './FacebookIntegrationList.less'
+import FacebookLoginButton from '../FacebookLoginButton/FacebookLoginButton'
 import FacebookPageRow from './FacebookPageRow'
 
 type Props = {
@@ -38,16 +37,7 @@ This integration creates tickets when customers post on your Facebook page or se
                 integrations={integrations}
                 longTypeDescription={longTypeDescription}
                 createIntegration={this._onLogin}
-                createIntegrationButton={
-                    <button className={css.createIntegrationButton}>
-                        <img
-                            src={facebookLogo}
-                            alt="facebook-logo"
-                            className={css.facebookLogo}
-                        />
-                        Login with Facebook
-                    </button>
-                }
+                createIntegrationButton={<FacebookLoginButton showIcon />}
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}
             />

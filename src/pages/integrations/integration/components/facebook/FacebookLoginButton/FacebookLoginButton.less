@@ -1,18 +1,21 @@
 @import '~css/new/colors';
 
 :local {
-    .createIntegrationButton {
-        background-color: @facebookBlue !important;
+    .facebookButton {
         border-width: 0;
         border-radius: 4px;
         padding: 0px 12px;
-        color: white;
         transition: background-color 0.2s linear;
 
-        &:hover,
-        &:active,
-        &:focus {
-            background-color: darken(@facebookBlue, 5%) !important;
+        &.primary {
+            background-color: @facebookBlue !important;
+            color: white;
+
+            &:hover,
+            &:active,
+            &:focus {
+                background-color: darken(@facebookBlue, 5%);
+            }
         }
 
         .facebookLogo {

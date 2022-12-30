@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom'
 
 import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
 
-import FacebookLoginButton from '../FacebookLoginButton/FacebookLoginButton'
+import FacebookIntegrationLoginButton from '../FacebookLoginButton/FacebookIntegrationLoginButton'
 
 type Props = {
     integration: Map<any, any>
@@ -51,7 +51,11 @@ export default class FacebookPageRow extends Component<Props> {
                     </Link>
                 </td>
                 <td className="smallest align-middle p-0">
-                    <div>{isDisabled && <FacebookLoginButton reconnect />}</div>
+                    <div>
+                        {isDisabled && (
+                            <FacebookIntegrationLoginButton reconnect />
+                        )}
+                    </div>
                 </td>
                 <td className="smallest align-middle">
                     <ForwardIcon href={editLink} />

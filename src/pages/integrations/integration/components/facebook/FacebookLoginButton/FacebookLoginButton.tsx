@@ -1,61 +1,43 @@
-import React, {Component, ReactNode} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-
+import React, {ReactNode} from 'react'
+import classNames from 'classnames'
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
-import {getFacebookRedirectUri} from 'state/integrations/selectors'
-import {RootState} from 'state/types'
+import facebookLogo from 'assets/img/integrations/facebook-icon.svg'
 
-type OwnProps = {
-    reconnect?: boolean
-    link?: boolean
+import css from './FacebookLoginButton.less'
+
+type Props = {
     children?: ReactNode
     intent?: ButtonIntent
+    onClick?: (e: React.SyntheticEvent) => void
+    showIcon?: boolean
+    isLoading?: boolean
 }
 
-type Props = OwnProps & ConnectedProps<typeof connector>
-
-export class FacebookLoginButtonContainer extends Component<Props> {
-    static defaultProps: OwnProps = {
-        reconnect: false,
-        link: false,
-        children: null,
-        intent: 'primary',
-    }
-
-    _handleSubmit = (e: React.SyntheticEvent, redirectUri: string) => {
-        e.preventDefault()
-        window.open(redirectUri)
-    }
-
-    renderLink() {
-        const {redirectUri, children} = this.props
-
-        return <a href={redirectUri}>{children || 'Login with Facebook'}</a>
-    }
-
-    renderButton() {
-        const {redirectUri, children, intent} = this.props
-
-        return (
-            <Button
-                type="submit"
-                intent={intent}
-                onClick={(e) => this._handleSubmit(e, redirectUri)}
-            >
-                {children || 'Reconnect'}
-            </Button>
-        )
-    }
-
-    render() {
-        const {link} = this.props
-
-        return link ? this.renderLink() : this.renderButton()
-    }
+export default function FacebookLoginButton({
+    intent = 'primary',
+    onClick,
+    children,
+    showIcon,
+    isLoading,
+}: Props) {
+    return (
+        <Button
+            type="submit"
+            intent={intent}
+            onClick={onClick}
+            isLoading={isLoading}
+            className={classNames(css.facebookButton, {
+                [css.primary]: intent === 'primary',
+            })}
+        >
+            {showIcon && !isLoading && (
+                <img
+                    src={facebookLogo}
+                    alt="facebook-logo"
+                    className={css.facebookLogo}
+                />
+            )}
+            {children || 'Login with Facebook'}
+        </Button>
+    )
 }
-
-const connector = connect((state: RootState, props: OwnProps) => ({
-    redirectUri: getFacebookRedirectUri(props.reconnect)(state),
-}))
-
-export default connector(FacebookLoginButtonContainer)

@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FacebookIntegrationLoginButton component should render a log in link 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <Connect(FacebookIntegrationLoginButtonContainer)
+    link={true}
+  >
+    <FacebookIntegrationLoginButtonContainer
+      dispatch={[Function]}
+      link={true}
+      reconnect={false}
+      redirectUri="https://.../"
+    >
+      <a
+        href="https://.../"
+      >
+        Login with Facebook
+      </a>
+    </FacebookIntegrationLoginButtonContainer>
+  </Connect(FacebookIntegrationLoginButtonContainer)>
+</Provider>
+`;
+
+exports[`FacebookIntegrationLoginButton component should render a reconnect button 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <Connect(FacebookIntegrationLoginButtonContainer)
+    reconnect={true}
+  >
+    <FacebookIntegrationLoginButtonContainer
+      dispatch={[Function]}
+      link={false}
+      reconnect={true}
+      redirectUri="https://.../?reconnect"
+    >
+      <FacebookLoginButton
+        onClick={[Function]}
+      >
+        <ForwardRef
+          className="facebookButton primary"
+          intent="primary"
+          onClick={[Function]}
+          type="submit"
+        >
+          <BaseButton
+            className="facebookButton primary"
+            intent="primary"
+          >
+            <button
+              className="wrapper facebookButton primary fill primary medium"
+              onClick={[Function]}
+              type="submit"
+            >
+              Reconnect
+            </button>
+          </BaseButton>
+        </ForwardRef>
+      </FacebookLoginButton>
+    </FacebookIntegrationLoginButtonContainer>
+  </Connect(FacebookIntegrationLoginButtonContainer)>
+</Provider>
+`;

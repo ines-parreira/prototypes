@@ -6034,12 +6034,12 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
               <br />
               If you just associated the page with an Instagram account, please
                
-              <Connect(FacebookLoginButtonContainer)
+              <Connect(FacebookIntegrationLoginButtonContainer)
                 link={true}
                 reconnect={true}
               >
                 click here to update your integrations
-              </Connect(FacebookLoginButtonContainer)>
+              </Connect(FacebookIntegrationLoginButtonContainer)>
               .
             </Alert>
             <CheckBoxFieldSet

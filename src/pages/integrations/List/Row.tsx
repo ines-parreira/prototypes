@@ -86,6 +86,9 @@ const Row = ({integration}: Props) => {
                 case IntegrationType.BigCommerce: {
                     return 'connections'
                 }
+                case IntegrationType.WhatsApp: {
+                    return 'integrations'
+                }
 
                 default:
                     return null

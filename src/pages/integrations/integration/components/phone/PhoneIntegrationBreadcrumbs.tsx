@@ -46,6 +46,13 @@ export default function PhoneIntegrationBreadcrumbs({
 
     return (
         <Breadcrumb>
+            {type === IntegrationType.WhatsApp && (
+                <BreadcrumbItem>
+                    <Link to={`/app/settings/integrations`}>
+                        Apps & integrations
+                    </Link>
+                </BreadcrumbItem>
+            )}
             {integration && (
                 <>
                     <BreadcrumbItem>

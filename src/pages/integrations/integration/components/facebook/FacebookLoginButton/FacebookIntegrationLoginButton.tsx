@@ -1,23 +1,30 @@
 import React, {Component, ReactNode} from 'react'
-import {Button} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 
-import {getFacebookRedirectUri} from '../../../../../../state/integrations/selectors'
-import {RootState} from '../../../../../../state/types'
+import {ButtonIntent} from 'pages/common/components/button/Button'
+import {getFacebookRedirectUri} from 'state/integrations/selectors'
+import {RootState} from 'state/types'
+import FacebookLoginButton from './FacebookLoginButton'
 
 type OwnProps = {
     reconnect?: boolean
     link?: boolean
     children?: ReactNode
+    intent?: ButtonIntent
 }
 
 type Props = OwnProps & ConnectedProps<typeof connector>
 
-export class FacebookLoginButtonContainer extends Component<Props> {
-    static defaultProps = {
+export class FacebookIntegrationLoginButtonContainer extends Component<Props> {
+    static defaultProps: OwnProps = {
         reconnect: false,
         link: false,
         children: null,
+    }
+
+    _handleSubmit = (e: React.SyntheticEvent, redirectUri: string) => {
+        e.preventDefault()
+        window.open(redirectUri)
     }
 
     renderLink() {
@@ -27,12 +34,15 @@ export class FacebookLoginButtonContainer extends Component<Props> {
     }
 
     renderButton() {
-        const {redirectUri, children} = this.props
+        const {redirectUri, children, intent} = this.props
 
         return (
-            <Button tag="a" color="success" href={redirectUri}>
+            <FacebookLoginButton
+                intent={intent}
+                onClick={(e) => this._handleSubmit(e, redirectUri)}
+            >
                 {children || 'Reconnect'}
-            </Button>
+            </FacebookLoginButton>
         )
     }
 
@@ -47,4 +57,4 @@ const connector = connect((state: RootState, props: OwnProps) => ({
     redirectUri: getFacebookRedirectUri(props.reconnect)(state),
 }))
 
-export default connector(FacebookLoginButtonContainer)
+export default connector(FacebookIntegrationLoginButtonContainer)

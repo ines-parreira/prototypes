@@ -1,50 +1,35 @@
+import {cleanup, fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
-import {mount} from 'enzyme'
-import {fromJS} from 'immutable'
-import thunk from 'redux-thunk'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
-import {Provider} from 'react-redux'
-import {RootState, StoreDispatch} from 'state/types'
 
 import FacebookLoginButton from '../FacebookLoginButton'
 
 describe('FacebookLoginButton component', () => {
-    let store: MockStoreEnhanced
+    afterEach(cleanup)
 
-    beforeEach(() => {
-        const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>(
-            [thunk]
-        )
+    it('should call onClick', () => {
+        const onClick = jest.fn()
+        render(<FacebookLoginButton onClick={onClick} />)
 
-        store = mockStore({
-            integrations: fromJS({
-                authentication: {
-                    facebook: {
-                        redirect_uri_reconnect: 'https://.../?reconnect',
-                        redirect_uri: 'https://.../',
-                    },
-                },
-            }),
-        })
+        fireEvent.click(screen.getByText(/login with facebook/i))
+
+        expect(onClick).toHaveBeenCalled()
     })
 
-    it('should render a log in link', () => {
-        const component = mount(
-            <Provider store={store}>
-                <FacebookLoginButton link />
-            </Provider>
-        )
+    it('should show icon', () => {
+        render(<FacebookLoginButton showIcon />)
 
-        expect(component).toMatchSnapshot()
+        expect(screen.getByAltText(/facebook\-logo/i)).toBeVisible()
     })
 
-    it('should render a reconnect button', () => {
-        const component = mount(
-            <Provider store={store}>
-                <FacebookLoginButton reconnect />
-            </Provider>
-        )
+    it('should not show icon', () => {
+        render(<FacebookLoginButton />)
 
-        expect(component).toMatchSnapshot()
+        expect(screen.queryByAltText(/facebook\-logo/i)).toBeFalsy()
+    })
+
+    it('should display children', () => {
+        render(<FacebookLoginButton>children</FacebookLoginButton>)
+
+        expect(screen.getByText(/children/i)).toBeVisible()
     })
 })

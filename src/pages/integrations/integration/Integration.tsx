@@ -108,7 +108,6 @@ import WhatsAppIntegration from './components/whatsapp/WhatsAppIntegration'
 
 import TwitterIntegrationDetail from './components/twitter/TwitterIntegrationDetail'
 import TwitterIntegrationList from './components/twitter/TwitterIntegrationList'
-import WhatsAppSpike from './components/voice/WhatsAppSpike'
 import GorgiasTranslateText from './components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText'
 
 export enum Tab {
@@ -131,8 +130,6 @@ export enum Tab {
     SmoochInsideMigration = 'migration',
 }
 
-const WHATSAPP_SPIKE_PATH = 'whatsapp-spike'
-
 export const IntegrationDetail = ({
     actions,
     currentUser,
@@ -153,7 +150,6 @@ export const IntegrationDetail = ({
         'integrations',
         'setup',
         'about',
-        WHATSAPP_SPIKE_PATH,
     ].includes(integrationId)
 
     const isUpdate = useMemo(
@@ -441,10 +437,6 @@ export const IntegrationDetail = ({
             )
 
         case IntegrationType.Phone:
-            if (enableWhatsApp && integrationId === WHATSAPP_SPIKE_PATH) {
-                return <WhatsAppSpike />
-            }
-
             return <VoiceIntegration />
 
         case IntegrationType.WhatsApp: {

@@ -42,7 +42,7 @@ import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import FacebookIntegrationNavigation from './FacebookIntegrationNavigation'
-import FacebookLoginButton from './FacebookLoginButton/FacebookLoginButton'
+import FacebookIntegrationLoginButton from './FacebookLoginButton/FacebookIntegrationLoginButton'
 import {
     canEnableMetaSetting,
     FacebookRole,
@@ -486,10 +486,13 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
                                             <br />
                                             If you just associated the page with
                                             an Instagram account, please{' '}
-                                            <FacebookLoginButton reconnect link>
+                                            <FacebookIntegrationLoginButton
+                                                reconnect
+                                                link
+                                            >
                                                 click here to update your
                                                 integrations
-                                            </FacebookLoginButton>
+                                            </FacebookIntegrationLoginButton>
                                             .
                                         </Alert>
                                     )}

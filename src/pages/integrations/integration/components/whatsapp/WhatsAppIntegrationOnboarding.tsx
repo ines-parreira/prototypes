@@ -3,7 +3,6 @@ import React, {useState} from 'react'
 import {Container} from 'reactstrap'
 
 import history from 'pages/history'
-import Button from 'pages/common/components/button/Button'
 import client from 'models/api/resources'
 import {reportError} from 'utils/errors'
 
@@ -13,6 +12,7 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {fetchIntegrations} from 'state/integrations/actions'
 import {GorgiasApiError} from 'models/api/types'
+import FacebookLoginButton from '../facebook/FacebookLoginButton/FacebookLoginButton'
 
 async function submitAccessToken(accessToken: string) {
     await client.post('/integrations/whatsapp/onboard', {
@@ -126,13 +126,13 @@ export default function WhatsAppIntegrationOnboarding(): JSX.Element | null {
                 You will be redirected to log in with Facebook to continue
                 setting up your WhatsApp business account.
             </p>
-            <Button
-                className="mt-2"
-                onClick={handleOnboarding}
-                isLoading={isSubmitting}
-            >
-                Login With Facebook
-            </Button>
+            <div className="mt-2">
+                <FacebookLoginButton
+                    onClick={handleOnboarding}
+                    isLoading={isSubmitting}
+                    showIcon
+                />
+            </div>
         </Container>
     )
 }
