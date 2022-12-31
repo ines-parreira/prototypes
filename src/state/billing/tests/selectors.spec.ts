@@ -5,17 +5,23 @@ import _cloneDeep from 'lodash/cloneDeep'
 import moment from 'moment'
 import {
     AUTOMATION_PRODUCT_ID,
+    HELPDESK_PRODUCT_ID,
+    SMS_PRODUCT_ID,
+    VOICE_PRODUCT_ID,
     automationProduct,
     basicDiscountedAutomationPrice,
     basicMonthlyAutomationPrice,
     basicMonthlyHelpdeskPrice,
     basicYearlyHelpdeskPrice,
-    HELPDESK_PRODUCT_ID,
+    customHelpdeskPrice,
     helpdeskProduct,
+    legacyBasicAutomationPrice,
     legacyBasicHelpdeskPrice,
     products,
-    customHelpdeskPrice,
-    legacyBasicAutomationPrice,
+    smsPrice0,
+    smsPrice1,
+    voicePrice0,
+    voicePrice1,
 } from 'fixtures/productPrices'
 import * as billingFixtures from 'fixtures/billing'
 import {
@@ -450,6 +456,70 @@ describe('billing selectors', () => {
         })
     })
 
+    describe('getCurrentVoiceProduct', () => {
+        it('should return the current voice product', () => {
+            expect(
+                selectors.getCurrentVoiceProduct({
+                    ...state,
+                    currentAccount: state.currentAccount.setIn(
+                        ['current_subscription', 'products', VOICE_PRODUCT_ID],
+                        voicePrice1.price_id
+                    ),
+                })
+            ).toEqual(voicePrice1)
+        })
+
+        it('should return undefined when the current voice product is the pay-as-you-go', () => {
+            expect(
+                selectors.getCurrentVoiceProduct({
+                    ...state,
+                    currentAccount: state.currentAccount.setIn(
+                        ['current_subscription', 'products', VOICE_PRODUCT_ID],
+                        voicePrice0.price_id
+                    ),
+                })
+            ).toEqual(undefined)
+        })
+    })
+
+    describe('getCurrentSMSProduct', () => {
+        it('should return the current SMS product', () => {
+            expect(
+                selectors.getCurrentSMSProduct({
+                    ...state,
+                    currentAccount: state.currentAccount.setIn(
+                        ['current_subscription', 'products', SMS_PRODUCT_ID],
+                        smsPrice1.price_id
+                    ),
+                })
+            ).toEqual(smsPrice1)
+        })
+
+        it('should return undefined when the current SMS product is the pay-as-you-go', () => {
+            expect(
+                selectors.getCurrentVoiceProduct({
+                    ...state,
+                    currentAccount: state.currentAccount.setIn(
+                        ['current_subscription', 'products', VOICE_PRODUCT_ID],
+                        smsPrice0.price_id
+                    ),
+                })
+            ).toEqual(undefined)
+        })
+    })
+
+    describe('getCheapestSMSPrice', () => {
+        it('should return the cheapest non-zero SMS price', () => {
+            expect(selectors.getCheapestSMSPrice(state)).toEqual(smsPrice1)
+        })
+    })
+
+    describe('getCheapestVoicePrice', () => {
+        it('should return the cheapest non-zero Voice price', () => {
+            expect(selectors.getCheapestVoicePrice(state)).toEqual(voicePrice1)
+        })
+    })
+
     describe('getCurrentHelpdeskName', () => {
         it('should return the current product name', () => {
             expect(selectors.getCurrentHelpdeskName(state)).toBe('Basic')
@@ -597,6 +667,12 @@ describe('billing selectors', () => {
     describe('getHelpdeskPrices', () => {
         it('should return the helpdesk prices', () => {
             expect(selectors.getHelpdeskPrices(state)).toMatchSnapshot()
+        })
+    })
+
+    describe('getAutomationPrices', () => {
+        it('should return the automation prices', () => {
+            expect(selectors.getAutomationPrices(state)).toMatchSnapshot()
         })
     })
 })

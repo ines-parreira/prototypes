@@ -1,14 +1,14 @@
 import React, {useState} from 'react'
 
 import Paywall, {UpgradeType} from 'pages/common/components/Paywall/Paywall'
-import AutomationSubscriptionModal from 'pages/settings/billing/automation/AutomationSubscriptionModal'
+import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
 import {getCurrentHelpdeskProduct} from 'state/billing/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {CurrentAccountState} from 'state/currentAccount/types'
 import {SegmentEvent} from 'store/middlewares/segmentTracker'
 import {getIconFromUrl} from 'utils'
 import useAppSelector from 'hooks/useAppSelector'
-import AutomationSubscriptionButton from 'pages/settings/billing/automation/AutomationSubscriptionButton'
+import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionButton'
 
 const sspAutomationAddonMock = getIconFromUrl(
     'paywalls/screens/gorgias_chat_ssp_automation.png'

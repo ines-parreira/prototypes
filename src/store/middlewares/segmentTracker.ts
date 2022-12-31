@@ -48,6 +48,11 @@ export const logPageChange = () => {
     window.analytics.page()
 }
 
+export type SegmentEventToSend = {
+    name: SegmentEvent
+    props: any
+}
+
 export enum SegmentEvent {
     BigCommerceCreateOrderCancel = 'bigcommerce/create-order/cancel',
     BigCommerceCreateOrderOpen = 'bigcommerce/create-order/open',

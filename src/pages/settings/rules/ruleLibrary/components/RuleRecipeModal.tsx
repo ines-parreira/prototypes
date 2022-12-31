@@ -18,8 +18,8 @@ import {
     RuleType,
 } from 'state/rules/types'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
-import AutomationSubscriptionModal from 'pages/settings/billing/automation/AutomationSubscriptionModal'
-import AutomationSubscriptionButton from 'pages/settings/billing/automation/AutomationSubscriptionButton'
+import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
+import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionButton'
 
 import Tooltip from 'pages/common/components/Tooltip'
 import {getRulesLimitStatus} from 'state/entities/rules/selectors'

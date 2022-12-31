@@ -75,7 +75,9 @@ exports[`widgets infobar utils guessFieldValueFromRawData() given "0" and "senti
 exports[`widgets infobar utils guessFieldValueFromRawData() given "1" and "percent" as arguments, returns correct value 1`] = `"1%"`;
 
 exports[`widgets infobar utils guessFieldValueFromRawData() given "1" and "points" as arguments, returns correct value 1`] = `
-<Badge>
+<Badge
+  type="grey"
+>
   1
 </Badge>
 `;
@@ -177,7 +179,9 @@ exports[`widgets infobar utils guessFieldValueFromRawData() given 0 and "sentime
 exports[`widgets infobar utils guessFieldValueFromRawData() given 1 and "percent" as arguments, returns correct value 1`] = `"1%"`;
 
 exports[`widgets infobar utils guessFieldValueFromRawData() given 1 and "points" as arguments, returns correct value 1`] = `
-<Badge>
+<Badge
+  type="grey"
+>
   1
 </Badge>
 `;
@@ -292,7 +296,9 @@ exports[`widgets infobar utils guessFieldValueFromRawData() given 5 and "rating"
 exports[`widgets infobar utils guessFieldValueFromRawData() given 555 and "percent" as arguments, returns correct value 1`] = `"555%"`;
 
 exports[`widgets infobar utils guessFieldValueFromRawData() given 555 and "points" as arguments, returns correct value 1`] = `
-<Badge>
+<Badge
+  type="grey"
+>
   555
 </Badge>
 `;

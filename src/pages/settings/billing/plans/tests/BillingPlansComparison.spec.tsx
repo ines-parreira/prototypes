@@ -23,7 +23,7 @@ import {
     products,
     proMonthlyHelpdeskPrice,
 } from 'fixtures/productPrices'
-import {PlanInterval} from 'models/billing/types'
+import {HelpdeskPrice, PlanInterval} from 'models/billing/types'
 import {updateSubscription} from 'state/currentAccount/actions'
 import * as utils from 'utils'
 import * as billingSelectors from 'state/billing/selectors'
@@ -102,7 +102,8 @@ describe('<BillingPlansComparison />', () => {
         '%s interval',
         (interval) => {
             const helpdeskProduct = defaultProductPrices[0].prices.find(
-                (product) => product.interval === interval
+                (product): product is HelpdeskPrice =>
+                    product.interval === interval
             )!
 
             it(`should render only plans with the selected interval for ${helpdeskProduct.legacy_id} plan`, () => {

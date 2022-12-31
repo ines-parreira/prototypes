@@ -24,18 +24,14 @@ export enum ColorType {
     Blue = 'blue',
 }
 
-const Badge = ({
-    className,
-    children,
-    style,
-    type = ColorType.Grey,
-    ...props
-}: Props) => {
+const Badge = ({className, children, style, type, ...props}: Props) => {
     return (
         <div
             className={classnames(css.badge, className)}
             style={{
-                backgroundColor: `var(--background-${type})`,
+                ...(!!type
+                    ? {backgroundColor: `var(--background-${type})`}
+                    : {}),
                 ...(type === 'light' || type === 'blue'
                     ? {color: `var(--text-${type})`}
                     : {}),

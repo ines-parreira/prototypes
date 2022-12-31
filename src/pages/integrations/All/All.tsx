@@ -16,7 +16,11 @@ import {fetchIntegrations} from 'state/integrations/actions'
 import {IntegrationListItem} from 'state/integrations/types'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {getPrices, getCurrentProductsFeatures} from 'state/billing/selectors'
+import {
+    getAutomationPrices,
+    getHelpdeskPrices,
+    getCurrentProductsFeatures,
+} from 'state/billing/selectors'
 import {
     AccountFeature,
     AccountFeatureMetadata,
@@ -89,7 +93,10 @@ export default function All() {
     const integrations = useAppSelector(getIntegrations)
     const integrationsList = useAppSelector(getIntegrationsList)
     const features = useAppSelector(getCurrentProductsFeatures)
-    const prices = useAppSelector(getPrices)
+    const automationPrices = useAppSelector(getAutomationPrices)
+    const helpdeskPrices = useAppSelector(getHelpdeskPrices)
+
+    const prices = [...automationPrices, ...helpdeskPrices]
 
     const {search} = useLocation()
     const catagoryUrlParam = new URLSearchParams(search).get(CATEGORY_URL_PARAM)

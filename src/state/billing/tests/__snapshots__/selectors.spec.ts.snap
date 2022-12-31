@@ -1,5 +1,214 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`billing selectors getAutomationPrices should return the automation prices 1`] = `
+Array [
+  Object {
+    "additional_cost_per_ticket": 0.2,
+    "amount": 3000,
+    "automation_addon_discount": 0,
+    "automation_addon_included": true,
+    "base_price_id": "price_1LJBjWI9qXomtXqSPZn8LqlD",
+    "currency": "usd",
+    "features": Object {
+      "automation_cancellations_flow": Object {
+        "enabled": true,
+      },
+      "automation_managed_rules": Object {
+        "enabled": true,
+      },
+      "automation_report_issue_flow": Object {
+        "enabled": true,
+      },
+      "automation_return_flow": Object {
+        "enabled": true,
+      },
+      "automation_self_service_statistics": Object {
+        "enabled": true,
+      },
+      "automation_track_order_flow": Object {
+        "enabled": true,
+      },
+    },
+    "interval": "month",
+    "legacy_id": "basic-automation-full-price-monthly-usd-4",
+    "name": "Basic",
+    "order": 2,
+    "price_id": "price_1LJBjXI9qXomtXqSSX34F3we",
+    "product_id": "prod_LsHD5xmSqoFBBs",
+  },
+  Object {
+    "additional_cost_per_ticket": 0.18,
+    "amount": 18000,
+    "automation_addon_discount": 0,
+    "automation_addon_included": true,
+    "base_price_id": "price_1LJBjaI9qXomtXqSvYfzmmEU",
+    "currency": "usd",
+    "features": Object {
+      "automation_cancellations_flow": Object {
+        "enabled": true,
+      },
+      "automation_managed_rules": Object {
+        "enabled": true,
+      },
+      "automation_report_issue_flow": Object {
+        "enabled": true,
+      },
+      "automation_return_flow": Object {
+        "enabled": true,
+      },
+      "automation_self_service_statistics": Object {
+        "enabled": true,
+      },
+      "automation_track_order_flow": Object {
+        "enabled": true,
+      },
+    },
+    "interval": "month",
+    "legacy_id": "pro-automation-full-price-monthly-usd-4",
+    "name": "Pro",
+    "order": 3,
+    "price_id": "price_1LJBjbI9qXomtXqS2sfi1J7P",
+    "product_id": "prod_LsHD5xmSqoFBBs",
+  },
+  Object {
+    "additional_cost_per_ticket": 0.2,
+    "amount": 30000,
+    "automation_addon_discount": 0,
+    "automation_addon_included": true,
+    "base_price_id": "price_1LJBjYI9qXomtXqSLEjOrpmV",
+    "currency": "usd",
+    "features": Object {
+      "automation_cancellations_flow": Object {
+        "enabled": true,
+      },
+      "automation_managed_rules": Object {
+        "enabled": true,
+      },
+      "automation_report_issue_flow": Object {
+        "enabled": true,
+      },
+      "automation_return_flow": Object {
+        "enabled": true,
+      },
+      "automation_self_service_statistics": Object {
+        "enabled": true,
+      },
+      "automation_track_order_flow": Object {
+        "enabled": true,
+      },
+    },
+    "interval": "year",
+    "legacy_id": "basic-automation-full-price-yearly-usd-4",
+    "name": "Basic",
+    "order": 2,
+    "price_id": "price_1LJBjZI9qXomtXqSPNgkEZpl",
+    "product_id": "prod_LsHD5xmSqoFBBs",
+  },
+  Object {
+    "additional_cost_per_ticket": 0.18,
+    "amount": 45000,
+    "automation_addon_discount": 0,
+    "automation_addon_included": true,
+    "base_price_id": "price_1LJBjdI9qXomtXqS8RzPPA7K",
+    "currency": "usd",
+    "features": Object {
+      "automation_cancellations_flow": Object {
+        "enabled": true,
+      },
+      "automation_managed_rules": Object {
+        "enabled": true,
+      },
+      "automation_report_issue_flow": Object {
+        "enabled": true,
+      },
+      "automation_return_flow": Object {
+        "enabled": true,
+      },
+      "automation_self_service_statistics": Object {
+        "enabled": true,
+      },
+      "automation_track_order_flow": Object {
+        "enabled": true,
+      },
+    },
+    "interval": "month",
+    "legacy_id": "advanced-automation-full-price-monthly-usd-4",
+    "name": "Advanced",
+    "order": 4,
+    "price_id": "price_1LJBjeI9qXomtXqSXRjmhPsL",
+    "product_id": "prod_LsHD5xmSqoFBBs",
+  },
+  Object {
+    "additional_cost_per_ticket": 0.18,
+    "amount": 180000,
+    "automation_addon_discount": 0,
+    "automation_addon_included": true,
+    "base_price_id": "price_1LJBjbI9qXomtXqShB9YLy7V",
+    "currency": "usd",
+    "features": Object {
+      "automation_cancellations_flow": Object {
+        "enabled": true,
+      },
+      "automation_managed_rules": Object {
+        "enabled": true,
+      },
+      "automation_report_issue_flow": Object {
+        "enabled": true,
+      },
+      "automation_return_flow": Object {
+        "enabled": true,
+      },
+      "automation_self_service_statistics": Object {
+        "enabled": true,
+      },
+      "automation_track_order_flow": Object {
+        "enabled": true,
+      },
+    },
+    "interval": "year",
+    "legacy_id": "pro-automation-full-price-yearly-usd-4",
+    "name": "Pro",
+    "order": 3,
+    "price_id": "price_1LJBjdI9qXomtXqSlp9sh6iQ",
+    "product_id": "prod_LsHD5xmSqoFBBs",
+  },
+  Object {
+    "additional_cost_per_ticket": 0.18,
+    "amount": 450000,
+    "automation_addon_discount": 0,
+    "automation_addon_included": true,
+    "base_price_id": "price_1LJBjfI9qXomtXqSeKJ5lJjD",
+    "currency": "usd",
+    "features": Object {
+      "automation_cancellations_flow": Object {
+        "enabled": true,
+      },
+      "automation_managed_rules": Object {
+        "enabled": true,
+      },
+      "automation_report_issue_flow": Object {
+        "enabled": true,
+      },
+      "automation_return_flow": Object {
+        "enabled": true,
+      },
+      "automation_self_service_statistics": Object {
+        "enabled": true,
+      },
+      "automation_track_order_flow": Object {
+        "enabled": true,
+      },
+    },
+    "interval": "year",
+    "legacy_id": "advanced-automation-full-price-yearly-usd-4",
+    "name": "Advanced",
+    "order": 4,
+    "price_id": "price_1LJBjgI9qXomtXqSBZoBcg7G",
+    "product_id": "prod_LsHD5xmSqoFBBs",
+  },
+]
+`;
+
 exports[`billing selectors getAutomationProduct should return the automation product 1`] = `
 Object {
   "id": "prod_LsHD5xmSqoFBBs",
@@ -1780,6 +1989,46 @@ Object {
 exports[`billing selectors getPrices should return the prices 1`] = `
 Array [
   Object {
+    "amount": 0,
+    "currency": "usd",
+    "included_tickets": 0,
+    "interval": "month",
+    "name": "SMS Addon Free Monthly",
+    "price_id": "price_1M6V7uI9qXomtXqSpsoVQWUw",
+    "product_id": "prod_MT8Fzk7vmcT73m",
+    "sms_extra_ticket_cost": 1.6,
+  },
+  Object {
+    "amount": 90,
+    "currency": "usd",
+    "included_tickets": 150,
+    "interval": "month",
+    "name": "SMS Addon 150 Monthly",
+    "price_id": "price_1LkBzKI9qXomtXqSEXrSV8o4",
+    "product_id": "prod_MT8Fzk7vmcT73m",
+    "sms_extra_ticket_cost": 1.2,
+  },
+  Object {
+    "amount": 175,
+    "currency": "usd",
+    "included_tickets": 250,
+    "interval": "month",
+    "name": "Voice Addon 250 Monthly",
+    "price_id": "price_1LkAzlI9qXomtXqSxOOrhzcU",
+    "product_id": "prod_MT6fyh00TCFRGZ",
+    "voice_extra_ticket_cost": 1.4,
+  },
+  Object {
+    "amount": 1750,
+    "currency": "usd",
+    "included_tickets": 7500,
+    "interval": "month",
+    "name": "Voice Addon 7500 Monthly",
+    "price_id": "price_1LkB44I9qXomtXqS4aF9ibna",
+    "product_id": "prod_MT6fyh00TCFRGZ",
+    "voice_extra_ticket_cost": 0.47,
+  },
+  Object {
     "additional_cost_per_ticket": 0.2,
     "amount": 3000,
     "automation_addon_discount": 0,
@@ -1812,6 +2061,16 @@ Array [
     "order": 2,
     "price_id": "price_1LJBjXI9qXomtXqSSX34F3we",
     "product_id": "prod_LsHD5xmSqoFBBs",
+  },
+  Object {
+    "amount": 5768,
+    "currency": "usd",
+    "included_tickets": 15000,
+    "interval": "month",
+    "name": "SMS Addon 15000 Monthly",
+    "price_id": "price_1LkBzLI9qXomtXqSgzXlOnP4",
+    "product_id": "prod_MT8Fzk7vmcT73m",
+    "sms_extra_ticket_cost": 0.77,
   },
   Object {
     "addons": Array [
@@ -3655,6 +3914,68 @@ Array [
       },
     ],
     "type": "automation",
+  },
+  Object {
+    "id": "prod_MT8Fzk7vmcT73m",
+    "prices": Array [
+      Object {
+        "amount": 90,
+        "currency": "usd",
+        "included_tickets": 150,
+        "interval": "month",
+        "name": "SMS Addon 150 Monthly",
+        "price_id": "price_1LkBzKI9qXomtXqSEXrSV8o4",
+        "product_id": "prod_MT8Fzk7vmcT73m",
+        "sms_extra_ticket_cost": 1.2,
+      },
+      Object {
+        "amount": 5768,
+        "currency": "usd",
+        "included_tickets": 15000,
+        "interval": "month",
+        "name": "SMS Addon 15000 Monthly",
+        "price_id": "price_1LkBzLI9qXomtXqSgzXlOnP4",
+        "product_id": "prod_MT8Fzk7vmcT73m",
+        "sms_extra_ticket_cost": 0.77,
+      },
+      Object {
+        "amount": 0,
+        "currency": "usd",
+        "included_tickets": 0,
+        "interval": "month",
+        "name": "SMS Addon Free Monthly",
+        "price_id": "price_1M6V7uI9qXomtXqSpsoVQWUw",
+        "product_id": "prod_MT8Fzk7vmcT73m",
+        "sms_extra_ticket_cost": 1.6,
+      },
+    ],
+    "type": "sms",
+  },
+  Object {
+    "id": "prod_MT6fyh00TCFRGZ",
+    "prices": Array [
+      Object {
+        "amount": 175,
+        "currency": "usd",
+        "included_tickets": 250,
+        "interval": "month",
+        "name": "Voice Addon 250 Monthly",
+        "price_id": "price_1LkAzlI9qXomtXqSxOOrhzcU",
+        "product_id": "prod_MT6fyh00TCFRGZ",
+        "voice_extra_ticket_cost": 1.4,
+      },
+      Object {
+        "amount": 1750,
+        "currency": "usd",
+        "included_tickets": 7500,
+        "interval": "month",
+        "name": "Voice Addon 7500 Monthly",
+        "price_id": "price_1LkB44I9qXomtXqS4aF9ibna",
+        "product_id": "prod_MT6fyh00TCFRGZ",
+        "voice_extra_ticket_cost": 0.47,
+      },
+    ],
+    "type": "voice",
   },
 ]
 `;

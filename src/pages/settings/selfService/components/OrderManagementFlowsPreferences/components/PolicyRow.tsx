@@ -17,7 +17,7 @@ import {selfServiceConfigurationUpdated} from 'state/entities/selfServiceConfigu
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
-import AutomationSubscriptionModal from 'pages/settings/billing/automation/AutomationSubscriptionModal'
+import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
 import UpgradeButton from 'pages/common/components/UpgradeButton'
 import {getIconFromUrl} from 'utils'
 import useAppSelector from 'hooks/useAppSelector'

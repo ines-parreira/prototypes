@@ -1,9 +1,10 @@
 import {createSelector} from 'reselect'
 import {fromJS, List, Map} from 'immutable'
 import _isEmpty from 'lodash/isEmpty'
-
 import moment from 'moment-timezone'
+
 import {
+    getCheapestPrice,
     getFormattedAmount,
     getFullPrice,
     isHelpdeskPrice,
@@ -13,17 +14,19 @@ import {
     HelpdeskPrice,
     Product,
     ProductType,
+    SMSPrice,
+    VoicePrice,
 } from 'models/billing/types'
 import {
     AccountFeature,
     AccountFeatureMetadata,
     CurrentAccountState,
-} from '../currentAccount/types'
+} from 'state/currentAccount/types'
 import {
     getCurrentAccountState,
     getCurrentSubscription,
-} from '../currentAccount/selectors'
-import {getActiveIntegrations} from '../integrations/selectors'
+} from 'state/currentAccount/selectors'
+import {getActiveIntegrations} from 'state/integrations/selectors'
 import {RootState} from '../types'
 
 import {BillingImmutableState, BillingState} from './types'
@@ -57,11 +60,33 @@ export const getAutomationProduct = createSelector(getProducts, (products) => {
     )!
 })
 
+export const getVoiceProduct = createSelector(getProducts, (products) => {
+    return products.find(
+        (product): product is Product<VoicePrice> =>
+            product.type === ProductType.Voice
+    )
+})
+
+export const getSMSProduct = createSelector(getProducts, (products) => {
+    return products.find(
+        (product): product is Product<SMSPrice> =>
+            product.type === ProductType.SMS
+    )
+})
+
 export const getCurrentProducts = createSelector(
     getCurrentSubscription as (state: RootState) => CurrentAccountState,
     getHelpdeskProduct,
     getAutomationProduct,
-    (currentSubscription, helpdeskProduct, automationProduct) => {
+    getVoiceProduct,
+    getSMSProduct,
+    (
+        currentSubscription,
+        helpdeskProduct,
+        automationProduct,
+        voiceProduct,
+        smsProduct
+    ) => {
         const currentSubscriptionProducts: Record<string, string> = (
             (currentSubscription.get('products') || fromJS({})) as Map<any, any>
         ).toJS()
@@ -69,6 +94,8 @@ export const getCurrentProducts = createSelector(
         const currentProducts: {
             [ProductType.Helpdesk]: HelpdeskPrice
             [ProductType.Automation]?: AutomationPrice
+            [ProductType.Voice]?: VoicePrice
+            [ProductType.SMS]?: SMSPrice
         } = {} as any
         Object.entries(currentSubscriptionProducts).forEach(
             ([productId, priceId]) => {
@@ -85,6 +112,19 @@ export const getCurrentProducts = createSelector(
                             (price) => price.price_id === priceId
                         )!
                 }
+
+                if (voiceProduct?.id === productId) {
+                    currentProducts[ProductType.Voice] =
+                        voiceProduct.prices.find(
+                            (price) => price.price_id === priceId
+                        )!
+                }
+
+                if (smsProduct?.id === productId) {
+                    currentProducts[ProductType.SMS] = smsProduct.prices.find(
+                        (price) => price.price_id === priceId
+                    )!
+                }
             }
         )
         return !_isEmpty(currentProducts) ? currentProducts : undefined
@@ -99,6 +139,20 @@ export const getCurrentHelpdeskProduct = createSelector(
 export const getCurrentAutomationProduct = createSelector(
     getCurrentProducts,
     (currentProducts) => currentProducts?.automation
+)
+
+export const getCurrentVoiceProduct = createSelector(
+    getCurrentProducts,
+    (currentProducts) =>
+        currentProducts?.voice?.amount !== 0
+            ? currentProducts?.voice
+            : undefined
+)
+
+export const getCurrentSMSProduct = createSelector(
+    getCurrentProducts,
+    (currentProducts) =>
+        currentProducts?.sms?.amount !== 0 ? currentProducts?.sms : undefined
 )
 
 export const getCurrentHelpdeskName = createSelector(
@@ -163,7 +217,13 @@ export const getCurrentProductsFeatures = createSelector(
     (currentProducts) =>
         Object.values(currentProducts || {}).reduce<
             Partial<Record<AccountFeature, AccountFeatureMetadata>>
-        >((acc, product) => Object.assign(acc, product.features), {})
+        >(
+            (acc, product) =>
+                'features' in product
+                    ? Object.assign(acc, product.features)
+                    : acc,
+            {}
+        )
 )
 
 export const makeHasFeature = createSelector(
@@ -173,7 +233,7 @@ export const makeHasFeature = createSelector(
 
 export const getPrices = createSelector(getProducts, (products) =>
     products
-        .reduce<Array<HelpdeskPrice | AutomationPrice>>(
+        .reduce<Array<HelpdeskPrice | AutomationPrice | VoicePrice | SMSPrice>>(
             (acc, product) => acc.concat(product.prices),
             []
         )
@@ -184,16 +244,20 @@ export const getHelpdeskPrices = createSelector(getHelpdeskProduct, (product) =>
     product.prices.sort((a, b) => a.amount - b.amount)
 )
 
+export const getAutomationPrices = createSelector(
+    getAutomationProduct,
+    (product) => product.prices.sort((a, b) => a.amount - b.amount)
+)
+
 export const getPricesMap = createSelector(getProducts, (products) =>
-    products.reduce<Record<string, HelpdeskPrice | AutomationPrice>>(
-        (acc, product) => {
-            product.prices.map((price) => {
-                acc[price.price_id] = price
-            })
-            return acc
-        },
-        {}
-    )
+    products.reduce<
+        Record<string, HelpdeskPrice | AutomationPrice | VoicePrice | SMSPrice>
+    >((acc, product) => {
+        product.prices.map((price) => {
+            acc[price.price_id] = price
+        })
+        return acc
+    }, {})
 )
 
 export const getAutomationPricesMap = createSelector(
@@ -338,4 +402,16 @@ export const makeGetIsAllowedToChangePrice = createSelector(
             )
         }
     }
+)
+
+export const getCheapestSMSPrice = createSelector(
+    getSMSProduct,
+    getCurrentHelpdeskInterval,
+    (SMSProduct, interval) => getCheapestPrice(SMSProduct?.prices, interval)
+)
+
+export const getCheapestVoicePrice = createSelector(
+    getVoiceProduct,
+    getCurrentHelpdeskInterval,
+    (voiceProduct, interval) => getCheapestPrice(voiceProduct?.prices, interval)
 )

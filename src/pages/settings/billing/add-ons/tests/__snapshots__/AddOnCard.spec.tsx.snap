@@ -1,0 +1,123 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AddOnCard /> should render the add-on card for a subscriber 1`] = `
+<div
+  class="card"
+>
+  <div
+    class="card-title basic card-title"
+  >
+    <span
+      class="title"
+    >
+      SMS
+    </span>
+  </div>
+  <div
+    class="card-body card-body"
+  >
+    <div
+      class="description"
+    >
+      <div
+        class="badge badge"
+      >
+        CURRENT PLAN
+      </div>
+      <div
+        class="title"
+      >
+        15,000 SMS Tickets
+      </div>
+    </div>
+    <div
+      class="footer"
+    >
+      <button
+        class="wrapper button fill secondary medium"
+        type="button"
+      >
+        Manage
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<AddOnCard /> should render the add-on card for non-subscriber 1`] = `
+<div
+  class="card"
+>
+  <div
+    class="card-title card-title"
+  >
+    <span
+      class="title"
+    >
+      Voice
+    </span>
+    <div
+      class="subscription-amount-wrapper"
+    >
+      Starting at 
+      <div
+        class="amountWrapper subscription-amount"
+      >
+        <span
+          class="amount"
+        >
+          <b>
+            $10
+          </b>
+           
+          / 
+          month
+        </span>
+      </div>
+    </div>
+  </div>
+  <div
+    class="card-body card-body"
+  >
+    <div
+      class="description"
+    >
+      <p>
+        You are not a subscriber yet, what are you waiting for?
+      </p>
+      <p>
+        You’re currently on
+         
+        <a
+          href="https://www.gorgias.com/pricing"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          trial pricing
+        </a>
+         
+        until you add a plan.
+      </p>
+    </div>
+    <div
+      class="footer"
+    >
+      <a
+        href=""
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        View pricing details
+      </a>
+      <a
+        class="wrapper fill secondary medium"
+        href="http://gorgias.typeform.com/to/gH7HYEHu"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Subscribe
+      </a>
+    </div>
+  </div>
+</div>
+`;

@@ -25,7 +25,7 @@ const TotalAmount = ({
 }: Props) => {
     return (
         <div className={css.row}>
-            {amount && currency && interval ? (
+            {amount !== undefined && currency && interval ? (
                 <>
                     <div>Total</div>
                     <div className={css.amountContainer}>

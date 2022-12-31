@@ -2,7 +2,7 @@ import React, {ReactNode, useEffect, useState} from 'react'
 import {Table} from 'reactstrap'
 import classnames from 'classnames'
 
-import AutomationSubscriptionModal from 'pages/settings/billing/automation/AutomationSubscriptionModal'
+import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'

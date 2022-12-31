@@ -39,6 +39,15 @@ describe('<BillingContainer />', () => {
     })
 
     it('should render the billing page', () => {
+        jest.spyOn(global.Date, 'now').mockImplementation(() => 1672617660000)
+
+        store = mockStore({
+            ...defaultState,
+            billing: fromJS({
+                products: [],
+            }),
+        })
+
         const {container} = renderWithRouter(
             <Provider store={store}>
                 <BillingContainer />
@@ -46,6 +55,7 @@ describe('<BillingContainer />', () => {
         )
 
         expect(container.firstChild).toMatchSnapshot()
+        ;(global.Date.now as unknown as jest.SpyInstance).mockRestore()
     })
 
     it('should render billing details when the payment method is shopify', () => {
@@ -55,6 +65,7 @@ describe('<BillingContainer />', () => {
             }),
             billing: fromJS({
                 paymentMethod: PaymentMethodType.Shopify,
+                products: [],
             }),
         })
         const {getByTestId} = renderWithRouter(
@@ -71,6 +82,9 @@ describe('<BillingContainer />', () => {
             ...defaultState,
             currentAccount: fromJS({
                 meta: {},
+            }),
+            billing: fromJS({
+                products: [],
             }),
         })
 

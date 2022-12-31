@@ -19,11 +19,11 @@ import {
     legacyBasicHelpdeskPrice,
     products,
 } from 'fixtures/productPrices'
-import AutomationSection from '../AutomationSection'
+import AutomationCard from '../AutomationCard'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-describe('<AutomationSection />', () => {
+describe('<AutomationCard />', () => {
     const defaultState: Partial<RootState> = {
         currentAccount: fromJS({
             ...account,
@@ -40,7 +40,7 @@ describe('<AutomationSection />', () => {
     it('should render', () => {
         const {container} = render(
             <Provider store={mockStore(defaultState)}>
-                <AutomationSection />
+                <AutomationCard />
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
@@ -60,7 +60,7 @@ describe('<AutomationSection />', () => {
                     }),
                 })}
             >
-                <AutomationSection />
+                <AutomationCard />
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
@@ -88,7 +88,7 @@ describe('<AutomationSection />', () => {
                     }),
                 })}
             >
-                <AutomationSection />
+                <AutomationCard />
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
@@ -108,7 +108,7 @@ describe('<AutomationSection />', () => {
                     }),
                 })}
             >
-                <AutomationSection />
+                <AutomationCard />
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()

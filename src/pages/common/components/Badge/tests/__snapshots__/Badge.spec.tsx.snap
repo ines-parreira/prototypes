@@ -1,13 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Badge /> should render a badge 1`] = `
-<div
-  class="badge"
->
-  Shopify
-</div>
-`;
-
 exports[`<Badge /> should render a badge with custom style 1`] = `
 <div
   class="badge"

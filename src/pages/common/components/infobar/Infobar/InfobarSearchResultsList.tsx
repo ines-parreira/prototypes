@@ -3,7 +3,7 @@ import {List, Map} from 'immutable'
 import classnames from 'classnames'
 import {Card, CardBody, CardTitle} from 'reactstrap'
 
-import Badge from 'pages/common/components/Badge/Badge'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {getDisplayName} from 'state/customers/helpers'
 
 import css from '../Infobar.less'
@@ -61,7 +61,10 @@ export default class InfobarSearchResultsList extends React.Component<Props> {
                                         >
                                             {getDisplayName(customer!)}
                                             {isDefaultCustomer && (
-                                                <Badge className="ml-2">
+                                                <Badge
+                                                    type={ColorType.Grey}
+                                                    className="ml-2"
+                                                >
                                                     Current Customer
                                                 </Badge>
                                             )}

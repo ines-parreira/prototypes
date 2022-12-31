@@ -1,4 +1,4 @@
-import React, {ComponentProps} from 'react'
+import React, {ComponentProps, useMemo} from 'react'
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 
@@ -6,44 +6,40 @@ import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel, {
     ButtonIconPosition,
 } from 'pages/common/components/button/ButtonIconLabel'
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../store/middlewares/segmentTracker'
+import {logEvent, SegmentEventToSend} from 'store/middlewares/segmentTracker'
 
 import css from './UpgradeButton.less'
 
 type Props = {
-    segmentEventToSend?: Partial<SegmentEventToSend>
-    state?: any
+    hasIcon?: boolean
     label?: string
     position?: ButtonIconPosition
+    segmentEventToSend?: SegmentEventToSend
+    state?: any
 } & ComponentProps<typeof Button>
-
-type SegmentEventToSend = {
-    name: SegmentEvent
-    props: any
-}
-
-function sendSegmentEvent(segmentEventToSend?: Partial<SegmentEventToSend>) {
-    if (
-        segmentEventToSend &&
-        Object.prototype.hasOwnProperty.call(segmentEventToSend, 'name') &&
-        Object.prototype.hasOwnProperty.call(segmentEventToSend, 'props')
-    ) {
-        logEvent(segmentEventToSend.name!, segmentEventToSend.props)
-    }
-}
 
 const UpgradeButton = ({
     className,
     label = 'Upgrade',
     onClick,
     state = {},
-    segmentEventToSend = {},
+    segmentEventToSend,
     position = 'right',
+    hasIcon = true,
     ...other
 }: Props) => {
+    const buttonContent = useMemo(
+        () =>
+            hasIcon ? (
+                <ButtonIconLabel icon="auto_awesome" position={position}>
+                    {label}
+                </ButtonIconLabel>
+            ) : (
+                label
+            ),
+        [hasIcon, label, position]
+    )
+
     return (
         <div className={className}>
             <div
@@ -57,32 +53,30 @@ const UpgradeButton = ({
                     <Button
                         {...other}
                         onClick={(e) => {
-                            sendSegmentEvent(segmentEventToSend)
+                            !!segmentEventToSend &&
+                                logEvent(
+                                    segmentEventToSend.name,
+                                    segmentEventToSend.props
+                                )
                             onClick(e)
                         }}
                     >
-                        <ButtonIconLabel
-                            icon="auto_awesome"
-                            position={position}
-                        >
-                            {label}
-                        </ButtonIconLabel>
+                        {buttonContent}
                     </Button>
                 ) : (
                     // TODO[COR-1569]: There should be a single source of truth for the state
                     <Link to={{pathname: '/app/settings/billing/plans', state}}>
                         <Button
                             {...other}
-                            onClick={() => {
-                                sendSegmentEvent(segmentEventToSend)
-                            }}
+                            onClick={() =>
+                                !!segmentEventToSend &&
+                                logEvent(
+                                    segmentEventToSend.name,
+                                    segmentEventToSend.props
+                                )
+                            }
                         >
-                            <ButtonIconLabel
-                                icon="auto_awesome"
-                                position={position}
-                            >
-                                {label}
-                            </ButtonIconLabel>
+                            {buttonContent}
                         </Button>
                     </Link>
                 )}

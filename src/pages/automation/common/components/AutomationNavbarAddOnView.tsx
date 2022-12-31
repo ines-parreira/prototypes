@@ -3,7 +3,7 @@ import {useLocalStorage} from 'react-use'
 
 import useSelfServiceIntegrations from 'pages/automation/common/hooks/useSelfServiceIntegrations'
 import useShopifyIntegrations from 'pages/automation/common/hooks/useShopifyIntegrations'
-import AutomationSubscriptionModal from 'pages/settings/billing/automation/AutomationSubscriptionModal'
+import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
 import {ShopType} from 'models/selfServiceConfiguration/types'
 import {SelfServiceIntegration} from 'models/integration/types'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'

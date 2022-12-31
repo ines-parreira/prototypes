@@ -17,14 +17,22 @@ export type PlanLimits = {
 export enum ProductType {
     Helpdesk = 'helpdesk',
     Automation = 'automation',
+    Voice = 'voice',
+    SMS = 'sms',
 }
 
-export type Product<T = HelpdeskPrice | AutomationPrice> = {
+export type Product<
+    T = HelpdeskPrice | AutomationPrice | VoicePrice | SMSPrice
+> = {
     id: string
     type: T extends HelpdeskPrice
         ? ProductType.Helpdesk
         : T extends AutomationPrice
         ? ProductType.Automation
+        : T extends VoicePrice
+        ? ProductType.Voice
+        : T extends SMSPrice
+        ? ProductType.SMS
         : never
     prices: T[]
 }
@@ -81,4 +89,14 @@ export type AutomationPrice = BasePrice & {
     base_price_id: string
     features: AutomationPriceFeatures
     additional_cost_per_ticket: number
+}
+
+export type VoicePrice = Omit<BasePrice, 'legacy_id' | 'order'> & {
+    included_tickets: number
+    voice_extra_ticket_cost: number
+}
+
+export type SMSPrice = Omit<BasePrice, 'legacy_id' | 'order'> & {
+    included_tickets: number
+    sms_extra_ticket_cost: number
 }

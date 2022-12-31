@@ -51,7 +51,8 @@ describe('<IntegrationsList />', () => {
         ],
         features: {},
         helpdeskName: 'Pro',
-        prices: [basicMonthlyHelpdeskPrice, basicMonthlyAutomationPrice],
+        helpdeskPrices: [basicMonthlyHelpdeskPrice],
+        automationPrices: [basicMonthlyAutomationPrice],
         accountDomain: 'acme',
     }
 

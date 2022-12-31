@@ -8,8 +8,8 @@ import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {RuleRecipe} from 'models/ruleRecipe/types'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
-import AutomationSubscriptionButton from 'pages/settings/billing/automation/AutomationSubscriptionButton'
-import AutomationSubscriptionModal from 'pages/settings/billing/automation/AutomationSubscriptionModal'
+import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionButton'
+import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
 
 import RuleRecipeCard from './components/RuleRecipeCard'
 

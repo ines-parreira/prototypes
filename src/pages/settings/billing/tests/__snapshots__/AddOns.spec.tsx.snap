@@ -1,0 +1,569 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AddOns /> should not render the add ons before January 2nd 1`] = `
+<div
+  class="wrapper"
+>
+  <h4
+    class="header"
+  >
+    <i
+      class="icon material-icons"
+    >
+      add_box
+    </i>
+    Add-ons
+  </h4>
+  <div
+    class="addOns"
+  >
+    <div
+      class="card automation-card card"
+    >
+      <div
+        class="card-title card-title"
+      >
+        <span
+          class="title"
+        >
+          Automation
+        </span>
+        <div
+          class="amountWrapper subscription-amount"
+        >
+          <span
+            class="amount"
+          >
+            <b>
+              $30
+            </b>
+             
+            / 
+            month
+          </span>
+        </div>
+      </div>
+      <div
+        class="card-body card-body"
+      >
+        <div
+          class="description"
+        >
+          <p>
+            Automate up to 20% of all interactions with quick response flows, order management flows, article recommendation, and advanced statistics.
+          </p>
+        </div>
+        <div
+          class="footer"
+        >
+          <a
+            href="https://docs.gorgias.com/en-US/automation-add-on-overview-81855#pricing"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            View pricing details
+          </a>
+          <div
+            class="button"
+          >
+            <div
+              class="d-flex align-items-center upgradeLink"
+            >
+              <button
+                class="wrapper fill secondary medium"
+                type="button"
+              >
+                Subscribe
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<AddOns /> should render the add ons after January 2nd 1`] = `
+<div
+  class="wrapper"
+>
+  <h4
+    class="header"
+  >
+    <i
+      class="icon material-icons"
+    >
+      add_box
+    </i>
+    Add-ons
+  </h4>
+  <div
+    class="addOns"
+  >
+    <div
+      class="card card"
+    >
+      <div
+        class="card-title card-title"
+      >
+        <span
+          class="title"
+        >
+          Automation
+        </span>
+        <div
+          class="amountWrapper subscription-amount"
+        >
+          <span
+            class="amount"
+          >
+            <b>
+              $30
+            </b>
+             
+            / 
+            month
+          </span>
+        </div>
+      </div>
+      <div
+        class="card-body card-body"
+      >
+        <div
+          class="description"
+        >
+          <p>
+            Automate up to 20% of all interactions with quick response flows, order management flows, article recommendation, and advanced statistics.
+          </p>
+        </div>
+        <div
+          class="footer"
+        >
+          <a
+            href="https://docs.gorgias.com/en-US/automation-add-on-overview-81855#pricing"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            View pricing details
+          </a>
+          <div
+            class="button"
+          >
+            <div
+              class="d-flex align-items-center upgradeLink"
+            >
+              <button
+                class="wrapper fill secondary medium"
+                type="button"
+              >
+                Subscribe
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="card card"
+    >
+      <div
+        class="card-title card-title"
+      >
+        <span
+          class="title"
+        >
+          Voice
+        </span>
+        <div
+          class="subscription-amount-wrapper"
+        >
+          Starting at 
+          <div
+            class="amountWrapper subscription-amount"
+          >
+            <span
+              class="amount"
+            >
+              <b>
+                $175
+              </b>
+               
+              / 
+              month
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        class="card-body card-body"
+      >
+        <div
+          class="description"
+        >
+          <p>
+            <b>
+              Provide hands-free phone support
+            </b>
+             
+            right from the helpdesk.
+          </p>
+          <p>
+            You’re currently on
+             
+            <a
+              href="https://www.gorgias.com/pricing"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              trial pricing
+            </a>
+             
+            until you add a plan.
+          </p>
+        </div>
+        <div
+          class="footer"
+        >
+          <a
+            href="https://docs.gorgias.com/en-US/billing-and-subscriptions-81852#voice-tickets"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            View pricing details
+          </a>
+          <a
+            class="wrapper fill secondary medium"
+            href="http://gorgias.typeform.com/to/gH7HYEHu"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Subscribe
+          </a>
+        </div>
+      </div>
+    </div>
+    <div
+      class="card card"
+    >
+      <div
+        class="card-title card-title"
+      >
+        <span
+          class="title"
+        >
+          SMS
+        </span>
+        <div
+          class="subscription-amount-wrapper"
+        >
+          Starting at 
+          <div
+            class="amountWrapper subscription-amount"
+          >
+            <span
+              class="amount"
+            >
+              <b>
+                $90
+              </b>
+               
+              / 
+              month
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        class="card-body card-body"
+      >
+        <div
+          class="description"
+        >
+          <p>
+            <b>
+              Deliver fast, conversational support
+            </b>
+             
+            to customers on the go.
+          </p>
+          <p>
+            You’re currently on
+             
+            <a
+              href="https://www.gorgias.com/pricing"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              trial pricing
+            </a>
+             
+            until you add a plan.
+          </p>
+        </div>
+        <div
+          class="footer"
+        >
+          <a
+            href="https://docs.gorgias.com/en-US/billing-and-subscriptions-81852#sms-tickets"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            View pricing details
+          </a>
+          <a
+            class="wrapper fill secondary medium"
+            href="http://gorgias.typeform.com/to/gH7HYEHu"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Subscribe
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<AddOns /> should render the add ons for pay-as-you-go subscribers as if they were non subscribers 1`] = `
+<div
+  class="wrapper"
+>
+  <h4
+    class="header"
+  >
+    <i
+      class="icon material-icons"
+    >
+      add_box
+    </i>
+    Add-ons
+  </h4>
+  <div
+    class="addOns"
+  >
+    <div
+      class="card card"
+    >
+      <div
+        class="card-title card-title"
+      >
+        <span
+          class="title"
+        >
+          Automation
+        </span>
+        <div
+          class="amountWrapper subscription-amount"
+        >
+          <span
+            class="amount"
+          >
+            <b>
+              $30
+            </b>
+             
+            / 
+            month
+          </span>
+        </div>
+      </div>
+      <div
+        class="card-body card-body"
+      >
+        <div
+          class="description"
+        >
+          <p>
+            Automate up to 20% of all interactions with quick response flows, order management flows, article recommendation, and advanced statistics.
+          </p>
+        </div>
+        <div
+          class="footer"
+        >
+          <a
+            href="https://docs.gorgias.com/en-US/automation-add-on-overview-81855#pricing"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            View pricing details
+          </a>
+          <div
+            class="button"
+          >
+            <div
+              class="d-flex align-items-center upgradeLink"
+            >
+              <button
+                class="wrapper fill secondary medium"
+                type="button"
+              >
+                Subscribe
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="card card"
+    >
+      <div
+        class="card-title card-title"
+      >
+        <span
+          class="title"
+        >
+          Voice
+        </span>
+        <div
+          class="subscription-amount-wrapper"
+        >
+          Starting at 
+          <div
+            class="amountWrapper subscription-amount"
+          >
+            <span
+              class="amount"
+            >
+              <b>
+                $175
+              </b>
+               
+              / 
+              month
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        class="card-body card-body"
+      >
+        <div
+          class="description"
+        >
+          <p>
+            <b>
+              Provide hands-free phone support
+            </b>
+             
+            right from the helpdesk.
+          </p>
+          <p>
+            You’re currently on
+             
+            <a
+              href="https://www.gorgias.com/pricing"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              trial pricing
+            </a>
+             
+            until you add a plan.
+          </p>
+        </div>
+        <div
+          class="footer"
+        >
+          <a
+            href="https://docs.gorgias.com/en-US/billing-and-subscriptions-81852#voice-tickets"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            View pricing details
+          </a>
+          <a
+            class="wrapper fill secondary medium"
+            href="http://gorgias.typeform.com/to/gH7HYEHu"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Subscribe
+          </a>
+        </div>
+      </div>
+    </div>
+    <div
+      class="card card"
+    >
+      <div
+        class="card-title card-title"
+      >
+        <span
+          class="title"
+        >
+          SMS
+        </span>
+        <div
+          class="subscription-amount-wrapper"
+        >
+          Starting at 
+          <div
+            class="amountWrapper subscription-amount"
+          >
+            <span
+              class="amount"
+            >
+              <b>
+                $90
+              </b>
+               
+              / 
+              month
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        class="card-body card-body"
+      >
+        <div
+          class="description"
+        >
+          <p>
+            <b>
+              Deliver fast, conversational support
+            </b>
+             
+            to customers on the go.
+          </p>
+          <p>
+            You’re currently on
+             
+            <a
+              href="https://www.gorgias.com/pricing"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              trial pricing
+            </a>
+             
+            until you add a plan.
+          </p>
+        </div>
+        <div
+          class="footer"
+        >
+          <a
+            href="https://docs.gorgias.com/en-US/billing-and-subscriptions-81852#sms-tickets"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            View pricing details
+          </a>
+          <a
+            class="wrapper fill secondary medium"
+            href="http://gorgias.typeform.com/to/gH7HYEHu"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Subscribe
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

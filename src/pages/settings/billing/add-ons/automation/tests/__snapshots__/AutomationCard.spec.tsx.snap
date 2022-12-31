@@ -1,0 +1,271 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AutomationCard /> should render 1`] = `
+<div
+  class="card"
+>
+  <div
+    class="card-title card-title"
+  >
+    <span
+      class="title"
+    >
+      Automation
+    </span>
+    <div
+      class="amountWrapper subscription-amount"
+    >
+      <span
+        class="amount"
+      >
+        <b>
+          $30
+        </b>
+         
+        / 
+        month
+      </span>
+    </div>
+  </div>
+  <div
+    class="card-body card-body"
+  >
+    <div
+      class="description"
+    >
+      <p>
+        Automate up to 20% of all interactions with quick response flows, order management flows, article recommendation, and advanced statistics.
+      </p>
+    </div>
+    <div
+      class="footer"
+    >
+      <a
+        href="https://docs.gorgias.com/en-US/automation-add-on-overview-81855#pricing"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        View pricing details
+      </a>
+      <div
+        class="button"
+      >
+        <div
+          class="d-flex align-items-center upgradeLink"
+        >
+          <button
+            class="wrapper fill secondary medium"
+            type="button"
+          >
+            Subscribe
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<AutomationCard /> should render for customers already with full add-on features 1`] = `
+<div
+  class="card"
+>
+  <div
+    class="card-title basic card-title"
+  >
+    <span
+      class="title"
+    >
+      Automation
+    </span>
+  </div>
+  <div
+    class="card-body card-body"
+  >
+    <div
+      class="description"
+    >
+      <p
+        class="mb0"
+      >
+        <b>
+          You have access to:
+        </b>
+      </p>
+      <div>
+        <ul>
+          <li>
+            Quick response flows in chat
+          </li>
+          <li>
+            Order management flows in chat and help center
+          </li>
+          <li>
+            Help center article recommendation
+          </li>
+          <li>
+            Advanced automation statistics
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div
+      class="footer"
+    >
+      <button
+        class="wrapper button fill secondary medium"
+        type="button"
+      >
+        Manage add-on
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<AutomationCard /> should render for customers already with legacy add-on features 1`] = `
+<div
+  class="card"
+>
+  <div
+    class="card-title card-title"
+  >
+    <span
+      class="title"
+    >
+      Automation
+    </span>
+    <div
+      class="amountWrapper subscription-amount"
+    >
+      <span
+        class="amount"
+      >
+        <b>
+          $15
+        </b>
+         
+        / 
+        month
+      </span>
+    </div>
+  </div>
+  <div
+    class="card-body card-body"
+  >
+    <div
+      class="description"
+    >
+      <p>
+        Leverage the power of the
+         
+        <b>
+          advanced self-service features
+        </b>
+         like customized report issue flow and self-service integrated in help center!
+        <br />
+        <b>
+          Track
+        </b>
+         your customers’ requests and see
+         
+        <b>
+          how many you automate
+        </b>
+        .
+      </p>
+    </div>
+    <div
+      class="footer"
+    >
+      <a
+        href="https://docs.gorgias.com/en-US/automation-add-on-overview-81855#pricing"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        View pricing details
+      </a>
+      <div
+        class="button"
+      >
+        <div
+          class="d-flex align-items-center upgradeLink"
+        >
+          <button
+            class="wrapper fill secondary medium"
+            type="button"
+          >
+            Subscribe
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<AutomationCard /> should render for trialing customers 1`] = `
+<div
+  class="card"
+>
+  <div
+    class="card-title card-title"
+  >
+    <span
+      class="title"
+    >
+      Automation
+    </span>
+    <div
+      class="amountWrapper subscription-amount"
+    >
+      <span
+        class="amount"
+      >
+        <b>
+          $30
+        </b>
+         
+        / 
+        month
+      </span>
+    </div>
+  </div>
+  <div
+    class="card-body card-body"
+  >
+    <div
+      class="description"
+    >
+      <p>
+        Automate up to 20% of all interactions with quick response flows, order management flows, article recommendation, and advanced statistics.
+      </p>
+    </div>
+    <div
+      class="footer"
+    >
+      <a
+        href="https://docs.gorgias.com/en-US/automation-add-on-overview-81855#pricing"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        View pricing details
+      </a>
+      <div
+        class="button"
+      >
+        <div
+          class="d-flex align-items-center upgradeLink"
+        >
+          <button
+            class="wrapper fill secondary medium"
+            type="button"
+          >
+            Subscribe
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

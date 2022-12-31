@@ -1,5 +1,13 @@
+import _minBy from 'lodash/minBy'
+
 import {ColorType} from 'pages/common/components/Badge/Badge'
-import {AutomationPrice, HelpdeskPrice} from 'models/billing/types'
+import {
+    AutomationPrice,
+    HelpdeskPrice,
+    PlanInterval,
+    SMSPrice,
+    VoicePrice,
+} from 'models/billing/types'
 
 export const PLAN_NAME_TO_BADGE_COLOR: Record<string, ColorType> = {
     Basic: ColorType.Classic,
@@ -19,7 +27,7 @@ export const getFullPrice = (discounted_amount: number, discount: number) => {
 }
 
 export function isHelpdeskPrice(
-    price: HelpdeskPrice | AutomationPrice
+    price: HelpdeskPrice | AutomationPrice | VoicePrice | SMSPrice
 ): price is HelpdeskPrice {
     return 'public' in price
 }
@@ -27,3 +35,16 @@ export function isHelpdeskPrice(
 export function getFormattedAmount(amountInCents: number) {
     return amountInCents / 100
 }
+
+export const getCheapestPrice = (
+    prices?: (VoicePrice | SMSPrice)[],
+    interval?: PlanInterval
+) =>
+    !!prices
+        ? _minBy(
+              prices.filter(
+                  (price) => price.interval === interval && price.amount !== 0
+              ),
+              (price) => price.amount
+          )
+        : undefined

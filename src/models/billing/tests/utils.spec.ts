@@ -1,8 +1,15 @@
 import {
     basicMonthlyHelpdeskPrice,
     basicMonthlyAutomationPrice,
+    smsProduct,
 } from 'fixtures/productPrices'
-import {getFullPrice, isHelpdeskPrice, getFormattedAmount} from '../utils'
+
+import {
+    getCheapestPrice,
+    getFormattedAmount,
+    getFullPrice,
+    isHelpdeskPrice,
+} from '../utils'
 
 describe('getFullPrice', () => {
     it('should return the full price from discounted price and the percentage of discount presented in decimal', () => {
@@ -37,5 +44,13 @@ describe('isHelpdeskPrice', () => {
 describe('getFormattedAmount', () => {
     it('should return a formatted amount', () => {
         expect(getFormattedAmount(1234)).toBe(12.34)
+    })
+})
+
+describe('getCheapestPrice', () => {
+    it('returns cheapest non-null amount amongst prices', () => {
+        expect(
+            getCheapestPrice(smsProduct.prices, smsProduct.prices[0].interval)
+        ).toEqual(smsProduct.prices[0])
     })
 })

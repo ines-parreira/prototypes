@@ -4,7 +4,6 @@ import moment from 'moment'
 import {
     Card,
     CardBody,
-    CardGroup,
     CardTitle,
     Progress,
     UncontrolledTooltip,
@@ -14,7 +13,6 @@ import {useAsyncFn} from 'react-use'
 import {PlanInterval} from 'models/billing/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {fetchCurrentUsage} from 'state/billing/actions'
-import {openChat} from 'utils'
 import {
     getCurrentUsage,
     getIsCurrentHelpdeskLegacy,
@@ -34,7 +32,6 @@ import history from 'pages/history'
 import useAppSelector from 'hooks/useAppSelector'
 import {convertLegacyPlanNameToPublicPlanName} from 'utils/paywalls'
 
-import AutomationSection from './automation/AutomationSection'
 import CurrentPlanBadge from './plans/CurrentPlanBadge'
 
 import css from './BillingHelpdeskUsage.less'
@@ -163,159 +160,130 @@ const BillingHelpdeskUsage = () => {
                 <LegacyPlanBanner isCustomPrice={isCustom} />
             )}
             <BillingHeader icon="insert_chart">Usage & Plans</BillingHeader>
-            <CardGroup className={css['card-group']}>
-                <Card
-                    className={classnames(
-                        {[css['card-current-plan']]: hasSubscription},
-                        css.card
-                    )}
+            <Card
+                className={classnames(
+                    {[css['card-current-plan']]: hasSubscription},
+                    css.card
+                )}
+            >
+                <CardTitle
+                    className={classnames(css['card-title'], {
+                        [css['current-plan-title']]: hasSubscription,
+                        [css[formattedPriceName.toLowerCase()]]:
+                            hasSubscription,
+                        [css.legacy]: isCurrentHelpdeskLegacy,
+                    })}
                 >
-                    <CardTitle
-                        className={classnames(css['card-title'], {
-                            [css['current-plan-title']]: hasSubscription,
-                            [css[formattedPriceName.toLowerCase()]]:
-                                hasSubscription,
-                            [css.legacy]: isCurrentHelpdeskLegacy,
-                        })}
-                    >
-                        {hasSubscription ? (
-                            <>
-                                <div className={css.planTitle}>{planTitle}</div>
-                                {isCurrentHelpdeskLegacy ? (
-                                    <LegacyPlanBadge />
-                                ) : (
-                                    <CurrentPlanBadge
-                                        planName={formattedPriceName}
-                                    />
-                                )}
-                            </>
-                        ) : (
-                            'No active plan'
-                        )}
-                    </CardTitle>
-                    <CardBody
-                        data-candu-id={
-                            hasSubscription
-                                ? 'billing-subscription-usage'
-                                : 'billing-trial-usage'
-                        }
-                        className={css['card-body']}
-                    >
-                        {hasSubscription && (
-                            <div className={css.billableTickets}>
-                                <div className={css['ticket-numbers']}>
-                                    {usedTickets.toLocaleString()}/
-                                    {freeTickets.toLocaleString()} tickets{' '}
-                                    <a id="current-period">
-                                        <i className="material-icons text-muted">
-                                            info_outline
-                                        </i>
-                                    </a>
-                                </div>
-                                <UncontrolledTooltip target="current-period">
-                                    Number of tickets included in your current
-                                    plan VS total number of tickets used
-                                    between:
-                                    <br />
-                                    {periodStart} and {periodEnd}
-                                </UncontrolledTooltip>
+                    {hasSubscription ? (
+                        <>
+                            <div className={css.planTitle}>{planTitle}</div>
+                            {isCurrentHelpdeskLegacy ? (
+                                <LegacyPlanBadge />
+                            ) : (
+                                <CurrentPlanBadge
+                                    className={
+                                        css[
+                                            `badge-${formattedPriceName.toLowerCase()}`
+                                        ]
+                                    }
+                                />
+                            )}
+                        </>
+                    ) : (
+                        'No active plan'
+                    )}
+                </CardTitle>
+                <CardBody
+                    data-candu-id={
+                        hasSubscription
+                            ? 'billing-subscription-usage'
+                            : 'billing-trial-usage'
+                    }
+                    className={css['card-body']}
+                >
+                    {hasSubscription && (
+                        <div className={css['billable-tickets']}>
+                            <div className={css['ticket-numbers']}>
+                                {usedTickets.toLocaleString()}/
+                                {freeTickets.toLocaleString()} tickets{' '}
+                                <a id="current-period">
+                                    <i className="material-icons text-muted">
+                                        info_outline
+                                    </i>
+                                </a>
+                            </div>
+                            <UncontrolledTooltip target="current-period">
+                                Number of tickets included in your current plan
+                                VS total number of tickets used between:
+                                <br />
+                                {periodStart} and {periodEnd}
+                            </UncontrolledTooltip>
 
+                            <Progress multi className={css['usage-progress']}>
                                 <Progress
-                                    multi
-                                    className={css['usage-progress']}
-                                >
-                                    <Progress
-                                        bar
-                                        value={percentUsed}
-                                        barClassName={classnames(
-                                            css.progressBar,
-                                            {
-                                                [css.isWarning]:
-                                                    freeTickets &&
-                                                    usedTickets >=
-                                                        freeTickets &&
-                                                    percentRemaining === 0,
-                                            }
-                                        )}
-                                    />
-                                    {!!freeTickets &&
-                                        usedTickets >= freeTickets &&
-                                        percentRemaining > 0 && (
-                                            <Progress
-                                                bar
-                                                value={percentRemaining}
-                                                barClassName={classnames(
-                                                    css.remainingProgressBar,
-                                                    {
-                                                        [css.isDanger]:
-                                                            percentRemaining >=
-                                                            20,
-                                                    }
-                                                )}
-                                            />
-                                        )}
-                                </Progress>
-                                <div className="flex justify-content-between">
-                                    <div>${extraCost} extra cost</div>
-                                    <div>
-                                        <strong>Usage reset on:</strong>{' '}
-                                        {periodEnd}
-                                    </div>
+                                    bar
+                                    value={percentUsed}
+                                    barClassName={classnames(css.progressBar, {
+                                        [css.isWarning]:
+                                            freeTickets &&
+                                            usedTickets >= freeTickets &&
+                                            percentRemaining === 0,
+                                    })}
+                                />
+                                {!!freeTickets &&
+                                    usedTickets >= freeTickets &&
+                                    percentRemaining > 0 && (
+                                        <Progress
+                                            bar
+                                            value={percentRemaining}
+                                            barClassName={classnames(
+                                                css.remainingProgressBar,
+                                                {
+                                                    [css.isDanger]:
+                                                        percentRemaining >= 20,
+                                                }
+                                            )}
+                                        />
+                                    )}
+                            </Progress>
+                            <div className="flex justify-content-between">
+                                <div>${extraCost} extra cost</div>
+                                <div>
+                                    <strong>Usage reset on:</strong> {periodEnd}
                                 </div>
                             </div>
-                        )}
-                        <div className={css.description}>
-                            {isTrialing ? (
-                                <>
-                                    Your free trial started on{' '}
-                                    <strong>
-                                        {currentSubscriptionTrialStart}
-                                    </strong>{' '}
-                                    and will expire on{' '}
-                                    <strong>
-                                        {currentSubscriptionTrialEnd}
-                                    </strong>
-                                </>
-                            ) : hasSubscription ? (
-                                <>
-                                    Your current subscription started on{' '}
-                                    <strong>{currentSubscriptionStart}</strong>
-                                </>
-                            ) : (
-                                'Please select a plan before updating you payment method.'
-                            )}
                         </div>
-                        <Button
-                            className={css.action}
-                            intent={hasSubscription ? 'primary' : 'secondary'}
-                            onClick={() => {
-                                history.push('/app/settings/billing/plans')
-                            }}
-                        >
-                            {isTrialing || !hasSubscription
-                                ? 'Choose plan'
-                                : 'Update plan'}
-                        </Button>
-                    </CardBody>
-                </Card>
-                {hasSubscription && <AutomationSection />}
-            </CardGroup>
-
-            <p>
-                If you have any questions or if you want to unsubscribe, please
-                contact us at{' '}
-                <a
-                    className={css.link}
-                    href={`mailto:${window.GORGIAS_SUPPORT_EMAIL}`}
-                >
-                    {window.GORGIAS_SUPPORT_EMAIL}
-                </a>{' '}
-                or{' '}
-                <a className={css.link} href="" onClick={openChat}>
-                    Live Chat
-                </a>
-                .
-            </p>
+                    )}
+                    <div className={css.description}>
+                        {isTrialing ? (
+                            <>
+                                Your free trial started on{' '}
+                                <strong>{currentSubscriptionTrialStart}</strong>{' '}
+                                and will expire on{' '}
+                                <strong>{currentSubscriptionTrialEnd}</strong>
+                            </>
+                        ) : hasSubscription ? (
+                            <>
+                                Your current subscription started on{' '}
+                                <strong>{currentSubscriptionStart}</strong>
+                            </>
+                        ) : (
+                            'Please select a plan before updating you payment method.'
+                        )}
+                    </div>
+                    <Button
+                        className={css.action}
+                        intent={hasSubscription ? 'primary' : 'secondary'}
+                        onClick={() => {
+                            history.push('/app/settings/billing/plans')
+                        }}
+                    >
+                        {isTrialing || !hasSubscription
+                            ? 'Choose plan'
+                            : 'Update plan'}
+                    </Button>
+                </CardBody>
+            </Card>
         </div>
     )
 }

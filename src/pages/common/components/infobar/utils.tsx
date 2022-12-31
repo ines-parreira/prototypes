@@ -771,7 +771,11 @@ export function guessFieldValueFromRawData(
         }
         case 'points': {
             if (!isNaN(data)) {
-                fieldValue = <Badge>{parseFloat(data).toLocaleString()}</Badge>
+                fieldValue = (
+                    <Badge type={ColorType.Grey}>
+                        {parseFloat(data).toLocaleString()}
+                    </Badge>
+                )
             }
 
             break

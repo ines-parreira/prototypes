@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 
-import AutomationSubscriptionModal from 'pages/settings/billing/automation/AutomationSubscriptionModal'
+import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
 
 import AutomationNavbarAddOnPaywallViewItem from './AutomationNavbarAddOnPaywallViewItem'
 

@@ -13,10 +13,11 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
+    getAutomationPrices,
     getCurrentHelpdeskMaxIntegrations,
     getCurrentHelpdeskName,
-    getPrices,
     getCurrentProductsFeatures,
+    getHelpdeskPrices,
 } from 'state/billing/selectors'
 import {
     getActiveIntegrations,
@@ -35,13 +36,14 @@ import {getCheapestPriceNameForFeature} from 'utils/paywalls'
 import IntegrationListRow from './Row'
 
 export const List = ({
+    activeIntegrations,
+    automationPrices,
+    features,
+    helpdeskName,
+    helpdeskPrices,
     integrations,
     integrationsList,
-    activeIntegrations,
     maxIntegrations,
-    features,
-    prices,
-    helpdeskName,
 }: ConnectedProps<typeof connector>) => {
     const [isLoading, setLoading] = useState(true)
     const [apps, setApps] = useState<AppListItem[]>([])
@@ -212,7 +214,7 @@ export const List = ({
             if (requiredFeature && !features[requiredFeature]?.enabled) {
                 let requiredPriceName = getCheapestPriceNameForFeature(
                     requiredFeature,
-                    prices
+                    [...automationPrices, ...helpdeskPrices]
                 )
                 // Kind of a hacky way because `prices` variable doesn't
                 // contain the custom prices (Enterprise prices == Custom prices)
@@ -282,7 +284,8 @@ const connector = connect((state: RootState) => ({
     features: getCurrentProductsFeatures(state),
     integrations: getIntegrations(state),
     integrationsList: getIntegrationsList(state),
-    prices: getPrices(state),
+    automationPrices: getAutomationPrices(state),
+    helpdeskPrices: getHelpdeskPrices(state),
     helpdeskName: getCurrentHelpdeskName(state),
 }))
 

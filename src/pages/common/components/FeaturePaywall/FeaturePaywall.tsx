@@ -1,18 +1,19 @@
 import React from 'react'
 
 import {paywallConfigs as defaultPaywallConfigs} from 'config/paywalls'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     AccountFeature,
     AccountFeatureMetadata,
 } from 'state/currentAccount/types'
 import {
-    getPrices,
+    getAutomationPrices,
+    getHelpdeskPrices,
     getIsCurrentHelpdeskLegacy,
     getIsCurrentHelpdeskCustom,
     getCurrentHelpdeskName,
 } from 'state/billing/selectors'
 import {getCheapestPriceNameForFeature} from 'utils/paywalls'
-import useAppSelector from 'hooks/useAppSelector'
 
 import Paywall, {PaywallTheme, UpgradeType} from '../Paywall/Paywall'
 
@@ -25,10 +26,13 @@ const FeaturePaywall = ({
     feature,
     paywallConfigs = defaultPaywallConfigs,
 }: Props) => {
-    const prices = useAppSelector(getPrices)
+    const automationPrices = useAppSelector(getAutomationPrices)
+    const helpdeskPrices = useAppSelector(getHelpdeskPrices)
     const isProductLegacy = useAppSelector(getIsCurrentHelpdeskLegacy)
     const isProductCustom = useAppSelector(getIsCurrentHelpdeskCustom)
     const helpdeskName = useAppSelector(getCurrentHelpdeskName)
+
+    const prices = [...automationPrices, ...helpdeskPrices]
 
     const shouldKeepPrice =
         isProductCustom ||

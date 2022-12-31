@@ -19,10 +19,6 @@
         }
     }
 
-    .card-group {
-        margin-bottom: 16px;
-    }
-
     .card-body {
         color: @classic-neutral-grey-5;
         padding: 16px;
@@ -85,8 +81,9 @@
         background: @classic-feedback-success;
     }
 
-    .billableTickets {
+    .billable-tickets {
         flex: 0 0 100%;
+        margin-bottom: 24px;
     }
 
     .custom {
@@ -130,5 +127,21 @@
         @media @mobiles, @tablets {
             margin-top: 20px;
         }
+    }
+
+    .badge-basic,
+    .badge-pro {
+        background-color: @classic-accessory-blue-bg;
+        color: @classic-main-primary-4;
+    }
+
+    .badge-advanced {
+        background-color: @classic-accessory-green-bg;
+        color: @classic-accessory-green-text;
+    }
+
+    .badge-custom {
+        background-color: @classic-accessory-orange-bg;
+        color: @classic-accessory-brown-text;
     }
 }

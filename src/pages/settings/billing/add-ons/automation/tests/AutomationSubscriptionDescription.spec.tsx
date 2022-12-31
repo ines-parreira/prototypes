@@ -22,7 +22,7 @@ import {
 import {RootState, StoreDispatch} from 'state/types'
 
 import AutomationSubscriptionDescription from '../AutomationSubscriptionDescription'
-import * as billingFixtures from '../../../../../fixtures/billing'
+import * as billingFixtures from '../../../../../../fixtures/billing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

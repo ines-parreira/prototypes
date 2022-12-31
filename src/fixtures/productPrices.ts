@@ -7,8 +7,9 @@ import {
     PlanInterval,
     Product,
     ProductType,
+    SMSPrice,
+    VoicePrice,
 } from 'models/billing/types'
-import {BillingProducts} from 'state/billing/types'
 
 export const basicHelpdeskPriceFeatures: HelpdeskPriceFeatures = {
     [AccountFeature.Api1stPartyRateLimit]: {
@@ -651,8 +652,76 @@ export const starterHelpdeskPrice: HelpdeskPrice = {
     trial_period_days: 7,
 }
 
+export const voicePrice0: VoicePrice = {
+    amount: 0,
+    currency: 'usd',
+    included_tickets: 0,
+    interval: PlanInterval.Month,
+    name: 'Voice Addon Free Monthly',
+    price_id: 'price_1LkClqI9qXomtXqSlgYCG6Wm',
+    product_id: 'prod_MT6fyh00TCFRGZ',
+    voice_extra_ticket_cost: 2.4,
+}
+
+export const voicePrice1: VoicePrice = {
+    amount: 175,
+    currency: 'usd',
+    included_tickets: 250,
+    interval: PlanInterval.Month,
+    name: 'Voice Addon 250 Monthly',
+    price_id: 'price_1LkAzlI9qXomtXqSxOOrhzcU',
+    product_id: 'prod_MT6fyh00TCFRGZ',
+    voice_extra_ticket_cost: 1.4,
+}
+
+const voicePrice2: VoicePrice = {
+    amount: 1750,
+    currency: 'usd',
+    included_tickets: 7500,
+    interval: PlanInterval.Month,
+    name: 'Voice Addon 7500 Monthly',
+    price_id: 'price_1LkB44I9qXomtXqS4aF9ibna',
+    product_id: 'prod_MT6fyh00TCFRGZ',
+    voice_extra_ticket_cost: 0.47,
+}
+
+export const smsPrice1: SMSPrice = {
+    amount: 90,
+    currency: 'usd',
+    included_tickets: 150,
+    interval: PlanInterval.Month,
+    name: 'SMS Addon 150 Monthly',
+    price_id: 'price_1LkBzKI9qXomtXqSEXrSV8o4',
+    product_id: 'prod_MT8Fzk7vmcT73m',
+    sms_extra_ticket_cost: 1.2,
+}
+
+const smsPrice2: SMSPrice = {
+    amount: 5768,
+    currency: 'usd',
+    included_tickets: 15000,
+    interval: PlanInterval.Month,
+    name: 'SMS Addon 15000 Monthly',
+    price_id: 'price_1LkBzLI9qXomtXqSgzXlOnP4',
+    product_id: 'prod_MT8Fzk7vmcT73m',
+    sms_extra_ticket_cost: 0.77,
+}
+
+export const smsPrice0: SMSPrice = {
+    amount: 0,
+    currency: 'usd',
+    included_tickets: 0,
+    interval: PlanInterval.Month,
+    name: 'SMS Addon Free Monthly',
+    price_id: 'price_1M6V7uI9qXomtXqSpsoVQWUw',
+    product_id: 'prod_MT8Fzk7vmcT73m',
+    sms_extra_ticket_cost: 1.6,
+}
+
 export const HELPDESK_PRODUCT_ID = 'prod_LsH6kV35G6zKWo'
 export const AUTOMATION_PRODUCT_ID = 'prod_LsHD5xmSqoFBBs'
+export const VOICE_PRODUCT_ID = 'prod_MT6fyh00TCFRGZ'
+export const SMS_PRODUCT_ID = 'prod_MT8Fzk7vmcT73m'
 
 export const helpdeskProduct: Product<HelpdeskPrice> = {
     id: HELPDESK_PRODUCT_ID,
@@ -680,4 +749,18 @@ export const automationProduct: Product<AutomationPrice> = {
     ],
 }
 
-export const products: BillingProducts = [helpdeskProduct, automationProduct]
+export const voiceProduct: Product<VoicePrice> = {
+    id: VOICE_PRODUCT_ID,
+    type: ProductType.Voice,
+    prices: [voicePrice1, voicePrice2],
+}
+
+export const smsProduct: Product<SMSPrice> = {
+    id: SMS_PRODUCT_ID,
+    type: ProductType.SMS,
+    prices: [smsPrice1, smsPrice2, smsPrice0],
+}
+
+export const products: Product<
+    HelpdeskPrice | AutomationPrice | SMSPrice | VoicePrice
+>[] = [helpdeskProduct, automationProduct, smsProduct, voiceProduct]
