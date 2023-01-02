@@ -2,31 +2,29 @@ import classnames from 'classnames'
 import {fromJS, List} from 'immutable'
 import React, {Fragment, useMemo, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import _camelCase from 'lodash/camelCase'
 
-import {IntegrationType} from '../../../../../models/integration/types'
+import {IntegrationType} from 'models/integration/types'
 import {
     IDENTIFIER_CATEGORIES,
     IDENTIFIER_VARIABLES_BY_CATEGORY,
-} from '../../../../../models/rule/constants'
-import {
-    IdentifierCategoryKey,
-    IdentifierElement,
-} from '../../../../../models/rule/types'
+} from 'models/rule/constants'
+import {IdentifierCategoryKey, IdentifierElement} from 'models/rule/types'
 import {
     generateExpression,
     getAstPath,
     getCategoryFromPath,
-} from '../../../../../models/rule/utils'
-import {RootState} from '../../../../../state/types'
+} from 'models/rule/utils'
+import {RootState} from 'state/types'
+import {ObjectExpressionPropertyKey, RuleOperation} from 'state/rules/types'
+import {makeHasIntegrationOfTypes} from 'state/integrations/selectors'
+import {RuleItemActions} from 'pages/settings/rules/types'
+import {getIconFromUrl} from 'utils'
 import {
-    ObjectExpressionPropertyKey,
-    RuleOperation,
-} from '../../../../../state/rules/types'
-import {makeHasIntegrationOfTypes} from '../../../../../state/integrations/selectors'
-import {RuleItemActions} from '../../../../settings/rules/types'
+    getHasAutomationAddOn,
+    getHasLegacyAutomationAddOnFeatures,
+} from 'state/billing/selectors'
+
 import RuleSelect from '../widget/RuleSelect'
-import {getIconFromUrl} from '../../../../../utils'
 
 import css from './MemberExpression.less'
 
@@ -40,17 +38,11 @@ type OwnProps = {
 
 export function MemberExpressionContainer({
     hasIntegrationType,
+    hasAutomationAddOn,
+    hasLegacyAutomationAddOnFeatures,
     object,
     property,
     parent,
-    filteredIntegrationTypes = [
-        IntegrationType.Shopify,
-        IntegrationType.Magento2,
-        IntegrationType.Recharge,
-        IntegrationType.Smile,
-        IntegrationType.SelfService,
-        IntegrationType.BigCommerce,
-    ],
     actions,
 }: OwnProps & ConnectedProps<typeof connector>) {
     const [selectedCategory, setSelectedCategory] =
@@ -73,15 +65,34 @@ export function MemberExpressionContainer({
 
     const filteredCategories = useMemo(() => {
         return IDENTIFIER_CATEGORIES.filter((category) => {
-            const currentIntegration = filteredIntegrationTypes.find(
-                (integrationType) =>
-                    category.value.startsWith(_camelCase(integrationType))
-            )
-
-            return !currentIntegration || hasIntegrationType(currentIntegration)
+            switch (category.value) {
+                case IdentifierCategoryKey.ShopifyCustomer:
+                case IdentifierCategoryKey.ShopifyLastOrder:
+                    return hasIntegrationType(IntegrationType.Shopify)
+                case IdentifierCategoryKey.Magento2Customer:
+                case IdentifierCategoryKey.Magento2LastOrder:
+                    return hasIntegrationType(IntegrationType.Magento2)
+                case IdentifierCategoryKey.RechargeLastSubscription:
+                case IdentifierCategoryKey.RechargeCustomer:
+                    return hasIntegrationType(IntegrationType.Recharge)
+                case IdentifierCategoryKey.SmileCustomer:
+                    return hasIntegrationType(IntegrationType.Smile)
+                case IdentifierCategoryKey.BigCommerceCustomer:
+                case IdentifierCategoryKey.BigCommerceLastOrder:
+                    return hasIntegrationType(IntegrationType.BigCommerce)
+                case IdentifierCategoryKey.SelfServiceFlow:
+                    return (
+                        hasAutomationAddOn || hasLegacyAutomationAddOnFeatures
+                    )
+                default:
+                    return true
+            }
         })
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [
+        hasIntegrationType,
+        hasAutomationAddOn,
+        hasLegacyAutomationAddOnFeatures,
+    ])
 
     const handleSelect = (value: string) => {
         const expression = fromJS(
@@ -231,6 +242,9 @@ export function MemberExpressionContainer({
 
 const connector = connect((state: RootState) => ({
     hasIntegrationType: makeHasIntegrationOfTypes(state),
+    hasAutomationAddOn: getHasAutomationAddOn(state),
+    hasLegacyAutomationAddOnFeatures:
+        getHasLegacyAutomationAddOnFeatures(state),
 }))
 
 export default connector(MemberExpressionContainer)

@@ -98,6 +98,7 @@ describe('<MemberExpression/>', () => {
         },
         parent: fromJS(['body', 0, 'test', 'arguments', 0]),
         hasIntegrationType: () => jest.fn().mockReturnValue(true),
+        hasAutomationAddOn: true,
     } as unknown as ComponentProps<typeof MemberExpressionContainer>
 
     it('should render', () => {

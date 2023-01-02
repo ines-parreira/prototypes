@@ -33,7 +33,6 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {updateSelfServiceConfiguration} from 'models/selfServiceConfiguration/resources'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {updateOrCreateIntegration} from 'state/integrations/actions'
 import {selfServiceConfigurationUpdated} from 'state/entities/selfServiceConfigurations/actions'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {CurrentAccountState} from 'state/currentAccount/types'
@@ -46,7 +45,6 @@ export const OrderManagementFlowsPreferences = () => {
         isLoadingConfig: loading,
         integration,
         configuration,
-        selfServiceIntegration,
     } = useConfigurationData()
 
     const hasSelfServiceV1Features = useAppSelector(
@@ -69,7 +67,7 @@ export const OrderManagementFlowsPreferences = () => {
             name: SegmentEvent.SelfServiceActivatedViaBanner,
             props: {
                 domain: account.get('domain'),
-                shop_name: selfServiceIntegration.getIn(['meta', 'shop_name']),
+                shop_name: integration.getIn(['meta', 'shop_name']),
             },
         }
 
@@ -79,16 +77,6 @@ export const OrderManagementFlowsPreferences = () => {
                     ...configuration,
                     deactivated_datetime: null,
                 }),
-                selfServiceIntegration
-                    ? dispatch(
-                          updateOrCreateIntegration(
-                              selfServiceIntegration.set(
-                                  'deactivated_datetime',
-                                  null
-                              )
-                          )
-                      )
-                    : null,
             ])
 
             void dispatch(selfServiceConfigurationUpdated(res))

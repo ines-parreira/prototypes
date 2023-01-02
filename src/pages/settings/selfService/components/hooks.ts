@@ -22,9 +22,6 @@ export const useConfigurationData = () => {
     const shopifyIntegrations = useAppSelector(
         DEPRECATED_getIntegrationsByTypes(IntegrationType.Shopify)
     )
-    const selfServiceIntegrations = useAppSelector(
-        DEPRECATED_getIntegrationsByTypes(IntegrationType.SelfService)
-    )
     const selfServiceConfigurations = useAppSelector(
         getSelfServiceConfigurations
     )
@@ -81,19 +78,9 @@ export const useConfigurationData = () => {
             )
         })
 
-    const selfServiceIntegration: Map<any, any> = selfServiceIntegrations.find(
-        (integration: Map<any, any>) => {
-            return (
-                integration.getIn(['meta', 'shop_name']) ===
-                shopifyIntegration.getIn(['meta', 'shop_name'])
-            )
-        }
-    )
-
     return {
         isLoadingConfig,
         configuration,
         integration: shopifyIntegration,
-        selfServiceIntegration,
     }
 }

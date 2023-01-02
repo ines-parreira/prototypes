@@ -1,16 +1,10 @@
-import React, {useEffect} from 'react'
-import {fromJS} from 'immutable'
+import React from 'react'
 
 import {getIconFromType} from 'state/integrations/helpers'
 import {IntegrationType} from 'models/integration/constants'
-import {
-    SelfServiceIntegration,
-    ShopifyIntegration,
-} from 'models/integration/types'
+import {ShopifyIntegration} from 'models/integration/types'
 import NavbarLink from 'pages/common/components/navbar/NavbarLink'
 import NavbarSectionBlock from 'pages/common/components/navbar/NavbarSectionBlock'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {updateOrCreateIntegration} from 'state/integrations/actions'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 
@@ -18,7 +12,6 @@ import AutomationNavbarAddOnPaywallViewItem from './AutomationNavbarAddOnPaywall
 
 type Props = {
     shopifyIntegration: ShopifyIntegration
-    selfServiceIntegration?: SelfServiceIntegration
     onToggle: () => void
     onSubscribeToAutomationAddOnClick: () => void
     isExpanded: boolean
@@ -26,30 +19,12 @@ type Props = {
 
 const AutomationNavbarAddOnSectionBlock = ({
     shopifyIntegration,
-    selfServiceIntegration,
     onSubscribeToAutomationAddOnClick,
     ...props
 }: Props) => {
-    const dispatch = useAppDispatch()
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
 
     const shopName = shopifyIntegration.meta.shop_name
-
-    useEffect(() => {
-        if (!selfServiceIntegration) {
-            void dispatch(
-                updateOrCreateIntegration(
-                    fromJS({
-                        name: `Self-service for ${shopName}`,
-                        type: IntegrationType.SelfService,
-                        meta: {shop_name: shopName},
-                        deactivated_datetime: null,
-                    })
-                )
-            )
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selfServiceIntegration])
 
     return (
         <NavbarSectionBlock

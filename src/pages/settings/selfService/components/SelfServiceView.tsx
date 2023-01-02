@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import {Col, Container, Row, Table} from 'reactstrap'
-import {List, Map} from 'immutable'
+import {Map} from 'immutable'
 import classnames from 'classnames'
 import moment from 'moment-timezone'
 
@@ -36,18 +36,6 @@ import css from './SelfServiceView.less'
 
 const selfServiceMock = getIconFromUrl('integrations/self_service.png')
 
-const _findSelfServiceIntegration = (
-    selfServiceIntegrations: List<Map<any, any>>,
-    shopifyIntegration: Map<any, any>
-): Map<any, any> | undefined => {
-    return selfServiceIntegrations.find((selfServiceIntegration) => {
-        return (
-            selfServiceIntegration?.getIn(['meta', 'shop_name']) ===
-            shopifyIntegration.getIn(['meta', 'shop_name'])
-        )
-    })
-}
-
 export const SelfServiceView = () => {
     const dispatch = useAppDispatch()
     const hasSelfServiceV1Features = useAppSelector(
@@ -57,9 +45,6 @@ export const SelfServiceView = () => {
 
     const shopifyIntegrations = useAppSelector(
         DEPRECATED_getIntegrationsByTypes(IntegrationType.Shopify)
-    )
-    const selfServiceIntegrations = useAppSelector(
-        DEPRECATED_getIntegrationsByTypes(IntegrationType.SelfService)
     )
     const {helpCenters} = useHelpCenterList({per_page: 900})
     const standaloneHelpCenters = useStandaloneHelpCenterAfterDismiss(
@@ -175,10 +160,6 @@ export const SelfServiceView = () => {
                                                             shopifyIntegration={
                                                                 shopifyIntegration
                                                             }
-                                                            selfServiceIntegration={_findSelfServiceIntegration(
-                                                                selfServiceIntegrations,
-                                                                shopifyIntegration
-                                                            )}
                                                         />
                                                     )
                                                 )}

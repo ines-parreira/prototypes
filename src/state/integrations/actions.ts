@@ -212,8 +212,6 @@ export function onCreateSuccess(
         nextStep = '/installation'
     } else if (resp.type === IntegrationType.Smooch) {
         nextStep = '/overview'
-    } else if (resp.type === IntegrationType.SelfService) {
-        return
     }
 
     if (!disableRedirect) {
@@ -251,10 +249,6 @@ export function onUpdateSuccess(
     })
 
     void fetchIntegrations()(dispatch)
-
-    if (resp.type === IntegrationType.SelfService) {
-        return Promise.resolve()
-    }
 
     let message = 'Integration successfully updated'
 

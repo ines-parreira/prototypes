@@ -1,11 +1,9 @@
-import React, {useMemo, useState} from 'react'
+import React, {useState} from 'react'
 import {useLocalStorage} from 'react-use'
 
-import useSelfServiceIntegrations from 'pages/automation/common/hooks/useSelfServiceIntegrations'
 import useShopifyIntegrations from 'pages/automation/common/hooks/useShopifyIntegrations'
 import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
 import {ShopType} from 'models/selfServiceConfiguration/types'
-import {SelfServiceIntegration} from 'models/integration/types'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 
 import AutomationNavbarAddOnSectionBlock from './AutomationNavbarAddOnSectionBlock'
@@ -22,22 +20,7 @@ const AutomationNavbarAddOnView = () => {
         []
     )
 
-    const selfServiceIntegrations = useSelfServiceIntegrations()
     const shopifyIntegrations = useShopifyIntegrations()
-
-    const selfServiceIntegrationsByShopName = useMemo(
-        () =>
-            selfServiceIntegrations.reduce<
-                Record<string, SelfServiceIntegration>
-            >((acc, selfServiceIntegration) => {
-                const shopName = selfServiceIntegration.meta.shop_name
-
-                acc[shopName] = selfServiceIntegration
-
-                return acc
-            }, {}),
-        [selfServiceIntegrations]
-    )
 
     const handleToggle = (key: `${ShopType}:${string}`) => {
         if (!collapsedSections) {
@@ -68,9 +51,6 @@ const AutomationNavbarAddOnView = () => {
                         <AutomationNavbarAddOnSectionBlock
                             key={key}
                             shopifyIntegration={shopifyIntegration}
-                            selfServiceIntegration={
-                                selfServiceIntegrationsByShopName[shopName]
-                            }
                             onToggle={() => {
                                 handleToggle(key)
                             }}
