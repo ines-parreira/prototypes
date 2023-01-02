@@ -91,7 +91,7 @@ export function SelfServiceFlowSelect({
                                 )
                             if (reasonSpecs) {
                                 options = options.push({
-                                    value: reason,
+                                    value: reason.reasonKey,
                                     label: `Report issue: ${
                                         reasonSpecs['label'] as string
                                     }`,
