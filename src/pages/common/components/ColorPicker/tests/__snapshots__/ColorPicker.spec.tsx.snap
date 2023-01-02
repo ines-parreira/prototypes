@@ -140,61 +140,33 @@ exports[`<ColorPicker /> should display popup on button click with default color
 `;
 
 exports[`<ColorPicker /> should display popup on button click with provided colors 1`] = `
-<body>
-  <div>
+Array [
+  <div
+    class="popover-inner"
+    role="tooltip"
+  >
     <div
-      class="d-inline-block"
-    >
-      <button
-        class="wrapper fill secondary medium"
-        id="color-picker-5"
-        type="button"
-      >
-        Pick a color
-      </button>
-    </div>
-  </div>
-  <div>
-    <div
-      class="fade"
+      class="popover-content popover-body"
     >
       <div
-        class="popover show bs-popover-auto"
-        style="position: absolute; top: 0px; left: 0px; transform: translate3d(NaNpx, NaNpx, 0); will-change: transform;"
-        x-placement="right"
+        class="popup"
       >
-        <div
-          class="popover-inner"
-          role="tooltip"
-        >
-          <div
-            class="popover-content popover-body"
-          >
-            <div
-              class="popup"
-            >
-              <button
-                aria-label="color #fff"
-                class="choice"
-                style="background-color: rgb(255, 255, 255);"
-                type="button"
-              />
-              <input
-                class="input form-control-sm form-control"
-                placeholder="ex: #eeeeee"
-                type="text"
-                value=""
-              />
-            </div>
-          </div>
-        </div>
-        <span
-          class="arrow"
+        <button
+          aria-label="color #fff"
+          class="choice"
+          style="background-color: rgb(255, 255, 255);"
+          type="button"
+        />
+        <input
+          class="input form-control-sm form-control"
+          placeholder="ex: #eeeeee"
+          type="text"
+          value=""
         />
       </div>
     </div>
-  </div>
-</body>
+  </div>,
+]
 `;
 
 exports[`<ColorPicker /> should render with background color matching defaultValue 1`] = `

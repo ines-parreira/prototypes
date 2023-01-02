@@ -45,13 +45,10 @@ describe('<ColorPicker />', () => {
         await screen.findByRole('textbox')
         expect(container.firstChild).toMatchSnapshot()
     })
-    it('should display popup on button click with provided colors', async () => {
-        const {container} = render(
-            <ColorPicker {...minProps} colors={['#fff']} />
-        )
+    it('should display popup on button click with provided colors', () => {
+        render(<ColorPicker {...minProps} colors={['#fff']} />)
         fireEvent.click(screen.getByRole('button'))
-        await screen.findByRole('textbox')
-        expect(container.parentElement).toMatchSnapshot()
+        expect(screen.getAllByRole('tooltip')).toMatchSnapshot()
     })
 
     it('should call onChange with the clicked color as argument', async () => {
