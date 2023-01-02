@@ -1,26 +1,35 @@
 @import '~css/new/colors';
 @import '~css/new/mixins';
+@import '~css/new/layout';
 
 :local {
     .container {
         display: flex;
-        gap: 24px;
-        padding: 24px;
+        gap: @layout-spacing-m;
+        padding: @layout-spacing-m;
         @media @mobiles {
             flex-direction: column;
         }
     }
 
     .spacer {
-        margin-bottom: 16px;
+        margin-bottom: @layout-spacing-s;
     }
 
     .cardContainer {
         flex-grow: 1;
     }
 
+    .searchLabel {
+        font-size: 20px;
+    }
+
+    .searchBold {
+        font-weight: 600;
+    }
+
     .noApps {
-        margin: 26px 0 30px 0;
+        margin: @layout-spacing-m 0 @layout-spacing-l 0;
         font-size: 18px;
     }
 
@@ -33,7 +42,7 @@
 
     .spinner {
         width: 50px;
-        margin-right: 8px;
+        margin-right: @layout-spacing-xs;
     }
 
     li.showDesktop {

@@ -6,7 +6,7 @@ exports[`<Card /> should render a basic link card with proper link 1`] = `
 >
   <a
     class="card interactive"
-    role="link"
+    data-testid="card-link"
     to="/app/settings/integrations/bigcommerce/connections"
   >
     <div

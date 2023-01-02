@@ -28,7 +28,7 @@ import App from './App'
 import IntegrationDetail from './integrations/integration/Integration'
 import AppDetail from './integrations/App'
 import IntegrationsList from './integrations/List'
-import AllIntegrations from './integrations/All'
+import IntegrationsStore from './integrations/Store'
 import PhoneNumbersListContainer from './phoneNumbers/PhoneNumbersListContainer'
 import PhoneNumberCreateContainer from './phoneNumbers/PhoneNumberCreateContainer'
 import PhoneNumberDetailContainer from './phoneNumbers/PhoneNumberDetailContainer'
@@ -831,7 +831,7 @@ export function IntegrationsSettingsRoutes({
                     exact
                     render={appRender({
                         content: memoizedWithUserRoleRequired(
-                            AllIntegrations,
+                            IntegrationsStore,
                             ADMIN_ROLE,
                             PageSection.Integrations
                         ),

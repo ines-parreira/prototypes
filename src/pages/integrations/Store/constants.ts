@@ -9,8 +9,6 @@ export const CATEGORY_DATA: {
 } = {
     [Category.FEATURED]: {
         title: 'Featured',
-        subtitle:
-            'Our trusted partners and other cool apps that we decided to feature. ',
         skipNav: true,
     },
     [Category.CHAT]: {
@@ -78,3 +76,5 @@ export const ORDERED_CATEGORIES: Category[] = [
 export const MAX_CARDS_DISPLAYED = 5
 
 export const CATEGORY_URL_PARAM = 'category'
+
+export const SEARCH_URL_PARAM = 'search'

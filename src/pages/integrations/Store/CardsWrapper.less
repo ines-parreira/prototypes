@@ -1,35 +1,16 @@
 @import '~css/new/colors';
 @import '~css/new/mixins';
+@import '~css/new/layout';
 
 :local {
-    .section {
-        margin-bottom: 0;
-    }
     .header {
-        margin-bottom: 14px;
+        margin-bottom: @layout-spacing-s;
     }
-
-    .titleWrapper {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .title {
-        margin-bottom: 4px;
-        font-weight: 600;
-        font-size: 20px;
-    }
-
-    .subtitle {
-        color: @classic-neutral-grey-5;
-    }
-
-    .cardWrapper {
+    .cardsWrapper {
         display: grid;
         grid-template-columns: repeat(1, 1fr);
-        gap: 16px;
-        margin: 0 0 26px 0;
+        gap: @layout-spacing-s;
+        margin: 0 0 @layout-spacing-m 0;
         padding: 0;
         @media @desktops {
             grid-template-columns: repeat(2, 1fr);

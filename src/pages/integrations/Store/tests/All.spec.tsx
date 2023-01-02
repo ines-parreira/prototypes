@@ -21,8 +21,9 @@ import client from 'models/api/resources'
 import {IntegrationType} from 'models/integration/constants'
 import {HelpdeskPrice, PlanInterval, ProductType} from 'models/billing/types'
 
+import {CATEGORY_URL_PARAM, SEARCH_URL_PARAM} from '../constants'
 import All, {addRequiredPlanToIntegrations} from '../All'
-import {LOADING_TEST_ID} from '../Card'
+import {CARD_LINK_ID, LOADING_TEST_ID} from '../Card'
 
 const mockStore = configureMockStore([thunk])
 
@@ -153,7 +154,7 @@ describe('<All />', () => {
                 <All />
             </Provider>,
             {
-                route: `?category=${encodeURIComponent(
+                route: `?${CATEGORY_URL_PARAM}=${encodeURIComponent(
                     dummyAppListData.categories[0]
                 )}`,
             }
@@ -168,7 +169,10 @@ describe('<All />', () => {
         const dummyAppsNumber = 6
         const dummyApps = []
         for (let i = 0; i < dummyAppsNumber; i++) {
-            dummyApps.push(dummyAppListData)
+            dummyApps.push({
+                ...dummyAppListData,
+                name: `${dummyAppListData.name}-${i}`,
+            })
         }
         mockApi.onGet('/api/apps/').reply(200, {data: dummyApps})
 
@@ -177,7 +181,7 @@ describe('<All />', () => {
                 <All />
             </Provider>,
             {
-                route: `?category=${encodeURIComponent(
+                route: `?${CATEGORY_URL_PARAM}=${encodeURIComponent(
                     dummyAppListData.categories[0]
                 )}`,
             }
@@ -185,6 +189,61 @@ describe('<All />', () => {
         await waitFor(() => {
             expect(screen.queryByText(/Loading/)).toBe(null)
         })
-        expect(screen.getAllByText(dummyAppListData.name).length).toBe(6)
+        const matcher = new RegExp(`${dummyAppListData.name}`)
+        expect(screen.getAllByText(matcher).length).toBe(dummyAppsNumber)
+    })
+
+    it('should show all the cards whose lowercased title match the search param', async () => {
+        const dummyAppsNumber = 4
+        const dummyApps = []
+        for (let i = 0; i < dummyAppsNumber; i++) {
+            dummyApps.push({
+                ...dummyAppListData,
+                name: `${dummyAppListData.name}-${i}`,
+            })
+        }
+        dummyApps[0].name = dummyApps[0].name.toUpperCase()
+        mockApi.onGet('/api/apps/').reply(200, {data: dummyApps})
+
+        renderWithRouter(
+            <Provider store={store}>
+                <All />
+            </Provider>,
+            {
+                route: `?${SEARCH_URL_PARAM}=${encodeURIComponent(
+                    dummyAppListData.name.toLowerCase()
+                )}`,
+            }
+        )
+        await waitFor(() => {
+            expect(screen.queryByText(/Loading/)).toBe(null)
+        })
+        expect(screen.getAllByTestId(CARD_LINK_ID).length).toBe(dummyAppsNumber)
+    })
+
+    it('should show 0 cards when there is no match', async () => {
+        const dummyAppsNumber = 4
+        const dummyApps = []
+        for (let i = 0; i < dummyAppsNumber; i++) {
+            dummyApps.push({
+                ...dummyAppListData,
+                name: `${dummyAppListData.name}-${i}`,
+            })
+        }
+        mockApi.onGet('/api/apps/').reply(200, {data: dummyApps})
+
+        renderWithRouter(
+            <Provider store={store}>
+                <All />
+            </Provider>,
+            {
+                route: `?${SEARCH_URL_PARAM}=nada}`,
+            }
+        )
+        await waitFor(() => {
+            expect(screen.queryByText(/Loading/)).toBe(null)
+        })
+        expect(screen.getByText(/0 results/))
+        expect(screen.queryAllByTestId(CARD_LINK_ID).length).toBe(0)
     })
 })

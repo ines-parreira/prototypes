@@ -1,7 +1,8 @@
 import React from 'react'
 import classnames from 'classnames'
-import {Link, useLocation} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 
+import useSearch from 'hooks/useSearch'
 import ArrowLink from 'pages/common/components/ArrowLink/ArrowLink'
 import {Category} from 'models/integration/types/app'
 
@@ -13,8 +14,8 @@ import {
 import css from './CategoryFilter.less'
 
 export default function CategoryFilter() {
-    const {search} = useLocation()
-    const activeCategory = new URLSearchParams(search).get(CATEGORY_URL_PARAM)
+    const search = useSearch<{[CATEGORY_URL_PARAM]: string}>()
+    const activeCategory = search[CATEGORY_URL_PARAM]
     return (
         <div className={css.container}>
             <nav>

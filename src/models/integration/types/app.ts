@@ -21,7 +21,7 @@ export enum Category {
 }
 
 export const isCategory = (
-    potentialCategory: string | null
+    potentialCategory: Maybe<string>
 ): potentialCategory is Category =>
     Object.values<string>(Category).includes(potentialCategory || '')
 

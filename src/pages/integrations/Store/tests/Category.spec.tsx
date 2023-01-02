@@ -8,18 +8,12 @@ import Category from '../Category'
 
 describe('<Category />', () => {
     it('should render correctly', () => {
-        const {container} = render(
-            <Category category={CategoryType.QUALITY}>
-                My category content
-            </Category>
-        )
+        const {container} = render(<Category category={CategoryType.QUALITY} />)
         expect(container.firstChild).toMatchSnapshot()
     })
     it('should render a "view all" arrow link', () => {
         renderWithRouter(
-            <Category category={CategoryType.QUALITY} showCategoryLink>
-                My category content
-            </Category>
+            <Category category={CategoryType.QUALITY} showCategoryLink />
         )
         expect(
             screen.getByText(/View All/).getAttribute('to')

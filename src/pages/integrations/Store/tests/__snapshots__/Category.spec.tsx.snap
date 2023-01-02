@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Category /> should render correctly 1`] = `
+<div
+  class="titleWrapper"
+>
+  <h2
+    class="title"
+  >
+    Quality Assurance
+  </h2>
+</div>
+`;

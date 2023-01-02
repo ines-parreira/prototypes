@@ -1,7 +1,7 @@
 import React, {ReactNode, useEffect, useState} from 'react'
-import {useLocation} from 'react-router-dom'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
+import useSearch from 'hooks/useSearch'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {getCheapestPriceNameForFeature} from 'utils/paywalls'
 import {fetchApps} from 'models/integration/resources'
@@ -37,14 +37,18 @@ import Spinner from 'pages/common/components/Spinner/Spinner'
 import {
     ORDERED_CATEGORIES,
     MAX_CARDS_DISPLAYED,
+    SEARCH_URL_PARAM,
     CATEGORY_URL_PARAM,
+    CATEGORY_DATA,
 } from './constants'
 import css from './All.less'
 import CategoryFilter from './CategoryFilter'
 import LimitWarning from './LimitWarning'
 import Category from './Category'
+import CardsWrapper from './CardsWrapper'
 import Card from './Card'
 import RequestApp from './RequestApp'
+import Search from './Search'
 
 type Item = IntegrationListItem | AppListItem
 
@@ -98,11 +102,12 @@ export default function All() {
 
     const prices = [...automationPrices, ...helpdeskPrices]
 
-    const {search} = useLocation()
-    const catagoryUrlParam = new URLSearchParams(search).get(CATEGORY_URL_PARAM)
-    const activeCategory = isCategory(catagoryUrlParam)
-        ? catagoryUrlParam
-        : null
+    const search =
+        useSearch<{[SEARCH_URL_PARAM]: string; [CATEGORY_URL_PARAM]: string}>()
+    const activeSearch = search[SEARCH_URL_PARAM]
+    const categoryParam = search[CATEGORY_URL_PARAM]
+    const activeCategory = isCategory(categoryParam) ? categoryParam : undefined
+
     const [isLoading, setLoading] = useState(true)
     const [apps, setApps] = useState<AppListItem[]>([])
 
@@ -144,76 +149,120 @@ export default function All() {
         ...apps,
     ]
 
-    const itemsByCategory = {} as Record<Partial<CategoryType>, typeof items>
+    const hasFilter = activeSearch || activeCategory
+    const cardsByCategory = {} as Record<Partial<CategoryType>, ReactNode[]>
+    const filteredCards: ReactNode[] = []
 
-    items.forEach((item) => {
-        item.categories.forEach((category) => {
-            if (typeof itemsByCategory[category] === 'undefined')
-                itemsByCategory[category] = []
-            itemsByCategory[category].push(item)
+    if (hasFilter) {
+        items.forEach((item) => {
+            const matchSearch = Boolean(
+                activeSearch && item.title.toLowerCase().includes(activeSearch)
+            )
+            const matchCategory = Boolean(
+                activeCategory && item.categories.includes(activeCategory)
+            )
+            if (
+                (!activeCategory && matchSearch) ||
+                (!activeSearch && matchCategory) ||
+                (matchSearch && matchCategory)
+            ) {
+                filteredCards.push(
+                    <Card
+                        key={item.title}
+                        item={item}
+                        isFeatured={item.categories.includes(
+                            CategoryType.FEATURED
+                        )}
+                        hasNoFeaturedPill={
+                            activeCategory === CategoryType.FEATURED
+                        }
+                    />
+                )
+            }
         })
-    })
+    } else {
+        items.forEach((item) => {
+            item.categories.forEach((category) => {
+                if (typeof cardsByCategory[category] === 'undefined') {
+                    cardsByCategory[category] = []
+                }
+                cardsByCategory[category].push(
+                    buildCardWithDisplayClasses(
+                        item,
+                        cardsByCategory[category].length,
+                        category
+                    )
+                )
+            })
+        })
+    }
 
     return (
         <main className="full-width">
-            <PageHeader title="All Apps" />
+            <PageHeader title="All Apps">
+                <Search />
+            </PageHeader>
             <div className={css.container}>
                 <CategoryFilter />
                 <div className={css.cardContainer}>
                     <LimitWarning className={css.spacer} />
-                    {activeCategory ? (
+
+                    {!activeSearch && activeCategory && (
                         <>
-                            <Category category={activeCategory}>
-                                {itemsByCategory[activeCategory]?.map(
-                                    (item, index) => (
-                                        <Card
-                                            key={`${index}-${item.title}`}
-                                            item={item}
-                                            isFeatured={item.categories.includes(
-                                                CategoryType.FEATURED
-                                            )}
-                                            hasNoFeaturedPill={
-                                                activeCategory ===
-                                                CategoryType.FEATURED
-                                            }
-                                        />
-                                    )
-                                )}
-                            </Category>
-                            {!isLoading && !itemsByCategory[activeCategory] && (
+                            <CardsWrapper
+                                header={<Category category={activeCategory} />}
+                            >
+                                {filteredCards}
+                            </CardsWrapper>
+                            {!isLoading && filteredCards.length === 0 && (
                                 <p className={css.noApps}>
                                     They are no apps in this category yet.
                                 </p>
                             )}
-                            {isLoading && (
-                                <p className={`${css.spinnerWrapper}`}>
-                                    <Spinner
-                                        className={css.spinner}
-                                        color="gloom"
-                                    />
-                                    Loading more Apps
-                                </p>
-                            )}
                         </>
-                    ) : (
-                        ORDERED_CATEGORIES.filter(
-                            (category) => category in itemsByCategory
-                        ).map((category) => {
-                            return (
-                                <Category
-                                    key={category}
-                                    category={category}
-                                    showCategoryLink
-                                >
-                                    {buildUnfilteredCards(
-                                        category,
-                                        itemsByCategory[category],
-                                        isLoading
-                                    )}
-                                </Category>
-                            )
-                        })
                     )}
+                    {activeSearch && (
+                        <CardsWrapper
+                            header={
+                                <SearchLabel
+                                    activeSearch={activeSearch}
+                                    activeCategory={activeCategory}
+                                    hasResults={Boolean(filteredCards.length)}
+                                />
+                            }
+                        >
+                            {filteredCards}
+                        </CardsWrapper>
+                    )}
+
+                    {hasFilter && isLoading && (
+                        <p className={`${css.spinnerWrapper}`}>
+                            <Spinner className={css.spinner} color="gloom" />
+                            Loading more Apps
+                        </p>
+                    )}
+
+                    {!hasFilter &&
+                        ORDERED_CATEGORIES.filter(
+                            (category) => category in cardsByCategory
+                        ).map((category) => {
+                            let cards = cardsByCategory[category]
+                            if (isLoading) cards = fillGap(cards)
+
+                            return (
+                                <CardsWrapper
+                                    key={category}
+                                    header={
+                                        <Category
+                                            category={category}
+                                            showCategoryLink
+                                        />
+                                    }
+                                >
+                                    {cards}
+                                </CardsWrapper>
+                            )
+                        })}
 
                     {!isLoading && <RequestApp />}
                 </div>
@@ -222,27 +271,18 @@ export default function All() {
     )
 }
 
-function buildUnfilteredCards(
-    category: CategoryType,
-    items: Item[],
-    isLoading: boolean
-) {
-    const cards: ReactNode[] = items
-        .slice(0, MAX_CARDS_DISPLAYED)
-        .map((item, index) => buildUnfilteredCard(item, category, index))
-
-    if (isLoading) {
-        for (let index = cards.length; index < MAX_CARDS_DISPLAYED; index++) {
-            cards.push(buildUnfilteredCard(null, category, index))
-        }
+function fillGap(cards: ReactNode[]) {
+    const newCards = [...cards]
+    for (let index = newCards.length; index < MAX_CARDS_DISPLAYED; index++) {
+        newCards.push(buildCardWithDisplayClasses(null, index))
     }
-    return cards
+    return newCards
 }
 
-function buildUnfilteredCard(
+function buildCardWithDisplayClasses(
     item: Item | null,
-    category: CategoryType,
-    index: number
+    index: number,
+    category?: CategoryType
 ) {
     let additionalClasses = ''
     if (index > 0) additionalClasses += css.showDesktop + ' '
@@ -250,17 +290,44 @@ function buildUnfilteredCard(
     if (index > 2) additionalClasses += css.showXLargeDesktop + ' '
     if (index > 3) additionalClasses += css.showXXLargeDesktop + ' '
 
-    if (!item) return <Card isLoading className={additionalClasses} />
+    if (!item)
+        return <Card isLoading className={additionalClasses} key={index} />
 
     const isFeatured = item.categories.includes(CategoryType.FEATURED)
 
     return (
         <Card
-            key={`${category}-${item.title}`}
+            key={item.title}
             item={item}
             className={additionalClasses}
             isFeatured={isFeatured}
             hasNoFeaturedPill={category === CategoryType.FEATURED}
         />
+    )
+}
+
+function SearchLabel({
+    activeSearch,
+    activeCategory,
+    hasResults,
+}: {
+    activeSearch: string
+    activeCategory: CategoryType | undefined
+    hasResults: boolean
+}) {
+    return (
+        <h2 className={css.searchLabel}>
+            {hasResults ? 'Results for' : '0 results for'}{' '}
+            <span className={css.searchBold}>“{activeSearch}”</span>
+            {activeCategory ? (
+                <>
+                    {' '}
+                    in category{' '}
+                    <span className={css.searchBold}>
+                        {CATEGORY_DATA[activeCategory].title}
+                    </span>
+                </>
+            ) : null}
+        </h2>
     )
 }
