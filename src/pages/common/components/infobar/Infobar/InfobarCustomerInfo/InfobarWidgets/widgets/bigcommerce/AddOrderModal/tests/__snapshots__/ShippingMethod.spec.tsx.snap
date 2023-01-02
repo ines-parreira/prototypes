@@ -56,7 +56,7 @@ exports[`ShippingMethod create/update consignment and change shipping method: dr
         style="position: absolute;"
       >
         <div
-          class="wrapper dropdownBody"
+          class="wrapper body"
         >
           <fieldset
             name="radio-field-1"
@@ -122,7 +122,7 @@ exports[`ShippingMethod create/update consignment and change shipping method: dr
           </fieldset>
         </div>
         <div
-          class="dropdownFooter"
+          class="footer"
         >
           <button
             class="wrapper fill secondary medium"

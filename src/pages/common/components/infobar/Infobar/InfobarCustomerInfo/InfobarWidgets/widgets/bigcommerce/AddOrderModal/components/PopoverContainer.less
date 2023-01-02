@@ -1,0 +1,25 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .body {
+        display: flex;
+        padding: 24px 16px;
+        min-width: 300px;
+
+        & > * {
+            width: 100%;
+        }
+    }
+
+    .footer {
+        background-color: @classic-neutral-grey-2;
+        border-top: 1px solid @classic-neutral-grey-3;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        width: 100%;
+        padding: 12px 16px;
+    }
+}

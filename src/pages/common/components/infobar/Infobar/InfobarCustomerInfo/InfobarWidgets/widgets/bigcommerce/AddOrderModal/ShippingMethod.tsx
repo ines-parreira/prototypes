@@ -1,8 +1,6 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react'
 
 import classnames from 'classnames'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import Button from 'pages/common/components/button/Button'
 import Tooltip from 'pages/common/components/Tooltip'
 import RadioFieldSet, {RadioFieldOption} from 'pages/common/forms/RadioFieldSet'
@@ -15,6 +13,7 @@ import {
     BigCommerceShippingOption,
 } from 'models/integration/types'
 import css from './OrderTotals.less'
+import {PopoverContainer} from './components/PopoverContainer'
 
 export const useShippingMethods = ({
     consignment,
@@ -214,14 +213,14 @@ export function ShippingMethod({
 
     const buttonRef = useRef<HTMLButtonElement>(null)
 
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-    const onClose = () => setIsDropdownOpen(false)
+    const [isPopoverOpen, setIsPopoverOpen] = useState(false)
+    const onClose = () => setIsPopoverOpen(false)
     const onToggle = () => {
         if (isDisabled) {
             return
         }
 
-        setIsDropdownOpen((isDropdownOpen) => !isDropdownOpen)
+        setIsPopoverOpen((isDropdownOpen) => !isDropdownOpen)
     }
 
     const {
@@ -286,43 +285,41 @@ export function ShippingMethod({
                     />
                 </dd>
             </>
-            <Dropdown
-                isOpen={isDropdownOpen}
+            <PopoverContainer
+                isOpen={isPopoverOpen}
                 onToggle={onToggle}
                 target={buttonRef}
-            >
-                <DropdownBody
-                    className={css.dropdownBody}
-                    onClick={(event) => {
-                        // stop event from propagating to modal and closing it
-                        event.stopPropagation()
-                    }}
-                >
-                    {shippingMethodOptions.length > 0 ? (
-                        <RadioFieldSet
-                            selectedValue={selectedShippingMethod?.id ?? null}
-                            onChange={onSelectShippingMethod}
-                            options={shippingMethodOptions}
-                        />
-                    ) : (
-                        <span className={css.selectShippingAddress}>
-                            Select shipping address first
-                        </span>
-                    )}
-                </DropdownBody>
-
-                <div className={css.dropdownFooter}>
-                    <Button intent="secondary" onClick={onClose}>
-                        Close
-                    </Button>
-                    {/*
-                      Apply button is for the user to "feel" that he "confirmed" the
-                      selection of shipping method, while in reality, shipping method
-                      is changed on every change of radio select
-                    */}
-                    <Button onClick={onClose}>Apply</Button>
-                </div>
-            </Dropdown>
+                body={
+                    <>
+                        {shippingMethodOptions.length > 0 ? (
+                            <RadioFieldSet
+                                selectedValue={
+                                    selectedShippingMethod?.id ?? null
+                                }
+                                onChange={onSelectShippingMethod}
+                                options={shippingMethodOptions}
+                            />
+                        ) : (
+                            <span className={css.selectShippingAddress}>
+                                Select shipping address first
+                            </span>
+                        )}
+                    </>
+                }
+                footer={
+                    <>
+                        <Button intent="secondary" onClick={onClose}>
+                            Close
+                        </Button>
+                        {/*
+                          Apply button is for the user to "feel" that he "confirmed" the
+                          selection of shipping method, while in reality, shipping method
+                          is changed on every change of radio select
+                        */}
+                        <Button onClick={onClose}>Apply</Button>
+                    </>
+                }
+            />
         </>
     )
 }

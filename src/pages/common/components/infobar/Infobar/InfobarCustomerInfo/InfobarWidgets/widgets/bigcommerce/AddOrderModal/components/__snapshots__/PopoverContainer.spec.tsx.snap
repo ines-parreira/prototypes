@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PopoverContainer /> renders 1`] = `
+<div>
+  <div
+    class="wrapper body"
+  >
+    <div>
+      <span>
+        A Body
+      </span>
+    </div>
+  </div>
+  <div
+    class="footer"
+  >
+    <div>
+      <footer>
+        A footer
+      </footer>
+    </div>
+  </div>
+</div>
+`;
