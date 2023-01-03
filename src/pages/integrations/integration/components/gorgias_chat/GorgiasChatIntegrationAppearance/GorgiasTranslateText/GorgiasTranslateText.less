@@ -1,11 +1,69 @@
 @import '~css/new/colorTokens';
+@import '~css/typography';
 
 @medium: ~'only screen and (max-width: 1393px)';
 
 :local {
-    .backWrapper {
+    .pageContainer {
         padding: 24px;
-        padding-bottom: 0;
+        .pageColumn {
+            max-width: 680px;
+            padding-right: 6px;
+        }
+    }
+
+    .pageContainerBlocks {
+        padding: 24px;
+        padding-top: 0px;
+        .pageColumn {
+            max-width: 680px;
+        }
+    }
+
+    .inputContainer {
+        padding: 0px;
+        padding-left: 10px;
+        padding-bottom: 4px;
+        .pageColumn {
+            padding: 8px;
+            max-width: 680px;
+        }
+    }
+
+    .buttonsContainer {
+        text-align: left;
+        position: fixed;
+        bottom: 0;
+        background: white;
+        box-shadow: 0px 0px 14px 0px @classic-neutral-grey-3;
+        padding-top: 14px;
+        padding-bottom: 14px;
+        padding-left: 24px;
+        margin-top: 20px;
+
+        .pageColumn {
+            max-width: 680px;
+        }
+    }
+
+    .footerSpacer {
+        height: 40px;
+    }
+
+    .flagContainerWrapper {
+        padding: 12px;
+
+        .flagContainer {
+            background-color: #f4f5f7;
+            padding-left: 6px;
+            padding-right: 6px;
+            float: right;
+        }
+    }
+
+    .backWrapper {
+        padding: 12px;
+        padding-left: 0px;
 
         a {
             font-weight: 500;
@@ -18,5 +76,56 @@
             }
         }
         margin-bottom: 8px;
+    }
+
+    .lengthLeft {
+        .caption-regular();
+        padding: 0px;
+        padding-left: 4px;
+        padding-top: 4px;
+        font-size: 12px;
+        color: @classic-neutral-grey-4;
+        margin: 0px;
+        margin-bottom: -20px;
+    }
+
+    .inputItemInvalid {
+        border: 1px solid, red;
+        border-color: red;
+    }
+    .inputItemInvalid:focus {
+        border: 1px solid, red;
+        border-color: red;
+    }
+
+    .modal {
+        max-width: 680px;
+    }
+    .modalBody {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+    }
+    .footer {
+        background-color: @classic-neutral-grey-2;
+        display: flex;
+        padding: 10px;
+        .separateButtonsGroup {
+            margin-left: auto;
+        }
+    }
+
+    .spinnerWrapper {
+        box-sizing: border-box;
+        min-height: 64px;
+        padding: 16px;
+        position: relative;
+        width: 50%;
+    }
+
+    .spinner {
+        display: block;
+        margin: 0 auto;
+        width: 32px;
     }
 }

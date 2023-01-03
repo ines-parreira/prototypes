@@ -17,13 +17,13 @@ export const CustomizeToneOfVoiceBlock = ({integrationId}: Props) => (
                 to={`/app/settings/channels/gorgias_chat/${integrationId}/appearance/texts`}
                 className={css.actionLink}
             >
-                Customize tone of voice
+                Customize Copy
             </Link>
         }
     >
         <div>
-            Customize tone of voice by editing messages, contact form subjects,
-            and more.
+            Customize copy for labels, automated messages, and contact form
+            subjects to match your tone of voice.
         </div>
     </Alert>
 )

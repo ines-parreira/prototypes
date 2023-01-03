@@ -46,6 +46,99 @@
                         }
                     }
                 }
+            },
+            "put": {
+                "tags": [
+                    "gorgias-chat-api"
+                ],
+                "summary": "Update application texts",
+                "operationId": "updateApplicationTexts",
+                "requestBody": {
+                    "content": {
+                        "*/*": {
+                            "schema": {
+                                "type": "string",
+                                "example": "\"{\\n    \\\"texts\\\": {},\\n    \\\"sspTexts\\\": {}\\n}\\n\""
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "application/json"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Bearer {{accessToken}}"
+                    },
+                    {
+                        "name": "applicationId",
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/translations": {
+            "get": {
+                "tags": [
+                    "gorgias-chat-api"
+                ],
+                "summary": "Get translations",
+                "operationId": "getTranslations",
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "application/json"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Bearer {{accessToken}}"
+                    },
+                    {
+                        "name": "lang",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
             }
         }
     }

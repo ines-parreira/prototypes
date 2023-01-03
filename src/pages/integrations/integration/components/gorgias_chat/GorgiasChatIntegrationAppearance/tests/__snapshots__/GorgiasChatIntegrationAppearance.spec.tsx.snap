@@ -372,7 +372,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="label"
                     >
                       <div>
-                        Customize tone of voice by editing messages, contact form subjects, and more.
+                        Customize copy for labels, automated messages, and contact form subjects to match your tone of voice.
                       </div>
                     </span>
                     <div
@@ -382,7 +382,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         class="actionLink"
                         to="/app/settings/channels/gorgias_chat/undefined/appearance/texts"
                       >
-                        Customize tone of voice
+                        Customize Copy
                       </a>
                     </div>
                   </div>
@@ -1085,7 +1085,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="label"
                     >
                       <div>
-                        Customize tone of voice by editing messages, contact form subjects, and more.
+                        Customize copy for labels, automated messages, and contact form subjects to match your tone of voice.
                       </div>
                     </span>
                     <div
@@ -1095,7 +1095,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         class="actionLink"
                         to="/app/settings/channels/gorgias_chat/2/appearance/texts"
                       >
-                        Customize tone of voice
+                        Customize Copy
                       </a>
                     </div>
                   </div>
@@ -1875,7 +1875,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="label"
                     >
                       <div>
-                        Customize tone of voice by editing messages, contact form subjects, and more.
+                        Customize copy for labels, automated messages, and contact form subjects to match your tone of voice.
                       </div>
                     </span>
                     <div
@@ -1885,7 +1885,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         class="actionLink"
                         to="/app/settings/channels/gorgias_chat/2/appearance/texts"
                       >
-                        Customize tone of voice
+                        Customize Copy
                       </a>
                     </div>
                   </div>
@@ -2635,7 +2635,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                       class="label"
                     >
                       <div>
-                        Customize tone of voice by editing messages, contact form subjects, and more.
+                        Customize copy for labels, automated messages, and contact form subjects to match your tone of voice.
                       </div>
                     </span>
                     <div
@@ -2645,7 +2645,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                         class="actionLink"
                         to="/app/settings/channels/gorgias_chat/2/appearance/texts"
                       >
-                        Customize tone of voice
+                        Customize Copy
                       </a>
                     </div>
                   </div>
@@ -3403,7 +3403,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class="label"
                     >
                       <div>
-                        Customize tone of voice by editing messages, contact form subjects, and more.
+                        Customize copy for labels, automated messages, and contact form subjects to match your tone of voice.
                       </div>
                     </span>
                     <div
@@ -3413,7 +3413,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         class="actionLink"
                         to="/app/settings/channels/gorgias_chat/2/appearance/texts"
                       >
-                        Customize tone of voice
+                        Customize Copy
                       </a>
                     </div>
                   </div>
@@ -4163,7 +4163,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class="label"
                     >
                       <div>
-                        Customize tone of voice by editing messages, contact form subjects, and more.
+                        Customize copy for labels, automated messages, and contact form subjects to match your tone of voice.
                       </div>
                     </span>
                     <div
@@ -4173,7 +4173,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         class="actionLink"
                         to="/app/settings/channels/gorgias_chat/2/appearance/texts"
                       >
-                        Customize tone of voice
+                        Customize Copy
                       </a>
                     </div>
                   </div>
@@ -5012,7 +5012,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                       class="label"
                     >
                       <div>
-                        Customize tone of voice by editing messages, contact form subjects, and more.
+                        Customize copy for labels, automated messages, and contact form subjects to match your tone of voice.
                       </div>
                     </span>
                     <div
@@ -5022,7 +5022,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                         class="actionLink"
                         to="/app/settings/channels/gorgias_chat/undefined/appearance/texts"
                       >
-                        Customize tone of voice
+                        Customize Copy
                       </a>
                     </div>
                   </div>
@@ -5879,7 +5879,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       class="label"
                     >
                       <div>
-                        Customize tone of voice by editing messages, contact form subjects, and more.
+                        Customize copy for labels, automated messages, and contact form subjects to match your tone of voice.
                       </div>
                     </span>
                     <div
@@ -5889,7 +5889,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         class="actionLink"
                         to="/app/settings/channels/gorgias_chat/2/appearance/texts"
                       >
-                        Customize tone of voice
+                        Customize Copy
                       </a>
                     </div>
                   </div>
@@ -6600,7 +6600,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       class="label"
                     >
                       <div>
-                        Customize tone of voice by editing messages, contact form subjects, and more.
+                        Customize copy for labels, automated messages, and contact form subjects to match your tone of voice.
                       </div>
                     </span>
                     <div
@@ -6610,7 +6610,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         class="actionLink"
                         to="/app/settings/channels/gorgias_chat/1/appearance/texts"
                       >
-                        Customize tone of voice
+                        Customize Copy
                       </a>
                     </div>
                   </div>

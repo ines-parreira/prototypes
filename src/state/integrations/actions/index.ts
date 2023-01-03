@@ -24,7 +24,12 @@ import GorgiasApi from 'services/gorgiasApi'
 import {fetchIntegrations as fetchIntegrationsResources} from 'models/integration/resources'
 import {getGorgiasChatApiClient} from 'rest_api/gorgias_chat_api/client'
 import type {AplicationAgentsResponse} from 'rest_api/gorgias_chat_api/types'
-import * as helpers from './helpers'
+import * as helpers from '../helpers'
+import {
+    getTranslations as getTranslationsAction,
+    getApplicationTexts as getApplicationTextsAction,
+    updateApplicationTexts as updateApplicationTextsAction,
+} from './gorgias-chat.actions'
 
 export function fetchIntegrations() {
     return async (
@@ -997,3 +1002,7 @@ export function fetchChatIntegrationStatus(integrationId: number) {
         }
     }
 }
+
+export const getTranslations = getTranslationsAction
+export const getApplicationTexts = getApplicationTextsAction
+export const updateApplicationTexts = updateApplicationTextsAction
