@@ -16,7 +16,7 @@ import {getIconFromUrl} from 'utils'
 import css from './Card.less'
 
 export const LOADING_TEST_ID = 'card-loading'
-export const CARD_LINK_ID = 'card-link'
+export const CARD_LINK_TEST_ID = 'card-link'
 
 type Item = IntegrationListItem | AppListItem
 
@@ -76,7 +76,7 @@ function LinkOrDiv({
                 })
             }}
             to={getUrl(item)}
-            data-testid={CARD_LINK_ID}
+            data-testid={CARD_LINK_TEST_ID}
         >
             {children}
         </Link>

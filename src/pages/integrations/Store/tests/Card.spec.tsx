@@ -11,7 +11,7 @@ import {IntegrationType} from 'models/integration/constants'
 import {Category} from 'models/integration/types/app'
 import {dummyAppListItem} from 'fixtures/apps'
 
-import Card, {Pills, CARD_LINK_ID, LOADING_TEST_ID} from '../Card'
+import Card, {Pills, CARD_LINK_TEST_ID, LOADING_TEST_ID} from '../Card'
 
 describe('<Pills />', () => {
     it('should render an empty div', () => {
@@ -77,7 +77,7 @@ describe('<Card />', () => {
                 />
             </Provider>
         )
-        expect(screen.queryByTestId(CARD_LINK_ID)).toBeNull()
+        expect(screen.queryByTestId(CARD_LINK_TEST_ID)).toBeNull()
     })
 
     it('should render a featured card with a featured pill', () => {
@@ -91,7 +91,7 @@ describe('<Card />', () => {
                 />
             </Provider>
         )
-        expect(screen.getByTestId(CARD_LINK_ID)).toHaveClass('featured')
+        expect(screen.getByTestId(CARD_LINK_TEST_ID)).toHaveClass('featured')
         expect(screen.getByText('Featured'))
     })
 
@@ -108,7 +108,7 @@ describe('<Card />', () => {
                 />
             </Provider>
         )
-        expect(screen.getByTestId(CARD_LINK_ID)).toHaveClass('featured')
+        expect(screen.getByTestId(CARD_LINK_TEST_ID)).toHaveClass('featured')
         expect(screen.queryByText('Featured')).toBeNull()
     })
 
@@ -123,7 +123,7 @@ describe('<Card />', () => {
                 />
             </Provider>
         )
-        expect(screen.queryByTestId(CARD_LINK_ID)).toBeNull()
+        expect(screen.queryByTestId(CARD_LINK_TEST_ID)).toBeNull()
         expect(screen.getByTestId(LOADING_TEST_ID))
     })
 })

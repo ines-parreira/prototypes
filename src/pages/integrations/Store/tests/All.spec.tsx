@@ -23,7 +23,7 @@ import {HelpdeskPrice, PlanInterval, ProductType} from 'models/billing/types'
 
 import {CATEGORY_URL_PARAM, SEARCH_URL_PARAM} from '../constants'
 import All, {addRequiredPlanToIntegrations} from '../All'
-import {CARD_LINK_ID, LOADING_TEST_ID} from '../Card'
+import {CARD_LINK_TEST_ID, LOADING_TEST_ID} from '../Card'
 
 const mockStore = configureMockStore([thunk])
 
@@ -130,7 +130,7 @@ describe('<All />', () => {
         expect(screen.getAllByTestId(LOADING_TEST_ID))
     })
 
-    it('should show static integrations, loaded apps and request app', async () => {
+    it('should show static integrations, loaded apps', async () => {
         mockApi.onGet('/api/apps/').reply(200, {data: [dummyAppListData]})
 
         renderWithRouter(
@@ -143,7 +143,6 @@ describe('<All />', () => {
         })
         expect(screen.getByText('Shopify'))
         expect(screen.getByText('My test app'))
-        expect(screen.getByText('Can’t find what you need?'))
     })
 
     it('should show a message saying the category is empty when a category that has no apps is set', async () => {
@@ -218,7 +217,9 @@ describe('<All />', () => {
         await waitFor(() => {
             expect(screen.queryByText(/Loading/)).toBe(null)
         })
-        expect(screen.getAllByTestId(CARD_LINK_ID).length).toBe(dummyAppsNumber)
+        expect(screen.getAllByTestId(CARD_LINK_TEST_ID).length).toBe(
+            dummyAppsNumber
+        )
     })
 
     it('should show 0 cards when there is no match', async () => {
@@ -244,6 +245,6 @@ describe('<All />', () => {
             expect(screen.queryByText(/Loading/)).toBe(null)
         })
         expect(screen.getByText(/0 results/))
-        expect(screen.queryAllByTestId(CARD_LINK_ID).length).toBe(0)
+        expect(screen.queryAllByTestId(CARD_LINK_TEST_ID).length).toBe(0)
     })
 })

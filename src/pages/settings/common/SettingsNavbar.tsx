@@ -98,6 +98,18 @@ const CATEGORIES: Category[] = [
         links: [
             {
                 requiredRole: ADMIN_ROLE,
+                requiredFeatureFlag: FeatureFlagKey.AppStore,
+                to: 'integrations/mine',
+                text: 'My Apps',
+            },
+            {
+                requiredRole: ADMIN_ROLE,
+                requiredFeatureFlag: FeatureFlagKey.AppStore,
+                to: 'integrations/all',
+                text: 'All apps',
+            },
+            {
+                requiredRole: ADMIN_ROLE,
                 to: 'integrations',
                 text: 'Apps & integrations',
             },

@@ -33,7 +33,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import PageHeader from 'pages/common/components/PageHeader'
 
-import Spinner from 'pages/common/components/Spinner/Spinner'
 import {
     ORDERED_CATEGORIES,
     MAX_CARDS_DISPLAYED,
@@ -44,10 +43,10 @@ import {
 import css from './All.less'
 import CategoryFilter from './CategoryFilter'
 import LimitWarning from './LimitWarning'
+import Loader from './Loader'
 import Category from './Category'
 import CardsWrapper from './CardsWrapper'
 import Card from './Card'
-import RequestApp from './RequestApp'
 import Search from './Search'
 
 type Item = IntegrationListItem | AppListItem
@@ -235,12 +234,7 @@ export default function All() {
                         </CardsWrapper>
                     )}
 
-                    {hasFilter && isLoading && (
-                        <p className={`${css.spinnerWrapper}`}>
-                            <Spinner className={css.spinner} color="gloom" />
-                            Loading more Apps
-                        </p>
-                    )}
+                    {hasFilter && isLoading && <Loader />}
 
                     {!hasFilter &&
                         ORDERED_CATEGORIES.filter(
@@ -263,8 +257,6 @@ export default function All() {
                                 </CardsWrapper>
                             )
                         })}
-
-                    {!isLoading && <RequestApp />}
                 </div>
             </div>
         </main>
