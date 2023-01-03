@@ -131,6 +131,8 @@ const ReportIssueCaseEditor: ComponentType = () => {
         const newErrors: Partial<ErrorFormState> = {}
         if (!title) {
             newErrors.title = 'Title is required'
+        } else if (title.length > 20) {
+            newErrors.title = 'Title is limited to 20 characters'
         }
 
         const reasonsOrConditionsError =
