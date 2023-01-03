@@ -13,14 +13,12 @@ describe('<ArticleRecommendation />', () => {
                     {
                         text: 'Help Center #1',
                         label: 'Help Center #1',
-                        value: 'Help Center #1',
-                        id: 1,
+                        value: 1,
                     },
                     {
                         text: 'Help Center #2',
                         label: 'Help Center #2',
-                        value: 'Help Center #2',
-                        id: 2,
+                        value: 2,
                     },
                 ]}
                 onSaveChanges={onSaveChanges}
@@ -82,8 +80,7 @@ describe('<ArticleRecommendation />', () => {
                         {
                             text: 'Help Center #1',
                             label: 'Help Center #1',
-                            value: 'Help Center #1',
-                            id: 1,
+                            value: 1,
                         },
                     ]}
                     onSaveChanges={jest.fn()}
@@ -109,14 +106,12 @@ describe('<ArticleRecommendation />', () => {
                         {
                             text: 'my-shop-help-center',
                             label: 'my-shop-help-center',
-                            value: 'my-shop-help-center',
-                            id: 1,
+                            value: 1,
                         },
                         {
                             text: 'Help Center #2',
                             label: 'Help Center #2',
-                            value: 'Help Center #2',
-                            id: 2,
+                            value: 2,
                         },
                     ]}
                     onSaveChanges={jest.fn()}
@@ -143,20 +138,17 @@ describe('<ArticleRecommendation />', () => {
                         {
                             text: 'Help Center #1',
                             label: 'Help Center #1',
-                            value: 'Help Center #1',
-                            id: 1,
+                            value: 1,
                         },
                         {
                             text: 'Help Center #2',
                             label: 'Help Center #2',
-                            value: 'Help Center #2',
-                            id: 2,
+                            value: 2,
                         },
                         {
                             text: 'Help Center #3',
                             label: 'Help Center #3',
-                            value: 'Help Center #3',
-                            id: 3,
+                            value: 3,
                         },
                     ]}
                     onSaveChanges={jest.fn()}
@@ -185,8 +177,7 @@ describe('<ArticleRecommendation />', () => {
                         {
                             text: 'Help Center #1',
                             label: 'Help Center #1',
-                            value: 'Help Center #1',
-                            id: 1,
+                            value: 1,
                         },
                     ]}
                     onSaveChanges={jest.fn()}
@@ -208,14 +199,12 @@ describe('<ArticleRecommendation />', () => {
                         {
                             text: 'Help Center #1',
                             label: 'Help Center #1',
-                            value: 'Help Center #1',
-                            id: 1,
+                            value: 1,
                         },
                         {
                             text: 'Help Center #2',
                             label: 'Help Center #2',
-                            value: 'Help Center #2',
-                            id: 2,
+                            value: 2,
                         },
                     ]}
                     onSaveChanges={jest.fn()}
@@ -238,8 +227,7 @@ describe('<ArticleRecommendation />', () => {
                         {
                             text: 'Help Center #1',
                             label: 'Help Center #1',
-                            value: 'Help Center #1',
-                            id: 1,
+                            value: 1,
                         },
                     ]}
                     onSaveChanges={jest.fn()}
@@ -266,8 +254,7 @@ describe('<ArticleRecommendation />', () => {
                         {
                             text: 'Help Center #1',
                             label: 'Help Center #1',
-                            value: 'Help Center #1',
-                            id: 1,
+                            value: 1,
                         },
                     ]}
                     onSaveChanges={jest.fn()}

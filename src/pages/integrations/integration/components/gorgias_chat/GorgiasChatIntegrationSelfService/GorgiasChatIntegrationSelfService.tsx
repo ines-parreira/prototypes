@@ -216,18 +216,9 @@ export function GorgiasChatIntegrationSelfServiceComponent({
                     label: `${helpCenter.name} (${localeToUserLanguage(
                         helpCenter.default_locale.split('-')[0]
                     )})`,
-                    value: helpCenter.name,
-                    id: helpCenter.id,
+                    value: helpCenter.id,
                 })),
         [helpCenters]
-    )
-
-    const selectedHelpCenter = useMemo(
-        () =>
-            helpCenterList?.find(
-                (el) => el.id === chatHelpCenterConfiguration?.help_center_id
-            )?.value,
-        [helpCenterList, chatHelpCenterConfiguration]
     )
 
     return (
@@ -278,7 +269,8 @@ export function GorgiasChatIntegrationSelfServiceComponent({
                             helpCenterList={helpCenterList}
                             initialValues={{
                                 isEnabled: chatHelpCenterConfiguration?.enabled,
-                                selectedHelpCenter,
+                                selectedHelpCenterId:
+                                    chatHelpCenterConfiguration?.help_center_id,
                             }}
                             onToggleEnabled={setArticleReccEnabled}
                             onSaveChanges={handleSaveArticleRecommendation}

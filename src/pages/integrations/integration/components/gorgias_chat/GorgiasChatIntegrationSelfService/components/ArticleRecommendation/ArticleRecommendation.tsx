@@ -10,32 +10,31 @@ import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import LinkAlert from 'pages/common/components/Alert/LinkAlert'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {SelectableOption} from 'pages/common/forms/SelectField/types'
 
 import css from './ArticleRecommendation.less'
 
-const getClosestMatchingHelpCenter = (
-    helpCenterList: (SelectableOption & {id: number})[],
+const getClosestMatchingHelpCenterId = (
+    helpCenterList: Props['helpCenterList'],
     associatedShopifyStoreName: string
 ) => {
     const closestMatchingHelpCenter =
         helpCenterList.find((el) =>
-            el.value
+            el.text
                 .toString()
                 .toLowerCase()
                 .includes(associatedShopifyStoreName.toLowerCase())
         ) ?? helpCenterList[0]
 
-    return closestMatchingHelpCenter.value.toString()
+    return closestMatchingHelpCenter.value
 }
 
 type Props = {
     isLoading?: boolean
     initialValues?: {
         isEnabled?: boolean
-        selectedHelpCenter?: string
+        selectedHelpCenterId?: number
     }
-    helpCenterList: (SelectableOption & {id: number})[]
+    helpCenterList: {text: string; label: string; value: number}[]
     onToggleEnabled?: (enabled: boolean) => void
     onSaveChanges: (isEnabled: boolean, helpCenterId: number) => void
     associatedShopifyStoreName: string
@@ -47,15 +46,15 @@ const ArticleRecommendation: FC<Props> = ({
     helpCenterList = [],
     initialValues = {
         isEnabled: false,
-        selectedHelpCenter: '',
+        selectedHelpCenterId: undefined,
     },
     onToggleEnabled,
     onSaveChanges,
     associatedShopifyStoreName,
 }) => {
     const [isEnabled, setEnabled] = useState(initialValues.isEnabled ?? false)
-    const [selectedHelpCenter, setSelectedHelpCenter] = useState(
-        initialValues.selectedHelpCenter ?? ''
+    const [selectedHelpCenterId, setSelectedHelpCenterId] = useState(
+        initialValues.selectedHelpCenterId
     )
 
     useEffect(() => {
@@ -63,8 +62,8 @@ const ArticleRecommendation: FC<Props> = ({
     }, [initialValues.isEnabled])
 
     useEffect(() => {
-        setSelectedHelpCenter(initialValues.selectedHelpCenter ?? '')
-    }, [initialValues.selectedHelpCenter])
+        setSelectedHelpCenterId(initialValues.selectedHelpCenterId)
+    }, [initialValues.selectedHelpCenterId])
 
     const handleToggleInput = (nextValue: boolean) => {
         if (helpCenterList.length === 0) {
@@ -80,42 +79,33 @@ const ArticleRecommendation: FC<Props> = ({
     }
 
     const handleSelectHelpCenter = (value: string | number) => {
-        setSelectedHelpCenter(value.toString())
+        setSelectedHelpCenterId(value as number)
     }
 
     const handleSaveChanges = () => {
-        const helpCenterId = (
-            helpCenterList.find((el) => el.value === selectedHelpCenter) as {
-                id: number
-            }
-        ).id
-        onSaveChanges(isEnabled, helpCenterId)
+        onSaveChanges(isEnabled, selectedHelpCenterId as number)
     }
 
     const allowSaveChanges = useMemo(() => {
         if (isEnabled) {
             if (
                 isEnabled !== initialValues.isEnabled ||
-                selectedHelpCenter !== initialValues.selectedHelpCenter
+                selectedHelpCenterId !== initialValues.selectedHelpCenterId
             ) {
-                return selectedHelpCenter !== ''
+                return Boolean(selectedHelpCenterId)
             }
         }
 
         return isEnabled !== initialValues.isEnabled
-    }, [isEnabled, selectedHelpCenter, initialValues])
+    }, [isEnabled, selectedHelpCenterId, initialValues])
 
     useEffect(() => {
-        if (
-            isEnabled &&
-            selectedHelpCenter === '' &&
-            helpCenterList.length > 0
-        ) {
+        if (isEnabled && !selectedHelpCenterId && helpCenterList.length > 0) {
             if (helpCenterList.length === 1) {
-                setSelectedHelpCenter(helpCenterList[0].value.toString())
+                setSelectedHelpCenterId(helpCenterList[0].value)
             } else {
-                setSelectedHelpCenter(
-                    getClosestMatchingHelpCenter(
+                setSelectedHelpCenterId(
+                    getClosestMatchingHelpCenterId(
                         helpCenterList,
                         associatedShopifyStoreName
                     )
@@ -124,7 +114,7 @@ const ArticleRecommendation: FC<Props> = ({
         }
     }, [
         helpCenterList,
-        selectedHelpCenter,
+        selectedHelpCenterId,
         isEnabled,
         associatedShopifyStoreName,
     ])
@@ -195,7 +185,7 @@ const ArticleRecommendation: FC<Props> = ({
                         id="help-center-select"
                         options={helpCenterList}
                         placeholder="Select an option"
-                        value={selectedHelpCenter}
+                        value={selectedHelpCenterId}
                         onChange={handleSelectHelpCenter}
                     />
                 </div>
