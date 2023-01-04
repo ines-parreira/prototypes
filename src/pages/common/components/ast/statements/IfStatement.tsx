@@ -3,13 +3,13 @@ import {Map, List} from 'immutable'
 
 import classnames from 'classnames'
 
-import {RuleItemActions} from '../../../../settings/rules/types'
-import AddActionOrIfStatement from '../operations/AddActionOrIfStatement'
-import AddLogicalCondition from '../operations/AddLogicalCondition'
-import DeleteBlockStatementItem from '../operations/DeleteBlockStatementItem'
-import Expression from '../expression/Expression'
-import {computeLeftPadding} from '../utils.js'
-import Foldable from '../Foldable/Foldable'
+import {RuleItemActions} from 'pages/settings/rules/types'
+import AddActionOrIfStatement from 'pages/common/components/ast/operations/AddActionOrIfStatement'
+import AddLogicalCondition from 'pages/common/components/ast/operations/AddLogicalCondition'
+import DeleteBlockStatementItem from 'pages/common/components/ast/operations/DeleteBlockStatementItem'
+import Expression from 'pages/common/components/ast/expression/Expression'
+import {computeLeftPadding} from 'pages/common/components/ast/utils'
+import Foldable from 'pages/common/components/ast/Foldable/Foldable'
 
 import BlockStatement from './BlockStatement'
 import Statement from './Statement'
@@ -171,7 +171,7 @@ type IfStatementProps = {
     rule: Map<any, any>
     test: Partial<ComponentProps<typeof Expression>>
     consequent: Partial<ComponentProps<typeof Expression>>
-    alternate: Partial<ComponentProps<typeof Statement>>
+    alternate?: Partial<ComponentProps<typeof Statement>>
     parent: List<any>
     schemas: Map<any, any>
     actions: RuleItemActions

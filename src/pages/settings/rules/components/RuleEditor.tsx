@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {fromJS} from 'immutable'
 import {FormGroup} from 'reactstrap'
 import classnames from 'classnames'
@@ -34,7 +34,11 @@ function RuleEditor({
                 setEventTypes={handleEventChanges}
             />
             <Program
-                {...ruleDraft.code_ast}
+                body={
+                    ruleDraft.code_ast.body as ComponentProps<
+                        typeof Program
+                    >['body']
+                }
                 rule={fromJS(ruleDraft)}
                 actions={actions}
             />

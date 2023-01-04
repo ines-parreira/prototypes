@@ -1,9 +1,9 @@
 import React, {ComponentProps} from 'react'
 import {List, Map} from 'immutable'
 
-import {RuleItemActions} from '../../../settings/rules/types'
+import {RuleItemActions} from 'pages/settings/rules/types'
 
-import {Statement} from './statements/index.js'
+import Statement from './statements/Statement'
 import AddActionOrIfStatement from './operations/AddActionOrIfStatement'
 
 type Props = {

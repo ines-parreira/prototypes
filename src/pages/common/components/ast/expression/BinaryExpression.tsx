@@ -1,16 +1,19 @@
 import React, {ComponentProps} from 'react'
 import {List, Map} from 'immutable'
 
-import Widget from '../Widget'
-import {getSyntaxTreeLeaves} from '../utils.js'
-import {RuleItemActions} from '../../../../settings/rules/types'
+import {
+    getSyntaxTreeLeaves,
+    SyntaxTree,
+} from 'pages/common/components/ast/utils'
+import {RuleItemActions} from 'pages/settings/rules/types'
+import Widget from 'pages/common/components/ast/Widget'
 
 import Expression from './Expression'
 
 type Props = {
     operator: string
-    left: Partial<ComponentProps<typeof Expression>> & {type: string}
-    right: Partial<ComponentProps<typeof Expression>> & {type: string}
+    left: Partial<ComponentProps<typeof Expression>> & SyntaxTree
+    right: Partial<ComponentProps<typeof Expression>> & SyntaxTree
     rule: Map<any, any>
     actions: RuleItemActions
     schemas: Map<any, any>

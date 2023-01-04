@@ -1,0 +1,349 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ConsequentStatement/> component should render 1`] = `
+<div
+  class="consequent"
+>
+  <div
+    class="container"
+  >
+    <div
+      class="icon-wrapper"
+    >
+      <i
+        class="material-icons"
+      >
+        keyboard_arrow_down
+      </i>
+    </div>
+    <span
+      class="d-inline-flex"
+    >
+      <div
+        class="AddActionOrIfStatement btn-group"
+        style="padding-left: 0px;"
+      >
+        <button
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="ControlStructureButton dropdown-toggle btn btn-secondary"
+          type="button"
+        >
+          THEN
+        </button>
+        <div
+          aria-hidden="true"
+          class="dropdown-menu"
+          role="menu"
+          tabindex="-1"
+        >
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Action
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            "IF" statement
+          </button>
+        </div>
+      </div>
+    </span>
+    <div>
+      <div
+        class="badge unknownstatement"
+      >
+        Unknown 
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`IfStatement component should not render alternate because there is none 1`] = `
+<div
+  class="IfStatement"
+>
+  <div
+    class="test"
+    style="padding-left: 0px;"
+  >
+    <span
+      class="clickable delete-blockstatement"
+      style="display: none;"
+    >
+      <i
+        class="material-icons"
+        id="body-0-expression"
+      >
+        close
+      </i>
+    </span>
+    <span
+      class="d-inline-flex"
+    >
+      <button
+        class="mr-1 btn btn-info"
+        type="button"
+      >
+        IF
+      </button>
+    </span>
+    <div
+      class="badge unknownstatement"
+    >
+      Unknown 
+    </div>
+  </div>
+  <div
+    class="consequent"
+  >
+    <div
+      class="container"
+    >
+      <div
+        class="icon-wrapper"
+      >
+        <i
+          class="material-icons"
+        >
+          keyboard_arrow_down
+        </i>
+      </div>
+      <span
+        class="d-inline-flex"
+      >
+        <div
+          class="AddActionOrIfStatement btn-group"
+          style="padding-left: 0px;"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="ControlStructureButton dropdown-toggle btn btn-secondary"
+            type="button"
+          >
+            THEN
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown-menu"
+            role="menu"
+            tabindex="-1"
+          >
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Action
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              "IF" statement
+            </button>
+          </div>
+        </div>
+      </span>
+      <div>
+        <div
+          class="badge unknownstatement"
+        >
+          Unknown 
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`IfStatement component should render alternate because there is one 1`] = `
+<div
+  class="IfStatement"
+>
+  <div
+    class="test"
+    style="padding-left: 0px;"
+  >
+    <span
+      class="clickable delete-blockstatement"
+      style="display: none;"
+    >
+      <i
+        class="material-icons"
+        id="body-0-expression"
+      >
+        close
+      </i>
+    </span>
+    <span
+      class="d-inline-flex"
+    >
+      <button
+        class="mr-1 btn btn-info"
+        type="button"
+      >
+        IF
+      </button>
+    </span>
+    <div
+      class="badge unknownstatement"
+    >
+      Unknown 
+    </div>
+  </div>
+  <div
+    class="consequent"
+  >
+    <div
+      class="container"
+    >
+      <div
+        class="icon-wrapper"
+      >
+        <i
+          class="material-icons"
+        >
+          keyboard_arrow_down
+        </i>
+      </div>
+      <span
+        class="d-inline-flex"
+      >
+        <div
+          class="AddActionOrIfStatement btn-group"
+          style="padding-left: 0px;"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="ControlStructureButton dropdown-toggle btn btn-secondary"
+            type="button"
+          >
+            THEN
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown-menu"
+            role="menu"
+            tabindex="-1"
+          >
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Action
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              "IF" statement
+            </button>
+          </div>
+        </div>
+      </span>
+      <div>
+        <div
+          class="badge unknownstatement"
+        >
+          Unknown 
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="alternate"
+  >
+    <div
+      class="container"
+    >
+      <div
+        class="icon-wrapper"
+      >
+        <i
+          class="material-icons"
+        >
+          keyboard_arrow_down
+        </i>
+      </div>
+      <span
+        class="d-inline-flex"
+      >
+        <div
+          class="AddActionOrIfStatement btn-group"
+          style="padding-left: 0px;"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="ControlStructureButton dropdown-toggle btn btn-secondary"
+            type="button"
+          >
+            ELSE
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown-menu"
+            role="menu"
+            tabindex="-1"
+          >
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Action
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              "IF" statement
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <i
+                class="material-icons red mr-1"
+              >
+                delete
+              </i>
+              Delete node
+            </button>
+          </div>
+        </div>
+      </span>
+      <div>
+        <div
+          class="badge unknownstatement"
+        >
+          Unknown 
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

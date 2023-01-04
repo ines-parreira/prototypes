@@ -6,7 +6,7 @@ import {usePrevious} from 'react-use'
 
 import CheckBox from 'pages/common/forms/CheckBox'
 import Loader from 'pages/common/components/Loader/Loader'
-import BlankState from 'pages/common/components/BlankState/index.js'
+import BlankState from 'pages/common/components/BlankState/BlankStateContainer'
 import Navigation from 'pages/common/components/Navigation/index.js'
 import {RootState} from 'state/types'
 import shortcutManager from 'services/shortcutManager'

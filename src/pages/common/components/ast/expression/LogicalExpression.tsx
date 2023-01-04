@@ -2,19 +2,22 @@ import React, {ComponentProps} from 'react'
 import {Button} from 'reactstrap'
 import {Map, List} from 'immutable'
 
-import {RuleItemActions} from '../../../../settings/rules/types'
-import {getSyntaxTreeLeaves} from '../utils.js'
+import {RuleItemActions} from 'pages/settings/rules/types'
+import {
+    getSyntaxTreeLeaves,
+    SyntaxTree,
+} from 'pages/common/components/ast/utils'
 
 import Expression from './Expression'
 
 type Props = {
     rule: Map<any, any>
     actions: RuleItemActions
-    left: Partial<ComponentProps<typeof Expression>> & {type: string}
+    left: Partial<ComponentProps<typeof Expression>> & SyntaxTree
     leftsiblings?: List<any>
     operator: string
     parent: List<any>
-    right: Partial<ComponentProps<typeof Expression>> & {type: string}
+    right: Partial<ComponentProps<typeof Expression>> & SyntaxTree
     schemas: Map<any, any>
 }
 

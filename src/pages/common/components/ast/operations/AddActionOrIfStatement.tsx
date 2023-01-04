@@ -8,11 +8,11 @@ import {
     DropdownItem,
 } from 'reactstrap'
 
-import Errors from '../Errors'
-import {RuleOperation} from '../../../../../state/rules/types'
-import {RuleItemActions} from '../../../../settings/rules/types'
-import Hoverable from '../../Hoverable'
-import {computeLeftPadding} from '../utils.js'
+import {RuleOperation} from 'state/rules/types'
+import {RuleItemActions} from 'pages/settings/rules/types'
+import Hoverable from 'pages/common/components/Hoverable'
+import Errors from 'pages/common/components/ast/Errors'
+import {computeLeftPadding} from 'pages/common/components/ast/utils'
 
 type Props = {
     rule: Map<any, any>

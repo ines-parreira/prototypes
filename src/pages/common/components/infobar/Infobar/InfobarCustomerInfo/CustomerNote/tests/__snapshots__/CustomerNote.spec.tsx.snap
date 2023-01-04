@@ -1,0 +1,132 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CustomerNote component should display error message because the note failed to be saved 1`] = `
+<div>
+  <div
+    class="customerNote"
+  >
+    <i
+      class="material-icons noteIcon"
+    >
+      note
+    </i>
+    <div
+      class="noteInputContainer"
+    >
+      <textarea
+        class="noteInput error"
+        placeholder="This customer has no note."
+        rows="1"
+      />
+      <p
+        class="errorMessage text-danger"
+      >
+        An error occurred while posting this note. Please try again in a few seconds.
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`CustomerNote component should display loading state because the note is being saved 1`] = `
+<div>
+  <div
+    class="customerNote"
+  >
+    <i
+      class="material-icons noteIcon"
+    >
+      note
+    </i>
+    <div
+      class="noteInputContainer"
+    >
+      <textarea
+        class="noteInput loading"
+        disabled=""
+        placeholder="This customer has no note."
+        rows="1"
+      >
+        this customer is VERY nice
+      </textarea>
+      <i
+        class="icon-custom icon-circle-o-notch md-spin loaderIcon"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`CustomerNote component should display passed note 1`] = `
+<div>
+  <div
+    class="customerNote"
+  >
+    <i
+      class="material-icons noteIcon"
+    >
+      note
+    </i>
+    <div
+      class="noteInputContainer"
+    >
+      <textarea
+        class="noteInput"
+        placeholder="This customer has no note."
+        rows="1"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`CustomerNote component should display passed note 2`] = `
+<div>
+  <div
+    class="customerNote"
+  >
+    <i
+      class="material-icons noteIcon"
+    >
+      note
+    </i>
+    <div
+      class="noteInputContainer"
+    >
+      <textarea
+        class="noteInput"
+        placeholder="This customer has no note."
+        rows="2"
+      >
+        this customer is nice
+ and happy
+      </textarea>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`CustomerNote component should display the changed note and not loading because the note was successfully saved 1`] = `
+<div>
+  <div
+    class="customerNote"
+  >
+    <i
+      class="material-icons noteIcon"
+    >
+      note
+    </i>
+    <div
+      class="noteInputContainer"
+    >
+      <textarea
+        class="noteInput"
+        placeholder="This customer has no note."
+        rows="1"
+      >
+        this customer is VERY nice
+      </textarea>
+    </div>
+  </div>
+</div>
+`;

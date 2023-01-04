@@ -1,18 +1,20 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {fireEvent, render, waitFor} from '@testing-library/react'
 
-import InfiniteScroll from '../InfiniteScroll.tsx'
+import InfiniteScroll from '../InfiniteScroll'
 
 describe('InfiniteScroll component', () => {
-    const originalClientHeight = Object.getOwnPropertyDescriptor(
-        HTMLElement.prototype,
-        'clientHeight'
-    )
+    const originalClientHeight =
+        Object.getOwnPropertyDescriptor(
+            HTMLElement.prototype,
+            'clientHeight'
+        ) || 0
 
-    const originalScrollHeight = Object.getOwnPropertyDescriptor(
-        HTMLElement.prototype,
-        'scrollHeight'
-    )
+    const originalScrollHeight =
+        Object.getOwnPropertyDescriptor(
+            HTMLElement.prototype,
+            'scrollHeight'
+        ) || 0
 
     beforeAll(() => {
         Object.defineProperty(HTMLElement.prototype, 'clientHeight', {
@@ -38,19 +40,26 @@ describe('InfiniteScroll component', () => {
         )
     })
 
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
+
+    const minProps: ComponentProps<typeof InfiniteScroll> = {
+        onLoad: jest.fn(),
+        shouldLoadMore: true,
+        children: <div>Pizza Pepperoni</div>,
+    }
+
     it('should display infinite scroll with children', () => {
-        const {container} = render(
-            <InfiniteScroll>
-                <div>Pizza Pepperoni</div>
-            </InfiniteScroll>
-        )
+        const {container} = render(<InfiniteScroll {...minProps} />)
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should trigger load on scroll to bottom', () => {
+    it('should trigger load on scroll to bottom', async () => {
         const load = jest.fn()
         const {container} = render(
             <InfiniteScroll
+                {...minProps}
                 onLoad={() => {
                     load()
                     return Promise.resolve()
@@ -58,15 +67,16 @@ describe('InfiniteScroll component', () => {
             />
         )
 
-        fireEvent.scroll(container.firstChild, {target: {scrollTop: 200}})
+        fireEvent.scroll(container.firstChild!, {target: {scrollTop: 200}})
 
-        expect(load).toBeCalled()
+        await waitFor(() => expect(load).toBeCalled())
     })
 
-    it('should not trigger load when not scrolled to bottom', () => {
+    it('should not trigger load when not scrolled to bottom', async () => {
         const load = jest.fn()
         const {container} = render(
             <InfiniteScroll
+                {...minProps}
                 onLoad={() => {
                     load()
                     return Promise.resolve()
@@ -74,14 +84,15 @@ describe('InfiniteScroll component', () => {
             />
         )
 
-        fireEvent.scroll(container.firstChild, {target: {scrollTop: 10}})
-        expect(load).not.toBeCalled()
+        fireEvent.scroll(container.firstChild!, {target: {scrollTop: 10}})
+        await waitFor(() => expect(load).not.toBeCalled())
     })
 
-    it('should trigger load on scroll to bottom with different threshold', () => {
+    it('should trigger load on scroll to bottom with different threshold', async () => {
         const load = jest.fn()
         const {container} = render(
             <InfiniteScroll
+                {...minProps}
                 threshold={1}
                 onLoad={() => {
                     load()
@@ -90,16 +101,17 @@ describe('InfiniteScroll component', () => {
             />
         )
 
-        fireEvent.scroll(container.firstChild, {
+        fireEvent.scroll(container.firstChild!, {
             target: {scrollTop: 100},
         })
-        expect(load).toBeCalled()
+        await waitFor(() => expect(load).toBeCalled())
     })
 
-    it('should not trigger load with shouldLoadMore=false', () => {
+    it('should not trigger load with shouldLoadMore=false', async () => {
         const load = jest.fn()
         const {container} = render(
             <InfiniteScroll
+                {...minProps}
                 shouldLoadMore={false}
                 onLoad={() => {
                     load()
@@ -108,12 +120,12 @@ describe('InfiniteScroll component', () => {
             />
         )
 
-        fireEvent.scroll(container.firstChild, {target: {scrollTop: 50}})
-        expect(load).not.toBeCalled()
+        fireEvent.scroll(container.firstChild!, {target: {scrollTop: 50}})
+        await waitFor(() => expect(load).not.toBeCalled())
     })
 
     it('should call onLoad when is able to load more', async () => {
-        const props = {onLoad: jest.fn(), shouldLoadMore: true, threshold: 100}
+        const props = {...minProps, threshold: 100}
         const {rerender} = render(<InfiniteScroll {...props} />)
 
         await waitFor(() => expect(props.onLoad).toHaveBeenCalledTimes(1))
@@ -125,7 +137,7 @@ describe('InfiniteScroll component', () => {
     it('should call onLoad when onLoad is updated and it is able to load more', async () => {
         const first = jest.fn()
         const second = jest.fn()
-        const props = {shouldLoadMore: true, threshold: 100}
+        const props = {...minProps, threshold: 100}
         const {rerender} = render(<InfiniteScroll {...props} onLoad={first} />)
 
         await waitFor(() => expect(first).toHaveBeenCalledTimes(1))

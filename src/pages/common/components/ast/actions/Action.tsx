@@ -7,14 +7,13 @@ import {Link} from 'react-router-dom'
 import _isFunction from 'lodash/isFunction'
 import _isArray from 'lodash/isArray'
 
+import {isEmailList, findProperty} from 'utils'
+
 import {ManagedRulesSlugs} from 'state/rules/types'
-import {computeLeftPadding} from '../utils.js'
-import {templateRegex} from '../../../utils/template'
-
-import Errors from '../Errors'
-
-import {isEmailList, findProperty} from '../../../../../utils'
-import {RuleItemActions} from '../../../../settings/rules/types'
+import {computeLeftPadding} from 'pages/common/components/ast/utils'
+import {templateRegex} from 'pages/common/utils/template'
+import Errors from 'pages/common/components/ast/Errors'
+import {RuleItemActions} from 'pages/settings/rules/types'
 
 import ActionSelect from './ActionSelect'
 import ActionWarning from './ActionWarning'

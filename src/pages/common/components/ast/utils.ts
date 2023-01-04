@@ -1,11 +1,12 @@
-import {fromJS, List} from 'immutable'
+import {fromJS, Map, List, Iterable} from 'immutable'
+import {Expression, Literal, Super} from 'estree'
 
-import {ACTION_DEFAULT_STATE} from '../../../../state/rules/constants.ts'
-import {
-    updateCallExpression,
-    getObjectExpression,
-} from '../../../../state/rules/utils.ts'
-import {getCode, getAST, toJS, toImmutable} from '../../../../utils.ts'
+import {CodeASTType} from 'pages/settings/rules/types'
+import {ACTION_DEFAULT_STATE} from 'state/rules/constants'
+import {updateCallExpression, getObjectExpression} from 'state/rules/utils'
+import {RuleOperation} from 'state/rules/types'
+import {SchemasState} from 'state/schemas/types'
+import {getCode, getAST, toJS, toImmutable} from 'utils'
 
 export const BASIC_PADDING = 0
 export const PADDING_STEP = 18
@@ -15,7 +16,7 @@ export const PADDING_STEP = 18
  * @param depth: the nesting level of the element
  * @returns {string}: the string to use as paddingLeft style
  */
-export function computeLeftPadding(depth) {
+export function computeLeftPadding(depth: number) {
     return `${BASIC_PADDING + depth * PADDING_STEP}px`
 }
 
@@ -31,9 +32,12 @@ export function computeLeftPadding(depth) {
 
  This kind of path is useful for use in combination with the schemas (getting the kind of widgets,
  possible values, etc..)
-
  */
-export const getSyntaxTreeLeaves = (syntaxTree) => {
+export type SyntaxTree = Expression | Super
+
+export const getSyntaxTreeLeaves = (
+    syntaxTree?: SyntaxTree
+): Iterable<number, Literal['value']> | null => {
     if (syntaxTree === undefined || syntaxTree.type === undefined) {
         return null
     }
@@ -44,21 +48,27 @@ export const getSyntaxTreeLeaves = (syntaxTree) => {
         case 'Literal':
             return List([syntaxTree.value])
         case 'MemberExpression':
-            return getSyntaxTreeLeaves(syntaxTree.object).concat(
+            return getSyntaxTreeLeaves(syntaxTree.object)!.concat(
                 getSyntaxTreeLeaves(syntaxTree.property)
             )
         default:
-            throw Error('Unknown type', syntaxTree)
+            throw Error(`Unknown type: ${syntaxTree.type}`)
     }
 }
 
-export const updateCodeAst = (schemas, ast, path, value, operation) => {
-    const immutableAst = toImmutable(ast)
-    const immutablePath = toImmutable(path)
+export const updateCodeAst = (
+    schemas: SchemasState,
+    ast: CodeASTType,
+    path: List<any>,
+    value: Maybe<string | Record<string, unknown>>,
+    operation: `${RuleOperation}`
+) => {
+    const immutableAst = toImmutable<Map<any, any>, CodeASTType>(ast)
+    const immutablePath = toImmutable<List<any>, List<any>>(path)
 
     let newAst
 
-    if (operation === 'UPDATE') {
+    if (operation === RuleOperation.Update) {
         // First set the value directly based on the full path
         newAst = immutableAst.setIn(immutablePath.toJS(), value)
 
@@ -91,14 +101,21 @@ export const updateCodeAst = (schemas, ast, path, value, operation) => {
                     // This is done so we have a default value for a newly created action
                     newAst = newAst.setIn(
                         pathParentCallExpression.push('arguments', 1),
-                        getObjectExpression(ACTION_DEFAULT_STATE[value] || {})
+                        getObjectExpression(
+                            (
+                                ACTION_DEFAULT_STATE as Record<
+                                    string,
+                                    Record<string, unknown>
+                                >
+                            )[value as string] || {}
+                        )
                     )
                 }
             }
         }
     }
 
-    if (operation === 'INSERT') {
+    if (operation === RuleOperation.Insert) {
         const valueP = immutableAst.getIn(immutablePath.toJS())
 
         /*
@@ -131,29 +148,35 @@ export const updateCodeAst = (schemas, ast, path, value, operation) => {
                 })
             )
         } else {
-            newAst = immutableAst.updateIn(immutablePath.toJS(), (list) => {
-                // add action at the beginning of the body (more readable for users)
-                if (value.type === 'ExpressionStatement') {
-                    return list.unshift(value)
-                }
+            newAst = immutableAst.updateIn(
+                immutablePath.toJS(),
+                (list: List<any>) => {
+                    // add action at the beginning of the body (more readable for users)
+                    if (
+                        (value as Record<string, unknown>).type ===
+                        'ExpressionStatement'
+                    ) {
+                        return list.unshift(value)
+                    }
 
-                // add conditions at the end of the body
-                return list.push(value)
-            })
+                    // add conditions at the end of the body
+                    return list.push(value)
+                }
+            )
         }
     }
-    if (operation === 'DELETE') {
+    if (operation === RuleOperation.Delete) {
         const lastIndex = immutablePath.last()
         const pathNew = immutablePath.pop()
-        newAst = immutableAst.updateIn(pathNew.toJS(), (list) =>
+        newAst = immutableAst.updateIn(pathNew.toJS(), (list: List<any>) =>
             list.delete(lastIndex)
         )
     }
 
     // Add logical AND operation in TEST block of IFSTATEMENT.
-    if (operation === 'UPDATE_LOGICAL_OPERATOR') {
-        const test = immutableAst.getIn(immutablePath.toJS())
-        value.left = test.toJS()
+    if (operation === RuleOperation.UpdateLogicalOperator) {
+        const test: Map<any, any> = immutableAst.getIn(immutablePath.toJS())
+        ;(value as Record<string, unknown>).left = test.toJS()
         newAst = immutableAst.setIn(immutablePath.toJS(), value)
     }
 
@@ -166,7 +189,7 @@ export const updateCodeAst = (schemas, ast, path, value, operation) => {
      * This assumption will stay true since in UPDATE_LOGICAL_OPERATOR, we force this order.
      */
 
-    if (operation === 'DELETE_BINARY_EXPRESSION') {
+    if (operation === RuleOperation.DeleteBinaryExpression) {
         const lastIndex = immutablePath.last()
         const pathNew = immutablePath.pop()
 
@@ -181,13 +204,15 @@ export const updateCodeAst = (schemas, ast, path, value, operation) => {
         }
     }
 
-    if (operation === 'UPDATE_IF_STATEMENT') {
+    if (operation === RuleOperation.UpdateIfStatement) {
         newAst = immutableAst.setIn(
             immutablePath,
             fromJS(
                 Object.assign(
                     {},
-                    ...immutableAst.getIn(immutablePath).toJS(),
+                    ...(
+                        immutableAst.getIn(immutablePath) as Map<any, any>
+                    ).toJS(),
                     value
                 )
             )
@@ -200,8 +225,8 @@ export const updateCodeAst = (schemas, ast, path, value, operation) => {
         console.warn('New AST was not generated', newAst)
     }
 
-    newAst = toJS(newAst)
-    const code = getCode(newAst)
+    newAst = toJS(newAst as Map<any, any>)
+    const code = getCode(newAst as CodeASTType)
     return {
         code,
         ast: getAST(code),

@@ -31,7 +31,7 @@ import {getEmptyRule} from 'state/rules/utils'
 import history from 'pages/history'
 
 import {ErrorsContext} from 'pages/common/components/ast/Errors'
-import {updateCodeAst} from 'pages/common/components/ast/utils.js'
+import {updateCodeAst} from 'pages/common/components/ast/utils'
 import {getSchemas} from 'state/schemas/selectors'
 import TextInput from 'pages/common/forms/input/TextInput'
 import ToggleInput from 'pages/common/forms/ToggleInput'
@@ -207,7 +207,7 @@ export const DefaultRuleEditor = forwardRef<EditorHandle, RuleEditorProps>(
                 operation
             )
             setRuleDraft({...ruleDraft, code, code_ast: ast})
-            return ast as CodeASTType
+            return ast
         }
 
         const getCondition = (path: List<any>) =>
