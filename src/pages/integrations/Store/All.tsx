@@ -41,6 +41,10 @@ import {
     CATEGORY_DATA,
 } from './constants'
 import css from './All.less'
+import {
+    hasTwitterIntegrations,
+    filterOutDeprecatedIntegrations,
+} from './filters'
 import CategoryFilter from './CategoryFilter'
 import LimitWarning from './LimitWarning'
 import Loader from './Loader'
@@ -50,14 +54,6 @@ import Card from './Card'
 import Search from './Search'
 
 type Item = IntegrationListItem | AppListItem
-
-function hasTwitterIntegrations(integrations: Integration[]) {
-    return integrations.some(
-        (integration) =>
-            integration.type === IntegrationType.Twitter &&
-            integration.deleted_datetime === null
-    )
-}
 
 export function addRequiredPlanToIntegrations(
     integrationsListItems: IntegrationListItem[],
@@ -78,8 +74,8 @@ export function addRequiredPlanToIntegrations(
         // `prices` variable doesn't contain the custom plans and the
         // most similar plan would be the enterprise one
         if (
-            !hasTwitterIntegrations(integrations) &&
-            integration.type === IntegrationType.Twitter
+            integration.type === IntegrationType.Twitter &&
+            !hasTwitterIntegrations(integrations)
         ) {
             requiredPriceName = 'Enterprise'
         }
@@ -133,14 +129,22 @@ export default function All() {
         void dispatch(fetchIntegrations())
     }, [dispatch])
 
-    const isAppStoreEnabled = useFlags()[FeatureFlagKey.AppStore]
+    const featureFlags = useFlags()
+    const isAppStoreEnabled = featureFlags[FeatureFlagKey.AppStore]
     if (!isAppStoreEnabled) {
         return null
     }
 
+    const isWhatsAppEnabled = featureFlags[FeatureFlagKey.EnableWhatsApp]
+    const filteredIntegrationsList = filterOutDeprecatedIntegrations(
+        integrationsList,
+        integrations,
+        isWhatsAppEnabled
+    )
+
     const items: Item[] = [
         ...addRequiredPlanToIntegrations(
-            integrationsList,
+            filteredIntegrationsList,
             integrations,
             features,
             prices
