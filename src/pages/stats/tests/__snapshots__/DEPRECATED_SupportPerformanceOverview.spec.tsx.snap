@@ -1,0 +1,1416 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DEPRECATED_SupportPerformanceOverview should render the filters and stats when stats filters are defined 1`] = `
+<div
+  class="full-width wrapper"
+>
+  <div
+    class="header"
+    data-candu-id="stat-header-container"
+  >
+    <div
+      class="page-header pageHeader mb-0"
+    >
+      <h1
+        class="align-items-center"
+      >
+        <span>
+          Performance overview
+        </span>
+        <button
+          class="wrapper wrapper ml-3 fill secondary medium"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              info_outline
+            </i>
+            Learn
+          </span>
+        </button>
+      </h1>
+      <div>
+        <div
+          class="d-flex flex-wrap float-right"
+        >
+          <div
+            class="dropdown"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
+              type="button"
+            >
+              <span>
+                All integrations
+              </span>
+            </button>
+            <div
+              aria-hidden="true"
+              class="dropdown dropdown-menu dropdown-menu-right"
+              role="menu"
+              tabindex="-1"
+            >
+              <h6
+                class="dropdown-item-input dropdownItemInput dropdown-header"
+                tabindex="-1"
+              >
+                <input
+                  class="form-control"
+                  placeholder="Search integrations..."
+                  type="text"
+                  value=""
+                />
+              </h6>
+              <button
+                class="component dropdown-item"
+                role="menuitem"
+                tabindex="0"
+              >
+                <div
+                  class="checkbox"
+                >
+                  <label
+                    class="label label quickSelectionOption"
+                    for="checkbox-1"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-1"
+                      name="checkbox-1"
+                      type="checkbox"
+                    />
+                    Select all
+                    <div
+                      class="badge"
+                    >
+                      7
+                    </div>
+                  </label>
+                </div>
+              </button>
+              <div
+                class="dropdownDivider dropdown-divider"
+                tabindex="-1"
+              />
+              <div
+                class="content"
+              >
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-2"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-2"
+                      name="checkbox-2"
+                      type="checkbox"
+                    />
+                    <img
+                      alt="logo-gmail"
+                      class="integrationIcon"
+                      src="test-file-stub"
+                    />
+                     Acme Billing
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-3"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-3"
+                      name="checkbox-3"
+                      type="checkbox"
+                    />
+                    <img
+                      alt="logo-gmail"
+                      class="integrationIcon"
+                      src="test-file-stub"
+                    />
+                     Deactivated gmail
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-4"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-4"
+                      name="checkbox-4"
+                      type="checkbox"
+                    />
+                    <i
+                      class="icon material-icons icon"
+                    >
+                      email
+                    </i>
+                     Acme Support
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-5"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-5"
+                      name="checkbox-5"
+                      type="checkbox"
+                    />
+                    <i
+                      class="icon material-icons icon"
+                    >
+                      email
+                    </i>
+                     Acme Contact
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-6"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-6"
+                      name="checkbox-6"
+                      type="checkbox"
+                    />
+                    <i
+                      class="icon material-icons icon"
+                    >
+                      email
+                    </i>
+                     Acme Unverified
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-7"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-7"
+                      name="checkbox-7"
+                      type="checkbox"
+                    />
+                    <i
+                      class="icon material-icons icon"
+                    >
+                      email
+                    </i>
+                     Sendgrid Integration
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-8"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-8"
+                      name="checkbox-8"
+                      type="checkbox"
+                    />
+                    <i
+                      class="icon material-icons icon"
+                    >
+                      chat
+                    </i>
+                     Chitty chatty
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="dropdown"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
+              type="button"
+            >
+              <span>
+                1 channel
+              </span>
+            </button>
+            <div
+              aria-hidden="true"
+              class="dropdown dropdown-menu dropdown-menu-right"
+              role="menu"
+              tabindex="-1"
+            >
+              <h6
+                class="dropdown-item-input dropdownItemInput dropdown-header"
+                tabindex="-1"
+              >
+                <input
+                  class="form-control"
+                  placeholder="Search channels..."
+                  type="text"
+                  value=""
+                />
+              </h6>
+              <button
+                class="component dropdown-item"
+                role="menuitem"
+                tabindex="0"
+              >
+                <div
+                  class="checkbox"
+                >
+                  <label
+                    class="label label quickSelectionOption"
+                    for="checkbox-9"
+                  >
+                    <input
+                      checked=""
+                      class="input"
+                      id="checkbox-9"
+                      name="checkbox-9"
+                      type="checkbox"
+                    />
+                    Deselect
+                    <div
+                      class="badge badge--unselect"
+                    >
+                      1
+                    </div>
+                  </label>
+                </div>
+              </button>
+              <div
+                class="dropdownDivider dropdown-divider"
+                tabindex="-1"
+              />
+              <div
+                class="content"
+              >
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-10"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-10"
+                      name="checkbox-10"
+                      type="checkbox"
+                    />
+                     Aircall
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-11"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-11"
+                      name="checkbox-11"
+                      type="checkbox"
+                    />
+                     Api
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-12"
+                  >
+                    <input
+                      checked=""
+                      class="input"
+                      id="checkbox-12"
+                      name="checkbox-12"
+                      type="checkbox"
+                    />
+                     Chat
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-13"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-13"
+                      name="checkbox-13"
+                      type="checkbox"
+                    />
+                     Email
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-14"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-14"
+                      name="checkbox-14"
+                      type="checkbox"
+                    />
+                     Facebook
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-15"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-15"
+                      name="checkbox-15"
+                      type="checkbox"
+                    />
+                     Facebook mention
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-16"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-16"
+                      name="checkbox-16"
+                      type="checkbox"
+                    />
+                     Facebook messenger
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-17"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-17"
+                      name="checkbox-17"
+                      type="checkbox"
+                    />
+                     Facebook recommendations
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-18"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-18"
+                      name="checkbox-18"
+                      type="checkbox"
+                    />
+                     Help center
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-19"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-19"
+                      name="checkbox-19"
+                      type="checkbox"
+                    />
+                     Instagram ad comment
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-20"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-20"
+                      name="checkbox-20"
+                      type="checkbox"
+                    />
+                     Instagram comment
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-21"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-21"
+                      name="checkbox-21"
+                      type="checkbox"
+                    />
+                     Instagram mention
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-22"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-22"
+                      name="checkbox-22"
+                      type="checkbox"
+                    />
+                     Instagram direct message
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-23"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-23"
+                      name="checkbox-23"
+                      type="checkbox"
+                    />
+                     Phone
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-24"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-24"
+                      name="checkbox-24"
+                      type="checkbox"
+                    />
+                     Sms
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-25"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-25"
+                      name="checkbox-25"
+                      type="checkbox"
+                    />
+                     Twitter
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-26"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-26"
+                      name="checkbox-26"
+                      type="checkbox"
+                    />
+                     Twitter direct message
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-27"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-27"
+                      name="checkbox-27"
+                      type="checkbox"
+                    />
+                     Yotpo review
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="dropdown"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
+              type="button"
+            >
+              <span>
+                1 agent
+              </span>
+            </button>
+            <div
+              aria-hidden="true"
+              class="dropdown dropdown-menu dropdown-menu-right"
+              role="menu"
+              tabindex="-1"
+            >
+              <h6
+                class="dropdown-item-input dropdownItemInput dropdown-header"
+                tabindex="-1"
+              >
+                <input
+                  class="form-control"
+                  placeholder="Search agents..."
+                  type="text"
+                  value=""
+                />
+              </h6>
+              <button
+                class="component dropdown-item"
+                role="menuitem"
+                tabindex="0"
+              >
+                <div
+                  class="checkbox"
+                >
+                  <label
+                    class="label label quickSelectionOption"
+                    for="checkbox-28"
+                  >
+                    <input
+                      checked=""
+                      class="input"
+                      id="checkbox-28"
+                      name="checkbox-28"
+                      type="checkbox"
+                    />
+                    Deselect
+                    <div
+                      class="badge badge--unselect"
+                    >
+                      1
+                    </div>
+                  </label>
+                </div>
+              </button>
+              <div
+                class="dropdownDivider dropdown-divider"
+                tabindex="-1"
+              />
+              <div
+                class="content"
+              >
+                <h6
+                  class="dropdownHeader dropdown-header"
+                  tabindex="-1"
+                >
+                  Teams
+                </h6>
+                <div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-29"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-29"
+                        name="checkbox-29"
+                        type="checkbox"
+                      />
+                      Foo
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-30"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-30"
+                        name="checkbox-30"
+                        type="checkbox"
+                      />
+                      Phone team - +1 205-396-3441
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-31"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-31"
+                        name="checkbox-31"
+                        type="checkbox"
+                      />
+                      Team: user meta null
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-32"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-32"
+                        name="checkbox-32"
+                        type="checkbox"
+                      />
+                      Test
+                    </label>
+                  </div>
+                </div>
+                <div
+                  class="dropdownDivider dropdown-divider"
+                  tabindex="-1"
+                />
+                <h6
+                  class="dropdownHeader dropdown-header"
+                  tabindex="-1"
+                >
+                  Users
+                </h6>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-33"
+                  >
+                    <input
+                      checked=""
+                      class="input"
+                      id="checkbox-33"
+                      name="checkbox-33"
+                      type="checkbox"
+                    />
+                     Acme Support
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-34"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-34"
+                      name="checkbox-34"
+                      type="checkbox"
+                    />
+                     Bob Smith
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            TagsStatsFilterMock, value: 
+            [1]
+          </div>
+          <div>
+            <button
+              class="wrapper fill secondary medium"
+              type="button"
+            >
+              <span
+                class="wrapper"
+              >
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  calendar_today
+                </i>
+                <span
+                  class="wrapper"
+                >
+                  Feb 03, 2021
+                  <i
+                    class="material-icons icon isRight medium"
+                  >
+                    arrow_drop_down
+                  </i>
+                </span>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="statsWrapper"
+  >
+    <div
+      class="statsContainer container-fluid"
+    >
+      <div
+        class="wrapper"
+      >
+        <div
+          class="metrics"
+        >
+          <div
+            class="metric"
+          >
+            <div
+              class="label"
+            >
+              Tickets created
+              <span>
+                <i
+                  class="material-icons ml-2 helpIcon info-icon"
+                  id="title-total-tickets-created-0"
+                >
+                  info_outline
+                </i>
+              </span>
+            </div>
+            <div
+              class="mt-3 statsDisplay"
+            >
+              -
+            </div>
+          </div>
+          <div
+            class="metric"
+          >
+            <div
+              class="label"
+            >
+              Tickets replied
+              <span>
+                <i
+                  class="material-icons ml-2 helpIcon info-icon"
+                  id="title-total-tickets-replied-1"
+                >
+                  info_outline
+                </i>
+              </span>
+            </div>
+            <div
+              class="mt-3 statsDisplay"
+            >
+              -
+            </div>
+          </div>
+          <div
+            class="metric"
+          >
+            <div
+              class="label"
+            >
+              Tickets closed
+              <span>
+                <i
+                  class="material-icons ml-2 helpIcon info-icon"
+                  id="title-total-tickets-closed-2"
+                >
+                  info_outline
+                </i>
+              </span>
+            </div>
+            <div
+              class="mt-3 statsDisplay"
+            >
+              -
+            </div>
+          </div>
+          <div
+            class="metric"
+          >
+            <div
+              class="label"
+            >
+              Messages sent
+              <span>
+                <i
+                  class="material-icons ml-2 helpIcon info-icon"
+                  id="title-total-messages-sent-3"
+                >
+                  info_outline
+                </i>
+              </span>
+            </div>
+            <div
+              class="mt-3 statsDisplay"
+            >
+              <div>
+                <div
+                  class="value"
+                >
+                  30
+                </div>
+                <span
+                  class="diff"
+                  id="value-total-messages-sent-3"
+                >
+                  <span>
+                    <i
+                      class="material-icons mr-1 statsDifference"
+                    >
+                      arrow_downward
+                    </i>
+                    -42
+                    %
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="metric"
+          >
+            <div
+              class="label"
+            >
+              Messages received
+              <span>
+                <i
+                  class="material-icons ml-2 helpIcon info-icon"
+                  id="title-total-messages-received-4"
+                >
+                  info_outline
+                </i>
+              </span>
+            </div>
+            <div
+              class="mt-3 statsDisplay"
+            >
+              -
+            </div>
+          </div>
+          <div
+            class="metric"
+          >
+            <div
+              class="label"
+            >
+              First response time
+              <span>
+                <i
+                  class="material-icons ml-2 helpIcon info-icon"
+                  id="title-median-first-response-time-5"
+                >
+                  info_outline
+                </i>
+              </span>
+            </div>
+            <div
+              class="mt-3 statsDisplay"
+            >
+              -
+            </div>
+          </div>
+          <div
+            class="metric"
+          >
+            <div
+              class="label"
+            >
+              Resolution time
+              <span>
+                <i
+                  class="material-icons ml-2 helpIcon info-icon"
+                  id="title-median-resolution-time-6"
+                >
+                  info_outline
+                </i>
+              </span>
+            </div>
+            <div
+              class="mt-3 statsDisplay"
+            >
+              -
+            </div>
+          </div>
+          <div
+            class="metric"
+          >
+            <div
+              class="label"
+            >
+              One-touch tickets
+              <span>
+                <i
+                  class="material-icons ml-2 helpIcon info-icon"
+                  id="title-total-one-touch-tickets-7"
+                >
+                  info_outline
+                </i>
+              </span>
+            </div>
+            <div
+              class="mt-3 statsDisplay"
+            >
+              -
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="wrapper"
+      >
+        <div
+          class="mb-3 d-flex justify-content-between align-items-baseline"
+        >
+          <h5
+            class="mb-0 d-flex header"
+          >
+            Support volume
+            <span>
+              <i
+                class="material-icons ml-2 helpIcon"
+                id="tooltip-support-volume"
+              >
+                info_outline
+              </i>
+            </span>
+          </h5>
+          <button
+            class="csvButton btn btn-secondary"
+            type="button"
+          >
+            <i
+              class="material-icons mr-1 csvButtonIcon"
+            >
+              file_download
+            </i>
+            CSV
+          </button>
+        </div>
+        <div>
+          <div
+            class="mb-4"
+          >
+            <div
+              class="legends"
+            >
+              <span
+                class="label mr-4 mb-2"
+              >
+                <span
+                  class="circle mr-2"
+                  style="background: rgb(255, 181, 132);"
+                />
+                Ticket created
+              </span>
+              <span
+                class="label mr-4 mb-2"
+              >
+                <span
+                  class="circle mr-2"
+                  style="background: rgb(136, 146, 242);"
+                />
+                Ticket replied
+              </span>
+              <span
+                class="label mr-4 mb-2"
+              >
+                <span
+                  class="circle mr-2"
+                  style="background: rgb(165, 229, 171);"
+                />
+                Ticket closed
+              </span>
+            </div>
+          </div>
+          <div>
+            <canvas />
+          </div>
+        </div>
+      </div>
+      <div
+        class="wrapper"
+      >
+        <div
+          class="mb-3 d-flex justify-content-between align-items-baseline"
+        >
+          <h5
+            class="mb-0 d-flex header"
+          >
+            Resolution time (percentiles)
+            <span>
+              <i
+                class="material-icons ml-2 helpIcon"
+                id="tooltip-resolution-time"
+              >
+                info_outline
+              </i>
+            </span>
+          </h5>
+          <button
+            class="csvButton btn btn-secondary"
+            type="button"
+          >
+            <i
+              class="material-icons mr-1 csvButtonIcon"
+            >
+              file_download
+            </i>
+            CSV
+          </button>
+        </div>
+        <div>
+          <div
+            class="mb-4"
+          >
+            <div
+              class="legends"
+            >
+              <span
+                class="label mr-4 mb-2"
+              >
+                <span
+                  class="circle mr-2"
+                  style="background: rgb(255, 181, 132);"
+                />
+                median
+              </span>
+              <span
+                class="label mr-4 mb-2"
+              >
+                <span
+                  class="circle mr-2"
+                  style="background: rgb(255, 107, 128);"
+                />
+                90%
+              </span>
+            </div>
+          </div>
+          <div>
+            <canvas />
+          </div>
+        </div>
+      </div>
+      <div
+        class="wrapper"
+      >
+        <div
+          class="mb-3 d-flex justify-content-between align-items-baseline"
+        >
+          <h5
+            class="mb-0 d-flex header"
+          >
+            First response time (percentiles)
+            <span>
+              <i
+                class="material-icons ml-2 helpIcon"
+                id="tooltip-first-response-time"
+              >
+                info_outline
+              </i>
+            </span>
+          </h5>
+          <button
+            class="csvButton btn btn-secondary"
+            type="button"
+          >
+            <i
+              class="material-icons mr-1 csvButtonIcon"
+            >
+              file_download
+            </i>
+            CSV
+          </button>
+        </div>
+        <div>
+          <div
+            class="mb-4"
+          >
+            <div
+              class="legends"
+            >
+              <span
+                class="label mr-4 mb-2"
+              >
+                <span
+                  class="circle mr-2"
+                  style="background: rgb(136, 146, 242);"
+                />
+                median
+              </span>
+              <span
+                class="label mr-4 mb-2"
+              >
+                <span
+                  class="circle mr-2"
+                  style="background: rgb(255, 107, 128);"
+                />
+                90%
+              </span>
+            </div>
+          </div>
+          <div>
+            <canvas />
+          </div>
+        </div>
+      </div>
+      <div
+        class="wrapper"
+      >
+        <div
+          class="mb-3 d-flex justify-content-between align-items-baseline"
+        >
+          <h5
+            class="mb-0 d-flex header"
+          >
+            Busiest time of the week
+            <span>
+              <i
+                class="material-icons ml-2 helpIcon"
+                id="tooltip-tickets-created-per-hour-per-weekday"
+              >
+                info_outline
+              </i>
+            </span>
+          </h5>
+          <button
+            class="csvButton btn btn-secondary"
+            type="button"
+          >
+            <i
+              class="material-icons mr-1 csvButtonIcon"
+            >
+              file_download
+            </i>
+            CSV
+          </button>
+        </div>
+        <div>
+          <div
+            class="mb-4"
+          >
+            <div
+              class="legends"
+            >
+              <span
+                class="label mr-4 mb-2"
+              >
+                <span
+                  class="square mr-2"
+                />
+                Business Hours
+              </span>
+            </div>
+          </div>
+          <table
+            class="hourlyTable table table-hover"
+          >
+            <thead>
+              <tr>
+                <th
+                  class="string"
+                >
+                  <span>
+                    HOUR
+                  </span>
+                </th>
+                <th
+                  class="number"
+                >
+                  <span>
+                    MONDAY
+                  </span>
+                </th>
+                <th
+                  class="number"
+                >
+                  <span>
+                    TUESDAY
+                  </span>
+                </th>
+                <th
+                  class="number"
+                >
+                  <span>
+                    WEDNESDAY
+                  </span>
+                </th>
+                <th
+                  class="number"
+                >
+                  <span>
+                    THURSDAY
+                  </span>
+                </th>
+                <th
+                  class="number"
+                >
+                  <span>
+                    FRIDAY
+                  </span>
+                </th>
+                <th
+                  class="number"
+                >
+                  <span>
+                    SATURDAY
+                  </span>
+                </th>
+                <th
+                  class="number"
+                >
+                  <span>
+                    SUNDAY
+                  </span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td
+                  style="background-color: rgb(255, 255, 255);"
+                >
+                  <span>
+                    00:00
+                  </span>
+                </td>
+                <td
+                  style="background-color: rgb(255, 255, 255);"
+                >
+                  <div
+                    class="redTransparentStripes"
+                  />
+                  <span>
+                    0
+                  </span>
+                </td>
+                <td
+                  style="background-color: rgb(255, 255, 255);"
+                >
+                  <span>
+                    2
+                  </span>
+                </td>
+                <td
+                  style="background-color: rgb(255, 255, 255);"
+                >
+                  <span>
+                    0
+                  </span>
+                </td>
+                <td
+                  style="background-color: rgb(255, 255, 255);"
+                >
+                  <span>
+                    0
+                  </span>
+                </td>
+                <td
+                  style="background-color: rgb(255, 255, 255);"
+                >
+                  <span>
+                    0
+                  </span>
+                </td>
+                <td
+                  style="background-color: rgb(255, 255, 255);"
+                >
+                  <span>
+                    0
+                  </span>
+                </td>
+                <td
+                  style="background-color: rgb(255, 255, 255);"
+                >
+                  <span>
+                    0
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

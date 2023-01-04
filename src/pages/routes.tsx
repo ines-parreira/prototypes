@@ -109,6 +109,8 @@ import SupportPerformanceAgents from './stats/SupportPerformanceAgents'
 import SupportPerformanceSatisfaction from './stats/SupportPerformanceSatisfaction'
 import SupportPerformanceRevenue from './stats/SupportPerformanceRevenue'
 import SupportPerformanceOverview from './stats/SupportPerformanceOverview'
+import DEPRECATED_SupportPerformanceOverview from './stats/DEPRECATED_SupportPerformanceOverview'
+import SupportPerformanceWeeklyTicketLoad from './stats/SupportPerformanceWeeklyTicketLoad'
 import LiveOverview from './stats/LiveOverview'
 import LiveAgents from './stats/LiveAgents'
 import AutomationOverview from './stats/AutomationOverview'
@@ -439,6 +441,8 @@ export function StatsRoutes({match: {path}}: RouteComponentProps) {
     const hasLiveOverviewFeature = useAppSelector(
         currentAccountHasFeature(AccountFeature.OverviewLiveStatistics)
     )
+    const hasAnalyticsBeta: boolean | undefined =
+        useFlags()[FeatureFlagKey.AnalyticsBetaTesters]
 
     return (
         <DefaultStatsFilters
@@ -485,10 +489,22 @@ export function StatsRoutes({match: {path}}: RouteComponentProps) {
                     exact
                     path={`${path}/support-performance-overview`}
                     render={appRender({
-                        content: SupportPerformanceOverview,
+                        content: hasAnalyticsBeta
+                            ? SupportPerformanceOverview
+                            : DEPRECATED_SupportPerformanceOverview,
                         navbar: StatsNavbarContainer,
                     })}
                 />
+                {hasAnalyticsBeta && (
+                    <Route
+                        exact
+                        path={`${path}/weekly-ticket-load`}
+                        render={appRender({
+                            content: SupportPerformanceWeeklyTicketLoad,
+                            navbar: StatsNavbarContainer,
+                        })}
+                    />
+                )}
                 <Route
                     exact
                     path={`${path}/tags`}

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<SupportPerformanceOverview /> should render the page 1`] = `
+exports[`<SupportPerformanceWeeklyTicketLoad /> should render the page 1`] = `
 <div
   class="full-width wrapper"
 >
@@ -15,7 +15,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
         class="align-items-center"
       >
         <span>
-          Overview
+          Weekly Ticket Load
         </span>
       </h1>
       <div>
@@ -31,7 +31,7 @@ exports[`<SupportPerformanceOverview /> should render the page 1`] = `
     <div
       class="statsContainer container-fluid"
     >
-      SupportPerformanceOverview
+      SupportPerformanceWeeklyTicketLoad
     </div>
   </div>
 </div>

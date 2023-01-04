@@ -28,4 +28,22 @@ describe('<HeaderWithInfo />', () => {
 
         await findByTestId('description')
     })
+
+    it('should not render the learn more link when missing helpUrl', () => {
+        const {getByText, queryByText} = render(
+            <HeaderWithInfo
+                title="Foo"
+                description={<span data-testid="description">description</span>}
+            />
+        )
+        fireEvent.click(getByText('Learn'))
+
+        expect(queryByText('Learn More')).toBeNull()
+    })
+
+    it('should not render the learn more button when missing description', () => {
+        const {queryByText} = render(<HeaderWithInfo title="Foo" />)
+
+        expect(queryByText('Learn')).toBeNull()
+    })
 })

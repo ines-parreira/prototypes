@@ -1,5 +1,6 @@
 export enum FeatureFlagKey {
     AgentsAvailabilityStatus = 'agents-availability-status',
+    AnalyticsBetaTesters = 'analytics-beta-testers',
     AutomationSettingsRevamp = 'automation-settings-revamp',
     AppStore = 'app-store',
     BigCommerceCreateOrder = 'bigcommerce-create-order',

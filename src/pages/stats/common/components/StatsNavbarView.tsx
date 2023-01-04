@@ -1,20 +1,29 @@
 import React, {ComponentProps} from 'react'
 import {NavLink} from 'react-router-dom'
+import classnames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
-import css from 'assets/css/navbar.less'
+import cssNavbar from 'assets/css/navbar.less'
+import {FeatureFlagKey} from 'config/featureFlags'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import NavbarBlock from 'pages/common/components/navbar/NavbarBlock'
 
+import css from './StatsNavbarView.less'
+
 const COMMON_NAV_LINK_PROPS: Partial<ComponentProps<NavLink>> = {
-    className: css.link,
+    className: classnames(cssNavbar.link, css.link),
     activeClassName: 'active',
     exact: true,
 }
 
 export default function StatsNavbarView() {
+    const hasAnalyticsBeta: boolean | undefined =
+        useFlags()[FeatureFlagKey.AnalyticsBetaTesters]
+
     return (
         <>
             <NavbarBlock icon="adjust" title="Live">
-                <div className={css.menu}>
+                <div className={cssNavbar.menu}>
                     <NavLink
                         {...COMMON_NAV_LINK_PROPS}
                         to="/app/stats/live-overview"
@@ -30,13 +39,28 @@ export default function StatsNavbarView() {
                 </div>
             </NavbarBlock>
             <NavbarBlock icon="insights" title="Support Performance">
-                <div className={css.menu}>
+                <div className={cssNavbar.menu}>
                     <NavLink
                         {...COMMON_NAV_LINK_PROPS}
                         to="/app/stats/support-performance-overview"
                     >
                         Overview
+                        {hasAnalyticsBeta && (
+                            <Badge className={css.badge} type={ColorType.Blue}>
+                                new
+                            </Badge>
+                        )}
                     </NavLink>
+
+                    {hasAnalyticsBeta && (
+                        <NavLink
+                            {...COMMON_NAV_LINK_PROPS}
+                            to="/app/stats/weekly-ticket-load"
+                        >
+                            Weekly ticket load
+                        </NavLink>
+                    )}
+
                     <NavLink {...COMMON_NAV_LINK_PROPS} to="/app/stats/tags">
                         Tags
                     </NavLink>
@@ -64,7 +88,7 @@ export default function StatsNavbarView() {
                 </div>
             </NavbarBlock>
             <NavbarBlock icon="bolt" title="Automations">
-                <div className={css.menu}>
+                <div className={cssNavbar.menu}>
                     {
                         // TMP: This link will come back when the page will be reworked
                         // <NavLink

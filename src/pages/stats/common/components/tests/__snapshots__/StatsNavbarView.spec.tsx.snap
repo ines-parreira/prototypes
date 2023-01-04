@@ -11,7 +11,7 @@ exports[`StatsNavbarView should render 1`] = `
     >
       <NavLink
         activeClassName="active"
-        className="link"
+        className="link link"
         exact={true}
         to="/app/stats/live-overview"
       >
@@ -19,7 +19,7 @@ exports[`StatsNavbarView should render 1`] = `
       </NavLink>
       <NavLink
         activeClassName="active"
-        className="link"
+        className="link link"
         exact={true}
         to="/app/stats/live-agents"
       >
@@ -36,7 +36,7 @@ exports[`StatsNavbarView should render 1`] = `
     >
       <NavLink
         activeClassName="active"
-        className="link"
+        className="link link"
         exact={true}
         to="/app/stats/support-performance-overview"
       >
@@ -44,7 +44,7 @@ exports[`StatsNavbarView should render 1`] = `
       </NavLink>
       <NavLink
         activeClassName="active"
-        className="link"
+        className="link link"
         exact={true}
         to="/app/stats/tags"
       >
@@ -52,7 +52,7 @@ exports[`StatsNavbarView should render 1`] = `
       </NavLink>
       <NavLink
         activeClassName="active"
-        className="link"
+        className="link link"
         exact={true}
         to="/app/stats/channels"
       >
@@ -60,7 +60,7 @@ exports[`StatsNavbarView should render 1`] = `
       </NavLink>
       <NavLink
         activeClassName="active"
-        className="link"
+        className="link link"
         exact={true}
         to="/app/stats/support-performance-agents"
       >
@@ -68,7 +68,7 @@ exports[`StatsNavbarView should render 1`] = `
       </NavLink>
       <NavLink
         activeClassName="active"
-        className="link"
+        className="link link"
         exact={true}
         to="/app/stats/satisfaction"
       >
@@ -76,7 +76,7 @@ exports[`StatsNavbarView should render 1`] = `
       </NavLink>
       <NavLink
         activeClassName="active"
-        className="link"
+        className="link link"
         exact={true}
         to="/app/stats/revenue"
       >
@@ -93,7 +93,7 @@ exports[`StatsNavbarView should render 1`] = `
     >
       <NavLink
         activeClassName="active"
-        className="link"
+        className="link link"
         exact={true}
         to="/app/stats/macros"
       >
@@ -101,7 +101,7 @@ exports[`StatsNavbarView should render 1`] = `
       </NavLink>
       <NavLink
         activeClassName="active"
-        className="link"
+        className="link link"
         exact={true}
         to="/app/stats/intents"
       >
@@ -109,7 +109,7 @@ exports[`StatsNavbarView should render 1`] = `
       </NavLink>
       <NavLink
         activeClassName="active"
-        className="link"
+        className="link link"
         exact={true}
         to="/app/stats/self-service"
       >
