@@ -8,64 +8,64 @@ export type OptionFormat = {
 
 export default {
     general: {
-        'sspTexts.sendUsAMessage': {maxLength: 17},
-        'texts.leaveAMessage': {maxLength: 15},
-        'sspTexts.needHelp': {maxLength: 15},
+        'sspTexts.sendUsAMessage': {maxLength: 30},
+        'texts.leaveAMessage': {maxLength: 27},
+        'sspTexts.needHelp': {maxLength: 27},
         'texts.backLabelBackAt': {
-            maxLength: 28,
+            maxLength: 32,
         },
     },
     contactForm: {
-        'texts.contactFormIntro': {maxLength: 65},
-        'texts.contactFormAskSubject': {maxLength: 31},
-        'sspTexts.trackOrderShort': {maxLength: 11},
-        'sspTexts.reportIssueShort': {maxLength: 12},
-        'sspTexts.cancelOrderShort': {maxLength: 12},
-        'texts.productQuestionShort': {maxLength: 16},
+        'texts.contactFormIntro': {maxLength: 106},
+        'texts.contactFormAskSubject': {maxLength: 33},
+        'sspTexts.trackOrderShort': {maxLength: 20},
+        'sspTexts.reportIssueShort': {maxLength: 23},
+        'sspTexts.cancelOrderShort': {maxLength: 21},
+        'texts.productQuestionShort': {maxLength: 23},
         'texts.contactFormAskSubjectOther': {
-            maxLength: 29,
+            maxLength: 32,
         },
-        'texts.contactFormAskMessage': {maxLength: 71},
-        'texts.contactFormAskEmail': {maxLength: 28},
+        'texts.contactFormAskMessage': {maxLength: 122},
+        'texts.contactFormAskEmail': {maxLength: 48},
         'texts.contactFormAskAdditionalMessage': {
-            maxLength: 52,
+            maxLength: 68,
         },
-        'texts.thatsAll': {maxLength: 10},
+        'texts.thatsAll': {maxLength: 12},
         'texts.contactFormEndingMessage': {
-            maxLength: 55,
+            maxLength: 85,
         },
     },
     dynamicWaitTime: {
-        'texts.waitTimeShortNoEmail': {maxLength: 101},
+        'texts.waitTimeShortNoEmail': {maxLength: 166},
         'texts.waitTimeShortEmailCaptured': {
-            maxLength: 72,
+            maxLength: 109,
         },
-        'texts.waitTimeMediumNoEmail': {maxLength: 128},
+        'texts.waitTimeMediumNoEmail': {maxLength: 192},
         'texts.waitTimeMediumEmailCaptured': {
-            maxLength: 100,
+            maxLength: 136,
         },
-        'texts.waitTimeAgentsAreBusy': {maxLength: 118},
-        'texts.waitForAnAgent': {maxLength: 17},
+        'texts.waitTimeAgentsAreBusy': {maxLength: 152},
+        'texts.waitForAnAgent': {maxLength: 28},
         'texts.waitTimeLongEmailCaptured': {
-            maxLength: 98,
+            maxLength: 106,
         },
-        'texts.waitTimeLongNoEmail': {maxLength: 128},
+        'texts.waitTimeLongNoEmail': {maxLength: 163},
         'texts.getRepliesByEmail': {
-            maxLength: 43,
+            maxLength: 41,
         },
     },
     autoResponder: {
-        'texts.usualReplyTimeMinutes': {maxLength: 34},
-        'texts.usualReplyTimeHours': {maxLength: 32},
+        'texts.usualReplyTimeMinutes': {maxLength: 50},
+        'texts.usualReplyTimeHours': {maxLength: 49},
         'texts.emailCaptureTriggerTextBase': {
-            maxLength: 55,
+            maxLength: 79,
         },
-        'texts.emailCaptureTriggerTypicalReplyMinutes': {maxLength: 42},
-        'texts.emailCaptureTriggerTypicalReplyHours': {maxLength: 40},
+        'texts.emailCaptureTriggerTypicalReplyMinutes': {maxLength: 64},
+        'texts.emailCaptureTriggerTypicalReplyHours': {maxLength: 64},
     },
     emailCapture: {
         'texts.emailCaptureOnlineTriggerText': {
-            maxLength: 52,
+            maxLength: 76,
             filteredBy: ({emailCaptureEnforcement}: FilterProps) => {
                 if (emailCaptureEnforcement === 'always-required') {
                     return false
@@ -74,13 +74,13 @@ export default {
             },
         },
         'sspTexts.youWillGetRepliesHereAndByEmail': {
-            maxLength: 54,
+            maxLength: 60,
         },
         'texts.emailCaptureThanksText': {
-            maxLength: 80,
+            maxLength: 119,
         },
         'texts.requireEmailCaptureIntro': {
-            maxLength: 89,
+            maxLength: 144,
             filteredBy: ({emailCaptureEnforcement}: FilterProps) => {
                 if (emailCaptureEnforcement !== 'always-required') {
                     return false
@@ -88,6 +88,6 @@ export default {
                 return true
             },
         },
-        'texts.howCanWeHelpToday': {maxLength: 31},
+        'texts.howCanWeHelpToday': {maxLength: 45},
     },
 }
