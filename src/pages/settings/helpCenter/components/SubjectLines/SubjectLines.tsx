@@ -31,6 +31,7 @@ type SubjectLinesProps = {
     currentLocale: LocaleCode
     updateContactForm: React.Dispatch<React.SetStateAction<UpdateContactForm>>
     translationsLoaded: boolean
+    setIsDirty: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const SubjectLines = ({
@@ -39,6 +40,7 @@ const SubjectLines = ({
     contactForm,
     updateContactForm,
     translationsLoaded,
+    setIsDirty,
 }: SubjectLinesProps) => {
     const integrations = useAppSelector(
         getIntegrationsByType<ShopifyIntegration>(IntegrationType.Shopify)
@@ -208,6 +210,7 @@ const SubjectLines = ({
         subjectLines[subjectLineIndex].value = newValue
 
         setSubjectLinesWithId(subjectLines)
+        setIsDirty(true)
     }
 
     const handleOnDelete = (id: string) => {
@@ -223,6 +226,7 @@ const SubjectLines = ({
         subjectLines.splice(subjectLineIndex, 1)
 
         setSubjectLinesWithId(subjectLines)
+        setIsDirty(true)
     }
 
     const handleOnAdd = () => {
@@ -231,6 +235,7 @@ const SubjectLines = ({
             {id: _uniqueId('subject-line-'), value: ''},
         ])
         setSubjectLinesExpanded(true)
+        setIsDirty(true)
     }
 
     const handleOnMoveEntity = (dragIndex: number, hoverIndex: number) => {
@@ -241,6 +246,7 @@ const SubjectLines = ({
         subjectLines.splice(hoverIndex, 0, dragSubjectLine)
 
         setSubjectLinesWithId(subjectLines)
+        setIsDirty(true)
     }
 
     const handleOnToggleCheckbox = (value: boolean) => {
@@ -260,6 +266,7 @@ const SubjectLines = ({
                 ...subjectLines,
             },
         }))
+        setIsDirty(true)
     }
 
     return (

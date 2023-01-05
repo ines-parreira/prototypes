@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<ContactFormInfoSection /> should render the component 1`] = `
+exports[`<SubjectLines /> should render the component and show the "Other" toggle 1`] = `
 <div>
   <div
     class="wrapper"
@@ -20,13 +20,13 @@ exports[`<ContactFormInfoSection /> should render the component 1`] = `
     >
       <label
         class="label label"
-        for="checkbox-uniqueId"
+        for="checkbox-4"
       >
         <input
           checked=""
           class="input"
-          id="checkbox-uniqueId"
-          name="checkbox-uniqueId"
+          id="checkbox-4"
+          name="checkbox-4"
           type="checkbox"
         />
         Allow custom input using “Other”
@@ -38,7 +38,7 @@ exports[`<ContactFormInfoSection /> should render the component 1`] = `
     >
       <div
         class="wrapper"
-        data-handler-id="T0"
+        data-handler-id="T6"
         style="opacity: 1;"
       >
         <div
@@ -55,8 +55,8 @@ exports[`<ContactFormInfoSection /> should render the component 1`] = `
         >
           <input
             class="input"
-            id="input-text-uniqueId"
-            name="input-text-uniqueId"
+            id="input-text-11"
+            name="input-text-11"
             type="text"
             value="Option 1"
           />
@@ -69,7 +69,7 @@ exports[`<ContactFormInfoSection /> should render the component 1`] = `
       </div>
       <div
         class="wrapper"
-        data-handler-id="T2"
+        data-handler-id="T8"
         style="opacity: 1;"
       >
         <div
@@ -86,8 +86,8 @@ exports[`<ContactFormInfoSection /> should render the component 1`] = `
         >
           <input
             class="input"
-            id="input-text-uniqueId"
-            name="input-text-uniqueId"
+            id="input-text-12"
+            name="input-text-12"
             type="text"
             value="Option 2"
           />
@@ -100,7 +100,7 @@ exports[`<ContactFormInfoSection /> should render the component 1`] = `
       </div>
       <div
         class="wrapper"
-        data-handler-id="T4"
+        data-handler-id="T10"
         style="opacity: 1;"
       >
         <div
@@ -117,8 +117,8 @@ exports[`<ContactFormInfoSection /> should render the component 1`] = `
         >
           <input
             class="input"
-            id="input-text-uniqueId"
-            name="input-text-uniqueId"
+            id="input-text-13"
+            name="input-text-13"
             type="text"
             value="Option 3"
           />
@@ -130,6 +130,46 @@ exports[`<ContactFormInfoSection /> should render the component 1`] = `
         </i>
       </div>
     </div>
+    <div
+      class="footer"
+    >
+      <button
+        class="wrapper button fill secondary medium"
+        type="button"
+      >
+        <i
+          class="material-icons"
+        >
+          add
+        </i>
+        <span>
+          Add Subject Line
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<SubjectLines /> should render the component with no subject lines and hide the "Other" toggle 1`] = `
+<div>
+  <div
+    class="wrapper"
+  >
+    <div
+      class="title"
+    >
+      Edit the subject of the contact form
+    </div>
+    <div
+      class="description"
+    >
+      Here is a default list of subject lines. If there is no subject added, user can freely type any subject.
+    </div>
+    <div
+      class="subjectLinesWrapper"
+      style="max-height: 240px;"
+    />
     <div
       class="footer"
     >

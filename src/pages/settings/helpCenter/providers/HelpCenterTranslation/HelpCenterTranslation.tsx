@@ -42,6 +42,7 @@ type HelpCenterTranslationContext = {
     resetTranslation: () => void
     translationsLoaded: boolean
     isDirty: boolean
+    setIsDirty: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const defaultTranslation: HelpCenterTranslationState = {
@@ -175,7 +176,6 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
                 ...translation,
                 ...payload,
             })
-            setIsDirty(true)
         },
         [updateTranslation, translation]
     )
@@ -183,7 +183,6 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
     const handleOnUpdateContactForm = useCallback(
         (payload: React.SetStateAction<UpdateContactForm>) => {
             updateContactForm(payload)
-            setIsDirty(true)
         },
         [updateContactForm]
     )
@@ -241,16 +240,14 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
             }
         }
 
-        updateTranslation(produce(translation, updateFn))
-        updateContactForm(produce(contactForm, updateContactFormFn))
+        updateTranslation((prevTranslation) =>
+            produce(prevTranslation, updateFn)
+        )
+        updateContactForm((prevContactForm) =>
+            produce(prevContactForm, updateContactFormFn)
+        )
         setIsDirty(false)
-    }, [
-        contactForm,
-        helpCenter.contact_form,
-        helpCenter.translations,
-        translation,
-        viewLanguage,
-    ])
+    }, [helpCenter.contact_form, helpCenter.translations, viewLanguage])
 
     useEffect(() => {
         updateTranslationFromData()
@@ -258,7 +255,7 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
             setTranslationsLoaded(true)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [helpCenter.translations, viewLanguage])
+    }, [helpCenter.translations])
 
     useEffect(() => {
         if (!helpCenter.translations) {
@@ -277,6 +274,7 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
             resetTranslation: updateTranslationFromData,
             translationsLoaded,
             isDirty,
+            setIsDirty,
         }),
         [
             translation,
@@ -287,6 +285,7 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
             updateTranslationFromData,
             translationsLoaded,
             isDirty,
+            setIsDirty,
         ]
     )
 

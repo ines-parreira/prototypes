@@ -59,6 +59,7 @@ const ContactFormInfoSection = ({helpCenter}: ContactFormInfoSectionProps) => {
         updateContactForm,
         contactForm,
         translationsLoaded,
+        setIsDirty,
     } = useHelpCenterTranslation()
 
     const integrations = useAppSelector(
@@ -130,22 +131,17 @@ const ContactFormInfoSection = ({helpCenter}: ContactFormInfoSectionProps) => {
             )
 
             if (selectedIntegration) {
-                updateContactForm({
-                    ...contactForm,
+                updateContactForm((prevContactForm) => ({
+                    ...prevContactForm,
                     helpdesk_integration_email:
                         selectedIntegration.meta.address,
                     helpdesk_integration_id: selectedIntegration.id,
-                })
+                }))
 
                 setIsAlertAcknowledged(false)
             }
         },
-        [
-            emailIntegrations,
-            updateContactForm,
-            setIsAlertAcknowledged,
-            contactForm,
-        ]
+        [emailIntegrations, updateContactForm, setIsAlertAcknowledged]
     )
 
     const handleGetCodeModal = () => {
@@ -229,19 +225,21 @@ const ContactFormInfoSection = ({helpCenter}: ContactFormInfoSectionProps) => {
                             value: integration.id,
                         }))}
                         fullWidth
-                        onChange={(integrationId) =>
+                        onChange={(integrationId) => {
                             onChangeContactFormIntegration(integrationId)
-                        }
+                            setIsDirty(true)
+                        }}
                         className={css.selectEmailIntegration}
                         icon="email"
                     />
                     <ToggleInput
                         isToggled={!!contactForm.card_enabled}
                         onClick={(value) => {
-                            updateContactForm({
-                                ...contactForm,
+                            updateContactForm((prevContactForm) => ({
+                                ...prevContactForm,
                                 card_enabled: value,
-                            })
+                            }))
+                            setIsDirty(true)
                         }}
                         isDisabled={!contactForm.helpdesk_integration_email}
                         className={css.contactCardToggle}
@@ -266,6 +264,7 @@ const ContactFormInfoSection = ({helpCenter}: ContactFormInfoSectionProps) => {
                             setIsDescriptionTooLong(false)
 
                             handleChange('description')(value)
+                            setIsDirty(true)
                         }}
                         autoRowHeight
                         rows={1}
@@ -281,6 +280,7 @@ const ContactFormInfoSection = ({helpCenter}: ContactFormInfoSectionProps) => {
                             contactForm={contactForm}
                             currentLocale={viewLanguage}
                             updateContactForm={updateContactForm}
+                            setIsDirty={setIsDirty}
                             translationsLoaded={translationsLoaded}
                         />
                     )}
