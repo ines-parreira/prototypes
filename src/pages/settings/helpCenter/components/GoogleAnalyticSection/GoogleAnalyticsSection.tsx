@@ -37,7 +37,11 @@ export const GoogleAnalyticsSection = ({onChange, onDelete, gaid}: Props) => {
                 Provide your <b>Google Universal Analytics ID</b> or{' '}
                 <b>Google Analytics 4 property ID</b> such as{' '}
                 <i>UA-123456789-1</i> or <i>G-ABCD1234E</i>.{' '}
-                <a href="https://docs.gorgias.com/en-US/how-to-use-google-analytics-with-your-help-center-97353">
+                <a
+                    href="https://docs.gorgias.com/en-US/how-to-use-google-analytics-with-your-help-center-97353"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
                     Learn more
                 </a>{' '}
                 about how to use Google Analytics with your help center.
