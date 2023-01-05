@@ -1,5 +1,8 @@
 import React from 'react'
 
+import useAppSelector from 'hooks/useAppSelector'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import ArrowLink from 'pages/common/components/ArrowLink/ArrowLink'
 import {Category as CategoryType} from 'models/integration/types/app'
 
@@ -13,6 +16,7 @@ type Props = {
 }
 
 export default function Category({category, showCategoryLink = false}: Props) {
+    const domain = useAppSelector(getCurrentAccountState).get('domain')
     return (
         <>
             <div className={css.titleWrapper}>
@@ -20,6 +24,12 @@ export default function Category({category, showCategoryLink = false}: Props) {
                 {showCategoryLink && (
                     <ArrowLink
                         href={`?category=${encodeURIComponent(category)}`}
+                        onClick={() => {
+                            logEvent(SegmentEvent.IntegrationFilterClicked, {
+                                category: CATEGORY_DATA[category].title,
+                                account_domain: domain,
+                            })
+                        }}
                     >
                         View All
                     </ArrowLink>

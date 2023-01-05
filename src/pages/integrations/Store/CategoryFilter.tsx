@@ -3,6 +3,9 @@ import classnames from 'classnames'
 import {Link} from 'react-router-dom'
 
 import useSearch from 'hooks/useSearch'
+import useAppSelector from 'hooks/useAppSelector'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import ArrowLink from 'pages/common/components/ArrowLink/ArrowLink'
 import {Category} from 'models/integration/types/app'
 
@@ -14,8 +17,10 @@ import {
 import css from './CategoryFilter.less'
 
 export default function CategoryFilter() {
+    const domain = useAppSelector(getCurrentAccountState).get('domain')
     const search = useSearch<{[CATEGORY_URL_PARAM]: string}>()
     const activeCategory = search[CATEGORY_URL_PARAM]
+
     return (
         <div className={css.container}>
             <nav>
@@ -39,6 +44,12 @@ export default function CategoryFilter() {
                                 [css.active]:
                                     activeCategory === Category.FEATURED,
                             })}
+                            onClick={() =>
+                                trackCategoryClick(
+                                    CATEGORY_DATA[Category.FEATURED].title,
+                                    domain
+                                )
+                            }
                         >
                             {CATEGORY_DATA[Category.FEATURED].title}
                         </Link>
@@ -56,6 +67,12 @@ export default function CategoryFilter() {
                                         [css.active]:
                                             activeCategory === category,
                                     })}
+                                    onClick={() =>
+                                        trackCategoryClick(
+                                            categoryData.title,
+                                            domain
+                                        )
+                                    }
                                 >
                                     {categoryData.title}
                                 </Link>
@@ -82,4 +99,11 @@ export default function CategoryFilter() {
             </aside>
         </div>
     )
+}
+
+function trackCategoryClick(categoryLabel: string, domain: string) {
+    logEvent(SegmentEvent.IntegrationFilterClicked, {
+        category: categoryLabel,
+        account_domain: domain,
+    })
 }

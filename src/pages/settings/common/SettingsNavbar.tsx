@@ -280,10 +280,14 @@ const SettingsNavbar = () => {
                                     active: isActive,
                                 })}
                                 onClick={() => {
-                                    logEvent(SegmentEvent.IntegrationClicked, {
-                                        title: text,
-                                        account_domain: account.get('domain'),
-                                    })
+                                    logEvent(
+                                        SegmentEvent.SettingsNavigationClicked,
+                                        {
+                                            title: text,
+                                            account_domain:
+                                                account.get('domain'),
+                                        }
+                                    )
                                     dispatch(closePanels())
                                 }}
                             >
