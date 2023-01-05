@@ -1,4 +1,5 @@
 @import '~css/new/colorTokens';
+@import (reference) '~css/typography';
 
 :local {
     .popover {
@@ -10,8 +11,20 @@
         margin-bottom: 8px;
     }
 
-    .input {
+    .inputDiv {
         margin-bottom: 16px;
+
+        .input {
+            &.hasError {
+                border-color: @classic-feedback-error;
+            }
+        }
+
+        .unsupportedWarning {
+            .caption-regular();
+            color: @classic-feedback-error;
+            margin-top: 4px;
+        }
     }
 
     .buttons {

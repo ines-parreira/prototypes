@@ -49,16 +49,20 @@ exports[`<AddVideo/> should render the popover when the button is clicked 1`] = 
           Video URL
         </h4>
         <div
-          class="wrapper isFocused input"
+          class="inputDiv"
         >
-          <input
-            class="input"
-            id="input-text-1"
-            name="input-text-1"
-            placeholder="External video URL"
-            type="text"
-            value=""
-          />
+          <div
+            class="wrapper hasError isFocused input"
+          >
+            <input
+              class="input"
+              id="input-text-1"
+              name="input-text-1"
+              placeholder="External video URL"
+              type="text"
+              value=""
+            />
+          </div>
         </div>
         <div
           class="buttons"

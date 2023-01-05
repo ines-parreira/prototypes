@@ -77,6 +77,10 @@ export function AddVideo({
         return _url.protocol === 'http:' || _url.protocol === 'https:'
     }, [url])
 
+    const reactPlayerCanPlay = useMemo(() => {
+        return ReactPlayer.canPlay(url)
+    }, [url])
+
     const _addVideo = useCallback(
         () => {
             const editorState = getEditorState()
@@ -156,15 +160,23 @@ export function AddVideo({
         >
             <div>
                 <h4 className={css.title}>Video URL</h4>
-                <TextInput
-                    className={css.input}
-                    ref={textInputRef}
-                    placeholder="External video URL"
-                    onChange={setUrl}
-                    value={url}
-                    onKeyDown={onKeyDown}
-                    autoFocus
-                />
+                <div className={css.inputDiv}>
+                    <TextInput
+                        className={css.input}
+                        hasError={!reactPlayerCanPlay}
+                        ref={textInputRef}
+                        placeholder="External video URL"
+                        onChange={setUrl}
+                        value={url}
+                        onKeyDown={onKeyDown}
+                        autoFocus
+                    />
+                    {isValidUrl && !reactPlayerCanPlay && (
+                        <p className={css.unsupportedWarning}>
+                            This provider is not supported or link is not valid.
+                        </p>
+                    )}
+                </div>
                 <div className={css.buttons}>
                     <Button isDisabled={!isValidUrl} onClick={_addVideo}>
                         Insert Video

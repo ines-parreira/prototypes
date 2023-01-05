@@ -78,6 +78,30 @@ describe('<AddVideo/>', () => {
         ).toBeNull()
     })
 
+    it('should render the `not supported warning` when providing a valid url that is not supported by ReactPlayer', () => {
+        render(
+            <Provider store={store}>
+                <AddVideo {...minProps} />
+            </Provider>
+        )
+        fireEvent.click(screen.getByText(/video/i))
+
+        expect(
+            screen.queryByText(
+                'This provider is not supported or link is not valid.'
+            )
+        ).toBeNull()
+
+        fireEvent.change(screen.getByPlaceholderText('External video URL'), {
+            target: {value: 'https://www.google.com'},
+        })
+        expect(
+            screen.getByText('Insert Video').getAttribute('disabled')
+        ).toBeNull()
+
+        screen.getByText('This provider is not supported or link is not valid.')
+    })
+
     it('should call `addVideo` to the draftjs editorState', () => {
         const addVideoSpy = jest
             .spyOn(draftjsPluginsUtils, 'addVideo')
