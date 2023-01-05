@@ -47,6 +47,7 @@ const GorgiasTranslateInputField = ({
                         }}
                         onBlur={() => {
                             setHasFocus(false)
+                            saveValue(keyName, value.trim())
                         }}
                         value={value}
                     />
