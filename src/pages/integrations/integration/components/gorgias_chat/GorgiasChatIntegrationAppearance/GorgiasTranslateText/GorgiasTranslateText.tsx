@@ -299,8 +299,17 @@ function GorgiasTranslateText({
                             >
                                 <div>
                                     Any changes made through{' '}
-                                    <b>code will override</b> changes made on
-                                    this page.
+                                    <b>
+                                        <a
+                                            href="https://docs.gorgias.com/en-US/advanced-customization-new-chat-81792"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            advanced customization
+                                        </a>{' '}
+                                        will override
+                                    </b>{' '}
+                                    changes made on this page.
                                 </div>
                             </Alert>
                         )}
