@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<List /> should render correctly 1`] = `
+<table
+  class="table table-hover"
+>
+  <thead
+    class="border-0"
+  >
+    <tr>
+      <th>
+        Field
+      </th>
+      <th />
+      <th
+        class="p-0 align-middle smallest pr-4"
+      >
+        last updated
+      </th>
+      <th />
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        This is a row for 
+        123
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;

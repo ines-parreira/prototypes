@@ -1,0 +1,30 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .row {
+        border-bottom: 1px solid @classic-neutral-grey-3;
+
+        .middleColumn {
+            cursor: pointer;
+        }
+
+        .middleColumnContent {
+            display: flex;
+            align-items: center;
+        }
+
+        &:hover {
+            background: @classic-neutral-grey-1;
+        }
+
+        cursor: pointer;
+    }
+
+    .label {
+        font-weight: 600;
+    }
+
+    .actionButton {
+        display: inline-block;
+    }
+}

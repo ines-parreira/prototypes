@@ -1,0 +1,181 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Row /> should render correctly active field 1`] = `
+<table>
+  <tbody>
+    <tr
+      class="draggable row"
+      id="123"
+    >
+      <td
+        class="link-full-td align-middle middle-column"
+        id="ticket-field-name-123"
+      >
+        <a
+          to="/app/settings/ticket-fields/123/edit"
+        >
+          <div>
+            <span
+              class="mr-2 label"
+            >
+              Test field
+            </span>
+          </div>
+        </a>
+      </td>
+      <td
+        class="link-full-td align-middle smallest pr-4"
+      />
+      <td
+        class="link-full-td align-middle smallest pr-4"
+      >
+        <div
+          class="text-faded"
+        >
+          <div>
+            2022-01-02T03:04:05.123456+00:00
+          </div>
+        </div>
+      </td>
+      <td
+        class="align-middle smallest actions"
+      >
+        <button
+          class="wrapper actionButton mr-1 wrapper ghost ghost secondary medium"
+          id="archive-ticket-field-123"
+          title="Archive ticket field"
+          type="button"
+        >
+          <i
+            class="material-icons icon"
+          >
+            archive
+          </i>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
+exports[`<Row /> should render correctly active required field 1`] = `
+<table>
+  <tbody>
+    <tr
+      class="draggable row"
+      id="123"
+    >
+      <td
+        class="link-full-td align-middle middle-column"
+        id="ticket-field-name-123"
+      >
+        <a
+          to="/app/settings/ticket-fields/123/edit"
+        >
+          <div>
+            <span
+              class="mr-2 label"
+            >
+              Test field
+            </span>
+          </div>
+        </a>
+      </td>
+      <td
+        class="link-full-td align-middle smallest pr-4"
+      >
+        <div
+          class="badge"
+        >
+          REQUIRED
+        </div>
+      </td>
+      <td
+        class="link-full-td align-middle smallest pr-4"
+      >
+        <div
+          class="text-faded"
+        >
+          <div>
+            2022-01-02T03:04:05.123456+00:00
+          </div>
+        </div>
+      </td>
+      <td
+        class="align-middle smallest actions"
+      >
+        <button
+          class="wrapper actionButton mr-1 wrapper ghost ghost secondary medium"
+          id="archive-ticket-field-123"
+          title="Archive ticket field"
+          type="button"
+        >
+          <i
+            class="material-icons icon"
+          >
+            archive
+          </i>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;
+
+exports[`<Row /> should render correctly archived required field 1`] = `
+<table>
+  <tbody>
+    <tr
+      class="draggable row"
+      id="123"
+    >
+      <td
+        class="link-full-td align-middle middle-column"
+        id="ticket-field-name-123"
+      >
+        <a
+          to="/app/settings/ticket-fields/123/edit"
+        >
+          <div>
+            <span
+              class="mr-2 label"
+            >
+              Test field
+            </span>
+          </div>
+        </a>
+      </td>
+      <td
+        class="link-full-td align-middle smallest pr-4"
+      />
+      <td
+        class="link-full-td align-middle smallest pr-4"
+      >
+        <div
+          class="text-faded"
+        >
+          <div>
+            2022-01-02T03:04:05.123456+00:00
+          </div>
+        </div>
+      </td>
+      <td
+        class="align-middle smallest actions"
+      >
+        <button
+          class="wrapper actionButton mr-1 wrapper ghost ghost secondary medium"
+          id="restore-ticket-field-name-123"
+          title="Restore ticket field"
+          type="button"
+        >
+          <i
+            class="material-icons icon"
+          >
+            unarchive
+          </i>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;

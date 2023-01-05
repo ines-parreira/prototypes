@@ -18,7 +18,7 @@ exports[`<AddTicketField/> should render if the account has the feature flag 1`]
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/ticket-fields"
+            to="/app/settings/ticket-fields/active"
           >
             Ticket fields
           </a>

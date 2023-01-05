@@ -44,7 +44,7 @@ export default function EditTicketField() {
                 title={
                     <Breadcrumb>
                         <BreadcrumbItem>
-                            <Link to="/app/settings/ticket-fields">
+                            <Link to="/app/settings/ticket-fields/active">
                                 Ticket fields
                             </Link>
                         </BreadcrumbItem>

@@ -1,43 +1,302 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<TicketFields/> should render if the account has the feature flag 1`] = `
+exports[`<TicketFields/> account has the feature flag should render active ticket fields 1`] = `
 <div
-  class="full-width"
+  class="full-width overflow-auto pageContainer"
 >
   <div
-    class="page-header pageHeader"
+    class="pageHeaderContainer"
   >
-    <nav
-      aria-label="breadcrumb"
-      class=""
+    <div
+      class="page-header pageHeader"
     >
-      <ol
-        class="breadcrumb"
+      <h1
+        class="d-flex align-items-center"
       >
-        <li
-          aria-current="page"
-          class="active breadcrumb-item"
+        Ticket Fields
+      </h1>
+      <div>
+        <div
+          class="headerContainer"
         >
-          Ticket fields
-        </li>
-      </ol>
+          <a
+            to="/app/settings/ticket-fields/add"
+          >
+            <button
+              class="wrapper float-right fill primary medium"
+              type="button"
+            >
+              Create Field
+            </button>
+          </a>
+        </div>
+      </div>
+    </div>
+    <nav
+      class="navbar navbar"
+    >
+      <a
+        class="link"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/ticket-fields/active"
+      >
+        Active
+      </a>
+      <a
+        class="link"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/ticket-fields/archived"
+      >
+        Archived
+      </a>
     </nav>
   </div>
   <div
-    class="container"
+    class="p-0 container-fluid"
   >
-    <h2>
+    <div
+      data-testid="ticket-fields-list"
+    />
+  </div>
+</div>
+`;
+
+exports[`<TicketFields/> account has the feature flag should render archived ticket fields 1`] = `
+<div
+  class="full-width overflow-auto pageContainer"
+>
+  <div
+    class="pageHeaderContainer"
+  >
+    <div
+      class="page-header pageHeader"
+    >
+      <h1
+        class="d-flex align-items-center"
+      >
+        Ticket Fields
+      </h1>
+      <div>
+        <div
+          class="headerContainer"
+        >
+          <a
+            to="/app/settings/ticket-fields/add"
+          >
+            <button
+              class="wrapper float-right fill primary medium"
+              type="button"
+            >
+              Create Field
+            </button>
+          </a>
+        </div>
+      </div>
+    </div>
+    <nav
+      class="navbar navbar"
+    >
+      <a
+        class="link"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/ticket-fields/active"
+      >
+        Active
+      </a>
+      <a
+        class="link"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/ticket-fields/archived"
+      >
+        Archived
+      </a>
+    </nav>
+  </div>
+  <div
+    class="p-0 container-fluid"
+  >
+    <div
+      data-testid="ticket-fields-list"
+    />
+  </div>
+</div>
+`;
+
+exports[`<TicketFields/> account has the feature flag should render get started 1`] = `
+<div
+  class="full-width overflow-auto pageContainer"
+>
+  <div
+    class="pageHeaderContainer"
+  >
+    <div
+      class="page-header pageHeader"
+    >
+      <h1
+        class="d-flex align-items-center"
+      >
+        Ticket Fields
+      </h1>
+      <div>
+        <div
+          class="headerContainer"
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    class="emptyViewContainer"
+  >
+    <h2
+      class="emptyViewContainerHeader"
+    >
       Get started with Ticket Fields
     </h2>
-    <p>
+    <p
+      class="emptyViewContainerText"
+    >
       Set up custom fields to make sure your team handle tickets efficiently and consistently. You can create a custom field to track the contact reason, product or even the resolution provided in the ticket.
     </p>
     <button
-      class="wrapper fill primary medium"
+      class="wrapper mt-2 fill primary medium"
       type="button"
     >
       Create Field
     </button>
+  </div>
+</div>
+`;
+
+exports[`<TicketFields/> account has the feature flag should render no active ticket fields 1`] = `
+<div
+  class="full-width overflow-auto pageContainer"
+>
+  <div
+    class="pageHeaderContainer"
+  >
+    <div
+      class="page-header pageHeader"
+    >
+      <h1
+        class="d-flex align-items-center"
+      >
+        Ticket Fields
+      </h1>
+      <div>
+        <div
+          class="headerContainer"
+        >
+          <a
+            to="/app/settings/ticket-fields/add"
+          >
+            <button
+              class="wrapper float-right fill primary medium"
+              type="button"
+            >
+              Create Field
+            </button>
+          </a>
+        </div>
+      </div>
+    </div>
+    <nav
+      class="navbar navbar"
+    >
+      <a
+        class="link"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/ticket-fields/active"
+      >
+        Active
+      </a>
+      <a
+        class="link"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/ticket-fields/archived"
+      >
+        Archived
+      </a>
+    </nav>
+  </div>
+  <div
+    class="p-0 container-fluid"
+  >
+    <div
+      class="emptyListTextWrapper"
+    >
+      You don't have any active ticket fields at the moment
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<TicketFields/> account has the feature flag should render no archived ticket fields 1`] = `
+<div
+  class="full-width overflow-auto pageContainer"
+>
+  <div
+    class="pageHeaderContainer"
+  >
+    <div
+      class="page-header pageHeader"
+    >
+      <h1
+        class="d-flex align-items-center"
+      >
+        Ticket Fields
+      </h1>
+      <div>
+        <div
+          class="headerContainer"
+        >
+          <a
+            to="/app/settings/ticket-fields/add"
+          >
+            <button
+              class="wrapper float-right fill primary medium"
+              type="button"
+            >
+              Create Field
+            </button>
+          </a>
+        </div>
+      </div>
+    </div>
+    <nav
+      class="navbar navbar"
+    >
+      <a
+        class="link"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/ticket-fields/active"
+      >
+        Active
+      </a>
+      <a
+        class="link"
+        data-active-class-name="active"
+        data-exact="true"
+        href="/app/settings/ticket-fields/archived"
+      >
+        Archived
+      </a>
+    </nav>
+  </div>
+  <div
+    class="p-0 container-fluid"
+  >
+    <div
+      class="emptyListTextWrapper"
+    >
+      You don't have any archived ticket fields at the moment
+    </div>
   </div>
 </div>
 `;

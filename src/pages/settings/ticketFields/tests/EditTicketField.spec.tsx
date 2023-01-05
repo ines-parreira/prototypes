@@ -32,8 +32,8 @@ describe('<EditTicketField/>', () => {
                 </DndProvider>
             </Provider>,
             {
-                path: '/custom-fields/:id',
-                route: '/custom-fields/123',
+                path: '/ticket-fields/:id/edit',
+                route: '/ticket-fields/123/edit',
             }
         )
         expect(container.firstChild).toBeNull()
@@ -50,8 +50,8 @@ describe('<EditTicketField/>', () => {
                 <EditTicketField />
             </Provider>,
             {
-                path: '/custom-fields/:id',
-                route: '/custom-fields/123',
+                path: '/ticket-fields/:id/edit',
+                route: '/ticket-fields/123/edit',
             }
         )
         expect(container.firstChild).toMatchSnapshot()

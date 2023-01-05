@@ -765,18 +765,6 @@ export function TicketFieldsRoutes({match: {path}}: RouteComponentProps) {
     return (
         <Switch>
             <Route
-                path={`${path}/`}
-                exact
-                render={appRender({
-                    content: memoizedWithUserRoleRequired(
-                        TicketFields,
-                        ADMIN_ROLE,
-                        PageSection.TicketFields
-                    ),
-                    navbar: SettingsNavbar,
-                })}
-            />
-            <Route
                 path={`${path}/add`}
                 exact
                 render={appRender({
@@ -789,11 +777,28 @@ export function TicketFieldsRoutes({match: {path}}: RouteComponentProps) {
                 })}
             />
             <Route
-                path={`${path}/:id`}
+                path={`${path}/:id/edit`}
                 exact
                 render={appRender({
                     content: memoizedWithUserRoleRequired(
                         EditTicketField,
+                        ADMIN_ROLE,
+                        PageSection.TicketFields
+                    ),
+                    navbar: SettingsNavbar,
+                })}
+            />
+            <Route
+                exact
+                path={`${path}/`}
+                render={() => <Redirect to={`${path}/active`} />}
+            />
+            <Route
+                path={`${path}/:activeTab`}
+                exact
+                render={appRender({
+                    content: memoizedWithUserRoleRequired(
+                        TicketFields,
                         ADMIN_ROLE,
                         PageSection.TicketFields
                     ),

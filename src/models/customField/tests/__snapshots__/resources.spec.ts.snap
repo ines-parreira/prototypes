@@ -113,6 +113,70 @@ Object {
 }
 `;
 
+exports[`custom field resources getCustomFields should resolve with a list of paginated CustomFields on success 1`] = `
+Object {
+  "data": Array [
+    Object {
+      "created_datetime": "2022-01-02T03:04:05.123456+00:00",
+      "deactivated_datetime": null,
+      "definition": Object {
+        "data_type": "text",
+        "input_settings": Object {
+          "input_type": "input",
+          "placeholder": "Test placeholder",
+        },
+      },
+      "id": 123,
+      "label": "Test field",
+      "object_type": "Ticket",
+      "priority": 123,
+      "required": false,
+      "updated_datetime": "2022-01-02T03:04:05.123456+00:00",
+    },
+  ],
+}
+`;
+
+exports[`custom field resources getCustomFields should resolve with a list of paginated CustomFields on success 2`] = `
+Object {
+  "delete": Array [],
+  "get": Array [
+    Object {
+      "data": undefined,
+      "headers": Object {
+        "Accept": "application/json, text/plain, */*",
+        "X-CSRF-Token": "abcd",
+        "X-Gorgias-User-Client": "web",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "get",
+      "params": Object {
+        "archived": false,
+        "object_type": "Ticket",
+      },
+      "timeout": 0,
+      "transformRequest": Array [
+        [Function],
+      ],
+      "transformResponse": Array [
+        [Function],
+      ],
+      "url": "/api/custom-fields/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "head": Array [],
+  "list": Array [],
+  "options": Array [],
+  "patch": Array [],
+  "post": Array [],
+  "put": Array [],
+}
+`;
+
 exports[`custom field resources updateCustomField should resolve with an updated CustomField on success 1`] = `
 Object {
   "created_datetime": "2022-01-02T03:04:05.123456+00:00",

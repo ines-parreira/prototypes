@@ -6,6 +6,7 @@ import client from 'models/api/resources'
 import {
     createCustomField,
     getCustomField,
+    getCustomFields,
     updateCustomField,
 } from '../resources'
 
@@ -14,6 +15,32 @@ const mockedServer = new MockAdapter(client)
 describe('custom field resources', () => {
     beforeEach(() => {
         mockedServer.reset()
+    })
+
+    describe('getCustomFields', () => {
+        it('should resolve with a list of paginated CustomFields on success', async () => {
+            mockedServer
+                .onGet('/api/custom-fields/')
+                .reply(200, {data: [customField]})
+            const res = await getCustomFields({
+                archived: false,
+                object_type: 'Ticket',
+            })
+            expect(res).toMatchSnapshot()
+            expect(mockedServer.history).toMatchSnapshot()
+        })
+
+        it('should reject an error on fail', () => {
+            mockedServer
+                .onGet('/api/custom-fields')
+                .reply(404, {message: 'error'})
+            return expect(
+                getCustomFields({
+                    archived: false,
+                    object_type: 'Ticket',
+                })
+            ).rejects.toEqual(new Error('Request failed with status code 404'))
+        })
     })
 
     describe('getCustomField', () => {

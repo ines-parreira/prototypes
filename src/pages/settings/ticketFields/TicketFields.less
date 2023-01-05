@@ -1,0 +1,55 @@
+@import '~css/new/colorTokens.less';
+@import '~css/new/layout.less';
+
+:local {
+    .pageContainer {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .pageHeaderContainer {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background-color: @classic-neutral-grey-0;
+    }
+
+    .headerContainer {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .emptyListTextWrapper {
+        padding-top: @layout-spacing-m;
+        padding-left: @layout-spacing-m;
+    }
+
+    .navigation {
+        margin-left: @layout-spacing-s;
+        margin-bottom: @layout-spacing-s;
+    }
+
+    .emptyViewContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        align-self: stretch;
+        justify-content: center;
+
+        margin: auto;
+        padding: @layout-spacing-s;
+        text-align: center;
+        max-width: 400px;
+    }
+
+    .emptyViewContainerHeader {
+        margin-bottom: @layout-spacing-xs;
+        line-height: @layout-spacing-m;
+        font-size: 16px;
+    }
+
+    .emptyViewContainerText {
+        line-height: @layout-spacing-s;
+        font-size: 12px;
+    }
+}
