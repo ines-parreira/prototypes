@@ -1,5 +1,6 @@
 import _debounce from 'lodash/debounce'
 import axios from 'axios'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {
     addBigCommerceCheckoutBillingAddress,
@@ -28,6 +29,7 @@ import {
 } from 'models/integration/types'
 import {StoreDispatch} from 'state/types'
 import {executeAction} from 'state/infobar/actions'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 export const onInit = async ({
     customer,
@@ -538,3 +540,5 @@ export function bigcommerceCreateOrder(
 export const exportedForTesting = {
     createCart,
 }
+export const useCanViewBigCommerceV1Features = () =>
+    Boolean(useFlags()[FeatureFlagKey.BigCommerceCreateOrderV1])

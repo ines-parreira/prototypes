@@ -44,6 +44,7 @@ import Tip from 'pages/common/components/tip/Tip'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {CustomerContext} from 'providers/infobar/CustomerContext'
+import {updateBigCommerceCheckoutDiscount} from 'models/integration/resources/bigcommerce'
 import OrderTable from './OrderTable'
 import OrderTotals from './OrderTotals'
 import {
@@ -129,6 +130,45 @@ const useValidationStatus = ({
     }, [performValidations])
 
     return {validationStatus, performValidations}
+}
+
+const getTotals = ({
+    checkout,
+    cart,
+}: {
+    checkout: Maybe<BigCommerceCheckout>
+    cart: Maybe<BigCommerceCart>
+}) => {
+    if (cart) {
+        const cartAmountWithTax =
+            cart.cart_amount ?? cart.cart_amount_inc_tax ?? 0
+
+        const subTotal = cart.base_amount ?? 0
+        const discount = cart.discount_amount
+        const shipping = checkout?.shipping_cost_total_ex_tax ?? 0
+        const total =
+            cartAmountWithTax + (checkout?.shipping_cost_total_inc_tax ?? 0)
+
+        const taxes =
+            cartAmountWithTax +
+            ((checkout?.shipping_cost_total_inc_tax ?? 0) -
+                (checkout?.shipping_cost_total_ex_tax ?? 0)) -
+            (subTotal - discount)
+
+        return {
+            subTotal,
+            shipping,
+            taxes: Math.abs(taxes), // thanks to our friend JS taxes _might_ become a negative zero, need to absolute it
+            total,
+        }
+    }
+
+    return {
+        subTotal: 0,
+        shipping: 0,
+        taxes: 0,
+        total: 0,
+    }
 }
 
 export const useCheckout = ({integrationId}: {integrationId: number}) => {
@@ -236,37 +276,31 @@ export const useCheckout = ({integrationId}: {integrationId: number}) => {
         }
     }
 
-    const totals = useMemo(() => {
-        if (checkout) {
-            return {
-                subTotal: checkout.subtotal_ex_tax ?? 0,
-                shipping: checkout.shipping_cost_total_ex_tax ?? 0,
-                taxes: checkout.tax_total ?? 0,
-                total: checkout.grand_total,
-            }
+    const onUpdateDiscountAmount = async (discountAmount: number) => {
+        if (!cart) {
+            return
         }
 
-        if (cart) {
-            const subTotal = cart.base_amount ?? 0
-            const total = cart.cart_amount ?? 0
+        try {
+            setIsTotalPriceLoading(true)
+            const checkout = await updateBigCommerceCheckoutDiscount({
+                integrationId,
+                checkoutId: cart.id,
+                discountAmount,
+            })
 
-            const taxes = total - subTotal
-
-            return {
-                subTotal,
-                shipping: 0,
-                taxes,
-                total,
-            }
+            setCheckout(checkout)
+        } catch (error) {
+            console.error(error)
+        } finally {
+            setIsTotalPriceLoading(false)
         }
+    }
 
-        return {
-            subTotal: 0,
-            shipping: 0,
-            taxes: 0,
-            total: 0,
-        }
-    }, [cart, checkout])
+    const totals = useMemo(
+        () => getTotals({checkout, cart: checkout?.cart ?? cart}),
+        [cart, checkout]
+    )
 
     return {
         cart: checkout ? checkout.cart : cart,
@@ -278,6 +312,7 @@ export const useCheckout = ({integrationId}: {integrationId: number}) => {
         setCart: setCartExposed,
         onSelectAddress,
         onUpdateConsignmentShippingMethod,
+        onUpdateDiscountAmount,
     }
 }
 
@@ -307,6 +342,7 @@ export function OrderModal({
         setCart,
         onSelectAddress,
         onUpdateConsignmentShippingMethod,
+        onUpdateDiscountAmount,
     } = useCheckout({
         integrationId: integration.id,
     })
@@ -513,6 +549,7 @@ export function OrderModal({
                             onUpdateConsignmentShippingMethod={
                                 onUpdateConsignmentShippingMethod
                             }
+                            onUpdateDiscountAmount={onUpdateDiscountAmount}
                             hasError={!validationStatus.checkout}
                             isTotalPriceLoading={isTotalPriceLoading}
                         />

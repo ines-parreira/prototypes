@@ -213,9 +213,9 @@ describe('useCheckout', () => {
             consignment: null,
             shippingAddress: null,
             totals: {
-                subTotal: cartMock.base_amount,
+                subTotal: 78,
                 shipping: 0,
-                taxes: cartMock.cart_amount - cartMock.base_amount,
+                taxes: 15.599999999999994,
                 total: cartMock.cart_amount,
             },
         })
@@ -261,10 +261,10 @@ describe('useCheckout', () => {
             consignment: bigCommerceConsignmentFixture,
             shippingAddress: bigCommerceShippingAddressesFixture[0],
             totals: {
-                subTotal: 777,
+                subTotal: 78,
                 shipping: 27,
-                taxes: 111,
-                total: 888,
+                taxes: 11.400000000000006,
+                total: 93.6,
             },
         })
     })

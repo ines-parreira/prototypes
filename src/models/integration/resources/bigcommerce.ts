@@ -199,3 +199,26 @@ export async function getBigCommerceCheckout({
 
     return response.data.data
 }
+
+export async function updateBigCommerceCheckoutDiscount({
+    integrationId,
+    checkoutId,
+    discountAmount,
+}: {
+    integrationId: number
+    checkoutId: string
+    discountAmount: number
+}): Promise<BigCommerceCheckout> {
+    const url = '/integrations/bigcommerce/order/discounts/'
+
+    const payload = [{discounted_amount: discountAmount, name: 'Manual'}]
+
+    const response = await client.post<BigCommerceCheckout>(url, payload, {
+        params: {
+            integration_id: integrationId,
+            checkout_id: checkoutId,
+        },
+    })
+
+    return response.data
+}

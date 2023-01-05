@@ -151,31 +151,6 @@ export const bigCommerceIntegrationFixture = (): BigCommerceIntegration => ({
     },
 })
 
-export const bigCommerceEmptyCartFixture = (): BigCommerceCart => ({
-    id: 'c58d3aac-244c-4405-bad5-638b555bc31b',
-    customer_id: 1,
-    channel_id: 1,
-    email: 'alexandru.daineanu+bigcommerce@gorgias.com',
-    currency: {
-        code: 'EUR',
-    },
-    tax_included: false,
-    base_amount: 0,
-    discount_amount: 0,
-    cart_amount: 0,
-    coupons: [],
-    discounts: [],
-    line_items: {
-        physical_items: [],
-        digital_items: [],
-        gift_certificates: [],
-        custom_items: [],
-    },
-    created_time: '2022-12-02T11:50:22+00:00',
-    updated_time: '2022-12-02T11:50:22+00:00',
-    locale: 'en',
-})
-
 export const bigCommerceLineItemFixture = (): BigCommerceCartLineItem => ({
     id: '3aee2b2f-9182-4d16-82ae-734dced3d218',
     parent_id: null,
@@ -251,6 +226,8 @@ export const bigCommerceCartFixture = (): BigCommerceCart => ({
     base_amount: 78,
     discount_amount: 0,
     cart_amount: 93.6,
+    cart_amount_ex_tax: 93.6,
+    cart_amount_inc_tax: 93.6,
     coupons: [],
     discounts: [
         {

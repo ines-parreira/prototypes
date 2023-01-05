@@ -52,16 +52,25 @@ export type BigCommerceCart = {
     email: string
     currency: any
     tax_included: boolean
+    // Sum of cart line-item amounts before cart-level discounts, coupons, or taxes are applied.
     base_amount: number
+    // Discounted amount
     discount_amount: number
+    // Sum of cart line-item amounts minus cart-level discounts and coupons including tax.
+    cart_amount_inc_tax: number
+    // Sum of cart line-item amounts minus cart-level discounts and coupons excluding tax.
+    cart_amount_ex_tax: number
+    // Sum of cart line-item amounts minus cart-level discounts and coupons. This amount includes taxes (where applicable).
     cart_amount: number
     coupons: Array<any>
-    discounts: Array<any>
+    discounts: Array<BigCommerceDiscount>
     line_items: BigCommerceCartLineItems
     created_time: string
     updated_time: string
     locale: string
 }
+
+export type BigCommerceDiscount = {id: string; discounted_amount: number}
 
 export type BigCommerceCartLineItem = {
     id: string
@@ -74,7 +83,7 @@ export type BigCommerceCartLineItem = {
     quantity: number
     taxable: boolean
     image_url: string
-    discounts: Array<any>
+    discounts: Array<BigCommerceDiscount>
     coupons: Array<any>
     discount_amount: number
     coupon_amount: number

@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Discount /> works as expected: discount set 1`] = `
+<body>
+  <div>
+    <dt
+      class="descriptionTitle"
+    >
+      <button
+        class="actionButton"
+        id="discount-button"
+      >
+        Add discount
+      </button>
+    </dt>
+    <div />
+    <dd
+      class="descriptionValue"
+    >
+      <span>
+        €5.55
+      </span>
+    </dd>
+  </div>
+  <div
+    id="floating-ui-root"
+  />
+</body>
+`;
+
+exports[`<Discount /> works as expected: initial 1`] = `
+<body>
+  <div>
+    <dt
+      class="descriptionTitle"
+    >
+      <button
+        class="actionButton"
+        id="discount-button"
+      >
+        Add discount
+      </button>
+    </dt>
+    <div />
+    <dd
+      class="descriptionValue descriptionValueZero"
+    >
+      <span>
+        €0.00
+      </span>
+    </dd>
+  </div>
+  <div
+    id="floating-ui-root"
+  />
+</body>
+`;
