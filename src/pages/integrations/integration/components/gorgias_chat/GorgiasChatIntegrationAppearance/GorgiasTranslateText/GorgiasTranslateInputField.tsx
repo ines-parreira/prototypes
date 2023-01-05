@@ -48,6 +48,7 @@ const GorgiasTranslateInputField = ({
                         onBlur={() => {
                             setHasFocus(false)
                         }}
+                        value={value}
                     />
                     {hasFocus && (
                         <p className={css.lengthLeft}>

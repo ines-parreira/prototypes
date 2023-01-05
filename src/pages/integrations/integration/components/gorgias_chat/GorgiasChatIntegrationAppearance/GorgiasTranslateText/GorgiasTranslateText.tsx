@@ -2,6 +2,7 @@ import {Map} from 'immutable'
 import {set} from 'lodash'
 import React, {useCallback, useEffect, useState} from 'react'
 import {connect} from 'react-redux'
+import {produce} from 'immer'
 import {Link, useHistory} from 'react-router-dom'
 import {
     Breadcrumb,
@@ -68,6 +69,12 @@ const mapStateToProps = (state: RootState) => {
 }
 const mapDispatchToProps = {}
 
+enum LoadingState {
+    NOT_LOADED = 'not-loaded',
+    LOADING = 'loading',
+    LOADED = 'loaded',
+}
+
 function GorgiasTranslateText({
     integration,
 }: OwnProps & ReturnType<typeof mapStateToProps>) {
@@ -123,34 +130,42 @@ function GorgiasTranslateText({
         setShowWarning(false)
     }
 
-    const [translations, setTranslations] = useState({
+    const [translations, setTranslations] = useState<Texts>({
         texts: {},
         sspTexts: {},
     })
 
-    const [initialTexts, setInitialTexts] = useState({})
-    const [texts, setTexts] = useState(initialTexts)
-    const [loadingTexts, setLoadingTexts] = useState(false)
+    const [initialTexts, setInitialTexts] = useState<Texts>({
+        texts: {},
+        sspTexts: {},
+    })
+    const [texts, setTexts] = useState<Texts>(initialTexts)
+
+    const [textsLoadingState, setTextsLoadingState] = useState<LoadingState>(
+        LoadingState.NOT_LOADED
+    )
+    const [translationsLoadingState, setTranslationsLoadingState] =
+        useState<LoadingState>(LoadingState.NOT_LOADED)
 
     const saveKeyValue = useCallback(
         (key: string, value: string) => {
             setHasChanges(true)
-            set(texts, key, value || undefined)
-            setTexts((texts) => ({...texts}))
+            setTexts(
+                produce(texts, (textsDraft) => {
+                    set(textsDraft, key, value || undefined)
+                })
+            )
         },
         [texts, setTexts, setHasChanges]
     )
 
     const updateApplicationTexts = useCallback(async (): Promise<void> => {
         const applicationId: string = integration.getIn(['meta', 'app_id'])
-        await IntegrationsActions.updateApplicationTexts(
-            applicationId,
-            texts as Texts
-        )
+        await IntegrationsActions.updateApplicationTexts(applicationId, texts)
     }, [integration, texts])
 
     const onDiscarChangesAndExit = () => {
-        setTexts(initialTexts)
+        setTexts({...initialTexts})
         setHasChanges(false)
         history.push(backUrl)
     }
@@ -173,7 +188,7 @@ function GorgiasTranslateText({
     }
 
     const resetValues = useCallback(() => {
-        setTexts(initialTexts)
+        setTexts({...initialTexts})
         setHasChanges(false)
         dispatchNotification('Discarded changes')
     }, [setTexts, setHasChanges, initialTexts, dispatchNotification])
@@ -185,8 +200,8 @@ function GorgiasTranslateText({
             try {
                 await updateApplicationTexts()
                 setInitialTexts({
-                    texts: {...(texts as Texts).texts},
-                    sspTexts: {...(texts as Texts).sspTexts},
+                    texts: {...texts.texts},
+                    sspTexts: {...texts.sspTexts},
                 })
                 setHasChanges(false)
                 dispatchNotification('Your changes are now live')
@@ -206,21 +221,22 @@ function GorgiasTranslateText({
         ]
     )
 
-    const hasTranslationTexts = !!Object.keys(translations.texts).length
-    const hasTextsValues = !!(texts as Texts).texts
-
     useEffect(() => {
-        if (!hasTranslationTexts) {
+        if (translationsLoadingState === LoadingState.NOT_LOADED) {
+            setTranslationsLoadingState(LoadingState.LOADING)
+
             void IntegrationsActions.getTranslations(
                 language.get('value')
             ).then((data: Translations) => {
                 setTranslations(data)
+                setTranslationsLoadingState(LoadingState.LOADED)
             })
         }
 
         const applicationId: string = integration.getIn(['meta', 'app_id'])
-        if (!loadingTexts && applicationId && !hasTextsValues) {
-            setLoadingTexts(true)
+        if (applicationId && textsLoadingState === LoadingState.NOT_LOADED) {
+            setTextsLoadingState(LoadingState.LOADING)
+
             void IntegrationsActions.getApplicationTexts(applicationId).then(
                 (data) => {
                     setInitialTexts({
@@ -228,18 +244,17 @@ function GorgiasTranslateText({
                         sspTexts: {...data.sspTexts},
                     })
                     setTexts(data)
-                    setLoadingTexts(false)
+                    setTextsLoadingState(LoadingState.LOADED)
                 }
             )
         }
     }, [
-        hasTranslationTexts,
-        hasTextsValues,
         integration,
         setInitialTexts,
         setTexts,
         language,
-        loadingTexts,
+        textsLoadingState,
+        translationsLoadingState,
     ])
 
     return (
@@ -326,74 +341,79 @@ function GorgiasTranslateText({
                 </Row>
             </Container>
 
-            {(hasTranslationTexts && hasTextsValues && (
-                <Form
-                    onSubmit={submitData}
-                    id="texts-form"
-                    onReset={resetValues}
-                >
-                    <GrogiasTranslateInputGroup
-                        title="General"
-                        keys={generalKeys}
-                        filtersForKeys={{}}
-                        texts={texts}
-                        translations={translations}
-                        saveValue={saveKeyValue}
-                        formPropsValues={formProps.general}
-                    />
+            {(translationsLoadingState === LoadingState.LOADED &&
+                textsLoadingState === LoadingState.LOADED && (
+                    <Form
+                        onSubmit={submitData}
+                        id="texts-form"
+                        onReset={resetValues}
+                    >
+                        <GrogiasTranslateInputGroup
+                            title="General"
+                            keys={generalKeys}
+                            filtersForKeys={{}}
+                            texts={texts}
+                            translations={translations}
+                            saveValue={saveKeyValue}
+                            formPropsValues={formProps.general}
+                        />
 
-                    <GrogiasTranslateInputGroup
-                        title="Contact form"
-                        keys={contactFormKeys}
-                        filtersForKeys={{}}
-                        texts={texts}
-                        translations={translations}
-                        saveValue={saveKeyValue}
-                        formPropsValues={formProps.contactForm}
-                    />
+                        <GrogiasTranslateInputGroup
+                            title="Contact form"
+                            keys={contactFormKeys}
+                            filtersForKeys={{}}
+                            texts={texts}
+                            translations={translations}
+                            saveValue={saveKeyValue}
+                            formPropsValues={formProps.contactForm}
+                        />
 
-                    <GrogiasTranslateInputGroup
-                        title="Dynamic wait time"
-                        keys={dynamicWaitTimeKeys}
-                        filtersForKeys={{}}
-                        texts={texts}
-                        translations={translations}
-                        saveValue={saveKeyValue}
-                        formPropsValues={formProps.dynamicWaitTime}
-                    />
+                        <GrogiasTranslateInputGroup
+                            title="Dynamic wait time"
+                            keys={dynamicWaitTimeKeys}
+                            filtersForKeys={{}}
+                            texts={texts}
+                            translations={translations}
+                            saveValue={saveKeyValue}
+                            formPropsValues={formProps.dynamicWaitTime}
+                        />
 
-                    <GrogiasTranslateInputGroup
-                        title="Auto-responder"
-                        keys={autoResponderKeys}
-                        filtersForKeys={{}}
-                        texts={texts}
-                        translations={translations}
-                        saveValue={saveKeyValue}
-                        formPropsValues={formProps.autoResponder}
-                    />
+                        <GrogiasTranslateInputGroup
+                            title="Auto-responder"
+                            keys={autoResponderKeys}
+                            filtersForKeys={{}}
+                            texts={texts}
+                            translations={translations}
+                            saveValue={saveKeyValue}
+                            formPropsValues={formProps.autoResponder}
+                        />
 
-                    <GrogiasTranslateInputGroup
-                        title="Email capture"
-                        keys={emailCaptureKeys}
-                        filtersForKeys={filterForlEmailCaptureKeys}
-                        texts={texts}
-                        translations={translations}
-                        saveValue={saveKeyValue}
-                        formPropsValues={formProps.emailCapture}
-                    />
+                        <GrogiasTranslateInputGroup
+                            title="Email capture"
+                            keys={emailCaptureKeys}
+                            filtersForKeys={filterForlEmailCaptureKeys}
+                            texts={texts}
+                            translations={translations}
+                            saveValue={saveKeyValue}
+                            formPropsValues={formProps.emailCapture}
+                        />
 
-                    <div className={css.footerSpacer} />
+                        <div className={css.footerSpacer} />
 
-                    <Container fluid className={css.buttonsContainer}>
-                        <Button type="submit" color="primary" className="mr-3">
-                            Save Changes
-                        </Button>
-                        <Button type="reset" color="secondary">
-                            Discard Changes
-                        </Button>
-                    </Container>
-                </Form>
-            )) || (
+                        <Container fluid className={css.buttonsContainer}>
+                            <Button
+                                type="submit"
+                                color="primary"
+                                className="mr-3"
+                            >
+                                Save Changes
+                            </Button>
+                            <Button type="reset" color="secondary">
+                                Discard Changes
+                            </Button>
+                        </Container>
+                    </Form>
+                )) || (
                 <div className={css.spinnerWrapper}>
                     <Spinner className={css.spinner} color="gloom" />
                 </div>
