@@ -1,9 +1,7 @@
-import React, {useMemo, useState} from 'react'
+import React, {useMemo} from 'react'
 import {List, Map} from 'immutable'
 import classnames from 'classnames'
 import {Breadcrumb, BreadcrumbItem, Button, Container} from 'reactstrap'
-
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 
 import {getIntegrationConfig} from 'state/integrations/helpers'
 
@@ -29,26 +27,12 @@ type Props = {
 }
 
 function GorgiasChatIntegrationList({integrations, loading}: Props) {
-    const [calloutDisplayed, setCalloutDisplayed] = useState<boolean>(true)
-
     const longTypeDescription = (
         <div>
             Chat with your customers by adding our Chat widget on your website.
             Every time a customer starts a conversation on your website, it
             opens a ticket in Gorgias.
         </div>
-    )
-
-    const toggleMovedToInstallationTabInfoCallout = (
-        <Alert
-            className="mb-4"
-            type={AlertType.Info}
-            icon
-            onClose={() => setCalloutDisplayed(false)}
-        >
-            The toggle to hide the chat from your website was moved to the{' '}
-            <b>Installation</b> tab of your chat's settings.
-        </Alert>
     )
 
     const chats = useMemo(
@@ -107,9 +91,6 @@ function GorgiasChatIntegrationList({integrations, loading}: Props) {
                 )}
             >
                 <div className="mb-3">{longTypeDescription}</div>
-                {calloutDisplayed && (
-                    <div>{toggleMovedToInstallationTabInfoCallout}</div>
-                )}
 
                 {integrations.isEmpty() && (
                     <div className="mt-3">
