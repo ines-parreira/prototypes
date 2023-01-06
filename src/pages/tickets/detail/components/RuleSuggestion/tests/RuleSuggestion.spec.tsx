@@ -84,6 +84,11 @@ describe('RuleSuggestion', () => {
         ;(sendTicketMessage as jest.Mock).mockReset()
         resetLDMocks()
         mockFlags({[FeatureFlagKey.RuleSuggestion]: true})
+        jest.useFakeTimers()
+    })
+
+    afterEach(() => {
+        jest.clearAllTimers()
     })
 
     it('should display RuleSuggestion', () => {
@@ -176,6 +181,7 @@ describe('RuleSuggestion', () => {
         )
 
         fireEvent.click(await screen.findByText('Expand'))
+        jest.runAllTimers()
         expect(screen.queryByText('Expand')).toBeNull()
         expect(container).toMatchSnapshot()
     })
