@@ -5,6 +5,8 @@ import thunk from 'redux-thunk'
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 
+import {FeatureFlagKey} from 'config/featureFlags'
+import {getLDClient} from 'utils/launchDarkly'
 import {ACTION_TEMPLATES} from '../../../../../../config'
 import {MacroActionName} from '../../../../../../models/macroAction/types'
 import {RootState} from '../../../../../../state/types'
@@ -14,6 +16,10 @@ import TicketReplyActions from '../TicketReplyActions'
 const mockStore = configureMockStore([thunk])
 
 jest.mock('draft-js/lib/generateRandomKey', () => () => '888')
+
+jest.mock('utils/launchDarkly')
+const allFlagsMock = getLDClient().allFlags as jest.Mock
+allFlagsMock.mockReturnValue({[FeatureFlagKey.ChatVideoSharingExtra]: true})
 
 describe('<TicketReplyActions/>', () => {
     const defaultState: Partial<RootState> = {

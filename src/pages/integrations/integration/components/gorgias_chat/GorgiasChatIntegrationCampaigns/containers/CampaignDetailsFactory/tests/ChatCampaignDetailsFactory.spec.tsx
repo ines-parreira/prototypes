@@ -4,6 +4,8 @@ import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import {render} from '@testing-library/react'
+import {getLDClient} from 'utils/launchDarkly'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import {RootState, StoreDispatch} from 'state/types'
 
@@ -16,6 +18,10 @@ const integration = fromJS({
 })
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
+
+jest.mock('utils/launchDarkly')
+const allFlagsMock = getLDClient().allFlags as jest.Mock
+allFlagsMock.mockReturnValue({[FeatureFlagKey.ChatVideoSharingExtra]: true})
 
 describe('<ChatCampaignDetailsFactory />', () => {
     const defaultState = {} as RootState

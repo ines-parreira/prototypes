@@ -28,6 +28,7 @@ import {
 import {Route} from 'react-router-dom'
 import URLSafeBase64 from 'urlsafe-base64'
 
+import {TicketChannel} from './business/types/ticket'
 import {humanize} from './business/format'
 import {ACTION_TEMPLATES} from './config'
 import TICKET_LANGUAGES from './config/ticketLanguages'
@@ -1066,6 +1067,27 @@ export function objKeys<T>(value: T): (keyof T)[] {
  */
 export function notEmpty<T>(elem: T | null | undefined): elem is T {
     return elem !== null && elem !== undefined
+}
+
+/**
+ * Helper to determine if we can add a embedded video to the draftjs editor.
+ * It is mainly scoped toward the GorgiasChat integration at the moment.
+ * @param newMessageChannel
+ * @param isNewMessagePublic
+ * @returns
+ */
+export function canAddVideoPlayer(
+    newMessageChannel: TicketChannel,
+    isNewMessagePublic: boolean
+): boolean {
+    return (
+        // If currently writting a chat ticket message.
+        newMessageChannel === TicketChannel.Chat ||
+        // Or an internal note.
+        isNewMessagePublic === false ||
+        // Or currently editing a chat campaign content.
+        isCurrentlyOnChatCampaignDetailsPage()
+    )
 }
 
 /**

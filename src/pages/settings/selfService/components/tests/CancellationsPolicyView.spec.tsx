@@ -7,6 +7,7 @@ import thunk from 'redux-thunk'
 import {useParams, useRouteMatch} from 'react-router-dom'
 
 import LD from 'launchdarkly-react-client-sdk'
+import {getLDClient} from 'utils/launchDarkly'
 import {
     SelfServiceConfiguration,
     ShopType,
@@ -33,6 +34,10 @@ const useRouteMatchMock = useRouteMatch as jest.MockedFunction<
 jest.mock('models/selfServiceConfiguration/resources')
 jest.mock('react-router')
 jest.mock('draft-js/lib/generateRandomKey', () => () => 'someRandomKey')
+
+jest.mock('utils/launchDarkly')
+const allFlagsMock = getLDClient().allFlags as jest.Mock
+allFlagsMock.mockReturnValue({[FeatureFlagKey.ChatVideoSharingExtra]: true})
 
 const createShopifyIntegrationFixtures = (length: number) => {
     return Array.from({length}, (_, i) => ({

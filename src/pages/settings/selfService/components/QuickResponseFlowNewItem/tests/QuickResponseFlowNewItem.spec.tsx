@@ -7,6 +7,9 @@ import MockDate from 'mockdate'
 import {fromJS, List, Map} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 
+import {getLDClient} from 'utils/launchDarkly'
+import {FeatureFlagKey} from 'config/featureFlags'
+
 import {RootState, StoreDispatch} from 'state/types'
 import {account} from 'fixtures/account'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
@@ -26,6 +29,10 @@ jest.mock('store/middlewares/segmentTracker', () => {
         logEvent: jest.fn(),
     }
 })
+
+jest.mock('utils/launchDarkly')
+const allFlagsMock = getLDClient().allFlags as jest.Mock
+allFlagsMock.mockReturnValue({[FeatureFlagKey.ChatVideoSharingExtra]: true})
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const useParamsMock = useParams as jest.MockedFunction<typeof useParams>

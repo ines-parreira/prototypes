@@ -11,6 +11,7 @@ import {Provider} from 'react-redux'
 
 import {User} from 'config/types/user'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {getLDClient} from 'utils/launchDarkly'
 
 import {RootState, StoreDispatch} from 'state/types'
 
@@ -27,6 +28,7 @@ import {VisitCountOperators} from '../../../types/enums/VisitCountOperators.enum
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 const defaultState = {} as RootState
+jest.mock('utils/launchDarkly')
 
 const agents = [
     {
@@ -107,6 +109,11 @@ describe('<AdvancedCampaignDetails />', () => {
     beforeEach(() => {
         mockFlags({
             [FeatureFlagKey.ChatVideoSharingCampaigns]: true,
+        })
+
+        const allFlagsMock = getLDClient().allFlags as jest.Mock
+        allFlagsMock.mockReturnValue({
+            [FeatureFlagKey.ChatVideoSharingExtra]: true,
         })
     })
 

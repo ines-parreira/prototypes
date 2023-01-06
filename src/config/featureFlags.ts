@@ -8,6 +8,7 @@ export enum FeatureFlagKey {
     ChatEnableTranslationEdit = 'enable-translations-edit',
     ChatVideoSharingCampaigns = 'chat-video-sharing-campaigns',
     ChatVideoSharingConversations = 'chat-video-sharing-conversations',
+    ChatVideoSharingExtra = 'enable-chat-video-sharing-extra',
     ChatMergedOrderManagementButton = 'chat-merged-order-management-button',
     EarlyAdopter = 'early-adopter',
     EnableSendgrid = 'use-sendgrid',

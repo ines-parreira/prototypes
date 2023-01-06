@@ -8,9 +8,15 @@ import {createEvent, fireEvent, render} from '@testing-library/react'
 import {FORM_CONTENT_TYPE} from 'config'
 import {MacroActionName} from 'models/macroAction/types'
 
+import {FeatureFlagKey} from 'config/featureFlags'
+import {getLDClient} from 'utils/launchDarkly'
 import {TicketReplyActionContainer} from '../TicketReplyAction'
 
 jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
+
+jest.mock('utils/launchDarkly')
+const allFlagsMock = getLDClient().allFlags as jest.Mock
+allFlagsMock.mockReturnValue({[FeatureFlagKey.ChatVideoSharingExtra]: true})
 
 describe('<TicketReplyAction />', () => {
     const mockStore = configureMockStore([thunk])

@@ -1,5 +1,7 @@
 import _noop from 'lodash/noop'
 
+import {EditorHandledNotHandled} from 'utils/editor'
+
 import {insertInlineImages, isImage} from '../utils'
 import {PluginMethods, ImagePluginConfig} from '../types'
 
@@ -8,7 +10,7 @@ const _handlePastedFiles =
     (files: Array<File>, pluginArgs: PluginMethods) => {
         const images = files.filter(isImage)
         if (!images.length) {
-            return 'not-handled'
+            return EditorHandledNotHandled.NotHandled
         }
 
         if (config.getCanInsertInlineImages()) {
@@ -16,7 +18,7 @@ const _handlePastedFiles =
         } else if (config.getCanDropFiles()) {
             config.getAttachFiles()(images)
         }
-        return 'handled'
+        return EditorHandledNotHandled.Handled
     }
 
 const pasteImagePlugin = (

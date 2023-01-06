@@ -7,6 +7,7 @@ import 'draft-js/dist/Draft.css'
 import {Map, List} from 'immutable'
 import _isEqual from 'lodash/isEqual'
 import _noop from 'lodash/noop'
+import ReactPlayer from 'react-player'
 import React, {
     ReactNode,
     ComponentType,
@@ -16,7 +17,21 @@ import React, {
     Component,
 } from 'react'
 
-import {ConnectedAction} from '../../../../state/types'
+import {connect, ConnectedProps} from 'react-redux'
+
+import {getLDClient} from 'utils/launchDarkly'
+import {FeatureFlagKey} from 'config/featureFlags'
+
+import {canAddVideoPlayer} from 'utils'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {
+    getNewMessageChannel,
+    isNewMessagePublic,
+} from 'state/newMessage/selectors'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {addVideo} from 'pages/common/draftjs/plugins/utils'
+
+import {ConnectedAction, RootState} from '../../../../state/types'
 import {notify} from '../../../../state/notifications/actions'
 import {scrollToReactNode} from '../../../common/utils/keyboard'
 
@@ -32,6 +47,8 @@ import {ActionName} from '../../draftjs/plugins/toolbar/types'
 import {ImagePluginConfig, Plugin} from '../../draftjs/plugins/types'
 import {
     contentStateFromTextOrHTML,
+    EditorHandledNotHandled,
+    focusToTheEndOfContent,
     isValidSelectionKey,
     refreshEditor,
     removeMentions,
@@ -84,7 +101,8 @@ export type Props = {
     placeholder?: string
 } & ToolbarPluginProps &
     MentionFilteredSuggestionsProps &
-    GrammarlyUsageTrackingProps
+    GrammarlyUsageTrackingProps &
+    ConnectedProps<typeof connector>
 
 type State = {
     isDragging: boolean
@@ -93,6 +111,10 @@ type State = {
 }
 
 export class RichFieldEditor extends Component<Props, State> {
+    chatVideoSharingExtraLDFlag: boolean | undefined = getLDClient().allFlags()[
+        FeatureFlagKey.ChatVideoSharingExtra
+    ] as boolean | undefined
+
     static defaultProps: Pick<
         Props,
         | 'emailExtraEnabled'
@@ -255,10 +277,10 @@ export class RichFieldEditor extends Component<Props, State> {
         const newState = RichUtils.handleKeyCommand(editorState, command)
         if (newState) {
             this.handleChildChange(newState)
-            return 'handled'
+            return EditorHandledNotHandled.Handled
         }
 
-        return 'not-handled'
+        return EditorHandledNotHandled.NotHandled
     }
 
     _handlePastedText = (
@@ -276,7 +298,7 @@ export class RichFieldEditor extends Component<Props, State> {
         // use the same method as draft-js to detect draft-js-content
         // https://github.com/facebook/draft-js/blob/0ce20bcc6ac18b24b06945d54f1a4a692eee8cc9/src/component/handlers/edit/editOnPaste.js#L123
         if (html && html.indexOf(this.editor.getEditorKey()) !== -1) {
-            return 'not-handled'
+            return EditorHandledNotHandled.NotHandled
         }
 
         // manually convert pasted text/html with draft-convert to preserve newlines and empty blocks.
@@ -288,17 +310,54 @@ export class RichFieldEditor extends Component<Props, State> {
             contentStateFromTextOrHTML(text, html).getBlockMap()
         )
 
-        const newEditorState = (
+        let newEditorState = (
             EditorState.push as (
                 editorState: EditorState,
                 contentState: ContentState
             ) => EditorState
         )(editorState, contentState)
+
+        // Automatically inject a video player at the bottom when content pasted is a video link. When applicable.
+        newEditorState = this._insertExtraVideoOnPastedTextIfApplicable(
+            newEditorState,
+            text,
+            html
+        )
+
         this.handleChildChange(newEditorState)
 
         // draft-js-plugins-editor requires `handled`, instead of `true` like the native draft-js instance,
         // to prevent the default behavior.
-        return 'handled'
+        return EditorHandledNotHandled.Handled
+    }
+
+    _insertExtraVideoOnPastedTextIfApplicable = (
+        editorState: EditorState,
+        text: string,
+        html: string | undefined
+    ): EditorState => {
+        const {newMessageChannel, isNewMessagePublic, currentAccount, ticket} =
+            this.props
+
+        let newEditorState = editorState
+
+        if (
+            this.chatVideoSharingExtraLDFlag &&
+            text &&
+            !html &&
+            canAddVideoPlayer(newMessageChannel, isNewMessagePublic) &&
+            ReactPlayer.canPlay(text)
+        ) {
+            newEditorState = focusToTheEndOfContent(newEditorState)
+            newEditorState = addVideo(newEditorState, text)
+            logEvent(SegmentEvent.InsertVideoAddedFromPastedLink, {
+                account_id: currentAccount?.get('domain'),
+                channel: newMessageChannel,
+                ticket: (ticket as Immutable.Map<any, any>)?.get('id') || 'new',
+            })
+        }
+
+        return newEditorState
     }
 
     _runPlugins = (editorState: EditorState) => {
@@ -443,6 +502,15 @@ export class RichFieldEditor extends Component<Props, State> {
     }
 }
 
-export default withGrammarlyUsageTracking(
-    provideToolbarPlugin(provideMentionFilteredSuggestions(RichFieldEditor))
+const connector = connect((state: RootState) => ({
+    currentAccount: getCurrentAccountState(state),
+    ticket: state.ticket,
+    newMessageChannel: getNewMessageChannel(state),
+    isNewMessagePublic: isNewMessagePublic(state),
+}))
+
+export default connector(
+    withGrammarlyUsageTracking(
+        provideToolbarPlugin(provideMentionFilteredSuggestions(RichFieldEditor))
+    )
 )

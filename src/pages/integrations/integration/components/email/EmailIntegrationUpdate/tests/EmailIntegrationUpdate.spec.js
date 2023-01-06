@@ -9,6 +9,9 @@ import * as helpers from '../../helpers'
 
 import {EmailIntegrationUpdateContainer} from '../EmailIntegrationUpdate.tsx'
 
+import {getLDClient} from 'utils/launchDarkly'
+import {FeatureFlagKey} from 'config/featureFlags'
+
 import {EmailProvider} from 'models/integration/constants'
 
 import {
@@ -30,6 +33,10 @@ const commonProps = {
         deleteIntegration: jest.fn(),
     },
 }
+
+jest.mock('utils/launchDarkly')
+const allFlagsMock = getLDClient().allFlags
+allFlagsMock.mockReturnValue({[FeatureFlagKey.ChatVideoSharingExtra]: true})
 
 describe('<EmailIntegrationUpdateContainer />', () => {
     const mockStore = configureMockStore([thunk])

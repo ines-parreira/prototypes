@@ -1,6 +1,7 @@
 import _noop from 'lodash/noop'
 import {SelectionState} from 'draft-js'
 
+import {EditorHandledNotHandled} from 'utils/editor'
 import {insertInlineImages, isImage} from '../utils'
 import {PluginMethods, ImagePluginConfig} from '../types'
 
@@ -35,7 +36,7 @@ const _handleDroppedFiles =
         if (config.getCanDropFiles()) {
             config.getAttachFiles()(others)
         }
-        return 'handled'
+        return EditorHandledNotHandled.Handled
     }
 
 const dndUploadPlugin = (

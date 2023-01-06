@@ -3,15 +3,22 @@ import {render} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
-
 import {fromJS} from 'immutable'
+
+import {getLDClient} from 'utils/launchDarkly'
+import {FeatureFlagKey} from 'config/featureFlags'
+
 import {RootState, StoreDispatch} from 'state/types'
 import {ManagedRulesSlugs} from 'state/rules/types'
 import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
 
 import {IntegrationType} from 'models/integration/constants'
 import AutoReplyWismoEditor from '../AutoReplyWismoEditor'
+
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
+jest.mock('utils/launchDarkly')
+const allFlagsMock = getLDClient().allFlags as jest.Mock
+allFlagsMock.mockReturnValue({[FeatureFlagKey.ChatVideoSharingExtra]: true})
 
 describe('<AutoReplyWismoEditor/>', () => {
     const minProps: ComponentProps<typeof AutoReplyWismoEditor> = {

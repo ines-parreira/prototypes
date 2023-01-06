@@ -11,15 +11,10 @@ import {connect, ConnectedProps} from 'react-redux'
 import {EditorState} from 'draft-js'
 import ReactPlayer from 'react-player'
 
-import {
-    insertLink,
-    insertText,
-    isCurrentlyOnChatCampaignDetailsPage,
-} from 'utils'
+import {insertLink, insertText, canAddVideoPlayer} from 'utils'
 import Button from 'pages/common/components/button/Button'
 import Popover from 'pages/common/draftjs/plugins/toolbar/components/ButtonPopover'
 import TextInput from 'pages/common/forms/input/TextInput'
-import {TicketChannel} from 'business/types/ticket'
 import {UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_VIDEOS} from 'config/integrations/shopify'
 
 import {
@@ -85,16 +80,11 @@ export function AddVideo({
         () => {
             const editorState = getEditorState()
 
-            const canAddVideoPlayer =
-                // If currently writting a chat ticket message.
-                newMessageChannel === (TicketChannel.Chat as string) ||
-                // Or an internal note.
-                !isNewMessagePublic ||
-                // Or currently editing a chat campaign content.
-                isCurrentlyOnChatCampaignDetailsPage()
-
             let newEditorState
-            if (canAddVideoPlayer && ReactPlayer.canPlay(url)) {
+            if (
+                canAddVideoPlayer(newMessageChannel, isNewMessagePublic) &&
+                ReactPlayer.canPlay(url)
+            ) {
                 newEditorState = addVideo(editorState, url)
             } else {
                 if (

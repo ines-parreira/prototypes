@@ -4,6 +4,8 @@ import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
+import {getLDClient} from 'utils/launchDarkly'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {ManagedRulesSlugs} from 'state/rules/types'
@@ -16,6 +18,9 @@ import {user} from 'fixtures/users'
 import ManagedRuleEditor from '../ManagedRuleEditor'
 
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
+jest.mock('utils/launchDarkly')
+const allFlagsMock = getLDClient().allFlags as jest.Mock
+allFlagsMock.mockReturnValue({[FeatureFlagKey.ChatVideoSharingExtra]: true})
 
 describe('<ManagedRuleEditor/>', () => {
     const minProps: ComponentProps<typeof ManagedRuleEditor> = {

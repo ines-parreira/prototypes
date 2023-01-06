@@ -9,12 +9,19 @@ import {fromJS} from 'immutable'
 
 import {convertFromHTML} from 'utils/editor'
 
+import {FeatureFlagKey} from 'config/featureFlags'
+import {getLDClient} from 'utils/launchDarkly'
+import {TicketChannel} from 'business/types/ticket'
 import {RichFieldEditor} from '../RichFieldEditor'
 import toolbarPlugin from '../../../draftjs/plugins/toolbar/index'
 import provideToolbarPlugin from '../provideToolbarPlugin'
 
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
+
+jest.mock('utils/launchDarkly')
+const allFlagsMock = getLDClient().allFlags as jest.Mock
+allFlagsMock.mockReturnValue({[FeatureFlagKey.ChatVideoSharingExtra]: true})
 
 describe('RichFieldEditor', () => {
     const defaultProps: ComponentProps<typeof RichFieldEditor> = {
@@ -41,6 +48,11 @@ describe('RichFieldEditor', () => {
         isFocused: false,
         mentionSearchResults: fromJS({}),
         onMentionSearchChange: jest.fn(),
+        currentAccount: fromJS({}),
+        ticket: fromJS({}),
+        isNewMessagePublic: false,
+        newMessageChannel: TicketChannel.Email,
+        dispatch: jest.fn(),
     }
     let contentState: ContentState
     let editorState: EditorState
@@ -165,5 +177,61 @@ describe('RichFieldEditor', () => {
             .find('.public-DraftEditor-content')
             .simulate('keyDown', {ctrlKey: true, key: 'b', keyCode: 66})
         expect(spyOnchange.mock.calls).toMatchSnapshot()
+    })
+
+    it('should insert a video preview when pasting a compatible video link when channel is chat', () => {
+        const onChangeSpy = jest.fn()
+        contentState = convertFromHTML('html')
+        editorState = EditorState.createWithContent(contentState)
+        editorState = EditorState.moveFocusToEnd(editorState)
+        const component = mount<RichFieldEditor>(
+            <RichFieldEditor
+                {...defaultProps}
+                editorKey="editor"
+                editorState={editorState}
+                onChange={onChangeSpy}
+                newMessageChannel={TicketChannel.Chat}
+                isNewMessagePublic={true}
+            />
+        )
+        const text = 'https://www.youtube.com/watch?v=4sLFpe-xbhk'
+        const html = undefined
+        // simulate pasted text
+        component.instance()._handlePastedText(text, html, editorState)
+
+        const [newContentState]: EditorState[] =
+            onChangeSpy.mock.calls[onChangeSpy.mock.calls.length - 1]
+        const convertedHTML = convertToHTML(newContentState.getCurrentContent())
+        // we can't simulate the paste event, so we test for unmodified content
+        expect(convertedHTML).toBe('<figure></figure>')
+    })
+
+    it('should NOT insert a video preview when pasting a compatible video link when channel is mail', () => {
+        const onChangeSpy = jest.fn()
+        contentState = convertFromHTML('html')
+        editorState = EditorState.createWithContent(contentState)
+        editorState = EditorState.moveFocusToEnd(editorState)
+        const component = mount<RichFieldEditor>(
+            <RichFieldEditor
+                {...defaultProps}
+                editorKey="editor"
+                editorState={editorState}
+                onChange={onChangeSpy}
+                newMessageChannel={TicketChannel.Email}
+                isNewMessagePublic={true}
+            />
+        )
+        const text = 'https://www.youtube.com/watch?v=4sLFpe-xbhk'
+        const html = undefined
+        // simulate pasted text
+        component.instance()._handlePastedText(text, html, editorState)
+
+        const [newContentState]: EditorState[] =
+            onChangeSpy.mock.calls[onChangeSpy.mock.calls.length - 1]
+        const convertedHTML = convertToHTML(newContentState.getCurrentContent())
+        // we can't simulate the paste event, so we test for unmodified content
+        expect(convertedHTML).toBe(
+            '<p>htmlhttps://www.youtube.com/watch?v=4sLFpe-xbhk</p>'
+        )
     })
 })

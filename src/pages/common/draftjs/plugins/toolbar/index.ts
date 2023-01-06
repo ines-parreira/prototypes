@@ -5,6 +5,7 @@ import {ContentBlock, EditorState, KeyBindingUtil} from 'draft-js'
 import {Plugin, PluginMethods} from '../types'
 import {removeLink} from '../utils'
 import {
+    EditorHandledNotHandled,
     getSelectedEntityKey,
     getSelectedText,
 } from '../../../../../utils/editor'
@@ -129,10 +130,10 @@ export default function toolbarPlugin(config: Config): Plugin {
                     )
                 }
 
-                return 'handled'
+                return EditorHandledNotHandled.Handled
             }
 
-            return 'not-handled'
+            return EditorHandledNotHandled.NotHandled
         },
     }
 }

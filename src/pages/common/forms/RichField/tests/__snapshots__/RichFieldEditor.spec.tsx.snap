@@ -260,6 +260,7 @@ exports[`RichFieldEditor should focus the end of input on initial focus 1`] = `
             },
           ]
         }
+        ticket={Immutable.Map {}}
       />
       <Decorated(MentionSuggestions)
         canAddMention={false}
@@ -273,7 +274,9 @@ exports[`RichFieldEditor should focus the end of input on initial focus 1`] = `
     canDropFiles={false}
     canInsertInlineImages={true}
     createToolbarPlugin={[Function]}
+    currentAccount={Immutable.Map {}}
     detectGrammarly={[Function]}
+    dispatch={[MockFunction]}
     editorKey="editor"
     editorState={
       EditorState {
@@ -373,11 +376,13 @@ exports[`RichFieldEditor should focus the end of input on initial focus 1`] = `
     }
     emailExtraEnabled={false}
     isFocused={false}
+    isNewMessagePublic={false}
     isRequired={false}
     linkIsOpen={false}
     linkText=""
     linkUrl=""
     mentionSearchResults={Immutable.Map {}}
+    newMessageChannel="email"
     notify={[Function]}
     onBlur={[MockFunction]}
     onChange={[MockFunction]}
@@ -388,6 +393,7 @@ exports[`RichFieldEditor should focus the end of input on initial focus 1`] = `
     onLinkUrlChange={[Function]}
     onMentionSearchChange={[MockFunction]}
     productCardsEnabled={true}
+    ticket={Immutable.Map {}}
   />
 </div>
 `;

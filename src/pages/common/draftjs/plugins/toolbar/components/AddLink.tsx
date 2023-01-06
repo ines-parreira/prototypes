@@ -1,11 +1,21 @@
 import {EditorState, Modifier} from 'draft-js'
 import React, {Component, KeyboardEvent} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
+import ReactPlayer from 'react-player'
+
+import {getLDClient} from 'utils/launchDarkly'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+
+import {FeatureFlagKey} from 'config/featureFlags'
+import {RootState} from 'state/types'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {canAddVideoPlayer} from 'utils'
 
 import Button from 'pages/common/components/button/Button'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import {linkifyWithTemplate, removeLink} from '../../utils'
+import {addVideo, linkifyWithTemplate, removeLink} from '../../utils'
 import {
+    focusToTheEndOfContent,
     getEntitySelectionState,
     getSelectedEntityKey,
     getSelectedText,
@@ -16,6 +26,10 @@ import {
     linkEditionEnded,
     linkEditionStarted,
 } from '../../../../../../state/ui/editor/actions'
+import {
+    getNewMessageChannel,
+    isNewMessagePublic,
+} from '../../../../../../state/newMessage/selectors'
 
 import css from './AddLink.less'
 import Popover from './ButtonPopover'
@@ -33,6 +47,10 @@ type Props = {
     ConnectedProps<typeof connector>
 
 export class AddLinkContainer extends Component<Props> {
+    chatVideoSharingExtraLDFlag: boolean | undefined = getLDClient().allFlags()[
+        FeatureFlagKey.ChatVideoSharingExtra
+    ] as boolean | undefined
+
     componentDidUpdate(prevProps: Props) {
         const {isOpen, linkEditionEnded, linkEditionStarted} = this.props
 
@@ -98,21 +116,29 @@ export class AddLinkContainer extends Component<Props> {
         if (!this._isValid()) {
             return
         }
-        if (this.props.entityKey) {
-            this._updateLink()
-        } else {
-            this._insertLink()
+        const newEditorState: EditorState | null = this.props.entityKey
+            ? this._updateLink()
+            : this._insertLink()
+
+        if (
+            this.chatVideoSharingExtraLDFlag &&
+            newEditorState &&
+            // Do not append a video if we are in `Update Link` mode.
+            !this.props.entityKey
+        ) {
+            this._insertExtraVideoIfApplicable(newEditorState)
         }
+
         this.props.onClose()
     }
 
-    _updateLink = () => {
+    _updateLink = (): EditorState | null => {
         let editorState = this.props.getEditorState()
         let contentState = editorState.getCurrentContent()
         const {url, text, entityKey} = this.props
 
         if (!entityKey) {
-            return
+            return null
         }
 
         // Use linkify to add protocol to the url
@@ -150,9 +176,11 @@ export class AddLinkContainer extends Component<Props> {
         this.props.setEditorState(
             EditorState.forceSelection(editorState, editorState.getSelection())
         )
+
+        return editorState
     }
 
-    _insertLink = () => {
+    _insertLink = (): EditorState | null => {
         const {url, text} = this.props
         // Use linkify to add protocol to the url
         const parsedUrl = linkifyWithTemplate(url)
@@ -183,6 +211,41 @@ export class AddLinkContainer extends Component<Props> {
         ) // Focus the editor
 
         this.props.setEditorState(editorState)
+
+        return editorState
+    }
+
+    _insertExtraVideoIfApplicable = (editorState: EditorState) => {
+        const {
+            url,
+            newMessageChannel,
+            isNewMessagePublic,
+            currentAccount,
+            ticket,
+            setEditorState,
+        } = this.props
+
+        if (
+            !canAddVideoPlayer(newMessageChannel, isNewMessagePublic) ||
+            !ReactPlayer.canPlay(url)
+        ) {
+            return
+        }
+
+        let newEditorState = focusToTheEndOfContent(editorState)
+        newEditorState = addVideo(newEditorState, url)
+
+        newEditorState = EditorState.forceSelection(
+            newEditorState,
+            newEditorState.getSelection()
+        )
+        setEditorState(newEditorState)
+
+        logEvent(SegmentEvent.InsertVideoAddedFromInsertLink, {
+            account_id: currentAccount?.get('domain'),
+            channel: newMessageChannel,
+            ticket: ticket?.get('id') || 'new',
+        })
     }
 
     render() {
@@ -225,9 +288,13 @@ export class AddLinkContainer extends Component<Props> {
     }
 }
 
-const connector = connect(null, {
+const connector = connect((state: RootState) => ({
     linkEditionStarted,
     linkEditionEnded,
-})
+    currentAccount: getCurrentAccountState(state),
+    ticket: state.ticket,
+    newMessageChannel: getNewMessageChannel(state),
+    isNewMessagePublic: isNewMessagePublic(state),
+}))
 
 export default connector(AddLinkContainer)

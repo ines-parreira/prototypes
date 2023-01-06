@@ -8,6 +8,7 @@ import LD from 'launchdarkly-react-client-sdk'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 
+import {getLDClient} from 'utils/launchDarkly'
 import {CampaignDetail} from '../CampaignDetail'
 
 const middlewares = [thunk]
@@ -42,6 +43,7 @@ const commonProps = {
 }
 
 jest.mock('draft-js/lib/generateRandomKey', () => () => 'someRandomKey')
+jest.mock('utils/launchDarkly')
 
 describe('CampaignDetail component', () => {
     let store = mockStore({})
@@ -55,6 +57,10 @@ describe('CampaignDetail component', () => {
         jest.resetAllMocks()
         store = mockStore({})
         Date.now = jest.fn(() => 42)
+        const allFlagsMock = getLDClient().allFlags as jest.Mock
+        allFlagsMock.mockReturnValue({
+            [FeatureFlagKey.ChatVideoSharingExtra]: true,
+        })
     })
     afterAll(() => {
         Date.now = realDateNow

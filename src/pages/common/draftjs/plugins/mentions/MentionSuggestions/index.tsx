@@ -5,6 +5,7 @@ import React, {Component, KeyboardEvent} from 'react'
 import {List, Map, fromJS} from 'immutable'
 import {genKey, EditorState, SelectionState} from 'draft-js'
 
+import {EditorHandledNotHandled} from 'utils/editor'
 import addMention from '../modifiers/addMention.js'
 import {decodeOffsetKey, getSearchText} from '../utils.js'
 
@@ -323,7 +324,7 @@ export default class MentionSuggestions extends Component<Props, State> {
         this.onMentionSelect(
             this.props.suggestions.get(this.state.focusedOptionIndex)
         )
-        return 'handled'
+        return EditorHandledNotHandled.Handled
     }
 
     openDropdown = () => {
