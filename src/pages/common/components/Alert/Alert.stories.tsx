@@ -82,4 +82,21 @@ CustomActions.args = {
     ),
 }
 
+export const CustomActionsWithOverflow = Template.bind({})
+CustomActionsWithOverflow.args = {
+    ...defaultProps,
+    children:
+        'Ullamco ullamco laboris magna incididunt eiusmod aute adipisicing laborum aliquip. Velit nisi officia nulla proident. Irure magna enim id adipisicing est sunt aliquip. Anim ex incididunt tempor duis nulla nisi nostrud ullamco elit. Officia occaecat exercitation est deserunt non excepteur cupidatat ex. Excepteur Lorem ex Lorem incididunt pariatur ut officia. Nostrud sit id proident pariatur consequat excepteur eu proident ea. Magna ad aute eiusmod non nisi quis esse consequat aliquip laborum elit.',
+    customActions: (
+        <div>
+            <Button type="button" color="primary" className="mr-3">
+                Apply
+            </Button>
+            <Button type="button" color="secondary">
+                Cancel
+            </Button>
+        </div>
+    ),
+}
+
 export default storyConfig
