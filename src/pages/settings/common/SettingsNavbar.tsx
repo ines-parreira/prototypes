@@ -1,6 +1,7 @@
 import React from 'react'
 import classnames from 'classnames'
 import {Link, useLocation} from 'react-router-dom'
+import cloneDeep from 'lodash/cloneDeep'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import css from 'assets/css/navbar.less'
@@ -98,20 +99,13 @@ const CATEGORIES: Category[] = [
         links: [
             {
                 requiredRole: ADMIN_ROLE,
-                requiredFeatureFlag: FeatureFlagKey.AppStore,
                 to: 'integrations/mine',
                 text: 'My Apps',
             },
             {
                 requiredRole: ADMIN_ROLE,
-                requiredFeatureFlag: FeatureFlagKey.AppStore,
-                to: 'integrations/all',
-                text: 'All apps',
-            },
-            {
-                requiredRole: ADMIN_ROLE,
                 to: 'integrations',
-                text: 'Apps & integrations',
+                text: 'All Apps',
             },
             {
                 requiredRole: ADMIN_ROLE,
@@ -217,6 +211,8 @@ const SettingsNavbar = () => {
     const featureFlags = useFlags()
     const isAutomationSettingsRevampEnabled: boolean | undefined =
         featureFlags[FeatureFlagKey.AutomationSettingsRevamp]
+    const isAppStoreEnabled: boolean | undefined =
+        featureFlags[FeatureFlagKey.AppStore]
 
     const getCategories = () => {
         if (isAutomationSettingsRevampEnabled) {
@@ -231,6 +227,21 @@ const SettingsNavbar = () => {
 
                 return categories
             }
+        }
+        if (!isAppStoreEnabled) {
+            const integrationIndex = CATEGORIES.findIndex(
+                (category) => category.name === 'App Store'
+            )
+            const categories = cloneDeep(CATEGORIES)
+            const links = categories[integrationIndex].links
+            links.splice(0, 2)
+            links.unshift({
+                requiredRole: ADMIN_ROLE,
+                to: 'integrations',
+                text: 'Apps & integrations',
+            })
+
+            return categories
         }
 
         return CATEGORIES
@@ -262,6 +273,14 @@ const SettingsNavbar = () => {
                             pathname.startsWith(`/app/settings/${to}`) ||
                             (/settings\/?$/.test(pathname) &&
                                 to === 'channels/email')
+
+                        if (
+                            isActive &&
+                            pathname.includes('integrations/mine') &&
+                            to.match(/.*integrations(\/)?$/)
+                        ) {
+                            isActive = false
+                        }
 
                         // TODO(@Manuel): remove this edge case once the http integration has its own route
                         if (

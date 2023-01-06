@@ -613,7 +613,7 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
             <Route path={`${path}/channels`} render={ChannelsSettingsRoutes} />
             <Route
                 path={`${path}/integrations`}
-                render={IntegrationsSettingsRoutes}
+                render={(props) => <IntegrationsSettingsRoutes {...props} />}
             />
             <Route
                 path={`${path}/phone-numbers`}
@@ -833,6 +833,9 @@ export function ChannelsSettingsRoutes({match: {path}}: RouteComponentProps) {
 export function IntegrationsSettingsRoutes({
     match: {path},
 }: RouteComponentProps) {
+    const featureFlags = useFlags()
+    const isAppStoreEnabled: boolean | undefined =
+        featureFlags[FeatureFlagKey.AppStore]
     return (
         <HelpCenterApiClientProvider>
             <Switch>
@@ -841,7 +844,9 @@ export function IntegrationsSettingsRoutes({
                     exact
                     render={appRender({
                         content: memoizedWithUserRoleRequired(
-                            IntegrationsList,
+                            isAppStoreEnabled
+                                ? IntegrationsStore
+                                : IntegrationsList,
                             ADMIN_ROLE,
                             PageSection.Integrations
                         ),
@@ -854,18 +859,6 @@ export function IntegrationsSettingsRoutes({
                     render={appRender({
                         content: memoizedWithUserRoleRequired(
                             MyIntegrations,
-                            ADMIN_ROLE,
-                            PageSection.Integrations
-                        ),
-                        navbar: SettingsNavbar,
-                    })}
-                />
-                <Route
-                    path={`${path}/all`}
-                    exact
-                    render={appRender({
-                        content: memoizedWithUserRoleRequired(
-                            IntegrationsStore,
                             ADMIN_ROLE,
                             PageSection.Integrations
                         ),
