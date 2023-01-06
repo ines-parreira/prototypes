@@ -1152,3 +1152,16 @@ export function extractGorgiasVideoDivFromHtmlContent(html: string): {
         videoUrls: urls,
     }
 }
+
+/**
+ * Adapt video URL to fix some issues found with the lib ReactPlayer.
+ *
+ * Trim the `playlist` variable from `https://www.dailymotion.com/video/x2m3vyr?playlist=x7juya` for instance so ReactPlayer can play it.
+ */
+export function fixVideoUrlForReactPlayer(url: string) {
+    // Match `https://www.dailymotion.com/video/x2m3vyr?playlist=x7juyaf` to capture leading `?playlist=x7juyaf`.
+    if (url.includes('dailymotion.com')) {
+        return url.replace(/(\?playlist=\w+$)/, '')
+    }
+    return url
+}

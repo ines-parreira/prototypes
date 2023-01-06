@@ -958,4 +958,40 @@ describe('global utils', () => {
             }
         })
     })
+
+    describe('fixVideoUrlForReactPlayer()', () => {
+        it('should properly extract', () => {
+            const dataset: {
+                rawUrl: string
+                expectedUrl: string
+            }[] = [
+                {
+                    rawUrl: `https://www.dailymotion.com/video/x2m3vyr?playlist=x7juyaf`,
+                    expectedUrl: `https://www.dailymotion.com/video/x2m3vyr`,
+                },
+                {
+                    rawUrl: `https://www.dailymotion.com/video/x2m3vyr?playlist=x7juyaf&anotherunknowstuff=rr`,
+                    expectedUrl: `https://www.dailymotion.com/video/x2m3vyr?playlist=x7juyaf&anotherunknowstuff=rr`,
+                },
+                {
+                    rawUrl: `https://www.google.com/`,
+                    expectedUrl: `https://www.google.com/`,
+                },
+                {
+                    rawUrl: `https://www.dailymotion.com/video/x2m3vyr`,
+                    expectedUrl: `https://www.dailymotion.com/video/x2m3vyr`,
+                },
+                {
+                    rawUrl: `https://www.youtube.com/watch?v=4sLFpe-xbhk`,
+                    expectedUrl: `https://www.youtube.com/watch?v=4sLFpe-xbhk`,
+                },
+            ]
+
+            for (const data of dataset) {
+                expect(utils.fixVideoUrlForReactPlayer(data.rawUrl)).toEqual(
+                    data.expectedUrl
+                )
+            }
+        })
+    })
 })

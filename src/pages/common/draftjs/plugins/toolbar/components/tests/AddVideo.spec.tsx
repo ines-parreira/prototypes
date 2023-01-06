@@ -28,8 +28,17 @@ describe('<AddVideo/>', () => {
     let store = mockStore({})
 
     beforeEach(() => {
-        jest.clearAllMocks()
         store = mockStore({ticket: fromJS({id: 1})})
+
+        jest.spyOn(newMesageSelector, 'isNewMessagePublic').mockImplementation(
+            () => true
+        )
+
+        window.location.pathname = '/app/ticket/187'
+    })
+
+    afterEach(() => {
+        jest.clearAllMocks()
     })
 
     it('should not render when the popover is closed', () => {
@@ -102,10 +111,15 @@ describe('<AddVideo/>', () => {
         screen.getByText('This provider is not supported or link is not valid.')
     })
 
-    it('should call `addVideo` to the draftjs editorState', () => {
+    it('should call `addVideo` to the draftjs editorState (chat channel)', () => {
         const addVideoSpy = jest
             .spyOn(draftjsPluginsUtils, 'addVideo')
             .mockImplementation(jest.fn())
+
+        jest.spyOn(
+            newMesageSelector,
+            'getNewMessageChannel'
+        ).mockImplementation(() => TicketChannel.Chat)
 
         render(
             <Provider store={store}>
@@ -119,13 +133,53 @@ describe('<AddVideo/>', () => {
         })
 
         fireEvent.click(screen.getByText(/Insert Video/i))
-        expect(addVideoSpy).toHaveBeenCalled()
+        expect(addVideoSpy).toHaveBeenCalledWith(
+            undefined,
+            `https://www.youtube.com/watch?v=4sLFpe-xbhk`
+        )
     })
 
-    it('should call `insertLink` to the draftjs editorState', () => {
+    it('should call `addVideo` to the draftjs editorState (internal note channel)', () => {
+        const addVideoSpy = jest
+            .spyOn(draftjsPluginsUtils, 'addVideo')
+            .mockImplementation(jest.fn())
+
+        // Internal note has Email + isNewMessagePublic falsy.
+        jest.spyOn(
+            newMesageSelector,
+            'getNewMessageChannel'
+        ).mockImplementation(() => TicketChannel.Email)
+        jest.spyOn(newMesageSelector, 'isNewMessagePublic').mockImplementation(
+            () => false
+        )
+
+        render(
+            <Provider store={store}>
+                <AddVideo {...minProps} />
+            </Provider>
+        )
+        fireEvent.click(screen.getByText(/video/i))
+
+        fireEvent.change(screen.getByPlaceholderText('External video URL'), {
+            target: {value: 'https://www.youtube.com/watch?v=4sLFpe-xbhk'}, // URL is valid and ReactPlayer.canPlay: true.
+        })
+
+        fireEvent.click(screen.getByText(/Insert Video/i))
+        expect(addVideoSpy).toHaveBeenCalledWith(
+            undefined,
+            `https://www.youtube.com/watch?v=4sLFpe-xbhk`
+        )
+    })
+
+    it('should call `insertLink` to the draftjs editorState (email channel)', () => {
         const insertLinkSpy = jest
             .spyOn(utils, 'insertLink')
             .mockImplementation(jest.fn())
+
+        jest.spyOn(
+            newMesageSelector,
+            'getNewMessageChannel'
+        ).mockImplementation(() => TicketChannel.Email)
 
         render(
             <Provider store={store}>
@@ -139,7 +193,10 @@ describe('<AddVideo/>', () => {
         })
 
         fireEvent.click(screen.getByText(/Insert Video/i))
-        expect(insertLinkSpy).toHaveBeenCalled()
+        expect(insertLinkSpy).toHaveBeenCalledWith(
+            undefined,
+            `https://gorgias.com`
+        )
     })
 
     it('should call `insertText` to the draftjs editorState (UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_VIDEOS case)', () => {
@@ -164,7 +221,10 @@ describe('<AddVideo/>', () => {
         })
 
         fireEvent.click(screen.getByText(/Insert Video/i))
-        expect(insertText).toHaveBeenCalled()
+        expect(insertText).toHaveBeenCalledWith(
+            undefined,
+            `https://gorgias.com`
+        )
     })
 
     it('should call `insertVideo` to the draftjs editorState when being in the campaign edit page', () => {
@@ -192,6 +252,66 @@ describe('<AddVideo/>', () => {
 
         fireEvent.click(screen.getByText(/Insert Video/i))
         expect(addVideoSpy).toHaveBeenCalled()
+    })
+
+    it('should call `addVideo` to the draftjs editorState with the fixed URL (dailymotion playlist case)', () => {
+        const addVideoSpy = jest
+            .spyOn(draftjsPluginsUtils, 'addVideo')
+            .mockImplementation(jest.fn())
+
+        jest.spyOn(
+            newMesageSelector,
+            'getNewMessageChannel'
+        ).mockImplementation(() => TicketChannel.Chat)
+
+        render(
+            <Provider store={store}>
+                <AddVideo {...minProps} />
+            </Provider>
+        )
+        fireEvent.click(screen.getByText(/video/i))
+
+        fireEvent.change(screen.getByPlaceholderText('External video URL'), {
+            target: {
+                value: 'https://www.dailymotion.com/video/x2m3vyr?playlist=x7juyaf',
+            },
+        })
+
+        fireEvent.click(screen.getByText(/Insert Video/i))
+        expect(addVideoSpy).toHaveBeenCalledWith(
+            undefined,
+            'https://www.dailymotion.com/video/x2m3vyr'
+        )
+    })
+
+    it('should call `insertLink` to the draftjs editorState with the original URL (dailymotion playlist case with Email channel)', () => {
+        const insertLinkSpy = jest
+            .spyOn(utils, 'insertLink')
+            .mockImplementation(jest.fn())
+
+        jest.spyOn(
+            newMesageSelector,
+            'getNewMessageChannel'
+        ).mockImplementation(() => TicketChannel.Email)
+
+        render(
+            <Provider store={store}>
+                <AddVideo {...minProps} />
+            </Provider>
+        )
+        fireEvent.click(screen.getByText(/video/i))
+
+        fireEvent.change(screen.getByPlaceholderText('External video URL'), {
+            target: {
+                value: 'https://www.dailymotion.com/video/x2m3vyr?playlist=x7juyaf',
+            },
+        })
+
+        fireEvent.click(screen.getByText(/Insert Video/i))
+        expect(insertLinkSpy).toHaveBeenCalledWith(
+            undefined,
+            `https://www.dailymotion.com/video/x2m3vyr?playlist=x7juyaf`
+        )
     })
 })
 

@@ -11,7 +11,12 @@ import {connect, ConnectedProps} from 'react-redux'
 import {EditorState} from 'draft-js'
 import ReactPlayer from 'react-player'
 
-import {insertLink, insertText, canAddVideoPlayer} from 'utils'
+import {
+    insertLink,
+    insertText,
+    canAddVideoPlayer,
+    fixVideoUrlForReactPlayer,
+} from 'utils'
 import Button from 'pages/common/components/button/Button'
 import Popover from 'pages/common/draftjs/plugins/toolbar/components/ButtonPopover'
 import TextInput from 'pages/common/forms/input/TextInput'
@@ -80,12 +85,13 @@ export function AddVideo({
         () => {
             const editorState = getEditorState()
 
+            const urlFixed = fixVideoUrlForReactPlayer(url)
             let newEditorState
             if (
                 canAddVideoPlayer(newMessageChannel, isNewMessagePublic) &&
-                ReactPlayer.canPlay(url)
+                ReactPlayer.canPlay(urlFixed)
             ) {
-                newEditorState = addVideo(editorState, url)
+                newEditorState = addVideo(editorState, urlFixed)
             } else {
                 if (
                     !UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_VIDEOS.includes(
