@@ -254,8 +254,7 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
         if (helpCenter.translations) {
             setTranslationsLoaded(true)
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [helpCenter.translations])
+    }, [helpCenter.translations, updateTranslationFromData])
 
     useEffect(() => {
         if (!helpCenter.translations) {
