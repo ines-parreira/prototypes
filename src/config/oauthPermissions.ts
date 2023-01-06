@@ -33,6 +33,11 @@ export const oauthPermissions: Record<string, OAuthPermission> = {
         description:
             'Ticket views and their settings, as well as tickets with their content, including messages, tags, assignees, etc.',
     },
+    custom_fields: {
+        icon: 'input',
+        name: 'Custom Fields',
+        description: 'Custom fields that can be added to tickets.',
+    },
     events: {
         icon: 'history',
         name: 'Helpdesk Events',
