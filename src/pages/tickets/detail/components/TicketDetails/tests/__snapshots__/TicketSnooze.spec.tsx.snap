@@ -18,44 +18,11 @@ exports[`<TicketSnooze/> rendering should render an icon with a tooltip 1`] = `
 `;
 
 exports[`<TicketSnooze/> rendering should render an icon with a tooltip 2`] = `
-<body>
-  <div>
-    <div
-      class="wrapper"
-    >
-      <i
-        class="icon material-icons icon"
-      >
-        snooze
-      </i>
-      <span
-        class="label"
-      >
-        Snoozed Ticket
-      </span>
-    </div>
-  </div>
-  <div>
-    <div
-      class="tooltip fade"
-    >
-      <div
-        class="tooltip show bs-tooltip-auto"
-        style="position: absolute; top: 0px; left: 0px; transform: translate3d(NaNpx, NaNpx, 0); will-change: transform;"
-        x-placement="bottom"
-      >
-        <div
-          class="tooltip-inner"
-          role="tooltip"
-        >
-          Snooze 
-          12/22/2017
-        </div>
-        <span
-          class="arrow"
-        />
-      </div>
-    </div>
-  </div>
-</body>
+<div
+  class="tooltip-inner"
+  role="tooltip"
+>
+  Snooze 
+  12/22/2017
+</div>
 `;
