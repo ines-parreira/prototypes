@@ -43,7 +43,7 @@ exports[`<Row /> should render correctly active field 1`] = `
         <button
           class="wrapper actionButton mr-1 wrapper ghost ghost secondary medium"
           id="archive-ticket-field-123"
-          title="Archive ticket field"
+          title="Archive"
           type="button"
         >
           <i
@@ -107,7 +107,7 @@ exports[`<Row /> should render correctly active required field 1`] = `
         <button
           class="wrapper actionButton mr-1 wrapper ghost ghost secondary medium"
           id="archive-ticket-field-123"
-          title="Archive ticket field"
+          title="Archive"
           type="button"
         >
           <i
@@ -164,8 +164,8 @@ exports[`<Row /> should render correctly archived required field 1`] = `
       >
         <button
           class="wrapper actionButton mr-1 wrapper ghost ghost secondary medium"
-          id="restore-ticket-field-name-123"
-          title="Restore ticket field"
+          id="restore-ticket-field-123"
+          title="Unarchive"
           type="button"
         >
           <i

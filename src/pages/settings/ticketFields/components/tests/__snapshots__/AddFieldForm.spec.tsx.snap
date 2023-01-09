@@ -192,19 +192,23 @@ exports[`<AddFieldForm/> should render correctly 1`] = `
   <div
     class="buttons"
   >
-    <button
-      class="wrapper fill primary medium isDisabled"
-      disabled=""
-      type="submit"
+    <div
+      class="leftGroup"
     >
-      Save Changes
-    </button>
-    <button
-      class="wrapper fill secondary medium"
-      type="button"
-    >
-      Cancel
-    </button>
+      <button
+        class="wrapper fill primary medium isDisabled"
+        disabled=""
+        type="submit"
+      >
+        Save Changes
+      </button>
+      <button
+        class="wrapper fill secondary medium"
+        type="button"
+      >
+        Cancel
+      </button>
+    </div>
   </div>
 </form>
 `;

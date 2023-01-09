@@ -1,4 +1,4 @@
-import React, {FormEvent, useEffect, useRef, useState} from 'react'
+import React, {FormEvent, useCallback, useEffect, useRef, useState} from 'react'
 import {set, pick} from 'lodash'
 
 import {
@@ -13,21 +13,25 @@ import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Button from 'pages/common/components/button/Button'
 import Caption from 'pages/common/forms/Caption/Caption'
 import TextArea from 'pages/common/forms/TextArea'
-
-import css from './FieldForm.less'
-import TypeSelectInput from './TypeSelectInput'
+import useAppDispatch from 'hooks/useAppDispatch'
+import ArchiveConfirmationModal from 'pages/settings/ticketFields/components/ArchiveConfirmationModal'
+import {handleArchivingCustomField} from 'pages/settings/ticketFields/utils/handleArchivingCustomField'
 import DropdownInput from './DropdownInput'
+import TypeSelectInput from './TypeSelectInput'
+import css from './FieldForm.less'
 
 interface FieldFormProps {
     field: CustomField | CustomFieldInput
     onSubmit: (field: CustomFieldInput) => Promise<void>
     onCancel: () => void
+    onFieldChange?: () => void
 }
 
 const pickMap = {
     input: ['placeholder'],
     dropdown: ['choices', 'default'],
 }
+
 function sanitizeInput(input: CustomFieldInput): CustomFieldInput {
     input.definition.input_settings = pick(
         input.definition.input_settings,
@@ -39,8 +43,11 @@ function sanitizeInput(input: CustomFieldInput): CustomFieldInput {
 }
 
 export default function FieldForm(props: FieldFormProps) {
+    const dispatch = useAppDispatch()
+
     const formRef = useRef<HTMLFormElement>(null)
 
+    const [archiveModalVisible, setArchiveModalVisible] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [isFormValid, setIsFormValid] = useState(false)
     const [form, setForm] = useState(props.field)
@@ -66,6 +73,15 @@ export default function FieldForm(props: FieldFormProps) {
             setIsLoading(false)
         }
     }
+
+    const handleArchivingCustomFieldCallback = useCallback(
+        async (id: number, archive: boolean) => {
+            setIsLoading(true)
+            await handleArchivingCustomField(id, archive, dispatch)
+            setIsLoading(false)
+        },
+        [dispatch]
+    )
 
     return (
         <form onSubmit={handleSubmit} ref={formRef}>
@@ -154,17 +170,70 @@ export default function FieldForm(props: FieldFormProps) {
             )}
 
             <div className={css.buttons}>
-                <Button
-                    intent="primary"
-                    type="submit"
-                    isDisabled={!isFormValid}
-                    isLoading={isLoading}
-                >
-                    Save Changes
-                </Button>
-                <Button intent="secondary" onClick={props.onCancel}>
-                    Cancel
-                </Button>
+                <div className={css.leftGroup}>
+                    <Button
+                        intent="primary"
+                        type="submit"
+                        isDisabled={!isFormValid}
+                        isLoading={isLoading}
+                    >
+                        Save Changes
+                    </Button>
+                    <Button intent="secondary" onClick={props.onCancel}>
+                        Cancel
+                    </Button>
+                </div>
+
+                {isCustomField(props.field) && (
+                    <>
+                        {!props.field.deactivated_datetime && (
+                            <div className={css.rightGroup}>
+                                <Button
+                                    intent="secondary"
+                                    type="button"
+                                    isDisabled={isLoading}
+                                    isLoading={isLoading}
+                                    onClick={() => setArchiveModalVisible(true)}
+                                >
+                                    Archive field
+                                </Button>
+
+                                <ArchiveConfirmationModal
+                                    ticketFieldLabel={props.field.label}
+                                    isOpen={archiveModalVisible}
+                                    onConfirm={async () => {
+                                        await handleArchivingCustomFieldCallback(
+                                            (props.field as CustomField).id,
+                                            true
+                                        )
+                                        props.onFieldChange?.()
+                                        setArchiveModalVisible(false)
+                                    }}
+                                    onClose={() =>
+                                        setArchiveModalVisible(false)
+                                    }
+                                />
+                            </div>
+                        )}
+                        {props.field.deactivated_datetime && (
+                            <Button
+                                intent="secondary"
+                                type="button"
+                                isDisabled={isLoading}
+                                isLoading={isLoading}
+                                onClick={async () => {
+                                    await handleArchivingCustomFieldCallback(
+                                        (props.field as CustomField).id,
+                                        false
+                                    )
+                                    props.onFieldChange?.()
+                                }}
+                            >
+                                Unarchive field
+                            </Button>
+                        )}
+                    </>
+                )}
             </div>
         </form>
     )

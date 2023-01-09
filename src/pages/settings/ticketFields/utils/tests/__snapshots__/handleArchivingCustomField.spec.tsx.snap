@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`handleArchivingCustomField() should archive a custom field successfully 1`] = `
+Object {
+  "payload": Object {
+    "allowHTML": false,
+    "buttons": Array [],
+    "closeButton": false,
+    "dismissAfter": 3000,
+    "dismissible": true,
+    "message": "Ticket field successfully archived.",
+    "position": "top-center",
+    "status": "success",
+    "style": "alert",
+  },
+  "type": "reapop/upsertNotification",
+}
+`;
+
+exports[`handleArchivingCustomField() should fail archiving a custom field 1`] = `
+Object {
+  "payload": Object {
+    "allowHTML": false,
+    "buttons": Array [],
+    "closeButton": false,
+    "dismissAfter": 3000,
+    "dismissible": true,
+    "message": "Failed to archive ticket field.",
+    "position": "top-center",
+    "status": "error",
+    "style": "alert",
+  },
+  "type": "reapop/upsertNotification",
+}
+`;
+
+exports[`handleArchivingCustomField() should fail restoring a custom field 1`] = `
+Object {
+  "payload": Object {
+    "allowHTML": false,
+    "buttons": Array [],
+    "closeButton": false,
+    "dismissAfter": 3000,
+    "dismissible": true,
+    "message": "Failed to unarchive ticket field.",
+    "position": "top-center",
+    "status": "error",
+    "style": "alert",
+  },
+  "type": "reapop/upsertNotification",
+}
+`;
+
+exports[`handleArchivingCustomField() should restore a custom field successfully 1`] = `
+Object {
+  "payload": Object {
+    "allowHTML": false,
+    "buttons": Array [],
+    "closeButton": false,
+    "dismissAfter": 3000,
+    "dismissible": true,
+    "message": "Ticket field successfully unarchived.",
+    "position": "top-center",
+    "status": "success",
+    "style": "alert",
+  },
+  "type": "reapop/upsertNotification",
+}
+`;

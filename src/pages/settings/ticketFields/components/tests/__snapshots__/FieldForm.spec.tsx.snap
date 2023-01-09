@@ -136,18 +136,22 @@ exports[`<FieldForm/> should render correctly 1`] = `
   <div
     class="buttons"
   >
-    <button
-      class="wrapper fill primary medium"
-      type="submit"
+    <div
+      class="leftGroup"
     >
-      Save Changes
-    </button>
-    <button
-      class="wrapper fill secondary medium"
-      type="button"
-    >
-      Cancel
-    </button>
+      <button
+        class="wrapper fill primary medium"
+        type="submit"
+      >
+        Save Changes
+      </button>
+      <button
+        class="wrapper fill secondary medium"
+        type="button"
+      >
+        Cancel
+      </button>
+    </div>
   </div>
 </form>
 `;
@@ -302,18 +306,32 @@ exports[`<FieldForm/> should show archiving status and disable type change on ed
   <div
     class="buttons"
   >
-    <button
-      class="wrapper fill primary medium"
-      type="submit"
+    <div
+      class="leftGroup"
     >
-      Save Changes
-    </button>
-    <button
-      class="wrapper fill secondary medium"
-      type="button"
+      <button
+        class="wrapper fill primary medium"
+        type="submit"
+      >
+        Save Changes
+      </button>
+      <button
+        class="wrapper fill secondary medium"
+        type="button"
+      >
+        Cancel
+      </button>
+    </div>
+    <div
+      class="rightGroup"
     >
-      Cancel
-    </button>
+      <button
+        class="wrapper fill secondary medium"
+        type="button"
+      >
+        Archive field
+      </button>
+    </div>
   </div>
 </form>
 `;

@@ -16,6 +16,7 @@ export default function EditFieldForm(props: EditFieldFormProps) {
     const dispatch = useDispatch()
 
     const close = () => history.push('/app/settings/ticket-fields')
+    const reloadPage = () => window.location.reload()
     const handleSubmit = async (field: CustomFieldInput) => {
         await updateCustomField(props.field.id, field)
         void dispatch(
@@ -32,6 +33,7 @@ export default function EditFieldForm(props: EditFieldFormProps) {
             field={props.field}
             onSubmit={handleSubmit}
             onCancel={close}
+            onFieldChange={reloadPage}
         />
     )
 }

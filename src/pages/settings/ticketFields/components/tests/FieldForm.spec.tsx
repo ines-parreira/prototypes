@@ -1,9 +1,13 @@
 import React from 'react'
 import {render} from '@testing-library/react'
 
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import {Provider} from 'react-redux'
 import {customField, customFieldInput} from 'fixtures/customField'
-
 import FieldForm from '../FieldForm'
+
+const mockStore = configureMockStore([thunk])()
 
 describe('<FieldForm/>', () => {
     it('should render correctly', () => {
@@ -13,7 +17,11 @@ describe('<FieldForm/>', () => {
             onCancel: jest.fn(),
         }
 
-        const {container} = render(<FieldForm {...props} />)
+        const {container} = render(
+            <Provider store={mockStore}>
+                <FieldForm {...props} />
+            </Provider>
+        )
         expect(container.firstChild).toMatchSnapshot()
     })
 
@@ -24,7 +32,11 @@ describe('<FieldForm/>', () => {
             onCancel: jest.fn(),
         }
 
-        const {container} = render(<FieldForm {...props} />)
+        const {container} = render(
+            <Provider store={mockStore}>
+                <FieldForm {...props} />
+            </Provider>
+        )
         expect(container.firstChild).toMatchSnapshot()
     })
 
@@ -35,7 +47,11 @@ describe('<FieldForm/>', () => {
             onCancel: jest.fn(),
         }
 
-        const {findByText} = render(<FieldForm {...props} />)
+        const {findByText} = render(
+            <Provider store={mockStore}>
+                <FieldForm {...props} />
+            </Provider>
+        )
 
         const saveButton = await findByText(/Save Changes/)
         saveButton.click()
@@ -50,7 +66,11 @@ describe('<FieldForm/>', () => {
             onCancel: jest.fn(),
         }
 
-        const {findByText} = render(<FieldForm {...props} />)
+        const {findByText} = render(
+            <Provider store={mockStore}>
+                <FieldForm {...props} />
+            </Provider>
+        )
 
         const saveButton = await findByText(/Save Changes/)
         saveButton.click()
@@ -66,7 +86,11 @@ describe('<FieldForm/>', () => {
             onCancel: jest.fn(),
         }
 
-        const {findByText} = render(<FieldForm {...props} />)
+        const {findByText} = render(
+            <Provider store={mockStore}>
+                <FieldForm {...props} />
+            </Provider>
+        )
 
         const cancelButton = await findByText(/Cancel/)
         cancelButton.click()

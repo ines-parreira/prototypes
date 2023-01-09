@@ -17,6 +17,7 @@ describe('<List />', () => {
     it('should render correctly', () => {
         const props = {
             ticketFields: [customField],
+            onFieldChange: jest.fn(),
         }
 
         const {container} = render(<List {...props} />)

@@ -31,8 +31,8 @@ export default function TicketFields() {
     const dispatch = useAppDispatch()
     const history = useHistory()
 
-    const [isLoadingActive, setLoadingActive] = useState(false)
-    const [isLoadingArchived, setLoadingArchived] = useState(false)
+    const [isLoadingActive, setLoadingActive] = useState(true)
+    const [isLoadingArchived, setLoadingArchived] = useState(true)
 
     const [activeTicketFields, setActiveTicketFields] = useState<CustomField[]>(
         []
@@ -144,7 +144,13 @@ export default function TicketFields() {
 
         return (
             <>
-                <List ticketFields={ticketFields}></List>
+                <List
+                    ticketFields={ticketFields}
+                    onFieldChange={() => {
+                        void handleGetCustomFields(false)
+                        void handleGetCustomFields(true)
+                    }}
+                ></List>
                 <Navigation
                     className={css.navigation}
                     hasNextItems={!!paginationMeta?.next_cursor}
@@ -196,36 +202,41 @@ export default function TicketFields() {
                     </SecondaryNavbar>
                 )}
             </div>
-            {activeTicketFields.length === 0 &&
-                archivedTicketFields.length === 0 && (
-                    <div className={css.emptyViewContainer}>
-                        <h2 className={css.emptyViewContainerHeader}>
-                            Get started with Ticket Fields
-                        </h2>
-                        <p className={css.emptyViewContainerText}>
-                            Set up custom fields to make sure your team handle
-                            tickets efficiently and consistently. You can create
-                            a custom field to track the contact reason, product
-                            or even the resolution provided in the ticket.
-                        </p>
-                        <Button
-                            className="mt-2"
-                            onClick={() =>
-                                history.push('/app/settings/ticket-fields/add')
-                            }
-                        >
-                            Create Field
-                        </Button>
-                    </div>
-                )}
-            {(activeTicketFields.length > 0 ||
-                archivedTicketFields.length > 0) && (
-                <Container fluid className="p-0">
-                    {(isLoadingActive || isLoadingArchived) && (
-                        <Loader minHeight="60px" />
-                    )}
-                    {!(isLoadingActive || isLoadingArchived) && (
-                        <>
+
+            {(isLoadingActive || isLoadingArchived) && (
+                <Loader minHeight="60px" />
+            )}
+
+            {!(isLoadingActive || isLoadingArchived) && (
+                <>
+                    {activeTicketFields.length === 0 &&
+                        archivedTicketFields.length === 0 && (
+                            <div className={css.emptyViewContainer}>
+                                <h2 className={css.emptyViewContainerHeader}>
+                                    Get started with Ticket Fields
+                                </h2>
+                                <p className={css.emptyViewContainerText}>
+                                    Set up custom fields to make sure your team
+                                    handle tickets efficiently and consistently.
+                                    You can create a custom field to track the
+                                    contact reason, product or even the
+                                    resolution provided in the ticket.
+                                </p>
+                                <Button
+                                    className="mt-2"
+                                    onClick={() =>
+                                        history.push(
+                                            '/app/settings/ticket-fields/add'
+                                        )
+                                    }
+                                >
+                                    Create Field
+                                </Button>
+                            </div>
+                        )}
+                    {(activeTicketFields.length > 0 ||
+                        archivedTicketFields.length > 0) && (
+                        <Container fluid className="p-0">
                             {activeTicketFields.length === 0 &&
                                 archivedTicketFields.length > 0 &&
                                 activeTab === TicketFieldsTab.Active && (
@@ -244,9 +255,9 @@ export default function TicketFields() {
                                 )}
 
                             {renderListByTab()}
-                        </>
+                        </Container>
                     )}
-                </Container>
+                </>
             )}
         </div>
     )
