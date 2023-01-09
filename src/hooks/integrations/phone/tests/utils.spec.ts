@@ -107,6 +107,7 @@ describe('connectDevice', () => {
         )
 
         void connectDevice(dispatch, 6)
+        jest.advanceTimersToNextTimer()
 
         await waitFor(() => {
             expect(dispatch).toHaveBeenCalledWith(setIsConnecting())
