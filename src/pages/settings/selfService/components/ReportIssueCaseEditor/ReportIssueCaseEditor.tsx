@@ -12,7 +12,9 @@ import {
 import {Link, useRouteMatch, useHistory} from 'react-router-dom'
 import {UnregisterCallback} from 'history'
 import produce from 'immer'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
@@ -82,6 +84,9 @@ const ReportIssueCaseEditor: ComponentType = () => {
     const {isLoadingConfig, configuration} = useConfigurationData()
 
     const unblockRef = useRef<UnregisterCallback>()
+
+    const automatedResponsesEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.SelfServiceAutomatedResponseOrderManagement]
 
     useEffect(() => {
         unblockRef.current = history.block((location) => {
@@ -378,7 +383,10 @@ const ReportIssueCaseEditor: ComponentType = () => {
 
                                 <Reasons
                                     reasons={reasons}
-                                    allowEdit={caseIndex !== 'new'}
+                                    allowEdit={
+                                        caseIndex !== 'new' &&
+                                        automatedResponsesEnabled === true
+                                    }
                                     onChange={(updatedReasons) => {
                                         setIsDirty(true)
                                         setReasons(updatedReasons)
