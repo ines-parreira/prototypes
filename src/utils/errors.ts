@@ -12,7 +12,7 @@ import {
     isStaging,
 } from 'utils/environment'
 
-const TRACE_SAMPLE_RATE = 0.003
+const TRACE_SAMPLE_RATE = 0.001
 const IGNORED_ERRORS = [
     'fb_xd_fragment', // Facebook borked
     'ResizeObserver loop completed with undelivered notifications',

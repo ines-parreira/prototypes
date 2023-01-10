@@ -38,7 +38,7 @@ Array [
     Object {
       "applicationId": "a9fcd4e9-2ebd-47e7-92c2-9438dd12c9df",
       "clientToken": "pube64f1e4ec3c5172711f0a2d03cb1a0ff",
-      "sampleRate": 0.5,
+      "sampleRate": 1,
       "service": "helpdesk-web-app",
       "sessionReplaySampleRate": 0,
       "site": "datadoghq.com",
