@@ -30,6 +30,7 @@ type Props = {
     }) => void
     startDatetime: Moment
     userTimezone?: string | null
+    onOpen?: () => void
 }
 
 export const PeriodPickerContainer = ({
@@ -39,6 +40,7 @@ export const PeriodPickerContainer = ({
     isDisabled = false,
     labelDateFormat = 'MMM DD, YYYY',
     onChange,
+    onOpen,
     startDatetime,
     userTimezone,
 }: Props & Partial<DateRangeProps>) => {
@@ -199,6 +201,7 @@ export const PeriodPickerContainer = ({
                             }),
                         }}
                         onShow={(event, target) => {
+                            onOpen?.()
                             dateRangerPickerElement.current =
                                 target.container?.get(0)
                             dateRangerPickerElement.current.classList.add(

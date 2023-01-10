@@ -4,6 +4,7 @@ import React, {ComponentProps, useCallback} from 'react'
 import {mergeStatsFilters} from 'state/stats/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {StatsFilters} from 'models/stat/types'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import PeriodPicker from './common/PeriodPicker'
 
@@ -50,6 +51,13 @@ export default function PeriodStatsFilter({value}: Props) {
                     seconds: -1, // counting days start at 0 because for our needs 1 day selected is 23H59m59s
                 })
             }
+            onOpen={() => {
+                logEvent(SegmentEvent.AnalyticsStatsDatepickerOpen, {
+                    eventDate: moment().format(),
+                    startDate: value.start_datetime,
+                    endDate: value.end_datetime,
+                })
+            }}
         />
     )
 }

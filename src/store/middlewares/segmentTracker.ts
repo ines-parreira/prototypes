@@ -54,6 +54,7 @@ export type SegmentEventToSend = {
 }
 
 export enum SegmentEvent {
+    AnalyticsStatsDatepickerOpen = 'analytics/stats/datepicker-open',
     BigCommerceCreateOrderCancel = 'bigcommerce/create-order/cancel',
     BigCommerceCreateOrderOpen = 'bigcommerce/create-order/open',
     BigCommerceCreateOrderSetProducts = 'bigcommerce/create-order/set-products',
