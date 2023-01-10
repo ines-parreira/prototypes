@@ -89,6 +89,9 @@ exports[`OrderModal should render 1`] = `
                 </div>
               </div>
             </div>
+            <div
+              class="currencyDropdown"
+            />
             <div>
               <p
                 class="heading-section-semibold"
@@ -98,9 +101,10 @@ exports[`OrderModal should render 1`] = `
             </div>
             <div
               class="relative"
+              id="product-search-input-tooltip"
             >
               <div
-                class="searchInput dropdown"
+                class="dropdown"
               >
                 <div
                   aria-expanded="false"
@@ -169,23 +173,27 @@ exports[`OrderModal should render 1`] = `
                 </abbr>
               </label>
               <div
-                class="wrapper"
-                role="listbox"
-                tabindex="0"
+                id="shipping-address-dropdown"
               >
                 <div
-                  class="inputWrapper"
+                  class="wrapper"
+                  role="listbox"
+                  tabindex="0"
                 >
                   <div
-                    class="input isGreyed"
+                    class="inputWrapper"
                   >
-                    Select from address book...
+                    <div
+                      class="input isGreyed"
+                    >
+                      Select from address book...
+                    </div>
+                    <i
+                      class="affix suffix toggle material-icons"
+                    >
+                      arrow_drop_down
+                    </i>
                   </div>
-                  <i
-                    class="affix suffix toggle material-icons"
-                  >
-                    arrow_drop_down
-                  </i>
                 </div>
               </div>
               <p

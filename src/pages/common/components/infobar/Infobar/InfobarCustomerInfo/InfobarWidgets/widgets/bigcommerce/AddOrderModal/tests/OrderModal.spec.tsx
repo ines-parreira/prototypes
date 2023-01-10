@@ -74,7 +74,7 @@ describe('OrderModal', () => {
             </Provider>
         )
 
-        await screen.findByText('Awaiting Fulfillment')
+        await screen.findByText('Fulfillment')
         expect(onInit).toHaveBeenCalled()
 
         expect(baseElement).toMatchSnapshot()

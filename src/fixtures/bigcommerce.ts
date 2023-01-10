@@ -347,3 +347,5 @@ export const bigCommerceCheckoutFixture: BigCommerceCheckout = {
     order_id: 'any',
     customer_message: '',
 }
+
+export const bigCommerceAvailableCurrenciesFixture = ['EUR', 'USD']

@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CurrencyPickerDropdown/> should display the selected currency 1`] = `
+<div>
+  <p
+    class="heading-section-semibold"
+  >
+    Billing
+  </p>
+  <label
+    class="label label"
+  >
+    Currency
+    <abbr
+      aria-label="required"
+      class="abbr"
+      title="required"
+    >
+      *
+    </abbr>
+  </label>
+  <div
+    class="wrapper disabled"
+    role="listbox"
+    tabindex="0"
+  >
+    <div
+      class="inputWrapper"
+    >
+      <div
+        class="input"
+      >
+        EUR
+      </div>
+      <i
+        class="affix suffix toggle material-icons"
+      >
+        arrow_drop_down
+      </i>
+    </div>
+  </div>
+</div>
+`;

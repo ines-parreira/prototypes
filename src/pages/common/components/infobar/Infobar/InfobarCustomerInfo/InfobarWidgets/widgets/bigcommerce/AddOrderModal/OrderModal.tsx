@@ -49,6 +49,7 @@ import {
     updateBigCommerceCheckoutDiscount,
     updateBigCommerceCoupon,
 } from 'models/integration/resources/bigcommerce'
+import Tooltip from 'pages/common/components/Tooltip'
 import OrderTable from './OrderTable'
 import OrderTotals from './OrderTotals'
 import {
@@ -65,8 +66,10 @@ import {
     updateCheckoutConsignmentShippingMethod,
     updateRow,
     upsertCheckoutConsignment,
+    useCanViewBigCommerceV1Features,
 } from './utils'
 import {ShippingAddressesDropdown} from './ShippingAddressesDropdown'
+import {CurrencyPickerDropdown} from './CurrencyPickerDropdown'
 
 import css from './OrderModal.less'
 
@@ -383,6 +386,16 @@ export function OrderModal({
 }: Props) {
     const dispatch = useAppDispatch()
 
+    const canViewBigCommerceV1Features = useCanViewBigCommerceV1Features()
+
+    const storeHasMultipleCurrencies = integration.meta.available_currencies
+        ? integration.meta.available_currencies.length > 1
+        : false
+    const [currency, setCurrency] = useState(
+        storeHasMultipleCurrencies && canViewBigCommerceV1Features
+            ? ''
+            : integration.meta.currency
+    )
     const [isLoading, setIsLoading] = useState(false)
     const [lineItemWithErrorId, setLineItemWithErrorId] = useState('')
 
@@ -466,10 +479,11 @@ export function OrderModal({
     }
 
     useEffect(() => {
-        if (data.customer) {
+        if (data.customer && currency) {
             void onInit({
                 customer: data.customer,
                 integrationId: integration.id,
+                currency,
                 setIsLoading,
                 setCart,
             })
@@ -482,7 +496,7 @@ export function OrderModal({
         }
         // Single run on mount
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [currency])
 
     return (
         <Modal
@@ -515,12 +529,35 @@ export function OrderModal({
                             </Alert>
                         )}
                     </div>
+                    <div className={css.currencyDropdown}>
+                        {canViewBigCommerceV1Features &&
+                            storeHasMultipleCurrencies && (
+                                <CurrencyPickerDropdown
+                                    availableCurrencies={
+                                        integration.meta.available_currencies
+                                    }
+                                    currency={currency}
+                                    setCurrency={setCurrency}
+                                />
+                            )}
+                    </div>
                     <div>
                         <p className="heading-section-semibold">Products</p>
                     </div>
-                    <div className={css.relative}>
+                    <div
+                        className={css.relative}
+                        id="product-search-input-tooltip"
+                    >
+                        {canViewBigCommerceV1Features && !currency && (
+                            <Tooltip target="product-search-input-tooltip">
+                                Set currency to select products.
+                            </Tooltip>
+                        )}
                         <ProductSearchInput
-                            className={css.searchInput}
+                            className={classnames({
+                                [css.disabled]:
+                                    !currency && canViewBigCommerceV1Features,
+                            })}
                             hasError={!validationStatus.products}
                             dataMappers={bigcommerceDataMappers}
                             searchOnFocus={true}
@@ -560,7 +597,7 @@ export function OrderModal({
                         {integration.meta && hasItemsInCart && (
                             <OrderTable
                                 storeHash={integration.meta.store_hash}
-                                currencyCode={integration.meta.currency}
+                                currencyCode={currency}
                                 lineItems={lineItems}
                                 products={products}
                                 lineItemWithErrorId={lineItemWithErrorId}
@@ -598,9 +635,8 @@ export function OrderModal({
                             </div>
                         )}
                     </div>
-                    {hasItemsInCart && (
+                    {hasItemsInCart && currency && (
                         <OrderTotals
-                            integration={integration}
                             checkout={checkout}
                             cart={cart}
                             consignment={consignment}
@@ -614,6 +650,7 @@ export function OrderModal({
                             onRemoveCoupon={onRemoveCoupon}
                             hasError={!validationStatus.checkout}
                             isTotalPriceLoading={isTotalPriceLoading}
+                            currencyCode={currency}
                         />
                     )}
                     <ShippingAddressesDropdown
@@ -621,6 +658,7 @@ export function OrderModal({
                         shippingAddresses={shippingAddresses}
                         onSelectAddress={onSelectAddress}
                         hasError={!validationStatus.shippingAddress}
+                        isDisabled={!currency && canViewBigCommerceV1Features}
                     />
                     <p className="heading-section-semibold">Comments & Notes</p>
                     <div>
@@ -665,7 +703,10 @@ export function OrderModal({
                         intent="primary"
                         tabIndex={0}
                         onClick={handleAddOrder}
-                        isDisabled={isTotalPriceLoading}
+                        isDisabled={
+                            isTotalPriceLoading ||
+                            (canViewBigCommerceV1Features && !currency)
+                        }
                     >
                         Create order
                     </Button>

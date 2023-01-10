@@ -35,6 +35,7 @@ describe('utils', () => {
     const customer = bigCommerceCustomerFixture()
     const product = bigCommerceProductFixture()
     const variant = bigCommerceVariantFixture()
+    const currency = 'USD'
     const index = 0
     const newQuantity = 2
     const products = new Map<number, BigCommerceProduct>()
@@ -50,7 +51,13 @@ describe('utils', () => {
         it('should init the order modal', async () => {
             apiMock.onAny().reply(200, cart)
 
-            await onInit({customer, integrationId, setIsLoading, setCart})
+            await onInit({
+                customer,
+                integrationId,
+                currency,
+                setIsLoading,
+                setCart,
+            })
 
             expect(setCart).toHaveBeenCalledWith(cart)
             expect(setIsLoading).toHaveBeenCalledWith(false)
@@ -73,6 +80,7 @@ describe('utils', () => {
             const newCart = await exportedForTesting.createCart({
                 integrationId,
                 customer,
+                currency,
             })
             expect(newCart).toStrictEqual(cart)
         })

@@ -20,7 +20,7 @@ exports[`<OrderTotals/> rendering should render 1`] = `
       class="descriptionValue descriptionValueZero"
     >
       <span>
-        €0.00
+        $0.00
       </span>
     </dd>
     <dt
@@ -38,7 +38,7 @@ exports[`<OrderTotals/> rendering should render 1`] = `
       class="descriptionValue descriptionValueZero"
     >
       <span>
-        €0.00
+        $0.00
       </span>
     </dd>
     <dt
@@ -51,7 +51,7 @@ exports[`<OrderTotals/> rendering should render 1`] = `
       class="descriptionValue"
     >
       <span>
-        €78.00
+        $78.00
       </span>
     </dd>
     <dt
@@ -73,7 +73,7 @@ exports[`<OrderTotals/> rendering should render 1`] = `
       class="descriptionValue"
     >
       <span>
-        €50.00
+        $50.00
       </span>
     </dd>
     <dt
@@ -90,7 +90,7 @@ exports[`<OrderTotals/> rendering should render 1`] = `
       class="descriptionValue"
     >
       <span>
-        €15.60
+        $15.60
       </span>
     </dd>
     <div
@@ -108,7 +108,7 @@ exports[`<OrderTotals/> rendering should render 1`] = `
           >
             <strong>
               <span>
-                €93.60
+                $93.60
               </span>
             </strong>
           </div>

@@ -21,23 +21,27 @@ exports[`<ShippingAddressesDropdown/> should display \`No results\` when shippin
       </abbr>
     </label>
     <div
-      class="wrapper"
-      role="listbox"
-      tabindex="0"
+      id="shipping-address-dropdown"
     >
       <div
-        class="inputWrapper isFocused"
+        class="wrapper"
+        role="listbox"
+        tabindex="0"
       >
         <div
-          class="input isGreyed"
+          class="inputWrapper isFocused"
         >
-          Select from address book...
+          <div
+            class="input isGreyed"
+          >
+            Select from address book...
+          </div>
+          <i
+            class="affix suffix toggle material-icons"
+          >
+            arrow_drop_down
+          </i>
         </div>
-        <i
-          class="affix suffix toggle material-icons"
-        >
-          arrow_drop_down
-        </i>
       </div>
     </div>
     <p
@@ -70,23 +74,27 @@ exports[`<ShippingAddressesDropdown/> snapshot renders the selected shipping add
       </abbr>
     </label>
     <div
-      class="wrapper"
-      role="listbox"
-      tabindex="0"
+      id="shipping-address-dropdown"
     >
       <div
-        class="inputWrapper"
+        class="wrapper"
+        role="listbox"
+        tabindex="0"
       >
         <div
-          class="input"
+          class="inputWrapper"
         >
-          A Test 2, Random Street 19, 507051 Paris, Paris, FR, France
+          <div
+            class="input"
+          >
+            A Test 2, Random Street 19, 507051 Paris, Paris, FR, France
+          </div>
+          <i
+            class="affix suffix toggle material-icons"
+          >
+            arrow_drop_down
+          </i>
         </div>
-        <i
-          class="affix suffix toggle material-icons"
-        >
-          arrow_drop_down
-        </i>
       </div>
     </div>
     <p

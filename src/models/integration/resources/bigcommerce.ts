@@ -13,13 +13,17 @@ import {
 
 export async function createBigCommerceCart(
     integrationId: number,
-    customerId: number
+    customerId: number,
+    currency: string
 ): Promise<BigCommerceCart> {
     const url = '/integrations/bigcommerce/order/cart/'
 
     const payload = {
         customer_id: customerId,
         line_items: [],
+        currency: {
+            code: currency,
+        },
     }
 
     const response = await client.post<BigCommerceCart>(url, payload, {

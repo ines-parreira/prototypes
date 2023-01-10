@@ -4,7 +4,6 @@ import {
     bigCommerceCartFixture,
     bigCommerceCheckoutFixture,
     bigCommerceConsignmentFixture,
-    bigCommerceIntegrationFixture,
 } from 'fixtures/bigcommerce'
 import OrderTotals from '../OrderTotals'
 
@@ -16,13 +15,12 @@ jest.mock('../utils', () => ({
 describe('<OrderTotals/>', () => {
     describe('rendering', () => {
         it('should render', () => {
-            const integration = bigCommerceIntegrationFixture()
+            const currency = 'USD'
 
             const {container} = render(
                 <OrderTotals
                     checkout={bigCommerceCheckoutFixture}
                     cart={bigCommerceCartFixture()}
-                    integration={integration}
                     consignment={bigCommerceConsignmentFixture}
                     onUpdateConsignmentShippingMethod={jest.fn()}
                     onUpdateDiscountAmount={jest.fn()}
@@ -36,6 +34,7 @@ describe('<OrderTotals/>', () => {
                     }}
                     hasShippingAddress
                     isTotalPriceLoading={false}
+                    currencyCode={currency}
                 />
             )
 

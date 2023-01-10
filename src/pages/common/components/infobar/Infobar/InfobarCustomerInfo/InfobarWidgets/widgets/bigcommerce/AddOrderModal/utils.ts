@@ -34,15 +34,17 @@ import {FeatureFlagKey} from 'config/featureFlags'
 export const onInit = async ({
     customer,
     integrationId,
+    currency,
     setIsLoading,
     setCart,
 }: {
     customer: BigCommerceCustomer
     integrationId: number
+    currency: string
     setIsLoading: (state: boolean) => void
     setCart: (state: BigCommerceCart) => void
 }) => {
-    const cart = await createCart({integrationId, customer})
+    const cart = await createCart({integrationId, customer, currency})
     const eventName = SegmentEvent.BigCommerceCreateOrderOpen
     logEvent(eventName)
     setCart(cart)
@@ -95,13 +97,15 @@ export const onReset = _debounce(
 const createCart = async ({
     integrationId,
     customer,
+    currency,
 }: {
     integrationId: number
     customer: BigCommerceCustomer
+    currency: string
 }): Promise<BigCommerceCart> => {
     const eventName = SegmentEvent.BigCommerceCreateOrderCreateCart
     logEvent(eventName)
-    return await createBigCommerceCart(integrationId, customer.id)
+    return await createBigCommerceCart(integrationId, customer.id, currency)
 }
 
 const deleteCart = async ({
@@ -540,5 +544,6 @@ export function bigcommerceCreateOrder(
 export const exportedForTesting = {
     createCart,
 }
+
 export const useCanViewBigCommerceV1Features = () =>
     Boolean(useFlags()[FeatureFlagKey.BigCommerceCreateOrderV1])

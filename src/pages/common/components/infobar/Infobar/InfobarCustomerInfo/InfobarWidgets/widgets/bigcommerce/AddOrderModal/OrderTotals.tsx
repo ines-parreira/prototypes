@@ -1,7 +1,6 @@
 import React from 'react'
 import classnames from 'classnames'
 import {
-    BigCommerceIntegration,
     BigCommerceConsignment,
     BigCommerceCart,
     BigCommerceCheckout,
@@ -19,7 +18,6 @@ type Props = {
     cart: Maybe<BigCommerceCart>
     checkout: Maybe<BigCommerceCheckout>
     consignment: Maybe<BigCommerceConsignment>
-    integration: BigCommerceIntegration
     hasShippingAddress: boolean
     onUpdateConsignmentShippingMethod: (
         selectedShippingMethodId: Maybe<string>
@@ -35,6 +33,7 @@ type Props = {
     }
     hasError?: boolean
     isTotalPriceLoading: boolean
+    currencyCode: string
 }
 
 const TotalLine = ({
@@ -78,7 +77,6 @@ const TotalLine = ({
 )
 
 export default function OrderTotals({
-    integration,
     checkout,
     cart,
     consignment,
@@ -90,12 +88,8 @@ export default function OrderTotals({
     totals: {subTotal, shipping, taxes, total},
     hasError = false,
     isTotalPriceLoading,
+    currencyCode,
 }: Props) {
-    const currencyCode =
-        integration.meta && integration.meta.currency
-            ? integration.meta.currency
-            : null
-
     return (
         <dl className={css.totalsContainer}>
             <Discount
