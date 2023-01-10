@@ -1,7 +1,10 @@
 import React from 'react'
 import {act, render} from '@testing-library/react'
 
-import {createContextConsumer} from '../../../../../utils/testing'
+import {createContextConsumer} from 'utils/testing'
+
+jest.unmock('../SynchronizedScrollTopProvider')
+
 import SynchronizedScrollTopContext from '../SynchronizedScrollTopContext'
 import SynchronizedScrollTopProvider from '../SynchronizedScrollTopProvider'
 
