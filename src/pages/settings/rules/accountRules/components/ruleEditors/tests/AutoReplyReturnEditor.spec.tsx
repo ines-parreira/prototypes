@@ -7,9 +7,14 @@ import thunk from 'redux-thunk'
 import {RootState, StoreDispatch} from 'state/types'
 import {ManagedRulesSlugs} from 'state/rules/types'
 import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
+import {getLDClient} from 'utils/launchDarkly'
+import {FeatureFlagKey} from 'config/featureFlags'
 import AutoReplyReturnEditor from '../AutoReplyReturnEditor'
 
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
+jest.mock('utils/launchDarkly')
+const allFlagsMock = getLDClient().allFlags as jest.Mock
+allFlagsMock.mockReturnValue({[FeatureFlagKey.ChatVideoSharingExtra]: true})
 
 describe('<AutoReplyReturnEditor/>', () => {
     const minProps: ComponentProps<typeof AutoReplyReturnEditor> = {
