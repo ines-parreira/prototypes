@@ -1,8 +1,6 @@
 import React, {MouseEvent, useCallback} from 'react'
 import moment from 'moment'
-import {Container} from 'reactstrap'
 
-import classNames from 'classnames'
 import {HelpCenter, Locale} from 'models/helpCenter/types'
 import {LanguageList} from 'pages/common/components/LanguageBulletList'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -14,7 +12,6 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import settingsCss from '../../settings.less'
 
 import {useAbilityChecker} from '../hooks/useHelpCenterApi'
 import IconButton from '../../../common/components/button/IconButton'
@@ -62,17 +59,6 @@ export const HelpCenterTable: React.FC<Props> = ({
 
     if (isLoading) {
         return <Loader />
-    }
-
-    if (list.length === 0) {
-        return (
-            <Container
-                fluid
-                className={classNames(settingsCss.py24, settingsCss.mt24)}
-            >
-                <div>You have no Help Center at the moment.</div>
-            </Container>
-        )
     }
 
     return (

@@ -1,17 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<HelpCenterTable /> should display a message when list is empty 1`] = `
-<div>
-  <div
-    class="py24 mt24 container-fluid"
-  >
-    <div>
-      You have no Help Center at the moment.
-    </div>
-  </div>
-</div>
-`;
-
 exports[`<HelpCenterTable /> should display the table correctly when loading 1`] = `
 <div>
   <div

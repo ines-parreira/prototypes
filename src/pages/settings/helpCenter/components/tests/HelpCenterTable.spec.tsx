@@ -50,13 +50,6 @@ describe('<HelpCenterTable />', () => {
         expect(mockedOnClick).toHaveBeenCalledWith(props.list[1])
     })
 
-    it('should display a message when list is empty', () => {
-        const {container} = render(
-            <HelpCenterTable {...props} isLoading={false} list={[]} />
-        )
-        expect(container).toMatchSnapshot()
-    })
-
     it('should duplicate a Help Center', () => {
         const firstHelpCenter = props.list[0]
 

@@ -90,6 +90,35 @@ describe('<ManageHelpCenters />', () => {
         expect(container).toMatchSnapshot()
     })
 
+    it('should not render the "Create New" button while loading in still in progress', () => {
+        renderWithRouter(
+            <Provider store={mockedStore(defaultState)}>
+                <ManageHelpCenters
+                    {...props}
+                    isLoading={true}
+                    helpCenterList={[]}
+                />
+            </Provider>
+        )
+
+        expect(screen.queryByText(/create new/i)).toBeNull()
+    })
+
+    it('should render the empty list state when the component is loaded and the help center list is empty', () => {
+        renderWithRouter(
+            <Provider store={mockedStore(defaultState)}>
+                <ManageHelpCenters
+                    {...props}
+                    isLoading={false}
+                    helpCenterList={[]}
+                />
+            </Provider>
+        )
+
+        screen.getByText(/You have no Help Centers at the moment./i)
+        screen.getByText(/create new/i)
+    })
+
     it('should navigate to the creation page when clicking on the new button', () => {
         renderWithRouter(
             <Provider store={mockedStore(defaultState)}>

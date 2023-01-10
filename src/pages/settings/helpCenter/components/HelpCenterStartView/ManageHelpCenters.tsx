@@ -2,8 +2,10 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import produce from 'immer'
 import {keyBy as _keyBy} from 'lodash'
 import moment from 'moment'
-
+import {Container} from 'reactstrap'
 import {useHistory} from 'react-router-dom'
+import settingsCss from 'pages/settings/settings.less'
+
 import {HelpCenter, Locale} from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'
 import Tooltip from 'pages/common/components/Tooltip'
@@ -224,6 +226,22 @@ export const ManageHelpCenters = ({
     const handleAddHelpCenter = () =>
         history.push(`${HELP_CENTER_BASE_PATH}/new`)
 
+    if (!isLoading && !helpCenterList.length) {
+        return (
+            <Container fluid className={settingsCss.pageContainer}>
+                <p>You have no Help Centers at the moment.</p>
+                <Button
+                    isDisabled={isButtonDisabled}
+                    onClick={handleAddHelpCenter}
+                >
+                    <div className={css.createNewButton}>
+                        <i className="material-icons mr-2">add</i>Create New
+                    </div>
+                </Button>
+            </Container>
+        )
+    }
+
     return (
         <div className={css.infiniteScrollWrapper}>
             <InfiniteScroll
@@ -252,28 +270,33 @@ export const ManageHelpCenters = ({
                     </div>
                 </div>
             </InfiniteScroll>
-            <div className={css.addHelpCenter}>
-                <Button
-                    id="add-new-help-center-button"
-                    isDisabled={isButtonDisabled}
-                    onClick={handleAddHelpCenter}
-                >
-                    <div className={css.createNewButton}>
-                        <i className="material-icons mr-2">add</i>Create New
+            {isLoading ? null : (
+                <>
+                    <div className={css.addHelpCenter}>
+                        <Button
+                            id="add-new-help-center-button"
+                            isDisabled={isButtonDisabled}
+                            onClick={handleAddHelpCenter}
+                        >
+                            <div className={css.createNewButton}>
+                                <i className="material-icons mr-2">add</i>Create
+                                New
+                            </div>
+                        </Button>
                     </div>
-                </Button>
-            </div>
-            <Tooltip
-                disabled={!isHelpCenterLimitReached}
-                placement="top-start"
-                target="add-new-help-center-button"
-                style={{
-                    textAlign: 'start',
-                    width: 180,
-                }}
-            >
-                Please contact us to create more Help Centers.
-            </Tooltip>
+                    <Tooltip
+                        disabled={!isHelpCenterLimitReached}
+                        placement="top-start"
+                        target="add-new-help-center-button"
+                        style={{
+                            textAlign: 'start',
+                            width: 180,
+                        }}
+                    >
+                        Please contact us to create more Help Centers.
+                    </Tooltip>
+                </>
+            )}
         </div>
     )
 }
