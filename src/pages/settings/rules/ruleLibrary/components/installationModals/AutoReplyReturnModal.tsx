@@ -4,7 +4,8 @@ import classnames from 'classnames'
 import {assetsUrl} from 'utils'
 
 import Avatar from 'pages/common/components/Avatar/Avatar'
-import {FakeOrderTracking} from 'pages/settings/rules/components/FakeOrderTracking'
+import Button from 'pages/common/components/button/Button'
+
 import {ManagedRuleModalProps} from '../InstallRuleModalBody'
 
 import defaultModalCss from '../RuleRecipeModal.less'
@@ -13,37 +14,31 @@ import TargetCount from './components/TargetCount'
 
 import css from './ManagedRuleModal.less'
 
-export const AutoReplyWismoModal = ({
+export const AutoReplyReturnModal = ({
     triggeredCount,
     viewCreationCheckbox,
 }: ManagedRuleModalProps) => {
     const icon = assetsUrl('/img/icons/logo.png')
 
     return (
-        <div className={classnames(css.managedRule, css.autoReplyWismo)}>
+        <div className={classnames(css.managedRule, css.autoReplyReturn)}>
             <div className={css.container}>
                 <div className={css.description}>
                     <TargetCount count={triggeredCount} />
                     <div className={defaultModalCss.descriptionBlock}>
                         <h4>How it works</h4>
                         <p>
-                            This rule detects emails related to order status or
-                            tracking, replies with tracking links for the
-                            shopper’s last 3 orders, and auto-closes the ticket.
-                            If shoppers reply, the ticket will reopen so you
-                            never miss a response.
-                        </p>
-                    </div>
-                    <div className={defaultModalCss.descriptionBlock}>
-                        <p className={css.addendum}>
-                            This rule requires an active Shopify integration.
+                            This rule detects emails related to return requests,
+                            auto-replies with the link to your return portal,
+                            and auto-closes the ticket. If shoppers reply, the
+                            ticket will reopen so you never miss a response.
                         </p>
                     </div>
                     <div className={defaultModalCss.descriptionBlock}>
                         <h4>Customize it</h4>
                         <p>
-                            Personalize the message and exclude email addresses
-                            from this rule.
+                            Personalize the message body and signature, and
+                            connect your returns integration.
                         </p>
                     </div>
                     <div className={defaultModalCss.descriptionBlock}>
@@ -66,8 +61,8 @@ export const AutoReplyWismoModal = ({
                             <div className="ml-3">
                                 <div className={css.name}>Client Name</div>
                                 <div>
-                                    Hey, do you have a tracking number so I can
-                                    double check?
+                                    Hi, I want to return my order. Can you help
+                                    me?
                                 </div>
                             </div>
                         </div>
@@ -90,16 +85,19 @@ export const AutoReplyWismoModal = ({
                                 </div>
                                 <div>
                                     <p>Hi Client Name,</p>
-                                    <p>
-                                        It looks like you’re reaching out about
-                                        your order status. Is this tracking
-                                        information helpful?
+                                    <p className="mb-0">
+                                        It looks like you'd like to return your
+                                        order. Access our return portal below to
+                                        start a return.
                                     </p>
-                                    <FakeOrderTracking />
+                                    <Button className={css.button}>
+                                        Start a return
+                                    </Button>
                                     <p>
-                                        If you need more help you can reply to
-                                        this email and we will get back to you
-                                        as soon as possible.
+                                        This is an automated message. If you
+                                        need more help, just reply to this
+                                        message and we will get back to you as
+                                        soon as possible.
                                     </p>
                                     <p>Agent Name</p>
                                 </div>

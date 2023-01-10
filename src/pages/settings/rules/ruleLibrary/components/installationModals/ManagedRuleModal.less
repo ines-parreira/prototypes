@@ -4,6 +4,21 @@
     display: flex;
     min-height: 492px;
 
+    .legend {
+        margin: 8px 0 0 0;
+        color: @classic-neutral-grey-4;
+        text-align: center;
+    }
+
+    .button {
+        max-width: 160px;
+        margin-block: 24px;
+        width: 100%;
+        text-transform: none;
+        pointer-events: none;
+        cursor: initial;
+    }
+
     .bordered {
         border: 1px solid @classic-neutral-grey-3;
         border-radius: 4px;
@@ -18,10 +33,9 @@
     }
 
     .example {
-        flex-basis: 56.3%;
-        justify-content: center;
-        gap: 16px;
+        display: flex;
         flex-direction: column;
+        flex-basis: 56.3%;
     }
 
     &.autoCloseSpam {
@@ -32,7 +46,8 @@
     }
 
     &.autoReplyWismo,
-    &.autoReplyFAQ {
+    &.autoReplyFAQ,
+    &.autoReplyReturn {
         .addendum {
             &::before {
                 content: '*';
@@ -40,12 +55,8 @@
             font-style: italic;
             color: @classic-neutral-grey-4;
         }
-        .legend {
-            margin-top: 8px;
-            color: @classic-neutral-grey-4;
-            text-align: center;
-        }
         .exampleContainer {
+            flex-grow: 1;
             background-color: @classic-neutral-grey-1;
             max-height: 492px;
             overflow: scroll;

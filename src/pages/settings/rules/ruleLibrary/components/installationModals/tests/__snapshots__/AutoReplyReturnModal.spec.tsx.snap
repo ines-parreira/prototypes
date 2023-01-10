@@ -1,0 +1,327 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AutoReplyReturnModal/> should render the instalation modal when automation add-on is not subscribed 1`] = `
+<div
+  class="managedRule autoReplyReturn"
+>
+  <div
+    class="container"
+  >
+    <div
+      class="description"
+    >
+      <div
+        class="count"
+      >
+        <div
+          class="targetTitle"
+        >
+          install to target up to
+        </div>
+        <div
+          class="targetValue"
+        >
+          <span
+            class="bold"
+          >
+            10
+          </span>
+           
+          <span
+            class="ticketsPerMonth"
+          >
+            tickets/month
+          </span>
+        </div>
+      </div>
+      <div
+        class="descriptionBlock"
+      >
+        <h4>
+          How it works
+        </h4>
+        <p>
+          This rule detects emails related to return requests, auto-replies with the link to your return portal, and auto-closes the ticket. If shoppers reply, the ticket will reopen so you never miss a response.
+        </p>
+      </div>
+      <div
+        class="descriptionBlock"
+      >
+        <h4>
+          Customize it
+        </h4>
+        <p>
+          Personalize the message body and signature, and connect your returns integration.
+        </p>
+      </div>
+      <div
+        class="descriptionBlock"
+      >
+        view creation checkbox
+      </div>
+    </div>
+    <div
+      class="example"
+    >
+      <div
+        class="exampleContainer bordered"
+      >
+        <div
+          class="fakeMessage"
+        >
+          <div
+            class="component clientAvatar"
+            style="width: 28px; height: 28px;"
+          >
+            <div
+              class="initials"
+              style="width: 28px; height: 28px; font-size: 11.666666666666668px;"
+            >
+              <span
+                style="line-height: 30px;"
+              >
+                Cn
+              </span>
+            </div>
+          </div>
+          <div
+            class="ml-3"
+          >
+            <div
+              class="name"
+            >
+              Client Name
+            </div>
+            <div>
+              Hi, I want to return my order. Can you help me?
+            </div>
+          </div>
+        </div>
+        <div
+          class="fakeMessage"
+        >
+          <div>
+            <div
+              class="component hasImage autoResponderAvatar"
+              style="width: 28px; height: 28px;"
+            >
+              <div
+                class="initials"
+                style="width: 28px; height: 28px; font-size: 11.666666666666668px;"
+              >
+                <span
+                  style="line-height: 30px;"
+                />
+              </div>
+              <img
+                alt="avatar"
+                class="gravatar"
+                src="/assets/img/icons/logo.png"
+              />
+            </div>
+          </div>
+          <div
+            class="ml-3"
+          >
+            <div
+              class="name autoResponder"
+            >
+              Autoresponder
+            </div>
+            <div>
+              <p>
+                Hi Client Name,
+              </p>
+              <p
+                class="mb-0"
+              >
+                It looks like you'd like to return your order. Access our return portal below to start a return.
+              </p>
+              <button
+                class="wrapper button fill primary medium"
+                type="button"
+              >
+                Start a return
+              </button>
+              <p>
+                This is an automated message. If you need more help, just reply to this message and we will get back to you as soon as possible.
+              </p>
+              <p>
+                Agent Name
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p
+        class="legend"
+      >
+        See auto-response example above
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<AutoReplyReturnModal/> should render the instalation modal when automation add-on is subscribed 1`] = `
+<div
+  class="managedRule autoReplyReturn"
+>
+  <div
+    class="container"
+  >
+    <div
+      class="description"
+    >
+      <div
+        class="count"
+      >
+        <div
+          class="targetTitle"
+        >
+          install to target up to
+        </div>
+        <div
+          class="targetValue"
+        >
+          <span
+            class="bold"
+          >
+            10
+          </span>
+           
+          <span
+            class="ticketsPerMonth"
+          >
+            tickets/month
+          </span>
+        </div>
+      </div>
+      <div
+        class="descriptionBlock"
+      >
+        <h4>
+          How it works
+        </h4>
+        <p>
+          This rule detects emails related to return requests, auto-replies with the link to your return portal, and auto-closes the ticket. If shoppers reply, the ticket will reopen so you never miss a response.
+        </p>
+      </div>
+      <div
+        class="descriptionBlock"
+      >
+        <h4>
+          Customize it
+        </h4>
+        <p>
+          Personalize the message body and signature, and connect your returns integration.
+        </p>
+      </div>
+      <div
+        class="descriptionBlock"
+      >
+        view creation checkbox
+      </div>
+    </div>
+    <div
+      class="example"
+    >
+      <div
+        class="exampleContainer bordered"
+      >
+        <div
+          class="fakeMessage"
+        >
+          <div
+            class="component clientAvatar"
+            style="width: 28px; height: 28px;"
+          >
+            <div
+              class="initials"
+              style="width: 28px; height: 28px; font-size: 11.666666666666668px;"
+            >
+              <span
+                style="line-height: 30px;"
+              >
+                Cn
+              </span>
+            </div>
+          </div>
+          <div
+            class="ml-3"
+          >
+            <div
+              class="name"
+            >
+              Client Name
+            </div>
+            <div>
+              Hi, I want to return my order. Can you help me?
+            </div>
+          </div>
+        </div>
+        <div
+          class="fakeMessage"
+        >
+          <div>
+            <div
+              class="component hasImage autoResponderAvatar"
+              style="width: 28px; height: 28px;"
+            >
+              <div
+                class="initials"
+                style="width: 28px; height: 28px; font-size: 11.666666666666668px;"
+              >
+                <span
+                  style="line-height: 30px;"
+                />
+              </div>
+              <img
+                alt="avatar"
+                class="gravatar"
+                src="/assets/img/icons/logo.png"
+              />
+            </div>
+          </div>
+          <div
+            class="ml-3"
+          >
+            <div
+              class="name autoResponder"
+            >
+              Autoresponder
+            </div>
+            <div>
+              <p>
+                Hi Client Name,
+              </p>
+              <p
+                class="mb-0"
+              >
+                It looks like you'd like to return your order. Access our return portal below to start a return.
+              </p>
+              <button
+                class="wrapper button fill primary medium"
+                type="button"
+              >
+                Start a return
+              </button>
+              <p>
+                This is an automated message. If you need more help, just reply to this message and we will get back to you as soon as possible.
+              </p>
+              <p>
+                Agent Name
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p
+        class="legend"
+      >
+        See auto-response example above
+      </p>
+    </div>
+  </div>
+</div>
+`;

@@ -33,6 +33,8 @@ import type {ManagedRuleEditorProps, EditorHandle} from '../RuleFormEditor'
 import AutoCloseSpamEditor from './AutoCloseSpamEditor'
 import AutoReplyWismoEditor from './AutoReplyWismoEditor'
 import AutoReplyWismoDemo from './AutoReplyWismoDemo'
+import AutoReplyReturnEditor from './AutoReplyReturnEditor'
+import AutoReplyReturnDemo from './AutoReplyReturnDemo'
 import AutoReplyFAQEditor from './AutoReplyFAQEditor'
 import AutoReplyFAQDemo from './AutoReplyFAQDemo'
 
@@ -55,7 +57,12 @@ type Props = {slug: ManagedRulesSlugs} & ManagedRuleEditorProps
 
 export type ManagedRuleDetailProps<T> = {
     settings: ManagedRuleSettings<T>
-    onChange: () => ((settings: ManagedRuleSettings<T>) => void) | undefined
+    onChange: () =>
+        | ((
+              settings: ManagedRuleSettings<T>,
+              hasInvalidField?: boolean
+          ) => void)
+        | undefined
     handleInstallationError?: (error: InstallationError | null) => void
 }
 
@@ -78,15 +85,18 @@ export const ManagedRuleEditor = forwardRef<EditorHandle, Props>(
             [ManagedRulesSlugs.AutoCloseSpam]: AutoCloseSpamEditor,
             [ManagedRulesSlugs.AutoReplyWismo]: AutoReplyWismoEditor,
             [ManagedRulesSlugs.AutoReplyFAQ]: AutoReplyFAQEditor,
+            [ManagedRulesSlugs.AutoReplyReturn]: AutoReplyReturnEditor,
         }
         const demoTypes = {
             [ManagedRulesSlugs.AutoCloseSpam]: FakeTicketComponent,
             [ManagedRulesSlugs.AutoReplyWismo]: AutoReplyWismoDemo,
             [ManagedRulesSlugs.AutoReplyFAQ]: AutoReplyFAQDemo,
+            [ManagedRulesSlugs.AutoReplyReturn]: AutoReplyReturnDemo,
         }
         const Editor = componentTypes[slug]
         const Demo = demoTypes[slug]
         type SettingsType = ComponentProps<typeof Editor>['settings']
+        const [editorHasError, setEditorHasError] = useState(false)
         const [settings, setSettings] = useState<SettingsType>(rule.settings)
         const [deactivatedDatetime, setDeactivatedDatetime] = useState(
             rule.deactivated_datetime
@@ -120,15 +130,18 @@ export const ManagedRuleEditor = forwardRef<EditorHandle, Props>(
                     ? rule.deactivated_datetime
                     : deactivatedDatetime
 
-            handleSubmit({
-                id: rule.id,
-                deactivated_datetime: newDeactivatedDatetime,
-                settings: {
-                    ...rule.settings,
-                    ...settings,
+            handleSubmit(
+                {
+                    id: rule.id,
+                    deactivated_datetime: newDeactivatedDatetime,
+                    settings: {
+                        ...rule.settings,
+                        ...settings,
+                    },
                 },
-            })
-        }, [deactivatedDatetime, rule, settings, handleSubmit])
+                editorHasError
+            )
+        }, [deactivatedDatetime, rule, settings, handleSubmit, editorHasError])
 
         useImperativeHandle(ref, () => ({submit}), [submit])
 
@@ -178,7 +191,10 @@ export const ManagedRuleEditor = forwardRef<EditorHandle, Props>(
                 )
                 return
             }
-            return (settings: SettingsType) => setSettings(settings)
+            return (settings: SettingsType, hasInvalidField?: boolean) => {
+                setSettings(settings)
+                setEditorHasError(!!hasInvalidField)
+            }
         }
 
         return (
@@ -215,6 +231,7 @@ export const ManagedRuleEditor = forwardRef<EditorHandle, Props>(
                     <RuleItemButtons
                         ruleId={rule.id}
                         canSubmit={
+                            !editorHasError &&
                             hasAgentPrivileges &&
                             !isSubmitting &&
                             hasAutomationAddOn &&

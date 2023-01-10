@@ -123,4 +123,8 @@ export const ManagedRuleDisplayName = new Map<ManagedRulesSlugs, string>([
         '[Auto Reply] Article recommendation (Email)',
     ],
     [ManagedRulesSlugs.AutoCloseSpam, '[Auto Close] Auto-close spam emails'],
+    [
+        ManagedRulesSlugs.AutoReplyReturn,
+        '[Auto Reply] Automate return request emails',
+    ],
 ])

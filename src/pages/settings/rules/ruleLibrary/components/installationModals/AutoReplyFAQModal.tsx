@@ -50,7 +50,7 @@ export const AutoReplyFAQModal = ({
                     </div>
                     <div className={defaultModalCss.descriptionBlock}>
                         <h4>Customize it</h4>
-                        <p>Personailze the message body and signature.</p>
+                        <p>Personalize the message body and signature.</p>
                     </div>
                     <div className={defaultModalCss.descriptionBlock}>
                         {viewCreationCheckbox()}

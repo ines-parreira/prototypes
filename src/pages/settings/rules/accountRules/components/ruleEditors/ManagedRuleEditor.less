@@ -37,7 +37,8 @@
         }
 
         &.autoReplyWismo,
-        &.autoReplyFAQ {
+        &.autoReplyFAQ,
+        &.autoReplyReturn {
             .listWrapper :global(.editor-wrapper) {
                 min-height: 92px;
                 max-height: 200px;
@@ -101,6 +102,21 @@
         &.autoReplyFAQ {
             .demoContent {
                 height: calc(~'100% - 27px');
+            }
+        }
+
+        &.autoReplyReturn {
+            .demoContent {
+                padding: 24px 0;
+            }
+
+            .button {
+                max-width: 160px;
+                margin-block: 24px;
+                width: 100%;
+                text-transform: none;
+                pointer-events: none;
+                cursor: initial;
             }
         }
     }

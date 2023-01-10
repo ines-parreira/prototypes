@@ -230,15 +230,11 @@ exports[`<AutoReplyWismoModal/> should render the autoclose spam body when autom
           </div>
         </div>
       </div>
-      <div
-        class="descriptionBlock"
+      <p
+        class="legend"
       >
-        <p
-          class="legend"
-        >
-          See auto-response example above
-        </p>
-      </div>
+        See auto-response example above
+      </p>
     </div>
   </div>
 </div>
@@ -474,15 +470,11 @@ exports[`<AutoReplyWismoModal/> should render the autoclose spam body when autom
           </div>
         </div>
       </div>
-      <div
-        class="descriptionBlock"
+      <p
+        class="legend"
       >
-        <p
-          class="legend"
-        >
-          See auto-response example above
-        </p>
-      </div>
+        See auto-response example above
+      </p>
     </div>
   </div>
 </div>

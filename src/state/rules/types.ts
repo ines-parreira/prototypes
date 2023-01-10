@@ -119,6 +119,7 @@ export enum ManagedRulesSlugs {
     AutoCloseSpam = 'non-support-related-emails',
     AutoReplyWismo = 'auto-reply-wismo',
     AutoReplyFAQ = 'auto-reply-faq-questions',
+    AutoReplyReturn = 'auto-reply-return-request',
 }
 export type ManagedRuleEmptySettings = {
     slug: ManagedRulesSlugs
@@ -131,6 +132,7 @@ export type AnyManagedRuleSettings =
     | ManagedRuleSettings<AutoCloseSpamSettings>
     | ManagedRuleSettings<AutoReplyFAQSettings>
     | ManagedRuleSettings<AutoReplyWismoSettings>
+    | ManagedRuleSettings<AutoReplyReturnSettings>
 
 export type AutoCloseSpamSettings = {
     allow_list?: string[]
@@ -138,6 +140,15 @@ export type AutoCloseSpamSettings = {
 }
 
 export type AutoReplyWismoSettings = {
+    block_list?: string[]
+    body_text?: string
+    body_html?: string
+    signature_text?: string
+    signature_html?: string
+}
+
+export type AutoReplyReturnSettings = {
+    return_portal_url?: string
     block_list?: string[]
     body_text?: string
     body_html?: string

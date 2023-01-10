@@ -51,7 +51,7 @@ exports[`<AutoReplyFAQModal/> should render the autoclose spam body when automat
           Customize it
         </h4>
         <p>
-          Personailze the message body and signature.
+          Personalize the message body and signature.
         </p>
       </div>
       <div
@@ -261,7 +261,7 @@ exports[`<AutoReplyFAQModal/> should render the autoclose spam body when automat
           Customize it
         </h4>
         <p>
-          Personailze the message body and signature.
+          Personalize the message body and signature.
         </p>
       </div>
       <div

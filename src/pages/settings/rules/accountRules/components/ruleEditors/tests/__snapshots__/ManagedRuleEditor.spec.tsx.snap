@@ -1239,6 +1239,1208 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
 </div>
 `;
 
+exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render correctly 1`] = `
+<div
+  class="container"
+>
+  <div
+    class="editorContainer"
+  >
+    <div
+      class="container autoReplyReturn"
+    >
+      <p>
+        This rule detects emails related to return requests, auto-replies with the link to your return portal, and auto-closes the ticket. If shoppers reply, the ticket will reopen so you never miss a response.
+      </p>
+      <div
+        class="listWrapper"
+      >
+        <div>
+          <label
+            class="label label"
+            for="input-text-4"
+          >
+            Return portal URL
+            <abbr
+              aria-label="required"
+              class="abbr"
+              title="required"
+            >
+              *
+            </abbr>
+          </label>
+          <div
+            class="wrapper hasError"
+          >
+            <input
+              aria-describedby="input-text-4-caption"
+              class="input"
+              id="input-text-4"
+              name="input-text-4"
+              required=""
+              type="url"
+              value=""
+            />
+          </div>
+          <div
+            class="caption error"
+            id="input-text-4-caption"
+          >
+            Enter a valid URL
+          </div>
+        </div>
+      </div>
+      <div
+        class="listWrapper"
+      >
+        <h4>
+          Exclusion email list
+        </h4>
+        <p>
+          This rule will never trigger on incoming emails from the addresses below.
+        </p>
+        <div
+          class="MultiSelectField blockList"
+        >
+          <div
+            class="container"
+          >
+            <div
+              class="inputContainer multiSelectOptionField-dropdown"
+            >
+              <div
+                class="dropdown"
+              >
+                <div
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  class=""
+                  data-toggle="dropdown"
+                >
+                  <input
+                    autocomplete="off"
+                    class="input"
+                    placeholder="Add emails..."
+                    value=""
+                  />
+                </div>
+                <div
+                  aria-hidden="true"
+                  class="options dropdown-menu"
+                  role="menu"
+                  tabindex="-1"
+                >
+                  <h6
+                    class="dropdown-header"
+                    tabindex="-1"
+                  >
+                    No result
+                  </h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="listWrapper"
+      >
+        <h4>
+          Message above return portal link
+        </h4>
+        <div
+          class="field"
+        >
+          <div
+            class="textarea-toolbar"
+          >
+            <div
+              class="btn-group"
+            >
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="dropdown-toggle btn-sm mr-2 dropdown-toggle btn btn-secondary"
+                type="button"
+              >
+                Ticket customer
+              </button>
+              <div
+                aria-hidden="true"
+                class="dropdown-menu"
+                role="menu"
+                tabindex="-1"
+              >
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  First name
+                </button>
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  Last name
+                </button>
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  Full name
+                </button>
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  Email
+                </button>
+              </div>
+            </div>
+            <div
+              class="btn-group"
+            >
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="dropdown-toggle btn-sm mr-2 dropdown-toggle btn btn-secondary"
+                type="button"
+              >
+                Current agent
+              </button>
+              <div
+                aria-hidden="true"
+                class="dropdown-menu"
+                role="menu"
+                tabindex="-1"
+              >
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  First name
+                </button>
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  Last name
+                </button>
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  Full name
+                </button>
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  Email
+                </button>
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  Bio
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            class="rich-textarea-wrapper"
+          >
+            <div
+              class="editor-wrapper"
+            >
+              <div
+                class="withMinHeight"
+              >
+                <div
+                  class="DraftEditor-root"
+                >
+                  <div
+                    class="public-DraftEditorPlaceholder-root"
+                  >
+                    <div
+                      class="public-DraftEditorPlaceholder-inner"
+                      id="placeholder-123"
+                      style="white-space: pre-wrap;"
+                    >
+                      Type {{ for variables }}
+                    </div>
+                  </div>
+                  <div
+                    class="DraftEditor-editorContainer"
+                  >
+                    <div
+                      aria-autocomplete="list"
+                      aria-describedby="placeholder-123"
+                      aria-expanded="true"
+                      class="notranslate public-DraftEditor-content"
+                      contenteditable="true"
+                      role="combobox"
+                      spellcheck="true"
+                      style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
+                    >
+                      <div
+                        data-contents="true"
+                      >
+                        <div
+                          class=""
+                          data-block="true"
+                          data-editor="123"
+                          data-offset-key="123-0-0"
+                        >
+                          <div
+                            class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                            data-offset-key="123-0-0"
+                          >
+                            <span
+                              data-offset-key="123-0-0"
+                            >
+                              <br
+                                data-text="true"
+                              />
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="editor-toolbar page"
+            >
+              <div
+                class="actionsWrapper"
+              >
+                <div
+                  class="actions"
+                >
+                  <button
+                    class="wrapper button wrapper small fill secondary small"
+                    id="format_bold"
+                    type="button"
+                  >
+                    <i
+                      class="material-icons icon"
+                    >
+                      format_bold
+                    </i>
+                  </button>
+                  <button
+                    class="wrapper button wrapper small fill secondary small"
+                    id="format_italic"
+                    type="button"
+                  >
+                    <i
+                      class="material-icons icon"
+                    >
+                      format_italic
+                    </i>
+                  </button>
+                  <button
+                    class="wrapper button wrapper small fill secondary small"
+                    id="format_underline"
+                    type="button"
+                  >
+                    <i
+                      class="material-icons icon"
+                    >
+                      format_underline
+                    </i>
+                  </button>
+                  <span
+                    class="popoverWrapper"
+                  >
+                    <button
+                      class="wrapper button wrapper small fill secondary small"
+                      id="insert_link"
+                      type="button"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        link
+                      </i>
+                    </button>
+                    <div
+                      class="popover top-left hidden"
+                    />
+                  </span>
+                  <span
+                    class="popoverWrapper"
+                  >
+                    <button
+                      class="wrapper button wrapper small fill secondary small"
+                      id="insert_photo"
+                      type="button"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        insert_photo
+                      </i>
+                    </button>
+                    <div
+                      class="popover top-left hidden"
+                    />
+                  </span>
+                  <span
+                    class="popoverWrapper"
+                  >
+                    <button
+                      class="wrapper button wrapper small fill secondary small"
+                      id="insert_emoticon"
+                      type="button"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        insert_emoticon
+                      </i>
+                    </button>
+                    <div
+                      class="p-0 d-flex popover top-left hidden"
+                    />
+                  </span>
+                  <span
+                    class="popoverWrapper"
+                  >
+                    <button
+                      class="wrapper button wrapper small fill secondary small"
+                      id="insert_shopify_product"
+                      type="button"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        shopify
+                      </i>
+                    </button>
+                    <div
+                      class="productLinkToolTip p-0 d-flex popover top-left hidden"
+                    />
+                  </span>
+                </div>
+                <div
+                  class="hoverOverlay"
+                >
+                  Add files as attachments
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="listWrapper"
+      >
+        <h4>
+          Message below return portal link
+        </h4>
+        <div
+          class="field"
+        >
+          <div
+            class="textarea-toolbar"
+          >
+            <div
+              class="btn-group"
+            >
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="dropdown-toggle btn-sm mr-2 dropdown-toggle btn btn-secondary"
+                type="button"
+              >
+                Ticket customer
+              </button>
+              <div
+                aria-hidden="true"
+                class="dropdown-menu"
+                role="menu"
+                tabindex="-1"
+              >
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  First name
+                </button>
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  Last name
+                </button>
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  Full name
+                </button>
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  Email
+                </button>
+              </div>
+            </div>
+            <div
+              class="btn-group"
+            >
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="dropdown-toggle btn-sm mr-2 dropdown-toggle btn btn-secondary"
+                type="button"
+              >
+                Current agent
+              </button>
+              <div
+                aria-hidden="true"
+                class="dropdown-menu"
+                role="menu"
+                tabindex="-1"
+              >
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  First name
+                </button>
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  Last name
+                </button>
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  Full name
+                </button>
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  Email
+                </button>
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  Bio
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            class="rich-textarea-wrapper"
+          >
+            <div
+              class="editor-wrapper"
+            >
+              <div
+                class="withMinHeight"
+              >
+                <div
+                  class="DraftEditor-root"
+                >
+                  <div
+                    class="public-DraftEditorPlaceholder-root"
+                  >
+                    <div
+                      class="public-DraftEditorPlaceholder-inner"
+                      id="placeholder-123"
+                      style="white-space: pre-wrap;"
+                    >
+                      Type {{ for variables }}
+                    </div>
+                  </div>
+                  <div
+                    class="DraftEditor-editorContainer"
+                  >
+                    <div
+                      aria-autocomplete="list"
+                      aria-describedby="placeholder-123"
+                      aria-expanded="true"
+                      class="notranslate public-DraftEditor-content"
+                      contenteditable="true"
+                      role="combobox"
+                      spellcheck="true"
+                      style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
+                    >
+                      <div
+                        data-contents="true"
+                      >
+                        <div
+                          class=""
+                          data-block="true"
+                          data-editor="123"
+                          data-offset-key="123-0-0"
+                        >
+                          <div
+                            class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                            data-offset-key="123-0-0"
+                          >
+                            <span
+                              data-offset-key="123-0-0"
+                            >
+                              <br
+                                data-text="true"
+                              />
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="editor-toolbar page"
+            >
+              <div
+                class="actionsWrapper"
+              >
+                <div
+                  class="actions"
+                >
+                  <button
+                    class="wrapper button wrapper small fill secondary small"
+                    id="format_bold"
+                    type="button"
+                  >
+                    <i
+                      class="material-icons icon"
+                    >
+                      format_bold
+                    </i>
+                  </button>
+                  <button
+                    class="wrapper button wrapper small fill secondary small"
+                    id="format_italic"
+                    type="button"
+                  >
+                    <i
+                      class="material-icons icon"
+                    >
+                      format_italic
+                    </i>
+                  </button>
+                  <button
+                    class="wrapper button wrapper small fill secondary small"
+                    id="format_underline"
+                    type="button"
+                  >
+                    <i
+                      class="material-icons icon"
+                    >
+                      format_underline
+                    </i>
+                  </button>
+                  <span
+                    class="popoverWrapper"
+                  >
+                    <button
+                      class="wrapper button wrapper small fill secondary small"
+                      id="insert_link"
+                      type="button"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        link
+                      </i>
+                    </button>
+                    <div
+                      class="popover top-left hidden"
+                    />
+                  </span>
+                  <span
+                    class="popoverWrapper"
+                  >
+                    <button
+                      class="wrapper button wrapper small fill secondary small"
+                      id="insert_photo"
+                      type="button"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        insert_photo
+                      </i>
+                    </button>
+                    <div
+                      class="popover top-left hidden"
+                    />
+                  </span>
+                  <span
+                    class="popoverWrapper"
+                  >
+                    <button
+                      class="wrapper button wrapper small fill secondary small"
+                      id="insert_emoticon"
+                      type="button"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        insert_emoticon
+                      </i>
+                    </button>
+                    <div
+                      class="p-0 d-flex popover top-left hidden"
+                    />
+                  </span>
+                  <span
+                    class="popoverWrapper"
+                  >
+                    <button
+                      class="wrapper button wrapper small fill secondary small"
+                      id="insert_shopify_product"
+                      type="button"
+                    >
+                      <i
+                        class="material-icons icon"
+                      >
+                        shopify
+                      </i>
+                    </button>
+                    <div
+                      class="productLinkToolTip p-0 d-flex popover top-left hidden"
+                    />
+                  </span>
+                </div>
+                <div
+                  class="hoverOverlay"
+                >
+                  Add files as attachments
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="toggleButtonContainer"
+    >
+      <span>
+        <div>
+          <label
+            aria-checked="true"
+            class="label label"
+            for="toggle-button-6"
+            role="switch"
+          >
+            <input
+              checked=""
+              class="input"
+              disabled=""
+              id="toggle-button-6"
+              name="toggle-button-6"
+              type="checkbox"
+            />
+            <div
+              class="slider"
+            />
+          </label>
+        </div>
+      </span>
+      <span>
+        <label
+          class="toggleLabel mr-2 mb-0"
+        >
+          Enable rule
+        </label>
+      </span>
+    </div>
+    <div
+      class="buttons-container"
+    >
+      <div>
+        <button
+          class="wrapper fill primary medium isDisabled"
+          disabled=""
+          form="rule-form"
+          id="rule-item-save"
+          type="button"
+        >
+          Update rule
+        </button>
+      </div>
+      <div>
+        <button
+          class="wrapper fill destructive medium"
+          id="rule-item-delete"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              delete
+            </i>
+            Delete rule
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    class="demoContainer"
+    style="height: 0px;"
+  >
+    <div
+      class="demo autoReplyReturn"
+    >
+      <div
+        class="topbar"
+      >
+        <div
+          class="circle"
+        />
+        <div
+          class="circle"
+        />
+        <div
+          class="circle"
+        />
+      </div>
+      <div
+        class="demoContent"
+      >
+        <div
+          class="textdata"
+        >
+          <div>
+            <div
+              class="previewLegend"
+            >
+              Message above return portal link
+            </div>
+            <div
+              class="previewBodyWrapper"
+            >
+              <div
+                class="rich-textarea-wrapper display-only"
+              >
+                <div
+                  class="editor-wrapper"
+                >
+                  <div
+                    class="withMinHeight"
+                  >
+                    <div
+                      class="DraftEditor-root"
+                    >
+                      <div
+                        class="DraftEditor-editorContainer"
+                      >
+                        <div
+                          aria-describedby="placeholder-123"
+                          class="public-DraftEditor-content"
+                          contenteditable="false"
+                          spellcheck="false"
+                          style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
+                        >
+                          <div
+                            data-contents="true"
+                          >
+                            <div
+                              class=""
+                              data-block="true"
+                              data-editor="123"
+                              data-offset-key="123-0-0"
+                            >
+                              <div
+                                class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                                data-offset-key="123-0-0"
+                              >
+                                <span
+                                  data-offset-key="123-0-0"
+                                >
+                                  <br
+                                    data-text="true"
+                                  />
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="editor-toolbar page"
+                >
+                  <div
+                    class="actionsWrapper"
+                  >
+                    <div
+                      class="actions"
+                    >
+                      <button
+                        class="wrapper button wrapper small fill secondary small"
+                        id="format_bold"
+                        type="button"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          format_bold
+                        </i>
+                      </button>
+                      <button
+                        class="wrapper button wrapper small fill secondary small"
+                        id="format_italic"
+                        type="button"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          format_italic
+                        </i>
+                      </button>
+                      <button
+                        class="wrapper button wrapper small fill secondary small"
+                        id="format_underline"
+                        type="button"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          format_underline
+                        </i>
+                      </button>
+                      <span
+                        class="popoverWrapper"
+                      >
+                        <button
+                          class="wrapper button wrapper small fill secondary small"
+                          id="insert_link"
+                          type="button"
+                        >
+                          <i
+                            class="material-icons icon"
+                          >
+                            link
+                          </i>
+                        </button>
+                        <div
+                          class="popover top-left hidden"
+                        />
+                      </span>
+                      <span
+                        class="popoverWrapper"
+                      >
+                        <button
+                          class="wrapper button wrapper small fill secondary small"
+                          id="insert_photo"
+                          type="button"
+                        >
+                          <i
+                            class="material-icons icon"
+                          >
+                            insert_photo
+                          </i>
+                        </button>
+                        <div
+                          class="popover top-left hidden"
+                        />
+                      </span>
+                      <span
+                        class="popoverWrapper"
+                      >
+                        <button
+                          class="wrapper button wrapper small fill secondary small"
+                          id="insert_emoticon"
+                          type="button"
+                        >
+                          <i
+                            class="material-icons icon"
+                          >
+                            insert_emoticon
+                          </i>
+                        </button>
+                        <div
+                          class="p-0 d-flex popover top-left hidden"
+                        />
+                      </span>
+                      <span
+                        class="popoverWrapper"
+                      >
+                        <button
+                          class="wrapper button wrapper small fill secondary small"
+                          id="insert_shopify_product"
+                          type="button"
+                        >
+                          <i
+                            class="material-icons icon"
+                          >
+                            shopify
+                          </i>
+                        </button>
+                        <div
+                          class="productLinkToolTip p-0 d-flex popover top-left hidden"
+                        />
+                      </span>
+                    </div>
+                    <div
+                      class="hoverOverlay"
+                    >
+                      Add files as attachments
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button
+            class="wrapper button fill primary medium"
+            type="button"
+          >
+            Start a return
+          </button>
+          <div>
+            <div
+              class="previewLegend"
+            >
+              Message below return portal link
+            </div>
+            <div
+              class="previewBodyWrapper"
+            >
+              <div
+                class="rich-textarea-wrapper display-only"
+              >
+                <div
+                  class="editor-wrapper"
+                >
+                  <div
+                    class="withMinHeight"
+                  >
+                    <div
+                      class="DraftEditor-root"
+                    >
+                      <div
+                        class="DraftEditor-editorContainer"
+                      >
+                        <div
+                          aria-describedby="placeholder-123"
+                          class="public-DraftEditor-content"
+                          contenteditable="false"
+                          spellcheck="false"
+                          style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
+                        >
+                          <div
+                            data-contents="true"
+                          >
+                            <div
+                              class=""
+                              data-block="true"
+                              data-editor="123"
+                              data-offset-key="123-0-0"
+                            >
+                              <div
+                                class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                                data-offset-key="123-0-0"
+                              >
+                                <span
+                                  data-offset-key="123-0-0"
+                                >
+                                  <br
+                                    data-text="true"
+                                  />
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="editor-toolbar page"
+                >
+                  <div
+                    class="actionsWrapper"
+                  >
+                    <div
+                      class="actions"
+                    >
+                      <button
+                        class="wrapper button wrapper small fill secondary small"
+                        id="format_bold"
+                        type="button"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          format_bold
+                        </i>
+                      </button>
+                      <button
+                        class="wrapper button wrapper small fill secondary small"
+                        id="format_italic"
+                        type="button"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          format_italic
+                        </i>
+                      </button>
+                      <button
+                        class="wrapper button wrapper small fill secondary small"
+                        id="format_underline"
+                        type="button"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          format_underline
+                        </i>
+                      </button>
+                      <span
+                        class="popoverWrapper"
+                      >
+                        <button
+                          class="wrapper button wrapper small fill secondary small"
+                          id="insert_link"
+                          type="button"
+                        >
+                          <i
+                            class="material-icons icon"
+                          >
+                            link
+                          </i>
+                        </button>
+                        <div
+                          class="popover top-left hidden"
+                        />
+                      </span>
+                      <span
+                        class="popoverWrapper"
+                      >
+                        <button
+                          class="wrapper button wrapper small fill secondary small"
+                          id="insert_photo"
+                          type="button"
+                        >
+                          <i
+                            class="material-icons icon"
+                          >
+                            insert_photo
+                          </i>
+                        </button>
+                        <div
+                          class="popover top-left hidden"
+                        />
+                      </span>
+                      <span
+                        class="popoverWrapper"
+                      >
+                        <button
+                          class="wrapper button wrapper small fill secondary small"
+                          id="insert_emoticon"
+                          type="button"
+                        >
+                          <i
+                            class="material-icons icon"
+                          >
+                            insert_emoticon
+                          </i>
+                        </button>
+                        <div
+                          class="p-0 d-flex popover top-left hidden"
+                        />
+                      </span>
+                      <span
+                        class="popoverWrapper"
+                      >
+                        <button
+                          class="wrapper button wrapper small fill secondary small"
+                          id="insert_shopify_product"
+                          type="button"
+                        >
+                          <i
+                            class="material-icons icon"
+                          >
+                            shopify
+                          </i>
+                        </button>
+                        <div
+                          class="productLinkToolTip p-0 d-flex popover top-left hidden"
+                        />
+                      </span>
+                    </div>
+                    <div
+                      class="hoverOverlay"
+                    >
+                      Add files as attachments
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`] = `
 <div
   class="container"

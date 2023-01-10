@@ -66,7 +66,10 @@ export type RuleEditorProps = {
 export type ManagedRuleEditorProps<T = ManagedRuleEmptySettings> =
     RuleEditorProps & {
         rule: ManagedRule<T>
-        handleSubmit: (rule: Partial<ManagedRule<T>>) => void
+        handleSubmit: (
+            rule: Partial<ManagedRule<T>>,
+            hasMissingFields?: boolean
+        ) => void
     }
 
 const RuleNavbar = ({activeTab, handleTabChange}: NavbarProps) => (
