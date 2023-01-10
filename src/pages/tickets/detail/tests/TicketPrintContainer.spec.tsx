@@ -15,23 +15,23 @@ window.print = jest.fn()
 const mockStore = configureMockStore([thunk])
 
 describe('<TicketPrintContainer/>', () => {
-    const loadingTicket = fromJS({
+    const loadingTicket = {
         id: 123,
         _internal: {
             loading: {
                 fetchTicket: true,
             },
         },
-    })
+    }
 
-    const nonLoadingTicket = fromJS({
+    const nonLoadingTicket = {
         id: 123,
         _internal: {
             loading: {
                 fetchTicket: false,
             },
         },
-    })
+    }
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -41,7 +41,7 @@ describe('<TicketPrintContainer/>', () => {
         const {container} = renderWithRouter(
             <Provider
                 store={mockStore({
-                    ticket: loadingTicket,
+                    ticket: fromJS(loadingTicket),
                 })}
             >
                 <TicketPrintContainer />
@@ -57,7 +57,7 @@ describe('<TicketPrintContainer/>', () => {
 
     it('should render ticket body and call window.print when loading stops', () => {
         const {container, rerender} = renderWithRouter(
-            <Provider store={mockStore({ticket: loadingTicket})}>
+            <Provider store={mockStore({ticket: fromJS(loadingTicket)})}>
                 <TicketPrintContainer />
             </Provider>,
             {
@@ -67,12 +67,66 @@ describe('<TicketPrintContainer/>', () => {
         )
 
         rerender(
-            <Provider store={mockStore({ticket: nonLoadingTicket})}>
+            <Provider store={mockStore({ticket: fromJS(nonLoadingTicket)})}>
                 <TicketPrintContainer />
             </Provider>
         )
 
         expect(container.firstChild).toMatchSnapshot()
         expect(window.print).toHaveBeenCalled()
+    })
+
+    it('should not set document title when ticket is loading', () => {
+        renderWithRouter(
+            <Provider
+                store={mockStore({
+                    ticket: fromJS(loadingTicket),
+                })}
+            >
+                <TicketPrintContainer />
+            </Provider>,
+            {
+                path: '/foo/:ticketId',
+                route: '/foo/1',
+            }
+        )
+
+        expect(window.document.title).toEqual('Gorgias')
+    })
+
+    it('should set document title with ticket id', () => {
+        renderWithRouter(
+            <Provider
+                store={mockStore({
+                    ticket: fromJS(nonLoadingTicket),
+                })}
+            >
+                <TicketPrintContainer />
+            </Provider>,
+            {
+                path: '/foo/:ticketId',
+                route: '/foo/1',
+            }
+        )
+
+        expect(window.document.title).toEqual('123')
+    })
+
+    it('should set document title with ticket id and subject', () => {
+        renderWithRouter(
+            <Provider
+                store={mockStore({
+                    ticket: fromJS({...nonLoadingTicket, subject: 'foo'}),
+                })}
+            >
+                <TicketPrintContainer />
+            </Provider>,
+            {
+                path: '/foo/:ticketId',
+                route: '/foo/1',
+            }
+        )
+
+        expect(window.document.title).toEqual('123_foo')
     })
 })

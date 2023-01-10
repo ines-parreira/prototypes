@@ -8,6 +8,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {getBody} from 'state/ticket/selectors'
 import {fetchTicket} from 'state/ticket/actions'
+import useTitle from 'hooks/useTitle'
 
 import css from './TicketPrintContainer.less'
 
@@ -30,6 +31,15 @@ const TicketPrintContainer = () => {
             window.print()
         }
     }, [isLoading])
+
+    const title = ticket.get('id')
+        ? ticket.get('subject')
+            ? `${ticket.get('id') as number}_${
+                  ticket.get('subject', '') as string
+              }`
+            : `${ticket.get('id') as number}`
+        : undefined
+    useTitle(isLoading ? undefined : title)
 
     return (
         <div>
