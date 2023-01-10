@@ -330,15 +330,6 @@ function GorgiasTranslateText({
                         )}
                     </Col>
                 </Row>
-
-                <Row>
-                    <Col className={css.pageColumn} md="8">
-                        <p>
-                            This chat's language is set to{' '}
-                            <b>{language.get('label')}</b>.
-                        </p>
-                    </Col>
-                </Row>
             </Container>
 
             {(translationsLoadingState === LoadingState.LOADED &&
