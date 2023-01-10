@@ -26,6 +26,8 @@ describe('<OrderTotals/>', () => {
                     consignment={bigCommerceConsignmentFixture}
                     onUpdateConsignmentShippingMethod={jest.fn()}
                     onUpdateDiscountAmount={jest.fn()}
+                    onUpdateCoupon={jest.fn()}
+                    onRemoveCoupon={jest.fn()}
                     totals={{
                         subTotal: 78,
                         shipping: 50,

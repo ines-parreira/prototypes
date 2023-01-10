@@ -44,7 +44,11 @@ import Tip from 'pages/common/components/tip/Tip'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {CustomerContext} from 'providers/infobar/CustomerContext'
-import {updateBigCommerceCheckoutDiscount} from 'models/integration/resources/bigcommerce'
+import {
+    deleteBigCommerceCoupon,
+    updateBigCommerceCheckoutDiscount,
+    updateBigCommerceCoupon,
+} from 'models/integration/resources/bigcommerce'
 import OrderTable from './OrderTable'
 import OrderTotals from './OrderTotals'
 import {
@@ -145,6 +149,10 @@ const getTotals = ({
 
         const subTotal = cart.base_amount ?? 0
         const discount = cart.discount_amount
+        const couponDiscount = cart.coupons.reduce(
+            (accum, coupon) => accum + coupon.discounted_amount,
+            0
+        )
         const shipping = checkout?.shipping_cost_total_ex_tax ?? 0
         const total =
             cartAmountWithTax + (checkout?.shipping_cost_total_inc_tax ?? 0)
@@ -153,7 +161,7 @@ const getTotals = ({
             cartAmountWithTax +
             ((checkout?.shipping_cost_total_inc_tax ?? 0) -
                 (checkout?.shipping_cost_total_ex_tax ?? 0)) -
-            (subTotal - discount)
+            (subTotal - discount - couponDiscount)
 
         return {
             subTotal,
@@ -297,6 +305,54 @@ export const useCheckout = ({integrationId}: {integrationId: number}) => {
         }
     }
 
+    const onUpdateCoupon = async (couponCode: string) => {
+        if (!cart) {
+            return
+        }
+
+        try {
+            setIsTotalPriceLoading(true)
+
+            const checkout = await updateBigCommerceCoupon({
+                integrationId,
+                checkoutId: cart.id,
+                couponCode: couponCode,
+            })
+
+            setCheckout(checkout)
+        } catch (error) {
+            console.error(error)
+            // rethrowing it for callback consumer
+            throw error
+        } finally {
+            setIsTotalPriceLoading(false)
+        }
+    }
+
+    const onRemoveCoupon = async () => {
+        if (!checkout || !checkout.coupons[0]) {
+            return
+        }
+
+        try {
+            setIsTotalPriceLoading(true)
+
+            const newCheckout = await deleteBigCommerceCoupon({
+                integrationId,
+                checkoutId: checkout.id,
+                couponCode: checkout.coupons[0].code,
+            })
+
+            setCheckout(newCheckout)
+        } catch (error) {
+            console.error(error)
+            // rethrowing it for callback consumer
+            throw error
+        } finally {
+            setIsTotalPriceLoading(false)
+        }
+    }
+
     const totals = useMemo(
         () => getTotals({checkout, cart: checkout?.cart ?? cart}),
         [cart, checkout]
@@ -313,6 +369,8 @@ export const useCheckout = ({integrationId}: {integrationId: number}) => {
         onSelectAddress,
         onUpdateConsignmentShippingMethod,
         onUpdateDiscountAmount,
+        onUpdateCoupon,
+        onRemoveCoupon,
     }
 }
 
@@ -343,6 +401,8 @@ export function OrderModal({
         onSelectAddress,
         onUpdateConsignmentShippingMethod,
         onUpdateDiscountAmount,
+        onUpdateCoupon,
+        onRemoveCoupon,
     } = useCheckout({
         integrationId: integration.id,
     })
@@ -550,6 +610,8 @@ export function OrderModal({
                                 onUpdateConsignmentShippingMethod
                             }
                             onUpdateDiscountAmount={onUpdateDiscountAmount}
+                            onUpdateCoupon={onUpdateCoupon}
+                            onRemoveCoupon={onRemoveCoupon}
                             hasError={!validationStatus.checkout}
                             isTotalPriceLoading={isTotalPriceLoading}
                         />

@@ -222,3 +222,51 @@ export async function updateBigCommerceCheckoutDiscount({
 
     return response.data
 }
+
+export async function updateBigCommerceCoupon({
+    integrationId,
+    checkoutId,
+    couponCode,
+}: {
+    integrationId: number
+    checkoutId: string
+    couponCode: string
+}): Promise<BigCommerceCheckout> {
+    const url = '/integrations/bigcommerce/order/coupons/'
+
+    const payload = {coupon_code: couponCode}
+
+    const response = await client.post<BigCommerceCheckout>(url, payload, {
+        params: {
+            integration_id: integrationId,
+            checkout_id: checkoutId,
+        },
+    })
+
+    return response.data
+}
+
+export async function deleteBigCommerceCoupon({
+    integrationId,
+    checkoutId,
+    couponCode,
+}: {
+    integrationId: number
+    checkoutId: string
+    couponCode: string
+}): Promise<BigCommerceCheckout> {
+    const url = '/integrations/bigcommerce/order/coupons/delete/'
+
+    /**
+     * Using `get` here instead of `delete` because this is the way our backend is, sorry
+     */
+    const response = await client.get<BigCommerceNestedCheckout>(url, {
+        params: {
+            integration_id: integrationId,
+            checkout_id: checkoutId,
+            coupon_code: couponCode,
+        },
+    })
+
+    return response.data.data
+}

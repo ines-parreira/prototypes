@@ -13,6 +13,7 @@ import {buildTaxExtraInfo} from './utils'
 
 import css from './OrderTotals.less'
 import {Discount} from './Discount'
+import {Coupon} from './Coupon'
 
 type Props = {
     cart: Maybe<BigCommerceCart>
@@ -24,6 +25,8 @@ type Props = {
         selectedShippingMethodId: Maybe<string>
     ) => Promise<void>
     onUpdateDiscountAmount: (discountAmount: number) => Promise<void>
+    onUpdateCoupon: (coupon: string) => Promise<void>
+    onRemoveCoupon: () => Promise<void>
     totals: {
         subTotal: number
         shipping: number
@@ -82,6 +85,8 @@ export default function OrderTotals({
     hasShippingAddress,
     onUpdateConsignmentShippingMethod,
     onUpdateDiscountAmount,
+    onUpdateCoupon,
+    onRemoveCoupon,
     totals: {subTotal, shipping, taxes, total},
     hasError = false,
     isTotalPriceLoading,
@@ -97,6 +102,13 @@ export default function OrderTotals({
                 cart={cart}
                 currencyCode={currencyCode}
                 onUpdateDiscountAmount={onUpdateDiscountAmount}
+            />
+
+            <Coupon
+                cart={cart}
+                currencyCode={currencyCode}
+                onUpdateCoupon={onUpdateCoupon}
+                onRemoveCoupon={onRemoveCoupon}
             />
 
             <TotalLine
