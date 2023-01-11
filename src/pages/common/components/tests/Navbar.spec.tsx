@@ -8,6 +8,7 @@ import {DEFAULT_PREFERENCES} from 'config'
 import {user} from 'fixtures/users'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {getLDClient} from 'utils/launchDarkly'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import {
     advancedMonthlyHelpdeskPrice,
@@ -51,6 +52,7 @@ describe('<Navbar />', () => {
 
     afterEach(() => {
         jest.clearAllMocks()
+        allFlagsMock.mockReturnValue({})
     })
 
     it('should render the navbar', () => {
@@ -195,5 +197,14 @@ describe('<Navbar />', () => {
         userEvent.click(getByText(user.name))
 
         expect(getByText(/your profile/i)).toBeTruthy()
+    })
+
+    it('should render the spotlight search if enabled', () => {
+        allFlagsMock.mockReturnValue({
+            [FeatureFlagKey.SpotlightGlobalSearch]: true,
+        })
+
+        const {container} = render(<Navbar {...minProps} />)
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

@@ -1,0 +1,27 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .row {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+
+        &:not(:last-of-type) {
+            margin-bottom: 32px;
+        }
+    }
+
+    .icon {
+        width: 24px;
+    }
+
+    .line {
+        flex: 1 0 auto;
+    }
+
+    .container {
+        &:not(:last-of-type) {
+            margin-right: 8px;
+        }
+    }
+}

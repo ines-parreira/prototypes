@@ -40,7 +40,7 @@ export type Customer = CustomerDraft & {
     created_datetime: string
     customer: Maybe<CustomerInformation>
     data: CustomerInformation
-    email: string
+    email: string | null
     external_id: Maybe<string>
     firstname: string
     id: number

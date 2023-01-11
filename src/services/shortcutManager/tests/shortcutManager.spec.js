@@ -135,4 +135,18 @@ describe('shortcutManager', () => {
 
         expect(counter).toBe(0)
     })
+
+    it('denylist bound component', () => {
+        const action = {
+            key: 'p',
+            action: bump,
+        }
+        sm.bind('pizza', {
+            ACTION_NAME: action,
+        })
+        sm.denylist(['pizza'])
+        sm.trigger('p')
+
+        expect(counter).toBe(0)
+    })
 })

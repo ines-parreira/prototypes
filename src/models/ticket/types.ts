@@ -38,7 +38,7 @@ export type Ticket = {
     sender: Actor
     tags: unknown[]
     events: InternalTicketEvent[]
-    customer: unknown
+    customer: Record<string, any>
     from_agent: boolean
     created_datetime: string
     opened_datetime: string | null

@@ -453,9 +453,11 @@ export const DatetimeLabel = datetimeLabelConnector(DatetimeLabelContainer)
 const UserAssigneeLabelComponent = ({
     assigneeUser,
     agents,
+    size,
 }: {
     assigneeUser: Map<any, any>
     agents: List<Map<any, any>>
+    size?: number
 }) => {
     const agent = agents.find(
         (agent) => agent!.get('id') === assigneeUser.get('id')
@@ -468,7 +470,7 @@ const UserAssigneeLabelComponent = ({
             <Avatar
                 name={assigneeUser.get('name')}
                 url={avatarUrl}
-                size={26}
+                size={size || 26}
                 className={css.assigneeLabelAvatar}
             />
             <div className="d-inline-block">{assigneeUser.get('name')}</div>

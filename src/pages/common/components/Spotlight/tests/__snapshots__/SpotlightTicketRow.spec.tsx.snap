@@ -1,0 +1,477 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SpotlightTicketRow/> should render a date from the current year without the year 1`] = `
+<a
+  class="container"
+  to="/app/ticket/152"
+>
+  <div
+    class="icon"
+  >
+    <div
+      class="ticketIconWrapper isOpen"
+      id="icon-8-tooltip-target"
+    >
+      <i
+        class="icon d-inline-block material-icons ticketIcon"
+      >
+        email
+      </i>
+    </div>
+  </div>
+  <span
+    class="title"
+  >
+    Great ticket
+  </span>
+  <div
+    class="separator"
+  />
+  <span
+    class="info"
+  >
+    <div
+      class="ticketInfo"
+    >
+      <span>
+        Jean Bon
+      </span>
+      <span
+        class="infoSeparator"
+      >
+        •
+      </span>
+      <div
+        class="assigneeLabelContainer"
+      >
+        <div
+          class="component assigneeLabelAvatar"
+          style="width: 24px; height: 24px;"
+        >
+          <div
+            class="initials"
+            style="width: 24px; height: 24px; font-size: 10px;"
+          >
+            <span
+              style="line-height: 26px;"
+            >
+              AP
+            </span>
+          </div>
+        </div>
+        <div
+          class="d-inline-block"
+        >
+          Alex Plugaru
+        </div>
+      </div>
+      <span
+        class="separator"
+      />
+      <span>
+        Nov 12th
+      </span>
+    </div>
+  </span>
+</a>
+`;
+
+exports[`<SpotlightTicketRow/> should render closed icon 1`] = `
+<a
+  class="container"
+  to="/app/ticket/152"
+>
+  <div
+    class="icon"
+  >
+    <div
+      class="ticketIconWrapper"
+      id="icon-2-tooltip-target"
+    >
+      <i
+        class="icon d-inline-block material-icons ticketIcon"
+      >
+        email
+      </i>
+    </div>
+  </div>
+  <span
+    class="title"
+  >
+    Great ticket
+  </span>
+  <div
+    class="separator"
+  />
+  <span
+    class="info"
+  >
+    <div
+      class="ticketInfo"
+    >
+      <span>
+        Jean Bon
+      </span>
+      <span
+        class="infoSeparator"
+      >
+        •
+      </span>
+      <div
+        class="assigneeLabelContainer"
+      >
+        <div
+          class="component assigneeLabelAvatar"
+          style="width: 24px; height: 24px;"
+        >
+          <div
+            class="initials"
+            style="width: 24px; height: 24px; font-size: 10px;"
+          >
+            <span
+              style="line-height: 26px;"
+            >
+              AP
+            </span>
+          </div>
+        </div>
+        <div
+          class="d-inline-block"
+        >
+          Alex Plugaru
+        </div>
+      </div>
+      <span
+        class="separator"
+      />
+      <span>
+        Jul 31st 17
+      </span>
+    </div>
+  </span>
+</a>
+`;
+
+exports[`<SpotlightTicketRow/> should render current date as "today" 1`] = `
+<a
+  class="container"
+  to="/app/ticket/152"
+>
+  <div
+    class="icon"
+  >
+    <div
+      class="ticketIconWrapper isOpen"
+      id="icon-7-tooltip-target"
+    >
+      <i
+        class="icon d-inline-block material-icons ticketIcon"
+      >
+        email
+      </i>
+    </div>
+  </div>
+  <span
+    class="title"
+  >
+    Great ticket
+  </span>
+  <div
+    class="separator"
+  />
+  <span
+    class="info"
+  >
+    <div
+      class="ticketInfo"
+    >
+      <span>
+        Jean Bon
+      </span>
+      <span
+        class="infoSeparator"
+      >
+        •
+      </span>
+      <div
+        class="assigneeLabelContainer"
+      >
+        <div
+          class="component assigneeLabelAvatar"
+          style="width: 24px; height: 24px;"
+        >
+          <div
+            class="initials"
+            style="width: 24px; height: 24px; font-size: 10px;"
+          >
+            <span
+              style="line-height: 26px;"
+            >
+              AP
+            </span>
+          </div>
+        </div>
+        <div
+          class="d-inline-block"
+        >
+          Alex Plugaru
+        </div>
+      </div>
+      <span
+        class="separator"
+      />
+      <span>
+        Today
+      </span>
+    </div>
+  </span>
+</a>
+`;
+
+exports[`<SpotlightTicketRow/> should render the closed ticket info tooltip on hover 1`] = `
+<div
+  class="tooltip-inner"
+  role="tooltip"
+>
+  This ticket is 
+  closed
+</div>
+`;
+
+exports[`<SpotlightTicketRow/> should render the open ticket info tooltip on hover 1`] = `
+<div
+  class="tooltip-inner"
+  role="tooltip"
+>
+  This ticket is 
+  open
+</div>
+`;
+
+exports[`<SpotlightTicketRow/> should render ticket information 1`] = `
+<a
+  class="container"
+  to="/app/ticket/152"
+>
+  <div
+    class="icon"
+  >
+    <div
+      class="ticketIconWrapper isOpen"
+      id="icon-1-tooltip-target"
+    >
+      <i
+        class="icon d-inline-block material-icons ticketIcon"
+      >
+        email
+      </i>
+    </div>
+  </div>
+  <span
+    class="title"
+  >
+    Great ticket
+  </span>
+  <div
+    class="separator"
+  />
+  <span
+    class="info"
+  >
+    <div
+      class="ticketInfo"
+    >
+      <span>
+        Jean Bon
+      </span>
+      <span
+        class="infoSeparator"
+      >
+        •
+      </span>
+      <div
+        class="assigneeLabelContainer"
+      >
+        <div
+          class="component assigneeLabelAvatar"
+          style="width: 24px; height: 24px;"
+        >
+          <div
+            class="initials"
+            style="width: 24px; height: 24px; font-size: 10px;"
+          >
+            <span
+              style="line-height: 26px;"
+            >
+              AP
+            </span>
+          </div>
+        </div>
+        <div
+          class="d-inline-block"
+        >
+          Alex Plugaru
+        </div>
+      </div>
+      <span
+        class="separator"
+      />
+      <span>
+        Jul 31st 17
+      </span>
+    </div>
+  </span>
+</a>
+`;
+
+exports[`<SpotlightTicketRow/> should render without customer name 1`] = `
+<a
+  class="container"
+  to="/app/ticket/152"
+>
+  <div
+    class="icon"
+  >
+    <div
+      class="ticketIconWrapper isOpen"
+      id="icon-5-tooltip-target"
+    >
+      <i
+        class="icon d-inline-block material-icons ticketIcon"
+      >
+        email
+      </i>
+    </div>
+  </div>
+  <span
+    class="title"
+  >
+    Great ticket
+  </span>
+  <div
+    class="separator"
+  />
+  <span
+    class="info"
+  >
+    <div
+      class="ticketInfo"
+    >
+      <span>
+        Customer #34
+      </span>
+      <span
+        class="infoSeparator"
+      >
+        •
+      </span>
+      <div
+        class="assigneeLabelContainer"
+      >
+        <div
+          class="component assigneeLabelAvatar"
+          style="width: 24px; height: 24px;"
+        >
+          <div
+            class="initials"
+            style="width: 24px; height: 24px; font-size: 10px;"
+          >
+            <span
+              style="line-height: 26px;"
+            >
+              AP
+            </span>
+          </div>
+        </div>
+        <div
+          class="d-inline-block"
+        >
+          Alex Plugaru
+        </div>
+      </div>
+      <span
+        class="separator"
+      />
+      <span>
+        Jul 31st 17
+      </span>
+    </div>
+  </span>
+</a>
+`;
+
+exports[`<SpotlightTicketRow/> should render without customer name 2`] = `
+<a
+  class="container"
+  to="/app/ticket/152"
+>
+  <div
+    class="icon"
+  >
+    <div
+      class="ticketIconWrapper isOpen"
+      id="icon-6-tooltip-target"
+    >
+      <i
+        class="icon d-inline-block material-icons ticketIcon"
+      >
+        email
+      </i>
+    </div>
+  </div>
+  <span
+    class="title"
+  >
+    Great ticket
+  </span>
+  <div
+    class="separator"
+  />
+  <span
+    class="info"
+  >
+    <div
+      class="ticketInfo"
+    >
+      <span>
+        Customer #34
+      </span>
+      <span
+        class="infoSeparator"
+      >
+        •
+      </span>
+      <div
+        class="assigneeLabelContainer"
+      >
+        <div
+          class="component assigneeLabelAvatar"
+          style="width: 24px; height: 24px;"
+        >
+          <div
+            class="initials"
+            style="width: 24px; height: 24px; font-size: 10px;"
+          >
+            <span
+              style="line-height: 26px;"
+            >
+              AP
+            </span>
+          </div>
+        </div>
+        <div
+          class="d-inline-block"
+        >
+          Alex Plugaru
+        </div>
+      </div>
+      <span
+        class="separator"
+      />
+      <span>
+        Jul 31st 17
+      </span>
+    </div>
+  </span>
+</a>
+`;

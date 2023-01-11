@@ -28,6 +28,7 @@ export enum FeatureFlagKey {
     RuleSuggestion = 'rule-suggestion',
     SelfServiceArticleRecommendation = 'self-service-article-recommendation',
     SelfServiceAutomatedResponseOrderManagement = 'self-service-automated-response-order-management',
+    SpotlightGlobalSearch = 'spotlight-global-search',
     TicketFields = 'ticket-fields',
     TicketMessagesVirtualization = 'ticket-messages-virtualization',
 }

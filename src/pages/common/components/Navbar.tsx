@@ -14,9 +14,11 @@ import * as Sentry from '@sentry/react'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import HomePageLink from 'pages/common/components/HomePageLink'
+import SpotlightButton from 'pages/common/components/Spotlight/SpotlightButton'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {getLDClient} from 'utils/launchDarkly'
 import {FeatureFlagKey} from 'config/featureFlags'
+
 import shortcutManager from '../../../services/shortcutManager/index'
 import {getCurrentHelpdeskProduct} from '../../../state/billing/selectors'
 import {isTrialing} from '../../../state/currentAccount/selectors'
@@ -272,6 +274,9 @@ export class Navbar extends Component<Props, State> {
             currentHelpdeskProduct?.name.toLowerCase().includes(priceType)
         )
 
+        const isSpotlightEnabled =
+            getLDClient().allFlags()[FeatureFlagKey.SpotlightGlobalSearch]
+
         return (
             <div
                 className={classnames(css['nav-primary'], {
@@ -295,10 +300,6 @@ export class Navbar extends Component<Props, State> {
                             </i>
                         </div>
                     </DropdownToggle>
-
-                    <HomePageLink />
-
-                    <div data-candu-id="navbar-home-spacer" />
 
                     <DropdownMenu className={css['dropdown-menu']}>
                         {getMainMenu().map((item) => {
@@ -331,6 +332,14 @@ export class Navbar extends Component<Props, State> {
                         })}
                     </DropdownMenu>
                 </UncontrolledDropdown>
+
+                <div className={css['navbar-cta-group']}>
+                    <HomePageLink />
+
+                    <div data-candu-id="navbar-home-spacer" />
+
+                    {isSpotlightEnabled && <SpotlightButton />}
+                </div>
 
                 <div className={css['navbar-content']}>
                     {this.props.children}

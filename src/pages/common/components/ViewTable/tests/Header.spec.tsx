@@ -2,12 +2,14 @@ import React, {MouseEvent} from 'react'
 import {shallow, ShallowWrapper} from 'enzyme'
 import {fromJS, Map} from 'immutable'
 
-import Search from 'pages/common/components/Search'
+import {getConfigByName} from 'config/views'
 import * as viewsFixtures from 'fixtures/views'
+import Search from 'pages/common/components/Search'
+import EmojiSelect from 'pages/common/components/ViewTable/EmojiSelect/EmojiSelect'
 import * as viewsActions from 'state/views/actions'
 import history from 'pages/history'
-import EmojiSelect from 'pages/common/components/ViewTable/EmojiSelect/EmojiSelect'
-import {getConfigByName} from 'config/views'
+import {getLDClient} from 'utils/launchDarkly'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import {HeaderContainer} from '../Header'
 
@@ -19,6 +21,9 @@ jest.mock('state/views/actions.ts', () => {
 })
 jest.mock('react-router-dom')
 jest.mock('pages/history')
+jest.mock('utils/launchDarkly')
+const allFlagsMock = getLDClient().allFlags as jest.Mock
+allFlagsMock.mockReturnValue({})
 
 describe('ViewTable::Header', () => {
     const fixtureView = viewsFixtures.view
@@ -45,6 +50,7 @@ describe('ViewTable::Header', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+        allFlagsMock.mockReturnValue({})
     })
 
     it('empty view', () => {
@@ -59,7 +65,42 @@ describe('ViewTable::Header', () => {
         expect(component).toMatchSnapshot()
     })
 
+    it('should not render unfocused search input when spotlight is enabled', () => {
+        allFlagsMock.mockReturnValue({
+            [FeatureFlagKey.SpotlightGlobalSearch]: true,
+        })
+
+        const component = shallow(
+            <HeaderContainer
+                {...minProps}
+                config={config}
+                activeView={fromJS({})}
+                isUpdate={false}
+            />
+        )
+        expect(component).toMatchSnapshot()
+    })
+
     it('search view', () => {
+        const component = shallow(
+            <HeaderContainer
+                {...minProps}
+                config={config}
+                isSearch
+                activeView={fromJS({
+                    ...fixtureView,
+                    search: 'term1',
+                })}
+            />
+        )
+        expect(component).toMatchSnapshot()
+    })
+
+    it('should render search with search term location when spotlight is enabled', () => {
+        allFlagsMock.mockReturnValue({
+            [FeatureFlagKey.SpotlightGlobalSearch]: true,
+        })
+
         const component = shallow(
             <HeaderContainer
                 {...minProps}
@@ -100,7 +141,7 @@ describe('ViewTable::Header', () => {
 
     it('should not update view on search submit when not in search mode', () => {
         const component = shallow(
-            <HeaderContainer {...minProps} isSearch={false} config={config} />
+            <HeaderContainer {...minProps} isSearch={true} config={config} />
         )
         const onKeyDown = component.find(Search).props().onKeyDown
 

@@ -1,0 +1,96 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SpotlightLoader /> should render 1`] = `
+<div>
+  <div
+    class="row"
+  >
+    <span
+      aria-busy="true"
+      aria-live="polite"
+      class="container icon"
+    >
+      <span
+        class="react-loading-skeleton skeleton"
+        style="height: 24px; border-radius: 4px;"
+      >
+        ‌
+      </span>
+      <br />
+    </span>
+    <span
+      aria-busy="true"
+      aria-live="polite"
+      class="container line"
+    >
+      <span
+        class="react-loading-skeleton skeleton"
+        style="height: 24px; border-radius: 4px;"
+      >
+        ‌
+      </span>
+      <br />
+    </span>
+  </div>
+  <div
+    class="row"
+  >
+    <span
+      aria-busy="true"
+      aria-live="polite"
+      class="container icon"
+    >
+      <span
+        class="react-loading-skeleton skeleton"
+        style="height: 24px; border-radius: 4px;"
+      >
+        ‌
+      </span>
+      <br />
+    </span>
+    <span
+      aria-busy="true"
+      aria-live="polite"
+      class="container line"
+    >
+      <span
+        class="react-loading-skeleton skeleton"
+        style="height: 24px; border-radius: 4px;"
+      >
+        ‌
+      </span>
+      <br />
+    </span>
+  </div>
+  <div
+    class="row"
+  >
+    <span
+      aria-busy="true"
+      aria-live="polite"
+      class="container icon"
+    >
+      <span
+        class="react-loading-skeleton skeleton"
+        style="height: 24px; border-radius: 4px;"
+      >
+        ‌
+      </span>
+      <br />
+    </span>
+    <span
+      aria-busy="true"
+      aria-live="polite"
+      class="container line"
+    >
+      <span
+        class="react-loading-skeleton skeleton"
+        style="height: 24px; border-radius: 4px;"
+      >
+        ‌
+      </span>
+      <br />
+    </span>
+  </div>
+</div>
+`;

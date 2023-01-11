@@ -1,0 +1,41 @@
+@import '~css/new/colorTokens';
+@import '~css/typography';
+
+:local {
+    .body {
+        .body-regular();
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .advancedSearchCta {
+        background: none;
+        border: none;
+        color: @classic-main-primary;
+        margin-top: 4px;
+        cursor: pointer;
+
+        &:hover {
+            color: @classic-main-primary-4;
+        }
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    .title {
+        .body-semibold();
+        margin-bottom: 4px;
+    }
+
+    .wrapper {
+        align-items: center;
+        color: @classic-neutral-grey-5;
+        display: flex;
+        flex-direction: column;
+        margin: 16px;
+        padding: 34px;
+    }
+}

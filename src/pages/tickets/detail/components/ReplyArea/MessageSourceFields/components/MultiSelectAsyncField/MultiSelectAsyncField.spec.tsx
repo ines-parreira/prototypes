@@ -2,6 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import _debounce from 'lodash/debounce'
 
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {ReceiverValue} from 'state/ticket/utils'
 import {isEmail} from 'utils'
 
@@ -205,7 +206,7 @@ describe('MultiSelectAsyncField component', () => {
             },
         })
 
-        expect(component.find('.skeleton').length).toBe(3)
+        expect(component.find(Skeleton).props().count).toBe(3)
     })
 
     it('should render no results when the query returns no result', (done) => {

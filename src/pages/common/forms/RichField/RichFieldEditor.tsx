@@ -30,6 +30,7 @@ import {
 } from 'state/newMessage/selectors'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {addVideo} from 'pages/common/draftjs/plugins/utils'
+import shortcutManager from 'services/shortcutManager'
 
 import {ConnectedAction, RootState} from '../../../../state/types'
 import {notify} from '../../../../state/notifications/actions'
@@ -249,6 +250,10 @@ export class RichFieldEditor extends Component<Props, State> {
         }
     }
 
+    componentWillUnmount() {
+        shortcutManager.unpause()
+    }
+
     _getAttachFiles = () => this.props.attachFiles
 
     _getCanDropFiles = () => this.props.canDropFiles
@@ -267,6 +272,7 @@ export class RichFieldEditor extends Component<Props, State> {
             if (this.editor) {
                 this.editor.focus()
                 scrollToReactNode(this.editor as any)
+                shortcutManager.denylist(['SpotlightModal'])
             }
         }, 0)
     }
@@ -393,9 +399,15 @@ export class RichFieldEditor extends Component<Props, State> {
     }
 
     _onEditorFocus = (event: MouseEvent<HTMLDivElement>) => {
+        shortcutManager.denylist(['SpotlightModal'])
         const {onFocus, detectGrammarly} = this.props
         onFocus(event)
         detectGrammarly()
+    }
+
+    _onEditorBlur = () => {
+        this.props.onBlur()
+        shortcutManager.unpause()
     }
 
     render() {
@@ -441,7 +453,7 @@ export class RichFieldEditor extends Component<Props, State> {
                             editorState={this.props.editorState}
                             onChange={this.handleChildChange}
                             onFocus={this._onEditorFocus}
-                            onBlur={this.props.onBlur}
+                            onBlur={this._onEditorBlur}
                             plugins={this.plugins}
                             handleKeyCommand={this._handleKeyCommand}
                             handlePastedText={this._handlePastedText}

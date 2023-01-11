@@ -7,6 +7,7 @@ import {convertToHTML} from 'draft-convert'
 import Editor from 'draft-js-plugins-editor'
 import {fromJS} from 'immutable'
 
+import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {convertFromHTML} from 'utils/editor'
 
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -18,6 +19,7 @@ import provideToolbarPlugin from '../provideToolbarPlugin'
 
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
+jest.mock('services/shortcutManager/shortcutManager')
 
 jest.mock('utils/launchDarkly')
 const allFlagsMock = getLDClient().allFlags as jest.Mock
@@ -158,6 +160,41 @@ describe('RichFieldEditor', () => {
 
         component.find(Editor).simulate('focus')
         expect(detectGrammarly).toBeCalledTimes(1)
+    })
+
+    describe('should blacklist spotlight shortcuts when editor is focused', () => {
+        const onFocus = jest.fn()
+
+        const component = shallow(
+            <RichFieldEditor
+                {...defaultProps}
+                editorKey="editor"
+                editorState={editorState}
+                onFocus={onFocus}
+            />
+        )
+
+        component.find(Editor).simulate('focus')
+        expect(shortcutManager.denylist).toHaveBeenCalledWith([
+            'SpotlightModal',
+        ])
+    })
+
+    describe('should unpause spotlight shortcuts when editor is focused', () => {
+        const onFocus = jest.fn()
+
+        const component = shallow(
+            <RichFieldEditor
+                {...defaultProps}
+                editorKey="editor"
+                editorState={editorState}
+                onFocus={onFocus}
+            />
+        )
+
+        component.find(Editor).simulate('focus')
+        component.find(Editor).simulate('blur')
+        expect(shortcutManager.unpause).toHaveBeenCalled()
     })
 
     it('should handle shortcuts', () => {

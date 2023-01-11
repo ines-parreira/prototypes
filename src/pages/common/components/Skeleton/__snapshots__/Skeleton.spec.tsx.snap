@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Skeleton /> should render a skeleton 1`] = `
+<span
+  aria-busy="true"
+  aria-live="polite"
+>
+  <span
+    class="react-loading-skeleton skeleton"
+    style="height: 20px; border-radius: 4px;"
+  >
+    ‌
+  </span>
+  <br />
+</span>
+`;

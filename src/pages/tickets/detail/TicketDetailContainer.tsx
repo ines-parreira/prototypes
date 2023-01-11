@@ -43,6 +43,7 @@ import {
 } from 'state/ticket/actions'
 import {updateCursor} from 'state/tickets/actions'
 import {getActiveView} from 'state/views/selectors'
+import {isMacOs} from 'utils/platform'
 
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import Loader from '../../common/components/Loader/Loader'
@@ -447,7 +448,7 @@ export const TicketDetailContainer = ({
     const ctrlFPredicate = (event: KeyboardEvent) => {
         return (
             ticketIdParam !== 'new' &&
-            (navigator.platform.includes('Mac')
+            (isMacOs
                 ? event.metaKey && event.key === 'f'
                 : event.ctrlKey && event.key === 'f')
         )

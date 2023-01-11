@@ -5,20 +5,21 @@ import {Map} from 'immutable'
 import classnames from 'classnames'
 
 import closeIcon from 'assets/img/icons/close.svg'
+import * as viewsConfig from 'config/views'
+import EditableTitle from 'pages/common/components/EditableTitle'
+import Search from 'pages/common/components/Search'
+import Tooltip from 'pages/common/components/Tooltip'
+import ViewName from 'pages/common/components/ViewName/ViewName'
+import EmojiSelect from 'pages/common/components/ViewTable/EmojiSelect/EmojiSelect'
+import history from 'pages/history'
+import shortcutManager from 'services/shortcutManager'
+import * as viewsActions from 'state/views/actions'
+import * as viewsSelectors from 'state/views/selectors'
+import {RootState} from 'state/types'
+import {getLDClient} from 'utils/launchDarkly'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {slugify} from 'utils'
 
-import EditableTitle from '../EditableTitle'
-import Search from '../Search'
-import {slugify} from '../../../../utils'
-import * as viewsActions from '../../../../state/views/actions'
-import * as viewsSelectors from '../../../../state/views/selectors'
-import * as viewsConfig from '../../../../config/views'
-import shortcutManager from '../../../../services/shortcutManager'
-import ViewName from '../ViewName/ViewName'
-import Tooltip from '../Tooltip'
-import {RootState} from '../../../../state/types'
-import history from '../../../history'
-
-import EmojiSelect from './EmojiSelect/EmojiSelect'
 import css from './Header.less'
 
 type OwnProps = {
@@ -132,10 +133,13 @@ export class HeaderContainer extends React.Component<Props, State> {
     }
 
     render() {
-        const {activeView, config, isSearch, isUpdate, viewButtons} = this.props
+        const {activeView, config, isUpdate, isSearch, viewButtons} = this.props
 
         const isEditMode = activeView.get('editMode')
         const emoji = activeView.getIn(['decoration', 'emoji'])
+
+        const isSpotlightEnabled =
+            getLDClient().allFlags()[FeatureFlagKey.SpotlightGlobalSearch]
 
         return (
             <div className={css.component}>
@@ -234,7 +238,9 @@ export class HeaderContainer extends React.Component<Props, State> {
                         </div>
                     )}
 
-                    {(!isEditMode || (isEditMode && isSearch)) && (
+                    {(isSpotlightEnabled
+                        ? isSearch
+                        : !isEditMode || (isEditMode && isSearch)) && (
                         <div
                             className={classnames('d-flex', {
                                 'flex-grow': isSearch,
@@ -247,9 +253,15 @@ export class HeaderContainer extends React.Component<Props, State> {
                                 placeholder={`Search ${
                                     config.get('plural') as string
                                 }...`}
-                                location={`${
-                                    activeView.get('id') as unknown as string
-                                }${isSearch ? '(s)' : ''}`}
+                                location={
+                                    isSpotlightEnabled
+                                        ? activeView.get('search', '')
+                                        : `${
+                                              activeView.get(
+                                                  'id'
+                                              ) as unknown as string
+                                          }${isSearch ? '(s)' : ''}`
+                                }
                                 forcedQuery={activeView.get('search') || ''}
                                 className={classnames(
                                     css.headerSearch,
@@ -259,7 +271,11 @@ export class HeaderContainer extends React.Component<Props, State> {
                                         'flex-grow': isSearch,
                                     }
                                 )}
-                                onFocus={this.handleFocus}
+                                onFocus={
+                                    !isSpotlightEnabled
+                                        ? this.handleFocus
+                                        : undefined
+                                }
                             />
 
                             {isSearch ? (

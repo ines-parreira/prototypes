@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ShortcutIcon /> should render a dark icon 1`] = `
+<div
+  class="wrapper dark"
+>
+  ⌘
+</div>
+`;
+
+exports[`<ShortcutIcon /> should render an icon 1`] = `
+<div
+  class="wrapper classic"
+>
+  ⌘
+</div>
+`;

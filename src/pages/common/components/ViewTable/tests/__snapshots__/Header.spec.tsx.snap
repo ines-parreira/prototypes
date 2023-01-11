@@ -306,6 +306,80 @@ exports[`ViewTable::Header search view 1`] = `
 </div>
 `;
 
+exports[`ViewTable::Header should not render unfocused search input when spotlight is enabled 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="d-flex flex-grow"
+  >
+    <div
+      className="flex-grow mr-2 titleWrapper"
+    >
+      <div
+        className="title mr-2 h-100 cursor-pointer"
+        color="transparent"
+        id="settings-view-button"
+        onClick={[Function]}
+      >
+        <Memo(ViewName) />
+        <i
+          className="material-icons"
+        >
+          keyboard_arrow_down
+        </i>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ViewTable::Header should render search with search term location when spotlight is enabled 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="d-flex flex-grow"
+  >
+    <div
+      className="d-flex flex-grow"
+    >
+      <Search
+        autoFocus={true}
+        bindKey={true}
+        className="headerSearch mr-2 isSearching flex-grow"
+        disabled={false}
+        forcedQuery="term1"
+        location="term1"
+        onKeyDown={[Function]}
+        placeholder="Search tickets..."
+        searchDebounceTime={0}
+        style={Object {}}
+      />
+      <Link
+        to="/app/tickets"
+      >
+        <i
+          className="closeIcon material-icons d-none d-md-inline-block"
+          id="leave-search-mode"
+        >
+          close
+        </i>
+        <Tooltip
+          placement="top"
+          target="leave-search-mode"
+        >
+          <b>
+            Esc
+          </b>
+           Leave search mode
+        </Tooltip>
+      </Link>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`ViewTable::Header should render when view is in edit mode 1`] = `
 <div
   className="component"

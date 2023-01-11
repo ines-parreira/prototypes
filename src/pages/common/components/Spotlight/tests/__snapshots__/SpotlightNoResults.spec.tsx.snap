@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SpotlightNoResults /> should render 1`] = `
+<div
+  class="wrapper"
+>
+  <div
+    class="title"
+  >
+    No results
+  </div>
+  <div
+    class="body"
+  >
+    You may want to try using different keywords or check for typos.
+    <button
+      class="advancedSearchCta"
+    >
+      Use advanced search
+    </button>
+  </div>
+</div>
+`;

@@ -1,0 +1,94 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SpotlightCustomerRow/> should not render customer mail and phone sections if not available 1`] = `
+<a
+  class="container shrinkInfo"
+  to="/app/customer/34"
+>
+  <span
+    class="title"
+  >
+    Jean Bon
+  </span>
+  <div
+    class="separator"
+  />
+  <span
+    class="info"
+  />
+</a>
+`;
+
+exports[`<SpotlightCustomerRow/> should render render customer information 1`] = `
+<a
+  class="container shrinkInfo"
+  to="/app/customer/34"
+>
+  <span
+    class="title"
+  >
+    Jean Bon
+  </span>
+  <div
+    class="separator"
+  />
+  <span
+    class="info"
+  >
+    <div
+      class="customerInfo"
+    >
+      <span
+        class="infoText"
+      >
+        jeanbon@gorgias.io
+      </span>
+      <span
+        class="infoSeparator"
+      >
+        •
+      </span>
+      <span>
+        +1 415-548-9999
+      </span>
+    </div>
+  </span>
+</a>
+`;
+
+exports[`<SpotlightCustomerRow/> should render with customer id when no customer name is available 1`] = `
+<a
+  class="container shrinkInfo"
+  to="/app/customer/34"
+>
+  <span
+    class="title"
+  >
+    Customer #34
+  </span>
+  <div
+    class="separator"
+  />
+  <span
+    class="info"
+  >
+    <div
+      class="customerInfo"
+    >
+      <span
+        class="infoText"
+      >
+        jeanbon@gorgias.io
+      </span>
+      <span
+        class="infoSeparator"
+      >
+        •
+      </span>
+      <span>
+        +1 415-548-9999
+      </span>
+    </div>
+  </span>
+</a>
+`;

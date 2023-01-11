@@ -120,6 +120,14 @@ export class ShortcutManager {
         })
     }
 
+    denylist(list: Array<string> = []) {
+        this._bound.forEach((b) => {
+            if (list.includes(b.name)) {
+                b.paused = true
+            }
+        })
+    }
+
     unpause() {
         this._isPaused = false
 

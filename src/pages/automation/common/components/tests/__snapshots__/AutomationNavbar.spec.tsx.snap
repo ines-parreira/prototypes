@@ -24,14 +24,6 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
         </div>
       </button>
       <div
-        class="hiddenLink"
-        data-candu-id="navbar-dropdown"
-        data-testid="candu-hidden-link"
-      />
-      <div
-        data-candu-id="navbar-home-spacer"
-      />
-      <div
         aria-hidden="true"
         class="dropdown-menu dropdown-menu"
         role="menu"
@@ -112,6 +104,18 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
           Settings
         </a>
       </div>
+    </div>
+    <div
+      class="navbar-cta-group"
+    >
+      <div
+        class="hiddenLink"
+        data-candu-id="navbar-dropdown"
+        data-testid="candu-hidden-link"
+      />
+      <div
+        data-candu-id="navbar-home-spacer"
+      />
     </div>
     <div
       class="navbar-content"
@@ -279,14 +283,6 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
         </div>
       </button>
       <div
-        class="hiddenLink"
-        data-candu-id="navbar-dropdown"
-        data-testid="candu-hidden-link"
-      />
-      <div
-        data-candu-id="navbar-home-spacer"
-      />
-      <div
         aria-hidden="true"
         class="dropdown-menu dropdown-menu"
         role="menu"
@@ -367,6 +363,18 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
           Settings
         </a>
       </div>
+    </div>
+    <div
+      class="navbar-cta-group"
+    >
+      <div
+        class="hiddenLink"
+        data-candu-id="navbar-dropdown"
+        data-testid="candu-hidden-link"
+      />
+      <div
+        data-candu-id="navbar-home-spacer"
+      />
     </div>
     <div
       class="navbar-content"
@@ -537,14 +545,6 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
         </div>
       </button>
       <div
-        class="hiddenLink"
-        data-candu-id="navbar-dropdown"
-        data-testid="candu-hidden-link"
-      />
-      <div
-        data-candu-id="navbar-home-spacer"
-      />
-      <div
         aria-hidden="true"
         class="dropdown-menu dropdown-menu"
         role="menu"
@@ -625,6 +625,18 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
           Settings
         </a>
       </div>
+    </div>
+    <div
+      class="navbar-cta-group"
+    >
+      <div
+        class="hiddenLink"
+        data-candu-id="navbar-dropdown"
+        data-testid="candu-hidden-link"
+      />
+      <div
+        data-candu-id="navbar-home-spacer"
+      />
     </div>
     <div
       class="navbar-content"
@@ -776,14 +788,6 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
         </div>
       </button>
       <div
-        class="hiddenLink"
-        data-candu-id="navbar-dropdown"
-        data-testid="candu-hidden-link"
-      />
-      <div
-        data-candu-id="navbar-home-spacer"
-      />
-      <div
         aria-hidden="true"
         class="dropdown-menu dropdown-menu"
         role="menu"
@@ -864,6 +868,18 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
           Settings
         </a>
       </div>
+    </div>
+    <div
+      class="navbar-cta-group"
+    >
+      <div
+        class="hiddenLink"
+        data-candu-id="navbar-dropdown"
+        data-testid="candu-hidden-link"
+      />
+      <div
+        data-candu-id="navbar-home-spacer"
+      />
     </div>
     <div
       class="navbar-content"
@@ -1031,14 +1047,6 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
         </div>
       </button>
       <div
-        class="hiddenLink"
-        data-candu-id="navbar-dropdown"
-        data-testid="candu-hidden-link"
-      />
-      <div
-        data-candu-id="navbar-home-spacer"
-      />
-      <div
         aria-hidden="true"
         class="dropdown-menu dropdown-menu"
         role="menu"
@@ -1119,6 +1127,18 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
           Settings
         </a>
       </div>
+    </div>
+    <div
+      class="navbar-cta-group"
+    >
+      <div
+        class="hiddenLink"
+        data-candu-id="navbar-dropdown"
+        data-testid="candu-hidden-link"
+      />
+      <div
+        data-candu-id="navbar-home-spacer"
+      />
     </div>
     <div
       class="navbar-content"
@@ -1289,14 +1309,6 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
         </div>
       </button>
       <div
-        class="hiddenLink"
-        data-candu-id="navbar-dropdown"
-        data-testid="candu-hidden-link"
-      />
-      <div
-        data-candu-id="navbar-home-spacer"
-      />
-      <div
         aria-hidden="true"
         class="dropdown-menu dropdown-menu"
         role="menu"
@@ -1377,6 +1389,18 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
           Settings
         </a>
       </div>
+    </div>
+    <div
+      class="navbar-cta-group"
+    >
+      <div
+        class="hiddenLink"
+        data-candu-id="navbar-dropdown"
+        data-testid="candu-hidden-link"
+      />
+      <div
+        data-candu-id="navbar-home-spacer"
+      />
     </div>
     <div
       class="navbar-content"
@@ -1528,14 +1552,6 @@ exports[`<AutomationNavbar /> render() should render automation navbar for non-a
         </div>
       </button>
       <div
-        class="hiddenLink"
-        data-candu-id="navbar-dropdown"
-        data-testid="candu-hidden-link"
-      />
-      <div
-        data-candu-id="navbar-home-spacer"
-      />
-      <div
         aria-hidden="true"
         class="dropdown-menu dropdown-menu"
         role="menu"
@@ -1616,6 +1632,18 @@ exports[`<AutomationNavbar /> render() should render automation navbar for non-a
           Settings
         </a>
       </div>
+    </div>
+    <div
+      class="navbar-cta-group"
+    >
+      <div
+        class="hiddenLink"
+        data-candu-id="navbar-dropdown"
+        data-testid="candu-hidden-link"
+      />
+      <div
+        data-candu-id="navbar-home-spacer"
+      />
     </div>
     <div
       class="navbar-content"
@@ -1715,14 +1743,6 @@ exports[`<AutomationNavbar /> render() should render automation navbar for non-a
         </div>
       </button>
       <div
-        class="hiddenLink"
-        data-candu-id="navbar-dropdown"
-        data-testid="candu-hidden-link"
-      />
-      <div
-        data-candu-id="navbar-home-spacer"
-      />
-      <div
         aria-hidden="true"
         class="dropdown-menu dropdown-menu"
         role="menu"
@@ -1803,6 +1823,18 @@ exports[`<AutomationNavbar /> render() should render automation navbar for non-a
           Settings
         </a>
       </div>
+    </div>
+    <div
+      class="navbar-cta-group"
+    >
+      <div
+        class="hiddenLink"
+        data-candu-id="navbar-dropdown"
+        data-testid="candu-hidden-link"
+      />
+      <div
+        data-candu-id="navbar-home-spacer"
+      />
     </div>
     <div
       class="navbar-content"

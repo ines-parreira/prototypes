@@ -23,6 +23,19 @@ const shortcuts: Record<string, KeyMap> = {
             },
         },
     },
+    SpotlightModal: {
+        description: 'Spotlight search',
+        actions: {
+            TOGGLE_SPOTLIGHT: {
+                key: ['mod+k'],
+                description: 'Open the spotlight search',
+            },
+            GO_ADVANCED_SEARCH: {
+                key: 'shift+enter',
+                description: 'Go to advanced search',
+            },
+        },
+    },
     View: {
         description: 'Views (Global)',
         actions: {

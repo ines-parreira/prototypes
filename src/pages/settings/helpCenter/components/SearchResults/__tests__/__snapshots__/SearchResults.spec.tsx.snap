@@ -174,7 +174,8 @@ exports[`SearchResults displays article and category search results 1`] = `
                 aria-live="polite"
               >
                 <span
-                  class="react-loading-skeleton"
+                  class="react-loading-skeleton skeleton"
+                  style="height: 20px; border-radius: 4px;"
                 >
                   ‌
                 </span>
@@ -265,7 +266,8 @@ exports[`SearchResults displays article and category search results 1`] = `
                 aria-live="polite"
               >
                 <span
-                  class="react-loading-skeleton"
+                  class="react-loading-skeleton skeleton"
+                  style="height: 20px; border-radius: 4px;"
                 >
                   ‌
                 </span>
@@ -373,7 +375,8 @@ exports[`SearchResults displays article and category search results 1`] = `
                 aria-live="polite"
               >
                 <span
-                  class="react-loading-skeleton"
+                  class="react-loading-skeleton skeleton"
+                  style="height: 20px; border-radius: 4px;"
                 >
                   ‌
                 </span>
@@ -463,7 +466,8 @@ exports[`SearchResults displays article and category search results 1`] = `
                 aria-live="polite"
               >
                 <span
-                  class="react-loading-skeleton"
+                  class="react-loading-skeleton skeleton"
+                  style="height: 20px; border-radius: 4px;"
                 >
                   ‌
                 </span>
@@ -553,7 +557,8 @@ exports[`SearchResults displays article and category search results 1`] = `
                 aria-live="polite"
               >
                 <span
-                  class="react-loading-skeleton"
+                  class="react-loading-skeleton skeleton"
+                  style="height: 20px; border-radius: 4px;"
                 >
                   ‌
                 </span>
@@ -643,7 +648,8 @@ exports[`SearchResults displays article and category search results 1`] = `
                 aria-live="polite"
               >
                 <span
-                  class="react-loading-skeleton"
+                  class="react-loading-skeleton skeleton"
+                  style="height: 20px; border-radius: 4px;"
                 >
                   ‌
                 </span>
@@ -733,7 +739,8 @@ exports[`SearchResults displays article and category search results 1`] = `
                 aria-live="polite"
               >
                 <span
-                  class="react-loading-skeleton"
+                  class="react-loading-skeleton skeleton"
+                  style="height: 20px; border-radius: 4px;"
                 >
                   ‌
                 </span>
@@ -823,7 +830,8 @@ exports[`SearchResults displays article and category search results 1`] = `
                 aria-live="polite"
               >
                 <span
-                  class="react-loading-skeleton"
+                  class="react-loading-skeleton skeleton"
+                  style="height: 20px; border-radius: 4px;"
                 >
                   ‌
                 </span>
@@ -913,7 +921,8 @@ exports[`SearchResults displays article and category search results 1`] = `
                 aria-live="polite"
               >
                 <span
-                  class="react-loading-skeleton"
+                  class="react-loading-skeleton skeleton"
+                  style="height: 20px; border-radius: 4px;"
                 >
                   ‌
                 </span>
@@ -1004,7 +1013,8 @@ exports[`SearchResults displays article and category search results 1`] = `
                 aria-live="polite"
               >
                 <span
-                  class="react-loading-skeleton"
+                  class="react-loading-skeleton skeleton"
+                  style="height: 20px; border-radius: 4px;"
                 >
                   ‌
                 </span>
@@ -1113,7 +1123,8 @@ exports[`SearchResults displays article and category search results 1`] = `
                 aria-live="polite"
               >
                 <span
-                  class="react-loading-skeleton"
+                  class="react-loading-skeleton skeleton"
+                  style="height: 20px; border-radius: 4px;"
                 >
                   ‌
                 </span>
@@ -1222,7 +1233,8 @@ exports[`SearchResults displays article and category search results 1`] = `
                 aria-live="polite"
               >
                 <span
-                  class="react-loading-skeleton"
+                  class="react-loading-skeleton skeleton"
+                  style="height: 20px; border-radius: 4px;"
                 >
                   ‌
                 </span>

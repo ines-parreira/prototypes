@@ -1,0 +1,75 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SpotlightRow/> should render with icon 1`] = `
+<div>
+  <a
+    class="container"
+    to="/app/foo"
+  >
+    <div
+      class="icon"
+    >
+      🚀
+    </div>
+    <span
+      class="title"
+    >
+      This is the title
+    </span>
+    <div
+      class="separator"
+    />
+    <span
+      class="info"
+    >
+      And this is the info!
+    </span>
+  </a>
+</div>
+`;
+
+exports[`<SpotlightRow/> should render with minimal props 1`] = `
+<div>
+  <a
+    class="container"
+    to="/app/foo"
+  >
+    <span
+      class="title"
+    >
+      This is the title
+    </span>
+    <div
+      class="separator"
+    />
+    <span
+      class="info"
+    >
+      And this is the info!
+    </span>
+  </a>
+</div>
+`;
+
+exports[`<SpotlightRow/> should shrink info flex container 1`] = `
+<div>
+  <a
+    class="container shrinkInfo"
+    to="/app/foo"
+  >
+    <span
+      class="title"
+    >
+      This is the title
+    </span>
+    <div
+      class="separator"
+    />
+    <span
+      class="info"
+    >
+      And this is the info!
+    </span>
+  </a>
+</div>
+`;

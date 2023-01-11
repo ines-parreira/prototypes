@@ -1,0 +1,58 @@
+@import '~css/typography';
+@import '~css/new/colorTokens';
+
+:local {
+    .container {
+        height: 56px;
+        display: flex;
+        align-items: center;
+        padding: 0 16px;
+        color: unset;
+        border-radius: 4px;
+
+        &:hover {
+            color: unset;
+            background-color: @classic-neutral-grey-1;
+        }
+
+        &.shrinkInfo {
+            .title {
+                flex-shrink: 0;
+            }
+            .info {
+                flex-shrink: 1;
+            }
+        }
+    }
+
+    .icon {
+        margin-right: 8px;
+    }
+
+    .title {
+        .heading-subsection-semibold();
+        color: @classic-neutral-grey-6;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .separator {
+        width: 12px;
+        height: 1px;
+        flex-shrink: 0;
+        margin: 0 8px;
+        background-color: @classic-neutral-grey-4;
+    }
+
+    .info {
+        .caption-regular();
+        color: @classic-neutral-grey-5;
+        overflow: hidden;
+        flex-shrink: 0;
+
+        &.shrink {
+            flex-shrink: 1;
+        }
+    }
+}

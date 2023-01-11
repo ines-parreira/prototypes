@@ -1,0 +1,449 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SpotlightModal/> should render 1`] = `
+<div
+  aria-describedby="modal-1-desc"
+  aria-labelledby="modal-1-title"
+  aria-modal="true"
+  class="modal spotlightModal default open"
+  role="dialog"
+>
+  <div
+    class="dialog large scrollableDialog"
+  >
+    <div
+      class="modalContent scrollableContent default spotlightModalContent"
+    >
+      <div
+        class="component searchInput"
+      >
+        <div
+          class="wrapper input textInput shortcuts-enable"
+        >
+          <span
+            class="prefix"
+          >
+            <i
+              class="material-icons icon"
+            >
+              search
+            </i>
+          </span>
+          <input
+            class="input"
+            id="input-text-2"
+            name="input-text-2"
+            placeholder="Search..."
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+      <div
+        class="wrapper footer cleanSearchFooter"
+      >
+        <button
+          class="wrapper ghost secondary small"
+          type="button"
+        >
+          <span>
+            Advanced Search
+          </span>
+          <div
+            class="wrapper classic shortcut"
+          >
+            ⇧
+          </div>
+          <div
+            class="wrapper classic shortcut"
+          >
+            ↩
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<SpotlightModal/> should render the fetched result set with SpotlightRow for /app/customers route 1`] = `
+<div
+  aria-describedby="modal-37-desc"
+  aria-labelledby="modal-37-title"
+  aria-modal="true"
+  class="modal spotlightModal default open"
+  role="dialog"
+>
+  <div
+    class="dialog large scrollableDialog"
+  >
+    <div
+      class="modalContent scrollableContent default spotlightModalContent"
+    >
+      <div
+        class="component searchInput"
+      >
+        <div
+          class="wrapper isFocused input textInput shortcuts-enable"
+        >
+          <span
+            class="prefix"
+          >
+            <i
+              class="material-icons icon"
+            >
+              search
+            </i>
+          </span>
+          <input
+            class="input"
+            id="input-text-38"
+            name="input-text-38"
+            placeholder="Search..."
+            type="text"
+            value="foo"
+          />
+        </div>
+      </div>
+      <div
+        class="wrapper scrollable modalBody"
+        id="modal-37-desc"
+      >
+        <div>
+          <div>
+            SpotlightCustomerRow
+          </div>
+        </div>
+      </div>
+      <div
+        class="wrapper footer"
+      >
+        <button
+          class="wrapper ghost secondary small"
+          type="button"
+        >
+          <span>
+            Advanced Search
+          </span>
+          <div
+            class="wrapper classic shortcut"
+          >
+            ⇧
+          </div>
+          <div
+            class="wrapper classic shortcut"
+          >
+            ↩
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<SpotlightModal/> should render the fetched result set with SpotlightRow for /app/tickets route 1`] = `
+<div
+  aria-describedby="modal-35-desc"
+  aria-labelledby="modal-35-title"
+  aria-modal="true"
+  class="modal spotlightModal default open"
+  role="dialog"
+>
+  <div
+    class="dialog large scrollableDialog"
+  >
+    <div
+      class="modalContent scrollableContent default spotlightModalContent"
+    >
+      <div
+        class="component searchInput"
+      >
+        <div
+          class="wrapper isFocused input textInput shortcuts-enable"
+        >
+          <span
+            class="prefix"
+          >
+            <i
+              class="material-icons icon"
+            >
+              search
+            </i>
+          </span>
+          <input
+            class="input"
+            id="input-text-36"
+            name="input-text-36"
+            placeholder="Search..."
+            type="text"
+            value="foo"
+          />
+        </div>
+      </div>
+      <div
+        class="wrapper scrollable modalBody"
+        id="modal-35-desc"
+      >
+        <div>
+          <div>
+            SpotlightTicketRow
+          </div>
+        </div>
+      </div>
+      <div
+        class="wrapper footer"
+      >
+        <button
+          class="wrapper ghost secondary small"
+          type="button"
+        >
+          <span>
+            Advanced Search
+          </span>
+          <div
+            class="wrapper classic shortcut"
+          >
+            ⇧
+          </div>
+          <div
+            class="wrapper classic shortcut"
+          >
+            ↩
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<SpotlightModal/> should reset search after closing 1`] = `
+<div
+  aria-describedby="modal-39-desc"
+  aria-labelledby="modal-39-title"
+  aria-modal="true"
+  class="modal spotlightModal default open"
+  role="dialog"
+>
+  <div
+    class="dialog large scrollableDialog"
+  >
+    <div
+      class="modalContent scrollableContent default spotlightModalContent"
+    >
+      <div
+        class="component searchInput"
+      >
+        <div
+          class="wrapper isFocused input textInput shortcuts-enable"
+        >
+          <span
+            class="prefix"
+          >
+            <i
+              class="material-icons icon"
+            >
+              search
+            </i>
+          </span>
+          <input
+            class="input"
+            id="input-text-40"
+            name="input-text-40"
+            placeholder="Search..."
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+      <div
+        class="wrapper footer cleanSearchFooter"
+      >
+        <button
+          class="wrapper ghost secondary small"
+          type="button"
+        >
+          <span>
+            Advanced Search
+          </span>
+          <div
+            class="wrapper classic shortcut"
+          >
+            ⇧
+          </div>
+          <div
+            class="wrapper classic shortcut"
+          >
+            ↩
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<SpotlightModal/> should show SpotlightLoader component while results are fetched 1`] = `
+<div
+  aria-describedby="modal-31-desc"
+  aria-labelledby="modal-31-title"
+  aria-modal="true"
+  class="modal spotlightModal default open"
+  role="dialog"
+>
+  <div
+    class="dialog large scrollableDialog"
+  >
+    <div
+      class="modalContent scrollableContent default spotlightModalContent"
+    >
+      <div
+        class="component searchInput"
+      >
+        <div
+          class="wrapper isFocused input textInput shortcuts-enable"
+        >
+          <span
+            class="prefix"
+          >
+            <i
+              class="material-icons icon"
+            >
+              search
+            </i>
+          </span>
+          <input
+            class="input"
+            id="input-text-32"
+            name="input-text-32"
+            placeholder="Search..."
+            type="text"
+            value="foo"
+          />
+        </div>
+      </div>
+      <div
+        class="wrapper scrollable modalBody"
+        id="modal-31-desc"
+      >
+        <div>
+          SpotlightLoader
+        </div>
+      </div>
+      <div
+        class="wrapper footer"
+      >
+        <button
+          class="wrapper ghost secondary small"
+          type="button"
+        >
+          <span>
+            Advanced Search
+          </span>
+          <div
+            class="wrapper classic shortcut"
+          >
+            ⇧
+          </div>
+          <div
+            class="wrapper classic shortcut"
+          >
+            ↩
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<SpotlightModal/> should show SpotlightNoResults component when no results are available and notify when an error occurs 1`] = `
+<div
+  aria-describedby="modal-33-desc"
+  aria-labelledby="modal-33-title"
+  aria-modal="true"
+  class="modal spotlightModal default open"
+  role="dialog"
+>
+  <div
+    class="dialog large scrollableDialog"
+  >
+    <div
+      class="modalContent scrollableContent default spotlightModalContent"
+    >
+      <div
+        class="component searchInput"
+      >
+        <div
+          class="wrapper isFocused input textInput shortcuts-enable"
+        >
+          <span
+            class="prefix"
+          >
+            <i
+              class="material-icons icon"
+            >
+              search
+            </i>
+          </span>
+          <input
+            class="input"
+            id="input-text-34"
+            name="input-text-34"
+            placeholder="Search..."
+            type="text"
+            value="foo"
+          />
+        </div>
+      </div>
+      <div
+        class="wrapper scrollable modalBody"
+        id="modal-33-desc"
+      >
+        <div
+          class="wrapper"
+        >
+          <div
+            class="title"
+          >
+            No results
+          </div>
+          <div
+            class="body"
+          >
+            You may want to try using different keywords or check for typos.
+            <button
+              class="advancedSearchCta"
+            >
+              Use advanced search
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        class="wrapper footer"
+      >
+        <button
+          class="wrapper ghost secondary small"
+          type="button"
+        >
+          <span>
+            Advanced Search
+          </span>
+          <div
+            class="wrapper classic shortcut"
+          >
+            ⇧
+          </div>
+          <div
+            class="wrapper classic shortcut"
+          >
+            ↩
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;

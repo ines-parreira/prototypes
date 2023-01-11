@@ -118,7 +118,7 @@ exports[`RichFieldEditor should focus the end of input on initial focus 1`] = `
         }
         handleKeyCommand={[Function]}
         handlePastedText={[Function]}
-        onBlur={[MockFunction]}
+        onBlur={[Function]}
         onChange={[Function]}
         onFocus={[Function]}
         plugins={

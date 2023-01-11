@@ -16,9 +16,8 @@ import _cloneDeep from 'lodash/cloneDeep'
 import _trim from 'lodash/trim'
 import _isArray from 'lodash/isArray'
 import _debounce from 'lodash/debounce'
-import _times from 'lodash/times'
-import Skeleton from 'react-loading-skeleton'
 
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {ReceiverValue} from 'state/ticket/utils'
 
 import css from './MultiSelectAsyncField.less'
@@ -471,11 +470,7 @@ class MultiSelectAsyncField extends React.Component<Props, State> {
                             Type to search
                         </div>
                     ) : isLoading ? (
-                        _times(3).map((value, index) => (
-                            <div key={index} className={css.skeleton}>
-                                <Skeleton />
-                            </div>
-                        ))
+                        <Skeleton count={3} />
                     ) : options.length === 0 ? (
                         <div className={css.emptySuggestions}>No results</div>
                     ) : (

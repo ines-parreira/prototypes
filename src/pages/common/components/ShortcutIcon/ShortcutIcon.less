@@ -1,0 +1,30 @@
+@import '~css/new/colorTokens';
+@import (reference) '~css/typography';
+
+:local {
+    .wrapper {
+        .caption-allcaps();
+
+        align-items: center;
+        border-radius: 2px;
+        display: flex;
+        flex-direction: column;
+        height: 18px;
+        padding: 2px 4px;
+        width: fit-content;
+
+        &.classic {
+            background-color: @classic-neutral-grey-3;
+            color: @classic-neutral-grey-5;
+        }
+
+        &.dark {
+            background-color: @modern-neutral-grey-5;
+            color: @classic-neutral-grey-2;
+        }
+
+        &:not(:first-of-type) {
+            margin-left: 2px;
+        }
+    }
+}

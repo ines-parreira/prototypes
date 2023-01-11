@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SpotlightSearchButton /> should render a search button 1`] = `
+<button
+  class="wrapper button ghost primary medium"
+  id="spotlight-button-1"
+  type="button"
+>
+  <span
+    class="wrapper"
+  >
+    <i
+      class="material-icons icon isLeft medium"
+    >
+      search
+    </i>
+  </span>
+  Search
+</button>
+`;
+
+exports[`<SpotlightSearchButton /> should render a tooltip on button hover on mac 1`] = `
+<div
+  class="tooltip-inner"
+  role="tooltip"
+>
+  <div
+    class="tooltipContent"
+  >
+    <span>
+      Global search
+    </span>
+    <div
+      class="wrapper dark"
+    >
+      ⌘
+    </div>
+    <div
+      class="wrapper dark"
+    >
+      k
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<SpotlightSearchButton /> should render a tooltip on button hover on other systems 1`] = `
+<div
+  class="tooltip-inner"
+  role="tooltip"
+>
+  <div
+    class="tooltipContent"
+  >
+    <span>
+      Global search
+    </span>
+    <div
+      class="wrapper dark"
+    >
+      ctrl
+    </div>
+    <div
+      class="wrapper dark"
+    >
+      k
+    </div>
+  </div>
+</div>
+`;

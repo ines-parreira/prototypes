@@ -3,6 +3,7 @@ import React, {
     Component,
     KeyboardEvent,
     InputHTMLAttributes,
+    RefObject,
 } from 'react'
 import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
@@ -23,12 +24,14 @@ type Props = {
     disabled: boolean
     autoFocus?: boolean
     className?: string
+    textInputClassName?: string
     placeholder: string
     bindKey?: boolean
     searchDebounceTime: number
     // location is an identifier, if it changes it's like if the Search unmounted then mounted again (ex: changing page)
     location?: string
     style: CSSProperties
+    externalInputRef?: RefObject<HTMLInputElement>
 } & Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'onKeyDown'>
 
 export default class Search extends Component<Props> {
@@ -66,7 +69,10 @@ export default class Search extends Component<Props> {
                 FOCUS_SEARCH: {
                     action: (e) => {
                         e.preventDefault()
-                        this.searchInputRef?.focus()
+                        const ref =
+                            this.props.externalInputRef?.current ||
+                            this.searchInputRef
+                        ref?.focus()
                     },
                 },
             })
@@ -125,12 +131,13 @@ export default class Search extends Component<Props> {
     handleKeyDown = (e: KeyboardEvent) => {
         const {onKeyDown} = this.props
         const {search} = this.state
+        const ref = this.props.externalInputRef?.current || this.searchInputRef
 
         if (onKeyDown) {
             onKeyDown(e, search)
         }
-        if (e.key === 'Escape' && this.searchInputRef) {
-            this.searchInputRef.blur()
+        if (e.key === 'Escape' && ref) {
+            ref.blur()
         }
     }
 
@@ -138,6 +145,7 @@ export default class Search extends Component<Props> {
         const {
             style,
             className,
+            textInputClassName,
             onChange, // eslint-disable-line
             forcedQuery, // eslint-disable-line
             shouldResetInput, // eslint-disable-line
@@ -145,15 +153,19 @@ export default class Search extends Component<Props> {
             searchDebounceTime, // eslint-disable-line
             location, // eslint-disable-line
             type,
+            externalInputRef,
             ...rest
         } = this.props
 
         return (
             <div className={classnames(css.component, className)} style={style}>
                 <TextInput
-                    ref={(ref) => (this.searchInputRef = ref)}
+                    ref={
+                        externalInputRef ||
+                        ((ref) => (this.searchInputRef = ref))
+                    }
                     type={type}
-                    className={css.input}
+                    className={classnames(css.input, textInputClassName)}
                     value={this.state.search}
                     onChange={(value) => this._handleChange(value)}
                     prefix={<IconInput icon="search" />}
