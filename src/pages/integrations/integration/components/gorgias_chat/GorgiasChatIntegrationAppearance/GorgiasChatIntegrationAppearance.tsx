@@ -657,7 +657,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                 }
                             />
 
-                            {viewTranslateEdit && (
+                            {viewTranslateEdit && isUpdate && (
                                 <CustomizeToneOfVoiceBlock
                                     integrationId={integration.get('id')}
                                 />

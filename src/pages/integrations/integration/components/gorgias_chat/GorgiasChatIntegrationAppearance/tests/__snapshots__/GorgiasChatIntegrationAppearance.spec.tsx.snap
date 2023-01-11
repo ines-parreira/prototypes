@@ -355,39 +355,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   </div>
                 </div>
                 <div
-                  class="alert info mb-4"
-                >
-                  <div
-                    class="iconContainer"
-                  >
-                    <img
-                      alt="icon"
-                      src="test-file-stub"
-                    />
-                  </div>
-                  <div
-                    class="content"
-                  >
-                    <span
-                      class="label"
-                    >
-                      <div>
-                        Customize copy for labels, automated messages, and contact form subjects to match your tone of voice.
-                      </div>
-                    </span>
-                    <div
-                      class="customActions"
-                    >
-                      <a
-                        class="actionLink"
-                        to="/app/settings/channels/gorgias_chat/undefined/appearance/texts"
-                      >
-                        Customize Copy
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div
                   class="colorPickersWrapper formGroup"
                 >
                   <div
@@ -4995,39 +4962,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                   </div>
                 </div>
                 <div
-                  class="alert info mb-4"
-                >
-                  <div
-                    class="iconContainer"
-                  >
-                    <img
-                      alt="icon"
-                      src="test-file-stub"
-                    />
-                  </div>
-                  <div
-                    class="content"
-                  >
-                    <span
-                      class="label"
-                    >
-                      <div>
-                        Customize copy for labels, automated messages, and contact form subjects to match your tone of voice.
-                      </div>
-                    </span>
-                    <div
-                      class="customActions"
-                    >
-                      <a
-                        class="actionLink"
-                        to="/app/settings/channels/gorgias_chat/undefined/appearance/texts"
-                      >
-                        Customize Copy
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div
                   class="colorPickersWrapper formGroup"
                 >
                   <div
@@ -5859,39 +5793,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       type="text"
                       value="We'll be back tomorrow"
                     />
-                  </div>
-                </div>
-                <div
-                  class="alert info mb-4"
-                >
-                  <div
-                    class="iconContainer"
-                  >
-                    <img
-                      alt="icon"
-                      src="test-file-stub"
-                    />
-                  </div>
-                  <div
-                    class="content"
-                  >
-                    <span
-                      class="label"
-                    >
-                      <div>
-                        Customize copy for labels, automated messages, and contact form subjects to match your tone of voice.
-                      </div>
-                    </span>
-                    <div
-                      class="customActions"
-                    >
-                      <a
-                        class="actionLink"
-                        to="/app/settings/channels/gorgias_chat/2/appearance/texts"
-                      >
-                        Customize Copy
-                      </a>
-                    </div>
                   </div>
                 </div>
                 <div
