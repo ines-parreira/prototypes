@@ -8,35 +8,39 @@ exports[`<DropdownInput/> should render correctly 1`] = `
     style="opacity: 1;"
   >
     <div
-      class="material-icons dragIndicator"
-      data-testid="dropdown-choice-1-handle"
-      draggable="true"
+      class="inputContainer"
     >
-      drag_indicator
-    </div>
-    <div
-      class="wrapper"
-    >
-      <input
-        class="input"
-        data-testid="dropdown-choice-1"
-        id="dropdown-choice-1"
-        name="dropdown-choice-1"
-        type="text"
-        value="Option 1"
-      />
-    </div>
-    <button
-      class="wrapper deleteButton wrapper ghost ghost destructive medium"
-      data-testid="dropdown-choice-1-remove"
-      type="button"
-    >
-      <i
-        class="material-icons icon"
+      <div
+        class="material-icons dragIndicator"
+        data-testid="dropdown-choice-1-handle"
+        draggable="true"
       >
-        clear
-      </i>
-    </button>
+        drag_indicator
+      </div>
+      <div
+        class="wrapper"
+      >
+        <input
+          class="input"
+          data-testid="dropdown-choice-1"
+          id="dropdown-choice-1"
+          name="dropdown-choice-1"
+          type="text"
+          value="Option 1"
+        />
+      </div>
+      <button
+        class="wrapper deleteButton wrapper ghost ghost destructive medium"
+        data-testid="dropdown-choice-1-remove"
+        type="button"
+      >
+        <i
+          class="material-icons icon"
+        >
+          clear
+        </i>
+      </button>
+    </div>
   </div>
   <div
     class="input"
@@ -44,35 +48,39 @@ exports[`<DropdownInput/> should render correctly 1`] = `
     style="opacity: 1;"
   >
     <div
-      class="material-icons dragIndicator"
-      data-testid="dropdown-choice-2-handle"
-      draggable="true"
+      class="inputContainer"
     >
-      drag_indicator
-    </div>
-    <div
-      class="wrapper"
-    >
-      <input
-        class="input"
-        data-testid="dropdown-choice-2"
-        id="dropdown-choice-2"
-        name="dropdown-choice-2"
-        type="text"
-        value="Option 2"
-      />
-    </div>
-    <button
-      class="wrapper deleteButton wrapper ghost ghost destructive medium"
-      data-testid="dropdown-choice-2-remove"
-      type="button"
-    >
-      <i
-        class="material-icons icon"
+      <div
+        class="material-icons dragIndicator"
+        data-testid="dropdown-choice-2-handle"
+        draggable="true"
       >
-        clear
-      </i>
-    </button>
+        drag_indicator
+      </div>
+      <div
+        class="wrapper"
+      >
+        <input
+          class="input"
+          data-testid="dropdown-choice-2"
+          id="dropdown-choice-2"
+          name="dropdown-choice-2"
+          type="text"
+          value="Option 2"
+        />
+      </div>
+      <button
+        class="wrapper deleteButton wrapper ghost ghost destructive medium"
+        data-testid="dropdown-choice-2-remove"
+        type="button"
+      >
+        <i
+          class="material-icons icon"
+        >
+          clear
+        </i>
+      </button>
+    </div>
   </div>
   <div
     class="input"
@@ -80,35 +88,39 @@ exports[`<DropdownInput/> should render correctly 1`] = `
     style="opacity: 1;"
   >
     <div
-      class="material-icons dragIndicator"
-      data-testid="dropdown-choice-3-handle"
-      draggable="true"
+      class="inputContainer"
     >
-      drag_indicator
-    </div>
-    <div
-      class="wrapper"
-    >
-      <input
-        class="input"
-        data-testid="dropdown-choice-3"
-        id="dropdown-choice-3"
-        name="dropdown-choice-3"
-        type="text"
-        value="Option 3"
-      />
-    </div>
-    <button
-      class="wrapper deleteButton wrapper ghost ghost destructive medium"
-      data-testid="dropdown-choice-3-remove"
-      type="button"
-    >
-      <i
-        class="material-icons icon"
+      <div
+        class="material-icons dragIndicator"
+        data-testid="dropdown-choice-3-handle"
+        draggable="true"
       >
-        clear
-      </i>
-    </button>
+        drag_indicator
+      </div>
+      <div
+        class="wrapper"
+      >
+        <input
+          class="input"
+          data-testid="dropdown-choice-3"
+          id="dropdown-choice-3"
+          name="dropdown-choice-3"
+          type="text"
+          value="Option 3"
+        />
+      </div>
+      <button
+        class="wrapper deleteButton wrapper ghost ghost destructive medium"
+        data-testid="dropdown-choice-3-remove"
+        type="button"
+      >
+        <i
+          class="material-icons icon"
+        >
+          clear
+        </i>
+      </button>
+    </div>
   </div>
   <div
     class="lastInput"
@@ -116,16 +128,222 @@ exports[`<DropdownInput/> should render correctly 1`] = `
     style="opacity: 1;"
   >
     <div
-      class="wrapper"
+      class="inputContainer"
     >
-      <input
-        class="input"
-        data-testid="dropdown-choice-4"
-        id="dropdown-choice-4"
-        name="dropdown-choice-4"
-        type="text"
-        value=""
-      />
+      <div
+        class="wrapper"
+      >
+        <input
+          class="input"
+          data-testid="dropdown-choice-4"
+          id="dropdown-choice-4"
+          name="dropdown-choice-4"
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    class="caption lastInput"
+  >
+    Use :: to separate nesting levels (e.g. Category::Subcategory::Item). Max 5 nesting levels allowed.
+  </div>
+</div>
+`;
+
+exports[`<DropdownInput/> should show an error for duplicate values 1`] = `
+<div>
+  <div
+    class="input"
+    data-handler-id="T8"
+    style="opacity: 1;"
+  >
+    <div
+      class="inputContainer"
+    >
+      <div
+        class="material-icons dragIndicator"
+        data-testid="dropdown-choice-1-handle"
+        draggable="true"
+      >
+        drag_indicator
+      </div>
+      <div
+        class="wrapper hasError"
+      >
+        <input
+          class="input"
+          data-testid="dropdown-choice-1"
+          id="dropdown-choice-1"
+          name="dropdown-choice-1"
+          type="text"
+          value="Option 1"
+        />
+      </div>
+      <button
+        class="wrapper deleteButton wrapper ghost ghost destructive medium"
+        data-testid="dropdown-choice-1-remove"
+        type="button"
+      >
+        <i
+          class="material-icons icon"
+        >
+          clear
+        </i>
+      </button>
+    </div>
+    <div
+      class="caption error lastInput"
+    >
+      This value already exists. Please use unique values.
+    </div>
+  </div>
+  <div
+    class="input"
+    data-handler-id="T10"
+    style="opacity: 1;"
+  >
+    <div
+      class="inputContainer"
+    >
+      <div
+        class="material-icons dragIndicator"
+        data-testid="dropdown-choice-2-handle"
+        draggable="true"
+      >
+        drag_indicator
+      </div>
+      <div
+        class="wrapper"
+      >
+        <input
+          class="input"
+          data-testid="dropdown-choice-2"
+          id="dropdown-choice-2"
+          name="dropdown-choice-2"
+          type="text"
+          value="Option 2"
+        />
+      </div>
+      <button
+        class="wrapper deleteButton wrapper ghost ghost destructive medium"
+        data-testid="dropdown-choice-2-remove"
+        type="button"
+      >
+        <i
+          class="material-icons icon"
+        >
+          clear
+        </i>
+      </button>
+    </div>
+  </div>
+  <div
+    class="input"
+    data-handler-id="T12"
+    style="opacity: 1;"
+  >
+    <div
+      class="inputContainer"
+    >
+      <div
+        class="material-icons dragIndicator"
+        data-testid="dropdown-choice-3-handle"
+        draggable="true"
+      >
+        drag_indicator
+      </div>
+      <div
+        class="wrapper hasError"
+      >
+        <input
+          class="input"
+          data-testid="dropdown-choice-3"
+          id="dropdown-choice-3"
+          name="dropdown-choice-3"
+          type="text"
+          value="Option 1"
+        />
+      </div>
+      <button
+        class="wrapper deleteButton wrapper ghost ghost destructive medium"
+        data-testid="dropdown-choice-3-remove"
+        type="button"
+      >
+        <i
+          class="material-icons icon"
+        >
+          clear
+        </i>
+      </button>
+    </div>
+    <div
+      class="caption error lastInput"
+    >
+      This value already exists. Please use unique values.
+    </div>
+  </div>
+  <div
+    class="input"
+    data-handler-id="T14"
+    style="opacity: 1;"
+  >
+    <div
+      class="inputContainer"
+    >
+      <div
+        class="material-icons dragIndicator"
+        data-testid="dropdown-choice-4-handle"
+        draggable="true"
+      >
+        drag_indicator
+      </div>
+      <div
+        class="wrapper"
+      >
+        <input
+          class="input"
+          data-testid="dropdown-choice-4"
+          id="dropdown-choice-4"
+          name="dropdown-choice-4"
+          type="text"
+          value="Option 3"
+        />
+      </div>
+      <button
+        class="wrapper deleteButton wrapper ghost ghost destructive medium"
+        data-testid="dropdown-choice-4-remove"
+        type="button"
+      >
+        <i
+          class="material-icons icon"
+        >
+          clear
+        </i>
+      </button>
+    </div>
+  </div>
+  <div
+    class="lastInput"
+    data-handler-id="T16"
+    style="opacity: 1;"
+  >
+    <div
+      class="inputContainer"
+    >
+      <div
+        class="wrapper"
+      >
+        <input
+          class="input"
+          data-testid="dropdown-choice-5"
+          id="dropdown-choice-5"
+          name="dropdown-choice-5"
+          type="text"
+          value=""
+        />
+      </div>
     </div>
   </div>
   <div

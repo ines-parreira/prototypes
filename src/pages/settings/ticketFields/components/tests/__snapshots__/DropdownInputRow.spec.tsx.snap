@@ -7,34 +7,86 @@ exports[`<DropdownInputRow/> should render correctly 1`] = `
   style="opacity: 1;"
 >
   <div
-    class="material-icons dragIndicator"
-    data-testid="dropdown-choice-123-handle"
-    draggable="true"
+    class="inputContainer"
   >
-    drag_indicator
+    <div
+      class="material-icons dragIndicator"
+      data-testid="dropdown-choice-123-handle"
+      draggable="true"
+    >
+      drag_indicator
+    </div>
+    <div
+      class="wrapper"
+    >
+      <input
+        class="input"
+        data-testid="dropdown-choice-123"
+        id="dropdown-choice-123"
+        name="dropdown-choice-123"
+        type="text"
+        value="Test value"
+      />
+    </div>
+    <button
+      class="wrapper deleteButton wrapper ghost ghost destructive medium"
+      data-testid="dropdown-choice-123-remove"
+      type="button"
+    >
+      <i
+        class="material-icons icon"
+      >
+        clear
+      </i>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<DropdownInputRow/> should render correctly when validation fails 1`] = `
+<div
+  class="input"
+  data-handler-id="T2"
+  style="opacity: 1;"
+>
+  <div
+    class="inputContainer"
+  >
+    <div
+      class="material-icons dragIndicator"
+      data-testid="dropdown-choice-123-handle"
+      draggable="true"
+    >
+      drag_indicator
+    </div>
+    <div
+      class="wrapper hasError"
+    >
+      <input
+        class="input"
+        data-testid="dropdown-choice-123"
+        id="dropdown-choice-123"
+        name="dropdown-choice-123"
+        type="text"
+        value="Test value"
+      />
+    </div>
+    <button
+      class="wrapper deleteButton wrapper ghost ghost destructive medium"
+      data-testid="dropdown-choice-123-remove"
+      type="button"
+    >
+      <i
+        class="material-icons icon"
+      >
+        clear
+      </i>
+    </button>
   </div>
   <div
-    class="wrapper"
+    class="caption error lastInput"
   >
-    <input
-      class="input"
-      data-testid="dropdown-choice-123"
-      id="dropdown-choice-123"
-      name="dropdown-choice-123"
-      type="text"
-      value="Test value"
-    />
+    Unfortunately there is an error
   </div>
-  <button
-    class="wrapper deleteButton wrapper ghost ghost destructive medium"
-    data-testid="dropdown-choice-123-remove"
-    type="button"
-  >
-    <i
-      class="material-icons icon"
-    >
-      clear
-    </i>
-  </button>
 </div>
 `;

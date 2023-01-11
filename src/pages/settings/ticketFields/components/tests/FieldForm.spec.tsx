@@ -1,10 +1,14 @@
 import React from 'react'
 import {render} from '@testing-library/react'
-
+import {DndProvider} from 'react-dnd'
+import {HTML5Backend} from 'react-dnd-html5-backend'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
+
 import {customField, customFieldInput} from 'fixtures/customField'
+import {CustomFieldInput} from 'models/customField/types'
+
 import FieldForm from '../FieldForm'
 
 const mockStore = configureMockStore([thunk])()
@@ -50,6 +54,36 @@ describe('<FieldForm/>', () => {
         const {findByText} = render(
             <Provider store={mockStore}>
                 <FieldForm {...props} />
+            </Provider>
+        )
+
+        const saveButton = await findByText(/Save Changes/)
+        saveButton.click()
+
+        expect(props.onSubmit).not.toHaveBeenCalled()
+    })
+
+    it('should disable the save button if the form has duplicates', async () => {
+        const props = {
+            field: {
+                ...customFieldInput,
+                definition: {
+                    data_type: 'text',
+                    input_settings: {
+                        input_type: 'dropdown',
+                        choices: ['Option 1', 'Option 2', 'Option 1'],
+                    },
+                },
+            } as CustomFieldInput,
+            onSubmit: jest.fn(),
+            onCancel: jest.fn(),
+        }
+
+        const {findByText} = render(
+            <Provider store={mockStore}>
+                <DndProvider backend={HTML5Backend}>
+                    <FieldForm {...props} />
+                </DndProvider>
             </Provider>
         )
 

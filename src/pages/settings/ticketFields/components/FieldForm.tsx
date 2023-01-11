@@ -57,9 +57,9 @@ export default function FieldForm(props: FieldFormProps) {
         setIsFormValid(formRef.current!.checkValidity() || false)
     }, [form])
 
-    const setValue = (key: string, value: any) => {
-        setForm(set({...form}, key, value))
-    }
+    const setValue = useCallback((key: string, value: any) => {
+        setForm((form) => set({...form}, key, value))
+    }, [])
 
     const handleSubmit = async (evt: FormEvent<HTMLFormElement>) => {
         evt.preventDefault()
@@ -81,6 +81,11 @@ export default function FieldForm(props: FieldFormProps) {
             setIsLoading(false)
         },
         [dispatch]
+    )
+
+    const handleChoiceChange = useCallback(
+        (val) => setValue('definition.input_settings.choices', val),
+        [setValue]
     )
 
     return (
@@ -162,9 +167,7 @@ export default function FieldForm(props: FieldFormProps) {
                     </Label>
                     <DropdownInput
                         value={form.definition.input_settings.choices}
-                        onChange={(val) =>
-                            setValue('definition.input_settings.choices', val)
-                        }
+                        onChange={handleChoiceChange}
                     />
                 </div>
             )}

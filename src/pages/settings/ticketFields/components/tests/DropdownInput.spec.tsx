@@ -30,6 +30,20 @@ describe('<DropdownInput/>', () => {
         expect(container).toMatchSnapshot()
     })
 
+    it('should show an error for duplicate values', () => {
+        const props = {
+            value: ['Option 1', 'Option 2', 'Option 1', 'Option 3'],
+            onChange: jest.fn(),
+        }
+
+        const {container} = render(
+            <DndProvider backend={HTML5Backend}>
+                <DropdownInput {...props} />
+            </DndProvider>
+        )
+        expect(container).toMatchSnapshot()
+    })
+
     it('should trigger an onChange event when changing a value', async () => {
         const props = {
             value: ['Option 1', 'Option 2', 'Option 3'],

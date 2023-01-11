@@ -30,6 +30,23 @@ describe('<DropdownInputRow/>', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
+    it('should render correctly when validation fails', () => {
+        const props = {
+            value: 'Test value',
+            error: 'Unfortunately there is an error',
+            onChange: jest.fn(),
+            onRemove: jest.fn(),
+            ...commonProps,
+        }
+
+        const {container} = render(
+            <DndProvider backend={HTML5Backend}>
+                <DropdownInputRow {...props} />
+            </DndProvider>
+        )
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
     it('should trigger an onChange event when changing the value', async () => {
         const props = {
             value: 'Test value',
@@ -47,7 +64,7 @@ describe('<DropdownInputRow/>', () => {
         const input = await findByTestId('dropdown-choice-123')
         fireEvent.change(input, {target: {value: 'My new value'}})
 
-        expect(props.onChange).toHaveBeenCalledWith('My new value')
+        expect(props.onChange).toHaveBeenCalledWith(0, 'My new value')
     })
 
     it('should trigger an onRemove event when the remove button is clicked', async () => {

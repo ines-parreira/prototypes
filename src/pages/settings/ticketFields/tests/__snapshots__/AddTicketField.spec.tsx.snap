@@ -171,16 +171,20 @@ exports[`<AddTicketField/> should render if the account has the feature flag 1`]
             style="opacity: 1;"
           >
             <div
-              class="wrapper"
+              class="inputContainer"
             >
-              <input
-                class="input"
-                data-testid="dropdown-choice-5"
-                id="dropdown-choice-5"
-                name="dropdown-choice-5"
-                type="text"
-                value=""
-              />
+              <div
+                class="wrapper"
+              >
+                <input
+                  class="input"
+                  data-testid="dropdown-choice-5"
+                  id="dropdown-choice-5"
+                  name="dropdown-choice-5"
+                  type="text"
+                  value=""
+                />
+              </div>
             </div>
           </div>
           <div

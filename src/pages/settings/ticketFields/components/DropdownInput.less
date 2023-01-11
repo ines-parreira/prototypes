@@ -1,10 +1,14 @@
 @import '~css/new/colorTokens';
+@import '~css/new/layout';
 
 :local {
     .input {
+        padding-bottom: @layout-spacing-xs;
+    }
+
+    .inputContainer {
         display: flex;
         flex-direction: row;
-        padding-bottom: 8px;
     }
 
     .lastInput {
