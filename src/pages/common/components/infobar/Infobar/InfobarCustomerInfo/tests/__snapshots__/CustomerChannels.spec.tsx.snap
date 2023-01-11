@@ -521,6 +521,7 @@ exports[`CustomerChannels component should display all passed channels (includin
       </SourceIcon>
       <ClickablePhoneNumber
         address="+15551238523"
+        customerId="1"
         customerName="Foo"
         id="address-copied-4"
       >
@@ -619,6 +620,7 @@ exports[`CustomerChannels component should display all passed channels (includin
       </SourceIcon>
       <ClickablePhoneNumber
         address="+15554567852"
+        customerId="1"
         customerName="Foo"
         id="address-copied-5"
       >
@@ -717,6 +719,7 @@ exports[`CustomerChannels component should display all passed channels (includin
       </SourceIcon>
       <ClickablePhoneNumber
         address="+15557899632"
+        customerId="1"
         customerName="Foo"
         id="address-copied-6"
       >
@@ -1084,6 +1087,7 @@ exports[`CustomerChannels component should display first few passed channels and
       />
       <ClickablePhoneNumber
         address="+15551238523"
+        customerId="1"
         customerName="Foo"
         id="address-copied-undefined"
       />
@@ -1121,6 +1125,7 @@ exports[`CustomerChannels component should display first few passed channels and
       />
       <ClickablePhoneNumber
         address="+15554567852"
+        customerId="1"
         customerName="Foo"
         id="address-copied-undefined"
       />
@@ -1158,6 +1163,7 @@ exports[`CustomerChannels component should display first few passed channels and
       />
       <ClickablePhoneNumber
         address="+15557899632"
+        customerId="1"
         customerName="Foo"
         id="address-copied-undefined"
       />

@@ -72,7 +72,7 @@ type OwnProps = {
             absolutePath: string[]
         ) => void
     }
-    customer: Map<any, any>
+    customer?: Map<any, any>
     displayTabs?: boolean
     hasIntegrations: boolean
     isEditing: boolean

@@ -1,10 +1,11 @@
-import React from 'react'
+import React, {ReactElement} from 'react'
 import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import moment from 'moment'
 import momentTimezone from 'moment-timezone'
+import {WidgetContextType} from 'state/widgets/types'
 
-import * as utils from '../utils.tsx'
+import * as utils from '../utils'
 
 jest.mock('../../../utils/labels', () => ({
     DatetimeLabel: () => <div>DatetimeLabel</div>,
@@ -117,7 +118,7 @@ describe('widgets infobar utils', () => {
             fromJS({}),
         ]
 
-        const context = 'ticket'
+        const context = WidgetContextType.Ticket
 
         it('detection OK', () => {
             correct.forEach((input) => {
@@ -225,11 +226,11 @@ describe('widgets infobar utils', () => {
 
     describe('guessFieldValueFromRawData()', () => {
         it('should return an empty string because passed data is undefined', () => {
-            expect(utils.guessFieldValueFromRawData(undefined)).toEqual('')
+            expect(utils.guessFieldValueFromRawData(undefined, '')).toEqual('')
         })
 
         it('should return an empty string because passed data is null', () => {
-            expect(utils.guessFieldValueFromRawData(null)).toEqual('')
+            expect(utils.guessFieldValueFromRawData(null, '')).toEqual('')
         })
 
         it('should return passed data because passed type is `text`', () => {
@@ -312,7 +313,7 @@ describe('widgets infobar utils', () => {
             expect(utils.guessFieldValueFromRawData(0, 'boolean')).toBe(false)
         })
 
-        const validValues = [
+        const validValues: [string | number, string][] = [
             ['1', 'sentiment'],
             [1, 'sentiment'],
             ['-1', 'sentiment'],
@@ -360,23 +361,27 @@ describe('widgets infobar utils', () => {
         })
 
         it('should return a success badge because passed data is a `true` value', () => {
-            const {container} = render(utils.displayValue(true))
+            const {container} = render(utils.displayValue(true) as ReactElement)
             expect(container).toMatchSnapshot()
         })
 
         it('should return a danger badge because passed data is a `false` value', () => {
-            const {container} = render(utils.displayValue(false))
+            const {container} = render(
+                utils.displayValue(false) as ReactElement
+            )
             expect(container).toMatchSnapshot()
         })
 
         it('should return a comma-separated list of rendered values because passed data is an array', () => {
-            const {container} = render(utils.displayValue([123, 'test', true]))
+            const {container} = render(
+                utils.displayValue([123, 'test', true]) as ReactElement
+            )
             expect(container).toMatchSnapshot()
         })
 
         it('should work when passed an immutable object', () => {
             const {container} = render(
-                utils.displayValue(fromJS({key: 'value'}))
+                utils.displayValue(fromJS({key: 'value'})) as ReactElement
             )
             expect(container).toMatchSnapshot()
         })
@@ -486,6 +491,7 @@ describe('widgets infobar utils', () => {
                     timezone,
                     referenceDay ? mockedReference : null
                 )
+
                 expect(result).toBe(expectedDisplayLastSeenOnChat)
             }
         )
@@ -641,13 +647,13 @@ describe('widgets infobar utils', () => {
 
     describe('getInfobarMinWidth()', () => {
         it('should return calculated width because it is larger than the limit', () => {
-            window.innerWidth = 1800
-            const expected = window.innerWidth / 5.1
+            global.innerWidth = 1800
+            const expected = global.innerWidth / 5.1
             expect(utils.getInfobarMinWidth()).toBe(expected)
         })
 
         it('should return limit because the calculated width is smaller than the limit', () => {
-            window.innerWidth = 1700
+            global.innerWidth = 1700
             const expected = 350
             expect(utils.getInfobarMinWidth()).toBe(expected)
         })

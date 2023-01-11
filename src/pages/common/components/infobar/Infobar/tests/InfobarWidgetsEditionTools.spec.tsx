@@ -1,10 +1,11 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
+import {WidgetContextType} from 'state/widgets/types'
 
-import InfobarWidgetsEditionTools from '../InfobarWidgetsEditionTools.tsx'
+import InfobarWidgetsEditionTools from '../InfobarWidgetsEditionTools'
 
-const commonProps = {
+const commonProps: ComponentProps<typeof InfobarWidgetsEditionTools> = {
     widgets: fromJS({
         _internal: {
             isDirty: false,
@@ -17,7 +18,7 @@ const commonProps = {
         submitWidgets: jest.fn(),
         startEditionMode: jest.fn(),
     },
-    context: 'ticket',
+    context: WidgetContextType.Ticket,
 }
 
 describe('InfobarWidgetsEditionTools component', () => {

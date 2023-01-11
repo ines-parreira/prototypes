@@ -1,10 +1,10 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import InfobarCustomerActions from '../InfobarCustomerActions.tsx'
+import InfobarCustomerActions from '../InfobarCustomerActions'
 
-const commonProps = {
+const commonProps: ComponentProps<typeof InfobarCustomerActions> = {
     customer: fromJS({
         id: 1,
     }),
@@ -19,12 +19,12 @@ const commonProps = {
     selectedCustomer: fromJS({
         id: 3,
     }),
-    toggleMergeCustomerModal: () => {},
-    setCustomer: () => {},
+    toggleMergeCustomerModal: () => null,
+    setCustomer: () => null,
 }
 
 jest.mock('../../../../../../utils', () => ({
-    isCurrentlyOnTicket: (ticketId) => !!ticketId,
+    isCurrentlyOnTicket: (ticketId: Maybe<string | number>) => !!ticketId,
 }))
 
 describe('InfobarCustomerActions component', () => {

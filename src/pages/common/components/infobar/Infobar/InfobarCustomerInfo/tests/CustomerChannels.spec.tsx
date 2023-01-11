@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {fromJS} from 'immutable'
 import {mount, shallow} from 'enzyme'
 import configureMockStore from 'redux-mock-store'
@@ -8,17 +8,26 @@ import {Provider} from 'react-redux'
 import {
     EMAIL_CUSTOMER_CHANNEL_TYPE,
     PHONE_CUSTOMER_CHANNEL_TYPE,
-} from '../../../../../../../constants/user.ts'
-import {initialState} from '../../../../../../../state/twilio/reducers.ts'
-import {CustomerChannels as CustomerChannelsComponent} from '../CustomerChannels.tsx'
-import CustomerInfoWrapper from '../CustomerInfoWrapper.tsx'
+} from 'constants/user'
+import {initialState} from 'state/twilio/reducers'
+import {CustomerChannels as CustomerChannelsComponent} from '../CustomerChannels'
+import CustomerInfoWrapper from '../CustomerInfoWrapper'
 
 const mockStore = configureMockStore([thunk])
+
+const minProps: ComponentProps<typeof CustomerChannelsComponent> = {
+    customerName: 'Foo',
+    customerId: '1',
+    channels: fromJS([]),
+    customerLocationInfo: fromJS({}),
+    customerLastSeenOnChat: null,
+    dispatch: jest.fn(),
+}
 
 describe('CustomerChannels component', () => {
     beforeEach(() => {
         const mockDate = new Date('2019-01-26T12:34:56.000Z')
-        global.Date.now = jest.fn(() => mockDate)
+        global.Date.now = jest.fn(() => mockDate) as unknown as typeof Date.now
     })
 
     it(
@@ -27,15 +36,12 @@ describe('CustomerChannels component', () => {
         () => {
             const component = shallow(
                 <CustomerChannelsComponent
-                    currentUser={fromJS({
-                        timezone: 'Europe/Paris',
-                    })}
+                    {...minProps}
                     customerLocationInfo={fromJS({
                         city: 'Paris',
                         country_name: 'France',
                         time_zone: {offset: '+0100'},
                     })}
-                    customerName="Foo"
                     channels={fromJS([
                         {
                             type: EMAIL_CUSTOMER_CHANNEL_TYPE,
@@ -81,10 +87,7 @@ describe('CustomerChannels component', () => {
         () => {
             const component = shallow(
                 <CustomerChannelsComponent
-                    currentUser={fromJS({
-                        timezone: 'Europe/Paris',
-                    })}
-                    customerName="Foo"
+                    {...minProps}
                     channels={fromJS([
                         {
                             type: EMAIL_CUSTOMER_CHANNEL_TYPE,
@@ -105,16 +108,12 @@ describe('CustomerChannels component', () => {
         () => {
             const component = shallow(
                 <CustomerChannelsComponent
-                    currentUser={fromJS({
-                        timezone: 'Europe/Paris',
-                    })}
+                    {...minProps}
                     customerLocationInfo={fromJS({
                         city: 'Paris',
                         country_name: 'France',
                         time_zone: {offset: '+0100'},
                     })}
-                    customerName="Foo"
-                    channels={fromJS([])}
                 />
             )
 
@@ -128,15 +127,11 @@ describe('CustomerChannels component', () => {
         () => {
             const component = shallow(
                 <CustomerChannelsComponent
-                    currentUser={fromJS({
-                        timezone: 'Europe/Paris',
-                    })}
+                    {...minProps}
                     customerLocationInfo={fromJS({
                         city: 'Paris',
                         time_zone: {offset: '+0100'},
                     })}
-                    customerName="Foo"
-                    channels={fromJS([])}
                 />
             )
 
@@ -150,15 +145,12 @@ describe('CustomerChannels component', () => {
         () => {
             const component = shallow(
                 <CustomerChannelsComponent
-                    currentUser={fromJS({
-                        timezone: 'Europe/Paris',
-                    })}
+                    {...minProps}
                     customerLocationInfo={fromJS({
                         city: 'Paris',
                         country_name: 'France',
                         time_zone: {offset: '+0100'},
                     })}
-                    customerName="Foo"
                     channels={fromJS([
                         {
                             type: EMAIL_CUSTOMER_CHANNEL_TYPE,
@@ -179,14 +171,11 @@ describe('CustomerChannels component', () => {
         () => {
             const component = shallow(
                 <CustomerChannelsComponent
-                    currentUser={fromJS({
-                        timezone: 'Europe/Paris',
-                    })}
+                    {...minProps}
                     customerLocationInfo={fromJS({
                         country_name: 'France',
                         time_zone: {offset: '+0100'},
                     })}
-                    customerName="Foo"
                     channels={fromJS([
                         {
                             type: EMAIL_CUSTOMER_CHANNEL_TYPE,
@@ -203,7 +192,10 @@ describe('CustomerChannels component', () => {
 
     it('should display all passed channels (including last seen on chat 36 minutes ago) because the user clicked on "show more"', () => {
         const mockDate = new Date('2021-02-26T13:00:00.000Z')
-        global.Date.now = jest.fn(() => mockDate)
+        global.Date.now = jest.fn(() => mockDate) as unknown as typeof Date.now
+
+        const holder = document.createElement('div')
+        document.body.appendChild(holder)
 
         const store = mockStore({
             twilio: initialState,
@@ -215,16 +207,13 @@ describe('CustomerChannels component', () => {
         const component = mount(
             <Provider store={store}>
                 <CustomerChannelsComponent
-                    currentUser={fromJS({
-                        timezone: 'Europe/Paris',
-                    })}
+                    {...minProps}
                     customerLastSeenOnChat={1614342240000} // 2021-02-26T12:24:00.000Z
                     customerLocationInfo={fromJS({
                         city: 'Paris',
                         country_name: 'France',
                         time_zone: {offset: '+0100'},
                     })}
-                    customerName="Foo"
                     channels={fromJS([
                         {
                             type: EMAIL_CUSTOMER_CHANNEL_TYPE,
@@ -268,7 +257,7 @@ describe('CustomerChannels component', () => {
             {
                 // required for `reactstrap.Tooltip` to mount correctly
                 // see https://github.com/reactstrap/reactstrap/issues/818
-                attachTo: document.body,
+                attachTo: holder,
             }
         )
 

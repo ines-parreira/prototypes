@@ -1,13 +1,13 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
 
-import Navigation from '../Navigation.tsx'
+import Navigation from '../Navigation'
 
-const commonProps = {
+const commonProps: ComponentProps<typeof Navigation> = {
     hasNextItems: true,
     hasPrevItems: true,
-    fetchNextItems: () => {},
-    fetchPrevItems: () => {},
+    fetchNextItems: () => null,
+    fetchPrevItems: () => null,
 }
 
 describe('Navigation component', () => {
@@ -16,7 +16,9 @@ describe('Navigation component', () => {
         [true, false],
         [false, true],
     ].forEach(([hasNextItems, hasPrevItems]) => {
-        it(`should render with (prev button disabled: ${!hasPrevItems}) and (next button disabled: ${!hasNextItems})`, () => {
+        it(`should render with (prev button disabled: ${String(
+            !hasPrevItems
+        )}) and (next button disabled: ${String(!hasNextItems)})`, () => {
             const component = shallow(
                 <Navigation
                     {...commonProps}

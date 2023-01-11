@@ -2,12 +2,41 @@
 
 exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=false\` because there is no active data integration 1`] = `
 <ContextProvider
-  value={null}
+  value={
+    Object {
+      "store": Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      },
+      "subscription": Subscription {
+        "handleChangeWrapper": [Function],
+        "listeners": Object {
+          "notify": [Function],
+        },
+        "onStateChange": [Function],
+        "parentSub": undefined,
+        "store": Object {
+          "clearActions": [Function],
+          "dispatch": [Function],
+          "getActions": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+        },
+        "unsubscribe": null,
+      },
+    }
+  }
 >
-  <InfobarCustomerInfoContainer
+  <Connect(InfobarCustomerInfoContainer)
     actions={
       Object {
         "generateAndSetWidgets": [MockFunction],
+        "removeEditedWidget": [MockFunction],
         "resetWidgets": [MockFunction],
         "setEditedWidgets": [MockFunction],
         "setEditionAsDirty": [MockFunction],
@@ -19,20 +48,8 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=false\` because th
         "name": "foo",
       }
     }
-    dispatch={[Function]}
-    hasIntegrations={false}
     isEditing={false}
     sources={Immutable.Map {}}
-    store={
-      Object {
-        "clearActions": [Function],
-        "dispatch": [Function],
-        "getActions": [Function],
-        "getState": [Function],
-        "replaceReducer": [Function],
-        "subscribe": [Function],
-      }
-    }
     widgets={
       Immutable.Map {
         "currentContext": "ticket",
@@ -44,12 +61,41 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=false\` because th
 
 exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because there is an active integration of type bigcommerce 1`] = `
 <ContextProvider
-  value={null}
+  value={
+    Object {
+      "store": Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      },
+      "subscription": Subscription {
+        "handleChangeWrapper": [Function],
+        "listeners": Object {
+          "notify": [Function],
+        },
+        "onStateChange": [Function],
+        "parentSub": undefined,
+        "store": Object {
+          "clearActions": [Function],
+          "dispatch": [Function],
+          "getActions": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+        },
+        "unsubscribe": null,
+      },
+    }
+  }
 >
-  <InfobarCustomerInfoContainer
+  <Connect(InfobarCustomerInfoContainer)
     actions={
       Object {
         "generateAndSetWidgets": [MockFunction],
+        "removeEditedWidget": [MockFunction],
         "resetWidgets": [MockFunction],
         "setEditedWidgets": [MockFunction],
         "setEditionAsDirty": [MockFunction],
@@ -61,20 +107,8 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
         "name": "foo",
       }
     }
-    dispatch={[Function]}
-    hasIntegrations={true}
     isEditing={false}
     sources={Immutable.Map {}}
-    store={
-      Object {
-        "clearActions": [Function],
-        "dispatch": [Function],
-        "getActions": [Function],
-        "getState": [Function],
-        "replaceReducer": [Function],
-        "subscribe": [Function],
-      }
-    }
     widgets={
       Immutable.Map {
         "currentContext": "ticket",
@@ -86,12 +120,41 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
 
 exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because there is an active integration of type http 1`] = `
 <ContextProvider
-  value={null}
+  value={
+    Object {
+      "store": Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      },
+      "subscription": Subscription {
+        "handleChangeWrapper": [Function],
+        "listeners": Object {
+          "notify": [Function],
+        },
+        "onStateChange": [Function],
+        "parentSub": undefined,
+        "store": Object {
+          "clearActions": [Function],
+          "dispatch": [Function],
+          "getActions": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+        },
+        "unsubscribe": null,
+      },
+    }
+  }
 >
-  <InfobarCustomerInfoContainer
+  <Connect(InfobarCustomerInfoContainer)
     actions={
       Object {
         "generateAndSetWidgets": [MockFunction],
+        "removeEditedWidget": [MockFunction],
         "resetWidgets": [MockFunction],
         "setEditedWidgets": [MockFunction],
         "setEditionAsDirty": [MockFunction],
@@ -103,20 +166,8 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
         "name": "foo",
       }
     }
-    dispatch={[Function]}
-    hasIntegrations={true}
     isEditing={false}
     sources={Immutable.Map {}}
-    store={
-      Object {
-        "clearActions": [Function],
-        "dispatch": [Function],
-        "getActions": [Function],
-        "getState": [Function],
-        "replaceReducer": [Function],
-        "subscribe": [Function],
-      }
-    }
     widgets={
       Immutable.Map {
         "currentContext": "ticket",
@@ -128,12 +179,41 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
 
 exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because there is an active integration of type magento2 1`] = `
 <ContextProvider
-  value={null}
+  value={
+    Object {
+      "store": Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      },
+      "subscription": Subscription {
+        "handleChangeWrapper": [Function],
+        "listeners": Object {
+          "notify": [Function],
+        },
+        "onStateChange": [Function],
+        "parentSub": undefined,
+        "store": Object {
+          "clearActions": [Function],
+          "dispatch": [Function],
+          "getActions": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+        },
+        "unsubscribe": null,
+      },
+    }
+  }
 >
-  <InfobarCustomerInfoContainer
+  <Connect(InfobarCustomerInfoContainer)
     actions={
       Object {
         "generateAndSetWidgets": [MockFunction],
+        "removeEditedWidget": [MockFunction],
         "resetWidgets": [MockFunction],
         "setEditedWidgets": [MockFunction],
         "setEditionAsDirty": [MockFunction],
@@ -145,20 +225,8 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
         "name": "foo",
       }
     }
-    dispatch={[Function]}
-    hasIntegrations={true}
     isEditing={false}
     sources={Immutable.Map {}}
-    store={
-      Object {
-        "clearActions": [Function],
-        "dispatch": [Function],
-        "getActions": [Function],
-        "getState": [Function],
-        "replaceReducer": [Function],
-        "subscribe": [Function],
-      }
-    }
     widgets={
       Immutable.Map {
         "currentContext": "ticket",
@@ -170,12 +238,41 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
 
 exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because there is an active integration of type recharge 1`] = `
 <ContextProvider
-  value={null}
+  value={
+    Object {
+      "store": Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      },
+      "subscription": Subscription {
+        "handleChangeWrapper": [Function],
+        "listeners": Object {
+          "notify": [Function],
+        },
+        "onStateChange": [Function],
+        "parentSub": undefined,
+        "store": Object {
+          "clearActions": [Function],
+          "dispatch": [Function],
+          "getActions": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+        },
+        "unsubscribe": null,
+      },
+    }
+  }
 >
-  <InfobarCustomerInfoContainer
+  <Connect(InfobarCustomerInfoContainer)
     actions={
       Object {
         "generateAndSetWidgets": [MockFunction],
+        "removeEditedWidget": [MockFunction],
         "resetWidgets": [MockFunction],
         "setEditedWidgets": [MockFunction],
         "setEditionAsDirty": [MockFunction],
@@ -187,20 +284,8 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
         "name": "foo",
       }
     }
-    dispatch={[Function]}
-    hasIntegrations={true}
     isEditing={false}
     sources={Immutable.Map {}}
-    store={
-      Object {
-        "clearActions": [Function],
-        "dispatch": [Function],
-        "getActions": [Function],
-        "getState": [Function],
-        "replaceReducer": [Function],
-        "subscribe": [Function],
-      }
-    }
     widgets={
       Immutable.Map {
         "currentContext": "ticket",
@@ -212,12 +297,41 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
 
 exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because there is an active integration of type shopify 1`] = `
 <ContextProvider
-  value={null}
+  value={
+    Object {
+      "store": Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      },
+      "subscription": Subscription {
+        "handleChangeWrapper": [Function],
+        "listeners": Object {
+          "notify": [Function],
+        },
+        "onStateChange": [Function],
+        "parentSub": undefined,
+        "store": Object {
+          "clearActions": [Function],
+          "dispatch": [Function],
+          "getActions": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+        },
+        "unsubscribe": null,
+      },
+    }
+  }
 >
-  <InfobarCustomerInfoContainer
+  <Connect(InfobarCustomerInfoContainer)
     actions={
       Object {
         "generateAndSetWidgets": [MockFunction],
+        "removeEditedWidget": [MockFunction],
         "resetWidgets": [MockFunction],
         "setEditedWidgets": [MockFunction],
         "setEditionAsDirty": [MockFunction],
@@ -229,20 +343,8 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
         "name": "foo",
       }
     }
-    dispatch={[Function]}
-    hasIntegrations={true}
     isEditing={false}
     sources={Immutable.Map {}}
-    store={
-      Object {
-        "clearActions": [Function],
-        "dispatch": [Function],
-        "getActions": [Function],
-        "getState": [Function],
-        "replaceReducer": [Function],
-        "subscribe": [Function],
-      }
-    }
     widgets={
       Immutable.Map {
         "currentContext": "ticket",
@@ -254,12 +356,41 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
 
 exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because there is an active integration of type smile 1`] = `
 <ContextProvider
-  value={null}
+  value={
+    Object {
+      "store": Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      },
+      "subscription": Subscription {
+        "handleChangeWrapper": [Function],
+        "listeners": Object {
+          "notify": [Function],
+        },
+        "onStateChange": [Function],
+        "parentSub": undefined,
+        "store": Object {
+          "clearActions": [Function],
+          "dispatch": [Function],
+          "getActions": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+        },
+        "unsubscribe": null,
+      },
+    }
+  }
 >
-  <InfobarCustomerInfoContainer
+  <Connect(InfobarCustomerInfoContainer)
     actions={
       Object {
         "generateAndSetWidgets": [MockFunction],
+        "removeEditedWidget": [MockFunction],
         "resetWidgets": [MockFunction],
         "setEditedWidgets": [MockFunction],
         "setEditionAsDirty": [MockFunction],
@@ -271,20 +402,8 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
         "name": "foo",
       }
     }
-    dispatch={[Function]}
-    hasIntegrations={true}
     isEditing={false}
     sources={Immutable.Map {}}
-    store={
-      Object {
-        "clearActions": [Function],
-        "dispatch": [Function],
-        "getActions": [Function],
-        "getState": [Function],
-        "replaceReducer": [Function],
-        "subscribe": [Function],
-      }
-    }
     widgets={
       Immutable.Map {
         "currentContext": "ticket",
@@ -440,6 +559,7 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and empty widg
           Object {
             "actions": Object {
               "generateAndSetWidgets": [MockFunction],
+              "removeEditedWidget": [MockFunction],
               "resetWidgets": [MockFunction],
               "setEditedWidgets": [MockFunction],
               "setEditionAsDirty": [MockFunction],
@@ -637,6 +757,7 @@ exports[`<InfobarCustomerInfo/> sources render basic customer info and widgets b
   actions={
     Object {
       "generateAndSetWidgets": [MockFunction],
+      "removeEditedWidget": [MockFunction],
       "resetWidgets": [MockFunction],
       "setEditedWidgets": [MockFunction],
       "setEditionAsDirty": [MockFunction],
@@ -648,6 +769,7 @@ exports[`<InfobarCustomerInfo/> sources render basic customer info and widgets b
       "name": "foo",
     }
   }
+  dispatch={[MockFunction]}
   hasIntegrations={true}
   isEditing={false}
   sources={

@@ -845,8 +845,8 @@ export function getLocalTime(timezoneOffset: string) {
  * Return the prettified last seen on chat string, based on the UTC timestamp received from the chat
  */
 export function getDisplayCustomerLastSeenOnChat(
-    customerLastSeenOnChatUtcDateTimeStamp: number,
-    timezone: string,
+    customerLastSeenOnChatUtcDateTimeStamp: MomentInput,
+    timezone: string | null,
     referenceDay: MomentInput = null
 ) {
     const now = momentTimezone.utc()

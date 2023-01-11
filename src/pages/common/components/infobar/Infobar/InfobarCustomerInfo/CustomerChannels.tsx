@@ -22,7 +22,7 @@ type Props = {
     customerLastSeenOnChat: number | null
     customerId: string
     customerName: string
-    children: ReactNode
+    children?: ReactNode
 } & ConnectedProps<typeof connector>
 
 export class CustomerChannels extends Component<Props> {
