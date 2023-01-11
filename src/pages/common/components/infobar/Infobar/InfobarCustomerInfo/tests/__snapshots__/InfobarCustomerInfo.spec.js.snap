@@ -534,7 +534,7 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and the sugges
       </Component>
     </div>
   </div>
-  <AddIntegrationSuggestion />
+  <AddAppSuggestion />
 </div>
 `;
 

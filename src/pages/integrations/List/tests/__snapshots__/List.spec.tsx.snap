@@ -10,7 +10,7 @@ exports[`<IntegrationsList /> SMS integrations feature flag should include SMS t
     <h1
       class="d-flex align-items-center"
     >
-      Apps & integrations
+      All Apps
     </h1>
   </div>
   <div
@@ -112,7 +112,7 @@ exports[`<IntegrationsList /> SMS integrations feature flag should not include S
     <h1
       class="d-flex align-items-center"
     >
-      Apps & integrations
+      All Apps
     </h1>
   </div>
   <div
@@ -214,7 +214,7 @@ exports[`<IntegrationsList /> should display content 1`] = `
     <h1
       class="d-flex align-items-center"
     >
-      Apps & integrations
+      All Apps
     </h1>
   </div>
   <div

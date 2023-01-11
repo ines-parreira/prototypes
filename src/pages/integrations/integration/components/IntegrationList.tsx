@@ -105,7 +105,7 @@ class IntegrationList extends React.Component<Props> {
                             config?.type === IntegrationType.Http ? null : (
                                 <BreadcrumbItem>
                                     <Link to="/app/settings/integrations">
-                                        Apps & integrations
+                                        All Apps
                                     </Link>
                                 </BreadcrumbItem>
                             )}

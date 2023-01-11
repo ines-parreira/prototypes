@@ -29,6 +29,7 @@ import {
     getIntegrations,
     getIntegrationsList,
 } from 'state/integrations/selectors'
+import useTitle from 'hooks/useTitle'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -87,6 +88,7 @@ export function addRequiredPlanToIntegrations(
 }
 
 export default function All() {
+    useTitle('All Apps')
     const dispatch = useAppDispatch()
 
     const integrations = useAppSelector(getIntegrations)
@@ -173,11 +175,9 @@ export default function All() {
                     <Card
                         key={item.title}
                         item={item}
-                        isFeatured={item.categories.includes(
-                            CategoryType.FEATURED
-                        )}
-                        hasNoFeaturedPill={
-                            activeCategory === CategoryType.FEATURED
+                        isFeatured={
+                            item.categories.includes(CategoryType.FEATURED) &&
+                            activeCategory !== CategoryType.FEATURED
                         }
                     />
                 )
@@ -189,13 +189,15 @@ export default function All() {
                 if (typeof cardsByCategory[category] === 'undefined') {
                     cardsByCategory[category] = []
                 }
-                cardsByCategory[category].push(
-                    buildCardWithDisplayClasses(
-                        item,
-                        cardsByCategory[category].length,
-                        category
+                if (cardsByCategory[category].length < MAX_CARDS_DISPLAYED) {
+                    cardsByCategory[category].push(
+                        buildCardWithDisplayClasses(
+                            item,
+                            cardsByCategory[category].length,
+                            category
+                        )
                     )
-                )
+                }
             })
         })
     }

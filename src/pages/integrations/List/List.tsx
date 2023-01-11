@@ -236,7 +236,7 @@ export const List = ({
 
     return (
         <div className="full-width">
-            <PageHeader title="Apps & integrations" />
+            <PageHeader title="All Apps" />
             <Container fluid className={css.pageContainer}>
                 <Row
                     className="mb-4"

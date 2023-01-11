@@ -541,7 +541,12 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
             'Yotpo is a user-generated content tool for merchants. It includes customer reviews, visual marketing, loyalty, and referrals.',
         image: 'yotpo.png',
         requiredFeature: AccountFeature.YotpoIntegration,
-        categories: [Category.SMS, Category.LOYALTY, Category.REVIEWS],
+        categories: [
+            Category.FEATURED,
+            Category.SMS,
+            Category.LOYALTY,
+            Category.REVIEWS,
+        ],
         longDescription:
             '<p>Yotpo is an eCommerce marketing platform with the most advanced solutions for customer reviews, visual marketing, loyalty, referrals, and SMS marketing.</p><p>From approving a product review to updating reward points of a specific customer, allow your support agents to manage product reviews, questions, loyalty plans, and referrals without leaving Gorgias. </p><p><strong>Connect Yotpo with Gorgias to:</strong></p><ul role="list"><li>Display customer’s Yotpo data in Gorgias customer Activity Sidebar such as loyalty points, provided ratings, latest reviews, etc.</li><li>Manage customer loyalty plans (change point balance, assign VIP tier, honor redemptions, and send rewards) from the Gorgias sidebar.</li><li>Respond to a question with an answer either publicly or privately as new tickets.</li><li>Moderate customer reviews (product and site) and questions from within Gorgias as new tickets.</li><li>Request reviews from a customer. </li></ul>',
         screenshots: [

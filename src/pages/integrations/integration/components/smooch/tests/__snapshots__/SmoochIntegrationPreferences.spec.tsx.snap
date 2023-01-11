@@ -35,7 +35,7 @@ exports[`<SmoochIntegrationPreferences/> render() should render loading buttons 
           <Link
             to="/app/settings/integrations"
           >
-            Apps & integrations
+            All Apps
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -191,7 +191,7 @@ exports[`<SmoochIntegrationPreferences/> render() should render the Smooch prefe
           <Link
             to="/app/settings/integrations"
           >
-            Apps & integrations
+            All Apps
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem

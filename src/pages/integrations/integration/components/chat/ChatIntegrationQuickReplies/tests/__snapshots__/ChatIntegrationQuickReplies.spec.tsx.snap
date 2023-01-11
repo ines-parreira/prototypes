@@ -58,7 +58,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                 <Link
                   to="/app/settings/integrations"
                 >
-                  Apps & integrations
+                  All Apps
                 </Link>
               </BreadcrumbItem>
               <BreadcrumbItem
@@ -105,7 +105,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                         <a
                           to="/app/settings/integrations"
                         >
-                          Apps & integrations
+                          All Apps
                         </a>
                       </Link>
                     </li>
@@ -877,7 +877,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                 <Link
                   to="/app/settings/integrations"
                 >
-                  Apps & integrations
+                  All Apps
                 </Link>
               </BreadcrumbItem>
               <BreadcrumbItem
@@ -924,7 +924,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                         <a
                           to="/app/settings/integrations"
                         >
-                          Apps & integrations
+                          All Apps
                         </a>
                       </Link>
                     </li>

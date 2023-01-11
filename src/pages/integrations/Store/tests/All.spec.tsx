@@ -21,7 +21,11 @@ import client from 'models/api/resources'
 import {IntegrationType} from 'models/integration/constants'
 import {HelpdeskPrice, PlanInterval, ProductType} from 'models/billing/types'
 
-import {CATEGORY_URL_PARAM, SEARCH_URL_PARAM} from '../constants'
+import {
+    CATEGORY_URL_PARAM,
+    MAX_CARDS_DISPLAYED,
+    SEARCH_URL_PARAM,
+} from '../constants'
 import All, {addRequiredPlanToIntegrations} from '../All'
 import {CARD_LINK_TEST_ID, LOADING_TEST_ID} from '../Card'
 
@@ -162,6 +166,29 @@ describe('<All />', () => {
             expect(screen.queryByText(/Loading/)).toBe(null)
         })
         expect(screen.getByText(/They are no apps/))
+    })
+
+    it('should not show more than 5 cards par category when there is no filter', async () => {
+        const dummyAppsNumber = 6
+        const dummyApps = []
+        for (let i = 0; i < dummyAppsNumber; i++) {
+            dummyApps.push({
+                ...dummyAppListData,
+                name: `${dummyAppListData.name}-${i}`,
+            })
+        }
+        mockApi.onGet('/api/apps/').reply(200, {data: dummyApps})
+
+        renderWithRouter(
+            <Provider store={store}>
+                <All />
+            </Provider>
+        )
+        await waitFor(() => {
+            expect(screen.queryByText(/Loading/)).toBe(null)
+        })
+        const matcher = new RegExp(`${dummyAppListData.name}`)
+        expect(screen.getAllByText(matcher).length).toBe(MAX_CARDS_DISPLAYED)
     })
 
     it('should show as many cards as there is in a category when a category is set', async () => {

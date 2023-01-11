@@ -21,7 +21,7 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
             <a
               to="/app/settings/integrations"
             >
-              Apps & integrations
+              All Apps
             </a>
           </li>
           <li
@@ -138,7 +138,7 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
             <a
               to="/app/settings/integrations"
             >
-              Apps & integrations
+              All Apps
             </a>
           </li>
           <li

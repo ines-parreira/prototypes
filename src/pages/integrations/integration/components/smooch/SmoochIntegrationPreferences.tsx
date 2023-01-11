@@ -123,7 +123,7 @@ export class SmoochIntegrationPreferences extends React.Component<
                         <Breadcrumb>
                             <BreadcrumbItem>
                                 <Link to="/app/settings/integrations">
-                                    Apps & integrations
+                                    All Apps
                                 </Link>
                             </BreadcrumbItem>
                             <BreadcrumbItem>

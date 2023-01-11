@@ -11,6 +11,7 @@ import {IntegrationListItem} from 'state/integrations/types'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {getIntegrationsList} from 'state/integrations/selectors'
+import useTitle from 'hooks/useTitle'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -26,6 +27,7 @@ type Item = IntegrationListItem | AppListItem
 export const LOCAL_STORAGE_KEY = `integrations_connected_warning_discarded`
 
 export default function Mine() {
+    useTitle('My Apps')
     const dispatch = useAppDispatch()
 
     const installedIntegrations = useAppSelector(getIntegrationsList).filter(

@@ -63,7 +63,7 @@ exports[`FacebookIntegrationCustomerChat component should display the list of Sh
                 <Link
                   to="/app/settings/integrations"
                 >
-                  Apps & integrations
+                  All Apps
                 </Link>
               </BreadcrumbItem>
               <BreadcrumbItem
@@ -108,7 +108,7 @@ exports[`FacebookIntegrationCustomerChat component should display the list of Sh
                         <a
                           to="/app/settings/integrations"
                         >
-                          Apps & integrations
+                          All Apps
                         </a>
                       </Link>
                     </li>

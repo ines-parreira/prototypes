@@ -123,7 +123,7 @@ exports[`<ChatIntegrationPreferences/> render() should render buttons in loading
           <Link
             to="/app/settings/integrations"
           >
-            Apps & integrations
+            All Apps
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -433,7 +433,7 @@ exports[`<ChatIntegrationPreferences/> render() should render the Chat preferenc
           <Link
             to="/app/settings/integrations"
           >
-            Apps & integrations
+            All Apps
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem

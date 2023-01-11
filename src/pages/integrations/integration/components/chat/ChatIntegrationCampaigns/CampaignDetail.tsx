@@ -211,7 +211,7 @@ export class CampaignDetail extends Component<CampaignDetailProps> {
                         <Breadcrumb>
                             <BreadcrumbItem>
                                 <Link to="/app/settings/integrations">
-                                    Apps & integrations
+                                    All Apps
                                 </Link>
                             </BreadcrumbItem>
                             <BreadcrumbItem>

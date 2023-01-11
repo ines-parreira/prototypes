@@ -59,7 +59,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should not render anything 
           <Link
             to="/app/settings/integrations"
           >
-            Apps & integrations
+            All Apps
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -193,7 +193,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render a small parag
           <Link
             to="/app/settings/integrations"
           >
-            Apps & integrations
+            All Apps
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -319,7 +319,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render an alert beca
           <Link
             to="/app/settings/integrations"
           >
-            Apps & integrations
+            All Apps
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -445,7 +445,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render buttons loadi
           <Link
             to="/app/settings/integrations"
           >
-            Apps & integrations
+            All Apps
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -571,7 +571,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render not render de
           <Link
             to="/app/settings/integrations"
           >
-            Apps & integrations
+            All Apps
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem

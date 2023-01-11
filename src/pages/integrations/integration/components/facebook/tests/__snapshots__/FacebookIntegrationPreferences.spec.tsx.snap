@@ -35,7 +35,7 @@ exports[`<FacebookIntegrationPreferences/> render() should render loading button
           <Link
             to="/app/settings/integrations"
           >
-            Apps & integrations
+            All Apps
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -190,7 +190,7 @@ exports[`<FacebookIntegrationPreferences/> render() should render the Facebook p
           <Link
             to="/app/settings/integrations"
           >
-            Apps & integrations
+            All Apps
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem

@@ -20,7 +20,7 @@ exports[`<Shopify/> Detail should render a detail view 1`] = `
           <a
             to="/app/settings/integrations"
           >
-            Apps & integrations
+            All Apps
           </a>
         </li>
         <li
@@ -354,7 +354,7 @@ exports[`<Shopify/> Integration should render 1`] = `
           <a
             to="/app/settings/integrations"
           >
-            Apps & integrations
+            All Apps
           </a>
         </li>
         <li
@@ -543,7 +543,7 @@ exports[`<Shopify/> List should render 1`] = `
           <a
             to="/app/settings/integrations"
           >
-            Apps & integrations
+            All Apps
           </a>
         </li>
         <li

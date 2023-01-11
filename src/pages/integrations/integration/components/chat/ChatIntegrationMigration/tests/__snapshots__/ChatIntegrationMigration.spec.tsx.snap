@@ -20,7 +20,7 @@ exports[`ChatIntegrationMigration component should display the migration page 1`
           <a
             to="/app/settings/integrations"
           >
-            Apps & integrations
+            All Apps
           </a>
         </li>
         <li

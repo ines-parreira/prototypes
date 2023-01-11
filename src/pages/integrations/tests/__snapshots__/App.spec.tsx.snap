@@ -36,7 +36,7 @@ exports[`App should render 2`] = `
           <a
             to="/app/settings/integrations"
           >
-            Integrations
+            All Apps
           </a>
         </li>
         <li
@@ -362,7 +362,7 @@ exports[`App should render the advanced tab 2`] = `
           <a
             to="/app/settings/integrations"
           >
-            Integrations
+            All Apps
           </a>
         </li>
         <li

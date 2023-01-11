@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom'
 import Button from 'pages/common/components/button/Button'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
-export default function AddIntegrationSuggestion() {
+export default function AddAppSuggestion() {
     return (
         <div className="no-result-container mt-5">
             <div
@@ -15,7 +15,7 @@ export default function AddIntegrationSuggestion() {
                     fontWeight: 600,
                 }}
             >
-                Display customer data here by adding an integration
+                Display customer data here by adding an app
             </div>
             <Link to="/app/settings/integrations">
                 <Button
@@ -24,7 +24,7 @@ export default function AddIntegrationSuggestion() {
                         logEvent(SegmentEvent.InfobarIntegrationAddClicked)
                     }}
                 >
-                    Add integration
+                    Add app
                 </Button>
             </Link>
         </div>

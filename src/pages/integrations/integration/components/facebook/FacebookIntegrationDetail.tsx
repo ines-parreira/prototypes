@@ -391,7 +391,7 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
                         <Breadcrumb>
                             <BreadcrumbItem>
                                 <Link to="/app/settings/integrations">
-                                    Apps & integrations
+                                    All Apps
                                 </Link>
                             </BreadcrumbItem>
                             <BreadcrumbItem>

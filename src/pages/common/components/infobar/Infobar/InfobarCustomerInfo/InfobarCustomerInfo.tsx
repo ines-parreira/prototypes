@@ -25,7 +25,7 @@ import {getIntegrationsByTypes} from 'state/integrations/selectors'
 import CustomerChannels from './CustomerChannels'
 import CustomerNote from './CustomerNote/CustomerNote'
 import InfobarWidgets from './InfobarWidgets/InfobarWidgets'
-import AddIntegrationSuggestion from './AddIntegrationSuggestion'
+import AddAppSuggestion from './AddAppSuggestion'
 
 type GenerateButtonProps = {
     setEditedWidgets: (items: Map<any, any>[]) => void
@@ -241,7 +241,7 @@ export const InfobarCustomerInfoContainer = ({
             return null
         }
 
-        return <AddIntegrationSuggestion />
+        return <AddAppSuggestion />
     }
 
     if (!customer || customer.isEmpty()) {

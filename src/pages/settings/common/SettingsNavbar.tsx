@@ -238,7 +238,7 @@ const SettingsNavbar = () => {
             links.unshift({
                 requiredRole: ADMIN_ROLE,
                 to: 'integrations',
-                text: 'Apps & integrations',
+                text: 'All Apps',
             })
 
             return categories
