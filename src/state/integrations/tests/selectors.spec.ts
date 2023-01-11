@@ -826,7 +826,7 @@ describe('integrations selectors', () => {
         )
     })
 
-    it('should get active and non self-service integrations', () => {
+    it('should get active integrations', () => {
         const integrations = getActiveIntegrations(state)
 
         const expected = (
@@ -835,8 +835,7 @@ describe('integrations selectors', () => {
             ) as List<any>
         ).filter(
             (integration: Map<any, any>) =>
-                !integration.get('deactivated_datetime') &&
-                integration.get('type') !== IntegrationType.SelfService
+                !integration.get('deactivated_datetime')
         )
 
         expect(integrations).toEqual(expected)

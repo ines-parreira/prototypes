@@ -21,7 +21,6 @@ export enum IntegrationType {
     Phone = 'phone',
     Sms = 'sms',
     Twitter = 'twitter',
-    SelfService = 'self_service',
     App = 'app',
     WhatsApp = 'whatsapp',
 }

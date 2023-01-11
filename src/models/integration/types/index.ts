@@ -17,7 +17,6 @@ import type {KlaviyoIntegration} from './klaviyo'
 import type {PhoneIntegration} from './phone'
 import type {SmsIntegration} from './sms'
 import type {TwitterIntegration} from './twitter'
-import type {SelfServiceIntegration} from './selfService'
 import type {BigCommerceIntegration} from './bigcommerce'
 import {WhatsAppIntegration} from './whatsapp'
 
@@ -50,7 +49,6 @@ export * from './klaviyo'
 export * from './phone'
 export * from './sms'
 export * from './twitter'
-export * from './selfService'
 export * from './bigcommerce'
 export * from './whatsapp'
 
@@ -74,6 +72,5 @@ export type Integration =
     | PhoneIntegration
     | SmsIntegration
     | TwitterIntegration
-    | SelfServiceIntegration
     | BigCommerceIntegration
     | WhatsAppIntegration
