@@ -93,6 +93,36 @@ describe('<FieldForm/>', () => {
         expect(props.onSubmit).not.toHaveBeenCalled()
     })
 
+    it('should disable the save button if a dropdown choice has more than 5 levels of nesting', async () => {
+        const props = {
+            field: {
+                ...customFieldInput,
+                definition: {
+                    data_type: 'text',
+                    input_settings: {
+                        input_type: 'dropdown',
+                        choices: ['A::B::C::D::E::F'],
+                    },
+                },
+            } as CustomFieldInput,
+            onSubmit: jest.fn(),
+            onCancel: jest.fn(),
+        }
+
+        const {findByText} = render(
+            <Provider store={mockStore}>
+                <DndProvider backend={HTML5Backend}>
+                    <FieldForm {...props} />
+                </DndProvider>
+            </Provider>
+        )
+
+        const saveButton = await findByText(/Save Changes/)
+        saveButton.click()
+
+        expect(props.onSubmit).not.toHaveBeenCalled()
+    })
+
     it('should call onSubmit if the form is valid and the save button is clicked', async () => {
         const props = {
             field: customFieldInput,

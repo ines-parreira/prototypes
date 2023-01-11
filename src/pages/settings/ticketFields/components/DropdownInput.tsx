@@ -27,6 +27,11 @@ function validate(
         return undefined
     }
 
+    // Maximum 5 levels of nesting for individual choices
+    if (value.split('::').length > 5) {
+        return 'Choices cannot have more than 5 levels of nesting.'
+    }
+
     for (let i = 0; i < values.length; ++i) {
         if (i !== index && values[i] === value) {
             return 'This value already exists. Please use unique values.'
