@@ -54,16 +54,10 @@ export const ChatCampaign = ({
                     </div>
                 </div>
             </div>
-            <div className={css.videos}>
-                {videoUrls.length > 0 &&
-                    videoUrls.map((url, idx) => (
-                        <div
-                            key={idx}
-                            style={{
-                                width: '100%',
-                                aspectRatio: '16/9',
-                            }}
-                        >
+            {videoUrls.length > 0 && (
+                <div className={css.videos}>
+                    {videoUrls.map((url, idx) => (
+                        <div key={idx} className={css.video}>
                             <ReactPlayer
                                 url={url}
                                 controls={true}
@@ -73,7 +67,8 @@ export const ChatCampaign = ({
                             />
                         </div>
                     ))}
-            </div>
+                </div>
+            )}
             {products.length > 0 && (
                 <div>
                     <ProductCarousel products={products} />
