@@ -29,7 +29,7 @@ export default function PrivateReply({
     return (
         <>
             <PrivateReplyButton
-                buttonComponent={Button}
+                buttonComponent={ReplyButton}
                 ticketMessageId={ticketMessageId}
                 meta={meta}
                 messageCreatedDatetime={messageCreatedDatetime}
@@ -57,3 +57,7 @@ export default function PrivateReply({
         </>
     )
 }
+
+const ReplyButton = (props: ComponentProps<typeof Button>) => (
+    <Button {...props} intent="secondary" />
+)

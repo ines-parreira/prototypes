@@ -4,16 +4,19 @@
     .container {
         font-size: 13px;
         font-weight: normal;
-        color: @classic-neutral-grey-6 !important;
+        color: @classic-neutral-grey-6;
         background-color: @classic-neutral-grey-2 !important;
         border-color: @classic-neutral-grey-3 !important;
-        pointer-events: auto !important;
         line-height: 24px;
 
         .messengerIcon {
             margin-right: 5px;
             width: 12px;
             height: 12px;
+        }
+
+        &.disabled img {
+            opacity: 0.2;
         }
 
         .instagramDirectMessageIcon {

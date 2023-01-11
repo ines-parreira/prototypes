@@ -4,37 +4,40 @@ exports[`<PrivateReplyAction/> should display the correct text for facebook comm
 <div
   class="dropdown"
 >
-  <button
-    class="dropdownItem dropdown-item"
+  <div
     id="private-reply-button-1"
-    role="menuitem"
-    tabindex="0"
-    type="button"
   >
-    <div
-      class="icon"
-    >
-      <img
-        alt="private message icon"
-        class="instagramDirectMessageIcon"
-        src="test-file-stub"
-      />
-    </div>
-    <div
-      class="content"
+    <button
+      class="dropdownItem dropdown-item"
+      role="menuitem"
+      tabindex="0"
+      type="button"
     >
       <div
-        class="title"
+        class="icon"
       >
-        Message
+        <img
+          alt="private message icon"
+          class="instagramDirectMessageIcon"
+          src="test-file-stub"
+        />
       </div>
       <div
-        class="description"
+        class="content"
       >
-        Respond with a direct message
+        <div
+          class="title"
+        >
+          Message
+        </div>
+        <div
+          class="description"
+        >
+          Respond with a direct message
+        </div>
       </div>
-    </div>
-  </button>
+    </button>
+  </div>
 </div>
 `;
 
@@ -42,36 +45,39 @@ exports[`<PrivateReplyAction/> should display the correct text for instagram com
 <div
   class="dropdown"
 >
-  <button
-    class="dropdownItem dropdown-item"
+  <div
     id="private-reply-button-1"
-    role="menuitem"
-    tabindex="0"
-    type="button"
   >
-    <div
-      class="icon"
-    >
-      <img
-        alt="private message icon"
-        class="instagramDirectMessageIcon"
-        src="test-file-stub"
-      />
-    </div>
-    <div
-      class="content"
+    <button
+      class="dropdownItem dropdown-item"
+      role="menuitem"
+      tabindex="0"
+      type="button"
     >
       <div
-        class="title"
+        class="icon"
       >
-        Message
+        <img
+          alt="private message icon"
+          class="instagramDirectMessageIcon"
+          src="test-file-stub"
+        />
       </div>
       <div
-        class="description"
+        class="content"
       >
-        Respond with a direct message
+        <div
+          class="title"
+        >
+          Message
+        </div>
+        <div
+          class="description"
+        >
+          Respond with a direct message
+        </div>
       </div>
-    </div>
-  </button>
+    </button>
+  </div>
 </div>
 `;

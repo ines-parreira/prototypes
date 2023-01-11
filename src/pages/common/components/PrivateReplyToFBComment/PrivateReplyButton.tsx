@@ -61,28 +61,33 @@ export default function PrivateReplyButton({
         tooltipMessage = 'Only one private reply per comment is allowed'
     }
 
+    const isDisabled = isAlreadySent || isMessageTooOld
+
     return (
         <>
-            <Component
-                type="submit"
-                className={classnames(css.container, className)}
-                onClick={onClick}
-                isDisabled={isAlreadySent || isMessageTooOld}
-                id={`private-reply-button-${ticketMessageId}`}
-                href="#"
-            >
-                <img
-                    className={
-                        isFacebookComment
-                            ? css.messengerIcon
-                            : css.instagramDirectMessageIcon
-                    }
-                    src={icon}
-                    alt="private message icon"
-                />
-                {buttonText}
-            </Component>
-            {(isAlreadySent || isMessageTooOld) && (
+            <div id={`private-reply-button-${ticketMessageId}`}>
+                <Component
+                    type="submit"
+                    className={classnames(css.container, className, {
+                        [css.disabled]: isDisabled,
+                    })}
+                    onClick={onClick}
+                    isDisabled={isDisabled}
+                    href="#"
+                >
+                    <img
+                        className={
+                            isFacebookComment
+                                ? css.messengerIcon
+                                : css.instagramDirectMessageIcon
+                        }
+                        src={icon}
+                        alt="private message icon"
+                    />
+                    {buttonText}
+                </Component>
+            </div>
+            {isDisabled && (
                 <UncontrolledTooltip
                     target={`private-reply-button-${ticketMessageId}`}
                 >

@@ -1,51 +1,60 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<PrivateReplyButton/> render should render a disabled button 1`] = `
-<button
-  class="wrapper container fill primary medium isDisabled"
-  disabled=""
-  href="#"
+<div
   id="private-reply-button-1"
-  type="submit"
 >
-  <img
-    alt="private message icon"
-    class="messengerIcon"
-    src="test-file-stub"
-  />
-  Message
-</button>
+  <button
+    class="wrapper container disabled fill primary medium isDisabled"
+    disabled=""
+    href="#"
+    type="submit"
+  >
+    <img
+      alt="private message icon"
+      class="messengerIcon"
+      src="test-file-stub"
+    />
+    Message
+  </button>
+</div>
 `;
 
 exports[`<PrivateReplyButton/> render should render a disabled button 2`] = `
-<button
-  class="wrapper container fill primary medium isDisabled"
-  disabled=""
-  href="#"
+<div
   id="private-reply-button-1"
-  type="submit"
 >
-  <img
-    alt="private message icon"
-    class="messengerIcon"
-    src="test-file-stub"
-  />
-  Message
-</button>
+  <button
+    class="wrapper container disabled fill primary medium isDisabled"
+    disabled=""
+    href="#"
+    type="submit"
+  >
+    <img
+      alt="private message icon"
+      class="messengerIcon"
+      src="test-file-stub"
+    />
+    Message
+  </button>
+</div>
 `;
 
 exports[`<PrivateReplyButton/> render should render the button 1`] = `
-<button
-  class="wrapper container fill primary medium"
-  href="#"
+<div
   id="private-reply-button-1"
-  type="submit"
 >
-  <img
-    alt="private message icon"
-    class="messengerIcon"
-    src="test-file-stub"
-  />
-  Message
-</button>
+  <button
+    class="wrapper container fill primary medium"
+    href="#"
+    type="submit"
+  >
+    <img
+      alt="private message icon"
+      class="messengerIcon"
+      src="test-file-stub"
+    />
+    Message
+  </button>
+</div>
 `;
