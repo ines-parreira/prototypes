@@ -34,7 +34,7 @@ export default function AddTicketField() {
             />
             <Container fluid className={css.pageContainer}>
                 <div className={css.contentWrapper}>
-                    <AddFieldForm objectType="Ticket" priority={0} />
+                    <AddFieldForm objectType="Ticket" />
                 </div>
             </Container>
         </div>

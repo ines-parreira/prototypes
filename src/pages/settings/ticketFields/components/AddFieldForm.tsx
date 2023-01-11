@@ -10,7 +10,6 @@ import FieldForm from './FieldForm'
 
 interface AddFieldFormProps {
     objectType: CustomFieldInput['object_type']
-    priority: number
 }
 
 export default function AddFieldForm(props: AddFieldFormProps) {
@@ -19,7 +18,6 @@ export default function AddFieldForm(props: AddFieldFormProps) {
     const newField: CustomFieldInput = {
         object_type: props.objectType,
         label: '',
-        priority: props.priority,
         required: false,
         definition: {
             data_type: 'text',

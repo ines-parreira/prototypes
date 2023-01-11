@@ -10,7 +10,7 @@ Object {
   "patch": Array [],
   "post": Array [
     Object {
-      "data": "{\\"object_type\\":\\"Ticket\\",\\"label\\":\\"Test name\\",\\"priority\\":1,\\"required\\":false,\\"definition\\":{\\"data_type\\":\\"text\\",\\"input_settings\\":{\\"input_type\\":\\"dropdown\\",\\"choices\\":[]}}}",
+      "data": "{\\"object_type\\":\\"Ticket\\",\\"label\\":\\"Test name\\",\\"required\\":false,\\"definition\\":{\\"data_type\\":\\"text\\",\\"input_settings\\":{\\"input_type\\":\\"dropdown\\",\\"choices\\":[]}}}",
       "headers": Object {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",

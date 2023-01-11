@@ -27,7 +27,7 @@ describe('<AddFieldForm/>', () => {
         const {container} = render(
             <Provider store={mockStore}>
                 <DndProvider backend={HTML5Backend}>
-                    <AddFieldForm objectType="Ticket" priority={1} />
+                    <AddFieldForm objectType="Ticket" />
                 </DndProvider>
             </Provider>
         )
@@ -40,7 +40,7 @@ describe('<AddFieldForm/>', () => {
         const {findByText, findByLabelText} = render(
             <Provider store={mockStore}>
                 <DndProvider backend={HTML5Backend}>
-                    <AddFieldForm objectType="Ticket" priority={1} />
+                    <AddFieldForm objectType="Ticket" />
                 </DndProvider>
             </Provider>
         )
@@ -66,7 +66,7 @@ describe('<AddFieldForm/>', () => {
         const {findByText} = render(
             <Provider store={mockStore}>
                 <DndProvider backend={HTML5Backend}>
-                    <AddFieldForm objectType="Ticket" priority={1} />
+                    <AddFieldForm objectType="Ticket" />
                 </DndProvider>
             </Provider>
         )

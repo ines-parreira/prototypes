@@ -20,7 +20,7 @@ export interface CustomFieldInput {
     object_type: 'Ticket'
     label: string
     description?: string
-    priority: number
+    priority?: number
     required: boolean
     definition: CustomTypeDefinitionText
 }
