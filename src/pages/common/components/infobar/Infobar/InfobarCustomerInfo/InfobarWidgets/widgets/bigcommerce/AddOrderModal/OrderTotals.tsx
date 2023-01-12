@@ -92,6 +92,12 @@ export default function OrderTotals({
 }: Props) {
     return (
         <dl className={css.totalsContainer}>
+            <TotalLine
+                label="Subtotal"
+                value={subTotal}
+                currencyCode={currencyCode}
+            />
+
             <Discount
                 cart={cart}
                 currencyCode={currencyCode}
@@ -103,12 +109,6 @@ export default function OrderTotals({
                 currencyCode={currencyCode}
                 onUpdateCoupon={onUpdateCoupon}
                 onRemoveCoupon={onRemoveCoupon}
-            />
-
-            <TotalLine
-                label="Subtotal"
-                value={subTotal}
-                currencyCode={currencyCode}
             />
 
             <ShippingMethod

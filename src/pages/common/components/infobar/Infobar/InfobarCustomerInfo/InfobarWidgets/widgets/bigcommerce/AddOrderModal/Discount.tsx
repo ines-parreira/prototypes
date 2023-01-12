@@ -92,6 +92,7 @@ export function Discount({cart, currencyCode, onUpdateDiscountAmount}: Props) {
                     amount={String(cartDiscountAmount)}
                     currencyCode={currencyCode}
                     renderIfZero
+                    negative
                 />
             </dd>
             <PopoverContainer

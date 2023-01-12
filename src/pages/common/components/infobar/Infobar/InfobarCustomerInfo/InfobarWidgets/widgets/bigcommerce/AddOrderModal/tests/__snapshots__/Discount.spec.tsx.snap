@@ -18,7 +18,7 @@ exports[`<Discount /> works as expected: discount set 1`] = `
       class="descriptionValue"
     >
       <span>
-        €5.55
+        -€5.55
       </span>
     </dd>
   </div>
@@ -46,7 +46,7 @@ exports[`<Discount /> works as expected: initial 1`] = `
       class="descriptionValue descriptionValueZero"
     >
       <span>
-        €0.00
+        -€0.00
       </span>
     </dd>
   </div>

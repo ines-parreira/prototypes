@@ -128,6 +128,7 @@ export function Coupon({
                     amount={String(cartCouponAmount)}
                     currencyCode={currencyCode}
                     renderIfZero
+                    negative
                 />
             </dd>
             <PopoverContainer

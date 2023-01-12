@@ -8,6 +8,19 @@ exports[`<OrderTotals/> rendering should render 1`] = `
     <dt
       class="descriptionTitle"
     >
+      Subtotal
+    </dt>
+    <div />
+    <dd
+      class="descriptionValue"
+    >
+      <span>
+        $78.00
+      </span>
+    </dd>
+    <dt
+      class="descriptionTitle"
+    >
       <button
         class="actionButton"
         id="discount-button"
@@ -20,7 +33,7 @@ exports[`<OrderTotals/> rendering should render 1`] = `
       class="descriptionValue descriptionValueZero"
     >
       <span>
-        $0.00
+        -$0.00
       </span>
     </dd>
     <dt
@@ -38,20 +51,7 @@ exports[`<OrderTotals/> rendering should render 1`] = `
       class="descriptionValue descriptionValueZero"
     >
       <span>
-        $0.00
-      </span>
-    </dd>
-    <dt
-      class="descriptionTitle"
-    >
-      Subtotal
-    </dt>
-    <div />
-    <dd
-      class="descriptionValue"
-    >
-      <span>
-        $78.00
+        -$0.00
       </span>
     </dd>
     <dt
