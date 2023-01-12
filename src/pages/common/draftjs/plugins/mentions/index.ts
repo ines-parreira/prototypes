@@ -2,15 +2,24 @@
  * Adapted from https://github.com/draft-js-plugins/draft-js-plugins/tree/master/draft-js-mention-plugin
  */
 
+import {KeyboardEvent} from 'react'
 import decorateComponentWithProps from 'decorate-component-with-props'
 import {Map} from 'immutable'
+import {EditorState} from 'draft-js'
 
 import Mention from './Mention'
-import MentionSuggestions from './MentionSuggestions/index.tsx'
+import MentionSuggestions from './MentionSuggestions'
 import MentionSuggestionsPortal from './MentionSuggestionsPortal'
 import mentionStrategy from './mentionStrategy'
 import mentionSuggestionsStrategy from './mentionSuggestionsStrategy'
 import {defaultSuggestionsFilter, positionSuggestions} from './utils'
+import {
+    MentionPluginTheme,
+    MentionPluginStore,
+    ClientRectFunction,
+    GetSetEditorState,
+    MentionSuggestionCallbacks,
+} from './types'
 
 import styles from './Mention.less'
 
@@ -43,7 +52,7 @@ const letterRegExp =
     ']*'
 
 const createMentionPlugin = () => {
-    const theme = {
+    const theme: MentionPluginTheme = {
         // CSS class for mention text
         mention: styles.mention,
         // CSS class for suggestions component
@@ -59,7 +68,7 @@ const createMentionPlugin = () => {
     const entityMutability = 'SEGMENTED'
     const mentionRegExp = letterRegExp
 
-    const callbacks = {
+    const callbacks: MentionSuggestionCallbacks = {
         keyBindingFn: undefined,
         handleKeyCommand: undefined,
         onDownArrow: undefined,
@@ -75,11 +84,11 @@ const createMentionPlugin = () => {
         ariaExpanded: 'false',
     }
 
-    let searches = Map()
-    let escapedSearch
-    let clientRectFunctions = Map()
+    let searches: Map<string, string> = Map()
+    let escapedSearch: string | undefined
+    let clientRectFunctions: Map<string, ClientRectFunction> = Map()
 
-    const store = {
+    const store: MentionPluginStore = {
         getEditorState: undefined,
         setEditorState: undefined,
         getPortalClientRect: (offsetKey) =>
@@ -147,22 +156,22 @@ const createMentionPlugin = () => {
             ariaExpanded: ariaProps.ariaExpanded,
         }),
 
-        initialize: ({getEditorState, setEditorState}) => {
+        initialize: ({getEditorState, setEditorState}: GetSetEditorState) => {
             store.getEditorState = getEditorState
             store.setEditorState = setEditorState
         },
 
-        onDownArrow: (keyboardEvent) =>
+        onDownArrow: (keyboardEvent: KeyboardEvent) =>
             callbacks.onDownArrow && callbacks.onDownArrow(keyboardEvent),
-        onTab: (keyboardEvent) =>
+        onTab: (keyboardEvent: KeyboardEvent) =>
             callbacks.onTab && callbacks.onTab(keyboardEvent),
-        onUpArrow: (keyboardEvent) =>
+        onUpArrow: (keyboardEvent: KeyboardEvent) =>
             callbacks.onUpArrow && callbacks.onUpArrow(keyboardEvent),
-        onEscape: (keyboardEvent) =>
+        onEscape: (keyboardEvent: KeyboardEvent) =>
             callbacks.onEscape && callbacks.onEscape(keyboardEvent),
-        handleReturn: (keyboardEvent) =>
+        handleReturn: (keyboardEvent: KeyboardEvent) =>
             callbacks.handleReturn && callbacks.handleReturn(keyboardEvent),
-        onChange: (editorState) => {
+        onChange: (editorState: EditorState) => {
             if (callbacks.onChange) {
                 return callbacks.onChange(editorState)
             }

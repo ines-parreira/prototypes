@@ -1,8 +1,8 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {mount} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import MentionSuggestions from '../index.tsx'
+import MentionSuggestions from '../index'
 
 const mentions = fromJS([
     {
@@ -38,36 +38,36 @@ const mentions = fromJS([
 ])
 
 describe('MentionSuggestions Component', () => {
+    const minProps: ComponentProps<typeof MentionSuggestions> = {
+        ariaProps: {
+            ariaExpanded: 'false',
+            ariaHasPopup: 'false',
+        },
+        onSearchChange: jest.fn(),
+        callbacks: {
+            handleKeyCommand: undefined,
+        },
+        store: {
+            getAllSearches: jest.fn(),
+            getPortalClientRect: jest.fn(),
+            isEscaped: jest.fn(),
+            resetEscapedSearch: jest.fn(),
+            escapeSearch: jest.fn(),
+            register: jest.fn(),
+            unregister: jest.fn(),
+            updatePortalClientRect: jest.fn(),
+        },
+        theme: {},
+        suggestions: mentions,
+        positionSuggestions: jest.fn(),
+        mentionTrigger: '',
+        entityMutability: 'SEGMENTED',
+        mentionPrefix: '',
+    }
+
     it('Closes when suggestions is empty', () => {
-        const callbacks = {
-            onDownArrow: () => Promise.resolve(),
-            onUpArrow: () => Promise.resolve(),
-            onTab: () => Promise.resolve(),
-            onEscape: () => Promise.resolve(),
-            handleReturn: () => Promise.resolve(),
-        }
-        const store = {
-            getAllSearches: () => Promise.resolve(),
-            getPortalClientRect: () => Promise.resolve(),
-            isEscaped: () => Promise.resolve(),
-            resetEscapedSearch: () => Promise.resolve(),
-            escapeSearch: () => Promise.resolve(),
-        }
-        const ariaProps = {}
-        const onSearchChange = () => Promise.resolve()
-        const onAddMention = () => Promise.resolve()
-        const positionSuggestions = () => Promise.resolve()
-        const suggestions = mount(
-            <MentionSuggestions
-                ariaProps={ariaProps}
-                onSearchChange={onSearchChange}
-                positionSuggestions={positionSuggestions}
-                suggestions={mentions}
-                callbacks={callbacks}
-                store={store}
-                theme={{}}
-                onAddMention={onAddMention}
-            />
+        const suggestions = mount<MentionSuggestions>(
+            <MentionSuggestions {...minProps} />
         )
 
         suggestions.instance().openDropdown()

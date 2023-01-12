@@ -1,4 +1,4 @@
-import {EditorState, ContentState} from 'draft-js'
+import {EditorState, ContentState, EditorChangeType} from 'draft-js'
 import {fromJS} from 'immutable'
 
 import addMention from '../addMention'
@@ -7,7 +7,8 @@ describe('addMention', () => {
     it('should add a mention', () => {
         const editorState = EditorState.push(
             EditorState.createEmpty(),
-            ContentState.createFromText('@Bob')
+            ContentState.createFromText('@Bob'),
+            'insert-mention' as EditorChangeType
         )
         const newEditorState = addMention(
             editorState,

@@ -1,7 +1,7 @@
 import React, {Component, ComponentType} from 'react'
 import {fromJS, List} from 'immutable'
 
-import {suggestionsFilter} from '../../draftjs/plugins/mentions/index.js'
+import {suggestionsFilter} from '../../draftjs/plugins/mentions'
 
 type RequiredProps = {
     mentionSuggestions?: List<any>

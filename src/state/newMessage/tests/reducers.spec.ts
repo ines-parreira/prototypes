@@ -6,7 +6,7 @@ import {
     TicketMessageSourceType,
     TicketChannel,
 } from '../../../business/types/ticket'
-import addMention from '../../../pages/common/draftjs/plugins/mentions/modifiers/addMention.js'
+import addMention from '../../../pages/common/draftjs/plugins/mentions/modifiers/addMention'
 import reducer, {makeNewMessage, initialState} from '../reducers'
 import * as types from '../constants'
 import {GorgiasAction} from '../../types'

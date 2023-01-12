@@ -2,16 +2,17 @@
  * Adapted from https://github.com/draft-js-plugins/draft-js-plugins/tree/master/draft-js-mention-plugin
  */
 
-import {Modifier, EditorState} from 'draft-js'
+import {Modifier, EditorState, EditorChangeType} from 'draft-js'
+import {Map} from 'immutable'
 
 import {getSearchText, getTypeByTrigger} from '../utils'
 
 const addMention = (
-    editorState,
-    mention,
-    mentionPrefix,
-    mentionTrigger,
-    entityMutability
+    editorState: EditorState,
+    mention: Map<unknown, unknown>,
+    mentionPrefix: string,
+    mentionTrigger: string,
+    entityMutability: 'SEGMENTED' | 'IMMUTABLE' | 'MUTABLE'
 ) => {
     const contentState = editorState.getCurrentContent()
     const entityContentState = contentState.createEntity(
@@ -37,8 +38,8 @@ const addMention = (
     let mentionReplacedContent = Modifier.replaceText(
         contentState,
         mentionTextSelection,
-        `${mentionPrefix}${mention.get('name')}`,
-        null, // no inline style needed
+        `${mentionPrefix}${mention.get('name') as string}`,
+        undefined, // no inline style needed
         entityKey
     )
 
@@ -57,7 +58,7 @@ const addMention = (
     const newEditorState = EditorState.push(
         editorState,
         mentionReplacedContent,
-        'insert-mention'
+        'insert-mention' as EditorChangeType
     )
     return EditorState.forceSelection(
         newEditorState,

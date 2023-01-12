@@ -4,9 +4,14 @@
 
 import findWithRegex from 'find-with-regex'
 import _escapeRegExp from 'lodash/escapeRegExp'
+import {ContentBlock} from 'draft-js'
 
 const mentionSuggestionStrategy =
-    (trigger, regExp) => (contentBlock, callback) => {
+    (trigger: string, regExp: string) =>
+    (
+        contentBlock: ContentBlock,
+        callback: (start: number, end: number) => void
+    ) => {
         findWithRegex(
             new RegExp(`(\\s|^)${_escapeRegExp(trigger)}${regExp}`, 'g'),
             contentBlock,

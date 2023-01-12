@@ -1,9 +1,8 @@
 import React, {Component, ComponentType} from 'react'
 import classnames from 'classnames'
-
 import {Map} from 'immutable'
 
-import {Theme} from '../types'
+import {MentionPluginTheme} from 'pages/common/draftjs/plugins/mentions/types'
 
 type Props = {
     entryComponent: ComponentType<
@@ -13,7 +12,7 @@ type Props = {
             onMouseUp: () => void
             onMouseEnter: () => void
             role: string
-            theme: Theme
+            theme: MentionPluginTheme
             mention: Map<any, any>
             searchValue: string
         }>
@@ -23,7 +22,7 @@ type Props = {
     mention: Map<any, unknown>
     index: number
     onMentionFocus: (T: number) => void
-    theme: Theme
+    theme: MentionPluginTheme
     isFocused?: boolean
     id?: string
 }

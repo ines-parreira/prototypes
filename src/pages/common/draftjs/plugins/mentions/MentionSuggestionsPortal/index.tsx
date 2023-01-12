@@ -2,17 +2,22 @@
  * Adapted from https://github.com/draft-js-plugins/draft-js-plugins/tree/master/draft-js-mention-plugin
  */
 
-import React, {Component} from 'react'
-import PropTypes from 'prop-types'
+import React, {ReactNode, Component} from 'react'
+import {EditorState} from 'draft-js'
 
-export default class MentionSuggestionsPortal extends Component {
-    static propTypes = {
-        store: PropTypes.object,
-        setEditorState: PropTypes.func,
-        offsetKey: PropTypes.string,
-        getEditorState: PropTypes.func,
-        children: PropTypes.array,
-    }
+import {MentionPluginStore} from '../types'
+
+type Props = {
+    offsetKey: string
+    store: MentionPluginStore
+    getEditorState(): EditorState
+    setEditorState(state: EditorState): void
+    children: ReactNode
+}
+
+export default class MentionSuggestionsPortal extends Component<Props> {
+    key!: string
+    searchPortal!: HTMLSpanElement | null
 
     // When inputting Japanese characters (or any complex alphabet which requires
     // hitting enter to commit the characters), that action was causing a race
@@ -29,7 +34,7 @@ export default class MentionSuggestionsPortal extends Component {
         this.props.setEditorState(this.props.getEditorState())
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Props) {
         this.updatePortalClientRect(nextProps)
     }
 
@@ -37,9 +42,9 @@ export default class MentionSuggestionsPortal extends Component {
         this.props.store.unregister(this.props.offsetKey)
     }
 
-    updatePortalClientRect(props) {
+    updatePortalClientRect(props: Props) {
         this.props.store.updatePortalClientRect(props.offsetKey, () =>
-            this.searchPortal.getBoundingClientRect()
+            this.searchPortal!.getBoundingClientRect()
         )
     }
 

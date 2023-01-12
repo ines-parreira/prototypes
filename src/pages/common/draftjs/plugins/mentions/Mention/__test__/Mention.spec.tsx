@@ -1,6 +1,5 @@
 import React from 'react'
 import {render} from 'enzyme'
-import {Map} from 'immutable'
 import {ContentState} from 'draft-js'
 
 import Mention from '../index'
@@ -19,7 +18,7 @@ describe('Mention', () => {
             <Mention
                 contentState={contentState}
                 entityKey={entityKey}
-                theme={Map()}
+                theme={{}}
             />
         )
         expect(result.length).toEqual(1)

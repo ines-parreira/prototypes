@@ -1,10 +1,18 @@
+import {EditorState, SelectionState} from 'draft-js'
 import _deburr from 'lodash/deburr'
+import {List, Map} from 'immutable'
 
 /**
  * Adapted from https://github.com/draft-js-plugins/draft-js-plugins/tree/master/draft-js-mention-plugin
  */
 
-export const decodeOffsetKey = (offsetKey) => {
+export interface DecodedOffset {
+    blockKey: string
+    decoratorKey: number
+    leafKey: number
+}
+
+export const decodeOffsetKey = (offsetKey: string): DecodedOffset => {
     const [blockKey, decoratorKey, leafKey] = offsetKey.split('-')
     return {
         blockKey,
@@ -14,20 +22,24 @@ export const decodeOffsetKey = (offsetKey) => {
 }
 
 // Get the first 5 suggestions that match
-export const defaultSuggestionsFilter = (searchValue, suggestions) => {
+export const defaultSuggestionsFilter = (
+    searchValue: string,
+    suggestions: List<Map<string, string>>
+) => {
     const value = _deburr(searchValue.toLowerCase())
     const filteredSuggestions = suggestions.filter(
         (suggestion) =>
             !value ||
-            _deburr((suggestion.get('name') || '').toLowerCase()).indexOf(
+            _deburr((suggestion?.get('name') || '').toLowerCase()).indexOf(
                 value
             ) > -1
     )
     const size = filteredSuggestions.size < 5 ? filteredSuggestions.size : 5
-    return filteredSuggestions.setSize(size)
+
+    return (filteredSuggestions as List<any>).setSize(size)
 }
 
-export const getWordAt = (string, position) => {
+export const getWordAt = (string: string, position: number) => {
     // Perform type conversions.
     const str = String(string)
     // eslint-disable-next-line no-bitwise
@@ -54,7 +66,10 @@ export const getWordAt = (string, position) => {
     }
 }
 
-export const getSearchText = (editorState, selection) => {
+export const getSearchText = (
+    editorState: EditorState,
+    selection: SelectionState
+) => {
     const anchorKey = selection.getAnchorKey()
     const anchorOffset = selection.getAnchorOffset() - 1
     const currentContent = editorState.getCurrentContent()
@@ -63,10 +78,12 @@ export const getSearchText = (editorState, selection) => {
     return getWordAt(blockText, anchorOffset)
 }
 
-export const getTypeByTrigger = (trigger) =>
+export const getTypeByTrigger = (trigger: string): string =>
     trigger === '@' ? 'mention' : `${trigger}mention`
 
-export const getRelativeParent = (element) => {
+export const getRelativeParent = (
+    element: HTMLElement | null
+): HTMLElement | null => {
     if (!element) {
         return null
     }
@@ -81,9 +98,19 @@ export const getRelativeParent = (element) => {
     return getRelativeParent(element.parentElement)
 }
 
-export const positionSuggestions = ({decoratorRect, popover, state, props}) => {
+export const positionSuggestions = ({
+    decoratorRect,
+    popover,
+    state,
+    props,
+}: {
+    decoratorRect: DOMRect
+    popover: HTMLElement
+    state: {isActive: boolean}
+    props: {suggestions: List<any>}
+}) => {
     const relativeParent = getRelativeParent(popover.parentElement)
-    const relativeRect = {}
+    const relativeRect: Partial<Element & {top: number; left: number}> = {}
 
     if (relativeParent) {
         relativeRect.scrollLeft = relativeParent.scrollLeft

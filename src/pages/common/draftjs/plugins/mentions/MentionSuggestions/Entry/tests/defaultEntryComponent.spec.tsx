@@ -1,7 +1,7 @@
 import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
 
-import DefaultEntryComponent from '../DefaultEntryComponent.tsx'
+import DefaultEntryComponent from '../DefaultEntryComponent'
 
 describe('DefaultEntryComponent', () => {
     it('should render', () => {

@@ -3,46 +3,31 @@
  */
 import React, {Component, KeyboardEvent} from 'react'
 import {List, Map, fromJS} from 'immutable'
-import {genKey, EditorState, SelectionState} from 'draft-js'
+import {genKey, EditorState, SelectionState, DraftHandleValue} from 'draft-js'
 
 import {EditorHandledNotHandled} from 'utils/editor'
-import addMention from '../modifiers/addMention.js'
-import {decodeOffsetKey, getSearchText} from '../utils.js'
+import addMention from '../modifiers/addMention'
+import {decodeOffsetKey, getSearchText} from '../utils'
+import {
+    MentionPluginTheme,
+    MentionPluginStore,
+    MentionSuggestionCallbacks,
+} from '../types'
 
 import Entry from './Entry'
 import DefaultEntryComponent from './Entry/DefaultEntryComponent'
-import {Theme} from './types'
-
-type Callbacks = {
-    onDownArrow?: (event: KeyboardEvent) => void | null
-    onUpArrow?: (event: KeyboardEvent) => void | null
-    onEscape?: (event: KeyboardEvent) => void | null
-    handleReturn?: () => string | null
-    onTab?: (event: KeyboardEvent) => void | null
-    onChange?: (editorState: EditorState) => EditorState
-}
-
-type Store = {
-    getAllSearches: () => Map<any, any>
-    getPortalClientRect: (T: string) => string | null
-    resetEscapedSearch: () => void
-    isEscaped: (T: string) => boolean
-    escapeSearch: (T: string) => void
-    getEditorState: () => EditorState
-    setEditorState: (T: EditorState) => void
-}
 
 type Props = {
-    callbacks: Callbacks
-    store: Store
+    callbacks: MentionSuggestionCallbacks
+    store: MentionPluginStore
     ariaProps: {
         ariaHasPopup: 'true' | 'false'
         ariaExpanded: 'true' | 'false'
     }
-    theme: Theme
+    theme: MentionPluginTheme
     suggestions: List<any>
     positionSuggestions: (T: {
-        decoratorRect: string | null
+        decoratorRect: DOMRect
         prevProps: Props
         prevState: State
         props: Props
@@ -52,9 +37,9 @@ type Props = {
     onSearchChange: (T: {value: string}) => void
     mentionTrigger: string
     canAddMention?: boolean
-    entityMutability?: string
+    entityMutability: 'SEGMENTED' | 'IMMUTABLE' | 'MUTABLE'
     entryComponent?: () => void
-    mentionPrefix?: string
+    mentionPrefix: string
 }
 
 type State = {
@@ -156,9 +141,9 @@ export default class MentionSuggestions extends Component<Props, State> {
             return removeList()
         }
 
-        // identify the start & end positon of each search-text
+        // identify the start & end position of each search-text
         const offsetDetails = searches.map((offsetKey) =>
-            decodeOffsetKey(offsetKey)
+            decodeOffsetKey(offsetKey as string)
         )
 
         // a leaf can be empty when it is removed due e.g. using backspace
@@ -291,7 +276,7 @@ export default class MentionSuggestions extends Component<Props, State> {
         this.closeDropdown()
 
         // to force a re-render of the outer component to change the aria props
-        this.props.store.setEditorState(this.props.store.getEditorState())
+        this.props.store.setEditorState!(this.props.store.getEditorState!())
     }
 
     onMentionSelect = (mention: Map<unknown, unknown>) => {
@@ -303,13 +288,13 @@ export default class MentionSuggestions extends Component<Props, State> {
 
         this.closeDropdown()
         const newEditorState = addMention(
-            this.props.store.getEditorState(),
+            this.props.store.getEditorState!(),
             mention,
             this.props.mentionPrefix,
             this.props.mentionTrigger,
             this.props.entityMutability
         )
-        this.props.store.setEditorState(newEditorState)
+        this.props.store.setEditorState!(newEditorState)
     }
 
     onMentionFocus = (index: number) => {
@@ -317,10 +302,10 @@ export default class MentionSuggestions extends Component<Props, State> {
         this.state.focusedOptionIndex = index
 
         // to force a re-render of the outer component to change the aria props
-        this.props.store.setEditorState(this.props.store.getEditorState())
+        this.props.store.setEditorState!(this.props.store.getEditorState!())
     }
 
-    commitSelection = () => {
+    commitSelection = (): DraftHandleValue => {
         this.onMentionSelect(
             this.props.suggestions.get(this.state.focusedOptionIndex)
         )
