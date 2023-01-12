@@ -9,10 +9,7 @@ import {phoneNumbersFetched} from 'state/entities/phoneNumbers/actions'
 import {getPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {getCurrentAccountFeatures} from 'state/currentAccount/selectors'
-import {AccountFeatures} from 'state/currentAccount/types'
 import PageHeader from 'pages/common/components/PageHeader'
-import PhoneNumbersLimitAlert from 'pages/phoneNumbers/PhoneNumbersLimitAlert'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import history from 'pages/history'
@@ -26,15 +23,6 @@ import PhoneNumbersList from './PhoneNumbersList'
 export function PhoneNumbersListContainer() {
     const dispatch = useAppDispatch()
     const phoneNumbers = useAppSelector(getPhoneNumbers)
-    const accountFeatures: AccountFeatures = useAppSelector(
-        getCurrentAccountFeatures
-    ).toJS()
-
-    const currentPhoneNumbers = Object.keys(phoneNumbers).length
-    const maxPhoneNumbers = accountFeatures?.phone_number?.limit
-    const isLimitReacted =
-        (maxPhoneNumbers && currentPhoneNumbers >= maxPhoneNumbers) || false
-
     const [{loading: isLoading}, handleFetchPhoneNumbers] = useAsyncFn(
         async () => {
             try {
@@ -61,7 +49,6 @@ export function PhoneNumbersListContainer() {
         <div className="full-width">
             <PageHeader title="Phone numbers">
                 <Button
-                    isDisabled={isLimitReacted}
                     onClick={() =>
                         history.push('/app/settings/phone-numbers/new')
                     }
@@ -74,10 +61,6 @@ export function PhoneNumbersListContainer() {
                     Create a phone number in Gorgias to connect Voice and SMS
                     capabilities.
                 </div>
-                <PhoneNumbersLimitAlert
-                    currentPhoneNumbers={currentPhoneNumbers}
-                    maxPhoneNumbers={maxPhoneNumbers}
-                />
                 {isEmpty(phoneNumbers) &&
                     (isLoading ? (
                         <Loader />
