@@ -37,7 +37,7 @@ export default function BillableTicketsLabel({
             >
                 {new Intl.NumberFormat('en-US', {
                     style: 'currency',
-                    currency: currency,
+                    currency,
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0,
                 }).format(formattedCostPerTicket)}{' '}

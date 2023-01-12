@@ -19,143 +19,8 @@ exports[`<BillingContainer /> should render the billing page 1`] = `
     <div>
       Billing usage
     </div>
-    <div
-      class="wrapper"
-    >
-      <h4
-        class="header"
-      >
-        <i
-          class="icon material-icons"
-        >
-          add_box
-        </i>
-        Add-ons
-      </h4>
-      <div
-        class="addOns"
-      >
-        <div
-          class="card card"
-        >
-          <div
-            class="card-title card-title"
-          >
-            <span
-              class="title"
-            >
-              Voice
-            </span>
-          </div>
-          <div
-            class="card-body card-body"
-          >
-            <div
-              class="description"
-            >
-              <p>
-                <b>
-                  Provide hands-free phone support
-                </b>
-                 
-                right from the helpdesk.
-              </p>
-              <p>
-                You’re currently on
-                 
-                <a
-                  href="https://www.gorgias.com/pricing"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  trial pricing
-                </a>
-                 
-                until you add a plan.
-              </p>
-            </div>
-            <div
-              class="footer"
-            >
-              <a
-                href="https://docs.gorgias.com/en-US/billing-and-subscriptions-81852#voice-tickets"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                View pricing details
-              </a>
-              <a
-                class="wrapper fill secondary medium"
-                href="http://gorgias.typeform.com/to/gH7HYEHu"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                Subscribe
-              </a>
-            </div>
-          </div>
-        </div>
-        <div
-          class="card card"
-        >
-          <div
-            class="card-title card-title"
-          >
-            <span
-              class="title"
-            >
-              SMS
-            </span>
-          </div>
-          <div
-            class="card-body card-body"
-          >
-            <div
-              class="description"
-            >
-              <p>
-                <b>
-                  Deliver fast, conversational support
-                </b>
-                 
-                to customers on the go.
-              </p>
-              <p>
-                You’re currently on
-                 
-                <a
-                  href="https://www.gorgias.com/pricing"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  trial pricing
-                </a>
-                 
-                until you add a plan.
-              </p>
-            </div>
-            <div
-              class="footer"
-            >
-              <a
-                href="https://docs.gorgias.com/en-US/billing-and-subscriptions-81852#sms-tickets"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                View pricing details
-              </a>
-              <a
-                class="wrapper fill secondary medium"
-                href="http://gorgias.typeform.com/to/gH7HYEHu"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                Subscribe
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div>
+      AddOns
     </div>
     <p
       class="mb24"
@@ -178,9 +43,7 @@ exports[`<BillingContainer /> should render the billing page 1`] = `
     <div>
       Billing payment method
     </div>
-    <div
-      data-testid="BillingDetails"
-    >
+    <div>
       Billing details
     </div>
     <div>

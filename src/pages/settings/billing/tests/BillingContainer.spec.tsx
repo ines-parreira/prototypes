@@ -4,6 +4,7 @@ import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
+import {account} from 'fixtures/account'
 import {PaymentMethodType} from 'state/billing/types'
 import {RootState, StoreDispatch} from 'state/types'
 import {renderWithRouter} from 'utils/testing'
@@ -14,10 +15,9 @@ jest.mock('../BillingHelpdeskUsage', () => () => <div>Billing usage</div>)
 jest.mock('../BillingPaymentMethod', () => () => (
     <div>Billing payment method</div>
 ))
-jest.mock('../details/BillingDetails', () => () => (
-    <div data-testid="BillingDetails">Billing details</div>
-))
+jest.mock('../details/BillingDetails', () => () => <div>Billing details</div>)
 jest.mock('../BillingInvoices', () => () => <div>Billing invoices</div>)
+jest.mock('../AddOns', () => () => <div>AddOns</div>)
 
 describe('<BillingContainer />', () => {
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
@@ -25,6 +25,7 @@ describe('<BillingContainer />', () => {
     ])
     const defaultState: Partial<RootState> = {
         currentAccount: fromJS({
+            ...account,
             meta: {
                 hasCreditCard: true,
             },
@@ -39,8 +40,6 @@ describe('<BillingContainer />', () => {
     })
 
     it('should render the billing page', () => {
-        jest.spyOn(global.Date, 'now').mockImplementation(() => 1672617660000)
-
         store = mockStore({
             ...defaultState,
             billing: fromJS({
@@ -55,7 +54,6 @@ describe('<BillingContainer />', () => {
         )
 
         expect(container.firstChild).toMatchSnapshot()
-        ;(global.Date.now as unknown as jest.SpyInstance).mockRestore()
     })
 
     it('should render billing details when the payment method is shopify', () => {
@@ -68,13 +66,13 @@ describe('<BillingContainer />', () => {
                 products: [],
             }),
         })
-        const {getByTestId} = renderWithRouter(
+        const {queryByText} = renderWithRouter(
             <Provider store={store}>
                 <BillingContainer />
             </Provider>
         )
 
-        expect(getByTestId('BillingDetails')).toBeTruthy()
+        expect(queryByText('Billing details')).toBeInTheDocument()
     })
 
     it("should not render billing details when the account doesn't have a credit card", () => {
@@ -88,12 +86,27 @@ describe('<BillingContainer />', () => {
             }),
         })
 
-        const {queryByTestId} = renderWithRouter(
+        const {queryByText} = renderWithRouter(
             <Provider store={store}>
                 <BillingContainer />
             </Provider>
         )
 
-        expect(queryByTestId('BillingDetails')).toBeFalsy()
+        expect(queryByText('Billing details')).not.toBeInTheDocument()
+    })
+
+    it("should not render addons section when the account doesn't have an active subscription", () => {
+        store = mockStore({
+            ...defaultState,
+            currentAccount: undefined,
+        })
+
+        const {queryByText} = renderWithRouter(
+            <Provider store={store}>
+                <BillingContainer />
+            </Provider>
+        )
+
+        expect(queryByText('AddOns')).not.toBeInTheDocument()
     })
 })

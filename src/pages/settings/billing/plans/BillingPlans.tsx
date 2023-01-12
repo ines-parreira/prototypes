@@ -145,13 +145,9 @@ class BillingPlans extends React.Component<Props> {
     }
 }
 
-const connector = connect((state: RootState) => {
-    return {
-        isTrialing: currentAccountSelectors.isTrialing(state),
-        shouldPayWithShopify:
-            currentAccountSelectors.shouldPayWithShopify(state),
-        subscription: currentAccountSelectors.getCurrentSubscription(state),
-    }
-}, {})
+const connector = connect((state: RootState) => ({
+    isTrialing: currentAccountSelectors.isTrialing(state),
+    shouldPayWithShopify: currentAccountSelectors.shouldPayWithShopify(state),
+}))
 
 export default withRouter(connector(BillingPlans))

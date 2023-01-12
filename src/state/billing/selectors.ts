@@ -143,16 +143,12 @@ export const getCurrentAutomationProduct = createSelector(
 
 export const getCurrentVoiceProduct = createSelector(
     getCurrentProducts,
-    (currentProducts) =>
-        currentProducts?.voice?.amount !== 0
-            ? currentProducts?.voice
-            : undefined
+    (currentProducts) => currentProducts?.voice
 )
 
 export const getCurrentSMSProduct = createSelector(
     getCurrentProducts,
-    (currentProducts) =>
-        currentProducts?.sms?.amount !== 0 ? currentProducts?.sms : undefined
+    (currentProducts) => currentProducts?.sms
 )
 
 export const getCurrentHelpdeskName = createSelector(

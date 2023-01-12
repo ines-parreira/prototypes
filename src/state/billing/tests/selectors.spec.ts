@@ -1,8 +1,9 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
 import _cloneDeep from 'lodash/cloneDeep'
-
 import moment from 'moment'
+
+import * as billingFixtures from 'fixtures/billing'
 import {
     AUTOMATION_PRODUCT_ID,
     HELPDESK_PRODUCT_ID,
@@ -18,21 +19,19 @@ import {
     legacyBasicAutomationPrice,
     legacyBasicHelpdeskPrice,
     products,
-    smsPrice0,
     smsPrice1,
-    voicePrice0,
     voicePrice1,
 } from 'fixtures/productPrices'
-import * as billingFixtures from 'fixtures/billing'
 import {
     automationSubscriptionProductPrices,
     legacyWithoutAutomationAddOnProductPrices,
 } from 'fixtures/account'
+import {billingState} from 'fixtures/billing'
 import {PlanInterval} from 'models/billing/types'
 import {getFormattedAmount} from 'models/billing/utils'
 import {AccountFeature} from 'state/currentAccount/types'
-import {billingState} from 'fixtures/billing'
-import {RootState} from '../../types'
+import {RootState} from 'state/types'
+
 import * as selectors from '../selectors'
 import {initialState} from '../reducers'
 
@@ -468,18 +467,6 @@ describe('billing selectors', () => {
                 })
             ).toEqual(voicePrice1)
         })
-
-        it('should return undefined when the current voice product is the pay-as-you-go', () => {
-            expect(
-                selectors.getCurrentVoiceProduct({
-                    ...state,
-                    currentAccount: state.currentAccount.setIn(
-                        ['current_subscription', 'products', VOICE_PRODUCT_ID],
-                        voicePrice0.price_id
-                    ),
-                })
-            ).toEqual(undefined)
-        })
     })
 
     describe('getCurrentSMSProduct', () => {
@@ -493,18 +480,6 @@ describe('billing selectors', () => {
                     ),
                 })
             ).toEqual(smsPrice1)
-        })
-
-        it('should return undefined when the current SMS product is the pay-as-you-go', () => {
-            expect(
-                selectors.getCurrentVoiceProduct({
-                    ...state,
-                    currentAccount: state.currentAccount.setIn(
-                        ['current_subscription', 'products', VOICE_PRODUCT_ID],
-                        smsPrice0.price_id
-                    ),
-                })
-            ).toEqual(undefined)
         })
     })
 

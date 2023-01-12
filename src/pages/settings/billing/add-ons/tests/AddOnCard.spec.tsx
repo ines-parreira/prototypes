@@ -7,7 +7,7 @@ import {Provider} from 'react-redux'
 
 import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
-import {smsProduct} from 'fixtures/productPrices'
+import {smsProduct, voicePrice0} from 'fixtures/productPrices'
 import {ProductType} from 'models/billing/types'
 import {RootState, StoreDispatch} from 'state/types'
 
@@ -57,6 +57,21 @@ describe('<AddOnCard />', () => {
                     {...minProps}
                     name={ProductType.SMS}
                     addOnPrice={smsProduct.prices[1]}
+                />
+            </Provider>
+        )
+
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should render the add-on card for a trialing add-on price', () => {
+        const {container} = render(
+            <Provider store={store}>
+                <AddOnCard
+                    {...minProps}
+                    name={ProductType.Voice}
+                    headerPriceAmount={10}
+                    addOnPrice={voicePrice0}
                 />
             </Provider>
         )

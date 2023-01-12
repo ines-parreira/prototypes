@@ -44,7 +44,7 @@ exports[`<AddOnCard /> should render the add-on card for a subscriber 1`] = `
 </div>
 `;
 
-exports[`<AddOnCard /> should render the add-on card for non-subscriber 1`] = `
+exports[`<AddOnCard /> should render the add-on card for a trialing add-on price 1`] = `
 <div
   class="card"
 >
@@ -86,17 +86,79 @@ exports[`<AddOnCard /> should render the add-on card for non-subscriber 1`] = `
         You are not a subscriber yet, what are you waiting for?
       </p>
       <p>
-        You’re currently on
+        You’re currently paying
          
-        <a
-          href="https://www.gorgias.com/pricing"
-          rel="noopener noreferrer"
-          target="_blank"
+        <b>
+          $2.40
+          /ticket
+        </b>
+         
+        until you subscribe to a plan.
+      </p>
+    </div>
+    <div
+      class="footer"
+    >
+      <a
+        href=""
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        View pricing details
+      </a>
+      <a
+        class="wrapper fill secondary medium"
+        href="http://gorgias.typeform.com/to/gH7HYEHu"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Subscribe
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<AddOnCard /> should render the add-on card for non-subscriber 1`] = `
+<div
+  class="card"
+>
+  <div
+    class="card-title card-title"
+  >
+    <span
+      class="title"
+    >
+      Voice
+    </span>
+    <div
+      class="subscription-amount-wrapper"
+    >
+      Starting at 
+      <div
+        class="amountWrapper subscription-amount"
+      >
+        <span
+          class="amount"
         >
-          trial pricing
-        </a>
-         
-        until you add a plan.
+          <b>
+            $10
+          </b>
+           
+          / 
+          month
+        </span>
+      </div>
+    </div>
+  </div>
+  <div
+    class="card-body card-body"
+  >
+    <div
+      class="description"
+    >
+      <p>
+        You are not a subscriber yet, what are you waiting for?
       </p>
     </div>
     <div

@@ -32,6 +32,12 @@ type Props = {
     nonSubscriberDescription: ReactNode
 }
 
+const isVoicePrice = (price: SMSPrice | VoicePrice): price is VoicePrice =>
+    'voice_extra_ticket_cost' in price
+
+const isSMSPrice = (price: SMSPrice | VoicePrice): price is SMSPrice =>
+    'sms_extra_ticket_cost' in price
+
 const AddOnCard = ({
     addOnPrice,
     headerPriceAmount,
@@ -46,8 +52,20 @@ const AddOnCard = ({
     const formattedPriceName = convertLegacyPlanNameToPublicPlanName(
         priceName || ''
     )
+    const isPayAsYouGo = useMemo(() => addOnPrice?.amount === 0, [addOnPrice])
+    const extraTicketCost =
+        isPayAsYouGo && addOnPrice
+            ? isSMSPrice(addOnPrice)
+                ? addOnPrice.sms_extra_ticket_cost
+                : isVoicePrice(addOnPrice)
+                ? addOnPrice.voice_extra_ticket_cost
+                : undefined
+            : undefined
 
-    const hasAddOn = useMemo(() => !!addOnPrice, [addOnPrice])
+    const hasAddOn = useMemo(
+        () => !!addOnPrice && !isPayAsYouGo,
+        [addOnPrice, isPayAsYouGo]
+    )
 
     return (
         <Card className={className}>
@@ -84,17 +102,22 @@ const AddOnCard = ({
                     ) : (
                         <>
                             <p>{nonSubscriberDescription}</p>
-                            <p>
-                                You’re currently on{' '}
-                                <a
-                                    href="https://www.gorgias.com/pricing"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    trial pricing
-                                </a>{' '}
-                                until you add a plan.
-                            </p>
+                            {isPayAsYouGo && (
+                                <p>
+                                    You’re currently paying{' '}
+                                    <b>
+                                        {!!extraTicketCost &&
+                                            new Intl.NumberFormat('en-US', {
+                                                style: 'currency',
+                                                currency,
+                                                minimumFractionDigits: 2,
+                                                maximumFractionDigits: 2,
+                                            }).format(extraTicketCost)}
+                                        /ticket
+                                    </b>{' '}
+                                    until you subscribe to a plan.
+                                </p>
+                            )}
                         </>
                     )}
                 </div>

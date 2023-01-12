@@ -59,7 +59,7 @@ export class BillingContainer extends Component<Props> {
                 <PageHeader title="Billing & usage" />
                 <Container fluid className={css.pageContainer}>
                     <BillingHelpdeskUsage />
-                    <AddOns />
+                    {!this.props.currentSubscription.isEmpty() && <AddOns />}
                     <p className={css.mb24}>
                         If you have any questions or if you want to unsubscribe,
                         please contact us at{' '}
@@ -84,14 +84,11 @@ export class BillingContainer extends Component<Props> {
 }
 
 const connector = connect(
-    (state: RootState) => {
-        const currentSubscription = getCurrentSubscription(state)
-        return {
-            currentSubscription,
-            paymentMethod: paymentMethod(state),
-            hasCreditCard: hasCreditCard(state),
-        }
-    },
+    (state: RootState) => ({
+        currentSubscription: getCurrentSubscription(state),
+        paymentMethod: paymentMethod(state),
+        hasCreditCard: hasCreditCard(state),
+    }),
     {notify}
 )
 

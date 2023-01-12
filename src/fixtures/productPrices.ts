@@ -752,7 +752,7 @@ export const automationProduct: Product<AutomationPrice> = {
 export const voiceProduct: Product<VoicePrice> = {
     id: VOICE_PRODUCT_ID,
     type: ProductType.Voice,
-    prices: [voicePrice1, voicePrice2],
+    prices: [voicePrice1, voicePrice2, voicePrice0],
 }
 
 export const smsProduct: Product<SMSPrice> = {
