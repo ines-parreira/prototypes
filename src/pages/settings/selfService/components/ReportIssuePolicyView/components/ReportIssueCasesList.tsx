@@ -24,9 +24,6 @@ type ReportIssueCaseWithIdType = ReportIssueCaseType & {id: string}
 const ReportIssueCasesList = (): ReactElement | null => {
     const dispatch = useAppDispatch()
 
-    // TODO[COR-1569]: Setting the state here manually is dangerous and error prone
-    // A better approach would be to define all the possible state in a single
-    // location using a discriminated union and then check based on it
     const history = useHistory<{newlyCreatedCaseIndex?: number} | undefined>()
     const [cases, setCases] = useState<ReportIssueCaseWithIdType[]>([])
     const {isLoadingConfig, configuration} = useConfigurationData()
