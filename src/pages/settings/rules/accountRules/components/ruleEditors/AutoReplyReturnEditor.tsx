@@ -39,7 +39,7 @@ export const AutoReplyReturnEditor = ({
             })
         ) {
             errorMessage.return_portal_url =
-                'Enter a valid URL. Missing "https://" or "http://" protocol (e.g. "https://link.com" instead of "link.com")'
+                'Enter a valid URL. Missing "https://" or "http://" protocol (e.g. "https://gorgias.com" instead of "gorgias.com")'
         }
 
         return [Object.keys(errorMessage).length > 0, errorMessage]
