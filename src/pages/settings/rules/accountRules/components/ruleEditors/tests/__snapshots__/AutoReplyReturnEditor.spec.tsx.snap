@@ -55,7 +55,7 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
       This rule will never trigger on incoming emails from the addresses below.
     </p>
     <div
-      class="MultiSelectField blockList"
+      class="MultiSelectField allowList"
     >
       <div
         class="container"

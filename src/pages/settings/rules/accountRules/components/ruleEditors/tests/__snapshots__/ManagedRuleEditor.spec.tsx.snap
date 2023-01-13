@@ -1286,7 +1286,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
             class="caption error"
             id="input-text-4-caption"
           >
-            Enter a valid URL
+            Enter a valid URL.
           </div>
         </div>
       </div>
@@ -1300,7 +1300,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
           This rule will never trigger on incoming emails from the addresses below.
         </p>
         <div
-          class="MultiSelectField blockList"
+          class="MultiSelectField allowList"
         >
           <div
             class="container"

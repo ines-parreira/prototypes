@@ -2,6 +2,7 @@ import React, {useEffect} from 'react'
 import {useStateValidator, useMap} from 'react-use'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
+import isURL from 'validator/lib/isURL'
 import MultiSelectField from 'pages/common/forms/MultiSelectField'
 import InputField from 'pages/common/forms/input/InputField'
 import {AutoReplyReturnSettings} from 'state/rules/types'
@@ -11,16 +12,6 @@ import {MacroActionName} from 'models/macroAction/types'
 import {ManagedRuleDetailProps} from './ManagedRuleEditor'
 
 import css from './ManagedRuleEditor.less'
-
-function isValidHttpUrl(value: string) {
-    let url
-    try {
-        url = new URL(value)
-    } catch (_) {
-        return false
-    }
-    return url.protocol === 'http:' || url.protocol === 'https:'
-}
 
 export const AutoReplyReturnEditor = ({
     settings,
@@ -37,10 +28,20 @@ export const AutoReplyReturnEditor = ({
         const errorMessage: {[key in keyof typeof settingsFields]: string} = {}
         if (
             !state.return_portal_url ||
-            !isValidHttpUrl(state.return_portal_url)
+            !isURL(state.return_portal_url, {require_protocol: false})
         ) {
-            errorMessage.return_portal_url = 'Enter a valid URL'
+            errorMessage.return_portal_url = 'Enter a valid URL.'
+        } else if (
+            !isURL(state.return_portal_url, {
+                require_valid_protocol: true,
+                require_protocol: true,
+                protocols: ['http', 'https'],
+            })
+        ) {
+            errorMessage.return_portal_url =
+                'Enter a valid URL. Missing "https://" or "http://" protocol (e.g. "https://link.com" instead of "link.com")'
         }
+
         return [Object.keys(errorMessage).length > 0, errorMessage]
     })
 
@@ -86,7 +87,7 @@ export const AutoReplyReturnEditor = ({
                         onChange={(block_list) =>
                             setSettingsField('block_list', block_list)
                         }
-                        className={css.blockList}
+                        className={css.allowList}
                         singular="email"
                         plural="emails"
                     />

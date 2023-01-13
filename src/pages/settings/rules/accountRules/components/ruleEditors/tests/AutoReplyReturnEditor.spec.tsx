@@ -72,10 +72,10 @@ describe('<AutoReplyReturnEditor/>', () => {
 
         if (valid) {
             expect(onChangeSpy).toHaveBeenCalledWith(expect.any(Object), false)
-            expect(screen.queryByText('Enter a valid URL')).toBeFalsy()
+            expect(screen.queryByText(/Enter a valid URL/)).toBeFalsy()
         } else {
             expect(onChangeSpy).toHaveBeenCalledWith(expect.any(Object), true)
-            expect(screen.queryByText('Enter a valid URL')).toBeTruthy()
+            expect(screen.queryByText(/Enter a valid URL/)).toBeTruthy()
         }
     })
 })
