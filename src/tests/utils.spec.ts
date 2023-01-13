@@ -994,4 +994,34 @@ describe('global utils', () => {
             }
         })
     })
+
+    describe('isDomain()', () => {
+        it('should validate domain correctly', () => {
+            const dataset: {
+                input: string
+                output: boolean
+            }[] = [
+                {
+                    input: `www.dailymotion.com`,
+                    output: true,
+                },
+                {
+                    input: `dailymotion.com`,
+                    output: true,
+                },
+                {
+                    input: `https://www.dailymotion.com`,
+                    output: false,
+                },
+                {
+                    input: `1`,
+                    output: false,
+                },
+            ]
+
+            for (const data of dataset) {
+                expect(utils.isDomain(data.input)).toEqual(data.output)
+            }
+        })
+    })
 })

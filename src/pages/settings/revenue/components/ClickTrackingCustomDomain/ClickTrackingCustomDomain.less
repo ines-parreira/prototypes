@@ -1,0 +1,58 @@
+@import (reference) '~css/new/colorTokens';
+
+:local {
+    .title {
+        line-height: 24px;
+        margin-bottom: 4px;
+    }
+
+    .domainForm {
+        display: grid;
+        grid-template-columns: 400px auto;
+        grid-template-areas: 'input status';
+
+        column-gap: 8px;
+    }
+
+    .helpContainer {
+        border: 1px solid @classic-neutral-grey-3;
+        box-sizing: border-box;
+        border-radius: 4px;
+        padding: 16px;
+        margin: 16px 0;
+    }
+
+    .domainInput {
+        grid-area: input;
+        position: relative;
+    }
+
+    .deleteDomain {
+        position: absolute;
+        right: 0;
+        top: 50%;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        height: 33px;
+        width: 33px;
+        margin-top: -4px;
+
+        color: @classic-feedback-error;
+        font-size: 16px;
+
+        cursor: pointer;
+        transform: translateY(-50%);
+    }
+
+    .domainStatus {
+        grid-area: status;
+        align-self: center;
+    }
+
+    .infoIcon {
+        font-weight: bold;
+    }
+}

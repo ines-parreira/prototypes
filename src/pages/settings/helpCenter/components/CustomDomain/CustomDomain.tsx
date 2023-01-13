@@ -13,17 +13,17 @@ import Loader from 'pages/common/components/Loader/Loader'
 
 import settingsCss from 'pages/settings/settings.less'
 
+import {StatusCheck} from 'pages/common/components/StatusCheck'
+import {
+    ConnectionStatus,
+    ConnectionStatusProps,
+} from 'pages/common/components/ConnectionStatus'
 import {useHelpCenterActions} from '../../hooks/useHelpCenterActions'
 import {useHelpCenterApi} from '../../hooks/useHelpCenterApi'
 import {useHelpCenterIdParam} from '../../hooks/useHelpCenterIdParam'
 import {useCurrentHelpCenter} from '../../providers/CurrentHelpCenter'
 
-import {
-    ConnectionStatus,
-    ConnectionStatusProps,
-} from './components/ConnectionStatus'
 import {HelpText} from './components/HelpText'
-import {StatusCheck} from './components/StatusCheck'
 
 import css from './CustomDomain.less'
 

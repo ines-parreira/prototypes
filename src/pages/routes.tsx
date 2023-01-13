@@ -120,6 +120,8 @@ import SelfServiceStatsPage from './stats/self-service/SelfServiceStatsPage'
 import TwilioSubaccountStatusForm from './tasks/detail/TwilioSubaccountStatusForm'
 import EditTicketField from './settings/ticketFields/EditTicketField'
 import MaybeDeprecatedRoute from './common/components/MaybeDeprecatedRoute'
+import {ClickTrackingApiClientProvider} from './settings/revenue/hooks/useClickTrackingApi'
+import {ClickTrackingSettingsView} from './settings/revenue/components/ClickTrackingSettingsView'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -686,6 +688,7 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
             />
             <Route path={`${path}/teams`} render={TeamsSettingsRoutes} />
             <Route path={`${path}/users`} render={UsersSettingsRoutes} />
+            <Route path={`${path}/revenue`} render={RevenueSettingsRoutes} />
             <Route path={`${path}/billing`} render={BillingSettingsRoutes} />
             <Route
                 path={`${path}/manage-tags`}
@@ -1386,6 +1389,27 @@ export function UsersSettingsRoutes({match: {path}}: RouteComponentProps) {
                 })}
             />
         </Switch>
+    )
+}
+
+export function RevenueSettingsRoutes({match: {path}}: RouteComponentProps) {
+    return (
+        <ClickTrackingApiClientProvider>
+            <Switch>
+                <Route
+                    path={`${path}/click-tracking`}
+                    exact
+                    render={appRender({
+                        content: memoizedWithUserRoleRequired(
+                            ClickTrackingSettingsView as any,
+                            ADMIN_ROLE,
+                            PageSection.Users
+                        ),
+                        navbar: SettingsNavbar,
+                    })}
+                />
+            </Switch>
+        </ClickTrackingApiClientProvider>
     )
 }
 

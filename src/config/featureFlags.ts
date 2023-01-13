@@ -23,6 +23,7 @@ export enum FeatureFlagKey {
     RevenueAlphaTesters = 'revenue-alpha-testers',
     RevenueBetaShopifyHeadless = 'revenue-beta-shopify-headless',
     RevenueBetaTesters = 'revenue-beta-testers',
+    RevenueClickTracking = 'revenue-click-tracking',
     RevenueHideDiscountCodeButton = 'revenue-hide-discount-code-button',
     RuleSuggestion = 'rule-suggestion',
     SelfServiceArticleRecommendation = 'self-service-article-recommendation',

@@ -115,6 +115,18 @@ const CATEGORIES: Category[] = [
         ],
     },
     {
+        name: 'Revenue',
+        icon: 'paid',
+        links: [
+            {
+                requiredRole: ADMIN_ROLE,
+                to: 'revenue/click-tracking',
+                requiredFeatureFlag: FeatureFlagKey.RevenueClickTracking,
+                text: 'Click Tracking',
+            },
+        ],
+    },
+    {
         name: 'Users & Teams',
         icon: 'group',
         links: [

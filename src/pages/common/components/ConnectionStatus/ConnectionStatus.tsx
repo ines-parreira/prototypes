@@ -2,7 +2,7 @@ import React, {createRef} from 'react'
 import classNames from 'classnames'
 import _capitalize from 'lodash/capitalize'
 
-import Tooltip from '../../../../../../common/components/Tooltip'
+import Tooltip from '../Tooltip'
 
 import css from './ConnectionStatus.less'
 
@@ -13,7 +13,6 @@ export type ConnectionStatusProps = {
     tooltip?: string
 }
 
-// TODO: (Maybe) Move this to shared folder
 // TODO: Add Storybook file
 export const ConnectionStatus = ({
     className = '',

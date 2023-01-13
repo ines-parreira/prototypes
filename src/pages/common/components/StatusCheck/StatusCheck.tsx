@@ -4,7 +4,8 @@ import {Col, Row} from 'reactstrap'
 
 import Button from 'pages/common/components/button/Button'
 
-import Loader from '../../../../../../common/components/Loader/Loader'
+import Loader from '../Loader/Loader'
+import css from './StatusCheck.less'
 
 type Props = {
     isLoading?: boolean
@@ -12,6 +13,7 @@ type Props = {
     status?: string
 }
 
+// TODO: Add Storybook file
 export const StatusCheck = ({
     isLoading = false,
     onCheckStatus,
@@ -42,7 +44,7 @@ export const StatusCheck = ({
                     </>
                 )}
             </Button>
-            <span>
+            <span className={css.noteText}>
                 NOTE: It may take up to a few hours for DNS changes to take
                 effect.
             </span>

@@ -97,6 +97,19 @@ export function isUrl(string: string): string is string {
 }
 
 /**
+ * Guess if a passed string is a domain
+ */
+export function isDomain(string: string): string is string {
+    if (!_isString(string)) {
+        return false
+    }
+
+    return /^((?!-))(xn--)?[a-z0-9][a-z0-9-_]{0,61}[a-z0-9]{0,1}\.(xn--)?([a-z0-9\-]{1,61}|[a-z0-9-]{1,30}\.[a-z]{2,})$/i.test(
+        string
+    )
+}
+
+/**
  * Guess if a passed string is an email
  */
 export function isEmail(string: string): string is string {

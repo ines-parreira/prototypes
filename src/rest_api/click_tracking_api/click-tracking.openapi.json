@@ -1,0 +1,435 @@
+{
+    "openapi": "3.0.2",
+    "info": {"title": "FastAPI", "version": "0.1.0"},
+    "paths": {
+        "/health-check": {
+            "get": {
+                "tags": ["healthcheck"],
+                "summary": "Health Check",
+                "operationId": "health_check_health_check_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {"application/json": {"schema": {}}}
+                    }
+                }
+            }
+        },
+        "/": {
+            "get": {
+                "tags": ["healthcheck"],
+                "summary": "Health Check",
+                "operationId": "health_check__get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {"application/json": {"schema": {}}}
+                    }
+                }
+            }
+        },
+        "/track": {
+            "post": {
+                "tags": ["urls"],
+                "summary": "Create",
+                "operationId": "create_track_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/JWTTokenSchema"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/URLSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/track/bulk": {
+            "post": {
+                "tags": ["urls"],
+                "summary": "Create Bulk",
+                "operationId": "create_bulk_track_bulk_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/JWTTokenSchema"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {"application/json": {"schema": {}}}
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/check": {
+            "post": {
+                "tags": ["urls"],
+                "summary": "Retrieve Urls By Meta",
+                "operationId": "retrieve_urls_by_meta_check_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/JWTTokenSchema"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "title": "Response Retrieve Urls By Meta Check Post",
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/URLWithClicksSchema"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/r/{alias}": {
+            "get": {
+                "tags": ["urls"],
+                "summary": "Redirect",
+                "operationId": "redirect_r__alias__get",
+                "parameters": [
+                    {
+                        "required": true,
+                        "schema": {"title": "Alias", "type": "string"},
+                        "name": "alias",
+                        "in": "path"
+                    },
+                    {
+                        "required": false,
+                        "schema": {"title": "Referrer", "type": "string"},
+                        "name": "referrer",
+                        "in": "header"
+                    },
+                    {
+                        "required": false,
+                        "schema": {"title": "User-Agent", "type": "string"},
+                        "name": "user-agent",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "302": {
+                        "description": "Successful Response",
+                        "content": {"application/json": {"schema": {}}}
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/custom-domains": {
+            "get": {
+                "tags": ["custom_domains"],
+                "summary": "Retrieve",
+                "operationId": "get_custom_domain",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CustomDomainSchema"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [{"OAuth2PasswordBearer": []}]
+            },
+            "post": {
+                "tags": ["custom_domains"],
+                "summary": "Create",
+                "operationId": "create_custom_domain",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CustomDomainOperationSchema"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CustomDomainSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [{"OAuth2PasswordBearer": []}]
+            },
+            "delete": {
+                "tags": ["custom_domains"],
+                "summary": "Delete",
+                "operationId": "delete_custom_domain",
+                "responses": {"204": {"description": "Successful Response"}},
+                "security": [{"OAuth2PasswordBearer": []}]
+            }
+        },
+        "/custom-domains/check": {
+            "post": {
+                "tags": ["custom_domains"],
+                "summary": "Check",
+                "operationId": "check_custom_domain",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CustomDomainSchema"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [{"OAuth2PasswordBearer": []}]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "CustomDomainOperationSchema": {
+                "title": "CustomDomainOperationSchema",
+                "required": ["hostname"],
+                "type": "object",
+                "properties": {
+                    "hostname": {"title": "Hostname", "type": "string"}
+                }
+            },
+            "CustomDomainSchema": {
+                "title": "CustomDomainSchema",
+                "required": ["hostname", "status"],
+                "type": "object",
+                "properties": {
+                    "hostname": {"title": "Hostname", "type": "string"},
+                    "status": {"title": "Status", "type": "string"}
+                }
+            },
+            "HTTPValidationError": {
+                "title": "HTTPValidationError",
+                "type": "object",
+                "properties": {
+                    "detail": {
+                        "title": "Detail",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ValidationError"
+                        }
+                    }
+                }
+            },
+            "JWTTokenSchema": {
+                "title": "JWTTokenSchema",
+                "required": ["token"],
+                "type": "object",
+                "properties": {"token": {"title": "Token", "type": "string"}}
+            },
+            "URLClickSchema": {
+                "title": "URLClickSchema",
+                "required": ["created_datetime"],
+                "type": "object",
+                "properties": {
+                    "client_ip": {"title": "Client Ip", "type": "string"},
+                    "client_agent": {"title": "Client Agent", "type": "string"},
+                    "client_referrer": {
+                        "title": "Client Referrer",
+                        "type": "string"
+                    },
+                    "created_datetime": {
+                        "title": "Created Datetime",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "URLSchema": {
+                "title": "URLSchema",
+                "required": [
+                    "id",
+                    "account_id",
+                    "url",
+                    "created_datetime",
+                    "is_shortened",
+                    "alias"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {"title": "Id", "type": "integer"},
+                    "account_id": {"title": "Account Id", "type": "integer"},
+                    "url": {
+                        "title": "Url",
+                        "maxLength": 65536,
+                        "minLength": 1,
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "created_datetime": {
+                        "title": "Created Datetime",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "is_shortened": {
+                        "title": "Is Shortened",
+                        "type": "boolean"
+                    },
+                    "alias": {"title": "Alias", "type": "string"},
+                    "short_url": {"title": "Short Url", "type": "string"},
+                    "custom_domain": {
+                        "$ref": "#/components/schemas/CustomDomainSchema"
+                    }
+                }
+            },
+            "URLWithClicksSchema": {
+                "title": "URLWithClicksSchema",
+                "required": [
+                    "id",
+                    "account_id",
+                    "url",
+                    "created_datetime",
+                    "is_shortened",
+                    "alias",
+                    "clicks"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {"title": "Id", "type": "integer"},
+                    "account_id": {"title": "Account Id", "type": "integer"},
+                    "url": {
+                        "title": "Url",
+                        "maxLength": 65536,
+                        "minLength": 1,
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "created_datetime": {
+                        "title": "Created Datetime",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "is_shortened": {
+                        "title": "Is Shortened",
+                        "type": "boolean"
+                    },
+                    "alias": {"title": "Alias", "type": "string"},
+                    "short_url": {"title": "Short Url", "type": "string"},
+                    "custom_domain": {
+                        "$ref": "#/components/schemas/CustomDomainSchema"
+                    },
+                    "clicks": {
+                        "title": "Clicks",
+                        "type": "array",
+                        "items": {"$ref": "#/components/schemas/URLClickSchema"}
+                    }
+                }
+            },
+            "ValidationError": {
+                "title": "ValidationError",
+                "required": ["loc", "msg", "type"],
+                "type": "object",
+                "properties": {
+                    "loc": {
+                        "title": "Location",
+                        "type": "array",
+                        "items": {
+                            "anyOf": [{"type": "string"}, {"type": "integer"}]
+                        }
+                    },
+                    "msg": {"title": "Message", "type": "string"},
+                    "type": {"title": "Error Type", "type": "string"}
+                }
+            }
+        },
+        "securitySchemes": {
+            "OAuth2PasswordBearer": {
+                "type": "oauth2",
+                "flows": {"password": {"scopes": {}, "tokenUrl": "token"}}
+            }
+        }
+    }
+}

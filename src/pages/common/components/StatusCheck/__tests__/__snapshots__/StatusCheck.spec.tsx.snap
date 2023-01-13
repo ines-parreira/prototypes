@@ -16,7 +16,9 @@ exports[`<StatusCheck /> matches snapshot 1`] = `
       </span>
       Check Status
     </button>
-    <span>
+    <span
+      class="noteText"
+    >
       NOTE: It may take up to a few hours for DNS changes to take effect.
     </span>
   </div>
