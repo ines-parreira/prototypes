@@ -231,6 +231,11 @@ export enum SegmentEvent {
     PrintTicketClicked = 'print-ticket-clicked',
     HelpCenterArticleRowClicked = 'help-center/articles-view/article-row-clicked',
     HelpCenterArticleRowSettingsClicked = 'help-center/articles-view/article-row-settings-clicked',
+    ChatSettingsAppearancePageViewed = 'settings-appearance-page-viewed',
+    ChatSettingsToneOfVoiceLinkClicked = 'settings-tone-of-voice-link-clicked',
+    ChatSettingsToneOfVoicePageViewed = 'settings-tone-of-voice-page-viewed',
+    ChatSettingsToneOfVoiceFieldClicked = 'settings-tone-of-voice-field-clicked',
+    ChatSettingsToneOfVoicePageSaved = 'settings-tone-of-voice-page-saved',
 }
 
 export enum StatViewLinkClickedStat {

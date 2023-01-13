@@ -54,6 +54,9 @@ import ChatIntegrationPreview from 'pages/integrations/integration/components/go
 import MessageContentPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/MessageContent'
 import GorgiasChatIntegrationPreviewContainer from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {SegmentEvent} from 'store/middlewares/segmentTracker'
+
+import useIntegrationPageViewLogEvent from '../../../hooks/useIntegrationPageViewLogEvent'
 
 import css from './GorgiasChatIntegrationAppearance.less'
 import {StoreNameDropdown} from './StoreNameDropdown'
@@ -159,6 +162,14 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
     )
 
     const [storeIntegrationId, setStoreIntegrationId] = useState(0)
+
+    useIntegrationPageViewLogEvent(
+        SegmentEvent.ChatSettingsAppearancePageViewed,
+        {
+            isReady: !loading.get('integration'),
+            integration: integration,
+        }
+    )
 
     useEffect(() => {
         if (isUpdate && !loading.get('integration')) {

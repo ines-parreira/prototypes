@@ -10,6 +10,7 @@ type Props = {
     defaultValue: string
     saveValue: (key: string, value: string) => void
     focus?: boolean
+    trackInputMethod?: (key: string) => void
 }
 
 const GorgiasTranslateInputField = ({
@@ -19,6 +20,7 @@ const GorgiasTranslateInputField = ({
     defaultValue,
     saveValue,
     focus = false,
+    trackInputMethod,
 }: Props) => {
     const onChange = (value: string) => {
         saveValue(keyName, value)
@@ -44,6 +46,7 @@ const GorgiasTranslateInputField = ({
                         autoFocus={focus}
                         onFocus={() => {
                             setHasFocus(true)
+                            trackInputMethod?.(keyName)
                         }}
                         onBlur={() => {
                             setHasFocus(false)

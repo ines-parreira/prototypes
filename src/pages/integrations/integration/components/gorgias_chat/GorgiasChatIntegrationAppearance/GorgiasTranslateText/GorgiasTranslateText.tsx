@@ -24,6 +24,8 @@ import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import PageHeader from 'pages/common/components/PageHeader'
 import {notify} from 'state/notifications/actions'
 
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+
 import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS,
@@ -34,13 +36,14 @@ import * as integrationSelectors from '../../../../../../../state/integrations/s
 import {NotificationStatus} from '../../../../../../../state/notifications/types'
 import {FlagLanguageItem} from '../../../../../../common/components/LanguageBulletList'
 import GorgiasChatIntegrationNavigation from '../../GorgiasChatIntegrationNavigation'
+import useIntegrationPageViewLogEvent from '../../../../hooks/useIntegrationPageViewLogEvent'
 
 import {
     Texts,
     Translations,
 } from '../../../../../../../rest_api/gorgias_chat_protected_api/types'
 import GorgiasTranslateExitModal from './GorgiasTranslateExitModal'
-import GrogiasTranslateInputGroup from './GorgiasTranslateInputGroup'
+import GorgiasTranslateInputGroup from './GorgiasTranslateInputGroup'
 import css from './GorgiasTranslateText.less'
 import GorgiasTranslateTextBackLink from './GorgiasTranslateTextBackLink'
 import formProps from './translations-available-keys'
@@ -109,6 +112,14 @@ function GorgiasTranslateText({
             )
         },
         [dispatch]
+    )
+
+    useIntegrationPageViewLogEvent(
+        SegmentEvent.ChatSettingsToneOfVoicePageViewed,
+        {
+            isReady: !!integration,
+            integration,
+        }
     )
 
     const [hasChanges, setHasChanges] = useState(false)
@@ -205,6 +216,10 @@ function GorgiasTranslateText({
                 })
                 setHasChanges(false)
                 dispatchNotification('Your changes are now live')
+
+                logEvent(SegmentEvent.ChatSettingsToneOfVoicePageSaved, {
+                    id: integration.get('id'),
+                })
             } catch {
                 dispatchNotification(
                     `There was a problem. We couldn't update your changes`,
@@ -218,7 +233,18 @@ function GorgiasTranslateText({
             texts,
             setHasChanges,
             setInitialTexts,
+            integration,
         ]
+    )
+
+    const trackInput = useCallback(
+        (key: string) => {
+            logEvent(SegmentEvent.ChatSettingsToneOfVoiceFieldClicked, {
+                id: integration.get('id'),
+                key_value: key,
+            })
+        },
+        [integration]
     )
 
     useEffect(() => {
@@ -339,7 +365,7 @@ function GorgiasTranslateText({
                         id="texts-form"
                         onReset={resetValues}
                     >
-                        <GrogiasTranslateInputGroup
+                        <GorgiasTranslateInputGroup
                             title="General"
                             keys={generalKeys}
                             filtersForKeys={{}}
@@ -347,9 +373,10 @@ function GorgiasTranslateText({
                             translations={translations}
                             saveValue={saveKeyValue}
                             formPropsValues={formProps.general}
+                            trackInputMethod={trackInput}
                         />
 
-                        <GrogiasTranslateInputGroup
+                        <GorgiasTranslateInputGroup
                             title="Contact form"
                             keys={contactFormKeys}
                             filtersForKeys={{}}
@@ -357,9 +384,10 @@ function GorgiasTranslateText({
                             translations={translations}
                             saveValue={saveKeyValue}
                             formPropsValues={formProps.contactForm}
+                            trackInputMethod={trackInput}
                         />
 
-                        <GrogiasTranslateInputGroup
+                        <GorgiasTranslateInputGroup
                             title="Dynamic wait time"
                             keys={dynamicWaitTimeKeys}
                             filtersForKeys={{}}
@@ -367,9 +395,10 @@ function GorgiasTranslateText({
                             translations={translations}
                             saveValue={saveKeyValue}
                             formPropsValues={formProps.dynamicWaitTime}
+                            trackInputMethod={trackInput}
                         />
 
-                        <GrogiasTranslateInputGroup
+                        <GorgiasTranslateInputGroup
                             title="Auto-responder"
                             keys={autoResponderKeys}
                             filtersForKeys={{}}
@@ -377,9 +406,10 @@ function GorgiasTranslateText({
                             translations={translations}
                             saveValue={saveKeyValue}
                             formPropsValues={formProps.autoResponder}
+                            trackInputMethod={trackInput}
                         />
 
-                        <GrogiasTranslateInputGroup
+                        <GorgiasTranslateInputGroup
                             title="Email capture"
                             keys={emailCaptureKeys}
                             filtersForKeys={filterForlEmailCaptureKeys}
@@ -387,9 +417,8 @@ function GorgiasTranslateText({
                             translations={translations}
                             saveValue={saveKeyValue}
                             formPropsValues={formProps.emailCapture}
+                            trackInputMethod={trackInput}
                         />
-
-                        <div className={css.footerSpacer} />
 
                         <Container fluid className={css.buttonsContainer}>
                             <Button

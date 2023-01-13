@@ -19,9 +19,10 @@ export type Props = {
     saveValue: (key: string, value: string) => void
     formPropsValues: Record<string, OptionFormat>
     isFilteredByActive?: boolean // activate the use of filter to show/hide options
+    trackInputMethod?: (key: string) => void
 }
 
-const GrogiasTranslateInputGroup = ({
+const GorgiasTranslateInputGroup = ({
     title,
     keys,
     filtersForKeys,
@@ -30,6 +31,7 @@ const GrogiasTranslateInputGroup = ({
     saveValue,
     formPropsValues,
     isFilteredByActive = false,
+    trackInputMethod,
 }: Props) => {
     return (
         <Container fluid className={css.pageContainerBlocks}>
@@ -60,6 +62,7 @@ const GrogiasTranslateInputGroup = ({
                                 value={get(texts, key) || ''}
                                 defaultValue={get(translations, key)}
                                 saveValue={saveValue}
+                                trackInputMethod={trackInputMethod}
                             />
                         </Col>
                     </Row>
@@ -69,4 +72,4 @@ const GrogiasTranslateInputGroup = ({
     )
 }
 
-export default GrogiasTranslateInputGroup
+export default GorgiasTranslateInputGroup
