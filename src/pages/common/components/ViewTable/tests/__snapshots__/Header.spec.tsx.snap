@@ -330,6 +330,9 @@ exports[`ViewTable::Header should not render unfocused search input when spotlig
         </i>
       </div>
     </div>
+    <div
+      className="d-flex"
+    />
   </div>
 </div>
 `;

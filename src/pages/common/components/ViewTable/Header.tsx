@@ -238,45 +238,46 @@ export class HeaderContainer extends React.Component<Props, State> {
                         </div>
                     )}
 
-                    {(isSpotlightEnabled
-                        ? isSearch
-                        : !isEditMode || (isEditMode && isSearch)) && (
+                    {(!isEditMode || (isEditMode && isSearch)) && (
                         <div
                             className={classnames('d-flex', {
                                 'flex-grow': isSearch,
                             })}
                         >
-                            <Search
-                                autoFocus={isSearch}
-                                bindKey
-                                onKeyDown={this.handleKeyDown}
-                                placeholder={`Search ${
-                                    config.get('plural') as string
-                                }...`}
-                                location={
-                                    isSpotlightEnabled
-                                        ? activeView.get('search', '')
-                                        : `${
-                                              activeView.get(
-                                                  'id'
-                                              ) as unknown as string
-                                          }${isSearch ? '(s)' : ''}`
-                                }
-                                forcedQuery={activeView.get('search') || ''}
-                                className={classnames(
-                                    css.headerSearch,
-                                    'mr-2',
-                                    {
-                                        [css.isSearching]: isSearch,
-                                        'flex-grow': isSearch,
+                            {(!isSpotlightEnabled ||
+                                (isSpotlightEnabled && isSearch)) && (
+                                <Search
+                                    autoFocus={isSearch}
+                                    bindKey
+                                    onKeyDown={this.handleKeyDown}
+                                    placeholder={`Search ${
+                                        config.get('plural') as string
+                                    }...`}
+                                    location={
+                                        isSpotlightEnabled
+                                            ? activeView.get('search', '')
+                                            : `${
+                                                  activeView.get(
+                                                      'id'
+                                                  ) as unknown as string
+                                              }${isSearch ? '(s)' : ''}`
                                     }
-                                )}
-                                onFocus={
-                                    !isSpotlightEnabled
-                                        ? this.handleFocus
-                                        : undefined
-                                }
-                            />
+                                    forcedQuery={activeView.get('search') || ''}
+                                    className={classnames(
+                                        css.headerSearch,
+                                        'mr-2',
+                                        {
+                                            [css.isSearching]: isSearch,
+                                            'flex-grow': isSearch,
+                                        }
+                                    )}
+                                    onFocus={
+                                        !isSpotlightEnabled
+                                            ? this.handleFocus
+                                            : undefined
+                                    }
+                                />
+                            )}
 
                             {isSearch ? (
                                 <Link to={this._goBackUrl()}>
