@@ -9,6 +9,7 @@ import {
     BigCommerceCreateConsignmentPayload,
     BigCommerceUpsertConsignmentPayload,
     BigCommerceNestedCheckout,
+    BigCommerceCustomProduct,
 } from '../types'
 
 export async function createBigCommerceCart(
@@ -67,23 +68,36 @@ export async function addBigCommerceCheckoutBillingAddress(
     return response.data
 }
 
-export async function addBigCommerceLineItem(
-    integrationId: number,
-    cartId: string,
-    productId: number,
-    variantId: number
-): Promise<BigCommerceCart> {
+export async function addBigCommerceLineItem({
+    integrationId,
+    cartId,
+    productId,
+    variantId,
+    customProduct,
+}: {
+    integrationId: number
+    cartId: string
+    productId?: number
+    variantId?: number
+    customProduct?: BigCommerceCustomProduct
+}): Promise<BigCommerceCart> {
+    // Add a line item or a custom line item to the Cart.
+
     const url = '/integrations/bigcommerce/order/line-item/'
 
-    const payload = {
-        line_items: [
-            {
-                product_id: productId,
-                variant_id: variantId,
-                quantity: 1,
-            },
-        ],
-    }
+    const payload = customProduct
+        ? {
+              custom_items: [customProduct],
+          } // Custom Line Item
+        : {
+              line_items: [
+                  {
+                      product_id: productId,
+                      variant_id: variantId,
+                      quantity: 1,
+                  },
+              ],
+          } // Line Item
 
     const response = await client.post<BigCommerceCart>(url, payload, {
         params: {
@@ -101,6 +115,8 @@ export async function editBigCommerceLineItem(
     lineItem: BigCommerceCartLineItem,
     newQuantity: number
 ): Promise<BigCommerceCart> {
+    // Updates an existing, single line item in the Cart. Custom items cannot be updated via API.
+
     const url = '/integrations/bigcommerce/order/line-item/'
 
     const payload = {
@@ -127,6 +143,8 @@ export async function removeBigCommerceLineItem(
     cartId: string,
     lineItemId: string
 ): Promise<BigCommerceCart> {
+    // Deletes a Cart line item or a custom line item.
+
     const url = '/integrations/bigcommerce/order/line-item/delete/'
 
     const response = await client.get<BigCommerceNestedCart>(url, {

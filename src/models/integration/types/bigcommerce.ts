@@ -30,7 +30,7 @@ export type BigCommerceIntegrationMeta = {
         external_orders: BigCommerceImportState
     }
     need_scope_update?: boolean
-    currency?: string
+    currency: string
     available_currencies?: string[]
 }
 
@@ -103,11 +103,21 @@ export type BigCommerceCartLineItem = {
     is_mutable: boolean
 }
 
+export type BigCommerceCustomCartLineItem = {
+    extended_list_price: number
+    id: string
+    image_url: string
+    list_price: number
+    name: string
+    quantity: number
+    sku: string
+}
+
 export type BigCommerceCartLineItems = {
     physical_items: Array<BigCommerceCartLineItem>
     digital_items: Array<BigCommerceCartLineItem>
+    custom_items: Array<BigCommerceCustomCartLineItem>
     gift_certificates: Array<any>
-    custom_items: Array<any>
 }
 
 export type BigCommerceNestedCart = {
@@ -182,6 +192,16 @@ export type BigCommerceProduct = {
     variants: BigCommerceProductVariant[]
 }
 
+export type BigCommerceCustomProduct = {
+    id?: Maybe<string>
+    name: string
+    sku: Maybe<string>
+    list_price: number
+    quantity: number
+    extended_list_price?: Maybe<number>
+    image_url?: Maybe<string>
+}
+
 export type BigCommerceProductVariant = {
     id: number
     sku: string
@@ -191,6 +211,11 @@ export type BigCommerceProductVariant = {
     inventory_level: number
     options: Array<Record<string, any>>
 }
+
+export type BigCommerceProductsListType = Map<
+    number | string,
+    BigCommerceProduct | BigCommerceCustomProduct
+>
 
 export enum BigCommerceCustomerAddressType {
     Residential = 'residential',
@@ -275,4 +300,15 @@ export enum OrderPaymentMethodType {
     cash = 'Cash',
     test_payment_gateway = 'Test Payment Gateway',
     manual = 'Manual',
+}
+
+export type BigCommerceCreateOrderErrorType = {
+    id?: Maybe<number | string>
+    message?: Maybe<string>
+    type?: 'error' | 'warning'
+}
+
+export enum BigCommerceErrorMessage {
+    defaultError = 'Insufficient inventory. Please adjust product quantity.',
+    customLineItemCannotBeUpdatedError = 'The custom item cannot be updated via the API at this time. To update your cart, add a new updated custom item or delete the outdated one.',
 }

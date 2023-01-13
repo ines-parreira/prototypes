@@ -19,16 +19,19 @@ import {InfobarModalProps} from 'pages/common/components/infobar/Infobar/Infobar
 import Label from 'pages/common/forms/Label/Label'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
-import {bigcommerceDataMappers} from 'pages/common/forms/ProductSearchInput/Mappings'
 import {
     BigCommerceActionType,
     BigCommerceCart,
+    BigCommerceCartLineItem,
     BigCommerceCheckout,
+    BigCommerceCreateOrderErrorType,
+    BigCommerceCustomCartLineItem,
     BigCommerceCustomer,
     BigCommerceCustomerAddress,
+    BigCommerceCustomProduct,
     BigCommerceIntegration,
     BigCommerceProduct,
+    BigCommerceProductsListType,
     BigCommerceProductVariant,
     CreateOrderValidationResult,
     IntegrationDataItem,
@@ -72,6 +75,7 @@ import {ShippingAddressesDropdown} from './ShippingAddressesDropdown'
 import {CurrencyPickerDropdown} from './CurrencyPickerDropdown'
 
 import css from './OrderModal.less'
+import {ProductSearch} from './ProductSearch'
 
 type Props = {
     integration: BigCommerceIntegration
@@ -85,7 +89,7 @@ const useValidationStatus = ({
     checkout,
     cart,
 }: {
-    products: Maybe<Map<number, BigCommerceProduct>>
+    products: Maybe<BigCommerceProductsListType>
     shippingAddress: Maybe<BigCommerceCustomerAddress>
     checkout: Maybe<BigCommerceCheckout>
     cart: Maybe<BigCommerceCart>
@@ -397,9 +401,14 @@ export function OrderModal({
             : integration.meta.currency
     )
     const [isLoading, setIsLoading] = useState(false)
-    const [lineItemWithErrorId, setLineItemWithErrorId] = useState('')
+    const [lineItemWithError, setLineItemWithError] =
+        useState<BigCommerceCreateOrderErrorType>({
+            id: '',
+            message: '',
+            type: 'error',
+        })
 
-    const [products, setProducts] = useState<Map<number, BigCommerceProduct>>(
+    const [products, setProducts] = useState<BigCommerceProductsListType>(
         new Map()
     )
 
@@ -438,8 +447,14 @@ export function OrderModal({
         setComment(event.currentTarget.value)
     }
 
-    const lineItems = cart
-        ? cart.line_items.physical_items.concat(cart.line_items.digital_items)
+    const lineItems: Array<
+        BigCommerceCartLineItem | BigCommerceCustomCartLineItem
+    > = cart
+        ? [
+              ...cart.line_items.physical_items,
+              ...cart.line_items.digital_items,
+              ...cart.line_items.custom_items,
+          ]
         : []
 
     const hasItemsInCart = Boolean(lineItems.length)
@@ -522,10 +537,16 @@ export function OrderModal({
                                 <strong>Awaiting Fulfillment</strong>.
                             </span>
                         </Tip>
-                        {!!lineItemWithErrorId && (
-                            <Alert type={AlertType.Error} icon={true}>
-                                Insufficient inventory. Please adjust product
-                                quantity.
+                        {!!lineItemWithError.message && (
+                            <Alert
+                                type={
+                                    lineItemWithError.type === 'warning'
+                                        ? AlertType.Warning
+                                        : AlertType.Error
+                                }
+                                icon={true}
+                            >
+                                {lineItemWithError.message}
                             </Alert>
                         )}
                     </div>
@@ -553,28 +574,37 @@ export function OrderModal({
                                 Set currency to select products.
                             </Tooltip>
                         )}
-                        <ProductSearchInput
-                            className={classnames({
-                                [css.disabled]:
-                                    !currency && canViewBigCommerceV1Features,
-                            })}
-                            hasError={!validationStatus.products}
-                            dataMappers={bigcommerceDataMappers}
-                            searchOnFocus={true}
+                        <ProductSearch
+                            currency={currency}
+                            validationStatus={validationStatus}
+                            onAddCustomProduct={(
+                                customItem: BigCommerceCustomProduct
+                            ) => {
+                                void addRow({
+                                    integrationId: integration.id,
+                                    customProduct: customItem,
+                                    setIsLoading,
+                                    cart,
+                                    setCart,
+                                    products,
+                                    setProducts,
+                                    setLineItemWithError,
+                                })
+                            }}
                             onVariantClicked={(
                                 item: IntegrationDataItem<BigCommerceProduct>,
                                 variant: BigCommerceProductVariant
                             ) => {
                                 void addRow({
                                     integrationId: integration.id,
-                                    product: item.data,
-                                    variant,
+                                    lineProduct: item.data,
+                                    variant: variant,
                                     setIsLoading,
                                     cart,
                                     setCart,
                                     products,
                                     setProducts,
-                                    setLineItemWithErrorId,
+                                    setLineItemWithError,
                                 })
                             }}
                         />
@@ -600,7 +630,7 @@ export function OrderModal({
                                 currencyCode={currency}
                                 lineItems={lineItems}
                                 products={products}
-                                lineItemWithErrorId={lineItemWithErrorId}
+                                lineItemWithError={lineItemWithError}
                                 onLineItemUpdate={(
                                     index: number,
                                     newQuantity: number,
@@ -614,7 +644,8 @@ export function OrderModal({
                                         cart,
                                         setCart,
                                         setQuantity,
-                                        setLineItemWithErrorId,
+                                        lineItemWithError,
+                                        setLineItemWithError,
                                     })
                                 }}
                                 onLineItemDelete={(index: number) => {
@@ -624,7 +655,7 @@ export function OrderModal({
                                         setIsLoading,
                                         cart,
                                         setCart,
-                                        setLineItemWithErrorId,
+                                        setLineItemWithError,
                                     })
                                 }}
                             />

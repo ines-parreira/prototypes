@@ -1,10 +1,13 @@
 import React from 'react'
-import {BigCommerceCartLineItem} from 'models/integration/types'
+import {
+    BigCommerceCartLineItem,
+    BigCommerceCustomCartLineItem,
+} from 'models/integration/types'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import css from './OrderLineItemRow.less'
 
 type Props = {
-    lineItem: BigCommerceCartLineItem
+    lineItem: BigCommerceCartLineItem | BigCommerceCustomCartLineItem
     currencyCode: Maybe<string>
 }
 export default function PriceComponent({lineItem, currencyCode}: Props) {

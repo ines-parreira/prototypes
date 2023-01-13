@@ -104,48 +104,52 @@ exports[`OrderModal should render 1`] = `
               id="product-search-input-tooltip"
             >
               <div
-                class="dropdown"
+                class="flex"
               >
                 <div
-                  aria-expanded="false"
-                  aria-haspopup="true"
-                  class="input-icon input-icon-right"
-                  data-toggle="dropdown"
+                  class="searchInput dropdown"
                 >
                   <div
-                    class="wrapper"
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    class="input-icon input-icon-right"
+                    data-toggle="dropdown"
                   >
-                    <input
-                      class="input"
-                      id="input-text-2"
-                      name="input-text-2"
-                      placeholder="Search products..."
-                      type="text"
-                      value=""
-                    />
-                    <span
-                      class="suffix"
+                    <div
+                      class="wrapper"
                     >
-                      <i
-                        class="material-icons icon"
+                      <input
+                        class="input"
+                        id="input-text-2"
+                        name="input-text-2"
+                        placeholder="Search products..."
+                        type="text"
+                        value=""
+                      />
+                      <span
+                        class="suffix"
                       >
-                        search
-                      </i>
-                    </span>
+                        <i
+                          class="material-icons icon"
+                        >
+                          search
+                        </i>
+                      </span>
+                    </div>
                   </div>
-                </div>
-                <div
-                  aria-hidden="true"
-                  class="dropdown dropdown-menu"
-                  role="menu"
-                  tabindex="-1"
-                >
-                  <h6
-                    class="header dropdown-header"
+                  <div
+                    aria-hidden="true"
+                    class="dropdown dropdown-menu"
+                    role="menu"
                     tabindex="-1"
                   >
-                    0 product
-                  </h6>
+                    <h6
+                      class="header dropdown-header"
+                      tabindex="-1"
+                    >
+                      0 product
+                    </h6>
+                  </div>
                 </div>
               </div>
               <p

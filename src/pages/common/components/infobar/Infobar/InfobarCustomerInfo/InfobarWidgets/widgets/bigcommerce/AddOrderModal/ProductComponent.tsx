@@ -1,16 +1,19 @@
 import React, {useCallback} from 'react'
 import {
     BigCommerceCartLineItem,
+    BigCommerceCustomCartLineItem,
     BigCommerceProduct,
+    BigCommerceCustomProduct,
     BigCommerceProductVariant,
 } from 'models/integration/types'
 import defaultImage from 'assets/img/presentationals/shopify-product-default-image.png'
 import {ProductStockQuantity} from './ProductStockQuantity'
 import css from './OrderLineItemRow.less'
+import {isBigCommerceCartLineItem, isBigCommerceProduct} from './utils'
 
 type Props = {
-    product?: BigCommerceProduct
-    lineItem: BigCommerceCartLineItem
+    product?: BigCommerceProduct | BigCommerceCustomProduct
+    lineItem: BigCommerceCartLineItem | BigCommerceCustomCartLineItem
     storeHash: string
 }
 const StockNotAvailable = () => <span className="text-muted">N/A</span>
@@ -22,8 +25,18 @@ export default function ProductComponent({
 }: Props) {
     const sku = lineItem.sku
     const renderImage = () => {
-        const src =
-            !!product && product.image_url ? product.image_url : defaultImage
+        let src
+
+        if (product && isBigCommerceProduct(product)) {
+            // Product
+            src =
+                !!product && product.image_url
+                    ? product.image_url
+                    : defaultImage
+        } else {
+            // Custom Product - use the default image
+            src = defaultImage
+        }
 
         return (
             <img
@@ -35,8 +48,12 @@ export default function ProductComponent({
     }
 
     const renderTitle = useCallback(() => {
-        const productId = lineItem.product_id
+        const productId = isBigCommerceCartLineItem(lineItem)
+            ? lineItem.product_id
+            : null
+
         if (!productId) {
+            // Custom Line Item
             return (
                 <div>
                     <span className={css.title}>{lineItem.name}</span>
@@ -61,6 +78,14 @@ export default function ProductComponent({
     }, [lineItem, storeHash])
 
     const renderStock = useCallback(() => {
+        if (
+            !isBigCommerceCartLineItem(lineItem) ||
+            (product && !isBigCommerceProduct(product))
+        ) {
+            // Custom Product + Custom Line Item
+            return <StockNotAvailable />
+        }
+
         const variantId = lineItem.variant_id
         const variant = !!product
             ? product.variants.find(

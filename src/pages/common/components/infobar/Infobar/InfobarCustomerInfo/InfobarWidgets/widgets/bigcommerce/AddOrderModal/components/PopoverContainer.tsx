@@ -1,5 +1,6 @@
 import React, {RefObject} from 'react'
 
+import {Placement} from '@floating-ui/react-dom-interactions'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 
@@ -11,14 +12,21 @@ export const PopoverContainer = ({
     isOpen,
     onToggle,
     target,
+    dropdownPlacement = 'bottom-start',
 }: {
     isOpen: boolean
     onToggle: () => void
     target: RefObject<HTMLButtonElement | null>
+    dropdownPlacement?: Placement
     body: React.ReactNode
     footer: React.ReactNode
 }) => (
-    <Dropdown isOpen={isOpen} onToggle={onToggle} target={target}>
+    <Dropdown
+        isOpen={isOpen}
+        onToggle={onToggle}
+        target={target}
+        placement={dropdownPlacement}
+    >
         <DropdownBody
             className={css.body}
             onClick={(event) => {

@@ -1,17 +1,23 @@
 import React, {memo} from 'react'
 import {Table} from 'reactstrap'
 
-import {BigCommerceCartLineItem} from 'models/integration/types'
+import {
+    BigCommerceCreateOrderErrorType,
+    BigCommerceCartLineItem,
+    BigCommerceCustomCartLineItem,
+    BigCommerceProductsListType,
+} from 'models/integration/types'
 
 import OrderLineItemRow from './OrderLineItemRow'
 import css from './OrderTable.less'
+import {isBigCommerceCartLineItem} from './utils'
 
 type Props = {
     storeHash: string
     currencyCode: string | undefined
-    lineItems: Array<any>
-    products?: Map<number, any>
-    lineItemWithErrorId?: string
+    lineItems: Array<BigCommerceCartLineItem | BigCommerceCustomCartLineItem>
+    products?: BigCommerceProductsListType
+    lineItemWithError?: BigCommerceCreateOrderErrorType
     onLineItemDelete: (index: number) => void
     onLineItemUpdate: (
         index: number,
@@ -19,10 +25,32 @@ type Props = {
         setQuantity: (quantity: number) => void
     ) => void
 }
+
+function getOrderLineItemInfo(
+    lineItem: BigCommerceCartLineItem | BigCommerceCustomCartLineItem,
+    products: BigCommerceProductsListType
+) {
+    let uid, product
+
+    if (isBigCommerceCartLineItem(lineItem)) {
+        // Line Item
+        const productId = lineItem.product_id
+        const variantId = lineItem.variant_id
+        uid = `${productId}${variantId ? `_${variantId}` : ''}`
+        product = products.get(lineItem.product_id)
+    } else {
+        // Custom Line Item
+        uid = lineItem.id
+        product = products.get(lineItem.id)
+    }
+
+    return {uid, product}
+}
+
 function OrderTable({
     lineItems = [],
     products = new Map(),
-    lineItemWithErrorId = '',
+    lineItemWithError = {id: null, message: ''},
     storeHash,
     currencyCode,
     onLineItemUpdate,
@@ -46,20 +74,21 @@ function OrderTable({
                         </td>
                     </tr>
                 )}
-                {lineItems.map((lineItem: BigCommerceCartLineItem, index) => {
-                    const hasError = lineItemWithErrorId === lineItem.id
-                    const productId = lineItem.product_id
-                    const variantId = lineItem.variant_id
-                    const uid = `${productId}${
-                        variantId ? `_${variantId}` : ''
-                    }`
+                {lineItems.map((lineItem, index) => {
+                    const hasError = lineItemWithError.id === lineItem.id
+
+                    const {uid, product} = getOrderLineItemInfo(
+                        lineItem,
+                        products
+                    )
+
                     return (
                         <OrderLineItemRow
                             key={uid}
                             id={uid}
                             index={index}
                             lineItem={lineItem}
-                            product={products.get(lineItem.product_id)}
+                            product={product}
                             storeHash={storeHash}
                             currencyCode={currencyCode}
                             removable={lineItems.length > 1}

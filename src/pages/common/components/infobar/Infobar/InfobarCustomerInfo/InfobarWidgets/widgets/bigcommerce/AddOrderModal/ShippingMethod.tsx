@@ -161,18 +161,25 @@ const getDisabledStatus = ({
     const countOfPhysicalItemsInCart =
         cart?.line_items.physical_items.length ?? 0
     const countOfDigitalItemsInCart = cart?.line_items.digital_items.length ?? 0
+    const countOfCustomItemsInCart = cart?.line_items.custom_items.length ?? 0
 
-    const countOfPhysicalAndDigitalItemsInCart =
-        countOfPhysicalItemsInCart + countOfDigitalItemsInCart
+    const countOfTotalItemsInCart =
+        countOfPhysicalItemsInCart +
+        countOfDigitalItemsInCart +
+        countOfCustomItemsInCart
 
-    if (!cart || !countOfPhysicalAndDigitalItemsInCart) {
+    if (!cart || !countOfTotalItemsInCart) {
         return {
             disabled: true,
             reason: 'Your cart contains no products, please select some first.',
         }
     }
 
-    if (countOfPhysicalItemsInCart === 0 && countOfDigitalItemsInCart >= 1) {
+    if (
+        countOfPhysicalItemsInCart === 0 &&
+        countOfCustomItemsInCart === 0 &&
+        countOfDigitalItemsInCart >= 1
+    ) {
         return {
             disabled: true,
             reason: 'Your cart contains only digital products, no shipping is required.',

@@ -36,6 +36,10 @@ type Props<ResultType, SubResultType> = {
     subResultLabel: string
     subResultLabelPlural: string
     hasError?: boolean
+    renderResultsAppendix?: (props: {
+        onMouseOver: () => void
+        onMouseClick: () => void
+    }) => JSX.Element | ConcatArray<JSX.Element>
 }
 
 type State<ResultType extends SearchResultType, SubResultType> = {
@@ -302,10 +306,10 @@ export default class SearchInput<
     }
 
     _renderResults = () => {
-        const {renderResult: Result} = this.props
+        const {renderResult: Result, renderResultsAppendix} = this.props
         const {results, hoveredIndex} = this.state
 
-        return results.length
+        let dropdownItems = results.length
             ? results.map((result, index) => (
                   <DropdownItem
                       key={`result-${result.id}`}
@@ -319,7 +323,19 @@ export default class SearchInput<
                       <Result result={result} />
                   </DropdownItem>
               ))
-            : null
+            : []
+
+        if (renderResultsAppendix) {
+            dropdownItems = dropdownItems.concat(
+                renderResultsAppendix({
+                    onMouseOver: () => this.setState({hoveredIndex: -1}),
+                    onMouseClick: () =>
+                        this.setState({...this.state, isOpen: false}),
+                })
+            )
+        }
+
+        return dropdownItems
     }
 
     _renderSubResults() {

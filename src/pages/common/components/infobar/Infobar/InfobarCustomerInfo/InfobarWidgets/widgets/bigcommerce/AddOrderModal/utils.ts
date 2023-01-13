@@ -16,6 +16,7 @@ import {
 import {
     BigCommerceCart,
     BigCommerceCartLineItem,
+    BigCommerceCustomCartLineItem,
     BigCommerceCustomerAddress,
     BigCommerceCustomer,
     BigCommerceProduct,
@@ -26,10 +27,22 @@ import {
     OrderStatusIDType,
     OrderPaymentMethodType,
     BigCommerceTaxCheckout,
+    BigCommerceCustomProduct,
+    BigCommerceErrorMessage,
+    BigCommerceCreateOrderErrorType,
+    BigCommerceProductsListType,
 } from 'models/integration/types'
 import {StoreDispatch} from 'state/types'
 import {executeAction} from 'state/infobar/actions'
 import {FeatureFlagKey} from 'config/featureFlags'
+
+export const isBigCommerceCartLineItem = (
+    lineItem: BigCommerceCartLineItem | BigCommerceCustomCartLineItem
+): lineItem is BigCommerceCartLineItem => 'product_id' in lineItem
+
+export const isBigCommerceProduct = (
+    product: BigCommerceProduct | BigCommerceCustomProduct
+): product is BigCommerceProduct => 'variants' in product
 
 export const onInit = async ({
     customer,
@@ -80,7 +93,7 @@ export const onReset = _debounce(
         setNote,
     }: {
         setCart: (cart: Maybe<BigCommerceCart>) => void
-        setProducts: (products: Map<number, BigCommerceProduct>) => void
+        setProducts: (products: BigCommerceProductsListType) => void
         setComment: (value: string) => void
         setNote: (value: string) => void
     }) => {
@@ -125,24 +138,26 @@ const deleteCart = async ({
 
 export const addRow = async ({
     integrationId,
-    product,
+    lineProduct,
+    customProduct,
     variant,
     setIsLoading,
     cart,
     setCart,
     products,
     setProducts,
-    setLineItemWithErrorId,
+    setLineItemWithError,
 }: {
     integrationId: number
-    product: BigCommerceProduct
-    variant: BigCommerceProductVariant
+    lineProduct?: BigCommerceProduct
+    customProduct?: BigCommerceCustomProduct
+    variant?: BigCommerceProductVariant
     setIsLoading: (state: boolean) => void
     cart: Maybe<BigCommerceCart>
     setCart: (cart: BigCommerceCart) => void
-    products: Map<number, BigCommerceProduct>
-    setProducts: (products: Map<number, BigCommerceProduct>) => void
-    setLineItemWithErrorId: (value: string) => void
+    products: BigCommerceProductsListType
+    setProducts: (products: BigCommerceProductsListType) => void
+    setLineItemWithError: (value: BigCommerceCreateOrderErrorType) => void
 }) => {
     setIsLoading(true)
     const newProducts = new Map(products)
@@ -150,43 +165,103 @@ export const addRow = async ({
     if (!cartId || !cart) {
         return
     }
+
+    let newCart
+
     try {
-        const newCart = await addBigCommerceLineItem(
-            integrationId,
-            cartId,
-            product.id,
-            variant.id
-        )
+        if (customProduct) {
+            newCart = await addBigCommerceLineItem({
+                integrationId: integrationId,
+                cartId: cartId,
+                customProduct: customProduct,
+            })
 
-        if (!newProducts.has(product.id)) {
-            newProducts.set(product.id, product)
+            const newCustomProduct: Maybe<BigCommerceCustomCartLineItem> =
+                newCart.line_items.custom_items.find(
+                    (item: BigCommerceCustomProduct) =>
+                        item.name === customProduct.name &&
+                        item.list_price === customProduct.list_price
+                )
+
+            if (!newCustomProduct) {
+                return
+            }
+
+            // Custom Items are identified by their ID, computed after adding them to the cart, in the Products list
+            if (newCustomProduct.id && !newProducts.has(newCustomProduct.id)) {
+                newProducts.set(newCustomProduct.id, newCustomProduct)
+            }
+            let eventName = SegmentEvent.BigCommerceCreateOrderSetProducts
+
+            logEvent(eventName, {
+                productId: newCustomProduct.id,
+            })
+            setIsLoading(false)
+            setProducts(newProducts)
+            setCart(newCart)
+
+            eventName = SegmentEvent.BigCommerceCreateOrderAddRow
+            logEvent(eventName, {
+                integrationId: integrationId,
+                product: newCustomProduct,
+                newCart: newCart,
+            })
+        } else if (lineProduct && variant) {
+            newCart = await addBigCommerceLineItem({
+                integrationId: integrationId,
+                cartId: cartId,
+                productId: lineProduct.id,
+                variantId: variant.id,
+            })
+
+            // Line Items are identified by their ID in the Products list
+            if (!newProducts.has(lineProduct.id)) {
+                newProducts.set(lineProduct.id, lineProduct)
+            }
+            let eventName = SegmentEvent.BigCommerceCreateOrderSetProducts
+
+            logEvent(eventName, {
+                productId: lineProduct.id,
+                variantId: variant.id,
+            })
+            setIsLoading(false)
+            setProducts(newProducts)
+            setCart(newCart)
+
+            eventName = SegmentEvent.BigCommerceCreateOrderAddRow
+            logEvent(eventName, {
+                integrationId: integrationId,
+                product: lineProduct,
+                variant: variant,
+                newCart: newCart,
+            })
+        } else {
+            return
         }
-        let eventName = SegmentEvent.BigCommerceCreateOrderSetProducts
 
-        logEvent(eventName, {
-            productId: product.id,
-            variantId: variant.id,
-        })
-        setIsLoading(false)
-        setProducts(newProducts)
-        setCart(newCart)
-
-        eventName = SegmentEvent.BigCommerceCreateOrderAddRow
-        logEvent(eventName, {
-            integrationId: integrationId,
-            product: product,
-            variant: variant,
-            newCart: newCart,
-        })
-        setLineItemWithErrorId('')
+        setLineItemWithError({id: null, message: ''})
     } catch (error) {
-        const lineItems = cart.line_items.physical_items.concat(
-            cart.line_items.physical_items
-        )
-        const lineItem = lineItems.find(
-            (l) => l.product_id === product.id && l.variant_id === variant.id
-        )
-        setLineItemWithErrorId(lineItem ? lineItem.id : ' ')
+        if (lineProduct && variant) {
+            // Line Item
+            const lineItems = cart.line_items.physical_items.concat(
+                cart.line_items.digital_items
+            )
+            const lineItem = lineItems.find(
+                (l) =>
+                    l.product_id === lineProduct.id &&
+                    l.variant_id === variant.id
+            )
+            setLineItemWithError({
+                id: lineItem ? lineItem.id : null,
+                message: BigCommerceErrorMessage.defaultError,
+            })
+        } else {
+            // Custom Line Item
+            setLineItemWithError({
+                id: null,
+                message: BigCommerceErrorMessage.defaultError,
+            })
+        }
     } finally {
         setIsLoading(false)
     }
@@ -198,23 +273,25 @@ export const removeRow = async ({
     setIsLoading,
     cart,
     setCart,
-    setLineItemWithErrorId,
+    setLineItemWithError,
 }: {
     integrationId: number
     index: number
     setIsLoading: (state: boolean) => void
     cart: Maybe<BigCommerceCart>
     setCart: (cart: BigCommerceCart) => void
-    setLineItemWithErrorId: (value: string) => void
+    setLineItemWithError: (value: BigCommerceCreateOrderErrorType) => void
 }) => {
     setIsLoading(true)
     if (!cart) {
         return
     }
-    const lineItem: BigCommerceCartLineItem =
-        cart.line_items.physical_items.concat(cart.line_items.digital_items)[
-            index
-        ]
+    const lineItem: BigCommerceCartLineItem | BigCommerceCustomCartLineItem = [
+        ...cart.line_items.physical_items,
+        ...cart.line_items.digital_items,
+        ...cart.line_items.custom_items,
+    ][index]
+
     const newCart = await removeBigCommerceLineItem(
         integrationId,
         cart.id,
@@ -229,7 +306,7 @@ export const removeRow = async ({
         index: index,
         newCart: newCart,
     })
-    setLineItemWithErrorId('')
+    setLineItemWithError({id: null, message: ''})
 }
 
 export const updateRow = _debounce(
@@ -241,7 +318,8 @@ export const updateRow = _debounce(
         setIsLoading,
         cart,
         setCart,
-        setLineItemWithErrorId,
+        lineItemWithError,
+        setLineItemWithError,
     }: {
         integrationId: number
         index: number
@@ -250,17 +328,42 @@ export const updateRow = _debounce(
         setIsLoading: (state: boolean) => void
         cart: Maybe<BigCommerceCart>
         setCart: (cart: BigCommerceCart) => void
-        setLineItemWithErrorId: (value: string) => void
+        lineItemWithError?: BigCommerceCreateOrderErrorType
+        setLineItemWithError: (value: BigCommerceCreateOrderErrorType) => void
     }) => {
         setIsLoading(true)
         if (!cart) {
             return
         }
-        const lineItem: BigCommerceCartLineItem =
-            cart.line_items.physical_items.concat(
-                cart.line_items.digital_items
-            )[index]
+        const lineItem:
+            | BigCommerceCartLineItem
+            | BigCommerceCustomCartLineItem = [
+            ...cart.line_items.physical_items,
+            ...cart.line_items.digital_items,
+            ...cart.line_items.custom_items,
+        ][index]
+
         try {
+            if (!isBigCommerceCartLineItem(lineItem)) {
+                // Custom Line Item - cannot be updated via API
+                if (
+                    lineItem.quantity === newQuantity &&
+                    lineItemWithError &&
+                    lineItemWithError.message
+                ) {
+                    setLineItemWithError({id: null, message: ''})
+                    return
+                }
+
+                setLineItemWithError({
+                    id: lineItem.id,
+                    message:
+                        BigCommerceErrorMessage.customLineItemCannotBeUpdatedError,
+                    type: 'warning',
+                })
+                return
+            }
+
             const newCart = await editBigCommerceLineItem(
                 integrationId,
                 cart.id,
@@ -277,10 +380,13 @@ export const updateRow = _debounce(
                 newQuantity: newQuantity,
                 newCart: newCart,
             })
-            setLineItemWithErrorId('')
+            setLineItemWithError({id: null, message: ''})
         } catch (error) {
             setQuantity(lineItem.quantity)
-            setLineItemWithErrorId(lineItem.id)
+            setLineItemWithError({
+                id: lineItem.id,
+                message: BigCommerceErrorMessage.defaultError,
+            })
         } finally {
             setIsLoading(false)
         }
@@ -387,6 +493,7 @@ export async function upsertCheckoutConsignment({
     const lineItems = [
         ...cart.line_items.physical_items,
         ...cart.line_items.digital_items,
+        ...cart.line_items.custom_items,
     ].map(({id, quantity}) => ({
         item_id: id,
         quantity,
@@ -457,7 +564,7 @@ export const updateCheckoutConsignmentShippingMethod = async ({
 }
 
 export function checkProductsValidity(
-    products: Maybe<Map<number, BigCommerceProduct>>
+    products: BigCommerceProductsListType | undefined | null
 ) {
     if (!products) {
         return false
@@ -482,7 +589,8 @@ export function checkCheckoutValidity({
     if (
         cart &&
         cart.line_items?.digital_items?.length &&
-        !cart.line_items?.physical_items?.length
+        !cart.line_items?.physical_items?.length &&
+        !cart.line_items?.custom_items?.length
     ) {
         // Cart contains only digital products -> there are no consignments in checkout
         return true
@@ -501,7 +609,8 @@ export function checkCheckoutValidity({
 
     return !!(
         (checkout.cart.line_items?.physical_items?.length ||
-            checkout.cart.line_items?.digital_items?.length) &&
+            checkout.cart.line_items?.digital_items?.length ||
+            checkout.cart.line_items?.custom_items?.length) &&
         checkout.consignments?.length &&
         checkout.consignments[0].line_item_ids?.length &&
         checkout.consignments[0].address?.email &&

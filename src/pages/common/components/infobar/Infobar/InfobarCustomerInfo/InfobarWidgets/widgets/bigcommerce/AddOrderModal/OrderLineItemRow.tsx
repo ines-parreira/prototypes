@@ -2,19 +2,22 @@ import React, {memo, useEffect, useState} from 'react'
 
 import {
     BigCommerceCartLineItem,
+    BigCommerceCustomCartLineItem,
     BigCommerceProduct,
+    BigCommerceCustomProduct,
 } from 'models/integration/types'
 
 import ProductComponent from './ProductComponent'
 import PriceComponent from './PriceComponent'
 import {TotalPriceComponent} from './TotalPriceComponent'
 import {QuantityComponent} from './QuantityComponent'
+import {isBigCommerceProduct} from './utils'
 
 type Props = {
     id: string
     index: number
-    lineItem: BigCommerceCartLineItem
-    product?: BigCommerceProduct
+    lineItem: BigCommerceCartLineItem | BigCommerceCustomCartLineItem
+    product?: BigCommerceProduct | BigCommerceCustomProduct
     storeHash: string
     currencyCode: string | undefined
     removable: boolean
@@ -39,6 +42,13 @@ function OrderLineItemRow({
     hasError,
 }: Props) {
     const handleQuantityChange = (value: string) => {
+        if (product && !isBigCommerceProduct(product)) {
+            // Custom Product - cannot update via API
+            setQuantity(lineItem.quantity)
+            onChange(index, lineItem.quantity, setQuantity)
+            return
+        }
+
         let newQuantity = Number.parseInt(value, 10)
         if (newQuantity < 1 || !newQuantity) {
             newQuantity = 1

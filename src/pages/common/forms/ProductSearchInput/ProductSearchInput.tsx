@@ -1,4 +1,4 @@
-import React, {useCallback, useContext} from 'react'
+import React, {ComponentProps, useCallback, useContext} from 'react'
 import _noop from 'lodash/noop'
 
 import {IntegrationDataItem} from 'models/integration/types'
@@ -23,6 +23,7 @@ export default function ProductSearchInput<
     onVariantClicked = _noop,
     dataMappers,
     hasError = false,
+    renderResultsAppendix,
 }: {
     className?: string
     autoFocus?: boolean
@@ -34,7 +35,7 @@ export default function ProductSearchInput<
         variants: (item: ItemType, variant: Variant) => ResultProps
     }
     hasError?: boolean
-}) {
+} & Pick<ComponentProps<typeof SearchInput>, 'renderResultsAppendix'>) {
     const {integrationId} = useContext(IntegrationContext)
 
     const handleProductClicked = useCallback(
@@ -79,6 +80,7 @@ export default function ProductSearchInput<
             subResultLabel="variant"
             subResultLabelPlural="variants"
             hasError={hasError}
+            renderResultsAppendix={renderResultsAppendix}
         />
     )
 }

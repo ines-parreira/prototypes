@@ -45,7 +45,7 @@ describe('utils', () => {
     const setIsLoading = jest.fn()
     const setProducts = jest.fn()
     const setQuantity = jest.fn()
-    const setLineItemWithErrorId = jest.fn()
+    const setLineItemWithError = jest.fn()
 
     describe('onInit', () => {
         it('should init the order modal', async () => {
@@ -92,14 +92,14 @@ describe('utils', () => {
 
             await addRow({
                 integrationId,
-                product,
-                variant,
+                lineProduct: product,
+                variant: variant,
                 setIsLoading,
                 cart,
                 setCart,
                 products,
                 setProducts,
-                setLineItemWithErrorId,
+                setLineItemWithError,
             })
 
             expect(setIsLoading).toHaveBeenCalled()
@@ -111,19 +111,19 @@ describe('utils', () => {
             apiMock.onAny().reply(422, cart)
 
             await addRow({
-                integrationId,
-                product,
-                variant,
+                integrationId: integrationId,
+                lineProduct: product,
+                variant: variant,
                 setIsLoading,
                 cart,
                 setCart,
                 products,
                 setProducts,
-                setLineItemWithErrorId,
+                setLineItemWithError,
             })
 
             expect(setIsLoading).toHaveBeenCalled()
-            expect(setLineItemWithErrorId).toHaveBeenCalled()
+            expect(setLineItemWithError).toHaveBeenCalled()
         })
     })
 
@@ -136,12 +136,15 @@ describe('utils', () => {
                 setIsLoading,
                 cart,
                 setCart,
-                setLineItemWithErrorId,
+                setLineItemWithError,
             })
 
             expect(setIsLoading).toHaveBeenCalled()
             expect(setCart).toHaveBeenCalled()
-            expect(setLineItemWithErrorId).toHaveBeenCalledWith('')
+            expect(setLineItemWithError).toHaveBeenCalledWith({
+                id: null,
+                message: '',
+            })
         })
     })
 
@@ -156,7 +159,7 @@ describe('utils', () => {
                 cart,
                 setCart,
                 setQuantity,
-                setLineItemWithErrorId,
+                setLineItemWithError,
             })
 
             expect(setIsLoading).toHaveBeenCalled()
@@ -173,11 +176,11 @@ describe('utils', () => {
                 cart,
                 setCart,
                 setQuantity,
-                setLineItemWithErrorId,
+                setLineItemWithError,
             })
 
             expect(setIsLoading).toHaveBeenCalled()
-            expect(setLineItemWithErrorId).toHaveBeenCalled()
+            expect(setLineItemWithError).toHaveBeenCalled()
         })
     })
 })
