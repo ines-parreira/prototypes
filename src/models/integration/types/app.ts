@@ -86,6 +86,7 @@ export type AppDetail = Omit<IntegrationConfig, 'isExternalConnectUrl'> & {
     supportPhone: AppData['support_phone']
     connectTitle?: string
     icon?: string
+    hideInfoCard?: boolean
     otherResources?: {
         title: string
         icon: string

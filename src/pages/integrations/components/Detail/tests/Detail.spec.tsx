@@ -41,4 +41,19 @@ describe(`Detail`, () => {
         )
         expect(screen.getByText(notification))
     })
+
+    it('should not display info card block', () => {
+        render(
+            <Provider store={store}>
+                <Detail
+                    {...{
+                        ...dummyAppDetail,
+                        hideInfoCard: true,
+                    }}
+                />
+            </Provider>
+        )
+        expect(screen.getByText('My test app'))
+        expect(screen.queryByText('Connect App')).toBe(null)
+    })
 })

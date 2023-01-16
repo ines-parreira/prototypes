@@ -9,7 +9,7 @@ import InfoCard, {InfoCardProps} from './InfoCard'
 import css from './Detail.less'
 
 export default function Detail(props: InfoCardProps) {
-    const {screenshots = [], longDescription} = props
+    const {screenshots = [], longDescription, hideInfoCard} = props
 
     return (
         <>
@@ -31,7 +31,7 @@ export default function Detail(props: InfoCardProps) {
                         screenshots={screenshots}
                     />
                 </section>
-                <InfoCard {...props} />
+                {!hideInfoCard && <InfoCard {...props} />}
             </main>
         </>
     )

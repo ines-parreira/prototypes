@@ -32,6 +32,7 @@ export type InfoCardProps =
           notification?: BannerProps
           isConnectionDisabled?: boolean
           disabledConnectionNotification?: ReactChild
+          hideInfoCard?: boolean
       })
 
 export default function InfoCard(props: InfoCardProps) {

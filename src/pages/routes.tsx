@@ -1398,7 +1398,6 @@ export function RevenueSettingsRoutes({match: {path}}: RouteComponentProps) {
             <Switch>
                 <Route
                     path={`${path}/click-tracking`}
-                    exact
                     render={appRender({
                         content: memoizedWithUserRoleRequired(
                             ClickTrackingSettingsView as any,
