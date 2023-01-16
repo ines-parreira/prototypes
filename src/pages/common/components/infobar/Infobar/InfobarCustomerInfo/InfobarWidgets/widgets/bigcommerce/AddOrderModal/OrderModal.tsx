@@ -53,7 +53,7 @@ import {
     updateBigCommerceCoupon,
 } from 'models/integration/resources/bigcommerce'
 import Tooltip from 'pages/common/components/Tooltip'
-import OrderTable from './OrderTable'
+import OrderTable from './components/order-table/OrderTable'
 import OrderTotals from './OrderTotals'
 import {
     addCheckoutBillingAddress,

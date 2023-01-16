@@ -7,7 +7,7 @@ import getShopifyMoneySymbol from 'pages/common/components/infobar/Infobar/Infob
 import IconButton from 'pages/common/components/button/IconButton'
 import InputField from 'pages/common/forms/input/InputField'
 import css from './AddCustomProductPopover.less'
-import {PopoverContainer} from './components/PopoverContainer'
+import {PopoverContainer} from './components/popover-container/PopoverContainer'
 
 type Props = {
     id: string

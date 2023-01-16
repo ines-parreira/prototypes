@@ -8,7 +8,7 @@ import Spinner from 'pages/common/components/Spinner'
 
 import {BigCommerceCart} from 'models/integration/types'
 
-import {PopoverContainer} from './components/PopoverContainer'
+import {PopoverContainer} from './components/popover-container/PopoverContainer'
 
 import css from './OrderTotals.less'
 import {useCanViewBigCommerceV1Features} from './utils'

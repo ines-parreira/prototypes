@@ -13,7 +13,7 @@ import {
     BigCommerceShippingOption,
 } from 'models/integration/types'
 import css from './OrderTotals.less'
-import {PopoverContainer} from './components/PopoverContainer'
+import {PopoverContainer} from './components/popover-container/PopoverContainer'
 
 export const useShippingMethods = ({
     consignment,

@@ -1,4 +1,4 @@
-import React, {memo, useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 
 import {
     BigCommerceCartLineItem,
@@ -7,11 +7,11 @@ import {
     BigCommerceCustomProduct,
 } from 'models/integration/types'
 
+import {isBigCommerceProduct} from '../../utils'
 import ProductComponent from './ProductComponent'
-import PriceComponent from './PriceComponent'
 import {TotalPriceComponent} from './TotalPriceComponent'
 import {QuantityComponent} from './QuantityComponent'
-import {isBigCommerceProduct} from './utils'
+import PriceComponent from './PriceComponent'
 
 type Props = {
     id: string
@@ -30,7 +30,7 @@ type Props = {
     hasError: boolean
 }
 
-function OrderLineItemRow({
+export default function OrderLineItemRow({
     index,
     lineItem,
     product,
@@ -86,5 +86,3 @@ function OrderLineItemRow({
         </tr>
     )
 }
-
-export default memo(OrderLineItemRow)

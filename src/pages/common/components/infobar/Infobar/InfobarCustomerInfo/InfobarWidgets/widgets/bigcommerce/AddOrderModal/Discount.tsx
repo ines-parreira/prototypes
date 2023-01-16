@@ -10,7 +10,7 @@ import {BigCommerceCart} from 'models/integration/types'
 import Spinner from 'pages/common/components/Spinner'
 import getShopifyMoneySymbol from '../../shopify/shared/helpers'
 
-import {PopoverContainer} from './components/PopoverContainer'
+import {PopoverContainer} from './components/popover-container/PopoverContainer'
 
 import {useCanViewBigCommerceV1Features} from './utils'
 

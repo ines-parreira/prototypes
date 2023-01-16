@@ -7,9 +7,9 @@ import {
     BigCommerceProductVariant,
 } from 'models/integration/types'
 import defaultImage from 'assets/img/presentationals/shopify-product-default-image.png'
-import {ProductStockQuantity} from './ProductStockQuantity'
+import {ProductStockQuantity} from '../../ProductStockQuantity'
+import {isBigCommerceCartLineItem, isBigCommerceProduct} from '../../utils'
 import css from './OrderLineItemRow.less'
-import {isBigCommerceCartLineItem, isBigCommerceProduct} from './utils'
 
 type Props = {
     product?: BigCommerceProduct | BigCommerceCustomProduct

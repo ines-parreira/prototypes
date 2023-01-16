@@ -4,19 +4,25 @@ import {
     BigCommerceCustomCartLineItem,
 } from 'models/integration/types'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
+
+import {isBigCommerceCartLineItem} from '../../utils'
 import css from './OrderLineItemRow.less'
 
 type Props = {
-    lineItem: BigCommerceCartLineItem | BigCommerceCustomCartLineItem
     currencyCode: Maybe<string>
+    lineItem: BigCommerceCartLineItem | BigCommerceCustomCartLineItem
 }
-export default function PriceComponent({lineItem, currencyCode}: Props) {
-    const price = String(lineItem.list_price)
+
+export function TotalPriceComponent({currencyCode, lineItem}: Props) {
+    const price = isBigCommerceCartLineItem(lineItem)
+        ? lineItem.extended_sale_price // Line Item
+        : lineItem.extended_list_price // Custom Line Item
+
     return (
         <td className={css.numberCol}>
             <MoneyAmount
                 renderIfZero
-                amount={price}
+                amount={String(price)}
                 currencyCode={currencyCode ? currencyCode : null}
             />
         </td>

@@ -1,4 +1,4 @@
-import React, {memo} from 'react'
+import React from 'react'
 import {Table} from 'reactstrap'
 
 import {
@@ -8,9 +8,10 @@ import {
     BigCommerceProductsListType,
 } from 'models/integration/types'
 
+import {isBigCommerceCartLineItem} from '../../utils'
+
 import OrderLineItemRow from './OrderLineItemRow'
 import css from './OrderTable.less'
-import {isBigCommerceCartLineItem} from './utils'
 
 type Props = {
     storeHash: string
@@ -47,7 +48,7 @@ function getOrderLineItemInfo(
     return {uid, product}
 }
 
-function OrderTable({
+export default function OrderTable({
     lineItems = [],
     products = new Map(),
     lineItemWithError = {id: null, message: ''},
@@ -102,4 +103,3 @@ function OrderTable({
         </Table>
     )
 }
-export default memo(OrderTable)
