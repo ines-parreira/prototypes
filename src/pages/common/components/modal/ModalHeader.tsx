@@ -9,9 +9,10 @@ type Props = {
     className?: string
     subtitle?: string
     title: string
+    forceCloseButton?: boolean
 }
 
-const ModalHeader = ({className, subtitle, title}: Props) => {
+const ModalHeader = ({className, subtitle, title, forceCloseButton}: Props) => {
     const {labelId, onClose, isClosable} = useContext(ModalContext)
 
     return (
@@ -22,7 +23,7 @@ const ModalHeader = ({className, subtitle, title}: Props) => {
                 </div>
                 <div className={css.subtitle}>{subtitle}</div>
             </div>
-            {isClosable && (
+            {(isClosable || forceCloseButton) && (
                 <i
                     className={classnames('material-icons', css.icon)}
                     onClick={onClose}

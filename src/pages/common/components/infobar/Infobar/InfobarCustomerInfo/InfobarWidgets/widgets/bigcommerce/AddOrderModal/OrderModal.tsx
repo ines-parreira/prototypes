@@ -517,11 +517,11 @@ export function OrderModal({
         <Modal
             isOpen
             isScrollable
-            isClosable
+            isClosable={false}
             onClose={() => handleCancel('header')}
             size="medium"
         >
-            <ModalHeader title="Create order" />
+            <ModalHeader title="Create order" forceCloseButton />
             <div className={css.scrollable}>
                 <div className={css.formBody}>
                     <div className={css.alerts}>
