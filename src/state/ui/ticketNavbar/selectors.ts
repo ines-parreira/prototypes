@@ -4,10 +4,8 @@ import {View, ViewType, ViewVisibility} from '../../../models/view/types'
 import {getViewsOrderingUserSetting} from '../../currentUser/selectors'
 import {RootState} from '../../types'
 import {TicketNavbarElement} from '../../../pages/tickets/navbar/TicketNavbarContent'
-import {SectionsState} from '../../entities/sections/types'
 import {UserViewsOrderingSettingData} from '../../../config/types/user'
 import {TicketNavbarElementType} from '../../../pages/tickets/navbar/TicketNavbar'
-import {ViewsState} from '../../entities/views/types'
 import {AccountViewsOrderingSettingData} from '../../currentAccount/types'
 import {getViewsOrderingSetting} from '../../currentAccount/selectors'
 
@@ -16,14 +14,7 @@ const createTicketNavbarElementsSelector = (visibility: ViewVisibility) => {
         views: {},
         view_sections: {},
     }
-    return createSelector<
-        RootState,
-        TicketNavbarElement[],
-        ViewsState,
-        SectionsState,
-        AccountViewsOrderingSettingData | UserViewsOrderingSettingData,
-        AccountViewsOrderingSettingData | UserViewsOrderingSettingData
-    >(
+    return createSelector(
         (state: RootState) => state.entities.views,
         (state: RootState) => state.entities.sections,
         (state: RootState) =>

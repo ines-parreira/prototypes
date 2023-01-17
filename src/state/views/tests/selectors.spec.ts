@@ -309,7 +309,7 @@ describe('selectors', () => {
                     ),
             } as RootState
             const selector = selectors.makeGetViewsByType()
-            expect(selector(state, 'ticket-list')).toEqualImmutable(
+            expect(selector(state, ViewType.TicketList)).toEqualImmutable(
                 fromJS([
                     {
                         ...view1,
@@ -323,7 +323,7 @@ describe('selectors', () => {
                     },
                 ])
             )
-            expect(selector(state, 'customer-list')).toEqualImmutable(
+            expect(selector(state, ViewType.CustomerList)).toEqualImmutable(
                 fromJS([
                     {
                         ...view3,
@@ -407,7 +407,7 @@ describe('selectors', () => {
                     ),
             } as RootState
             const selector = selectors.makeGetViewsByType()
-            expect(selector(state, 'ticket-list')).toEqualImmutable(
+            expect(selector(state, ViewType.TicketList)).toEqualImmutable(
                 fromJS([
                     {
                         ...view2,

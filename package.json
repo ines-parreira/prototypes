@@ -145,7 +145,7 @@
         "redux": "4.0.5",
         "redux-logger": "2.7.4",
         "redux-thunk": "2.3.0",
-        "reselect": "2.5.4",
+        "reselect": "4.1.7",
         "sanitize-html": "1.14.1",
         "scroll-into-view-if-needed": "2.2.20",
         "slick-carousel": "1.6.0",

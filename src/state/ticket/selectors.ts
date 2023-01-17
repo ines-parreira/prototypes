@@ -15,25 +15,17 @@ export const getTicketState = (state: RootState): TicketState =>
     state.ticket || fromJS({})
 
 export const getProperty = (property: string) =>
-    createSelector<RootState, Map<any, any>, TicketState>(
+    createSelector(
         getTicketState,
         (state) => state.get(property) as Map<any, any>
     )
 
-export const DEPRECATED_getTicket = createImmutableSelector<
-    RootState,
-    Map<any, any>,
-    TicketState
->(
+export const DEPRECATED_getTicket = createImmutableSelector(
     getTicketState,
     (state) => state.delete('_internal').delete('state') || fromJS({})
 )
 
-export const getTicket = createImmutableSelector<
-    RootState,
-    Omit<Ticket, 'state' | '_internal'>,
-    TicketState
->(
+export const getTicket = createImmutableSelector(
     getTicketState,
     (state) =>
         state.delete('_internal').delete('state').toJS() as Omit<
@@ -42,11 +34,7 @@ export const getTicket = createImmutableSelector<
         >
 )
 
-export const getIntegrationsData = createSelector<
-    RootState,
-    Map<any, any>,
-    TicketState
->(
+export const getIntegrationsData = createSelector(
     getTicketState,
     (state) =>
         (state.getIn(['customer', 'integrations']) || fromJS({})) as Map<
@@ -56,36 +44,24 @@ export const getIntegrationsData = createSelector<
 )
 
 export const getIntegrationDataByIntegrationId = (integrationId: number) =>
-    createSelector<RootState, Map<any, any>, Map<any, any>>(
+    createSelector(
         getIntegrationsData,
         (state) =>
             (state.get(String(integrationId)) || fromJS({})) as Map<any, any>
     )
 
-export const getLoading = createImmutableSelector<
-    RootState,
-    Map<any, any>,
-    TicketState
->(
+export const getLoading = createImmutableSelector(
     getTicketState,
     (state) =>
         (state.getIn(['_internal', 'loading']) || fromJS({})) as Map<any, any>
 )
 
-export const getDisplayHistory = createImmutableSelector<
-    RootState,
-    boolean,
-    TicketState
->(
+export const getDisplayHistory = createImmutableSelector(
     getTicketState,
     (state) => state.getIn(['_internal', 'displayHistory']) as boolean
 )
 
-export const shouldDisplayAuditLogEvents = createImmutableSelector<
-    RootState,
-    boolean,
-    TicketState
->(
+export const shouldDisplayAuditLogEvents = createImmutableSelector(
     getTicketState,
     (state) =>
         state.getIn(['_internal', 'shouldDisplayAuditLogEvents']) as boolean
@@ -94,21 +70,14 @@ export const shouldDisplayAuditLogEvents = createImmutableSelector<
 // in props usage
 // ex: isMerging: isLoading('merge')(state)
 export const isLoading = (name: string) =>
-    createSelector<RootState, boolean, Map<any, any>>(
-        getLoading,
-        (loading) => loading.get(name, false) as boolean
-    )
+    createSelector(getLoading, (loading) => loading.get(name, false) as boolean)
 
 // in component usage
 // ex: isLoading: makeIsLoading(state)   then : const isMerging = isLoading('merge')
 export const makeIsLoading = (state: RootState) => (name: string) =>
     isLoading(name)(state)
 
-export const getMessages = createImmutableSelector<
-    RootState,
-    List<Map<any, any>>,
-    TicketState
->(getTicketState, (state) => {
+export const getMessages = createImmutableSelector(getTicketState, (state) => {
     const messages: List<Map<any, any>> = state.get('messages') || fromJS([])
 
     return messages.filter(
@@ -116,39 +85,26 @@ export const getMessages = createImmutableSelector<
     ) as List<Map<any, any>>
 })
 
-export const getVia = createImmutableSelector<
-    RootState,
-    TicketVia,
-    TicketState
->(getTicketState, (state) => state.get('via') as TicketVia)
+export const getVia = createImmutableSelector(
+    getTicketState,
+    (state) => state.get('via') as TicketVia
+)
 
-export const getCustomerMessages = createImmutableSelector<
-    RootState,
-    List<any>,
-    List<any>
->(
+export const getCustomerMessages = createImmutableSelector(
     getMessages,
     (messages) =>
-        (messages.filter((m: Map<any, any>) => m.get('from_agent') === false) ||
+        (messages.filter((m) => m!.get('from_agent') === false) ||
             fromJS([])) as List<any>
 )
 
-export const getPendingMessages = createImmutableSelector<
-    RootState,
-    List<any>,
-    TicketState
->(
+export const getPendingMessages = createImmutableSelector(
     getTicketState,
     (state) =>
         (state.getIn(['_internal', 'pendingMessages']) ||
             fromJS([])) as List<any>
 )
 
-export const getLastCustomerMessage = createImmutableSelector<
-    RootState,
-    Map<any, any>,
-    List<any>
->(
+export const getLastCustomerMessage = createImmutableSelector(
     getCustomerMessages,
     (state) =>
         (state
@@ -159,57 +115,34 @@ export const getLastCustomerMessage = createImmutableSelector<
             .last() || fromJS({})) as Map<any, any>
 )
 
-export const getLastMessage = createImmutableSelector<
-    RootState,
-    Map<any, any>,
-    List<any>
->(
+export const getLastMessage = createImmutableSelector(
     getMessages,
     (state) =>
-        (state
-            .sortBy(
-                (message: Map<any, any>) =>
-                    message.get('created_datetime') as string
-            )
-            .last() || fromJS({})) as Map<any, any>
+        state
+            .sortBy((message) => message!.get('created_datetime') as string)
+            .last() || fromJS({})
 )
 
-export const getReadMessages = createImmutableSelector<
-    RootState,
-    List<any>,
-    List<any>
->(
+export const getReadMessages = createImmutableSelector(
     getMessages,
     (state) =>
-        (state.filter(
-            (message: Map<any, any>) =>
-                message.get('opened_datetime') as boolean
-        ) || fromJS([])) as List<any>
+        state.filter((message) => message!.get('opened_datetime') as boolean) ||
+        fromJS([])
 )
 
-export const getLastReadMessage = createImmutableSelector<
-    RootState,
-    Map<any, any>,
-    List<any>
->(
+export const getLastReadMessage = createImmutableSelector(
     getReadMessages,
     (state) =>
-        (state.maxBy(
-            (message: Map<any, any>) => message.get('sent_datetime') as boolean
-        ) || fromJS({})) as Map<any, any>
+        state.maxBy((message) => message!.get('sent_datetime') as boolean) ||
+        fromJS({})
 )
 
-export const getEvents = createImmutableSelector<
-    RootState,
-    List<any>,
-    TicketState
->(getTicketState, (state) => (state.get('events') || fromJS([])) as List<any>)
+export const getEvents = createImmutableSelector(
+    getTicketState,
+    (state) => (state.get('events') || fromJS([])) as List<any>
+)
 
-export const getSatisfactionSurveys = createImmutableSelector<
-    RootState,
-    List<any>,
-    TicketState
->(
+export const getSatisfactionSurveys = createImmutableSelector(
     getTicketState,
     (state) =>
         fromJS(
@@ -219,25 +152,13 @@ export const getSatisfactionSurveys = createImmutableSelector<
         ) as List<any>
 )
 
-export const getRuleSuggestion = createImmutableSelector<
-    RootState,
-    Map<any, any>,
-    TicketState
->(
+export const getRuleSuggestion = createImmutableSelector(
     getTicketState,
     (state) => fromJS(state.getIn(['meta', 'rule_suggestion'])) as Map<any, any>
 )
 
 // return elements we display in the body of a ticket (messages, events, etc.)
-export const getBody = createImmutableSelector<
-    RootState,
-    List<any>,
-    List<any>,
-    List<any>,
-    List<any>,
-    List<any>,
-    Map<any, any>
->(
+export const getBody = createImmutableSelector(
     getMessages,
     getPendingMessages,
     getEvents,
@@ -250,8 +171,8 @@ export const getBody = createImmutableSelector<
         satisfactionSurveys,
         ruleSuggestion
     ) => {
-        const nextMessages = messages.map((message: Map<any, any>) => {
-            return message.set('isMessage', true)
+        const nextMessages = messages.map((message) => {
+            return message!.set('isMessage', true)
         }) as List<any>
 
         const nextPendingMessages = pendingMessages.map(
@@ -316,29 +237,25 @@ export const getBody = createImmutableSelector<
     }
 )
 
-export const getAppliedMacro = createImmutableSelector<
-    RootState,
-    Map<any, any>,
-    TicketState
->(
+export const getAppliedMacro = createImmutableSelector(
     getTicketState,
     (state) =>
         state.getIn(['state', 'appliedMacro'], fromJS({})) as Map<any, any>
 )
 
-export const getTopRankMacroState = createImmutableSelector<
-    RootState,
-    TopRankMacroState | null,
-    TicketState
->(getTicketState, (state) => {
-    const topRankMacroState = state.getIn(['state', 'topRankMacroState']) as
-        | Map<any, any>
-        | undefined
-    if (!topRankMacroState || topRankMacroState.isEmpty()) {
-        return null
+export const getTopRankMacroState = createImmutableSelector(
+    getTicketState,
+    (state) => {
+        const topRankMacroState = state.getIn([
+            'state',
+            'topRankMacroState',
+        ]) as Map<any, any> | undefined
+        if (!topRankMacroState || topRankMacroState.isEmpty()) {
+            return null
+        }
+        return topRankMacroState.toJS() as TopRankMacroState
     }
-    return topRankMacroState.toJS() as TopRankMacroState
-})
+)
 
 export const hasContentlessAction = createImmutableSelector(
     getTicketState,
@@ -357,15 +274,14 @@ export const hasContentlessAction = createImmutableSelector(
     }
 )
 
-export const getRuleSuggestionState = createImmutableSelector<
-    RootState,
-    RuleSuggestionState | undefined,
-    TicketState
->(getTicketState, (state) => {
-    const ruleSuggestionState = state.getIn([
-        'state',
-        'ruleSuggestionState',
-    ]) as unknown
+export const getRuleSuggestionState = createImmutableSelector(
+    getTicketState,
+    (state) => {
+        const ruleSuggestionState = state.getIn([
+            'state',
+            'ruleSuggestionState',
+        ]) as unknown
 
-    return ruleSuggestionState as RuleSuggestionState | undefined
-})
+        return ruleSuggestionState as RuleSuggestionState | undefined
+    }
+)

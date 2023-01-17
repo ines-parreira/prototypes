@@ -2,22 +2,10 @@ import {createSelector} from 'reselect'
 import {fromJS, Map, List} from 'immutable'
 
 import {getCurrentAccountState} from '../currentAccount/selectors'
-import {CurrentAccountState} from '../currentAccount/types'
 import {getCurrentUser} from '../currentUser/selectors'
-import {CurrentUserState} from '../currentUser/types'
 import {DEPRECATED_getTicket, getCustomerMessages} from '../ticket/selectors'
-import {RootState} from '../types'
 
-import {PredictionContext} from './types'
-
-export const getContext = createSelector<
-    RootState,
-    PredictionContext,
-    CurrentUserState,
-    Map<any, any>,
-    CurrentAccountState,
-    List<any>
->(
+export const getContext = createSelector(
     getCurrentUser,
     DEPRECATED_getTicket,
     getCurrentAccountState,

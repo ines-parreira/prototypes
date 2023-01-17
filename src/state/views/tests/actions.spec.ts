@@ -1156,7 +1156,14 @@ describe('actions', () => {
             jest.spyOn(
                 viewsSelectors,
                 'getViewIdsOrderedByCollapsedSections'
-            ).mockReturnValue(() => fromJS(_range(101)) as List<any>)
+            ).mockReturnValue(
+                (() =>
+                    fromJS(
+                        _range(101)
+                    ) as unknown as List<any>) as unknown as ReturnType<
+                    typeof viewsSelectors.getViewIdsOrderedByCollapsedSections
+                >
+            )
         })
 
         it('should fetch the views count', () => {

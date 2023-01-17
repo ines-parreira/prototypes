@@ -15,17 +15,12 @@ const typeSafeGetViews = (state: RootState) =>
 export const getCurrentUserState = (state: RootState): Map<any, any> =>
     (state.currentUser as CurrentUserState) || fromJS({})
 
-export const getCurrentUser = createSelector<
-    RootState,
-    CurrentUserState,
-    CurrentUserState
->(getCurrentUserState, (state) => state)
+export const getCurrentUser = createSelector(
+    getCurrentUserState,
+    (state) => state
+)
 
-export const getSettings = createSelector<
-    RootState,
-    List<any>,
-    CurrentUserState
->(
+export const getSettings = createSelector(
     getCurrentUserState,
     (state) => (state.get('settings') as List<any>) || fromJS([])
 )
@@ -62,37 +57,25 @@ const _getSettingsByType = (
 }
 
 export const makeGetSettingsByType = () =>
-    createImmutableSelector<
-        RootState,
-        Map<any, any>,
-        List<any>,
-        List<any>,
-        string
-    >(
+    createImmutableSelector(
         typeSafeGetViews,
         getSettings,
-        (state, type: string) => type,
+        (state: RootState, type: string) => type,
         _getSettingsByType
     )
 
 // used to get ticket-views and customer-views user preferences
 export const getSettingsByType = (type: string) =>
-    createImmutableSelector<RootState, Map<any, any>, List<any>, List<any>>(
-        typeSafeGetViews,
-        getSettings,
-        (views, settings) => _getSettingsByType(views, settings, type)
+    createImmutableSelector(typeSafeGetViews, getSettings, (views, settings) =>
+        _getSettingsByType(views, settings, type)
     )
 
-export const getApiKey = createSelector<RootState, string, CurrentUserState>(
+export const getApiKey = createSelector(
     getCurrentUserState,
     (state) => (state.getIn(['auths', 0, 'data', 'token']) as string) || ''
 )
 
-export const getPreferences = createSelector<
-    RootState,
-    Map<any, any>,
-    List<any>
->(getSettings, (state) => {
+export const getPreferences = createSelector(getSettings, (state) => {
     return (
         fromJS({
             type: 'preferences',
@@ -105,61 +88,50 @@ export const getPreferences = createSelector<
     )
 })
 
-export const isAvailable = createSelector<RootState, boolean, Map<any, any>>(
+export const isAvailable = createSelector(
     getPreferences,
     (state) => state.getIn(['data', 'available']) as boolean
 )
 
-export const isHidingTips = createSelector<RootState, boolean, Map<any, any>>(
+export const isHidingTips = createSelector(
     getPreferences,
     (state) => (state.getIn(['data', 'hide_tips']) as boolean) || false
 )
 
-export const isActive = createSelector<RootState, boolean, CurrentUserState>(
+export const isActive = createSelector(
     getCurrentUserState,
     (state) => state.get('is_active') !== false
 )
 
-export const has2FaEnabled = createSelector<
-    RootState,
-    boolean,
-    CurrentUserState
->(getCurrentUserState, (state) => !!state.get('has_2fa_enabled'))
+export const has2FaEnabled = createSelector(
+    getCurrentUserState,
+    (state) => !!state.get('has_2fa_enabled')
+)
 
-export const getTimezone = createSelector<
-    RootState,
-    string | null,
-    CurrentUserState
->(
+export const getTimezone = createSelector(
     getCurrentUserState,
     (state) => (state.get('timezone') as Maybe<string>) || null
 )
 
 const createUserSettingSelector = (type: UserSettingType) =>
-    createSelector<RootState, Maybe<UserSetting>, CurrentUserState>(
-        getCurrentUserState,
-        (state) =>
-            ((state.get('settings') as List<any>).toJS() as UserSetting[]).find(
-                (item) => item.type === type
-            )
+    createSelector(getCurrentUserState, (state) =>
+        ((state.get('settings') as List<any>).toJS() as UserSetting[]).find(
+            (item) => item.type === type
+        )
     )
 
 export const getViewsOrderingUserSetting = createUserSettingSelector(
     UserSettingType.ViewsOrdering
 )
 
-export const getLoadingState = createSelector<
-    RootState,
-    Map<any, any>,
-    CurrentUserState
->(
+export const getLoadingState = createSelector(
     getCurrentUserState,
     (state: CurrentUserState) =>
         (state.getIn(['_internal', 'loading']) as Map<any, any>) || fromJS({})
 )
 
 export const isLoading = (name: string | string[]) =>
-    createSelector<RootState, boolean, Map<any, any>>(
+    createSelector(
         getLoadingState,
         (loadingState: Map<any, any>) =>
             loadingState.getIn(

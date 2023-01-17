@@ -13,7 +13,6 @@ import {
     WhatsAppIntegration,
 } from 'models/integration/types'
 import {MESSAGING_INTEGRATION_TYPES} from 'models/integration/constants'
-import {PhoneNumber} from 'models/phoneNumber/types'
 import {compare} from 'utils'
 import {RootState} from 'state/types'
 import {getCurrentUserState} from 'state/currentUser/selectors'
@@ -21,11 +20,7 @@ import {getPhoneNumbers as getPhoneNumbersState} from 'state/entities/phoneNumbe
 import {nestedReplace} from 'state/ticket/utils'
 import {isBaseEmailIntegration} from 'pages/integrations/integration/components/email/helpers'
 
-import {
-    IntegrationsState,
-    IntegrationsImmutableState,
-    IntegrationListItem,
-} from './types'
+import {IntegrationsState, IntegrationListItem} from './types'
 
 type IntegrationsCountMap = {
     [key in IntegrationType]?: number
@@ -37,85 +32,70 @@ export const DEPRECATED_getIntegrationsState = (state: RootState) =>
 export const getIntegrationsState = (state: RootState): IntegrationsState =>
     state.integrations.toJS() as IntegrationsState
 
-export const DEPRECATED_getIntegrations = createSelector<
-    RootState,
-    List<any>,
-    IntegrationsImmutableState
->(
+export const DEPRECATED_getIntegrations = createSelector(
     DEPRECATED_getIntegrationsState,
     (state) => state.get('integrations', fromJS([])) as List<any>
 )
 
-export const getIntegrations = createSelector<
-    RootState,
-    Integration[],
-    IntegrationsState
->(getIntegrationsState, (state) => state.integrations)
+export const getIntegrations = createSelector(
+    getIntegrationsState,
+    (state) => state.integrations
+)
 
-export const getIntegrationsCountPerType = createSelector<
-    RootState,
-    IntegrationsCountMap,
-    Integration[]
->(getIntegrations, (integrations) => {
-    return integrations.reduce(
-        (accumulator: IntegrationsCountMap = {}, item: Integration) => {
-            if (!item.deactivated_datetime) {
-                accumulator[item.type] = (accumulator[item.type] || 0) + 1
-            }
-            return accumulator
-        },
-        {}
-    )
-})
-
-export const getIntegrationsList = createSelector<
-    RootState,
-    IntegrationListItem[],
-    IntegrationsCountMap
->(getIntegrationsCountPerType, (counts) => {
-    return INTEGRATION_TYPE_CONFIG.reduce(
-        (accumulator: IntegrationListItem[], description) => {
-            if (
-                isChannel(description.type) ||
-                description.type === IntegrationType.Http
-            )
+export const getIntegrationsCountPerType = createSelector(
+    getIntegrations,
+    (integrations) => {
+        return integrations.reduce(
+            (accumulator: IntegrationsCountMap = {}, item: Integration) => {
+                if (!item.deactivated_datetime) {
+                    accumulator[item.type] = (accumulator[item.type] || 0) + 1
+                }
                 return accumulator
-            let count = 0
+            },
+            {}
+        )
+    }
+)
 
-            if (description.subTypes) {
-                description.subTypes.forEach((type) => {
-                    count += counts[type] || 0
-                })
-            } else {
-                count += counts[description.type] || 0
-            }
+export const getIntegrationsList = createSelector(
+    getIntegrationsCountPerType,
+    (counts) => {
+        return INTEGRATION_TYPE_CONFIG.reduce(
+            (accumulator: IntegrationListItem[], description) => {
+                if (
+                    isChannel(description.type) ||
+                    description.type === IntegrationType.Http
+                )
+                    return accumulator
+                let count = 0
 
-            return [
-                ...accumulator,
-                {
-                    ...description,
-                    count,
-                },
-            ]
-        },
-        []
-    )
-})
+                if (description.subTypes) {
+                    description.subTypes.forEach((type) => {
+                        count += counts[type] || 0
+                    })
+                } else {
+                    count += counts[description.type] || 0
+                }
 
-export const getCurrentIntegration = createSelector<
-    RootState,
-    Map<any, any>,
-    IntegrationsImmutableState
->(
+                return [
+                    ...accumulator,
+                    {
+                        ...description,
+                        count,
+                    },
+                ]
+            },
+            []
+        )
+    }
+)
+
+export const getCurrentIntegration = createSelector(
     DEPRECATED_getIntegrationsState,
     (state) => (state.get('integration') || fromJS({})) as Map<any, any>
 )
 
-export const getActiveIntegrations = createSelector<
-    RootState,
-    List<any>,
-    List<any>
->(
+export const getActiveIntegrations = createSelector(
     DEPRECATED_getIntegrations,
     (state) =>
         state.filter(
@@ -124,58 +104,44 @@ export const getActiveIntegrations = createSelector<
 )
 
 export const getIntegrationById = (id: number) =>
-    createSelector<RootState, Map<any, any>, List<any>>(
-        DEPRECATED_getIntegrations,
-        (integrations: List<any>) => {
-            return (
-                (integrations.find(
-                    (integration: Map<any, any>) =>
-                        (integration.get('id', '') as number).toString() ===
-                        (id || '').toString()
-                ) as Map<any, any>) || fromJS({})
-            )
-        }
-    )
+    createSelector(DEPRECATED_getIntegrations, (integrations: List<any>) => {
+        return (
+            (integrations.find(
+                (integration: Map<any, any>) =>
+                    (integration.get('id', '') as number).toString() ===
+                    (id || '').toString()
+            ) as Map<any, any>) || fromJS({})
+        )
+    })
 
 export const getIntegrationsByType = <T extends Integration>(
     type: IntegrationType | string
 ) =>
-    createSelector<RootState, T[], IntegrationsState>(
-        getIntegrationsState,
-        (state) => {
-            return state.integrations.filter(
-                (integration): integration is T => integration.type === type
-            )
-        }
-    )
+    createSelector(getIntegrationsState, (state) => {
+        return state.integrations.filter(
+            (integration): integration is T => integration.type === type
+        )
+    })
 
 export const getIntegrationsByTypes = (
     types: readonly IntegrationType[] | IntegrationType[]
 ) =>
-    createSelector<RootState, Integration[], IntegrationsState>(
-        getIntegrationsState,
-        (state) => {
-            return state.integrations.filter((integration) =>
-                types.includes(integration.type)
-            )
-        }
-    )
+    createSelector(getIntegrationsState, (state) => {
+        return state.integrations.filter((integration) =>
+            types.includes(integration.type)
+        )
+    })
 
 export const DEPRECATED_getIntegrationsByTypes = (
     types: readonly IntegrationType[] | IntegrationType[] | IntegrationType
 ) =>
-    createSelector<RootState, List<any>, List<any>>(
-        DEPRECATED_getIntegrations,
-        (integrations) => {
-            const formattedTypes = !_isArray(types) ? [types] : types
+    createSelector(DEPRECATED_getIntegrations, (integrations) => {
+        const formattedTypes = !_isArray(types) ? [types] : types
 
-            return integrations.filter((integration: Map<any, any>) =>
-                formattedTypes.includes(
-                    integration.get('type') as IntegrationType
-                )
-            ) as List<any>
-        }
-    )
+        return integrations.filter((integration: Map<any, any>) =>
+            formattedTypes.includes(integration.get('type') as IntegrationType)
+        ) as List<any>
+    })
 
 export const makeGetIntegrationsByTypes =
     (state: RootState) => (types: IntegrationType[] | IntegrationType) =>
@@ -199,11 +165,7 @@ export const getEligibleShopifyIntegrationsFor =
         ) as List<any>
     }
 
-export const getFacebookIntegrations = createSelector<
-    RootState,
-    List<any>,
-    List<any>
->(
+export const getFacebookIntegrations = createSelector(
     DEPRECATED_getIntegrations,
     (state) =>
         state
@@ -217,7 +179,7 @@ export const getFacebookIntegrations = createSelector<
 )
 
 export const getOnboardingIntegrations = (integrationType: IntegrationType) =>
-    createSelector<RootState, List<any>, IntegrationsImmutableState>(
+    createSelector(
         DEPRECATED_getIntegrationsState,
         (state) =>
             (state.getIn([
@@ -229,7 +191,7 @@ export const getOnboardingIntegrations = (integrationType: IntegrationType) =>
     )
 
 export const getOnboardingMeta = (integrationType: IntegrationType) =>
-    createSelector<RootState, Map<any, any>, IntegrationsImmutableState>(
+    createSelector(
         DEPRECATED_getIntegrationsState,
         (state) =>
             (state.getIn([
@@ -243,18 +205,14 @@ export const getOnboardingMeta = (integrationType: IntegrationType) =>
 export const getIntegrationTypeExtraState = (
     integrationType: IntegrationType
 ) =>
-    createSelector<RootState, Map<any, any>, IntegrationsImmutableState>(
+    createSelector(
         DEPRECATED_getIntegrationsState,
         (state) =>
             (state.getIn(['extra', integrationType]) as Map<any, any>) ||
             fromJS({})
     )
 
-export const getFacebookMaxAccountAds = createSelector<
-    RootState,
-    number,
-    IntegrationsImmutableState
->(
+export const getFacebookMaxAccountAds = createSelector(
     DEPRECATED_getIntegrationsState,
     (state) =>
         (state.getIn([
@@ -264,11 +222,7 @@ export const getFacebookMaxAccountAds = createSelector<
         ]) as number) || 0
 )
 
-export const getEmailIntegrations = createSelector<
-    RootState,
-    List<any>,
-    List<any>
->(
+export const getEmailIntegrations = createSelector(
     DEPRECATED_getIntegrations,
     (state) =>
         state.filter((integration: Map<any, any>) =>
@@ -280,11 +234,7 @@ export const getEmailIntegrations = createSelector<
         ) as List<any>
 )
 
-export const DEPRECATED_getPhoneIntegrations = createSelector<
-    RootState,
-    List<any>,
-    List<any>
->(
+export const DEPRECATED_getPhoneIntegrations = createSelector(
     DEPRECATED_getIntegrations,
     (state) =>
         state.filter(
@@ -308,11 +258,7 @@ export const getWhatsAppIntegrations = createSelector(
     (integrations) => integrations.filter(isWhatsAppIntegration)
 )
 
-export const getBaseEmailIntegration = createSelector<
-    RootState,
-    Map<any, any>,
-    List<any>
->(
+export const getBaseEmailIntegration = createSelector(
     getEmailIntegrations,
     (state) =>
         (state.find((integration: Map<any, any>) =>
@@ -321,13 +267,7 @@ export const getBaseEmailIntegration = createSelector<
 )
 
 // return email and gmail integrations formatted as channel
-export const getEmailChannels = createSelector<
-    RootState,
-    List<any>,
-    Map<any, any>,
-    Map<any, any>,
-    List<any>
->(
+export const getEmailChannels = createSelector(
     (state: RootState) => state.ticket || fromJS({}),
     getCurrentUserState,
     getEmailIntegrations,
@@ -365,26 +305,19 @@ export const getEmailChannels = createSelector<
     }
 )
 
-export const getActiveEmailChannels = createSelector<
-    RootState,
-    List<any>,
-    List<any>
->(getEmailChannels, (channels) =>
-    channels
-        .filter((channel: Map<any, any>) => !channel.get('isDeactivated'))
-        .toList()
+export const getActiveEmailChannels = createSelector(
+    getEmailChannels,
+    (channels) =>
+        channels
+            .filter((channel: Map<any, any>) => !channel.get('isDeactivated'))
+            .toList()
 )
 
 // return phone integrations formatted as channel
 export const makeGetPhoneChannels = (
     type: IntegrationType.Phone | IntegrationType.Sms
 ) =>
-    createSelector<
-        RootState,
-        List<any>,
-        List<any>,
-        Record<number, PhoneNumber>
-    >(
+    createSelector(
         DEPRECATED_getIntegrationsByTypes([type]),
         getPhoneNumbersState,
         (integrations, phoneNumbers) => {
@@ -415,24 +348,25 @@ export const getPhoneChannelsForSmsSource = makeGetPhoneChannels(
 )
 
 // return email and gmail integrations formatted as channel
-export const getWhatsAppChannels = createSelector<
-    RootState,
-    List<any>,
-    WhatsAppIntegration[]
->(getWhatsAppIntegrations, (integrations) => {
-    const channels = integrations.map((integration: WhatsAppIntegration) => {
-        return {
-            id: integration.id,
-            type: integration.type,
-            name: integration.name,
-            address: integration.meta.routing.phone_number,
-        }
-    })
-    return fromJS(channels) as List<any>
-})
+export const getWhatsAppChannels = createSelector(
+    getWhatsAppIntegrations,
+    (integrations) => {
+        const channels = integrations.map(
+            (integration: WhatsAppIntegration) => {
+                return {
+                    id: integration.id,
+                    type: integration.type,
+                    name: integration.name,
+                    address: integration.meta.routing.phone_number,
+                }
+            }
+        )
+        return fromJS(channels) as List<any>
+    }
+)
 
 export const getChannelsByType = (type: string) =>
-    createSelector<RootState, List<any>, List<any>, List<any>, List<any>>(
+    createSelector(
         getEmailChannels,
         getPhoneChannelsForSmsSource,
         getPhoneChannelsForPhoneSource,
@@ -464,7 +398,7 @@ export const getChannelByTypeAndAddress = (
     type: IntegrationType,
     address: string
 ) =>
-    createSelector<RootState, Map<any, any>, List<any>>(
+    createSelector(
         getEmailChannels,
         (channels) =>
             (channels
@@ -477,35 +411,31 @@ export const getChannelByTypeAndAddress = (
     )
 
 export const getChannelSignature = (type: IntegrationType, address: string) =>
-    createSelector<RootState, Map<any, any>, Map<any, any>>(
+    createSelector(
         getChannelByTypeAndAddress(type, address),
         (channel) => (channel.get('signature') as Map<any, any>) || fromJS({})
     )
 
 export const getAuthData = (type: IntegrationType) =>
-    createSelector<RootState, Map<any, any>, IntegrationsImmutableState>(
+    createSelector(
         DEPRECATED_getIntegrationsState,
         (state) =>
             state.getIn(['authentication', type], fromJS({})) as Map<any, any>
     )
 
 export const getRedirectUri = (type: IntegrationType) =>
-    createSelector<RootState, string, Map<any, any>>(
+    createSelector(
         getAuthData(type),
         (state) => state.get('redirect_uri', '') as string
     )
 
-export const getForwardingEmailAddress = createSelector<
-    RootState,
-    string,
-    Map<any, any>
->(
+export const getForwardingEmailAddress = createSelector(
     getAuthData(IntegrationType.Email),
     (state) => state.get('forwarding_email_address', '') as string
 )
 
 export const getFacebookRedirectUri = (reconnect = false) =>
-    createSelector<RootState, string, Map<any, any>>(
+    createSelector(
         getAuthData(IntegrationType.Facebook),
         (state) =>
             state.get(
@@ -519,29 +449,25 @@ export const makeGetRedirectUri =
         getRedirectUri(type)(state)
 
 // return the list of integration used to send messages from the helpdesk
-export const getMessagingIntegrations = createSelector<
-    RootState,
-    List<Map<any, any>>,
-    List<Map<any, any>>
->(
+export const getMessagingIntegrations = createSelector(
     DEPRECATED_getIntegrationsByTypes(MESSAGING_INTEGRATION_TYPES),
     (integrations) => {
-        return integrations.map((integration) => {
-            if (integration!.get('type') === IntegrationType.Facebook) {
-                return integration!.set(
+        return integrations.map((integration: Map<any, any>) => {
+            if (integration.get('type') === IntegrationType.Facebook) {
+                return integration.set(
                     'name',
-                    integration!.getIn(['meta', 'name'])
+                    integration.getIn(['meta', 'name'])
                 )
             }
             return integration
-        }) as List<Map<any, any>>
+        })
     }
 )
 
 export const hasIntegrationOfTypes = (
     types: IntegrationType[] | IntegrationType
 ) =>
-    createSelector<RootState, boolean, List<any>>(
+    createSelector(
         DEPRECATED_getIntegrationsByTypes(types),
         (integrations) => !integrations.isEmpty()
     )
@@ -597,7 +523,7 @@ export const getShopifyIntegrationsWithoutFacebook = (state: RootState) => {
 }
 
 export const getShopifyIntegrationByShopName = (shopName: string) =>
-    createSelector<RootState, Map<any, any>, List<any>>(
+    createSelector(
         DEPRECATED_getIntegrationsByTypes([IntegrationType.Shopify]),
         (state) =>
             (state.find(
@@ -607,7 +533,7 @@ export const getShopifyIntegrationByShopName = (shopName: string) =>
     )
 
 export const getMagento2IntegrationByStoreUrl = (storeUrl: string) =>
-    createSelector<RootState, Map<any, any>, List<any>>(
+    createSelector(
         DEPRECATED_getIntegrationsByTypes([IntegrationType.Magento2]),
         (state) =>
             (state.find(
@@ -617,7 +543,7 @@ export const getMagento2IntegrationByStoreUrl = (storeUrl: string) =>
     )
 
 export const getChatIntegrationCampaigns = (id: number) =>
-    createSelector<RootState, List<any>, Map<any, any>>(
+    createSelector(
         getIntegrationById(id),
         (integration) =>
             (integration.getIn(['meta', 'campaigns']) as List<any>) ||
@@ -628,7 +554,7 @@ export const getChatIntegrationCampaignById = (
     id: number,
     campaignId: number | string
 ) =>
-    createSelector<RootState, Map<any, any>, List<any>>(
+    createSelector(
         getChatIntegrationCampaigns(id),
         (campaigns) =>
             (campaigns.find(
@@ -648,7 +574,7 @@ export const hasAtLeastOneEmailIntegration = (state: RootState) =>
     }).size > 0
 
 export const getEmailForwardingActivated = (id: number) =>
-    createSelector<RootState, boolean, Map<any, any>>(
+    createSelector(
         getIntegrationById(id),
         (integration) =>
             integration.getIn(
@@ -663,13 +589,13 @@ export const getAreIntegrationsLoading = createSelector(
 )
 
 export const getIsChatIntegrationStatusLoading = (id: number) =>
-    createSelector<RootState, boolean, IntegrationsState>(
+    createSelector(
         getIntegrationsState,
         (state) => !!state.state?.loading?.chatStatus?.[id]
     )
 
 export const getIsChatIntegrationStatusError = (id: number) =>
-    createSelector<RootState, boolean, IntegrationsState>(
+    createSelector(
         getIntegrationsState,
         (state) => !!state.state?.error?.chatStatus?.[id]
     )

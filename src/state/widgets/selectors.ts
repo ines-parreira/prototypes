@@ -11,35 +11,32 @@ import {WidgetContextType, WidgetsState} from './types'
 export const getWidgetsState = (state: RootState): WidgetsState =>
     state.widgets || fromJS({})
 
-export const getContext = createSelector<RootState, string, WidgetsState>(
+export const getContext = createSelector(
     getWidgetsState,
     (state) => (state.get('currentContext') as WidgetContextType) || ''
 )
 
-export const getWidgets = createSelector<RootState, List<any>, WidgetsState>(
+export const getWidgets = createSelector(
     getWidgetsState,
     (state) => (state.get('items') || fromJS([])) as List<any>
 )
 
-export const hasWidgets = createSelector<RootState, boolean, List<any>>(
+export const hasWidgets = createSelector(
     getWidgets,
     (widgets) => !widgets.isEmpty()
 )
 
 export const getWidgetsWithContext = (context?: WidgetContextType) =>
-    createSelector<RootState, List<any>, List<any>, string>(
+    createSelector(
         getWidgets,
         getContext,
         // take current context by default
         (widgets, currentContext) =>
-            itemsWithContext(
-                widgets,
-                context || (currentContext as WidgetContextType)
-            )
+            itemsWithContext(widgets, context || currentContext)
     )
 
 export const hasWidgetsWithContext = (context?: WidgetContextType) =>
-    createSelector<RootState, boolean, List<any>>(
+    createSelector(
         getWidgetsWithContext(context),
         (widgets) => !widgets.isEmpty()
     )
@@ -51,11 +48,7 @@ export const getSources = (state: RootState) => {
     }) as Map<any, any>
 }
 
-export const getSourcesWithCustomer = createSelector<
-    RootState,
-    Map<any, any>,
-    Map<any, any>
->(getSources, (sources) => {
+export const getSourcesWithCustomer = createSelector(getSources, (sources) => {
     // If there's no customer and ticket is not loading then use the one from sources.
     // Loading check prevents from content flashing: https://github.com/gorgias/gorgias/issues/2415
     if (
@@ -67,7 +60,7 @@ export const getSourcesWithCustomer = createSelector<
     return sources
 })
 
-export const isEditing = createSelector<RootState, boolean, WidgetsState>(
+export const isEditing = createSelector(
     getWidgetsState,
     (state) => (state.getIn(['_internal', 'isEditing']) as boolean) || false
 )

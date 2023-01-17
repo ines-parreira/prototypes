@@ -9,21 +9,13 @@ import {Customer, CustomersState} from './types'
 export const getCustomersState = (state: RootState) =>
     state.customers || fromJS({})
 
-export const getLoading = createSelector<
-    RootState,
-    Map<any, any>,
-    CustomersState
->(
+export const getLoading = createSelector(
     getCustomersState,
     (state: CustomersState) =>
         (state.getIn(['_internal', 'loading']) as Map<any, any>) || fromJS({})
 )
 
-export const getCustomerHistory = createSelector<
-    RootState,
-    Map<any, any>,
-    CustomersState
->(
+export const getCustomerHistory = createSelector(
     getCustomersState,
     (state: CustomersState) =>
         (state.get('customerHistory') as Map<any, any>) || fromJS({})
@@ -32,7 +24,7 @@ export const getCustomerHistory = createSelector<
 // in props usage
 // ex: isMerging: isLoading('merge')(state)
 export const isLoading = (name: string) =>
-    createSelector<RootState, boolean, Map<any, any>>(
+    createSelector(
         getLoading,
         (loading: Map<any, any>) => loading.get(name, false) as boolean
     )
@@ -44,30 +36,18 @@ export const makeIsLoading =
     (name: string): boolean =>
         isLoading(name)(state)
 
-export const getCustomers = createSelector<
-    RootState,
-    List<any>,
-    CustomersState
->(
+export const getCustomers = createSelector(
     getCustomersState,
     (state: CustomersState) => (state.get('items') as List<any>) || fromJS([])
 )
 
-export const DEPRECATED_getActiveCustomer = createSelector<
-    RootState,
-    Map<any, any>,
-    CustomersState
->(
+export const DEPRECATED_getActiveCustomer = createSelector(
     getCustomersState,
     (state: CustomersState) =>
         (state.get('active') as Map<any, any>) || fromJS({})
 )
 
-export const getActiveCustomer = createSelector<
-    RootState,
-    Customer | Record<string, never>,
-    CustomersState
->(
+export const getActiveCustomer = createSelector(
     getCustomersState,
     (state) =>
         (state.get('active') as Map<any, any>).toJS() as
@@ -75,20 +55,12 @@ export const getActiveCustomer = createSelector<
             | Record<string, never>
 )
 
-export const getActiveCustomerId = createSelector<
-    RootState,
-    Maybe<number>,
-    Map<any, any>
->(
+export const getActiveCustomerId = createSelector(
     DEPRECATED_getActiveCustomer,
     (activeCustomer: Map<any, any>) => activeCustomer.get('id') as Maybe<number>
 )
 
-export const getActiveCustomerIntegrationData = createSelector<
-    RootState,
-    Map<any, any>,
-    Map<any, any>
->(
+export const getActiveCustomerIntegrationData = createSelector(
     DEPRECATED_getActiveCustomer,
     (activeCustomer: Map<any, any>) =>
         (activeCustomer.get('integrations') as Map<any, any>) || fromJS([])
@@ -97,7 +69,7 @@ export const getActiveCustomerIntegrationData = createSelector<
 export const getActiveCustomerIntegrationDataByIntegrationId = (
     integrationId: number
 ) =>
-    createSelector<RootState, Map<any, any>, Map<any, any>>(
+    createSelector(
         getActiveCustomerIntegrationData,
         (data: Map<any, any>) =>
             (data.get(integrationId.toString()) as Map<any, any>) || fromJS({})

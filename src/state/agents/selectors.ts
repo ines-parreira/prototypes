@@ -12,22 +12,18 @@ export const getState = (state: RootState): AgentsState =>
     state.agents || fromJS({})
 
 export const getPaginatedAgents: Selector<RootState, Agents> =
-    createImmutableSelector<RootState, List<any>, AgentsState>(
+    createImmutableSelector(
         getState,
         (state: AgentsState) =>
             (state.getIn(['pagination']) as List<any>) || fromJS([])
     )
 
-export const getAgents = createImmutableSelector<
-    RootState,
-    List<any>,
-    AgentsState
->(
+export const getAgents = createImmutableSelector(
     getState,
     (state: AgentsState) => (state.get('all') as List<any>) || fromJS([])
 )
 
-export const getLabelledAgents = createSelector<RootState, List<any>, Agents>(
+export const getLabelledAgents = createSelector(
     getAgents,
     (agents) =>
         agents.map((agent: Map<any, any>) => ({
@@ -39,12 +35,7 @@ export const getLabelledAgents = createSelector<RootState, List<any>, Agents>(
 export const getLabelledAgentsJS =
     makeGetPlainJS<{id: number; label: string}[]>(getLabelledAgents)
 
-export const getOtherAgents = createSelector<
-    RootState,
-    Agents,
-    Agents,
-    CurrentUser
->(
+export const getOtherAgents = createSelector(
     getAgents,
     getCurrentUser,
     (agents: Agents, currentUser: CurrentUser) =>
@@ -56,7 +47,7 @@ export const getOtherAgents = createSelector<
 )
 
 export const getAgent = (id?: number) =>
-    createSelector<RootState, Agent, Agents>(getAgents, (agents: Agents) => {
+    createSelector(getAgents, (agents: Agents) => {
         if (!id) {
             return fromJS({}) as Agent
         }
@@ -75,11 +66,7 @@ export const makeGetAgent =
         getAgent(id)(state)
 
 // Location of agents in the app (ticket, view, etc.) by their ids
-export const getAgentsIdsLocation = createSelector<
-    RootState,
-    Map<any, any>,
-    AgentsState
->(
+export const getAgentsIdsLocation = createSelector(
     getState,
     (state: AgentsState) =>
         (state.get('locations') as Map<any, any>) || fromJS({})
@@ -87,36 +74,26 @@ export const getAgentsIdsLocation = createSelector<
 
 // Ids of agents on a specific ticket
 export const getAgentsIdsOnTicket = (ticketId?: string) =>
-    createSelector<RootState, List<any>, Map<any, any>>(
-        getAgentsIdsLocation,
-        (locations: Map<any, any>) => {
-            if (!ticketId) {
-                return fromJS([]) as List<any>
-            }
-
-            const userIds: any[] = []
-            locations.forEach(
-                (objectMap: Map<any, any>, userId: Maybe<number>) => {
-                    const ticketIds =
-                        (objectMap.get('Ticket') as List<any>) || fromJS([])
-
-                    if (ticketIds.includes(parseInt(ticketId))) {
-                        userIds.push(userId)
-                    }
-                }
-            )
-            return fromJS(userIds) as List<any>
+    createSelector(getAgentsIdsLocation, (locations: Map<any, any>) => {
+        if (!ticketId) {
+            return fromJS([]) as List<any>
         }
-    )
+
+        const userIds: any[] = []
+        locations.forEach((objectMap: Map<any, any>, userId: Maybe<number>) => {
+            const ticketIds =
+                (objectMap.get('Ticket') as List<any>) || fromJS([])
+
+            if (ticketIds.includes(parseInt(ticketId))) {
+                userIds.push(userId)
+            }
+        })
+        return fromJS(userIds) as List<any>
+    })
 
 // Agents on a specific ticket
 export const getAgentsOnTicket = (ticketId?: string) =>
-    createSelector<
-        RootState,
-        Agents,
-        List<any>,
-        ReturnType<typeof makeGetAgent>
-    >(
+    createSelector(
         getAgentsIdsOnTicket(ticketId),
         makeGetAgent,
         (
@@ -138,7 +115,7 @@ export const getAgentsOnTicket = (ticketId?: string) =>
 
 // Agents on a specific ticket EXCEPT current user
 export const getOtherAgentsOnTicket = (ticketId?: string) =>
-    createSelector<RootState, Agents, CurrentUser, Agents>(
+    createSelector(
         getCurrentUser,
         getAgentsOnTicket(ticketId),
         (currentUser: CurrentUser, agents: Agents) => {
@@ -155,11 +132,7 @@ export const makeGetOtherAgentsOnTicket =
         getOtherAgentsOnTicket(ticketId)(state)
 
 // Location of typing agents in the app by their ids
-export const getAgentsIdsTypingStatus = createSelector<
-    RootState,
-    Map<any, any>,
-    AgentsState
->(
+export const getAgentsIdsTypingStatus = createSelector(
     getState,
     (state: AgentsState) =>
         (state.get('typingStatuses') as Map<any, any>) || fromJS({})
@@ -167,7 +140,7 @@ export const getAgentsIdsTypingStatus = createSelector<
 
 // Ids of agents typing on a specific ticket
 export const getAgentsIdsTypingStatusOnTicket = (ticketId?: string) =>
-    createSelector<RootState, List<any>, Map<any, any>>(
+    createSelector(
         getAgentsIdsTypingStatus,
         (typingStatuses: Map<any, any>) => {
             if (!ticketId) {
@@ -188,12 +161,7 @@ export const getAgentsIdsTypingStatusOnTicket = (ticketId?: string) =>
 
 // Agents typing on a specific ticket
 export const getAgentsTypingOnTicket = (ticketId?: string) =>
-    createSelector<
-        RootState,
-        List<any>,
-        List<any>,
-        ReturnType<typeof makeGetAgent>
-    >(
+    createSelector(
         getAgentsIdsTypingStatusOnTicket(ticketId),
         makeGetAgent,
         (
@@ -215,7 +183,7 @@ export const getAgentsTypingOnTicket = (ticketId?: string) =>
 
 // Agents typing on a specific ticket EXCEPT current user
 export const getOtherAgentsTypingOnTicket = (ticketId?: string) =>
-    createSelector<RootState, Agents, CurrentUser, Agents>(
+    createSelector(
         getCurrentUser,
         getAgentsTypingOnTicket(ticketId),
         (currentUser: CurrentUser, agents: Agents) => {
@@ -227,7 +195,7 @@ export const getOtherAgentsTypingOnTicket = (ticketId?: string) =>
         }
     )
 export const isAgentTypingOnTicket = (ticketId?: string) =>
-    createSelector<RootState, boolean, CurrentUser, Agents>(
+    createSelector(
         getCurrentUser,
         getAgentsTypingOnTicket(ticketId),
         (currentUser: CurrentUser, agents: Agents) => {

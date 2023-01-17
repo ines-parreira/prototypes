@@ -270,12 +270,7 @@ export const getHasAutomationAddOn = createSelector(
     (price) => !!price
 )
 
-export const getHasLegacyAutomationAddOnFeatures = createSelector<
-    RootState,
-    boolean,
-    CurrentAccountState,
-    HelpdeskPrice | undefined
->(
+export const getHasLegacyAutomationAddOnFeatures = createSelector(
     getCurrentAccountState,
     getCurrentHelpdeskProduct,
     (accountState, product) => {
@@ -321,11 +316,7 @@ export const getCurrentAutomationFullAmount = createSelector(
             : undefined
 )
 
-export const invoices = createSelector<
-    RootState,
-    List<any>,
-    BillingImmutableState
->(
+export const invoices = createSelector(
     DEPRECATED_getBillingState,
     (billing) =>
         (billing.get('invoices', fromJS([])) as List<any>).filter(
@@ -334,20 +325,12 @@ export const invoices = createSelector<
         ) as List<any>
 )
 
-export const getContact = createSelector<
-    RootState,
-    Maybe<Map<any, any>>,
-    BillingImmutableState
->(
+export const getContact = createSelector(
     DEPRECATED_getBillingState,
-    (billing) => (billing.get('contact') as Map<any, any>) || null
+    (billing) => (billing.get('contact') as Map<any, any> | null) || null
 )
 
-export const isMissingContactInformation = createSelector<
-    RootState,
-    boolean,
-    Maybe<Map<any, any>>
->(
+export const isMissingContactInformation = createSelector(
     getContact,
     (contact) =>
         !contact ||
@@ -358,29 +341,17 @@ export const isMissingContactInformation = createSelector<
             !contact.getIn(['shipping', 'address', 'state']))
 )
 
-export const creditCard = createSelector<
-    RootState,
-    Map<any, any>,
-    BillingImmutableState
->(
+export const creditCard = createSelector(
     DEPRECATED_getBillingState,
     (billing) => (billing.get('creditCard') as Map<any, any>) || fromJS({})
 )
 
-export const paymentMethod = createSelector<
-    RootState,
-    string,
-    BillingImmutableState
->(
+export const paymentMethod = createSelector(
     DEPRECATED_getBillingState,
     (billing) => (billing.get('paymentMethod') as string) || ''
 )
 
-export const getCurrentUsage = createSelector<
-    RootState,
-    Map<any, any>,
-    BillingImmutableState
->(
+export const getCurrentUsage = createSelector(
     DEPRECATED_getBillingState,
     (billing) => (billing.get('currentUsage') as Map<any, any>) || fromJS({})
 )

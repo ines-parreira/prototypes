@@ -1,11 +1,8 @@
-import {Map} from 'immutable'
 import {createSelector} from 'reselect'
 
-import {View, ViewType} from '../../../models/view/types'
-import {makeGetSettingsByType} from '../../currentUser/selectors'
-import {RootState} from '../../types'
-
-import {ViewsState} from './types'
+import {ViewType} from 'models/view/types'
+import {makeGetSettingsByType} from 'state/currentUser/selectors'
+import {RootState} from 'state/types'
 
 export const getTicketViews = createSelector(
     (state: RootState) => state.entities.views || {},
@@ -16,7 +13,7 @@ export const getTicketViews = createSelector(
 )
 
 export const getOrderedViewsByType = (type: ViewType) =>
-    createSelector<RootState, View[], ViewsState, Map<any, any>>(
+    createSelector(
         (state: RootState) => state.entities.views,
         (state: RootState) =>
             makeGetSettingsByType()(

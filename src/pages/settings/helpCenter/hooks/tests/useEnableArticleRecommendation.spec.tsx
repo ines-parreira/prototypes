@@ -57,7 +57,7 @@ describe('useEnableArticleRecommendation', () => {
     })
 
     it('Should call createChatHelpCenterConfiguration', async () => {
-        ;(getHasAutomationAddOn as jest.Mock).mockReturnValue(true)
+        ;(getHasAutomationAddOn as unknown as jest.Mock).mockReturnValue(true)
         ;(fetchChatHelpCenterConfiguration as jest.Mock).mockRejectedValue({
             isAxiosError: true,
             response: {status: 404},
@@ -93,7 +93,7 @@ describe('useEnableArticleRecommendation', () => {
         })
     })
     it('Should not call if there is already a help-center with the same store', async () => {
-        ;(getHasAutomationAddOn as jest.Mock).mockReturnValue(true)
+        ;(getHasAutomationAddOn as unknown as jest.Mock).mockReturnValue(true)
 
         const {result} = renderHook(useEnableArticleRecommendation, {
             wrapper: getDependencyWrapper({
@@ -118,7 +118,7 @@ describe('useEnableArticleRecommendation', () => {
         expect(createChatHelpCenterConfiguration).not.toHaveBeenCalled()
     })
     it('Should not call if AutomationAddOn is not enabled', async () => {
-        ;(getHasAutomationAddOn as jest.Mock).mockReturnValue(false)
+        ;(getHasAutomationAddOn as unknown as jest.Mock).mockReturnValue(false)
 
         const {result} = renderHook(useEnableArticleRecommendation, {
             wrapper: getDependencyWrapper(),
@@ -131,7 +131,7 @@ describe('useEnableArticleRecommendation', () => {
         expect(createChatHelpCenterConfiguration).not.toHaveBeenCalled()
     })
     it('Should not call if there is already a chatHelpCenterConfiguration', async () => {
-        ;(getHasAutomationAddOn as jest.Mock).mockReturnValue(true)
+        ;(getHasAutomationAddOn as unknown as jest.Mock).mockReturnValue(true)
         ;(fetchChatHelpCenterConfiguration as jest.Mock).mockResolvedValue(true)
 
         const {result} = renderHook(useEnableArticleRecommendation, {
@@ -145,7 +145,7 @@ describe('useEnableArticleRecommendation', () => {
         expect(createChatHelpCenterConfiguration).not.toHaveBeenCalled()
     })
     it('Should not call if they are not related to the same shop', async () => {
-        ;(getHasAutomationAddOn as jest.Mock).mockReturnValue(true)
+        ;(getHasAutomationAddOn as unknown as jest.Mock).mockReturnValue(true)
 
         const {result} = renderHook(useEnableArticleRecommendation, {
             wrapper: getDependencyWrapper(),

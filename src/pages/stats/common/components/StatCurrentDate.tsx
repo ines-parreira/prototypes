@@ -20,7 +20,7 @@ export default function StatCurrentDate() {
     const formattedRange = useMemo(() => {
         return businessRanges
             ?.map(
-                (range: [Moment, Moment]) =>
+                (range: Moment[]) =>
                     `${range[0].format('hh:mm a')} - ${range[1].format(
                         'hh:mm a'
                     )}`

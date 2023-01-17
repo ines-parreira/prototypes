@@ -1018,11 +1018,7 @@ export const toRGBA = (color: string, alpha = 1): string => {
 
 export const makeGetPlainJS = <T = unknown, S = RootState>(
     selector: Selector<S, Iterable<any, any>>
-) =>
-    createSelector<S, T, Iterable<any, any>>(
-        selector,
-        (data: Iterable<any, any>) => data.toJS() as T
-    )
+) => createSelector(selector, (data: Iterable<any, any>) => data.toJS() as T)
 
 export function createTypeGuard<
     Input,

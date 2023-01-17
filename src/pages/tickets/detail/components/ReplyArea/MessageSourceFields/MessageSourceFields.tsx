@@ -64,7 +64,9 @@ const MessageSourceFields = forwardRef<MultiSelectAsyncField, Props>(
             (state: RootState) => !state.ticket.get('id')
         )
         const areNewMessageContactPropertiesFulfilled = useAppSelector(
-            getAreNewMessageContactPropertiesFulfilled
+            getAreNewMessageContactPropertiesFulfilled as unknown as (
+                state: RootState
+            ) => boolean
         )
         const isOpen = isOpenDefault || !areNewMessageContactPropertiesFulfilled
         const optionalContactProperties = useAppSelector(
