@@ -1,7 +1,10 @@
 import React, {ReactElement, useMemo, useRef} from 'react'
 import produce from 'immer'
 
-import {ReportIssueCaseReason} from 'models/selfServiceConfiguration/types'
+import {
+    ReportIssueCaseReason,
+    ReportIssueReasons,
+} from 'models/selfServiceConfiguration/types'
 
 import SelectField from '../../../../../common/forms/SelectField/SelectField'
 import {Callbacks} from '../../../../../settings/helpCenter/hooks/useReorderDnD'
@@ -11,6 +14,7 @@ import {REASONS_DROPDOWN_OPTIONS} from '../constants'
 import DraggableReason from './DraggableReason'
 
 import css from './Reasons.less'
+import {DEFAULT_REASON_ACTIONS} from './defaults'
 
 interface ReasonsProps {
     reasons: ReportIssueCaseReason[]
@@ -30,7 +34,9 @@ const Reasons = ({
             ...reasons,
             {
                 reasonKey: selectedValue,
-                action: undefined,
+                action: DEFAULT_REASON_ACTIONS[
+                    selectedValue as ReportIssueReasons
+                ],
             },
         ])
     }
