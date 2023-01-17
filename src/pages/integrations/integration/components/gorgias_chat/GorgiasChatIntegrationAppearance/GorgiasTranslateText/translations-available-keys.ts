@@ -9,63 +9,63 @@ export type OptionFormat = {
 export default {
     general: {
         'sspTexts.sendUsAMessage': {maxLength: 30},
-        'texts.leaveAMessage': {maxLength: 27},
-        'sspTexts.needHelp': {maxLength: 27},
+        'texts.leaveAMessage': {maxLength: 30},
+        'sspTexts.needHelp': {maxLength: 30},
         'texts.backLabelBackAt': {
-            maxLength: 32,
+            maxLength: 35,
         },
     },
     contactForm: {
-        'texts.contactFormIntro': {maxLength: 106},
-        'texts.contactFormAskSubject': {maxLength: 33},
+        'texts.contactFormIntro': {maxLength: 110},
+        'texts.contactFormAskSubject': {maxLength: 35},
         'sspTexts.trackOrderShort': {maxLength: 20},
-        'sspTexts.reportIssueShort': {maxLength: 23},
-        'sspTexts.cancelOrderShort': {maxLength: 21},
-        'texts.productQuestionShort': {maxLength: 23},
+        'sspTexts.reportIssueShort': {maxLength: 25},
+        'sspTexts.cancelOrderShort': {maxLength: 25},
+        'texts.productQuestionShort': {maxLength: 25},
         'texts.contactFormAskSubjectOther': {
-            maxLength: 32,
+            maxLength: 35,
         },
-        'texts.contactFormAskMessage': {maxLength: 122},
-        'texts.contactFormAskEmail': {maxLength: 48},
+        'texts.contactFormAskMessage': {maxLength: 125},
+        'texts.contactFormAskEmail': {maxLength: 50},
         'texts.contactFormAskAdditionalMessage': {
-            maxLength: 68,
+            maxLength: 70,
         },
-        'texts.thatsAll': {maxLength: 12},
+        'texts.thatsAll': {maxLength: 15},
         'texts.contactFormEndingMessage': {
             maxLength: 85,
         },
     },
     dynamicWaitTime: {
-        'texts.waitTimeShortNoEmail': {maxLength: 166},
+        'texts.waitTimeShortNoEmail': {maxLength: 170},
         'texts.waitTimeShortEmailCaptured': {
-            maxLength: 109,
+            maxLength: 110,
         },
-        'texts.waitTimeMediumNoEmail': {maxLength: 192},
+        'texts.waitTimeMediumNoEmail': {maxLength: 195},
         'texts.waitTimeMediumEmailCaptured': {
-            maxLength: 136,
+            maxLength: 140,
         },
-        'texts.waitTimeAgentsAreBusy': {maxLength: 152},
-        'texts.waitForAnAgent': {maxLength: 28},
+        'texts.waitTimeAgentsAreBusy': {maxLength: 155},
+        'texts.waitForAnAgent': {maxLength: 30},
         'texts.waitTimeLongEmailCaptured': {
-            maxLength: 106,
+            maxLength: 110,
         },
-        'texts.waitTimeLongNoEmail': {maxLength: 163},
+        'texts.waitTimeLongNoEmail': {maxLength: 165},
         'texts.getRepliesByEmail': {
-            maxLength: 41,
+            maxLength: 45,
         },
     },
     autoResponder: {
         'texts.usualReplyTimeMinutes': {maxLength: 50},
-        'texts.usualReplyTimeHours': {maxLength: 49},
+        'texts.usualReplyTimeHours': {maxLength: 50},
         'texts.emailCaptureTriggerTextBase': {
-            maxLength: 79,
+            maxLength: 80,
         },
-        'texts.emailCaptureTriggerTypicalReplyMinutes': {maxLength: 64},
-        'texts.emailCaptureTriggerTypicalReplyHours': {maxLength: 64},
+        'texts.emailCaptureTriggerTypicalReplyMinutes': {maxLength: 65},
+        'texts.emailCaptureTriggerTypicalReplyHours': {maxLength: 65},
     },
     emailCapture: {
         'texts.emailCaptureOnlineTriggerText': {
-            maxLength: 76,
+            maxLength: 80,
             filteredBy: ({emailCaptureEnforcement}: FilterProps) => {
                 if (emailCaptureEnforcement === 'always-required') {
                     return false
@@ -77,10 +77,10 @@ export default {
             maxLength: 60,
         },
         'texts.emailCaptureThanksText': {
-            maxLength: 119,
+            maxLength: 120,
         },
         'texts.requireEmailCaptureIntro': {
-            maxLength: 144,
+            maxLength: 145,
             filteredBy: ({emailCaptureEnforcement}: FilterProps) => {
                 if (emailCaptureEnforcement !== 'always-required') {
                     return false
