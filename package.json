@@ -266,7 +266,7 @@
         "optimize-css-assets-webpack-plugin": "5.0.1",
         "patch-package": "6.4.7",
         "postinstall-postinstall": "2.1.0",
-        "postman-to-openapi": "^2.9.0",
+        "postman-to-openapi": "3.0.0",
         "prettier": "2.4.1",
         "randomstring": "^1.2.3",
         "react-hooks-testing-library": "0.5.1",
