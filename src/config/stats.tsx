@@ -851,11 +851,11 @@ export const stats = toImmutable<
         lines: {
             created: {
                 label: 'Ticket created',
-                color: '#ffb584',
+                color: '#8892f2',
             },
             replied: {
                 label: 'Ticket replied',
-                color: '#8892f2',
+                color: '#ffb584',
             },
             closed: {
                 label: 'Ticket closed',

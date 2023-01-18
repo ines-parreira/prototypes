@@ -1078,7 +1078,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
               >
                 <span
                   class="circle mr-2"
-                  style="background: rgb(255, 181, 132);"
+                  style="background: rgb(136, 146, 242);"
                 />
                 Ticket created
               </span>
@@ -1087,7 +1087,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
               >
                 <span
                   class="circle mr-2"
-                  style="background: rgb(136, 146, 242);"
+                  style="background: rgb(255, 181, 132);"
                 />
                 Ticket replied
               </span>
