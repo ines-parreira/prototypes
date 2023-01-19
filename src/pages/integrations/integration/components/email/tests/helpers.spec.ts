@@ -1,5 +1,5 @@
 import {cloneDeep} from 'lodash'
-import {EmailProvider} from 'models/integration/constants'
+import {EmailProvider, IntegrationType} from 'models/integration/constants'
 import {
     EmailIntegration,
     OutboundVerificationStatusValue,
@@ -12,6 +12,7 @@ import {
     isSingleSenderVerified,
     isBaseEmailAddress,
     isBaseEmailIntegration,
+    isSendgridEmailIntegration,
 } from '../helpers'
 
 const integration = {
@@ -163,6 +164,52 @@ describe('helpers', () => {
                     },
                 } as any)
             ).toBe(false)
+        })
+    })
+
+    describe('isSendgridEmailIntegration', () => {
+        it('should return false for mailgun integrations', () => {
+            expect(
+                isSendgridEmailIntegration({
+                    type: IntegrationType.Email,
+                    meta: {
+                        provider: EmailProvider.Mailgun,
+                    },
+                } as any)
+            )
+        })
+
+        it('should return false for sendgrid outlook integrations', () => {
+            expect(
+                isSendgridEmailIntegration({
+                    type: IntegrationType.Outlook,
+                    meta: {
+                        provider: EmailProvider.Sendgrid,
+                    },
+                } as any)
+            )
+        })
+
+        it('should return false for sendgrid gmail integrations', () => {
+            expect(
+                isSendgridEmailIntegration({
+                    type: IntegrationType.Gmail,
+                    meta: {
+                        provider: EmailProvider.Sendgrid,
+                    },
+                } as any)
+            )
+        })
+
+        it('should return true for sendgrid email integrations', () => {
+            expect(
+                isSendgridEmailIntegration({
+                    type: IntegrationType.Email,
+                    meta: {
+                        provider: EmailProvider.Sendgrid,
+                    },
+                } as any)
+            )
         })
     })
 })

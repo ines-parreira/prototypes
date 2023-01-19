@@ -13,13 +13,13 @@ import {EmailDomain, IntegrationType} from 'models/integration/types'
 import history from 'pages/history'
 import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
 import {getIntegrationsByTypes} from 'state/integrations/helpers'
-import {EmailProvider} from 'models/integration/constants'
 import IntegrationList from '../IntegrationList'
 import {fetchEmailDomains} from './resources'
 import {
     getDomainFromEmailAddress,
     isBaseEmailIntegration,
     isOutboundVerifiedSendgrid,
+    isSendgridEmailIntegration,
 } from './helpers'
 import WarningWithTooltip from './WarningWithTooltip'
 
@@ -74,8 +74,6 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
 
         const address = integration.getIn(['meta', 'address'], '') as string
         const domain = getDomainFromEmailAddress(address)
-        const isSendgridIntegration =
-            integration.getIn(['meta', 'provider']) === EmailProvider.Sendgrid
 
         const isBaseIntegration = isBaseEmailIntegration(integration.toJS())
 
@@ -92,7 +90,7 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
         // Whether to show the "pending domain verification" warning for this integration
 
         const shouldDisplayDomainVerificationWarning =
-            !isSendgridIntegration && // In case the provider is sendgrid, use shouldDisplayOutboundVerificationWarning
+            !isSendgridEmailIntegration(integration.toJS()) && // In case the provider is sendgrid, use shouldDisplayOutboundVerificationWarning
             !isDomainVerified &&
             !isBaseIntegration && // The base email integration cannot have a domain associated
             !isOutlook && // Outlook does not need domain verification
@@ -101,8 +99,8 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
 
         const shouldDisplayOutboundVerificationWarning =
             isVerified &&
-            isSendgridIntegration &&
             !isBaseIntegration &&
+            isSendgridEmailIntegration(integration.toJS()) &&
             !isOutboundVerifiedSendgrid(integration.toJS())
 
         const getTabURL = () => {

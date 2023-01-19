@@ -33,8 +33,7 @@ import css from 'pages/settings/settings.less'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {EmailProvider} from 'models/integration/constants'
-import {isBaseEmailAddress} from '../helpers'
+import {isBaseEmailAddress, isSendgridEmailIntegration} from '../helpers'
 
 type OwnProps = {
     integration: Map<any, any>
@@ -83,14 +82,14 @@ export class EmailIntegrationCreateVerification extends Component<
             !this.props.integration.getIn(['meta', 'verified']) &&
             nextProps.integration.getIn(['meta', 'verified'])
         ) {
-            const isSendgridIntegration =
-                nextProps.integration.getIn(['meta', 'provider']) ===
-                EmailProvider.Sendgrid
-
             history.push(
                 `/app/settings/channels/email/${
                     nextProps.integration.get('id') as number
-                }${isSendgridIntegration ? '/outbound-verification' : ''}`
+                }${
+                    isSendgridEmailIntegration(nextProps.integration.toJS())
+                        ? '/outbound-verification'
+                        : ''
+                }`
             )
         }
     }

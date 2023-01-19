@@ -1,4 +1,5 @@
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
+import {EmailProvider} from 'models/integration/constants'
 import {
     EmailIntegration,
     GmailIntegration,
@@ -48,6 +49,15 @@ export const isOutboundVerifiedSendgrid = (
 
 export const getDomainFromEmailAddress = (address: string): string =>
     address.substring(address.lastIndexOf('@') + 1)
+
+export const isSendgridEmailIntegration = (
+    integration: Integration
+): boolean => {
+    return (
+        integration.type === IntegrationType.Email &&
+        integration.meta?.provider === EmailProvider.Sendgrid
+    )
+}
 
 export const isGenericEmailIntegration = (
     integration: Integration
