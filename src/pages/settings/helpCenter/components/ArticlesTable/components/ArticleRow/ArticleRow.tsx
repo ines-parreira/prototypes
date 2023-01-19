@@ -14,10 +14,7 @@ import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import {ArticleRowActionTypes} from 'pages/settings/helpCenter/constants'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
-import {
-    Callbacks,
-    useReorderDnD,
-} from 'pages/settings/helpCenter/hooks/useReorderDnD'
+import {Callbacks, useReorderDnD} from 'pages/common/hooks/useReorderDnD'
 import {getDetailedFormattedDate, getFormattedDate} from 'utils/date'
 import {TableActions} from '../../../TableActions'
 

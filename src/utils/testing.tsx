@@ -1,12 +1,15 @@
-import React, {ReactElement, Context, ComponentType, useContext} from 'react'
+import React, {ComponentType, Context, ReactElement, useContext} from 'react'
 import configureMockStore, {MockStore} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {shallow} from 'enzyme'
 import {act, render, RenderOptions} from '@testing-library/react'
-import {Router, Route} from 'react-router-dom'
+import {Route, Router} from 'react-router-dom'
 import {createMemoryHistory, History} from 'history'
 import _last from 'lodash/last'
 import _findLast from 'lodash/findLast'
+import {BackendFactory} from 'dnd-core'
+import {HTML5Backend} from 'react-dnd-html5-backend'
+import {DndProvider} from 'react-dnd'
 
 import shortcutManager from '../services/shortcutManager/shortcutManager'
 
@@ -47,6 +50,23 @@ export const renderWithRouter = (
             <Router history={history}>
                 <Route path={path}>{children}</Route>
             </Router>
+        ),
+        ...options,
+    })
+}
+
+export type RenderWithDnDParams = {
+    options?: Omit<RenderOptions, 'wrapper'>
+    backend?: BackendFactory
+}
+
+export const renderWithDnD = (
+    ui: ReactElement,
+    {options, backend = HTML5Backend}: RenderWithDnDParams = {}
+) => {
+    return render(ui, {
+        wrapper: ({children}: any) => (
+            <DndProvider backend={backend}>{children}</DndProvider>
         ),
         ...options,
     })

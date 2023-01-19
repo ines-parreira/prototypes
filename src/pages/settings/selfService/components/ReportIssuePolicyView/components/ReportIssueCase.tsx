@@ -1,18 +1,16 @@
 import React, {ReactElement} from 'react'
 import classNames from 'classnames'
 
-import {useRouteMatch, Link} from 'react-router-dom'
+import {Link, useRouteMatch} from 'react-router-dom'
 
-import TableBodyRow from '../../../../../common/components/table/TableBodyRow'
-import BodyCell from '../../../../../common/components/table/cells/BodyCell'
-import {
-    useReorderDnD,
-    Callbacks,
-} from '../../../../../settings/helpCenter/hooks/useReorderDnD'
-import ForwardIcon from '../../../../../integrations/common/components/ForwardIcon'
+import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import {Callbacks, useReorderDnD} from 'pages/common/hooks/useReorderDnD'
+import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
+import BodyCellContent from 'pages/common/components/table/cells/BodyCellContent'
 
-import bodyCellCss from '../../../../../common/components/table/cells/BodyCell.less'
-import BodyCellContent from '../../../../../common/components/table/cells/BodyCellContent'
+import bodyCellCss from 'pages/common/components/table/cells/BodyCell.less'
+
 import css from './ReportIssueCase.less'
 
 interface ReportIssueCaseProps {

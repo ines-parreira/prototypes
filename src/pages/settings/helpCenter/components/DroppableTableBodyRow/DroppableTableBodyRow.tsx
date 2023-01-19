@@ -8,7 +8,7 @@ import {
     Callbacks,
     DragItemRequired,
     useReorderDnD,
-} from '../../hooks/useReorderDnD'
+} from 'pages/common/hooks/useReorderDnD'
 import {getCategoryDndType} from '../../utils/getCategoryDndType'
 
 import css from './DroppableTableBodyRow.less'

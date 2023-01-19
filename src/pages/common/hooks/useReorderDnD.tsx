@@ -6,7 +6,7 @@ export type DragItemRequired = {
     position: number
 }
 
-type useReorderDnDInterface = {
+type UseReorderDnDInterface = {
     dragRef: React.RefObject<unknown>
     dropRef: React.RefObject<unknown>
     handlerId: string | symbol | null
@@ -22,8 +22,9 @@ export type Callbacks = {
 export const useReorderDnD = <ItemType extends DragItemRequired>(
     dragItem: ItemType,
     acceptEntities: string[],
-    callbacks: Callbacks = {}
-): useReorderDnDInterface => {
+    callbacks: Callbacks = {},
+    canDrag = true
+): UseReorderDnDInterface => {
     const $dropRef = React.useRef<HTMLTableRowElement>(null)
     const $dragRef = React.useRef<HTMLDivElement>(null)
 
@@ -92,6 +93,7 @@ export const useReorderDnD = <ItemType extends DragItemRequired>(
                 callbacks.onCancel(dragItem.type)
             }
         },
+        canDrag,
     })
 
     preview(drop($dropRef))

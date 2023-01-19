@@ -7,7 +7,7 @@ import {
 } from 'models/selfServiceConfiguration/types'
 
 import SelectField from '../../../../../common/forms/SelectField/SelectField'
-import {Callbacks} from '../../../../../settings/helpCenter/hooks/useReorderDnD'
+import {Callbacks} from '../../../../../common/hooks/useReorderDnD'
 
 import {REASONS_DROPDOWN_OPTIONS} from '../constants'
 

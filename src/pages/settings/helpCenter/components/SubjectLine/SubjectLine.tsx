@@ -2,10 +2,7 @@ import React from 'react'
 import classNames from 'classnames'
 
 import TextInput from 'pages/common/forms/input/TextInput'
-import {
-    Callbacks,
-    useReorderDnD,
-} from 'pages/settings/helpCenter/hooks/useReorderDnD'
+import {Callbacks, useReorderDnD} from 'pages/common/hooks/useReorderDnD'
 
 import css from './SubjectLine.less'
 

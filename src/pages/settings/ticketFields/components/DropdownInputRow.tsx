@@ -2,9 +2,8 @@ import React, {memo, useEffect} from 'react'
 
 import IconButton from 'pages/common/components/button/IconButton'
 import TextInput from 'pages/common/forms/input/TextInput'
-
 import Caption from 'pages/common/forms/Caption/Caption'
-import {useReorderDnD} from 'pages/settings/helpCenter/hooks/useReorderDnD'
+import {useReorderDnD} from 'pages/common/hooks/useReorderDnD'
 
 import css from './DropdownInput.less'
 

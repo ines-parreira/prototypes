@@ -4,7 +4,7 @@ import {render} from '@testing-library/react'
 import {getSingleCategoryEnglish} from 'pages/settings/helpCenter/fixtures/getCategoriesResponse.fixtures'
 import {DroppableTableBodyRow} from '../DroppableTableBodyRow'
 
-jest.mock('pages/settings/helpCenter/hooks/useReorderDnD', () => {
+jest.mock('pages/common/hooks/useReorderDnD', () => {
     return {
         useReorderDnD: jest.fn().mockResolvedValue({
             dragRef: '',
