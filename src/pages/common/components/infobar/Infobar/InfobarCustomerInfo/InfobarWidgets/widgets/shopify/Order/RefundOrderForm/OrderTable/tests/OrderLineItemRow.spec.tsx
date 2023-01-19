@@ -6,8 +6,8 @@ import {
     shopifyLineItemFixture,
     shopifyOrderFixture,
     shopifyPriceSetFixture,
-} from '../../../../../../../../../../../../../fixtures/shopify'
-import {initRefundOrderLineItems} from '../../../../../../../../../../../../../business/shopify/order'
+} from 'fixtures/shopify'
+import {initRefundOrderLineItems} from 'business/shopify/order'
 import OrderLineItemRow from '../OrderLineItemRow'
 
 describe('<LineItemRow/>', () => {
@@ -145,6 +145,25 @@ describe('<LineItemRow/>', () => {
         )
 
         expect(screen.getByText("This product can't be restocked."))
+    })
+
+    it('should render with the zero quantity', () => {
+        const lineItem = fromJS(shopifyLineItemFixture({currencyCode: 'USD'}))
+
+        const {container} = render(
+            <OrderLineItemRow
+                lineItem={lineItem}
+                index={0}
+                isRestockable
+                shopName="storegorgias3"
+                currencyCode="USD"
+                shopCurrencyCode="USD"
+                onChange={onChange}
+                keepLineItemQuantityAsDefault={false}
+            />
+        )
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     describe('onQuantityChange()', () => {

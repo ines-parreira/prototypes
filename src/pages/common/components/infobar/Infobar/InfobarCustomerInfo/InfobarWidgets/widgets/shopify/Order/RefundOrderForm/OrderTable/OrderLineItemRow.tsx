@@ -21,6 +21,7 @@ type Props = {
     shopName: string
     currencyCode: string
     shopCurrencyCode: string
+    keepLineItemQuantityAsDefault?: boolean
     onChange: (lineItem: Map<string, any>, index: number) => void
 }
 
@@ -32,8 +33,11 @@ function OrderLineItemRow({
     currencyCode,
     shopCurrencyCode,
     onChange,
+    keepLineItemQuantityAsDefault = true,
 }: Props) {
-    const [quantity, setQuantity] = useState<number>(lineItem.get('quantity'))
+    const [quantity, setQuantity] = useState<number>(
+        keepLineItemQuantityAsDefault ? lineItem.get('quantity') : 0
+    )
     const [maxQuantity] = useState<number>(lineItem.get('quantity'))
 
     const onQuantityChange = useCallback(

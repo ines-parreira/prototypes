@@ -547,3 +547,277 @@ exports[`<OrderTable/> should render for multi-currency order 1`] = `
   </tbody>
 </table>
 `;
+
+exports[`<OrderTable/> should render with zero quantity 1`] = `
+<table
+  class="table mb-4 table table-hover"
+>
+  <thead>
+    <tr>
+      <th>
+        Product
+      </th>
+      <th>
+        Item price
+      </th>
+      <th>
+        <div
+          class="qty"
+        >
+          Qty
+          <span
+            aria-label="Quantity warning"
+            class="material-icons orange ml-1"
+            id="qty-warning-icon"
+          >
+            warning
+          </span>
+        </div>
+      </th>
+      <th
+        class="itemTotal"
+      >
+        Item total
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td
+        class="container"
+      >
+        <div
+          class="legend"
+        >
+          <div>
+            <a
+              class="title"
+              href="https://storegorgias3.myshopify.com/admin/products/8345093387/variants/31128766316567"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Acidulous candy
+            </a>
+          </div>
+          <div
+            class="subtitle"
+          >
+            Red / A
+          </div>
+          <div
+            class="subtitle"
+          >
+            SKU: 
+            0987654321-1
+          </div>
+        </div>
+      </td>
+      <td
+        class="numberCol"
+      >
+        <div
+          class="d-flex"
+        >
+          <div
+            class="d-inline-block text-center"
+          >
+            <small
+              class="d-block text-muted"
+            >
+              <del>
+                <span>
+                  $1.00
+                </span>
+              </del>
+            </small>
+            <span>
+              $1.00
+            </span>
+          </div>
+          <span
+            class="times"
+          >
+            x
+          </span>
+        </div>
+      </td>
+      <td
+        class="quantityCol"
+      >
+        <div
+          class="input-group"
+        >
+          <span
+            class="quantityContainer"
+          >
+            <input
+              class="quantityInput form-control"
+              pattern="\\\\d+"
+              type="text"
+              value="0"
+            />
+            <span
+              class="quantityMax"
+            >
+              / 
+              1
+            </span>
+          </span>
+          <div
+            class="quantityButtonsContainer input-group-append"
+          >
+            <button
+              class="wrapper focusable quantityBtn quantityBtnUp fill secondary medium"
+              tabindex="0"
+              type="button"
+            >
+              ▲
+            </button>
+            <button
+              class="wrapper focusable quantityBtn quantityBtnDown fill secondary medium isDisabled"
+              disabled=""
+              tabindex="0"
+              type="button"
+            >
+              ▼
+            </button>
+          </div>
+        </div>
+      </td>
+      <td
+        class="numberCol"
+      >
+        <div
+          class="d-flex"
+        >
+          <strong
+            class="mt-auto mb-auto ml-auto"
+          >
+            <span>
+              $0.00
+            </span>
+          </strong>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td
+        class="container"
+      >
+        <div
+          class="legend"
+        >
+          <div>
+            <a
+              class="title"
+              href="https://storegorgias3.myshopify.com/admin/products/8345093387/variants/31128766349335"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Acidulous candy
+            </a>
+          </div>
+          <div
+            class="subtitle"
+          >
+            Red / B
+          </div>
+          <div
+            class="subtitle"
+          >
+            SKU: 
+            0987654321-2
+          </div>
+        </div>
+      </td>
+      <td
+        class="numberCol"
+      >
+        <div
+          class="d-flex"
+        >
+          <div
+            class="d-inline-block text-center"
+          >
+            <small
+              class="d-block text-muted"
+            >
+              <del>
+                <span>
+                  $1.00
+                </span>
+              </del>
+            </small>
+            <span>
+              $1.00
+            </span>
+          </div>
+          <span
+            class="times"
+          >
+            x
+          </span>
+        </div>
+      </td>
+      <td
+        class="quantityCol"
+      >
+        <div
+          class="input-group"
+        >
+          <span
+            class="quantityContainer"
+          >
+            <input
+              class="quantityInput form-control"
+              pattern="\\\\d+"
+              type="text"
+              value="0"
+            />
+            <span
+              class="quantityMax"
+            >
+              / 
+              4
+            </span>
+          </span>
+          <div
+            class="quantityButtonsContainer input-group-append"
+          >
+            <button
+              class="wrapper focusable quantityBtn quantityBtnUp fill secondary medium"
+              tabindex="0"
+              type="button"
+            >
+              ▲
+            </button>
+            <button
+              class="wrapper focusable quantityBtn quantityBtnDown fill secondary medium isDisabled"
+              disabled=""
+              tabindex="0"
+              type="button"
+            >
+              ▼
+            </button>
+          </div>
+        </div>
+      </td>
+      <td
+        class="numberCol"
+      >
+        <div
+          class="d-flex"
+        >
+          <strong
+            class="mt-auto mb-auto ml-auto"
+          >
+            <span>
+              $0.00
+            </span>
+          </strong>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+`;

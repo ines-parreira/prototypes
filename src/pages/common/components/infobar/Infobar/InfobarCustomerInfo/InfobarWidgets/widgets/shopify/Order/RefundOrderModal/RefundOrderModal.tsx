@@ -161,6 +161,7 @@ export const RefundOrderModalContainer = ({
                         onLineItemChange={onLineChange}
                         onReasonChange={handleReasonChange}
                         onNotifyChange={handleNotifyChange}
+                        keepLineItemQuantityAsDefault={false}
                     />
                 )}
                 <ModalFooter className={css.footer}>

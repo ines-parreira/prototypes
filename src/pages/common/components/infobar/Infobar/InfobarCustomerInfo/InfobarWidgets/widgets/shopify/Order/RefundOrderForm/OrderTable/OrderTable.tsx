@@ -17,6 +17,7 @@ type Props = {
     refund: Map<string, any> | null
     lineItems: List<Map<string, any>>
     onLineItemChange: (lineItem: Map<string, any>, index: number) => void
+    keepLineItemQuantityAsDefault?: boolean
 }
 
 function OrderTable({
@@ -27,6 +28,7 @@ function OrderTable({
     shopName,
     currencyCode,
     shopCurrencyCode,
+    keepLineItemQuantityAsDefault = true,
 }: Props) {
     // if an order item is in the refund list and has no location_id,
     // then it is not possible to restock it. Otherwise yes
@@ -101,6 +103,9 @@ function OrderTable({
                             currencyCode={currencyCode}
                             shopCurrencyCode={shopCurrencyCode}
                             onChange={onLineItemChange}
+                            keepLineItemQuantityAsDefault={
+                                keepLineItemQuantityAsDefault
+                            }
                         />
                     )
                 })}

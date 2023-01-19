@@ -6,7 +6,7 @@ import {FulfillmentStatus} from 'constants/integrations/types/shopify'
 import {
     shopifyOrderFixture,
     shopifySuggestedRefundFixture,
-} from '../../../../../../../../../../../../../fixtures/shopify'
+} from 'fixtures/shopify'
 import OrderTable from '../OrderTable'
 
 describe('<OrderTable/>', () => {
@@ -36,6 +36,24 @@ describe('<OrderTable/>', () => {
                 refund={refund}
                 onLineItemChange={onLineItemChange}
                 fulfillmentStatus={FulfillmentStatus.Partial}
+            />
+        )
+
+        expect(container.firstChild).toMatchSnapshot()
+        expect(screen.getByLabelText('Quantity warning'))
+    })
+
+    it('should render with zero quantity', () => {
+        const {container} = render(
+            <OrderTable
+                shopName="storegorgias3"
+                currencyCode="USD"
+                shopCurrencyCode="USD"
+                lineItems={lineItems}
+                refund={refund}
+                onLineItemChange={onLineItemChange}
+                fulfillmentStatus={FulfillmentStatus.Partial}
+                keepLineItemQuantityAsDefault={false}
             />
         )
 

@@ -5,6 +5,7 @@ exports[`<RefundOrderForm/> render() should render 1`] = `
   <Memo(OrderTable)
     currencyCode="USD"
     fulfillmentStatus={null}
+    keepLineItemQuantityAsDefault={true}
     lineItems={
       Immutable.List [
         Immutable.Map {
@@ -13,12 +14,32 @@ exports[`<RefundOrderForm/> render() should render 1`] = `
           "price": "1.00",
           "quantity": 1,
           "product_id": 8345093387,
+          "price_set": Immutable.Map {
+            "shop_money": Immutable.Map {
+              "amount": "1.00",
+              "currency_code": "USD",
+            },
+            "presentment_money": Immutable.Map {
+              "amount": "1.00",
+              "currency_code": "USD",
+            },
+          },
           "product_exists": true,
           "properties": Immutable.List [],
           "variant_id": 31128766316567,
           "title": "Acidulous candy",
           "sku": "0987654321-1",
           "variant_title": "Red / A",
+          "total_discount_set": Immutable.Map {
+            "shop_money": Immutable.Map {
+              "amount": "1.00",
+              "currency_code": "USD",
+            },
+            "presentment_money": Immutable.Map {
+              "amount": "1.00",
+              "currency_code": "USD",
+            },
+          },
           "requires_shipping": true,
         },
       ]
@@ -141,6 +162,7 @@ exports[`<RefundOrderForm/> render() should render for multi-currency order 1`] 
   <Memo(OrderTable)
     currencyCode="USD"
     fulfillmentStatus={null}
+    keepLineItemQuantityAsDefault={true}
     lineItems={
       Immutable.List [
         Immutable.Map {
@@ -149,12 +171,32 @@ exports[`<RefundOrderForm/> render() should render for multi-currency order 1`] 
           "price": "1.00",
           "quantity": 1,
           "product_id": 8345093387,
+          "price_set": Immutable.Map {
+            "shop_money": Immutable.Map {
+              "amount": "1.00",
+              "currency_code": "USD",
+            },
+            "presentment_money": Immutable.Map {
+              "amount": "1.00",
+              "currency_code": "USD",
+            },
+          },
           "product_exists": true,
           "properties": Immutable.List [],
           "variant_id": 31128766316567,
           "title": "Acidulous candy",
           "sku": "0987654321-1",
           "variant_title": "Red / A",
+          "total_discount_set": Immutable.Map {
+            "shop_money": Immutable.Map {
+              "amount": "1.00",
+              "currency_code": "USD",
+            },
+            "presentment_money": Immutable.Map {
+              "amount": "1.00",
+              "currency_code": "USD",
+            },
+          },
           "requires_shipping": true,
         },
       ]
@@ -270,4 +312,405 @@ exports[`<RefundOrderForm/> render() should render for multi-currency order 1`] 
     setPayload={[MockFunction]}
   />
 </Fragment>
+`;
+
+exports[`<RefundOrderForm/> render() should render with zero quantity 1`] = `
+<div>
+  <table
+    class="table mb-4 table table-hover"
+  >
+    <thead>
+      <tr>
+        <th>
+          Product
+        </th>
+        <th>
+          Item price
+        </th>
+        <th>
+          <div
+            class="qty"
+          >
+            Qty
+            <span
+              aria-label="Quantity warning"
+              class="material-icons orange ml-1"
+              id="qty-warning-icon"
+            >
+              warning
+            </span>
+          </div>
+        </th>
+        <th
+          class="itemTotal"
+        >
+          Item total
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td
+          class="container"
+        >
+          <div
+            class="legend"
+          >
+            <div>
+              <a
+                class="title"
+                href="https://storegorgias3.myshopify.com/admin/products/8345093387/variants/31128766316567"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Acidulous candy
+              </a>
+            </div>
+            <div
+              class="subtitle"
+            >
+              Red / A
+            </div>
+            <div
+              class="subtitle"
+            >
+              SKU: 
+              0987654321-1
+            </div>
+          </div>
+        </td>
+        <td
+          class="numberCol"
+        >
+          <div
+            class="d-flex"
+          >
+            <div
+              class="d-inline-block text-center"
+            >
+              <small
+                class="d-block text-muted"
+              >
+                <del>
+                  <span>
+                    $1.00
+                  </span>
+                </del>
+              </small>
+              <span>
+                $0.00
+              </span>
+            </div>
+            <span
+              class="times"
+            >
+              x
+            </span>
+          </div>
+        </td>
+        <td
+          class="quantityCol"
+        >
+          <div
+            class="input-group"
+          >
+            <span
+              class="quantityContainer"
+            >
+              <input
+                class="quantityInput form-control"
+                pattern="\\\\d+"
+                type="text"
+                value="0"
+              />
+              <span
+                class="quantityMax"
+              >
+                / 
+                1
+              </span>
+            </span>
+            <div
+              class="quantityButtonsContainer input-group-append"
+            >
+              <button
+                class="wrapper focusable quantityBtn quantityBtnUp fill secondary medium"
+                tabindex="0"
+                type="button"
+              >
+                ▲
+              </button>
+              <button
+                class="wrapper focusable quantityBtn quantityBtnDown fill secondary medium isDisabled"
+                disabled=""
+                tabindex="0"
+                type="button"
+              >
+                ▼
+              </button>
+            </div>
+          </div>
+        </td>
+        <td
+          class="numberCol"
+        >
+          <div
+            class="d-flex"
+          >
+            <strong
+              class="mt-auto mb-auto ml-auto"
+            >
+              <span>
+                $0.00
+              </span>
+            </strong>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div
+    class="container container-fluid"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="col-12 order-2 col-xl-7 order-xl-1"
+      >
+        <div
+          class="mb-5 row"
+        >
+          <div
+            class="col-12"
+          >
+            <div
+              class="mb-3"
+            >
+              <label
+                class="label label"
+                for="checkbox-1"
+              >
+                <input
+                  checked=""
+                  class="input"
+                  id="checkbox-1"
+                  name="checkbox-1"
+                  type="checkbox"
+                />
+                Restock items
+              </label>
+              <div
+                class="caption caption"
+              >
+                The claimed quantity will be restocked back to your store. Note that custom items can’t be restocked.
+              </div>
+            </div>
+            <div
+              class="mb-3"
+            >
+              <label
+                class="label label"
+                for="notify-customer"
+              >
+                <input
+                  class="input"
+                  id="notify-customer"
+                  name="notify-customer"
+                  type="checkbox"
+                />
+                Send notification to customer
+              </label>
+            </div>
+          </div>
+        </div>
+        <div
+          class="row"
+        >
+          <div
+            class="col-12 col-lg-6"
+          >
+            <div
+              class="form-group"
+            >
+              <label
+                class="label"
+                for="amount"
+              >
+                Refund with: Manual
+              </label>
+              <div
+                class="container amountInput"
+              >
+                <span
+                  class="leftLabel"
+                  style="width: 2rem;"
+                >
+                  $
+                </span>
+                <input
+                  class="input form-control"
+                  id="amount"
+                  max="1.2"
+                  min="0"
+                  required=""
+                  step="0.01"
+                  style="padding-left: 2rem;"
+                  type="number"
+                  value="1.00"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-12 col-lg-6"
+          >
+            <div
+              class="form-group"
+            >
+              <label
+                class="label"
+                for="reason"
+              >
+                Reason for canceling this order
+              </label>
+              <select
+                class="form-control"
+                id="reason"
+              >
+                <option
+                  value="customer"
+                >
+                  Customer changed/canceled order
+                </option>
+                <option
+                  value="fraud"
+                >
+                  Fraudulent order
+                </option>
+                <option
+                  value="inventory"
+                >
+                  Items unavailable
+                </option>
+                <option
+                  value="declined"
+                >
+                  Payment declined
+                </option>
+                <option
+                  value="other"
+                >
+                  Other
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div
+          class="row"
+        >
+          <div
+            class="col-12"
+          >
+            <div
+              class="form-group"
+            >
+              <label
+                class="label"
+                for="discrepancy-reason"
+              >
+                Reason for custom refund amount
+              </label>
+              <select
+                class="discrepancyReasonInput form-control"
+                id="discrepancy-reason"
+              >
+                <option
+                  value="restock"
+                >
+                  Restocking fee
+                </option>
+                <option
+                  value="damage"
+                >
+                  Damaged goods
+                </option>
+                <option
+                  value="customer"
+                >
+                  Customer satisfaction
+                </option>
+                <option
+                  value="other"
+                >
+                  Other
+                </option>
+              </select>
+              <small
+                class="form-text text-muted"
+              >
+                The amount being refunded is different from the value of items being returned.
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="mb-sm-4 col-12 order-1 col-xl-5 order-xl-2"
+      >
+        <dl
+          class="row text-right mb-0"
+        >
+          <dt
+            class="col-7 mb-2 grey"
+          >
+            Subtotal
+          </dt>
+          <dd
+            class="col-5 mb-2 value"
+          >
+            <span>
+              $1.00
+            </span>
+          </dd>
+          <dt
+            class="col-7 mb-2 grey"
+          >
+            Discounts
+          </dt>
+          <dd
+            class="col-5 mb-2 value"
+          >
+            —
+          </dd>
+          <dt
+            class="col-7 mb-2 grey"
+          >
+            Tax
+          </dt>
+          <dd
+            class="col-5 mb-2 value"
+          >
+            <span>
+              $0.20
+            </span>
+          </dd>
+          <dt
+            class="col-7 mb-2 grey"
+          >
+            Total available to refund
+          </dt>
+          <dd
+            class="col-5 mb-2 value"
+          >
+            <span>
+              $1.20
+            </span>
+          </dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</div>
 `;

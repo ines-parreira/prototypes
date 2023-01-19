@@ -14,6 +14,7 @@ type Props = {
     refund: Map<any, any>
     payload: Map<any, any>
     lineItems: List<any>
+    keepLineItemQuantityAsDefault?: boolean
     setPayload: (payload: Map<any, any>) => void
     onPayloadChange: (payload: Map<any, any>) => void
     onLineItemChange: (lineItem: Map<string, any>, index: number) => void
@@ -29,6 +30,7 @@ export default function RefundOrderForm({
     payload,
     refund,
     lineItems,
+    keepLineItemQuantityAsDefault = true,
     order,
     actionName,
     onLineItemChange,
@@ -54,6 +56,7 @@ export default function RefundOrderForm({
                 refund={refund}
                 onLineItemChange={onLineItemChange}
                 fulfillmentStatus={order.get('fulfillment_status')}
+                keepLineItemQuantityAsDefault={keepLineItemQuantityAsDefault}
             />
             <OrderFooter
                 editable
