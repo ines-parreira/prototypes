@@ -8,12 +8,41 @@ import {
     OutboundVerificationStatusValue,
 } from 'models/integration/types'
 
+export const isSingleSenderVerificationInProgress = (
+    integration: EmailIntegration
+): boolean => {
+    const verificationStatus =
+        integration.meta.outbound_verification_status?.single_sender
+    return (
+        verificationStatus === OutboundVerificationStatusValue.Pending ||
+        verificationStatus === OutboundVerificationStatusValue.Failure
+    )
+}
+
 export const isOutboundDomainVerified = (
     integration: EmailIntegration
 ): boolean => {
     return (
         integration.meta?.outbound_verification_status?.domain ===
         OutboundVerificationStatusValue.Success
+    )
+}
+
+export const isSingleSenderVerified = (
+    integration: EmailIntegration
+): boolean => {
+    return (
+        integration.meta.outbound_verification_status?.single_sender ===
+        OutboundVerificationStatusValue.Success
+    )
+}
+
+export const isOutboundVerifiedSendgrid = (
+    integration: EmailIntegration
+): boolean => {
+    return (
+        isOutboundDomainVerified(integration) ||
+        isSingleSenderVerified(integration)
     )
 }
 

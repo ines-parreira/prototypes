@@ -1,0 +1,67 @@
+import React from 'react'
+import {useAsyncFn} from 'react-use'
+import {AxiosError} from 'axios'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import {SenderVerification} from 'models/singleSenderVerification/types'
+import {deleteVerification} from 'models/singleSenderVerification/resources'
+import {NotificationStatus} from 'state/notifications/types'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {removeVerification} from 'state/entities/singleSenderVerification/actions'
+import {notify} from 'state/notifications/actions'
+
+type Props = {
+    isLoading?: boolean
+    isDisabled?: boolean
+    verification: SenderVerification
+    onConfirm?: (verification?: SenderVerification) => void
+}
+
+export default function DeleteVerificationButton({
+    isLoading,
+    isDisabled,
+    verification,
+    onConfirm,
+}: Props) {
+    const dispatch = useAppDispatch()
+
+    const [{loading: isDeleteInProgress}, handleDelete] =
+        useAsyncFn(async () => {
+            try {
+                await deleteVerification(verification.integration_id)
+                onConfirm?.(verification)
+                void dispatch(
+                    notify({
+                        message: 'Verification deleted successfully',
+                        status: NotificationStatus.Success,
+                    })
+                )
+                dispatch(removeVerification(verification.integration_id))
+            } catch (error) {
+                const {response} = error as AxiosError<{error: {msg: string}}>
+                const errorMsg =
+                    response && response.data.error
+                        ? response.data.error.msg
+                        : 'Failed to delete verification'
+                void dispatch(
+                    notify({
+                        message: errorMsg,
+                        status: NotificationStatus.Error,
+                    })
+                )
+            }
+        }, [verification])
+
+    return (
+        <ConfirmButton
+            confirmationContent="If you delete verification, you will not be able to send outbound messages with this email."
+            onConfirm={handleDelete}
+            isLoading={isLoading || isDeleteInProgress}
+            isDisabled={isDisabled}
+            intent="destructive"
+            confirmationTitle={'Delete Verification?'}
+        >
+            <ButtonIconLabel icon="delete">Delete verification</ButtonIconLabel>
+        </ConfirmButton>
+    )
+}

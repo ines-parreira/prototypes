@@ -173,7 +173,9 @@ describe('<EmailIntegrationList/>', () => {
             await component.findByTestId('integration-link')
             expect(
                 component.getByTestId('integration-link').getAttribute('to')
-            ).toBe(`/app/settings/channels/email/${integration.id}/dns`)
+            ).toBe(
+                `/app/settings/channels/email/${integration.id}/outbound-verification`
+            )
         })
     })
 })

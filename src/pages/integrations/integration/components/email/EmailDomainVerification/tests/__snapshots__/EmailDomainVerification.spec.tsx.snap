@@ -246,7 +246,7 @@ exports[`<EmailDomainVerification/> render() should render the page when there i
               class="label"
               style="min-width: 10px; opacity: 1;"
             >
-              1024 (Default)
+              1024 
             </span>
             <input
               autocomplete="chrome-off"
@@ -323,7 +323,7 @@ exports[`<EmailDomainVerification/> render() should render the page when there i
               class="label"
               style="min-width: 10px; opacity: 1;"
             >
-              1024 
+              1024 (Default)
             </span>
             <input
               autocomplete="chrome-off"
@@ -430,7 +430,7 @@ exports[`<EmailDomainVerification/> render() should render the page with an opti
               class="label"
               style="min-width: 10px; opacity: 1;"
             >
-              1024 (Default)
+              1024 
             </span>
             <input
               autocomplete="chrome-off"
@@ -536,7 +536,7 @@ exports[`<EmailDomainVerification/> render() should render the page with an opti
               class="label"
               style="min-width: 10px; opacity: 1;"
             >
-              1024 (Default)
+              1024 
             </span>
             <input
               autocomplete="chrome-off"

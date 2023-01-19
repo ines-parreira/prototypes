@@ -200,8 +200,8 @@ export default function EmailDomainVerification({
                                                 value: 1024,
                                                 label: `1024 ${
                                                     isSendgrid
-                                                        ? ''
-                                                        : '(Default)'
+                                                        ? '(Default)'
+                                                        : ''
                                                 }`,
                                             },
                                             {

@@ -6,9 +6,12 @@ import {
 } from 'models/integration/types'
 import {
     getDomainFromEmailAddress,
+    isOutboundDomainVerified,
+    isOutboundVerifiedSendgrid,
+    isSingleSenderVerificationInProgress,
+    isSingleSenderVerified,
     isBaseEmailAddress,
     isBaseEmailIntegration,
-    isOutboundDomainVerified,
 } from '../helpers'
 
 const integration = {
@@ -22,6 +25,55 @@ const integration = {
 } as unknown as EmailIntegration
 
 describe('helpers', () => {
+    describe('isSingleSenderVerificationInProgress', () => {
+        it.each([
+            OutboundVerificationStatusValue.Failure,
+            OutboundVerificationStatusValue.Pending,
+        ])('should return true when status is %s', (status) => {
+            const newIntegration = cloneDeep(integration)
+            newIntegration.meta.outbound_verification_status.single_sender =
+                status
+            expect(isSingleSenderVerificationInProgress(newIntegration)).toBe(
+                true
+            )
+        })
+
+        it.each([
+            OutboundVerificationStatusValue.Unverified,
+            OutboundVerificationStatusValue.Success,
+        ])('should return false when status is %s', (status) => {
+            const newIntegration = cloneDeep(integration)
+            newIntegration.meta.outbound_verification_status.single_sender =
+                status
+            expect(isSingleSenderVerificationInProgress(newIntegration)).toBe(
+                false
+            )
+        })
+    })
+
+    describe('isOutboundVerifiedSendgrid', () => {
+        it.each`
+            domain                                        | singleSender                                  | result
+            ${OutboundVerificationStatusValue.Unverified} | ${OutboundVerificationStatusValue.Unverified} | ${false}
+            ${OutboundVerificationStatusValue.Unverified} | ${OutboundVerificationStatusValue.Pending}    | ${false}
+            ${OutboundVerificationStatusValue.Unverified} | ${OutboundVerificationStatusValue.Failure}    | ${false}
+            ${OutboundVerificationStatusValue.Unverified} | ${OutboundVerificationStatusValue.Success}    | ${true}
+            ${OutboundVerificationStatusValue.Success}    | ${OutboundVerificationStatusValue.Unverified} | ${true}
+            ${OutboundVerificationStatusValue.Success}    | ${OutboundVerificationStatusValue.Pending}    | ${true}
+            ${OutboundVerificationStatusValue.Success}    | ${OutboundVerificationStatusValue.Failure}    | ${true}
+            ${OutboundVerificationStatusValue.Success}    | ${OutboundVerificationStatusValue.Success}    | ${true}
+        `(
+            'should return $result when domain is $domain and single sender is $singleSender',
+            ({domain, singleSender, result}) => {
+                const newIntegration = cloneDeep(integration)
+                newIntegration.meta.outbound_verification_status.domain = domain
+                newIntegration.meta.outbound_verification_status.single_sender =
+                    singleSender
+                expect(isOutboundVerifiedSendgrid(newIntegration)).toBe(result)
+            }
+        )
+    })
+
     describe('isOutboundDomainVerified', () => {
         it('should return false when status is unverified', () => {
             const newIntegration = cloneDeep(integration)
@@ -35,6 +87,22 @@ describe('helpers', () => {
             newIntegration.meta.outbound_verification_status.domain =
                 OutboundVerificationStatusValue.Success
             expect(isOutboundDomainVerified(newIntegration)).toBe(true)
+        })
+    })
+
+    describe('isSingleSenderVerified', () => {
+        it('should return false when status is unverified', () => {
+            const newIntegration = cloneDeep(integration)
+            newIntegration.meta.outbound_verification_status.single_sender =
+                OutboundVerificationStatusValue.Unverified
+            expect(isSingleSenderVerified(newIntegration)).toBe(false)
+        })
+
+        it('should return true when status is success', () => {
+            const newIntegration = cloneDeep(integration)
+            newIntegration.meta.outbound_verification_status.single_sender =
+                OutboundVerificationStatusValue.Success
+            expect(isSingleSenderVerified(newIntegration)).toBe(true)
         })
     })
 

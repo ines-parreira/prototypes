@@ -1,0 +1,52 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .container {
+        background-color: @classic-neutral-grey-2;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        &.interactive {
+            cursor: pointer;
+        }
+    }
+
+    .labelContainer {
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    i.icon {
+        font-size: 16px;
+        color: @classic-neutral-grey-4;
+    }
+
+    .statusIcon {
+        margin-right: 6px;
+
+        &.success {
+            color: @classic-feedback-success;
+        }
+
+        &.error {
+            color: @classic-feedback-error;
+        }
+    }
+
+    .verifiedStatus {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        font-size: 12px;
+    }
+
+    i.arrowIcon {
+        margin-left: 4px;
+        font-size: 24px;
+        color: @classic-neutral-grey-4;
+    }
+}

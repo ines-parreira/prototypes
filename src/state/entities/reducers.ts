@@ -25,6 +25,8 @@ import ruleRecipes from './ruleRecipes/reducer'
 import {RuleRecipesState} from './ruleRecipes/types'
 import auditLogEvents from './auditLogEvents/reducer'
 import {AuditLogEventsState} from './auditLogEvents/types'
+import {SingleSenderVerificationsState} from './singleSenderVerification/types'
+import singleSenderVerifications from './singleSenderVerification/reducer'
 
 const entitiesReducers = combineReducers<{
     macros: MacrosState
@@ -38,6 +40,7 @@ const entitiesReducers = combineReducers<{
     rules: RulesState
     phoneNumbers: PhoneNumbersState
     newPhoneNumbers: NewPhoneNumbersState
+    singleSenderVerifications: SingleSenderVerificationsState
     ruleRecipes: RuleRecipesState
     auditLogEvents: AuditLogEventsState
 }>({
@@ -53,6 +56,7 @@ const entitiesReducers = combineReducers<{
     selfServiceConfigurations,
     phoneNumbers,
     newPhoneNumbers,
+    singleSenderVerifications,
     auditLogEvents,
 })
 

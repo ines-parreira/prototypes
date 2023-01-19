@@ -16,6 +16,7 @@ export enum OutboundVerificationStatusValue {
 }
 
 export enum OutboundVerificationType {
+    SingleSender = 'single_sender',
     Domain = 'domain',
 }
 
@@ -39,6 +40,7 @@ export type EmailIntegrationMeta = {
     }>
     provider: EmailProvider
     outbound_verification_status: {
+        [OutboundVerificationType.SingleSender]: OutboundVerificationStatusValue
         [OutboundVerificationType.Domain]: OutboundVerificationStatusValue
     }
 }

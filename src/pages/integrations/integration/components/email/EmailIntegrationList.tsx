@@ -16,7 +16,11 @@ import {getIntegrationsByTypes} from 'state/integrations/helpers'
 import {EmailProvider} from 'models/integration/constants'
 import IntegrationList from '../IntegrationList'
 import {fetchEmailDomains} from './resources'
-import {getDomainFromEmailAddress, isBaseEmailIntegration} from './helpers'
+import {
+    getDomainFromEmailAddress,
+    isBaseEmailIntegration,
+    isOutboundVerifiedSendgrid,
+} from './helpers'
 import WarningWithTooltip from './WarningWithTooltip'
 
 import css from './EmailIntegrationList.less'
@@ -88,15 +92,23 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
         // Whether to show the "pending domain verification" warning for this integration
 
         const shouldDisplayDomainVerificationWarning =
+            !isSendgridIntegration && // In case the provider is sendgrid, use shouldDisplayOutboundVerificationWarning
             !isDomainVerified &&
             !isBaseIntegration && // The base email integration cannot have a domain associated
             !isOutlook && // Outlook does not need domain verification
             !(isGmail && enableGmailSending) && // GMail only needs domain verification if email sending is disabled
             (isGmail || isVerified) // Email integrations must be verified before adding a domain configuration
 
-        const getTabURL = () => {
-            if (isSendgridIntegration && !isDomainVerified) return '/dns'
+        const shouldDisplayOutboundVerificationWarning =
+            isVerified &&
+            isSendgridIntegration &&
+            !isBaseIntegration &&
+            !isOutboundVerifiedSendgrid(integration.toJS())
 
+        const getTabURL = () => {
+            if (shouldDisplayOutboundVerificationWarning) {
+                return '/outbound-verification'
+            }
             return isVerified || isGmail ? '' : '/verification'
         }
 
@@ -182,6 +194,11 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
                         {shouldDisplayDomainVerificationWarning && (
                             <WarningWithTooltip id={toolTipId}>
                                 Pending domain verification
+                            </WarningWithTooltip>
+                        )}
+                        {shouldDisplayOutboundVerificationWarning && (
+                            <WarningWithTooltip id={`${toolTipId}-outbound`}>
+                                Pending outbound verification
                             </WarningWithTooltip>
                         )}
                     </div>

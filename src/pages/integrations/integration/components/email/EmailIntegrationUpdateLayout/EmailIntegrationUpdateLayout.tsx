@@ -5,6 +5,7 @@ import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import {EmailProvider} from 'models/integration/constants'
 
 type Props = {
     integration: Map<string, any>
@@ -13,6 +14,10 @@ type Props = {
 
 const EmailIntegrationUpdateLayout = ({integration, children}: Props) => {
     const integrationId: number = integration.get('id')
+    const integrationProvider: EmailProvider = integration.getIn([
+        'meta',
+        'provider',
+    ])
 
     return (
         <div className="full-width">
@@ -40,12 +45,21 @@ const EmailIntegrationUpdateLayout = ({integration, children}: Props) => {
                 >
                     Preferences
                 </NavLink>
-                <NavLink
-                    to={`/app/settings/channels/email/${integrationId}/dns`}
-                    exact
-                >
-                    Domain Verification
-                </NavLink>
+                {integrationProvider !== EmailProvider.Sendgrid && (
+                    <NavLink
+                        to={`/app/settings/channels/email/${integrationId}/dns`}
+                        exact
+                    >
+                        Domain Verification
+                    </NavLink>
+                )}
+                {integrationProvider === EmailProvider.Sendgrid && (
+                    <NavLink
+                        to={`/app/settings/channels/email/${integrationId}/outbound-verification`}
+                    >
+                        Outbound Verification
+                    </NavLink>
+                )}
             </SecondaryNavbar>
             {children}
         </div>

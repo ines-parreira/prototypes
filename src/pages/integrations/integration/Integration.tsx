@@ -33,6 +33,7 @@ import {AccountFeature} from 'state/currentAccount/types'
 import {compare} from 'utils'
 import useAppDispatch from 'hooks/useAppDispatch'
 
+import {EmailProvider} from 'models/integration/constants'
 import history from '../../history'
 
 import AircallIntegrationList from './components/aircall/AircallIntegrationList'
@@ -87,6 +88,7 @@ import EmailIntegrationCreateVerification from './components/email/EmailIntegrat
 import EmailIntegrationCreateCustom from './components/email/EmailIntegrationCreateCustom/EmailIntegrationCreateCustom'
 import EmailIntegrationLayout from './components/email/EmailIntegrationUpdateLayout/EmailIntegrationUpdateLayout'
 import EmailDomainVerificationContainer from './components/email/EmailDomainVerification/EmailDomainVerificationContainer'
+import EmailOutboundVerification from './components/email/EmailOutboundVerification/EmailOutboundVerification'
 
 import ChatIntegrationList from './components/chat/ChatIntegrationList'
 import ChatIntegrationAppearance from './components/chat/ChatIntegrationAppearance/ChatIntegrationAppearance'
@@ -114,6 +116,7 @@ export enum Tab {
     EmailForwarding = 'forwarding',
     EmailVerification = 'verification',
     EmailDomainVerification = 'dns',
+    EmailOutboundVerification = 'outbound-verification',
     EmailCustom = 'custom',
     FacebookCustomerChat = 'customer_chat',
     Preferences = 'preferences',
@@ -248,6 +251,8 @@ export const IntegrationDetail = ({
             actions.fetchIntegration(integrationId, integrationType)
         }
     }, [integrationId, isIntegrationId])
+
+    const integrationProvider = integration.getIn(['meta', 'provider'])
 
     switch (integrationType) {
         case IntegrationType.Aircall:
@@ -705,6 +710,20 @@ export const IntegrationDetail = ({
                         return (
                             <EmailIntegrationLayout integration={integration}>
                                 <EmailDomainVerificationContainer
+                                    integration={integration.toJS()}
+                                    loading={loading.toJS()}
+                                />
+                            </EmailIntegrationLayout>
+                        )
+                    }
+
+                    if (
+                        extra === Tab.EmailOutboundVerification &&
+                        integrationProvider === EmailProvider.Sendgrid
+                    ) {
+                        return (
+                            <EmailIntegrationLayout integration={integration}>
+                                <EmailOutboundVerification
                                     integration={integration.toJS()}
                                     loading={loading.toJS()}
                                 />

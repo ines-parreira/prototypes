@@ -90,7 +90,7 @@ export class EmailIntegrationCreateVerification extends Component<
             history.push(
                 `/app/settings/channels/email/${
                     nextProps.integration.get('id') as number
-                }${isSendgridIntegration ? '/dns' : ''}`
+                }${isSendgridIntegration ? '/outbound-verification' : ''}`
             )
         }
     }
@@ -200,8 +200,8 @@ export class EmailIntegrationCreateVerification extends Component<
                     })}
                     onClick={this._sendVerificationEmail}
                 >
-                    <i className="material-icons">mail</i> Re-send verification
-                    email
+                    <i className="material-icons mr-2">mail</i> Re-send
+                    verification email
                 </Button>
                 <ConfirmButton
                     onConfirm={() => deleteIntegration(integration)}

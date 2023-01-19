@@ -155,7 +155,7 @@ exports[`<EmailIntegrationCreateVerification/> render() should render the regula
         onClick={[Function]}
       >
         <i
-          className="material-icons"
+          className="material-icons mr-2"
         >
           mail
         </i>
