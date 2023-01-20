@@ -738,7 +738,7 @@ export const ACTION_TEMPLATES: ActionTemplate[] = [
         title: 'Set status',
         partialUpdateKeys: 'status',
         partialUpdateValues: 'status',
-        icon: 'power_settings_new',
+        icon: 'check_box',
         arguments: {
             status: {
                 default: 'open',
