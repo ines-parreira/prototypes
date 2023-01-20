@@ -12,7 +12,10 @@ import {
 import Caption from 'pages/common/forms/Caption/Caption'
 import {PopoverContainer} from '../popover-container/PopoverContainer'
 
-import {isBigCommerceCartLineItem} from '../../utils'
+import {
+    isBigCommerceCartLineItem,
+    useCanViewBigCommerceV1Features,
+} from '../../utils'
 
 import commonCss from '../../OrderTotals.less'
 import css from './OrderLineItemRow.less'
@@ -44,6 +47,8 @@ export default function PriceComponent({
     currencyCode,
     handleDiscount,
 }: Props) {
+    const canViewBigCommerceV1Features = useCanViewBigCommerceV1Features()
+
     // Keep a reference to initial line item before any discounts are applied
     // After a discount is applied to `lineItem` the `id` stays the same
     // but there is no more reference to an original price, so we have to
@@ -66,7 +71,8 @@ export default function PriceComponent({
         currentDiscountAmount
     )
 
-    const canAddDiscount = isBigCommerceCartLineItem(lineItem)
+    const canAddDiscount =
+        canViewBigCommerceV1Features && isBigCommerceCartLineItem(lineItem)
 
     const hasError = (discountAmount ?? 0) > fullPrice
 

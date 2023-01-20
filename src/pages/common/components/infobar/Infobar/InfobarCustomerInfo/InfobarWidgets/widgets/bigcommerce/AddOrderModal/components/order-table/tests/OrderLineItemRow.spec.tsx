@@ -24,6 +24,11 @@ const defaultProps: ComponentProps<typeof OrderLineItemRow> = {
     product,
 }
 
+jest.mock('../../../utils', () => ({
+    ...jest.requireActual<Record<string, unknown>>('../../../utils'),
+    useCanViewBigCommerceV1Features: jest.fn(() => true),
+}))
+
 jest.mock('hooks/useId', () => jest.fn(() => 'mocked'))
 
 describe('<OrderLineItemRow/>', () => {
