@@ -1,11 +1,12 @@
 import React from 'react'
 import {render, fireEvent} from '@testing-library/react'
 
-import {Action, ActionStatus, TicketMessage} from 'models/ticket/types'
+import {MacroActionName} from 'models/macroAction/types'
 import {
     action as defaultAction,
     message as defaultMessage,
 } from 'models/ticket/tests/mocks'
+import {Action, ActionStatus, TicketMessage} from 'models/ticket/types'
 
 import Actions from '../Actions'
 
@@ -29,45 +30,45 @@ describe('Actions component', () => {
             {
                 ...defaultAction,
                 status: ActionStatus.Pending,
-                name: 'setResponseText',
+                name: MacroActionName.SetResponseText,
             },
             {
                 ...defaultAction,
                 status: ActionStatus.Cancelled,
-                name: 'http',
+                name: MacroActionName.Http,
                 title: 'action1',
                 arguments: args,
             },
             {
                 ...defaultAction,
                 status: ActionStatus.Error,
-                name: 'http',
+                name: MacroActionName.Http,
                 title: 'action2',
                 arguments: args,
             },
             {
                 ...defaultAction,
                 status: ActionStatus.Error,
-                name: 'http',
+                name: MacroActionName.Http,
                 title: 'action3',
                 arguments: args,
             },
             {
                 ...defaultAction,
-                name: 'http',
+                name: MacroActionName.Http,
                 title: 'action4',
                 arguments: args,
             },
             {
                 ...defaultAction,
-                name: 'addTags',
+                name: MacroActionName.AddTags,
                 title: 'Add tags',
                 arguments: {tags: 'tag1,tag2'},
             },
             {
                 ...defaultAction,
                 status: ActionStatus.Cancelled,
-                name: 'setAssignee',
+                name: MacroActionName.SetAssignee,
                 title: 'Assign an agent',
                 arguments: {assignee_user: 'User 1'},
             },
@@ -88,6 +89,25 @@ describe('Actions component', () => {
         expect(await findByText('Add tags: tag1, tag2')).toMatchSnapshot()
     })
 
+    it('should display the action badge without arguments', async () => {
+        const title = 'Exclude ticket from CSAT'
+        const messageWithExcludedCSAT: TicketMessage = {
+            ...defaultMessage,
+            actions: [
+                {
+                    ...defaultAction,
+                    name: MacroActionName.ExcludeFromCSAT,
+                    title,
+                },
+            ],
+        }
+
+        const {findByText} = render(
+            <Actions message={messageWithExcludedCSAT} />
+        )
+        expect(await findByText(title)).toMatchSnapshot()
+    })
+
     it('should display modal when hovering http or shopify action', async () => {
         const {findByText} = render(<Actions message={message} />)
         fireEvent.mouseOver(await findByText('action1'))
@@ -106,7 +126,7 @@ describe('Actions component', () => {
             actions: [
                 {
                     ...defaultAction,
-                    name: 'shopifyFullRefundLastOrder',
+                    name: MacroActionName.ShopifyFullRefundLastOrder,
                     title: 'Refund Action',
                     arguments: minArguments,
                 },

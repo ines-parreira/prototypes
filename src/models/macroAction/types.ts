@@ -1,17 +1,18 @@
-import {HttpMethod} from '../api/types'
-import type {User} from '../../config/types/user'
-import type {Team} from '../../state/teams/types'
+import type {User} from 'config/types/user'
+import {HttpMethod} from 'models/api/types'
+import type {Team} from 'state/teams/types'
 
 export enum MacroActionName {
     AddAttachments = 'addAttachments',
     AddInternalNote = 'addInternalNote',
     AddTags = 'addTags',
+    ExcludeFromCSAT = 'excludeFromCSAT',
+    ForwardByEmail = 'forwardByEmail',
     Http = 'http',
     RechargeActivateLastSubscription = 'rechargeActivateLastSubscription',
     RechargeCancelLastSubscription = 'rechargeCancelLastSubscription',
     RechargeRefundLastCharge = 'rechargeRefundLastCharge',
     RechargeRefundLastOrder = 'rechargeRefundLastOrder',
-    ForwardByEmail = 'forwardByEmail',
     SetAssignee = 'setAssignee',
     SetResponseText = 'setResponseText',
     SetStatus = 'setStatus',
@@ -20,11 +21,11 @@ export enum MacroActionName {
     ShopifyCancelLastOrder = 'shopifyCancelLastOrder',
     ShopifyCancelOrder = 'shopifyCancelOrder',
     ShopifyDuplicateLastOrder = 'shopifyDuplicateLastOrder',
+    ShopifyEditNoteLastOrder = 'shopifyEditNoteOfLastOrder',
     ShopifyEditShippingAddressLastOrder = 'shopifyEditShippingAddressOfLastOrder',
-    ShopifyRefundShippingCostLastOrder = 'shopifyRefundShippingCostOfLastOrder',
     ShopifyFullRefundLastOrder = 'shopifyFullRefundLastOrder',
     ShopifyPartialRefundLastOrder = 'shopifyPartialRefundLastOrder',
-    ShopifyEditNoteLastOrder = 'shopifyEditNoteOfLastOrder',
+    ShopifyRefundShippingCostLastOrder = 'shopifyRefundShippingCostOfLastOrder',
     SnoozeTicket = 'snoozeTicket',
     SnoozeTicketDuration = 'snoozeTicketDuration',
 }

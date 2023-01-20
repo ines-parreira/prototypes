@@ -79,6 +79,8 @@ export const SimpleActionPreview = ({action}: Props) => {
                         <span>{action.title}</span>
                     </Badge>
                 )
+            case MacroActionName.ExcludeFromCSAT:
+                return null
             default:
                 break
         }

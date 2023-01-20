@@ -3,17 +3,16 @@ import classnames from 'classnames'
 import {Map, List} from 'immutable'
 import {Card, CardBody} from 'reactstrap'
 import {Link} from 'react-router-dom'
-
 import _isFunction from 'lodash/isFunction'
 import _isArray from 'lodash/isArray'
 
-import {isEmailList, findProperty} from 'utils'
-
-import {ManagedRulesSlugs} from 'state/rules/types'
+import {MacroActionName} from 'models/macroAction/types'
+import Errors from 'pages/common/components/ast/Errors'
 import {computeLeftPadding} from 'pages/common/components/ast/utils'
 import {templateRegex} from 'pages/common/utils/template'
-import Errors from 'pages/common/components/ast/Errors'
 import {RuleItemActions} from 'pages/settings/rules/types'
+import {ManagedRulesSlugs} from 'state/rules/types'
+import {isEmailList, findProperty} from 'utils'
 
 import ActionSelect from './ActionSelect'
 import ActionWarning from './ActionWarning'
@@ -233,7 +232,7 @@ export const actionsConfig: {[key: string]: ActionConfig} = {
         },
         validate: validateBody,
     },
-    addInternalNote: {
+    [MacroActionName.AddInternalNote]: {
         compact: false,
         name: 'Add internal note',
         args: {
@@ -253,7 +252,7 @@ export const actionsConfig: {[key: string]: ActionConfig} = {
         name: 'Apply macro',
         validate: validateApplyMacro,
     },
-    addTags: {
+    [MacroActionName.AddTags]: {
         compact: true,
         name: 'Add tags',
         validate: validateTags,
@@ -268,7 +267,7 @@ export const actionsConfig: {[key: string]: ActionConfig} = {
         name: 'Reset tags',
         validate: validateTags,
     },
-    setSubject: {
+    [MacroActionName.SetSubject]: {
         compact: true,
         name: 'Set subject',
         args: {
@@ -279,11 +278,11 @@ export const actionsConfig: {[key: string]: ActionConfig} = {
         },
         validate: validateSubject,
     },
-    setStatus: {
+    [MacroActionName.SetStatus]: {
         compact: true,
         name: 'Set status',
     },
-    snoozeTicket: {
+    [MacroActionName.SnoozeTicket]: {
         compact: true,
         name: 'Snooze for',
         args: {
@@ -292,12 +291,12 @@ export const actionsConfig: {[key: string]: ActionConfig} = {
             },
         },
     },
-    setAssignee: {
+    [MacroActionName.SetAssignee]: {
         compact: true,
         name: 'Assign agent',
         validate: validateAssignAgent,
     },
-    setTeamAssignee: {
+    [MacroActionName.SetTeamAssignee]: {
         compact: true,
         name: 'Assign team',
         validate: validateAssignTeam,
@@ -313,6 +312,10 @@ export const actionsConfig: {[key: string]: ActionConfig} = {
     facebookLikeComment: {
         compact: true,
         name: 'Like Facebook comment',
+    },
+    [MacroActionName.ExcludeFromCSAT]: {
+        compact: true,
+        name: 'Exclude ticket from CSAT',
     },
 }
 

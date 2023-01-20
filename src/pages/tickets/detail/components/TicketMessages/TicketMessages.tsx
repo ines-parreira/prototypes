@@ -1,6 +1,5 @@
 import React from 'react'
 import moment, {Moment} from 'moment'
-
 import {fromJS, Map} from 'immutable'
 
 import {

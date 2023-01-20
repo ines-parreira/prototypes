@@ -46,6 +46,21 @@ exports[`Actions component should display the action badge correctly 2`] = `
 </span>
 `;
 
+exports[`Actions component should display the action badge without arguments 1`] = `
+<span
+  class="badge badge-secondary"
+  id="message-1-actions-badge-0"
+  style="color: rgb(32, 192, 140); background-color: rgba(32, 192, 140, 0.05);"
+>
+  <i
+    class="material-icons mr-2 icon"
+  >
+    check
+  </i>
+  Exclude ticket from CSAT
+</span>
+`;
+
 exports[`Actions component should open modal when clicking more details on http or shopify tooltip 1`] = `
 <div
   class="tooltip-inner"

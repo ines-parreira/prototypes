@@ -253,6 +253,14 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
           >
             Send internal note
           </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Exclude ticket from CSAT
+          </button>
           <div
             class="dropdown-divider"
             tabindex="-1"

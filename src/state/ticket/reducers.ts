@@ -1,22 +1,22 @@
 import {fromJS, Map, List} from 'immutable'
 import moment from 'moment'
 
-import {TICKET_EVENT_TYPES} from 'models/event/types'
-import {GorgiasAction} from 'state/types'
-import * as customerTypes from 'state/customers/constants'
-import ticketReplyCache from 'state/newMessage/ticketReplyCache'
-import * as newMessageTypes from 'state/newMessage/constants'
 import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
+import {TICKET_EVENT_TYPES} from 'models/event/types'
+import {MacroActionName} from 'models/macroAction/types'
+import * as customerTypes from 'state/customers/constants'
+import * as newMessageTypes from 'state/newMessage/constants'
+import ticketReplyCache from 'state/newMessage/ticketReplyCache'
+import {GorgiasAction} from 'state/types'
 import {compare} from 'utils'
 
-import {MACRO_ACTION_NAME} from 'models/macroAction/constants'
-import {getPendingMessageIndex, mergeActions, parseTimedelta} from './utils'
 import * as types from './constants'
 import {
     deduplicateAuditLogEvents,
     shouldDeduplicateAuditLogEvents,
 } from './helpers'
 import {TicketState} from './types'
+import {getPendingMessageIndex, mergeActions, parseTimedelta} from './utils'
 
 export const initialState: TicketState = fromJS({
     state: {
@@ -305,8 +305,8 @@ export default function reducer(
                 ).filter(
                     (action: Map<any, any>) =>
                         ![
-                            MACRO_ACTION_NAME.SET_RESPONSE_TEXT,
-                            MACRO_ACTION_NAME.ADD_ATTACHMENTS,
+                            MacroActionName.SetResponseText,
+                            MacroActionName.AddAttachments,
                         ].includes(action.get('name'))
                 ) as List<any>
 

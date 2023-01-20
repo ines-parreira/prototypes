@@ -31,6 +31,7 @@ type AvailableActions =
     | MacroActionName.AddAttachments
     | MacroActionName.AddInternalNote
     | MacroActionName.ForwardByEmail
+    | MacroActionName.ExcludeFromCSAT
 
 const ACTION_COMPONENT_MAPPER: Record<
     AvailableActions,
@@ -45,6 +46,7 @@ const ACTION_COMPONENT_MAPPER: Record<
     [MacroActionName.AddAttachments]: SimpleActionPreview,
     [MacroActionName.AddInternalNote]: SimpleActionPreview,
     [MacroActionName.ForwardByEmail]: SimpleActionPreview,
+    [MacroActionName.ExcludeFromCSAT]: SimpleActionPreview,
 }
 
 export const ActionPreviews = ({actions, textPreviewMinWidth}: Props) => {

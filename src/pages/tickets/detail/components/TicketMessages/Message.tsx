@@ -1,12 +1,8 @@
 import classNames from 'classnames'
 import React, {useState} from 'react'
 
-import {
-    hasFailedAction,
-    isFailed,
-    isPending,
-} from '../../../../../models/ticket/predicates'
-import {TicketMessage} from '../../../../../models/ticket/types'
+import {hasFailedAction, isFailed, isPending} from 'models/ticket/predicates'
+import {TicketMessage} from 'models/ticket/types'
 
 import Actions from './Actions'
 import Attachments from './Attachments'

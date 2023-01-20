@@ -2,10 +2,7 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
 
-import {
-    MACRO_ACTION_NAME,
-    MACRO_ACTION_TYPE,
-} from 'models/macroAction/constants'
+import {MacroActionName, MacroActionType} from 'models/macroAction/types'
 import {Action, ActionStatus} from 'models/ticket/types'
 
 import HttpAction from '../HttpAction'
@@ -14,8 +11,8 @@ describe('HTTP action component', () => {
     const action: Action = {
         status: ActionStatus.Success,
         title: 'HTTP hook',
-        type: MACRO_ACTION_TYPE.USER,
-        name: MACRO_ACTION_NAME.HTTP,
+        type: MacroActionType.User,
+        name: MacroActionName.Http,
     }
 
     it('should render the HTTP action component', () => {

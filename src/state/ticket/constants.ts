@@ -32,18 +32,20 @@ export const ADD_TICKET_AUDIT_LOG_EVENTS = 'ADD_TICKET_AUDIT_LOG_EVENTS'
 export const REMOVE_TICKET_AUDIT_LOG_EVENTS = 'REMOVE_TICKET_AUDIT_LOG_EVENTS'
 
 // Macro actions
+// partial sync with g/utils/action/constants.py
+export const ADD_INTERNAL_NOTE = 'addInternalNote'
 export const ADD_TICKET_TAGS = 'addTags'
+export const SEND_EMAIL = 'sendEmail'
+export const SET_STATUS = 'setStatus'
+export const SET_SUBJECT = 'setSubject'
+export const SET_TEAM = 'setTeamAssignee'
+export const SNOOZE_TICKET = 'snoozeTicket'
+
+export const SET_AGENT = 'setAssignee'
 export const SET_SPAM_START = 'setSpamStart'
 export const SET_SPAM_SUCCESS = 'setSpamSuccess'
 export const SET_TRASHED_START = 'setTrashedStart'
 export const SET_TRASHED_SUCCESS = 'setTrashedSuccess'
-export const SET_STATUS = 'setStatus'
-export const SET_AGENT = 'setAssignee'
-export const SET_TEAM = 'setTeamAssignee'
-export const SET_SUBJECT = 'setSubject'
-export const SNOOZE_TICKET = 'snoozeTicket'
-export const ADD_INTERNAL_NOTE = 'addInternalNote'
-export const SEND_EMAIL = 'sendEmail'
 
 export const SET_CUSTOMER = 'setCustomer'
 

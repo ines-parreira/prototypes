@@ -8,6 +8,7 @@ import {
 } from 'business/types/ticket'
 import {FacebookReactionType} from 'constants/integrations/facebook'
 import {ApiCursorPaginationParams, OrderParams} from 'models/api/types'
+import {MacroActionName} from 'models/macroAction/types'
 
 import {Event} from '../event/types'
 
@@ -149,7 +150,7 @@ export type Attachment = {
 
 export type Action = {
     status: ActionStatus
-    name: string
+    name: MacroActionName
     title: string
     type: string
     response?: {

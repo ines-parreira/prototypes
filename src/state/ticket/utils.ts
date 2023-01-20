@@ -11,28 +11,28 @@ import _set from 'lodash/set'
 import _get from 'lodash/get'
 import parsePhoneNumber from 'libphonenumber-js'
 
-import {SOURCE_VALUE_PROP} from 'config'
-import {INTEGRATION_TYPE_WITH_VARIABLES} from 'config/integrations'
-import * as ticketConfig from 'config/ticket'
-import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
-import {getPersonLabelFromSource} from 'pages/tickets/common/utils'
-import {getActionTemplate, isImmutable, toImmutable} from 'utils'
-import {renderTemplate} from 'pages/common/utils/template'
-import {tryLocalStorage} from 'services/common/utils'
-import * as responseUtils from 'state/newMessage/responseUtils'
 import {
     TicketVia,
     TicketMessageSourceType,
     TicketChannel,
 } from 'business/types/ticket'
+import {SOURCE_VALUE_PROP} from 'config'
+import {INTEGRATION_TYPE_WITH_VARIABLES} from 'config/integrations'
+import * as ticketConfig from 'config/ticket'
 import {PHONE_EVENTS} from 'constants/event'
+import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
+import {MacroActionName} from 'models/macroAction/types'
+import {TicketMessage} from 'models/ticket/types'
+import {renderTemplate} from 'pages/common/utils/template'
+import {getPersonLabelFromSource} from 'pages/tickets/common/utils'
+import {tryLocalStorage} from 'services/common/utils'
+import * as responseUtils from 'state/newMessage/responseUtils'
 import {notify as notifyAction} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {RootState} from 'state/types'
-import {TicketMessage} from 'models/ticket/types'
-
-import {MACRO_ACTION_NAME} from 'models/macroAction/constants'
+import {getActionTemplate, isImmutable, toImmutable} from 'utils'
 import {unescapeQuoteEntities} from 'utils/html'
+
 import {getProperty} from './selectors'
 import {EMPTY_SENDER} from './constants'
 
@@ -963,14 +963,14 @@ export const mergeActions = (oldActions: List<any>, newActions: List<any>) => {
         if (macroActionIndex !== -1) {
             const newAction = actions.get(macroActionIndex)
             switch (name) {
-                case MACRO_ACTION_NAME.ADD_TAGS: {
+                case MacroActionName.AddTags: {
                     actions = actions.setIn(
                         [macroActionIndex, 'arguments', 'tags'],
                         mergeTagActions(oldAction, newAction)
                     )
                     break
                 }
-                case MACRO_ACTION_NAME.HTTP: {
+                case MacroActionName.Http: {
                     const hookActions = actions.filter(
                         (action: Map<any, any>) => action.get('name') === name
                     )
@@ -979,7 +979,7 @@ export const mergeActions = (oldActions: List<any>, newActions: List<any>) => {
                         actions = actions.push(oldAction)
                     break
                 }
-                case MACRO_ACTION_NAME.ADD_INTERNAL_NOTE: {
+                case MacroActionName.AddInternalNote: {
                     actions = actions.setIn(
                         [macroActionIndex, 'arguments'],
                         mergeInternalNoteActions(oldAction, newAction)

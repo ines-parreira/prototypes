@@ -93,6 +93,7 @@ export enum EventType {
     TicketCreated = 'ticket-created',
     TicketCustomerUpdated = 'ticket-customer-updated',
     TicketDeleted = 'ticket-deleted',
+    TicketExcludedFromCSAT = 'ticket-excluded-from-csat',
     TicketMarkedSpam = 'ticket-marked-spam',
     TicketMerged = 'ticket-merged',
     TicketMessageCreated = 'ticket-message-created',
@@ -177,17 +178,20 @@ export enum EventSortableProperties {
 
 export const TICKET_EVENT_TYPES = Object.freeze({
     ..._pick(EventType, [
+        'RuleSuggestionSuggested',
         'TicketAssigned',
         'TicketClosed',
         'TicketCreated',
         'TicketCustomerUpdated',
+        'TicketExcludedFromCSAT',
         'TicketMarkedSpam',
         'TicketMerged',
         'TicketMessageCreated',
         'TicketMessageSummaryCreated',
         'TicketReopened',
-        'TicketSnoozed',
         'TicketSelfUnsnoozed',
+        'TicketSnoozed',
+        'TicketSubjectUpdated',
         'TicketTagsAdded',
         'TicketTagsRemoved',
         'TicketTeamAssigned',
@@ -197,8 +201,6 @@ export const TICKET_EVENT_TYPES = Object.freeze({
         'TicketUnmarkedSpam',
         'TicketUntrashed',
         'TicketUpdated',
-        'TicketSubjectUpdated',
-        'RuleSuggestionSuggested',
     ]),
     RuleExecuted: 'rule-executed',
 } as const)
@@ -239,19 +241,20 @@ export const RULE_ACTIONS_EVENT_TYPES = Object.freeze([
 ])
 
 export enum RuleActionFailureCauses {
-    NoReplyUnanswerableChannel = 'unanswerable-channel',
-    NoReplyToAgent = 'no-autoreply-no-nonagents',
-    NoReplyRecent = 'recent-auto-reply',
-    NoReplyNoReturnPath = 'no-return-path',
+    CsatAlreadySent = 'csat-already-sent',
+    MissingHelpCenter = 'missing-help-center',
+    NoAssignUserNotFound = 'user-not-found',
+    NoEmailIntegrationNotFound = 'integration-not-found',
+    NoEmailNoRecipient = 'no-recipient',
     NoReplyAutoSubmitted = 'auto-submitted',
+    NoReplyNoReturnPath = 'no-return-path',
     NoReplyNotEmail = 'not-email',
+    NoReplyRecent = 'recent-auto-reply',
+    NoReplyToAgent = 'no-autoreply-no-nonagents',
+    NoReplyUnanswerableChannel = 'unanswerable-channel',
     NoSnoozeClosedTicket = 'no-snooze-closed-ticket',
     NoSnoozePastDate = 'snooze-datetime-in-past',
-    NoAssignUserNotFound = 'user-not-found',
     NoTeamAssignUserNotFound = 'team-not-found',
-    NoEmailNoRecipient = 'no-recipient',
-    NoEmailIntegrationNotFound = 'integration-not-found',
-    MissingHelpCenter = 'missing-help-center',
 }
 
 export enum RuleActionFailureSeverity {
@@ -267,17 +270,30 @@ export type RuleActionFailureType = {
 export const rulesActionsFailures: {
     [key: string]: RuleActionFailureType
 } = {
-    [RuleActionFailureCauses.NoReplyUnanswerableChannel]: {
-        description: 'The channel of the previous message is not eligible.',
-        severity: RuleActionFailureSeverity.Warning,
+    [RuleActionFailureCauses.CsatAlreadySent]: {
+        description: 'CSAT has already been sent for this ticket.',
+        severity: RuleActionFailureSeverity.Error,
     },
-    [RuleActionFailureCauses.NoReplyToAgent]: {
-        description: 'Can only auto-reply to customer messages.',
-        severity: RuleActionFailureSeverity.Warning,
-    },
-    [RuleActionFailureCauses.NoReplyRecent]: {
+    [RuleActionFailureCauses.MissingHelpCenter]: {
         description:
-            'Can only auto-reply to a given customer once every 5 minutes.',
+            'The connected help-center has either been deactivated or deleted.',
+        severity: RuleActionFailureSeverity.Error,
+    },
+    [RuleActionFailureCauses.NoAssignUserNotFound]: {
+        description: 'Could not find the agent to assign this ticket to.',
+        severity: RuleActionFailureSeverity.Error,
+    },
+    [RuleActionFailureCauses.NoEmailIntegrationNotFound]: {
+        description:
+            'The integration used to send the email was deactivated or deleted.',
+        severity: RuleActionFailureSeverity.Error,
+    },
+    [RuleActionFailureCauses.NoEmailNoRecipient]: {
+        description: 'The recipient of the email was not specified.',
+        severity: RuleActionFailureSeverity.Warning,
+    },
+    [RuleActionFailureCauses.NoReplyAutoSubmitted]: {
+        description: 'Cannot auto-reply to an auto-generated message.',
         severity: RuleActionFailureSeverity.Warning,
     },
     [RuleActionFailureCauses.NoReplyNoReturnPath]: {
@@ -285,15 +301,23 @@ export const rulesActionsFailures: {
             'No return-path specified in the header of the previous message.',
         severity: RuleActionFailureSeverity.Warning,
     },
-    [RuleActionFailureCauses.NoReplyAutoSubmitted]: {
-        description: 'Cannot auto-reply to an auto-generated message.',
-        severity: RuleActionFailureSeverity.Warning,
-    },
     [RuleActionFailureCauses.NoReplyNotEmail]: {
         description: 'Can only auto-reply to email messages.',
         severity: RuleActionFailureSeverity.Warning,
     },
-
+    [RuleActionFailureCauses.NoReplyRecent]: {
+        description:
+            'Can only auto-reply to a given customer once every 5 minutes.',
+        severity: RuleActionFailureSeverity.Warning,
+    },
+    [RuleActionFailureCauses.NoReplyToAgent]: {
+        description: 'Can only auto-reply to customer messages.',
+        severity: RuleActionFailureSeverity.Warning,
+    },
+    [RuleActionFailureCauses.NoReplyUnanswerableChannel]: {
+        description: 'The channel of the previous message is not eligible.',
+        severity: RuleActionFailureSeverity.Warning,
+    },
     [RuleActionFailureCauses.NoSnoozeClosedTicket]: {
         description: 'Cannot only snooze an open ticket.',
         severity: RuleActionFailureSeverity.Warning,
@@ -302,28 +326,8 @@ export const rulesActionsFailures: {
         description: 'Specified snooze date is in the past.',
         severity: RuleActionFailureSeverity.Warning,
     },
-
-    [RuleActionFailureCauses.NoAssignUserNotFound]: {
-        description: 'Could not find the agent to assign this ticket to.',
-        severity: RuleActionFailureSeverity.Error,
-    },
-    [RuleActionFailureCauses.NoAssignUserNotFound]: {
+    [RuleActionFailureCauses.NoTeamAssignUserNotFound]: {
         description: 'Could not find the team to assign this ticket to.',
-        severity: RuleActionFailureSeverity.Error,
-    },
-
-    [RuleActionFailureCauses.NoEmailNoRecipient]: {
-        description: 'The recipient of the email was not specified.',
-        severity: RuleActionFailureSeverity.Warning,
-    },
-    [RuleActionFailureCauses.NoEmailIntegrationNotFound]: {
-        description:
-            'The integration used to send the email was deactivated or deleted.',
-        severity: RuleActionFailureSeverity.Error,
-    },
-    [RuleActionFailureCauses.MissingHelpCenter]: {
-        description:
-            'The connected help-center has either been deactivated or deleted.',
         severity: RuleActionFailureSeverity.Error,
     },
 }

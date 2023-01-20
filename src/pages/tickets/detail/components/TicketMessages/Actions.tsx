@@ -3,32 +3,31 @@ import {fromJS} from 'immutable'
 import _get from 'lodash/get'
 import _truncate from 'lodash/truncate'
 import classnames from 'classnames'
-
 import {Badge} from 'reactstrap'
-import {getActionTemplate, toRGBA} from 'utils'
-import Spinner from 'pages/common/components/Spinner'
+
+import {ActionTemplate, ActionTemplateExecution} from 'config'
+import {ContentType} from 'models/api/types'
+import {MacroActionName} from 'models/macroAction/types'
+import {TicketMessage, ActionStatus, Action} from 'models/ticket/types'
+import {JSONTree} from 'pages/common/components/JSONTree'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import {JSONTree} from 'pages/common/components/JSONTree'
-import {ContentType} from 'models/api/types'
-import {MACRO_ACTION_NAME} from 'models/macroAction/constants'
-import {TicketMessage, ActionStatus, Action} from 'models/ticket/types'
-
-import {ActionTemplate, ActionTemplateExecution} from 'config'
-import {MacroActionName} from 'models/macroAction/types'
+import Spinner from 'pages/common/components/Spinner'
 import Tooltip from 'pages/common/components/Tooltip'
+import {getActionTemplate, toRGBA} from 'utils'
+
 import css from './Actions.less'
 
 const SHOPIFY_ACTION_NAMES = [
-    MACRO_ACTION_NAME.SHOPIFY_CANCEL_LAST_ORDER,
-    MACRO_ACTION_NAME.SHOPIFY_CANCEL_ORDER,
-    MACRO_ACTION_NAME.SHOPIFY_DUPLICATE_LAST_ORDER,
-    MACRO_ACTION_NAME.SHOPIFY_EDIT_NOTE_LAST_ORDER,
-    MACRO_ACTION_NAME.SHOPIFY_EDIT_SHIPPING_ADDRESS_LAST_ORDER,
-    MACRO_ACTION_NAME.SHOPIFY_FULL_REFUND_LAST_ORDER,
-    MACRO_ACTION_NAME.SHOPIFY_PARTIAL_REFUND_LAST_ORDER,
-    MACRO_ACTION_NAME.SHOPIFY_REFUND_SHIPPING_COST_LAST_ORDER,
+    MacroActionName.ShopifyCancelLastOrder,
+    MacroActionName.ShopifyCancelOrder,
+    MacroActionName.ShopifyDuplicateLastOrder,
+    MacroActionName.ShopifyEditNoteLastOrder,
+    MacroActionName.ShopifyEditShippingAddressLastOrder,
+    MacroActionName.ShopifyFullRefundLastOrder,
+    MacroActionName.ShopifyPartialRefundLastOrder,
+    MacroActionName.ShopifyRefundShippingCostLastOrder,
 ]
 const displayedArg: Record<string, string> = {
     [MacroActionName.AddTags]: 'tags',
@@ -243,8 +242,10 @@ export default class Actions extends Component<Props, State> {
                                     {icon}
                                     {action.title}
                                     {!isHTTPOrShopify &&
-                                        action.name !==
-                                            MacroActionName.ForwardByEmail &&
+                                        ![
+                                            MacroActionName.ForwardByEmail,
+                                            MacroActionName.ExcludeFromCSAT,
+                                        ].includes(action.name) &&
                                         ': ' + arg}
                                 </Badge>
                             }

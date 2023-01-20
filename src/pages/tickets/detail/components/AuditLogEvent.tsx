@@ -117,6 +117,7 @@ export class AuditLogEventContainer extends Component<Props> {
         [CONTENTFUL_EVENT_TYPES.TicketUntrashed]: ['undo'],
         [CONTENTFUL_EVENT_TYPES.TicketMessageSummaryCreated]: ['email'],
         [CONTENTFUL_EVENT_TYPES.TicketSubjectUpdated]: ['mode'],
+        [CONTENTFUL_EVENT_TYPES.TicketExcludedFromCSAT]: ['close'],
     }
 
     _CONTENT_RENDERERS: Partial<Record<TicketEventType, () => ReactNode>> = {
@@ -183,6 +184,9 @@ export class AuditLogEventContainer extends Component<Props> {
             this._renderTicketMessageSummaryCreatedEvent(),
         [CONTENTFUL_EVENT_TYPES.TicketSubjectUpdated]: () =>
             this._renderTicketSubjectUpdated(),
+        [CONTENTFUL_EVENT_TYPES.TicketExcludedFromCSAT]: () => (
+            <ActionName>Excluded from CSAT</ActionName>
+        ),
     }
 
     _getIcon() {

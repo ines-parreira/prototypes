@@ -21,8 +21,6 @@ import {getActionTemplate, humanizeString} from 'utils'
 import {getSortedIntegrationActionsNames} from 'pages/tickets/common/utils'
 import {FeatureFlagKey} from 'config/featureFlags'
 import * as integrationsSelectors from 'state/integrations/selectors'
-import * as newMessageTypes from 'state/newMessage/constants'
-import * as ticketTypes from 'state/ticket/constants'
 
 import InputField from 'pages/common/forms/input/InputField'
 import SetStatusAction from './actions/SetStatusAction'
@@ -54,7 +52,7 @@ type Props = {
 
 export class MacroEdit extends Component<Props> {
     _isTagAction = (action: Map<any, any>) =>
-        action.get('name') === ticketTypes.ADD_TICKET_TAGS
+        action.get('name') === MacroActionName.AddTags
 
     componentWillReceiveProps() {
         if (!this.props.actions.find(this._isTagAction))
@@ -64,7 +62,7 @@ export class MacroEdit extends Component<Props> {
     _extractText = () => {
         const action: Map<any, any> = this.props.actions.find(
             (action: Map<any, any>) =>
-                action.get('name') === newMessageTypes.SET_RESPONSE_TEXT
+                action.get('name') === MacroActionName.SetResponseText
         )
         return action
             ? (action.getIn(['arguments', 'body_text']) as string)
@@ -214,7 +212,7 @@ export class MacroEdit extends Component<Props> {
         let config
 
         switch (action.get('name')) {
-            case ticketTypes.SET_STATUS:
+            case MacroActionName.SetStatus:
                 config = {
                     title: 'Set status',
                     content: (
@@ -226,7 +224,7 @@ export class MacroEdit extends Component<Props> {
                     ),
                 }
                 break
-            case ticketTypes.ADD_TICKET_TAGS:
+            case MacroActionName.AddTags:
                 config = {
                     title: 'Add tags to ticket',
                     description:
@@ -240,7 +238,7 @@ export class MacroEdit extends Component<Props> {
                     ),
                 }
                 break
-            case newMessageTypes.SET_RESPONSE_TEXT:
+            case MacroActionName.SetResponseText:
                 config = {
                     title: 'Response text',
                     content: (
@@ -274,7 +272,7 @@ export class MacroEdit extends Component<Props> {
                     ),
                 }
                 break
-            case ticketTypes.ADD_INTERNAL_NOTE:
+            case MacroActionName.AddInternalNote:
                 config = {
                     title: 'Internal note',
                     content: (
@@ -290,7 +288,7 @@ export class MacroEdit extends Component<Props> {
                     ),
                 }
                 break
-            case ticketTypes.SET_AGENT:
+            case MacroActionName.SetAssignee:
                 config = {
                     title: 'Set user assignee',
                     content: (
@@ -303,7 +301,7 @@ export class MacroEdit extends Component<Props> {
                     ),
                 }
                 break
-            case ticketTypes.SET_TEAM:
+            case MacroActionName.SetTeamAssignee:
                 config = {
                     title: 'Set team assignee',
                     content: (
@@ -316,7 +314,7 @@ export class MacroEdit extends Component<Props> {
                     ),
                 }
                 break
-            case ticketTypes.SET_SUBJECT:
+            case MacroActionName.SetSubject:
                 config = {
                     title: 'Set ticket subject',
                     content: (
@@ -328,7 +326,7 @@ export class MacroEdit extends Component<Props> {
                     ),
                 }
                 break
-            case ticketTypes.SNOOZE_TICKET:
+            case MacroActionName.SnoozeTicket:
                 config = {
                     title: 'Snooze for',
                     content: (
@@ -353,7 +351,7 @@ export class MacroEdit extends Component<Props> {
                     ),
                 }
                 break
-            case newMessageTypes.ADD_ATTACHMENTS:
+            case MacroActionName.AddAttachments:
                 config = {
                     title: 'Add attachments',
                     content: (
@@ -364,6 +362,12 @@ export class MacroEdit extends Component<Props> {
                             removeAttachment={this._deleteAttachment}
                         />
                     ),
+                }
+                break
+            case MacroActionName.ExcludeFromCSAT:
+                config = {
+                    title: 'Exclude ticket from CSAT',
+                    content: null,
                 }
                 break
             default: {

@@ -2,8 +2,9 @@ import {
     TicketChannel,
     TicketMessageSourceType,
     TicketVia,
-} from '../../../business/types/ticket'
-import {Action, ActionStatus, TicketMessage} from '../types'
+} from 'business/types/ticket'
+import {MacroActionName} from 'models/macroAction/types'
+import {Action, ActionStatus, TicketMessage} from 'models/ticket/types'
 
 export const message: TicketMessage = {
     id: 1,
@@ -318,7 +319,7 @@ export const duplicatedHiddenFacebookMessage = {
 
 export const action: Action = {
     status: ActionStatus.Success,
-    name: 'foo',
+    name: MacroActionName.SetAssignee,
     title: '',
     type: 'user',
 }

@@ -1595,6 +1595,13 @@ export const ACTION_TEMPLATES: ActionTemplate[] = [
             },
         ],
     },
+    {
+        execution: ActionTemplateExecution.Back,
+        name: MacroActionName.ExcludeFromCSAT,
+        title: 'Exclude ticket from CSAT',
+        icon: 'cancel',
+        arguments: {},
+    },
 ]
 
 export const DEFAULT_ACTIONS = ACTION_TEMPLATES.map<string>(

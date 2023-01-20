@@ -2,40 +2,34 @@ import classnames from 'classnames'
 import moment from 'moment'
 import React, {useMemo} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-
 import {Link} from 'react-router-dom'
-import IconButton from 'pages/common/components/button/IconButton'
+
 import {ISO639English} from 'constants/languages'
-import {MACRO_ACTION_NAME} from 'models/macroAction/constants'
-import {TagLabel} from 'pages/common/utils/labels'
-import Tooltip from 'pages/common/components/Tooltip'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
-import {OrderDirection, GorgiasApiError} from '../../../models/api/types'
-import {createMacro, deleteMacro} from '../../../models/macro/resources'
-import {
-    FetchMacrosOptions,
-    MacroSortableProperties,
-} from '../../../models/macro/types'
-import {
-    macroCreated,
-    macroDeleted,
-} from '../../../state/entities/macros/actions'
-import {notify} from '../../../state/notifications/actions'
-import {NotificationStatus} from '../../../state/notifications/types'
-import {RootState} from '../../../state/types'
-import Loader from '../../common/components/Loader/Loader'
-import BodyCell from '../../common/components/table/cells/BodyCell'
-import HeaderCell from '../../common/components/table/cells/HeaderCell'
-import HeaderCellProperty from '../../common/components/table/cells/HeaderCellProperty'
-import TableBody from '../../common/components/table/TableBody'
-import TableBodyRow from '../../common/components/table/TableBodyRow'
-import TableHead from '../../common/components/table/TableHead'
-import TableWrapper from '../../common/components/table/TableWrapper'
-import BodyCellContent from '../../common/components/table/cells/BodyCellContent'
-import bodyCellCss from '../../common/components/table/cells/BodyCell.less'
-import history from '../../history'
-import {errorToChildren} from '../../../utils'
+import {OrderDirection, GorgiasApiError} from 'models/api/types'
+import {createMacro, deleteMacro} from 'models/macro/resources'
+import {FetchMacrosOptions, MacroSortableProperties} from 'models/macro/types'
+import {MacroActionName} from 'models/macroAction/types'
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import BodyCellContent from 'pages/common/components/table/cells/BodyCellContent'
+import bodyCellCss from 'pages/common/components/table/cells/BodyCell.less'
+import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+import IconButton from 'pages/common/components/button/IconButton'
+import Loader from 'pages/common/components/Loader/Loader'
+import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
+import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
+import TableBody from 'pages/common/components/table/TableBody'
+import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import TableHead from 'pages/common/components/table/TableHead'
+import TableWrapper from 'pages/common/components/table/TableWrapper'
+import Tooltip from 'pages/common/components/Tooltip'
+import {TagLabel} from 'pages/common/utils/labels'
+import history from 'pages/history'
+import {macroCreated, macroDeleted} from 'state/entities/macros/actions'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {RootState} from 'state/types'
+import {errorToChildren} from 'utils'
 
 import css from './MacrosSettingsTable.less'
 
@@ -193,7 +187,7 @@ export function MacrosSettingsTableContainer({
                         const tags = macro.actions
                             .filter(
                                 (action) =>
-                                    action.name === MACRO_ACTION_NAME.ADD_TAGS
+                                    action.name === MacroActionName.AddTags
                             )
                             .reduce((allTags: string[], action) => {
                                 const tags = action.arguments.tags?.split(',')

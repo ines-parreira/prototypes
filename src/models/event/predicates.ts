@@ -13,7 +13,7 @@ export const isViaRuleEvent = (
     event: Map<any, any>,
     events: List<any>
 ): boolean =>
-    ((event.get('context') as Map<any, any>) &&
+    (!!event.get('context') &&
         (events.find(
             (otherEvent: Map<any, any>) =>
                 isRuleExecutedType(otherEvent) &&
