@@ -147,7 +147,7 @@ describe('RuleSuggestion', () => {
             </Provider>
         )
 
-        fireEvent.click(screen.getByText('Apply & Send'))
+        fireEvent.click(screen.getByText(/Apply/))
         expect((sendTicketMessage as jest.Mock).mock.calls).toMatchSnapshot()
 
         const placeholder = screen.queryByText('(No reply will be sent)')
@@ -161,7 +161,7 @@ describe('RuleSuggestion', () => {
             </Provider>
         )
 
-        const button = screen.getByText('Apply & Send')
+        const button = screen.getByText(/Apply/)
         fireEvent.click(button)
         expect((sendTicketMessage as jest.Mock).mock.calls).toMatchSnapshot()
         expect(button.className.includes('isDisabled')).toBeTruthy()
@@ -200,7 +200,7 @@ describe('RuleSuggestion', () => {
             </Provider>
         )
 
-        const install = screen.getByText('Install')
+        const install = screen.getByText(/Install/)
         expect(
             Object.values(install.classList).includes('isDisabled')
         ).toBeTruthy()

@@ -80,14 +80,14 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
               class="wrapper fill secondary small"
               type="button"
             >
-              Install
+              Install Rule
             </button>
           </div>
           <button
             class="wrapper fill primary small"
             type="button"
           >
-            Apply & Send
+            Apply Rule & Send
           </button>
         </div>
         <div
@@ -269,14 +269,14 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
               class="wrapper fill secondary small"
               type="button"
             >
-              Install
+              Install Rule
             </button>
           </div>
           <button
             class="wrapper fill primary small"
             type="button"
           >
-            Apply & Send
+            Apply Rule & Send
           </button>
         </div>
         <div

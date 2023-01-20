@@ -166,7 +166,7 @@ export default function SuggestionHeader({
                                 >
                                     {!!rule?.deactivated_datetime
                                         ? 'Activate'
-                                        : 'Install'}
+                                        : 'Install Rule'}
                                 </Button>
                             )
                         )}
@@ -188,7 +188,7 @@ export default function SuggestionHeader({
                         }}
                         isDisabled={isSending}
                     >
-                        Apply & Send
+                        Apply Rule & Send
                     </Button>
                 </div>
                 <div className={css.chevron} onClick={onChevronToggle}>
