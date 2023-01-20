@@ -364,12 +364,12 @@ export const updateRow = _debounce(
                 return
             }
 
-            const newCart = await editBigCommerceLineItem(
-                integrationId,
-                cart.id,
-                lineItem,
-                newQuantity
-            )
+            const newCart = await editBigCommerceLineItem({
+                integrationId: integrationId,
+                cartId: cart.id,
+                lineItem: lineItem,
+                quantity: newQuantity,
+            })
 
             setCart(newCart)
 
@@ -393,6 +393,63 @@ export const updateRow = _debounce(
     },
     250
 )
+
+export const setLineItemDiscount = async ({
+    integrationId,
+    index,
+    setIsLoading,
+    cart,
+    setCart,
+    setLineItemWithError,
+    listPrice,
+}: {
+    integrationId: number
+    index: number
+    setIsLoading: (state: boolean) => void
+    cart: Maybe<BigCommerceCart>
+    setCart: (cart: BigCommerceCart) => void
+    setLineItemWithError: (value: BigCommerceCreateOrderErrorType) => void
+    listPrice: number
+}) => {
+    setIsLoading(true)
+
+    if (!cart) {
+        return
+    }
+
+    const lineItem = [
+        ...cart.line_items.physical_items,
+        ...cart.line_items.digital_items,
+    ][index]
+
+    try {
+        const newCart = await editBigCommerceLineItem({
+            integrationId,
+            cartId: cart.id,
+            lineItem,
+            quantity: lineItem.quantity,
+            listPrice: listPrice,
+        })
+
+        setCart(newCart)
+
+        logEvent(SegmentEvent.BigCommerceCreateOrderAddLineItemDiscount, {
+            integrationId,
+            index,
+            listPrice,
+            newCart,
+        })
+
+        setLineItemWithError({id: null, message: ''})
+    } catch (error) {
+        setLineItemWithError({
+            id: lineItem.id,
+            message: BigCommerceErrorMessage.defaultError,
+        })
+    } finally {
+        setIsLoading(false)
+    }
+}
 
 export const buildTaxExtraInfo = ({
     taxes,

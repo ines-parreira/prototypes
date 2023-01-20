@@ -17,7 +17,7 @@ type Props = {
     id: string
     index: number
     lineItem: BigCommerceCartLineItem | BigCommerceCustomCartLineItem
-    product?: BigCommerceProduct | BigCommerceCustomProduct
+    product: BigCommerceProduct | BigCommerceCustomProduct
     storeHash: string
     currencyCode: string | undefined
     removable: boolean
@@ -28,6 +28,7 @@ type Props = {
         setQuantity: (quantity: number) => void
     ) => void
     hasError: boolean
+    onLineItemDiscount: (index: number, discountAmount: number) => void
 }
 
 export default function OrderLineItemRow({
@@ -40,6 +41,7 @@ export default function OrderLineItemRow({
     onDelete,
     onChange,
     hasError,
+    onLineItemDiscount,
 }: Props) {
     const handleQuantityChange = (value: string) => {
         if (product && !isBigCommerceProduct(product)) {
@@ -57,6 +59,10 @@ export default function OrderLineItemRow({
         onChange(index, newQuantity, setQuantity)
     }
 
+    const handleDiscount = (newPrice: number) => {
+        onLineItemDiscount(index, newPrice)
+    }
+
     const [quantity, setQuantity] = useState<number>(1)
 
     useEffect(() => {
@@ -70,7 +76,11 @@ export default function OrderLineItemRow({
                 lineItem={lineItem}
                 storeHash={storeHash}
             />
-            <PriceComponent lineItem={lineItem} currencyCode={currencyCode} />
+            <PriceComponent
+                lineItem={lineItem}
+                currencyCode={currencyCode}
+                handleDiscount={handleDiscount}
+            />
             <QuantityComponent
                 quantity={quantity}
                 index={index}

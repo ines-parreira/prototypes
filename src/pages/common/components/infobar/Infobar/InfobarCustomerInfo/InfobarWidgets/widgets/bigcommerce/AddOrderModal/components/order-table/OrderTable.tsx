@@ -19,6 +19,7 @@ type Props = {
     lineItems: Array<BigCommerceCartLineItem | BigCommerceCustomCartLineItem>
     products?: BigCommerceProductsListType
     lineItemWithError?: BigCommerceCreateOrderErrorType
+    onLineItemDiscount: (index: number, newPrice: number) => void
     onLineItemDelete: (index: number) => void
     onLineItemUpdate: (
         index: number,
@@ -38,11 +39,11 @@ function getOrderLineItemInfo(
         const productId = lineItem.product_id
         const variantId = lineItem.variant_id
         uid = `${productId}${variantId ? `_${variantId}` : ''}`
-        product = products.get(lineItem.product_id)
+        product = products.get(lineItem.product_id)!
     } else {
         // Custom Line Item
         uid = lineItem.id
-        product = products.get(lineItem.id)
+        product = products.get(lineItem.id)!
     }
 
     return {uid, product}
@@ -56,6 +57,7 @@ export default function OrderTable({
     currencyCode,
     onLineItemUpdate,
     onLineItemDelete,
+    onLineItemDiscount,
 }: Props) {
     return (
         <Table hover={!!lineItems.length} className={css.table}>
@@ -95,6 +97,7 @@ export default function OrderTable({
                             removable={lineItems.length > 1}
                             onDelete={onLineItemDelete}
                             onChange={onLineItemUpdate}
+                            onLineItemDiscount={onLineItemDiscount}
                             hasError={hasError}
                         />
                     )

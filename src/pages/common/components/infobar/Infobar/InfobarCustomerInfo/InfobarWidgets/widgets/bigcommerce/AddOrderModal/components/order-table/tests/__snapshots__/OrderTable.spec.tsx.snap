@@ -66,9 +66,14 @@ exports[`<OrderTable/> rendering should render with items 1`] = `
         <td
           class="numberCol"
         >
-          <span>
-            $78.00
-          </span>
+          <button
+            class="actionButton"
+            id="discount-button"
+          >
+            <span>
+              $78.00
+            </span>
+          </button>
         </td>
         <td
           class="quantityCol"

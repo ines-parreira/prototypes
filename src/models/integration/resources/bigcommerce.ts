@@ -109,12 +109,19 @@ export async function addBigCommerceLineItem({
     return response.data
 }
 
-export async function editBigCommerceLineItem(
-    integrationId: number,
-    cartId: string,
-    lineItem: BigCommerceCartLineItem,
-    newQuantity: number
-): Promise<BigCommerceCart> {
+export async function editBigCommerceLineItem({
+    integrationId,
+    cartId,
+    lineItem,
+    quantity,
+    listPrice,
+}: {
+    integrationId: number
+    cartId: string
+    lineItem: BigCommerceCartLineItem
+    quantity: number
+    listPrice?: number
+}): Promise<BigCommerceCart> {
     // Updates an existing, single line item in the Cart. Custom items cannot be updated via API.
 
     const url = '/integrations/bigcommerce/order/line-item/'
@@ -123,7 +130,8 @@ export async function editBigCommerceLineItem(
         line_item: {
             product_id: lineItem.product_id,
             variant_id: lineItem.variant_id,
-            quantity: newQuantity,
+            quantity,
+            list_price: listPrice,
         },
     }
 

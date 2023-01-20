@@ -41,9 +41,14 @@ exports[`<OrderLineItemRow/> render() should render 1`] = `
   <td
     class="numberCol"
   >
-    <span>
-      $78.00
-    </span>
+    <button
+      class="actionButton"
+      id="discount-button"
+    >
+      <span>
+        $78.00
+      </span>
+    </button>
   </td>
   <td
     class="quantityCol"
@@ -56,9 +61,9 @@ exports[`<OrderLineItemRow/> render() should render 1`] = `
       >
         <input
           class="input"
-          id="input-text-1"
+          id="input-text-mocked"
           min="1"
-          name="input-text-1"
+          name="input-text-mocked"
           type="text"
           value="1"
         />
@@ -130,9 +135,14 @@ exports[`<OrderLineItemRow/> render() should render with the default image 1`] =
   <td
     class="numberCol"
   >
-    <span>
-      $78.00
-    </span>
+    <button
+      class="actionButton"
+      id="discount-button"
+    >
+      <span>
+        $78.00
+      </span>
+    </button>
   </td>
   <td
     class="quantityCol"
@@ -145,9 +155,9 @@ exports[`<OrderLineItemRow/> render() should render with the default image 1`] =
       >
         <input
           class="input"
-          id="input-text-2"
+          id="input-text-mocked"
           min="1"
-          name="input-text-2"
+          name="input-text-mocked"
           type="text"
           value="1"
         />
@@ -219,9 +229,14 @@ exports[`<OrderLineItemRow/> render() should render without quantity and without
   <td
     class="numberCol"
   >
-    <span>
-      $0.00
-    </span>
+    <button
+      class="actionButton"
+      id="discount-button"
+    >
+      <span>
+        $0.00
+      </span>
+    </button>
   </td>
   <td
     class="quantityCol"
@@ -234,9 +249,9 @@ exports[`<OrderLineItemRow/> render() should render without quantity and without
       >
         <input
           class="input"
-          id="input-text-3"
+          id="input-text-mocked"
           min="1"
-          name="input-text-3"
+          name="input-text-mocked"
           type="text"
           value="0"
         />

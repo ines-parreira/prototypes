@@ -190,6 +190,7 @@ export type BigCommerceProduct = {
     image_url: string
     options: Array<Record<string, any>>
     variants: BigCommerceProductVariant[]
+    calculated_price: number
 }
 
 export type BigCommerceCustomProduct = {
@@ -210,6 +211,7 @@ export type BigCommerceProductVariant = {
     product_id: number
     inventory_level: number
     options: Array<Record<string, any>>
+    calculated_price: number
 }
 
 export type BigCommerceProductsListType = Map<

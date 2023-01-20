@@ -1,57 +1,46 @@
 import React, {ComponentProps} from 'react'
-import {fireEvent, render, screen} from '@testing-library/react'
+import {render, screen, waitFor} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import {
     bigCommerceLineItemFixture,
     bigCommerceProductFixture,
 } from 'fixtures/bigcommerce'
 import OrderLineItemRow from '../OrderLineItemRow'
 
+const lineItem = bigCommerceLineItemFixture()
+const product = bigCommerceProductFixture()
+
+const defaultProps: ComponentProps<typeof OrderLineItemRow> = {
+    id: 'line-item',
+    storeHash: 'storeHash',
+    currencyCode: 'USD',
+    removable: true,
+    onChange: jest.fn(),
+    onDelete: jest.fn(),
+    index: 0,
+    hasError: false,
+    onLineItemDiscount: jest.fn(),
+    lineItem,
+    product,
+}
+
+jest.mock('hooks/useId', () => jest.fn(() => 'mocked'))
+
 describe('<OrderLineItemRow/>', () => {
-    let onChange: jest.MockedFunction<any>,
-        onDelete: jest.MockedFunction<any>,
-        props: ComponentProps<typeof OrderLineItemRow>
-
-    beforeEach(() => {
-        onChange = jest.fn()
-        onDelete = jest.fn()
-
-        props = {
-            id: 'line-item',
-            storeHash: 'storeHash',
-            currencyCode: 'USD',
-            removable: true,
-            onChange,
-            onDelete,
-            index: 0,
-        } as unknown as ComponentProps<typeof OrderLineItemRow>
-    })
-    afterEach(() => {
-        jest.useRealTimers()
-    })
-
     describe('render()', () => {
         it('should render', () => {
-            const lineItem = bigCommerceLineItemFixture()
-            const product = bigCommerceProductFixture()
-            const {container} = render(
-                <OrderLineItemRow
-                    {...props}
-                    lineItem={lineItem}
-                    product={product}
-                />
-            )
+            const {container} = render(<OrderLineItemRow {...defaultProps} />)
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render with the default image', () => {
-            const lineItem = bigCommerceLineItemFixture()
             const product = bigCommerceProductFixture()
             product.image_url = ''
 
             const {container} = render(
                 <OrderLineItemRow
-                    {...props}
+                    {...defaultProps}
                     lineItem={lineItem}
                     product={product}
                 />
@@ -68,7 +57,7 @@ describe('<OrderLineItemRow/>', () => {
 
             const {container} = render(
                 <OrderLineItemRow
-                    {...props}
+                    {...defaultProps}
                     lineItem={lineItem}
                     product={product}
                 />
@@ -79,41 +68,69 @@ describe('<OrderLineItemRow/>', () => {
     })
 
     describe('on quantity changed', () => {
-        it('should call onChange() with index and quantity', () => {
-            const lineItem = bigCommerceLineItemFixture()
-            const product = bigCommerceProductFixture()
+        it('should call onChange() with index and quantity', async () => {
+            const onChangeMock = jest.fn()
 
             render(
-                <OrderLineItemRow
-                    {...props}
-                    lineItem={lineItem}
-                    product={product}
-                />
+                <OrderLineItemRow {...defaultProps} onChange={onChangeMock} />
             )
 
-            fireEvent.change(screen.getByRole('textbox'), {
-                target: {value: 5},
-            })
+            await userEvent.type(screen.getByRole('textbox'), '5')
 
-            expect(onChange).toHaveBeenCalled()
+            expect(onChangeMock).toHaveBeenCalled()
         })
     })
 
     describe('on delete line', () => {
         it('should call onDelete() with correct index', () => {
-            const lineItem = bigCommerceLineItemFixture()
-            const product = bigCommerceProductFixture()
+            const onDeleteMock = jest.fn()
 
             render(
-                <OrderLineItemRow
-                    {...props}
-                    lineItem={lineItem}
-                    product={product}
-                />
+                <OrderLineItemRow {...defaultProps} onDelete={onDeleteMock} />
             )
-            fireEvent.click(screen.getByText('close'))
 
-            expect(onDelete).toHaveBeenCalledWith(0)
+            userEvent.click(screen.getByText('close'))
+
+            expect(onDeleteMock).toHaveBeenCalledWith(0)
         })
+    })
+
+    it('should call discount callback', async () => {
+        const onLineItemDiscountMock = jest.fn()
+        const lineItem = bigCommerceLineItemFixture()
+        lineItem.variant_id = 1
+
+        render(
+            <OrderLineItemRow
+                {...defaultProps}
+                lineItem={lineItem}
+                onLineItemDiscount={onLineItemDiscountMock}
+            />
+        )
+
+        userEvent.click(screen.getByRole('button', {name: /78/i}))
+        userEvent.clear(screen.getByLabelText('Discount amount'))
+
+        userEvent.clear(screen.getByLabelText('Discount amount'))
+        await userEvent.type(screen.getByLabelText('Discount amount'), '555')
+
+        await waitFor(() => {
+            expect(
+                screen.getByText('Discount cannot be more than the price')
+            ).toBeInTheDocument()
+        })
+
+        userEvent.clear(screen.getByLabelText('Discount amount'))
+        await userEvent.type(screen.getByLabelText('Discount amount'), '5')
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', {name: /Apply/i})
+            ).not.toBeDisabled()
+        })
+
+        userEvent.click(screen.getByRole('button', {name: /Apply/i}))
+
+        expect(onLineItemDiscountMock).toHaveBeenCalledWith(0, 73)
     })
 })

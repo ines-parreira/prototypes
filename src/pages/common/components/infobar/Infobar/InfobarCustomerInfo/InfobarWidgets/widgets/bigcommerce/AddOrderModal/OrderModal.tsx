@@ -66,6 +66,7 @@ import {
     onInit,
     onReset,
     removeRow,
+    setLineItemDiscount,
     updateCheckoutConsignmentShippingMethod,
     updateRow,
     upsertCheckoutConsignment,
@@ -631,10 +632,21 @@ export function OrderModal({
                                 lineItems={lineItems}
                                 products={products}
                                 lineItemWithError={lineItemWithError}
+                                onLineItemDiscount={(index, listPrice) =>
+                                    setLineItemDiscount({
+                                        integrationId: integration.id,
+                                        index,
+                                        setIsLoading,
+                                        cart,
+                                        setCart,
+                                        setLineItemWithError,
+                                        listPrice,
+                                    })
+                                }
                                 onLineItemUpdate={(
-                                    index: number,
-                                    newQuantity: number,
-                                    setQuantity: (quantity: number) => void
+                                    index,
+                                    newQuantity,
+                                    setQuantity
                                 ) => {
                                     void updateRow({
                                         integrationId: integration.id,
@@ -648,7 +660,7 @@ export function OrderModal({
                                         setLineItemWithError,
                                     })
                                 }}
-                                onLineItemDelete={(index: number) => {
+                                onLineItemDelete={(index) => {
                                     void removeRow({
                                         integrationId: integration.id,
                                         index,

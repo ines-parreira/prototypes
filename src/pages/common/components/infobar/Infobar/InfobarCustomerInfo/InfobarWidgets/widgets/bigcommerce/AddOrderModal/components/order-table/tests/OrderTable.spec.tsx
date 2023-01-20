@@ -12,6 +12,7 @@ const storeHash = 'testHash'
 const currencyCode = 'USD'
 const onLineItemUpdate = jest.fn()
 const onLineItemDelete = jest.fn()
+const onLineItemDiscount = jest.fn()
 const products = new Map()
 products.set(product.id, product)
 
@@ -22,6 +23,7 @@ const minProps = {
     currencyCode,
     onLineItemUpdate,
     onLineItemDelete,
+    onLineItemDiscount,
 }
 
 describe('<OrderTable/>', () => {

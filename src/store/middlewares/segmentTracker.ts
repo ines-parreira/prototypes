@@ -64,6 +64,7 @@ export enum SegmentEvent {
     BigCommerceCreateOrderAddRow = 'bigcommerce/create-order/add-row',
     BigCommerceCreateOrderRemoveRow = 'bigcommerce/create-order/remove-row',
     BigCommerceCreateOrderUpdateRow = 'bigcommerce/create-order/update-row',
+    BigCommerceCreateOrderAddLineItemDiscount = 'bigcommerce/create-order/add-line-item-discount',
     BookCallClicked = 'book-call-clicked',
     CustomerNoteEdited = 'customer-note-edited',
     DisplayAllEventsClicked = 'display-all-events-clicked',

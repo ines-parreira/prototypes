@@ -12,6 +12,7 @@ import {
     BigCommerceConsignment,
     BigCommerceCheckout,
     BigCommerceBillingAddress,
+    BigCommerceCustomCartLineItem,
 } from 'models/integration/types'
 
 export const bigCommerceCustomerFixture = () => ({
@@ -176,6 +177,17 @@ export const bigCommerceLineItemFixture = (): BigCommerceCartLineItem => ({
     is_mutable: true,
 })
 
+export const bigCommerceCustomLineItemFixture: BigCommerceCustomCartLineItem = {
+    id: '3aee2b2f-9182-4d16-82ae-734dced3d218',
+    sku: '',
+    name: 'test 102',
+    quantity: 1,
+    image_url:
+        'https://cdn11.bigcommerce.com/r-4b20dad619e29ebf3490f7f35369a8220637ce48/themes/ClassicNext/images/ProductDefault.gif',
+    list_price: 78,
+    extended_list_price: 78,
+}
+
 export const bigCommerceShippingAddressesFixture: BigCommerceCustomerAddress[] =
     [
         {
@@ -258,6 +270,7 @@ export const bigCommerceVariantFixture = (): BigCommerceProductVariant => ({
     product_id: 77,
     inventory_level: 0,
     options: [],
+    calculated_price: 78,
 })
 
 export const bigCommerceProductFixture = (): BigCommerceProduct => ({
@@ -271,6 +284,7 @@ export const bigCommerceProductFixture = (): BigCommerceProduct => ({
     created_at: '2022-12-02T11:50:22+00:00',
     options: [],
     variants: [bigCommerceVariantFixture()],
+    calculated_price: 78,
 })
 
 export const bigCommerceConsignmentFixture: BigCommerceConsignment = {
