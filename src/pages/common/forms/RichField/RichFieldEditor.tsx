@@ -251,7 +251,7 @@ export class RichFieldEditor extends Component<Props, State> {
     }
 
     componentWillUnmount() {
-        shortcutManager.unpause()
+        shortcutManager.clear(['SpotlightModal'])
     }
 
     _getAttachFiles = () => this.props.attachFiles
@@ -407,7 +407,7 @@ export class RichFieldEditor extends Component<Props, State> {
 
     _onEditorBlur = () => {
         this.props.onBlur()
-        shortcutManager.unpause()
+        shortcutManager.clear(['SpotlightModal'])
     }
 
     render() {

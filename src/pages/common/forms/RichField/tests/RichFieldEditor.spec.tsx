@@ -180,7 +180,7 @@ describe('RichFieldEditor', () => {
         ])
     })
 
-    describe('should unpause spotlight shortcuts when editor is focused', () => {
+    describe('should clear spotlight shortcuts when editor is focused', () => {
         const onFocus = jest.fn()
 
         const component = shallow(
@@ -194,7 +194,7 @@ describe('RichFieldEditor', () => {
 
         component.find(Editor).simulate('focus')
         component.find(Editor).simulate('blur')
-        expect(shortcutManager.unpause).toHaveBeenCalled()
+        expect(shortcutManager.clear).toHaveBeenCalledWith(['SpotlightModal'])
     })
 
     it('should handle shortcuts', () => {

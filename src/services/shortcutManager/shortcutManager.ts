@@ -128,6 +128,14 @@ export class ShortcutManager {
         })
     }
 
+    clear(list: Array<string> = []) {
+        this._bound.forEach((b) => {
+            if (list.includes(b.name)) {
+                b.paused = false
+            }
+        })
+    }
+
     unpause() {
         this._isPaused = false
 
