@@ -13,19 +13,6 @@ exports[`<TitleWrapper/> render() should render default 1`] = `
 </span>
 `;
 
-exports[`<TitleWrapper/> render() should render inline 1`] = `
-<span
-  class="container"
->
-  <img
-    alt="HTTP"
-    class="container"
-    src="test-file-stub"
-  />
-  HTTP
-</span>
-`;
-
 exports[`<TitleWrapper/> render() should render with a color tile 1`] = `
 <span
   class="container"

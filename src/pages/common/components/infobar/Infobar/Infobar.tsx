@@ -42,29 +42,31 @@ import InfobarWidgetsEditionTools from './InfobarWidgetsEditionTools'
 import InfobarCustomerActions from './InfobarCustomerActions'
 import {ActionButtonContext} from './InfobarCustomerInfo/InfobarWidgets/widgets/ActionButton'
 
+export type WidgetsActionsType = {
+    cancelDrag: typeof WidgetsActions.cancelDrag
+    drag: typeof WidgetsActions.drag
+    drop: ConnectedAction<typeof WidgetsActions.drop>
+    generateAndSetWidgets: ConnectedAction<
+        typeof WidgetsActions.generateAndSetWidgets
+    >
+    removeEditedWidget: typeof WidgetsActions.removeEditedWidget
+    resetWidgets: typeof WidgetsActions.resetWidgets
+    setEditedWidgets: typeof WidgetsActions.setEditedWidgets
+    setEditionAsDirty: typeof WidgetsActions.setEditionAsDirty
+    startEditionMode: typeof WidgetsActions.startEditionMode
+    stopEditionMode: typeof WidgetsActions.stopEditionMode
+    startWidgetEdition: typeof WidgetsActions.startWidgetEdition
+    stopWidgetEdition: typeof WidgetsActions.stopWidgetEdition
+    submitWidgets: ConnectedAction<typeof WidgetsActions.submitWidgets>
+    updateEditedWidget: typeof WidgetsActions.updateEditedWidget
+}
+
 type Props = {
     actions: {
         fetchPreviewCustomer: ConnectedAction<
             typeof infobarActions.fetchPreviewCustomer
         >
-        widgets: {
-            cancelDrag: typeof WidgetsActions.cancelDrag
-            drag: typeof WidgetsActions.drag
-            drop: ConnectedAction<typeof WidgetsActions.drop>
-            generateAndSetWidgets: ConnectedAction<
-                typeof WidgetsActions.generateAndSetWidgets
-            >
-            removeEditedWidget: typeof WidgetsActions.removeEditedWidget
-            resetWidgets: typeof WidgetsActions.resetWidgets
-            setEditedWidgets: typeof WidgetsActions.setEditedWidgets
-            setEditionAsDirty: typeof WidgetsActions.setEditionAsDirty
-            startEditionMode: typeof WidgetsActions.startEditionMode
-            stopEditionMode: typeof WidgetsActions.stopEditionMode
-            startWidgetEdition: typeof WidgetsActions.startWidgetEdition
-            stopWidgetEdition: typeof WidgetsActions.stopWidgetEdition
-            submitWidgets: ConnectedAction<typeof WidgetsActions.submitWidgets>
-            updateEditedWidget: typeof WidgetsActions.updateEditedWidget
-        }
+        widgets: WidgetsActionsType
     }
     context: WidgetContextType
     customer: Map<any, any>
@@ -422,21 +424,19 @@ export const Infobar = ({
                                 }}
                             >
                                 <InfobarCustomerInfo
-                                    actions={
-                                        {
-                                            cancelDrag,
-                                            drag,
-                                            drop,
-                                            generateAndSetWidgets,
-                                            removeEditedWidget,
-                                            resetWidgets,
-                                            setEditedWidgets,
-                                            setEditionAsDirty,
-                                            startWidgetEdition,
-                                            stopWidgetEdition,
-                                            updateEditedWidget,
-                                        } as any
-                                    }
+                                    actions={{
+                                        cancelDrag,
+                                        drag,
+                                        drop,
+                                        generateAndSetWidgets,
+                                        removeEditedWidget,
+                                        resetWidgets,
+                                        setEditedWidgets,
+                                        setEditionAsDirty,
+                                        startWidgetEdition,
+                                        stopWidgetEdition,
+                                        updateEditedWidget,
+                                    }}
                                     isEditing={isEditing}
                                     sources={sources
                                         .setIn(
@@ -491,21 +491,19 @@ export const Infobar = ({
                     ) : identifier ? (
                         <>
                             <InfobarCustomerInfo
-                                actions={
-                                    {
-                                        cancelDrag,
-                                        drag,
-                                        drop,
-                                        generateAndSetWidgets,
-                                        removeEditedWidget,
-                                        resetWidgets,
-                                        setEditedWidgets,
-                                        setEditionAsDirty,
-                                        startWidgetEdition,
-                                        stopWidgetEdition,
-                                        updateEditedWidget,
-                                    } as any
-                                }
+                                actions={{
+                                    cancelDrag,
+                                    drag,
+                                    drop,
+                                    generateAndSetWidgets,
+                                    removeEditedWidget,
+                                    resetWidgets,
+                                    setEditedWidgets,
+                                    setEditionAsDirty,
+                                    startWidgetEdition,
+                                    stopWidgetEdition,
+                                    updateEditedWidget,
+                                }}
                                 isEditing={isEditing}
                                 sources={sources
                                     .setIn(['ticket', 'customer'], customer)
@@ -562,21 +560,19 @@ export const Infobar = ({
                                         }}
                                     >
                                         <InfobarCustomerInfo
-                                            actions={
-                                                {
-                                                    cancelDrag,
-                                                    drag,
-                                                    drop,
-                                                    generateAndSetWidgets,
-                                                    removeEditedWidget,
-                                                    resetWidgets,
-                                                    setEditedWidgets,
-                                                    setEditionAsDirty,
-                                                    startWidgetEdition,
-                                                    stopWidgetEdition,
-                                                    updateEditedWidget,
-                                                } as any
-                                            }
+                                            actions={{
+                                                cancelDrag,
+                                                drag,
+                                                drop,
+                                                generateAndSetWidgets,
+                                                removeEditedWidget,
+                                                resetWidgets,
+                                                setEditedWidgets,
+                                                setEditionAsDirty,
+                                                startWidgetEdition,
+                                                stopWidgetEdition,
+                                                updateEditedWidget,
+                                            }}
                                             isEditing={isEditing}
                                             sources={sources
                                                 .setIn(

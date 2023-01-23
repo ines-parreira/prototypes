@@ -1,6 +1,6 @@
 import {createContext} from 'react'
 
-type WidgetContextType = {
+export type WidgetContextType = {
     data_source: string | null
     widget_resource_ids: {
         target_id: number | null

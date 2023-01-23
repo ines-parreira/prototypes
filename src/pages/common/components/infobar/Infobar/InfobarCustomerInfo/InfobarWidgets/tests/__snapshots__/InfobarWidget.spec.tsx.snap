@@ -11,7 +11,10 @@ exports[`InfobarWidget card widget should display the widget with BigCommerce ex
   value={
     Object {
       "data_source": "",
-      "widget_resource_ids": Object {},
+      "widget_resource_ids": Object {
+        "customer_id": null,
+        "target_id": null,
+      },
     }
   }
 >
@@ -70,7 +73,10 @@ exports[`InfobarWidget card widget should display the widget with Magento2 exten
   value={
     Object {
       "data_source": "",
-      "widget_resource_ids": Object {},
+      "widget_resource_ids": Object {
+        "customer_id": null,
+        "target_id": null,
+      },
     }
   }
 >
@@ -129,7 +135,10 @@ exports[`InfobarWidget card widget should display the widget with Recharge exten
   value={
     Object {
       "data_source": "",
-      "widget_resource_ids": Object {},
+      "widget_resource_ids": Object {
+        "customer_id": null,
+        "target_id": null,
+      },
     }
   }
 >
@@ -188,7 +197,10 @@ exports[`InfobarWidget card widget should display the widget with Shopify extens
   value={
     Object {
       "data_source": "",
-      "widget_resource_ids": Object {},
+      "widget_resource_ids": Object {
+        "customer_id": null,
+        "target_id": null,
+      },
     }
   }
 >

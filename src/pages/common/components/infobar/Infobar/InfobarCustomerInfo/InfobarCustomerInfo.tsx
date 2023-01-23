@@ -20,6 +20,7 @@ import {
     canDrop,
     jsonToWidgets,
 } from 'pages/common/components/infobar/utils'
+import {WidgetsActionsType} from 'pages/common/components/infobar/Infobar/Infobar'
 
 import {getIntegrationsByTypes} from 'state/integrations/selectors'
 import CustomerChannels from './CustomerChannels'
@@ -62,16 +63,10 @@ const GenerateButton = ({
 }
 
 type OwnProps = {
-    actions: {
-        setEditedWidgets: (items: Map<any, any>[]) => void
-        setEditionAsDirty: () => void
-        resetWidgets: () => void
-        generateAndSetWidgets: (sources: Map<any, any>, context: string) => void
-        removeEditedWidget: (
-            templatePath: string,
-            absolutePath: string[]
-        ) => void
-    }
+    actions: Omit<
+        WidgetsActionsType,
+        'startEditionMode' | 'stopEditionMode' | 'submitWidgets'
+    >
     customer?: Map<any, any>
     displayTabs?: boolean
     hasIntegrations: boolean

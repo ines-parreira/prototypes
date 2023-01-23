@@ -1,14 +1,19 @@
 import {fromJS} from 'immutable'
 
-import Customer from '../Customer.tsx'
-import Order from '../Order.tsx'
+import Customer from '../Customer'
+import Order from '../Order'
 
 import magento2 from '..'
 
 describe('magento2', () => {
+    const defaultArgs = {
+        source: fromJS({}),
+        parent: fromJS({}),
+    }
     it('should return the Customer widget because the passed path matches its path', () => {
         expect(
             magento2({
+                ...defaultArgs,
                 template: fromJS({
                     absolutePath: ['customer', 'integrations', 123, 'customer'],
                 }),
@@ -19,6 +24,7 @@ describe('magento2', () => {
     it('should return the Order widget because the passed path matches its path', () => {
         expect(
             magento2({
+                ...defaultArgs,
                 template: fromJS({
                     absolutePath: [
                         'customer',
@@ -39,7 +45,9 @@ describe('magento2', () => {
             ['customer', 123, 'customer'],
         ]
         paths.forEach((absolutePath) => {
-            expect(magento2({template: fromJS({absolutePath})})).toEqual({})
+            expect(
+                magento2({...defaultArgs, template: fromJS({absolutePath})})
+            ).toEqual({})
         })
     })
 })

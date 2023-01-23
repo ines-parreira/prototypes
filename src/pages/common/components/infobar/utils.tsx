@@ -570,7 +570,7 @@ export function canDrop(
 export function prepareWidgetToDisplay(
     template: Map<any, any> = fromJS({}),
     source: Map<any, any> = fromJS({}),
-    parent: Map<any, any>
+    parent?: Map<any, any>
 ) {
     // build absolute path of widget
     const parentPath =

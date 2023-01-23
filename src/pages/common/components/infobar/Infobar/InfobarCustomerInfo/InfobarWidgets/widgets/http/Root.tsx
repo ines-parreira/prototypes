@@ -14,7 +14,7 @@ export default function Root() {
 }
 
 type Props = {
-    children: ReactNode
+    children?: ReactNode
     source: Map<string, any>
     template: Map<string, any>
 }

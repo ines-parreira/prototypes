@@ -1,19 +1,19 @@
 import {shallow} from 'enzyme'
-import React from 'react'
-import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
+import {fromJS, Map} from 'immutable'
 
 import {
     MAGENTO2_INTEGRATION_TYPE,
     RECHARGE_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
     BIGCOMMERCE_INTEGRATION_TYPE,
-} from '../../../../../../../../constants/integration.ts'
+} from 'constants/integration'
 
 import InfobarWidget from '../InfobarWidget'
 
-const defaultWidget = fromJS({})
+const defaultWidget: Map<string, unknown> = fromJS({})
 
-const defaultSource = fromJS({
+const defaultSource: Map<string, unknown> = fromJS({
     ticket: {
         customer: {
             integrations: [
@@ -25,7 +25,7 @@ const defaultSource = fromJS({
     },
 })
 
-const defaultTemplate = fromJS({
+const defaultTemplate: Map<string, unknown> = fromJS({
     type: 'card',
     path: ['ticket', 'customer', 'integrations', '0'],
     title: 'Duh',
@@ -39,7 +39,7 @@ const defaultTemplate = fromJS({
     ],
 })
 
-const defaultProps = {
+const defaultProps: ComponentProps<typeof InfobarWidget> = {
     widget: defaultWidget,
     template: defaultTemplate,
     isEditing: false,
@@ -150,7 +150,7 @@ describe('InfobarWidget', () => {
         })
 
         describe('invalid card widget data', () => {
-            const invalidData = [
+            const invalidData: [string, unknown][] = [
                 ['object', {aaa: 'bbb'}],
                 ['string', 'foo'],
                 ['boolean', true],

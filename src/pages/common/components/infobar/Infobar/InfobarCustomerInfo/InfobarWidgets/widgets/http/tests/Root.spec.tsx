@@ -2,25 +2,13 @@ import React from 'react'
 import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
-import {TitleWrapper} from '../Root.tsx'
+import {TitleWrapper} from '../Root'
 
 describe('<TitleWrapper/>', () => {
     describe('render()', () => {
         it('should render default', () => {
             const {container} = render(
                 <TitleWrapper source={fromJS({})} template={fromJS({})} />
-            )
-
-            expect(container.firstChild).toMatchSnapshot()
-        })
-
-        it('should render inline', () => {
-            const {container} = render(
-                <TitleWrapper
-                    source={fromJS({})}
-                    isEditing
-                    template={fromJS({})}
-                />
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -44,6 +32,7 @@ describe('<TitleWrapper/>', () => {
         it('should render with a color tile', () => {
             const {container} = render(
                 <TitleWrapper
+                    source={fromJS({})}
                     template={fromJS({
                         meta: {color: '#123'},
                     })}
@@ -56,6 +45,7 @@ describe('<TitleWrapper/>', () => {
         it('should render with a custom picture', () => {
             const {container} = render(
                 <TitleWrapper
+                    source={fromJS({})}
                     template={fromJS({
                         meta: {
                             pictureUrl: 'http://mypictureurl.com',

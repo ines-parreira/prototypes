@@ -2,9 +2,10 @@ import React, {Component, createContext} from 'react'
 import classnames from 'classnames'
 import {Map, List} from 'immutable'
 
-import {compare} from 'utils'
+import {Editing} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
+import InfobarWidget from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/InfobarWidget'
 
-import InfobarWidget from '../InfobarWidget.js'
+import {compare} from 'utils'
 
 import css from './List.less'
 
@@ -19,12 +20,12 @@ export const WidgetListContext = createContext<WidgetListContextType>({
 const DEFAULT_LIST_LIMIT = 3
 
 type OwnProps = {
-    editing: Record<string | number, unknown>
+    editing?: Editing
     source: List<Map<string, unknown>>
-    widget: Map<unknown, unknown>
+    widget: Map<string, unknown>
     template: Map<unknown, unknown>
     isEditing?: boolean
-    isParentList: boolean
+    isParentList?: boolean
     removeBorderTop?: boolean
 }
 

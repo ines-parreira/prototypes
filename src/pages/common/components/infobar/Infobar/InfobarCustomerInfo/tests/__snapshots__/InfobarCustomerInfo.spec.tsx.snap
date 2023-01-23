@@ -35,11 +35,17 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=false\` because th
   <Connect(InfobarCustomerInfoContainer)
     actions={
       Object {
+        "cancelDrag": [MockFunction],
+        "drag": [MockFunction],
+        "drop": [MockFunction],
         "generateAndSetWidgets": [MockFunction],
         "removeEditedWidget": [MockFunction],
         "resetWidgets": [MockFunction],
         "setEditedWidgets": [MockFunction],
         "setEditionAsDirty": [MockFunction],
+        "startWidgetEdition": [MockFunction],
+        "stopWidgetEdition": [MockFunction],
+        "updateEditedWidget": [MockFunction],
       }
     }
     customer={
@@ -94,11 +100,17 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
   <Connect(InfobarCustomerInfoContainer)
     actions={
       Object {
+        "cancelDrag": [MockFunction],
+        "drag": [MockFunction],
+        "drop": [MockFunction],
         "generateAndSetWidgets": [MockFunction],
         "removeEditedWidget": [MockFunction],
         "resetWidgets": [MockFunction],
         "setEditedWidgets": [MockFunction],
         "setEditionAsDirty": [MockFunction],
+        "startWidgetEdition": [MockFunction],
+        "stopWidgetEdition": [MockFunction],
+        "updateEditedWidget": [MockFunction],
       }
     }
     customer={
@@ -153,11 +165,17 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
   <Connect(InfobarCustomerInfoContainer)
     actions={
       Object {
+        "cancelDrag": [MockFunction],
+        "drag": [MockFunction],
+        "drop": [MockFunction],
         "generateAndSetWidgets": [MockFunction],
         "removeEditedWidget": [MockFunction],
         "resetWidgets": [MockFunction],
         "setEditedWidgets": [MockFunction],
         "setEditionAsDirty": [MockFunction],
+        "startWidgetEdition": [MockFunction],
+        "stopWidgetEdition": [MockFunction],
+        "updateEditedWidget": [MockFunction],
       }
     }
     customer={
@@ -212,11 +230,17 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
   <Connect(InfobarCustomerInfoContainer)
     actions={
       Object {
+        "cancelDrag": [MockFunction],
+        "drag": [MockFunction],
+        "drop": [MockFunction],
         "generateAndSetWidgets": [MockFunction],
         "removeEditedWidget": [MockFunction],
         "resetWidgets": [MockFunction],
         "setEditedWidgets": [MockFunction],
         "setEditionAsDirty": [MockFunction],
+        "startWidgetEdition": [MockFunction],
+        "stopWidgetEdition": [MockFunction],
+        "updateEditedWidget": [MockFunction],
       }
     }
     customer={
@@ -271,11 +295,17 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
   <Connect(InfobarCustomerInfoContainer)
     actions={
       Object {
+        "cancelDrag": [MockFunction],
+        "drag": [MockFunction],
+        "drop": [MockFunction],
         "generateAndSetWidgets": [MockFunction],
         "removeEditedWidget": [MockFunction],
         "resetWidgets": [MockFunction],
         "setEditedWidgets": [MockFunction],
         "setEditionAsDirty": [MockFunction],
+        "startWidgetEdition": [MockFunction],
+        "stopWidgetEdition": [MockFunction],
+        "updateEditedWidget": [MockFunction],
       }
     }
     customer={
@@ -330,11 +360,17 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
   <Connect(InfobarCustomerInfoContainer)
     actions={
       Object {
+        "cancelDrag": [MockFunction],
+        "drag": [MockFunction],
+        "drop": [MockFunction],
         "generateAndSetWidgets": [MockFunction],
         "removeEditedWidget": [MockFunction],
         "resetWidgets": [MockFunction],
         "setEditedWidgets": [MockFunction],
         "setEditionAsDirty": [MockFunction],
+        "startWidgetEdition": [MockFunction],
+        "stopWidgetEdition": [MockFunction],
+        "updateEditedWidget": [MockFunction],
       }
     }
     customer={
@@ -389,11 +425,17 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
   <Connect(InfobarCustomerInfoContainer)
     actions={
       Object {
+        "cancelDrag": [MockFunction],
+        "drag": [MockFunction],
+        "drop": [MockFunction],
         "generateAndSetWidgets": [MockFunction],
         "removeEditedWidget": [MockFunction],
         "resetWidgets": [MockFunction],
         "setEditedWidgets": [MockFunction],
         "setEditionAsDirty": [MockFunction],
+        "startWidgetEdition": [MockFunction],
+        "stopWidgetEdition": [MockFunction],
+        "updateEditedWidget": [MockFunction],
       }
     }
     customer={
@@ -558,11 +600,17 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and empty widg
         editing={
           Object {
             "actions": Object {
+              "cancelDrag": [MockFunction],
+              "drag": [MockFunction],
+              "drop": [MockFunction],
               "generateAndSetWidgets": [MockFunction],
               "removeEditedWidget": [MockFunction],
               "resetWidgets": [MockFunction],
               "setEditedWidgets": [MockFunction],
               "setEditionAsDirty": [MockFunction],
+              "startWidgetEdition": [MockFunction],
+              "stopWidgetEdition": [MockFunction],
+              "updateEditedWidget": [MockFunction],
             },
             "canDrop": [Function],
             "isDragging": true,
@@ -756,11 +804,17 @@ exports[`<InfobarCustomerInfo/> sources render basic customer info and widgets b
 <InfobarCustomerInfoContainer
   actions={
     Object {
+      "cancelDrag": [MockFunction],
+      "drag": [MockFunction],
+      "drop": [MockFunction],
       "generateAndSetWidgets": [MockFunction],
       "removeEditedWidget": [MockFunction],
       "resetWidgets": [MockFunction],
       "setEditedWidgets": [MockFunction],
       "setEditionAsDirty": [MockFunction],
+      "startWidgetEdition": [MockFunction],
+      "stopWidgetEdition": [MockFunction],
+      "updateEditedWidget": [MockFunction],
     }
   }
   customer={

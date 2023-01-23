@@ -22,7 +22,7 @@ import css from './InfobarWidgets.less'
 import {InfobarTabs} from './InfobarTabs'
 import Placeholder from './widgets/Placeholder'
 import {infobarWidgetShouldRender} from './predicates'
-import InfobarWidget from './InfobarWidget.js'
+import InfobarWidget from './InfobarWidget'
 
 type Props = {
     context: WidgetContextType
@@ -205,11 +205,11 @@ function renderWidgets({
                     newItem.getIn(['template', 'path'], []) as string[]
                 ).toString()}-${index}`}
                 source={source}
-                widget={newItem.get('widget')}
-                template={newItem.get('template')}
+                widget={newItem.get('widget') as Map<string, unknown>}
+                template={newItem.get('template') as Map<unknown, unknown>}
                 editing={editing}
                 isEditing={isEditing}
-                open={newItem.get('open')}
+                open={newItem.get('open') as boolean}
             />
         )
     })
