@@ -43,7 +43,7 @@ import {
     getAppliedMacro,
     getTopRankMacroState,
     getLastMessage,
-    getRuleSuggestionState,
+    getInTicketSuggestionState,
 } from 'state/ticket/selectors'
 import {nestedReplace} from 'state/ticket/utils'
 import {RootState} from 'state/types'
@@ -149,7 +149,7 @@ export class TicketReplyArea extends Component<Props, State> {
     }
 
     checkTopRankMacro() {
-        if (this.props.ruleSuggestionState === 'pending') {
+        if (this.props.inTicketSuggestionState === 'pending') {
             return
         }
 
@@ -679,7 +679,7 @@ const connector = connect(
         macroParametersOptions: getMacroParametersOptions(state),
         appliedMacro: getAppliedMacro(state),
         topRankMacroState: getTopRankMacroState(state),
-        ruleSuggestionState: getRuleSuggestionState(state),
+        inTicketSuggestionState: getInTicketSuggestionState(state),
     }),
     {
         applyMacro,

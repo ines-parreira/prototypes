@@ -226,7 +226,7 @@ describe('RuleSuggestion', () => {
                 <RuleSuggestion {...minProps} />
             </Provider>
         )
-        const activate = screen.getByText('Activate')
+        const activate = screen.getByText(/Activate/)
         expect(!!activate).toBeTruthy()
     })
 

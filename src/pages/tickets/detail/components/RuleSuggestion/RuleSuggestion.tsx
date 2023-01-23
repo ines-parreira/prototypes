@@ -1,24 +1,40 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
+import _pick from 'lodash/pick'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import classnames from 'classnames'
-import {useMeasure} from 'react-use'
-import {assetsUrl} from 'utils'
+import {fromJS} from 'immutable'
+import {Spinner, Tooltip} from 'reactstrap'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 import {FeatureFlagKey} from 'config/featureFlags'
 import Button from 'pages/common/components/button/Button'
 import {ActionStatus, Ticket} from 'models/ticket/types'
 import {actionsConfig} from 'pages/common/components/ast/actions/Action'
-import Avatar from 'pages/common/components/Avatar/Avatar'
 import {
     MacroAction,
     MacroActionName,
     MacroActionType,
 } from 'models/macroAction/types'
-import {RuleAction, RuleActionName} from 'models/rule/types'
+import {RuleAction, RuleActionName, RuleType} from 'models/rule/types'
 
-import SuggestionHeader from './SuggestionHeader'
-import SuggestionBody from './SuggestionBody'
+import {useRuleRecipes} from 'state/entities/ruleRecipes/hooks'
+import {getEmailChannels} from 'state/integrations/selectors'
+import {getPreferredChannel, guessReceiversFromTicket} from 'state/ticket/utils'
+import {
+    TicketMessageSourceType,
+    TicketChannel,
+    TicketVia,
+} from 'business/types/ticket'
+import {sendTicketMessage} from 'state/newMessage/actions'
+import {NewMessage} from 'state/newMessage/types'
+import {transformToInternalNote} from 'state/newMessage/utils'
+import {getMomentNow} from 'utils/date'
+import {getCurrentUser} from 'state/currentUser/selectors'
+import {useRules} from 'state/entities/rules/hooks'
+import {UserRole} from 'config/types/user'
+import {ManagedRule} from 'state/rules/types'
+import {hasRole} from 'utils'
+import useAppDispatch from 'hooks/useAppDispatch'
+import InTicketSuggestion from './InTicketSuggestion'
 
 import css from './RuleSuggestion.less'
 
@@ -34,29 +50,15 @@ export type RuleSuggestionData = {
     slug: string
 }
 
-export type SuggestionStates = 'collapse' | 'expand' | 'preview' | null
-
 export default function RuleSuggestion({ticket, isCollapsed}: Props) {
-    const [suggestionState, setSuggestionState] =
-        useState<SuggestionStates>(null)
+    const dispatch = useAppDispatch()
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
-    const {isFocused} = useAppSelector((state) => state.ui.editor)
-    const isPartialUpdating = useAppSelector(
-        (state) =>
-            state.ticket.getIn(['_internal', 'isPartialUpdating']) as boolean
-    )
     const ruleSuggestionFeatureFlag = useFlags()[FeatureFlagKey.RuleSuggestion]
-    const isVirtualizationEnabled =
-        useFlags()[FeatureFlagKey.TicketMessagesVirtualization]
-
-    const [headerRef, {height: headerHeight}] = useMeasure<HTMLElement>()
-    useEffect(() => {
-        if (isFocused || isPartialUpdating) setSuggestionState('collapse')
-    }, [isFocused, isPartialUpdating])
-
-    useEffect(() => {
-        if (isCollapsed) setSuggestionState('collapse')
-    }, [isCollapsed])
+    const recipes = useRuleRecipes()
+    const emailChannels = useAppSelector(getEmailChannels)
+    const currentUser = useAppSelector(getCurrentUser)
+    const [rules, isLoadingRules] = useRules()
+    const [isSending, setIsSending] = useState(false)
 
     const suggestion = ticket.meta?.['rule_suggestion']
     if (!suggestion) return null
@@ -81,74 +83,149 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
         (action) => action.name === RuleActionName.ReplyToTicket
     )?.args
 
-    return hasAutomationAddOn &&
-        ruleSuggestionFeatureFlag &&
-        (actions?.length || text) ? (
-        <div
-            className={classnames(css.container, {
-                [css.isVirtualized]: isVirtualizationEnabled,
-            })}
-        >
-            <div className={css.avatar}>
-                <Avatar
-                    name="Gorgias Tips"
-                    size={36}
-                    url={assetsUrl('/img/icons/gorgias-icon-logo-white.png')}
-                />
+    if (
+        !hasAutomationAddOn ||
+        !ruleSuggestionFeatureFlag ||
+        (!actions?.length && !text)
+    )
+        return null
+
+    const channel = getPreferredChannel(
+        TicketMessageSourceType.Email,
+        emailChannels
+    )
+
+    const {to} = guessReceiversFromTicket(
+        fromJS(ticket),
+        TicketMessageSourceType.Email,
+        emailChannels
+    )
+    const ruleName = recipes?.[suggestion.slug]?.rule?.name ?? suggestion.slug
+
+    const tooltipId = 'rule-suggestion-install-button'
+    const canInstall =
+        hasRole(currentUser, UserRole.Admin) ||
+        hasRole(currentUser, UserRole.Agent)
+
+    const rule = rules
+        ? Object.values(rules).find(
+              (rule) =>
+                  rule.type === RuleType.Managed &&
+                  (rule as ManagedRule).settings.slug === suggestion.slug
+          )
+        : undefined
+
+    const applySuggestion = async () => {
+        let message = {
+            source: {
+                from: {address: channel.get('address')},
+                to: to,
+                type: TicketMessageSourceType.Email,
+                extra: {},
+            },
+            channel: TicketChannel.Email,
+            sender: _pick(currentUser.toJS(), ['email', 'id', 'name']),
+            body_text: text?.body_text ?? '',
+            body_html: text?.body_html ?? '',
+            attachments: [],
+            actions: fromJS(actions),
+            public: true,
+            macros: [],
+            via: TicketVia.Helpdesk,
+            from_agent: true,
+            meta: {rule_suggestion_slug: suggestion.slug},
+        } as unknown as NewMessage
+
+        if (!text) {
+            const {newMessage, newActions} = transformToInternalNote(
+                message,
+                fromJS(actions),
+                `Sent via suggested rule: <a target="_blank" href="/app/settings/rules/library?${suggestion.slug}">${ruleName}</a>`
+            )
+            message = {...newMessage, actions: newActions ?? fromJS([])}
+        }
+
+        await dispatch(sendTicketMessage(getMomentNow(), message, null))
+    }
+
+    const header = (
+        <>
+            <div className={css.infoContainer}>
+                <div className={css.title}>
+                    <span>Gorgias Tips</span>
+                    <span>Only visible to you</span>
+                </div>
+                <div className={css.info}>
+                    <span>
+                        Automate this ticket with the{' '}
+                        <a
+                            target="_blank"
+                            rel="noreferrer"
+                            href={`/app/settings/rules/library?${suggestion.slug}`}
+                        >
+                            {ruleName}
+                        </a>{' '}
+                        rule!{' '}
+                    </span>
+                    <span>Here’s a preview:</span>
+                </div>
             </div>
+            <div className={css.buttonsContainer}>
+                <div className={css.buttons}>
+                    <div id={tooltipId}>
+                        {isLoadingRules ? (
+                            <Spinner color="dark" width="25px" />
+                        ) : (
+                            (!rule || !!rule?.deactivated_datetime) && (
+                                <Button
+                                    intent="secondary"
+                                    size="small"
+                                    onClick={() =>
+                                        window.open(
+                                            `/app/settings/rules/library?${suggestion.slug}&install`,
+                                            '_blank'
+                                        )
+                                    }
+                                    isDisabled={!canInstall}
+                                >
+                                    {!!rule?.deactivated_datetime
+                                        ? 'Activate Rule'
+                                        : 'Install Rule'}
+                                </Button>
+                            )
+                        )}
+                        {!canInstall && (
+                            <Tooltip
+                                target={tooltipId}
+                                boundariesElement="viewport"
+                            >
+                                Reach out to an admin to install this rule.
+                            </Tooltip>
+                        )}
+                    </div>
+                    <Button
+                        size="small"
+                        onClick={() => {
+                            if (isSending) return
+                            setIsSending(true)
+                            void applySuggestion()
+                        }}
+                        isDisabled={isSending}
+                    >
+                        Apply Rule & Send
+                    </Button>
+                </div>
+            </div>
+        </>
+    )
 
-            <SuggestionHeader
-                onChevronToggle={() =>
-                    setSuggestionState((state) =>
-                        state === 'collapse' ? 'expand' : 'collapse'
-                    )
-                }
-                innerRef={headerRef}
-                slug={suggestion.slug}
-                state={suggestionState}
-                ticket={ticket}
-                text={text}
-                actions={actions}
-            />
-
-            <SuggestionBody
-                state={suggestionState}
-                actions={actions}
-                __html={text?.body_html}
-                ticketId={ticket.id}
-                setSuggestionState={setSuggestionState}
-            />
-
-            {suggestionState === 'preview' ? (
-                <FadeLayer
-                    onClick={() => setSuggestionState('expand')}
-                    gradientStart={headerHeight}
-                />
-            ) : null}
-        </div>
-    ) : null
-}
-
-function FadeLayer({
-    gradientStart,
-    onClick,
-}: {
-    gradientStart: number
-    onClick: () => void
-}) {
     return (
-        <div
-            style={{
-                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0) ${gradientStart}px, rgba(255, 255, 255, 1) 100%)`,
-            }}
-            className={css.fadeLayer}
-        >
-            <div onClick={onClick} className={css.expandButton}>
-                <Button fillStyle="ghost" intent="secondary">
-                    Expand
-                    <i className="material-icons-round">expand_more</i>
-                </Button>
-            </div>
-        </div>
+        <InTicketSuggestion
+            ticket={ticket}
+            isCollapsed={isCollapsed}
+            text={text?.body_html}
+            actions={actions}
+            header={header}
+        />
     )
 }

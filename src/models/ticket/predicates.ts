@@ -18,6 +18,9 @@ export const isTicketSatisfactionSurvey = (obj: Record<string, unknown>) =>
 export const isTicketRuleSuggestion = (obj: Record<string, unknown>) =>
     obj.isRuleSuggestion as boolean
 
+export const isTicketAISuggestion = (obj: Record<string, unknown>) =>
+    obj.isAISuggestion as boolean
+
 export const hasFailedAction = memoizeOne((message: TicketMessage): boolean => {
     if (!message.actions) {
         return false

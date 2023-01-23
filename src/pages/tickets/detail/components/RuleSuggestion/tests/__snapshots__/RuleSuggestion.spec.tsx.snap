@@ -90,15 +90,15 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
             Apply Rule & Send
           </button>
         </div>
-        <div
-          class="chevron"
+      </div>
+      <div
+        class="chevron"
+      >
+        <i
+          class="material-icons-round"
         >
-          <i
-            class="material-icons-round"
-          >
-            expand_less
-          </i>
-        </div>
+          expand_less
+        </i>
       </div>
     </header>
     <div
@@ -279,15 +279,15 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
             Apply Rule & Send
           </button>
         </div>
-        <div
-          class="chevron"
+      </div>
+      <div
+        class="chevron"
+      >
+        <i
+          class="material-icons-round"
         >
-          <i
-            class="material-icons-round"
-          >
-            expand_less
-          </i>
-        </div>
+          expand_less
+        </i>
       </div>
     </header>
     <div

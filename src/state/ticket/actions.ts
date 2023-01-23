@@ -19,7 +19,7 @@ import {getLDClient} from 'utils/launchDarkly'
 import {ViewType} from 'models/view/constants'
 import {MacroActionName} from 'models/macroAction/types'
 import {search} from 'models/search/resources'
-import {RuleSuggestionState} from 'state/entities/rules/types'
+import {InTicketSuggestionState} from 'state/entities/rules/types'
 import {SearchType, UserSearchResult} from 'models/search/types'
 import browserNotification from 'services/browserNotification'
 import GorgiasApi from 'services/gorgiasApi'
@@ -1315,11 +1315,11 @@ export const setTypingActivityShopper =
         return Promise.resolve()
     }
 
-export function setRuleSuggestionState(
-    ruleSuggestionState: RuleSuggestionState
+export function setInTicketSuggestionState(
+    inTicketSuggestionState: InTicketSuggestionState
 ) {
     return {
-        type: types.SET_RULE_SUGGESTION_STATE,
-        ruleSuggestionState,
+        type: types.SET_IN_TICKET_SUGGESTION_STATE,
+        inTicketSuggestionState,
     }
 }

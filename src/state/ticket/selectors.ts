@@ -1,7 +1,7 @@
 import {fromJS, Map, List} from 'immutable'
 import {createSelector} from 'reselect'
 
-import {RuleSuggestionState} from 'state/entities/rules/types'
+import {InTicketSuggestionState} from 'state/entities/rules/types'
 import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'
 import {createImmutableSelector} from 'utils'
 import {Ticket} from 'state/newMessage/types'
@@ -157,6 +157,11 @@ export const getRuleSuggestion = createImmutableSelector(
     (state) => fromJS(state.getIn(['meta', 'rule_suggestion'])) as Map<any, any>
 )
 
+export const getAISuggestion = createImmutableSelector(
+    getTicketState,
+    (state) => fromJS(state.getIn(['meta', 'ai_suggestion'])) as Map<any, any>
+)
+
 // return elements we display in the body of a ticket (messages, events, etc.)
 export const getBody = createImmutableSelector(
     getMessages,
@@ -164,12 +169,14 @@ export const getBody = createImmutableSelector(
     getEvents,
     getSatisfactionSurveys,
     getRuleSuggestion,
+    getAISuggestion,
     (
         messages,
         pendingMessages,
         events,
         satisfactionSurveys,
-        ruleSuggestion
+        ruleSuggestion,
+        aiSuggestion
     ) => {
         const nextMessages = messages.map((message) => {
             return message!.set('isMessage', true)
@@ -215,22 +222,32 @@ export const getBody = createImmutableSelector(
             )
             .concat(activePendingMessages) as List<any>
 
+        const getSuggestionPosition = () => {
+            const index = body.findIndex(
+                (message: Map<any, any>) =>
+                    !!message.get('isMessage') && !!message.get('from_agent')
+            )
+            return index !== -1 ? index : body.size
+        }
+
         if (ruleSuggestion) {
             const hasRuleSuggestionApplied = body.some(
                 (element: Map<any, any>) =>
                     element.hasIn(['meta', 'rule_suggestion_slug'])
             )
             if (!hasRuleSuggestionApplied) {
-                const index = body.findIndex(
-                    (message: Map<any, any>) =>
-                        !!message.get('isMessage') &&
-                        !!message.get('from_agent')
-                )
                 body = body.insert(
-                    index !== -1 ? index : body.size,
+                    getSuggestionPosition(),
                     ruleSuggestion.set('isRuleSuggestion', true)
                 )
             }
+        }
+
+        if (aiSuggestion && !ruleSuggestion) {
+            body = body.insert(
+                getSuggestionPosition(),
+                aiSuggestion.set('isAISuggestion', true)
+            )
         }
 
         return body
@@ -274,14 +291,14 @@ export const hasContentlessAction = createImmutableSelector(
     }
 )
 
-export const getRuleSuggestionState = createImmutableSelector(
+export const getInTicketSuggestionState = createImmutableSelector(
     getTicketState,
     (state) => {
-        const ruleSuggestionState = state.getIn([
+        const inTicketSuggestionState = state.getIn([
             'state',
-            'ruleSuggestionState',
+            'inTicketSuggestionState',
         ]) as unknown
 
-        return ruleSuggestionState as RuleSuggestionState | undefined
+        return inTicketSuggestionState as InTicketSuggestionState | undefined
     }
 )

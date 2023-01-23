@@ -289,7 +289,7 @@ describe('<TicketReplyArea/>', () => {
                 },
             ]
 
-            minProps.ruleSuggestionState = 'pending'
+            minProps.inTicketSuggestionState = 'pending'
 
             const component = mount(
                 <Provider store={mockedStore({})}>

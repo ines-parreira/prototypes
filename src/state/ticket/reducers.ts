@@ -711,11 +711,11 @@ export default function reducer(
             return state.setIn(['_internal', 'isPartialUpdating'], false)
         }
 
-        case types.SET_RULE_SUGGESTION_STATE: {
-            const ruleSuggestionState = action.ruleSuggestionState
+        case types.SET_IN_TICKET_SUGGESTION_STATE: {
+            const inTicketSuggestionState = action.inTicketSuggestionState
             return state.setIn(
-                ['state', 'ruleSuggestionState'],
-                ruleSuggestionState
+                ['state', 'inTicketSuggestionState'],
+                inTicketSuggestionState
             )
         }
 

@@ -5,11 +5,11 @@ import {useMeasure} from 'react-use'
 import TicketReplyAction from 'pages/tickets/detail/components/ReplyArea/TicketReplyAction'
 import {MacroAction} from 'models/macroAction/types'
 import css from './SuggestionBody.less'
-import {SuggestionStates} from './RuleSuggestion'
+import {SuggestionStates} from './InTicketSuggestion'
 
 type Props = {
     __html?: string
-    actions: MacroAction[]
+    actions?: MacroAction[]
     ticketId: number
     state: SuggestionStates
     setSuggestionState: (state: SuggestionStates) => void
@@ -66,7 +66,7 @@ export default function SuggestionBody({
                 </div>
 
                 <div>
-                    {actions.map((action, index) => {
+                    {actions?.map((action, index) => {
                         return (
                             <TicketReplyAction
                                 key={action.name + 'suggestion'}
