@@ -6,11 +6,10 @@ import React, {
     MutableRefObject,
     useEffect,
 } from 'react'
-import {useLocalStorage, useClickAway} from 'react-use'
+import {Link} from 'react-router-dom'
 import {Popover, PopoverBody} from 'reactstrap'
 import classnames from 'classnames'
 import Button from 'pages/common/components/button/Button'
-import {GroupPositionContext} from 'pages/common/components/layout/Group'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -50,11 +49,6 @@ export default function OnbordingMacroPopover({
     const currentUser = useAppSelector(getCurrentUser)
 
     const currentUserPreferences = useAppSelector(getPreferences)
-
-    const [closedCount, setClosedCount] = useLocalStorage(
-        'default-macro-popover-closed',
-        0
-    )
 
     useEffect(() => {
         const showMacrosSetting: undefined | boolean =
@@ -102,20 +96,6 @@ export default function OnbordingMacroPopover({
         )
     }
 
-    const handleClose = async () => {
-        setShowPopover(false)
-        const nextClosedCount = closedCount === undefined ? 0 : closedCount + 1
-        setClosedCount(nextClosedCount)
-
-        if (nextClosedCount >= 3) {
-            await setShowMacroByDefault()
-            logEvent(SegmentEvent.MacroDefaultMacroToSearch, {
-                action: 'closed popover',
-                user_id: currentUser.get('id'),
-            })
-        }
-    }
-
     const handleKeepSearch = async () => {
         await setShowMacroByDefault()
         logEvent(SegmentEvent.MacroDefaultMacroToSearch, {
@@ -137,8 +117,9 @@ export default function OnbordingMacroPopover({
         info: {
             content: (
                 <p>
-                    You're currently in the macro search view. You can switch to
-                    the text editor here.
+                    You’re currently in the macro search view. You can change
+                    this in your{' '}
+                    <Link to={'/app/settings/profile'}>macro preferences</Link>.
                 </p>
             ),
             buttons: [
@@ -152,8 +133,9 @@ export default function OnbordingMacroPopover({
         prompt: {
             content: (
                 <p>
-                    You're now defaulted to the macro search view to optimize
-                    your workflow.
+                    You’re now defaulted to the macro search view to optimize
+                    your workflow. You can change this in your{' '}
+                    <Link to={'/app/settings/profile'}>macro preferences</Link>.
                 </p>
             ),
             buttons: [
@@ -176,7 +158,6 @@ export default function OnbordingMacroPopover({
             {showPopover && (
                 <MacroPopOver
                     target={target}
-                    onClose={handleClose}
                     content={popoverData[stage].content}
                     buttons={popoverData[stage].buttons}
                 />
@@ -189,20 +170,12 @@ function MacroPopOver({
     content,
     buttons,
     target,
-    onClose,
 }: {
-    onClose: () => void
     content: ReactElement
     buttons: Array<ButtonProps>
     target: MutableRefObject<HTMLElement | null>
 }) {
     const popoverBodyRef = useRef(null)
-
-    useClickAway(popoverBodyRef, () => {
-        if (buttons.every((button) => button.label !== 'Got it')) {
-            onClose()
-        }
-    })
 
     return (
         <>
@@ -216,32 +189,36 @@ function MacroPopOver({
                     }}
                     trigger="legacy"
                 >
-                    <div ref={popoverBodyRef}>
-                        <PopoverBody>
-                            <div
-                                className={classnames(
-                                    'd-md-block p-1',
-                                    css.popoverContent
-                                )}
-                            >
-                                {content}
+                    {({scheduleUpdate}) => {
+                        // React-Virtuoso is preventing Popperjs initial update
+                        scheduleUpdate()
+                        return (
+                            <div ref={popoverBodyRef}>
+                                <PopoverBody>
+                                    <div
+                                        className={classnames(
+                                            'd-md-block p-1',
+                                            css.popoverContent
+                                        )}
+                                    >
+                                        {content}
+                                    </div>
+                                    {buttons.map((button) => {
+                                        return (
+                                            <Button
+                                                {...button.buttonsProp}
+                                                className="mx-1"
+                                                onClick={button.onClick}
+                                                key={button.label}
+                                            >
+                                                {button.label}
+                                            </Button>
+                                        )
+                                    })}
+                                </PopoverBody>
                             </div>
-                            <GroupPositionContext.Provider value={null}>
-                                {buttons.map((button) => {
-                                    return (
-                                        <Button
-                                            {...button.buttonsProp}
-                                            className="mx-1"
-                                            onClick={button.onClick}
-                                            key={button.label}
-                                        >
-                                            {button.label}
-                                        </Button>
-                                    )
-                                })}
-                            </GroupPositionContext.Provider>
-                        </PopoverBody>
-                    </div>
+                        )
+                    }}
                 </Popover>
             )}
         </>

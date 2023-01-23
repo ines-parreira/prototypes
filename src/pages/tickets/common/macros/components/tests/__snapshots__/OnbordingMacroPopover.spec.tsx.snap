@@ -28,7 +28,14 @@ exports[`<OnbordingMacroPopover /> should display popover 1`] = `
                 class="d-md-block p-1 popoverContent"
               >
                 <p>
-                  You're currently in the macro search view. You can switch to the text editor here.
+                  You’re currently in the macro search view. You can change this in your
+                   
+                  <a
+                    to="/app/settings/profile"
+                  >
+                    macro preferences
+                  </a>
+                  .
                 </p>
               </div>
               <button
