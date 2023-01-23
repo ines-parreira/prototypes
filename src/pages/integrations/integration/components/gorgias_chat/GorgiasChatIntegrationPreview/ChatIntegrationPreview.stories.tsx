@@ -111,4 +111,30 @@ WithQuickReplies.args = {
     ),
 }
 
+export const WithAgentMessagesAnimations = Template.bind({})
+WithAgentMessagesAnimations.args = {
+    ...defaultProps,
+    children: (
+        <MessageContent
+            conversationColor=""
+            currentUser={fromJS(user)}
+            customerInitialMessages={['Hello']}
+            agentMessages={[
+                {
+                    content:
+                        'Hi 👋  Our sizes are made for all shapes and body types. Check out this standard size chart for a measurement guide and international conversion.',
+                    isHtml: false,
+                    attachments: [],
+                },
+                {
+                    content: 'Was this helpful?',
+                    isHtml: false,
+                    attachments: [],
+                },
+            ]}
+            enableAgentMessagesAnimations
+        />
+    ),
+}
+
 export default storyConfig

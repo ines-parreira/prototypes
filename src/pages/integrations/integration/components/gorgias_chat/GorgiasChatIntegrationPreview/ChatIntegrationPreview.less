@@ -1,6 +1,15 @@
 @import '~css/new/colorTokens';
 
 :local {
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+
     @primary: #479af5;
     @lighterGrey: #f8f9fa;
     @lightGrey: #ededed;
@@ -262,10 +271,6 @@
         font-size: 14px;
         position: relative;
         border-left-color: @primary;
-        -webkit-transition: opacity 150ms;
-        -o-transition: opacity 150ms;
-        -moz-transition: opacity 150ms;
-        transition: opacity 150ms;
         word-break: break-word;
 
         line-height: 1.4;
@@ -288,6 +293,12 @@
         &.lastMessage {
             margin-bottom: 10px;
         }
+
+        &.isAnimated {
+            :global {
+                animation: fadeIn 0.35s linear;
+            }
+        }
     }
 
     .appMakerMessageWrapper {
@@ -304,6 +315,12 @@
         font-size: 13px;
         font-weight: 600;
         margin-bottom: 8px;
+
+        &.isAnimated {
+            :global {
+                animation: fadeIn 0.35s linear;
+            }
+        }
     }
 
     .avatar {
@@ -325,6 +342,12 @@
 
         img {
             width: 60%;
+        }
+
+        &.isAnimated {
+            :global {
+                animation: fadeIn 0.35s linear;
+            }
         }
     }
 

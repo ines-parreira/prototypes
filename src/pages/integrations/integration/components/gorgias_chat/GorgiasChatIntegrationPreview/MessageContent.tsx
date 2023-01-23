@@ -24,6 +24,7 @@ type Props = {
     customerInitialMessages: string[] | JSX.Element[]
     agentMessages: AgentMessages
     hideMessageTimestamp?: boolean
+    enableAgentMessagesAnimations?: boolean
 }
 
 const renderAgentMessage = ({
@@ -75,6 +76,7 @@ export default class MessageContent extends Component<Props> {
             customerInitialMessages,
             agentMessages,
             hideMessageTimestamp,
+            enableAgentMessagesAnimations,
         } = this.props
 
         if (!currentUser) {
@@ -99,20 +101,35 @@ export default class MessageContent extends Component<Props> {
                                 'profile_picture_url',
                             ])}
                             size={35}
-                            className={css.avatar}
+                            className={classnames(css.avatar, {
+                                [css.isAnimated]: enableAgentMessagesAnimations,
+                            })}
                         />
                         <div>
-                            <div className={css.user}>
+                            <div
+                                className={classnames(css.user, {
+                                    [css.isAnimated]:
+                                        enableAgentMessagesAnimations,
+                                })}
+                            >
                                 {currentUser.get('name')}
                             </div>
 
-                            {agentMessages.map((message) => (
+                            {agentMessages.map((message, index) => (
                                 <div
                                     className={classnames(
                                         css.bubble,
-                                        css.firstMessageOfAppMaker
+                                        css.firstMessageOfAppMaker,
+                                        {
+                                            [css.isAnimated]:
+                                                enableAgentMessagesAnimations,
+                                        }
                                     )}
-                                    key={message.content}
+                                    key={
+                                        enableAgentMessagesAnimations
+                                            ? index
+                                            : message.content
+                                    }
                                 >
                                     {renderAgentMessage(message)}
                                 </div>
