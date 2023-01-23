@@ -13,6 +13,7 @@ import {
 } from 'reactstrap'
 
 import {UserRole} from 'config/types/user'
+import history from 'pages/history'
 import {FetchMacrosOptions} from 'models/macro/types'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -237,6 +238,19 @@ export class TicketMacrosContainer extends Component<Props, State> {
                                                 delete
                                             </i>{' '}
                                             Delete macro
+                                        </DropdownItem>
+                                        <DropdownItem
+                                            onClick={() =>
+                                                history.push(
+                                                    '/app/settings/profile'
+                                                )
+                                            }
+                                            className="cursor-pointer"
+                                        >
+                                            <i className="material-icons-round">
+                                                how_to_reg
+                                            </i>{' '}
+                                            My macro preferences
                                         </DropdownItem>
                                     </DropdownMenu>
                                 </Dropdown>

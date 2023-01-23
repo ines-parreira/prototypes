@@ -93,6 +93,20 @@ exports[`<TicketMacros /> should display macros list, and selected macro 1`] = `
              
             Delete macro
           </button>
+          <button
+            class="cursor-pointer dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <i
+              class="material-icons-round"
+            >
+              how_to_reg
+            </i>
+             
+            My macro preferences
+          </button>
         </div>
       </div>
     </div>
