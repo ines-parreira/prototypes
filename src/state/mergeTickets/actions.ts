@@ -25,7 +25,6 @@ export function searchTickets(
     navigation: Map<any, any>
 ) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
-        //$TsFixMe remove casting once defaultMergeTicketsView is migrated
         const view = defaultMergeTicketsView(
             sourceTicketId,
             searchQuery,

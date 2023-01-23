@@ -2,8 +2,8 @@ import {fromJS, List, Map} from 'immutable'
 import React, {ComponentType, useState, useCallback, useMemo} from 'react'
 import {Dropdown, DropdownMenu, DropdownToggle} from 'reactstrap'
 
-import {fieldPath, resolveLiteral} from 'utils'
 import FilterDropdownSearch from 'pages/common/components/ViewTable/FilterDropdownSearch'
+import {fieldPath, resolveLiteral} from 'utils'
 
 import FilterDropdownItems from './FilterDropdownItems'
 

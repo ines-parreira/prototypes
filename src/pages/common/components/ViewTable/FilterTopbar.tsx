@@ -21,23 +21,34 @@ import {
 import {useAsyncFn, usePrevious, useUnmount, useUpdateEffect} from 'react-use'
 import * as Sentry from '@sentry/react'
 
+import {getConfigByName} from 'config/views'
+import {SYSTEM_VIEW_CATEGORY} from 'constants/view'
+import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import {JobType} from 'models/job/types'
+import {View, ViewType, ViewVisibility} from 'models/view/types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import IconButton from 'pages/common/components/button/IconButton'
-import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import Group from 'pages/common/components/layout/Group'
-import {getConfigByName} from 'config/views'
-import {SYSTEM_VIEW_CATEGORY} from 'constants/view'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {View, ViewType, ViewVisibility} from 'models/view/types'
+import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
+import ViewSharingButton from 'pages/common/components/ViewSharing/ViewSharingButton'
+import history from 'pages/history'
+import withCancellableRequest, {
+    CancellableRequestInjectedProps,
+} from 'pages/common/utils/withCancellableRequest'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {
     viewCreated,
     viewDeleted,
     viewUpdated,
 } from 'state/entities/views/actions'
+import {getSchemas} from 'state/schemas/selectors'
+import {getTickets} from 'state/tickets/selectors'
+import {GorgiasAction} from 'state/types'
+import {activeViewIdSet} from 'state/ui/views/actions'
 import {
     addFieldFilter,
     createJob,
@@ -54,10 +65,6 @@ import {
     getViewIdToDisplay,
     isDirty as getIsViewDirty,
 } from 'state/views/selectors'
-import {getSchemas} from 'state/schemas/selectors'
-import {GorgiasAction} from 'state/types'
-import {getTickets} from 'state/tickets/selectors'
-import {activeViewIdSet} from 'state/ui/views/actions'
 import {
     SUBMIT_NEW_VIEW_ERROR,
     SUBMIT_UPDATE_VIEW_ERROR,
@@ -65,14 +72,6 @@ import {
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {fieldPath, getDefaultOperator, slugify} from 'utils'
 import {reportError} from 'utils/errors'
-import {JobType} from 'models/job/types'
-import history from 'pages/history'
-import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
-
-import withCancellableRequest, {
-    CancellableRequestInjectedProps,
-} from '../../utils/withCancellableRequest'
-import ViewSharingButton from '../ViewSharing/ViewSharingButton'
 
 import Filters from './Filters/ViewFilters'
 import css from './FilterTopbar.less'

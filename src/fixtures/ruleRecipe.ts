@@ -1,7 +1,7 @@
-import {RuleRecipe, RuleRecipeTag} from '../models/ruleRecipe/types'
-import {RuleDraft} from '../state/rules/types'
-import {TagDraft} from '../state/tags/types'
-import {ViewDraft} from '../models/view/types'
+import {RuleRecipe, RuleRecipeTag} from 'models/ruleRecipe/types'
+import {TagDraft} from 'models/tag/types'
+import {RuleDraft} from 'state/rules/types'
+import {ViewDraft} from 'models/view/types'
 
 import {emptyRule} from './rule'
 import {view} from './views'

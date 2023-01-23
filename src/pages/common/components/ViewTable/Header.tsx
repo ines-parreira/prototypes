@@ -5,7 +5,8 @@ import {Map} from 'immutable'
 import classnames from 'classnames'
 
 import closeIcon from 'assets/img/icons/close.svg'
-import * as viewsConfig from 'config/views'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {getConfigByName} from 'config/views'
 import EditableTitle from 'pages/common/components/EditableTitle'
 import Search from 'pages/common/components/Search'
 import Tooltip from 'pages/common/components/Tooltip'
@@ -13,11 +14,17 @@ import ViewName from 'pages/common/components/ViewName/ViewName'
 import EmojiSelect from 'pages/common/components/ViewTable/EmojiSelect/EmojiSelect'
 import history from 'pages/history'
 import shortcutManager from 'services/shortcutManager'
-import * as viewsActions from 'state/views/actions'
-import * as viewsSelectors from 'state/views/selectors'
+import {
+    deleteView,
+    fetchViewItems,
+    removeFieldFilter,
+    resetView,
+    setViewEditMode,
+    updateView,
+} from 'state/views/actions'
+import {getActiveView, getLastViewId} from 'state/views/selectors'
 import {RootState} from 'state/types'
 import {getLDClient} from 'utils/launchDarkly'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {slugify} from 'utils'
 
 import css from './Header.less'
@@ -312,17 +319,17 @@ export class HeaderContainer extends React.Component<Props, State> {
 
 const connector = connect(
     (state: RootState, ownProps: OwnProps) => ({
-        activeView: viewsSelectors.getActiveView(state),
-        config: viewsConfig.getConfigByName(ownProps.type),
-        lastViewId: viewsSelectors.getLastViewId(state),
+        activeView: getActiveView(state),
+        config: getConfigByName(ownProps.type),
+        lastViewId: getLastViewId(state),
     }),
     {
-        deleteView: viewsActions.deleteView,
-        removeFieldFilter: viewsActions.removeFieldFilter,
-        updateView: viewsActions.updateView,
-        setViewEditMode: viewsActions.setViewEditMode,
-        resetView: viewsActions.resetView,
-        fetchViewItems: viewsActions.fetchViewItems,
+        deleteView,
+        fetchViewItems,
+        removeFieldFilter,
+        resetView,
+        setViewEditMode,
+        updateView,
     }
 )
 

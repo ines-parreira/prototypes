@@ -1,10 +1,11 @@
 import {fromJS, Map, List} from 'immutable'
 
-import {PaginationMeta} from '../../models/api/types'
-import {GorgiasAction} from '../types'
+import {PaginationMeta} from 'models/api/types'
+import {Tag} from 'models/tag/types'
+import {GorgiasAction} from 'state/types'
 
 import * as constants from './constants'
-import {TagsState, Tag} from './types'
+import {TagsState} from './types'
 
 export const initialState: TagsState = fromJS({
     _internal: {},

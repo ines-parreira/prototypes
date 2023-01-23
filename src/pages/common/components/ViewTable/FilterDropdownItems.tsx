@@ -2,9 +2,9 @@ import React from 'react'
 import {Map, List} from 'immutable'
 import {DropdownItem} from 'reactstrap'
 
-import {getLanguageDisplayName, isImmutable} from 'utils'
 import {RenderLabel} from 'pages/common/utils/labels'
-import * as customersHelpers from 'state/customers/helpers'
+import {getDisplayName} from 'state/customers/helpers'
+import {getLanguageDisplayName, isImmutable} from 'utils'
 
 import css from './FilterDropdownItems.less'
 
@@ -52,9 +52,7 @@ export default function FilterDropdownItems({
             // display tags as tags
             renderValue = (value as Map<any, any>).get('name')
         } else if (field.get('name') === 'customer') {
-            renderValue = customersHelpers.getDisplayName(
-                value as Map<any, any>
-            )
+            renderValue = getDisplayName(value as Map<any, any>)
         } else if (field.get('name') === 'language') {
             renderValue = getLanguageDisplayName(value as string)
         } else if (typeof value === 'object' || field.get('name') === 'role') {

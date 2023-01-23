@@ -23,7 +23,7 @@ import {
 
 import {createTag, fetchTags} from 'models/tag/resources'
 import {tagCreated} from 'state/entities/tags/actions'
-import {TagDraft} from 'state/tags/types'
+import {TagDraft} from 'models/tag/types'
 
 import {getTicketViews} from 'state/entities/views/selectors'
 import {viewCreated, viewDeleted} from 'state/entities/views/actions'

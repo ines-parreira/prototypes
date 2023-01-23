@@ -4,13 +4,15 @@ import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
 import {usePrevious} from 'react-use'
 
-import CheckBox from 'pages/common/forms/CheckBox'
-import Loader from 'pages/common/components/Loader/Loader'
 import BlankState from 'pages/common/components/BlankState/BlankStateContainer'
+import Loader from 'pages/common/components/Loader/Loader'
 import Navigation from 'pages/common/components/Navigation/Navigation'
-import {RootState} from 'state/types'
-import shortcutManager from 'services/shortcutManager'
+import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 import {moveIndex, MoveIndexDirection} from 'pages/common/utils/keyboard'
+import CheckBox from 'pages/common/forms/CheckBox'
+import history from 'pages/history'
+import shortcutManager from 'services/shortcutManager'
+import {RootState} from 'state/types'
 import {
     toggleViewSelection,
     toggleIdInSelectedItemsIds,
@@ -20,13 +22,11 @@ import {
 } from 'state/views/actions'
 import {areAllActiveViewItemsSelected} from 'state/views/selectors'
 import {ViewImmutable, ViewNavDirection} from 'state/views/types'
-import history from 'pages/history'
-import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 
-import css from './Table.less'
 import HeaderCell from './Table/HeaderCell'
 import Row from './Table/Row'
 import ViewSelection from './Table/ViewSelection'
+import css from './Table.less'
 
 type OwnProps = {
     headerRow?: ReactNode
@@ -356,16 +356,14 @@ const TableContainer = ({
 }
 
 const connector = connect(
-    (state: RootState) => {
-        return {
-            viewSelected: areAllActiveViewItemsSelected(state),
-        }
-    },
+    (state: RootState) => ({
+        viewSelected: areAllActiveViewItemsSelected(state),
+    }),
     {
-        toggleIdInPageSelection: toggleIdInSelectedItemsIds,
-        updatePageSelection: updateSelectedItemsIds,
-        toggleViewSelection,
         resetView,
+        toggleIdInPageSelection: toggleIdInSelectedItemsIds,
+        toggleViewSelection,
+        updatePageSelection: updateSelectedItemsIds,
     }
 )
 

@@ -9,12 +9,12 @@ import {
 } from 'lz-string'
 import {stringify} from 'qs'
 
-import useSearch from '../../../../hooks/useSearch'
-import * as viewsSelectors from '../../../../state/views/selectors'
-import {RootState} from '../../../../state/types'
-import * as viewsActions from '../../../../state/views/actions'
-import * as viewsConfig from '../../../../config/views'
-import history from '../../../history'
+import {getConfigByName} from 'config/views'
+import useSearch from 'hooks/useSearch'
+import history from 'pages/history'
+import {RootState} from 'state/types'
+import {updateView} from 'state/views/actions'
+import {areFiltersValid, getActiveView} from 'state/views/selectors'
 
 type InjectedProps = {
     urlSearchView: Map<any, any>
@@ -98,15 +98,15 @@ export function withViewSearchUrlSyncContainer<P extends Props>(
 
 const connector = connect(
     (state: RootState, ownProps: Props) => {
-        const config = viewsConfig.getConfigByName(ownProps.type)
+        const config = getConfigByName(ownProps.type)
         return {
             config,
-            activeView: viewsSelectors.getActiveView(state),
-            areFiltersValid: viewsSelectors.areFiltersValid(state),
+            activeView: getActiveView(state),
+            areFiltersValid: areFiltersValid(state),
         }
     },
     {
-        updateView: viewsActions.updateView,
+        updateView,
     }
 )
 

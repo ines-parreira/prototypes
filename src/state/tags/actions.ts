@@ -6,12 +6,11 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import type {StoreDispatch} from 'state/types'
 import {fetchTags as fetchTagsResources} from 'models/tag/resources'
-import {FetchTagsOptions} from 'models/tag/types'
+import {FetchTagsOptions, Tag, TagDraft} from 'models/tag/types'
 import GorgiasApi from 'services/gorgiasApi'
 import {createErrorNotification} from 'state/utils'
 
 import * as constants from './constants'
-import {Tag, TagDraft} from './types'
 
 export function addTags(tags: Array<string> | string) {
     return {

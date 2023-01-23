@@ -15,8 +15,8 @@ import {
 } from 'models/phoneNumber/types'
 import {Section} from 'models/section/types'
 import {View} from 'models/view/types'
+import {Tag} from 'models/tag/types'
 import {Account} from 'state/currentAccount/types'
-import {Tag} from 'state/tags/types'
 import {Team} from 'state/teams/types'
 import {BillingProducts} from 'state/billing/types'
 

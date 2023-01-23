@@ -68,9 +68,6 @@ type MockedRootState = {
     }
 }
 
-//$TsFixMe remove casting once ticket/reducers is migrated
-const typeSafeTicketInitialState = ticketInitialState as Map<any, any>
-
 const middlewares = [thunk]
 const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
     middlewares
@@ -394,7 +391,6 @@ describe('actions', () => {
                     unknown
                 >
                 const sender = setSenderAction.sender as Map<any, any>
-                //$TsFixMe remove casting once fixtures/integrations is migrated
                 const senderChannel = integrationsState.integrations.find(
                     (integration) =>
                         integration.meta.address === sender.get('address')
@@ -448,7 +444,6 @@ describe('actions', () => {
                     unknown
                 >
                 const sender = setSenderAction.sender as Map<any, any>
-                //$TsFixMe remove casting once fixtures/integrations is migrated
                 const senderChannel = integrationsState.integrations.find(
                     (integration) =>
                         integration.meta.address === sender.get('address')
@@ -1372,7 +1367,7 @@ describe('actions', () => {
                     .onPost('/api/tickets/12/messages/')
                     .reply(201, {ticket_id: 12, messages: []})
                 store = mockStore({
-                    ticket: typeSafeTicketInitialState.set('id', 12),
+                    ticket: ticketInitialState.set('id', 12),
                     newMessage: initialState,
                     currentUser: fromJS({
                         id: 1,
@@ -1429,11 +1424,11 @@ describe('actions', () => {
                 mockedUploadFiles.mockReturnValue(Promise.resolve([]))
                 store = mockStore({
                     newMessage: initialState,
-                    ticket: typeSafeTicketInitialState.set('id', 1),
+                    ticket: ticketInitialState.set('id', 1),
                 })
                 store.dispatch(
                     actions.addAttachments(
-                        typeSafeTicketInitialState.set('id', 1),
+                        ticketInitialState.set('id', 1),
                         fileList
                     )
                 )
@@ -1449,11 +1444,11 @@ describe('actions', () => {
                 mockedUploadFiles.mockReturnValue(Promise.resolve([]))
                 store = mockStore({
                     newMessage: initialState,
-                    ticket: typeSafeTicketInitialState.set('id', 2),
+                    ticket: ticketInitialState.set('id', 2),
                 })
                 store.dispatch(
                     actions.addAttachments(
-                        typeSafeTicketInitialState.set('id', 1),
+                        ticketInitialState.set('id', 1),
                         fileList
                     )
                 )
@@ -1473,11 +1468,11 @@ describe('actions', () => {
                 )
                 store = mockStore({
                     newMessage: initialState,
-                    ticket: typeSafeTicketInitialState.set('id', 1),
+                    ticket: ticketInitialState.set('id', 1),
                 })
                 store.dispatch(
                     actions.addAttachments(
-                        typeSafeTicketInitialState.set('id', 1),
+                        ticketInitialState.set('id', 1),
                         fileList
                     )
                 )
@@ -1499,11 +1494,11 @@ describe('actions', () => {
                 )
                 store = mockStore({
                     newMessage: initialState,
-                    ticket: typeSafeTicketInitialState.set('id', 1),
+                    ticket: ticketInitialState.set('id', 1),
                 })
                 store.dispatch(
                     actions.addAttachments(
-                        typeSafeTicketInitialState.set('id', 1),
+                        ticketInitialState.set('id', 1),
                         fileList
                     )
                 )
@@ -1523,15 +1518,12 @@ describe('actions', () => {
                         ['newMessage', 'source', 'type'],
                         TicketMessageSourceType.FacebookComment
                     ),
-                    ticket: typeSafeTicketInitialState.set('id', 1),
+                    ticket: ticketInitialState.set('id', 1),
                 })
                 store.dispatch(
-                    actions.addAttachments(
-                        typeSafeTicketInitialState.set('id', 1),
-                        {
-                            0: fileBaz,
-                        } as unknown as FileList
-                    )
+                    actions.addAttachments(ticketInitialState.set('id', 1), {
+                        0: fileBaz,
+                    } as unknown as FileList)
                 )
 
                 expect(mockedUploadFiles).toHaveBeenNthCalledWith(1, fileList)
@@ -1548,16 +1540,13 @@ describe('actions', () => {
                         ['newMessage', 'source', 'type'],
                         TicketMessageSourceType.FacebookComment
                     ),
-                    ticket: typeSafeTicketInitialState.set('id', 1),
+                    ticket: ticketInitialState.set('id', 1),
                 })
                 store.dispatch(
-                    actions.addAttachments(
-                        typeSafeTicketInitialState.set('id', 1),
-                        {
-                            0: fileFoo,
-                            1: fileBar,
-                        } as unknown as FileList
-                    )
+                    actions.addAttachments(ticketInitialState.set('id', 1), {
+                        0: fileFoo,
+                        1: fileBar,
+                    } as unknown as FileList)
                 )
 
                 expect(mockedUploadFiles).toHaveBeenNthCalledWith(1, fileList)
@@ -1586,11 +1575,11 @@ describe('actions', () => {
             mockedUploadFiles.mockReturnValue(Promise.resolve([]))
             store = mockStore({
                 newMessage: initialState,
-                ticket: typeSafeTicketInitialState.set('id', 1),
+                ticket: ticketInitialState.set('id', 1),
             })
             store.dispatch(
                 actions.addProductCardAttachments(
-                    typeSafeTicketInitialState.set('id', 1),
+                    ticketInitialState.set('id', 1),
                     cardDetail
                 )
             )
@@ -1604,11 +1593,11 @@ describe('actions', () => {
         it('should not dispatch NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS when successfully adding attachments in another ticket', (done) => {
             store = mockStore({
                 newMessage: initialState,
-                ticket: typeSafeTicketInitialState.set('id', 2),
+                ticket: ticketInitialState.set('id', 2),
             })
             store.dispatch(
                 actions.addProductCardAttachments(
-                    typeSafeTicketInitialState.set('id', 1),
+                    ticketInitialState.set('id', 1),
                     cardDetail
                 )
             )

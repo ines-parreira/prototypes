@@ -4,16 +4,18 @@ import {fromJS, Map, List} from 'immutable'
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
 
-import {fieldPath as getFieldPath} from '../../../../../utils'
-
-import ShowMoreFieldsDropdown from '../ShowMoreFieldsDropdown'
-
-import * as viewsActions from '../../../../../state/views/actions'
-import * as viewsSelectors from '../../../../../state/views/selectors'
-
-import * as viewsConfig from '../../../../../config/views'
-import {OrderDirection} from '../../../../../models/api/types'
-import {RootState} from '../../../../../state/types'
+import {getConfigByName} from 'config/views'
+import {OrderDirection} from 'models/api/types'
+import ShowMoreFieldsDropdown from 'pages/common/components/ViewTable/ShowMoreFieldsDropdown'
+import {RootState} from 'state/types'
+import {fetchViewItems, setOrderDirection} from 'state/views/actions'
+import {
+    getActiveView,
+    getActiveViewOrderBy,
+    getActiveViewOrderDirection,
+    getSelectedItemsIds,
+} from 'state/views/selectors'
+import {fieldPath as getFieldPath} from 'utils'
 
 type OwnProps = {
     ActionsComponent: Maybe<ComponentType<any>>
@@ -124,16 +126,16 @@ export class HeaderCellContainer extends Component<Props> {
 const connector = connect(
     (state: RootState, ownProps: OwnProps) => {
         return {
-            activeView: viewsSelectors.getActiveView(state),
-            config: viewsConfig.getConfigByName(ownProps.type),
-            orderBy: viewsSelectors.getActiveViewOrderBy(state),
-            orderDirection: viewsSelectors.getActiveViewOrderDirection(state),
-            selectedItemsIds: viewsSelectors.getSelectedItemsIds(state),
+            activeView: getActiveView(state),
+            config: getConfigByName(ownProps.type),
+            orderBy: getActiveViewOrderBy(state),
+            orderDirection: getActiveViewOrderDirection(state),
+            selectedItemsIds: getSelectedItemsIds(state),
         }
     },
     {
-        fetchViewItems: viewsActions.fetchViewItems,
-        setOrderDirection: viewsActions.setOrderDirection,
+        fetchViewItems,
+        setOrderDirection,
     }
 )
 

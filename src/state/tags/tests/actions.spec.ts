@@ -7,12 +7,11 @@ import axios from 'axios'
 
 import client from 'models/api/resources'
 import {OrderDirection} from 'models/api/types'
-import {TagSortableProperties} from 'models/tag/types'
+import {TagSortableProperties, Tag, TagDraft} from 'models/tag/types'
 import {StoreDispatch} from 'state/types'
 import * as actions from 'state/tags/actions'
 import * as types from 'state/tags/constants'
 import {initialState} from 'state/tags/reducers'
-import {Tag, TagDraft} from 'state/tags/types'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore<MockedRootState, StoreDispatch>(

@@ -2,13 +2,13 @@ import type {Map} from 'immutable'
 import _debounce from 'lodash/debounce'
 import React, {ComponentType} from 'react'
 
-import {fieldEnumSearch} from '../../../../state/views/actions'
+import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
+import {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
 import withCancellableRequest, {
     CancellableRequestInjectedProps,
-} from '../../../common/utils/withCancellableRequest'
-import MultiSelectOptionsField from '../../forms/MultiSelectOptionsField/MultiSelectOptionsField'
-import {Option} from '../../forms/MultiSelectOptionsField/types'
-import {FieldSearchResult} from '../../../../state/views/types'
+} from 'pages/common/utils/withCancellableRequest'
+import {fieldEnumSearch} from 'state/views/actions'
+import {FieldSearchResult} from 'state/views/types'
 
 type Props = {
     plural: string

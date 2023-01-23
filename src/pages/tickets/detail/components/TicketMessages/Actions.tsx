@@ -28,7 +28,7 @@ const SHOPIFY_ACTION_NAMES = [
     MacroActionName.ShopifyFullRefundLastOrder,
     MacroActionName.ShopifyPartialRefundLastOrder,
     MacroActionName.ShopifyRefundShippingCostLastOrder,
-]
+] as const
 const displayedArg: Record<string, string> = {
     [MacroActionName.AddTags]: 'tags',
     [MacroActionName.AddAttachments]: 'attachments',
@@ -217,7 +217,7 @@ export default class Actions extends Component<Props, State> {
 
                     const isHttpAction = action.name === 'http'
                     const isShopifyAction = SHOPIFY_ACTION_NAMES.includes(
-                        action.name
+                        action.name as typeof SHOPIFY_ACTION_NAMES[number]
                     )
                     const contentType = _get(action, 'arguments.content_type')
 

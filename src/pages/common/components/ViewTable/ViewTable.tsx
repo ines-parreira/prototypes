@@ -5,29 +5,38 @@ import {withRouter, RouteComponentProps} from 'react-router-dom'
 import classnames from 'classnames'
 import {parse, stringify} from 'qs'
 
+import {getConfigByName} from 'config/views'
+import {ViewVisibility} from 'models/view/types'
 import Loader from 'pages/common/components/Loader/Loader'
+import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
+import {isCreationUrl} from 'pages/common/utils/url'
 import withCancellableRequest, {
     CancellableRequestInjectedProps,
 } from 'pages/common/utils/withCancellableRequest'
-import {ViewVisibility} from 'models/view/types'
-import {activeViewIdSet} from 'state/ui/views/actions'
-import * as viewsActions from 'state/views/actions'
-import * as viewsSelectors from 'state/views/selectors'
-import * as viewsConfig from 'config/views'
-import {RootState} from 'state/types'
 import history from 'pages/history'
-import {isCreationUrl} from 'pages/common/utils/url'
-import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
+import {RootState} from 'state/types'
+import {activeViewIdSet} from 'state/ui/views/actions'
+import {fetchViewItems, setViewActive, updateView} from 'state/views/actions'
+import {
+    getActiveView,
+    getNavigation,
+    getSelectedItemsIds,
+    hasActiveViewOfType,
+    isOnFirstPage,
+    makeGetView,
+    makeGetViewIdToDisplay,
+    makeIsLoading,
+} from 'state/views/selectors'
 
+import DeactivatedViewMessage from './DeactivatedViewMessage'
+import FilterTopbar from './FilterTopbar'
 import Header from './Header'
 import Table from './Table'
-import FilterTopbar from './FilterTopbar'
-import DeactivatedViewMessage from './DeactivatedViewMessage'
+import MissingBillingInformationRow from './Table/MissingBillingInformationRow'
 import css from './ViewTable.less'
 import withViewSearchUrlSync, {
     ViewSearchUrlSyncInjectedProps,
 } from './withViewSearchUrlSync'
-import MissingBillingInformationRow from './Table/MissingBillingInformationRow'
 
 type OwnProps = {
     className?: string
@@ -51,7 +60,7 @@ type Props = OwnProps &
     CancellableRequestInjectedProps<
         'fetchViewItemsCancellable',
         'cancelFetchViewItemsCancellable',
-        typeof viewsActions.fetchViewItems
+        typeof fetchViewItems
     >
 
 export class ViewTableContainer extends Component<Props> {
@@ -332,27 +341,25 @@ export class ViewTableContainer extends Component<Props> {
 
 const connector = connect(
     (state: RootState, ownProps: OwnProps) => {
-        const config = viewsConfig.getConfigByName(ownProps.type)
+        const config = getConfigByName(ownProps.type)
 
         return {
-            activeView: viewsSelectors.getActiveView(state),
+            activeView: getActiveView(state),
             config,
-            getView: viewsSelectors.makeGetView(state),
-            getViewIdToDisplay: viewsSelectors.makeGetViewIdToDisplay(state),
-            hasActiveView: viewsSelectors.hasActiveViewOfType(
-                config.get('type')
-            )(state),
-            isLoading: viewsSelectors.makeIsLoading(state),
-            isOnFirstPage: viewsSelectors.isOnFirstPage(state),
-            navigation: viewsSelectors.getNavigation(state),
-            selectedItemsIds: viewsSelectors.getSelectedItemsIds(state),
+            getView: makeGetView(state),
+            getViewIdToDisplay: makeGetViewIdToDisplay(state),
+            hasActiveView: hasActiveViewOfType(config.get('type'))(state),
+            isLoading: makeIsLoading(state),
+            isOnFirstPage: isOnFirstPage(state),
+            navigation: getNavigation(state),
+            selectedItemsIds: getSelectedItemsIds(state),
         }
     },
     {
-        fetchViewItems: viewsActions.fetchViewItems,
-        setViewActive: viewsActions.setViewActive,
-        updateView: viewsActions.updateView,
         activeViewIdSet,
+        fetchViewItems,
+        setViewActive,
+        updateView,
     }
 )
 
@@ -360,9 +367,9 @@ export default withRouter<any, any>(
     withCancellableRequest<
         'fetchViewItemsCancellable',
         'cancelFetchViewItemsCancellable',
-        typeof viewsActions.fetchViewItems
+        typeof fetchViewItems
     >(
         'fetchViewItemsCancellable',
-        viewsActions.fetchViewItems
+        fetchViewItems
     )(connector(withViewSearchUrlSync(ViewTableContainer)))
 )

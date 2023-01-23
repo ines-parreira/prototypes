@@ -14,17 +14,18 @@ import {
     shopifyOrderFixture,
     shopifyProductFixture,
     shopifyVariantFixture,
-} from '../../../../../fixtures/shopify'
-import {ShopifyAction} from '../../../../../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/constants'
-import {executeAction} from '../../../../infobar/actions'
-import {initialState} from '../reducers'
-import * as actions from '../actions'
-import client from '../../../../../models/api/resources'
+} from 'fixtures/shopify'
+import client from 'models/api/resources'
 import {
     IntegrationDataItemType,
     IntegrationType,
-} from '../../../../../models/integration/types'
-import {RootState, StoreDispatch} from '../../../../types'
+} from 'models/integration/types'
+import {ShopifyActionType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
+import {executeAction} from 'state/infobar/actions'
+import {RootState, StoreDispatch} from 'state/types'
+
+import {initialState} from '../reducers'
+import * as actions from '../actions'
 
 jest.mock('lodash/debounce', () => (fn: Record<string, unknown>) => {
     fn.cancel = jest.fn()
@@ -238,7 +239,7 @@ describe('infobarActions.shopify.createOrder actions', () => {
 
             mockCalculateSuccess()
 
-            const actionName = ShopifyAction.DUPLICATE_ORDER
+            const actionName = ShopifyActionType.DuplicateOrder
             const product = shopifyProductFixture()
             const variant = product.variants[0]
             await store.dispatch(
