@@ -12,7 +12,7 @@ import PageHeader from 'pages/common/components/PageHeader'
 import CheckBox from 'pages/common/forms/CheckBox'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
-import HeaderWithInfo from 'pages/common/components/HeaderWithInfo'
+import HeaderTitle from 'pages/common/components/HeaderTitle'
 import {fetchChats} from 'state/chats/actions'
 import {submitSetting} from 'state/currentAccount/actions'
 import {getTicketAssignmentSettings} from 'state/currentAccount/selectors'
@@ -170,7 +170,7 @@ export class TicketAssignmentContainer extends Component<Props, State> {
             <div className="full-width">
                 <PageHeader
                     title={
-                        <HeaderWithInfo
+                        <HeaderTitle
                             title="Ticket assignment"
                             description="Automate the assignment of tickets among your team members or the unassignment when your
                     agents are not available to respond. You can use both at the same time!"

@@ -1,4 +1,11 @@
-import React, {useEffect, useCallback, useMemo, useRef, useState} from 'react'
+import React, {
+    useEffect,
+    useCallback,
+    useMemo,
+    useRef,
+    useState,
+    ComponentProps,
+} from 'react'
 import {connect} from 'react-redux'
 import moment, {Moment} from 'moment-timezone'
 import DateRangePicker, {
@@ -31,6 +38,7 @@ type Props = {
     startDatetime: Moment
     userTimezone?: string | null
     onOpen?: () => void
+    toggleProps?: Partial<ComponentProps<typeof Button>>
 }
 
 export const PeriodPickerContainer = ({
@@ -42,6 +50,7 @@ export const PeriodPickerContainer = ({
     onChange,
     onOpen,
     startDatetime,
+    toggleProps,
     userTimezone,
 }: Props & Partial<DateRangeProps>) => {
     const [startDate, setStartDate] = useState(startDatetime)
@@ -244,7 +253,11 @@ export const PeriodPickerContainer = ({
                         }}
                     >
                         <div>
-                            <Button intent="secondary" isDisabled={isDisabled}>
+                            <Button
+                                intent="secondary"
+                                isDisabled={isDisabled}
+                                {...toggleProps}
+                            >
                                 <ButtonIconLabel icon="calendar_today">
                                     <ButtonIconLabel
                                         icon="arrow_drop_down"

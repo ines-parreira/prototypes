@@ -3,7 +3,7 @@ import {Button} from 'reactstrap'
 
 import PopoverModal from 'pages/common/components/PopoverModal'
 
-import css from './HeaderWithInfo.less'
+import css from './HeaderTitle.less'
 
 type Props = {
     title: string
@@ -11,7 +11,7 @@ type Props = {
     helpUrl?: string
 }
 
-export default function HeaderWithInfo({title, description, helpUrl}: Props) {
+export default function HeaderTitle({title, description, helpUrl}: Props) {
     return (
         <h1 className="align-items-center">
             <span>{title}</span>

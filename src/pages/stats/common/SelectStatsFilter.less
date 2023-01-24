@@ -1,0 +1,22 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .toggle,
+    :global.show > :global.dropdown-toggle:local.toggle {
+        background: none !important;
+        border: none;
+        box-shadow: none !important;
+        color: @classic-neutral-grey-5 !important;
+
+        &:hover {
+            background-color: @classic-neutral-grey-2 !important;
+            box-shadow: none;
+        }
+
+        &:active {
+            background-color: @classic-neutral-grey-3 !important;
+            box-shadow: none !important;
+            color: @classic-neutral-grey-6 !important;
+        }
+    }
+}

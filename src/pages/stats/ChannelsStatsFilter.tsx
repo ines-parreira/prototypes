@@ -10,20 +10,27 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {StatsFilters} from 'models/stat/types'
 
 import SelectFilter from './common/SelectFilter'
+import SelectStatsFilter from './common/SelectStatsFilter'
 
 type Props = {
     value: StatsFilters['channels']
     channels: TicketChannel[]
+    variant?: 'fill' | 'ghost'
 }
 
-export default function ChannelsStatsFilter({value = [], channels}: Props) {
+export default function ChannelsStatsFilter({
+    value = [],
+    channels,
+    variant = 'fill',
+}: Props) {
     const dispatch = useAppDispatch()
     const isWhatsAppEnabled = useFlags()[FeatureFlagKey.EnableWhatsApp]
     const channelsToDisplay = isWhatsAppEnabled
         ? channels
         : _without(channels, TicketChannel.WhatsApp)
+    const Component = variant === 'fill' ? SelectFilter : SelectStatsFilter
 
-    const handleFilterChange: ComponentProps<typeof SelectFilter>['onChange'] =
+    const handleFilterChange: ComponentProps<typeof Component>['onChange'] =
         useCallback(
             (values) => {
                 dispatch(
@@ -34,19 +41,19 @@ export default function ChannelsStatsFilter({value = [], channels}: Props) {
         )
 
     return (
-        <SelectFilter
+        <Component
             plural="channels"
             singular="channel"
             onChange={handleFilterChange}
             value={value}
         >
             {channelsToDisplay.map((channel) => (
-                <SelectFilter.Item
+                <Component.Item
                     key={channel}
                     label={_upperFirst(channel.replace(/-/g, ' '))}
                     value={channel}
                 />
             ))}
-        </SelectFilter>
+        </Component>
     )
 }

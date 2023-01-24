@@ -19,6 +19,7 @@ import {StatsFilters} from 'models/stat/types'
 
 import css from './TagsStatsFilter.less'
 import SelectFilter from './common/SelectFilter'
+import SelectStatsFilter from './common/SelectStatsFilter'
 
 const ORDER_OPTIONS: OrderParams<TagSortableProperties> = {
     orderBy: `${TagSortableProperties.Name}:${OrderDirection.Asc}`,
@@ -30,17 +31,19 @@ const TagDropdownMenuWrapper = (
 
 type Props = {
     value: StatsFilters['tags']
+    variant?: 'fill' | 'ghost'
 }
 
-export default function TagsStatsFilter({value = []}: Props) {
+export default function TagsStatsFilter({value = [], variant = 'fill'}: Props) {
     const dispatch = useAppDispatch()
     const tags = useAppSelector((state: RootState) => state.entities.tags)
     const [tagIds, setTagIds] = useState<string[]>([])
     const [tagSearch, setTagSearch] = useState('')
     const [debouncedTagSearch, setDebouncedTagSearch] = useState('')
     const [nextCursor, setNextCursor] = useState<string | null>(null)
+    const Component = variant === 'fill' ? SelectFilter : SelectStatsFilter
 
-    const handleFilterChange: ComponentProps<typeof SelectFilter>['onChange'] =
+    const handleFilterChange: ComponentProps<typeof Component>['onChange'] =
         useCallback(
             (values) => {
                 dispatch(mergeStatsFilters({tags: values as number[]}))
@@ -111,7 +114,7 @@ export default function TagsStatsFilter({value = []}: Props) {
     }, [handleFetchTags, tagSearch])
 
     return (
-        <SelectFilter
+        <Component
             plural="tags"
             singular="tag"
             onChange={handleFilterChange}
@@ -130,7 +133,7 @@ export default function TagsStatsFilter({value = []}: Props) {
 
                     return (
                         tag && (
-                            <SelectFilter.Item
+                            <Component.Item
                                 key={tag.id}
                                 label={tag.name}
                                 value={tag.id}
@@ -139,6 +142,6 @@ export default function TagsStatsFilter({value = []}: Props) {
                     )
                 })}
             </InfiniteScroll>
-        </SelectFilter>
+        </Component>
     )
 }

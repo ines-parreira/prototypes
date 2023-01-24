@@ -10,9 +10,10 @@ import PeriodPicker from './common/PeriodPicker'
 
 type Props = {
     value: StatsFilters['period']
+    variant?: 'fill' | 'ghost'
 }
 
-export default function PeriodStatsFilter({value}: Props) {
+export default function PeriodStatsFilter({value, variant = 'fill'}: Props) {
     const dispatch = useAppDispatch()
 
     const handleFilterChange: ComponentProps<typeof PeriodPicker>['onChange'] =
@@ -38,6 +39,13 @@ export default function PeriodStatsFilter({value}: Props) {
 
     return (
         <PeriodPicker
+            toggleProps={
+                variant === 'ghost'
+                    ? {
+                          fillStyle: 'ghost',
+                      }
+                    : undefined
+            }
             startDatetime={moment(value.start_datetime)}
             endDatetime={moment(value.end_datetime)}
             initialSettings={{

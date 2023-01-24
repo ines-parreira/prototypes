@@ -1,12 +1,12 @@
 import React from 'react'
 import {fireEvent, render} from '@testing-library/react'
 
-import HeaderWithInfo from '../HeaderWithInfo'
+import HeaderTitle from '../HeaderTitle'
 
-describe('<HeaderWithInfo />', () => {
+describe('<HeaderTitle />', () => {
     it('should render the title', () => {
         const {container} = render(
-            <HeaderWithInfo
+            <HeaderTitle
                 title="Foo"
                 description="Foo statistic page"
                 helpUrl="http://example.com"
@@ -17,7 +17,7 @@ describe('<HeaderWithInfo />', () => {
 
     it('should render the description on learn button click', async () => {
         const {getByText, findByTestId} = render(
-            <HeaderWithInfo
+            <HeaderTitle
                 title="Foo"
                 description={<span data-testid="description">description</span>}
                 helpUrl="http://example.com"
@@ -31,7 +31,7 @@ describe('<HeaderWithInfo />', () => {
 
     it('should not render the learn more link when missing helpUrl', () => {
         const {getByText, queryByText} = render(
-            <HeaderWithInfo
+            <HeaderTitle
                 title="Foo"
                 description={<span data-testid="description">description</span>}
             />
@@ -42,7 +42,7 @@ describe('<HeaderWithInfo />', () => {
     })
 
     it('should not render the learn more button when missing description', () => {
-        const {queryByText} = render(<HeaderWithInfo title="Foo" />)
+        const {queryByText} = render(<HeaderTitle title="Foo" />)
 
         expect(queryByText('Learn')).toBeNull()
     })

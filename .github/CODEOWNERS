@@ -27,9 +27,9 @@
 /src/pages/common/components/ViewTable/ @gorgias/analytics-frontend
 /src/pages/common/components/EditableTitle.tsx @gorgias/analytics-frontend
 /src/pages/common/components/EditableTitle.less @gorgias/analytics-frontend
-/src/pages/common/components/HeaderWithInfo.tsx @gorgias/analytics-frontend
-/src/pages/common/components/HeaderWithInfo.stories.tsx @gorgias/analytics-frontend
-/src/pages/common/components/HeaderWithInfo.less @gorgias/analytics-frontend
+/src/pages/common/components/HeaderTitle.tsx @gorgias/analytics-frontend
+/src/pages/common/components/HeaderTitle.stories.tsx @gorgias/analytics-frontend
+/src/pages/common/components/HeaderTitle.less @gorgias/analytics-frontend
 /src/pages/common/components/Search.tsx @gorgias/analytics-frontend
 /src/pages/common/components/Search.less @gorgias/analytics-frontend
 /src/pages/common/forms/SearchInput/ @gorgias/analytics-frontend

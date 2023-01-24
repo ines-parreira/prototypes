@@ -9,18 +9,24 @@ import {getLabelledAgentsJS} from 'state/agents/selectors'
 import {StatsFilters} from 'models/stat/types'
 
 import SelectFilter from './common/SelectFilter'
+import SelectStatsFilter from './common/SelectStatsFilter'
 import css from './AgentsStatsFilter.less'
 
 type Props = {
     value: StatsFilters['agents']
+    variant?: 'fill' | 'ghost'
 }
 
-export default function AgentsStatsFilter({value = []}: Props) {
+export default function AgentsStatsFilter({
+    value = [],
+    variant = 'fill',
+}: Props) {
     const dispatch = useAppDispatch()
     const agents = useAppSelector(getLabelledAgentsJS)
     const teams = useAppSelector(getLabelledTeamsJS)
+    const Component = variant === 'fill' ? SelectFilter : SelectStatsFilter
 
-    const handleFilterChange: ComponentProps<typeof SelectFilter>['onChange'] =
+    const handleFilterChange: ComponentProps<typeof Component>['onChange'] =
         useCallback(
             (values) => {
                 dispatch(mergeStatsFilters({agents: values as number[]}))
@@ -29,7 +35,7 @@ export default function AgentsStatsFilter({value = []}: Props) {
         )
 
     return (
-        <SelectFilter
+        <Component
             plural="agents"
             singular="agent"
             onChange={handleFilterChange}
@@ -53,12 +59,12 @@ export default function AgentsStatsFilter({value = []}: Props) {
                 Users
             </DropdownItem>
             {agents.map((agent) => (
-                <SelectFilter.Item
+                <Component.Item
                     key={`agent-${agent.id}`}
                     label={agent.label}
                     value={agent.id}
                 />
             ))}
-        </SelectFilter>
+        </Component>
     )
 }

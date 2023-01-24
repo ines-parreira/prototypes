@@ -13,6 +13,7 @@ import {Integration} from 'models/integration/types'
 import {StatsFilters} from 'models/stat/types'
 
 import SelectFilter from './common/SelectFilter'
+import SelectStatsFilter from './common/SelectStatsFilter'
 import css from './IntegrationsStatsFilter.less'
 
 export const IMAGE_ICONS = {
@@ -38,6 +39,7 @@ type Props = {
     integrations: Integration[]
     isMultiple?: boolean
     isRequired?: boolean
+    variant?: 'fill' | 'ghost'
 }
 
 export default function IntegrationsStatsFilter({
@@ -45,6 +47,7 @@ export default function IntegrationsStatsFilter({
     integrations,
     isMultiple = false,
     isRequired = false,
+    variant = 'fill',
 }: Props) {
     const dispatch = useAppDispatch()
 
@@ -56,8 +59,9 @@ export default function IntegrationsStatsFilter({
             integrationsIds.includes(integrationId)
         )
     }, [value, integrations])
+    const Component = variant === 'fill' ? SelectFilter : SelectStatsFilter
 
-    const handleFilterChange: ComponentProps<typeof SelectFilter>['onChange'] =
+    const handleFilterChange: ComponentProps<typeof Component>['onChange'] =
         useCallback(
             (values) => {
                 dispatch(mergeStatsFilters({integrations: values as number[]}))
@@ -66,7 +70,7 @@ export default function IntegrationsStatsFilter({
         )
 
     return (
-        <SelectFilter
+        <Component
             plural="integrations"
             singular="integration"
             isMultiple={isMultiple}
@@ -89,7 +93,7 @@ export default function IntegrationsStatsFilter({
                     />
                 )
                 return (
-                    <SelectFilter.Item
+                    <Component.Item
                         key={integration.id}
                         label={integration.name}
                         value={integration.id}
@@ -97,6 +101,6 @@ export default function IntegrationsStatsFilter({
                     />
                 )
             })}
-        </SelectFilter>
+        </Component>
     )
 }

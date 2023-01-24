@@ -35,7 +35,7 @@ import {SegmentEvent} from 'store/middlewares/segmentTracker'
 import {getStatsFilters} from 'state/stats/selectors'
 import {mergeStatsFilters} from 'state/stats/actions'
 import Loader from 'pages/common/components/Loader/Loader'
-import HeaderWithInfo from 'pages/common/components/HeaderWithInfo'
+import HeaderTitle from 'pages/common/components/HeaderTitle'
 import PageHeader from 'pages/common/components/PageHeader'
 import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
 import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionButton'
@@ -247,7 +247,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                 pageHeader={
                     <PageHeader
                         title={
-                            <HeaderWithInfo
+                            <HeaderTitle
                                 title={TITLE}
                                 description={DESCRIPTION}
                                 helpUrl={HELP_URL}
