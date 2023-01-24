@@ -151,6 +151,7 @@ export const IntegrationDetail = ({
         'new',
         'connections',
         'integrations',
+        'onboard',
         'setup',
         'about',
     ].includes(integrationId)

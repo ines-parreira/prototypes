@@ -74,10 +74,8 @@ export default function ConnectLink({
         <a
             href={sanitizedConnectUrl}
             onClick={trackInstalls(integrationTitle, isApp, domain)}
-            {...(isApp && {
-                target: '_blank',
-                rel: 'noopener noreferrer',
-            })}
+            target="_blank"
+            rel="noopener noreferrer"
             className={css.connectButtonWrapper}
         >
             {children}

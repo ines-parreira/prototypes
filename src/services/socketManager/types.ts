@@ -46,6 +46,8 @@ export enum SocketEventType {
     AgentAvailabilityUpdated = 'agent-availability-updated',
     CustomerExternalDataUpdated = 'customer-external-data-updated',
     TicketTypingActivityShopperStarted = 'ticket-typing-activity-shopper-started',
+    WhatsAppOnboardingSucceeded = 'whatsapp-onboarding-succeeded',
+    WhatsAppOnboardingFailed = 'whatsapp-onboarding-failed',
 }
 
 export enum JoinEventType {
@@ -283,6 +285,25 @@ export type TicketTypingActivityShopperStartedEvent = {
     }
 }
 
+export type WhatsAppOnboardingSucceededEvent = {
+    event: {
+        type: SocketEventType.WhatsAppOnboardingFailed
+    }
+    integration_id: Maybe<number>
+    phone_number: Maybe<string>
+}
+
+export type WhatsAppOnboardingFailedEvent = {
+    event: {
+        type: SocketEventType.WhatsAppOnboardingSucceeded
+    }
+    error: Maybe<{
+        code: Maybe<number>
+        message: string
+    }>
+    phone_number: Maybe<string>
+}
+
 export type ServerMessage =
     | CustomerUpdatedEvent
     | CustomerExternalDataUpdatedEvent
@@ -314,3 +335,5 @@ export type ServerMessage =
     | MacroParamsUpdatedEvent
     | AgentAvailabilityUpdatedEvent
     | TicketTypingActivityShopperStartedEvent
+    | WhatsAppOnboardingSucceededEvent
+    | WhatsAppOnboardingFailedEvent

@@ -51,7 +51,9 @@ export function countryCode(
         return number.twilio_phone_number?.country
     }
 
-    return number.meta.country
+    if (isOldPhoneNumber(number)) {
+        return number.meta.country
+    }
 }
 
 export function friendlyName(phoneNumber: PhoneNumber | NewPhoneNumber) {

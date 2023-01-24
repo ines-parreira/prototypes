@@ -11,6 +11,7 @@ export enum FeatureFlagKey {
     ChatMergedOrderManagementButton = 'chat-merged-order-management-button',
     EarlyAdopter = 'early-adopter',
     EnableWhatsApp = 'enable-whatsapp',
+    NewWhatsAppOnboarding = 'new-whats-app-onboarding',
     ElasticsearchSearchLoadTest = 'elasticsearch-search-load-test',
     ElasticsearchTicketSearch = 'elasticsearch-ticket-search',
     DefaultMacroToSearch = 'default-macro-to-search',

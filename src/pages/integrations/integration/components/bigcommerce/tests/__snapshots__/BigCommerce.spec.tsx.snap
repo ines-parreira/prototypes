@@ -171,6 +171,8 @@ exports[`<BigCommerce/> Detail should render a detail view 1`] = `
           <a
             class="connectButtonWrapper"
             href="https://store-pk360c6roo.mybigcommerce.com/manage/marketplace/apps/my-apps"
+            rel="noopener noreferrer"
+            target="_blank"
           >
             <button
               class="wrapper actionButton fill primary medium"
@@ -472,6 +474,8 @@ exports[`<BigCommerce/> List should render 1`] = `
     <a
       class="connectButtonWrapper"
       href="https://store-pk360c6roo.mybigcommerce.com/manage/marketplace/apps/my-apps"
+      rel="noopener noreferrer"
+      target="_blank"
     >
       <button
         class="wrapper actionButton fill primary medium"

@@ -6,6 +6,9 @@ import browserNotification from 'services/browserNotification'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {setIsAvailable} from 'state/currentUser/actions'
 import {MACRO_PARAMS_UPDATED} from 'state/macro/constants'
+import {fetchNewPhoneNumbers} from 'models/phoneNumber/resources'
+import {newPhoneNumbersFetched} from 'state/entities/phoneNumbers/actions'
+
 import {shouldTicketBeDisplayedInRecentChats} from '../business/recentChats'
 
 import * as agentsActions from '../state/agents/actions'
@@ -59,6 +62,8 @@ import {
     ViewSectionDeletedEvent,
     ViewSectionUpdatedEvent,
     ViewUpdatedEvent,
+    WhatsAppOnboardingFailedEvent,
+    WhatsAppOnboardingSucceededEvent,
 } from '../services/socketManager/types'
 import {NotificationStatus} from '../state/notifications/types'
 import {RootState} from '../state/types'
@@ -782,6 +787,47 @@ export const receivedEvents: ReceivedEvent[] = [
 
             reduxStore.dispatch(
                 ticketActions.setTypingActivityShopper(ticket.id) as any
+            )
+        },
+    },
+    {
+        name: SocketEventType.WhatsAppOnboardingSucceeded,
+        onReceive: async (data) => {
+            const {phone_number} = data as WhatsAppOnboardingSucceededEvent
+            const listPath = '/app/settings/integrations/whatsapp/integrations'
+            if (window.location.pathname !== listPath) {
+                history.push(listPath)
+            }
+            reduxStore.dispatch(
+                notificationsActions.notify({
+                    dismissAfter: 10000,
+                    message: `WhatsApp successfully connected for number ${phone_number!}.`,
+                }) as any
+            )
+            reduxStore.dispatch(integrationsActions.fetchIntegrations() as any)
+            const phoneNumbers = await fetchNewPhoneNumbers()
+            if (phoneNumbers) {
+                reduxStore.dispatch(newPhoneNumbersFetched(phoneNumbers.data))
+            }
+        },
+    },
+    {
+        name: SocketEventType.WhatsAppOnboardingFailed,
+        onReceive: (data) => {
+            const {phone_number, error} = data as WhatsAppOnboardingFailedEvent
+            const listPath = '/app/settings/integrations/whatsapp/integrations'
+            if (window.location.pathname !== listPath) {
+                history.push(listPath)
+            }
+            const message = error?.message
+                ? `${error.message} (number: ${phone_number!})`
+                : `Failed to connect WhatsApp for number ${phone_number!}. Please try again or contact support.`
+            reduxStore.dispatch(
+                notificationsActions.notify({
+                    dismissAfter: 10000,
+                    status: NotificationStatus.Error,
+                    message,
+                }) as any
             )
         },
     },
