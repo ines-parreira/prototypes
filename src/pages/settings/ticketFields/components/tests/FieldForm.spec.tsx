@@ -5,6 +5,7 @@ import {HTML5Backend} from 'react-dnd-html5-backend'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
 
 import {customField, customFieldInput} from 'fixtures/customField'
 import {CustomFieldInput} from 'models/customField/types'
@@ -12,6 +13,8 @@ import {CustomFieldInput} from 'models/customField/types'
 import FieldForm from '../FieldForm'
 
 const mockStore = configureMockStore([thunk])()
+
+const queryClient = new QueryClient()
 
 describe('<FieldForm/>', () => {
     it('should render correctly', () => {
@@ -22,9 +25,11 @@ describe('<FieldForm/>', () => {
         }
 
         const {container} = render(
-            <Provider store={mockStore}>
-                <FieldForm {...props} />
-            </Provider>
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore}>
+                    <FieldForm {...props} />
+                </Provider>
+            </QueryClientProvider>
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -37,9 +42,11 @@ describe('<FieldForm/>', () => {
         }
 
         const {container} = render(
-            <Provider store={mockStore}>
-                <FieldForm {...props} />
-            </Provider>
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore}>
+                    <FieldForm {...props} />
+                </Provider>{' '}
+            </QueryClientProvider>
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -52,9 +59,11 @@ describe('<FieldForm/>', () => {
         }
 
         const {findByText} = render(
-            <Provider store={mockStore}>
-                <FieldForm {...props} />
-            </Provider>
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore}>
+                    <FieldForm {...props} />
+                </Provider>{' '}
+            </QueryClientProvider>
         )
 
         const saveButton = await findByText(/Save Changes/)
@@ -80,11 +89,13 @@ describe('<FieldForm/>', () => {
         }
 
         const {findByText} = render(
-            <Provider store={mockStore}>
-                <DndProvider backend={HTML5Backend}>
-                    <FieldForm {...props} />
-                </DndProvider>
-            </Provider>
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore}>
+                    <DndProvider backend={HTML5Backend}>
+                        <FieldForm {...props} />
+                    </DndProvider>
+                </Provider>{' '}
+            </QueryClientProvider>
         )
 
         const saveButton = await findByText(/Save Changes/)
@@ -110,11 +121,13 @@ describe('<FieldForm/>', () => {
         }
 
         const {findByText} = render(
-            <Provider store={mockStore}>
-                <DndProvider backend={HTML5Backend}>
-                    <FieldForm {...props} />
-                </DndProvider>
-            </Provider>
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore}>
+                    <DndProvider backend={HTML5Backend}>
+                        <FieldForm {...props} />
+                    </DndProvider>
+                </Provider>{' '}
+            </QueryClientProvider>
         )
 
         const saveButton = await findByText(/Save Changes/)
@@ -131,9 +144,11 @@ describe('<FieldForm/>', () => {
         }
 
         const {findByText} = render(
-            <Provider store={mockStore}>
-                <FieldForm {...props} />
-            </Provider>
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore}>
+                    <FieldForm {...props} />
+                </Provider>{' '}
+            </QueryClientProvider>
         )
 
         const saveButton = await findByText(/Save Changes/)
@@ -151,9 +166,11 @@ describe('<FieldForm/>', () => {
         }
 
         const {findByText} = render(
-            <Provider store={mockStore}>
-                <FieldForm {...props} />
-            </Provider>
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore}>
+                    <FieldForm {...props} />
+                </Provider>{' '}
+            </QueryClientProvider>
         )
 
         const cancelButton = await findByText(/Cancel/)

@@ -1,14 +1,14 @@
 import React from 'react'
 import {screen, waitFor} from '@testing-library/react'
-
 import LD from 'launchdarkly-react-client-sdk'
-
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
 import MockAdapter from 'axios-mock-adapter'
 import {AxiosRequestConfig} from 'axios'
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
+
 import {RootState, StoreDispatch} from 'state/types'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {user} from 'fixtures/users'
@@ -16,7 +16,7 @@ import client from 'models/api/resources'
 import {renderWithRouter} from 'utils/testing'
 import {CustomField} from 'models/customField/types'
 import {customField} from 'fixtures/customField'
-import TicketFields, {TicketFieldsTab} from '../TicketFields'
+import TicketFields from '../TicketFields'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const store = mockStore({
@@ -38,13 +38,25 @@ describe('<TicketFields/>', () => {
     it('should not render if the account does not have the feature flag', () => {
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({}))
 
+        const queryClient = new QueryClient()
+
+        mockedServer.onGet('/api/custom-fields/').reply(200, {
+            data: [],
+            meta: {
+                prev_cursor: null,
+                next_cursor: null,
+            },
+        })
+
         const {container} = renderWithRouter(
-            <Provider store={store}>
-                <TicketFields />
-            </Provider>,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={store}>
+                    <TicketFields />
+                </Provider>
+            </QueryClientProvider>,
             {
                 path: '/ticket-fields/:activeTab',
-                route: `/ticket-fields/${TicketFieldsTab.Active}`,
+                route: `/ticket-fields/active`,
             }
         )
 
@@ -57,6 +69,8 @@ describe('<TicketFields/>', () => {
                 [FeatureFlagKey.TicketFields]: true,
             }))
 
+            const queryClient = new QueryClient()
+
             mockedServer.onGet('/api/custom-fields/').reply(200, {
                 data: [],
                 meta: {
@@ -66,12 +80,14 @@ describe('<TicketFields/>', () => {
             })
 
             const {container} = renderWithRouter(
-                <Provider store={store}>
-                    <TicketFields />
-                </Provider>,
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={store}>
+                        <TicketFields />
+                    </Provider>
+                </QueryClientProvider>,
                 {
                     path: '/ticket-fields/:activeTab',
-                    route: `/ticket-fields/${TicketFieldsTab.Active}`,
+                    route: `/ticket-fields/active`,
                 }
             )
 
@@ -89,6 +105,8 @@ describe('<TicketFields/>', () => {
             jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
                 [FeatureFlagKey.TicketFields]: true,
             }))
+
+            const queryClient = new QueryClient()
 
             mockedServer
                 .onGet('/api/custom-fields/')
@@ -111,12 +129,14 @@ describe('<TicketFields/>', () => {
                 })
 
             const {container} = renderWithRouter(
-                <Provider store={store}>
-                    <TicketFields />
-                </Provider>,
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={store}>
+                        <TicketFields />
+                    </Provider>
+                </QueryClientProvider>,
                 {
                     path: '/ticket-fields/:activeTab',
-                    route: `/ticket-fields/${TicketFieldsTab.Active}`,
+                    route: `/ticket-fields/active`,
                 }
             )
 
@@ -137,6 +157,8 @@ describe('<TicketFields/>', () => {
                 [FeatureFlagKey.TicketFields]: true,
             }))
 
+            const queryClient = new QueryClient()
+
             mockedServer
                 .onGet('/api/custom-fields/')
                 .reply((config: AxiosRequestConfig) => {
@@ -157,12 +179,14 @@ describe('<TicketFields/>', () => {
                 })
 
             const {container} = renderWithRouter(
-                <Provider store={store}>
-                    <TicketFields />
-                </Provider>,
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={store}>
+                        <TicketFields />
+                    </Provider>
+                </QueryClientProvider>,
                 {
                     path: '/ticket-fields/:activeTab',
-                    route: `/ticket-fields/${TicketFieldsTab.Active}`,
+                    route: `/ticket-fields/active`,
                 }
             )
 
@@ -178,6 +202,8 @@ describe('<TicketFields/>', () => {
                 [FeatureFlagKey.TicketFields]: true,
             }))
 
+            const queryClient = new QueryClient()
+
             mockedServer
                 .onGet('/api/custom-fields/')
                 .reply((config: AxiosRequestConfig) => {
@@ -198,12 +224,14 @@ describe('<TicketFields/>', () => {
                 })
 
             const {container} = renderWithRouter(
-                <Provider store={store}>
-                    <TicketFields />
-                </Provider>,
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={store}>
+                        <TicketFields />
+                    </Provider>
+                </QueryClientProvider>,
                 {
                     path: '/ticket-fields/:activeTab',
-                    route: `/ticket-fields/${TicketFieldsTab.Archived}`,
+                    route: `/ticket-fields/archived`,
                 }
             )
 
@@ -223,6 +251,8 @@ describe('<TicketFields/>', () => {
             jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
                 [FeatureFlagKey.TicketFields]: true,
             }))
+
+            const queryClient = new QueryClient()
 
             mockedServer
                 .onGet('/api/custom-fields/')
@@ -244,12 +274,14 @@ describe('<TicketFields/>', () => {
                 })
 
             const {container} = renderWithRouter(
-                <Provider store={store}>
-                    <TicketFields />
-                </Provider>,
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={store}>
+                        <TicketFields />
+                    </Provider>
+                </QueryClientProvider>,
                 {
                     path: '/ticket-fields/:activeTab',
-                    route: `/ticket-fields/${TicketFieldsTab.Archived}`,
+                    route: `/ticket-fields/archived`,
                 }
             )
 

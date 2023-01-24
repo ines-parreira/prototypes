@@ -1,4 +1,3 @@
-import moment from 'moment'
 import client from 'models/api/resources'
 import {
     ApiCursorPaginationParams,
@@ -45,16 +44,13 @@ export async function updateCustomField(
     return response.data
 }
 
-export async function archiveCustomField(id: number): Promise<CustomField> {
-    const response = await client.put<CustomField>(`/api/custom-fields/${id}`, {
-        deactivated_datetime: moment.utc().toISOString(),
-    })
-    return response.data
-}
-
-export async function unArchiveCustomField(id: number): Promise<CustomField> {
-    const response = await client.put<CustomField>(`/api/custom-fields/${id}`, {
-        deactivated_datetime: null,
-    })
+export async function updatePartialCustomField(
+    id: number,
+    data: Partial<CustomField>
+): Promise<CustomField> {
+    const response = await client.put<CustomField>(
+        `/api/custom-fields/${id}`,
+        data
+    )
     return response.data
 }

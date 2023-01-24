@@ -6,10 +6,9 @@ import Row from 'pages/settings/ticketFields/components/Row'
 
 export type Props = {
     ticketFields: CustomField[]
-    onFieldChange: () => void
 }
 
-export default function List({ticketFields, onFieldChange}: Props) {
+export default function List({ticketFields}: Props) {
     if (!ticketFields.length) {
         return null
     }
@@ -33,11 +32,7 @@ export default function List({ticketFields, onFieldChange}: Props) {
                 </thead>
                 <tbody>
                     {ticketFields.map((ticketField) => (
-                        <Row
-                            key={ticketField.id}
-                            ticketField={ticketField}
-                            onFieldChange={onFieldChange}
-                        />
+                        <Row key={ticketField.id} ticketField={ticketField} />
                     ))}
                 </tbody>
             </Table>

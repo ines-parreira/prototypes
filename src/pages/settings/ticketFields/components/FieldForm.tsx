@@ -6,6 +6,7 @@ import {
     CustomFieldInput,
     isCustomField,
 } from 'models/customField/types'
+import {useUpdateCustomFieldStatus} from 'models/customField/queries'
 import InputField from 'pages/common/forms/input/InputField'
 import CheckBox from 'pages/common/forms/CheckBox'
 import Label from 'pages/common/forms/Label/Label'
@@ -13,9 +14,7 @@ import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Button from 'pages/common/components/button/Button'
 import Caption from 'pages/common/forms/Caption/Caption'
 import TextArea from 'pages/common/forms/TextArea'
-import useAppDispatch from 'hooks/useAppDispatch'
 import ArchiveConfirmationModal from 'pages/settings/ticketFields/components/ArchiveConfirmationModal'
-import {handleArchivingCustomField} from 'pages/settings/ticketFields/utils/handleArchivingCustomField'
 import DropdownInput from './DropdownInput'
 import TypeSelectInput from './TypeSelectInput'
 import css from './FieldForm.less'
@@ -24,7 +23,6 @@ interface FieldFormProps {
     field: CustomField | CustomFieldInput
     onSubmit: (field: CustomFieldInput) => Promise<void>
     onCancel: () => void
-    onFieldChange?: () => void
 }
 
 const pickMap = {
@@ -43,7 +41,10 @@ function sanitizeInput(input: CustomFieldInput): CustomFieldInput {
 }
 
 export default function FieldForm(props: FieldFormProps) {
-    const dispatch = useAppDispatch()
+    const {mutateAsync} = useUpdateCustomFieldStatus(
+        // this `: 0` case should never happen
+        isCustomField(props.field) ? props.field.id : 0
+    )
 
     const formRef = useRef<HTMLFormElement>(null)
 
@@ -75,12 +76,12 @@ export default function FieldForm(props: FieldFormProps) {
     }
 
     const handleArchivingCustomFieldCallback = useCallback(
-        async (id: number, archive: boolean) => {
+        async (archived: boolean) => {
             setIsLoading(true)
-            await handleArchivingCustomField(id, archive, dispatch)
+            await mutateAsync({archived})
             setIsLoading(false)
         },
-        [dispatch]
+        [mutateAsync]
     )
 
     const handleChoiceChange = useCallback(
@@ -206,10 +207,8 @@ export default function FieldForm(props: FieldFormProps) {
                                     isOpen={archiveModalVisible}
                                     onConfirm={async () => {
                                         await handleArchivingCustomFieldCallback(
-                                            (props.field as CustomField).id,
                                             true
                                         )
-                                        props.onFieldChange?.()
                                         setArchiveModalVisible(false)
                                     }}
                                     onClose={() =>
@@ -226,10 +225,8 @@ export default function FieldForm(props: FieldFormProps) {
                                 isLoading={isLoading}
                                 onClick={async () => {
                                     await handleArchivingCustomFieldCallback(
-                                        (props.field as CustomField).id,
                                         false
                                     )
-                                    props.onFieldChange?.()
                                 }}
                             >
                                 Unarchive field

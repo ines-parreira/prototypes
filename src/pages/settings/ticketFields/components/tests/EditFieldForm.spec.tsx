@@ -6,6 +6,7 @@ import {HTML5Backend} from 'react-dnd-html5-backend'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
 
 import {customField} from 'fixtures/customField'
 import client from 'models/api/resources'
@@ -18,6 +19,8 @@ const mockedServer = new MockAdapter(client)
 
 jest.mock('pages/history')
 
+const queryClient = new QueryClient()
+
 describe('<EditFieldForm/>', () => {
     beforeEach(() => {
         mockedServer.reset()
@@ -25,11 +28,13 @@ describe('<EditFieldForm/>', () => {
 
     it('should render correctly', () => {
         const {container} = render(
-            <Provider store={mockStore}>
-                <DndProvider backend={HTML5Backend}>
-                    <EditFieldForm field={customField} />
-                </DndProvider>
-            </Provider>
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore}>
+                    <DndProvider backend={HTML5Backend}>
+                        <EditFieldForm field={customField} />
+                    </DndProvider>
+                </Provider>
+            </QueryClientProvider>
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -40,11 +45,13 @@ describe('<EditFieldForm/>', () => {
             .reply(200, customField)
 
         const {findByText, findByLabelText} = render(
-            <Provider store={mockStore}>
-                <DndProvider backend={HTML5Backend}>
-                    <EditFieldForm field={customField} />
-                </DndProvider>
-            </Provider>
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore}>
+                    <DndProvider backend={HTML5Backend}>
+                        <EditFieldForm field={customField} />
+                    </DndProvider>
+                </Provider>
+            </QueryClientProvider>
         )
 
         const nameInput = await findByLabelText(/Name/)
@@ -66,11 +73,13 @@ describe('<EditFieldForm/>', () => {
 
     it('should go back to listing if the cancel button is clicked', async () => {
         const {findByText} = render(
-            <Provider store={mockStore}>
-                <DndProvider backend={HTML5Backend}>
-                    <EditFieldForm field={customField} />
-                </DndProvider>
-            </Provider>
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore}>
+                    <DndProvider backend={HTML5Backend}>
+                        <EditFieldForm field={customField} />
+                    </DndProvider>
+                </Provider>{' '}
+            </QueryClientProvider>
         )
 
         const cancelButton = await findByText(/Cancel/)

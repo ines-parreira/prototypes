@@ -5,6 +5,7 @@ import {HTML5Backend} from 'react-dnd-html5-backend'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
 
 import LD from 'launchdarkly-react-client-sdk'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -12,17 +13,20 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import AddTicketField from '../AddTicketField'
 
 const mockStore = configureMockStore([thunk])()
+const queryClient = new QueryClient()
 
 describe('<AddTicketField/>', () => {
     it('should not render if the account does not have the feature flag', () => {
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({}))
 
         const {container} = render(
-            <Provider store={mockStore}>
-                <DndProvider backend={HTML5Backend}>
-                    <AddTicketField />
-                </DndProvider>
-            </Provider>
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore}>
+                    <DndProvider backend={HTML5Backend}>
+                        <AddTicketField />
+                    </DndProvider>
+                </Provider>
+            </QueryClientProvider>
         )
         expect(container.firstChild).toBeNull()
     })
@@ -33,11 +37,13 @@ describe('<AddTicketField/>', () => {
         }))
 
         const {container} = render(
-            <Provider store={mockStore}>
-                <DndProvider backend={HTML5Backend}>
-                    <AddTicketField />
-                </DndProvider>
-            </Provider>
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore}>
+                    <DndProvider backend={HTML5Backend}>
+                        <AddTicketField />
+                    </DndProvider>
+                </Provider>
+            </QueryClientProvider>
         )
         expect(container.firstChild).toMatchSnapshot()
     })

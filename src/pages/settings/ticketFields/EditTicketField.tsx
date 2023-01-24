@@ -1,30 +1,21 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import {Link, useParams} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import useTitle from 'hooks/useTitle'
-import {getCustomField} from 'models/customField/resources'
-import {CustomField} from 'models/customField/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import css from 'pages/settings/settings.less'
+import {useGetCustomFieldDefinition} from 'models/customField/queries'
 import EditFieldForm from './components/EditFieldForm'
 
 export default function EditTicketField() {
     const params = useParams<{id: string}>()
     const id = parseInt(params.id, 10)
 
-    const [field, setField] = useState<CustomField>()
-
-    useEffect(() => {
-        getCustomField(id)
-            .then(setField)
-            .catch((e) => {
-                console.error('Error loading field', e)
-            })
-    }, [id])
+    const {data: field, isLoading} = useGetCustomFieldDefinition(id)
 
     useTitle(field?.label)
 
@@ -34,7 +25,7 @@ export default function EditTicketField() {
         return null
     }
 
-    if (!field) {
+    if (isLoading || !field) {
         return <Loader />
     }
 

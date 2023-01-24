@@ -12,3 +12,9 @@ export const VALUE_TYPES = [
         description: 'Add descriptions, notes, or other text',
     },
 ]
+
+export enum CustomFieldQueryKeys {
+    customFieldDefinition = 'customFieldDefinition',
+    customFieldDefinitionList = 'customFieldDefinitionList',
+    customFieldDefinitionEdit = 'customFieldDefinitionEdit',
+}

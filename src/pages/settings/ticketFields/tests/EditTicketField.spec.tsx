@@ -5,6 +5,7 @@ import {Provider} from 'react-redux'
 import MockAdapter from 'axios-mock-adapter'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
 
 import LD from 'launchdarkly-react-client-sdk'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -16,6 +17,7 @@ import EditTicketField from '../EditTicketField'
 
 const mockStore = configureMockStore([thunk])()
 const mockedServer = new MockAdapter(client)
+const queryClient = new QueryClient()
 
 describe('<EditTicketField/>', () => {
     beforeEach(() => {
@@ -26,11 +28,13 @@ describe('<EditTicketField/>', () => {
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({}))
 
         const {container} = renderWithRouter(
-            <Provider store={mockStore}>
-                <DndProvider backend={HTML5Backend}>
-                    <EditTicketField />
-                </DndProvider>
-            </Provider>,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore}>
+                    <DndProvider backend={HTML5Backend}>
+                        <EditTicketField />
+                    </DndProvider>
+                </Provider>
+            </QueryClientProvider>,
             {
                 path: '/ticket-fields/:id/edit',
                 route: '/ticket-fields/123/edit',
@@ -46,9 +50,12 @@ describe('<EditTicketField/>', () => {
         }))
 
         const {container, findByText} = renderWithRouter(
-            <Provider store={mockStore}>
-                <EditTicketField />
-            </Provider>,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore}>
+                    <EditTicketField />
+                </Provider>
+            </QueryClientProvider>,
+
             {
                 path: '/ticket-fields/:id/edit',
                 route: '/ticket-fields/123/edit',

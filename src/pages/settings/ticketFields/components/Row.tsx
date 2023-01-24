@@ -1,34 +1,22 @@
-import React, {useCallback, useState} from 'react'
+import React, {useState} from 'react'
 import classnames from 'classnames'
 import {Link} from 'react-router-dom'
 import {CustomField} from 'models/customField/types'
+import {useUpdateCustomFieldStatus} from 'models/customField/queries'
 import IconButton from 'pages/common/components/button/IconButton'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import css from 'pages/settings/ticketFields/components/Row.less'
 import {DatetimeLabel} from 'pages/common/utils/labels'
-import useAppDispatch from 'hooks/useAppDispatch'
 import ArchiveConfirmationModal from 'pages/settings/ticketFields/components/ArchiveConfirmationModal'
-import {handleArchivingCustomField} from 'pages/settings/ticketFields/utils/handleArchivingCustomField'
 
 export type Props = {
     ticketField: CustomField
-    onFieldChange: () => void
 }
-export default function Row({ticketField, onFieldChange}: Props) {
-    const dispatch = useAppDispatch()
+export default function Row({ticketField}: Props) {
+    const {mutate, isLoading} = useUpdateCustomFieldStatus(ticketField.id)
 
     const link = `/app/settings/ticket-fields/${ticketField.id}/edit`
     const [archiveModalVisible, setArchiveModalVisible] = useState(false)
-    const [isLoading, setLoading] = useState(false)
-
-    const handleArchivingCustomFieldCallback = useCallback(
-        async (id: number, archive: boolean) => {
-            setLoading(true)
-            await handleArchivingCustomField(id, archive, dispatch)
-            setLoading(false)
-        },
-        [dispatch]
-    )
 
     return (
         <tr
@@ -92,12 +80,9 @@ export default function Row({ticketField, onFieldChange}: Props) {
                         <ArchiveConfirmationModal
                             ticketFieldLabel={ticketField.label}
                             isOpen={archiveModalVisible}
-                            onConfirm={async () => {
-                                await handleArchivingCustomFieldCallback(
-                                    ticketField.id,
-                                    true
-                                )
-                                onFieldChange()
+                            onConfirm={() => {
+                                setArchiveModalVisible(false)
+                                mutate({archived: true})
                             }}
                             onClose={() => setArchiveModalVisible(false)}
                         />
@@ -107,12 +92,8 @@ export default function Row({ticketField, onFieldChange}: Props) {
                 {ticketField.deactivated_datetime && (
                     <IconButton
                         className={classnames(css.actionButton, 'mr-1')}
-                        onClick={async () => {
-                            await handleArchivingCustomFieldCallback(
-                                ticketField.id,
-                                false
-                            )
-                            onFieldChange()
+                        onClick={() => {
+                            mutate({archived: false})
                         }}
                         fillStyle="ghost"
                         intent="secondary"

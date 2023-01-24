@@ -10,6 +10,7 @@ import {HTML5Backend} from 'react-dnd-html5-backend'
 import Immutable from 'immutable'
 import installDevTools from 'immutable-devtools'
 import {Store} from 'redux'
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
 
 import {getLDClient, LDUser} from 'utils/launchDarkly'
 import {RootState} from '../state/types'
@@ -29,6 +30,8 @@ if (process.env.NODE_ENV !== 'production') {
     installDevTools(Immutable)
 }
 
+const queryClient = new QueryClient()
+
 const manager = createDragDropManager(HTML5Backend, undefined, undefined)
 
 class Root extends Component<Props, State> {
@@ -47,22 +50,24 @@ class Root extends Component<Props, State> {
         const {LDClient} = this.state
 
         return (
-            <Provider store={store}>
-                <DndProvider manager={manager}>
-                    <LDProvider
-                        clientSideID={window.GORGIAS_LAUNCHDARKLY_CLIENT_ID}
-                        ldClient={LDClient}
-                        reactOptions={{
-                            useCamelCaseFlagKeys: false,
-                        }}
-                        user={LDUser}
-                    >
-                        <Router history={history}>
-                            <Routes />
-                        </Router>
-                    </LDProvider>
-                </DndProvider>
-            </Provider>
+            <QueryClientProvider client={queryClient}>
+                <Provider store={store}>
+                    <DndProvider manager={manager}>
+                        <LDProvider
+                            clientSideID={window.GORGIAS_LAUNCHDARKLY_CLIENT_ID}
+                            ldClient={LDClient}
+                            reactOptions={{
+                                useCamelCaseFlagKeys: false,
+                            }}
+                            user={LDUser}
+                        >
+                            <Router history={history}>
+                                <Routes />
+                            </Router>
+                        </LDProvider>
+                    </DndProvider>
+                </Provider>
+            </QueryClientProvider>
         )
     }
 }
