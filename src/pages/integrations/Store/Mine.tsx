@@ -1,9 +1,7 @@
 import React, {useEffect, useState} from 'react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {useLocalStorage} from 'react-use'
 import {Link} from 'react-router-dom'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {fetchApps} from 'models/integration/resources'
 import {AppListItem} from 'models/integration/types/app'
 import {fetchIntegrations} from 'state/integrations/actions'
@@ -65,11 +63,6 @@ export default function Mine() {
     useEffect(() => {
         void dispatch(fetchIntegrations())
     }, [dispatch])
-
-    const isAppStoreEnabled = useFlags()[FeatureFlagKey.AppStore]
-    if (!isAppStoreEnabled) {
-        return null
-    }
 
     const connectedItems: Item[] = [...installedIntegrations, ...connectedApps]
 

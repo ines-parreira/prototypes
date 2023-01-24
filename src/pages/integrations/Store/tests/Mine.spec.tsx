@@ -6,11 +6,9 @@ import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import MockAdapter from 'axios-mock-adapter'
-import LD from 'launchdarkly-react-client-sdk'
 
 import {IntegrationType} from 'models/integration/types'
 import {dummyAppListData as appData} from 'fixtures/apps'
-import {FeatureFlagKey} from 'config/featureFlags'
 import client from 'models/api/resources'
 
 import Mine, {LOCAL_STORAGE_KEY} from '../Mine'
@@ -26,9 +24,6 @@ const store = mockStore({
 
 describe('<Mine />', () => {
     const mockApi = new MockAdapter(client)
-    jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-        [FeatureFlagKey.AppStore]: true,
-    }))
 
     beforeEach(() => {
         mockApi.reset()

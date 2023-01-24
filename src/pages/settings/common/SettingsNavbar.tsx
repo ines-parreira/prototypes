@@ -1,7 +1,6 @@
 import React from 'react'
 import classnames from 'classnames'
 import {Link, useLocation} from 'react-router-dom'
-import cloneDeep from 'lodash/cloneDeep'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import css from 'assets/css/navbar.less'
@@ -223,8 +222,6 @@ const SettingsNavbar = () => {
     const featureFlags = useFlags()
     const isAutomationSettingsRevampEnabled: boolean | undefined =
         featureFlags[FeatureFlagKey.AutomationSettingsRevamp]
-    const isAppStoreEnabled: boolean | undefined =
-        featureFlags[FeatureFlagKey.AppStore]
 
     const getCategories = () => {
         if (isAutomationSettingsRevampEnabled) {
@@ -239,21 +236,6 @@ const SettingsNavbar = () => {
 
                 return categories
             }
-        }
-        if (!isAppStoreEnabled) {
-            const integrationIndex = CATEGORIES.findIndex(
-                (category) => category.name === 'App Store'
-            )
-            const categories = cloneDeep(CATEGORIES)
-            const links = categories[integrationIndex].links
-            links.splice(0, 2)
-            links.unshift({
-                requiredRole: ADMIN_ROLE,
-                to: 'integrations',
-                text: 'All Apps',
-            })
-
-            return categories
         }
 
         return CATEGORIES

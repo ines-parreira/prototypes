@@ -27,7 +27,6 @@ import {
 import App from './App'
 import IntegrationDetail from './integrations/integration/Integration'
 import AppDetail from './integrations/App'
-import IntegrationsList from './integrations/List'
 import IntegrationsStore from './integrations/Store'
 import MyIntegrations from './integrations/Store/Mine'
 import PhoneNumbersListContainer from './phoneNumbers/PhoneNumbersListContainer'
@@ -836,9 +835,6 @@ export function ChannelsSettingsRoutes({match: {path}}: RouteComponentProps) {
 export function IntegrationsSettingsRoutes({
     match: {path},
 }: RouteComponentProps) {
-    const featureFlags = useFlags()
-    const isAppStoreEnabled: boolean | undefined =
-        featureFlags[FeatureFlagKey.AppStore]
     return (
         <HelpCenterApiClientProvider>
             <Switch>
@@ -847,9 +843,7 @@ export function IntegrationsSettingsRoutes({
                     exact
                     render={appRender({
                         content: memoizedWithUserRoleRequired(
-                            isAppStoreEnabled
-                                ? IntegrationsStore
-                                : IntegrationsList,
+                            IntegrationsStore,
                             ADMIN_ROLE,
                             PageSection.Integrations
                         ),

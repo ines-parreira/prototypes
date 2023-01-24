@@ -132,11 +132,6 @@ export default function All() {
     }, [dispatch])
 
     const featureFlags = useFlags()
-    const isAppStoreEnabled = featureFlags[FeatureFlagKey.AppStore]
-    if (!isAppStoreEnabled) {
-        return null
-    }
-
     const isWhatsAppEnabled = featureFlags[FeatureFlagKey.EnableWhatsApp]
     const filteredIntegrationsList = filterOutDeprecatedIntegrations(
         integrationsList,

@@ -5,12 +5,10 @@ import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import MockAdapter from 'axios-mock-adapter'
-import LD from 'launchdarkly-react-client-sdk'
 import {renderWithRouter} from 'utils/testing'
 
 import {INTEGRATION_TYPE_CONFIG} from 'config'
 import {dummyAppListData} from 'fixtures/apps'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     AccountFeature,
     AccountFeatureMetadata,
@@ -117,9 +115,6 @@ describe('addRequiredPlanToIntegrations()', () => {
 
 describe('<All />', () => {
     const mockApi = new MockAdapter(client)
-    jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-        [FeatureFlagKey.AppStore]: true,
-    }))
 
     beforeEach(() => {
         mockApi.reset()
