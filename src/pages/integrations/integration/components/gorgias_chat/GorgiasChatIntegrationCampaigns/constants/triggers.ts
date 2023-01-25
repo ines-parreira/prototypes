@@ -1,6 +1,7 @@
 import {BusinessHoursOperators} from '../types/enums/BusinessHoursOperators.enum'
 import {CampaignTriggerKey} from '../types/enums/CampaignTriggerKey.enum'
 import {CartValueOperators} from '../types/enums/CartValueOperators.enum'
+import {CurrentProductTagsOperators} from '../types/enums/CurrentProductTagsOperators.enum'
 import {CurrentUrlOperators} from '../types/enums/CurrentUrlOperators.enum'
 import {ExitIntentOperators} from '../types/enums/ExitIntentOperators.enum'
 import {ProductTagsOperators} from '../types/enums/ProductTagsOperators.enum'
@@ -13,6 +14,7 @@ export const BETA_TRIGGERS = [
     CampaignTriggerKey.CartValue,
     CampaignTriggerKey.ExitIntent,
     CampaignTriggerKey.ProductTags,
+    CampaignTriggerKey.CurrentProductTags,
     CampaignTriggerKey.SessionTime,
     CampaignTriggerKey.SingleInView,
     CampaignTriggerKey.VisitCount,
@@ -101,6 +103,19 @@ export const TRIGGER_LIST = [
         defaults: {
             value: '',
             operator: ProductTagsOperators.Contains,
+        },
+        requirements: {
+            revenue: true,
+            shopify: true,
+            headless: false,
+        },
+    },
+    {
+        key: CampaignTriggerKey.CurrentProductTags,
+        label: 'Currently visited product',
+        defaults: {
+            value: '',
+            operator: CurrentProductTagsOperators.Contains,
         },
         requirements: {
             revenue: true,

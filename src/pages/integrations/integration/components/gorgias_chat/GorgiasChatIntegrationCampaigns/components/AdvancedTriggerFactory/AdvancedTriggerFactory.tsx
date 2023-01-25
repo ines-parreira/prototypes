@@ -21,6 +21,7 @@ import {TimeSpentOnPageTrigger} from './TimeSpentOnPageTrigger'
 import {VisitCountTrigger} from './VisitCountTrigger'
 
 import css from './style.less'
+import {CurrentProductTagsTrigger} from './CurrentProductTagsTrigger'
 
 type Props = {
     trigger: CampaignTrigger
@@ -61,6 +62,8 @@ export const AdvancedTriggerFactory = ({
                 return <CartValueTrigger {...baseProps} />
             case CampaignTriggerKey.ProductTags:
                 return <ProductTagsTrigger {...baseProps} />
+            case CampaignTriggerKey.CurrentProductTags:
+                return <CurrentProductTagsTrigger {...baseProps} />
             case CampaignTriggerKey.VisitCount:
                 return <VisitCountTrigger {...baseProps} />
             case CampaignTriggerKey.SessionTime:

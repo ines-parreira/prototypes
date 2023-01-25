@@ -1,5 +1,6 @@
 import {BusinessHoursOperators} from './enums/BusinessHoursOperators.enum'
 import {CartValueOperators} from './enums/CartValueOperators.enum'
+import {CurrentProductTagsOperators} from './enums/CurrentProductTagsOperators.enum'
 import {CurrentUrlOperators} from './enums/CurrentUrlOperators.enum'
 import {DeviceTypeOperators} from './enums/DeviceTypeOperators.enum'
 import {ExitIntentOperators} from './enums/ExitIntentOperators.enum'
@@ -15,6 +16,7 @@ export type CampaignOperator =
     | BusinessHoursOperators
     | CartValueOperators
     | ProductTagsOperators
+    | CurrentProductTagsOperators
     | VisitCountOperators
     | SessionTimeOperators
     | ExitIntentOperators

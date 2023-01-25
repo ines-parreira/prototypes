@@ -4,6 +4,7 @@ export enum CampaignTriggerKey {
     BusinessHours = 'business_hours',
     CartValue = 'cart_value',
     ProductTags = 'product_tags',
+    CurrentProductTags = 'current_product_tags',
     VisitCount = 'visit_count',
     SessionTime = 'session_time',
     ExitIntent = 'exit_intent',

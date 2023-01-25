@@ -1,5 +1,6 @@
 import {BusinessHoursOperators} from '../types/enums/BusinessHoursOperators.enum'
 import {CartValueOperators} from '../types/enums/CartValueOperators.enum'
+import {CurrentProductTagsOperators} from '../types/enums/CurrentProductTagsOperators.enum'
 import {CurrentUrlOperators} from '../types/enums/CurrentUrlOperators.enum'
 import {DeviceTypeOperators} from '../types/enums/DeviceTypeOperators.enum'
 import {ProductTagsOperators} from '../types/enums/ProductTagsOperators.enum'
@@ -85,6 +86,17 @@ export const PRODUCT_TAGS_OPERATORS = [
     {
         label: 'contains',
         value: ProductTagsOperators.Contains,
+    },
+]
+
+export const CURRENT_PRODUCT_TAGS_OPERATORS = [
+    {
+        label: 'equals',
+        value: CurrentProductTagsOperators.Equal,
+    },
+    {
+        label: 'contains',
+        value: CurrentProductTagsOperators.Contains,
     },
 ]
 

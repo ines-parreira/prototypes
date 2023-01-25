@@ -1,5 +1,7 @@
 import {renderHook} from 'react-hooks-testing-library'
 
+import {TRIGGER_LIST} from '../../constants/triggers'
+
 import {CampaignTriggerKey} from '../../types/enums/CampaignTriggerKey.enum'
 import {ExitIntentOperators} from '../../types/enums/ExitIntentOperators.enum'
 import {SessionTimeOperators} from '../../types/enums/SessionTimeOperators.enum'
@@ -121,7 +123,16 @@ describe('useAvailableTriggerList()', () => {
         })
     })
 
-    describe.skip('Merchant IS a revenue subscriber and HAS a Shopify chat', () => {
-        // To be implemented
+    describe('Merchant IS a revenue subscriber and HAS a Shopify chat', () => {
+        it('returns all triggers', () => {
+            const {result} = renderHook(() =>
+                useAvailableTriggerList({
+                    isRevenueBetaTester: true,
+                    isShopifyStore: true,
+                })
+            )
+
+            expect(result.current).toStrictEqual(TRIGGER_LIST)
+        })
     })
 })
