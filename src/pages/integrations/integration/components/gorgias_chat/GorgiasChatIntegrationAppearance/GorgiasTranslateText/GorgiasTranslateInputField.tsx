@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import {Col, Container, Row} from 'reactstrap'
-import TextInput from '../../../../../../common/forms/input/TextInput'
+import TextArea from '../../../../../../common/forms/TextArea'
 import css from './GorgiasTranslateText.less'
 
 type Props = {
@@ -34,9 +34,7 @@ const GorgiasTranslateInputField = ({
                     <label htmlFor={keyName}>{defaultValue}</label>
                 </Col>
                 <Col className={css.pageColumn} md="6">
-                    <TextInput
-                        type="text"
-                        className="input"
+                    <TextArea
                         aria-label={defaultValue}
                         defaultValue={value}
                         maxLength={maxLength}
@@ -44,6 +42,8 @@ const GorgiasTranslateInputField = ({
                         placeholder={'Enter custom value'}
                         key={keyName}
                         autoFocus={focus}
+                        rows={1}
+                        autoRowHeight
                         onFocus={() => {
                             setHasFocus(true)
                             trackInputMethod?.(keyName)
