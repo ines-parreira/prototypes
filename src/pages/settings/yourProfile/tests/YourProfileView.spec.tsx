@@ -209,9 +209,7 @@ describe('YourProfileView', () => {
                     }
                 )
                 await waitFor(() => {
-                    const queryResult = expect(
-                        queryByText(/Auto-fill macros with high/i)
-                    )
+                    const queryResult = expect(queryByText(/macro prediction/i))
                     prefillSetting
                         ? queryResult.toBeTruthy()
                         : queryResult.toBeFalsy()

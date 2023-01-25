@@ -2679,26 +2679,63 @@ exports[`YourProfileView render should render current user profile form 1`] = `
         <div
           className="heading-subsection-semibold mb16"
         >
-          Account Preferences
+          My Macro Preferences
         </div>
         <FormGroup
           className="inputField mb32 body-regular"
           tag="div"
         >
-          <ForwardRef(CheckBox)
-            className="mb-2"
-            name="show_macros"
-            onChange={[Function]}
+          <Group
+            className="inputField"
+            orientation="vertical"
           >
-            Display macros by default on emails
-          </ForwardRef(CheckBox)>
-          <ForwardRef(CheckBox)
-            isChecked={true}
-            name="show_macros_suggestions"
-            onChange={[Function]}
+            <ToggleInput
+              name="show_macros"
+              onClick={[Function]}
+            >
+              Display macro search view by default
+            </ToggleInput>
+            <FormText
+              color="muted"
+              tag="small"
+            >
+              Always display the macro search view when responding to incoming emails.
+               
+              <a
+                href="https://docs.gorgias.com/en-US/macros-81846#:~:text=will%20be%20easier.-,Additional%20features,-Still%20not%20fast"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Learn more
+              </a>
+            </FormText>
+          </Group>
+          <Group
+            className="inputField"
+            orientation="vertical"
           >
-            Display macros suggestions in message editor
-          </ForwardRef(CheckBox)>
+            <ToggleInput
+              isToggled={true}
+              name="show_macros_suggestions"
+              onClick={[Function]}
+            >
+              Macro suggestions
+            </ToggleInput>
+            <FormText
+              color="muted"
+              tag="small"
+            >
+              Display suggested macros that can be applied to tickets with one click.
+               
+              <a
+                href="https://docs.gorgias.com/en-US/macros-81846#:~:text=will%20be%20easier.-,Additional%20features,-Still%20not%20fast"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Learn more
+              </a>
+            </FormText>
+          </Group>
         </FormGroup>
         <FormGroup
           className="inputField mb40"

@@ -19,12 +19,10 @@ import Avatar from 'pages/common/components/Avatar/Avatar'
 import PageHeader from 'pages/common/components/PageHeader'
 import Button from 'pages/common/components/button/Button'
 import FileField, {UploadType} from 'pages/common/forms/FileField'
-import CheckBox from 'pages/common/forms/CheckBox'
 import InputField from 'pages/common/forms/input/InputField'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import Tooltip from 'pages/common/components/Tooltip'
 import Group from 'pages/common/components/layout/Group'
 import settingsCss from 'pages/settings/settings.less'
 
@@ -373,7 +371,7 @@ export class YourProfileView extends Component<Props, State> {
                                     settingsCss.mb16
                                 )}
                             >
-                                Account Preferences
+                                My Macro Preferences
                             </div>
 
                             <FormGroup
@@ -384,16 +382,18 @@ export class YourProfileView extends Component<Props, State> {
                                 )}
                             >
                                 {isPrefillBestMacroEnabled && (
-                                    <Group className={'align-items-baseline'}>
-                                        <CheckBox
-                                            className="mb-2 pr-1"
+                                    <Group
+                                        orientation="vertical"
+                                        className={settingsCss.inputField}
+                                    >
+                                        <ToggleInput
                                             name="prefill_best_macro"
-                                            isChecked={
+                                            isToggled={
                                                 this.state.preferences.get(
                                                     'prefill_best_macro'
                                                 ) as boolean
                                             }
-                                            onChange={(value: boolean) =>
+                                            onClick={(value: boolean) =>
                                                 this.setState({
                                                     preferences:
                                                         this.state.preferences.set(
@@ -403,65 +403,92 @@ export class YourProfileView extends Component<Props, State> {
                                                 })
                                             }
                                         >
-                                            Auto-fill macros with high success
-                                            rate
-                                        </CheckBox>
-                                        <i
-                                            id="autofill-tooltip"
-                                            className="material-icons md-1 mr-1"
-                                        >
-                                            info
-                                        </i>
-                                        <Tooltip
-                                            target="autofill-tooltip"
-                                            placement="top-start"
-                                        >
-                                            Whenever a macro responds to a
-                                            question accurately, it’s going to
-                                            be pre-filled.
-                                        </Tooltip>
+                                            Macro prediction
+                                        </ToggleInput>
+                                        <FormText color="muted">
+                                            Automatically select macros based on
+                                            ticket content.{' '}
+                                            <a
+                                                href="https://docs.gorgias.com/en-US/macros-81846#:~:text=will%20be%20easier.-,Additional%20features,-Still%20not%20fast"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                Learn more
+                                            </a>
+                                        </FormText>
                                     </Group>
                                 )}
-                                <CheckBox
-                                    className="mb-2"
-                                    name="show_macros"
-                                    isChecked={
-                                        this.state.preferences.get(
-                                            'show_macros'
-                                        ) as boolean
-                                    }
-                                    onChange={(value: boolean) =>
-                                        this.setState({
-                                            preferences:
-                                                this.state.preferences.set(
-                                                    'show_macros',
-                                                    value
-                                                ),
-                                        })
-                                    }
+                                <Group
+                                    orientation="vertical"
+                                    className={settingsCss.inputField}
                                 >
-                                    Display macros by default on emails
-                                </CheckBox>
-                                <CheckBox
-                                    name="show_macros_suggestions"
-                                    isChecked={
-                                        this.state.preferences.get(
-                                            'show_macros_suggestions',
-                                            true
-                                        ) as boolean
-                                    }
-                                    onChange={(value: boolean) =>
-                                        this.setState({
-                                            preferences:
-                                                this.state.preferences.set(
-                                                    'show_macros_suggestions',
-                                                    value
-                                                ),
-                                        })
-                                    }
+                                    <ToggleInput
+                                        name="show_macros"
+                                        isToggled={
+                                            this.state.preferences.get(
+                                                'show_macros'
+                                            ) as boolean
+                                        }
+                                        onClick={(value: boolean) =>
+                                            this.setState({
+                                                preferences:
+                                                    this.state.preferences.set(
+                                                        'show_macros',
+                                                        value
+                                                    ),
+                                            })
+                                        }
+                                    >
+                                        Display macro search view by default
+                                    </ToggleInput>
+                                    <FormText color="muted">
+                                        Always display the macro search view
+                                        when responding to incoming emails.{' '}
+                                        <a
+                                            href="https://docs.gorgias.com/en-US/macros-81846#:~:text=will%20be%20easier.-,Additional%20features,-Still%20not%20fast"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Learn more
+                                        </a>
+                                    </FormText>
+                                </Group>
+                                <Group
+                                    orientation="vertical"
+                                    className={settingsCss.inputField}
                                 >
-                                    Display macros suggestions in message editor
-                                </CheckBox>
+                                    <ToggleInput
+                                        name="show_macros_suggestions"
+                                        isToggled={
+                                            this.state.preferences.get(
+                                                'show_macros_suggestions',
+                                                true
+                                            ) as boolean
+                                        }
+                                        onClick={(value: boolean) =>
+                                            this.setState({
+                                                preferences:
+                                                    this.state.preferences.set(
+                                                        'show_macros_suggestions',
+                                                        value
+                                                    ),
+                                            })
+                                        }
+                                    >
+                                        Macro suggestions
+                                    </ToggleInput>
+                                    <FormText color="muted">
+                                        Display suggested macros that can be
+                                        applied to tickets with one click.{' '}
+                                        <a
+                                            href="https://docs.gorgias.com/en-US/macros-81846#:~:text=will%20be%20easier.-,Additional%20features,-Still%20not%20fast"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Learn more
+                                        </a>
+                                    </FormText>
+                                </Group>
                             </FormGroup>
                             <FormGroup
                                 className={classnames(
