@@ -25,6 +25,7 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
         "channel": "email",
         "is_unread": true,
         "meta": null,
+        "custom_fields": Immutable.List [],
         "last_received_message_datetime": null,
         "subject": "Great ticket",
         "messages": Immutable.List [
@@ -567,6 +568,7 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
         "channel": "email",
         "is_unread": true,
         "meta": null,
+        "custom_fields": Immutable.List [],
         "last_received_message_datetime": null,
         "subject": "Great ticket",
         "messages": Immutable.List [
@@ -1116,6 +1118,7 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
         "channel": "email",
         "is_unread": true,
         "meta": null,
+        "custom_fields": Immutable.List [],
         "last_received_message_datetime": null,
         "subject": "Great ticket",
         "messages": Immutable.List [
@@ -1683,6 +1686,7 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
         "channel": "email",
         "is_unread": true,
         "meta": null,
+        "custom_fields": Immutable.List [],
         "last_received_message_datetime": null,
         "subject": "Great ticket",
         "messages": Immutable.List [
@@ -2225,6 +2229,7 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
         "channel": "email",
         "is_unread": true,
         "meta": null,
+        "custom_fields": Immutable.List [],
         "last_received_message_datetime": null,
         "subject": "Great ticket",
         "messages": Immutable.List [
@@ -2774,6 +2779,7 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
         "channel": "email",
         "is_unread": true,
         "meta": null,
+        "custom_fields": Immutable.List [],
         "last_received_message_datetime": null,
         "subject": "Great ticket",
         "messages": Immutable.List [

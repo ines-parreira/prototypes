@@ -1,0 +1,42 @@
+@import '~css/new/colors';
+@import '~css/new/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .baseStyles {
+        padding: 0 @layout-spacing-xs;
+        height: 20px;
+        width: 82px;
+        .body-regular();
+        border-radius: 4px;
+        &:focus,
+        &:active {
+            outline: none;
+        }
+        &::placeholder {
+            color: @classic-neutral-grey-4;
+            font-weight: normal;
+        }
+    }
+
+    .stealth {
+        .body-semibold();
+        color: @classic-neutral-grey-6;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        border: 1px solid transparent;
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    .valid {
+        border: 1px solid @classic-main-primary;
+        box-shadow: 0 0 0 2px fadeout(@classic-main-primary, 80%);
+    }
+
+    .invalid {
+        border: 1px solid @classic-feedback-error;
+    }
+}

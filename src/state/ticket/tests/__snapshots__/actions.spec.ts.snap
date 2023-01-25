@@ -52,6 +52,7 @@ Array [
       "channel": "email",
       "is_unread": false,
       "priority": "normal",
+      "custom_fields": Immutable.Map {},
       "reply_options": Immutable.Map {
         "email": Immutable.Map {
           "answerable": true,
@@ -135,6 +136,7 @@ Object {
     "channel": "email",
     "is_unread": false,
     "priority": "normal",
+    "custom_fields": Immutable.Map {},
     "reply_options": Immutable.Map {
       "email": Immutable.Map {
         "answerable": true,
@@ -380,7 +382,7 @@ Array [
     "type": "FETCH_TICKET_START",
   },
   Object {
-    "resp": Object {
+    "response": Object {
       "id": 1,
       "messages": Array [
         Object {
@@ -424,6 +426,7 @@ Array [
       "channel": "email",
       "is_unread": false,
       "priority": "normal",
+      "custom_fields": Immutable.Map {},
       "reply_options": Immutable.Map {
         "email": Immutable.Map {
           "answerable": true,
@@ -512,7 +515,7 @@ Array [
     "type": "FETCH_TICKET_START",
   },
   Object {
-    "resp": Object {
+    "response": Object {
       "id": 1,
       "messages": Array [],
     },
@@ -544,6 +547,7 @@ Array [
       "channel": "email",
       "is_unread": false,
       "priority": "normal",
+      "custom_fields": Immutable.Map {},
       "reply_options": Immutable.Map {
         "email": Immutable.Map {
           "answerable": true,
@@ -620,6 +624,7 @@ Array [
       "channel": "email",
       "is_unread": false,
       "priority": "normal",
+      "custom_fields": Immutable.Map {},
       "reply_options": Immutable.Map {
         "email": Immutable.Map {
           "answerable": true,
@@ -672,7 +677,7 @@ Array [
     "type": "FETCH_TICKET_START",
   },
   Object {
-    "resp": Object {
+    "response": Object {
       "id": 1,
       "is_unread": true,
       "messages": Array [],
@@ -706,6 +711,7 @@ Array [
       "channel": "email",
       "is_unread": false,
       "priority": "normal",
+      "custom_fields": Immutable.Map {},
       "reply_options": Immutable.Map {
         "email": Immutable.Map {
           "answerable": true,
@@ -813,7 +819,7 @@ Array [
     "type": "FETCH_TICKET_START",
   },
   Object {
-    "resp": Object {
+    "response": Object {
       "customerId": 1,
       "id": 2,
       "messages": Array [],
@@ -845,6 +851,7 @@ Array [
       "channel": "email",
       "is_unread": false,
       "priority": "normal",
+      "custom_fields": Immutable.Map {},
       "reply_options": Immutable.Map {
         "email": Immutable.Map {
           "answerable": true,
@@ -908,7 +915,7 @@ Array [
     "type": "FETCH_TICKET_START",
   },
   Object {
-    "resp": Object {
+    "response": Object {
       "customerId": 1,
       "id": 2,
       "messages": Array [
@@ -952,6 +959,7 @@ Array [
       "channel": "email",
       "is_unread": false,
       "priority": "normal",
+      "custom_fields": Immutable.Map {},
       "reply_options": Immutable.Map {
         "email": Immutable.Map {
           "answerable": true,
@@ -1036,7 +1044,7 @@ Array [
 exports[`ticket actions goToNextTicket() should fetch next ticket and wait for promise to be resolved to go to this ticket 1`] = `
 Array [
   Object {
-    "resp": Object {
+    "response": Object {
       "id": 2,
       "messages": Array [],
     },
@@ -1066,6 +1074,7 @@ Array [
       "channel": "email",
       "is_unread": false,
       "priority": "normal",
+      "custom_fields": Immutable.Map {},
       "reply_options": Immutable.Map {
         "email": Immutable.Map {
           "answerable": true,
@@ -1161,7 +1170,7 @@ Array [
     "type": "FETCH_TICKET_START",
   },
   Object {
-    "resp": Object {
+    "response": Object {
       "customerId": 1,
       "id": 1,
       "messages": Array [],
@@ -1193,6 +1202,7 @@ Array [
       "channel": "email",
       "is_unread": false,
       "priority": "normal",
+      "custom_fields": Immutable.Map {},
       "reply_options": Immutable.Map {
         "email": Immutable.Map {
           "answerable": true,
@@ -1256,7 +1266,7 @@ Array [
     "type": "FETCH_TICKET_START",
   },
   Object {
-    "resp": Object {
+    "response": Object {
       "customerId": 1,
       "id": 1,
       "messages": Array [
@@ -1300,6 +1310,7 @@ Array [
       "channel": "email",
       "is_unread": false,
       "priority": "normal",
+      "custom_fields": Immutable.Map {},
       "reply_options": Immutable.Map {
         "email": Immutable.Map {
           "answerable": true,
@@ -1384,7 +1395,7 @@ Array [
 exports[`ticket actions goToPrevTicket() should fetch previous ticket and wait for promise to be resolved to go to this ticket 1`] = `
 Array [
   Object {
-    "resp": Object {
+    "response": Object {
       "id": 1,
       "messages": Array [],
     },
@@ -1414,6 +1425,7 @@ Array [
       "channel": "email",
       "is_unread": false,
       "priority": "normal",
+      "custom_fields": Immutable.Map {},
       "reply_options": Immutable.Map {
         "email": Immutable.Map {
           "answerable": true,
@@ -1482,7 +1494,7 @@ Array [
 exports[`ticket actions handleMessageActionError() should fetch the ticket because the user is currently on it 1`] = `
 Array [
   Object {
-    "resp": Object {
+    "response": Object {
       "id": 1,
       "messages": Array [],
     },
@@ -1512,6 +1524,7 @@ Array [
       "channel": "email",
       "is_unread": false,
       "priority": "normal",
+      "custom_fields": Immutable.Map {},
       "reply_options": Immutable.Map {
         "email": Immutable.Map {
           "answerable": true,
@@ -1580,7 +1593,7 @@ Array [
     "type": "TICKET_PARTIAL_UPDATE_START",
   },
   Object {
-    "resp": Object {
+    "response": Object {
       "id": 1,
       "messages": Array [],
     },
@@ -1610,6 +1623,7 @@ Array [
       "channel": "email",
       "is_unread": false,
       "priority": "normal",
+      "custom_fields": Immutable.Map {},
       "reply_options": Immutable.Map {
         "email": Immutable.Map {
           "answerable": true,

@@ -17,6 +17,7 @@ export const customFieldInput: CustomFieldInput = {
 export const customField: CustomField = {
     ...customFieldInput,
     id: 123,
+    priority: 123,
     created_datetime: '2022-01-02T03:04:05.123456+00:00',
     updated_datetime: '2022-01-02T03:04:05.123456+00:00',
     deactivated_datetime: null,

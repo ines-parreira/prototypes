@@ -46,7 +46,7 @@ import {
 } from 'business/types/ticket'
 import {IntegrationType, ProductCardDetails} from 'models/integration/types'
 import client from 'models/api/resources'
-import {Ticket as TicketResponse} from 'models/ticket/types'
+import {Ticket as TicketResponse, TicketAssignee} from 'models/ticket/types'
 import {Customer} from 'state/customers/types'
 import {NotificationStatus} from 'state/notifications/types'
 import {SocketEventType} from 'services/socketManager/types'
@@ -59,16 +59,11 @@ import {UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_VIDEOS} from 'config/integrations/sh
 
 import {MacroActionName, MacroActionType} from 'models/macroAction/types'
 import {isBaseEmailAddress} from 'pages/integrations/integration/components/email/helpers'
+import {FullTicketStateWithoutImmutable} from 'state/ticket/types'
 import * as responseUtils from './responseUtils'
 import * as selectors from './selectors'
 import * as constants from './constants'
-import {
-    MacroActions,
-    Message,
-    NewMessage,
-    ReplyAreaState,
-    Ticket,
-} from './types'
+import {MacroActions, Message, NewMessage, ReplyAreaState} from './types'
 import {
     addEmailExtraContent,
     deleteEmailExtraContent,
@@ -716,51 +711,53 @@ export function prepareTicketDataToSend(
     actionsForMacro: Maybe<MacroActions>,
     currentUser: CurrentUser
 ): Maybe<{
-    ticket: Omit<Ticket, 'state' | '_internal' | 'newMessage'>
+    ticket: FullTicketStateWithoutImmutable
     newMessage: NewMessage
     replyAreaState: ReplyAreaState
 }> {
-    const ticket = toJS<Ticket>(ticketState)
+    const ticket = toJS<FullTicketStateWithoutImmutable>(ticketState)
     const replyAreaState = responseUtils.toReplyAreaState(
         newMessageState.get('state') as Map<any, any>
     )
-    ticket.newMessage = (
+    let newMessage = (
         newMessageState.get('newMessage') as Map<any, any>
-    )?.toJS()
-    ticket.status = status || ticket.status
+    )?.toJS() as NewMessage
+    ticket.status = (status as TicketStatus) || ticket.status
 
     if (ticket.assignee_user) {
-        ticket.assignee_user = {id: ticket.assignee_user.id}
+        ticket.assignee_user = {id: ticket.assignee_user.id} as TicketAssignee
     }
 
     // Prepare newMessage to send it.
-    if (ticket.newMessage) {
+    if (newMessage) {
         const state = getState()
         let actions = actionsForMacro
 
         //Transform empty message with macro to internal note
         if (!selectors.hasContent(state) && !!ticket.state?.appliedMacro) {
-            const {newMessage, newActions} = transformToInternalNote(
-                ticket.newMessage,
-                actions,
-                `Applied macro "${(ticket.state.appliedMacro as Macro).name}"`
-            )
-            ticket.newMessage = newMessage
+            const {newMessage: editedNewMessage, newActions} =
+                transformToInternalNote(
+                    newMessage,
+                    actions,
+                    `Applied macro "${
+                        (ticket.state.appliedMacro as Macro).name
+                    }"`
+                )
+            newMessage = editedNewMessage
             actions = newActions
         }
 
-        const sourceType = ticket.newMessage.source.type
+        const sourceType = newMessage.source.type
         const {emailExtraAdded, contentState} = replyAreaState
 
         const isFacebookComment =
-            ticket.newMessage.channel === TicketMessageSourceType.Facebook &&
-            ticket.newMessage.source.type ===
-                TicketMessageSourceType.FacebookComment
+            newMessage.channel === TicketMessageSourceType.Facebook &&
+            newMessage.source.type === TicketMessageSourceType.FacebookComment
 
         const isFacebookReviewComment =
-            ticket.newMessage.channel ===
+            newMessage.channel ===
                 TicketMessageSourceType.FacebookRecommendations &&
-            ticket.newMessage.source.type ===
+            newMessage.source.type ===
                 TicketMessageSourceType.FacebookReviewComment
 
         if (sourceType === TicketMessageSourceType.Email && !emailExtraAdded) {
@@ -773,8 +770,8 @@ export function prepareTicketDataToSend(
                 isForwarded: selectors.isForward(state),
             })
 
-            ticket.newMessage = responseUtils.updateNewMessageWithContentState(
-                ticket.newMessage,
+            newMessage = responseUtils.updateNewMessageWithContentState(
+                newMessage,
                 newContentState
             )
             replyAreaState.emailExtraAdded = true
@@ -790,9 +787,9 @@ export function prepareTicketDataToSend(
             const lastMessage = lastSameTypeMessage.toJS() as NewMessage
 
             if (lastMessage.source.extra) {
-                ticket.newMessage.source.extra = _assign(
+                newMessage.source.extra = _assign(
                     {},
-                    ticket.newMessage.source.extra,
+                    newMessage.source.extra,
                     lastMessage.source.extra
                 )
             }
@@ -800,11 +797,11 @@ export function prepareTicketDataToSend(
 
         // i.e. if we're creating a new ticket
         if (!ticket.messages.length) {
-            ticket.channel = ticket.newMessage.channel
+            ticket.channel = newMessage.channel as TicketChannel
         }
 
-        if (!ticket.newMessage.sender) {
-            ticket.newMessage.sender = fromJS(
+        if (!newMessage.sender) {
+            newMessage.sender = fromJS(
                 _pick(currentUser.toJS(), ['email', 'id', 'name'])
             )
         }
@@ -812,8 +809,8 @@ export function prepareTicketDataToSend(
         // Facebook does not accept comment with just an attachment.
         if (isFacebookComment || isFacebookReviewComment) {
             if (
-                ticket.newMessage.body_text.length === 0 &&
-                ticket.newMessage.attachments.length > 0
+                newMessage.body_text.length === 0 &&
+                newMessage.attachments.length > 0
             ) {
                 void dispatch(
                     notify({
@@ -828,7 +825,7 @@ export function prepareTicketDataToSend(
         }
 
         if (actions) {
-            ticket.newMessage.actions = actions.map(
+            newMessage.actions = actions.map(
                 (curAction: Map<any, any> = fromJS({})) =>
                     formatAction(
                         curAction,
@@ -842,12 +839,14 @@ export function prepareTicketDataToSend(
         }
     }
 
-    const newMessageData = ticket.newMessage
-
     return {
         replyAreaState,
-        ticket: _omit(ticket, ['state', '_internal', 'newMessage']),
-        newMessage: newMessageData,
+        ticket: _omit(ticket, [
+            'state',
+            '_internal',
+            'newMessage',
+        ]) as FullTicketStateWithoutImmutable,
+        newMessage,
     }
 }
 
@@ -1247,6 +1246,9 @@ export function submitTicket(
         }
 
         const ticketToSend = dataToSend.ticket
+        // Types are so so wrong in there
+        //$TsFixMe
+        //@ts-ignore
         ticketToSend.messages.push(dataToSend.newMessage)
 
         return client

@@ -1,3 +1,6 @@
+export type CustomFieldTextInputTypes =
+    CustomTypeDefinitionText['input_settings']['input_type']
+
 interface CustomFieldInputSettingsText {
     input_type: 'input'
     placeholder?: string
@@ -27,9 +30,19 @@ export interface CustomFieldInput {
 
 export interface CustomField extends CustomFieldInput {
     id: number
+    priority: number
     created_datetime: string
     updated_datetime: string
     deactivated_datetime: string | null
+}
+
+export type CustomFieldValue = {
+    id: number
+    value: string | number | undefined
+}
+
+export type NormalizedCustomFieldValues = {
+    [id: number]: CustomFieldValue | undefined
 }
 
 export function isCustomField(

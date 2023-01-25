@@ -187,6 +187,7 @@ describe('ticket reducers', () => {
                     channel: 'email',
                 },
             ],
+            custom_fields: [],
             customer: {
                 id: 1,
                 data: {hello: 'world!'},
@@ -197,7 +198,7 @@ describe('ticket reducers', () => {
         expect(
             reducer(initialState, {
                 type: types.FETCH_TICKET_SUCCESS,
-                resp: ticket,
+                response: ticket,
             }).toJS()
         ).toMatchSnapshot()
 

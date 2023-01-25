@@ -111,3 +111,6 @@ export const EMPTY_SENDER = {name: '', address: ''}
 // Chat-related
 export const SET_TYPING_ACTIVITY_SHOPPER = 'SET_TYPING_ACTIVITY_SHOPPER'
 export const TYPING_ACTIVITY_SHOPPER_TIMEOUT_MS = 4000
+
+// Custom fields related
+export const UPDATE_CUSTOM_FIELD_VALUE = 'UPDATE_CUSTOM_FIELD_VALUE'

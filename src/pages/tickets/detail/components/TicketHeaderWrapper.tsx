@@ -16,6 +16,7 @@ import {
 import {FeatureFlagKey} from 'config/featureFlags'
 
 import css from './TicketHeaderWrapper.less'
+import TicketFields from './TicketFields/TicketFields'
 
 const CollisionDetection = () => {
     const agentsViewing =
@@ -101,9 +102,11 @@ type Props = {
 }
 
 const TicketHeaderWrapper = ({hideTicket, handleHistoryToggle}: Props) => {
+    const flags = useFlags()
     // TODO: refactor after Virtualization is rolled out
     const isVirtualizationEnabled =
-        useFlags()[FeatureFlagKey.TicketMessagesVirtualization]
+        flags[FeatureFlagKey.TicketMessagesVirtualization]
+    const isTicketFieldsEnabled = flags[FeatureFlagKey.TicketFields]
 
     const ticket = useAppSelector((state) => state.ticket)
     const customers = useAppSelector(getCustomersState)
@@ -147,6 +150,7 @@ const TicketHeaderWrapper = ({hideTicket, handleHistoryToggle}: Props) => {
                         className="flex-grow"
                     />
                 </div>
+                {isTicketFieldsEnabled && <TicketFields />}
                 <CollisionDetection />
             </div>
             {isExistingTicket && isVirtualizationEnabled && (

@@ -20,6 +20,8 @@ import {ViewType} from 'models/view/constants'
 import {MacroActionName} from 'models/macroAction/types'
 import {search} from 'models/search/resources'
 import {InTicketSuggestionState} from 'state/entities/rules/types'
+import {View} from 'models/view/types'
+import {CustomFieldValue} from 'models/customField/types'
 import {SearchType, UserSearchResult} from 'models/search/types'
 import browserNotification from 'services/browserNotification'
 import GorgiasApi from 'services/gorgiasApi'
@@ -42,10 +44,7 @@ import {
     TicketMessageIntent,
     SourceAddress,
 } from 'models/ticket/types'
-import {View} from 'models/view/types'
-
 import {getChannelsByType} from 'state/integrations/selectors'
-
 import {
     JoinEventType,
     SocketEventType,
@@ -733,7 +732,12 @@ export const clearAppliedMacro = (ticketId: number) => ({
  * Fetch a ticket from the API, and put it in the `ticket` store.
  */
 export const fetchTicket =
-    (ticketId: string, discreetly = false) =>
+    (
+        ticketId: string,
+        options: {discreetly?: boolean} = {
+            discreetly: false,
+        }
+    ) =>
     (dispatch: StoreDispatch, getState: () => RootState) => {
         if (ticketId === 'new') {
             return new Promise<ReturnType<StoreDispatch>>((resolve) => {
@@ -750,7 +754,7 @@ export const fetchTicket =
 
         const parsedTicketId = parseInt(ticketId)
 
-        if (!discreetly) {
+        if (!options.discreetly) {
             dispatch({
                 type: types.FETCH_TICKET_START,
             })
@@ -762,8 +766,8 @@ export const fetchTicket =
             .get<Ticket>(url)
             .then((json) => json?.data)
             .then(
-                (resp) => {
-                    if (_isEmpty(resp)) {
+                (response) => {
+                    if (_isEmpty(response)) {
                         console.error('No results for', url)
                     }
 
@@ -771,10 +775,9 @@ export const fetchTicket =
                         return Promise.resolve()
                     }
 
-                    const customerId = (fromJS(resp) as Map<any, any>).getIn([
-                        'customer',
-                        'id',
-                    ]) as number
+                    const customerId = (
+                        fromJS(response) as Map<any, any>
+                    ).getIn(['customer', 'id']) as number
 
                     if (parsedTicketId) {
                         socketManager.join(JoinEventType.Ticket, parsedTicketId)
@@ -787,7 +790,7 @@ export const fetchTicket =
                     // dispatch for ticket reducer branch
                     dispatch({
                         type: types.FETCH_TICKET_SUCCESS,
-                        resp,
+                        response,
                         ticketId: parsedTicketId,
                     })
 
@@ -802,7 +805,7 @@ export const fetchTicket =
                     ) {
                         dispatch({
                             type: newMessageTypes.NEW_MESSAGE_FETCH_TICKET_SUCCESS,
-                            resp,
+                            resp: response,
                         })
                     }
 
@@ -815,8 +818,8 @@ export const fetchTicket =
                     }
 
                     const sourceTypeOfResponse = getSourceTypeOfResponse(
-                        resp.messages,
-                        resp.via
+                        response.messages,
+                        response.via
                     )
 
                     if (
@@ -831,7 +834,7 @@ export const fetchTicket =
                     }
 
                     // Notify the server that we viewed this ticket and mark it as read in the reducer
-                    if (resp.is_unread) {
+                    if (response.is_unread) {
                         dispatch(markChatAsRead(parsedTicketId))
                         socketManager.send(
                             SocketEventType.TicketViewed,
@@ -950,7 +953,7 @@ export const _goToNextOrPrevTicket = (
 
                         dispatch({
                             type: types.FETCH_TICKET_SUCCESS,
-                            resp: ticket,
+                            response: ticket,
                             ticketId: ticket.id,
                         })
 
@@ -1086,7 +1089,7 @@ export const handleMessageActionError =
                 },
             ]
         } else {
-            fetchPromise = dispatch(fetchTicket(ticketId, true))
+            fetchPromise = dispatch(fetchTicket(ticketId, {discreetly: true}))
         }
 
         void dispatch(
@@ -1119,7 +1122,9 @@ export const handleMessageError =
 
         if (isCurrentlyOnTicket(json.ticket_id)) {
             fetchPromise = dispatch(
-                fetchTicket(json.ticket_id as unknown as string, true)
+                fetchTicket(json.ticket_id as unknown as string, {
+                    discreetly: true,
+                })
             )
         }
 
@@ -1323,3 +1328,14 @@ export function setInTicketSuggestionState(
         inTicketSuggestionState,
     }
 }
+
+// http call to update the value on the back-end is done
+// (and in some case debounced) at the component level
+export const updateCustomFieldValue = (
+    value: CustomFieldValue['value'],
+    id: number
+) => ({
+    type: types.UPDATE_CUSTOM_FIELD_VALUE,
+    id,
+    value,
+})

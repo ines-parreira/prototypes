@@ -222,6 +222,7 @@ Array [
           "channel": "email",
           "closed_datetime": null,
           "created_datetime": "2017-07-31T23:07:35.150000+00:00",
+          "custom_fields": Array [],
           "customer": Object {
             "channels": Array [
               Object {
@@ -2271,6 +2272,7 @@ Array [
       "channel": "email",
       "is_unread": false,
       "priority": "normal",
+      "custom_fields": Immutable.Map {},
       "reply_options": Immutable.Map {
         "email": Immutable.Map {
           "answerable": true,

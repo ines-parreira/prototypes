@@ -3,8 +3,8 @@ import _unescape from 'lodash/unescape'
 import _trim from 'lodash/trim'
 import moment from 'moment'
 
+import {TicketStateWithoutImmutable} from 'state/ticket/types'
 import {Customer} from '../../../state/customers/types'
-import {Ticket} from '../../../state/newMessage/types'
 
 export const filterRegex = /([\w_]+)\(([^(]*)\)/
 export const templateRegex =
@@ -47,7 +47,7 @@ const filters = {
 
 export type Context = {
     [key: string]: unknown
-    ticket?: Omit<Ticket, 'state' | '_internal'>
+    ticket?: TicketStateWithoutImmutable
     user?: Customer | Record<string, never>
 }
 

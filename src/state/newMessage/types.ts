@@ -1,10 +1,10 @@
 import {List, Map} from 'immutable'
 import {ContentState, SelectionState} from 'draft-js'
 
-import {TicketMessageSourceType} from '../../business/types/ticket'
-import {Macro} from '../../models/macro/types'
-import {MacroAction} from '../../models/macroAction/types'
-import {Attachment} from '../../types'
+import {TicketMessageSourceType} from 'business/types/ticket'
+import {Macro} from 'models/macro/types'
+import {MacroAction} from 'models/macroAction/types'
+import {Attachment} from 'types'
 
 export enum ReceiverProperty {
     To = 'to',

@@ -1,22 +1,24 @@
 import {fromJS, Map, List} from 'immutable'
 import moment from 'moment'
 
-import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
+import {Ticket} from 'models/ticket/types'
 import {TICKET_EVENT_TYPES} from 'models/event/types'
+import {NormalizedCustomFieldValues} from 'models/customField/types'
 import {MacroActionName} from 'models/macroAction/types'
+import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
 import * as customerTypes from 'state/customers/constants'
 import * as newMessageTypes from 'state/newMessage/constants'
 import ticketReplyCache from 'state/newMessage/ticketReplyCache'
 import {GorgiasAction} from 'state/types'
 import {compare} from 'utils'
 
+import {getPendingMessageIndex, mergeActions, parseTimedelta} from './utils'
 import * as types from './constants'
 import {
     deduplicateAuditLogEvents,
     shouldDeduplicateAuditLogEvents,
 } from './helpers'
 import {TicketState} from './types'
-import {getPendingMessageIndex, mergeActions, parseTimedelta} from './utils'
 
 export const initialState: TicketState = fromJS({
     state: {
@@ -39,6 +41,7 @@ export const initialState: TicketState = fromJS({
         isShopperTypingTimeoutId: undefined,
         isPartialUpdating: false,
     },
+    custom_fields: {},
     events: [],
     messages: [],
     subject: '',
@@ -153,7 +156,20 @@ export default function reducer(
         }
 
         case types.FETCH_TICKET_SUCCESS: {
-            const newState = state.merge(action.resp as Map<any, any>)
+            const data = {...action.response}
+            const customFields = (action.response as Ticket).custom_fields
+            if (customFields) {
+                // normalize the data for better render handling
+                data.custom_fields =
+                    customFields.reduce<NormalizedCustomFieldValues>(
+                        (accumulator, customField) => {
+                            accumulator[customField.id] = customField
+                            return accumulator
+                        },
+                        {}
+                    )
+            }
+            const newState = state.merge(data as Map<any, any>)
             return newState.setIn(
                 ['_internal', 'loading', 'fetchTicket'],
                 false
@@ -717,6 +733,11 @@ export default function reducer(
                 ['state', 'inTicketSuggestionState'],
                 inTicketSuggestionState
             )
+        }
+
+        case types.UPDATE_CUSTOM_FIELD_VALUE: {
+            const {id, value} = action
+            return state.setIn(['custom_fields', id], {id, value})
         }
 
         default:

@@ -1,0 +1,30 @@
+@import '~css/new/colors';
+@import '~css/new/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .labelWrapper {
+        display: flex;
+        // revert bootstrap shitty styles
+        margin-bottom: 0;
+        cursor: pointer;
+    }
+
+    .label {
+        display: inline-block;
+        margin-right: @layout-spacing-xxs;
+        .body-regular();
+    }
+
+    .asterisk {
+        display: inline-block;
+        margin-right: @layout-spacing-xxs;
+        color: @classic-feedback-error;
+        font-weight: @body-semibold-font-weight;
+        // revert bootstrap shitty styles
+        position: initial;
+        font-size: medium;
+        vertical-align: super;
+        line-height: initial;
+    }
+}
