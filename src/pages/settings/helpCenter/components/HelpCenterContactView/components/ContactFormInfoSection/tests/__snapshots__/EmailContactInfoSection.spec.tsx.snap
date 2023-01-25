@@ -140,6 +140,7 @@ exports[`<ContactFormInfoSection /> should render the component 1`] = `
         id="textarea-2"
         name="textarea-2"
         rows="1"
+        style="height: 0px;"
       />
     </div>
     <div

@@ -47,6 +47,16 @@ const storyConfig: Meta = {
                 type: 'text',
             },
         },
+        autoRowHeight: {
+            control: {
+                type: 'boolean',
+            },
+        },
+        rows: {
+            control: {
+                type: 'number',
+            },
+        },
     },
 }
 
@@ -65,6 +75,8 @@ const templateParameters = {
             'isRequired',
             'label',
             'placeholder',
+            'autoRowHeight',
+            'rows',
         ],
     },
 }
@@ -76,5 +88,16 @@ const defaultProps: Partial<ComponentProps<typeof TextArea>> = {
 export const Default = Template.bind({})
 Default.parameters = templateParameters
 Default.args = defaultProps
+
+export const LongTextOnMount: Story<ComponentProps<typeof TextArea>> = (
+    props
+) => <TextArea {...props} />
+LongTextOnMount.args = {
+    ...defaultProps,
+    autoRowHeight: true,
+    value: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '.repeat(
+        15
+    ),
+}
 
 export default storyConfig

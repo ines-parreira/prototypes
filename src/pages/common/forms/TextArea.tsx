@@ -4,6 +4,9 @@ import React, {
     ReactNode,
     Ref,
     useCallback,
+    useLayoutEffect,
+    useRef,
+    useImperativeHandle,
 } from 'react'
 import classnames from 'classnames'
 
@@ -42,23 +45,28 @@ function TextArea(
         autoRowHeight,
         ...props
     }: Props,
-    ref: Ref<HTMLTextAreaElement> | null | undefined
+    ref: Ref<HTMLTextAreaElement | null> | null
 ) {
     const randomId = useId()
     const textareaId = id || 'textarea-' + randomId
     const captionId = `${textareaId}-caption`
+    const innerTextAreaRef = useRef<HTMLTextAreaElement>(null)
+
+    useImperativeHandle(ref, () => innerTextAreaRef.current)
+
+    useLayoutEffect(() => {
+        if (autoRowHeight && !!innerTextAreaRef.current) {
+            // Based on: https://stackoverflow.com/a/53426195
+            innerTextAreaRef.current.style.height = 'inherit'
+            innerTextAreaRef.current.style.height = `${innerTextAreaRef.current.scrollHeight}px`
+        }
+    }, [props.value, autoRowHeight])
 
     const onChangeHandler = useCallback(
         (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-            if (autoRowHeight) {
-                // Based on: https://stackoverflow.com/a/53426195
-                event.target.style.height = 'inherit'
-                event.target.style.height = `${event.target.scrollHeight}px`
-            }
-
             return onChange(event.target.value)
         },
-        [onChange, autoRowHeight]
+        [onChange]
     )
 
     return (
@@ -81,7 +89,7 @@ function TextArea(
                 required={isRequired}
                 disabled={isDisabled}
                 {...(caption && {'aria-describedby': captionId})}
-                ref={ref}
+                ref={innerTextAreaRef}
                 {...props}
             />
             {!!(caption || error) && (
