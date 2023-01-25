@@ -1,0 +1,50 @@
+@import '~css/new/colors';
+@import '~css/new/layout';
+
+:local {
+    .dropdown {
+        min-width: 240px !important;
+        max-width: 400px;
+    }
+
+    .backButton {
+        max-width: 100%;
+        height: auto;
+        padding: 0 !important;
+        font-weight: 600;
+        color: @classic-neutral-grey-5 !important;
+    }
+
+    .backIcon {
+        margin-right: @layout-spacing-xxs;
+        font-size: 1.15rem !important;
+    }
+
+    .clearButton {
+        height: 40px;
+    }
+
+    .ellipsis {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow-x: hidden;
+    }
+
+    .choiceButton {
+        flex: 1;
+        display: flex;
+        justify-content: space-between;
+        min-width: 0;
+    }
+
+    .nextIcon {
+        margin-left: @layout-spacing-xxs;
+        font-size: 1.15rem !important;
+    }
+
+    .checkIcon {
+        margin-left: @layout-spacing-xxs;
+        font-size: 1.2rem !important;
+        color: @classic-main-primary;
+    }
+}

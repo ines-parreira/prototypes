@@ -9,6 +9,7 @@ import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
 
 import {customField, customFieldInput} from 'fixtures/customField'
 import {CustomFieldInput} from 'models/customField/types'
+import {DROPDOWN_NESTING_DELIMITER as delimiter} from 'models/customField/constants'
 
 import FieldForm from '../FieldForm'
 
@@ -112,7 +113,9 @@ describe('<FieldForm/>', () => {
                     data_type: 'text',
                     input_settings: {
                         input_type: 'dropdown',
-                        choices: ['A::B::C::D::E::F'],
+                        choices: [
+                            `A${delimiter}B${delimiter}C${delimiter}D${delimiter}E${delimiter}F`,
+                        ],
                     },
                 },
             } as CustomFieldInput,

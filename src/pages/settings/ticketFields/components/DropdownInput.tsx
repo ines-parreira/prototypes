@@ -2,6 +2,7 @@ import React, {memo, useCallback, useState} from 'react'
 import uniqueId from 'lodash/uniqueId'
 
 import Caption from 'pages/common/forms/Caption/Caption'
+import {DROPDOWN_NESTING_DELIMITER} from 'models/customField/constants'
 import DropdownInputRow from './DropdownInputRow'
 
 import css from './DropdownInput.less'
@@ -28,7 +29,7 @@ function validate(
     }
 
     // Maximum 5 levels of nesting for individual choices
-    if (value.split('::').length > 5) {
+    if (value.split(DROPDOWN_NESTING_DELIMITER).length > 5) {
         return 'Choices cannot have more than 5 levels of nesting.'
     }
 
@@ -140,8 +141,9 @@ export function DropdownInput({value, onChange}: DropdownInputProps) {
                 />
             ))}
             <Caption className={css.lastInput}>
-                Use :: to separate nesting levels (e.g.
-                Category::Subcategory::Item). Max 5 nesting levels allowed.
+                Use {DROPDOWN_NESTING_DELIMITER} to separate nesting levels
+                (e.g. Category{DROPDOWN_NESTING_DELIMITER}Subcategory
+                {DROPDOWN_NESTING_DELIMITER}Item). Max 5 nesting levels allowed.
             </Caption>
         </>
     )

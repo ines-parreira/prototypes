@@ -18,3 +18,5 @@ export enum CustomFieldQueryKeys {
     customFieldDefinitionList = 'customFieldDefinitionList',
     customFieldDefinitionEdit = 'customFieldDefinitionEdit',
 }
+
+export const DROPDOWN_NESTING_DELIMITER = '::'

@@ -190,7 +190,13 @@ exports[`<AddTicketField/> should render if the account has the feature flag 1`]
           <div
             class="caption lastInput"
           >
-            Use :: to separate nesting levels (e.g. Category::Subcategory::Item). Max 5 nesting levels allowed.
+            Use 
+            ::
+             to separate nesting levels (e.g. Category
+            ::
+            Subcategory
+            ::
+            Item). Max 5 nesting levels allowed.
           </div>
         </div>
         <div

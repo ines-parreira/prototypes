@@ -147,7 +147,13 @@ exports[`<DropdownInput/> should render correctly 1`] = `
   <div
     class="caption lastInput"
   >
-    Use :: to separate nesting levels (e.g. Category::Subcategory::Item). Max 5 nesting levels allowed.
+    Use 
+    ::
+     to separate nesting levels (e.g. Category
+    ::
+    Subcategory
+    ::
+    Item). Max 5 nesting levels allowed.
   </div>
 </div>
 `;
@@ -349,7 +355,13 @@ exports[`<DropdownInput/> should show an error for duplicate values 1`] = `
   <div
     class="caption lastInput"
   >
-    Use :: to separate nesting levels (e.g. Category::Subcategory::Item). Max 5 nesting levels allowed.
+    Use 
+    ::
+     to separate nesting levels (e.g. Category
+    ::
+    Subcategory
+    ::
+    Item). Max 5 nesting levels allowed.
   </div>
 </div>
 `;
