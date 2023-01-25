@@ -14,6 +14,8 @@ import shopify from 'assets/img/integrations/shopify.png'
 import Button from 'pages/common/components/button/Button'
 import useAppSelector from 'hooks/useAppSelector'
 
+import {withFeaturePaywall} from 'pages/common/utils/withFeaturePaywall'
+import {AccountFeature} from 'state/currentAccount/types'
 import {CreateHelpCenterDto, LocaleCode} from 'models/helpCenter/types'
 import {
     helpCenterCreated,
@@ -61,6 +63,7 @@ import {EMAIL_INTEGRATION_TYPES} from '../../../../constants/integration'
 import useAppDispatch from '../../../../hooks/useAppDispatch'
 import css from './HelpCenterNewView.less'
 import {LanguageBadgeTags} from './HelpCenterPreferencesView/components/AvailableLanguagesTags/LanguageBadgeTags'
+import HelpCenterPaywall from './Paywalls/HelpCenterPaywall'
 
 type Props = ConnectedProps<typeof connector>
 
@@ -78,10 +81,7 @@ const initialFormState: CreateHelpCenterPayload = {
     shop_name: undefined,
 }
 
-export const HelpCenterNewView = ({
-    notify,
-    helpCenterCreated,
-}: Props): JSX.Element => {
+const HelpCenterNewView = ({notify, helpCenterCreated}: Props): JSX.Element => {
     const dispatch = useAppDispatch()
     const history = useHistory()
     const location = useLocation()
@@ -513,4 +513,7 @@ const connector = connect(null, {
     notify: notifyAction,
 })
 
-export default connector(HelpCenterNewView)
+export default withFeaturePaywall(
+    AccountFeature.HelpCenter,
+    HelpCenterPaywall
+)(connector(HelpCenterNewView))

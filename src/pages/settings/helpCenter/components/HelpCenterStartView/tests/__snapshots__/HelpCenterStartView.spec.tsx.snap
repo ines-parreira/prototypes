@@ -143,7 +143,7 @@ exports[`<HelpCenterStartView /> should render the About component 1`] = `
           >
             <a
               class="connectButtonWrapper"
-              href="http://localhost/app/settings/help-center/new?account=undefined"
+              href="http://localhost/app/settings/help-center/new?account=acme"
               rel="noopener noreferrer"
               target="_blank"
             >

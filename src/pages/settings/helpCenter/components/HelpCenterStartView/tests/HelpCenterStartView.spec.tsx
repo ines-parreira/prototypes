@@ -3,12 +3,14 @@ import {fireEvent, screen} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import {fromJS} from 'immutable'
 import {RootState, StoreDispatch} from 'state/types'
 import {assumeMock, renderWithRouter} from 'utils/testing'
 import {HELP_CENTER_BASE_PATH} from 'pages/settings/helpCenter/constants'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
+import {account} from 'fixtures/account'
 import HelpCenterStartView from '../HelpCenterStartView'
 import {useHelpCenterList} from '../../../hooks/useHelpCenterList'
 
@@ -78,6 +80,7 @@ describe('<HelpCenterStartView />', () => {
                 },
             },
         } as any,
+        currentAccount: fromJS(account),
     }
     const props = {}
 

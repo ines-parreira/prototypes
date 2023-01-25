@@ -39,14 +39,17 @@ import {
     helpCenterUpdated,
 } from 'state/entities/helpCenter/helpCenters'
 
+import {withFeaturePaywall} from 'pages/common/utils/withFeaturePaywall'
+import {AccountFeature} from 'state/currentAccount/types'
 import {EditionManagerContextProvider} from '../EditionManagerContext'
 import {SearchContextProvider} from '../SearchContext'
 import {HelpCenterTranslationProvider} from '../HelpCenterTranslation'
 import {HelpCenterPreferencesSettings} from '../HelpCenterPreferencesSettings'
+import HelpCenterPaywall from '../../components/Paywalls/HelpCenterPaywall'
 
 const CurrentHelpCenterContext = createContext<HelpCenter | null>(null)
 
-export const CurrentHelpCenter: React.FC = () => {
+const CurrentHelpCenter: React.FC = () => {
     const dispatch = useAppDispatch()
     const {path} = useRouteMatch()
     const history = useHistory()
@@ -183,3 +186,8 @@ export const useCurrentHelpCenter = () => {
 
     return helpCenter
 }
+
+export default withFeaturePaywall(
+    AccountFeature.HelpCenter,
+    HelpCenterPaywall
+)(CurrentHelpCenter)

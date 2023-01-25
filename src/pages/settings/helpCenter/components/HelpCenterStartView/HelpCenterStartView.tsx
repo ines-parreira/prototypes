@@ -11,6 +11,8 @@ import {PRODUCT_BANNER_KEY} from 'hooks/useProductBannerStorage'
 import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import Detail from 'pages/integrations/components/Detail'
+import {withFeaturePaywall} from 'pages/common/utils/withFeaturePaywall'
+import {AccountFeature} from 'state/currentAccount/types'
 import {useAbilityChecker} from '../../hooks/useHelpCenterApi'
 import {
     HELP_CENTER_MAX_CREATION,
@@ -20,10 +22,11 @@ import {
 import {useHelpCenterList} from '../../hooks/useHelpCenterList'
 import {useStandaloneHelpCenterAfterDismiss} from '../../hooks/useStandaloneHelpCenterAfterDismiss'
 
+import HelpCenterPaywall from '../Paywalls/HelpCenterPaywall'
 import {ABOUT_PAGE} from './constants'
 import ManageHelpCenters from './ManageHelpCenters'
 
-export const HelpCenterStartView: React.FC = () => {
+const HelpCenterStartView: React.FC = () => {
     const dispatch = useAppDispatch()
     const {
         isLoading,
@@ -139,4 +142,7 @@ export const HelpCenterStartView: React.FC = () => {
     )
 }
 
-export default HelpCenterStartView
+export default withFeaturePaywall(
+    AccountFeature.HelpCenter,
+    HelpCenterPaywall
+)(HelpCenterStartView)

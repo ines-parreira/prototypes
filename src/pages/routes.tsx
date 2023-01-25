@@ -96,11 +96,10 @@ import SelfServiceReportIssueCaseEditorContainer from './settings/selfService/co
 import SelfServiceReportIssueReasonEditorContainer from './settings/selfService/components/ReportIssueReasonEditor/index'
 import HelpCenterStartView from './settings/helpCenter/components/HelpCenterStartView'
 import HelpCenterNewView from './settings/helpCenter/components/HelpCenterNewView'
-import {CurrentHelpCenter} from './settings/helpCenter/providers/CurrentHelpCenter/CurrentHelpCenter'
+import CurrentHelpCenter from './settings/helpCenter/providers/CurrentHelpCenter/CurrentHelpCenter'
 import {HelpCenterApiClientProvider} from './settings/helpCenter/hooks/useHelpCenterApi'
 import {SupportedLocalesProvider} from './settings/helpCenter/providers/SupportedLocales'
 import DefaultStatsFilters from './stats/DefaultStatsFilters'
-import HelpCenterPaywall from './settings/helpCenter/components/Paywalls/HelpCenterPaywall'
 import SupportPerformanceTags from './stats/SupportPerformanceTags'
 import ImportPhoneNumber from './tasks/detail/ImportPhoneNumber'
 import SupportPerformanceChannels from './stats/SupportPerformanceChannels'
@@ -944,10 +943,7 @@ export function HelpCenterSettingsRoutes({match: {path}}: RouteComponentProps) {
                         path={[`${path}/`, `${path}/about`, `${path}/manage`]}
                         exact
                         render={appRender({
-                            content: withFeaturePaywall(
-                                AccountFeature.HelpCenter,
-                                HelpCenterPaywall
-                            )(HelpCenterStartView),
+                            content: HelpCenterStartView,
                             navbar: SettingsNavbar,
                         })}
                     />
@@ -955,20 +951,14 @@ export function HelpCenterSettingsRoutes({match: {path}}: RouteComponentProps) {
                         path={`${path}/new`}
                         exact
                         render={appRender({
-                            content: withFeaturePaywall(
-                                AccountFeature.HelpCenter,
-                                HelpCenterPaywall
-                            )(HelpCenterNewView),
+                            content: HelpCenterNewView,
                             navbar: SettingsNavbar,
                         })}
                     />
                     <Route
                         path={`${path}/:helpCenterId`}
                         render={appRender({
-                            content: withFeaturePaywall(
-                                AccountFeature.HelpCenter,
-                                HelpCenterPaywall
-                            )(CurrentHelpCenter),
+                            content: CurrentHelpCenter,
                             navbar: SettingsNavbar,
                         })}
                     />
