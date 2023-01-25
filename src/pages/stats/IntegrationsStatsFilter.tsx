@@ -64,7 +64,12 @@ export default function IntegrationsStatsFilter({
     const handleFilterChange: ComponentProps<typeof Component>['onChange'] =
         useCallback(
             (values) => {
-                dispatch(mergeStatsFilters({integrations: values as number[]}))
+                dispatch(
+                    mergeStatsFilters({
+                        integrations: values as number[],
+                        campaigns: [],
+                    })
+                )
             },
             [dispatch]
         )

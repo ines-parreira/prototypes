@@ -1,6 +1,7 @@
 import React, {useMemo} from 'react'
 import {fromJS, Map} from 'immutable'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {
     getStatsFilters,
     getStatsStoreIntegrations,
@@ -23,6 +24,7 @@ import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
 import {AccountFeature} from 'state/currentAccount/types'
 import useAppSelector from 'hooks/useAppSelector'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import IntegrationsStatsFilter from './IntegrationsStatsFilter'
 import ChannelsStatsFilter from './ChannelsStatsFilter'
 import PeriodStatsFilter from './PeriodStatsFilter'
@@ -35,6 +37,7 @@ import {BarStat} from './common/components/charts/BarStat'
 import TableStat from './common/components/charts/TableStat/TableStat'
 import RevenueStatsRestrictedFeature from './RevenueStatsRestrictedFeature'
 import KeyMetricStatWrapper from './KeyMetricStatWrapper'
+import CampaignsStatsFilter from './CampaignsStatsFilter'
 
 const SUPPORT_PERFORMANCE_REVENUE_STAT_NAME = 'support-performance-revenue'
 
@@ -44,9 +47,10 @@ function SupportPerformanceRevenue() {
     const statsFilters = useAppSelector(getStatsFilters)
 
     const pageStatsFilters = useMemo<StatsFilters>(() => {
-        const {channels, tags, period} = statsFilters
+        const {channels, tags, period, campaigns} = statsFilters
         return {
             channels,
+            campaigns,
             tags,
             period,
             integrations: storeStatsFilter.length
@@ -88,6 +92,9 @@ function SupportPerformanceRevenue() {
             statsFilters: pageStatsFilters,
         })
 
+    const isRevenueBetaTester: boolean =
+        useFlags()[FeatureFlagKey.RevenueBetaTesters]
+
     return (
         <StatsPage
             title="Revenue"
@@ -102,6 +109,14 @@ helping customers through the purchasing journey."
                             integrations={storeIntegrations}
                             isRequired
                         />
+                        {isRevenueBetaTester && (
+                            <CampaignsStatsFilter
+                                value={pageStatsFilters.campaigns}
+                                selectedIntegrations={
+                                    pageStatsFilters.integrations
+                                }
+                            />
+                        )}
                         <ChannelsStatsFilter
                             value={pageStatsFilters.channels}
                             channels={Object.values(TicketChannel)}

@@ -8,6 +8,7 @@ Array [
         4,
         5,
       ],
+      "campaigns": Immutable.List [],
     },
     "type": "MERGE_STATS_FILTERS",
   },
@@ -21,6 +22,7 @@ Array [
       "integrations": Immutable.List [
         5,
       ],
+      "campaigns": Immutable.List [],
     },
     "type": "MERGE_STATS_FILTERS",
   },
@@ -618,6 +620,7 @@ Array [
       "integrations": Immutable.List [
         5,
       ],
+      "campaigns": Immutable.List [],
     },
     "type": "MERGE_STATS_FILTERS",
   },

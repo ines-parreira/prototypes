@@ -109,7 +109,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
               type="button"
             >
               <span>
-                1 channel
+                1 campaign
               </span>
             </button>
             <div
@@ -124,7 +124,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
               >
                 <input
                   class="form-control"
-                  placeholder="Search channels..."
+                  placeholder="Search campaigns..."
                   type="text"
                   value=""
                 />
@@ -172,30 +172,83 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                     for="checkbox-3"
                   >
                     <input
+                      checked=""
                       class="input"
                       id="checkbox-3"
                       name="checkbox-3"
                       type="checkbox"
                     />
-                     Aircall
+                     campaign 1
                   </label>
                 </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="dropdown"
+          >
+            <button
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
+              type="button"
+            >
+              <span>
+                1 channel
+              </span>
+            </button>
+            <div
+              aria-hidden="true"
+              class="dropdown dropdown-menu dropdown-menu-right"
+              role="menu"
+              tabindex="-1"
+            >
+              <h6
+                class="dropdown-item-input dropdownItemInput dropdown-header"
+                tabindex="-1"
+              >
+                <input
+                  class="form-control"
+                  placeholder="Search channels..."
+                  type="text"
+                  value=""
+                />
+              </h6>
+              <button
+                class="component dropdown-item"
+                role="menuitem"
+                tabindex="0"
+              >
                 <div
-                  class="wrapperItem"
+                  class="checkbox"
                 >
                   <label
-                    class="label label labelItem"
+                    class="label label quickSelectionOption"
                     for="checkbox-4"
                   >
                     <input
+                      checked=""
                       class="input"
                       id="checkbox-4"
                       name="checkbox-4"
                       type="checkbox"
                     />
-                     Api
+                    Deselect
+                    <div
+                      class="badge badge--unselect"
+                    >
+                      1
+                    </div>
                   </label>
                 </div>
+              </button>
+              <div
+                class="dropdownDivider dropdown-divider"
+                tabindex="-1"
+              />
+              <div
+                class="content"
+              >
                 <div
                   class="wrapperItem"
                 >
@@ -204,13 +257,12 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                     for="checkbox-5"
                   >
                     <input
-                      checked=""
                       class="input"
                       id="checkbox-5"
                       name="checkbox-5"
                       type="checkbox"
                     />
-                     Chat
+                     Aircall
                   </label>
                 </div>
                 <div
@@ -226,7 +278,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                       name="checkbox-6"
                       type="checkbox"
                     />
-                     Email
+                     Api
                   </label>
                 </div>
                 <div
@@ -237,12 +289,13 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                     for="checkbox-7"
                   >
                     <input
+                      checked=""
                       class="input"
                       id="checkbox-7"
                       name="checkbox-7"
                       type="checkbox"
                     />
-                     Facebook
+                     Chat
                   </label>
                 </div>
                 <div
@@ -258,7 +311,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                       name="checkbox-8"
                       type="checkbox"
                     />
-                     Facebook mention
+                     Email
                   </label>
                 </div>
                 <div
@@ -274,7 +327,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                       name="checkbox-9"
                       type="checkbox"
                     />
-                     Facebook messenger
+                     Facebook
                   </label>
                 </div>
                 <div
@@ -290,7 +343,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                       name="checkbox-10"
                       type="checkbox"
                     />
-                     Facebook recommendations
+                     Facebook mention
                   </label>
                 </div>
                 <div
@@ -306,7 +359,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                       name="checkbox-11"
                       type="checkbox"
                     />
-                     Help center
+                     Facebook messenger
                   </label>
                 </div>
                 <div
@@ -322,7 +375,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                       name="checkbox-12"
                       type="checkbox"
                     />
-                     Instagram ad comment
+                     Facebook recommendations
                   </label>
                 </div>
                 <div
@@ -338,7 +391,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                       name="checkbox-13"
                       type="checkbox"
                     />
-                     Instagram comment
+                     Help center
                   </label>
                 </div>
                 <div
@@ -354,7 +407,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                       name="checkbox-14"
                       type="checkbox"
                     />
-                     Instagram mention
+                     Instagram ad comment
                   </label>
                 </div>
                 <div
@@ -370,7 +423,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                       name="checkbox-15"
                       type="checkbox"
                     />
-                     Instagram direct message
+                     Instagram comment
                   </label>
                 </div>
                 <div
@@ -386,7 +439,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                       name="checkbox-16"
                       type="checkbox"
                     />
-                     Phone
+                     Instagram mention
                   </label>
                 </div>
                 <div
@@ -402,7 +455,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                       name="checkbox-17"
                       type="checkbox"
                     />
-                     Sms
+                     Instagram direct message
                   </label>
                 </div>
                 <div
@@ -418,7 +471,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                       name="checkbox-18"
                       type="checkbox"
                     />
-                     Twitter
+                     Phone
                   </label>
                 </div>
                 <div
@@ -434,7 +487,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                       name="checkbox-19"
                       type="checkbox"
                     />
-                     Twitter direct message
+                     Sms
                   </label>
                 </div>
                 <div
@@ -448,6 +501,38 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                       class="input"
                       id="checkbox-20"
                       name="checkbox-20"
+                      type="checkbox"
+                    />
+                     Twitter
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-21"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-21"
+                      name="checkbox-21"
+                      type="checkbox"
+                    />
+                     Twitter direct message
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-22"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-22"
+                      name="checkbox-22"
                       type="checkbox"
                     />
                      Yotpo review

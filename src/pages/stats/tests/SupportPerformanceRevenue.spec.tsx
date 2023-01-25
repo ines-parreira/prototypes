@@ -1,11 +1,12 @@
 import React, {ComponentProps} from 'react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {fromJS, Map} from 'immutable'
+import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import _noop from 'lodash/noop'
 
+import LD from 'launchdarkly-react-client-sdk'
 import {RootState, StoreDispatch} from 'state/types'
 import {TicketChannel} from 'business/types/ticket'
 import {
@@ -21,16 +22,17 @@ import {
     REVENUE_PER_DAY,
 } from 'config/stats'
 import FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywall'
-import {integrationsStateWithShopify} from 'fixtures/integrations'
 import {agents} from 'fixtures/agents'
 import {teams} from 'fixtures/teams'
 import {account} from 'fixtures/account'
 import {AccountFeature} from 'state/currentAccount/types'
 import {StatsFilters} from 'models/stat/types'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import TagsStatsFilter from '../TagsStatsFilter'
 import useStatResource from '../useStatResource'
 import SupportPerformanceRevenue from '../SupportPerformanceRevenue'
+import {IntegrationType} from '../../../models/integration/constants'
 
 jest.mock('../useStatResource')
 jest.mock('react-chartjs-2', () => ({Bar: () => <canvas />}))
@@ -55,10 +57,80 @@ const useStatResourceMock = useStatResource as jest.MockedFunction<
 let dateNowSpy: jest.SpiedFunction<typeof Date.now>
 let mathRandomSpy: jest.SpiedFunction<typeof Math.random>
 
+export const integrationsState = {
+    integrations: [
+        {
+            deleted_datetime: null,
+            meta: {
+                preferences: {
+                    linked_email_integration: 5,
+                },
+                shopify_integration_ids: [516],
+                campaigns: [
+                    {
+                        deactivated_datetime: '2023-01-05T14:55:57.437Z',
+                        id: 'f85a98e1-dc9e-40f1-9828-3b3c9908cacf',
+                        message: {
+                            html: '<div>simple campaign</div>',
+                            text: 'simple campaign',
+                        },
+                        name: 'campaign 1',
+                    },
+                ],
+            },
+            facebook: null,
+            http: null,
+            deactivated_datetime: null,
+            name: 'Chitty chatty',
+            user: {
+                id: 2,
+            },
+            uri: '/api/integrations/8/',
+            decoration: null,
+            locked_datetime: null,
+            created_datetime: '2017-02-07T06:07:43.481450+00:00',
+            type: 'gorgias_chat',
+            id: 8,
+            description: null,
+            updated_datetime: '2017-02-07T06:07:43.481517+00:00',
+        },
+        {
+            deleted_datetime: null,
+            meta: {
+                shop_name: 'My shop',
+                currency: 'USD',
+            },
+            http: null,
+            deactivated_datetime: null,
+            name: 'My Shop',
+            uri: '/api/integrations/516/',
+            decoration: null,
+            locked_datetime: null,
+            created_datetime: '2017-02-07T06:07:43.481450+00:00',
+            type: IntegrationType.Shopify,
+            id: 516,
+            description: null,
+            updated_datetime: '2017-02-07T06:07:43.481517+00:00',
+        },
+    ],
+    state: {
+        loading: {
+            integrations: false,
+            integration: false,
+        },
+    },
+}
+
 describe('SupportPerformanceRevenue', () => {
+    const shopifyIntegration = integrationsState.integrations.find(
+        (integration) => {
+            return integration.type === IntegrationType.Shopify
+        }
+    )
+
     const defaultState = {
         currentAccount: fromJS(account),
-        integrations: integrationsStateWithShopify,
+        integrations: fromJS(integrationsState),
         stats: fromJS({
             filters: {
                 period: {
@@ -66,16 +138,10 @@ describe('SupportPerformanceRevenue', () => {
                     end_datetime: '2021-02-03T23:59:59.999Z',
                 },
                 channels: [TicketChannel.Chat],
-                integrations: [
-                    (
-                        integrationsStateWithShopify.getIn([
-                            'integrations',
-                            '0',
-                        ]) as Map<any, any>
-                    ).get('id'),
-                ],
+                integrations: [shopifyIntegration && shopifyIntegration.id],
                 agents: [agents[0].id],
                 tags: [1],
+                campaigns: ['f85a98e1-dc9e-40f1-9828-3b3c9908cacf'],
             } as StatsFilters,
         }),
         agents: fromJS({
@@ -113,6 +179,9 @@ describe('SupportPerformanceRevenue', () => {
                     return [revenuePerTicket, false, _noop]
             }
         })
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.RevenueBetaTesters]: true,
+        }))
 
         const {container} = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
@@ -121,6 +190,32 @@ describe('SupportPerformanceRevenue', () => {
         )
 
         expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should not render the campaign filters if the flag is deactivated', () => {
+        useStatResourceMock.mockImplementation(({resourceName}) => {
+            switch (resourceName) {
+                case REVENUE_OVERVIEW:
+                    return [revenueOverview, false, _noop]
+                case REVENUE_PER_DAY:
+                    return [revenuePerDay, false, _noop]
+                case REVENUE_PER_AGENT:
+                    return [revenuePerAgent, false, _noop]
+                default:
+                    return [revenuePerTicket, false, _noop]
+            }
+        })
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.RevenueBetaTesters]: false,
+        }))
+
+        const {queryByPlaceholderText} = renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <SupportPerformanceRevenue />
+            </Provider>
+        )
+
+        expect(queryByPlaceholderText('Search campaigns...')).toBe(null)
     })
 
     it('should render the paywall when the current account has no revenue statistics feature', () => {
