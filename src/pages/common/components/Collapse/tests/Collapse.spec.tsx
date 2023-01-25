@@ -27,14 +27,31 @@ describe('<Collapse />', () => {
         expect(screen.getByText('FooBar')).not.toHaveClass('isCollapsed')
     })
 
-    it('should set height to null when isOpen is true', () => {
-        render(<Collapse isOpen>FooBar</Collapse>)
-        expect(screen.getByText('FooBar').style.height).toBe('')
-    })
+    it.each([
+        ['height', 'vertical'],
+        ['width', 'horizontal'],
+    ] as const)(
+        'should set %s to null when isOpen is true',
+        (prop, direction) => {
+            render(
+                <Collapse isOpen direction={direction}>
+                    FooBar
+                </Collapse>
+            )
+            expect(screen.getByText('FooBar').style[prop]).toBe('')
+        }
+    )
 
-    it('should not set height when isOpen is false', () => {
-        render(<Collapse isOpen={false}>FooBar</Collapse>)
-        expect(screen.getByText('FooBar').style.height).toBe('')
+    it.each([
+        ['height', 'vertical'],
+        ['width', 'horizontal'],
+    ] as const)('should not set %s when isOpen is false', (prop, direction) => {
+        render(
+            <Collapse isOpen={false} direction={direction}>
+                FooBar
+            </Collapse>
+        )
+        expect(screen.getByText('FooBar').style[prop]).toBe('')
     })
 
     it('should apply correct classes', () => {
@@ -50,11 +67,25 @@ describe('<Collapse />', () => {
         expect(screen.getByText('FooBar')).toHaveClass('isCollapsed')
     })
 
-    it('should set inline style to 0 when isOpen changes to false and remove after transition', () => {
-        const {rerender} = render(<Collapse isOpen>FooBar</Collapse>)
-        rerender(<Collapse isOpen={false}>FooBar</Collapse>)
-        expect(screen.getByText('FooBar').style.height).toBe('0px')
-        jest.runTimersToTime(350)
-        expect(screen.getByText('FooBar').style.height).toBe('')
-    })
+    it.each([
+        ['height', 'vertical'],
+        ['width', 'horizontal'],
+    ] as const)(
+        'should set inline style to 0 when isOpen changes to false and remove after transition',
+        (prop, direction) => {
+            const {rerender} = render(
+                <Collapse isOpen direction={direction}>
+                    FooBar
+                </Collapse>
+            )
+            rerender(
+                <Collapse isOpen={false} direction={direction}>
+                    FooBar
+                </Collapse>
+            )
+            expect(screen.getByText('FooBar').style[prop]).toBe('0px')
+            jest.runTimersToTime(350)
+            expect(screen.getByText('FooBar').style[prop]).toBe('')
+        }
+    )
 })

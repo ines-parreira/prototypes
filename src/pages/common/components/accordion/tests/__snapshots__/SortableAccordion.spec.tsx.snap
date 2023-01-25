@@ -41,7 +41,7 @@ exports[`<SortableAccordion /> should render sortable accordion component 1`] = 
           </div>
         </div>
         <div
-          class="container isCollapsed"
+          class="container isVertical isCollapsed"
         >
           <div
             class="contentContainer"
@@ -87,7 +87,7 @@ exports[`<SortableAccordion /> should render sortable accordion component 1`] = 
           </div>
         </div>
         <div
-          class="container isCollapsed"
+          class="container isVertical isCollapsed"
         >
           <div
             class="contentContainer"

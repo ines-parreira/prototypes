@@ -883,7 +883,7 @@ exports[`<ChatIntegrationPreview/> render() should display the offline status be
           className="replyTime"
         >
           <i
-            className="material-icons md-2"
+            className="material-icons"
             style={
               Object {
                 "color": "#161616",
@@ -1342,7 +1342,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
           className="replyTime"
         >
           <i
-            className="material-icons md-2"
+            className="material-icons"
             style={
               Object {
                 "color": "#FFFFFF",
@@ -1505,7 +1505,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
           className="replyTime"
         >
           <i
-            className="material-icons md-2"
+            className="material-icons"
             style={
               Object {
                 "color": "#FFFFFF",
@@ -1668,7 +1668,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
           className="replyTime"
         >
           <i
-            className="material-icons md-2"
+            className="material-icons"
             style={
               Object {
                 "color": "#FFFFFF",
@@ -1831,7 +1831,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
           className="replyTime"
         >
           <i
-            className="material-icons md-2"
+            className="material-icons"
             style={
               Object {
                 "color": "#FFFFFF",

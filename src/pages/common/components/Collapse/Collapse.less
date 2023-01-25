@@ -4,11 +4,25 @@
             display: none;
         }
 
+        &.isVertical {
+            transition: height 0.35s ease;
+        }
+
+        &.isHorizontal {
+            transition: width 0.35s ease;
+        }
+
         &.isCollapsing {
             position: relative;
-            height: 0;
             overflow: hidden;
-            transition: height 0.35s ease;
+
+            &.isVertical {
+                height: 0;
+            }
+
+            &.isHorizontal {
+                width: 0;
+            }
         }
     }
 }

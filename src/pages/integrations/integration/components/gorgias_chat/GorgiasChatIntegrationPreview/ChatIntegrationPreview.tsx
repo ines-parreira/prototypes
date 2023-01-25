@@ -3,6 +3,8 @@ import {Map} from 'immutable'
 import moment from 'moment'
 import React, {ReactNode} from 'react'
 
+import Collapse from 'pages/common/components/Collapse/Collapse'
+
 import {
     CHAT_AUTO_RESPONDER_REPLY_IN_DAY,
     CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
@@ -46,6 +48,8 @@ type Props = {
     autoResponderReply?: string
     hideButton?: boolean
     shouldHideAvatarOnlineMarker?: boolean
+    showGoBackButton?: boolean
+    enableAnimations?: boolean
 }
 
 const ChatIntegrationPreview = (props: Props) => {
@@ -71,6 +75,8 @@ const ChatIntegrationPreview = (props: Props) => {
         autoResponderReply,
         autoResponderEnabled,
         hideButton,
+        showGoBackButton,
+        enableAnimations,
     } = props
 
     // Preserve the space which should be occupied by a string when the string is empty
@@ -152,10 +158,25 @@ const ChatIntegrationPreview = (props: Props) => {
         )
 
     const ClockIcon = (
-        <i className="material-icons md-2" style={{color: contrastColor}}>
+        <i className="material-icons" style={{color: contrastColor}}>
             schedule
         </i>
     )
+
+    const renderWithAnimationIfEnabled = (
+        node: ReactNode,
+        direction: 'vertical' | 'horizontal'
+    ) => {
+        if (!enableAnimations) {
+            return node
+        }
+
+        return (
+            <Collapse isOpen appear direction={direction}>
+                {node}
+            </Collapse>
+        )
+    }
 
     return (
         <div className={css.preview} style={{...getPreviewCustomStyle()}}>
@@ -196,6 +217,18 @@ const ChatIntegrationPreview = (props: Props) => {
                         backgroundColor: isOnline ? mainColor : offlineColor,
                     }}
                 >
+                    {showGoBackButton &&
+                        renderWithAnimationIfEnabled(
+                            <div className={css.goBackButton}>
+                                <i
+                                    className="material-icons"
+                                    style={{color: contrastColor}}
+                                >
+                                    chevron_left
+                                </i>
+                            </div>,
+                            'horizontal'
+                        )}
                     <ChatIntegrationAvatar
                         avatarType={avatarType}
                         avatarTeamPictureUrl={avatarTeamPictureUrl}
@@ -216,28 +249,32 @@ const ChatIntegrationPreview = (props: Props) => {
                                     : offlineIntroductionText
                             )}
                         </div>
-                        {!isOnline && (
-                            <div className={css.replyTime}>
-                                {ClockIcon}
-                                {translatedTexts.backLabelBackAt.replace(
-                                    '{time}',
-                                    moment()
-                                        .hour(9)
-                                        .minutes(0)
-                                        .locale(language)
-                                        .format('LT')
-                                )}
-                            </div>
-                        )}
+                        {!isOnline &&
+                            renderWithAnimationIfEnabled(
+                                <div className={css.replyTime}>
+                                    {ClockIcon}
+                                    {translatedTexts.backLabelBackAt.replace(
+                                        '{time}',
+                                        moment()
+                                            .hour(9)
+                                            .minutes(0)
+                                            .locale(language)
+                                            .format('LT')
+                                    )}
+                                </div>,
+                                'vertical'
+                            )}
                         {isOnline &&
                             autoResponderEnabled &&
                             autoResponderReply &&
                             autoResponderReply !==
-                                GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC && (
+                                GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC &&
+                            renderWithAnimationIfEnabled(
                                 <div className={css.replyTime}>
                                     {ClockIcon}
                                     {getTypicalResponseText()}
-                                </div>
+                                </div>,
+                                'vertical'
                             )}
                     </div>
                 </div>

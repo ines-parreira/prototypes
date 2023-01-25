@@ -111,6 +111,19 @@ WithQuickReplies.args = {
     ),
 }
 
+export const WithGoBackButton = Template.bind({})
+WithGoBackButton.args = {
+    ...defaultProps,
+    showGoBackButton: true,
+}
+
+export const WithGoBackButtonAndAnimations = Template.bind({})
+WithGoBackButtonAndAnimations.args = {
+    ...defaultProps,
+    showGoBackButton: true,
+    enableAnimations: true,
+}
+
 export const WithAgentMessagesAnimations = Template.bind({})
 WithAgentMessagesAnimations.args = {
     ...defaultProps,

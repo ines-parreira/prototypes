@@ -6,12 +6,20 @@ import css from './Collapse.less'
 
 type Props = {
     isOpen?: boolean
+    direction?: 'vertical' | 'horizontal'
+    // https://reactcommunity.org/react-transition-group/transition#Transition-prop-appear
+    appear?: boolean
     children: ReactNode
 }
 
 // Behaviour identical to the Collapse component from reactstrap, inspired by
 // https://github.com/reactstrap/reactstrap/blob/master/src/Collapse.js with exclusion of things we don't need.
-const Collapse = ({isOpen, children}: Props) => {
+const Collapse = ({
+    isOpen,
+    direction = 'vertical',
+    appear,
+    children,
+}: Props) => {
     const [dimension, setDimension] = useState<number | null>(null)
     const nodeRef = useRef<HTMLDivElement>(null)
 
@@ -22,7 +30,17 @@ const Collapse = ({isOpen, children}: Props) => {
         handleExiting,
         handleExited,
     } = useMemo(() => {
-        const getDimension = () => nodeRef.current?.scrollHeight ?? null
+        const getDimension = () => {
+            const node = nodeRef.current
+
+            if (!node) {
+                return null
+            }
+
+            return direction === 'vertical'
+                ? node.scrollHeight
+                : node.scrollWidth
+        }
 
         return {
             handleEntering: () => {
@@ -42,11 +60,12 @@ const Collapse = ({isOpen, children}: Props) => {
                 setDimension(null)
             },
         }
-    }, [])
+    }, [direction])
 
     return (
         <Transition
             in={isOpen}
+            appear={appear}
             nodeRef={nodeRef}
             onEntering={handleEntering}
             onEntered={handleEntered}
@@ -58,9 +77,17 @@ const Collapse = ({isOpen, children}: Props) => {
             {(status) => (
                 <div
                     style={{
-                        ...(dimension !== null ? {height: dimension} : {}),
+                        ...(dimension !== null
+                            ? {
+                                  [direction === 'vertical'
+                                      ? 'height'
+                                      : 'width']: dimension,
+                              }
+                            : {}),
                     }}
                     className={classnames(css.container, {
+                        [css.isVertical]: direction === 'vertical',
+                        [css.isHorizontal]: direction === 'horizontal',
                         [css.isCollapsed]:
                             status === 'exited' || status === 'unmounted',
                         [css.isCollapsing]:
