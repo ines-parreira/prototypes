@@ -45,7 +45,6 @@ const NormalizedLineStat = ({data, config, legend}: Props) => {
             <Col lg={9} md={8} sm={12}>
                 <div>
                     <Line
-                        type="line"
                         height={chartMaxHeight}
                         data={{
                             labels: (

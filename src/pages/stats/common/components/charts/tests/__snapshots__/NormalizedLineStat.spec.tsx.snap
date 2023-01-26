@@ -183,7 +183,6 @@ exports[`NormalizedLineStat should render a line chart with total and disabled l
             },
           }
         }
-        type="line"
       />
     </div>
   </Col>

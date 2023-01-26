@@ -1,5 +1,5 @@
 import React, {Component, ComponentProps} from 'react'
-import {ChartOptions} from 'chart.js'
+import {ChartOptions, ChartDataset} from 'chart.js'
 
 import moment from 'moment'
 import {Map, List} from 'immutable'
@@ -13,7 +13,6 @@ import {
     colors as colorsConfig,
     chartMaxHeight,
     chartPointRadius,
-    StatConfig,
 } from '../../../../../config/stats'
 import {RootState} from '../../../../../state/types'
 import {getBusinessHoursRangesByUserTimezone} from '../../../../../state/currentAccount/selectors'
@@ -48,7 +47,7 @@ export class LineStatContainer extends Component<Props> {
                       },
                   }
                 : defaultOptions
-        ) as StatConfig
+        ) as ChartOptions<'line'>
     }
 
     render() {
@@ -64,11 +63,12 @@ export class LineStatContainer extends Component<Props> {
                     config.getIn(['lines', lineName]) as Map<any, any>
                 ).toJS() as Record<string, unknown>
 
-                const data: Record<string, unknown> = {
+                const data: ChartDataset<'line'> = {
                     label: label || lineName,
-                    backgroundColor: backgroundColor || colorsConfig[index!],
+                    backgroundColor:
+                        (backgroundColor as string) || colorsConfig[index!],
                     cubicInterpolationMode: 'default',
-                    lineTension: 0,
+                    tension: 0,
                     data: (line.get('data') as Map<any, any>).toJS(),
                     ...lineConfig,
                 }
@@ -103,7 +103,6 @@ export class LineStatContainer extends Component<Props> {
                 }
                 <div>
                     <Line
-                        type="line"
                         height={chartMaxHeight}
                         data={{
                             labels: (

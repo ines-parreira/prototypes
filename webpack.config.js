@@ -113,6 +113,13 @@ module.exports = (env = {}) => {
             module: {
                 rules: [
                     {
+                        test: /\.(js|tsx?)$/i,
+                        exclude: (_) =>
+                            /node_modules/.test(_) &&
+                            !/node_modules\/(chart\.js)/.test(_),
+                        loader: 'babel-loader',
+                    },
+                    {
                         test: /\.css$/,
                         use: ['style-loader', 'css-loader'],
                     },
