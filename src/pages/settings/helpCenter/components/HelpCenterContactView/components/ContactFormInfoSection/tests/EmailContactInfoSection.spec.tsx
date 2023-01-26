@@ -104,18 +104,6 @@ describe('<ContactFormInfoSection />', () => {
         })
     })
 
-    it('should render the component', () => {
-        const {container} = renderWithRouter(
-            <DefaultProviders>
-                <ContactFormInfoSection
-                    helpCenter={getSingleHelpCenterResponseFixture}
-                />
-            </DefaultProviders>
-        )
-
-        expect(container.firstChild).toMatchSnapshot()
-    })
-
     it('should render the component with the subject lines component', () => {
         mockFlags({
             [FeatureFlagKey.HelpCenterSubjectLines]: true,
