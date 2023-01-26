@@ -1,4 +1,4 @@
-import {useCallback, useState} from 'react'
+import {useCallback, useState, useMemo} from 'react'
 import {chain as _chain} from 'lodash'
 
 import {HelpCenterClient} from 'rest_api/help_center_api/index'
@@ -12,11 +12,11 @@ import {
 } from 'models/helpCenter/types'
 import {createArticleFromDto} from 'models/helpCenter/utils'
 import {
-    deleteArticle,
+    deleteArticle as deleteArticleAction,
     pushArticleSupportedLocales,
     removeLocaleFromArticle,
     saveArticles,
-    updateArticle,
+    updateArticle as updateArticleAction,
     updateArticlesOrder,
 } from 'state/entities/helpCenter/articles'
 import {getViewLanguage} from 'state/ui/helpCenter'
@@ -66,10 +66,8 @@ export const useArticlesActions = () => {
     const viewLanguage = useAppSelector(getViewLanguage)
     const [isLoading, setIsLoading] = useState(false)
 
-    return {
-        isLoading,
-
-        fetchArticlesByIds: async (ids: number[]) => {
+    const fetchArticlesByIds = useCallback(
+        async (ids: number[]) => {
             if (!client) throw new Error('HTTP client not initialized!')
 
             setIsLoading(true)
@@ -101,8 +99,11 @@ export const useArticlesActions = () => {
                 throw err
             }
         },
+        [client, dispatch, helpCenterId]
+    )
 
-        fetchArticles: async (
+    const fetchArticles = useCallback(
+        async (
             categoryId: number | null,
             params?: {page: number; per_page: number; ids?: number[]}
         ) => {
@@ -159,47 +160,48 @@ export const useArticlesActions = () => {
                 throw err
             }
         },
+        [client, dispatch, helpCenterId]
+    )
 
-        getArticleCount: useCallback(
-            async (categoryId: number | null) => {
-                if (!client) throw new Error('HTTP client not initialized!')
+    const getArticleCount = useCallback(
+        async (categoryId: number | null) => {
+            if (!client) throw new Error('HTTP client not initialized!')
 
-                setIsLoading(true)
+            setIsLoading(true)
 
-                try {
-                    const {
-                        data: {meta},
-                    } = await (categoryId !== null
-                        ? client.listCategoryArticles({
-                              help_center_id: helpCenterId,
-                              category_id: categoryId,
-                              page: 1,
-                              per_page: 1,
-                              version_status: 'latest_draft',
-                          })
-                        : client.listArticles({
-                              help_center_id: helpCenterId,
-                              has_category: false,
-                              page: 1,
-                              per_page: 1,
-                              version_status: 'latest_draft',
-                          }))
+            try {
+                const {
+                    data: {meta},
+                } = await (categoryId !== null
+                    ? client.listCategoryArticles({
+                          help_center_id: helpCenterId,
+                          category_id: categoryId,
+                          page: 1,
+                          per_page: 1,
+                          version_status: 'latest_draft',
+                      })
+                    : client.listArticles({
+                          help_center_id: helpCenterId,
+                          has_category: false,
+                          page: 1,
+                          per_page: 1,
+                          version_status: 'latest_draft',
+                      }))
 
-                    setIsLoading(false)
+                setIsLoading(false)
 
-                    return meta.item_count
-                } catch (err) {
-                    setIsLoading(false)
+                return meta.item_count
+            } catch (err) {
+                setIsLoading(false)
 
-                    throw err
-                }
-            },
-            [client, helpCenterId]
-        ),
+                throw err
+            }
+        },
+        [client, helpCenterId]
+    )
 
-        async createArticle(
-            translation: CreateArticleTranslationDto
-        ): Promise<Article> {
+    const createArticle = useCallback(
+        async (translation: CreateArticleTranslationDto): Promise<Article> => {
             if (!client) throw new Error('HTTP client not initialized!')
 
             setIsLoading(true)
@@ -237,11 +239,68 @@ export const useArticlesActions = () => {
                 throw err
             }
         },
+        [client, dispatch, helpCenterId]
+    )
 
-        async updateArticle(
+    const createArticleTranslation = useCallback(
+        async (article: Article) => {
+            if (!client) throw new Error('HTTP client not initialized!')
+
+            const {data: translation} = await client.createArticleTranslation(
+                {
+                    help_center_id: helpCenterId,
+                    article_id: article.id,
+                },
+                {
+                    locale: article.translation.locale,
+                    title: article.translation.title,
+                    content: article.translation.content,
+                    excerpt: article.translation.excerpt,
+                    slug: article.translation.slug,
+                    seo_meta: article.translation.seo_meta,
+                    is_current: article.translation.is_current,
+                    visibility_status: article.translation.visibility_status,
+                    category_id: article.translation.category_id,
+                }
+            )
+
+            return translation
+        },
+        [client, helpCenterId]
+    )
+
+    const updateArticleTranslation = useCallback(
+        async (article: Article) => {
+            if (!client) throw new Error('HTTP client not initialized!')
+
+            const {data: translation} = await client.updateArticleTranslation(
+                {
+                    help_center_id: helpCenterId,
+                    article_id: article.id,
+                    locale: article.translation.locale,
+                },
+                {
+                    title: article.translation.title,
+                    content: article.translation.content,
+                    excerpt: article.translation.excerpt,
+                    slug: article.translation.slug,
+                    seo_meta: article.translation.seo_meta,
+                    is_current: article.translation.is_current,
+                    category_id: article.translation.category_id,
+                    visibility_status: article.translation.visibility_status,
+                }
+            )
+
+            return translation
+        },
+        [client, helpCenterId]
+    )
+
+    const updateArticle = useCallback(
+        async (
             defaultLocale: LocaleCode,
             article: Article
-        ): Promise<Article> {
+        ): Promise<Article> => {
             if (!client) throw new Error('HTTP client not initialized!')
 
             setIsLoading(true)
@@ -271,8 +330,8 @@ export const useArticlesActions = () => {
 
                 updatedArticle.translation = {
                     ...(localeIsAvailable
-                        ? await this.updateArticleTranslation(updatedArticle)
-                        : await this.createArticleTranslation(updatedArticle)),
+                        ? await updateArticleTranslation(updatedArticle)
+                        : await createArticleTranslation(updatedArticle)),
                     rating: article.translation.rating,
                 }
 
@@ -298,7 +357,7 @@ export const useArticlesActions = () => {
                 }
 
                 if (article.translation.locale === defaultLocale) {
-                    dispatch(updateArticle(updatedArticle))
+                    dispatch(updateArticleAction(updatedArticle))
                 }
 
                 dispatch(
@@ -317,56 +376,18 @@ export const useArticlesActions = () => {
                 throw err
             }
         },
+        [
+            client,
+            createArticleTranslation,
+            dispatch,
+            helpCenterId,
+            updateArticleTranslation,
+            viewLanguage,
+        ]
+    )
 
-        async updateArticleTranslation(article: Article) {
-            if (!client) throw new Error('HTTP client not initialized!')
-
-            const {data: translation} = await client.updateArticleTranslation(
-                {
-                    help_center_id: helpCenterId,
-                    article_id: article.id,
-                    locale: article.translation.locale,
-                },
-                {
-                    title: article.translation.title,
-                    content: article.translation.content,
-                    excerpt: article.translation.excerpt,
-                    slug: article.translation.slug,
-                    seo_meta: article.translation.seo_meta,
-                    is_current: article.translation.is_current,
-                    category_id: article.translation.category_id,
-                    visibility_status: article.translation.visibility_status,
-                }
-            )
-
-            return translation
-        },
-
-        async createArticleTranslation(article: Article) {
-            if (!client) throw new Error('HTTP client not initialized!')
-
-            const {data: translation} = await client.createArticleTranslation(
-                {
-                    help_center_id: helpCenterId,
-                    article_id: article.id,
-                },
-                {
-                    locale: article.translation.locale,
-                    title: article.translation.title,
-                    content: article.translation.content,
-                    excerpt: article.translation.excerpt,
-                    slug: article.translation.slug,
-                    seo_meta: article.translation.seo_meta,
-                    is_current: article.translation.is_current,
-                    visibility_status: article.translation.visibility_status,
-                    category_id: article.translation.category_id,
-                }
-            )
-
-            return translation
-        },
-
-        async deleteArticle(articleId: number) {
+    const deleteArticle = useCallback(
+        async (articleId: number) => {
             if (!client) throw new Error('HTTP client not initialized!')
 
             setIsLoading(true)
@@ -377,7 +398,7 @@ export const useArticlesActions = () => {
                     id: articleId,
                 })
 
-                dispatch(deleteArticle(articleId))
+                dispatch(deleteArticleAction(articleId))
 
                 setIsLoading(false)
 
@@ -388,11 +409,11 @@ export const useArticlesActions = () => {
                 throw err
             }
         },
+        [client, dispatch, helpCenterId]
+    )
 
-        async updateArticlesPositions(
-            articles: Article[],
-            categoryId: number | null
-        ) {
+    const updateArticlesPositions = useCallback(
+        async (articles: Article[], categoryId: number | null) => {
             if (!client) throw new Error('HTTP client not initialized!')
 
             setIsLoading(true)
@@ -423,8 +444,11 @@ export const useArticlesActions = () => {
                 throw err
             }
         },
+        [client, dispatch, helpCenterId]
+    )
 
-        async deleteArticleTranslation(articleId: number, locale: LocaleCode) {
+    const deleteArticleTranslation = useCallback(
+        async (articleId: number, locale: LocaleCode) => {
             if (!client) throw new Error('HTTP client not initialized!')
 
             setIsLoading(true)
@@ -445,8 +469,11 @@ export const useArticlesActions = () => {
                 throw err
             }
         },
+        [client, dispatch, helpCenterId]
+    )
 
-        async cloneArticle(article: Article) {
+    const cloneArticle = useCallback(
+        async (article: Article) => {
             if (!client) throw new Error('HTTP client not initialized!')
 
             const translation: CreateArticleTranslationDto = {
@@ -474,7 +501,7 @@ export const useArticlesActions = () => {
                     })
                     .then((response) => response.data.data)
 
-                const clonedArticle = await this.createArticle(translation)
+                const clonedArticle = await createArticle(translation)
 
                 await Promise.all(
                     translations
@@ -520,5 +547,37 @@ export const useArticlesActions = () => {
                 throw err
             }
         },
-    }
+        [client, createArticle, dispatch, helpCenterId]
+    )
+
+    return useMemo(
+        () => ({
+            isLoading,
+            fetchArticlesByIds,
+            fetchArticles,
+            getArticleCount,
+            createArticle,
+            updateArticle,
+            updateArticleTranslation,
+            createArticleTranslation,
+            deleteArticle,
+            updateArticlesPositions,
+            deleteArticleTranslation,
+            cloneArticle,
+        }),
+        [
+            cloneArticle,
+            createArticle,
+            createArticleTranslation,
+            deleteArticle,
+            deleteArticleTranslation,
+            fetchArticles,
+            fetchArticlesByIds,
+            getArticleCount,
+            isLoading,
+            updateArticle,
+            updateArticleTranslation,
+            updateArticlesPositions,
+        ]
+    )
 }

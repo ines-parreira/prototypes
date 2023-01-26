@@ -80,10 +80,13 @@ export const HelpCenterApiClientProvider = ({
 export const useHelpCenterApi = (): UseHelpCenterApiInterface => {
     const {isReady, client} = useContext(HelpCenterApiClientContext)
 
-    return {
-        isReady,
-        client,
-    }
+    return useMemo(
+        () => ({
+            isReady,
+            client,
+        }),
+        [isReady, client]
+    )
 }
 
 export const useAbilityChecker = () => {
@@ -97,5 +100,10 @@ export const useAbilityChecker = () => {
         [agentAbility]
     )
 
-    return {isPassingRulesCheck}
+    return useMemo(
+        () => ({
+            isPassingRulesCheck,
+        }),
+        [isPassingRulesCheck]
+    )
 }

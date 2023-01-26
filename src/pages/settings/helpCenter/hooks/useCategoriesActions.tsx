@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useCallback, useState, useMemo} from 'react'
 
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -10,13 +10,13 @@ import {
 } from 'models/helpCenter/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
-    deleteCategory,
+    deleteCategory as deleteCategoryAction,
     getCategoriesById,
     pushCategorySupportedLocales,
     removeLocaleFromCategory,
     saveCategories,
     savePositions,
-    updateCategoryTranslation,
+    updateCategoryTranslation as updateCategoryTranslationAction,
 } from 'state/entities/helpCenter/categories'
 import * as articleActions from 'state/entities/helpCenter/articles/actions'
 import {getViewLanguage} from 'state/ui/helpCenter'
@@ -36,10 +36,8 @@ export const useCategoriesActions = () => {
     const [isLoading, setIsLoading] = useState(false)
     const categoriesById = useAppSelector(getCategoriesById)
 
-    return {
-        isLoading,
-
-        async getCategoryTranslation(categoryId: number, locale: LocaleCode) {
+    const getCategoryTranslation = useCallback(
+        async (categoryId: number, locale: LocaleCode) => {
             if (!client) throw new Error('HTTP client not initialized!')
 
             try {
@@ -60,12 +58,15 @@ export const useCategoriesActions = () => {
                 throw error
             }
         },
+        [client, helpCenterId]
+    )
 
-        async fetchCategories(
+    const fetchCategories = useCallback(
+        async (
             locale: LocaleCode,
             parentCategoryId: number,
             shouldReset: boolean
-        ) {
+        ) => {
             if (!client) throw new Error('HTTP client not initialized!')
 
             try {
@@ -92,8 +93,11 @@ export const useCategoriesActions = () => {
                 setIsLoading(false)
             }
         },
+        [client, dispatch, helpCenterId]
+    )
 
-        async createCategory(payload: CreateCategoryDto) {
+    const createCategory = useCallback(
+        async (payload: CreateCategoryDto) => {
             if (!client) throw new Error('HTTP client not initialized!')
 
             try {
@@ -137,12 +141,15 @@ export const useCategoriesActions = () => {
                 throw error
             }
         },
+        [categoriesById, client, dispatch, helpCenterId]
+    )
 
-        async updateCategoryTranslation(
+    const updateCategoryTranslation = useCallback(
+        async (
             categoryId: number,
             locale: LocaleCode,
             payload: UpdateCategoryTranslationDto
-        ) {
+        ) => {
             if (!client) throw new Error('HTTP client not initialized!')
 
             try {
@@ -164,7 +171,7 @@ export const useCategoriesActions = () => {
                 const currentLocale =
                     categoriesById[categoryId].translation?.locale
                 if (locale === currentLocale) {
-                    dispatch(updateCategoryTranslation(output))
+                    dispatch(updateCategoryTranslationAction(output))
                 }
 
                 const previousParentId =
@@ -197,11 +204,11 @@ export const useCategoriesActions = () => {
                 throw error
             }
         },
+        [categoriesById, client, dispatch, helpCenterId]
+    )
 
-        async createCategoryTranslation(
-            categoryId: number,
-            payload: CreateCategoryTranslationDto
-        ) {
+    const createCategoryTranslation = useCallback(
+        async (categoryId: number, payload: CreateCategoryTranslationDto) => {
             if (!client) throw new Error('HTTP client not initialized!')
 
             try {
@@ -216,7 +223,7 @@ export const useCategoriesActions = () => {
                 )
 
                 if (payload.locale === viewLanguage) {
-                    dispatch(updateCategoryTranslation(translation.data))
+                    dispatch(updateCategoryTranslationAction(translation.data))
 
                     const previousParentId =
                         categoriesById[categoryId].translation
@@ -257,12 +264,15 @@ export const useCategoriesActions = () => {
                 throw error
             }
         },
+        [categoriesById, client, dispatch, helpCenterId, viewLanguage]
+    )
 
-        async updateCategoriesPositions({
+    const updateCategoriesPositions = useCallback(
+        async ({
             categories,
             categoryId,
             defaultSiblingsPositions,
-        }: CategoriesPositionsType) {
+        }: CategoriesPositionsType) => {
             if (!client) throw new Error('HTTP client not initialized!')
 
             try {
@@ -309,11 +319,11 @@ export const useCategoriesActions = () => {
                 throw error
             }
         },
+        [client, dispatch, helpCenterId]
+    )
 
-        async deleteCategoryTranslation(
-            categoryId: number,
-            locale: LocaleCode
-        ) {
+    const deleteCategoryTranslation = useCallback(
+        async (categoryId: number, locale: LocaleCode) => {
             if (!client) throw new Error('HTTP client not initialized!')
 
             try {
@@ -333,7 +343,7 @@ export const useCategoriesActions = () => {
                         (availableLocale) => availableLocale !== locale
                     )
                     if (!availableLocales.length) {
-                        dispatch(deleteCategory(categoryId))
+                        dispatch(deleteCategoryAction(categoryId))
                     } else {
                         const newLocale = availableLocales[0]
                         const {data} = await client.getCategory({
@@ -342,7 +352,9 @@ export const useCategoriesActions = () => {
                             locale: newLocale,
                         })
 
-                        dispatch(updateCategoryTranslation(data.translation))
+                        dispatch(
+                            updateCategoryTranslationAction(data.translation)
+                        )
                     }
                 }
 
@@ -366,8 +378,11 @@ export const useCategoriesActions = () => {
                 throw error
             }
         },
+        [categoriesById, client, dispatch, helpCenterId, viewLanguage]
+    )
 
-        async deleteCategory(categoryId: number) {
+    const deleteCategory = useCallback(
+        async (categoryId: number) => {
             if (!client) throw new Error('HTTP client not initialized!')
 
             try {
@@ -383,7 +398,7 @@ export const useCategoriesActions = () => {
                     id: categoryId,
                 })
 
-                dispatch(deleteCategory(categoryId))
+                dispatch(deleteCategoryAction(categoryId))
 
                 setIsLoading(false)
 
@@ -394,5 +409,31 @@ export const useCategoriesActions = () => {
                 throw error
             }
         },
-    }
+        [client, dispatch, helpCenterId]
+    )
+
+    return useMemo(
+        () => ({
+            isLoading,
+            getCategoryTranslation,
+            fetchCategories,
+            createCategory,
+            updateCategoryTranslation,
+            createCategoryTranslation,
+            updateCategoriesPositions,
+            deleteCategoryTranslation,
+            deleteCategory,
+        }),
+        [
+            createCategory,
+            createCategoryTranslation,
+            deleteCategory,
+            deleteCategoryTranslation,
+            fetchCategories,
+            getCategoryTranslation,
+            isLoading,
+            updateCategoriesPositions,
+            updateCategoryTranslation,
+        ]
+    )
 }
