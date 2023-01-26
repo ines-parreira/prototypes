@@ -91,6 +91,8 @@ export default class SearchInput<
         if (autoFocus && this._inputElement) {
             setTimeout(() => this._inputElement?.focus(), 0)
         }
+
+        void this._fetchResults('')
     }
 
     componentWillUnmount() {
@@ -109,8 +111,7 @@ export default class SearchInput<
     _onChange = (value: string) => {
         this.setState({
             filter: value,
-            isOpen: false,
-            isLoading: true,
+            isOpen: true,
             hoveredIndex: -1,
         })
         void this._fetchResults(value)
@@ -175,9 +176,9 @@ export default class SearchInput<
     _onFocus = (event: ChangeEvent<HTMLInputElement>) => {
         const filter = event.target.value
         const {searchOnFocus} = this.props
-        const {isLoading, results} = this.state
+        const {results} = this.state
 
-        if (searchOnFocus && !isLoading && !results.length) {
+        if (searchOnFocus && !results.length) {
             void this._fetchResults(filter)
         }
     }
@@ -213,7 +214,7 @@ export default class SearchInput<
 
     _fetchResults = _debounce(async (filter: string) => {
         try {
-            this.setState({isOpen: false, isLoading: true})
+            this.setState({isLoading: true})
             this._gorgiasApi.cancelPendingRequests(true)
             const {endpoint} = this.props
             const results = (await this._gorgiasApi.search(
@@ -225,7 +226,7 @@ export default class SearchInput<
             this.setState({results: []})
             console.error(error)
         } finally {
-            this.setState({isOpen: true, isLoading: false})
+            this.setState({isLoading: false})
         }
     }, 300)
 
