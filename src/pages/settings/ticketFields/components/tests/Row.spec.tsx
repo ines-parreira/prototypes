@@ -3,10 +3,11 @@ import {render} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
+import {QueryClientProvider} from '@tanstack/react-query'
 
 import {customField} from 'fixtures/customField'
 import {DatetimeLabel} from 'pages/common/utils/labels'
+import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
 import Row from '../Row'
 
 const mockStore = configureMockStore([thunk])
@@ -19,9 +20,13 @@ jest.mock('pages/common/utils/labels', () => ({
 
 jest.mock('models/customField/resources')
 
-const queryClient = new QueryClient()
+const queryClient = createTestQueryClient()
 
 describe('<Row />', () => {
+    beforeEach(async () => {
+        await queryClient.invalidateQueries()
+    })
+
     it('should render correctly active field', () => {
         const props = {
             ticketField: customField,

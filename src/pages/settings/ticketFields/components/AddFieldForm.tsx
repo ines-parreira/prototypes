@@ -1,13 +1,8 @@
 import React from 'react'
-import {useDispatch} from 'react-redux'
 
-import {NotificationStatus} from 'state/notifications/types'
-import {notify} from 'state/notifications/actions'
-import {GorgiasApiError} from 'models/api/types'
 import {CustomFieldInput} from 'models/customField/types'
-import {createCustomField} from 'models/customField/resources'
 import history from 'pages/history'
-import {errorToChildren} from 'utils'
+import {useCreateCustomField} from 'models/customField/queries'
 import FieldForm from './FieldForm'
 
 interface AddFieldFormProps {
@@ -15,7 +10,7 @@ interface AddFieldFormProps {
 }
 
 export default function AddFieldForm(props: AddFieldFormProps) {
-    const dispatch = useDispatch()
+    const {mutateAsync} = useCreateCustomField()
 
     const newField: CustomFieldInput = {
         object_type: props.objectType,
@@ -32,26 +27,8 @@ export default function AddFieldForm(props: AddFieldFormProps) {
 
     const close = () => history.push('/app/settings/ticket-fields')
     const handleSubmit = async (field: CustomFieldInput) => {
-        try {
-            await createCustomField(field)
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Success,
-                    message: 'Ticket field created successfully.',
-                })
-            )
-            close()
-        } catch (error) {
-            const err = error as GorgiasApiError
-            void dispatch(
-                notify({
-                    title: err.response.data.error.msg,
-                    message: errorToChildren(err)!,
-                    allowHTML: true,
-                    status: NotificationStatus.Error,
-                })
-            )
-        }
+        await mutateAsync(field)
+        close()
     }
 
     return (

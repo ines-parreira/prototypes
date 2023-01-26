@@ -5,7 +5,7 @@ import {Provider} from 'react-redux'
 import MockAdapter from 'axios-mock-adapter'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
+import {QueryClientProvider} from '@tanstack/react-query'
 
 import LD from 'launchdarkly-react-client-sdk'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -13,15 +13,17 @@ import {customField} from 'fixtures/customField'
 import client from 'models/api/resources'
 import {renderWithRouter} from 'utils/testing'
 
+import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
 import EditTicketField from '../EditTicketField'
 
 const mockStore = configureMockStore([thunk])()
 const mockedServer = new MockAdapter(client)
-const queryClient = new QueryClient()
+const queryClient = createTestQueryClient()
 
 describe('<EditTicketField/>', () => {
-    beforeEach(() => {
+    beforeEach(async () => {
         mockedServer.reset()
+        await queryClient.invalidateQueries()
     })
 
     it('should not render if the account does not have the feature flag', () => {

@@ -5,19 +5,23 @@ import {HTML5Backend} from 'react-dnd-html5-backend'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
+import {QueryClientProvider} from '@tanstack/react-query'
 
 import {customField, customFieldInput} from 'fixtures/customField'
 import {CustomFieldInput} from 'models/customField/types'
 import {DROPDOWN_NESTING_DELIMITER as delimiter} from 'models/customField/constants'
 
+import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
 import FieldForm from '../FieldForm'
 
 const mockStore = configureMockStore([thunk])()
-
-const queryClient = new QueryClient()
+const queryClient = createTestQueryClient()
 
 describe('<FieldForm/>', () => {
+    beforeEach(async () => {
+        await queryClient.invalidateQueries()
+    })
+
     it('should render correctly', () => {
         const props = {
             field: customFieldInput,

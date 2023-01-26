@@ -7,7 +7,7 @@ import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
 import MockAdapter from 'axios-mock-adapter'
 import {AxiosRequestConfig} from 'axios'
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
+import {QueryClientProvider} from '@tanstack/react-query'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -16,6 +16,7 @@ import client from 'models/api/resources'
 import {renderWithRouter} from 'utils/testing'
 import {CustomField} from 'models/customField/types'
 import {customField} from 'fixtures/customField'
+import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
 import TicketFields from '../TicketFields'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -29,16 +30,16 @@ jest.mock('../components/List', () => () => {
 })
 
 const mockedServer = new MockAdapter(client)
+const queryClient = createTestQueryClient()
 
 describe('<TicketFields/>', () => {
-    beforeEach(() => {
+    beforeEach(async () => {
         mockedServer.reset()
+        await queryClient.invalidateQueries()
     })
 
     it('should not render if the account does not have the feature flag', () => {
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({}))
-
-        const queryClient = new QueryClient()
 
         mockedServer.onGet('/api/custom-fields/').reply(200, {
             data: [],
@@ -68,8 +69,6 @@ describe('<TicketFields/>', () => {
             jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
                 [FeatureFlagKey.TicketFields]: true,
             }))
-
-            const queryClient = new QueryClient()
 
             mockedServer.onGet('/api/custom-fields/').reply(200, {
                 data: [],
@@ -105,8 +104,6 @@ describe('<TicketFields/>', () => {
             jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
                 [FeatureFlagKey.TicketFields]: true,
             }))
-
-            const queryClient = new QueryClient()
 
             mockedServer
                 .onGet('/api/custom-fields/')
@@ -157,8 +154,6 @@ describe('<TicketFields/>', () => {
                 [FeatureFlagKey.TicketFields]: true,
             }))
 
-            const queryClient = new QueryClient()
-
             mockedServer
                 .onGet('/api/custom-fields/')
                 .reply((config: AxiosRequestConfig) => {
@@ -201,8 +196,6 @@ describe('<TicketFields/>', () => {
             jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
                 [FeatureFlagKey.TicketFields]: true,
             }))
-
-            const queryClient = new QueryClient()
 
             mockedServer
                 .onGet('/api/custom-fields/')
@@ -251,8 +244,6 @@ describe('<TicketFields/>', () => {
             jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
                 [FeatureFlagKey.TicketFields]: true,
             }))
-
-            const queryClient = new QueryClient()
 
             mockedServer
                 .onGet('/api/custom-fields/')

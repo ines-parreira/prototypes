@@ -3,15 +3,20 @@ import moment from 'moment'
 
 import {CustomFieldQueryKeys} from 'models/customField/constants'
 import {
+    createCustomField,
     getCustomField,
     getCustomFields,
     ListParams,
+    updateCustomField,
     updatePartialCustomField,
 } from 'models/customField/resources'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
+import {GorgiasApiError} from 'models/api/types'
+import {errorToChildren} from 'utils'
+import {CustomFieldInput} from 'models/customField/types'
 
 export const useGetCustomFieldDefinitions = (params: ListParams) => {
     const dispatch = useAppDispatch()
@@ -53,7 +58,67 @@ export const useGetCustomFieldDefinition = (id: number) => {
         },
     })
 }
+export const useCreateCustomField = () => {
+    const dispatch = useAppDispatch()
+    const queryClient = useQueryClient()
 
+    return useMutation({
+        mutationFn: (field: CustomFieldInput) => createCustomField(field),
+        onSuccess: () => {
+            void queryClient.invalidateQueries({
+                queryKey: [CustomFieldQueryKeys.customFieldDefinition],
+            })
+            void dispatch(
+                notify({
+                    message: 'Ticket field created successfully.',
+                    status: NotificationStatus.Success,
+                })
+            )
+        },
+        onError: (error) => {
+            const err = error as GorgiasApiError
+            void dispatch(
+                notify({
+                    title: err.response.data.error.msg,
+                    message: errorToChildren(err)!,
+                    allowHTML: true,
+                    status: NotificationStatus.Error,
+                })
+            )
+        },
+    })
+}
+
+export const useUpdateCustomField = (id: number) => {
+    const dispatch = useAppDispatch()
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: (field: CustomFieldInput) => updateCustomField(id, field),
+        onSuccess: () => {
+            void queryClient.invalidateQueries({
+                queryKey: [CustomFieldQueryKeys.customFieldDefinition],
+            })
+            void dispatch(
+                notify({
+                    message: 'Ticket field updated successfully.',
+                    status: NotificationStatus.Success,
+                })
+            )
+        },
+        onError: (error) => {
+            const err = error as GorgiasApiError
+            void dispatch(
+                notify({
+                    title: err.response.data.error.msg,
+                    message: errorToChildren(err)!,
+                    allowHTML: true,
+                    status: NotificationStatus.Error,
+                })
+            )
+        },
+    })
+}
 export const useUpdateCustomFieldStatus = (id: number) => {
     const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
@@ -78,12 +143,15 @@ export const useUpdateCustomFieldStatus = (id: number) => {
                 })
             )
         },
-        onError: (_, {archived}) => {
+        onError: (error, {archived}) => {
+            const err = error as GorgiasApiError
             void dispatch(
                 notify({
-                    message: `Failed to ${
+                    title: `Failed to ${
                         archived ? 'archive' : 'unarchive'
                     } ticket field.`,
+                    message: errorToChildren(err)!,
+                    allowHTML: true,
                     status: NotificationStatus.Error,
                 })
             )

@@ -8,6 +8,7 @@ import {
     getCustomField,
     getCustomFields,
     updateCustomField,
+    updatePartialCustomField,
 } from '../resources'
 
 const mockedServer = new MockAdapter(client)
@@ -96,6 +97,25 @@ describe('custom field resources', () => {
                 .reply(503, {message: 'error'})
             return expect(
                 updateCustomField(123, customFieldInput)
+            ).rejects.toEqual(new Error('Request failed with status code 503'))
+        })
+    })
+
+    describe('updatePartialCustomField', () => {
+        it('should resolve with an updated CustomField on success', async () => {
+            mockedServer.onPut('/api/custom-fields/123').reply(200, customField)
+            const res = await updatePartialCustomField(123, customFieldInput)
+
+            expect(res).toMatchSnapshot()
+            expect(mockedServer.history).toMatchSnapshot()
+        })
+
+        it('should reject an error on fail', () => {
+            mockedServer
+                .onPut('/api/custom-fields/123')
+                .reply(503, {message: 'error'})
+            return expect(
+                updatePartialCustomField(123, customFieldInput)
             ).rejects.toEqual(new Error('Request failed with status code 503'))
         })
     })
