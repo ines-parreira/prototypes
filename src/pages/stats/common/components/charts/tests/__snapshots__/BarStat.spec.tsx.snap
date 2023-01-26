@@ -107,6 +107,7 @@ exports[`BarStat should render a bar chart 1`] = `
           },
         }
       }
+      type="bar"
     />
   </div>
 </div>

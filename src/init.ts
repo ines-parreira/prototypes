@@ -1,18 +1,7 @@
 import {fromJS, Map} from 'immutable'
 import moment from 'moment-timezone'
 import {Store} from 'redux'
-import {
-    Chart,
-    BarController,
-    BarElement,
-    LineController,
-    LineElement,
-    PointElement,
-    LinearScale,
-    CategoryScale,
-    Tooltip,
-    Legend,
-} from 'chart.js'
+import {Chart} from 'chart.js'
 import {SankeyController, Flow} from 'chartjs-chart-sankey'
 
 import './polyfills'
@@ -279,19 +268,8 @@ export function initApp({datadog, sentry}: InitAppParams) {
         currentAutomationProduct?.price_id
     )
 
-    Chart.register(
-        BarController,
-        BarElement,
-        LineController,
-        LineElement,
-        PointElement,
-        Tooltip,
-        Legend,
-        LinearScale,
-        CategoryScale,
-        SankeyController,
-        Flow
-    )
+    // Register ChartJS Sankey plugin
+    Chart.register(SankeyController, Flow)
 
     return store
 }

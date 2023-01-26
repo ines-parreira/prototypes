@@ -260,6 +260,7 @@ exports[`NormalizedBarStat should render a bar with total chart and disabled lab
               },
             }
           }
+          type="bar"
         />
       </div>
     </Col>

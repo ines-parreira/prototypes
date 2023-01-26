@@ -138,6 +138,7 @@ const NormalizedBarStat = ({data, config, legend}: Props) => {
                 <Col lg={9} md={8} sm={12}>
                     <div>
                         <Bar
+                            type="bar"
                             height={chartMaxHeight}
                             data={{
                                 labels: (

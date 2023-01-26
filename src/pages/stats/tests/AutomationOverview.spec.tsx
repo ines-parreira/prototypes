@@ -24,10 +24,11 @@ import useStatResource from '../useStatResource'
 import AutomationOverview from '../AutomationOverview'
 
 jest.mock('../useStatResource')
-jest.mock('react-chartjs-2', () => ({
-    Chart: () => <canvas />,
-    Bar: () => <canvas />,
-}))
+jest.mock('react-chartjs-2', () => {
+    const ChartComponent = () => <canvas />
+    ChartComponent.Bar = () => <canvas />
+    return ChartComponent
+})
 jest.spyOn(Date, 'now').mockImplementation(() => 1487076708000)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])

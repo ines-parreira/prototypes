@@ -4,9 +4,9 @@ import {fromJS} from 'immutable'
 
 import SankeyStat from '../SankeyStat'
 
-jest.mock('react-chartjs-2', () => ({
-    Chart: (props: Record<string, unknown>) => <canvas {...props} />,
-}))
+jest.mock('react-chartjs-2', () => (props: Record<string, unknown>) => (
+    <canvas {...props} />
+))
 
 const minProps: ComponentProps<typeof SankeyStat> = {
     data: fromJS([

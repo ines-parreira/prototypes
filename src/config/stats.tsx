@@ -4,8 +4,9 @@ import {Link} from 'react-router-dom'
 import moment from 'moment'
 import _merge from 'lodash/merge'
 import _isString from 'lodash/isString'
-import {ChartType, Scale, TooltipItem, defaults} from 'chart.js'
+import {ChartType, Scale, TooltipItem} from 'chart.js'
 import classNames from 'classnames'
+import {defaults} from 'react-chartjs-2'
 
 import {formatDuration, formatNumber} from '../pages/stats/common/utils'
 import {TagLabel} from '../pages/common/utils/labels'
@@ -477,7 +478,7 @@ export const stats = toImmutable<
                 pointHoverBorderColor: '#8892f2',
                 pointRadius: 4,
                 pointHoverRadius: 6,
-                tension: 0.5,
+                lineTension: 0.5,
             },
             replied: {
                 label: 'Ticket replied',
@@ -489,7 +490,7 @@ export const stats = toImmutable<
                 pointHoverBorderColor: '#ffb584',
                 pointRadius: 4,
                 pointHoverRadius: 6,
-                tension: 0.5,
+                lineTension: 0.5,
             },
             closed: {
                 label: 'Ticket closed',
@@ -501,7 +502,7 @@ export const stats = toImmutable<
                 pointHoverBorderColor: '#a5e5ab',
                 pointRadius: 4,
                 pointHoverRadius: 6,
-                tension: 0.5,
+                lineTension: 0.5,
             },
         },
         options: (legend: Map<any, any>) => ({
