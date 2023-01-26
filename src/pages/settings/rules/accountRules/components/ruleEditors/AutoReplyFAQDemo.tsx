@@ -3,7 +3,7 @@ import classnames from 'classnames'
 import _noop from 'lodash/noop'
 import {AutoReplyFAQSettings} from 'state/rules/types'
 import FakeFAQArticlePreview from 'pages/settings/rules/components/FakeFAQArticlePreview'
-import RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'
+import RichField from 'pages/common/forms/RichField/RichField'
 
 import {ManagedRuleDetailProps} from './ManagedRuleEditor'
 import css from './ManagedRuleEditor.less'

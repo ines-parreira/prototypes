@@ -12,6 +12,7 @@ import React, {
 import {useMountedState} from 'react-use'
 import {Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 import _get from 'lodash/get'
+import classnames from 'classnames'
 
 import Button from 'pages/common/components/button/Button'
 import {GroupPositionContext} from 'pages/common/components/layout/Group'
@@ -20,6 +21,7 @@ import css from './ConfirmationPopover.less'
 
 type Props = {
     buttonProps?: ComponentProps<typeof Button>
+    cancelButtonProps?: ComponentProps<typeof Button>
     children: (props: {
         uid: string
         onDisplayConfirmation: (event: SyntheticEvent) => void
@@ -31,10 +33,13 @@ type Props = {
     placement?: ComponentProps<typeof Popover>['placement']
     title?: ReactNode
     confirmLabel?: string
+    cancelLabel?: string
+    showCancelButton?: boolean
 } & Omit<ComponentProps<typeof Popover>, 'target'>
 
 export default function ConfirmationPopover({
     buttonProps,
+    cancelButtonProps,
     children,
     content,
     id,
@@ -43,6 +48,8 @@ export default function ConfirmationPopover({
     placement = 'bottom',
     title = 'Are you sure?',
     confirmLabel = 'Confirm',
+    cancelLabel = 'Cancel',
+    showCancelButton,
     ...other
 }: Props) {
     const isMounted = useMountedState()
@@ -123,6 +130,18 @@ export default function ConfirmationPopover({
                             >
                                 {confirmLabel}
                             </Button>
+                            {showCancelButton && (
+                                <Button
+                                    {...cancelButtonProps}
+                                    className={classnames(
+                                        css.cancelButton,
+                                        cancelButtonProps?.className
+                                    )}
+                                    onClick={() => setIsOpened(false)}
+                                >
+                                    {cancelLabel}
+                                </Button>
+                            )}
                         </GroupPositionContext.Provider>
                     </PopoverBody>
                 </Popover>

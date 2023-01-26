@@ -17,7 +17,7 @@ import produce from 'immer'
 
 import PageHeader from 'pages/common/components/PageHeader'
 
-import DEPRECATED_RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'
+import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
 import {useConfigurationData} from 'pages/settings/selfService/components/hooks'
 import settingsCss from 'pages/settings/settings.less'
 
@@ -471,7 +471,7 @@ const ReportIssueReasonEditor: ComponentType = () => {
                                     After customers choose the option above,
                                     reply with an automated message.
                                 </p>
-                                <DEPRECATED_RichField
+                                <TicketRichField
                                     value={{
                                         html: reasonAction
                                             .responseMessageContent.html,

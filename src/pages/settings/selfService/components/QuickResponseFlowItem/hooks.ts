@@ -1,6 +1,6 @@
 import {useConfigurationData} from 'pages/settings/selfService/components/hooks'
 import {updateSelfServiceConfiguration} from '../../../../../models/selfServiceConfiguration/resources'
-import {QuickReplyPolicy} from '../../../../../models/selfServiceConfiguration/types'
+import {QuickResponsePolicy} from '../../../../../models/selfServiceConfiguration/types'
 import {selfServiceConfigurationUpdated} from '../../../../../state/entities/selfServiceConfigurations/actions'
 import {notify} from '../../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../../state/notifications/types'
@@ -14,7 +14,7 @@ export const useUpdateQuickReplyPolicies = () => {
         message,
         newQuickRepliesPolicy,
     }: {
-        newQuickRepliesPolicy: QuickReplyPolicy[]
+        newQuickRepliesPolicy: QuickResponsePolicy[]
         message: string
     }) => {
         if (!configuration || !configuration.configuration?.id) {

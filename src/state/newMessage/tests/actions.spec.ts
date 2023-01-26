@@ -1559,18 +1559,24 @@ describe('actions', () => {
     })
 
     describe('addProductCardAttachments()', () => {
-        const cardDetail = {
-            currency: 'USD',
-            fullProductTitle: 'foo',
-            imageUrl:
-                'https://cdn.shopify.com/s/files/1/1781/7573/products/candy.jpg?v=1575311784',
-            link: 'https://storegorgias3.myshopify.com/products/bonbon-acidule?variant=31128766349335',
-            price: '1.00',
-            productTitle: 'bar',
-            variantTitle: 'baz',
-            productId: 1,
-            variantId: 2,
-        }
+        const attachment = {
+            content_type: 'application/productCard',
+            name: 'bar',
+            size: 0,
+            url: 'https://cdn.shopify.com/s/files/1/1781/7573/products/candy.jpg?v=1575311784',
+            extra: {
+                product_id: 1,
+                variant_id: 2,
+                price: '1.00',
+                variant_name: 'baz',
+                product_link:
+                    'https://storegorgias3.myshopify.com/products/bonbon-acidule?variant=31128766349335',
+                currency: 'USD',
+                featured_image:
+                    'https://cdn.shopify.com/s/files/1/1781/7573/products/candy.jpg?v=1575311784',
+            },
+        } as const
+
         it('should dispatch NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS when successfully adding attachments', (done) => {
             mockedUploadFiles.mockReturnValue(Promise.resolve([]))
             store = mockStore({
@@ -1578,9 +1584,9 @@ describe('actions', () => {
                 ticket: ticketInitialState.set('id', 1),
             })
             store.dispatch(
-                actions.addProductCardAttachments(
+                actions.addProductCardAttachment(
                     ticketInitialState.set('id', 1),
-                    cardDetail
+                    attachment
                 )
             )
 
@@ -1596,9 +1602,9 @@ describe('actions', () => {
                 ticket: ticketInitialState.set('id', 2),
             })
             store.dispatch(
-                actions.addProductCardAttachments(
+                actions.addProductCardAttachment(
                     ticketInitialState.set('id', 1),
-                    cardDetail
+                    attachment
                 )
             )
 

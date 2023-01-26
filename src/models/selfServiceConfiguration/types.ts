@@ -116,7 +116,7 @@ export type SelfServiceConfigurationReportIssuePolicy = {
     cases: SelfServiceReportIssueCase[]
 }
 
-export type QuickReplyPolicy = {
+export type QuickResponsePolicy = {
     title: string
     deactivated_datetime: string | null
     response_message_content: {
@@ -124,7 +124,7 @@ export type QuickReplyPolicy = {
         text: string
         attachments: List<any>
     }
-    id?: string
+    id: string
 }
 
 export type SelfServiceConfiguration = {
@@ -138,7 +138,7 @@ export type SelfServiceConfiguration = {
     track_order_policy: SelfServiceConfigurationPolicy
     cancel_order_policy: SelfServiceConfigurationCancelOrderPolicy
     return_order_policy: SelfServiceConfigurationReturnOrderPolicy
-    quick_response_policies: QuickReplyPolicy[]
+    quick_response_policies: QuickResponsePolicy[]
 }
 
 // cf. comment on SelfServiceReportIssueCase_DEPRECATED

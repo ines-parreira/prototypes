@@ -9,7 +9,7 @@ import {canReply} from 'business/ticket'
 import {deleteActionOnApplied} from '../../../../../state/ticket/actions'
 import {deleteAttachment} from '../../../../../state/newMessage/actions'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
-import DEPRECATED_RichField from '../../../../common/forms/RichField/DEPRECATED_RichField'
+import RichField from '../../../../common/forms/RichField/RichField'
 
 import TicketAttachments from './TicketAttachments'
 import css from './TicketReply.less'
@@ -22,7 +22,7 @@ type Props = {
     applyMacro: (macro: Map<any, any>) => void
     className?: string
     macros: List<any>
-    richAreaRef: (ref: DEPRECATED_RichField | null) => void
+    richAreaRef: (ref: RichField | null) => void
     shouldDisplayQuickReply: boolean
     ticket: Map<any, any>
 } & ConnectedProps<typeof connector>

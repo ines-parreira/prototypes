@@ -27,7 +27,7 @@ import {
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
 } from 'config/integrations/gorgias_chat'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
-import DEPRECATED_RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'
+import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {Value} from 'pages/common/forms/SelectField/types'
@@ -581,7 +581,7 @@ export const GorgiasChatCampaignDetailForm = ({
                                 />
                             </div>
                             {stateInitialized && (
-                                <DEPRECATED_RichField
+                                <TicketRichField
                                     value={{
                                         html: message.get('html'),
                                     }}

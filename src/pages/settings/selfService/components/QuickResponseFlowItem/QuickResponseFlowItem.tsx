@@ -26,14 +26,14 @@ import {useConfigurationData} from 'pages/settings/selfService/components/hooks'
 import history from 'pages/history'
 import Button from 'pages/common/components/button/Button'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import DEPRECATED_RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'
+import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 
 import {convertToHTML} from 'utils/editor'
 
 import TicketAttachments from 'pages/tickets/detail/components/ReplyArea/TicketAttachments'
 import {NEW_MESSAGE_QUICK_RESPONSE_FLOW} from 'state/newMessage/constants'
-import {QuickReplyPolicy} from 'models/selfServiceConfiguration/types'
+import {QuickResponsePolicy} from 'models/selfServiceConfiguration/types'
 import {NotificationStatus} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
 import {getNewMessageAttachments} from '../../../../../state/newMessage/selectors'
@@ -49,7 +49,7 @@ type Props = {
         responseText: {message: Map<any, any>}
         attachments: List<any>
     }) => Promise<void>
-    quickResponseBeingEdited?: QuickReplyPolicy
+    quickResponseBeingEdited?: QuickResponsePolicy
     handleDelete?: () => void
 }
 
@@ -188,7 +188,7 @@ const QuickResponseFlowItem = ({
                                     After customers click the quick response
                                     prompt, reply with an automated message.
                                 </p>
-                                <DEPRECATED_RichField
+                                <TicketRichField
                                     value={{
                                         html: responseText.message.get('html'),
                                     }}

@@ -567,7 +567,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                       <div
                         className="inputField mb24 form-group"
                       >
-                        <DEPRECATED_RichFieldWithVariables
+                        <RichFieldWithVariables
                           allowExternalChanges={true}
                           label="Survey message"
                           onChange={[Function]}
@@ -959,7 +959,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                 </BaseButton>
                               </ForwardRef>
                             </div>
-                            <RichField
+                            <ForwardRef
                               allowExternalChanges={true}
                               onChange={[Function]}
                               value={
@@ -969,165 +969,11 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                 }
                               }
                             >
-                              <Connect(Wrapper)
+                              <RichField
                                 allowExternalChanges={true}
-                                editorState={
-                                  EditorState {
-                                    "_immutable": Immutable.Record {
-                                      "allowUndo": true,
-                                      "currentContent": Immutable.Record {
-                                        "entityMap": Object {
-                                          "__add": [Function],
-                                          "__create": [Function],
-                                          "__get": [Function],
-                                          "__getLastCreatedEntityKey": [Function],
-                                          "__mergeData": [Function],
-                                          "__replaceData": [Function],
-                                          "add": [Function],
-                                          "create": [Function],
-                                          "get": [Function],
-                                          "getLastCreatedEntityKey": [Function],
-                                          "mergeData": [Function],
-                                          "replaceData": [Function],
-                                        },
-                                        "blockMap": Immutable.OrderedMap {
-                                          "someRandomKey": Immutable.Record {
-                                            "key": "someRandomKey",
-                                            "type": "unstyled",
-                                            "text": "",
-                                            "characterList": Immutable.List [],
-                                            "depth": 0,
-                                            "data": Immutable.Map {},
-                                          },
-                                        },
-                                        "selectionBefore": Immutable.Record {
-                                          "anchorKey": "someRandomKey",
-                                          "anchorOffset": 0,
-                                          "focusKey": "someRandomKey",
-                                          "focusOffset": 0,
-                                          "isBackward": false,
-                                          "hasFocus": false,
-                                        },
-                                        "selectionAfter": Immutable.Record {
-                                          "anchorKey": "someRandomKey",
-                                          "anchorOffset": 0,
-                                          "focusKey": "someRandomKey",
-                                          "focusOffset": 0,
-                                          "isBackward": false,
-                                          "hasFocus": false,
-                                        },
-                                      },
-                                      "decorator": MultiDecorator {
-                                        "decorators": Immutable.List [
-                                          CompositeDraftDecorator {
-                                            "_decorators": Array [
-                                              Object {
-                                                "component": [Function],
-                                                "strategy": [Function],
-                                              },
-                                              Object {
-                                                "component": [Function],
-                                                "strategy": [Function],
-                                              },
-                                              Object {
-                                                "component": [Function],
-                                                "strategy": [Function],
-                                              },
-                                              Object {
-                                                "component": [Function],
-                                                "strategy": [Function],
-                                              },
-                                              Object {
-                                                "component": [Function],
-                                                "strategy": [Function],
-                                              },
-                                            ],
-                                          },
-                                        ],
-                                      },
-                                      "directionMap": Immutable.OrderedMap {
-                                        "someRandomKey": "LTR",
-                                      },
-                                      "forceSelection": false,
-                                      "inCompositionMode": false,
-                                      "inlineStyleOverride": null,
-                                      "lastChangeType": undefined,
-                                      "nativelyRenderedContent": null,
-                                      "redoStack": Immutable.Stack [],
-                                      "selection": Immutable.Record {
-                                        "anchorKey": "someRandomKey",
-                                        "anchorOffset": 0,
-                                        "focusKey": "someRandomKey",
-                                        "focusOffset": 0,
-                                        "isBackward": false,
-                                        "hasFocus": false,
-                                      },
-                                      "treeMap": Immutable.OrderedMap {
-                                        "someRandomKey": Immutable.List [
-                                          Immutable.Record {
-                                            "start": 0,
-                                            "end": 0,
-                                            "decoratorKey": null,
-                                            "leaves": Immutable.List [
-                                              Immutable.Record {
-                                                "start": 0,
-                                                "end": 0,
-                                              },
-                                            ],
-                                          },
-                                        ],
-                                      },
-                                      "undoStack": Immutable.Stack [
-                                        Immutable.Record {
-                                          "entityMap": Object {
-                                            "__add": [Function],
-                                            "__create": [Function],
-                                            "__get": [Function],
-                                            "__getLastCreatedEntityKey": [Function],
-                                            "__mergeData": [Function],
-                                            "__replaceData": [Function],
-                                            "add": [Function],
-                                            "create": [Function],
-                                            "get": [Function],
-                                            "getLastCreatedEntityKey": [Function],
-                                            "mergeData": [Function],
-                                            "replaceData": [Function],
-                                          },
-                                          "blockMap": Immutable.OrderedMap {
-                                            "someRandomKey": Immutable.Record {
-                                              "key": "someRandomKey",
-                                              "type": "unstyled",
-                                              "text": "",
-                                              "characterList": Immutable.List [],
-                                              "depth": 0,
-                                              "data": Immutable.Map {},
-                                            },
-                                          },
-                                          "selectionBefore": Immutable.Record {
-                                            "anchorKey": "someRandomKey",
-                                            "anchorOffset": 0,
-                                            "focusKey": "someRandomKey",
-                                            "focusOffset": 0,
-                                            "isBackward": false,
-                                            "hasFocus": false,
-                                          },
-                                          "selectionAfter": Immutable.Record {
-                                            "anchorKey": "someRandomKey",
-                                            "anchorOffset": 0,
-                                            "focusKey": "someRandomKey",
-                                            "focusOffset": 0,
-                                            "isBackward": false,
-                                            "hasFocus": false,
-                                          },
-                                        },
-                                      ],
-                                    },
-                                  }
-                                }
-                                isFocused={false}
-                                onBlur={[Function]}
+                                canAddVideoPlayer={true}
                                 onChange={[Function]}
-                                onFocus={[Function]}
+                                onInsertVideoAddedFromPastedLink={[Function]}
                                 value={
                                   Object {
                                     "html": "<div><br></div>",
@@ -1137,17 +983,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                               >
                                 <Wrapper
                                   allowExternalChanges={true}
-                                  currentAccount={
-                                    Immutable.Map {
-                                      "settings": Immutable.List [
-                                        Immutable.Map {
-                                          "data": Immutable.Map {},
-                                          "type": "satisfaction-surveys",
-                                        },
-                                      ],
-                                    }
-                                  }
-                                  dispatch={[Function]}
+                                  canAddVideoPlayer={true}
                                   editorState={
                                     EditorState {
                                       "_immutable": Immutable.Record {
@@ -1302,11 +1138,10 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                     }
                                   }
                                   isFocused={false}
-                                  isNewMessagePublic={false}
-                                  newMessageChannel="email"
                                   onBlur={[Function]}
                                   onChange={[Function]}
                                   onFocus={[Function]}
+                                  onInsertVideoAddedFromPastedLink={[Function]}
                                   value={
                                     Object {
                                       "html": "<div><br></div>",
@@ -1316,18 +1151,8 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                 >
                                   <Wrapper
                                     allowExternalChanges={true}
-                                    currentAccount={
-                                      Immutable.Map {
-                                        "settings": Immutable.List [
-                                          Immutable.Map {
-                                            "data": Immutable.Map {},
-                                            "type": "satisfaction-surveys",
-                                          },
-                                        ],
-                                      }
-                                    }
+                                    canAddVideoPlayer={true}
                                     detectGrammarly={[Function]}
-                                    dispatch={[Function]}
                                     editorState={
                                       EditorState {
                                         "_immutable": Immutable.Record {
@@ -1482,11 +1307,10 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                       }
                                     }
                                     isFocused={false}
-                                    isNewMessagePublic={false}
-                                    newMessageChannel="email"
                                     onBlur={[Function]}
                                     onChange={[Function]}
                                     onFocus={[Function]}
+                                    onInsertVideoAddedFromPastedLink={[Function]}
                                     value={
                                       Object {
                                         "html": "<div><br></div>",
@@ -1496,19 +1320,9 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                   >
                                     <Wrapper
                                       allowExternalChanges={true}
+                                      canAddVideoPlayer={true}
                                       createToolbarPlugin={[Function]}
-                                      currentAccount={
-                                        Immutable.Map {
-                                          "settings": Immutable.List [
-                                            Immutable.Map {
-                                              "data": Immutable.Map {},
-                                              "type": "satisfaction-surveys",
-                                            },
-                                          ],
-                                        }
-                                      }
                                       detectGrammarly={[Function]}
-                                      dispatch={[Function]}
                                       editorState={
                                         EditorState {
                                           "_immutable": Immutable.Record {
@@ -1663,14 +1477,13 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                         }
                                       }
                                       isFocused={false}
-                                      isNewMessagePublic={false}
                                       linkIsOpen={false}
                                       linkText=""
                                       linkUrl=""
-                                      newMessageChannel="email"
                                       onBlur={[Function]}
                                       onChange={[Function]}
                                       onFocus={[Function]}
+                                      onInsertVideoAddedFromPastedLink={[Function]}
                                       onLinkClose={[Function]}
                                       onLinkOpen={[Function]}
                                       onLinkTextChange={[Function]}
@@ -1685,21 +1498,11 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                       <RichFieldEditor
                                         allowExternalChanges={true}
                                         attachFiles={[Function]}
+                                        canAddVideoPlayer={true}
                                         canDropFiles={false}
                                         canInsertInlineImages={true}
                                         createToolbarPlugin={[Function]}
-                                        currentAccount={
-                                          Immutable.Map {
-                                            "settings": Immutable.List [
-                                              Immutable.Map {
-                                                "data": Immutable.Map {},
-                                                "type": "satisfaction-surveys",
-                                              },
-                                            ],
-                                          }
-                                        }
                                         detectGrammarly={[Function]}
-                                        dispatch={[Function]}
                                         editorState={
                                           EditorState {
                                             "_immutable": Immutable.Record {
@@ -1855,22 +1658,20 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                         }
                                         emailExtraEnabled={false}
                                         isFocused={false}
-                                        isNewMessagePublic={false}
                                         linkIsOpen={false}
                                         linkText=""
                                         linkUrl=""
                                         mentionSearchResults={Immutable.List []}
-                                        newMessageChannel="email"
                                         notify={[Function]}
                                         onBlur={[Function]}
                                         onChange={[Function]}
                                         onFocus={[Function]}
+                                        onInsertVideoAddedFromPastedLink={[Function]}
                                         onLinkClose={[Function]}
                                         onLinkOpen={[Function]}
                                         onLinkTextChange={[Function]}
                                         onLinkUrlChange={[Function]}
                                         onMentionSearchChange={[Function]}
-                                        productCardsEnabled={true}
                                         value={
                                           Object {
                                             "html": "<div><br></div>",
@@ -3161,24 +2962,14 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                               </Decorated(MentionSuggestions)>
                                             </div>
                                           </div>
-                                          <RichFieldToolbar
+                                          <Connect(Toolbar)
                                             allowExternalChanges={true}
                                             attachFiles={[Function]}
+                                            canAddVideoPlayer={true}
                                             canDropFiles={false}
                                             canInsertInlineImages={true}
                                             createToolbarPlugin={[Function]}
-                                            currentAccount={
-                                              Immutable.Map {
-                                                "settings": Immutable.List [
-                                                  Immutable.Map {
-                                                    "data": Immutable.Map {},
-                                                    "type": "satisfaction-surveys",
-                                                  },
-                                                ],
-                                              }
-                                            }
                                             detectGrammarly={[Function]}
-                                            dispatch={[Function]}
                                             editorState={
                                               EditorState {
                                                 "_immutable": Immutable.Record {
@@ -3333,34 +3124,28 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                               }
                                             }
                                             emailExtraEnabled={false}
+                                            getEditorRef={[Function]}
+                                            getEditorState={[Function]}
+                                            getPlugins={[Function]}
+                                            getProps={[Function]}
+                                            getReadOnly={[Function]}
                                             isFocused={false}
-                                            isNewMessagePublic={false}
                                             linkIsOpen={false}
                                             linkText=""
                                             linkUrl=""
                                             mentionSearchResults={Immutable.List []}
-                                            newMessageChannel="email"
                                             notify={[Function]}
                                             onBlur={[Function]}
                                             onChange={[Function]}
                                             onFocus={[Function]}
+                                            onInsertVideoAddedFromPastedLink={[Function]}
                                             onLinkClose={[Function]}
                                             onLinkOpen={[Function]}
                                             onLinkTextChange={[Function]}
                                             onLinkUrlChange={[Function]}
                                             onMentionSearchChange={[Function]}
-                                            pluginMethods={
-                                              Object {
-                                                "getEditorRef": [Function],
-                                                "getEditorState": [Function],
-                                                "getPlugins": [Function],
-                                                "getProps": [Function],
-                                                "getReadOnly": [Function],
-                                                "setEditorState": [Function],
-                                                "setReadOnly": [Function],
-                                              }
-                                            }
-                                            productCardsEnabled={true}
+                                            setEditorState={[Function]}
+                                            setReadOnly={[Function]}
                                             value={
                                               Object {
                                                 "html": "<div><br></div>",
@@ -3368,625 +3153,715 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                               }
                                             }
                                           >
-                                            <Connect(Toolbar)
+                                            <Toolbar
+                                              allowExternalChanges={true}
                                               attachFiles={[Function]}
+                                              buttons={Array []}
+                                              canAddVideoPlayer={true}
                                               canDropFiles={false}
+                                              canInsertInlineImages={true}
+                                              createToolbarPlugin={[Function]}
+                                              detectGrammarly={[Function]}
+                                              dispatch={[Function]}
+                                              editorState={
+                                                EditorState {
+                                                  "_immutable": Immutable.Record {
+                                                    "allowUndo": true,
+                                                    "currentContent": Immutable.Record {
+                                                      "entityMap": Object {
+                                                        "__add": [Function],
+                                                        "__create": [Function],
+                                                        "__get": [Function],
+                                                        "__getLastCreatedEntityKey": [Function],
+                                                        "__mergeData": [Function],
+                                                        "__replaceData": [Function],
+                                                        "add": [Function],
+                                                        "create": [Function],
+                                                        "get": [Function],
+                                                        "getLastCreatedEntityKey": [Function],
+                                                        "mergeData": [Function],
+                                                        "replaceData": [Function],
+                                                      },
+                                                      "blockMap": Immutable.OrderedMap {
+                                                        "someRandomKey": Immutable.Record {
+                                                          "key": "someRandomKey",
+                                                          "type": "unstyled",
+                                                          "text": "",
+                                                          "characterList": Immutable.List [],
+                                                          "depth": 0,
+                                                          "data": Immutable.Map {},
+                                                        },
+                                                      },
+                                                      "selectionBefore": Immutable.Record {
+                                                        "anchorKey": "someRandomKey",
+                                                        "anchorOffset": 0,
+                                                        "focusKey": "someRandomKey",
+                                                        "focusOffset": 0,
+                                                        "isBackward": false,
+                                                        "hasFocus": false,
+                                                      },
+                                                      "selectionAfter": Immutable.Record {
+                                                        "anchorKey": "someRandomKey",
+                                                        "anchorOffset": 0,
+                                                        "focusKey": "someRandomKey",
+                                                        "focusOffset": 0,
+                                                        "isBackward": false,
+                                                        "hasFocus": false,
+                                                      },
+                                                    },
+                                                    "decorator": MultiDecorator {
+                                                      "decorators": Immutable.List [
+                                                        CompositeDraftDecorator {
+                                                          "_decorators": Array [
+                                                            Object {
+                                                              "component": [Function],
+                                                              "strategy": [Function],
+                                                            },
+                                                            Object {
+                                                              "component": [Function],
+                                                              "strategy": [Function],
+                                                            },
+                                                            Object {
+                                                              "component": [Function],
+                                                              "strategy": [Function],
+                                                            },
+                                                            Object {
+                                                              "component": [Function],
+                                                              "strategy": [Function],
+                                                            },
+                                                            Object {
+                                                              "component": [Function],
+                                                              "strategy": [Function],
+                                                            },
+                                                          ],
+                                                        },
+                                                      ],
+                                                    },
+                                                    "directionMap": Immutable.OrderedMap {
+                                                      "someRandomKey": "LTR",
+                                                    },
+                                                    "forceSelection": false,
+                                                    "inCompositionMode": false,
+                                                    "inlineStyleOverride": null,
+                                                    "lastChangeType": undefined,
+                                                    "nativelyRenderedContent": null,
+                                                    "redoStack": Immutable.Stack [],
+                                                    "selection": Immutable.Record {
+                                                      "anchorKey": "someRandomKey",
+                                                      "anchorOffset": 0,
+                                                      "focusKey": "someRandomKey",
+                                                      "focusOffset": 0,
+                                                      "isBackward": false,
+                                                      "hasFocus": false,
+                                                    },
+                                                    "treeMap": Immutable.OrderedMap {
+                                                      "someRandomKey": Immutable.List [
+                                                        Immutable.Record {
+                                                          "start": 0,
+                                                          "end": 0,
+                                                          "decoratorKey": null,
+                                                          "leaves": Immutable.List [
+                                                            Immutable.Record {
+                                                              "start": 0,
+                                                              "end": 0,
+                                                            },
+                                                          ],
+                                                        },
+                                                      ],
+                                                    },
+                                                    "undoStack": Immutable.Stack [
+                                                      Immutable.Record {
+                                                        "entityMap": Object {
+                                                          "__add": [Function],
+                                                          "__create": [Function],
+                                                          "__get": [Function],
+                                                          "__getLastCreatedEntityKey": [Function],
+                                                          "__mergeData": [Function],
+                                                          "__replaceData": [Function],
+                                                          "add": [Function],
+                                                          "create": [Function],
+                                                          "get": [Function],
+                                                          "getLastCreatedEntityKey": [Function],
+                                                          "mergeData": [Function],
+                                                          "replaceData": [Function],
+                                                        },
+                                                        "blockMap": Immutable.OrderedMap {
+                                                          "someRandomKey": Immutable.Record {
+                                                            "key": "someRandomKey",
+                                                            "type": "unstyled",
+                                                            "text": "",
+                                                            "characterList": Immutable.List [],
+                                                            "depth": 0,
+                                                            "data": Immutable.Map {},
+                                                          },
+                                                        },
+                                                        "selectionBefore": Immutable.Record {
+                                                          "anchorKey": "someRandomKey",
+                                                          "anchorOffset": 0,
+                                                          "focusKey": "someRandomKey",
+                                                          "focusOffset": 0,
+                                                          "isBackward": false,
+                                                          "hasFocus": false,
+                                                        },
+                                                        "selectionAfter": Immutable.Record {
+                                                          "anchorKey": "someRandomKey",
+                                                          "anchorOffset": 0,
+                                                          "focusKey": "someRandomKey",
+                                                          "focusOffset": 0,
+                                                          "isBackward": false,
+                                                          "hasFocus": false,
+                                                        },
+                                                      },
+                                                    ],
+                                                  },
+                                                }
+                                              }
+                                              emailExtraEnabled={false}
                                               getEditorRef={[Function]}
                                               getEditorState={[Function]}
                                               getPlugins={[Function]}
                                               getProps={[Function]}
                                               getReadOnly={[Function]}
-                                              imageAction={
-                                                <AddImage
-                                                  getEditorRef={[Function]}
-                                                  getEditorState={[Function]}
-                                                  getPlugins={[Function]}
-                                                  getProps={[Function]}
-                                                  getReadOnly={[Function]}
-                                                  setEditorState={[Function]}
-                                                  setReadOnly={[Function]}
-                                                />
-                                              }
-                                              linkAction={
-                                                <UNDEFINED
-                                                  getEditorRef={[Function]}
-                                                  getEditorState={[Function]}
-                                                  getPlugins={[Function]}
-                                                  getProps={[Function]}
-                                                  getReadOnly={[Function]}
-                                                  isOpen={false}
-                                                  onClose={[Function]}
-                                                  onOpen={[Function]}
-                                                  onTextChange={[Function]}
-                                                  onUrlChange={[Function]}
-                                                  setEditorState={[Function]}
-                                                  setReadOnly={[Function]}
-                                                  text=""
-                                                  url=""
-                                                />
-                                              }
-                                              productCardsEnabled={true}
+                                              integrations={Immutable.List []}
+                                              isFocused={false}
+                                              linkIsOpen={false}
+                                              linkText=""
+                                              linkUrl=""
+                                              mentionSearchResults={Immutable.List []}
+                                              notify={[Function]}
+                                              onBlur={[Function]}
+                                              onChange={[Function]}
+                                              onFocus={[Function]}
+                                              onInsertVideoAddedFromPastedLink={[Function]}
+                                              onLinkClose={[Function]}
+                                              onLinkOpen={[Function]}
+                                              onLinkTextChange={[Function]}
+                                              onLinkUrlChange={[Function]}
+                                              onMentionSearchChange={[Function]}
                                               setEditorState={[Function]}
                                               setReadOnly={[Function]}
-                                              videoAction={
-                                                <UNDEFINED
-                                                  getEditorRef={[Function]}
-                                                  getEditorState={[Function]}
-                                                  getPlugins={[Function]}
-                                                  getProps={[Function]}
-                                                  getReadOnly={[Function]}
-                                                  setEditorState={[Function]}
-                                                  setReadOnly={[Function]}
-                                                />
+                                              value={
+                                                Object {
+                                                  "html": "<div><br></div>",
+                                                  "text": "",
+                                                }
                                               }
                                             >
-                                              <Toolbar
-                                                attachFiles={[Function]}
-                                                buttons={Array []}
-                                                canDropFiles={false}
-                                                dispatch={[Function]}
-                                                getEditorRef={[Function]}
-                                                getEditorState={[Function]}
-                                                getPlugins={[Function]}
-                                                getProps={[Function]}
-                                                getReadOnly={[Function]}
-                                                imageAction={
-                                                  <AddImage
-                                                    getEditorRef={[Function]}
-                                                    getEditorState={[Function]}
-                                                    getPlugins={[Function]}
-                                                    getProps={[Function]}
-                                                    getReadOnly={[Function]}
-                                                    setEditorState={[Function]}
-                                                    setReadOnly={[Function]}
-                                                  />
-                                                }
-                                                integrations={Immutable.List []}
-                                                linkAction={
-                                                  <UNDEFINED
-                                                    getEditorRef={[Function]}
-                                                    getEditorState={[Function]}
-                                                    getPlugins={[Function]}
-                                                    getProps={[Function]}
-                                                    getReadOnly={[Function]}
-                                                    isOpen={false}
-                                                    onClose={[Function]}
-                                                    onOpen={[Function]}
-                                                    onTextChange={[Function]}
-                                                    onUrlChange={[Function]}
-                                                    setEditorState={[Function]}
-                                                    setReadOnly={[Function]}
-                                                    text=""
-                                                    url=""
-                                                  />
-                                                }
-                                                productCardsEnabled={true}
-                                                setEditorState={[Function]}
-                                                setReadOnly={[Function]}
-                                                videoAction={
-                                                  <UNDEFINED
-                                                    getEditorRef={[Function]}
-                                                    getEditorState={[Function]}
-                                                    getPlugins={[Function]}
-                                                    getProps={[Function]}
-                                                    getReadOnly={[Function]}
-                                                    setEditorState={[Function]}
-                                                    setReadOnly={[Function]}
-                                                  />
-                                                }
+                                              <div
+                                                className="editor-toolbar page"
+                                                onDragLeave={[Function]}
+                                                onDragOver={[Function]}
+                                                onDrop={[Function]}
                                               >
                                                 <div
-                                                  className="editor-toolbar page"
-                                                  onDragLeave={[Function]}
-                                                  onDragOver={[Function]}
-                                                  onDrop={[Function]}
+                                                  className="actionsWrapper"
                                                 >
                                                   <div
-                                                    className="actionsWrapper"
+                                                    className="actions"
                                                   >
-                                                    <div
-                                                      className="actions"
+                                                    <Decorated(InlineStyle)
+                                                      getEditorState={[Function]}
+                                                      setEditorState={[Function]}
                                                     >
-                                                      <Decorated(InlineStyle)
+                                                      <InlineStyle
                                                         getEditorState={[Function]}
+                                                        icon="format_bold"
+                                                        id="format_bold"
+                                                        name="Bold"
                                                         setEditorState={[Function]}
+                                                        style="BOLD"
                                                       >
-                                                        <InlineStyle
-                                                          getEditorState={[Function]}
+                                                        <Button
                                                           icon="format_bold"
                                                           id="format_bold"
+                                                          isActive={false}
+                                                          isDisabled={false}
                                                           name="Bold"
-                                                          setEditorState={[Function]}
-                                                          style="BOLD"
+                                                          onToggle={[Function]}
                                                         >
-                                                          <Button
-                                                            icon="format_bold"
+                                                          <ForwardRef
+                                                            className="button"
                                                             id="format_bold"
-                                                            isActive={false}
-                                                            isDisabled={false}
-                                                            name="Bold"
-                                                            onToggle={[Function]}
+                                                            intent="secondary"
+                                                            onClick={[Function]}
+                                                            onMouseDown={[Function]}
+                                                            size="small"
                                                           >
                                                             <ForwardRef
-                                                              className="button"
+                                                              className="button wrapper small"
                                                               id="format_bold"
                                                               intent="secondary"
                                                               onClick={[Function]}
                                                               onMouseDown={[Function]}
                                                               size="small"
                                                             >
-                                                              <ForwardRef
+                                                              <BaseButton
                                                                 className="button wrapper small"
-                                                                id="format_bold"
                                                                 intent="secondary"
-                                                                onClick={[Function]}
-                                                                onMouseDown={[Function]}
                                                                 size="small"
                                                               >
-                                                                <BaseButton
-                                                                  className="button wrapper small"
-                                                                  intent="secondary"
-                                                                  size="small"
+                                                                <button
+                                                                  className="wrapper button wrapper small fill secondary small"
+                                                                  id="format_bold"
+                                                                  onClick={[Function]}
+                                                                  onMouseDown={[Function]}
+                                                                  type="button"
                                                                 >
-                                                                  <button
-                                                                    className="wrapper button wrapper small fill secondary small"
-                                                                    id="format_bold"
-                                                                    onClick={[Function]}
-                                                                    onMouseDown={[Function]}
-                                                                    type="button"
+                                                                  <i
+                                                                    className="material-icons icon"
                                                                   >
-                                                                    <i
-                                                                      className="material-icons icon"
-                                                                    >
-                                                                      format_bold
-                                                                    </i>
-                                                                  </button>
-                                                                </BaseButton>
-                                                              </ForwardRef>
+                                                                    format_bold
+                                                                  </i>
+                                                                </button>
+                                                              </BaseButton>
                                                             </ForwardRef>
-                                                            <Tooltip
+                                                          </ForwardRef>
+                                                          <Tooltip
+                                                            autohide={false}
+                                                            delay={100}
+                                                            placement="bottom"
+                                                            target="format_bold"
+                                                          >
+                                                            <UncontrolledTooltip
                                                               autohide={false}
+                                                              className="tooltip"
                                                               delay={100}
                                                               placement="bottom"
                                                               target="format_bold"
                                                             >
-                                                              <UncontrolledTooltip
+                                                              <Tooltip
                                                                 autohide={false}
                                                                 className="tooltip"
                                                                 delay={100}
+                                                                isOpen={false}
                                                                 placement="bottom"
+                                                                placementPrefix="bs-tooltip"
                                                                 target="format_bold"
+                                                                toggle={[Function]}
+                                                                trigger="hover focus"
                                                               >
-                                                                <Tooltip
+                                                                <TooltipPopoverWrapper
                                                                   autohide={false}
                                                                   className="tooltip"
                                                                   delay={100}
+                                                                  fade={true}
+                                                                  hideArrow={false}
+                                                                  innerClassName="tooltip-inner"
                                                                   isOpen={false}
                                                                   placement="bottom"
                                                                   placementPrefix="bs-tooltip"
+                                                                  popperClassName="tooltip show"
                                                                   target="format_bold"
                                                                   toggle={[Function]}
                                                                   trigger="hover focus"
                                                                 >
-                                                                  <TooltipPopoverWrapper
-                                                                    autohide={false}
+                                                                  <PopperContent
+                                                                    boundariesElement="scrollParent"
                                                                     className="tooltip"
-                                                                    delay={100}
+                                                                    container="body"
                                                                     fade={true}
+                                                                    fallbackPlacement="flip"
+                                                                    flip={true}
                                                                     hideArrow={false}
-                                                                    innerClassName="tooltip-inner"
                                                                     isOpen={false}
+                                                                    modifiers={Object {}}
+                                                                    offset={0}
+                                                                    onClosed={[Function]}
                                                                     placement="bottom"
                                                                     placementPrefix="bs-tooltip"
                                                                     popperClassName="tooltip show"
-                                                                    target="format_bold"
-                                                                    toggle={[Function]}
-                                                                    trigger="hover focus"
-                                                                  >
-                                                                    <PopperContent
-                                                                      boundariesElement="scrollParent"
-                                                                      className="tooltip"
-                                                                      container="body"
-                                                                      fade={true}
-                                                                      fallbackPlacement="flip"
-                                                                      flip={true}
-                                                                      hideArrow={false}
-                                                                      isOpen={false}
-                                                                      modifiers={Object {}}
-                                                                      offset={0}
-                                                                      onClosed={[Function]}
-                                                                      placement="bottom"
-                                                                      placementPrefix="bs-tooltip"
-                                                                      popperClassName="tooltip show"
-                                                                      target={
-                                                                        <button
-                                                                          class="wrapper button wrapper small fill secondary small"
-                                                                          id="format_bold"
-                                                                          type="button"
+                                                                    target={
+                                                                      <button
+                                                                        class="wrapper button wrapper small fill secondary small"
+                                                                        id="format_bold"
+                                                                        type="button"
+                                                                      >
+                                                                        <i
+                                                                          class="material-icons icon"
                                                                         >
-                                                                          <i
-                                                                            class="material-icons icon"
-                                                                          >
-                                                                            format_bold
-                                                                          </i>
-                                                                        </button>
+                                                                          format_bold
+                                                                        </i>
+                                                                      </button>
+                                                                    }
+                                                                    transition={
+                                                                      Object {
+                                                                        "appear": true,
+                                                                        "baseClass": "fade",
+                                                                        "baseClassActive": "show",
+                                                                        "enter": true,
+                                                                        "exit": true,
+                                                                        "in": true,
+                                                                        "mountOnEnter": false,
+                                                                        "onEnter": [Function],
+                                                                        "onEntered": [Function],
+                                                                        "onEntering": [Function],
+                                                                        "onExit": [Function],
+                                                                        "onExited": [Function],
+                                                                        "onExiting": [Function],
+                                                                        "tag": "div",
+                                                                        "timeout": 150,
+                                                                        "unmountOnExit": false,
                                                                       }
-                                                                      transition={
-                                                                        Object {
-                                                                          "appear": true,
-                                                                          "baseClass": "fade",
-                                                                          "baseClassActive": "show",
-                                                                          "enter": true,
-                                                                          "exit": true,
-                                                                          "in": true,
-                                                                          "mountOnEnter": false,
-                                                                          "onEnter": [Function],
-                                                                          "onEntered": [Function],
-                                                                          "onEntering": [Function],
-                                                                          "onExit": [Function],
-                                                                          "onExited": [Function],
-                                                                          "onExiting": [Function],
-                                                                          "tag": "div",
-                                                                          "timeout": 150,
-                                                                          "unmountOnExit": false,
-                                                                        }
-                                                                      }
-                                                                    />
-                                                                  </TooltipPopoverWrapper>
-                                                                </Tooltip>
-                                                              </UncontrolledTooltip>
-                                                            </Tooltip>
-                                                          </Button>
-                                                        </InlineStyle>
-                                                      </Decorated(InlineStyle)>
-                                                      <Decorated(InlineStyle)
+                                                                    }
+                                                                  />
+                                                                </TooltipPopoverWrapper>
+                                                              </Tooltip>
+                                                            </UncontrolledTooltip>
+                                                          </Tooltip>
+                                                        </Button>
+                                                      </InlineStyle>
+                                                    </Decorated(InlineStyle)>
+                                                    <Decorated(InlineStyle)
+                                                      getEditorState={[Function]}
+                                                      setEditorState={[Function]}
+                                                    >
+                                                      <InlineStyle
                                                         getEditorState={[Function]}
+                                                        icon="format_italic"
+                                                        id="format_italic"
+                                                        name="Italic"
                                                         setEditorState={[Function]}
+                                                        style="ITALIC"
                                                       >
-                                                        <InlineStyle
-                                                          getEditorState={[Function]}
+                                                        <Button
                                                           icon="format_italic"
                                                           id="format_italic"
+                                                          isActive={false}
+                                                          isDisabled={false}
                                                           name="Italic"
-                                                          setEditorState={[Function]}
-                                                          style="ITALIC"
+                                                          onToggle={[Function]}
                                                         >
-                                                          <Button
-                                                            icon="format_italic"
+                                                          <ForwardRef
+                                                            className="button"
                                                             id="format_italic"
-                                                            isActive={false}
-                                                            isDisabled={false}
-                                                            name="Italic"
-                                                            onToggle={[Function]}
+                                                            intent="secondary"
+                                                            onClick={[Function]}
+                                                            onMouseDown={[Function]}
+                                                            size="small"
                                                           >
                                                             <ForwardRef
-                                                              className="button"
+                                                              className="button wrapper small"
                                                               id="format_italic"
                                                               intent="secondary"
                                                               onClick={[Function]}
                                                               onMouseDown={[Function]}
                                                               size="small"
                                                             >
-                                                              <ForwardRef
+                                                              <BaseButton
                                                                 className="button wrapper small"
-                                                                id="format_italic"
                                                                 intent="secondary"
-                                                                onClick={[Function]}
-                                                                onMouseDown={[Function]}
                                                                 size="small"
                                                               >
-                                                                <BaseButton
-                                                                  className="button wrapper small"
-                                                                  intent="secondary"
-                                                                  size="small"
+                                                                <button
+                                                                  className="wrapper button wrapper small fill secondary small"
+                                                                  id="format_italic"
+                                                                  onClick={[Function]}
+                                                                  onMouseDown={[Function]}
+                                                                  type="button"
                                                                 >
-                                                                  <button
-                                                                    className="wrapper button wrapper small fill secondary small"
-                                                                    id="format_italic"
-                                                                    onClick={[Function]}
-                                                                    onMouseDown={[Function]}
-                                                                    type="button"
+                                                                  <i
+                                                                    className="material-icons icon"
                                                                   >
-                                                                    <i
-                                                                      className="material-icons icon"
-                                                                    >
-                                                                      format_italic
-                                                                    </i>
-                                                                  </button>
-                                                                </BaseButton>
-                                                              </ForwardRef>
+                                                                    format_italic
+                                                                  </i>
+                                                                </button>
+                                                              </BaseButton>
                                                             </ForwardRef>
-                                                            <Tooltip
+                                                          </ForwardRef>
+                                                          <Tooltip
+                                                            autohide={false}
+                                                            delay={100}
+                                                            placement="bottom"
+                                                            target="format_italic"
+                                                          >
+                                                            <UncontrolledTooltip
                                                               autohide={false}
+                                                              className="tooltip"
                                                               delay={100}
                                                               placement="bottom"
                                                               target="format_italic"
                                                             >
-                                                              <UncontrolledTooltip
+                                                              <Tooltip
                                                                 autohide={false}
                                                                 className="tooltip"
                                                                 delay={100}
+                                                                isOpen={false}
                                                                 placement="bottom"
+                                                                placementPrefix="bs-tooltip"
                                                                 target="format_italic"
+                                                                toggle={[Function]}
+                                                                trigger="hover focus"
                                                               >
-                                                                <Tooltip
+                                                                <TooltipPopoverWrapper
                                                                   autohide={false}
                                                                   className="tooltip"
                                                                   delay={100}
+                                                                  fade={true}
+                                                                  hideArrow={false}
+                                                                  innerClassName="tooltip-inner"
                                                                   isOpen={false}
                                                                   placement="bottom"
                                                                   placementPrefix="bs-tooltip"
+                                                                  popperClassName="tooltip show"
                                                                   target="format_italic"
                                                                   toggle={[Function]}
                                                                   trigger="hover focus"
                                                                 >
-                                                                  <TooltipPopoverWrapper
-                                                                    autohide={false}
+                                                                  <PopperContent
+                                                                    boundariesElement="scrollParent"
                                                                     className="tooltip"
-                                                                    delay={100}
+                                                                    container="body"
                                                                     fade={true}
+                                                                    fallbackPlacement="flip"
+                                                                    flip={true}
                                                                     hideArrow={false}
-                                                                    innerClassName="tooltip-inner"
                                                                     isOpen={false}
+                                                                    modifiers={Object {}}
+                                                                    offset={0}
+                                                                    onClosed={[Function]}
                                                                     placement="bottom"
                                                                     placementPrefix="bs-tooltip"
                                                                     popperClassName="tooltip show"
-                                                                    target="format_italic"
-                                                                    toggle={[Function]}
-                                                                    trigger="hover focus"
-                                                                  >
-                                                                    <PopperContent
-                                                                      boundariesElement="scrollParent"
-                                                                      className="tooltip"
-                                                                      container="body"
-                                                                      fade={true}
-                                                                      fallbackPlacement="flip"
-                                                                      flip={true}
-                                                                      hideArrow={false}
-                                                                      isOpen={false}
-                                                                      modifiers={Object {}}
-                                                                      offset={0}
-                                                                      onClosed={[Function]}
-                                                                      placement="bottom"
-                                                                      placementPrefix="bs-tooltip"
-                                                                      popperClassName="tooltip show"
-                                                                      target={
-                                                                        <button
-                                                                          class="wrapper button wrapper small fill secondary small"
-                                                                          id="format_italic"
-                                                                          type="button"
+                                                                    target={
+                                                                      <button
+                                                                        class="wrapper button wrapper small fill secondary small"
+                                                                        id="format_italic"
+                                                                        type="button"
+                                                                      >
+                                                                        <i
+                                                                          class="material-icons icon"
                                                                         >
-                                                                          <i
-                                                                            class="material-icons icon"
-                                                                          >
-                                                                            format_italic
-                                                                          </i>
-                                                                        </button>
+                                                                          format_italic
+                                                                        </i>
+                                                                      </button>
+                                                                    }
+                                                                    transition={
+                                                                      Object {
+                                                                        "appear": true,
+                                                                        "baseClass": "fade",
+                                                                        "baseClassActive": "show",
+                                                                        "enter": true,
+                                                                        "exit": true,
+                                                                        "in": true,
+                                                                        "mountOnEnter": false,
+                                                                        "onEnter": [Function],
+                                                                        "onEntered": [Function],
+                                                                        "onEntering": [Function],
+                                                                        "onExit": [Function],
+                                                                        "onExited": [Function],
+                                                                        "onExiting": [Function],
+                                                                        "tag": "div",
+                                                                        "timeout": 150,
+                                                                        "unmountOnExit": false,
                                                                       }
-                                                                      transition={
-                                                                        Object {
-                                                                          "appear": true,
-                                                                          "baseClass": "fade",
-                                                                          "baseClassActive": "show",
-                                                                          "enter": true,
-                                                                          "exit": true,
-                                                                          "in": true,
-                                                                          "mountOnEnter": false,
-                                                                          "onEnter": [Function],
-                                                                          "onEntered": [Function],
-                                                                          "onEntering": [Function],
-                                                                          "onExit": [Function],
-                                                                          "onExited": [Function],
-                                                                          "onExiting": [Function],
-                                                                          "tag": "div",
-                                                                          "timeout": 150,
-                                                                          "unmountOnExit": false,
-                                                                        }
-                                                                      }
-                                                                    />
-                                                                  </TooltipPopoverWrapper>
-                                                                </Tooltip>
-                                                              </UncontrolledTooltip>
-                                                            </Tooltip>
-                                                          </Button>
-                                                        </InlineStyle>
-                                                      </Decorated(InlineStyle)>
-                                                      <Decorated(InlineStyle)
+                                                                    }
+                                                                  />
+                                                                </TooltipPopoverWrapper>
+                                                              </Tooltip>
+                                                            </UncontrolledTooltip>
+                                                          </Tooltip>
+                                                        </Button>
+                                                      </InlineStyle>
+                                                    </Decorated(InlineStyle)>
+                                                    <Decorated(InlineStyle)
+                                                      getEditorState={[Function]}
+                                                      setEditorState={[Function]}
+                                                    >
+                                                      <InlineStyle
                                                         getEditorState={[Function]}
+                                                        icon="format_underline"
+                                                        id="format_underline"
+                                                        name="Underline"
                                                         setEditorState={[Function]}
+                                                        style="UNDERLINE"
                                                       >
-                                                        <InlineStyle
-                                                          getEditorState={[Function]}
+                                                        <Button
                                                           icon="format_underline"
                                                           id="format_underline"
+                                                          isActive={false}
+                                                          isDisabled={false}
                                                           name="Underline"
-                                                          setEditorState={[Function]}
-                                                          style="UNDERLINE"
+                                                          onToggle={[Function]}
                                                         >
-                                                          <Button
-                                                            icon="format_underline"
+                                                          <ForwardRef
+                                                            className="button"
                                                             id="format_underline"
-                                                            isActive={false}
-                                                            isDisabled={false}
-                                                            name="Underline"
-                                                            onToggle={[Function]}
+                                                            intent="secondary"
+                                                            onClick={[Function]}
+                                                            onMouseDown={[Function]}
+                                                            size="small"
                                                           >
                                                             <ForwardRef
-                                                              className="button"
+                                                              className="button wrapper small"
                                                               id="format_underline"
                                                               intent="secondary"
                                                               onClick={[Function]}
                                                               onMouseDown={[Function]}
                                                               size="small"
                                                             >
-                                                              <ForwardRef
+                                                              <BaseButton
                                                                 className="button wrapper small"
-                                                                id="format_underline"
                                                                 intent="secondary"
-                                                                onClick={[Function]}
-                                                                onMouseDown={[Function]}
                                                                 size="small"
                                                               >
-                                                                <BaseButton
-                                                                  className="button wrapper small"
-                                                                  intent="secondary"
-                                                                  size="small"
+                                                                <button
+                                                                  className="wrapper button wrapper small fill secondary small"
+                                                                  id="format_underline"
+                                                                  onClick={[Function]}
+                                                                  onMouseDown={[Function]}
+                                                                  type="button"
                                                                 >
-                                                                  <button
-                                                                    className="wrapper button wrapper small fill secondary small"
-                                                                    id="format_underline"
-                                                                    onClick={[Function]}
-                                                                    onMouseDown={[Function]}
-                                                                    type="button"
+                                                                  <i
+                                                                    className="material-icons icon"
                                                                   >
-                                                                    <i
-                                                                      className="material-icons icon"
-                                                                    >
-                                                                      format_underline
-                                                                    </i>
-                                                                  </button>
-                                                                </BaseButton>
-                                                              </ForwardRef>
+                                                                    format_underline
+                                                                  </i>
+                                                                </button>
+                                                              </BaseButton>
                                                             </ForwardRef>
-                                                            <Tooltip
+                                                          </ForwardRef>
+                                                          <Tooltip
+                                                            autohide={false}
+                                                            delay={100}
+                                                            placement="bottom"
+                                                            target="format_underline"
+                                                          >
+                                                            <UncontrolledTooltip
                                                               autohide={false}
+                                                              className="tooltip"
                                                               delay={100}
                                                               placement="bottom"
                                                               target="format_underline"
                                                             >
-                                                              <UncontrolledTooltip
+                                                              <Tooltip
                                                                 autohide={false}
                                                                 className="tooltip"
                                                                 delay={100}
+                                                                isOpen={false}
                                                                 placement="bottom"
+                                                                placementPrefix="bs-tooltip"
                                                                 target="format_underline"
+                                                                toggle={[Function]}
+                                                                trigger="hover focus"
                                                               >
-                                                                <Tooltip
+                                                                <TooltipPopoverWrapper
                                                                   autohide={false}
                                                                   className="tooltip"
                                                                   delay={100}
+                                                                  fade={true}
+                                                                  hideArrow={false}
+                                                                  innerClassName="tooltip-inner"
                                                                   isOpen={false}
                                                                   placement="bottom"
                                                                   placementPrefix="bs-tooltip"
+                                                                  popperClassName="tooltip show"
                                                                   target="format_underline"
                                                                   toggle={[Function]}
                                                                   trigger="hover focus"
                                                                 >
-                                                                  <TooltipPopoverWrapper
-                                                                    autohide={false}
+                                                                  <PopperContent
+                                                                    boundariesElement="scrollParent"
                                                                     className="tooltip"
-                                                                    delay={100}
+                                                                    container="body"
                                                                     fade={true}
+                                                                    fallbackPlacement="flip"
+                                                                    flip={true}
                                                                     hideArrow={false}
-                                                                    innerClassName="tooltip-inner"
                                                                     isOpen={false}
+                                                                    modifiers={Object {}}
+                                                                    offset={0}
+                                                                    onClosed={[Function]}
                                                                     placement="bottom"
                                                                     placementPrefix="bs-tooltip"
                                                                     popperClassName="tooltip show"
-                                                                    target="format_underline"
-                                                                    toggle={[Function]}
-                                                                    trigger="hover focus"
-                                                                  >
-                                                                    <PopperContent
-                                                                      boundariesElement="scrollParent"
-                                                                      className="tooltip"
-                                                                      container="body"
-                                                                      fade={true}
-                                                                      fallbackPlacement="flip"
-                                                                      flip={true}
-                                                                      hideArrow={false}
-                                                                      isOpen={false}
-                                                                      modifiers={Object {}}
-                                                                      offset={0}
-                                                                      onClosed={[Function]}
-                                                                      placement="bottom"
-                                                                      placementPrefix="bs-tooltip"
-                                                                      popperClassName="tooltip show"
-                                                                      target={
-                                                                        <button
-                                                                          class="wrapper button wrapper small fill secondary small"
-                                                                          id="format_underline"
-                                                                          type="button"
+                                                                    target={
+                                                                      <button
+                                                                        class="wrapper button wrapper small fill secondary small"
+                                                                        id="format_underline"
+                                                                        type="button"
+                                                                      >
+                                                                        <i
+                                                                          class="material-icons icon"
                                                                         >
-                                                                          <i
-                                                                            class="material-icons icon"
-                                                                          >
-                                                                            format_underline
-                                                                          </i>
-                                                                        </button>
+                                                                          format_underline
+                                                                        </i>
+                                                                      </button>
+                                                                    }
+                                                                    transition={
+                                                                      Object {
+                                                                        "appear": true,
+                                                                        "baseClass": "fade",
+                                                                        "baseClassActive": "show",
+                                                                        "enter": true,
+                                                                        "exit": true,
+                                                                        "in": true,
+                                                                        "mountOnEnter": false,
+                                                                        "onEnter": [Function],
+                                                                        "onEntered": [Function],
+                                                                        "onEntering": [Function],
+                                                                        "onExit": [Function],
+                                                                        "onExited": [Function],
+                                                                        "onExiting": [Function],
+                                                                        "tag": "div",
+                                                                        "timeout": 150,
+                                                                        "unmountOnExit": false,
                                                                       }
-                                                                      transition={
-                                                                        Object {
-                                                                          "appear": true,
-                                                                          "baseClass": "fade",
-                                                                          "baseClassActive": "show",
-                                                                          "enter": true,
-                                                                          "exit": true,
-                                                                          "in": true,
-                                                                          "mountOnEnter": false,
-                                                                          "onEnter": [Function],
-                                                                          "onEntered": [Function],
-                                                                          "onEntering": [Function],
-                                                                          "onExit": [Function],
-                                                                          "onExited": [Function],
-                                                                          "onExiting": [Function],
-                                                                          "tag": "div",
-                                                                          "timeout": 150,
-                                                                          "unmountOnExit": false,
-                                                                        }
-                                                                      }
-                                                                    />
-                                                                  </TooltipPopoverWrapper>
-                                                                </Tooltip>
-                                                              </UncontrolledTooltip>
-                                                            </Tooltip>
-                                                          </Button>
-                                                        </InlineStyle>
-                                                      </Decorated(InlineStyle)>
-                                                      <Connect(AddLinkContainer)
-                                                        getEditorRef={[Function]}
+                                                                    }
+                                                                  />
+                                                                </TooltipPopoverWrapper>
+                                                              </Tooltip>
+                                                            </UncontrolledTooltip>
+                                                          </Tooltip>
+                                                        </Button>
+                                                      </InlineStyle>
+                                                    </Decorated(InlineStyle)>
+                                                    <Connect(Component)
+                                                      getEditorState={[Function]}
+                                                      isOpen={false}
+                                                      onClose={[Function]}
+                                                      onOpen={[Function]}
+                                                      onTextChange={[Function]}
+                                                      onUrlChange={[Function]}
+                                                      setEditorState={[Function]}
+                                                      text=""
+                                                      url=""
+                                                    >
+                                                      <Component
                                                         getEditorState={[Function]}
-                                                        getPlugins={[Function]}
-                                                        getProps={[Function]}
-                                                        getReadOnly={[Function]}
                                                         isOpen={false}
+                                                        linkEditionEnded={[Function]}
+                                                        linkEditionStarted={[Function]}
                                                         onClose={[Function]}
                                                         onOpen={[Function]}
                                                         onTextChange={[Function]}
                                                         onUrlChange={[Function]}
                                                         setEditorState={[Function]}
-                                                        setReadOnly={[Function]}
                                                         text=""
                                                         url=""
                                                       >
                                                         <AddLinkContainer
-                                                          currentAccount={
-                                                            Immutable.Map {
-                                                              "settings": Immutable.List [
-                                                                Immutable.Map {
-                                                                  "data": Immutable.Map {},
-                                                                  "type": "satisfaction-surveys",
-                                                                },
-                                                              ],
-                                                            }
-                                                          }
-                                                          dispatch={[Function]}
-                                                          getEditorRef={[Function]}
+                                                          canAddDiscountCodeLink={true}
+                                                          canAddProductCard={true}
+                                                          canAddProductLink={true}
+                                                          canAddVideoLink={true}
+                                                          canAddVideoPlayer={true}
                                                           getEditorState={[Function]}
-                                                          getPlugins={[Function]}
-                                                          getProps={[Function]}
-                                                          getReadOnly={[Function]}
-                                                          isNewMessagePublic={false}
                                                           isOpen={false}
                                                           linkEditionEnded={[Function]}
                                                           linkEditionStarted={[Function]}
-                                                          newMessageChannel="email"
+                                                          onAddProductCardAttachment={[Function]}
                                                           onClose={[Function]}
+                                                          onInsertDiscountCodeAdded={[Function]}
+                                                          onInsertDiscountCodeOpen={[Function]}
+                                                          onInsertProductLinkAdded={[Function]}
+                                                          onInsertProductLinkOpen={[Function]}
+                                                          onInsertVideoAdded={[Function]}
+                                                          onInsertVideoAddedFromInsertLink={[Function]}
+                                                          onInsertVideoOpen={[Function]}
                                                           onOpen={[Function]}
                                                           onTextChange={[Function]}
                                                           onUrlChange={[Function]}
                                                           setEditorState={[Function]}
-                                                          setReadOnly={[Function]}
                                                           text=""
                                                           url=""
                                                         >
@@ -4110,380 +3985,375 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                             </ForwardRef>
                                                           </ButtonPopover>
                                                         </AddLinkContainer>
-                                                      </Connect(AddLinkContainer)>
-                                                      <AddImage
-                                                        getEditorRef={[Function]}
-                                                        getEditorState={[Function]}
-                                                        getPlugins={[Function]}
-                                                        getProps={[Function]}
-                                                        getReadOnly={[Function]}
-                                                        setEditorState={[Function]}
-                                                        setReadOnly={[Function]}
+                                                      </Component>
+                                                    </Connect(Component)>
+                                                    <AddImage
+                                                      getEditorState={[Function]}
+                                                      setEditorState={[Function]}
+                                                    >
+                                                      <ButtonPopover
+                                                        icon="insert_photo"
+                                                        id="insert_photo"
+                                                        isOpen={false}
+                                                        name="Insert image"
+                                                        onClose={[Function]}
+                                                        onOpen={[Function]}
                                                       >
-                                                        <ButtonPopover
-                                                          icon="insert_photo"
-                                                          id="insert_photo"
+                                                        <ForwardRef
                                                           isOpen={false}
-                                                          name="Insert image"
-                                                          onClose={[Function]}
-                                                          onOpen={[Function]}
+                                                          trigger={
+                                                            <Button
+                                                              icon="insert_photo"
+                                                              id="insert_photo"
+                                                              isActive={false}
+                                                              isDisabled={false}
+                                                              name="Insert image"
+                                                              onToggle={[Function]}
+                                                            />
+                                                          }
                                                         >
-                                                          <ForwardRef
-                                                            isOpen={false}
-                                                            trigger={
-                                                              <Button
-                                                                icon="insert_photo"
-                                                                id="insert_photo"
-                                                                isActive={false}
-                                                                isDisabled={false}
-                                                                name="Insert image"
-                                                                onToggle={[Function]}
-                                                              />
-                                                            }
+                                                          <span
+                                                            className="popoverWrapper"
                                                           >
-                                                            <span
-                                                              className="popoverWrapper"
+                                                            <Button
+                                                              icon="insert_photo"
+                                                              id="insert_photo"
+                                                              isActive={false}
+                                                              isDisabled={false}
+                                                              name="Insert image"
+                                                              onToggle={[Function]}
                                                             >
-                                                              <Button
-                                                                icon="insert_photo"
+                                                              <ForwardRef
+                                                                className="button"
                                                                 id="insert_photo"
-                                                                isActive={false}
-                                                                isDisabled={false}
-                                                                name="Insert image"
-                                                                onToggle={[Function]}
+                                                                intent="secondary"
+                                                                onClick={[Function]}
+                                                                onMouseDown={[Function]}
+                                                                size="small"
                                                               >
                                                                 <ForwardRef
-                                                                  className="button"
+                                                                  className="button wrapper small"
                                                                   id="insert_photo"
                                                                   intent="secondary"
                                                                   onClick={[Function]}
                                                                   onMouseDown={[Function]}
                                                                   size="small"
                                                                 >
-                                                                  <ForwardRef
+                                                                  <BaseButton
                                                                     className="button wrapper small"
-                                                                    id="insert_photo"
                                                                     intent="secondary"
-                                                                    onClick={[Function]}
-                                                                    onMouseDown={[Function]}
                                                                     size="small"
                                                                   >
-                                                                    <BaseButton
-                                                                      className="button wrapper small"
-                                                                      intent="secondary"
-                                                                      size="small"
+                                                                    <button
+                                                                      className="wrapper button wrapper small fill secondary small"
+                                                                      id="insert_photo"
+                                                                      onClick={[Function]}
+                                                                      onMouseDown={[Function]}
+                                                                      type="button"
                                                                     >
-                                                                      <button
-                                                                        className="wrapper button wrapper small fill secondary small"
-                                                                        id="insert_photo"
-                                                                        onClick={[Function]}
-                                                                        onMouseDown={[Function]}
-                                                                        type="button"
+                                                                      <i
+                                                                        className="material-icons icon"
                                                                       >
-                                                                        <i
-                                                                          className="material-icons icon"
-                                                                        >
-                                                                          insert_photo
-                                                                        </i>
-                                                                      </button>
-                                                                    </BaseButton>
-                                                                  </ForwardRef>
+                                                                        insert_photo
+                                                                      </i>
+                                                                    </button>
+                                                                  </BaseButton>
                                                                 </ForwardRef>
-                                                                <Tooltip
+                                                              </ForwardRef>
+                                                              <Tooltip
+                                                                autohide={false}
+                                                                delay={100}
+                                                                placement="bottom"
+                                                                target="insert_photo"
+                                                              >
+                                                                <UncontrolledTooltip
                                                                   autohide={false}
+                                                                  className="tooltip"
                                                                   delay={100}
                                                                   placement="bottom"
                                                                   target="insert_photo"
                                                                 >
-                                                                  <UncontrolledTooltip
+                                                                  <Tooltip
                                                                     autohide={false}
                                                                     className="tooltip"
                                                                     delay={100}
+                                                                    isOpen={false}
                                                                     placement="bottom"
+                                                                    placementPrefix="bs-tooltip"
                                                                     target="insert_photo"
+                                                                    toggle={[Function]}
+                                                                    trigger="hover focus"
                                                                   >
-                                                                    <Tooltip
+                                                                    <TooltipPopoverWrapper
                                                                       autohide={false}
                                                                       className="tooltip"
                                                                       delay={100}
+                                                                      fade={true}
+                                                                      hideArrow={false}
+                                                                      innerClassName="tooltip-inner"
                                                                       isOpen={false}
                                                                       placement="bottom"
                                                                       placementPrefix="bs-tooltip"
+                                                                      popperClassName="tooltip show"
                                                                       target="insert_photo"
                                                                       toggle={[Function]}
                                                                       trigger="hover focus"
                                                                     >
-                                                                      <TooltipPopoverWrapper
-                                                                        autohide={false}
+                                                                      <PopperContent
+                                                                        boundariesElement="scrollParent"
                                                                         className="tooltip"
-                                                                        delay={100}
+                                                                        container="body"
                                                                         fade={true}
+                                                                        fallbackPlacement="flip"
+                                                                        flip={true}
                                                                         hideArrow={false}
-                                                                        innerClassName="tooltip-inner"
                                                                         isOpen={false}
+                                                                        modifiers={Object {}}
+                                                                        offset={0}
+                                                                        onClosed={[Function]}
                                                                         placement="bottom"
                                                                         placementPrefix="bs-tooltip"
                                                                         popperClassName="tooltip show"
-                                                                        target="insert_photo"
-                                                                        toggle={[Function]}
-                                                                        trigger="hover focus"
-                                                                      >
-                                                                        <PopperContent
-                                                                          boundariesElement="scrollParent"
-                                                                          className="tooltip"
-                                                                          container="body"
-                                                                          fade={true}
-                                                                          fallbackPlacement="flip"
-                                                                          flip={true}
-                                                                          hideArrow={false}
-                                                                          isOpen={false}
-                                                                          modifiers={Object {}}
-                                                                          offset={0}
-                                                                          onClosed={[Function]}
-                                                                          placement="bottom"
-                                                                          placementPrefix="bs-tooltip"
-                                                                          popperClassName="tooltip show"
-                                                                          target={
-                                                                            <button
-                                                                              class="wrapper button wrapper small fill secondary small"
-                                                                              id="insert_photo"
-                                                                              type="button"
+                                                                        target={
+                                                                          <button
+                                                                            class="wrapper button wrapper small fill secondary small"
+                                                                            id="insert_photo"
+                                                                            type="button"
+                                                                          >
+                                                                            <i
+                                                                              class="material-icons icon"
                                                                             >
-                                                                              <i
-                                                                                class="material-icons icon"
-                                                                              >
-                                                                                insert_photo
-                                                                              </i>
-                                                                            </button>
+                                                                              insert_photo
+                                                                            </i>
+                                                                          </button>
+                                                                        }
+                                                                        transition={
+                                                                          Object {
+                                                                            "appear": true,
+                                                                            "baseClass": "fade",
+                                                                            "baseClassActive": "show",
+                                                                            "enter": true,
+                                                                            "exit": true,
+                                                                            "in": true,
+                                                                            "mountOnEnter": false,
+                                                                            "onEnter": [Function],
+                                                                            "onEntered": [Function],
+                                                                            "onEntering": [Function],
+                                                                            "onExit": [Function],
+                                                                            "onExited": [Function],
+                                                                            "onExiting": [Function],
+                                                                            "tag": "div",
+                                                                            "timeout": 150,
+                                                                            "unmountOnExit": false,
                                                                           }
-                                                                          transition={
-                                                                            Object {
-                                                                              "appear": true,
-                                                                              "baseClass": "fade",
-                                                                              "baseClassActive": "show",
-                                                                              "enter": true,
-                                                                              "exit": true,
-                                                                              "in": true,
-                                                                              "mountOnEnter": false,
-                                                                              "onEnter": [Function],
-                                                                              "onEntered": [Function],
-                                                                              "onEntering": [Function],
-                                                                              "onExit": [Function],
-                                                                              "onExited": [Function],
-                                                                              "onExiting": [Function],
-                                                                              "tag": "div",
-                                                                              "timeout": 150,
-                                                                              "unmountOnExit": false,
-                                                                            }
-                                                                          }
-                                                                        />
-                                                                      </TooltipPopoverWrapper>
-                                                                    </Tooltip>
-                                                                  </UncontrolledTooltip>
-                                                                </Tooltip>
-                                                              </Button>
-                                                              <div
-                                                                className="popover top-left hidden"
-                                                              />
-                                                            </span>
-                                                          </ForwardRef>
-                                                        </ButtonPopover>
-                                                      </AddImage>
-                                                      <AddEmoji
-                                                        getEditorState={[Function]}
-                                                        setEditorState={[Function]}
+                                                                        }
+                                                                      />
+                                                                    </TooltipPopoverWrapper>
+                                                                  </Tooltip>
+                                                                </UncontrolledTooltip>
+                                                              </Tooltip>
+                                                            </Button>
+                                                            <div
+                                                              className="popover top-left hidden"
+                                                            />
+                                                          </span>
+                                                        </ForwardRef>
+                                                      </ButtonPopover>
+                                                    </AddImage>
+                                                    <AddEmoji
+                                                      getEditorState={[Function]}
+                                                      setEditorState={[Function]}
+                                                    >
+                                                      <ButtonPopover
+                                                        className="p-0 d-flex"
+                                                        icon="insert_emoticon"
+                                                        id="insert_emoticon"
+                                                        isOpen={false}
+                                                        name="Insert emoji"
+                                                        onClose={[Function]}
+                                                        onOpen={[Function]}
                                                       >
-                                                        <ButtonPopover
+                                                        <ForwardRef
                                                           className="p-0 d-flex"
-                                                          icon="insert_emoticon"
-                                                          id="insert_emoticon"
                                                           isOpen={false}
-                                                          name="Insert emoji"
-                                                          onClose={[Function]}
-                                                          onOpen={[Function]}
+                                                          trigger={
+                                                            <Button
+                                                              icon="insert_emoticon"
+                                                              id="insert_emoticon"
+                                                              isActive={false}
+                                                              isDisabled={false}
+                                                              name="Insert emoji"
+                                                              onToggle={[Function]}
+                                                            />
+                                                          }
                                                         >
-                                                          <ForwardRef
-                                                            className="p-0 d-flex"
-                                                            isOpen={false}
-                                                            trigger={
-                                                              <Button
-                                                                icon="insert_emoticon"
-                                                                id="insert_emoticon"
-                                                                isActive={false}
-                                                                isDisabled={false}
-                                                                name="Insert emoji"
-                                                                onToggle={[Function]}
-                                                              />
-                                                            }
+                                                          <span
+                                                            className="popoverWrapper"
                                                           >
-                                                            <span
-                                                              className="popoverWrapper"
+                                                            <Button
+                                                              icon="insert_emoticon"
+                                                              id="insert_emoticon"
+                                                              isActive={false}
+                                                              isDisabled={false}
+                                                              name="Insert emoji"
+                                                              onToggle={[Function]}
                                                             >
-                                                              <Button
-                                                                icon="insert_emoticon"
+                                                              <ForwardRef
+                                                                className="button"
                                                                 id="insert_emoticon"
-                                                                isActive={false}
-                                                                isDisabled={false}
-                                                                name="Insert emoji"
-                                                                onToggle={[Function]}
+                                                                intent="secondary"
+                                                                onClick={[Function]}
+                                                                onMouseDown={[Function]}
+                                                                size="small"
                                                               >
                                                                 <ForwardRef
-                                                                  className="button"
+                                                                  className="button wrapper small"
                                                                   id="insert_emoticon"
                                                                   intent="secondary"
                                                                   onClick={[Function]}
                                                                   onMouseDown={[Function]}
                                                                   size="small"
                                                                 >
-                                                                  <ForwardRef
+                                                                  <BaseButton
                                                                     className="button wrapper small"
-                                                                    id="insert_emoticon"
                                                                     intent="secondary"
-                                                                    onClick={[Function]}
-                                                                    onMouseDown={[Function]}
                                                                     size="small"
                                                                   >
-                                                                    <BaseButton
-                                                                      className="button wrapper small"
-                                                                      intent="secondary"
-                                                                      size="small"
+                                                                    <button
+                                                                      className="wrapper button wrapper small fill secondary small"
+                                                                      id="insert_emoticon"
+                                                                      onClick={[Function]}
+                                                                      onMouseDown={[Function]}
+                                                                      type="button"
                                                                     >
-                                                                      <button
-                                                                        className="wrapper button wrapper small fill secondary small"
-                                                                        id="insert_emoticon"
-                                                                        onClick={[Function]}
-                                                                        onMouseDown={[Function]}
-                                                                        type="button"
+                                                                      <i
+                                                                        className="material-icons icon"
                                                                       >
-                                                                        <i
-                                                                          className="material-icons icon"
-                                                                        >
-                                                                          insert_emoticon
-                                                                        </i>
-                                                                      </button>
-                                                                    </BaseButton>
-                                                                  </ForwardRef>
+                                                                        insert_emoticon
+                                                                      </i>
+                                                                    </button>
+                                                                  </BaseButton>
                                                                 </ForwardRef>
-                                                                <Tooltip
+                                                              </ForwardRef>
+                                                              <Tooltip
+                                                                autohide={false}
+                                                                delay={100}
+                                                                placement="bottom"
+                                                                target="insert_emoticon"
+                                                              >
+                                                                <UncontrolledTooltip
                                                                   autohide={false}
+                                                                  className="tooltip"
                                                                   delay={100}
                                                                   placement="bottom"
                                                                   target="insert_emoticon"
                                                                 >
-                                                                  <UncontrolledTooltip
+                                                                  <Tooltip
                                                                     autohide={false}
                                                                     className="tooltip"
                                                                     delay={100}
+                                                                    isOpen={false}
                                                                     placement="bottom"
+                                                                    placementPrefix="bs-tooltip"
                                                                     target="insert_emoticon"
+                                                                    toggle={[Function]}
+                                                                    trigger="hover focus"
                                                                   >
-                                                                    <Tooltip
+                                                                    <TooltipPopoverWrapper
                                                                       autohide={false}
                                                                       className="tooltip"
                                                                       delay={100}
+                                                                      fade={true}
+                                                                      hideArrow={false}
+                                                                      innerClassName="tooltip-inner"
                                                                       isOpen={false}
                                                                       placement="bottom"
                                                                       placementPrefix="bs-tooltip"
+                                                                      popperClassName="tooltip show"
                                                                       target="insert_emoticon"
                                                                       toggle={[Function]}
                                                                       trigger="hover focus"
                                                                     >
-                                                                      <TooltipPopoverWrapper
-                                                                        autohide={false}
+                                                                      <PopperContent
+                                                                        boundariesElement="scrollParent"
                                                                         className="tooltip"
-                                                                        delay={100}
+                                                                        container="body"
                                                                         fade={true}
+                                                                        fallbackPlacement="flip"
+                                                                        flip={true}
                                                                         hideArrow={false}
-                                                                        innerClassName="tooltip-inner"
                                                                         isOpen={false}
+                                                                        modifiers={Object {}}
+                                                                        offset={0}
+                                                                        onClosed={[Function]}
                                                                         placement="bottom"
                                                                         placementPrefix="bs-tooltip"
                                                                         popperClassName="tooltip show"
-                                                                        target="insert_emoticon"
-                                                                        toggle={[Function]}
-                                                                        trigger="hover focus"
-                                                                      >
-                                                                        <PopperContent
-                                                                          boundariesElement="scrollParent"
-                                                                          className="tooltip"
-                                                                          container="body"
-                                                                          fade={true}
-                                                                          fallbackPlacement="flip"
-                                                                          flip={true}
-                                                                          hideArrow={false}
-                                                                          isOpen={false}
-                                                                          modifiers={Object {}}
-                                                                          offset={0}
-                                                                          onClosed={[Function]}
-                                                                          placement="bottom"
-                                                                          placementPrefix="bs-tooltip"
-                                                                          popperClassName="tooltip show"
-                                                                          target={
-                                                                            <button
-                                                                              class="wrapper button wrapper small fill secondary small"
-                                                                              id="insert_emoticon"
-                                                                              type="button"
+                                                                        target={
+                                                                          <button
+                                                                            class="wrapper button wrapper small fill secondary small"
+                                                                            id="insert_emoticon"
+                                                                            type="button"
+                                                                          >
+                                                                            <i
+                                                                              class="material-icons icon"
                                                                             >
-                                                                              <i
-                                                                                class="material-icons icon"
-                                                                              >
-                                                                                insert_emoticon
-                                                                              </i>
-                                                                            </button>
+                                                                              insert_emoticon
+                                                                            </i>
+                                                                          </button>
+                                                                        }
+                                                                        transition={
+                                                                          Object {
+                                                                            "appear": true,
+                                                                            "baseClass": "fade",
+                                                                            "baseClassActive": "show",
+                                                                            "enter": true,
+                                                                            "exit": true,
+                                                                            "in": true,
+                                                                            "mountOnEnter": false,
+                                                                            "onEnter": [Function],
+                                                                            "onEntered": [Function],
+                                                                            "onEntering": [Function],
+                                                                            "onExit": [Function],
+                                                                            "onExited": [Function],
+                                                                            "onExiting": [Function],
+                                                                            "tag": "div",
+                                                                            "timeout": 150,
+                                                                            "unmountOnExit": false,
                                                                           }
-                                                                          transition={
-                                                                            Object {
-                                                                              "appear": true,
-                                                                              "baseClass": "fade",
-                                                                              "baseClassActive": "show",
-                                                                              "enter": true,
-                                                                              "exit": true,
-                                                                              "in": true,
-                                                                              "mountOnEnter": false,
-                                                                              "onEnter": [Function],
-                                                                              "onEntered": [Function],
-                                                                              "onEntering": [Function],
-                                                                              "onExit": [Function],
-                                                                              "onExited": [Function],
-                                                                              "onExiting": [Function],
-                                                                              "tag": "div",
-                                                                              "timeout": 150,
-                                                                              "unmountOnExit": false,
-                                                                            }
-                                                                          }
-                                                                        />
-                                                                      </TooltipPopoverWrapper>
-                                                                    </Tooltip>
-                                                                  </UncontrolledTooltip>
-                                                                </Tooltip>
-                                                              </Button>
-                                                              <div
-                                                                className="p-0 d-flex popover top-left hidden"
-                                                              />
-                                                            </span>
-                                                          </ForwardRef>
-                                                        </ButtonPopover>
-                                                      </AddEmoji>
-                                                    </div>
-                                                    <div
-                                                      className="hoverOverlay"
-                                                    >
-                                                      Add files as attachments
-                                                    </div>
+                                                                        }
+                                                                      />
+                                                                    </TooltipPopoverWrapper>
+                                                                  </Tooltip>
+                                                                </UncontrolledTooltip>
+                                                              </Tooltip>
+                                                            </Button>
+                                                            <div
+                                                              className="p-0 d-flex popover top-left hidden"
+                                                            />
+                                                          </span>
+                                                        </ForwardRef>
+                                                      </ButtonPopover>
+                                                    </AddEmoji>
+                                                  </div>
+                                                  <div
+                                                    className="hoverOverlay"
+                                                  >
+                                                    Add files as attachments
                                                   </div>
                                                 </div>
-                                              </Toolbar>
-                                            </Connect(Toolbar)>
-                                          </RichFieldToolbar>
+                                              </div>
+                                            </Toolbar>
+                                          </Connect(Toolbar)>
                                         </div>
                                       </RichFieldEditor>
                                     </Wrapper>
                                   </Wrapper>
                                 </Wrapper>
-                              </Connect(Wrapper)>
-                            </RichField>
+                              </RichField>
+                            </ForwardRef>
                           </div>
-                        </DEPRECATED_RichFieldWithVariables>
+                        </RichFieldWithVariables>
                       </div>
                     </FormGroup>
                     <ForwardRef

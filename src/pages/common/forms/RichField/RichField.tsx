@@ -8,14 +8,13 @@ import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/
 
 import RichFieldEditor, {Props as RichFieldEditorProps} from './RichFieldEditor'
 
-type Props = {
+export type Props = {
     allowExternalChanges?: boolean
     value: {
         html?: string
         text?: string
     }
     defaultContentState?: ContentState
-    productCardsEnabled?: boolean
     onChange: (arg: EditorState) => void
 } & Partial<Omit<RichFieldEditorProps, 'editorState'>>
 
@@ -23,8 +22,6 @@ type State = {
     editorState: EditorState
     isFocused: boolean
 }
-
-// Deprecated component, use RichFieldEditor instead
 
 export default class RichField extends Component<Props, State> {
     constructor(props: Props) {

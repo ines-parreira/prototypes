@@ -17,22 +17,12 @@ import React, {
     Component,
 } from 'react'
 
-import {connect, ConnectedProps} from 'react-redux'
-
 import {getLDClient} from 'utils/launchDarkly'
 import {FeatureFlagKey} from 'config/featureFlags'
-
-import {canAddVideoPlayer} from 'utils'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {
-    getNewMessageChannel,
-    isNewMessagePublic,
-} from 'state/newMessage/selectors'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {addVideo} from 'pages/common/draftjs/plugins/utils'
 import shortcutManager from 'services/shortcutManager'
 
-import {ConnectedAction, RootState} from '../../../../state/types'
+import {ConnectedAction} from '../../../../state/types'
 import {notify} from '../../../../state/notifications/actions'
 import {scrollToReactNode} from '../../../common/utils/keyboard'
 
@@ -45,6 +35,7 @@ import createPredictionPlugin from '../../draftjs/plugins/prediction'
 import {createQuotesPlugin} from '../../draftjs/plugins/quotes/quotesPlugin'
 
 import {ActionName} from '../../draftjs/plugins/toolbar/types'
+import Toolbar from '../../draftjs/plugins/toolbar/Toolbar'
 import {ImagePluginConfig, Plugin} from '../../draftjs/plugins/types'
 import {
     contentStateFromTextOrHTML,
@@ -65,7 +56,6 @@ import provideMentionFilteredSuggestions, {
 import withGrammarlyUsageTracking, {
     InjectedProps as GrammarlyUsageTrackingProps,
 } from './withGrammarlyUsageTracking'
-import Toolbar from './Toolbar'
 import css from './RichFieldEditor.less'
 
 type suggestionsType = List<any>
@@ -79,7 +69,6 @@ export type Props = {
     onChange: (editorState: EditorState) => void
     displayOnly?: boolean
     emailExtraEnabled?: boolean
-    productCardsEnabled?: boolean
     onFocus: (event: MouseEvent<HTMLDivElement>) => void
     onBlur: () => void
     notify?: ConnectedAction<typeof notify>
@@ -100,10 +89,11 @@ export type Props = {
     isFocused: boolean
     isRequired: boolean
     placeholder?: string
+    canAddVideoPlayer?: boolean
+    onInsertVideoAddedFromPastedLink?: () => void
 } & ToolbarPluginProps &
     MentionFilteredSuggestionsProps &
-    GrammarlyUsageTrackingProps &
-    ConnectedProps<typeof connector>
+    GrammarlyUsageTrackingProps
 
 type State = {
     isDragging: boolean
@@ -119,20 +109,22 @@ export class RichFieldEditor extends Component<Props, State> {
     static defaultProps: Pick<
         Props,
         | 'emailExtraEnabled'
-        | 'productCardsEnabled'
         | 'notify'
         | 'attachFiles'
         | 'canDropFiles'
         | 'canInsertInlineImages'
         | 'isFocused'
+        | 'canAddVideoPlayer'
+        | 'onInsertVideoAddedFromPastedLink'
     > = {
         emailExtraEnabled: false,
-        productCardsEnabled: true,
         notify: () => Promise.resolve(),
         attachFiles: _noop,
         canDropFiles: false,
         canInsertInlineImages: true,
         isFocused: false,
+        canAddVideoPlayer: false,
+        onInsertVideoAddedFromPastedLink: _noop,
     }
 
     plugins: Plugin[]
@@ -342,25 +334,19 @@ export class RichFieldEditor extends Component<Props, State> {
         text: string,
         html: string | undefined
     ): EditorState => {
-        const {newMessageChannel, isNewMessagePublic, currentAccount, ticket} =
-            this.props
-
         let newEditorState = editorState
 
         if (
             this.chatVideoSharingExtraLDFlag &&
+            this.props.canAddVideoPlayer &&
             text &&
             !html &&
-            canAddVideoPlayer(newMessageChannel, isNewMessagePublic) &&
             ReactPlayer.canPlay(text)
         ) {
             newEditorState = focusToTheEndOfContent(newEditorState)
             newEditorState = addVideo(newEditorState, text)
-            logEvent(SegmentEvent.InsertVideoAddedFromPastedLink, {
-                account_id: currentAccount?.get('domain'),
-                channel: newMessageChannel,
-                ticket: (ticket as Immutable.Map<any, any>)?.get('id') || 'new',
-            })
+
+            this.props.onInsertVideoAddedFromPastedLink?.()
         }
 
         return newEditorState
@@ -418,7 +404,6 @@ export class RichFieldEditor extends Component<Props, State> {
             onFocus,
             emailExtraEnabled,
             ticket,
-            productCardsEnabled,
             footer,
         } = this.props
         // $TsFixMe remove casting after migrating createMentionPlugin
@@ -429,6 +414,7 @@ export class RichFieldEditor extends Component<Props, State> {
                 canAddMention: boolean
             }>
         }
+        const pluginMethods = this.editor?.getPluginMethods()
         return (
             <div
                 className={classnames(className, 'rich-textarea-wrapper', {
@@ -501,28 +487,20 @@ export class RichFieldEditor extends Component<Props, State> {
                         />
                     )}
                 </div>
-                <Toolbar
-                    {...(this.props as unknown as ComponentProps<
-                        typeof Toolbar
-                    >)}
-                    canDropFiles={!!this.props.canDropFiles}
-                    pluginMethods={this.editor?.getPluginMethods()}
-                    productCardsEnabled={!!productCardsEnabled}
-                />
+                {pluginMethods && (
+                    <Toolbar
+                        {...(this.props as unknown as ComponentProps<
+                            typeof Toolbar
+                        >)}
+                        canDropFiles={!!this.props.canDropFiles}
+                        {...pluginMethods}
+                    />
+                )}
             </div>
         )
     }
 }
 
-const connector = connect((state: RootState) => ({
-    currentAccount: getCurrentAccountState(state),
-    ticket: state.ticket,
-    newMessageChannel: getNewMessageChannel(state),
-    isNewMessagePublic: isNewMessagePublic(state),
-}))
-
-export default connector(
-    withGrammarlyUsageTracking(
-        provideToolbarPlugin(provideMentionFilteredSuggestions(RichFieldEditor))
-    )
+export default withGrammarlyUsageTracking(
+    provideToolbarPlugin(provideMentionFilteredSuggestions(RichFieldEditor))
 )

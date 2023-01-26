@@ -8,10 +8,14 @@ import Button from './Button'
 type Props = {
     confirmationButtonIntent?: ComponentProps<typeof Button>['intent']
     confirmationContent?: ReactNode
-    confirmationTitle?: string
+    confirmationTitle?: ReactNode
     onConfirm?: () => void
     placement?: ComponentProps<typeof Popover>['placement']
-    confirmLabel?: ComponentProps<typeof Popover>['confirmLabel']
+    confirmLabel?: ComponentProps<typeof ConfirmationPopover>['confirmLabel']
+    cancelLabel?: ComponentProps<typeof ConfirmationPopover>['cancelLabel']
+    showCancelButton?: ComponentProps<
+        typeof ConfirmationPopover
+    >['showCancelButton']
 } & ComponentProps<typeof Button>
 
 export default function ConfirmButton({
@@ -24,6 +28,8 @@ export default function ConfirmButton({
     placement = 'bottom',
     type = 'button',
     confirmLabel = 'Confirm',
+    cancelLabel,
+    showCancelButton,
     ...other
 }: Props) {
     return (
@@ -32,12 +38,17 @@ export default function ConfirmButton({
                 intent: confirmationButtonIntent,
                 type,
             }}
+            cancelButtonProps={{
+                intent: 'secondary',
+            }}
             content={confirmationContent}
             id={id}
             onConfirm={onConfirm}
             placement={placement}
             title={confirmationTitle}
             confirmLabel={confirmLabel}
+            cancelLabel={cancelLabel}
+            showCancelButton={showCancelButton}
         >
             {({uid, onDisplayConfirmation, elementRef}) => (
                 <Button

@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import _noop from 'lodash/noop'
 import {AutoReplyReturnSettings} from 'state/rules/types'
 import Button from 'pages/common/components/button/Button'
-import RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'
+import RichField from 'pages/common/forms/RichField/RichField'
 
 import {ManagedRuleDetailProps} from './ManagedRuleEditor'
 

@@ -44,7 +44,7 @@ import {
     TicketMessageSourceType,
     TicketStatus,
 } from 'business/types/ticket'
-import {IntegrationType, ProductCardDetails} from 'models/integration/types'
+import {IntegrationType} from 'models/integration/types'
 import client from 'models/api/resources'
 import {Ticket as TicketResponse, TicketAssignee} from 'models/ticket/types'
 import {Customer} from 'state/customers/types'
@@ -56,6 +56,7 @@ import {SearchType, UserSearchResult} from 'models/search/types'
 import {search} from 'models/search/resources'
 import {CustomerChannel} from 'models/customerChannel/types'
 import {UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_VIDEOS} from 'config/integrations/shopify'
+import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
 
 import {MacroActionName, MacroActionType} from 'models/macroAction/types'
 import {isBaseEmailAddress} from 'pages/integrations/integration/components/email/helpers'
@@ -176,8 +177,8 @@ export const addAttachments =
         )
     }
 
-export const addProductCardAttachments =
-    (ticket: Map<any, any>, productCardDetails: ProductCardDetails) =>
+export const addProductCardAttachment =
+    (ticket: Map<any, any>, attachment: ProductCardAttachment) =>
     (
         dispatch: StoreDispatch,
         getState: () => RootState
@@ -189,27 +190,9 @@ export const addProductCardAttachments =
             return Promise.resolve()
         }
 
-        const resp = [
-            {
-                content_type: 'application/productCard',
-                name: productCardDetails.productTitle,
-                size: 0,
-                url: productCardDetails.imageUrl,
-                extra: {
-                    product_id: productCardDetails.productId,
-                    variant_id: productCardDetails.variantId,
-                    price: productCardDetails.price,
-                    variant_name: productCardDetails.variantTitle,
-                    product_link: productCardDetails.link,
-                    currency: productCardDetails.currency,
-                    featured_image: productCardDetails.imageUrl,
-                },
-            },
-        ]
-
         dispatch({
             type: constants.NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS,
-            resp,
+            resp: [attachment],
         })
     }
 

@@ -141,7 +141,7 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
       </DropdownMenu>
     </UncontrolledDropdown>
   </div>
-  <RichField
+  <ForwardRef
     onChange={[Function]}
     value={
       Object {

@@ -10,7 +10,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 
 import {AgentLabel} from 'pages/common/utils/labels'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import DEPRECATED_RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'
+import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
 import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
 import TicketAttachments from 'pages/tickets/detail/components/ReplyArea/TicketAttachments'
 
@@ -136,11 +136,11 @@ export const CampaignMessage = memo(
                     />
                 </div>
                 <div className={css.textEditorWrapper}>
-                    <DEPRECATED_RichField
+                    <TicketRichField
                         value={value}
                         attachments={attachments}
                         allowExternalChanges
-                        productCardsEnabled={isRevenueBetaTester}
+                        disableProductCards={!isRevenueBetaTester}
                         onChange={onChangeMessage}
                         placeholder={'Write your message'}
                         displayedActions={displayedActions}

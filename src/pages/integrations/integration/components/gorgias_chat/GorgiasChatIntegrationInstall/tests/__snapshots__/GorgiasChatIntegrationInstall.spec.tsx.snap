@@ -492,6 +492,11 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                           "type": "button",
                                         }
                                       }
+                                      cancelButtonProps={
+                                        Object {
+                                          "intent": "secondary",
+                                        }
+                                      }
                                       confirmLabel="Confirm"
                                       content={
                                         <React.Fragment>
@@ -701,6 +706,11 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                           "type": "button",
                                         }
                                       }
+                                      cancelButtonProps={
+                                        Object {
+                                          "intent": "secondary",
+                                        }
+                                      }
                                       confirmLabel="Confirm"
                                       content={
                                         <React.Fragment>
@@ -902,6 +912,11 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                           "type": "button",
                                         }
                                       }
+                                      cancelButtonProps={
+                                        Object {
+                                          "intent": "secondary",
+                                        }
+                                      }
                                       confirmLabel="Confirm"
                                       content={
                                         <React.Fragment>
@@ -1101,6 +1116,11 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                         Object {
                                           "intent": undefined,
                                           "type": "button",
+                                        }
+                                      }
+                                      cancelButtonProps={
+                                        Object {
+                                          "intent": "secondary",
                                         }
                                       }
                                       confirmLabel="Confirm"
@@ -3533,6 +3553,11 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                         Object {
                                           "intent": undefined,
                                           "type": "button",
+                                        }
+                                      }
+                                      cancelButtonProps={
+                                        Object {
+                                          "intent": "secondary",
                                         }
                                       }
                                       confirmLabel="Confirm"

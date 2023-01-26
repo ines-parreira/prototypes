@@ -4,35 +4,24 @@ import {connect, ConnectedProps} from 'react-redux'
 import ReactPlayer from 'react-player'
 
 import {getLDClient} from 'utils/launchDarkly'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
-
 import {FeatureFlagKey} from 'config/featureFlags'
-import {RootState} from 'state/types'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {canAddVideoPlayer} from 'utils'
-
 import Button from 'pages/common/components/button/Button'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import {addVideo, linkifyWithTemplate, removeLink} from '../../utils'
 import {
     focusToTheEndOfContent,
     getEntitySelectionState,
     getSelectedEntityKey,
     getSelectedText,
     linkify,
-} from '../../../../../../utils/editor'
+} from 'utils/editor'
+import {linkEditionEnded, linkEditionStarted} from 'state/ui/editor/actions'
+
+import {addVideo, linkifyWithTemplate, removeLink} from '../../utils'
 import {ActionInjectedProps} from '../types'
-import {
-    linkEditionEnded,
-    linkEditionStarted,
-} from '../../../../../../state/ui/editor/actions'
-import {
-    getNewMessageChannel,
-    isNewMessagePublic,
-} from '../../../../../../state/newMessage/selectors'
+import {ToolbarContextType, withToolbarContext} from '../ToolbarContext'
+import Popover from './ButtonPopover'
 
 import css from './AddLink.less'
-import Popover from './ButtonPopover'
 
 type Props = {
     entityKey?: string
@@ -44,6 +33,10 @@ type Props = {
     onOpen: () => void
     onClose: () => void
 } & ActionInjectedProps &
+    Pick<
+        ToolbarContextType,
+        'canAddVideoPlayer' | 'onInsertVideoAddedFromInsertLink'
+    > &
     ConnectedProps<typeof connector>
 
 export class AddLinkContainer extends Component<Props> {
@@ -216,19 +209,10 @@ export class AddLinkContainer extends Component<Props> {
     }
 
     _insertExtraVideoIfApplicable = (editorState: EditorState) => {
-        const {
-            url,
-            newMessageChannel,
-            isNewMessagePublic,
-            currentAccount,
-            ticket,
-            setEditorState,
-        } = this.props
+        const {url, onInsertVideoAddedFromInsertLink, setEditorState} =
+            this.props
 
-        if (
-            !canAddVideoPlayer(newMessageChannel, isNewMessagePublic) ||
-            !ReactPlayer.canPlay(url)
-        ) {
+        if (!this.props.canAddVideoPlayer || !ReactPlayer.canPlay(url)) {
             return
         }
 
@@ -241,11 +225,7 @@ export class AddLinkContainer extends Component<Props> {
         )
         setEditorState(newEditorState)
 
-        logEvent(SegmentEvent.InsertVideoAddedFromInsertLink, {
-            account_id: currentAccount?.get('domain'),
-            channel: newMessageChannel,
-            ticket: ticket?.get('id') || 'new',
-        })
+        onInsertVideoAddedFromInsertLink()
     }
 
     render() {
@@ -288,13 +268,9 @@ export class AddLinkContainer extends Component<Props> {
     }
 }
 
-const connector = connect((state: RootState) => ({
+const connector = connect(null, {
     linkEditionStarted,
     linkEditionEnded,
-    currentAccount: getCurrentAccountState(state),
-    ticket: state.ticket,
-    newMessageChannel: getNewMessageChannel(state),
-    isNewMessagePublic: isNewMessagePublic(state),
-}))
+})
 
-export default connector(AddLinkContainer)
+export default connector(withToolbarContext(AddLinkContainer))

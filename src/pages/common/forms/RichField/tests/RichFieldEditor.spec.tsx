@@ -12,7 +12,6 @@ import {convertFromHTML} from 'utils/editor'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {getLDClient} from 'utils/launchDarkly'
-import {TicketChannel} from 'business/types/ticket'
 import {RichFieldEditor} from '../RichFieldEditor'
 import toolbarPlugin from '../../../draftjs/plugins/toolbar/index'
 import provideToolbarPlugin from '../provideToolbarPlugin'
@@ -50,11 +49,6 @@ describe('RichFieldEditor', () => {
         isFocused: false,
         mentionSearchResults: fromJS({}),
         onMentionSearchChange: jest.fn(),
-        currentAccount: fromJS({}),
-        ticket: fromJS({}),
-        isNewMessagePublic: false,
-        newMessageChannel: TicketChannel.Email,
-        dispatch: jest.fn(),
     }
     let contentState: ContentState
     let editorState: EditorState
@@ -216,7 +210,7 @@ describe('RichFieldEditor', () => {
         expect(spyOnchange.mock.calls).toMatchSnapshot()
     })
 
-    it('should insert a video preview when pasting a compatible video link when channel is chat', () => {
+    it('should insert a video preview when pasting a compatible video link', () => {
         const onChangeSpy = jest.fn()
         contentState = convertFromHTML('html')
         editorState = EditorState.createWithContent(contentState)
@@ -227,8 +221,7 @@ describe('RichFieldEditor', () => {
                 editorKey="editor"
                 editorState={editorState}
                 onChange={onChangeSpy}
-                newMessageChannel={TicketChannel.Chat}
-                isNewMessagePublic={true}
+                canAddVideoPlayer
             />
         )
         const text = 'https://www.youtube.com/watch?v=4sLFpe-xbhk'
@@ -243,7 +236,7 @@ describe('RichFieldEditor', () => {
         expect(convertedHTML).toBe('<figure></figure>')
     })
 
-    it('should NOT insert a video preview when pasting a compatible video link when channel is mail', () => {
+    it('should NOT insert a video preview when pasting a compatible video link', () => {
         const onChangeSpy = jest.fn()
         contentState = convertFromHTML('html')
         editorState = EditorState.createWithContent(contentState)
@@ -254,8 +247,7 @@ describe('RichFieldEditor', () => {
                 editorKey="editor"
                 editorState={editorState}
                 onChange={onChangeSpy}
-                newMessageChannel={TicketChannel.Email}
-                isNewMessagePublic={true}
+                canAddVideoPlayer={false}
             />
         )
         const text = 'https://www.youtube.com/watch?v=4sLFpe-xbhk'

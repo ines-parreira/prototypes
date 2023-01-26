@@ -9,38 +9,49 @@ import {DiscountCode} from 'models/discountCodes/types'
 import {insertLink, insertText} from 'utils'
 import DiscountCodeResults from 'pages/common/components/DiscountCodeResults/DiscountCodeResults'
 import shortcutManager from 'services/shortcutManager'
-import {getNewMessageChannel} from 'state/newMessage/selectors'
 import {getIconFromType} from 'state/integrations/helpers'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {
-    EditorStateGetter,
-    EditorStateSetter,
-} from 'pages/common/draftjs/plugins/toolbar/types'
-import {UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_DISCOUNT_CODES} from 'config/integrations/shopify'
-import {getTicket} from 'state/ticket/selectors'
 import {useModalManager} from 'hooks/useModalManager'
-import useAppSelector from 'hooks/useAppSelector'
-import css from './AddDiscountCode.less'
+
+import {ActionInjectedProps} from '../types'
+import {useToolbarContext} from '../ToolbarContext'
 import Popover from './ButtonPopover'
 
-type OwnProps = {
-    getEditorState: EditorStateGetter
-    setEditorState: EditorStateSetter
+import css from './AddDiscountCode.less'
+
+type Props = {
     integrations: List<any>
+} & ActionInjectedProps
+
+const mapIntegrationToPickedIntegration = (integration: Map<any, any>) => {
+    return fromJS({
+        id: integration.get('id'),
+        name: integration.get('name'),
+        shop_domain: integration.getIn(['meta', 'shop_domain']),
+        currency: integration.getIn(['meta', 'currency']),
+        oauth: integration.getIn(['meta', 'oauth']),
+    }) as Map<any, any>
 }
 
-export function AddDiscountCode({
+const AddDiscountCode = ({
     integrations,
     getEditorState,
     setEditorState,
-}: OwnProps) {
+}: Props) => {
+    const {
+        canAddDiscountCodeLink,
+        onInsertDiscountCodeOpen,
+        onInsertDiscountCodeAdded,
+    } = useToolbarContext()
     const [isOpen, setOpen] = useState(false)
-    const [pickedIntegration, setPickedIntegration] = useState(null)
+    const [pickedIntegration, setPickedIntegration] = useState(() => {
+        if (integrations.size === 1) {
+            return mapIntegrationToPickedIntegration(
+                integrations.get(0) as Map<any, any>
+            )
+        }
 
-    const currentAccount = useAppSelector(getCurrentAccountState)
-    const newMessageChannel = useAppSelector(getNewMessageChannel)
-    const ticket = useAppSelector(getTicket)
+        return null
+    })
 
     const discountModal = useModalManager(DISCOUNT_MODAL_NAME, {
         autoDestroy: false,
@@ -52,54 +63,26 @@ export function AddDiscountCode({
 
     const handlePopoverOpen = useCallback(() => {
         setOpen(true)
-        logEvent(SegmentEvent.InsertDiscountCodeOpen, {
-            account_id: currentAccount?.get('domain'),
-            channel: newMessageChannel,
-            ticket: ticket.id || 'new',
-        })
-    }, [currentAccount, newMessageChannel, ticket])
+
+        onInsertDiscountCodeOpen()
+    }, [onInsertDiscountCodeOpen])
 
     const handlePopoverClose = useCallback(() => {
         setOpen(discountModal.isOpen(DISCOUNT_MODAL_NAME))
     }, [discountModal])
 
-    const pickIntegration = useCallback(
-        (index: number) => {
-            const integrationRow = integrations.toArray()[index] as Map<
-                any,
-                any
-            >
+    const handlePickIntegration = useCallback((integration: Map<any, any>) => {
+        setPickedIntegration(mapIntegrationToPickedIntegration(integration))
+    }, [])
 
-            setPickedIntegration(
-                fromJS({
-                    id: integrationRow.get('id'),
-                    name: integrationRow.get('name'),
-                    shop_domain: (
-                        integrationRow.get('meta') as Map<any, any>
-                    ).get('shop_domain'),
-                    currency: (integrationRow.get('meta') as Map<any, any>).get(
-                        'currency'
-                    ),
-                    oauth: integrationRow.getIn(['meta', 'oauth']),
-                })
-            )
-        },
-        [integrations]
-    )
-
-    const addDiscountCode = useCallback(
+    const handleAddDiscountCode = useCallback(
         (event: React.MouseEvent<HTMLElement>, discount: DiscountCode) => {
             event.preventDefault()
 
             const editorState = getEditorState()
 
             let newEditorState
-            if (
-                discount.shareable_url &&
-                !UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_DISCOUNT_CODES.includes(
-                    newMessageChannel
-                )
-            ) {
+            if (discount.shareable_url && canAddDiscountCodeLink) {
                 newEditorState = insertLink(
                     editorState,
                     discount.shareable_url,
@@ -114,38 +97,28 @@ export function AddDiscountCode({
             )
             setEditorState(newEditorState)
 
-            logEvent(SegmentEvent.InsertDiscountCodeAdded, {
-                account_id: currentAccount?.get('domain'),
-                channel: newMessageChannel,
-                discount_id: discount.id,
-                ticket: ticket.id || 'new',
-            })
+            onInsertDiscountCodeAdded(discount)
             setOpen(false)
         },
         [
             getEditorState,
             setEditorState,
-            currentAccount,
-            newMessageChannel,
-            ticket,
+            canAddDiscountCodeLink,
+            onInsertDiscountCodeAdded,
         ]
     )
 
     useEffect(() => {
-        const integrationsArr = integrations.toArray()
-        if (!pickedIntegration && integrationsArr.length === 1) {
-            pickIntegration(0)
-        }
         shortcutManager.bind('AddDiscountCode', {
             CLOSE_POPOVER: {
                 key: 'esc',
                 action: () => handlePopoverClose(),
             },
         })
-        return function cleanup() {
+        return () => {
             shortcutManager.unbind('AddDiscountCode')
         }
-    }, [handlePopoverClose, integrations, pickIntegration, pickedIntegration])
+    }, [handlePopoverClose])
 
     return (
         <Popover
@@ -169,7 +142,7 @@ export function AddDiscountCode({
                                     action
                                     onClick={(event) => {
                                         event.preventDefault()
-                                        pickIntegration(index!)
+                                        handlePickIntegration(integration)
                                     }}
                                 >
                                     <div
@@ -203,13 +176,13 @@ export function AddDiscountCode({
                 </div>
             ) : (
                 <DiscountCodeResults
-                    onDiscountClicked={addDiscountCode}
+                    onDiscountClicked={handleAddDiscountCode}
                     onResetStoreChoice={
                         integrations.size > 1
                             ? handleResetStoreChoice
                             : undefined
                     }
-                    integration={pickedIntegration!}
+                    integration={pickedIntegration}
                 />
             )}
         </Popover>

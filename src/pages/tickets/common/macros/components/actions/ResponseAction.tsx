@@ -18,7 +18,8 @@ import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/
 import {getVariables} from 'config/ticket'
 import {convertToHTML, getPlainText} from 'utils/editor'
 import {IntegrationType} from 'models/integration/types'
-import DEPRECATED_RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'
+import RichField from 'pages/common/forms/RichField/RichField'
+import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
 import * as integrationsSelectors from 'state/integrations/selectors'
 import {MacroActionName} from 'models/macroAction/types'
 import useAppSelector from 'hooks/useAppSelector'
@@ -143,7 +144,7 @@ const ResponseAction: React.FC<Props> = ({
     ignoredVariables,
     updateActionArgs,
 }) => {
-    const richArea = useRef<DEPRECATED_RichField>(null)
+    const richArea = useRef<RichField>(null)
     const [showCcTip, setShowCcTip] = useState(false)
 
     const {
@@ -282,7 +283,7 @@ const ResponseAction: React.FC<Props> = ({
                 )
             ) : null}
             {toolbarOnTop && toolbar}
-            <DEPRECATED_RichField
+            <TicketRichField
                 ref={richArea}
                 value={{
                     text: action.getIn(['arguments', 'body_text'], ''),
@@ -290,7 +291,7 @@ const ResponseAction: React.FC<Props> = ({
                 }}
                 onChange={_setResponseText}
                 spellCheck
-                productCardsEnabled={false}
+                disableProductCards
                 placeholder="Type {{ for variables }}"
             />
             {!toolbarOnTop && toolbar}

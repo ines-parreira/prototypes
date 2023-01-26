@@ -56,7 +56,7 @@ import TicketAttachments from 'pages/tickets/detail/components/ReplyArea/TicketA
 import {deleteAttachment as deleteAttachmentAction} from 'state/newMessage/actions'
 import {getNewMessageAttachments} from 'state/newMessage/selectors'
 
-import DEPRECATED_RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'
+import TicketRichField from 'pages/common/forms/RichField/RichField'
 import {convertToHTML} from 'utils/editor'
 import {useConfigurationData} from '../hooks'
 import SelfServicePreferencesNavbar from '../SelfServicePreferencesNavbar'
@@ -550,7 +550,7 @@ export const ReturnsPolicyView = () => {
                                                             chat, reply with an
                                                             automated message.
                                                         </p>
-                                                        <DEPRECATED_RichField
+                                                        <TicketRichField
                                                             value={{
                                                                 html: returnAction
                                                                     .response_message_content

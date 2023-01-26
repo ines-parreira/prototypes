@@ -1,7 +1,7 @@
 import React from 'react'
 import {fireEvent, render} from '@testing-library/react'
 
-import {List, fromJS} from 'immutable'
+import {List} from 'immutable'
 
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -14,7 +14,6 @@ const minProps = {
     integrations: integrationsStateWithShopify.get('integrations') as List<any>,
     getEditorState: jest.fn(),
     setEditorState: jest.fn(),
-    productCardsEnabled: true,
 }
 
 const middlewares = [thunk]
@@ -24,7 +23,7 @@ describe('<AddProductLink/>', () => {
     let store = mockStore({})
     beforeEach(() => {
         jest.clearAllMocks()
-        store = mockStore({ticket: fromJS({id: 1})})
+        store = mockStore({})
     })
 
     it('should not render when the popover is closed', () => {
@@ -57,7 +56,6 @@ describe('<AddProductLink/>', () => {
                     integrations={integrations}
                     getEditorState={minProps.getEditorState}
                     setEditorState={minProps.setEditorState}
-                    productCardsEnabled
                 />
             </Provider>
         )

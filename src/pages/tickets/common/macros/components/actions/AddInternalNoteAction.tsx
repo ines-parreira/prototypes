@@ -15,7 +15,8 @@ import {insertText} from 'utils'
 import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/utils'
 import {convertToHTML, getPlainText} from 'utils/editor'
 import {getVariables} from 'config/ticket'
-import DEPRECATED_RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'
+import RichField from 'pages/common/forms/RichField/RichField'
+import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
 import {makeHasIntegrationOfTypes} from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/constants'
 import useAppSelector from 'hooks/useAppSelector'
@@ -50,7 +51,7 @@ export default function AddInternalNoteAction({
     } = useFlags()
 
     const hasIntegrationOfTypes = useAppSelector(makeHasIntegrationOfTypes)
-    const richArea = useRef<DEPRECATED_RichField>(null)
+    const richArea = useRef<RichField>(null)
 
     const _insertText = (text: string) => {
         if (richArea && richArea.current) {
@@ -142,7 +143,7 @@ export default function AddInternalNoteAction({
                         </span>
                     </MacroMessageActionsHeader>
                 )}
-            <DEPRECATED_RichField
+            <TicketRichField
                 ref={richArea}
                 value={{
                     text: action.getIn(['arguments', 'body_text'], ''),
@@ -150,7 +151,7 @@ export default function AddInternalNoteAction({
                 }}
                 onChange={_setInternalNote}
                 spellCheck
-                productCardsEnabled={false}
+                disableProductCards
                 placeholder="Type {{ for variables }}"
             />
             {renderVariables && (

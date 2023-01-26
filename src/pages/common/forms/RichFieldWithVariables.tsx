@@ -15,7 +15,8 @@ import Button from 'pages/common/components/button/Button'
 import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/utils'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
-import DEPRECATED_RichField from './RichField/DEPRECATED_RichField'
+import RichField from './RichField/RichField'
+import TicketRichField from './RichField/TicketRichField'
 import css from './RichFieldWithVariables.less'
 
 type Props = {
@@ -27,14 +28,11 @@ type Props = {
     allowExternalChanges?: boolean
     variableTypes: Array<string>
     onChange: (editorState: EditorState) => void
-} & Pick<
-    ComponentProps<typeof DEPRECATED_RichField>,
-    'isRequired' | 'placeholder'
->
+} & Pick<ComponentProps<typeof RichField>, 'isRequired' | 'placeholder'>
 
-export default class DEPRECATED_RichFieldWithVariables extends Component<Props> {
+export default class RichFieldWithVariables extends Component<Props> {
     id?: string
-    richArea?: DEPRECATED_RichField | null
+    richArea?: RichField | null
 
     _insertText = (text: string) => {
         if (!this.richArea) {
@@ -120,7 +118,7 @@ export default class DEPRECATED_RichFieldWithVariables extends Component<Props> 
                         )
                     )}
                 </div>
-                <DEPRECATED_RichField
+                <TicketRichField
                     ref={(richArea) => {
                         this.richArea = richArea
                     }}

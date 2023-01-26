@@ -11,7 +11,7 @@ import {isRichType} from 'config/ticket'
 import {getIconFromActionType} from 'models/macroAction/helpers'
 
 import {actionTypeToName, MacroActionName} from 'models/macroAction/types'
-import DEPRECATED_RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'
+import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
 
 import {
     TagLabel,
@@ -66,7 +66,7 @@ class Preview extends Component<Props> {
     renderResponseText(responseTextAction?: Map<string, any>) {
         if (!responseTextAction) return null
 
-        const value: ComponentProps<typeof DEPRECATED_RichField>['value'] = {
+        const value: ComponentProps<typeof TicketRichField>['value'] = {
             text: responseTextAction.getIn(['arguments', 'body_text']),
         }
 
@@ -135,7 +135,7 @@ class Preview extends Component<Props> {
                 )}
 
                 <div className={css.macroData}>
-                    <DEPRECATED_RichField
+                    <TicketRichField
                         value={value}
                         onChange={() => null}
                         displayOnly

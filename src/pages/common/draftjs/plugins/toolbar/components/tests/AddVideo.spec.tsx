@@ -1,19 +1,13 @@
 import React from 'react'
 import {fireEvent, render, screen} from '@testing-library/react'
-
-import {fromJS} from 'immutable'
-
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
 import ReactPlayer from 'react-player'
-import {TicketChannel} from 'business/types/ticket'
+import {EditorState} from 'draft-js'
 
 import * as utils from 'utils'
 
 import * as draftjsPluginsUtils from '../../../utils'
-import * as newMesageSelector from '../../../../../../../state/newMessage/selectors'
 
+import ToolbarProvider from '../../ToolbarProvider'
 import AddVideo from '../AddVideo'
 
 const minProps = {
@@ -21,51 +15,24 @@ const minProps = {
     setEditorState: jest.fn(),
 }
 
-const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
-
 describe('<AddVideo/>', () => {
-    let store = mockStore({})
-
-    beforeEach(() => {
-        store = mockStore({ticket: fromJS({id: 1})})
-
-        jest.spyOn(newMesageSelector, 'isNewMessagePublic').mockImplementation(
-            () => true
-        )
-
-        window.location.pathname = '/app/ticket/187'
-    })
-
     afterEach(() => {
         jest.clearAllMocks()
     })
 
     it('should not render when the popover is closed', () => {
-        const {container} = render(
-            <Provider store={store}>
-                <AddVideo {...minProps} />
-            </Provider>
-        )
+        const {container} = render(<AddVideo {...minProps} />)
         expect(container).toMatchSnapshot()
     })
 
     it('should render the popover when the button is clicked', () => {
-        const {container} = render(
-            <Provider store={store}>
-                <AddVideo {...minProps} />
-            </Provider>
-        )
+        const {container} = render(<AddVideo {...minProps} />)
         fireEvent.click(screen.getByText(/video/i))
         expect(container).toMatchSnapshot()
     })
 
     it('should enable the submit button only when providing a valid url', () => {
-        render(
-            <Provider store={store}>
-                <AddVideo {...minProps} />
-            </Provider>
-        )
+        render(<AddVideo {...minProps} />)
         fireEvent.click(screen.getByText(/video/i))
 
         expect(
@@ -88,11 +55,7 @@ describe('<AddVideo/>', () => {
     })
 
     it('should render the `not supported warning` when providing a valid url that is not supported by ReactPlayer', () => {
-        render(
-            <Provider store={store}>
-                <AddVideo {...minProps} />
-            </Provider>
-        )
+        render(<AddVideo {...minProps} />)
         fireEvent.click(screen.getByText(/video/i))
 
         expect(
@@ -111,20 +74,19 @@ describe('<AddVideo/>', () => {
         screen.getByText('This provider is not supported or link is not valid.')
     })
 
-    it('should call `addVideo` to the draftjs editorState (chat channel)', () => {
+    it('should call `addVideo` to the draftjs editorState', () => {
+        const editorState = EditorState.createEmpty()
+
+        minProps.getEditorState.mockReturnValueOnce(editorState)
+
         const addVideoSpy = jest
             .spyOn(draftjsPluginsUtils, 'addVideo')
-            .mockImplementation(jest.fn())
-
-        jest.spyOn(
-            newMesageSelector,
-            'getNewMessageChannel'
-        ).mockImplementation(() => TicketChannel.Chat)
+            .mockImplementation((editorState) => editorState)
 
         render(
-            <Provider store={store}>
+            <ToolbarProvider canAddVideoPlayer>
                 <AddVideo {...minProps} />
-            </Provider>
+            </ToolbarProvider>
         )
         fireEvent.click(screen.getByText(/video/i))
 
@@ -134,57 +96,24 @@ describe('<AddVideo/>', () => {
 
         fireEvent.click(screen.getByText(/Insert Video/i))
         expect(addVideoSpy).toHaveBeenCalledWith(
-            undefined,
+            editorState,
             `https://www.youtube.com/watch?v=4sLFpe-xbhk`
         )
     })
 
-    it('should call `addVideo` to the draftjs editorState (internal note channel)', () => {
-        const addVideoSpy = jest
-            .spyOn(draftjsPluginsUtils, 'addVideo')
-            .mockImplementation(jest.fn())
+    it('should call `insertLink` to the draftjs editorState', () => {
+        const editorState = EditorState.createEmpty()
 
-        // Internal note has Email + isNewMessagePublic falsy.
-        jest.spyOn(
-            newMesageSelector,
-            'getNewMessageChannel'
-        ).mockImplementation(() => TicketChannel.Email)
-        jest.spyOn(newMesageSelector, 'isNewMessagePublic').mockImplementation(
-            () => false
-        )
+        minProps.getEditorState.mockReturnValueOnce(editorState)
 
-        render(
-            <Provider store={store}>
-                <AddVideo {...minProps} />
-            </Provider>
-        )
-        fireEvent.click(screen.getByText(/video/i))
-
-        fireEvent.change(screen.getByPlaceholderText('External video URL'), {
-            target: {value: 'https://www.youtube.com/watch?v=4sLFpe-xbhk'}, // URL is valid and ReactPlayer.canPlay: true.
-        })
-
-        fireEvent.click(screen.getByText(/Insert Video/i))
-        expect(addVideoSpy).toHaveBeenCalledWith(
-            undefined,
-            `https://www.youtube.com/watch?v=4sLFpe-xbhk`
-        )
-    })
-
-    it('should call `insertLink` to the draftjs editorState (email channel)', () => {
         const insertLinkSpy = jest
             .spyOn(utils, 'insertLink')
-            .mockImplementation(jest.fn())
-
-        jest.spyOn(
-            newMesageSelector,
-            'getNewMessageChannel'
-        ).mockImplementation(() => TicketChannel.Email)
+            .mockImplementation((editorState) => editorState)
 
         render(
-            <Provider store={store}>
+            <ToolbarProvider canAddVideoLink>
                 <AddVideo {...minProps} />
-            </Provider>
+            </ToolbarProvider>
         )
         fireEvent.click(screen.getByText(/video/i))
 
@@ -194,26 +123,21 @@ describe('<AddVideo/>', () => {
 
         fireEvent.click(screen.getByText(/Insert Video/i))
         expect(insertLinkSpy).toHaveBeenCalledWith(
-            undefined,
+            editorState,
             `https://gorgias.com`
         )
     })
 
-    it('should call `insertText` to the draftjs editorState (UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_VIDEOS case)', () => {
+    it('should call `insertText` to the draftjs editorState', () => {
+        const editorState = EditorState.createEmpty()
+
+        minProps.getEditorState.mockReturnValueOnce(editorState)
+
         const insertText = jest
             .spyOn(utils, 'insertText')
-            .mockImplementation(jest.fn())
+            .mockImplementation((editorState) => editorState)
 
-        jest.spyOn(
-            newMesageSelector,
-            'getNewMessageChannel'
-        ).mockImplementation(() => TicketChannel.Sms)
-
-        render(
-            <Provider store={store}>
-                <AddVideo {...minProps} />
-            </Provider>
-        )
+        render(<AddVideo {...minProps} />)
         fireEvent.click(screen.getByText(/video/i))
 
         fireEvent.change(screen.getByPlaceholderText('External video URL'), {
@@ -222,27 +146,25 @@ describe('<AddVideo/>', () => {
 
         fireEvent.click(screen.getByText(/Insert Video/i))
         expect(insertText).toHaveBeenCalledWith(
-            undefined,
+            editorState,
             `https://gorgias.com`
         )
     })
 
     it('should call `insertVideo` to the draftjs editorState when being in the campaign edit page', () => {
+        minProps.getEditorState.mockReturnValueOnce(EditorState.createEmpty())
+
         const addVideoSpy = jest
             .spyOn(draftjsPluginsUtils, 'addVideo')
-            .mockImplementation(jest.fn())
+            .mockImplementation((editorState) => editorState)
 
-        jest.spyOn(
-            newMesageSelector,
-            'getNewMessageChannel'
-        ).mockImplementation(() => TicketChannel.Email) // The state has Email by default when being on a campaign edition page.
         window.location.pathname =
             '/app/settings/channels/gorgias_chat/69/campaigns/04c1b674-8800-4d22-9b8f-e93db01ef5de'
 
         render(
-            <Provider store={store}>
+            <ToolbarProvider canAddVideoPlayer>
                 <AddVideo {...minProps} />
-            </Provider>
+            </ToolbarProvider>
         )
         fireEvent.click(screen.getByText(/video/i))
 
@@ -255,19 +177,18 @@ describe('<AddVideo/>', () => {
     })
 
     it('should call `addVideo` to the draftjs editorState with the fixed URL (dailymotion playlist case)', () => {
+        const editorState = EditorState.createEmpty()
+
+        minProps.getEditorState.mockReturnValueOnce(editorState)
+
         const addVideoSpy = jest
             .spyOn(draftjsPluginsUtils, 'addVideo')
-            .mockImplementation(jest.fn())
-
-        jest.spyOn(
-            newMesageSelector,
-            'getNewMessageChannel'
-        ).mockImplementation(() => TicketChannel.Chat)
+            .mockImplementation((editorState) => editorState)
 
         render(
-            <Provider store={store}>
+            <ToolbarProvider canAddVideoPlayer>
                 <AddVideo {...minProps} />
-            </Provider>
+            </ToolbarProvider>
         )
         fireEvent.click(screen.getByText(/video/i))
 
@@ -279,25 +200,24 @@ describe('<AddVideo/>', () => {
 
         fireEvent.click(screen.getByText(/Insert Video/i))
         expect(addVideoSpy).toHaveBeenCalledWith(
-            undefined,
+            editorState,
             'https://www.dailymotion.com/video/x2m3vyr'
         )
     })
 
-    it('should call `insertLink` to the draftjs editorState with the original URL (dailymotion playlist case with Email channel)', () => {
+    it('should call `insertLink` to the draftjs editorState with the original URL (dailymotion playlist case)', () => {
+        const editorState = EditorState.createEmpty()
+
+        minProps.getEditorState.mockReturnValueOnce(editorState)
+
         const insertLinkSpy = jest
             .spyOn(utils, 'insertLink')
-            .mockImplementation(jest.fn())
-
-        jest.spyOn(
-            newMesageSelector,
-            'getNewMessageChannel'
-        ).mockImplementation(() => TicketChannel.Email)
+            .mockImplementation((editorState) => editorState)
 
         render(
-            <Provider store={store}>
+            <ToolbarProvider canAddVideoLink>
                 <AddVideo {...minProps} />
-            </Provider>
+            </ToolbarProvider>
         )
         fireEvent.click(screen.getByText(/video/i))
 
@@ -309,7 +229,7 @@ describe('<AddVideo/>', () => {
 
         fireEvent.click(screen.getByText(/Insert Video/i))
         expect(insertLinkSpy).toHaveBeenCalledWith(
-            undefined,
+            editorState,
             `https://www.dailymotion.com/video/x2m3vyr?playlist=x7juyaf`
         )
     })

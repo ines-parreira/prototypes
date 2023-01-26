@@ -22,7 +22,7 @@ import ChatIntegrationNavigation from 'pages/integrations/integration/components
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {Option, Value} from 'pages/common/forms/SelectField/types'
-import DEPRECATED_RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'
+import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -561,7 +561,7 @@ export class CampaignForm extends Component<
                                     />
                                 </div>
                                 {this.isInitialized && (
-                                    <DEPRECATED_RichField
+                                    <TicketRichField
                                         value={{html: message.get('html')}}
                                         onChange={(value) => {
                                             const content =

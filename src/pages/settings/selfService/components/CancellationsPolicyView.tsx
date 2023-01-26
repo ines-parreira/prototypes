@@ -17,7 +17,7 @@ import {EditorState} from 'draft-js'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {fromJS} from 'immutable'
-import DEPRECATED_RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'
+import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
 import Button from 'pages/common/components/button/Button'
 
 import PageHeader from 'pages/common/components/PageHeader'
@@ -382,7 +382,7 @@ export const CancellationsPolicyView = () => {
                                                     return in chat, reply with
                                                     an automated message.
                                                 </p>
-                                                <DEPRECATED_RichField
+                                                <TicketRichField
                                                     value={{
                                                         html: responseMessageContent.html,
                                                     }}

@@ -9,7 +9,7 @@ import ReactSortable from 'pages/common/components/dragging/ReactSortable'
 import history from 'pages/history'
 
 import {useConfigurationData} from '../../../hooks'
-import {QuickReplyPolicy} from '../../../../../../../models/selfServiceConfiguration/types'
+import {QuickResponsePolicy} from '../../../../../../../models/selfServiceConfiguration/types'
 import {useUpdateQuickReplyPolicies} from '../../../QuickResponseFlowItem/hooks'
 
 import QuickResponseListItem from '../QuickResponseListItem'
@@ -70,7 +70,7 @@ const QuickResponseList = () => {
                 (response) => response.title === id
             )
             return foundResponse
-        }) as QuickReplyPolicy[]
+        }) as QuickResponsePolicy[]
 
         void updateQuickReplyPolicies({
             newQuickRepliesPolicy: sortedResponsePolicies,

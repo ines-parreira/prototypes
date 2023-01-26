@@ -6,66 +6,42 @@ import React, {
     useRef,
     useState,
 } from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-
 import {EditorState} from 'draft-js'
 import ReactPlayer from 'react-player'
 
-import {
-    insertLink,
-    insertText,
-    canAddVideoPlayer,
-    fixVideoUrlForReactPlayer,
-} from 'utils'
+import {fixVideoUrlForReactPlayer, insertLink, insertText} from 'utils'
 import Button from 'pages/common/components/button/Button'
 import Popover from 'pages/common/draftjs/plugins/toolbar/components/ButtonPopover'
 import TextInput from 'pages/common/forms/input/TextInput'
-import {UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_VIDEOS} from 'config/integrations/shopify'
 
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../../../store/middlewares/segmentTracker'
-import {RootState} from '../../../../../../state/types'
-import {
-    getNewMessageChannel,
-    isNewMessagePublic,
-} from '../../../../../../state/newMessage/selectors'
-import {getCurrentAccountState} from '../../../../../../state/currentAccount/selectors'
-import {EditorStateGetter, EditorStateSetter} from '../types'
+import {ActionInjectedProps} from '../types'
+import {useToolbarContext} from '../ToolbarContext'
 import {addVideo} from '../../utils'
+
 import css from './AddVideo.less'
 
-type OwnProps = {
-    getEditorState: EditorStateGetter
-    setEditorState: EditorStateSetter
-}
+type Props = ActionInjectedProps
 
-export function AddVideo({
-    getEditorState,
-    setEditorState,
-    ticket,
-    newMessageChannel,
-    isNewMessagePublic,
-    currentAccount,
-}: ConnectedProps<typeof connector> & OwnProps) {
+const AddVideo = ({getEditorState, setEditorState}: Props) => {
+    const {
+        canAddVideoPlayer,
+        canAddVideoLink,
+        onInsertVideoOpen,
+        onInsertVideoAdded,
+    } = useToolbarContext()
     const [isOpen, setOpen] = useState(false)
     const [url, setUrl] = useState('')
     const textInputRef: RefObject<HTMLInputElement> = useRef(null)
 
     const handlePopoverOpen = useCallback(() => {
         setOpen(true)
-        logEvent(SegmentEvent.InsertVideoOpen, {
-            account_id: currentAccount?.get('domain'),
-            channel: newMessageChannel,
-            ticket: ticket?.get('id') || 'new',
-        })
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [setOpen])
+
+        onInsertVideoOpen()
+    }, [onInsertVideoOpen])
 
     const handlePopoverClose = useCallback(() => {
         setOpen(false)
-    }, [setOpen])
+    }, [])
 
     const isValidUrl = useMemo(() => {
         let _url
@@ -81,53 +57,38 @@ export function AddVideo({
         return ReactPlayer.canPlay(url)
     }, [url])
 
-    const _addVideo = useCallback(
-        () => {
-            const editorState = getEditorState()
+    const _addVideo = useCallback(() => {
+        const editorState = getEditorState()
 
-            const urlFixed = fixVideoUrlForReactPlayer(url)
-            let newEditorState
-            if (
-                canAddVideoPlayer(newMessageChannel, isNewMessagePublic) &&
-                ReactPlayer.canPlay(urlFixed)
-            ) {
-                newEditorState = addVideo(editorState, urlFixed)
+        const urlFixed = fixVideoUrlForReactPlayer(url)
+        let newEditorState
+        if (canAddVideoPlayer && ReactPlayer.canPlay(urlFixed)) {
+            newEditorState = addVideo(editorState, urlFixed)
+        } else {
+            if (canAddVideoLink) {
+                newEditorState = insertLink(editorState, url)
             } else {
-                if (
-                    !UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_VIDEOS.includes(
-                        newMessageChannel
-                    )
-                ) {
-                    newEditorState = insertLink(editorState, url)
-                } else {
-                    newEditorState = insertText(editorState, url)
-                }
+                newEditorState = insertText(editorState, url)
             }
+        }
 
-            newEditorState = EditorState.forceSelection(
-                newEditorState,
-                newEditorState.getSelection()
-            )
-            setEditorState(newEditorState)
+        newEditorState = EditorState.forceSelection(
+            newEditorState,
+            newEditorState.getSelection()
+        )
+        setEditorState(newEditorState)
 
-            logEvent(SegmentEvent.InsertVideoAdded, {
-                account_id: currentAccount?.get('domain'),
-                channel: newMessageChannel,
-                ticket: ticket?.get('id') || 'new',
-            })
-            setOpen(false)
-            setUrl('')
-        },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [
-            url,
-            getEditorState,
-            setEditorState,
-            setOpen,
-            newMessageChannel,
-            isNewMessagePublic,
-        ]
-    )
+        onInsertVideoAdded()
+        setOpen(false)
+        setUrl('')
+    }, [
+        url,
+        getEditorState,
+        setEditorState,
+        canAddVideoPlayer,
+        canAddVideoLink,
+        onInsertVideoAdded,
+    ])
 
     const onKeyDown = (e: KeyboardEvent) => {
         if (e.key === 'Enter') {
@@ -198,10 +159,4 @@ export function AddVideo({
     )
 }
 
-const connector = connect((state: RootState) => ({
-    currentAccount: getCurrentAccountState(state),
-    ticket: state.ticket,
-    newMessageChannel: getNewMessageChannel(state),
-    isNewMessagePublic: isNewMessagePublic(state),
-}))
-export default connector(AddVideo)
+export default AddVideo

@@ -29,7 +29,8 @@ import {
     getFileTooLargeError,
     getMaxAttachmentSize,
 } from '../../../../../utils/file'
-import DEPRECATED_RichField from '../../../../common/forms/RichField/DEPRECATED_RichField'
+import TicketRichField from '../../../../common/forms/RichField/TicketRichField'
+import RichField from '../../../../common/forms/RichField/RichField'
 import {getContext} from '../../../../../state/prediction/selectors'
 import {canAddAttachments} from '../../../../../business/ticket'
 import {TicketMessageSourceType} from '../../../../../business/types/ticket'
@@ -44,7 +45,7 @@ type Props = {
     replyAreaFooter?: ReactNode
     applyMacro: (macro: Map<any, any>) => void
     macros: List<any>
-    richAreaRef: (ref: DEPRECATED_RichField | null) => void
+    richAreaRef: (ref: RichField | null) => void
     shouldDisplayQuickReply: boolean
     ticket: Map<any, any>
     flags?: LDFlagSet
@@ -76,7 +77,7 @@ type State = {
 }
 
 export class TicketReplyEditorContainer extends Component<Props, State> {
-    richArea: Maybe<DEPRECATED_RichField>
+    richArea: Maybe<RichField>
 
     static defaultProps: Pick<Props, 'richAreaRef' | 'attachments'> = {
         richAreaRef: _noop,
@@ -433,7 +434,7 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
 
         return (
             <div className={css.component}>
-                <DEPRECATED_RichField
+                <TicketRichField
                     className={classnames(css.richField, {
                         [css.isInternal]: !isNewMessagePublic,
                     })}

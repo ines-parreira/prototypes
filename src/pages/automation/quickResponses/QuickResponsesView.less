@@ -1,0 +1,30 @@
+@import '~css/new/layout.less';
+@import '~css/new/mixins.less';
+
+:local {
+    .container {
+        display: grid;
+        padding: @layout-spacing-m;
+        grid-template-columns: 1fr;
+        row-gap: @layout-spacing-xl;
+
+        @media @desktops {
+            grid-template-columns: 1fr 452px;
+            column-gap: @layout-spacing-m;
+        }
+    }
+
+    .descriptionContainer {
+        margin-bottom: @layout-spacing-xs;
+    }
+
+    .addQuickResponseButton {
+        margin-top: @layout-spacing-s;
+    }
+
+    .submitAndCancelButtonsContainer {
+        display: flex;
+        column-gap: 12px;
+        margin-top: @layout-spacing-xl;
+    }
+}

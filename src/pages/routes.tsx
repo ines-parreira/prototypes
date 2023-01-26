@@ -120,6 +120,7 @@ import EditTicketField from './settings/ticketFields/EditTicketField'
 import MaybeDeprecatedRoute from './common/components/MaybeDeprecatedRoute'
 import {ClickTrackingApiClientProvider} from './settings/revenue/hooks/useClickTrackingApi'
 import {ClickTrackingSettingsView} from './settings/revenue/components/ClickTrackingSettingsView'
+import QuickResponsesViewContainer from './automation/quickResponses/QuickResponsesViewContainer'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -1285,6 +1286,14 @@ export function AutomationRoutes({match: {path}}: RouteComponentProps) {
                         isDeprecated
                     />
                 )}
+            />
+            <Route
+                path={`${path}/:integrationType/:integrationId/quick-responses`}
+                exact
+                render={appRender({
+                    content: QuickResponsesViewContainer,
+                    navbar: AutomationNavbar,
+                })}
             />
         </Switch>
     )

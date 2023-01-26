@@ -1,7 +1,8 @@
 import React, {useMemo} from 'react'
 import {produce} from 'immer'
-
+import {v4 as uuidv4} from 'uuid'
 import {List, Map} from 'immutable'
+
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {useConfigurationData} from 'pages/settings/selfService/components/hooks'
 import history from 'pages/history'
@@ -44,6 +45,7 @@ const QuickResponseFlowNewItem = () => {
             quickResponses,
             (quickResponsesDraft) => {
                 quickResponsesDraft.push({
+                    id: uuidv4(),
                     title: buttonLabel,
                     deactivated_datetime: deactivatedDatetime,
                     response_message_content: {

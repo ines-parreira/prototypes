@@ -1,0 +1,13 @@
+@import '~css/new/layout.less';
+
+:local {
+    .input {
+        flex-grow: 1;
+        margin-left: @layout-spacing-xs;
+        margin-right: @layout-spacing-l;
+
+        &:not(.isExpanded) {
+            border-color: transparent;
+        }
+    }
+}

@@ -15,6 +15,9 @@ import {
     Underline,
     AddProductLink,
     AddDiscountCode,
+    AddLink,
+    AddVideo,
+    AddImage,
 } from './components/index'
 import {ActionName, ActionInjectedProps} from './types'
 
@@ -29,12 +32,17 @@ type Props = {
     buttons?: ReactNode[]
     attachFiles: (T: Array<Blob>) => void
     canDropFiles: boolean
-    productCardsEnabled: boolean
     displayedActions?: ActionName[]
-    linkAction: ReactNode
-    imageAction: ReactNode
-    videoAction: ReactNode
     quickReply: ReactNode
+    attachments?: File[]
+    linkEntityKey?: string
+    linkIsOpen: boolean
+    linkUrl: string
+    linkText: string
+    onLinkUrlChange: (url: string) => void
+    onLinkTextChange: (text: string) => void
+    onLinkOpen: () => void
+    onLinkClose: () => void
 } & ActionInjectedProps &
     ConnectedProps<typeof connector>
 
@@ -97,7 +105,15 @@ export class Toolbar extends Component<Props, State> {
             setEditorState,
             quickReply,
             integrations,
-            productCardsEnabled,
+            attachments,
+            linkEntityKey,
+            linkIsOpen,
+            linkUrl,
+            linkText,
+            onLinkUrlChange,
+            onLinkTextChange,
+            onLinkOpen,
+            onLinkClose,
         } = this.props
 
         const actionsProps = {getEditorState, setEditorState}
@@ -125,24 +141,38 @@ export class Toolbar extends Component<Props, State> {
                         {this._isDisplayedAction(ActionName.Underline) && (
                             <Underline {...actionsProps} />
                         )}
-                        {this._isDisplayedAction(ActionName.Link) &&
-                            this.props.linkAction}
-                        {this._isDisplayedAction(ActionName.Image) &&
-                            this.props.imageAction}
+                        {this._isDisplayedAction(ActionName.Link) && (
+                            <AddLink
+                                {...actionsProps}
+                                entityKey={linkEntityKey}
+                                isOpen={linkIsOpen}
+                                url={linkUrl}
+                                text={linkText}
+                                onUrlChange={onLinkUrlChange}
+                                onTextChange={onLinkTextChange}
+                                onOpen={onLinkOpen}
+                                onClose={onLinkClose}
+                            />
+                        )}
+                        {this._isDisplayedAction(ActionName.Image) && (
+                            <AddImage
+                                {...actionsProps}
+                                attachments={attachments}
+                            />
+                        )}
                         {/* Do not display `insert Video` by default if `displayedActions` prop is not set. */}
                         {this._isDisplayedAction(ActionName.Video) &&
-                            this.props.displayedActions &&
-                            this.props.videoAction}
+                            this.props.displayedActions && (
+                                <AddVideo {...actionsProps} />
+                            )}
                         {this._isDisplayedAction(ActionName.Emoji) && (
                             <AddEmoji {...actionsProps} />
                         )}
                         {this._isDisplayedAction(ActionName.ProductPicker) &&
                             integrations.size > 0 && (
                                 <AddProductLink
-                                    getEditorState={actionsProps.getEditorState}
-                                    setEditorState={actionsProps.setEditorState}
+                                    {...actionsProps}
                                     integrations={integrations}
-                                    productCardsEnabled={productCardsEnabled}
                                 />
                             )}
                         {/* Do not display `insert Discount Code` by default if `displayedActions` prop is not set. */}
@@ -152,8 +182,7 @@ export class Toolbar extends Component<Props, State> {
                             this.props.displayedActions &&
                             integrations.size > 0 && (
                                 <AddDiscountCode
-                                    getEditorState={actionsProps.getEditorState}
-                                    setEditorState={actionsProps.setEditorState}
+                                    {...actionsProps}
                                     integrations={integrations}
                                 />
                             )}

@@ -1,121 +1,119 @@
-import React, {useEffect, useState, useCallback} from 'react'
-
-import {connect, ConnectedProps} from 'react-redux'
-
+import React, {useCallback, useEffect, useState} from 'react'
 import classnames from 'classnames'
-
 import {ListGroup, ListGroupItem} from 'reactstrap'
 import {EditorState} from 'draft-js'
-import {fromJS, Map, List} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 
 import {IntegrationType} from 'models/integration/constants'
-import ShopifyProductLine from '../../../../components/ShopifyProductLine/ShopifyProductLine'
+import ShopifyProductLine from 'pages/common/components/ShopifyProductLine/ShopifyProductLine'
+import {ProductCardDetails} from 'models/integration/types'
+import shortcutManager from 'services/shortcutManager'
+import {insertLink, insertText} from 'utils'
+import {getIconFromType} from 'state/integrations/helpers'
 
-import {RootState} from '../../../../../../state/types'
-import {ProductCardDetails} from '../../../../../../models/integration/types'
-
-import shortcutManager from '../../../../../../services/shortcutManager'
-
-import {insertLink, insertText} from '../../../../../../utils'
-
-import {addProductCardAttachments} from '../../../../../../state/newMessage/actions'
-
-import {
-    getNewMessageChannel,
-    isNewMessagePublic,
-} from '../../../../../../state/newMessage/selectors'
-import {TicketChannel} from '../../../../../../business/types/ticket'
-
-import {EditorStateGetter, EditorStateSetter} from '../types'
-
-import {getIconFromType} from '../../../../../../state/integrations/helpers'
-
-import {UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_PRODUCT_LINKS} from '../../../../../../config/integrations/shopify'
-
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../../../store/middlewares/segmentTracker'
-import {getCurrentAccountState} from '../../../../../../state/currentAccount/selectors'
-
-import css from './AddProductLink.less'
+import {ActionInjectedProps} from '../types'
+import {useToolbarContext} from '../ToolbarContext'
 import Popover from './ButtonPopover'
 
-type OwnProps = {
-    getEditorState: EditorStateGetter
-    setEditorState: EditorStateSetter
+import css from './AddProductLink.less'
+
+type Props = {
     integrations: List<any>
-    productCardsEnabled: boolean
+} & ActionInjectedProps
+
+export type ProductCardAttachment = {
+    content_type: 'application/productCard'
+    name?: string
+    size: number
+    url: string
+    extra: {
+        product_id: number
+        variant_id: number
+        price?: string
+        variant_name?: string
+        product_link: string
+        currency?: string
+        featured_image: string
+    }
 }
 
-export function AddProductLink({
-    integrations,
+const mapIntegrationToPickedShopifyIntegration = (
+    integration: Map<any, any>
+) => {
+    return fromJS({
+        id: integration.get('id'),
+        name: integration.get('name'),
+        shop_domain: integration.getIn(['meta', 'shop_domain']),
+        currency: integration.getIn(['meta', 'currency']),
+    }) as Map<any, any>
+}
+
+const AddProductLink = ({
     getEditorState,
     setEditorState,
-    ticket,
-    addProductCardAttachments,
-    newMessageChannel,
-    isNewMessagePublic,
-    currentAccount,
-    productCardsEnabled,
-}: ConnectedProps<typeof connector> & OwnProps) {
+    integrations,
+}: Props) => {
+    const {
+        canAddProductCard,
+        canAddProductLink,
+        onAddProductCardAttachment,
+        onInsertProductLinkOpen,
+        onInsertProductLinkAdded,
+    } = useToolbarContext()
     const [isOpen, setOpen] = useState(false)
-    const [pickedShopifyIntegration, setPickedShopifyIntegration] =
-        useState(null)
+    const [pickedShopifyIntegration, setPickedShopifyIntegration] = useState(
+        () => {
+            if (integrations.size === 1) {
+                return mapIntegrationToPickedShopifyIntegration(
+                    integrations.get(0) as Map<any, any>
+                )
+            }
+
+            return null
+        }
+    )
 
     const handleResetStoreChoice = () => {
         setPickedShopifyIntegration(null)
     }
-
-    const handlePopoverOpen = useCallback(() => {
+    const handlePopoverOpen = () => {
         setOpen(true)
-        logEvent(SegmentEvent.ShopifyInsertProductLinkOpen, {
-            account_id: currentAccount?.get('domain'),
-            channel: newMessageChannel,
-            ticket: ticket?.get('id') || 'new',
-        })
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [setOpen])
 
+        onInsertProductLinkOpen()
+    }
     const handlePopoverClose = useCallback(() => {
         setOpen(false)
-    }, [setOpen])
-
-    const pickIntegration = (index: number) => {
-        const integrationRow = integrations.toArray()[index] as Map<any, any>
-
+    }, [])
+    const handlePickIntegration = (integration: Map<any, any>) => {
         setPickedShopifyIntegration(
-            fromJS({
-                id: integrationRow.get('id'),
-                name: integrationRow.get('name'),
-                shop_domain: (integrationRow.get('meta') as Map<any, any>).get(
-                    'shop_domain'
-                ),
-                currency: (integrationRow.get('meta') as Map<any, any>).get(
-                    'currency'
-                ),
-            })
+            mapIntegrationToPickedShopifyIntegration(integration)
         )
     }
 
-    const addProductLink = useCallback(
+    const handleAddProductLink = useCallback(
         (productCardDetails: ProductCardDetails) => {
             const editorState = getEditorState()
-            const canAddCard =
-                productCardsEnabled &&
-                (newMessageChannel === (TicketChannel.Chat as string) ||
-                    !isNewMessagePublic)
 
-            if (canAddCard) {
-                addProductCardAttachments(ticket, productCardDetails)
+            if (canAddProductCard) {
+                onAddProductCardAttachment({
+                    content_type: 'application/productCard',
+                    name: productCardDetails.productTitle,
+                    size: 0,
+                    url: productCardDetails.imageUrl,
+                    extra: {
+                        product_id: productCardDetails.productId,
+                        variant_id: productCardDetails.variantId,
+                        price: productCardDetails.price,
+                        variant_name: productCardDetails.variantTitle,
+                        product_link: productCardDetails.link,
+                        currency: productCardDetails.currency,
+                        featured_image: productCardDetails.imageUrl,
+                    },
+                })
             } else {
                 let newEditorState
-                //Facebook/IG doesn't support hyperlinks
-                if (
-                    UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_PRODUCT_LINKS.includes(
-                        newMessageChannel
-                    )
-                ) {
+
+                if (!canAddProductLink) {
                     newEditorState = insertText(
                         editorState,
                         productCardDetails.link.concat(' ')
@@ -135,41 +133,29 @@ export function AddProductLink({
                 setEditorState(newEditorState)
             }
 
-            logEvent(SegmentEvent.ShopifyInsertProductLinkAdded, {
-                account_id: currentAccount?.get('domain'),
-                channel: newMessageChannel,
-                product_id: productCardDetails.productId,
-                variant_id: productCardDetails.variantId,
-                ticket: ticket?.get('id') || 'new',
-            })
+            onInsertProductLinkAdded(productCardDetails)
             setOpen(false)
         },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
         [
             getEditorState,
             setEditorState,
-            setOpen,
-            newMessageChannel,
-            isNewMessagePublic,
-            productCardsEnabled,
+            canAddProductCard,
+            canAddProductLink,
+            onInsertProductLinkAdded,
+            onAddProductCardAttachment,
         ]
     )
 
     useEffect(() => {
-        const integrationsArr = integrations.toArray()
-        if (!pickedShopifyIntegration && integrationsArr.length === 1) {
-            pickIntegration(0)
-        }
         shortcutManager.bind('AddProductLink', {
             CLOSE_POPOVER: {
                 key: 'esc',
                 action: () => handlePopoverClose(),
             },
         })
-        return function cleanup() {
+        return () => {
             shortcutManager.unbind('AddProductLink')
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [handlePopoverClose])
 
     return (
@@ -194,7 +180,7 @@ export function AddProductLink({
                                     action
                                     onClick={(event) => {
                                         event.preventDefault()
-                                        pickIntegration(index!)
+                                        handlePickIntegration(integration)
                                     }}
                                 >
                                     <div
@@ -228,26 +214,17 @@ export function AddProductLink({
                 </div>
             ) : (
                 <ShopifyProductLine
-                    productClicked={addProductLink}
+                    productClicked={handleAddProductLink}
                     onResetStoreChoice={
                         integrations.size > 1
                             ? handleResetStoreChoice
                             : undefined
                     }
-                    shopifyIntegration={pickedShopifyIntegration!}
+                    shopifyIntegration={pickedShopifyIntegration}
                 />
             )}
         </Popover>
     )
 }
 
-const connector = connect(
-    (state: RootState) => ({
-        currentAccount: getCurrentAccountState(state),
-        ticket: state.ticket,
-        newMessageChannel: getNewMessageChannel(state),
-        isNewMessagePublic: isNewMessagePublic(state),
-    }),
-    {addProductCardAttachments}
-)
-export default connector(AddProductLink)
+export default AddProductLink

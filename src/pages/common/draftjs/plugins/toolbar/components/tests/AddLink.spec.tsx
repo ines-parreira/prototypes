@@ -3,14 +3,9 @@ import {fireEvent, render, screen} from '@testing-library/react'
 import {shallow} from 'enzyme'
 import {EditorState} from 'draft-js'
 import _noop from 'lodash/noop'
-import {fromJS} from 'immutable'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
 import {getLDClient} from 'utils/launchDarkly'
 import {FeatureFlagKey} from 'config/featureFlags'
 
-import {TicketChannel} from 'business/types/ticket'
 import Button from 'pages/common/components/button/Button'
 
 import * as draftjsPluginsUtils from '../../../utils'
@@ -21,12 +16,7 @@ jest.mock('utils/launchDarkly')
 const allFlagsMock = getLDClient().allFlags as jest.Mock
 allFlagsMock.mockReturnValue({[FeatureFlagKey.ChatVideoSharingExtra]: true})
 
-const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
-
 describe('<AddLink />', () => {
-    let store = mockStore({})
-
     const defaultProps = {
         isOpen: true,
         getEditorState: () => EditorState.createEmpty(),
@@ -39,15 +29,12 @@ describe('<AddLink />', () => {
         url: '',
         linkEditionStarted: jest.fn(),
         linkEditionEnded: jest.fn(),
-        currentAccount: fromJS({}),
-        ticket: fromJS({}),
-        isNewMessagePublic: true,
-        newMessageChannel: TicketChannel.Email,
+        canAddVideoPlayer: false,
+        onInsertVideoAddedFromInsertLink: jest.fn(),
     } as unknown as ComponentProps<typeof AddLinkContainer>
 
     beforeEach(() => {
         jest.clearAllMocks()
-        store = mockStore({ticket: fromJS({id: 1})})
     })
 
     it('should allow to submit a valid url', () => {
@@ -97,18 +84,15 @@ describe('<AddLink />', () => {
     it('should add a video at the bottom when URL is compatible and under a chat channel', () => {
         const addVideoSpy = jest
             .spyOn(draftjsPluginsUtils, 'addVideo')
-            .mockImplementation(jest.fn())
+            .mockImplementation((editorState) => editorState)
 
         render(
-            <Provider store={store}>
-                <AddLinkContainer
-                    {...defaultProps}
-                    newMessageChannel={TicketChannel.Chat}
-                    isNewMessagePublic={true}
-                    text="foo"
-                    url="https://www.youtube.com/watch?v=4sLFpe-xbhk"
-                />
-            </Provider>
+            <AddLinkContainer
+                {...defaultProps}
+                canAddVideoPlayer
+                text="foo"
+                url="https://www.youtube.com/watch?v=4sLFpe-xbhk"
+            />
         )
         fireEvent.click(screen.getByText(/link/))
 
@@ -126,15 +110,12 @@ describe('<AddLink />', () => {
         )
 
         render(
-            <Provider store={store}>
-                <AddLinkContainer
-                    {...defaultProps}
-                    newMessageChannel={TicketChannel.Email}
-                    isNewMessagePublic={true}
-                    text="foo"
-                    url="https://www.youtube.com/watch?v=4sLFpe-xbhk"
-                />
-            </Provider>
+            <AddLinkContainer
+                {...defaultProps}
+                canAddVideoPlayer={false}
+                text="foo"
+                url="https://www.youtube.com/watch?v=4sLFpe-xbhk"
+            />
         )
         fireEvent.click(screen.getByText(/link/))
         fireEvent.click(screen.getByText(/Insert Link/))

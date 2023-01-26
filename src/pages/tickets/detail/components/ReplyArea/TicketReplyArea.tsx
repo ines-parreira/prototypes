@@ -22,7 +22,7 @@ import {
 import {MacroActionName} from 'models/macroAction/types'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {fetchMacros} from 'state/macro/actions'
-import DEPRECATED_RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'
+import RichField from 'pages/common/forms/RichField/RichField'
 import withCancellableRequest, {
     CancellableRequestInjectedProps,
 } from 'pages/common/utils/withCancellableRequest'
@@ -82,7 +82,7 @@ type State = {
 }
 
 export class TicketReplyArea extends Component<Props, State> {
-    richArea: Maybe<DEPRECATED_RichField>
+    richArea: Maybe<RichField>
     macroInput?: HTMLInputElement | null
     cacheAdded = false
 

@@ -1,13 +1,14 @@
 import React from 'react'
 import {fireEvent, render} from '@testing-library/react'
 
-import {List, fromJS} from 'immutable'
+import {List} from 'immutable'
 
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
 import {integrationsStateWithShopify} from 'fixtures/integrations'
+
 import AddDiscountCode from '../AddDiscountCode'
 
 const minProps = {
@@ -23,15 +24,11 @@ describe('<AddDiscountCode/>', () => {
     let store = mockStore({})
     beforeEach(() => {
         jest.clearAllMocks()
-        store = mockStore({ticket: fromJS({id: 1})})
+        store = mockStore({})
     })
 
     it('should not render when the popover is closed', () => {
-        const {container} = render(
-            <Provider store={store}>
-                <AddDiscountCode {...minProps} />
-            </Provider>
-        )
+        const {container} = render(<AddDiscountCode {...minProps} />)
         expect(container).toMatchSnapshot()
     })
 

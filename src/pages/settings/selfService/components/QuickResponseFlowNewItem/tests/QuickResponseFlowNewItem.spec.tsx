@@ -158,6 +158,7 @@ describe('<QuickResponseFlowNewItem />', () => {
                 },
                 {
                     deactivated_datetime: null,
+                    id: expect.any(String),
                     response_message_content: {
                         html: '<div><br></div>',
                         text: '',
@@ -247,6 +248,7 @@ describe('<QuickResponseFlowNewItem />', () => {
                 },
                 {
                     deactivated_datetime: null,
+                    id: expect.any(String),
                     response_message_content: {
                         html: '<div><br></div>',
                         text: '',
