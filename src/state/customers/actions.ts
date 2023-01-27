@@ -4,19 +4,18 @@ import {List} from 'immutable'
 import {notify as updateNotification} from 'reapop'
 import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actions'
 
-import * as viewsConfig from '../../config/views'
-
-import client from '../../models/api/resources'
-import {ApiListResponsePagination} from '../../models/api/types'
-import {Ticket} from '../../models/ticket/types'
-import {notify} from '../notifications/actions'
-import {NotificationStatus} from '../notifications/types'
-import type {StoreDispatch, RootState} from '../types'
-import {onApiError} from '../utils'
+import * as viewsConfig from 'config/views'
+import client from 'models/api/resources'
+import {ApiListResponsePagination} from 'models/api/types'
+import {Customer, CustomerDraft} from 'models/customer/types'
+import {Ticket} from 'models/ticket/types'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import type {StoreDispatch, RootState} from 'state/types'
+import {onApiError} from 'state/utils'
 
 import * as types from './constants'
 import {mergeChannels} from './helpers'
-import {Customer, CustomerDraft} from './types'
 
 export function fetchCustomer(customerId: string) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {

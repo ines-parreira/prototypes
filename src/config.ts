@@ -10,7 +10,7 @@ import {Order} from 'constants/integrations/types/shopify'
 import {Category, PricingPlan, TrialPeriod} from 'models/integration/types/app'
 import {IntegrationType} from 'models/integration/types'
 import {MacroActionName} from 'models/macroAction/types'
-import {Customer} from 'state/customers/types'
+import {Customer} from 'models/customer/types'
 
 import {daysToHours, hoursToSeconds} from 'utils'
 import {AccountFeature} from 'state/currentAccount/types'

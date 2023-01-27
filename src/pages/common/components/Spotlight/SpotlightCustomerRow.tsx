@@ -1,7 +1,7 @@
 import React from 'react'
 
 import {TicketChannel} from 'business/types/ticket'
-import {Customer} from 'state/customers/types'
+import {Customer} from 'models/customer/types'
 
 import SpotlightRow from './SpotlightRow'
 import css from './SpotlightCustomerRow.less'

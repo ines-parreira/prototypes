@@ -2,9 +2,10 @@ import {fromJS, Map, List} from 'immutable'
 import {createSelector} from 'reselect'
 
 import {TicketChannel} from 'business/types/ticket'
-import {RootState} from '../types'
+import {Customer} from 'models/customer/types'
+import {RootState} from 'state/types'
 
-import {Customer, CustomersState} from './types'
+import {CustomersState} from './types'
 
 export const getCustomersState = (state: RootState) =>
     state.customers || fromJS({})

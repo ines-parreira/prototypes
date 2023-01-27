@@ -11,24 +11,24 @@ import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import {isCustomerDataPresent, isCustomerDataValid} from '../infobar/utils'
 import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../store/middlewares/segmentTracker'
+    isCustomerDataPresent,
+    isCustomerDataValid,
+} from 'pages/common/components/infobar/utils'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
-import SourceIcon from '../SourceIcon'
-import Tooltip from '../Tooltip'
-import {JSONTree} from '../JSONTree'
-import BinaryChoiceField from '../BinaryChoiceField'
-import MultiSelectBinaryChoiceField from '../MultiSelectBinaryChoiceField'
+import SourceIcon from 'pages/common/components/SourceIcon'
+import Tooltip from 'pages/common/components/Tooltip'
+import {JSONTree} from 'pages/common/components/JSONTree'
+import BinaryChoiceField from 'pages/common/components/BinaryChoiceField'
+import MultiSelectBinaryChoiceField from 'pages/common/components/MultiSelectBinaryChoiceField'
 import {
     CustomerChannel,
     MultiSelectBinaryChoiceFieldOption,
-} from '../../../../models/customerChannel/types'
-import {SourceType} from '../../../../models/ticket/types'
-import {TicketMessageSourceType} from '../../../../business/types/ticket'
-import {Customer} from '../../../../state/customers/types'
+} from 'models/customerChannel/types'
+import {SourceType} from 'models/ticket/types'
+import {TicketMessageSourceType} from 'business/types/ticket'
+import {Customer} from 'models/customer/types'
 
 const defaultContent = {
     name: '',

@@ -4,7 +4,10 @@ import {connect, ConnectedProps} from 'react-redux'
 import {withRouter, RouteComponentProps} from 'react-router-dom'
 import classnames from 'classnames'
 import {parse, stringify} from 'qs'
+import {withLDConsumer} from 'launchdarkly-react-client-sdk'
+import {LDFlagSet} from 'launchdarkly-js-client-sdk'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {getConfigByName} from 'config/views'
 import {ViewVisibility} from 'models/view/types'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -47,6 +50,7 @@ type OwnProps = {
     urlViewId: Maybe<string>
     ActionsComponent: Maybe<ComponentType>
     viewButtons: ReactNode
+    flags: LDFlagSet
 }
 
 type Props = OwnProps &
@@ -312,7 +316,14 @@ export class ViewTableContainer extends Component<Props> {
     }
 
     render() {
-        const {activeView, isSearch, isUpdate, type, className} = this.props
+        const {activeView, isSearch, isUpdate, type, className, flags} =
+            this.props
+        const isESCustomerSearchEnabled =
+            !!flags[FeatureFlagKey.ElasticsearchCustomerSearch]
+        const hasFilters =
+            type === 'ticket' ||
+            !isSearch ||
+            (isSearch && !isESCustomerSearchEnabled)
 
         if (activeView.isEmpty()) {
             return <Loader />
@@ -328,11 +339,13 @@ export class ViewTableContainer extends Component<Props> {
                         viewButtons={this.props.viewButtons}
                     />
                 </div>
-                <FilterTopbar
-                    isUpdate={isUpdate}
-                    isSearch={isSearch}
-                    type={type}
-                />
+                {hasFilters && (
+                    <FilterTopbar
+                        isUpdate={isUpdate}
+                        isSearch={isSearch}
+                        type={type}
+                    />
+                )}
                 <div className={css.table}>{this._renderTable()}</div>
             </div>
         )
@@ -371,5 +384,5 @@ export default withRouter<any, any>(
     >(
         'fetchViewItemsCancellable',
         fetchViewItems
-    )(connector(withViewSearchUrlSync(ViewTableContainer)))
+    )(connector(withViewSearchUrlSync(withLDConsumer()(ViewTableContainer))))
 )

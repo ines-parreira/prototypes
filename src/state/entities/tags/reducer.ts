@@ -1,6 +1,6 @@
 import {createReducer} from '@reduxjs/toolkit'
 
-import {Tag} from '../../../models/tag/types'
+import {Tag} from 'models/tag/types'
 
 import {TagsState} from './types'
 import {

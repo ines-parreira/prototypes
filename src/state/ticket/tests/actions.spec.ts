@@ -19,7 +19,7 @@ import {
 import history from 'pages/history'
 import client from 'models/api/resources'
 import {ApiListResponseCursorPagination} from 'models/api/types'
-import {ViewType} from 'models/view/constants'
+import {ViewType} from 'models/view/types'
 import {SEARCH_ENDPOINT} from 'models/search/resources'
 
 import {initialState} from '../reducers'
@@ -78,6 +78,8 @@ jest.mock('state/notifications/actions', () => {
     }
 })
 jest.mock('pages/history')
+
+jest.mock('utils/launchDarkly')
 
 describe('ticket actions', () => {
     let store: MockStoreEnhanced<MockedRootState, StoreDispatch>

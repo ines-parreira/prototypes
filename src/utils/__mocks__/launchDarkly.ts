@@ -1,11 +1,9 @@
-const clientMock = {
-    allFlags: jest.fn().mockReturnValue({}),
-}
+import {ldClientMock} from 'jest-launchdarkly-mock'
 
 export function initLaunchDarkly() {
-    return clientMock
+    return ldClientMock
 }
 
 export function getLDClient() {
-    return clientMock
+    return ldClientMock
 }

@@ -35,6 +35,7 @@ import GorgiasApi from 'services/gorgiasApi'
 import {getLDClient} from 'utils/launchDarkly'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {searchTickets} from 'models/ticket/resources'
+import {searchCustomers} from 'models/customer/resources'
 
 import {activeViewUrl} from './utils'
 import * as viewsSelectors from './selectors'
@@ -364,7 +365,7 @@ export function fetchViewItems(
     searchRank?: SearchRank | null,
     cancelToken?: CancelToken
 ) {
-    return (
+    return async (
         dispatch: StoreDispatch,
         getState: () => RootState
     ): Promise<ReturnType<StoreDispatch>> => {
@@ -375,7 +376,7 @@ export function fetchViewItems(
         const viewConfig = viewsConfig.getConfigByType(activeViewType)
         const navigation = viewsSelectors.getNavigation(state)
         const shouldRegisterSearchRankRequest = !direction && !cursor
-        const featureFlags = getLDClient().allFlags()
+        const launchDarklyClient = getLDClient()
 
         const viewId = activeView.get('id') as number
 
@@ -414,8 +415,12 @@ export function fetchViewItems(
 
         let promise
 
+        await launchDarklyClient.waitForInitialization()
+
         if (
-            featureFlags[FeatureFlagKey.ElasticsearchTicketSearch] &&
+            launchDarklyClient.variation(
+                FeatureFlagKey.ElasticsearchTicketSearch
+            ) &&
             activeView.get('search') != null &&
             activeView.get('type') === ViewType.TicketList
         ) {
@@ -424,6 +429,25 @@ export function fetchViewItems(
             promise = searchTickets({
                 search: activeView.get('search') as string,
                 filters: activeView.get('filters') as string,
+                cursor:
+                    cursor ||
+                    (direction === ViewNavDirection.NextView && nextCursor) ||
+                    (direction === ViewNavDirection.PrevView && prevCursor) ||
+                    undefined,
+                cancelToken,
+            })
+        } else if (
+            launchDarklyClient.variation(
+                FeatureFlagKey.ElasticsearchCustomerSearch
+            ) &&
+            activeView.get('search') != null &&
+            activeViewType === ViewType.CustomerList
+        ) {
+            const nextCursor = navigation.get('next_cursor') as Maybe<string>
+            const prevCursor = navigation.get('prev_cursor') as Maybe<string>
+            promise = searchCustomers({
+                search: activeView.get('search') as string,
+                orderBy: '_score:desc',
                 cursor:
                     cursor ||
                     (direction === ViewNavDirection.NextView && nextCursor) ||
@@ -457,8 +481,12 @@ export function fetchViewItems(
         // It's a "fire and forget" request with a simplified payload to
         // allow us to measure the performance of the endpoint.
         if (
-            featureFlags[FeatureFlagKey.ElasticsearchSearchLoadTest] &&
-            !featureFlags[FeatureFlagKey.ElasticsearchTicketSearch] &&
+            launchDarklyClient.variation(
+                FeatureFlagKey.ElasticsearchSearchLoadTest
+            ) &&
+            !launchDarklyClient.variation(
+                FeatureFlagKey.ElasticsearchTicketSearch
+            ) &&
             activeView.get('search') != null &&
             activeView.get('type') === ViewType.TicketList &&
             !direction &&
@@ -719,7 +747,6 @@ export const fetchActiveViewTickets =
         if (!shouldUpdateView || isFetchingView || isEditing) {
             return
         }
-
         return dispatch(fetchViewItems(null, null, true))
     }
 

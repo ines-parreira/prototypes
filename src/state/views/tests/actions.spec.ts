@@ -6,26 +6,28 @@ import MockAdapter from 'axios-mock-adapter'
 import {fromJS, Map, List} from 'immutable'
 import _range from 'lodash/range'
 
-import {baseView, getExpirationTimeForCount} from 'config/views'
-import socketManager from 'services/socketManager/socketManager'
-import {ViewType, ViewVisibility} from 'models/view/types'
-import * as socketConstants from 'config/socketConstants'
-import {RootState, StoreDispatch} from 'state/types'
-import client from 'models/api/resources'
-import {JobType} from 'models/job/types'
-import {MoveIndexDirection} from 'pages/common/utils/keyboard'
-import {getAST} from 'utils'
-import {SEARCH_ENDPOINT} from 'models/search/resources'
-import {mockSearchRank} from 'fixtures/searchRank'
-import {getLDClient} from 'utils/launchDarkly'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {searchTickets} from 'models/ticket/resources'
+import * as socketConstants from 'config/socketConstants'
+import {baseView, getExpirationTimeForCount} from 'config/views'
+import {customer} from 'fixtures/customer'
+import {mockSearchRank} from 'fixtures/searchRank'
 import {ticket} from 'fixtures/ticket'
+import client from 'models/api/resources'
+import {searchCustomers} from 'models/customer/resources'
+import {JobType} from 'models/job/types'
+import {SEARCH_ENDPOINT} from 'models/search/resources'
+import {searchTickets} from 'models/ticket/resources'
+import {ViewType, ViewVisibility} from 'models/view/types'
+import {MoveIndexDirection} from 'pages/common/utils/keyboard'
+import socketManager from 'services/socketManager/socketManager'
+import {RootState, StoreDispatch} from 'state/types'
+import {getAST} from 'utils'
+import {getLDClient} from 'utils/launchDarkly'
 
-import {ViewNavDirection} from '../types'
-import * as viewsSelectors from '../selectors'
 import * as actions from '../actions'
 import {initialState} from '../reducers'
+import * as viewsSelectors from '../selectors'
+import {ViewNavDirection} from '../types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -46,8 +48,11 @@ jest.mock('reapop', () => {
 jest.mock('models/ticket/resources')
 const searchTicketsMock = searchTickets as jest.Mock
 
+jest.mock('models/customer/resources')
+const searchCustomersMock = searchCustomers as jest.Mock
+
 jest.mock('utils/launchDarkly')
-const allFlagsMock = getLDClient().allFlags as jest.Mock
+const variationMock = getLDClient().variation as jest.Mock
 
 const store = mockStore({
     views: initialState,
@@ -64,10 +69,19 @@ beforeEach(() => {
     dateNowSpy = jest
         .spyOn(Date, 'now')
         .mockImplementation(() => defaultDateNowValue)
-    allFlagsMock.mockReturnValue({})
+    variationMock.mockImplementation(() => false)
     searchTicketsMock.mockResolvedValue({
         data: {
             data: [ticket],
+            meta: {
+                next_cursor: null,
+                prev_cursor: null,
+            },
+        },
+    })
+    searchCustomersMock.mockResolvedValue({
+        data: {
+            data: [customer],
             meta: {
                 next_cursor: null,
                 prev_cursor: null,
@@ -686,9 +700,11 @@ describe('actions', () => {
             })
 
             it(`should shadow-search tickets when "${FeatureFlagKey.ElasticsearchSearchLoadTest}" flag is enabled`, async () => {
-                allFlagsMock.mockReturnValue({
-                    [FeatureFlagKey.ElasticsearchSearchLoadTest]: true,
-                })
+                variationMock.mockImplementation(
+                    (name: FeatureFlagKey) =>
+                        name === FeatureFlagKey.ElasticsearchSearchLoadTest
+                )
+
                 const store = mockStore({
                     views: fromJS({
                         active: ticketSearchView,
@@ -719,9 +735,10 @@ describe('actions', () => {
             ])(
                 'should not shadow-search tickets when view %s',
                 async (testName, view) => {
-                    allFlagsMock.mockReturnValue({
-                        [FeatureFlagKey.ElasticsearchSearchLoadTest]: true,
-                    })
+                    variationMock.mockImplementation(
+                        (name: FeatureFlagKey) =>
+                            name === FeatureFlagKey.ElasticsearchSearchLoadTest
+                    )
                     const store = mockStore({
                         views: fromJS({
                             active: view,
@@ -735,9 +752,10 @@ describe('actions', () => {
             )
 
             it('should not shadow-search tickets when a direction is passed', async () => {
-                allFlagsMock.mockReturnValue({
-                    [FeatureFlagKey.ElasticsearchSearchLoadTest]: true,
-                })
+                variationMock.mockImplementation(
+                    (name: FeatureFlagKey) =>
+                        name === FeatureFlagKey.ElasticsearchSearchLoadTest
+                )
                 const store = mockStore({
                     views: fromJS({
                         active: ticketSearchView,
@@ -752,9 +770,10 @@ describe('actions', () => {
             })
 
             it('should not shadow-search tickets when a cursor is passed', async () => {
-                allFlagsMock.mockReturnValue({
-                    [FeatureFlagKey.ElasticsearchSearchLoadTest]: true,
-                })
+                variationMock.mockImplementation(
+                    (name: FeatureFlagKey) =>
+                        name === FeatureFlagKey.ElasticsearchSearchLoadTest
+                )
                 const store = mockStore({
                     views: fromJS({
                         active: ticketSearchView,
@@ -767,9 +786,10 @@ describe('actions', () => {
             })
 
             it('should ignore the shadow request errors', (done) => {
-                allFlagsMock.mockReturnValue({
-                    [FeatureFlagKey.ElasticsearchSearchLoadTest]: true,
-                })
+                variationMock.mockImplementation(
+                    (name: FeatureFlagKey) =>
+                        name === FeatureFlagKey.ElasticsearchSearchLoadTest
+                )
                 searchTicketsMock.mockRejectedValue(new Error('Test error'))
 
                 const store = mockStore({
@@ -787,10 +807,12 @@ describe('actions', () => {
             })
 
             it(`should not shadow-search tickets when "${FeatureFlagKey.ElasticsearchTicketSearch}" flag is enabled`, async () => {
-                allFlagsMock.mockReturnValue({
-                    [FeatureFlagKey.ElasticsearchSearchLoadTest]: true,
-                    [FeatureFlagKey.ElasticsearchTicketSearch]: true,
-                })
+                variationMock.mockImplementation((name: FeatureFlagKey) =>
+                    [
+                        FeatureFlagKey.ElasticsearchSearchLoadTest,
+                        FeatureFlagKey.ElasticsearchTicketSearch,
+                    ].includes(name)
+                )
                 const store = mockStore({
                     views: fromJS({
                         active: ticketSearchView,
@@ -800,6 +822,26 @@ describe('actions', () => {
                 await store.dispatch(actions.fetchViewItems())
 
                 expect(searchTicketsMock).toHaveBeenCalledTimes(1)
+            })
+
+            it(`should use the customers/search endpoint when "${FeatureFlagKey.ElasticsearchCustomerSearch}" flag is enabled`, async () => {
+                variationMock.mockImplementation(
+                    (name: FeatureFlagKey) =>
+                        name === FeatureFlagKey.ElasticsearchCustomerSearch
+                )
+                const store = mockStore({
+                    views: fromJS({
+                        active: {
+                            ...ticketSearchView,
+                            type: ViewType.CustomerList,
+                        },
+                    }),
+                })
+
+                await store.dispatch(actions.fetchViewItems())
+
+                expect(searchTicketsMock).toHaveBeenCalledTimes(0)
+                expect(searchCustomersMock).toHaveBeenCalledTimes(1)
             })
         })
 
@@ -844,11 +886,12 @@ describe('actions', () => {
                     {...ticketSearchView, type: ViewType.CustomerList},
                 ],
             ])(
-                'should call /api/views/:viewId/items endpoint when when view %s',
+                'should call /api/views/:viewId/items endpoint when view %s',
                 async (testName, view) => {
-                    allFlagsMock.mockReturnValue({
-                        [FeatureFlagKey.ElasticsearchTicketSearch]: true,
-                    })
+                    variationMock.mockImplementation(
+                        (name: FeatureFlagKey) =>
+                            name === FeatureFlagKey.ElasticsearchTicketSearch
+                    )
                     const store = mockStore({
                         views: fromJS({
                             active: view,
@@ -863,9 +906,10 @@ describe('actions', () => {
             )
 
             it('should search tickets when "elasticsearch-ticket-search" flag is enabled', async () => {
-                allFlagsMock.mockReturnValue({
-                    [FeatureFlagKey.ElasticsearchTicketSearch]: true,
-                })
+                variationMock.mockImplementation(
+                    (name: FeatureFlagKey) =>
+                        name === FeatureFlagKey.ElasticsearchTicketSearch
+                )
                 const cursor = 'test_cursor'
                 const cancelToken = axios.CancelToken.source().token
                 const store = mockStore({
@@ -893,9 +937,10 @@ describe('actions', () => {
             })
 
             it('should search tickets with next_cursor when ViewNavDirection is next', async () => {
-                allFlagsMock.mockReturnValue({
-                    [FeatureFlagKey.ElasticsearchTicketSearch]: true,
-                })
+                variationMock.mockImplementation(
+                    (name: FeatureFlagKey) =>
+                        name === FeatureFlagKey.ElasticsearchTicketSearch
+                )
                 const cursor = 'next_cursor'
                 const store = mockStore({
                     views: fromJS({
@@ -921,9 +966,10 @@ describe('actions', () => {
             })
 
             it('should search tickets with prev_cursor when ViewNavDirection is prev', async () => {
-                allFlagsMock.mockReturnValue({
-                    [FeatureFlagKey.ElasticsearchTicketSearch]: true,
-                })
+                variationMock.mockImplementation(
+                    (name: FeatureFlagKey) =>
+                        name === FeatureFlagKey.ElasticsearchTicketSearch
+                )
                 const cursor = 'prev_cursor'
                 const store = mockStore({
                     views: fromJS({

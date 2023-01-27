@@ -32,8 +32,9 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useDelayedAsyncFn from 'hooks/useDelayedAsyncFn'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {Customer} from 'state/customers/types'
+import {Customer} from 'models/customer/types'
 import history from 'pages/history'
+import {searchCustomers} from 'models/customer/resources'
 
 import SpotlightScrollArea from './SpotlightScrollArea'
 import SpotlightLoader from './SpotlightLoader'
@@ -51,7 +52,11 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
     const {pathname} = useLocation()
     const dispatch = useAppDispatch()
     const spotlightSearchInputRef = useRef<HTMLInputElement>(null)
-    const featureFlags = useFlags()
+    const isESTicketSearchEnabled =
+        useFlags()[FeatureFlagKey.ElasticsearchTicketSearch]
+    const isESCustomerSearchEnabled =
+        useFlags()[FeatureFlagKey.ElasticsearchCustomerSearch]
+
     const isOnCustomerPage = useMemo(
         () => pathname.includes('/app/customer'),
         [pathname]
@@ -134,13 +139,22 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                 let promise
 
                 if (
-                    featureFlags[FeatureFlagKey.ElasticsearchTicketSearch] &&
+                    isESTicketSearchEnabled &&
                     viewType === ViewType.TicketList
                 ) {
                     promise = searchTickets({
                         search: searchTerm,
                         filters: '',
                         cancelToken,
+                    })
+                } else if (
+                    isESCustomerSearchEnabled &&
+                    viewType === ViewType.CustomerList
+                ) {
+                    promise = searchCustomers({
+                        search: searchTerm,
+                        cancelToken,
+                        orderBy: '_score:desc',
                     })
                 } else {
                     const url = `/api/views/${0}/items/`
@@ -165,7 +179,7 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                     )
                 }
             },
-        [featureFlags, dispatch]
+        [dispatch, isESCustomerSearchEnabled, isESTicketSearchEnabled]
     )
 
     const [cancellableFetchSearchItems] = useCancellableRequest(
@@ -174,7 +188,7 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
 
     const [{loading: isLoading}, fetchSearchItems] = useDelayedAsyncFn(
         cancellableFetchSearchItems,
-        [],
+        [createFetchSearchItems],
         300
     )
 

@@ -3,8 +3,8 @@ import _unescape from 'lodash/unescape'
 import _trim from 'lodash/trim'
 import moment from 'moment'
 
+import {Customer} from 'models/customer/types'
 import {TicketStateWithoutImmutable} from 'state/ticket/types'
-import {Customer} from '../../../state/customers/types'
 
 export const filterRegex = /([\w_]+)\(([^(]*)\)/
 export const templateRegex =

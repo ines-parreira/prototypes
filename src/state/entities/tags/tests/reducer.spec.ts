@@ -1,3 +1,5 @@
+import {tags as tagsFixtures} from 'fixtures/tag'
+
 import {
     tagCreated,
     tagDeleted,
@@ -6,8 +8,6 @@ import {
     tagsFetched,
 } from '../actions'
 import reducer from '../reducer'
-
-import {tags as tagsFixtures} from '../../../../fixtures/tag'
 
 describe('tags reducer', () => {
     describe('createTag action', () => {

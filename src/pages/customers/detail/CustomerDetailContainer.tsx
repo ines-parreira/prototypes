@@ -9,7 +9,7 @@ import {fetchCustomer, fetchCustomerHistory} from 'state/customers/actions'
 import Loader from 'pages/common/components/Loader/Loader'
 import CustomerForm from 'pages/customers/common/components/CustomerForm'
 import Timeline from 'pages/common/components/timeline/Timeline'
-import {Customer} from 'state/customers/types'
+import {Customer} from 'models/customer/types'
 import {
     DEPRECATED_getActiveCustomer,
     getCustomerHistory,

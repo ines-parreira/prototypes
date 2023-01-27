@@ -5,11 +5,13 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import history from 'pages/history'
 import {view as viewFixture} from 'fixtures/views'
-import {RootState, StoreDispatch} from 'state/types'
-import * as utils from 'utils'
+import {mockSearchRank} from 'fixtures/searchRank'
+import {JobType} from 'models/job/types'
+import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
+import history from 'pages/history'
 import {viewCreated, viewUpdated} from 'state/entities/views/actions'
+import {RootState, StoreDispatch} from 'state/types'
 import * as viewsActions from 'state/ui/views/actions'
 import {
     SUBMIT_NEW_VIEW_ERROR,
@@ -24,9 +26,7 @@ import {
     submitView,
 } from 'state/views/actions'
 import * as viewSelectors from 'state/views/selectors'
-import {JobType} from 'models/job/types'
-import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
-import {mockSearchRank} from 'fixtures/searchRank'
+import * as utils from 'utils'
 
 import {FilterTopbar} from '../FilterTopbar'
 

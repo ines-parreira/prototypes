@@ -2,11 +2,10 @@ import {fromJS, Map, List} from 'immutable'
 import _sortBy from 'lodash/sortBy'
 
 import {Ticket, TicketMessage} from 'models/ticket/types'
-import * as newMessageConstants from '../newMessage/constants'
-import * as ticketConstants from '../ticket/constants'
-import * as viewsConstants from '../views/constants'
-
-import {GorgiasAction} from '../types'
+import * as newMessageConstants from 'state/newMessage/constants'
+import * as ticketConstants from 'state/ticket/constants'
+import {GorgiasAction} from 'state/types'
+import * as viewsConstants from 'state/views/constants'
 
 import * as constants from './constants'
 import {CustomersState} from './types'

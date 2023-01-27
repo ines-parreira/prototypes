@@ -48,7 +48,7 @@ import {
 import {IntegrationType} from 'models/integration/types'
 import client from 'models/api/resources'
 import {Ticket as TicketResponse, TicketAssignee} from 'models/ticket/types'
-import {Customer} from 'state/customers/types'
+import {Customer} from 'models/customer/types'
 import {NotificationStatus} from 'state/notifications/types'
 import {SocketEventType} from 'services/socketManager/types'
 import history from 'pages/history'

@@ -1,9 +1,9 @@
 import {Map} from 'immutable'
 import _trim from 'lodash/trim'
 
-import {TicketChannel} from '../../business/types/ticket'
-import {CustomerChannel} from '../../models/customerChannel/types'
-import {isImmutable, toImmutable} from '../../utils'
+import {TicketChannel} from 'business/types/ticket'
+import {CustomerChannel} from 'models/customerChannel/types'
+import {isImmutable, toImmutable} from 'utils'
 
 /**
  * Return name of customer

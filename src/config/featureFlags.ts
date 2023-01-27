@@ -13,6 +13,7 @@ export enum FeatureFlagKey {
     EnableWhatsApp = 'enable-whatsapp',
     NewWhatsAppOnboarding = 'new-whats-app-onboarding',
     ElasticsearchSearchLoadTest = 'elasticsearch-search-load-test',
+    ElasticsearchCustomerSearch = 'elasticsearch-customer-search',
     ElasticsearchTicketSearch = 'elasticsearch-ticket-search',
     DefaultMacroToSearch = 'default-macro-to-search',
     HelpCenterSubjectLines = 'help-center-subject-lines',

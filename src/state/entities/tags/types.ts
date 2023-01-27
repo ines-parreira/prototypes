@@ -1,6 +1,6 @@
 import {PayloadActionCreator} from '@reduxjs/toolkit'
 
-import {Tag} from '../../../models/tag/types'
+import {Tag} from 'models/tag/types'
 
 import {
     TAG_CREATED,

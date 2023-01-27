@@ -6,14 +6,15 @@ import {Location} from 'history'
 import _identity from 'lodash/identity'
 import {stringify} from 'qs'
 
-import * as ticketFixtures from 'fixtures/ticket'
-import {ViewVisibility} from 'models/view/types'
-import * as viewsActions from 'state/views/actions'
-import {view as fixtureView} from 'fixtures/views'
-import {activeViewIdSet} from 'state/ui/views/actions'
-import history from 'pages/history'
-import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {mockSearchRank} from 'fixtures/searchRank'
+import * as ticketFixtures from 'fixtures/ticket'
+import {view as fixtureView} from 'fixtures/views'
+import {ViewVisibility} from 'models/view/types'
+import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
+import history from 'pages/history'
+import {activeViewIdSet} from 'state/ui/views/actions'
+import * as viewsActions from 'state/views/actions'
 
 import {ViewTableContainer} from '../ViewTable'
 
@@ -62,6 +63,7 @@ const minProps = {
     ActionsComponent: null,
     viewButtons: null,
     activeViewIdSet,
+    flags: {},
 } as unknown as ComponentProps<typeof ViewTableContainer>
 
 beforeEach(() => {
@@ -710,6 +712,19 @@ describe('<ViewTable />', () => {
                 />
             )
             expect(container.firstChild).toMatchSnapshot()
+        })
+
+        it('should not render the view filters for ES customer search', () => {
+            const {queryByText} = render(
+                <ViewTableContainer
+                    {...minProps}
+                    isSearch
+                    flags={{
+                        [FeatureFlagKey.ElasticsearchCustomerSearch]: true,
+                    }}
+                />
+            )
+            expect(queryByText('FilterTopbar')).toBeNull()
         })
     })
 })

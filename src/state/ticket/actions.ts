@@ -16,11 +16,9 @@ import {
 import {DEFAULT_ACTIONS} from 'config'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {getLDClient} from 'utils/launchDarkly'
-import {ViewType} from 'models/view/constants'
 import {MacroActionName} from 'models/macroAction/types'
 import {search} from 'models/search/resources'
 import {InTicketSuggestionState} from 'state/entities/rules/types'
-import {View} from 'models/view/types'
 import {CustomFieldValue} from 'models/customField/types'
 import {SearchType, UserSearchResult} from 'models/search/types'
 import browserNotification from 'services/browserNotification'
@@ -39,18 +37,21 @@ import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'
 
 import {
     Action,
+    SourceAddress,
     Ticket,
     TicketMessage,
     TicketMessageIntent,
-    SourceAddress,
 } from 'models/ticket/types'
+import {View, ViewType} from 'models/view/types'
+
 import {getChannelsByType} from 'state/integrations/selectors'
 import {
     JoinEventType,
     SocketEventType,
     TicketMessageFailedEvent,
 } from 'services/socketManager/types'
-import {Customer, CustomerExternalData} from 'state/customers/types'
+import {CustomerExternalData} from 'state/customers/types'
+import {Customer} from 'models/customer/types'
 import {
     Notification,
     NotificationButton,
@@ -564,7 +565,7 @@ export const applyMacroAction =
 
         const args = action.get('arguments') as Map<any, any>
 
-        const flags = getLDClient()?.allFlags()
+        const flags = getLDClient().allFlags()
         const isMacroResponseCcBccEnabled =
             flags?.[FeatureFlagKey.MacroResponseTextCcBcc]
 
@@ -660,7 +661,7 @@ export const applyMacro =
             })
         }
 
-        const flags = getLDClient()?.allFlags()
+        const flags = getLDClient().allFlags()
         const isMacroForwardByEmailEnabled =
             !!flags?.[FeatureFlagKey.MacroForwardByEmail]
 

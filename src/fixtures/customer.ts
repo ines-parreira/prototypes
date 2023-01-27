@@ -1,7 +1,7 @@
-import {TicketChannel} from '../business/types/ticket'
-import {USER_ROLE} from '../config/user'
-import {IntegrationType} from '../models/integration/types'
-import {Customer} from '../state/customers/types'
+import {TicketChannel} from 'business/types/ticket'
+import {USER_ROLE} from 'config/user'
+import {IntegrationType} from 'models/integration/types'
+import {Customer} from 'models/customer/types'
 import {
     FinancialStatus,
     OrderLineItem,
