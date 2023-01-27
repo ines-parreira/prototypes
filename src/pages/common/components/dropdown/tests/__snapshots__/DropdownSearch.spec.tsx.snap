@@ -95,10 +95,12 @@ exports[`<DropdownSearch /> should render 1`] = `
     </div>
   </div>
   <div
-    id="floating-ui-root"
+    data-floating-ui-portal=""
+    id="floating-ui-0"
   >
     <div
       class="overlay"
+      data-testid="floating-overlay"
       style="position: fixed; overflow: auto; top: 0px; right: 0px; bottom: 0px; left: 0px;"
     >
       <div
@@ -122,8 +124,8 @@ exports[`<DropdownSearch /> should render 1`] = `
             </span>
             <input
               class="input"
-              id="input-text-1"
-              name="input-text-1"
+              id="input-text-2"
+              name="input-text-2"
               placeholder="Search"
               type="text"
               value=""

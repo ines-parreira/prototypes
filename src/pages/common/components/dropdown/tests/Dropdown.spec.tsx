@@ -55,11 +55,10 @@ describe('<Dropdown />', () => {
             </MockedImplementation>
         )
 
-        const floatingOverlay =
-            document.getElementById('floating-ui-root')?.firstChild
         fireEvent.click(getByText(/Baz/))
         expect(mockedOnToggle).not.toHaveBeenCalled()
-        fireEvent.click(floatingOverlay!)
+
+        fireEvent.click(screen.getByTestId('floating-overlay'))
         expect(mockedOnToggle).toHaveBeenNthCalledWith(1, false)
     })
 

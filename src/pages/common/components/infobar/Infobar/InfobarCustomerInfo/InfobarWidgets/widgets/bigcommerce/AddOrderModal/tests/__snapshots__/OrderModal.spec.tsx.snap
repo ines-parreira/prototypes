@@ -281,7 +281,8 @@ exports[`OrderModal should render 1`] = `
     </div>
   </div>
   <div
-    id="floating-ui-root"
+    data-floating-ui-portal=""
+    id="floating-ui-0"
   />
 </body>
 `;

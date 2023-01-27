@@ -4,9 +4,6 @@ exports[`<TeamCreationModal /> should not render anything when the modal is clos
 
 exports[`<TeamCreationModal /> should render the opened modal 1`] = `
 <body>
-  <div
-    id="floating-ui-root"
-  />
   <div />
   <div
     aria-describedby="modal-5-desc"
@@ -175,5 +172,9 @@ exports[`<TeamCreationModal /> should render the opened modal 1`] = `
       </div>
     </div>
   </div>
+  <div
+    data-floating-ui-portal=""
+    id="floating-ui-1"
+  />
 </body>
 `;

@@ -11,10 +11,12 @@ exports[`<Dropdown /> should render a dropdown 1`] = `
     </div>
   </div>
   <div
-    id="floating-ui-root"
+    data-floating-ui-portal=""
+    id="floating-ui-0"
   >
     <div
       class="overlay"
+      data-testid="floating-overlay"
       style="position: fixed; overflow: auto; top: 0px; right: 0px; bottom: 0px; left: 0px;"
     >
       <div

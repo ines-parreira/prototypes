@@ -2,11 +2,18 @@
 
 exports[`<UncontrolledDropdown /> should open the dropdown when clicking the target 1`] = `
 <body>
+  <div>
+    <div>
+      Foo
+    </div>
+  </div>
   <div
-    id="floating-ui-root"
+    data-floating-ui-portal=""
+    id="floating-ui-1"
   >
     <div
       class="overlay"
+      data-testid="floating-overlay"
       style="position: fixed; overflow: auto; top: 0px; right: 0px; bottom: 0px; left: 0px;"
     >
       <div
@@ -15,11 +22,6 @@ exports[`<UncontrolledDropdown /> should open the dropdown when clicking the tar
       >
         Bar
       </div>
-    </div>
-  </div>
-  <div>
-    <div>
-      Foo
     </div>
   </div>
 </body>
@@ -33,7 +35,8 @@ exports[`<UncontrolledDropdown /> should render a closed dropdown 1`] = `
     </div>
   </div>
   <div
-    id="floating-ui-root"
+    data-floating-ui-portal=""
+    id="floating-ui-0"
   />
 </body>
 `;

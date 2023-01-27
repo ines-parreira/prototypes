@@ -27,7 +27,8 @@ exports[`<Coupon /> works as expected: coupon set 1`] = `
     </dd>
   </div>
   <div
-    id="floating-ui-root"
+    data-floating-ui-portal=""
+    id="floating-ui-0"
   />
 </body>
 `;
@@ -55,7 +56,8 @@ exports[`<Coupon /> works as expected: initial 1`] = `
     </dd>
   </div>
   <div
-    id="floating-ui-root"
+    data-floating-ui-portal=""
+    id="floating-ui-0"
   />
 </body>
 `;

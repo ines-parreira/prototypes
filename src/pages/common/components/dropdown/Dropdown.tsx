@@ -8,7 +8,7 @@ import {
     shift,
     size,
     useFloating,
-} from '@floating-ui/react-dom-interactions'
+} from '@floating-ui/react'
 import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
 import React, {
@@ -84,11 +84,12 @@ const Dropdown = forwardRef(
                         padding: safeDistance,
                     }),
                     size({
-                        apply({reference}) {
-                            Object.assign(refs.floating.current?.style ?? {}, {
-                                [contained
-                                    ? 'width'
-                                    : 'minWidth']: `${reference.width}px`,
+                        apply({elements}) {
+                            Object.assign(elements.floating.style ?? {}, {
+                                [contained ? 'width' : 'minWidth']: `${
+                                    elements.reference.getBoundingClientRect()
+                                        .width
+                                }px`,
                             })
                         },
                         padding: safeDistance,
@@ -213,6 +214,7 @@ const Dropdown = forwardRef(
                         <FloatingOverlay
                             className={css.overlay}
                             onClick={handleToggle}
+                            data-testid="floating-overlay"
                         >
                             <div
                                 className={classnames(css.wrapper, className)}
