@@ -6,7 +6,6 @@ import {renderWithRouter} from '../../../../utils/testing'
 import {TicketInfobarContainer} from '../TicketInfobarContainer'
 import Infobar from '../../../common/components/infobar/Infobar/Infobar'
 
-jest.addMatchers(immutableMatchers)
 jest.mock('../../../common/components/infobar/Infobar/Infobar', () => {
     return ({customer, sources, widgets}: ComponentProps<typeof Infobar>) => {
         return (
@@ -53,6 +52,10 @@ describe('TicketInfobarContainer component', () => {
             customer: fromJS({}),
         }),
     }
+
+    beforeEach(() => {
+        expect.extend(immutableMatchers)
+    })
 
     it('should render infobar for new ticket', () => {
         const {container} = renderWithRouter(

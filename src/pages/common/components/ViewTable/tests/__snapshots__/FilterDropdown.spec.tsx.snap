@@ -110,16 +110,16 @@ exports[`FilterDropdown should apply a special style to the language filter 1`] 
 `;
 
 exports[`FilterDropdown should call updateFieldFilter on item click 1`] = `
-Array [
-  Array [
+[
+  [
     1,
   ],
 ]
 `;
 
 exports[`FilterDropdown should call updateFieldFilter on me item click 1`] = `
-Array [
-  Array [
+[
+  [
     "{{current_user.id}}",
   ],
 ]

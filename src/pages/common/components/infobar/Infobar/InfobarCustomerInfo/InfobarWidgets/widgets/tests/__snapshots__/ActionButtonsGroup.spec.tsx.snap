@@ -7,14 +7,14 @@ exports[`ActionButtonsGroup component should not render the dropdown if there 3 
   <Connect(Component)
     key="action1"
     options={
-      Array [
-        Object {
+      [
+        {
           "label": "Option 1",
           "value": "option1",
         },
       ]
     }
-    payload={Object {}}
+    payload={{}}
     setModalOpen={[Function]}
     title={
       <div>
@@ -29,14 +29,14 @@ exports[`ActionButtonsGroup component should not render the dropdown if there 3 
   <Connect(Component)
     key="action2"
     options={
-      Array [
-        Object {
+      [
+        {
           "label": "Option 1",
           "value": "option1",
         },
       ]
     }
-    payload={Object {}}
+    payload={{}}
     setModalOpen={[Function]}
     title={
       <div>
@@ -51,14 +51,14 @@ exports[`ActionButtonsGroup component should not render the dropdown if there 3 
   <Connect(Component)
     key="action3"
     options={
-      Array [
-        Object {
+      [
+        {
           "label": "Option 1",
           "value": "option1",
         },
       ]
     }
-    payload={Object {}}
+    payload={{}}
     setModalOpen={[Function]}
     title={
       <div>
@@ -82,14 +82,14 @@ exports[`ActionButtonsGroup component should render the dropdown if there more t
   <Connect(Component)
     key="action1"
     options={
-      Array [
-        Object {
+      [
+        {
           "label": "Option 1",
           "value": "option1",
         },
       ]
     }
-    payload={Object {}}
+    payload={{}}
     setModalOpen={[Function]}
     title={
       <div>
@@ -104,14 +104,14 @@ exports[`ActionButtonsGroup component should render the dropdown if there more t
   <Connect(Component)
     key="action2"
     options={
-      Array [
-        Object {
+      [
+        {
           "label": "Option 1",
           "value": "option1",
         },
       ]
     }
-    payload={Object {}}
+    payload={{}}
     setModalOpen={[Function]}
     title={
       <div>
@@ -126,14 +126,14 @@ exports[`ActionButtonsGroup component should render the dropdown if there more t
   <Connect(Component)
     key="action3"
     options={
-      Array [
-        Object {
+      [
+        {
           "label": "Option 1",
           "value": "option1",
         },
       ]
     }
-    payload={Object {}}
+    payload={{}}
     setModalOpen={[Function]}
     title={
       <div>
@@ -176,18 +176,18 @@ exports[`ActionButtonsGroup component should render the dropdown if there more t
       <Connect(Component)
         key="action4"
         options={
-          Array [
-            Object {
+          [
+            {
               "label": "Option 1",
               "value": "option1",
             },
           ]
         }
-        payload={Object {}}
+        payload={{}}
         setModalOpen={[Function]}
         tag={[Function]}
         tagOptions={
-          Object {
+          {
             "className": "dropdownItem",
             "toggle": false,
           }

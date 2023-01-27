@@ -175,7 +175,7 @@ exports[`SearchResults displays article and category search results 1`] = `
               >
                 <span
                   class="react-loading-skeleton skeleton"
-                  style="height: 20px; border-radius: 4px;"
+                  style="--animation-duration: 1.3s; height: 20px; border-radius: 4px;"
                 >
                   ‌
                 </span>
@@ -267,7 +267,7 @@ exports[`SearchResults displays article and category search results 1`] = `
               >
                 <span
                   class="react-loading-skeleton skeleton"
-                  style="height: 20px; border-radius: 4px;"
+                  style="--animation-duration: 1.3s; height: 20px; border-radius: 4px;"
                 >
                   ‌
                 </span>
@@ -376,7 +376,7 @@ exports[`SearchResults displays article and category search results 1`] = `
               >
                 <span
                   class="react-loading-skeleton skeleton"
-                  style="height: 20px; border-radius: 4px;"
+                  style="--animation-duration: 1.3s; height: 20px; border-radius: 4px;"
                 >
                   ‌
                 </span>
@@ -467,7 +467,7 @@ exports[`SearchResults displays article and category search results 1`] = `
               >
                 <span
                   class="react-loading-skeleton skeleton"
-                  style="height: 20px; border-radius: 4px;"
+                  style="--animation-duration: 1.3s; height: 20px; border-radius: 4px;"
                 >
                   ‌
                 </span>
@@ -558,7 +558,7 @@ exports[`SearchResults displays article and category search results 1`] = `
               >
                 <span
                   class="react-loading-skeleton skeleton"
-                  style="height: 20px; border-radius: 4px;"
+                  style="--animation-duration: 1.3s; height: 20px; border-radius: 4px;"
                 >
                   ‌
                 </span>
@@ -649,7 +649,7 @@ exports[`SearchResults displays article and category search results 1`] = `
               >
                 <span
                   class="react-loading-skeleton skeleton"
-                  style="height: 20px; border-radius: 4px;"
+                  style="--animation-duration: 1.3s; height: 20px; border-radius: 4px;"
                 >
                   ‌
                 </span>
@@ -740,7 +740,7 @@ exports[`SearchResults displays article and category search results 1`] = `
               >
                 <span
                   class="react-loading-skeleton skeleton"
-                  style="height: 20px; border-radius: 4px;"
+                  style="--animation-duration: 1.3s; height: 20px; border-radius: 4px;"
                 >
                   ‌
                 </span>
@@ -831,7 +831,7 @@ exports[`SearchResults displays article and category search results 1`] = `
               >
                 <span
                   class="react-loading-skeleton skeleton"
-                  style="height: 20px; border-radius: 4px;"
+                  style="--animation-duration: 1.3s; height: 20px; border-radius: 4px;"
                 >
                   ‌
                 </span>
@@ -922,7 +922,7 @@ exports[`SearchResults displays article and category search results 1`] = `
               >
                 <span
                   class="react-loading-skeleton skeleton"
-                  style="height: 20px; border-radius: 4px;"
+                  style="--animation-duration: 1.3s; height: 20px; border-radius: 4px;"
                 >
                   ‌
                 </span>
@@ -1014,7 +1014,7 @@ exports[`SearchResults displays article and category search results 1`] = `
               >
                 <span
                   class="react-loading-skeleton skeleton"
-                  style="height: 20px; border-radius: 4px;"
+                  style="--animation-duration: 1.3s; height: 20px; border-radius: 4px;"
                 >
                   ‌
                 </span>
@@ -1124,7 +1124,7 @@ exports[`SearchResults displays article and category search results 1`] = `
               >
                 <span
                   class="react-loading-skeleton skeleton"
-                  style="height: 20px; border-radius: 4px;"
+                  style="--animation-duration: 1.3s; height: 20px; border-radius: 4px;"
                 >
                   ‌
                 </span>
@@ -1234,7 +1234,7 @@ exports[`SearchResults displays article and category search results 1`] = `
               >
                 <span
                   class="react-loading-skeleton skeleton"
-                  style="height: 20px; border-radius: 4px;"
+                  style="--animation-duration: 1.3s; height: 20px; border-radius: 4px;"
                 >
                   ‌
                 </span>

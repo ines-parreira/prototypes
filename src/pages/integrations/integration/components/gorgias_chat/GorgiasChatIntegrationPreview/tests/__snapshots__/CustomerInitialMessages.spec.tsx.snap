@@ -4,7 +4,7 @@ exports[`<CustomerInitialMessages/> should render timestamps and messages 1`] = 
 <CustomerInitialMessages
   conversationColor="red"
   messages={
-    Array [
+    [
       "Hey hey",
       "Hello",
       "How are you doing?",
@@ -23,7 +23,7 @@ exports[`<CustomerInitialMessages/> should render timestamps and messages 1`] = 
       className="bubble primary firstMessageOfAppUser"
       key="0"
       style={
-        Object {
+        {
           "backgroundColor": "red",
           "color": "#FFFFFF",
         }
@@ -35,7 +35,7 @@ exports[`<CustomerInitialMessages/> should render timestamps and messages 1`] = 
       className="bubble primary"
       key="1"
       style={
-        Object {
+        {
           "backgroundColor": "red",
           "color": "#FFFFFF",
         }
@@ -47,7 +47,7 @@ exports[`<CustomerInitialMessages/> should render timestamps and messages 1`] = 
       className="bubble primary lastMessage"
       key="2"
       style={
-        Object {
+        {
           "backgroundColor": "red",
           "color": "#FFFFFF",
         }

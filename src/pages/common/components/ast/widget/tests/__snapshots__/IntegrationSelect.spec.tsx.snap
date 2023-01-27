@@ -9,8 +9,8 @@ exports[`ast widgets IntegrationSelect should render a SelectField 1`] = `
   onChange={[Function]}
   onSearchChange={[Function]}
   options={
-    Array [
-      Object {
+    [
+      {
         "label": <RenderLabel
           field={
             Immutable.Map {
@@ -31,7 +31,7 @@ exports[`ast widgets IntegrationSelect should render a SelectField 1`] = `
         "text": "Acme Support",
         "value": 1,
       },
-      Object {
+      {
         "label": <RenderLabel
           field={
             Immutable.Map {
@@ -58,7 +58,7 @@ exports[`ast widgets IntegrationSelect should render a SelectField 1`] = `
   required={false}
   singular="option"
   style={
-    Object {
+    {
       "display": "inline-block",
       "verticalAlign": "top",
     }

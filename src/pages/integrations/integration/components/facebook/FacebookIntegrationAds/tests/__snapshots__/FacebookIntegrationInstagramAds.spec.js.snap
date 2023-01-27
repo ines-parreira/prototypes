@@ -3,7 +3,7 @@
 exports[`<FacebookIntegrationInstagramAds/> render() should render a spinner 1`] = `
 <Provider
   store={
-    Object {
+    {
       "clearActions": [Function],
       "dispatch": [Function],
       "getActions": [Function],
@@ -248,7 +248,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render a spinner 1`]
             <Row
               tag="div"
               widths={
-                Array [
+                [
                   "xs",
                   "sm",
                   "md",
@@ -264,7 +264,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render a spinner 1`]
                   lg={6}
                   tag="div"
                   widths={
-                    Array [
+                    [
                       "xs",
                       "sm",
                       "md",
@@ -318,7 +318,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render a spinner 1`]
                 <div
                   className="inner"
                   style={
-                    Object {
+                    {
                       "minHeight": "500px",
                     }
                   }
@@ -326,7 +326,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render a spinner 1`]
                   <i
                     className="icon-custom icon-circle-o-notch md-spin"
                     style={
-                      Object {
+                      {
                         "fontSize": "40px",
                       }
                     }
@@ -345,7 +345,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render a spinner 1`]
 exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limit reached 1`] = `
 <Provider
   store={
-    Object {
+    {
       "clearActions": [Function],
       "dispatch": [Function],
       "getActions": [Function],
@@ -612,7 +612,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
             <Row
               tag="div"
               widths={
-                Array [
+                [
                   "xs",
                   "sm",
                   "md",
@@ -628,7 +628,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                   lg={6}
                   tag="div"
                   widths={
-                    Array [
+                    [
                       "xs",
                       "sm",
                       "md",
@@ -771,7 +771,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                                   <TooltipPopoverWrapper
                                     autohide={true}
                                     delay={
-                                      Object {
+                                      {
                                         "hide": 50,
                                         "show": 0,
                                       }
@@ -791,28 +791,28 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                               </UncontrolledTooltip>
                             </div>
                             <Progress
-                              barStyle={Object {}}
+                              barStyle={{}}
                               max={100}
                               min={0}
                               multi={true}
-                              style={Object {}}
+                              style={{}}
                               tag="div"
                               value={0}
                             >
                               <div
                                 className="progress"
-                                style={Object {}}
+                                style={{}}
                               >
                                 <Progress
                                   bar={true}
-                                  barStyle={Object {}}
+                                  barStyle={{}}
                                   className="color-NaN"
                                   id="progress-1"
                                   key="progress-1"
                                   max={2}
                                   min={0}
                                   striped={true}
-                                  style={Object {}}
+                                  style={{}}
                                   tag="div"
                                   value={2}
                                 >
@@ -824,7 +824,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                                     id="progress-1"
                                     role="progressbar"
                                     style={
-                                      Object {
+                                      {
                                         "width": "100%",
                                       }
                                     }
@@ -864,7 +864,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
           accountTotalAds={2}
           ads={
             Immutable.Seq [
-              Array [
+              [
                 "postid1",
                 Immutable.Map {
                   "created_datetime": "2019-01-01 10:30:00",
@@ -874,7 +874,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                   "ad_account_id": "act_123",
                 },
               ],
-              Array [
+              [
                 "postid2",
                 Immutable.Map {
                   "created_datetime": "2019-01-01 10:30:00",
@@ -884,7 +884,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                   "ad_account_id": "act_123",
                 },
               ],
-              Array [
+              [
                 "postid3",
                 Immutable.Map {
                   "created_datetime": "2019-01-01 10:30:00",
@@ -1007,7 +1007,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                               <Tooltip
                                 className="datetimeTooltip"
                                 delay={
-                                  Object {
+                                  {
                                     "hide": 0,
                                     "show": 200,
                                   }
@@ -1018,7 +1018,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                                 <UncontrolledTooltip
                                   className="tooltip datetimeTooltip"
                                   delay={
-                                    Object {
+                                    {
                                       "hide": 0,
                                       "show": 200,
                                     }
@@ -1030,7 +1030,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                                     autohide={true}
                                     className="tooltip datetimeTooltip"
                                     delay={
-                                      Object {
+                                      {
                                         "hide": 0,
                                         "show": 200,
                                       }
@@ -1046,7 +1046,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                                       autohide={true}
                                       className="tooltip datetimeTooltip"
                                       delay={
-                                        Object {
+                                        {
                                           "hide": 0,
                                           "show": 200,
                                         }
@@ -1157,7 +1157,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                               <Tooltip
                                 className="datetimeTooltip"
                                 delay={
-                                  Object {
+                                  {
                                     "hide": 0,
                                     "show": 200,
                                   }
@@ -1168,7 +1168,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                                 <UncontrolledTooltip
                                   className="tooltip datetimeTooltip"
                                   delay={
-                                    Object {
+                                    {
                                       "hide": 0,
                                       "show": 200,
                                     }
@@ -1180,7 +1180,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                                     autohide={true}
                                     className="tooltip datetimeTooltip"
                                     delay={
-                                      Object {
+                                      {
                                         "hide": 0,
                                         "show": 200,
                                       }
@@ -1196,7 +1196,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                                       autohide={true}
                                       className="tooltip datetimeTooltip"
                                       delay={
-                                        Object {
+                                        {
                                           "hide": 0,
                                           "show": 200,
                                         }
@@ -1307,7 +1307,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                               <Tooltip
                                 className="datetimeTooltip"
                                 delay={
-                                  Object {
+                                  {
                                     "hide": 0,
                                     "show": 200,
                                   }
@@ -1318,7 +1318,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                                 <UncontrolledTooltip
                                   className="tooltip datetimeTooltip"
                                   delay={
-                                    Object {
+                                    {
                                       "hide": 0,
                                       "show": 200,
                                     }
@@ -1330,7 +1330,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                                     autohide={true}
                                     className="tooltip datetimeTooltip"
                                     delay={
-                                      Object {
+                                      {
                                         "hide": 0,
                                         "show": 200,
                                       }
@@ -1346,7 +1346,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                                       autohide={true}
                                       className="tooltip datetimeTooltip"
                                       delay={
-                                        Object {
+                                        {
                                           "hide": 0,
                                           "show": 200,
                                         }
@@ -1385,7 +1385,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
 exports[`<FacebookIntegrationInstagramAds/> render() should render with one Instagram ad 1`] = `
 <Provider
   store={
-    Object {
+    {
       "clearActions": [Function],
       "dispatch": [Function],
       "getActions": [Function],
@@ -1638,7 +1638,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
             <Row
               tag="div"
               widths={
-                Array [
+                [
                   "xs",
                   "sm",
                   "md",
@@ -1654,7 +1654,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
                   lg={6}
                   tag="div"
                   widths={
-                    Array [
+                    [
                       "xs",
                       "sm",
                       "md",
@@ -1693,7 +1693,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
           accountTotalAds={1}
           ads={
             Immutable.Seq [
-              Array [
+              [
                 "postid1",
                 Immutable.Map {
                   "created_datetime": "2019-01-01 10:30:00",
@@ -1816,7 +1816,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
                               <Tooltip
                                 className="datetimeTooltip"
                                 delay={
-                                  Object {
+                                  {
                                     "hide": 0,
                                     "show": 200,
                                   }
@@ -1827,7 +1827,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
                                 <UncontrolledTooltip
                                   className="tooltip datetimeTooltip"
                                   delay={
-                                    Object {
+                                    {
                                       "hide": 0,
                                       "show": 200,
                                     }
@@ -1839,7 +1839,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
                                     autohide={true}
                                     className="tooltip datetimeTooltip"
                                     delay={
-                                      Object {
+                                      {
                                         "hide": 0,
                                         "show": 200,
                                       }
@@ -1855,7 +1855,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
                                       autohide={true}
                                       className="tooltip datetimeTooltip"
                                       delay={
-                                        Object {
+                                        {
                                           "hide": 0,
                                           "show": 200,
                                         }
@@ -1894,7 +1894,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
 exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads (one not active) 1`] = `
 <Provider
   store={
-    Object {
+    {
       "clearActions": [Function],
       "dispatch": [Function],
       "getActions": [Function],
@@ -2154,7 +2154,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
             <Row
               tag="div"
               widths={
-                Array [
+                [
                   "xs",
                   "sm",
                   "md",
@@ -2170,7 +2170,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                   lg={6}
                   tag="div"
                   widths={
-                    Array [
+                    [
                       "xs",
                       "sm",
                       "md",
@@ -2209,7 +2209,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
           accountTotalAds={1}
           ads={
             Immutable.Seq [
-              Array [
+              [
                 "postid1",
                 Immutable.Map {
                   "created_datetime": "2019-01-01 10:30:00",
@@ -2219,7 +2219,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                   "ad_account_id": "act_123",
                 },
               ],
-              Array [
+              [
                 "postid2",
                 Immutable.Map {
                   "created_datetime": "2019-01-01 10:30:00",
@@ -2342,7 +2342,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                               <Tooltip
                                 className="datetimeTooltip"
                                 delay={
-                                  Object {
+                                  {
                                     "hide": 0,
                                     "show": 200,
                                   }
@@ -2353,7 +2353,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                                 <UncontrolledTooltip
                                   className="tooltip datetimeTooltip"
                                   delay={
-                                    Object {
+                                    {
                                       "hide": 0,
                                       "show": 200,
                                     }
@@ -2365,7 +2365,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                                     autohide={true}
                                     className="tooltip datetimeTooltip"
                                     delay={
-                                      Object {
+                                      {
                                         "hide": 0,
                                         "show": 200,
                                       }
@@ -2381,7 +2381,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                                       autohide={true}
                                       className="tooltip datetimeTooltip"
                                       delay={
-                                        Object {
+                                        {
                                           "hide": 0,
                                           "show": 200,
                                         }
@@ -2492,7 +2492,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                               <Tooltip
                                 className="datetimeTooltip"
                                 delay={
-                                  Object {
+                                  {
                                     "hide": 0,
                                     "show": 200,
                                   }
@@ -2503,7 +2503,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                                 <UncontrolledTooltip
                                   className="tooltip datetimeTooltip"
                                   delay={
-                                    Object {
+                                    {
                                       "hide": 0,
                                       "show": 200,
                                     }
@@ -2515,7 +2515,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                                     autohide={true}
                                     className="tooltip datetimeTooltip"
                                     delay={
-                                      Object {
+                                      {
                                         "hide": 0,
                                         "show": 200,
                                       }
@@ -2531,7 +2531,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                                       autohide={true}
                                       className="tooltip datetimeTooltip"
                                       delay={
-                                        Object {
+                                        {
                                           "hide": 0,
                                           "show": 200,
                                         }
@@ -2570,7 +2570,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
 exports[`<FacebookIntegrationInstagramAds/> render() should render without ad 1`] = `
 <Provider
   store={
-    Object {
+    {
       "clearActions": [Function],
       "dispatch": [Function],
       "getActions": [Function],
@@ -2815,7 +2815,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render without ad 1`
             <Row
               tag="div"
               widths={
-                Array [
+                [
                   "xs",
                   "sm",
                   "md",
@@ -2831,7 +2831,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render without ad 1`
                   lg={6}
                   tag="div"
                   widths={
-                    Array [
+                    [
                       "xs",
                       "sm",
                       "md",

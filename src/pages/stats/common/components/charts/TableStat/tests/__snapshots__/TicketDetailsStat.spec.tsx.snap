@@ -121,33 +121,33 @@ exports[`TicketDetailsStat should handle an unknown channel and report error 1`]
 `;
 
 exports[`TicketDetailsStat should handle an unknown channel and report error 2`] = `
-Array [
-  Array [
+[
+  [
     [Error: Channel not found for the name: foo],
   ],
-  Array [
+  [
     [Error: Channel not found for the name: bar],
   ],
 ]
 `;
 
 exports[`TicketDetailsStat should log event on view link click 1`] = `
-Array [
-  Array [
+[
+  [
     "stat-view-link-clicked",
-    Object {
+    {
       "stat": "tickets-open-per-agent-live",
     },
   ],
-  Array [
+  [
     "stat-view-link-clicked",
-    Object {
+    {
       "stat": "tickets-open-per-agent-per-channel-live",
     },
   ],
-  Array [
+  [
     "stat-view-link-clicked",
-    Object {
+    {
       "stat": "tickets-open-per-agent-per-channel-live",
     },
   ],

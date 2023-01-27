@@ -12,53 +12,53 @@ exports[`BusinessHoursForm component should render 1`] = `
     onChange={[Function]}
     onSearchChange={[Function]}
     options={
-      Array [
-        Object {
+      [
+        {
           "label": <i>
             Everyday
           </i>,
           "text": "Everyday",
           "value": "1,2,3,4,5,6,7",
         },
-        Object {
+        {
           "label": <i>
             Weekdays
           </i>,
           "text": "Weekdays",
           "value": "1,2,3,4,5",
         },
-        Object {
+        {
           "label": <i>
             Weekend
           </i>,
           "text": "Weekend",
           "value": "6,7",
         },
-        Object {
+        {
           "label": "Monday",
           "value": "1",
         },
-        Object {
+        {
           "label": "Tuesday",
           "value": "2",
         },
-        Object {
+        {
           "label": "Wednesday",
           "value": "3",
         },
-        Object {
+        {
           "label": "Thursday",
           "value": "4",
         },
-        Object {
+        {
           "label": "Friday",
           "value": "5",
         },
-        Object {
+        {
           "label": "Saturday",
           "value": "6",
         },
-        Object {
+        {
           "label": "Sunday",
           "value": "7",
         },
@@ -67,7 +67,7 @@ exports[`BusinessHoursForm component should render 1`] = `
     placeholder="Select an option"
     required={false}
     singular="option"
-    style={Object {}}
+    style={{}}
     value="1"
   />
   <Input

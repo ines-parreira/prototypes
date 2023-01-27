@@ -3,7 +3,7 @@
 exports[`<ChatIntegrationPreview/> render() should display auto responder 1`] = `
 <div
   className="preview"
-  style={Object {}}
+  style={{}}
 >
   <div
     className="dialog"
@@ -11,7 +11,7 @@ exports[`<ChatIntegrationPreview/> render() should display auto responder 1`] = 
     <div
       className="header"
       style={
-        Object {
+        {
           "backgroundColor": "#123456",
         }
       }
@@ -25,7 +25,7 @@ exports[`<ChatIntegrationPreview/> render() should display auto responder 1`] = 
       <div
         className="details"
         style={
-          Object {
+          {
             "color": "#FFFFFF",
           }
         }
@@ -50,7 +50,7 @@ exports[`<ChatIntegrationPreview/> render() should display auto responder 1`] = 
     />
     <PoweredByGorgias
       translatedTexts={
-        Object {
+        {
           "actionPostbackError": "An error occurred while processing your action. Please try again.",
           "backLabelBackAt": "Back online at {time}",
           "backLabelBackInAMinute": "Back in 1 minute",
@@ -105,7 +105,7 @@ exports[`<ChatIntegrationPreview/> render() should display auto responder 1`] = 
   <div
     className="button bottom-right"
     style={
-      Object {
+      {
         "backgroundColor": "#123456",
       }
     }
@@ -128,7 +128,7 @@ exports[`<ChatIntegrationPreview/> render() should display display the offsets w
 <div
   className="preview"
   style={
-    Object {
+    {
       "paddingRight": 60,
       "width": 440,
     }
@@ -140,7 +140,7 @@ exports[`<ChatIntegrationPreview/> render() should display display the offsets w
     <div
       className="header"
       style={
-        Object {
+        {
           "backgroundColor": "#123456",
         }
       }
@@ -154,7 +154,7 @@ exports[`<ChatIntegrationPreview/> render() should display display the offsets w
       <div
         className="details"
         style={
-          Object {
+          {
             "color": "#FFFFFF",
           }
         }
@@ -173,9 +173,9 @@ exports[`<ChatIntegrationPreview/> render() should display display the offsets w
     </div>
     <MessageContent
       agentMessages={
-        Array [
-          Object {
-            "attachments": Array [],
+        [
+          {
+            "attachments": [],
             "content": "test",
             "isHtml": false,
           },
@@ -187,11 +187,11 @@ exports[`<ChatIntegrationPreview/> render() should display display the offsets w
           "name": "Charles",
         }
       }
-      customerInitialMessages={Array []}
+      customerInitialMessages={[]}
     />
     <PoweredByGorgias
       translatedTexts={
-        Object {
+        {
           "actionPostbackError": "An error occurred while processing your action. Please try again.",
           "backLabelBackAt": "Back online at {time}",
           "backLabelBackInAMinute": "Back in 1 minute",
@@ -246,7 +246,7 @@ exports[`<ChatIntegrationPreview/> render() should display display the offsets w
   <div
     className="button bottom-right"
     style={
-      Object {
+      {
         "backgroundColor": "#123456",
       }
     }
@@ -264,7 +264,7 @@ exports[`<ChatIntegrationPreview/> render() should display display the offsets w
     <div
       className="axis-x"
       style={
-        Object {
+        {
           "right": -60,
           "width": 60,
         }
@@ -286,7 +286,7 @@ exports[`<ChatIntegrationPreview/> render() should display display the offsets w
 exports[`<ChatIntegrationPreview/> render() should display display the offsets when editing axis y 1`] = `
 <div
   className="preview"
-  style={Object {}}
+  style={{}}
 >
   <div
     className="dialog"
@@ -294,7 +294,7 @@ exports[`<ChatIntegrationPreview/> render() should display display the offsets w
     <div
       className="header"
       style={
-        Object {
+        {
           "backgroundColor": "#123456",
         }
       }
@@ -308,7 +308,7 @@ exports[`<ChatIntegrationPreview/> render() should display display the offsets w
       <div
         className="details"
         style={
-          Object {
+          {
             "color": "#FFFFFF",
           }
         }
@@ -327,9 +327,9 @@ exports[`<ChatIntegrationPreview/> render() should display display the offsets w
     </div>
     <MessageContent
       agentMessages={
-        Array [
-          Object {
-            "attachments": Array [],
+        [
+          {
+            "attachments": [],
             "content": "test",
             "isHtml": false,
           },
@@ -341,11 +341,11 @@ exports[`<ChatIntegrationPreview/> render() should display display the offsets w
           "name": "Charles",
         }
       }
-      customerInitialMessages={Array []}
+      customerInitialMessages={[]}
     />
     <PoweredByGorgias
       translatedTexts={
-        Object {
+        {
           "actionPostbackError": "An error occurred while processing your action. Please try again.",
           "backLabelBackAt": "Back online at {time}",
           "backLabelBackInAMinute": "Back in 1 minute",
@@ -400,7 +400,7 @@ exports[`<ChatIntegrationPreview/> render() should display display the offsets w
   <div
     className="button bottom-right"
     style={
-      Object {
+      {
         "backgroundColor": "#123456",
       }
     }
@@ -434,7 +434,7 @@ exports[`<ChatIntegrationPreview/> render() should display display the offsets w
 exports[`<ChatIntegrationPreview/> render() should display optional email capture 1`] = `
 <div
   className="preview"
-  style={Object {}}
+  style={{}}
 >
   <div
     className="dialog"
@@ -442,7 +442,7 @@ exports[`<ChatIntegrationPreview/> render() should display optional email captur
     <div
       className="header"
       style={
-        Object {
+        {
           "backgroundColor": "#123456",
         }
       }
@@ -456,7 +456,7 @@ exports[`<ChatIntegrationPreview/> render() should display optional email captur
       <div
         className="details"
         style={
-          Object {
+          {
             "color": "#FFFFFF",
           }
         }
@@ -480,7 +480,7 @@ exports[`<ChatIntegrationPreview/> render() should display optional email captur
     />
     <PoweredByGorgias
       translatedTexts={
-        Object {
+        {
           "actionPostbackError": "An error occurred while processing your action. Please try again.",
           "backLabelBackAt": "Back online at {time}",
           "backLabelBackInAMinute": "Back in 1 minute",
@@ -547,7 +547,7 @@ exports[`<ChatIntegrationPreview/> render() should display optional email captur
   <div
     className="button bottom-right"
     style={
-      Object {
+      {
         "backgroundColor": "#123456",
       }
     }
@@ -569,7 +569,7 @@ exports[`<ChatIntegrationPreview/> render() should display optional email captur
 exports[`<ChatIntegrationPreview/> render() should display required email capture 1`] = `
 <div
   className="preview"
-  style={Object {}}
+  style={{}}
 >
   <div
     className="dialog"
@@ -577,7 +577,7 @@ exports[`<ChatIntegrationPreview/> render() should display required email captur
     <div
       className="header"
       style={
-        Object {
+        {
           "backgroundColor": "#123456",
         }
       }
@@ -591,7 +591,7 @@ exports[`<ChatIntegrationPreview/> render() should display required email captur
       <div
         className="details"
         style={
-          Object {
+          {
             "color": "#FFFFFF",
           }
         }
@@ -615,7 +615,7 @@ exports[`<ChatIntegrationPreview/> render() should display required email captur
     />
     <PoweredByGorgias
       translatedTexts={
-        Object {
+        {
           "actionPostbackError": "An error occurred while processing your action. Please try again.",
           "backLabelBackAt": "Back online at {time}",
           "backLabelBackInAMinute": "Back in 1 minute",
@@ -670,7 +670,7 @@ exports[`<ChatIntegrationPreview/> render() should display required email captur
   <div
     className="button bottom-right"
     style={
-      Object {
+      {
         "backgroundColor": "#123456",
       }
     }
@@ -692,7 +692,7 @@ exports[`<ChatIntegrationPreview/> render() should display required email captur
 exports[`<ChatIntegrationPreview/> render() should display the avatar team picture in the header because the URL is set and the option is enabled 1`] = `
 <div
   className="preview"
-  style={Object {}}
+  style={{}}
 >
   <div
     className="dialog"
@@ -700,7 +700,7 @@ exports[`<ChatIntegrationPreview/> render() should display the avatar team pictu
     <div
       className="header"
       style={
-        Object {
+        {
           "backgroundColor": "#123456",
         }
       }
@@ -716,7 +716,7 @@ exports[`<ChatIntegrationPreview/> render() should display the avatar team pictu
       <div
         className="details"
         style={
-          Object {
+          {
             "color": "#FFFFFF",
           }
         }
@@ -735,9 +735,9 @@ exports[`<ChatIntegrationPreview/> render() should display the avatar team pictu
     </div>
     <MessageContent
       agentMessages={
-        Array [
-          Object {
-            "attachments": Array [],
+        [
+          {
+            "attachments": [],
             "content": "test",
             "isHtml": false,
           },
@@ -749,11 +749,11 @@ exports[`<ChatIntegrationPreview/> render() should display the avatar team pictu
           "name": "Charles",
         }
       }
-      customerInitialMessages={Array []}
+      customerInitialMessages={[]}
     />
     <PoweredByGorgias
       translatedTexts={
-        Object {
+        {
           "actionPostbackError": "An error occurred while processing your action. Please try again.",
           "backLabelBackAt": "Back online at {time}",
           "backLabelBackInAMinute": "Back in 1 minute",
@@ -820,7 +820,7 @@ exports[`<ChatIntegrationPreview/> render() should display the avatar team pictu
   <div
     className="button bottom-right"
     style={
-      Object {
+      {
         "backgroundColor": "#123456",
       }
     }
@@ -842,7 +842,7 @@ exports[`<ChatIntegrationPreview/> render() should display the avatar team pictu
 exports[`<ChatIntegrationPreview/> render() should display the offline status because chat is offline 1`] = `
 <div
   className="preview"
-  style={Object {}}
+  style={{}}
 >
   <div
     className="dialog"
@@ -850,7 +850,7 @@ exports[`<ChatIntegrationPreview/> render() should display the offline status be
     <div
       className="header"
       style={
-        Object {
+        {
           "backgroundColor": "#EBEBEB",
         }
       }
@@ -864,7 +864,7 @@ exports[`<ChatIntegrationPreview/> render() should display the offline status be
       <div
         className="details"
         style={
-          Object {
+          {
             "color": "#161616",
           }
         }
@@ -885,7 +885,7 @@ exports[`<ChatIntegrationPreview/> render() should display the offline status be
           <i
             className="material-icons"
             style={
-              Object {
+              {
                 "color": "#161616",
               }
             }
@@ -898,9 +898,9 @@ exports[`<ChatIntegrationPreview/> render() should display the offline status be
     </div>
     <MessageContent
       agentMessages={
-        Array [
-          Object {
-            "attachments": Array [],
+        [
+          {
+            "attachments": [],
             "content": "test",
             "isHtml": false,
           },
@@ -912,11 +912,11 @@ exports[`<ChatIntegrationPreview/> render() should display the offline status be
           "name": "Charles",
         }
       }
-      customerInitialMessages={Array []}
+      customerInitialMessages={[]}
     />
     <PoweredByGorgias
       translatedTexts={
-        Object {
+        {
           "actionPostbackError": "An error occurred while processing your action. Please try again.",
           "backLabelBackAt": "Back online at {time}",
           "backLabelBackInAMinute": "Back in 1 minute",
@@ -983,7 +983,7 @@ exports[`<ChatIntegrationPreview/> render() should display the offline status be
   <div
     className="button bottom-right"
     style={
-      Object {
+      {
         "backgroundColor": "#EBEBEB",
       }
     }
@@ -1005,7 +1005,7 @@ exports[`<ChatIntegrationPreview/> render() should display the offline status be
 exports[`<ChatIntegrationPreview/> render() should display the online status because chat is online 1`] = `
 <div
   className="preview"
-  style={Object {}}
+  style={{}}
 >
   <div
     className="dialog"
@@ -1013,7 +1013,7 @@ exports[`<ChatIntegrationPreview/> render() should display the online status bec
     <div
       className="header"
       style={
-        Object {
+        {
           "backgroundColor": "#123456",
         }
       }
@@ -1027,7 +1027,7 @@ exports[`<ChatIntegrationPreview/> render() should display the online status bec
       <div
         className="details"
         style={
-          Object {
+          {
             "color": "#FFFFFF",
           }
         }
@@ -1046,9 +1046,9 @@ exports[`<ChatIntegrationPreview/> render() should display the online status bec
     </div>
     <MessageContent
       agentMessages={
-        Array [
-          Object {
-            "attachments": Array [],
+        [
+          {
+            "attachments": [],
             "content": "test",
             "isHtml": false,
           },
@@ -1060,11 +1060,11 @@ exports[`<ChatIntegrationPreview/> render() should display the online status bec
           "name": "Charles",
         }
       }
-      customerInitialMessages={Array []}
+      customerInitialMessages={[]}
     />
     <PoweredByGorgias
       translatedTexts={
-        Object {
+        {
           "actionPostbackError": "An error occurred while processing your action. Please try again.",
           "backLabelBackAt": "Back online at {time}",
           "backLabelBackInAMinute": "Back in 1 minute",
@@ -1131,7 +1131,7 @@ exports[`<ChatIntegrationPreview/> render() should display the online status bec
   <div
     className="button bottom-right"
     style={
-      Object {
+      {
         "backgroundColor": "#123456",
       }
     }
@@ -1153,7 +1153,7 @@ exports[`<ChatIntegrationPreview/> render() should display the online status bec
 exports[`<ChatIntegrationPreview/> render() should display the sliders when editing the position 1`] = `
 <div
   className="preview"
-  style={Object {}}
+  style={{}}
 >
   <div
     className="dialog"
@@ -1161,7 +1161,7 @@ exports[`<ChatIntegrationPreview/> render() should display the sliders when edit
     <div
       className="header"
       style={
-        Object {
+        {
           "backgroundColor": "#123456",
         }
       }
@@ -1175,7 +1175,7 @@ exports[`<ChatIntegrationPreview/> render() should display the sliders when edit
       <div
         className="details"
         style={
-          Object {
+          {
             "color": "#FFFFFF",
           }
         }
@@ -1194,9 +1194,9 @@ exports[`<ChatIntegrationPreview/> render() should display the sliders when edit
     </div>
     <MessageContent
       agentMessages={
-        Array [
-          Object {
-            "attachments": Array [],
+        [
+          {
+            "attachments": [],
             "content": "test",
             "isHtml": false,
           },
@@ -1208,11 +1208,11 @@ exports[`<ChatIntegrationPreview/> render() should display the sliders when edit
           "name": "Charles",
         }
       }
-      customerInitialMessages={Array []}
+      customerInitialMessages={[]}
     />
     <PoweredByGorgias
       translatedTexts={
-        Object {
+        {
           "actionPostbackError": "An error occurred while processing your action. Please try again.",
           "backLabelBackAt": "Back online at {time}",
           "backLabelBackInAMinute": "Back in 1 minute",
@@ -1279,7 +1279,7 @@ exports[`<ChatIntegrationPreview/> render() should display the sliders when edit
   <div
     className="button bottom-right"
     style={
-      Object {
+      {
         "backgroundColor": "#123456",
       }
     }
@@ -1301,7 +1301,7 @@ exports[`<ChatIntegrationPreview/> render() should display the sliders when edit
 exports[`<ChatIntegrationPreview/> render() should display typical response time for reply-in-day 1`] = `
 <div
   className="preview"
-  style={Object {}}
+  style={{}}
 >
   <div
     className="dialog"
@@ -1309,7 +1309,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
     <div
       className="header"
       style={
-        Object {
+        {
           "backgroundColor": "#123456",
         }
       }
@@ -1323,7 +1323,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
       <div
         className="details"
         style={
-          Object {
+          {
             "color": "#FFFFFF",
           }
         }
@@ -1344,7 +1344,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
           <i
             className="material-icons"
             style={
-              Object {
+              {
                 "color": "#FFFFFF",
               }
             }
@@ -1357,9 +1357,9 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
     </div>
     <MessageContent
       agentMessages={
-        Array [
-          Object {
-            "attachments": Array [],
+        [
+          {
+            "attachments": [],
             "content": "test",
             "isHtml": false,
           },
@@ -1371,11 +1371,11 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
           "name": "Charles",
         }
       }
-      customerInitialMessages={Array []}
+      customerInitialMessages={[]}
     />
     <PoweredByGorgias
       translatedTexts={
-        Object {
+        {
           "actionPostbackError": "An error occurred while processing your action. Please try again.",
           "backLabelBackAt": "Back online at {time}",
           "backLabelBackInAMinute": "Back in 1 minute",
@@ -1430,7 +1430,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
   <div
     className="button bottom-right"
     style={
-      Object {
+      {
         "backgroundColor": "#123456",
       }
     }
@@ -1464,7 +1464,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
 exports[`<ChatIntegrationPreview/> render() should display typical response time for reply-in-hours 1`] = `
 <div
   className="preview"
-  style={Object {}}
+  style={{}}
 >
   <div
     className="dialog"
@@ -1472,7 +1472,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
     <div
       className="header"
       style={
-        Object {
+        {
           "backgroundColor": "#123456",
         }
       }
@@ -1486,7 +1486,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
       <div
         className="details"
         style={
-          Object {
+          {
             "color": "#FFFFFF",
           }
         }
@@ -1507,7 +1507,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
           <i
             className="material-icons"
             style={
-              Object {
+              {
                 "color": "#FFFFFF",
               }
             }
@@ -1520,9 +1520,9 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
     </div>
     <MessageContent
       agentMessages={
-        Array [
-          Object {
-            "attachments": Array [],
+        [
+          {
+            "attachments": [],
             "content": "test",
             "isHtml": false,
           },
@@ -1534,11 +1534,11 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
           "name": "Charles",
         }
       }
-      customerInitialMessages={Array []}
+      customerInitialMessages={[]}
     />
     <PoweredByGorgias
       translatedTexts={
-        Object {
+        {
           "actionPostbackError": "An error occurred while processing your action. Please try again.",
           "backLabelBackAt": "Back online at {time}",
           "backLabelBackInAMinute": "Back in 1 minute",
@@ -1593,7 +1593,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
   <div
     className="button bottom-right"
     style={
-      Object {
+      {
         "backgroundColor": "#123456",
       }
     }
@@ -1627,7 +1627,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
 exports[`<ChatIntegrationPreview/> render() should display typical response time for reply-in-minutes 1`] = `
 <div
   className="preview"
-  style={Object {}}
+  style={{}}
 >
   <div
     className="dialog"
@@ -1635,7 +1635,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
     <div
       className="header"
       style={
-        Object {
+        {
           "backgroundColor": "#123456",
         }
       }
@@ -1649,7 +1649,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
       <div
         className="details"
         style={
-          Object {
+          {
             "color": "#FFFFFF",
           }
         }
@@ -1670,7 +1670,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
           <i
             className="material-icons"
             style={
-              Object {
+              {
                 "color": "#FFFFFF",
               }
             }
@@ -1683,9 +1683,9 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
     </div>
     <MessageContent
       agentMessages={
-        Array [
-          Object {
-            "attachments": Array [],
+        [
+          {
+            "attachments": [],
             "content": "test",
             "isHtml": false,
           },
@@ -1697,11 +1697,11 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
           "name": "Charles",
         }
       }
-      customerInitialMessages={Array []}
+      customerInitialMessages={[]}
     />
     <PoweredByGorgias
       translatedTexts={
-        Object {
+        {
           "actionPostbackError": "An error occurred while processing your action. Please try again.",
           "backLabelBackAt": "Back online at {time}",
           "backLabelBackInAMinute": "Back in 1 minute",
@@ -1756,7 +1756,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
   <div
     className="button bottom-right"
     style={
-      Object {
+      {
         "backgroundColor": "#123456",
       }
     }
@@ -1790,7 +1790,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
 exports[`<ChatIntegrationPreview/> render() should display typical response time for reply-shortly 1`] = `
 <div
   className="preview"
-  style={Object {}}
+  style={{}}
 >
   <div
     className="dialog"
@@ -1798,7 +1798,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
     <div
       className="header"
       style={
-        Object {
+        {
           "backgroundColor": "#123456",
         }
       }
@@ -1812,7 +1812,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
       <div
         className="details"
         style={
-          Object {
+          {
             "color": "#FFFFFF",
           }
         }
@@ -1833,7 +1833,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
           <i
             className="material-icons"
             style={
-              Object {
+              {
                 "color": "#FFFFFF",
               }
             }
@@ -1846,9 +1846,9 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
     </div>
     <MessageContent
       agentMessages={
-        Array [
-          Object {
-            "attachments": Array [],
+        [
+          {
+            "attachments": [],
             "content": "test",
             "isHtml": false,
           },
@@ -1860,11 +1860,11 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
           "name": "Charles",
         }
       }
-      customerInitialMessages={Array []}
+      customerInitialMessages={[]}
     />
     <PoweredByGorgias
       translatedTexts={
-        Object {
+        {
           "actionPostbackError": "An error occurred while processing your action. Please try again.",
           "backLabelBackAt": "Back online at {time}",
           "backLabelBackInAMinute": "Back in 1 minute",
@@ -1919,7 +1919,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
   <div
     className="button bottom-right"
     style={
-      Object {
+      {
         "backgroundColor": "#123456",
       }
     }
@@ -1953,7 +1953,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
 exports[`<ChatIntegrationPreview/> render() should not display button if hideButton provided 1`] = `
 <div
   className="preview"
-  style={Object {}}
+  style={{}}
 >
   <div
     className="dialog"
@@ -1961,7 +1961,7 @@ exports[`<ChatIntegrationPreview/> render() should not display button if hideBut
     <div
       className="header"
       style={
-        Object {
+        {
           "backgroundColor": "#123456",
         }
       }
@@ -1975,7 +1975,7 @@ exports[`<ChatIntegrationPreview/> render() should not display button if hideBut
       <div
         className="details"
         style={
-          Object {
+          {
             "color": "#FFFFFF",
           }
         }
@@ -1994,9 +1994,9 @@ exports[`<ChatIntegrationPreview/> render() should not display button if hideBut
     </div>
     <MessageContent
       agentMessages={
-        Array [
-          Object {
-            "attachments": Array [],
+        [
+          {
+            "attachments": [],
             "content": "test",
             "isHtml": false,
           },
@@ -2008,11 +2008,11 @@ exports[`<ChatIntegrationPreview/> render() should not display button if hideBut
           "name": "Charles",
         }
       }
-      customerInitialMessages={Array []}
+      customerInitialMessages={[]}
     />
     <PoweredByGorgias
       translatedTexts={
-        Object {
+        {
           "actionPostbackError": "An error occurred while processing your action. Please try again.",
           "backLabelBackAt": "Back online at {time}",
           "backLabelBackInAMinute": "Back in 1 minute",

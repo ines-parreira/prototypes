@@ -24,16 +24,16 @@ exports[`TicketAttachments component private should display an error message if 
     enableKeyboardInput={true}
     imageCountSeparator=" of "
     images={
-      Array [
-        Object {
+      [
+        {
           "caption": "foo",
           "src": "http://proxy-url/cw-1,s8MK7LSC6RLh94fGgMBYlNoFyfP-9ZuGz67e8Ec8PZpk/http://gorgias.io/bar",
         },
-        Object {
+        {
           "caption": "bar",
           "src": "http://proxy-url/cw-1,seKwRTXuZZfHIF0O-p6Pte13-uEQ7wUFn5tkRNiZDeo8/http://gorgias.io/baz",
         },
-        Object {
+        {
           "caption": "baz",
           "src": "http://proxy-url/cw-1,sSfpnD-PAiV-KrmrNl6gZ9Cq7eu50_7Sd3bZqOar3Jt4/http://gorgias.io/foo",
         },
@@ -51,7 +51,7 @@ exports[`TicketAttachments component private should display an error message if 
     showCloseButton={true}
     showImageCount={true}
     showThumbnails={true}
-    theme={Object {}}
+    theme={{}}
     thumbnailOffset={2}
     width={1024}
   />
@@ -85,7 +85,7 @@ exports[`TicketAttachments component private should display both an error messag
       onClick={[Function]}
       rel="noopener noreferrer"
       style={
-        Object {
+        {
           "backgroundImage": "url(http://proxy-url/120x80,s8MK7LSC6RLh94fGgMBYlNoFyfP-9ZuGz67e8Ec8PZpk/http://gorgias.io/bar)",
         }
       }
@@ -121,7 +121,7 @@ exports[`TicketAttachments component private should display both an error messag
       onClick={[Function]}
       rel="noopener noreferrer"
       style={
-        Object {
+        {
           "backgroundImage": "url(http://proxy-url/120x80,sSfpnD-PAiV-KrmrNl6gZ9Cq7eu50_7Sd3bZqOar3Jt4/http://gorgias.io/foo)",
         }
       }
@@ -218,16 +218,16 @@ exports[`TicketAttachments component private should display both an error messag
     enableKeyboardInput={true}
     imageCountSeparator=" of "
     images={
-      Array [
-        Object {
+      [
+        {
           "caption": "foo",
           "src": "http://proxy-url/cw-1,s8MK7LSC6RLh94fGgMBYlNoFyfP-9ZuGz67e8Ec8PZpk/http://gorgias.io/bar",
         },
-        Object {
+        {
           "caption": "bar",
           "src": "http://proxy-url/cw-1,sq2V_C_-Dm_KHtaDdj_L_mXkIrrm2xS7uZ8pLuRDzmZ0/https://gorgias.io/baz",
         },
-        Object {
+        {
           "caption": "baz",
           "src": "http://proxy-url/cw-1,sSfpnD-PAiV-KrmrNl6gZ9Cq7eu50_7Sd3bZqOar3Jt4/http://gorgias.io/foo",
         },
@@ -245,7 +245,7 @@ exports[`TicketAttachments component private should display both an error messag
     showCloseButton={true}
     showImageCount={true}
     showThumbnails={true}
-    theme={Object {}}
+    theme={{}}
     thumbnailOffset={2}
     width={1024}
   />
@@ -266,7 +266,7 @@ exports[`TicketAttachments component read-only should match snapshot 1`] = `
       onClick={[Function]}
       rel="noopener noreferrer"
       style={
-        Object {
+        {
           "backgroundImage": "url(http://proxy-url/120x80,s8MK7LSC6RLh94fGgMBYlNoFyfP-9ZuGz67e8Ec8PZpk/http://gorgias.io/bar)",
         }
       }
@@ -394,8 +394,8 @@ exports[`TicketAttachments component read-only should match snapshot 1`] = `
     enableKeyboardInput={true}
     imageCountSeparator=" of "
     images={
-      Array [
-        Object {
+      [
+        {
           "caption": "foo",
           "src": "http://proxy-url/cw-1,s8MK7LSC6RLh94fGgMBYlNoFyfP-9ZuGz67e8Ec8PZpk/http://gorgias.io/bar",
         },
@@ -413,7 +413,7 @@ exports[`TicketAttachments component read-only should match snapshot 1`] = `
     showCloseButton={true}
     showImageCount={true}
     showThumbnails={true}
-    theme={Object {}}
+    theme={{}}
     thumbnailOffset={2}
     width={1024}
   />

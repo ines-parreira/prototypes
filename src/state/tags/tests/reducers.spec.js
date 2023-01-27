@@ -5,8 +5,6 @@ import {fromJS} from 'immutable'
 import reducer, {initialState} from '../reducers.ts'
 import * as types from '../constants.ts'
 
-jest.addMatchers(immutableMatchers)
-
 describe('tags reducers', () => {
     // Simulates current tags in state
     const currentFakeTags = fromJS([
@@ -19,6 +17,10 @@ describe('tags reducers', () => {
         {id: 3, name: 'new_fake_name'},
         {id: 4, name: 'other_new_fake_name'},
     ])
+
+    beforeEach(() => {
+        expect.extend(immutableMatchers)
+    })
 
     it('initial state', () => {
         expect(reducer(undefined, {})).toEqualImmutable(initialState)

@@ -7,7 +7,7 @@ exports[`Property component should display errors if the validate method of the 
   <Connect(Widget)
     compact={false}
     config={
-      Object {
+      {
         "validate": [Function],
       }
     }
@@ -26,7 +26,7 @@ exports[`Property component should display errors if the validate method of the 
       }
     }
     theKey={
-      Object {
+      {
         "foo": "theKey",
       }
     }
@@ -47,7 +47,7 @@ exports[`Property component should not display errors if the validate method of 
   <Connect(Widget)
     compact={false}
     config={
-      Object {
+      {
         "validate": [Function],
       }
     }
@@ -66,7 +66,7 @@ exports[`Property component should not display errors if the validate method of 
       }
     }
     theKey={
-      Object {
+      {
         "foo": "theKey",
       }
     }
@@ -81,7 +81,7 @@ exports[`Property component should not display errors if there is no validate me
 >
   <Connect(Widget)
     compact={false}
-    config={Object {}}
+    config={{}}
     parent={
       Immutable.List [
         "body",
@@ -97,7 +97,7 @@ exports[`Property component should not display errors if there is no validate me
       }
     }
     theKey={
-      Object {
+      {
         "foo": "theKey",
       }
     }
@@ -112,7 +112,7 @@ exports[`Property component should render a compact (inline) Property 1`] = `
 >
   <Connect(Widget)
     compact={true}
-    config={Object {}}
+    config={{}}
     parent={
       Immutable.List [
         "body",
@@ -128,7 +128,7 @@ exports[`Property component should render a compact (inline) Property 1`] = `
       }
     }
     theKey={
-      Object {
+      {
         "foo": "theKey",
       }
     }

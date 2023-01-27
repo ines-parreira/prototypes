@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`tags reducer createTag action should add a new tag to the state 1`] = `
-Object {
-  "2": Object {
+{
+  "2": {
     "created_datetime": "2021-01-21T13:10:46.444928+00:00",
     "decoration": null,
     "deleted_datetime": null,
@@ -15,11 +15,11 @@ Object {
 }
 `;
 
-exports[`tags reducer deleteTag action should delete a tag from the state 1`] = `Object {}`;
+exports[`tags reducer deleteTag action should delete a tag from the state 1`] = `{}`;
 
 exports[`tags reducer fetchTag action should add a new tag to the state 1`] = `
-Object {
-  "2": Object {
+{
+  "2": {
     "created_datetime": "2021-01-21T13:10:46.444928+00:00",
     "decoration": null,
     "deleted_datetime": null,
@@ -33,8 +33,8 @@ Object {
 `;
 
 exports[`tags reducer fetchTags action should add the tags to the state 1`] = `
-Object {
-  "1": Object {
+{
+  "1": {
     "created_datetime": "2021-01-21T13:10:46.435364+00:00",
     "decoration": null,
     "deleted_datetime": null,
@@ -44,7 +44,7 @@ Object {
     "uri": "/api/tags/1/",
     "usage": 20,
   },
-  "2": Object {
+  "2": {
     "created_datetime": "2021-01-21T13:10:46.444928+00:00",
     "decoration": null,
     "deleted_datetime": null,
@@ -54,7 +54,7 @@ Object {
     "uri": "/api/tags/2/",
     "usage": 10,
   },
-  "3": Object {
+  "3": {
     "created_datetime": "2021-01-21T13:10:46.445859+00:00",
     "decoration": null,
     "deleted_datetime": null,
@@ -64,7 +64,7 @@ Object {
     "uri": "/api/tags/3/",
     "usage": 0,
   },
-  "4": Object {
+  "4": {
     "created_datetime": "2021-01-21T13:10:46.446673+00:00",
     "decoration": null,
     "deleted_datetime": null,
@@ -78,8 +78,8 @@ Object {
 `;
 
 exports[`tags reducer updateTag action should replace an existing tag in the state 1`] = `
-Object {
-  "1": Object {
+{
+  "1": {
     "created_datetime": "2021-01-21T13:10:46.444928+00:00",
     "decoration": null,
     "deleted_datetime": null,
@@ -89,7 +89,7 @@ Object {
     "uri": "/api/tags/2/",
     "usage": 10,
   },
-  "2": Object {
+  "2": {
     "created_datetime": "2021-01-21T13:10:46.444928+00:00",
     "decoration": null,
     "deleted_datetime": null,

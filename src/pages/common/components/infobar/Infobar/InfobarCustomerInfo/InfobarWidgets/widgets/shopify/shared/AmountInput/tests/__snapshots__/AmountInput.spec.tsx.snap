@@ -7,7 +7,7 @@ exports[`<AmountInput/> render() should render with currency symbol on left 1`] 
   <span
     className="leftLabel"
     style={
-      Object {
+      {
         "width": "2rem",
       }
     }
@@ -25,7 +25,7 @@ exports[`<AmountInput/> render() should render with currency symbol on left 1`] 
     required={true}
     step={0.01}
     style={
-      Object {
+      {
         "paddingLeft": "2rem",
       }
     }
@@ -51,7 +51,7 @@ exports[`<AmountInput/> render() should render with percentage symbol on right 1
     required={true}
     step={0.01}
     style={
-      Object {
+      {
         "paddingRight": "2rem",
       }
     }
@@ -61,7 +61,7 @@ exports[`<AmountInput/> render() should render with percentage symbol on right 1
   <span
     className="rightLabel"
     style={
-      Object {
+      {
         "width": "2rem",
       }
     }

@@ -1,22 +1,22 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`infobar actions execute action fail 1`] = `
-Array [
-  Object {
+[
+  {
     "closeOnNext": true,
     "dismissAfter": 0,
     "message": "Executing action...",
     "status": "loading",
     "type": "NOTIFY-MOCK",
   },
-  Object {
+  {
     "callback": [MockFunction],
-    "data": Object {
+    "data": {
       "action_id": "shopifyRefundShippingCostOfOrder-34-5-f086fd149f679a11cf4d5378daa3a994cd70689a",
       "action_label": undefined,
       "action_name": "shopifyRefundShippingCostOfOrder",
       "integration_id": "5",
-      "payload": Object {
+      "payload": {
         "order_id": 4194477515,
       },
       "ticket_id": "1",
@@ -25,13 +25,13 @@ Array [
     "id": "shopifyRefundShippingCostOfOrder-34-5-f086fd149f679a11cf4d5378daa3a994cd70689a",
     "type": "EXECUTE_ACTION_START",
   },
-  Object {
-    "data": Object {
+  {
+    "data": {
       "action_id": "shopifyRefundShippingCostOfOrder-34-5-f086fd149f679a11cf4d5378daa3a994cd70689a",
       "action_label": undefined,
       "action_name": "shopifyRefundShippingCostOfOrder",
       "integration_id": "5",
-      "payload": Object {
+      "payload": {
         "order_id": 4194477515,
       },
       "ticket_id": "1",
@@ -46,22 +46,22 @@ Array [
 `;
 
 exports[`infobar actions execute action success 1`] = `
-Array [
-  Object {
+[
+  {
     "closeOnNext": true,
     "dismissAfter": 0,
     "message": "Executing action...",
     "status": "loading",
     "type": "NOTIFY-MOCK",
   },
-  Object {
+  {
     "callback": [MockFunction],
-    "data": Object {
+    "data": {
       "action_id": "shopifyRefundShippingCostOfOrder-34-5-f086fd149f679a11cf4d5378daa3a994cd70689a",
       "action_label": undefined,
       "action_name": "shopifyRefundShippingCostOfOrder",
       "integration_id": "5",
-      "payload": Object {
+      "payload": {
         "order_id": 4194477515,
       },
       "ticket_id": "1",
@@ -74,10 +74,10 @@ Array [
 `;
 
 exports[`infobar actions handle executed action display error 1`] = `
-Array [
-  Object {
-    "buttons": Array [
-      Object {
+[
+  {
+    "buttons": [
+      {
         "name": "Review",
         "onClick": [Function],
         "primary": true,
@@ -89,11 +89,11 @@ Array [
     "title": "Something went wrong on your last action 😞",
     "type": "NOTIFY-MOCK",
   },
-  Object {
-    "data": Object {
+  {
+    "data": {
       "action_id": "someId",
       "msg": "[SHOPIFY] [full-refund] No way",
-      "payload": Object {},
+      "payload": {},
       "status": "error",
     },
     "id": "someId",
@@ -103,10 +103,10 @@ Array [
 `;
 
 exports[`infobar actions handle executed action display error from ticket currently on 1`] = `
-Array [
-  Object {
-    "buttons": Array [
-      Object {
+[
+  {
+    "buttons": [
+      {
         "name": "Review",
         "onClick": [Function],
         "primary": true,
@@ -118,11 +118,11 @@ Array [
     "title": "Something went wrong on your last action 😞",
     "type": "NOTIFY-MOCK",
   },
-  Object {
-    "data": Object {
+  {
+    "data": {
       "action_id": "someId",
       "msg": "[SHOPIFY] [full-refund] No way",
-      "payload": Object {},
+      "payload": {},
       "status": "error",
       "ticket_id": "1",
     },
@@ -133,10 +133,10 @@ Array [
 `;
 
 exports[`infobar actions handle executed action display error from ticket not currently on 1`] = `
-Array [
-  Object {
-    "buttons": Array [
-      Object {
+[
+  {
+    "buttons": [
+      {
         "name": "Review",
         "onClick": [Function],
         "primary": true,
@@ -148,11 +148,11 @@ Array [
     "title": "Something went wrong on your last action 😞",
     "type": "NOTIFY-MOCK",
   },
-  Object {
-    "data": Object {
+  {
+    "data": {
       "action_id": "someId",
       "msg": "[SHOPIFY] [full-refund] No way",
-      "payload": Object {},
+      "payload": {},
       "status": "error",
       "ticket_id": "2",
     },
@@ -163,16 +163,16 @@ Array [
 `;
 
 exports[`infobar actions handle executed action success 1`] = `
-Array [
-  Object {
+[
+  {
     "status": "success",
     "title": "Action successfully executed",
     "type": "NOTIFY-MOCK",
   },
-  Object {
-    "data": Object {
+  {
+    "data": {
       "action_id": "someId",
-      "payload": Object {},
+      "payload": {},
       "status": "success",
     },
     "id": "someId",
@@ -182,14 +182,14 @@ Array [
 `;
 
 exports[`infobar actions search should dispatch search results on success 1`] = `
-Array [
-  Object {
+[
+  {
     "type": "SEARCH_CUSTOMERS_START",
   },
-  Object {
-    "resp": Object {
-      "data": Array [
-        Object {
+  {
+    "resp": {
+      "data": [
+        {
           "id": 1,
           "name": "alex",
         },
@@ -201,19 +201,19 @@ Array [
 `;
 
 exports[`infobar actions search should not dispatch results when cancelling the search 1`] = `
-Array [
-  Object {
+[
+  {
     "type": "SEARCH_CUSTOMERS_START",
   },
 ]
 `;
 
 exports[`infobar actions similarCustomer should reject on any error 1`] = `
-Array [
-  Object {
+[
+  {
     "type": "SEARCH_SIMILAR_CUSTOMER_START",
   },
-  Object {
+  {
     "reason": "Failed to search for similar customers. Please try again...",
     "type": "SEARCH_SIMILAR_CUSTOMER_ERROR",
   },
@@ -221,12 +221,12 @@ Array [
 `;
 
 exports[`infobar actions similarCustomer should resolve with a similar customer 1`] = `
-Array [
-  Object {
+[
+  {
     "type": "SEARCH_SIMILAR_CUSTOMER_START",
   },
-  Object {
-    "customer": Object {
+  {
+    "customer": {
       "id": 1,
       "name": "alex",
     },

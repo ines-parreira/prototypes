@@ -33,7 +33,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of HTTP reque
   <Row
     tag="div"
     widths={
-      Array [
+      [
         "xs",
         "sm",
         "md",
@@ -48,7 +48,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of HTTP reque
       md="12"
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -113,7 +113,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of HTTP reque
       md="12"
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -166,7 +166,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of HTTP reque
   <Row
     tag="div"
     widths={
-      Array [
+      [
         "xs",
         "sm",
         "md",
@@ -181,7 +181,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of HTTP reque
       md="12"
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -249,7 +249,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of HTTP reque
         <HTTPIntegrationEventItem
           name="Body"
           value="{
-    \\"bodyKey1\\": \\"bodyValue1\\"
+    "bodyKey1": "bodyValue1"
 }"
         >
           <InputField
@@ -257,7 +257,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of HTTP reque
             rows={3}
             type="textarea"
             value="{
-    \\"bodyKey1\\": \\"bodyValue1\\"
+    "bodyKey1": "bodyValue1"
 }"
           />
         </HTTPIntegrationEventItem>
@@ -269,7 +269,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of HTTP reque
       md="12"
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -306,7 +306,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of HTTP reque
         <HTTPIntegrationEventItem
           name="Body"
           value="{
-    \\"bodyKey1\\": \\"bodyValue1\\"
+    "bodyKey1": "bodyValue1"
 }"
         >
           <InputField
@@ -314,7 +314,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of HTTP reque
             rows={3}
             type="textarea"
             value="{
-    \\"bodyKey1\\": \\"bodyValue1\\"
+    "bodyKey1": "bodyValue1"
 }"
           />
         </HTTPIntegrationEventItem>
@@ -333,7 +333,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of a HTTP req
   <Row
     tag="div"
     widths={
-      Array [
+      [
         "xs",
         "sm",
         "md",
@@ -348,7 +348,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of a HTTP req
       md="12"
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -437,7 +437,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of a HTTP req
       md="12"
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -497,7 +497,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of the HTTP r
   <Row
     tag="div"
     widths={
-      Array [
+      [
         "xs",
         "sm",
         "md",
@@ -512,7 +512,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of the HTTP r
       md="12"
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -577,7 +577,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of the HTTP r
       md="12"
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -646,7 +646,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of the HTTP r
   <Row
     tag="div"
     widths={
-      Array [
+      [
         "xs",
         "sm",
         "md",
@@ -661,7 +661,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of the HTTP r
       md="12"
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -726,7 +726,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of the HTTP r
       md="12"
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -786,7 +786,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of the HTTP r
   <Row
     tag="div"
     widths={
-      Array [
+      [
         "xs",
         "sm",
         "md",
@@ -801,7 +801,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of the HTTP r
       md="12"
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -852,16 +852,16 @@ exports[`<HTTPIntegrationEvent /> component should render the data of the HTTP r
         </HTTPIntegrationEventItem>
         <HTTPIntegrationEventItem
           name="Params"
-          value="\\"{\\"paramKey1\\": \\"paramValue1\\"}\\""
+          value=""{"paramKey1": "paramValue1"}""
         >
           <HTTPIntegrationEventParams
-            params="\\"{\\"paramKey1\\": \\"paramValue1\\"}\\""
+            params=""{"paramKey1": "paramValue1"}""
           />
         </HTTPIntegrationEventItem>
         <HTTPIntegrationEventItem
           name="Body"
           value="{
-    \\"bodyKey1\\": \\"bodyValue1\\"
+    "bodyKey1": "bodyValue1"
 }"
         >
           <InputField
@@ -869,7 +869,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of the HTTP r
             rows={3}
             type="textarea"
             value="{
-    \\"bodyKey1\\": \\"bodyValue1\\"
+    "bodyKey1": "bodyValue1"
 }"
           />
         </HTTPIntegrationEventItem>
@@ -881,7 +881,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of the HTTP r
       md="12"
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -918,7 +918,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of the HTTP r
         <HTTPIntegrationEventItem
           name="Body"
           value="{
-    \\"bodyKey1\\": \\"bodyValue1\\"
+    "bodyKey1": "bodyValue1"
 }"
         >
           <InputField
@@ -926,7 +926,7 @@ exports[`<HTTPIntegrationEvent /> component should render the data of the HTTP r
             rows={3}
             type="textarea"
             value="{
-    \\"bodyKey1\\": \\"bodyValue1\\"
+    "bodyKey1": "bodyValue1"
 }"
           />
         </HTTPIntegrationEventItem>
@@ -945,7 +945,7 @@ exports[`<HTTPIntegrationEvent /> component should render the error that occurre
   <Row
     tag="div"
     widths={
-      Array [
+      [
         "xs",
         "sm",
         "md",
@@ -958,7 +958,7 @@ exports[`<HTTPIntegrationEvent /> component should render the error that occurre
       className="mb-4"
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",

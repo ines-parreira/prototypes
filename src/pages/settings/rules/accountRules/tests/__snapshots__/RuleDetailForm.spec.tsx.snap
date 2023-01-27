@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<RuleDetailForm /> rendering should render a filled form when rule id after fetched 1`] = `Array []`;
+exports[`<RuleDetailForm /> rendering should render a filled form when rule id after fetched 1`] = `[]`;
 
 exports[`<RuleDetailForm /> rendering should render a filled form when rule id after fetched 2`] = `
 <div

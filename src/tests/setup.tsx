@@ -1,4 +1,6 @@
 import '@testing-library/jest-dom'
+import {TextEncoder, TextDecoder} from 'util'
+import {setImmediate} from 'timers'
 import React from 'react'
 import MutationObserver from '@sheerun/mutationobserver-shim'
 import mockMoment from 'moment'
@@ -308,6 +310,11 @@ globalThis.analytics = {
     use: jest.fn(),
     user: jest.fn(),
 }
+
+// Jest 28 - migration changes
+global.TextEncoder = TextEncoder
+global.TextDecoder = TextDecoder as typeof global.TextDecoder
+global.setImmediate = setImmediate
 
 // LaunchDarkly
 mockFlags({})

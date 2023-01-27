@@ -18,7 +18,7 @@ exports[`Notification utils buildActionNotificationMessage() Should return the m
 
 exports[`Notification utils buildActionNotificationMessage() Should return the message for multiple updates 1`] = `"All the tickets in this view will be updated."`;
 
-exports[`Notification utils buildActionNotificationMessage() Should return the message for one tag update 1`] = `"1 ticket will be tagged with the \\"Awesome Tag\\" tag in a few seconds."`;
+exports[`Notification utils buildActionNotificationMessage() Should return the message for one tag update 1`] = `"1 ticket will be tagged with the "Awesome Tag" tag in a few seconds."`;
 
 exports[`Notification utils buildActionNotificationMessage() Should return the message for priority update 1`] = `"30 tickets will be marked as normal priority in a few seconds."`;
 

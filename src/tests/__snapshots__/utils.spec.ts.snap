@@ -17,12 +17,12 @@ exports[`global utils lightenDarkenColor() should work with leading zeros 2`] = 
 exports[`global utils lightenDarkenColor() should work without # 1`] = `"f2f2f2"`;
 
 exports[`global utils makeGetPlainJS() should return plain js object from an Immutable List collection 1`] = `
-Array [
-  Object {
+[
+  {
     "id": 3,
     "name": "Lisa",
   },
-  Object {
+  {
     "id": 4,
     "name": "Bart",
   },
@@ -30,13 +30,13 @@ Array [
 `;
 
 exports[`global utils makeGetPlainJS() should return plain js object from an Immutable Map collection 1`] = `
-Object {
-  "users": Array [
-    Object {
+{
+  "users": [
+    {
       "id": 1,
       "name": "Homer",
     },
-    Object {
+    {
       "id": 2,
       "name": "Marge",
     },
@@ -44,32 +44,32 @@ Object {
 }
 `;
 
-exports[`global utils proxifyImages should not proxify a proxified image 1`] = `"<img src=\\"http://proxy-url/http://gorgias.io/hello\\"/>"`;
+exports[`global utils proxifyImages should not proxify a proxified image 1`] = `"<img src="http://proxy-url/http://gorgias.io/hello"/>"`;
 
 exports[`global utils proxifyImages should not touch html with not img 1`] = `"<span>123</span>"`;
 
-exports[`global utils proxifyImages should work with direct image 1`] = `"<img src=\\"http://proxy-url/1000x,su1wNcUx8KXmK4rhnBqZx5knuRBX020OYFfFx-44vMNQ/http://gorgias.io/image.jpg\\"/>"`;
+exports[`global utils proxifyImages should work with direct image 1`] = `"<img src="http://proxy-url/1000x,su1wNcUx8KXmK4rhnBqZx5knuRBX020OYFfFx-44vMNQ/http://gorgias.io/image.jpg"/>"`;
 
-exports[`global utils proxifyImages should work with format 1`] = `"<img src=\\"http://proxy-url/100x100,skNMJBrGESJCUeVZ26R5wNbVyPNFEL1ics68-we5dknI/http://gorgias.io/hello\\"/>"`;
+exports[`global utils proxifyImages should work with format 1`] = `"<img src="http://proxy-url/100x100,skNMJBrGESJCUeVZ26R5wNbVyPNFEL1ics68-we5dknI/http://gorgias.io/hello"/>"`;
 
-exports[`global utils proxifyImages should work with no format 1`] = `"<img src=\\"http://proxy-url/1000x,skNMJBrGESJCUeVZ26R5wNbVyPNFEL1ics68-we5dknI/http://gorgias.io/hello\\"/>"`;
+exports[`global utils proxifyImages should work with no format 1`] = `"<img src="http://proxy-url/1000x,skNMJBrGESJCUeVZ26R5wNbVyPNFEL1ics68-we5dknI/http://gorgias.io/hello"/>"`;
 
-exports[`global utils proxifyImages should work with no src 1`] = `"<img alt=\\"no-src\\"/>"`;
+exports[`global utils proxifyImages should work with no src 1`] = `"<img alt="no-src"/>"`;
 
-exports[`global utils proxifyImages should work with pathname 1`] = `"<img src=\\"http://proxy-url/1000x,sp0-kh68jT4-ESLYOWw3H5yzvXCK7fTHOamesKjlqNkY/http://gorgias.io/test/x.jpg\\"/>"`;
+exports[`global utils proxifyImages should work with pathname 1`] = `"<img src="http://proxy-url/1000x,sp0-kh68jT4-ESLYOWw3H5yzvXCK7fTHOamesKjlqNkY/http://gorgias.io/test/x.jpg"/>"`;
 
 exports[`global utils proxifyImages should work with richer complex html 1`] = `
-"<div class=\\"something\\">
+"<div class="something">
 <i>italic</i><b>bold</b><u>under</u>
 <span>xxxxxsp <span>inside <span>inside a span</span></span> </span>
 <uknown-tag>11233</uknown-tag>
-<img alt=\\"no-src\\"/>
-<img src=\\"http://proxy-url/1000x,so6yvnkQDSUf7HkDo6h-Q3JQVISTUtLw6FCR6H9qeh5g/http://some-image/\\" alt=\\"bla \\"/>
-<strong><img src=\\"http://proxy-url/1000x,stFP7Aw5J-RVYmAgv_PqumNaXx7CTmG2A7vHBwluq4MY/https://image2/\\"/></strong>
+<img alt="no-src"/>
+<img src="http://proxy-url/1000x,so6yvnkQDSUf7HkDo6h-Q3JQVISTUtLw6FCR6H9qeh5g/http://some-image/" alt="bla "/>
+<strong><img src="http://proxy-url/1000x,stFP7Aw5J-RVYmAgv_PqumNaXx7CTmG2A7vHBwluq4MY/https://image2/"/></strong>
 </div>
 "
 `;
 
-exports[`global utils proxifyImages should work with search query but not uri-encode it 1`] = `"<img src=\\"http://proxy-url/1000x,sDDTU5QgssPtf_YOih2F4PdxvF_FGjX5S_FJdrOeloH0/http://gorgias.io/test/x.jpg?x=123&y=456\\"/>"`;
+exports[`global utils proxifyImages should work with search query but not uri-encode it 1`] = `"<img src="http://proxy-url/1000x,sDDTU5QgssPtf_YOih2F4PdxvF_FGjX5S_FJdrOeloH0/http://gorgias.io/test/x.jpg?x=123&y=456"/>"`;
 
 exports[`global utils proxifyImages should work with self closing 1`] = `"<br />"`;

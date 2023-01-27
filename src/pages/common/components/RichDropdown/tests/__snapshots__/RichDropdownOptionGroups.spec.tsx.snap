@@ -17,12 +17,12 @@ exports[`<RichDropdownOptionGroups/> should render a dropdown with nested option
   <RichDropdownOptions
     onClick={[MockFunction]}
     options={
-      Array [
-        Object {
+      [
+        {
           "key": "foo",
           "label": "Foo",
         },
-        Object {
+        {
           "description": "foobar",
           "key": "bar",
           "label": "Bar",
@@ -45,12 +45,12 @@ exports[`<RichDropdownOptionGroups/> should render a dropdown with nested option
   <RichDropdownOptions
     onClick={[MockFunction]}
     options={
-      Array [
-        Object {
+      [
+        {
           "key": "foo",
           "label": "Foo",
         },
-        Object {
+        {
           "description": "foobar",
           "key": "bar",
           "label": "Bar",

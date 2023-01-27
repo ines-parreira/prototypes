@@ -5,9 +5,11 @@ import reducer, {initialState} from '../reducers'
 import * as constants from '../constants'
 import {HTTPIntegrationEvent} from '../types'
 
-jest.addMatchers(immutableMatchers)
-
 describe('HTTPIntegrationEvents', () => {
+    beforeEach(() => {
+        expect.extend(immutableMatchers)
+    })
+
     describe('reducers', () => {
         it('should set `events` value', () => {
             const events = [

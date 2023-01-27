@@ -5,12 +5,12 @@ exports[`Avatar component should not render image in invisible container 1`] = `
   email="pepperoni@gorgias.io"
   name=""
   size={50}
-  style={Object {}}
+  style={{}}
 >
   <div
     className="component"
     style={
-      Object {
+      {
         "height": "50px",
         "width": "50px",
       }
@@ -19,7 +19,7 @@ exports[`Avatar component should not render image in invisible container 1`] = `
     <div
       className="initials"
       style={
-        Object {
+        {
           "fontSize": "20.833333333333336px",
           "height": "50px",
           "width": "50px",
@@ -28,7 +28,7 @@ exports[`Avatar component should not render image in invisible container 1`] = `
     >
       <span
         style={
-          Object {
+          {
             "lineHeight": "52px",
           }
         }
@@ -42,7 +42,7 @@ exports[`Avatar component should render avatar from cache 1`] = `
 <div
   className="component hasImage"
   style={
-    Object {
+    {
       "height": "50px",
       "width": "50px",
     }
@@ -51,7 +51,7 @@ exports[`Avatar component should render avatar from cache 1`] = `
   <div
     className="initials"
     style={
-      Object {
+      {
         "fontSize": "20.833333333333336px",
         "height": "50px",
         "width": "50px",
@@ -60,7 +60,7 @@ exports[`Avatar component should render avatar from cache 1`] = `
   >
     <span
       style={
-        Object {
+        {
           "lineHeight": "52px",
         }
       }
@@ -78,7 +78,7 @@ exports[`Avatar component should render default with no props 1`] = `
 <div
   className="component"
   style={
-    Object {
+    {
       "height": "50px",
       "width": "50px",
     }
@@ -87,7 +87,7 @@ exports[`Avatar component should render default with no props 1`] = `
   <div
     className="initials"
     style={
-      Object {
+      {
         "fontSize": "20.833333333333336px",
         "height": "50px",
         "width": "50px",
@@ -96,7 +96,7 @@ exports[`Avatar component should render default with no props 1`] = `
   >
     <span
       style={
-        Object {
+        {
           "lineHeight": "52px",
         }
       }
@@ -110,12 +110,12 @@ exports[`Avatar component should render image in visible container 1`] = `
   email="alex@gorgias.io"
   name=""
   size={50}
-  style={Object {}}
+  style={{}}
 >
   <div
     className="component hasImage"
     style={
-      Object {
+      {
         "height": "50px",
         "width": "50px",
       }
@@ -124,7 +124,7 @@ exports[`Avatar component should render image in visible container 1`] = `
     <div
       className="initials"
       style={
-        Object {
+        {
           "fontSize": "20.833333333333336px",
           "height": "50px",
           "width": "50px",
@@ -133,7 +133,7 @@ exports[`Avatar component should render image in visible container 1`] = `
     >
       <span
         style={
-          Object {
+          {
             "lineHeight": "52px",
           }
         }
@@ -152,7 +152,7 @@ exports[`Avatar component should render only the initials 1`] = `
 <div
   className="component"
   style={
-    Object {
+    {
       "height": "50px",
       "width": "50px",
     }
@@ -161,7 +161,7 @@ exports[`Avatar component should render only the initials 1`] = `
   <div
     className="initials"
     style={
-      Object {
+      {
         "fontSize": "20.833333333333336px",
         "height": "50px",
         "width": "50px",
@@ -170,7 +170,7 @@ exports[`Avatar component should render only the initials 1`] = `
   >
     <span
       style={
-        Object {
+        {
           "lineHeight": "52px",
         }
       }
@@ -185,7 +185,7 @@ exports[`Avatar component should render with className 1`] = `
 <div
   className="component marie-curie"
   style={
-    Object {
+    {
       "height": "50px",
       "width": "50px",
     }
@@ -194,7 +194,7 @@ exports[`Avatar component should render with className 1`] = `
   <div
     className="initials"
     style={
-      Object {
+      {
         "fontSize": "20.833333333333336px",
         "height": "50px",
         "width": "50px",
@@ -203,7 +203,7 @@ exports[`Avatar component should render with className 1`] = `
   >
     <span
       style={
-        Object {
+        {
           "lineHeight": "52px",
         }
       }

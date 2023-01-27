@@ -15,12 +15,12 @@ exports[`ast Widget SelfServiceFlowSelect should render SelfServiceFlowSelect fi
 exports[`ast Widget TagsSelect should render case sensitive TagsSelect field (tags properties) 1`] = `
 <TagsSelectContainer
   caseInsensitive={false}
-  deprecatedOptions={Array []}
+  deprecatedOptions={[]}
   description="Name of the tag. Keep it simple, a short 1 word tag is the best. The tag names are case sensitive."
-  hiddenOptions={Array []}
+  hiddenOptions={[]}
   multiple={true}
   onChange={[Function]}
-  options={Array []}
+  options={[]}
   type="tags-select"
   value="tag"
 />
@@ -31,7 +31,7 @@ exports[`ast Widget TagsSelect should render component AssigneeTeamSelect 1`] = 
   allowUnassign={false}
   description=""
   onChange={[Function]}
-  options={Array []}
+  options={[]}
   type="assignee_team-select"
 />
 `;
@@ -41,7 +41,7 @@ exports[`ast Widget TagsSelect should render component AssigneeUserSelect 1`] = 
   allowUnassign={false}
   description=""
   onChange={[Function]}
-  options={Array []}
+  options={[]}
   type="assignee_user-select"
 />
 `;
@@ -52,7 +52,7 @@ exports[`ast Widget TagsSelect should render multi TagsSelect field (addTags act
   description=""
   multiple={true}
   onChange={[Function]}
-  options={Array []}
+  options={[]}
   type="tags-select"
   value="hello, world, !"
 />
@@ -64,7 +64,7 @@ exports[`ast Widget should render DatetimeSelect field 1`] = `
 >
   <DatePicker
     initialSettings={
-      Object {
+      {
         "endDate": "2018-03-28T21:59:32.580Z",
         "startDate": "2018-03-28T21:59:32.580Z",
       }
@@ -101,13 +101,13 @@ exports[`ast Widget should render RichFieldWithVariables 1`] = `
   onChange={[Function]}
   placeholder=""
   value={
-    Object {
+    {
       "html": "hello my good lad",
       "text": "foo bar",
     }
   }
   variableTypes={
-    Array [
+    [
       "current_user",
       "ticket.customer",
       "shopify",
@@ -138,11 +138,11 @@ exports[`ast Widget should render case-insensitive MultiSelectField (containsAll
   caseInsensitive={true}
   className=" Text"
   onChange={[Function]}
-  options={Array []}
+  options={[]}
   plural="words"
   singular="word"
   values={
-    Array [
+    [
       "hello",
       "world!",
     ]

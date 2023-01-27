@@ -120,8 +120,8 @@ exports[`<NavbarBlock/> should render an icon 1`] = `
 exports[`<NavbarBlock/> should toggle the menu on clicking the dropdown toggle 1`] = `
 <NavbarBlock
   actions={
-    Array [
-      Object {
+    [
+      {
         "label": "foo",
         "onClick": [MockFunction],
       },
@@ -227,7 +227,7 @@ exports[`<NavbarBlock/> should toggle the menu on clicking the dropdown toggle 1
                     className="dropdown-menu dropdown-menu-right show"
                     role="menu"
                     style={
-                      Object {
+                      {
                         "left": 0,
                         "opacity": 0,
                         "pointerEvents": "none",

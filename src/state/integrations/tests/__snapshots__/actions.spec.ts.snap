@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`integrations actions delete integration 1`] = `
-Array [
-  Object {
+[
+  {
     "id": 1,
     "type": "DELETE_INTEGRATION_START",
   },
-  Object {
+  {
     "id": 1,
     "type": "DELETE_INTEGRATION_SUCCESS",
   },
@@ -14,12 +14,12 @@ Array [
 `;
 
 exports[`integrations actions delete integration error 1`] = `
-Array [
-  Object {
+[
+  {
     "id": 1,
     "type": "DELETE_INTEGRATION_START",
   },
-  Object {
+  {
     "error": [Error: Request failed with status code 400],
     "reason": "Failed to delete the integration",
     "type": "DELETE_INTEGRATION_ERROR",
@@ -29,12 +29,12 @@ Array [
 `;
 
 exports[`integrations actions fetch integration fails 1`] = `
-Array [
-  Object {
+[
+  {
     "id": "1",
     "type": "FETCH_INTEGRATION_START",
   },
-  Object {
+  {
     "error": [Error: Request failed with status code 404],
     "reason": "Failed to fetch integration",
     "type": "FETCH_INTEGRATION_ERROR",
@@ -43,12 +43,12 @@ Array [
 `;
 
 exports[`integrations actions fetch integration success 1`] = `
-Array [
-  Object {
+[
+  {
     "id": "1",
     "type": "FETCH_INTEGRATION_START",
   },
-  Object {
+  {
     "error": [Error: Request failed with status code 404],
     "reason": "Failed to fetch integration",
     "type": "FETCH_INTEGRATION_ERROR",
@@ -57,8 +57,8 @@ Array [
 `;
 
 exports[`integrations actions fetch integration success waiting for authentication 1`] = `
-Array [
-  Object {
+[
+  {
     "error": [Error: Request failed with status code 404],
     "reason": "Failed to fetch integration",
     "type": "FETCH_INTEGRATION_ERROR",
@@ -67,13 +67,13 @@ Array [
 `;
 
 exports[`integrations actions fetch integrations 1`] = `
-Array [
-  Object {
+[
+  {
     "type": "FETCH_INTEGRATIONS_START",
   },
-  Object {
-    "resp": Array [
-      Object {
+  {
+    "resp": [
+      {
         "id": 1,
         "name": "http",
       },
@@ -84,16 +84,16 @@ Array [
 `;
 
 exports[`integrations actions fetchChatIntegrationStatus action should handle error from api 1`] = `
-Array [
-  Object {
+[
+  {
     "id": 1,
     "type": "FETCH_CHAT_STATUS_START",
   },
-  Object {
-    "error": Object {
-      "config": Object {},
-      "data": Object {},
-      "headers": Object {},
+  {
+    "error": {
+      "config": {},
+      "data": {},
+      "headers": {},
       "status": 400,
       "statusText": "",
     },
@@ -105,12 +105,12 @@ Array [
 `;
 
 exports[`integrations actions fetchChatIntegrationStatus action should set offline status if there are no agents available 1`] = `
-Array [
-  Object {
+[
+  {
     "id": 1,
     "type": "FETCH_CHAT_STATUS_START",
   },
-  Object {
+  {
     "chatStatus": "offline",
     "id": 1,
     "type": "FETCH_CHAT_STATUS_SUCCESS",
@@ -119,12 +119,12 @@ Array [
 `;
 
 exports[`integrations actions fetchChatIntegrationStatus action should set online status if there are agents available 1`] = `
-Array [
-  Object {
+[
+  {
     "id": 1,
     "type": "FETCH_CHAT_STATUS_START",
   },
-  Object {
+  {
     "chatStatus": "online",
     "id": 1,
     "type": "FETCH_CHAT_STATUS_SUCCESS",
@@ -133,8 +133,8 @@ Array [
 `;
 
 exports[`integrations actions fetchChatIntegrationStatus action should set status if computed 1`] = `
-Array [
-  Object {
+[
+  {
     "chatStatus": "hidden",
     "id": 1,
     "type": "FETCH_CHAT_STATUS_SUCCESS",
@@ -143,30 +143,30 @@ Array [
 `;
 
 exports[`integrations actions on update success 1`] = `
-Array [
-  Object {
-    "resp": Object {
+[
+  {
+    "resp": {
       "id": 1,
       "type": "email",
     },
     "type": "UPDATE_INTEGRATION_SUCCESS",
   },
-  Object {
+  {
     "type": "FETCH_INTEGRATIONS_START",
   },
 ]
 `;
 
 exports[`integrations actions should do some action and redirect correctly on create email success 1`] = `
-Array [
-  Object {
-    "resp": Object {
+[
+  {
+    "resp": {
       "id": 1,
       "type": "email",
     },
     "type": "CREATE_INTEGRATION_SUCCESS",
   },
-  Object {
+  {
     "type": "FETCH_INTEGRATIONS_START",
   },
 ]
@@ -175,15 +175,15 @@ Array [
 exports[`integrations actions should do some action and redirect correctly on create email success 2`] = `"/app/settings/channels/email/1/forwarding"`;
 
 exports[`integrations actions should do some action and redirect correctly on create smooch success 1`] = `
-Array [
-  Object {
-    "resp": Object {
+[
+  {
+    "resp": {
       "id": 1,
       "type": "smooch",
     },
     "type": "CREATE_INTEGRATION_SUCCESS",
   },
-  Object {
+  {
     "type": "FETCH_INTEGRATIONS_START",
   },
 ]
@@ -192,15 +192,15 @@ Array [
 exports[`integrations actions should do some action and redirect correctly on create smooch success 2`] = `"/app/settings/integrations/smooch/1/overview"`;
 
 exports[`integrations actions should do some action and redirect correctly on create smooch_inside success 1`] = `
-Array [
-  Object {
-    "resp": Object {
+[
+  {
+    "resp": {
       "id": 1,
       "type": "smooch_inside",
     },
     "type": "CREATE_INTEGRATION_SUCCESS",
   },
-  Object {
+  {
     "type": "FETCH_INTEGRATIONS_START",
   },
 ]
@@ -208,11 +208,11 @@ Array [
 
 exports[`integrations actions should do some action and redirect correctly on create smooch_inside success 2`] = `"/app/settings/integrations/smooch_inside/1/installation"`;
 
-exports[`integrations actions verifyEmailIntegration action should dispatch an EMAIL_INTEGRATION_VERIFIED action on error 1`] = `Array []`;
+exports[`integrations actions verifyEmailIntegration action should dispatch an EMAIL_INTEGRATION_VERIFIED action on error 1`] = `[]`;
 
 exports[`integrations actions verifyEmailIntegration action should dispatch an EMAIL_INTEGRATION_VERIFIED action on success 1`] = `
-Array [
-  Object {
+[
+  {
     "integrationId": 1,
     "type": "EMAIL_INTEGRATION_VERIFIED",
   },

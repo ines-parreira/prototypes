@@ -48,7 +48,7 @@ exports[`HTTPIntegrationOverview should display data about the integration 1`] =
           className="control-label"
           tag="label"
           widths={
-            Array [
+            [
               "xs",
               "sm",
               "md",
@@ -196,12 +196,12 @@ exports[`HTTPIntegrationOverview should display data about the integration 1`] =
         <ObjectListField
           fieldName="header"
           fields={
-            Array [
-              Object {
+            [
+              {
                 "key": "Authorization",
                 "value": "Bearer a57sd4as6d4",
               },
-              Object {
+              {
                 "key": "Foo",
                 "value": "bar",
               },
@@ -214,8 +214,8 @@ exports[`HTTPIntegrationOverview should display data about the integration 1`] =
       </FormGroup>
       <JSONBody
         form={
-          Object {
-            "baz": Object {
+          {
+            "baz": {
               "bazile": "bazar",
             },
             "foo": "bar",
@@ -304,7 +304,7 @@ exports[`HTTPIntegrationOverview should display data with url-encoded format 1`]
           className="control-label"
           tag="label"
           widths={
-            Array [
+            [
               "xs",
               "sm",
               "md",
@@ -452,12 +452,12 @@ exports[`HTTPIntegrationOverview should display data with url-encoded format 1`]
         <ObjectListField
           fieldName="header"
           fields={
-            Array [
-              Object {
+            [
+              {
                 "key": "Authorization",
                 "value": "Bearer a57sd4as6d4",
               },
-              Object {
+              {
                 "key": "Foo",
                 "value": "bar",
               },
@@ -474,12 +474,12 @@ exports[`HTTPIntegrationOverview should display data with url-encoded format 1`]
         <ObjectListField
           fieldName="field"
           fields={
-            Array [
-              Object {
+            [
+              {
                 "key": "foo",
                 "value": "bar",
               },
-              Object {
+              {
                 "key": "baz",
                 "value": "foo",
               },
@@ -570,7 +570,7 @@ exports[`HTTPIntegrationOverview should display default values because there is 
           className="control-label"
           tag="label"
           widths={
-            Array [
+            [
               "xs",
               "sm",
               "md",
@@ -698,7 +698,7 @@ exports[`HTTPIntegrationOverview should display default values because there is 
       >
         <ObjectListField
           fieldName="header"
-          fields={Array []}
+          fields={[]}
           onChange={[Function]}
           title="Header"
           validate={[Function]}

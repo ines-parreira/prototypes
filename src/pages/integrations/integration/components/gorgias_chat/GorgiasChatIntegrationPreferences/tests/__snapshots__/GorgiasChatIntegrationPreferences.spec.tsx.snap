@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<GorgiasChatIntegrationPreferences/> _setLinkedEmailIntegration() should update the linked email integration in the state. 1`] = `
-Object {
+{
   "autoResponderEnabled": true,
   "autoResponderReply": "reply-dynamic",
   "avatarTeamPictureUrl": null,
@@ -19,7 +19,7 @@ Object {
 `;
 
 exports[`<GorgiasChatIntegrationPreferences/> _setLinkedEmailIntegration() should update the linked email integration in the state. 2`] = `
-Object {
+{
   "autoResponderEnabled": true,
   "autoResponderReply": "reply-dynamic",
   "avatarTeamPictureUrl": null,
@@ -38,8 +38,8 @@ Object {
 
 exports[`<GorgiasChatIntegrationPreferences/> _submitPreferences() should submit the form with defaults 1`] = `
 [MockFunction] {
-  "calls": Array [
-    Array [
+  "calls": [
+    [
       Immutable.Map {
         "id": undefined,
         "meta": Immutable.Map {
@@ -60,8 +60,8 @@ exports[`<GorgiasChatIntegrationPreferences/> _submitPreferences() should submit
       },
     ],
   ],
-  "results": Array [
-    Object {
+  "results": [
+    {
       "type": "return",
       "value": undefined,
     },
@@ -71,8 +71,8 @@ exports[`<GorgiasChatIntegrationPreferences/> _submitPreferences() should submit
 
 exports[`<GorgiasChatIntegrationPreferences/> _submitPreferences() should submit the form with loaded values 1`] = `
 [MockFunction] {
-  "calls": Array [
-    Array [
+  "calls": [
+    [
       Immutable.Map {
         "id": 1,
         "meta": Immutable.Map {
@@ -93,8 +93,8 @@ exports[`<GorgiasChatIntegrationPreferences/> _submitPreferences() should submit
       },
     ],
   ],
-  "results": Array [
-    Object {
+  "results": [
+    {
       "type": "return",
       "value": undefined,
     },
@@ -103,7 +103,7 @@ exports[`<GorgiasChatIntegrationPreferences/> _submitPreferences() should submit
 `;
 
 exports[`<GorgiasChatIntegrationPreferences/> componentDidMount() should initialize the state using the integration passed 1`] = `
-Object {
+{
   "autoResponderEnabled": true,
   "autoResponderReply": "reply-in-minutes",
   "avatarTeamPictureUrl": null,
@@ -121,7 +121,7 @@ Object {
 `;
 
 exports[`<GorgiasChatIntegrationPreferences/> componentDidUpdate() should initialize the state using the integration passed because the state was not initialized yet and the integration passed is not empty 1`] = `
-Object {
+{
   "autoResponderEnabled": true,
   "autoResponderReply": "reply-in-minutes",
   "avatarTeamPictureUrl": null,
@@ -190,7 +190,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
         language="en-US"
         mainColor="#789c5d"
         position={
-          Object {
+          {
             "alignment": "bottom-right",
             "offsetX": 0,
             "offsetY": 0,
@@ -247,13 +247,13 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
           <RadioFieldSet
             onChange={[Function]}
             options={
-              Array [
-                Object {
+              [
+                {
                   "caption": "Maximizes conversation volume",
                   "label": "Optional",
                   "value": "optional",
                 },
-                Object {
+                {
                   "caption": "Reduces conversation volume by around 30%",
                   "label": "Always required",
                   "value": "always-required",
@@ -288,18 +288,18 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
               className="mb-3 radioFieldSet"
               onChange={[Function]}
               options={
-                Array [
-                  Object {
+                [
+                  {
                     "caption": "Customers can only send live chat messages when an agent is available in Gorgias",
                     "label": "Live when agents are available",
                     "value": "auto-based-on-agent-availability",
                   },
-                  Object {
+                  {
                     "caption": "Customers can always send live chat messages during business hours",
                     "label": "Always live during business hours",
                     "value": "always-live-during-business-hours",
                   },
-                  Object {
+                  {
                     "caption": "Customers can only send messages using the contact form",
                     "label": "Offline",
                     "value": "offline",
@@ -432,8 +432,8 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
               isDisabled={false}
               onChange={[Function]}
               options={
-                Array [
-                  Object {
+                [
+                  {
                     "label": <div>
                       Dynamic wait time (recommended)
                        
@@ -470,11 +470,11 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
                     </div>,
                     "value": "reply-dynamic",
                   },
-                  Object {
+                  {
                     "label": "Thanks for reaching out! We typically reply in a few minutes",
                     "value": "reply-in-minutes",
                   },
-                  Object {
+                  {
                     "label": "Thanks for reaching out! We typically reply in a few hours",
                     "value": "reply-in-hours",
                   },
@@ -516,7 +516,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
             for="linkedEmailIntegration"
             tag="label"
             widths={
-              Array [
+              [
                 "xs",
                 "sm",
                 "md",
@@ -534,11 +534,11 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
             id={null}
             onChange={[Function]}
             onSearchChange={[Function]}
-            options={Array []}
+            options={[]}
             placeholder="Select an email integration"
             required={false}
             singular="option"
-            style={Object {}}
+            style={{}}
             value={null}
           />
         </div>
@@ -609,7 +609,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
         language="en-US"
         mainColor="#789c5d"
         position={
-          Object {
+          {
             "alignment": "bottom-right",
             "offsetX": 0,
             "offsetY": 0,
@@ -666,13 +666,13 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
           <RadioFieldSet
             onChange={[Function]}
             options={
-              Array [
-                Object {
+              [
+                {
                   "caption": "Maximizes conversation volume",
                   "label": "Optional",
                   "value": "optional",
                 },
-                Object {
+                {
                   "caption": "Reduces conversation volume by around 30%",
                   "label": "Always required",
                   "value": "always-required",
@@ -707,18 +707,18 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
               className="mb-3 radioFieldSet"
               onChange={[Function]}
               options={
-                Array [
-                  Object {
+                [
+                  {
                     "caption": "Customers can only send live chat messages when an agent is available in Gorgias",
                     "label": "Live when agents are available",
                     "value": "auto-based-on-agent-availability",
                   },
-                  Object {
+                  {
                     "caption": "Customers can always send live chat messages during business hours",
                     "label": "Always live during business hours",
                     "value": "always-live-during-business-hours",
                   },
-                  Object {
+                  {
                     "caption": "Customers can only send messages using the contact form",
                     "label": "Offline",
                     "value": "offline",
@@ -851,8 +851,8 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
               isDisabled={false}
               onChange={[Function]}
               options={
-                Array [
-                  Object {
+                [
+                  {
                     "label": <div>
                       Dynamic wait time (recommended)
                        
@@ -889,11 +889,11 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                     </div>,
                     "value": "reply-dynamic",
                   },
-                  Object {
+                  {
                     "label": "Thanks for reaching out! We typically reply in a few minutes",
                     "value": "reply-in-minutes",
                   },
-                  Object {
+                  {
                     "label": "Thanks for reaching out! We typically reply in a few hours",
                     "value": "reply-in-hours",
                   },
@@ -935,7 +935,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
             for="linkedEmailIntegration"
             tag="label"
             widths={
-              Array [
+              [
                 "xs",
                 "sm",
                 "md",
@@ -953,11 +953,11 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
             id={null}
             onChange={[Function]}
             onSearchChange={[Function]}
-            options={Array []}
+            options={[]}
             placeholder="Select an email integration"
             required={false}
             singular="option"
-            style={Object {}}
+            style={{}}
             value={null}
           />
         </div>

@@ -1,6 +1,6 @@
 import React, {ComponentProps} from 'react'
 import {fromJS, Map} from 'immutable'
-import {render, fireEvent, waitFor} from '@testing-library/react'
+import {render, fireEvent, waitFor, act} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -86,10 +86,11 @@ jest.mock('../../ViewSharing/ViewSharingButton', () => () => (
     <button>View Sharing Button</button>
 ))
 
+const globalDataNow = jest.spyOn(global.Date, 'now').mockImplementation(() => 0) // ConfirmButton generates ids based on the date
+
 beforeEach(() => {
     jest.clearAllMocks()
     jest.spyOn(utils, 'getDefaultOperator').mockImplementation(() => 'foo')
-    jest.spyOn(global.Date, 'now').mockImplementation(() => 0) // ConfirmButton generates ids based on the date
     submitViewMock.mockImplementation(() => () => Promise.resolve(viewFixture))
     deleteViewMock.mockImplementation(
         () => () => fromJS({...viewFixture, id: 8}) as Map<any, any>
@@ -100,7 +101,7 @@ beforeEach(() => {
 
 afterEach(() => {
     ;(utils.getDefaultOperator as unknown as jest.SpyInstance).mockRestore()
-    ;(global.Date.now as unknown as jest.SpyInstance).mockRestore()
+    globalDataNow.mockRestore()
     fetchViewItemsMock.mockRestore()
 })
 
@@ -564,7 +565,7 @@ describe('<FilterTopbar />', () => {
         })
     })
 
-    it('should display a temporary message when attempting to save an unchanged view', async () => {
+    it('should display a temporary message when attempting to save an unchanged view', () => {
         jest.useFakeTimers()
 
         const isDirtyMock = jest.spyOn(viewSelectors, 'isDirty')
@@ -576,21 +577,19 @@ describe('<FilterTopbar />', () => {
         )
 
         fireEvent.click(getByText('Update View'))
-        await waitFor(() => {
-            expect(
-                getByText(/No changes have been made/i).classList.contains(
-                    'visible'
-                )
-            ).toBe(true)
-        })
-        jest.runOnlyPendingTimers()
-        await waitFor(() => {
-            expect(
-                getByText(/No changes have been made/i).classList.contains(
-                    'visible'
-                )
-            ).toBe(false)
-        })
+        expect(
+            getByText(/No changes have been made/i).classList.contains(
+                'visible'
+            )
+        ).toBe(true)
+
+        act(() => jest.runOnlyPendingTimers())
+
+        expect(
+            getByText(/No changes have been made/i).classList.contains(
+                'visible'
+            )
+        ).toBe(false)
 
         jest.useRealTimers()
     })

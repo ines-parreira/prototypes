@@ -21,7 +21,7 @@ exports[`<MacrosSettingsContent/> should match snapshot 1`] = `
       <MacroFilters
         onChange={[Function]}
         selectedProperties={
-          Object {
+          {
             "languages": undefined,
             "tags": undefined,
           }
@@ -57,10 +57,10 @@ exports[`<MacrosSettingsContent/> should match snapshot 1`] = `
   </Container>
   <Component
     isLoading={false}
-    macroIds={Array []}
+    macroIds={[]}
     onSortOptionsChange={[Function]}
     options={
-      Object {
+      {
         "orderBy": "created_datetime:asc",
       }
     }

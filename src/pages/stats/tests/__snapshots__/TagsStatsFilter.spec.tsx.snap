@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TagsStatsFilter should merge stats filters on item select 1`] = `
-Array [
-  Object {
+[
+  {
     "filters": Immutable.Map {
       "tags": Immutable.List [
         2,

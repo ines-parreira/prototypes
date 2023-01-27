@@ -1,17 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<AddFieldForm/> should create custom field if the save button is clicked 1`] = `
-Object {
-  "delete": Array [],
-  "get": Array [],
-  "head": Array [],
-  "list": Array [],
-  "options": Array [],
-  "patch": Array [],
-  "post": Array [
-    Object {
-      "data": "{\\"object_type\\":\\"Ticket\\",\\"label\\":\\"Test name\\",\\"required\\":false,\\"definition\\":{\\"data_type\\":\\"text\\",\\"input_settings\\":{\\"input_type\\":\\"dropdown\\",\\"choices\\":[]}}}",
-      "headers": Object {
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [
+    {
+      "data": "{"object_type":"Ticket","label":"Test name","required":false,"definition":{"data_type":"text","input_settings":{"input_type":"dropdown","choices":[]}}}",
+      "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
         "X-CSRF-Token": "abcd",
@@ -21,10 +21,10 @@ Object {
       "maxContentLength": -1,
       "method": "post",
       "timeout": 0,
-      "transformRequest": Array [
+      "transformRequest": [
         [Function],
       ],
-      "transformResponse": Array [
+      "transformResponse": [
         [Function],
       ],
       "url": "/api/custom-fields",
@@ -33,7 +33,7 @@ Object {
       "xsrfHeaderName": "X-XSRF-TOKEN",
     },
   ],
-  "put": Array [],
+  "put": [],
 }
 `;
 

@@ -63,7 +63,7 @@ describe('<AircallIntegrationListItem/>', () => {
             })
 
             expect(deleteIntegrationMock.mock.calls[0]).toMatchInlineSnapshot(`
-                Array [
+                [
                   Immutable.Map {
                     "id": 7,
                     "name": "my Aircall integration",

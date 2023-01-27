@@ -26,8 +26,8 @@ exports[`<MergeCustomersModal/> render() should render 1`] = `
           label="Name"
           onChange={[Function]}
           options={
-            Array [
-              Object {
+            [
+              {
                 "label": <span>
                   <i
                     className="material-icons mr-2"
@@ -38,7 +38,7 @@ exports[`<MergeCustomersModal/> render() should render 1`] = `
                 </span>,
                 "value": "Pierre",
               },
-              Object {
+              {
                 "label": <span>
                   <i
                     className="material-icons mr-2"
@@ -57,8 +57,8 @@ exports[`<MergeCustomersModal/> render() should render 1`] = `
           label="Note"
           onChange={[Function]}
           options={
-            Array [
-              Object {
+            [
+              {
                 "label": <span>
                   <i
                     className="material-icons mr-2"
@@ -68,7 +68,7 @@ exports[`<MergeCustomersModal/> render() should render 1`] = `
                 </span>,
                 "value": "",
               },
-              Object {
+              {
                 "label": <span>
                   <i
                     className="material-icons mr-2"
@@ -86,8 +86,8 @@ exports[`<MergeCustomersModal/> render() should render 1`] = `
           label="Primary email"
           onChange={[Function]}
           options={
-            Array [
-              Object {
+            [
+              {
                 "label": <span>
                   <SourceIcon
                     className="mr-2"
@@ -97,7 +97,7 @@ exports[`<MergeCustomersModal/> render() should render 1`] = `
                 </span>,
                 "value": "pierre@gorgias.io",
               },
-              Object {
+              {
                 "label": <span>
                   <SourceIcon
                     className="mr-2"
@@ -131,9 +131,9 @@ exports[`<MergeCustomersModal/> render() should render 1`] = `
           label="Contact info"
           onChange={[Function]}
           options={
-            Array [
-              Array [
-                Object {
+            [
+              [
+                {
                   "label": <div>
                     <SourceIcon
                       className="mr-2"
@@ -141,9 +141,9 @@ exports[`<MergeCustomersModal/> render() should render 1`] = `
                     />
                     pierre@gorgias.io
                   </div>,
-                  "value": Object {
+                  "value": {
                     "address": "pierre@gorgias.io",
-                    "customer": Object {
+                    "customer": {
                       "id": 1,
                       "name": "Pierre",
                     },
@@ -152,8 +152,8 @@ exports[`<MergeCustomersModal/> render() should render 1`] = `
                   },
                 },
               ],
-              Array [
-                Object {
+              [
+                {
                   "label": <div>
                     <SourceIcon
                       className="mr-2"
@@ -161,9 +161,9 @@ exports[`<MergeCustomersModal/> render() should render 1`] = `
                     />
                     Pierre@gorgias.io
                   </div>,
-                  "value": Object {
+                  "value": {
                     "address": "Pierre@gorgias.io",
-                    "customer": Object {
+                    "customer": {
                       "id": 2,
                       "name": "Pierre",
                     },
@@ -175,16 +175,16 @@ exports[`<MergeCustomersModal/> render() should render 1`] = `
             ]
           }
           propertiesToCompare={
-            Array [
+            [
               "address",
               "type",
             ]
           }
           requiredValues={
-            Array [
-              Object {
+            [
+              {
                 "address": "pierre@gorgias.io",
-                "customer": Object {
+                "customer": {
                   "id": 1,
                   "name": "Pierre",
                 },
@@ -210,19 +210,19 @@ exports[`<MergeCustomersModal/> render() should render 1`] = `
             </span>
           }
           value={
-            Array [
-              Object {
+            [
+              {
                 "address": "pierre@gorgias.io",
-                "customer": Object {
+                "customer": {
                   "id": 1,
                   "name": "Pierre",
                 },
                 "preferred": true,
                 "type": "email",
               },
-              Object {
+              {
                 "address": "Pierre@gorgias.io",
-                "customer": Object {
+                "customer": {
                   "id": 2,
                   "name": "Pierre",
                 },
@@ -236,22 +236,22 @@ exports[`<MergeCustomersModal/> render() should render 1`] = `
           label="Customer data"
           onChange={[Function]}
           options={
-            Array [
-              Object {
+            [
+              {
                 "label": <JSONTree
                   data={Immutable.Map {}}
                 />,
-                "value": Object {},
+                "value": {},
               },
-              Object {
+              {
                 "label": <JSONTree
                   data={Immutable.Map {}}
                 />,
-                "value": Object {},
+                "value": {},
               },
             ]
           }
-          value={Object {}}
+          value={{}}
         />
       </div>
     </ModalBody>

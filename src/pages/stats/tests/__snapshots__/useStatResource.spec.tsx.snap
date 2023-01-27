@@ -1,20 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`useStatResource debouncing fetch requests should debounce requests when stat filter change 1`] = `
-Object {
-  "delete": Array [],
-  "get": Array [],
-  "head": Array [],
-  "list": Array [],
-  "options": Array [],
-  "patch": Array [],
-  "post": Array [
-    Object {
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [
+    {
       "cancelToken": CancelToken {
         "promise": Promise {},
       },
-      "data": "{\\"filters\\":{\\"period\\":{\\"start_datetime\\":\\"2021-04-02T00:00:00.000Z\\",\\"end_datetime\\":\\"2021-04-02T23:59:59.999Z\\"},\\"channels\\":[\\"email\\"],\\"tags\\":[2]}}",
-      "headers": Object {
+      "data": "{"filters":{"period":{"start_datetime":"2021-04-02T00:00:00.000Z","end_datetime":"2021-04-02T23:59:59.999Z"},"channels":["email"],"tags":[2]}}",
+      "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
         "X-CSRF-Token": "abcd",
@@ -24,10 +24,10 @@ Object {
       "maxContentLength": -1,
       "method": "post",
       "timeout": 180000,
-      "transformRequest": Array [
+      "transformRequest": [
         [Function],
       ],
-      "transformResponse": Array [
+      "transformResponse": [
         [Function],
       ],
       "url": "/api/stats/first-response-time/",
@@ -36,28 +36,28 @@ Object {
       "xsrfHeaderName": "X-XSRF-TOKEN",
     },
   ],
-  "put": Array [],
+  "put": [],
 }
 `;
 
 exports[`useStatResource should display error message on server response error 1`] = `
-Array [
-  Object {
-    "payload": Object {
+[
+  {
+    "payload": {
       "resourceName": "first-response-time",
       "statName": "stat",
     },
     "type": "STAT/FETCH_STAT_STARTED",
   },
-  Object {
-    "message": Object {
+  {
+    "message": {
       "status": "error",
       "title": "Failed to retrieve statistic. Please retry in a few seconds.",
     },
     "type": "notify mock",
   },
-  Object {
-    "payload": Object {
+  {
+    "payload": {
       "resourceName": "first-response-time",
       "statName": "stat",
     },
@@ -67,20 +67,20 @@ Array [
 `;
 
 exports[`useStatResource should fetch and save the stat 1`] = `
-Object {
-  "delete": Array [],
-  "get": Array [],
-  "head": Array [],
-  "list": Array [],
-  "options": Array [],
-  "patch": Array [],
-  "post": Array [
-    Object {
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [
+    {
       "cancelToken": CancelToken {
         "promise": Promise {},
       },
-      "data": "{\\"filters\\":{\\"period\\":{\\"start_datetime\\":\\"2021-04-02T00:00:00.000Z\\",\\"end_datetime\\":\\"2021-04-02T23:59:59.999Z\\"},\\"channels\\":[\\"email\\"]}}",
-      "headers": Object {
+      "data": "{"filters":{"period":{"start_datetime":"2021-04-02T00:00:00.000Z","end_datetime":"2021-04-02T23:59:59.999Z"},"channels":["email"]}}",
+      "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
         "X-CSRF-Token": "abcd",
@@ -90,10 +90,10 @@ Object {
       "maxContentLength": -1,
       "method": "post",
       "timeout": 180000,
-      "transformRequest": Array [
+      "transformRequest": [
         [Function],
       ],
-      "transformResponse": Array [
+      "transformResponse": [
         [Function],
       ],
       "url": "/api/stats/first-response-time/",
@@ -102,28 +102,28 @@ Object {
       "xsrfHeaderName": "X-XSRF-TOKEN",
     },
   ],
-  "put": Array [],
+  "put": [],
 }
 `;
 
 exports[`useStatResource should fetch and save the stat 2`] = `
-Array [
-  Object {
-    "payload": Object {
+[
+  {
+    "payload": {
       "resourceName": "first-response-time",
       "statName": "stat",
     },
     "type": "STAT/FETCH_STAT_STARTED",
   },
-  Object {
-    "payload": Object {
+  {
+    "payload": {
       "resourceName": "first-response-time",
       "statName": "stat",
-      "value": Object {
-        "data": Object {
-          "data": Object {
-            "axes": Object {
-              "x": Array [
+      "value": {
+        "data": {
+          "data": {
+            "axes": {
+              "x": [
                 1558760400,
                 1558846800,
                 1558933200,
@@ -132,11 +132,11 @@ Array [
                 1559192400,
                 1559278800,
               ],
-              "y": Array [],
+              "y": [],
             },
-            "lines": Array [
-              Object {
-                "data": Array [
+            "lines": [
+              {
+                "data": [
                   0,
                   0,
                   0,
@@ -147,8 +147,8 @@ Array [
                 ],
                 "name": "50%",
               },
-              Object {
-                "data": Array [
+              {
+                "data": [
                   0,
                   0,
                   0,
@@ -162,14 +162,14 @@ Array [
             ],
           },
           "label": "First response time (percentiles)",
-          "legend": Object {
-            "axes": Object {
+          "legend": {
+            "axes": {
               "x": "",
               "y": "First response time",
             },
           },
         },
-        "meta": Object {
+        "meta": {
           "end_datetime": "2019-05-31T23:59:59-05:00",
           "previous_end_datetime": "2019-05-25T00:00:00-05:00",
           "previous_start_datetime": "2019-05-18T00:00:01-05:00",
@@ -179,8 +179,8 @@ Array [
     },
     "type": "STAT/STAT_FETCHED",
   },
-  Object {
-    "payload": Object {
+  {
+    "payload": {
       "resourceName": "first-response-time",
       "statName": "stat",
     },
@@ -190,20 +190,20 @@ Array [
 `;
 
 exports[`useStatResource should fetch the page with cursor when fetchPage is called 1`] = `
-Object {
-  "delete": Array [],
-  "get": Array [],
-  "head": Array [],
-  "list": Array [],
-  "options": Array [],
-  "patch": Array [],
-  "post": Array [
-    Object {
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [
+    {
       "cancelToken": CancelToken {
         "promise": Promise {},
       },
-      "data": "{\\"filters\\":{\\"period\\":{\\"start_datetime\\":\\"2021-04-02T00:00:00.000Z\\",\\"end_datetime\\":\\"2021-04-02T23:59:59.999Z\\"},\\"channels\\":[\\"email\\"]},\\"cursor\\":\\"foo-cursor\\"}",
-      "headers": Object {
+      "data": "{"filters":{"period":{"start_datetime":"2021-04-02T00:00:00.000Z","end_datetime":"2021-04-02T23:59:59.999Z"},"channels":["email"]},"cursor":"foo-cursor"}",
+      "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
         "X-CSRF-Token": "abcd",
@@ -213,10 +213,10 @@ Object {
       "maxContentLength": -1,
       "method": "post",
       "timeout": 180000,
-      "transformRequest": Array [
+      "transformRequest": [
         [Function],
       ],
-      "transformResponse": Array [
+      "transformResponse": [
         [Function],
       ],
       "url": "/api/stats/first-response-time/",
@@ -225,28 +225,28 @@ Object {
       "xsrfHeaderName": "X-XSRF-TOKEN",
     },
   ],
-  "put": Array [],
+  "put": [],
 }
 `;
 
 exports[`useStatResource should fetch the page with cursor when fetchPage is called 2`] = `
-Array [
-  Object {
-    "payload": Object {
+[
+  {
+    "payload": {
       "resourceName": "first-response-time",
       "statName": "stat",
     },
     "type": "STAT/FETCH_STAT_STARTED",
   },
-  Object {
-    "payload": Object {
+  {
+    "payload": {
       "resourceName": "first-response-time",
       "statName": "stat",
-      "value": Object {
-        "data": Object {
-          "data": Object {
-            "axes": Object {
-              "x": Array [
+      "value": {
+        "data": {
+          "data": {
+            "axes": {
+              "x": [
                 1558760400,
                 1558846800,
                 1558933200,
@@ -255,11 +255,11 @@ Array [
                 1559192400,
                 1559278800,
               ],
-              "y": Array [],
+              "y": [],
             },
-            "lines": Array [
-              Object {
-                "data": Array [
+            "lines": [
+              {
+                "data": [
                   0,
                   0,
                   0,
@@ -270,8 +270,8 @@ Array [
                 ],
                 "name": "50%",
               },
-              Object {
-                "data": Array [
+              {
+                "data": [
                   0,
                   0,
                   0,
@@ -285,14 +285,14 @@ Array [
             ],
           },
           "label": "First response time (percentiles)",
-          "legend": Object {
-            "axes": Object {
+          "legend": {
+            "axes": {
               "x": "",
               "y": "First response time",
             },
           },
         },
-        "meta": Object {
+        "meta": {
           "end_datetime": "2019-05-31T23:59:59-05:00",
           "previous_end_datetime": "2019-05-25T00:00:00-05:00",
           "previous_start_datetime": "2019-05-18T00:00:01-05:00",
@@ -302,8 +302,8 @@ Array [
     },
     "type": "STAT/STAT_FETCHED",
   },
-  Object {
-    "payload": Object {
+  {
+    "payload": {
       "resourceName": "first-response-time",
       "statName": "stat",
     },

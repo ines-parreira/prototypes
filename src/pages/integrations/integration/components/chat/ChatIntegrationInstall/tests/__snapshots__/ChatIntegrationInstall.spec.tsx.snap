@@ -3,7 +3,7 @@
 exports[`ChatIntegrationInstall component should display the list of Shopify stores with the toggle checked or not depending on the installation status 1`] = `
 <Provider
   store={
-    Object {
+    {
       "clearActions": [Function],
       "dispatch": [Function],
       "getActions": [Function],
@@ -281,7 +281,7 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
             <Row
               tag="div"
               widths={
-                Array [
+                [
                   "xs",
                   "sm",
                   "md",
@@ -297,7 +297,7 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                   md="8"
                   tag="div"
                   widths={
-                    Array [
+                    [
                       "xs",
                       "sm",
                       "md",
@@ -349,9 +349,9 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                     </Component>
                     <CustomInstallationCard
                       code="<!-- Gorgias Chat Widget Start -->
-<div id=\\"gorgias-chat\\">
+<div id="gorgias-chat">
 <script>window.gorgiasChatParameters = {}</script>
-<script src=\\"config.gorgias.io/foo/chat/bar\\" defer></script>
+<script src="config.gorgias.io/foo/chat/bar" defer></script>
 </div>
 <!-- Gorgias Chat Widget End -->"
                       description={
@@ -412,7 +412,7 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                                 isOpen={true}
                                 tag="div"
                                 transition={
-                                  Object {
+                                  {
                                     "appear": true,
                                     "baseClass": "fade",
                                     "baseClassActive": "show",

@@ -1,66 +1,66 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ticketNavbar reducer optimisticAccountSettingsReset action should reset the account settings 1`] = `
-Object {
-  "optimisticAccountSettings": Object {
-    "view_sections": Object {},
-    "views": Object {},
+{
+  "optimisticAccountSettings": {
+    "view_sections": {},
+    "views": {},
   },
-  "optimisticUserSettings": Object {
-    "view_sections": Object {},
-    "views": Object {},
+  "optimisticUserSettings": {
+    "view_sections": {},
+    "views": {},
   },
 }
 `;
 
 exports[`ticketNavbar reducer optimisticAccountSettingsSet action should set the account settings 1`] = `
-Object {
-  "optimisticAccountSettings": Object {
-    "view_sections": Object {
-      "1": Object {
+{
+  "optimisticAccountSettings": {
+    "view_sections": {
+      "1": {
         "display_order": 2,
       },
     },
-    "views": Object {
-      "1": Object {
+    "views": {
+      "1": {
         "display_order": 1,
       },
     },
   },
-  "optimisticUserSettings": Object {
-    "view_sections": Object {},
-    "views": Object {},
+  "optimisticUserSettings": {
+    "view_sections": {},
+    "views": {},
   },
 }
 `;
 
 exports[`ticketNavbar reducer optimisticUserSettingsReset action should reset the user settings 1`] = `
-Object {
-  "optimisticAccountSettings": Object {
-    "view_sections": Object {},
-    "views": Object {},
+{
+  "optimisticAccountSettings": {
+    "view_sections": {},
+    "views": {},
   },
-  "optimisticUserSettings": Object {
-    "view_sections": Object {},
-    "views": Object {},
+  "optimisticUserSettings": {
+    "view_sections": {},
+    "views": {},
   },
 }
 `;
 
 exports[`ticketNavbar reducer optimisticUserSettingsSet action should set the user settings 1`] = `
-Object {
-  "optimisticAccountSettings": Object {
-    "view_sections": Object {},
-    "views": Object {},
+{
+  "optimisticAccountSettings": {
+    "view_sections": {},
+    "views": {},
   },
-  "optimisticUserSettings": Object {
-    "view_sections": Object {
-      "1": Object {
+  "optimisticUserSettings": {
+    "view_sections": {
+      "1": {
         "display_order": 2,
       },
     },
-    "views": Object {
-      "1": Object {
+    "views": {
+      "1": {
         "display_order": 1,
       },
     },

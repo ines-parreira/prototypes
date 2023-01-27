@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`PeriodStatsFilter should merge stats filters on period change 1`] = `
-Array [
-  Object {
+[
+  {
     "filters": Immutable.Map {
       "period": Immutable.Map {
         "start_datetime": "2017-02-14T00:00:00Z",

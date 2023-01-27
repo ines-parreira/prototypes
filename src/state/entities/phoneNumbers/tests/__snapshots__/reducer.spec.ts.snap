@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`phoneNumbers reducer createPhoneNumber action should add a new phone number to the state 1`] = `
-Object {
-  "1": Object {
-    "capabilities": Object {
+{
+  "1": {
+    "capabilities": {
       "mms": true,
       "sms": true,
       "voice": true,
@@ -11,8 +11,8 @@ Object {
     "created_datetime": "2021-12-01T18:00:00.000000+00:00",
     "deleted_datetime": null,
     "id": 1,
-    "integrations": Array [],
-    "meta": Object {
+    "integrations": [],
+    "meta": {
       "area_code": 415,
       "country": "US",
       "emoji": "👍",
@@ -27,12 +27,12 @@ Object {
 }
 `;
 
-exports[`phoneNumbers reducer deletePhoneNumner action should delete a phone numner from the state 1`] = `Object {}`;
+exports[`phoneNumbers reducer deletePhoneNumner action should delete a phone numner from the state 1`] = `{}`;
 
 exports[`phoneNumbers reducer fetchPhoneNumber action should add a new phone number to the state 1`] = `
-Object {
-  "1": Object {
-    "capabilities": Object {
+{
+  "1": {
+    "capabilities": {
       "mms": true,
       "sms": true,
       "voice": true,
@@ -40,8 +40,8 @@ Object {
     "created_datetime": "2021-12-01T18:00:00.000000+00:00",
     "deleted_datetime": null,
     "id": 1,
-    "integrations": Array [],
-    "meta": Object {
+    "integrations": [],
+    "meta": {
       "area_code": 415,
       "country": "US",
       "emoji": "👍",
@@ -57,9 +57,9 @@ Object {
 `;
 
 exports[`phoneNumbers reducer fetchPhoneNumbers action should add the phone numbers to the state 1`] = `
-Object {
-  "1": Object {
-    "capabilities": Object {
+{
+  "1": {
+    "capabilities": {
       "mms": true,
       "sms": true,
       "voice": true,
@@ -67,8 +67,8 @@ Object {
     "created_datetime": "2021-12-01T18:00:00.000000+00:00",
     "deleted_datetime": null,
     "id": 1,
-    "integrations": Array [],
-    "meta": Object {
+    "integrations": [],
+    "meta": {
       "area_code": 415,
       "country": "US",
       "emoji": "👍",
@@ -80,8 +80,8 @@ Object {
     "phone_number": "+14151112222",
     "updated_datetime": "2021-12-01T18:00:00.000000+00:00",
   },
-  "2": Object {
-    "capabilities": Object {
+  "2": {
+    "capabilities": {
       "mms": true,
       "sms": true,
       "voice": true,
@@ -89,8 +89,8 @@ Object {
     "created_datetime": "2021-12-01T18:00:00.000000+00:00",
     "deleted_datetime": null,
     "id": 2,
-    "integrations": Array [],
-    "meta": Object {
+    "integrations": [],
+    "meta": {
       "area_code": 813,
       "country": "CA",
       "emoji": "👍",
@@ -101,8 +101,8 @@ Object {
     "phone_number": "+14151112223",
     "updated_datetime": "2021-12-01T18:00:00.000000+00:00",
   },
-  "3": Object {
-    "address": Object {
+  "3": {
+    "address": {
       "address": "SomethingVile, Somewhere",
       "business_name": "ACME",
       "city": "SomethingVile",
@@ -111,7 +111,7 @@ Object {
       "region": "Somewhere",
       "type": "company",
     },
-    "capabilities": Object {
+    "capabilities": {
       "mms": false,
       "sms": false,
       "voice": true,
@@ -119,8 +119,8 @@ Object {
     "created_datetime": "2021-12-01T18:00:00.000000+00:00",
     "deleted_datetime": null,
     "id": 3,
-    "integrations": Array [],
-    "meta": Object {
+    "integrations": [],
+    "meta": {
       "area_code": 7,
       "country": "GB",
       "emoji": "👍",

@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<TicketAssignment/> should call \`fetchChats\` on submit when the \`assignment_channels\` setting has changed and \`auto_assign_to_teams\` is enabled 1`] = `
-Array [
-  Array [
-    Object {
-      "data": Object {
-        "assignment_channels": Array [
+[
+  [
+    {
+      "data": {
+        "assignment_channels": [
           "facebook-messenger",
         ],
         "auto_assign_to_teams": true,
@@ -21,11 +21,11 @@ Array [
 `;
 
 exports[`<TicketAssignment/> should call \`fetchChats\` on submit when the \`auto_assign_to_teams\` setting has changed 1`] = `
-Array [
-  Array [
-    Object {
-      "data": Object {
-        "assignment_channels": Array [
+[
+  [
+    {
+      "data": {
+        "assignment_channels": [
           "chat",
           "facebook-messenger",
         ],
@@ -42,11 +42,11 @@ Array [
 `;
 
 exports[`<TicketAssignment/> should call \`submitSetting\` and call \`fetchChats\` on submit when the account has no \`ticket-assignment\` setting 1`] = `
-Array [
-  Array [
-    Object {
-      "data": Object {
-        "assignment_channels": Array [
+[
+  [
+    {
+      "data": {
+        "assignment_channels": [
           "chat",
           "facebook-messenger",
         ],
@@ -63,11 +63,11 @@ Array [
 `;
 
 exports[`<TicketAssignment/> should call \`submitSetting\` and not call \`fetchChats\` on submit when nor the \`auto_assign_to_teams\` setting nor the \`assignment_channels\` setting has changed 1`] = `
-Array [
-  Array [
-    Object {
-      "data": Object {
-        "assignment_channels": Array [
+[
+  [
+    {
+      "data": {
+        "assignment_channels": [
           "chat",
           "facebook-messenger",
         ],
@@ -84,11 +84,11 @@ Array [
 `;
 
 exports[`<TicketAssignment/> should not call \`fetchChats\` on submit when the \`assignment_channels\` setting has changed but \`auto_assign_to_teams\` is disabled 1`] = `
-Array [
-  Array [
-    Object {
-      "data": Object {
-        "assignment_channels": Array [
+[
+  [
+    {
+      "data": {
+        "assignment_channels": [
           "facebook-messenger",
         ],
         "auto_assign_to_teams": false,
@@ -863,11 +863,11 @@ exports[`<TicketAssignment/> should render the store data 1`] = `
 `;
 
 exports[`<TicketAssignment/> should send updated auto assignment limits on submit 1`] = `
-Array [
-  Array [
-    Object {
-      "data": Object {
-        "assignment_channels": Array [
+[
+  [
+    {
+      "data": {
+        "assignment_channels": [
           "chat",
           "facebook-messenger",
         ],

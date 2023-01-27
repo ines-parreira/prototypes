@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`infobarActions.shopify.createOrder actions addCustomRow() should add custom row to the payload 1`] = `
-Array [
-  Object {
+[
+  {
     "payload": Immutable.Map {
       "shipping_address": Immutable.Map {
         "zip": null,
@@ -100,16 +100,16 @@ Array [
     },
     "type": "infobarActions/shopify/createOrder/SET_PAYLOAD",
   },
-  Object {
+  {
     "loading": true,
     "message": "Calculating draft order...",
     "type": "infobarActions/shopify/createOrder/SET_LOADING",
   },
-  Object {
+  {
     "calculatedDraftOrder": Immutable.Map {},
     "type": "infobarActions/shopify/createOrder/SET_CALCULATED_DRAFT_ORDER",
   },
-  Object {
+  {
     "calculatedDraftOrder": Immutable.Map {
       "appliedDiscount": Immutable.Map {
         "amountV2": Immutable.Map {
@@ -138,7 +138,7 @@ Array [
     },
     "type": "infobarActions/shopify/createOrder/SET_CALCULATED_DRAFT_ORDER",
   },
-  Object {
+  {
     "loading": false,
     "message": null,
     "type": "infobarActions/shopify/createOrder/SET_LOADING",
@@ -147,8 +147,8 @@ Array [
 `;
 
 exports[`infobarActions.shopify.createOrder actions addRow() should add row to the payload 1`] = `
-Array [
-  Object {
+[
+  {
     "payload": Immutable.Map {
       "shipping_address": Immutable.Map {
         "zip": null,
@@ -247,16 +247,16 @@ Array [
     },
     "type": "infobarActions/shopify/createOrder/SET_PAYLOAD",
   },
-  Object {
+  {
     "loading": true,
     "message": "Calculating draft order...",
     "type": "infobarActions/shopify/createOrder/SET_LOADING",
   },
-  Object {
+  {
     "calculatedDraftOrder": Immutable.Map {},
     "type": "infobarActions/shopify/createOrder/SET_CALCULATED_DRAFT_ORDER",
   },
-  Object {
+  {
     "products": Map {
       1 => Immutable.Map {
         "id": 1,
@@ -296,7 +296,7 @@ Array [
     },
     "type": "infobarActions/shopify/createOrder/SET_PRODUCTS",
   },
-  Object {
+  {
     "calculatedDraftOrder": Immutable.Map {
       "appliedDiscount": Immutable.Map {
         "amountV2": Immutable.Map {
@@ -325,171 +325,7 @@ Array [
     },
     "type": "infobarActions/shopify/createOrder/SET_CALCULATED_DRAFT_ORDER",
   },
-  Object {
-    "loading": false,
-    "message": null,
-    "type": "infobarActions/shopify/createOrder/SET_LOADING",
-  },
-]
-`;
-
-exports[`infobarActions.shopify.createOrder actions onEmailInvoice() should display an error 1`] = `
-Array [
-  Object {
-    "loading": true,
-    "message": "Creating draft order...",
-    "type": "infobarActions/shopify/createOrder/SET_LOADING",
-  },
-  Object {
-    "loading": false,
-    "message": null,
-    "type": "infobarActions/shopify/createOrder/SET_LOADING",
-  },
-  Object {
-    "loading": true,
-    "message": "Sending invoice...",
-    "type": "infobarActions/shopify/createOrder/SET_LOADING",
-  },
-  Object {
-    "payload": Object {
-      "allowHTML": false,
-      "buttons": Array [],
-      "closeButton": false,
-      "closeOnNext": true,
-      "dismissAfter": 3000,
-      "dismissible": true,
-      "id": 1,
-      "message": "Executing action...",
-      "position": "top-center",
-      "status": "loading",
-      "style": "alert",
-    },
-    "type": "reapop/upsertNotification",
-  },
-  Object {
-    "callback": [Function],
-    "data": Object {
-      "action_id": "shopifySendDraftOrderInvoice-789-1-ef990fcde14d08ea84a4dab72437ae3cbea2c819",
-      "action_label": undefined,
-      "action_name": "shopifySendDraftOrderInvoice",
-      "integration_id": "1",
-      "payload": Object {
-        "draft_order_id": 1,
-        "draft_order_invoice": Object {
-          "custom_message": "foo bar",
-          "to": "foo@bar.xyz",
-        },
-        "draft_order_name": "#D123",
-        "order_id": 123,
-      },
-      "ticket_id": "456",
-      "user_id": "789",
-    },
-    "id": "shopifySendDraftOrderInvoice-789-1-ef990fcde14d08ea84a4dab72437ae3cbea2c819",
-    "type": "EXECUTE_ACTION_START",
-  },
-  Object {
-    "data": Object {
-      "action_id": "shopifySendDraftOrderInvoice-789-1-ef990fcde14d08ea84a4dab72437ae3cbea2c819",
-      "action_label": undefined,
-      "action_name": "shopifySendDraftOrderInvoice",
-      "integration_id": "1",
-      "payload": Object {
-        "draft_order_id": 1,
-        "draft_order_invoice": Object {
-          "custom_message": "foo bar",
-          "to": "foo@bar.xyz",
-        },
-        "draft_order_name": "#D123",
-        "order_id": 123,
-      },
-      "ticket_id": "456",
-      "user_id": "789",
-    },
-    "error": [Error: Request failed with status code 500],
-    "id": "shopifySendDraftOrderInvoice-789-1-ef990fcde14d08ea84a4dab72437ae3cbea2c819",
-    "reason": "Failed to execute action shopifySendDraftOrderInvoice on customer #789 for integration 1",
-    "type": "EXECUTE_ACTION_ERROR",
-  },
-  Object {
-    "loading": false,
-    "message": null,
-    "type": "infobarActions/shopify/createOrder/SET_LOADING",
-  },
-]
-`;
-
-exports[`infobarActions.shopify.createOrder actions onEmailInvoice() should email invoice 1`] = `
-Array [
-  Object {
-    "loading": true,
-    "message": "Creating draft order...",
-    "type": "infobarActions/shopify/createOrder/SET_LOADING",
-  },
-  Object {
-    "loading": false,
-    "message": null,
-    "type": "infobarActions/shopify/createOrder/SET_LOADING",
-  },
-  Object {
-    "loading": true,
-    "message": "Sending invoice...",
-    "type": "infobarActions/shopify/createOrder/SET_LOADING",
-  },
-  Object {
-    "payload": Object {
-      "allowHTML": false,
-      "buttons": Array [],
-      "closeButton": false,
-      "closeOnNext": true,
-      "dismissAfter": 3000,
-      "dismissible": true,
-      "id": 1,
-      "message": "Executing action...",
-      "position": "top-center",
-      "status": "loading",
-      "style": "alert",
-    },
-    "type": "reapop/upsertNotification",
-  },
-  Object {
-    "callback": [Function],
-    "data": Object {
-      "action_id": "shopifySendDraftOrderInvoice-789-1-ef990fcde14d08ea84a4dab72437ae3cbea2c819",
-      "action_label": undefined,
-      "action_name": "shopifySendDraftOrderInvoice",
-      "integration_id": "1",
-      "payload": Object {
-        "draft_order_id": 1,
-        "draft_order_invoice": Object {
-          "custom_message": "foo bar",
-          "to": "foo@bar.xyz",
-        },
-        "draft_order_name": "#D123",
-        "order_id": 123,
-      },
-      "ticket_id": "456",
-      "user_id": "789",
-    },
-    "id": "shopifySendDraftOrderInvoice-789-1-ef990fcde14d08ea84a4dab72437ae3cbea2c819",
-    "type": "EXECUTE_ACTION_START",
-  },
-  Object {
-    "payload": Object {
-      "allowHTML": false,
-      "buttons": Array [],
-      "closeButton": false,
-      "dismissAfter": 3000,
-      "dismissible": true,
-      "id": 1,
-      "message": "Draft order #D123 created, invoice successfully sent",
-      "position": "top-center",
-      "status": "success",
-      "style": "alert",
-    },
-    "type": "reapop/upsertNotification",
-  },
-  Object {
+  {
     "loading": false,
     "message": null,
     "type": "infobarActions/shopify/createOrder/SET_LOADING",
@@ -498,13 +334,13 @@ Array [
 `;
 
 exports[`infobarActions.shopify.createOrder actions onInit() on error should call onError 1`] = `
-Array [
-  Object {
+[
+  {
     "loading": true,
     "message": "Fetching products...",
     "type": "infobarActions/shopify/createOrder/SET_LOADING",
   },
-  Object {
+  {
     "payload": Immutable.Map {
       "shipping_address": Immutable.Map {
         "zip": null,
@@ -614,16 +450,16 @@ Array [
     },
     "type": "infobarActions/shopify/createOrder/SET_PAYLOAD",
   },
-  Object {
+  {
     "loading": true,
     "message": "Calculating draft order...",
     "type": "infobarActions/shopify/createOrder/SET_LOADING",
   },
-  Object {
+  {
     "calculatedDraftOrder": Immutable.Map {},
     "type": "infobarActions/shopify/createOrder/SET_CALCULATED_DRAFT_ORDER",
   },
-  Object {
+  {
     "products": Map {
       8345093387 => Immutable.Map {
         "id": 8345093387,
@@ -678,15 +514,15 @@ Array [
     },
     "type": "infobarActions/shopify/createOrder/SET_PRODUCTS",
   },
-  Object {
+  {
     "loading": false,
     "message": null,
     "type": "infobarActions/shopify/createOrder/SET_LOADING",
   },
-  Object {
-    "payload": Object {
+  {
+    "payload": {
       "allowHTML": true,
-      "buttons": Array [],
+      "buttons": [],
       "closeButton": false,
       "dismissAfter": 3000,
       "dismissible": true,
@@ -698,7 +534,7 @@ Array [
     },
     "type": "reapop/upsertNotification",
   },
-  Object {
+  {
     "loading": false,
     "message": null,
     "type": "infobarActions/shopify/createOrder/SET_LOADING",
@@ -707,13 +543,13 @@ Array [
 `;
 
 exports[`infobarActions.shopify.createOrder actions onInit() on success should init the state 1`] = `
-Array [
-  Object {
+[
+  {
     "loading": true,
     "message": "Fetching products...",
     "type": "infobarActions/shopify/createOrder/SET_LOADING",
   },
-  Object {
+  {
     "payload": Immutable.Map {
       "shipping_address": Immutable.Map {
         "zip": null,
@@ -823,16 +659,16 @@ Array [
     },
     "type": "infobarActions/shopify/createOrder/SET_PAYLOAD",
   },
-  Object {
+  {
     "loading": true,
     "message": "Calculating draft order...",
     "type": "infobarActions/shopify/createOrder/SET_LOADING",
   },
-  Object {
+  {
     "calculatedDraftOrder": Immutable.Map {},
     "type": "infobarActions/shopify/createOrder/SET_CALCULATED_DRAFT_ORDER",
   },
-  Object {
+  {
     "products": Map {
       8345093387 => Immutable.Map {
         "id": 8345093387,
@@ -887,7 +723,7 @@ Array [
     },
     "type": "infobarActions/shopify/createOrder/SET_PRODUCTS",
   },
-  Object {
+  {
     "calculatedDraftOrder": Immutable.Map {
       "appliedDiscount": Immutable.Map {
         "amountV2": Immutable.Map {
@@ -916,7 +752,7 @@ Array [
     },
     "type": "infobarActions/shopify/createOrder/SET_CALCULATED_DRAFT_ORDER",
   },
-  Object {
+  {
     "loading": false,
     "message": null,
     "type": "infobarActions/shopify/createOrder/SET_LOADING",
@@ -925,8 +761,8 @@ Array [
 `;
 
 exports[`infobarActions.shopify.createOrder actions onInit() on success should init the state when the customer has no currency 1`] = `
-Array [
-  Object {
+[
+  {
     "payload": Immutable.Map {
       "shipping_address": Immutable.Map {
         "default": true,
@@ -1002,8 +838,8 @@ Array [
 `;
 
 exports[`infobarActions.shopify.createOrder actions onLineItemChange() edits the payload with the new product line 1`] = `
-Array [
-  Object {
+[
+  {
     "payload": Immutable.Map {
       "shipping_address": Immutable.Map {
         "zip": null,
@@ -1135,16 +971,16 @@ Array [
     },
     "type": "infobarActions/shopify/createOrder/SET_PAYLOAD",
   },
-  Object {
+  {
     "loading": true,
     "message": "Calculating draft order...",
     "type": "infobarActions/shopify/createOrder/SET_LOADING",
   },
-  Object {
+  {
     "calculatedDraftOrder": Immutable.Map {},
     "type": "infobarActions/shopify/createOrder/SET_CALCULATED_DRAFT_ORDER",
   },
-  Object {
+  {
     "calculatedDraftOrder": Immutable.Map {
       "appliedDiscount": Immutable.Map {
         "amountV2": Immutable.Map {
@@ -1173,7 +1009,7 @@ Array [
     },
     "type": "infobarActions/shopify/createOrder/SET_CALCULATED_DRAFT_ORDER",
   },
-  Object {
+  {
     "loading": false,
     "message": null,
     "type": "infobarActions/shopify/createOrder/SET_LOADING",
@@ -1182,8 +1018,8 @@ Array [
 `;
 
 exports[`infobarActions.shopify.createOrder actions onLineItemChange() edits the payload with the removed product line 1`] = `
-Array [
-  Object {
+[
+  {
     "payload": Immutable.Map {
       "shipping_address": Immutable.Map {
         "zip": null,
@@ -1253,16 +1089,16 @@ Array [
     },
     "type": "infobarActions/shopify/createOrder/SET_PAYLOAD",
   },
-  Object {
+  {
     "loading": true,
     "message": "Calculating draft order...",
     "type": "infobarActions/shopify/createOrder/SET_LOADING",
   },
-  Object {
+  {
     "calculatedDraftOrder": Immutable.Map {},
     "type": "infobarActions/shopify/createOrder/SET_CALCULATED_DRAFT_ORDER",
   },
-  Object {
+  {
     "calculatedDraftOrder": Immutable.Map {
       "appliedDiscount": Immutable.Map {
         "amountV2": Immutable.Map {
@@ -1291,7 +1127,7 @@ Array [
     },
     "type": "infobarActions/shopify/createOrder/SET_CALCULATED_DRAFT_ORDER",
   },
-  Object {
+  {
     "loading": false,
     "message": null,
     "type": "infobarActions/shopify/createOrder/SET_LOADING",
@@ -1300,8 +1136,8 @@ Array [
 `;
 
 exports[`infobarActions.shopify.createOrder actions onPayloadChange() on success should calculate draft order 1`] = `
-Array [
-  Object {
+[
+  {
     "payload": Immutable.Map {
       "shipping_address": Immutable.Map {
         "zip": null,
@@ -1385,16 +1221,16 @@ Array [
     },
     "type": "infobarActions/shopify/createOrder/SET_PAYLOAD",
   },
-  Object {
+  {
     "loading": true,
     "message": "Calculating draft order...",
     "type": "infobarActions/shopify/createOrder/SET_LOADING",
   },
-  Object {
+  {
     "calculatedDraftOrder": Immutable.Map {},
     "type": "infobarActions/shopify/createOrder/SET_CALCULATED_DRAFT_ORDER",
   },
-  Object {
+  {
     "calculatedDraftOrder": Immutable.Map {
       "appliedDiscount": Immutable.Map {
         "amountV2": Immutable.Map {
@@ -1423,7 +1259,7 @@ Array [
     },
     "type": "infobarActions/shopify/createOrder/SET_CALCULATED_DRAFT_ORDER",
   },
-  Object {
+  {
     "loading": false,
     "message": null,
     "type": "infobarActions/shopify/createOrder/SET_LOADING",
@@ -1432,8 +1268,8 @@ Array [
 `;
 
 exports[`infobarActions.shopify.createOrder actions onReset() should reset state 1`] = `
-Array [
-  Object {
+[
+  {
     "type": "infobarActions/shopify/createOrder/SET_INITIAL_STATE",
   },
 ]

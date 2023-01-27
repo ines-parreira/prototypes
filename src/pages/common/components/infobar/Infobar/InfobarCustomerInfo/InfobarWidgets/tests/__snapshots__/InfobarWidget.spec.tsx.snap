@@ -9,9 +9,9 @@ exports[`InfobarWidget card widget should display the widget if isEditing=true 1
 exports[`InfobarWidget card widget should display the widget with BigCommerce extension because the widget type is BigCommerce 1`] = `
 <ContextProvider
   value={
-    Object {
+    {
       "data_source": "",
-      "widget_resource_ids": Object {
+      "widget_resource_ids": {
         "customer_id": null,
         "target_id": null,
       },
@@ -36,7 +36,7 @@ exports[`InfobarWidget card widget should display the widget with BigCommerce ex
     template={
       Immutable.Map {
         "type": "card",
-        "path": Array [
+        "path": [
           "ticket",
           "customer",
           "integrations",
@@ -51,7 +51,7 @@ exports[`InfobarWidget card widget should display the widget with BigCommerce ex
             "widgets": Immutable.List [],
           },
         ],
-        "absolutePath": Array [
+        "absolutePath": [
           "ticket",
           "customer",
           "integrations",
@@ -71,9 +71,9 @@ exports[`InfobarWidget card widget should display the widget with BigCommerce ex
 exports[`InfobarWidget card widget should display the widget with Magento2 extension because the widget type is Magento2 1`] = `
 <ContextProvider
   value={
-    Object {
+    {
       "data_source": "",
-      "widget_resource_ids": Object {
+      "widget_resource_ids": {
         "customer_id": null,
         "target_id": null,
       },
@@ -98,7 +98,7 @@ exports[`InfobarWidget card widget should display the widget with Magento2 exten
     template={
       Immutable.Map {
         "type": "card",
-        "path": Array [
+        "path": [
           "ticket",
           "customer",
           "integrations",
@@ -113,7 +113,7 @@ exports[`InfobarWidget card widget should display the widget with Magento2 exten
             "widgets": Immutable.List [],
           },
         ],
-        "absolutePath": Array [
+        "absolutePath": [
           "ticket",
           "customer",
           "integrations",
@@ -133,9 +133,9 @@ exports[`InfobarWidget card widget should display the widget with Magento2 exten
 exports[`InfobarWidget card widget should display the widget with Recharge extension because the widget type is Recharge 1`] = `
 <ContextProvider
   value={
-    Object {
+    {
       "data_source": "",
-      "widget_resource_ids": Object {
+      "widget_resource_ids": {
         "customer_id": null,
         "target_id": null,
       },
@@ -160,7 +160,7 @@ exports[`InfobarWidget card widget should display the widget with Recharge exten
     template={
       Immutable.Map {
         "type": "card",
-        "path": Array [
+        "path": [
           "ticket",
           "customer",
           "integrations",
@@ -175,7 +175,7 @@ exports[`InfobarWidget card widget should display the widget with Recharge exten
             "widgets": Immutable.List [],
           },
         ],
-        "absolutePath": Array [
+        "absolutePath": [
           "ticket",
           "customer",
           "integrations",
@@ -195,9 +195,9 @@ exports[`InfobarWidget card widget should display the widget with Recharge exten
 exports[`InfobarWidget card widget should display the widget with Shopify extension because the widget type is Shopify 1`] = `
 <ContextProvider
   value={
-    Object {
+    {
       "data_source": "",
-      "widget_resource_ids": Object {
+      "widget_resource_ids": {
         "customer_id": null,
         "target_id": null,
       },
@@ -222,7 +222,7 @@ exports[`InfobarWidget card widget should display the widget with Shopify extens
     template={
       Immutable.Map {
         "type": "card",
-        "path": Array [
+        "path": [
           "ticket",
           "customer",
           "integrations",
@@ -237,7 +237,7 @@ exports[`InfobarWidget card widget should display the widget with Shopify extens
             "widgets": Immutable.List [],
           },
         ],
-        "absolutePath": Array [
+        "absolutePath": [
           "ticket",
           "customer",
           "integrations",

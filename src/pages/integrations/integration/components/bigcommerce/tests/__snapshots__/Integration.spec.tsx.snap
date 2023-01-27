@@ -128,8 +128,8 @@ exports[`<BigCommerceIntegration/> render() should render an integration with a 
 `;
 
 exports[`<BigCommerceIntegration/> render() should render an integration with a delete button that deletes the integration 2`] = `
-Array [
-  Array [
+[
+  [
     Immutable.Map {},
   ],
 ]

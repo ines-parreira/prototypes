@@ -13,7 +13,7 @@ exports[`DEPRECATED_BooleanField should render a basic boolean input 1`] = `
     htmlFor="id-mybooleanfield"
     tag="label"
     widths={
-      Array [
+      [
         "xs",
         "sm",
         "md",
@@ -32,7 +32,7 @@ exports[`DEPRECATED_BooleanField should render a basic boolean input 1`] = `
     />
     <span
       style={
-        Object {
+        {
           "verticalAlign": "middle",
         }
       }
@@ -56,7 +56,7 @@ exports[`DEPRECATED_BooleanField should render a help text 1`] = `
     htmlFor="id-mybooleanfield"
     tag="label"
     widths={
-      Array [
+      [
         "xs",
         "sm",
         "md",
@@ -75,7 +75,7 @@ exports[`DEPRECATED_BooleanField should render a help text 1`] = `
     />
     <span
       style={
-        Object {
+        {
           "verticalAlign": "middle",
         }
       }
@@ -105,7 +105,7 @@ exports[`DEPRECATED_BooleanField should render a required input 1`] = `
     htmlFor="id-mybooleanfield"
     tag="label"
     widths={
-      Array [
+      [
         "xs",
         "sm",
         "md",
@@ -125,7 +125,7 @@ exports[`DEPRECATED_BooleanField should render a required input 1`] = `
     />
     <span
       style={
-        Object {
+        {
           "verticalAlign": "middle",
         }
       }
@@ -149,7 +149,7 @@ exports[`DEPRECATED_BooleanField should render inline 1`] = `
     htmlFor="id-mybooleanfield"
     tag="label"
     widths={
-      Array [
+      [
         "xs",
         "sm",
         "md",
@@ -168,7 +168,7 @@ exports[`DEPRECATED_BooleanField should render inline 1`] = `
     />
     <span
       style={
-        Object {
+        {
           "verticalAlign": "middle",
         }
       }
@@ -192,7 +192,7 @@ exports[`DEPRECATED_BooleanField should render the input with an error 1`] = `
     htmlFor="id-mybooleanfield"
     tag="label"
     widths={
-      Array [
+      [
         "xs",
         "sm",
         "md",
@@ -211,7 +211,7 @@ exports[`DEPRECATED_BooleanField should render the input with an error 1`] = `
     />
     <span
       style={
-        Object {
+        {
           "verticalAlign": "middle",
         }
       }
@@ -226,7 +226,7 @@ exports[`DEPRECATED_BooleanField should render the input with an error 1`] = `
 `;
 
 exports[`DEPRECATED_BooleanField should use default props 1`] = `
-Object {
+{
   "label": "label",
   "name": "mybooleanfield",
   "onChange": [Function],

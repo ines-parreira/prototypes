@@ -325,11 +325,7 @@ describe('<SpotlightModal/>', () => {
     })
 
     it('should show SpotlightNoResults component when no results are available and notify when an error occurs', async () => {
-        mockSearchTickets.mockResolvedValue({
-            data: {
-                data: [],
-            },
-        } as unknown as AxiosResponse<ApiListResponseCursorPagination<Ticket[]>>)
+        mockSearchTickets.mockResolvedValue({} as unknown as AxiosResponse)
         jest.useFakeTimers()
 
         const {rerender, getByPlaceholderText, container} = renderWithRouter(

@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`InfobarWidgets component should call the appropriate callback when clicking remove icon in edit mode 1`] = `
-Array [
-  Array [
+[
+  [
     "templatePath",
     Immutable.List [
       "absolute",

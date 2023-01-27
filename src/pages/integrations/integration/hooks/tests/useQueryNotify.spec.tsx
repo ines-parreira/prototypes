@@ -51,9 +51,9 @@ describe('useQueryNotify()', () => {
             ),
         })
         expect(notify.mock.calls).toMatchInlineSnapshot(`
-            Array [
-              Array [
-                Object {
+            [
+              [
+                {
                   "message": "You need to update your app permissions in order to do that.",
                   "status": "error",
                 },
@@ -75,9 +75,9 @@ describe('useQueryNotify()', () => {
             ),
         })
         expect(notify.mock.calls).toMatchInlineSnapshot(`
-            Array [
-              Array [
-                Object {
+            [
+              [
+                {
                   "message": "you should see me in snaps",
                   "status": "info",
                 },
@@ -101,9 +101,9 @@ describe('useQueryNotify()', () => {
             ),
         })
         expect(notify.mock.calls).toMatchInlineSnapshot(`
-            Array [
-              Array [
-                Object {
+            [
+              [
+                {
                   "message": "you should see me in snaps",
                   "status": "warning",
                 },
@@ -125,9 +125,9 @@ describe('useQueryNotify()', () => {
             ),
         })
         expect(notify.mock.calls).toMatchInlineSnapshot(`
-            Array [
-              Array [
-                Object {
+            [
+              [
+                {
                   "message": "You need to update your app permissions in order to do that.",
                   "status": "warning",
                 },

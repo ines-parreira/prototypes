@@ -1402,9 +1402,9 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
 `;
 
 exports[`<BillingPlansComparison /> should display notification when not allowed to change plan on plan change 1`] = `
-Array [
-  Array [
-    Object {
+[
+  [
+    {
       "message": "You cannot change your current plan because you have too many active integrations. Delete or deactivate a few integrations and try again.",
       "status": "error",
     },

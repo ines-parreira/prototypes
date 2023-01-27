@@ -1,26 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`macro resources createMacro should resolve with a new Macro on success 1`] = `
-Object {
-  "actions": Array [
-    Object {
-      "arguments": Object {
+{
+  "actions": [
+    {
+      "arguments": {
         "tags": "refund",
       },
       "name": "addTags",
       "title": "Add Refund Tag",
       "type": "user",
     },
-    Object {
-      "arguments": Object {
+    {
+      "arguments": {
         "tags": "refund accepted",
       },
       "name": "addTags",
       "title": "Add Refund Accepted Tag",
       "type": "user",
     },
-    Object {
-      "arguments": Object {
+    {
+      "arguments": {
         "body_html": "<div>Hello {{ticket.customer.name}},</div><br/><div>Thanks for placing an order with our company.</div><br/><div>Due to ||reason for the refund||, we will be happy to adjust your order to reflect the correct amount. Please allow 1-5 business days for any charges to reconcile with your account. We apologize for the inconvenience.</div><br/><div>If you have any questions, concerns or comments, please don’t hesitate to reach out.</div><br/><div>Have a great day and thanks for using our service!</div><br/><div>Sincerely,</div><div>{{current_user.name}}</div>",
         "body_text": "Hello {{ticket.customer.name}},
 
@@ -51,23 +51,23 @@ Sincerely,
       "title": "Set Response Text",
       "type": "user",
     },
-    Object {
-      "arguments": Object {
-        "headers": Array [
-          Object {
+    {
+      "arguments": {
+        "headers": [
+          {
             "editable": false,
             "key": "X_API_KEY",
             "value": "9298jjdhdjkh393jhajkhdjashuurh",
           },
-          Object {
+          {
             "editable": false,
             "key": "content-type",
             "value": "application/json",
           },
         ],
         "method": "GET",
-        "params": Array [
-          Object {
+        "params": [
+          {
             "editable": false,
             "key": "user_id",
             "value": "{ticket.customer.id}",
@@ -91,17 +91,17 @@ Sincerely,
 `;
 
 exports[`macro resources createMacro should resolve with a new Macro on success 2`] = `
-Object {
-  "delete": Array [],
-  "get": Array [],
-  "head": Array [],
-  "list": Array [],
-  "options": Array [],
-  "patch": Array [],
-  "post": Array [
-    Object {
-      "data": "{\\"actions\\":[{\\"type\\":\\"user\\",\\"title\\":\\"Add Refund Tag\\",\\"arguments\\":{\\"tags\\":\\"refund\\"},\\"name\\":\\"addTags\\"},{\\"type\\":\\"user\\",\\"title\\":\\"Add Refund Accepted Tag\\",\\"arguments\\":{\\"tags\\":\\"refund accepted\\"},\\"name\\":\\"addTags\\"},{\\"type\\":\\"user\\",\\"description\\":\\"Hello {{ticket.customer.name}},\\\\n\\\\nThanks for placing an order with our company.\\\\n\\\\nDue to ||reason for the refund||, we will be happy to adjust your order to reflect the correct amount. Please allow 1-5 business days for any charges to reconcile with your account. We apologize for the inconvenience.\\\\n\\\\nIf you have any questions, concerns or comments, please don’t hesitate to reach out.\\\\n\\\\nHave a great day and thanks for using our service!\\\\n\\\\nSincerely,\\\\n{{current_user.name}}\\",\\"title\\":\\"Set Response Text\\",\\"arguments\\":{\\"body_text\\":\\"Hello {{ticket.customer.name}},\\\\n\\\\nThanks for placing an order with our company.\\\\n\\\\nDue to ||reason for the refund||, we will be happy to adjust your order to reflect the correct amount. Please allow 1-5 business days for any charges to reconcile with your account. We apologize for the inconvenience.\\\\n\\\\nIf you have any questions, concerns or comments, please don’t hesitate to reach out.\\\\n\\\\nHave a great day and thanks for using our service!\\\\n\\\\nSincerely,\\\\n{{current_user.name}}\\",\\"body_html\\":\\"<div>Hello {{ticket.customer.name}},</div><br/><div>Thanks for placing an order with our company.</div><br/><div>Due to ||reason for the refund||, we will be happy to adjust your order to reflect the correct amount. Please allow 1-5 business days for any charges to reconcile with your account. We apologize for the inconvenience.</div><br/><div>If you have any questions, concerns or comments, please don’t hesitate to reach out.</div><br/><div>Have a great day and thanks for using our service!</div><br/><div>Sincerely,</div><div>{{current_user.name}}</div>\\"},\\"name\\":\\"setResponseText\\"},{\\"type\\":\\"user\\",\\"description\\":\\"Refund the user's last month \\",\\"title\\":\\"Refund Last Month\\",\\"arguments\\":{\\"method\\":\\"GET\\",\\"headers\\":[{\\"editable\\":false,\\"key\\":\\"X_API_KEY\\",\\"value\\":\\"9298jjdhdjkh393jhajkhdjashuurh\\"},{\\"editable\\":false,\\"key\\":\\"content-type\\",\\"value\\":\\"application/json\\"}],\\"url\\":\\"https://httpbin.org/post\\",\\"params\\":[{\\"editable\\":false,\\"key\\":\\"user_id\\",\\"value\\":\\"{ticket.customer.id}\\"}]},\\"name\\":\\"http\\"}],\\"name\\":\\"Waive Fee\\",\\"language\\":null}",
-      "headers": Object {
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [
+    {
+      "data": "{"actions":[{"type":"user","title":"Add Refund Tag","arguments":{"tags":"refund"},"name":"addTags"},{"type":"user","title":"Add Refund Accepted Tag","arguments":{"tags":"refund accepted"},"name":"addTags"},{"type":"user","description":"Hello {{ticket.customer.name}},\\n\\nThanks for placing an order with our company.\\n\\nDue to ||reason for the refund||, we will be happy to adjust your order to reflect the correct amount. Please allow 1-5 business days for any charges to reconcile with your account. We apologize for the inconvenience.\\n\\nIf you have any questions, concerns or comments, please don’t hesitate to reach out.\\n\\nHave a great day and thanks for using our service!\\n\\nSincerely,\\n{{current_user.name}}","title":"Set Response Text","arguments":{"body_text":"Hello {{ticket.customer.name}},\\n\\nThanks for placing an order with our company.\\n\\nDue to ||reason for the refund||, we will be happy to adjust your order to reflect the correct amount. Please allow 1-5 business days for any charges to reconcile with your account. We apologize for the inconvenience.\\n\\nIf you have any questions, concerns or comments, please don’t hesitate to reach out.\\n\\nHave a great day and thanks for using our service!\\n\\nSincerely,\\n{{current_user.name}}","body_html":"<div>Hello {{ticket.customer.name}},</div><br/><div>Thanks for placing an order with our company.</div><br/><div>Due to ||reason for the refund||, we will be happy to adjust your order to reflect the correct amount. Please allow 1-5 business days for any charges to reconcile with your account. We apologize for the inconvenience.</div><br/><div>If you have any questions, concerns or comments, please don’t hesitate to reach out.</div><br/><div>Have a great day and thanks for using our service!</div><br/><div>Sincerely,</div><div>{{current_user.name}}</div>"},"name":"setResponseText"},{"type":"user","description":"Refund the user's last month ","title":"Refund Last Month","arguments":{"method":"GET","headers":[{"editable":false,"key":"X_API_KEY","value":"9298jjdhdjkh393jhajkhdjashuurh"},{"editable":false,"key":"content-type","value":"application/json"}],"url":"https://httpbin.org/post","params":[{"editable":false,"key":"user_id","value":"{ticket.customer.id}"}]},"name":"http"}],"name":"Waive Fee","language":null}",
+      "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
         "X-CSRF-Token": "abcd",
@@ -111,10 +111,10 @@ Object {
       "maxContentLength": -1,
       "method": "post",
       "timeout": 0,
-      "transformRequest": Array [
+      "transformRequest": [
         [Function],
       ],
-      "transformResponse": Array [
+      "transformResponse": [
         [Function],
       ],
       "url": "/api/macros/",
@@ -123,33 +123,33 @@ Object {
       "xsrfHeaderName": "X-XSRF-TOKEN",
     },
   ],
-  "put": Array [],
+  "put": [],
 }
 `;
 
 exports[`macro resources deleteMacro should resolve on success 1`] = `undefined`;
 
 exports[`macro resources fetchMacro should resolve with a Macro on success 1`] = `
-Object {
-  "actions": Array [
-    Object {
-      "arguments": Object {
+{
+  "actions": [
+    {
+      "arguments": {
         "tags": "refund",
       },
       "name": "addTags",
       "title": "Add Refund Tag",
       "type": "user",
     },
-    Object {
-      "arguments": Object {
+    {
+      "arguments": {
         "tags": "refund accepted",
       },
       "name": "addTags",
       "title": "Add Refund Accepted Tag",
       "type": "user",
     },
-    Object {
-      "arguments": Object {
+    {
+      "arguments": {
         "body_html": "<div>Hello {{ticket.customer.name}},</div><br/><div>Thanks for placing an order with our company.</div><br/><div>Due to ||reason for the refund||, we will be happy to adjust your order to reflect the correct amount. Please allow 1-5 business days for any charges to reconcile with your account. We apologize for the inconvenience.</div><br/><div>If you have any questions, concerns or comments, please don’t hesitate to reach out.</div><br/><div>Have a great day and thanks for using our service!</div><br/><div>Sincerely,</div><div>{{current_user.name}}</div>",
         "body_text": "Hello {{ticket.customer.name}},
 
@@ -180,23 +180,23 @@ Sincerely,
       "title": "Set Response Text",
       "type": "user",
     },
-    Object {
-      "arguments": Object {
-        "headers": Array [
-          Object {
+    {
+      "arguments": {
+        "headers": [
+          {
             "editable": false,
             "key": "X_API_KEY",
             "value": "9298jjdhdjkh393jhajkhdjashuurh",
           },
-          Object {
+          {
             "editable": false,
             "key": "content-type",
             "value": "application/json",
           },
         ],
         "method": "GET",
-        "params": Array [
-          Object {
+        "params": [
+          {
             "editable": false,
             "key": "user_id",
             "value": "{ticket.customer.id}",
@@ -220,10 +220,10 @@ Sincerely,
 `;
 
 exports[`macro resources fetchMacros should resolve with a Macro list on success 1`] = `
-Object {
-  "config": Object {
+{
+  "config": {
     "data": undefined,
-    "headers": Object {
+    "headers": {
       "Accept": "application/json, text/plain, */*",
       "X-CSRF-Token": "abcd",
       "X-Gorgias-User-Client": "web",
@@ -231,16 +231,16 @@ Object {
     "maxBodyLength": -1,
     "maxContentLength": -1,
     "method": "get",
-    "params": Object {
+    "params": {
       "limit": 30,
       "search": "hello",
     },
     "paramsSerializer": [Function],
     "timeout": 0,
-    "transformRequest": Array [
+    "transformRequest": [
       [Function],
     ],
-    "transformResponse": Array [
+    "transformResponse": [
       [Function],
     ],
     "url": "/api/macros/",
@@ -248,28 +248,28 @@ Object {
     "xsrfCookieName": "XSRF-TOKEN",
     "xsrfHeaderName": "X-XSRF-TOKEN",
   },
-  "data": Object {
-    "data": Array [
-      Object {
-        "actions": Array [
-          Object {
-            "arguments": Object {
+  "data": {
+    "data": [
+      {
+        "actions": [
+          {
+            "arguments": {
               "tags": "refund",
             },
             "name": "addTags",
             "title": "Add Refund Tag",
             "type": "user",
           },
-          Object {
-            "arguments": Object {
+          {
+            "arguments": {
               "tags": "refund accepted",
             },
             "name": "addTags",
             "title": "Add Refund Accepted Tag",
             "type": "user",
           },
-          Object {
-            "arguments": Object {
+          {
+            "arguments": {
               "body_html": "<div>Hello {{ticket.customer.name}},</div><br/><div>Thanks for placing an order with our company.</div><br/><div>Due to ||reason for the refund||, we will be happy to adjust your order to reflect the correct amount. Please allow 1-5 business days for any charges to reconcile with your account. We apologize for the inconvenience.</div><br/><div>If you have any questions, concerns or comments, please don’t hesitate to reach out.</div><br/><div>Have a great day and thanks for using our service!</div><br/><div>Sincerely,</div><div>{{current_user.name}}</div>",
               "body_text": "Hello {{ticket.customer.name}},
 
@@ -300,23 +300,23 @@ Sincerely,
             "title": "Set Response Text",
             "type": "user",
           },
-          Object {
-            "arguments": Object {
-              "headers": Array [
-                Object {
+          {
+            "arguments": {
+              "headers": [
+                {
                   "editable": false,
                   "key": "X_API_KEY",
                   "value": "9298jjdhdjkh393jhajkhdjashuurh",
                 },
-                Object {
+                {
                   "editable": false,
                   "key": "content-type",
                   "value": "application/json",
                 },
               ],
               "method": "GET",
-              "params": Array [
-                Object {
+              "params": [
+                {
                   "editable": false,
                   "key": "user_id",
                   "value": "{ticket.customer.id}",
@@ -337,18 +337,18 @@ Sincerely,
         "updated_datetime": "2017-08-01T17:56:51.190199+00:00",
         "usage": 1,
       },
-      Object {
-        "actions": Array [
-          Object {
-            "arguments": Object {
+      {
+        "actions": [
+          {
+            "arguments": {
               "tags": "rejectedTag",
             },
             "name": "addTags",
             "title": "Add Rejected Tag",
             "type": "user",
           },
-          Object {
-            "arguments": Object {
+          {
+            "arguments": {
               "body_html": "<div>Thanks for your patience and I'm so sorry to hear you are unable to make your reservation!</div><br/><div>Subject to our cancellation policy your membership with us will run out at the end of the month,</div><div>and you will be billed one last time then.</div>",
               "body_text": "Thanks for your patience and I'm so sorry to hear you are unable to make your reservation!
 
@@ -370,10 +370,10 @@ and you will be billed one last time then.",
         "updated_datetime": "2017-08-01T17:56:51.212472+00:00",
         "usage": 3,
       },
-      Object {
-        "actions": Array [
-          Object {
-            "arguments": Object {
+      {
+        "actions": [
+          {
+            "arguments": {
               "body_html": "<div>Hello {{ticket.customer.name}},</div><br/><div>Unfortunately, it has come to our attention that you never received your order. As a result, we will immediately have this order canceled and issue a refund. We will be reaching out to ||merchant_name|| for an explanation as to why your order was not delivered. We sincerely apologize for the inconvenience.</div><br/><div>Please allow 1-5 business days for any possible charges to reconcile with your account. If any credits were used during this transaction, they will return to your account and be available for use on your next order.</div><br/><div>If you have any questions, concerns or comments, please don’t hesitate to reach out.</div><br/><div>Have a great day and thanks for using our service.</div><br/><div>Sincerely,</div><div>{{current_user.name}}</div>",
               "body_text": "Hello {{ticket.customer.name}},
 
@@ -412,13 +412,13 @@ Sincerely,
         "usage": 0,
       },
     ],
-    "meta": Object {
+    "meta": {
       "next_cursor": null,
       "prev_cursor": null,
     },
   },
   "headers": undefined,
-  "request": Object {
+  "request": {
     "responseUrl": "/api/macros/",
   },
   "status": 200,
@@ -426,26 +426,26 @@ Sincerely,
 `;
 
 exports[`macro resources updateMacro should resolve with the updated macro on success 1`] = `
-Object {
-  "actions": Array [
-    Object {
-      "arguments": Object {
+{
+  "actions": [
+    {
+      "arguments": {
         "tags": "refund",
       },
       "name": "addTags",
       "title": "Add Refund Tag",
       "type": "user",
     },
-    Object {
-      "arguments": Object {
+    {
+      "arguments": {
         "tags": "refund accepted",
       },
       "name": "addTags",
       "title": "Add Refund Accepted Tag",
       "type": "user",
     },
-    Object {
-      "arguments": Object {
+    {
+      "arguments": {
         "body_html": "<div>Hello {{ticket.customer.name}},</div><br/><div>Thanks for placing an order with our company.</div><br/><div>Due to ||reason for the refund||, we will be happy to adjust your order to reflect the correct amount. Please allow 1-5 business days for any charges to reconcile with your account. We apologize for the inconvenience.</div><br/><div>If you have any questions, concerns or comments, please don’t hesitate to reach out.</div><br/><div>Have a great day and thanks for using our service!</div><br/><div>Sincerely,</div><div>{{current_user.name}}</div>",
         "body_text": "Hello {{ticket.customer.name}},
 
@@ -476,23 +476,23 @@ Sincerely,
       "title": "Set Response Text",
       "type": "user",
     },
-    Object {
-      "arguments": Object {
-        "headers": Array [
-          Object {
+    {
+      "arguments": {
+        "headers": [
+          {
             "editable": false,
             "key": "X_API_KEY",
             "value": "9298jjdhdjkh393jhajkhdjashuurh",
           },
-          Object {
+          {
             "editable": false,
             "key": "content-type",
             "value": "application/json",
           },
         ],
         "method": "GET",
-        "params": Array [
-          Object {
+        "params": [
+          {
             "editable": false,
             "key": "user_id",
             "value": "{ticket.customer.id}",
@@ -516,18 +516,18 @@ Sincerely,
 `;
 
 exports[`macro resources updateMacro should resolve with the updated macro on success 2`] = `
-Object {
-  "delete": Array [],
-  "get": Array [],
-  "head": Array [],
-  "list": Array [],
-  "options": Array [],
-  "patch": Array [],
-  "post": Array [],
-  "put": Array [
-    Object {
-      "data": "{\\"id\\":1,\\"name\\":\\"Waive Fee\\",\\"language\\":null,\\"actions\\":[{\\"type\\":\\"user\\",\\"title\\":\\"Add Refund Tag\\",\\"arguments\\":{\\"tags\\":\\"refund\\"},\\"name\\":\\"addTags\\"},{\\"type\\":\\"user\\",\\"title\\":\\"Add Refund Accepted Tag\\",\\"arguments\\":{\\"tags\\":\\"refund accepted\\"},\\"name\\":\\"addTags\\"},{\\"type\\":\\"user\\",\\"description\\":\\"Hello {{ticket.customer.name}},\\\\n\\\\nThanks for placing an order with our company.\\\\n\\\\nDue to ||reason for the refund||, we will be happy to adjust your order to reflect the correct amount. Please allow 1-5 business days for any charges to reconcile with your account. We apologize for the inconvenience.\\\\n\\\\nIf you have any questions, concerns or comments, please don’t hesitate to reach out.\\\\n\\\\nHave a great day and thanks for using our service!\\\\n\\\\nSincerely,\\\\n{{current_user.name}}\\",\\"title\\":\\"Set Response Text\\",\\"arguments\\":{\\"body_text\\":\\"Hello {{ticket.customer.name}},\\\\n\\\\nThanks for placing an order with our company.\\\\n\\\\nDue to ||reason for the refund||, we will be happy to adjust your order to reflect the correct amount. Please allow 1-5 business days for any charges to reconcile with your account. We apologize for the inconvenience.\\\\n\\\\nIf you have any questions, concerns or comments, please don’t hesitate to reach out.\\\\n\\\\nHave a great day and thanks for using our service!\\\\n\\\\nSincerely,\\\\n{{current_user.name}}\\",\\"body_html\\":\\"<div>Hello {{ticket.customer.name}},</div><br/><div>Thanks for placing an order with our company.</div><br/><div>Due to ||reason for the refund||, we will be happy to adjust your order to reflect the correct amount. Please allow 1-5 business days for any charges to reconcile with your account. We apologize for the inconvenience.</div><br/><div>If you have any questions, concerns or comments, please don’t hesitate to reach out.</div><br/><div>Have a great day and thanks for using our service!</div><br/><div>Sincerely,</div><div>{{current_user.name}}</div>\\"},\\"name\\":\\"setResponseText\\"},{\\"type\\":\\"user\\",\\"description\\":\\"Refund the user's last month \\",\\"title\\":\\"Refund Last Month\\",\\"arguments\\":{\\"method\\":\\"GET\\",\\"headers\\":[{\\"editable\\":false,\\"key\\":\\"X_API_KEY\\",\\"value\\":\\"9298jjdhdjkh393jhajkhdjashuurh\\"},{\\"editable\\":false,\\"key\\":\\"content-type\\",\\"value\\":\\"application/json\\"}],\\"url\\":\\"https://httpbin.org/post\\",\\"params\\":[{\\"editable\\":false,\\"key\\":\\"user_id\\",\\"value\\":\\"{ticket.customer.id}\\"}]},\\"name\\":\\"http\\"}],\\"created_datetime\\":\\"2017-08-01T17:56:51.190187+00:00\\",\\"updated_datetime\\":\\"2017-08-01T17:56:51.190199+00:00\\",\\"usage\\":1}",
-      "headers": Object {
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [
+    {
+      "data": "{"id":1,"name":"Waive Fee","language":null,"actions":[{"type":"user","title":"Add Refund Tag","arguments":{"tags":"refund"},"name":"addTags"},{"type":"user","title":"Add Refund Accepted Tag","arguments":{"tags":"refund accepted"},"name":"addTags"},{"type":"user","description":"Hello {{ticket.customer.name}},\\n\\nThanks for placing an order with our company.\\n\\nDue to ||reason for the refund||, we will be happy to adjust your order to reflect the correct amount. Please allow 1-5 business days for any charges to reconcile with your account. We apologize for the inconvenience.\\n\\nIf you have any questions, concerns or comments, please don’t hesitate to reach out.\\n\\nHave a great day and thanks for using our service!\\n\\nSincerely,\\n{{current_user.name}}","title":"Set Response Text","arguments":{"body_text":"Hello {{ticket.customer.name}},\\n\\nThanks for placing an order with our company.\\n\\nDue to ||reason for the refund||, we will be happy to adjust your order to reflect the correct amount. Please allow 1-5 business days for any charges to reconcile with your account. We apologize for the inconvenience.\\n\\nIf you have any questions, concerns or comments, please don’t hesitate to reach out.\\n\\nHave a great day and thanks for using our service!\\n\\nSincerely,\\n{{current_user.name}}","body_html":"<div>Hello {{ticket.customer.name}},</div><br/><div>Thanks for placing an order with our company.</div><br/><div>Due to ||reason for the refund||, we will be happy to adjust your order to reflect the correct amount. Please allow 1-5 business days for any charges to reconcile with your account. We apologize for the inconvenience.</div><br/><div>If you have any questions, concerns or comments, please don’t hesitate to reach out.</div><br/><div>Have a great day and thanks for using our service!</div><br/><div>Sincerely,</div><div>{{current_user.name}}</div>"},"name":"setResponseText"},{"type":"user","description":"Refund the user's last month ","title":"Refund Last Month","arguments":{"method":"GET","headers":[{"editable":false,"key":"X_API_KEY","value":"9298jjdhdjkh393jhajkhdjashuurh"},{"editable":false,"key":"content-type","value":"application/json"}],"url":"https://httpbin.org/post","params":[{"editable":false,"key":"user_id","value":"{ticket.customer.id}"}]},"name":"http"}],"created_datetime":"2017-08-01T17:56:51.190187+00:00","updated_datetime":"2017-08-01T17:56:51.190199+00:00","usage":1}",
+      "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
         "X-CSRF-Token": "abcd",
@@ -537,10 +537,10 @@ Object {
       "maxContentLength": -1,
       "method": "put",
       "timeout": 0,
-      "transformRequest": Array [
+      "transformRequest": [
         [Function],
       ],
-      "transformResponse": Array [
+      "transformResponse": [
         [Function],
       ],
       "url": "/api/macros/1/",

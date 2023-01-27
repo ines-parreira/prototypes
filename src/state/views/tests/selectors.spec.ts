@@ -15,9 +15,11 @@ import {RootState} from '../../types'
 import {initialState} from '../reducers'
 import * as selectors from '../selectors'
 
-jest.addMatchers(immutableMatchers)
-
 describe('selectors', () => {
+    beforeEach(() => {
+        expect.extend(immutableMatchers)
+    })
+
     afterEach(() => {
         localStorage.clear()
     })
@@ -435,6 +437,7 @@ describe('selectors', () => {
     })
 
     describe('getViewIdsOrderedByCollapsedSections', () => {
+        expect.extend(immutableMatchers)
         window.localStorage.setItem(
             'collapsed-view-sections',
             JSON.stringify([1])

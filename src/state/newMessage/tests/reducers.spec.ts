@@ -20,14 +20,13 @@ import {getMessageContextSnapshot} from './testUtils'
 
 const {addEmailExtraContent} = emailExtraUtils
 
-jest.addMatchers(immutableMatchers)
-
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => 'someRandomKey')
 
 describe('new message reducer', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        expect.extend(immutableMatchers)
     })
 
     it('should return the initial state', () => {

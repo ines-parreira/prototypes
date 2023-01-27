@@ -51,7 +51,7 @@ Immutable.Map {
   "loading": false,
   "_internal": Immutable.Map {
     "lastViewId": null,
-    "selectedItemsIds": Array [
+    "selectedItemsIds": [
       1,
       2,
       3,
@@ -90,7 +90,7 @@ Immutable.Map {
       ],
       "type": "ticket-list",
       "id": 7,
-      "filters": "neq(ticket.status, \\"closed\\")",
+      "filters": "neq(ticket.status, "closed")",
       "order_dir": "desc",
       "filters_ast": Immutable.Map {
         "sourceType": "script",
@@ -175,7 +175,7 @@ Immutable.Map {
                     },
                   },
                   "type": "Literal",
-                  "raw": "\\"closed\\"",
+                  "raw": ""closed"",
                 },
               ],
               "callee": Immutable.Map {
@@ -268,7 +268,7 @@ Immutable.Map {
       ],
       "type": "ticket-list",
       "id": 7,
-      "filters": "neq(ticket.status, \\"closed\\")",
+      "filters": "neq(ticket.status, "closed")",
       "order_dir": "desc",
       "filters_ast": Immutable.Map {
         "sourceType": "script",
@@ -353,7 +353,7 @@ Immutable.Map {
                     },
                   },
                   "type": "Literal",
-                  "raw": "\\"closed\\"",
+                  "raw": ""closed"",
                 },
               ],
               "callee": Immutable.Map {
@@ -427,7 +427,7 @@ Immutable.Map {
       ],
       "type": "ticket-list",
       "id": 7,
-      "filters": "neq(ticket.status, \\"closed\\")",
+      "filters": "neq(ticket.status, "closed")",
       "order_dir": "desc",
       "filters_ast": Immutable.Map {
         "sourceType": "script",
@@ -512,7 +512,7 @@ Immutable.Map {
                     },
                   },
                   "type": "Literal",
-                  "raw": "\\"closed\\"",
+                  "raw": ""closed"",
                 },
               ],
               "callee": Immutable.Map {
@@ -569,7 +569,7 @@ Immutable.Map {
     ],
     "type": "ticket-list",
     "id": 7,
-    "filters": "neq(ticket.status, \\"closed\\")",
+    "filters": "neq(ticket.status, "closed")",
     "order_dir": "desc",
     "filters_ast": Immutable.Map {
       "sourceType": "script",
@@ -654,7 +654,7 @@ Immutable.Map {
                   },
                 },
                 "type": "Literal",
-                "raw": "\\"closed\\"",
+                "raw": ""closed"",
               },
             ],
             "callee": Immutable.Map {
@@ -735,7 +735,7 @@ Immutable.Map {
       ],
       "type": "ticket-list",
       "id": 7,
-      "filters": "neq(ticket.status, \\"closed\\")",
+      "filters": "neq(ticket.status, "closed")",
       "order_dir": "desc",
       "filters_ast": Immutable.Map {
         "sourceType": "script",
@@ -820,7 +820,7 @@ Immutable.Map {
                     },
                   },
                   "type": "Literal",
-                  "raw": "\\"closed\\"",
+                  "raw": ""closed"",
                 },
               ],
               "callee": Immutable.Map {
@@ -877,7 +877,7 @@ Immutable.Map {
     ],
     "type": "ticket-list",
     "id": 7,
-    "filters": "neq(ticket.status, \\"closed\\")",
+    "filters": "neq(ticket.status, "closed")",
     "order_dir": "desc",
     "filters_ast": Immutable.Map {
       "sourceType": "script",
@@ -962,7 +962,7 @@ Immutable.Map {
                   },
                 },
                 "type": "Literal",
-                "raw": "\\"closed\\"",
+                "raw": ""closed"",
               },
             ],
             "callee": Immutable.Map {
@@ -1033,7 +1033,7 @@ Immutable.Map {
       ],
       "type": "ticket-list",
       "id": 7,
-      "filters": "neq(ticket.status, \\"closed\\")",
+      "filters": "neq(ticket.status, "closed")",
       "order_dir": "desc",
       "filters_ast": Immutable.Map {
         "sourceType": "script",
@@ -1118,7 +1118,7 @@ Immutable.Map {
                     },
                   },
                   "type": "Literal",
-                  "raw": "\\"closed\\"",
+                  "raw": ""closed"",
                 },
               ],
               "callee": Immutable.Map {
@@ -1176,7 +1176,7 @@ Immutable.Map {
     "filters": "neq(ticket.assignee_user.id, '2')",
     "filters_ast": Immutable.Map {
       "loc": SourceLocation {
-        "end": Object {
+        "end": {
           "column": 33,
           "line": 1,
         },
@@ -1189,7 +1189,7 @@ Immutable.Map {
       "body": Immutable.List [
         Immutable.Map {
           "loc": SourceLocation {
-            "end": Object {
+            "end": {
               "column": 33,
               "line": 1,
             },
@@ -1201,11 +1201,11 @@ Immutable.Map {
           "type": "ExpressionStatement",
           "expression": Immutable.Map {
             "loc": WrappingSourceLocation {
-              "end": Object {
+              "end": {
                 "column": 33,
                 "line": 1,
               },
-              "start": Object {
+              "start": {
                 "column": 0,
                 "line": 1,
               },
@@ -1213,7 +1213,7 @@ Immutable.Map {
             "type": "CallExpression",
             "callee": Immutable.Map {
               "loc": SourceLocation {
-                "end": Object {
+                "end": {
                   "column": 3,
                   "line": 1,
                 },
@@ -1228,11 +1228,11 @@ Immutable.Map {
             "arguments": Immutable.List [
               Immutable.Map {
                 "loc": WrappingSourceLocation {
-                  "end": Object {
+                  "end": {
                     "column": 27,
                     "line": 1,
                   },
-                  "start": Object {
+                  "start": {
                     "column": 4,
                     "line": 1,
                   },
@@ -1241,11 +1241,11 @@ Immutable.Map {
                 "computed": false,
                 "object": Immutable.Map {
                   "loc": WrappingSourceLocation {
-                    "end": Object {
+                    "end": {
                       "column": 24,
                       "line": 1,
                     },
-                    "start": Object {
+                    "start": {
                       "column": 4,
                       "line": 1,
                     },
@@ -1254,7 +1254,7 @@ Immutable.Map {
                   "computed": false,
                   "object": Immutable.Map {
                     "loc": SourceLocation {
-                      "end": Object {
+                      "end": {
                         "column": 10,
                         "line": 1,
                       },
@@ -1268,7 +1268,7 @@ Immutable.Map {
                   },
                   "property": Immutable.Map {
                     "loc": SourceLocation {
-                      "end": Object {
+                      "end": {
                         "column": 24,
                         "line": 1,
                       },
@@ -1283,7 +1283,7 @@ Immutable.Map {
                 },
                 "property": Immutable.Map {
                   "loc": SourceLocation {
-                    "end": Object {
+                    "end": {
                       "column": 27,
                       "line": 1,
                     },
@@ -1298,7 +1298,7 @@ Immutable.Map {
               },
               Immutable.Map {
                 "loc": SourceLocation {
-                  "end": Object {
+                  "end": {
                     "column": 32,
                     "line": 1,
                   },
@@ -1328,7 +1328,7 @@ Immutable.Map {
     "filters": "eq(ticket.assignee_user.id, '3')",
     "filters_ast": Immutable.Map {
       "loc": SourceLocation {
-        "end": Object {
+        "end": {
           "column": 32,
           "line": 1,
         },
@@ -1341,7 +1341,7 @@ Immutable.Map {
       "body": Immutable.List [
         Immutable.Map {
           "loc": SourceLocation {
-            "end": Object {
+            "end": {
               "column": 32,
               "line": 1,
             },
@@ -1353,11 +1353,11 @@ Immutable.Map {
           "type": "ExpressionStatement",
           "expression": Immutable.Map {
             "loc": WrappingSourceLocation {
-              "end": Object {
+              "end": {
                 "column": 32,
                 "line": 1,
               },
-              "start": Object {
+              "start": {
                 "column": 0,
                 "line": 1,
               },
@@ -1365,7 +1365,7 @@ Immutable.Map {
             "type": "CallExpression",
             "callee": Immutable.Map {
               "loc": SourceLocation {
-                "end": Object {
+                "end": {
                   "column": 2,
                   "line": 1,
                 },
@@ -1380,11 +1380,11 @@ Immutable.Map {
             "arguments": Immutable.List [
               Immutable.Map {
                 "loc": WrappingSourceLocation {
-                  "end": Object {
+                  "end": {
                     "column": 26,
                     "line": 1,
                   },
-                  "start": Object {
+                  "start": {
                     "column": 3,
                     "line": 1,
                   },
@@ -1393,11 +1393,11 @@ Immutable.Map {
                 "computed": false,
                 "object": Immutable.Map {
                   "loc": WrappingSourceLocation {
-                    "end": Object {
+                    "end": {
                       "column": 23,
                       "line": 1,
                     },
-                    "start": Object {
+                    "start": {
                       "column": 3,
                       "line": 1,
                     },
@@ -1406,7 +1406,7 @@ Immutable.Map {
                   "computed": false,
                   "object": Immutable.Map {
                     "loc": SourceLocation {
-                      "end": Object {
+                      "end": {
                         "column": 9,
                         "line": 1,
                       },
@@ -1420,7 +1420,7 @@ Immutable.Map {
                   },
                   "property": Immutable.Map {
                     "loc": SourceLocation {
-                      "end": Object {
+                      "end": {
                         "column": 23,
                         "line": 1,
                       },
@@ -1435,7 +1435,7 @@ Immutable.Map {
                 },
                 "property": Immutable.Map {
                   "loc": SourceLocation {
-                    "end": Object {
+                    "end": {
                       "column": 26,
                       "line": 1,
                     },
@@ -1450,7 +1450,7 @@ Immutable.Map {
               },
               Immutable.Map {
                 "loc": SourceLocation {
-                  "end": Object {
+                  "end": {
                     "column": 31,
                     "line": 1,
                   },

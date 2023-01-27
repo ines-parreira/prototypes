@@ -7,11 +7,11 @@ exports[`<MacrosSettingsForm/> should display a loader when fetching a macro 1`]
   macroDeleted={[MockFunction]}
   macroFetched={[MockFunction]}
   macroUpdated={[MockFunction]}
-  macros={Object {}}
+  macros={{}}
   match={
-    Object {
+    {
       "isExact": true,
-      "params": Object {
+      "params": {
         "macroId": "1",
       },
       "path": "foo/",
@@ -115,7 +115,7 @@ exports[`<MacrosSettingsForm/> should display a loader when fetching a macro 1`]
             <div
               className="inner"
               style={
-                Object {
+                {
                   "minHeight": "500px",
                 }
               }
@@ -123,7 +123,7 @@ exports[`<MacrosSettingsForm/> should display a loader when fetching a macro 1`]
               <i
                 className="icon-custom icon-circle-o-notch md-spin"
                 style={
-                  Object {
+                  {
                     "fontSize": "40px",
                   }
                 }
@@ -144,11 +144,11 @@ exports[`<MacrosSettingsForm/> should notify the user when failed to fetch the m
   macroDeleted={[MockFunction]}
   macroFetched={[MockFunction]}
   macroUpdated={[MockFunction]}
-  macros={Object {}}
+  macros={{}}
   match={
-    Object {
+    {
       "isExact": true,
-      "params": Object {
+      "params": {
         "macroId": "1",
       },
       "path": "foo/",
@@ -157,16 +157,16 @@ exports[`<MacrosSettingsForm/> should notify the user when failed to fetch the m
   }
   notify={
     [MockFunction] {
-      "calls": Array [
-        Array [
-          Object {
+      "calls": [
+        [
+          {
             "message": "Failed to fetch macro",
             "status": "error",
           },
         ],
       ],
-      "results": Array [
-        Object {
+      "results": [
+        {
           "type": "return",
           "value": undefined,
         },
@@ -269,7 +269,7 @@ exports[`<MacrosSettingsForm/> should notify the user when failed to fetch the m
             <div
               className="inner"
               style={
-                Object {
+                {
                   "minHeight": "500px",
                 }
               }
@@ -277,7 +277,7 @@ exports[`<MacrosSettingsForm/> should notify the user when failed to fetch the m
               <i
                 className="icon-custom icon-circle-o-notch md-spin"
                 style={
-                  Object {
+                  {
                     "fontSize": "40px",
                   }
                 }
@@ -292,11 +292,11 @@ exports[`<MacrosSettingsForm/> should notify the user when failed to fetch the m
 `;
 
 exports[`<MacrosSettingsForm/> should notify when failing to delete macro 1`] = `
-Array [
-  Object {
+[
+  {
     "allowHTML": true,
     "message": "
-        <ul className=\\"m-0\\">
+        <ul className="m-0">
             <li>Rules: Rule1</li><li>Rules: Rule2</li>
         </ul>
     ",
@@ -313,28 +313,28 @@ exports[`<MacrosSettingsForm/> should render a filled form when passed macro id 
   macroDeleted={[MockFunction]}
   macroFetched={
     [MockFunction] {
-      "calls": Array [
-        Array [
-          Object {
-            "actions": Array [
-              Object {
-                "arguments": Object {
+      "calls": [
+        [
+          {
+            "actions": [
+              {
+                "arguments": {
                   "tags": "refund",
                 },
                 "name": "addTags",
                 "title": "Add Refund Tag",
                 "type": "user",
               },
-              Object {
-                "arguments": Object {
+              {
+                "arguments": {
                   "tags": "refund accepted",
                 },
                 "name": "addTags",
                 "title": "Add Refund Accepted Tag",
                 "type": "user",
               },
-              Object {
-                "arguments": Object {
+              {
+                "arguments": {
                   "body_html": "<div>Hello {{ticket.customer.name}},</div><br/><div>Thanks for placing an order with our company.</div><br/><div>Due to ||reason for the refund||, we will be happy to adjust your order to reflect the correct amount. Please allow 1-5 business days for any charges to reconcile with your account. We apologize for the inconvenience.</div><br/><div>If you have any questions, concerns or comments, please don’t hesitate to reach out.</div><br/><div>Have a great day and thanks for using our service!</div><br/><div>Sincerely,</div><div>{{current_user.name}}</div>",
                   "body_text": "Hello {{ticket.customer.name}},
 
@@ -365,23 +365,23 @@ Sincerely,
                 "title": "Set Response Text",
                 "type": "user",
               },
-              Object {
-                "arguments": Object {
-                  "headers": Array [
-                    Object {
+              {
+                "arguments": {
+                  "headers": [
+                    {
                       "editable": false,
                       "key": "X_API_KEY",
                       "value": "9298jjdhdjkh393jhajkhdjashuurh",
                     },
-                    Object {
+                    {
                       "editable": false,
                       "key": "content-type",
                       "value": "application/json",
                     },
                   ],
                   "method": "GET",
-                  "params": Array [
-                    Object {
+                  "params": [
+                    {
                       "editable": false,
                       "key": "user_id",
                       "value": "{ticket.customer.id}",
@@ -404,8 +404,8 @@ Sincerely,
           },
         ],
       ],
-      "results": Array [
-        Object {
+      "results": [
+        {
           "type": "return",
           "value": undefined,
         },
@@ -414,27 +414,27 @@ Sincerely,
   }
   macroUpdated={[MockFunction]}
   macros={
-    Object {
-      "1": Object {
-        "actions": Array [
-          Object {
-            "arguments": Object {
+    {
+      "1": {
+        "actions": [
+          {
+            "arguments": {
               "tags": "refund",
             },
             "name": "addTags",
             "title": "Add Refund Tag",
             "type": "user",
           },
-          Object {
-            "arguments": Object {
+          {
+            "arguments": {
               "tags": "refund accepted",
             },
             "name": "addTags",
             "title": "Add Refund Accepted Tag",
             "type": "user",
           },
-          Object {
-            "arguments": Object {
+          {
+            "arguments": {
               "body_html": "<div>Hello {{ticket.customer.name}},</div><br/><div>Thanks for placing an order with our company.</div><br/><div>Due to ||reason for the refund||, we will be happy to adjust your order to reflect the correct amount. Please allow 1-5 business days for any charges to reconcile with your account. We apologize for the inconvenience.</div><br/><div>If you have any questions, concerns or comments, please don’t hesitate to reach out.</div><br/><div>Have a great day and thanks for using our service!</div><br/><div>Sincerely,</div><div>{{current_user.name}}</div>",
               "body_text": "Hello {{ticket.customer.name}},
 
@@ -465,23 +465,23 @@ Sincerely,
             "title": "Set Response Text",
             "type": "user",
           },
-          Object {
-            "arguments": Object {
-              "headers": Array [
-                Object {
+          {
+            "arguments": {
+              "headers": [
+                {
                   "editable": false,
                   "key": "X_API_KEY",
                   "value": "9298jjdhdjkh393jhajkhdjashuurh",
                 },
-                Object {
+                {
                   "editable": false,
                   "key": "content-type",
                   "value": "application/json",
                 },
               ],
               "method": "GET",
-              "params": Array [
-                Object {
+              "params": [
+                {
                   "editable": false,
                   "key": "user_id",
                   "value": "{ticket.customer.id}",
@@ -505,9 +505,9 @@ Sincerely,
     }
   }
   match={
-    Object {
+    {
       "isExact": true,
-      "params": Object {
+      "params": {
         "macroId": "1",
       },
       "path": "foo/",

@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`StatWrapper should display download error 1`] = `
-Array [
-  Array [
-    Object {
+[
+  [
+    {
       "status": "error",
       "title": "foo error",
     },
@@ -49,8 +49,8 @@ exports[`StatWrapper should display spinner while downloading the stat 1`] = `
 `;
 
 exports[`StatWrapper should download stat on download button click 1`] = `
-Array [
-  Array [
+[
+  [
     "foo.txt",
     "foo",
     "text/plain",
@@ -59,10 +59,10 @@ Array [
 `;
 
 exports[`StatWrapper should log event on download button click 1`] = `
-Array [
-  Array [
+[
+  [
     "stat-download-clicked",
-    Object {
+    {
       "account_domain": "acme",
       "name": "first-response-time",
       "user_id": 2,

@@ -2,11 +2,11 @@
 
 exports[`agents selectors getLabelledAgents() 1`] = `
 Immutable.List [
-  Object {
+  {
     "id": 1,
     "label": "Customer #1",
   },
-  Object {
+  {
     "id": 2,
     "label": "Customer #2",
   },

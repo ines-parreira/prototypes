@@ -27,15 +27,15 @@ exports[`<TicketAssignee/> render() should display teams only 1`] = `
   <DropdownMenu
     flip={true}
     modifiers={
-      Object {
-        "preventOverflow": Object {
+      {
+        "preventOverflow": {
           "boundariesElement": "viewport",
         },
       }
     }
     right={true}
     style={
-      Object {
+      {
         "width": "260px",
         "zIndex": 1051,
       }
@@ -128,15 +128,15 @@ exports[`<TicketAssignee/> render() should display the email of the agent assign
   <DropdownMenu
     flip={true}
     modifiers={
-      Object {
-        "preventOverflow": Object {
+      {
+        "preventOverflow": {
           "boundariesElement": "viewport",
         },
       }
     }
     right={true}
     style={
-      Object {
+      {
         "width": "260px",
         "zIndex": 1051,
       }
@@ -251,15 +251,15 @@ exports[`<TicketAssignee/> render() should display the info of the agent assigne
   <DropdownMenu
     flip={true}
     modifiers={
-      Object {
-        "preventOverflow": Object {
+      {
+        "preventOverflow": {
           "boundariesElement": "viewport",
         },
       }
     }
     right={true}
     style={
-      Object {
+      {
         "width": "260px",
         "zIndex": 1051,
       }
@@ -374,15 +374,15 @@ exports[`<TicketAssignee/> render() should display the info of the agent assigne
   <DropdownMenu
     flip={true}
     modifiers={
-      Object {
-        "preventOverflow": Object {
+      {
+        "preventOverflow": {
           "boundariesElement": "viewport",
         },
       }
     }
     right={true}
     style={
-      Object {
+      {
         "width": "260px",
         "zIndex": 1051,
       }
@@ -510,15 +510,15 @@ exports[`<TicketAssignee/> render() should display the name of the team assigned
   <DropdownMenu
     flip={true}
     modifiers={
-      Object {
-        "preventOverflow": Object {
+      {
+        "preventOverflow": {
           "boundariesElement": "viewport",
         },
       }
     }
     right={true}
     style={
-      Object {
+      {
         "width": "260px",
         "zIndex": 1051,
       }
@@ -630,15 +630,15 @@ exports[`<TicketAssignee/> render() should display users only 1`] = `
   <DropdownMenu
     flip={true}
     modifiers={
-      Object {
-        "preventOverflow": Object {
+      {
+        "preventOverflow": {
           "boundariesElement": "viewport",
         },
       }
     }
     right={true}
     style={
-      Object {
+      {
         "width": "260px",
         "zIndex": 1051,
       }
@@ -737,15 +737,15 @@ exports[`<TicketAssignee/> render() should not display any agent info because th
   <DropdownMenu
     flip={true}
     modifiers={
-      Object {
-        "preventOverflow": Object {
+      {
+        "preventOverflow": {
           "boundariesElement": "viewport",
         },
       }
     }
     right={true}
     style={
-      Object {
+      {
         "width": "260px",
         "zIndex": 1051,
       }
@@ -844,15 +844,15 @@ exports[`<TicketAssignee/> render() should not display teams because object is e
   <DropdownMenu
     flip={true}
     modifiers={
-      Object {
-        "preventOverflow": Object {
+      {
+        "preventOverflow": {
           "boundariesElement": "viewport",
         },
       }
     }
     right={true}
     style={
-      Object {
+      {
         "width": "260px",
         "zIndex": 1051,
       }
@@ -914,7 +914,7 @@ exports[`<TicketAssignee/> render() should not display teams because object is e
 exports[`<TicketAssignee/> should read data from the redux store correctly 1`] = `
 <Provider
   store={
-    Object {
+    {
       "clearActions": [Function],
       "dispatch": [Function],
       "getActions": [Function],
@@ -1039,15 +1039,15 @@ exports[`<TicketAssignee/> should read data from the redux store correctly 1`] =
             <DropdownMenu
               flip={true}
               modifiers={
-                Object {
-                  "preventOverflow": Object {
+                {
+                  "preventOverflow": {
                     "boundariesElement": "viewport",
                   },
                 }
               }
               right={true}
               style={
-                Object {
+                {
                   "width": "260px",
                   "zIndex": 1051,
                 }
@@ -1059,7 +1059,7 @@ exports[`<TicketAssignee/> should read data from the redux store correctly 1`] =
                 className="dropdown-menu dropdown-menu-right"
                 role="menu"
                 style={
-                  Object {
+                  {
                     "width": "260px",
                     "zIndex": 1051,
                   }
@@ -1219,12 +1219,12 @@ exports[`<TicketAssignee/> should read data from the redux store correctly 1`] =
                                   email=""
                                   name="Team 1"
                                   size={26}
-                                  style={Object {}}
+                                  style={{}}
                                 >
                                   <div
                                     className="component avatar"
                                     style={
-                                      Object {
+                                      {
                                         "height": "26px",
                                         "width": "26px",
                                       }
@@ -1233,7 +1233,7 @@ exports[`<TicketAssignee/> should read data from the redux store correctly 1`] =
                                     <div
                                       className="initials"
                                       style={
-                                        Object {
+                                        {
                                           "fontSize": "10.833333333333334px",
                                           "height": "26px",
                                           "width": "26px",
@@ -1242,7 +1242,7 @@ exports[`<TicketAssignee/> should read data from the redux store correctly 1`] =
                                     >
                                       <span
                                         style={
-                                          Object {
+                                          {
                                             "lineHeight": "28px",
                                           }
                                         }
@@ -1254,7 +1254,7 @@ exports[`<TicketAssignee/> should read data from the redux store correctly 1`] =
                                 </Avatar>
                                 <span
                                   className="name"
-                                  style={Object {}}
+                                  style={{}}
                                 >
                                   Team 1
                                 </span>
@@ -1291,12 +1291,12 @@ exports[`<TicketAssignee/> should read data from the redux store correctly 1`] =
                                   email=""
                                   name="Team 2"
                                   size={26}
-                                  style={Object {}}
+                                  style={{}}
                                 >
                                   <div
                                     className="component avatar"
                                     style={
-                                      Object {
+                                      {
                                         "height": "26px",
                                         "width": "26px",
                                       }
@@ -1305,7 +1305,7 @@ exports[`<TicketAssignee/> should read data from the redux store correctly 1`] =
                                     <div
                                       className="initials"
                                       style={
-                                        Object {
+                                        {
                                           "fontSize": "10.833333333333334px",
                                           "height": "26px",
                                           "width": "26px",
@@ -1314,7 +1314,7 @@ exports[`<TicketAssignee/> should read data from the redux store correctly 1`] =
                                     >
                                       <span
                                         style={
-                                          Object {
+                                          {
                                             "lineHeight": "28px",
                                           }
                                         }
@@ -1326,7 +1326,7 @@ exports[`<TicketAssignee/> should read data from the redux store correctly 1`] =
                                 </Avatar>
                                 <span
                                   className="name"
-                                  style={Object {}}
+                                  style={{}}
                                 >
                                   Team 2
                                 </span>
@@ -1412,13 +1412,13 @@ exports[`<TicketAssignee/> should read data from the redux store correctly 1`] =
                                   email=""
                                   name="User 1"
                                   size={26}
-                                  style={Object {}}
+                                  style={{}}
                                   url=""
                                 >
                                   <div
                                     className="component avatar"
                                     style={
-                                      Object {
+                                      {
                                         "height": "26px",
                                         "width": "26px",
                                       }
@@ -1427,7 +1427,7 @@ exports[`<TicketAssignee/> should read data from the redux store correctly 1`] =
                                     <div
                                       className="initials"
                                       style={
-                                        Object {
+                                        {
                                           "fontSize": "10.833333333333334px",
                                           "height": "26px",
                                           "width": "26px",
@@ -1436,7 +1436,7 @@ exports[`<TicketAssignee/> should read data from the redux store correctly 1`] =
                                     >
                                       <span
                                         style={
-                                          Object {
+                                          {
                                             "lineHeight": "28px",
                                           }
                                         }
@@ -1448,7 +1448,7 @@ exports[`<TicketAssignee/> should read data from the redux store correctly 1`] =
                                 </Avatar>
                                 <span
                                   className="name"
-                                  style={Object {}}
+                                  style={{}}
                                 >
                                   User 1
                                 </span>
@@ -1485,13 +1485,13 @@ exports[`<TicketAssignee/> should read data from the redux store correctly 1`] =
                                   email=""
                                   name="User 2"
                                   size={26}
-                                  style={Object {}}
+                                  style={{}}
                                   url=""
                                 >
                                   <div
                                     className="component avatar"
                                     style={
-                                      Object {
+                                      {
                                         "height": "26px",
                                         "width": "26px",
                                       }
@@ -1500,7 +1500,7 @@ exports[`<TicketAssignee/> should read data from the redux store correctly 1`] =
                                     <div
                                       className="initials"
                                       style={
-                                        Object {
+                                        {
                                           "fontSize": "10.833333333333334px",
                                           "height": "26px",
                                           "width": "26px",
@@ -1509,7 +1509,7 @@ exports[`<TicketAssignee/> should read data from the redux store correctly 1`] =
                                     >
                                       <span
                                         style={
-                                          Object {
+                                          {
                                             "lineHeight": "28px",
                                           }
                                         }
@@ -1521,7 +1521,7 @@ exports[`<TicketAssignee/> should read data from the redux store correctly 1`] =
                                 </Avatar>
                                 <span
                                   className="name"
-                                  style={Object {}}
+                                  style={{}}
                                 >
                                   User 2
                                 </span>

@@ -67,7 +67,9 @@ describe('<ImportZendeskCreate/>', () => {
             const email = 'gorgias+test@gorgias.com'
 
             const mockDate = new Date().toISOString()
-            jest.spyOn(global, 'Date').mockImplementation(() => mockDate)
+            jest.spyOn(global, 'Date').mockImplementation(
+                () => mockDate as unknown as Date
+            )
             Date.prototype.toISOString = () => mockDate
             Date.now = () => new Date(mockDate).valueOf()
 

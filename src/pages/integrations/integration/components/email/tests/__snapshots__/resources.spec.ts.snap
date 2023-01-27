@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`email resources fetch email domains should resolve with data 1`] = `
-Array [
-  Object {
+[
+  {
     "name": "gorgias-test.com",
     "verified": true,
   },

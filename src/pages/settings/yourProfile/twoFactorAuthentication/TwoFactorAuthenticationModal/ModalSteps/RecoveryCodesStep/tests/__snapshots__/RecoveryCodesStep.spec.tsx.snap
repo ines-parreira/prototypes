@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<RecoveryCodesStep /> handleDownload() should trigger download of recovery codes 1`] = `
-Array [
-  Array [
+[
+  [
     "href",
     "data:text/plain;base64,YWJjZGVmZ2gwMQphYmNkZWZnaDAyCmFiY2RlZmdoMDMKYWJjZGVmZ2gwNAphYmNkZWZnaDA1CmFiY2RlZmdoMDYKYWJjZGVmZ2gwNwphYmNkZWZnaDA4CmFiY2RlZmdoMDkKYWJjZGVmZ2gxMAphYmNkZWZnaDExCmFiY2RlZmdoMTIKYWJjZGVmZ2gxMwphYmNkZWZnaDE0CmFiY2RlZmdoMTUKYWJjZGVmZ2gxNg==",
   ],
-  Array [
+  [
     "download",
     "gorgiasRecoveryCodes.txt",
   ],

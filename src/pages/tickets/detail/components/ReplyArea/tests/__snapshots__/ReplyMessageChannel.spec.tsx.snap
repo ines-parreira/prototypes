@@ -14,7 +14,7 @@ exports[`ReplyMessageChannel component existing ticket with last message as chat
         className="dropdownToggle"
         color=""
         innerRef={
-          Object {
+          {
             "current": null,
           }
         }
@@ -27,7 +27,7 @@ exports[`ReplyMessageChannel component existing ticket with last message as chat
       </DropdownToggle>
       <ConvertToForwardPopover
         target={
-          Object {
+          {
             "current": null,
           }
         }
@@ -90,12 +90,12 @@ exports[`ReplyMessageChannel component existing ticket with last message as chat
   </div>
   <KeyboardShortcuts
     keymap={
-      Object {
-        "FORWARD_REPLY": Object {
+      {
+        "FORWARD_REPLY": {
           "action": [Function],
           "key": "f",
         },
-        "INTERNAL_NOTE_REPLY": Object {
+        "INTERNAL_NOTE_REPLY": {
           "action": [Function],
           "key": "i",
         },
@@ -120,7 +120,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type chat
         className="dropdownToggle"
         color=""
         innerRef={
-          Object {
+          {
             "current": null,
           }
         }
@@ -133,7 +133,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type chat
       </DropdownToggle>
       <ConvertToForwardPopover
         target={
-          Object {
+          {
             "current": null,
           }
         }
@@ -196,12 +196,12 @@ exports[`ReplyMessageChannel component existing ticket with message of type chat
   </div>
   <KeyboardShortcuts
     keymap={
-      Object {
-        "FORWARD_REPLY": Object {
+      {
+        "FORWARD_REPLY": {
           "action": [Function],
           "key": "f",
         },
-        "INTERNAL_NOTE_REPLY": Object {
+        "INTERNAL_NOTE_REPLY": {
           "action": [Function],
           "key": "i",
         },
@@ -226,7 +226,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type emai
         className="dropdownToggle"
         color=""
         innerRef={
-          Object {
+          {
             "current": null,
           }
         }
@@ -239,7 +239,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type emai
       </DropdownToggle>
       <ConvertToForwardPopover
         target={
-          Object {
+          {
             "current": null,
           }
         }
@@ -291,12 +291,12 @@ exports[`ReplyMessageChannel component existing ticket with message of type emai
   </div>
   <KeyboardShortcuts
     keymap={
-      Object {
-        "FORWARD_REPLY": Object {
+      {
+        "FORWARD_REPLY": {
           "action": [Function],
           "key": "f",
         },
-        "INTERNAL_NOTE_REPLY": Object {
+        "INTERNAL_NOTE_REPLY": {
           "action": [Function],
           "key": "i",
         },
@@ -321,7 +321,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
         className="dropdownToggle"
         color=""
         innerRef={
-          Object {
+          {
             "current": null,
           }
         }
@@ -334,7 +334,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
       </DropdownToggle>
       <ConvertToForwardPopover
         target={
-          Object {
+          {
             "current": null,
           }
         }
@@ -397,12 +397,12 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
   </div>
   <KeyboardShortcuts
     keymap={
-      Object {
-        "FORWARD_REPLY": Object {
+      {
+        "FORWARD_REPLY": {
           "action": [Function],
           "key": "f",
         },
-        "INTERNAL_NOTE_REPLY": Object {
+        "INTERNAL_NOTE_REPLY": {
           "action": [Function],
           "key": "i",
         },
@@ -427,7 +427,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
         className="dropdownToggle"
         color=""
         innerRef={
-          Object {
+          {
             "current": null,
           }
         }
@@ -440,7 +440,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
       </DropdownToggle>
       <ConvertToForwardPopover
         target={
-          Object {
+          {
             "current": null,
           }
         }
@@ -503,12 +503,12 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
   </div>
   <KeyboardShortcuts
     keymap={
-      Object {
-        "FORWARD_REPLY": Object {
+      {
+        "FORWARD_REPLY": {
           "action": [Function],
           "key": "f",
         },
-        "INTERNAL_NOTE_REPLY": Object {
+        "INTERNAL_NOTE_REPLY": {
           "action": [Function],
           "key": "i",
         },
@@ -533,7 +533,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
         className="dropdownToggle"
         color=""
         innerRef={
-          Object {
+          {
             "current": null,
           }
         }
@@ -546,7 +546,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
       </DropdownToggle>
       <ConvertToForwardPopover
         target={
-          Object {
+          {
             "current": null,
           }
         }
@@ -609,12 +609,12 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
   </div>
   <KeyboardShortcuts
     keymap={
-      Object {
-        "FORWARD_REPLY": Object {
+      {
+        "FORWARD_REPLY": {
           "action": [Function],
           "key": "f",
         },
-        "INTERNAL_NOTE_REPLY": Object {
+        "INTERNAL_NOTE_REPLY": {
           "action": [Function],
           "key": "i",
         },
@@ -639,7 +639,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
         className="dropdownToggle"
         color=""
         innerRef={
-          Object {
+          {
             "current": null,
           }
         }
@@ -652,7 +652,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
       </DropdownToggle>
       <ConvertToForwardPopover
         target={
-          Object {
+          {
             "current": null,
           }
         }
@@ -715,12 +715,12 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
   </div>
   <KeyboardShortcuts
     keymap={
-      Object {
-        "FORWARD_REPLY": Object {
+      {
+        "FORWARD_REPLY": {
           "action": [Function],
           "key": "f",
         },
-        "INTERNAL_NOTE_REPLY": Object {
+        "INTERNAL_NOTE_REPLY": {
           "action": [Function],
           "key": "i",
         },
@@ -745,7 +745,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
         className="dropdownToggle"
         color=""
         innerRef={
-          Object {
+          {
             "current": null,
           }
         }
@@ -758,7 +758,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
       </DropdownToggle>
       <ConvertToForwardPopover
         target={
-          Object {
+          {
             "current": null,
           }
         }
@@ -821,12 +821,12 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
   </div>
   <KeyboardShortcuts
     keymap={
-      Object {
-        "FORWARD_REPLY": Object {
+      {
+        "FORWARD_REPLY": {
           "action": [Function],
           "key": "f",
         },
-        "INTERNAL_NOTE_REPLY": Object {
+        "INTERNAL_NOTE_REPLY": {
           "action": [Function],
           "key": "i",
         },
@@ -851,7 +851,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type inst
         className="dropdownToggle"
         color=""
         innerRef={
-          Object {
+          {
             "current": null,
           }
         }
@@ -864,7 +864,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type inst
       </DropdownToggle>
       <ConvertToForwardPopover
         target={
-          Object {
+          {
             "current": null,
           }
         }
@@ -927,12 +927,12 @@ exports[`ReplyMessageChannel component existing ticket with message of type inst
   </div>
   <KeyboardShortcuts
     keymap={
-      Object {
-        "FORWARD_REPLY": Object {
+      {
+        "FORWARD_REPLY": {
           "action": [Function],
           "key": "f",
         },
-        "INTERNAL_NOTE_REPLY": Object {
+        "INTERNAL_NOTE_REPLY": {
           "action": [Function],
           "key": "i",
         },
@@ -957,7 +957,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type inst
         className="dropdownToggle"
         color=""
         innerRef={
-          Object {
+          {
             "current": null,
           }
         }
@@ -970,7 +970,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type inst
       </DropdownToggle>
       <ConvertToForwardPopover
         target={
-          Object {
+          {
             "current": null,
           }
         }
@@ -1033,12 +1033,12 @@ exports[`ReplyMessageChannel component existing ticket with message of type inst
   </div>
   <KeyboardShortcuts
     keymap={
-      Object {
-        "FORWARD_REPLY": Object {
+      {
+        "FORWARD_REPLY": {
           "action": [Function],
           "key": "f",
         },
-        "INTERNAL_NOTE_REPLY": Object {
+        "INTERNAL_NOTE_REPLY": {
           "action": [Function],
           "key": "i",
         },
@@ -1063,7 +1063,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type inst
         className="dropdownToggle"
         color=""
         innerRef={
-          Object {
+          {
             "current": null,
           }
         }
@@ -1076,7 +1076,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type inst
       </DropdownToggle>
       <ConvertToForwardPopover
         target={
-          Object {
+          {
             "current": null,
           }
         }
@@ -1139,12 +1139,12 @@ exports[`ReplyMessageChannel component existing ticket with message of type inst
   </div>
   <KeyboardShortcuts
     keymap={
-      Object {
-        "FORWARD_REPLY": Object {
+      {
+        "FORWARD_REPLY": {
           "action": [Function],
           "key": "f",
         },
-        "INTERNAL_NOTE_REPLY": Object {
+        "INTERNAL_NOTE_REPLY": {
           "action": [Function],
           "key": "i",
         },
@@ -1169,7 +1169,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type inst
         className="dropdownToggle"
         color=""
         innerRef={
-          Object {
+          {
             "current": null,
           }
         }
@@ -1182,7 +1182,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type inst
       </DropdownToggle>
       <ConvertToForwardPopover
         target={
-          Object {
+          {
             "current": null,
           }
         }
@@ -1245,12 +1245,12 @@ exports[`ReplyMessageChannel component existing ticket with message of type inst
   </div>
   <KeyboardShortcuts
     keymap={
-      Object {
-        "FORWARD_REPLY": Object {
+      {
+        "FORWARD_REPLY": {
           "action": [Function],
           "key": "f",
         },
-        "INTERNAL_NOTE_REPLY": Object {
+        "INTERNAL_NOTE_REPLY": {
           "action": [Function],
           "key": "i",
         },
@@ -1275,7 +1275,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type twit
         className="dropdownToggle"
         color=""
         innerRef={
-          Object {
+          {
             "current": null,
           }
         }
@@ -1288,7 +1288,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type twit
       </DropdownToggle>
       <ConvertToForwardPopover
         target={
-          Object {
+          {
             "current": null,
           }
         }
@@ -1351,12 +1351,12 @@ exports[`ReplyMessageChannel component existing ticket with message of type twit
   </div>
   <KeyboardShortcuts
     keymap={
-      Object {
-        "FORWARD_REPLY": Object {
+      {
+        "FORWARD_REPLY": {
           "action": [Function],
           "key": "f",
         },
-        "INTERNAL_NOTE_REPLY": Object {
+        "INTERNAL_NOTE_REPLY": {
           "action": [Function],
           "key": "i",
         },
@@ -1381,7 +1381,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type twit
         className="dropdownToggle"
         color=""
         innerRef={
-          Object {
+          {
             "current": null,
           }
         }
@@ -1394,7 +1394,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type twit
       </DropdownToggle>
       <ConvertToForwardPopover
         target={
-          Object {
+          {
             "current": null,
           }
         }
@@ -1457,12 +1457,12 @@ exports[`ReplyMessageChannel component existing ticket with message of type twit
   </div>
   <KeyboardShortcuts
     keymap={
-      Object {
-        "FORWARD_REPLY": Object {
+      {
+        "FORWARD_REPLY": {
           "action": [Function],
           "key": "f",
         },
-        "INTERNAL_NOTE_REPLY": Object {
+        "INTERNAL_NOTE_REPLY": {
           "action": [Function],
           "key": "i",
         },
@@ -1487,7 +1487,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type twit
         className="dropdownToggle"
         color=""
         innerRef={
-          Object {
+          {
             "current": null,
           }
         }
@@ -1500,7 +1500,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type twit
       </DropdownToggle>
       <ConvertToForwardPopover
         target={
-          Object {
+          {
             "current": null,
           }
         }
@@ -1563,12 +1563,12 @@ exports[`ReplyMessageChannel component existing ticket with message of type twit
   </div>
   <KeyboardShortcuts
     keymap={
-      Object {
-        "FORWARD_REPLY": Object {
+      {
+        "FORWARD_REPLY": {
           "action": [Function],
           "key": "f",
         },
-        "INTERNAL_NOTE_REPLY": Object {
+        "INTERNAL_NOTE_REPLY": {
           "action": [Function],
           "key": "i",
         },
@@ -1593,7 +1593,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type yotp
         className="dropdownToggle"
         color=""
         innerRef={
-          Object {
+          {
             "current": null,
           }
         }
@@ -1606,7 +1606,7 @@ exports[`ReplyMessageChannel component existing ticket with message of type yotp
       </DropdownToggle>
       <ConvertToForwardPopover
         target={
-          Object {
+          {
             "current": null,
           }
         }
@@ -1680,12 +1680,12 @@ exports[`ReplyMessageChannel component existing ticket with message of type yotp
   </div>
   <KeyboardShortcuts
     keymap={
-      Object {
-        "FORWARD_REPLY": Object {
+      {
+        "FORWARD_REPLY": {
           "action": [Function],
           "key": "f",
         },
-        "INTERNAL_NOTE_REPLY": Object {
+        "INTERNAL_NOTE_REPLY": {
           "action": [Function],
           "key": "i",
         },
@@ -1710,7 +1710,7 @@ exports[`ReplyMessageChannel component existing ticket without messages 1`] = `
         className="dropdownToggle"
         color=""
         innerRef={
-          Object {
+          {
             "current": null,
           }
         }
@@ -1723,7 +1723,7 @@ exports[`ReplyMessageChannel component existing ticket without messages 1`] = `
       </DropdownToggle>
       <ConvertToForwardPopover
         target={
-          Object {
+          {
             "current": null,
           }
         }
@@ -1753,12 +1753,12 @@ exports[`ReplyMessageChannel component existing ticket without messages 1`] = `
   </div>
   <KeyboardShortcuts
     keymap={
-      Object {
-        "FORWARD_REPLY": Object {
+      {
+        "FORWARD_REPLY": {
           "action": [Function],
           "key": "f",
         },
-        "INTERNAL_NOTE_REPLY": Object {
+        "INTERNAL_NOTE_REPLY": {
           "action": [Function],
           "key": "i",
         },
@@ -1783,7 +1783,7 @@ exports[`ReplyMessageChannel component new ticket 1`] = `
         className="dropdownToggle"
         color=""
         innerRef={
-          Object {
+          {
             "current": null,
           }
         }
@@ -1796,7 +1796,7 @@ exports[`ReplyMessageChannel component new ticket 1`] = `
       </DropdownToggle>
       <ConvertToForwardPopover
         target={
-          Object {
+          {
             "current": null,
           }
         }
@@ -1836,12 +1836,12 @@ exports[`ReplyMessageChannel component new ticket 1`] = `
   />
   <KeyboardShortcuts
     keymap={
-      Object {
-        "FORWARD_REPLY": Object {
+      {
+        "FORWARD_REPLY": {
           "action": [Function],
           "key": "f",
         },
-        "INTERNAL_NOTE_REPLY": Object {
+        "INTERNAL_NOTE_REPLY": {
           "action": [Function],
           "key": "i",
         },
@@ -1866,7 +1866,7 @@ exports[`ReplyMessageChannel component should render option "Make outbound call"
         className="dropdownToggle"
         color=""
         innerRef={
-          Object {
+          {
             "current": null,
           }
         }
@@ -1879,7 +1879,7 @@ exports[`ReplyMessageChannel component should render option "Make outbound call"
       </DropdownToggle>
       <ConvertToForwardPopover
         target={
-          Object {
+          {
             "current": null,
           }
         }
@@ -1920,12 +1920,12 @@ exports[`ReplyMessageChannel component should render option "Make outbound call"
   </div>
   <KeyboardShortcuts
     keymap={
-      Object {
-        "FORWARD_REPLY": Object {
+      {
+        "FORWARD_REPLY": {
           "action": [Function],
           "key": "f",
         },
-        "INTERNAL_NOTE_REPLY": Object {
+        "INTERNAL_NOTE_REPLY": {
           "action": [Function],
           "key": "i",
         },
@@ -1950,7 +1950,7 @@ exports[`ReplyMessageChannel component should render option "Make outbound call"
         className="dropdownToggle"
         color=""
         innerRef={
-          Object {
+          {
             "current": null,
           }
         }
@@ -1963,7 +1963,7 @@ exports[`ReplyMessageChannel component should render option "Make outbound call"
       </DropdownToggle>
       <ConvertToForwardPopover
         target={
-          Object {
+          {
             "current": null,
           }
         }
@@ -2004,12 +2004,12 @@ exports[`ReplyMessageChannel component should render option "Make outbound call"
   </div>
   <KeyboardShortcuts
     keymap={
-      Object {
-        "FORWARD_REPLY": Object {
+      {
+        "FORWARD_REPLY": {
           "action": [Function],
           "key": "f",
         },
-        "INTERNAL_NOTE_REPLY": Object {
+        "INTERNAL_NOTE_REPLY": {
           "action": [Function],
           "key": "i",
         },

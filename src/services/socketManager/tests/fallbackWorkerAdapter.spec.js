@@ -19,6 +19,8 @@ jest.mock('socket.io-client', () => {
 })
 
 jest.useFakeTimers()
+jest.spyOn(global, 'setTimeout')
+jest.spyOn(global, 'clearTimeout')
 
 describe('FallbackWorker', () => {
     let fallbackWorker

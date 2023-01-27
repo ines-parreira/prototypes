@@ -5,12 +5,11 @@ import {initialState} from '../reducers'
 import {IntegrationType} from '../../../../../models/integration/types'
 import {RootState} from '../../../../types'
 
-jest.addMatchers(immutableMatchers)
-
 describe('infobarActions.shopify.createOrder selectors', () => {
     let state: RootState
 
     beforeEach(() => {
+        expect.extend(immutableMatchers)
         state = {
             infobarActions: {
                 [IntegrationType.Shopify]: {

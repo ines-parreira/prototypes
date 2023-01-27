@@ -4,7 +4,7 @@ exports[`Action render() should render a warning about potential page deactivati
 <div
   className="Action d-flex align-items-baseline"
   style={
-    Object {
+    {
       "paddingLeft": "NaNpx",
     }
   }
@@ -23,7 +23,7 @@ exports[`Action render() should render a warning about potential page deactivati
 <div
   className="Action d-flex align-items-baseline"
   style={
-    Object {
+    {
       "paddingLeft": "NaNpx",
     }
   }
@@ -42,7 +42,7 @@ exports[`Action render() should render a warning regarding team assignment 1`] =
 <div
   className="Action d-flex align-items-baseline"
   style={
-    Object {
+    {
       "paddingLeft": "NaNpx",
     }
   }
@@ -58,7 +58,7 @@ exports[`Action render() should render a warning regarding team assignment 1`] =
     <MockedChild
       compact={true}
       key=".0"
-      properties={Array []}
+      properties={[]}
     />
   </span>
   <ActionWarning
@@ -81,7 +81,7 @@ exports[`Action render() should render an error saying an action cannot be empty
 <div
   className="Action"
   style={
-    Object {
+    {
       "paddingLeft": "NaNpx",
     }
   }

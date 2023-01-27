@@ -1,19 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Config: socketEvents receivedEvents OutboundPhoneCallInitiated handler should redirect to ticket page because agent is on the original ticket page 1`] = `
-Array [
-  Array [
+[
+  [
     "/app/ticket/456",
   ],
 ]
 `;
 
 exports[`Config: socketEvents receivedEvents VIEWS_DEACTIVATED handler should notify 1`] = `
-Array [
-  Array [
-    Object {
+[
+  [
+    {
       "allowHTML": true,
-      "message": "View \\"Foo\\" has been deactivated.",
+      "message": "View "Foo" has been deactivated.",
       "status": "warning",
     },
   ],
@@ -21,9 +21,9 @@ Array [
 `;
 
 exports[`Config: socketEvents receivedEvents VIEWS_DEACTIVATED handler should notify 2`] = `
-Array [
-  Array [
-    Object {
+[
+  [
+    {
       "allowHTML": true,
       "message": "2 views have been deactivated: <ul><li>Foo</li><li>Bar</li></ul>",
       "status": "warning",

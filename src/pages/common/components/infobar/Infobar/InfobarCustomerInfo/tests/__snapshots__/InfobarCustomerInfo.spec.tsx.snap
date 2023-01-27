@@ -3,8 +3,8 @@
 exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=false\` because there is no active data integration 1`] = `
 <ContextProvider
   value={
-    Object {
-      "store": Object {
+    {
+      "store": {
         "clearActions": [Function],
         "dispatch": [Function],
         "getActions": [Function],
@@ -14,12 +14,12 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=false\` because th
       },
       "subscription": Subscription {
         "handleChangeWrapper": [Function],
-        "listeners": Object {
+        "listeners": {
           "notify": [Function],
         },
         "onStateChange": [Function],
         "parentSub": undefined,
-        "store": Object {
+        "store": {
           "clearActions": [Function],
           "dispatch": [Function],
           "getActions": [Function],
@@ -34,7 +34,7 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=false\` because th
 >
   <Connect(InfobarCustomerInfoContainer)
     actions={
-      Object {
+      {
         "cancelDrag": [MockFunction],
         "drag": [MockFunction],
         "drop": [MockFunction],
@@ -68,8 +68,8 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=false\` because th
 exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because there is an active integration of type bigcommerce 1`] = `
 <ContextProvider
   value={
-    Object {
-      "store": Object {
+    {
+      "store": {
         "clearActions": [Function],
         "dispatch": [Function],
         "getActions": [Function],
@@ -79,12 +79,12 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
       },
       "subscription": Subscription {
         "handleChangeWrapper": [Function],
-        "listeners": Object {
+        "listeners": {
           "notify": [Function],
         },
         "onStateChange": [Function],
         "parentSub": undefined,
-        "store": Object {
+        "store": {
           "clearActions": [Function],
           "dispatch": [Function],
           "getActions": [Function],
@@ -99,7 +99,7 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
 >
   <Connect(InfobarCustomerInfoContainer)
     actions={
-      Object {
+      {
         "cancelDrag": [MockFunction],
         "drag": [MockFunction],
         "drop": [MockFunction],
@@ -133,8 +133,8 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
 exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because there is an active integration of type http 1`] = `
 <ContextProvider
   value={
-    Object {
-      "store": Object {
+    {
+      "store": {
         "clearActions": [Function],
         "dispatch": [Function],
         "getActions": [Function],
@@ -144,12 +144,12 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
       },
       "subscription": Subscription {
         "handleChangeWrapper": [Function],
-        "listeners": Object {
+        "listeners": {
           "notify": [Function],
         },
         "onStateChange": [Function],
         "parentSub": undefined,
-        "store": Object {
+        "store": {
           "clearActions": [Function],
           "dispatch": [Function],
           "getActions": [Function],
@@ -164,7 +164,7 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
 >
   <Connect(InfobarCustomerInfoContainer)
     actions={
-      Object {
+      {
         "cancelDrag": [MockFunction],
         "drag": [MockFunction],
         "drop": [MockFunction],
@@ -198,8 +198,8 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
 exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because there is an active integration of type magento2 1`] = `
 <ContextProvider
   value={
-    Object {
-      "store": Object {
+    {
+      "store": {
         "clearActions": [Function],
         "dispatch": [Function],
         "getActions": [Function],
@@ -209,12 +209,12 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
       },
       "subscription": Subscription {
         "handleChangeWrapper": [Function],
-        "listeners": Object {
+        "listeners": {
           "notify": [Function],
         },
         "onStateChange": [Function],
         "parentSub": undefined,
-        "store": Object {
+        "store": {
           "clearActions": [Function],
           "dispatch": [Function],
           "getActions": [Function],
@@ -229,7 +229,7 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
 >
   <Connect(InfobarCustomerInfoContainer)
     actions={
-      Object {
+      {
         "cancelDrag": [MockFunction],
         "drag": [MockFunction],
         "drop": [MockFunction],
@@ -263,8 +263,8 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
 exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because there is an active integration of type recharge 1`] = `
 <ContextProvider
   value={
-    Object {
-      "store": Object {
+    {
+      "store": {
         "clearActions": [Function],
         "dispatch": [Function],
         "getActions": [Function],
@@ -274,12 +274,12 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
       },
       "subscription": Subscription {
         "handleChangeWrapper": [Function],
-        "listeners": Object {
+        "listeners": {
           "notify": [Function],
         },
         "onStateChange": [Function],
         "parentSub": undefined,
-        "store": Object {
+        "store": {
           "clearActions": [Function],
           "dispatch": [Function],
           "getActions": [Function],
@@ -294,7 +294,7 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
 >
   <Connect(InfobarCustomerInfoContainer)
     actions={
-      Object {
+      {
         "cancelDrag": [MockFunction],
         "drag": [MockFunction],
         "drop": [MockFunction],
@@ -328,8 +328,8 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
 exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because there is an active integration of type shopify 1`] = `
 <ContextProvider
   value={
-    Object {
-      "store": Object {
+    {
+      "store": {
         "clearActions": [Function],
         "dispatch": [Function],
         "getActions": [Function],
@@ -339,12 +339,12 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
       },
       "subscription": Subscription {
         "handleChangeWrapper": [Function],
-        "listeners": Object {
+        "listeners": {
           "notify": [Function],
         },
         "onStateChange": [Function],
         "parentSub": undefined,
-        "store": Object {
+        "store": {
           "clearActions": [Function],
           "dispatch": [Function],
           "getActions": [Function],
@@ -359,7 +359,7 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
 >
   <Connect(InfobarCustomerInfoContainer)
     actions={
-      Object {
+      {
         "cancelDrag": [MockFunction],
         "drag": [MockFunction],
         "drop": [MockFunction],
@@ -393,8 +393,8 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
 exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because there is an active integration of type smile 1`] = `
 <ContextProvider
   value={
-    Object {
-      "store": Object {
+    {
+      "store": {
         "clearActions": [Function],
         "dispatch": [Function],
         "getActions": [Function],
@@ -404,12 +404,12 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
       },
       "subscription": Subscription {
         "handleChangeWrapper": [Function],
-        "listeners": Object {
+        "listeners": {
           "notify": [Function],
         },
         "onStateChange": [Function],
         "parentSub": undefined,
-        "store": Object {
+        "store": {
           "clearActions": [Function],
           "dispatch": [Function],
           "getActions": [Function],
@@ -424,7 +424,7 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
 >
   <Connect(InfobarCustomerInfoContainer)
     actions={
-      Object {
+      {
         "cancelDrag": [MockFunction],
         "drag": [MockFunction],
         "drop": [MockFunction],
@@ -471,7 +471,7 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and a "generat
         email=""
         name="foo"
         size={50}
-        style={Object {}}
+        style={{}}
       />
       <Link
         className="displayName"
@@ -552,7 +552,7 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and empty widg
         email=""
         name="foo"
         size={50}
-        style={Object {}}
+        style={{}}
       />
       <Link
         className="displayName"
@@ -582,14 +582,14 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and empty widg
   </div>
   <ContextProvider
     value={
-      Object {
+      {
         "isEditing": true,
       }
     }
   >
     <ContextProvider
       value={
-        Object {
+        {
           "customerId": 1,
         }
       }
@@ -598,8 +598,8 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and empty widg
         context="ticket"
         displayTabs={true}
         editing={
-          Object {
-            "actions": Object {
+          {
+            "actions": {
               "cancelDrag": [MockFunction],
               "drag": [MockFunction],
               "drop": [MockFunction],
@@ -674,7 +674,7 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and the sugges
         email=""
         name="foo"
         size={50}
-        style={Object {}}
+        style={{}}
       />
       <Link
         className="displayName"
@@ -722,7 +722,7 @@ exports[`<InfobarCustomerInfo/> should render only basic customer info because c
         email=""
         name="foo"
         size={50}
-        style={Object {}}
+        style={{}}
       />
       <Link
         className="displayName"
@@ -769,7 +769,7 @@ exports[`<InfobarCustomerInfo/> should render only basic customer info because t
         email=""
         name="foo"
         size={50}
-        style={Object {}}
+        style={{}}
       />
       <Link
         className="displayName"
@@ -803,7 +803,7 @@ exports[`<InfobarCustomerInfo/> should render only basic customer info because t
 exports[`<InfobarCustomerInfo/> sources render basic customer info and widgets because there is customer data, the user is not editing widgets and current widgets are not empty 1`] = `
 <InfobarCustomerInfoContainer
   actions={
-    Object {
+    {
       "cancelDrag": [MockFunction],
       "drag": [MockFunction],
       "drop": [MockFunction],
@@ -872,12 +872,12 @@ exports[`<InfobarCustomerInfo/> sources render basic customer info and widgets b
           email=""
           name="foo"
           size={50}
-          style={Object {}}
+          style={{}}
         >
           <div
             className="component mr-3 rounded"
             style={
-              Object {
+              {
                 "height": "50px",
                 "width": "50px",
               }
@@ -886,7 +886,7 @@ exports[`<InfobarCustomerInfo/> sources render basic customer info and widgets b
             <div
               className="initials"
               style={
-                Object {
+                {
                   "fontSize": "20.833333333333336px",
                   "height": "50px",
                   "width": "50px",
@@ -895,7 +895,7 @@ exports[`<InfobarCustomerInfo/> sources render basic customer info and widgets b
             >
               <span
                 style={
-                  Object {
+                  {
                     "lineHeight": "52px",
                   }
                 }

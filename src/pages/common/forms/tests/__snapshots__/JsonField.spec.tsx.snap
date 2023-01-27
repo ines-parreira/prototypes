@@ -21,7 +21,7 @@ exports[`JsonField display invalid message 1`] = `
           onChange={[Function]}
           rows="6"
           type="textarea"
-          value="\\"value\\""
+          value=""value""
         />
         <Errors>
           Invalid JSON : changes will not be saved until the JSON is fixed
@@ -64,14 +64,14 @@ exports[`JsonField should render input 1`] = `
                 onChange={[Function]}
                 rows="6"
                 type="textarea"
-                value="\\"value\\""
+                value=""value""
               >
                 <textarea
                   className="form-control"
                   id="id-input-1"
                   onChange={[Function]}
                   rows="6"
-                  value="\\"value\\""
+                  value=""value""
                 />
               </Input>
             </div>

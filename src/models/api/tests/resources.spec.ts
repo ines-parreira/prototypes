@@ -65,6 +65,7 @@ describe('client resources', () => {
 
         beforeEach(() => {
             jest.useFakeTimers()
+            jest.spyOn(window, 'setTimeout')
         })
 
         afterEach(() => {

@@ -1,21 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Campaign actions createCampaign should fetch the integration and execute onUpdateSuccess when creating a campaign successfully 1`] = `
-Array [
-  Object {
-    "resp": Object {
+[
+  {
+    "resp": {
       "id": 1,
       "type": "smooch_inside",
     },
     "type": "UPDATE_INTEGRATION_SUCCESS",
   },
-  Object {
+  {
     "type": "FETCH_INTEGRATIONS_START",
   },
-  Object {
-    "payload": Object {
+  {
+    "payload": {
       "allowHTML": false,
-      "buttons": Array [],
+      "buttons": [],
       "closeButton": false,
       "dismissAfter": 3000,
       "dismissible": true,
@@ -27,13 +27,13 @@ Array [
     },
     "type": "reapop/upsertNotification",
   },
-  Object {
+  {
     "id": 1,
     "type": "FETCH_INTEGRATION_START",
   },
-  Object {
-    "integration": Object {
-      "data": Object {},
+  {
+    "integration": {
+      "data": {},
     },
     "type": "FETCH_INTEGRATION_SUCCESS",
   },
@@ -41,8 +41,8 @@ Array [
 `;
 
 exports[`Campaign actions createCampaign should notify an error when creating a campaign fails 1`] = `
-Array [
-  Object {
+[
+  {
     "error": [Error: Request failed with status code 400],
     "type": "UPDATE_INTEGRATION_ERROR",
     "verbose": true,
@@ -51,8 +51,8 @@ Array [
 `;
 
 exports[`Campaign actions deleteCampaign should fetch the integration and execute onUpdateSuccess when deleting a campaign successfully 1`] = `
-Array [
-  Object {
+[
+  {
     "error": [Error: Request failed with status code 404],
     "type": "UPDATE_INTEGRATION_ERROR",
     "verbose": true,
@@ -61,8 +61,8 @@ Array [
 `;
 
 exports[`Campaign actions deleteCampaign should notify an error when deleting a campaign fails 1`] = `
-Array [
-  Object {
+[
+  {
     "error": [Error: Request failed with status code 404],
     "type": "UPDATE_INTEGRATION_ERROR",
     "verbose": true,
@@ -71,21 +71,21 @@ Array [
 `;
 
 exports[`Campaign actions updateCampaign should fetch the integration and execute onUpdateSuccess when updating a campaign successfully 1`] = `
-Array [
-  Object {
-    "resp": Object {
+[
+  {
+    "resp": {
       "id": 1,
       "type": "smooch_inside",
     },
     "type": "UPDATE_INTEGRATION_SUCCESS",
   },
-  Object {
+  {
     "type": "FETCH_INTEGRATIONS_START",
   },
-  Object {
-    "payload": Object {
+  {
+    "payload": {
       "allowHTML": false,
-      "buttons": Array [],
+      "buttons": [],
       "closeButton": false,
       "dismissAfter": 3000,
       "dismissible": true,
@@ -97,13 +97,13 @@ Array [
     },
     "type": "reapop/upsertNotification",
   },
-  Object {
+  {
     "id": 1,
     "type": "FETCH_INTEGRATION_START",
   },
-  Object {
-    "integration": Object {
-      "data": Object {},
+  {
+    "integration": {
+      "data": {},
     },
     "type": "FETCH_INTEGRATION_SUCCESS",
   },
@@ -111,8 +111,8 @@ Array [
 `;
 
 exports[`Campaign actions updateCampaign should notify an error when updating a campaign fails 1`] = `
-Array [
-  Object {
+[
+  {
     "error": [Error: Request failed with status code 400],
     "type": "UPDATE_INTEGRATION_ERROR",
     "verbose": true,

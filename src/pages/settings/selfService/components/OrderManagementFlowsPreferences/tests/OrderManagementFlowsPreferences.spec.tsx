@@ -196,28 +196,28 @@ describe('<OrderManagementFlowsPreferences/>', () => {
             fireEvent.click(document.getElementsByClassName('input')[2])
             expect(updateSelfServiceConfigurationMock.mock.calls[0])
                 .toMatchInlineSnapshot(`
-                Array [
-                  Object {
-                    "cancel_order_policy": Object {
-                      "eligibilities": Array [],
+                [
+                  {
+                    "cancel_order_policy": {
+                      "eligibilities": [],
                       "enabled": true,
-                      "exceptions": Array [],
+                      "exceptions": [],
                     },
                     "created_datetime": "2021-01-26T00:29:00Z",
                     "deactivated_datetime": null,
                     "id": 3,
-                    "quick_response_policies": Array [],
-                    "report_issue_policy": Object {
-                      "cases": Array [],
+                    "quick_response_policies": [],
+                    "report_issue_policy": {
+                      "cases": [],
                       "enabled": false,
                     },
-                    "return_order_policy": Object {
-                      "eligibilities": Array [],
+                    "return_order_policy": {
+                      "eligibilities": [],
                       "enabled": true,
-                      "exceptions": Array [],
+                      "exceptions": [],
                     },
                     "shop_name": "mystore3",
-                    "track_order_policy": Object {
+                    "track_order_policy": {
                       "enabled": true,
                     },
                     "type": "shopify",

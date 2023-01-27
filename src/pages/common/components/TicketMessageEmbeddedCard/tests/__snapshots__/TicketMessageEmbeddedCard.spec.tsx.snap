@@ -11,7 +11,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
     <Row
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -25,7 +25,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
         md="7"
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -41,7 +41,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
             email="some_email@foo.com"
             name="some_sender_name"
             size={36}
-            style={Object {}}
+            style={{}}
           />
         </div>
         <div
@@ -69,13 +69,13 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
               integrationId={1}
               messageId="123"
               source={
-                Object {
-                  "from": Object {
+                {
+                  "from": {
                     "address": "some_from_address",
                     "name": "some_from_name",
                   },
-                  "to": Array [
-                    Object {
+                  "to": [
+                    {
                       "address": "some_from_address",
                       "name": "some_from_name",
                     },
@@ -93,7 +93,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
         md="5"
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -111,7 +111,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
       className="mt-2"
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -124,7 +124,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
         md="12"
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -156,7 +156,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
       className="m-0"
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -170,7 +170,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
         md="1"
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -183,14 +183,14 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
           email="some_email@foo.com"
           name="some_sender_name"
           size={36}
-          style={Object {}}
+          style={{}}
         />
       </Col>
       <Col
         md="11"
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -202,7 +202,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
         <Row
           tag="div"
           widths={
-            Array [
+            [
               "xs",
               "sm",
               "md",
@@ -215,7 +215,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
             md="7"
             tag="div"
             widths={
-              Array [
+              [
                 "xs",
                 "sm",
                 "md",
@@ -249,13 +249,13 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
                   integrationId={1}
                   messageId="123"
                   source={
-                    Object {
-                      "from": Object {
+                    {
+                      "from": {
                         "address": "some_from_address",
                         "name": "some_from_name",
                       },
-                      "to": Array [
-                        Object {
+                      "to": [
+                        {
                           "address": "some_from_address",
                           "name": "some_from_name",
                         },
@@ -273,7 +273,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
             md="5"
             tag="div"
             widths={
-              Array [
+              [
                 "xs",
                 "sm",
                 "md",
@@ -290,7 +290,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
         <Row
           tag="div"
           widths={
-            Array [
+            [
               "xs",
               "sm",
               "md",
@@ -304,7 +304,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
             md="12"
             tag="div"
             widths={
-              Array [
+              [
                 "xs",
                 "sm",
                 "md",
@@ -338,7 +338,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
       className="m-0"
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -352,7 +352,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
         md="1"
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -365,14 +365,14 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
           email="some_email@foo.com"
           name="some_sender_name"
           size={36}
-          style={Object {}}
+          style={{}}
         />
       </Col>
       <Col
         md="11"
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -384,7 +384,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
         <Row
           tag="div"
           widths={
-            Array [
+            [
               "xs",
               "sm",
               "md",
@@ -397,7 +397,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
             md="7"
             tag="div"
             widths={
-              Array [
+              [
                 "xs",
                 "sm",
                 "md",
@@ -431,13 +431,13 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
                   integrationId={1}
                   messageId="123"
                   source={
-                    Object {
-                      "from": Object {
+                    {
+                      "from": {
                         "address": "some_from_address",
                         "name": "some_from_name",
                       },
-                      "to": Array [
-                        Object {
+                      "to": [
+                        {
                           "address": "some_from_address",
                           "name": "some_from_name",
                         },
@@ -455,7 +455,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
             md="5"
             tag="div"
             widths={
-              Array [
+              [
                 "xs",
                 "sm",
                 "md",
@@ -472,7 +472,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
         <Row
           tag="div"
           widths={
-            Array [
+            [
               "xs",
               "sm",
               "md",
@@ -486,7 +486,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
             md="12"
             tag="div"
             widths={
-              Array [
+              [
                 "xs",
                 "sm",
                 "md",
@@ -508,7 +508,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
       className="mt-2"
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -521,7 +521,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
         md="12"
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -562,7 +562,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
       className="m-0"
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -576,7 +576,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
         md="1"
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -589,14 +589,14 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
           email="some_email@foo.com"
           name="some_sender_name"
           size={36}
-          style={Object {}}
+          style={{}}
         />
       </Col>
       <Col
         md="11"
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -608,7 +608,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
         <Row
           tag="div"
           widths={
-            Array [
+            [
               "xs",
               "sm",
               "md",
@@ -621,7 +621,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
             md="7"
             tag="div"
             widths={
-              Array [
+              [
                 "xs",
                 "sm",
                 "md",
@@ -655,13 +655,13 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
                   integrationId={1}
                   messageId="123"
                   source={
-                    Object {
-                      "from": Object {
+                    {
+                      "from": {
                         "address": "some_from_address",
                         "name": "some_from_name",
                       },
-                      "to": Array [
-                        Object {
+                      "to": [
+                        {
                           "address": "some_from_address",
                           "name": "some_from_name",
                         },
@@ -679,7 +679,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
             md="5"
             tag="div"
             widths={
-              Array [
+              [
                 "xs",
                 "sm",
                 "md",
@@ -696,7 +696,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
         <Row
           tag="div"
           widths={
-            Array [
+            [
               "xs",
               "sm",
               "md",
@@ -710,7 +710,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
             md="12"
             tag="div"
             widths={
-              Array [
+              [
                 "xs",
                 "sm",
                 "md",
@@ -732,7 +732,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
       className="mt-2"
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -745,7 +745,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
         md="12"
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -776,7 +776,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
       className="m-0"
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -790,7 +790,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
         md="1"
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -803,14 +803,14 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
           email="some_email@foo.com"
           name="some_sender_name"
           size={36}
-          style={Object {}}
+          style={{}}
         />
       </Col>
       <Col
         md="11"
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -822,7 +822,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
         <Row
           tag="div"
           widths={
-            Array [
+            [
               "xs",
               "sm",
               "md",
@@ -835,7 +835,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
             md="7"
             tag="div"
             widths={
-              Array [
+              [
                 "xs",
                 "sm",
                 "md",
@@ -869,13 +869,13 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
                   integrationId={1}
                   messageId="123"
                   source={
-                    Object {
-                      "from": Object {
+                    {
+                      "from": {
                         "address": "some_from_address",
                         "name": "some_from_name",
                       },
-                      "to": Array [
-                        Object {
+                      "to": [
+                        {
                           "address": "some_from_address",
                           "name": "some_from_name",
                         },
@@ -893,7 +893,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
             md="5"
             tag="div"
             widths={
-              Array [
+              [
                 "xs",
                 "sm",
                 "md",
@@ -910,7 +910,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
         <Row
           tag="div"
           widths={
-            Array [
+            [
               "xs",
               "sm",
               "md",
@@ -924,7 +924,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
             md="12"
             tag="div"
             widths={
-              Array [
+              [
                 "xs",
                 "sm",
                 "md",
@@ -958,7 +958,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
       className="m-0"
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -972,7 +972,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
         md="1"
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -985,14 +985,14 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
           email="some_email@foo.com"
           name="some_sender_name"
           size={36}
-          style={Object {}}
+          style={{}}
         />
       </Col>
       <Col
         md="11"
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -1004,7 +1004,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
         <Row
           tag="div"
           widths={
-            Array [
+            [
               "xs",
               "sm",
               "md",
@@ -1017,7 +1017,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
             md="7"
             tag="div"
             widths={
-              Array [
+              [
                 "xs",
                 "sm",
                 "md",
@@ -1051,13 +1051,13 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
                   integrationId={1}
                   messageId="123"
                   source={
-                    Object {
-                      "from": Object {
+                    {
+                      "from": {
                         "address": "some_from_address",
                         "name": "some_from_name",
                       },
-                      "to": Array [
-                        Object {
+                      "to": [
+                        {
                           "address": "some_from_address",
                           "name": "some_from_name",
                         },
@@ -1075,7 +1075,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
             md="5"
             tag="div"
             widths={
-              Array [
+              [
                 "xs",
                 "sm",
                 "md",
@@ -1092,7 +1092,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
         <Row
           tag="div"
           widths={
-            Array [
+            [
               "xs",
               "sm",
               "md",
@@ -1106,7 +1106,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
             md="12"
             tag="div"
             widths={
-              Array [
+              [
                 "xs",
                 "sm",
                 "md",
@@ -1140,7 +1140,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
       className="m-0"
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -1154,7 +1154,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
         md="1"
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -1167,14 +1167,14 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
           email="some_email@foo.com"
           name="some_sender_name"
           size={36}
-          style={Object {}}
+          style={{}}
         />
       </Col>
       <Col
         md="11"
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -1186,7 +1186,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
         <Row
           tag="div"
           widths={
-            Array [
+            [
               "xs",
               "sm",
               "md",
@@ -1199,7 +1199,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
             md="12"
             tag="div"
             widths={
-              Array [
+              [
                 "xs",
                 "sm",
                 "md",
@@ -1233,13 +1233,13 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
                   integrationId={1}
                   messageId="123"
                   source={
-                    Object {
-                      "from": Object {
+                    {
+                      "from": {
                         "address": "some_from_address",
                         "name": "some_from_name",
                       },
-                      "to": Array [
-                        Object {
+                      "to": [
+                        {
                           "address": "some_from_address",
                           "name": "some_from_name",
                         },
@@ -1256,7 +1256,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
         <Row
           tag="div"
           widths={
-            Array [
+            [
               "xs",
               "sm",
               "md",
@@ -1270,7 +1270,7 @@ exports[`<TicketMessageEmbeddedCard/> render should render the comment card with
             md="12"
             tag="div"
             widths={
-              Array [
+              [
                 "xs",
                 "sm",
                 "md",

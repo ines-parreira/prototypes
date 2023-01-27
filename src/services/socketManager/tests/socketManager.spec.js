@@ -13,7 +13,7 @@ import {SocketManager} from '../socketManager.ts'
 
 jest.mock('../../../state/notifications/actions.ts', () => {
     return {
-        ...require.requireActual('../../../state/notifications/actions.ts'),
+        ...jest.requireActual('../../../state/notifications/actions.ts'),
         notify: jest.fn(),
     }
 })

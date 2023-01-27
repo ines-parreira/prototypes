@@ -15,7 +15,7 @@ exports[`<ProductEmbeddedCard/> Should render a product card 1`] = `
       <Row
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -27,7 +27,7 @@ exports[`<ProductEmbeddedCard/> Should render a product card 1`] = `
         <Col
           tag="div"
           widths={
-            Array [
+            [
               "xs",
               "sm",
               "md",
@@ -45,7 +45,7 @@ exports[`<ProductEmbeddedCard/> Should render a product card 1`] = `
         <Col
           tag="div"
           widths={
-            Array [
+            [
               "xs",
               "sm",
               "md",
@@ -57,7 +57,7 @@ exports[`<ProductEmbeddedCard/> Should render a product card 1`] = `
           <Row
             tag="div"
             widths={
-              Array [
+              [
                 "xs",
                 "sm",
                 "md",
@@ -73,7 +73,7 @@ exports[`<ProductEmbeddedCard/> Should render a product card 1`] = `
           <Row
             tag="div"
             widths={
-              Array [
+              [
                 "xs",
                 "sm",
                 "md",
@@ -135,7 +135,7 @@ exports[`<ProductEmbeddedCard/> Should render a product card 1`] = `
           className="chevronButton"
           tag="div"
           widths={
-            Array [
+            [
               "xs",
               "sm",
               "md",
@@ -155,7 +155,7 @@ exports[`<ProductEmbeddedCard/> Should render a product card 1`] = `
       <Row
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -167,7 +167,7 @@ exports[`<ProductEmbeddedCard/> Should render a product card 1`] = `
         <Col
           tag="div"
           widths={
-            Array [
+            [
               "xs",
               "sm",
               "md",
@@ -260,7 +260,7 @@ exports[`<ProductEmbeddedCard/> Should render a product card 2`] = `
       <Row
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -272,7 +272,7 @@ exports[`<ProductEmbeddedCard/> Should render a product card 2`] = `
         <Col
           tag="div"
           widths={
-            Array [
+            [
               "xs",
               "sm",
               "md",
@@ -290,7 +290,7 @@ exports[`<ProductEmbeddedCard/> Should render a product card 2`] = `
         <Col
           tag="div"
           widths={
-            Array [
+            [
               "xs",
               "sm",
               "md",
@@ -302,7 +302,7 @@ exports[`<ProductEmbeddedCard/> Should render a product card 2`] = `
           <Row
             tag="div"
             widths={
-              Array [
+              [
                 "xs",
                 "sm",
                 "md",
@@ -318,7 +318,7 @@ exports[`<ProductEmbeddedCard/> Should render a product card 2`] = `
           <Row
             tag="div"
             widths={
-              Array [
+              [
                 "xs",
                 "sm",
                 "md",
@@ -380,7 +380,7 @@ exports[`<ProductEmbeddedCard/> Should render a product card 2`] = `
           className="chevronButton"
           tag="div"
           widths={
-            Array [
+            [
               "xs",
               "sm",
               "md",
@@ -400,7 +400,7 @@ exports[`<ProductEmbeddedCard/> Should render a product card 2`] = `
       <Row
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -412,7 +412,7 @@ exports[`<ProductEmbeddedCard/> Should render a product card 2`] = `
         <Col
           tag="div"
           widths={
-            Array [
+            [
               "xs",
               "sm",
               "md",
@@ -505,7 +505,7 @@ exports[`<ProductEmbeddedCard/> Should render a product card 3`] = `
       <Row
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -517,7 +517,7 @@ exports[`<ProductEmbeddedCard/> Should render a product card 3`] = `
         <Col
           tag="div"
           widths={
-            Array [
+            [
               "xs",
               "sm",
               "md",
@@ -535,7 +535,7 @@ exports[`<ProductEmbeddedCard/> Should render a product card 3`] = `
         <Col
           tag="div"
           widths={
-            Array [
+            [
               "xs",
               "sm",
               "md",
@@ -547,7 +547,7 @@ exports[`<ProductEmbeddedCard/> Should render a product card 3`] = `
           <Row
             tag="div"
             widths={
-              Array [
+              [
                 "xs",
                 "sm",
                 "md",
@@ -563,7 +563,7 @@ exports[`<ProductEmbeddedCard/> Should render a product card 3`] = `
           <Row
             tag="div"
             widths={
-              Array [
+              [
                 "xs",
                 "sm",
                 "md",
@@ -625,7 +625,7 @@ exports[`<ProductEmbeddedCard/> Should render a product card 3`] = `
           className="chevronButton"
           tag="div"
           widths={
-            Array [
+            [
               "xs",
               "sm",
               "md",
@@ -645,7 +645,7 @@ exports[`<ProductEmbeddedCard/> Should render a product card 3`] = `
       <Row
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -657,7 +657,7 @@ exports[`<ProductEmbeddedCard/> Should render a product card 3`] = `
         <Col
           tag="div"
           widths={
-            Array [
+            [
               "xs",
               "sm",
               "md",

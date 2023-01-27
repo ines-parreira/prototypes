@@ -450,8 +450,8 @@ exports[`<MemberExpression/> should update the dropdown on clicking a category 1
 `;
 
 exports[`<MemberExpression/> should update the rule on clicking a variable option 1`] = `
-Array [
-  Array [
+[
+  [
     Immutable.List [
       "body",
       0,

@@ -1,15 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`services GorgiasApi *cursorPaginate() should yield each page of requested items until last page is reached 1`] = `
-Object {
-  "delete": Array [],
-  "get": Array [
-    Object {
+{
+  "delete": [],
+  "get": [
+    {
       "cancelToken": CancelToken {
         "promise": Promise {},
       },
       "data": undefined,
-      "headers": Object {
+      "headers": {
         "Accept": "application/json, text/plain, */*",
         "X-CSRF-Token": "abcd",
         "X-Gorgias-User-Client": "web",
@@ -17,14 +17,14 @@ Object {
       "maxBodyLength": -1,
       "maxContentLength": -1,
       "method": "get",
-      "params": Object {
+      "params": {
         "limit": 100,
       },
       "timeout": 0,
-      "transformRequest": Array [
+      "transformRequest": [
         [Function],
       ],
-      "transformResponse": Array [
+      "transformResponse": [
         [Function],
       ],
       "url": "/foo/bar",
@@ -32,12 +32,12 @@ Object {
       "xsrfCookieName": "XSRF-TOKEN",
       "xsrfHeaderName": "X-XSRF-TOKEN",
     },
-    Object {
+    {
       "cancelToken": CancelToken {
         "promise": Promise {},
       },
       "data": undefined,
-      "headers": Object {
+      "headers": {
         "Accept": "application/json, text/plain, */*",
         "X-CSRF-Token": "abcd",
         "X-Gorgias-User-Client": "web",
@@ -45,15 +45,15 @@ Object {
       "maxBodyLength": -1,
       "maxContentLength": -1,
       "method": "get",
-      "params": Object {
+      "params": {
         "cursor": "cursored_page_2",
         "limit": 100,
       },
       "timeout": 0,
-      "transformRequest": Array [
+      "transformRequest": [
         [Function],
       ],
-      "transformResponse": Array [
+      "transformResponse": [
         [Function],
       ],
       "url": "/foo/bar",
@@ -61,12 +61,12 @@ Object {
       "xsrfCookieName": "XSRF-TOKEN",
       "xsrfHeaderName": "X-XSRF-TOKEN",
     },
-    Object {
+    {
       "cancelToken": CancelToken {
         "promise": Promise {},
       },
       "data": undefined,
-      "headers": Object {
+      "headers": {
         "Accept": "application/json, text/plain, */*",
         "X-CSRF-Token": "abcd",
         "X-Gorgias-User-Client": "web",
@@ -74,15 +74,15 @@ Object {
       "maxBodyLength": -1,
       "maxContentLength": -1,
       "method": "get",
-      "params": Object {
+      "params": {
         "cursor": "cursored_page_3",
         "limit": 100,
       },
       "timeout": 0,
-      "transformRequest": Array [
+      "transformRequest": [
         [Function],
       ],
-      "transformResponse": Array [
+      "transformResponse": [
         [Function],
       ],
       "url": "/foo/bar",
@@ -91,33 +91,33 @@ Object {
       "xsrfHeaderName": "X-XSRF-TOKEN",
     },
   ],
-  "head": Array [],
-  "list": Array [],
-  "options": Array [],
-  "patch": Array [],
-  "post": Array [],
-  "put": Array [],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [],
 }
 `;
 
 exports[`services GorgiasApi cancelPendingRequests() should not be able to cancel pending requests because instance was not created with this ability 1`] = `"Cannot call \`.cancelPendingRequests()\` on this instance because it was not created with this ability."`;
 
 exports[`services GorgiasApi confirmInvoicePayment() should make an HTTP request to confirm a payment for an invoice. 1`] = `
-Object {
-  "delete": Array [],
-  "get": Array [],
-  "head": Array [],
-  "list": Array [],
-  "options": Array [],
-  "patch": Array [],
-  "post": Array [],
-  "put": Array [
-    Object {
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [
+    {
       "cancelToken": CancelToken {
         "promise": Promise {},
       },
       "data": "{}",
-      "headers": Object {
+      "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
         "X-CSRF-Token": "abcd",
@@ -127,10 +127,10 @@ Object {
       "maxContentLength": -1,
       "method": "put",
       "timeout": 0,
-      "transformRequest": Array [
+      "transformRequest": [
         [Function],
       ],
-      "transformResponse": Array [
+      "transformResponse": [
         [Function],
       ],
       "url": "/api/billing/invoices/in_mf9u2x3j20z/confirm-payment/",
@@ -143,14 +143,14 @@ Object {
 `;
 
 exports[`services GorgiasApi deleteDraftOrder() should delete a draft order 1`] = `
-Object {
-  "delete": Array [
-    Object {
+{
+  "delete": [
+    {
       "cancelToken": CancelToken {
         "promise": Promise {},
       },
       "data": undefined,
-      "headers": Object {
+      "headers": {
         "Accept": "application/json, text/plain, */*",
         "X-CSRF-Token": "abcd",
         "X-Gorgias-User-Client": "web",
@@ -158,14 +158,14 @@ Object {
       "maxBodyLength": -1,
       "maxContentLength": -1,
       "method": "delete",
-      "params": Object {
+      "params": {
         "integration_id": 1,
       },
       "timeout": 0,
-      "transformRequest": Array [
+      "transformRequest": [
         [Function],
       ],
-      "transformResponse": Array [
+      "transformResponse": [
         [Function],
       ],
       "url": "/integrations/shopify/order/draft/2/",
@@ -174,31 +174,31 @@ Object {
       "xsrfHeaderName": "X-XSRF-TOKEN",
     },
   ],
-  "get": Array [],
-  "head": Array [],
-  "list": Array [],
-  "options": Array [],
-  "patch": Array [],
-  "post": Array [],
-  "put": Array [],
+  "get": [],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [],
 }
 `;
 
 exports[`services GorgiasApi emailDraftOrderInvoice() should email invoice of given draft order 1`] = `
-Object {
-  "delete": Array [],
-  "get": Array [],
-  "head": Array [],
-  "list": Array [],
-  "options": Array [],
-  "patch": Array [],
-  "post": Array [
-    Object {
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [
+    {
       "cancelToken": CancelToken {
         "promise": Promise {},
       },
-      "data": "{\\"to\\":\\"foo@bar.xyz\\",\\"custom_message\\":\\"foo bar\\"}",
-      "headers": Object {
+      "data": "{"to":"foo@bar.xyz","custom_message":"foo bar"}",
+      "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
         "X-CSRF-Token": "abcd",
@@ -207,14 +207,14 @@ Object {
       "maxBodyLength": -1,
       "maxContentLength": -1,
       "method": "post",
-      "params": Object {
+      "params": {
         "integration_id": 1,
       },
       "timeout": 0,
-      "transformRequest": Array [
+      "transformRequest": [
         [Function],
       ],
-      "transformResponse": Array [
+      "transformResponse": [
         [Function],
       ],
       "url": "/integrations/shopify/order/draft/2/send-invoice/",
@@ -223,20 +223,20 @@ Object {
       "xsrfHeaderName": "X-XSRF-TOKEN",
     },
   ],
-  "put": Array [],
+  "put": [],
 }
 `;
 
 exports[`services GorgiasApi getViewSharing() should fetch view's sharing options 1`] = `
-Object {
-  "delete": Array [],
-  "get": Array [
-    Object {
+{
+  "delete": [],
+  "get": [
+    {
       "cancelToken": CancelToken {
         "promise": Promise {},
       },
       "data": undefined,
-      "headers": Object {
+      "headers": {
         "Accept": "application/json, text/plain, */*",
         "X-CSRF-Token": "abcd",
         "X-Gorgias-User-Client": "web",
@@ -245,10 +245,10 @@ Object {
       "maxContentLength": -1,
       "method": "get",
       "timeout": 0,
-      "transformRequest": Array [
+      "transformRequest": [
         [Function],
       ],
-      "transformResponse": Array [
+      "transformResponse": [
         [Function],
       ],
       "url": "/api/views/1",
@@ -257,31 +257,31 @@ Object {
       "xsrfHeaderName": "X-XSRF-TOKEN",
     },
   ],
-  "head": Array [],
-  "list": Array [],
-  "options": Array [],
-  "patch": Array [],
-  "post": Array [],
-  "put": Array [],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [],
 }
 `;
 
 exports[`services GorgiasApi payInvoice() should make an HTTP request to pay an invoice. 1`] = `
-Object {
-  "delete": Array [],
-  "get": Array [],
-  "head": Array [],
-  "list": Array [],
-  "options": Array [],
-  "patch": Array [],
-  "post": Array [],
-  "put": Array [
-    Object {
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [
+    {
       "cancelToken": CancelToken {
         "promise": Promise {},
       },
       "data": "{}",
-      "headers": Object {
+      "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
         "X-CSRF-Token": "abcd",
@@ -291,10 +291,10 @@ Object {
       "maxContentLength": -1,
       "method": "put",
       "timeout": 0,
-      "transformRequest": Array [
+      "transformRequest": [
         [Function],
       ],
-      "transformResponse": Array [
+      "transformResponse": [
         [Function],
       ],
       "url": "/api/billing/invoices/in_1dj2801j2d/pay/",
@@ -307,21 +307,21 @@ Object {
 `;
 
 exports[`services GorgiasApi setViewSharing() should update view's sharing options 1`] = `
-Object {
-  "delete": Array [],
-  "get": Array [],
-  "head": Array [],
-  "list": Array [],
-  "options": Array [],
-  "patch": Array [],
-  "post": Array [],
-  "put": Array [
-    Object {
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [
+    {
       "cancelToken": CancelToken {
         "promise": Promise {},
       },
-      "data": "{\\"visibility\\":\\"public\\",\\"shared_with_teams\\":[2],\\"shared_with_users\\":[3]}",
-      "headers": Object {
+      "data": "{"visibility":"public","shared_with_teams":[2],"shared_with_users":[3]}",
+      "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
         "X-CSRF-Token": "abcd",
@@ -331,10 +331,10 @@ Object {
       "maxContentLength": -1,
       "method": "put",
       "timeout": 0,
-      "transformRequest": Array [
+      "transformRequest": [
         [Function],
       ],
-      "transformResponse": Array [
+      "transformResponse": [
         [Function],
       ],
       "url": "/api/views/1",
@@ -347,21 +347,21 @@ Object {
 `;
 
 exports[`services GorgiasApi startSubscription() should start the subscription of the current account. 1`] = `
-Object {
-  "delete": Array [],
-  "get": Array [],
-  "head": Array [],
-  "list": Array [],
-  "options": Array [],
-  "patch": Array [],
-  "post": Array [],
-  "put": Array [
-    Object {
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [
+    {
       "cancelToken": CancelToken {
         "promise": Promise {},
       },
       "data": "{}",
-      "headers": Object {
+      "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
         "X-CSRF-Token": "abcd",
@@ -371,10 +371,10 @@ Object {
       "maxContentLength": -1,
       "method": "put",
       "timeout": 0,
-      "transformRequest": Array [
+      "transformRequest": [
         [Function],
       ],
-      "transformResponse": Array [
+      "transformResponse": [
         [Function],
       ],
       "url": "/api/billing/subscription/start/",
@@ -387,21 +387,21 @@ Object {
 `;
 
 exports[`services GorgiasApi updateCreditCard() should update the credit card of the current account. 1`] = `
-Object {
-  "delete": Array [],
-  "get": Array [],
-  "head": Array [],
-  "list": Array [],
-  "options": Array [],
-  "patch": Array [],
-  "post": Array [],
-  "put": Array [
-    Object {
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [
+    {
       "cancelToken": CancelToken {
         "promise": Promise {},
       },
-      "data": "{\\"token\\":\\"tok_2xe129dnm21d2miwmdfsa\\"}",
-      "headers": Object {
+      "data": "{"token":"tok_2xe129dnm21d2miwmdfsa"}",
+      "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
         "X-CSRF-Token": "abcd",
@@ -411,10 +411,10 @@ Object {
       "maxContentLength": -1,
       "method": "put",
       "timeout": 0,
-      "transformRequest": Array [
+      "transformRequest": [
         [Function],
       ],
-      "transformResponse": Array [
+      "transformResponse": [
         [Function],
       ],
       "url": "/api/billing/credit-card/",

@@ -3,7 +3,7 @@
 exports[`FacebookIntegrationList component should render 1`] = `
 <Router
   history={
-    Object {
+    {
       "action": "PUSH",
       "block": [Function],
       "createHref": [Function],
@@ -12,7 +12,7 @@ exports[`FacebookIntegrationList component should render 1`] = `
       "goForward": [Function],
       "length": 2,
       "listen": [Function],
-      "location": Object {
+      "location": {
         "hash": "",
         "key": "KEY",
         "pathname": "/foo/facebook",
@@ -29,7 +29,7 @@ exports[`FacebookIntegrationList component should render 1`] = `
   >
     <Provider
       store={
-        Object {
+        {
           "clearActions": [Function],
           "dispatch": [Function],
           "getActions": [Function],

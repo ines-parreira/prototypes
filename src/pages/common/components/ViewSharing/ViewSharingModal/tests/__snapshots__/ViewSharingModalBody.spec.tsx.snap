@@ -16,16 +16,16 @@ exports[`<ViewSharingModalBody/> render() should render an error 1`] = `
   >
     <RadioChoiceField
       choices={
-        Array [
-          Object {
+        [
+          {
             "label": "Public",
             "value": "public",
           },
-          Object {
+          {
             "label": "Shared",
             "value": "shared",
           },
-          Object {
+          {
             "label": "Private",
             "value": "private",
           },
@@ -58,16 +58,16 @@ exports[`<ViewSharingModalBody/> render() should render private body 1`] = `
   >
     <RadioChoiceField
       choices={
-        Array [
-          Object {
+        [
+          {
             "label": "Public",
             "value": "public",
           },
-          Object {
+          {
             "label": "Shared",
             "value": "shared",
           },
-          Object {
+          {
             "label": "Private",
             "value": "private",
           },
@@ -88,16 +88,16 @@ exports[`<ViewSharingModalBody/> render() should render public body 1`] = `
   >
     <RadioChoiceField
       choices={
-        Array [
-          Object {
+        [
+          {
             "label": "Public",
             "value": "public",
           },
-          Object {
+          {
             "label": "Shared",
             "value": "shared",
           },
-          Object {
+          {
             "label": "Private",
             "value": "private",
           },
@@ -118,16 +118,16 @@ exports[`<ViewSharingModalBody/> render() should render shared body 1`] = `
   >
     <RadioChoiceField
       choices={
-        Array [
-          Object {
+        [
+          {
             "label": "Public",
             "value": "public",
           },
-          Object {
+          {
             "label": "Shared",
             "value": "shared",
           },
-          Object {
+          {
             "label": "Private",
             "value": "private",
           },

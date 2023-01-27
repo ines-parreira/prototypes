@@ -3,9 +3,11 @@ import * as immutableMatchers from 'jest-immutable-matchers'
 import reducer, {initialState} from '../reducers'
 import * as types from '../constants'
 
-jest.addMatchers(immutableMatchers)
-
 describe('auths reducers', () => {
+    beforeEach(() => {
+        expect.extend(immutableMatchers)
+    })
+
     it('fetch auths pagination', () => {
         const resp = {
             data: [

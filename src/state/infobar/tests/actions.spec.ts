@@ -31,8 +31,7 @@ jest.mock('../../notifications/actions.ts', () => {
 })
 
 jest.mock('../../../utils', () => {
-    const utils: Record<string, unknown> =
-        require.requireActual('../../../utils')
+    const utils: Record<string, unknown> = jest.requireActual('../../../utils')
 
     return {
         ...utils,

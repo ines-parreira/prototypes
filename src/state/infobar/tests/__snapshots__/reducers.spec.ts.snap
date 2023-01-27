@@ -1,17 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`infobar reducers execute action 1`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {},
+{
+  "_internal": {
+    "loading": {},
   },
-  "pendingActionsCallbacks": Array [
-    Object {
+  "pendingActionsCallbacks": [
+    {
       "callback": undefined,
       "id": "shopifyRefundShippingCostOfOrder-34-5-f086fd149f679a11cf4d5378daa3a994cd70689a",
     },
   ],
-  "picture": Object {
+  "picture": {
     "email": null,
     "url": null,
   },
@@ -19,17 +19,17 @@ Object {
 `;
 
 exports[`infobar reducers execute action 2`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {},
+{
+  "_internal": {
+    "loading": {},
   },
-  "pendingActionsCallbacks": Array [
-    Object {
+  "pendingActionsCallbacks": [
+    {
       "callback": [MockFunction],
       "id": "shopifyRefundShippingCostOfOrder-34-5-f086fd149f679a11cf4d5378daa3a994cd70689a",
     },
   ],
-  "picture": Object {
+  "picture": {
     "email": null,
     "url": null,
   },
@@ -37,12 +37,12 @@ Object {
 `;
 
 exports[`infobar reducers execute action 3`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {},
+{
+  "_internal": {
+    "loading": {},
   },
-  "pendingActionsCallbacks": Array [],
-  "picture": Object {
+  "pendingActionsCallbacks": [],
+  "picture": {
     "email": null,
     "url": null,
   },
@@ -50,12 +50,12 @@ Object {
 `;
 
 exports[`infobar reducers execute action 4`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {},
+{
+  "_internal": {
+    "loading": {},
   },
-  "pendingActionsCallbacks": Array [],
-  "picture": Object {
+  "pendingActionsCallbacks": [],
+  "picture": {
     "email": null,
     "url": null,
   },

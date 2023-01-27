@@ -20,12 +20,12 @@ exports[`<RichDropdown/> should render a rich dropdown 1`] = `
       <RichDropdownOptions
         onClick={[MockFunction]}
         options={
-          Array [
-            Object {
+          [
+            {
               "key": "foo",
               "label": "Foo",
             },
-            Object {
+            {
               "description": "foobar",
               "key": "bar",
               "label": "Bar",
@@ -58,31 +58,31 @@ exports[`<RichDropdown/> should render a rich dropdown 2`] = `
       <RichDropdownOptionGroups
         onClick={[MockFunction]}
         options={
-          Array [
-            Object {
+          [
+            {
               "key": "foo",
               "label": "FOO",
-              "options": Array [
-                Object {
+              "options": [
+                {
                   "key": "foo",
                   "label": "Foo",
                 },
-                Object {
+                {
                   "description": "foobar",
                   "key": "bar",
                   "label": "Bar",
                 },
               ],
             },
-            Object {
+            {
               "key": "bar",
               "label": "BAR",
-              "options": Array [
-                Object {
+              "options": [
+                {
                   "key": "foo",
                   "label": "Foo",
                 },
-                Object {
+                {
                   "description": "foobar",
                   "key": "bar",
                   "label": "Bar",

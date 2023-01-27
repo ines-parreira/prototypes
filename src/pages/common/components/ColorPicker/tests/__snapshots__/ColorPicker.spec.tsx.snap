@@ -140,7 +140,7 @@ exports[`<ColorPicker /> should display popup on button click with default color
 `;
 
 exports[`<ColorPicker /> should display popup on button click with provided colors 1`] = `
-Array [
+[
   <div
     class="popover-inner"
     role="tooltip"

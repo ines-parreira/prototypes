@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`stat resources downloadStat should resolve with a Stat file on success 1`] = `
-Object {
+{
   "contentType": "filename=test.json",
-  "data": Object {
-    "data": Object {
-      "data": Object {
-        "axes": Object {
-          "x": Array [
+  "data": {
+    "data": {
+      "data": {
+        "axes": {
+          "x": [
             1558760400,
             1558846800,
             1558933200,
@@ -16,11 +16,11 @@ Object {
             1559192400,
             1559278800,
           ],
-          "y": Array [],
+          "y": [],
         },
-        "lines": Array [
-          Object {
-            "data": Array [
+        "lines": [
+          {
+            "data": [
               0,
               0,
               0,
@@ -31,8 +31,8 @@ Object {
             ],
             "name": "50%",
           },
-          Object {
-            "data": Array [
+          {
+            "data": [
               0,
               0,
               0,
@@ -46,14 +46,14 @@ Object {
         ],
       },
       "label": "First response time (percentiles)",
-      "legend": Object {
-        "axes": Object {
+      "legend": {
+        "axes": {
           "x": "",
           "y": "First response time",
         },
       },
     },
-    "meta": Object {
+    "meta": {
       "end_datetime": "2019-05-31T23:59:59-05:00",
       "previous_end_datetime": "2019-05-25T00:00:00-05:00",
       "previous_start_datetime": "2019-05-18T00:00:01-05:00",
@@ -65,11 +65,11 @@ Object {
 `;
 
 exports[`stat resources fetchStat should resolve with a Stat on success 1`] = `
-Object {
-  "data": Object {
-    "data": Object {
-      "axes": Object {
-        "x": Array [
+{
+  "data": {
+    "data": {
+      "axes": {
+        "x": [
           1558760400,
           1558846800,
           1558933200,
@@ -78,11 +78,11 @@ Object {
           1559192400,
           1559278800,
         ],
-        "y": Array [],
+        "y": [],
       },
-      "lines": Array [
-        Object {
-          "data": Array [
+      "lines": [
+        {
+          "data": [
             0,
             0,
             0,
@@ -93,8 +93,8 @@ Object {
           ],
           "name": "50%",
         },
-        Object {
-          "data": Array [
+        {
+          "data": [
             0,
             0,
             0,
@@ -108,14 +108,14 @@ Object {
       ],
     },
     "label": "First response time (percentiles)",
-    "legend": Object {
-      "axes": Object {
+    "legend": {
+      "axes": {
         "x": "",
         "y": "First response time",
       },
     },
   },
-  "meta": Object {
+  "meta": {
     "end_datetime": "2019-05-31T23:59:59-05:00",
     "previous_end_datetime": "2019-05-25T00:00:00-05:00",
     "previous_start_datetime": "2019-05-18T00:00:01-05:00",

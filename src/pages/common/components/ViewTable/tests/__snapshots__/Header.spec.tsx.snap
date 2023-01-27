@@ -40,7 +40,7 @@ exports[`ViewTable::Header default view displays 1`] = `
         onKeyDown={[Function]}
         placeholder="Search tickets..."
         searchDebounceTime={0}
-        style={Object {}}
+        style={{}}
       />
     </div>
   </div>
@@ -87,7 +87,7 @@ exports[`ViewTable::Header default view get search query from active view 1`] = 
         onKeyDown={[Function]}
         placeholder="Search tickets..."
         searchDebounceTime={0}
-        style={Object {}}
+        style={{}}
       />
     </div>
   </div>
@@ -252,7 +252,7 @@ exports[`ViewTable::Header empty view 1`] = `
         onKeyDown={[Function]}
         placeholder="Search tickets..."
         searchDebounceTime={0}
-        style={Object {}}
+        style={{}}
       />
     </div>
   </div>
@@ -280,7 +280,7 @@ exports[`ViewTable::Header search view 1`] = `
         onKeyDown={[Function]}
         placeholder="Search tickets..."
         searchDebounceTime={0}
-        style={Object {}}
+        style={{}}
       />
       <Link
         to="/app/tickets"
@@ -357,7 +357,7 @@ exports[`ViewTable::Header should render search with search term location when s
         onKeyDown={[Function]}
         placeholder="Search tickets..."
         searchDebounceTime={0}
-        style={Object {}}
+        style={{}}
       />
       <Link
         to="/app/tickets"

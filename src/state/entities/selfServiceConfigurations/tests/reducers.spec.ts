@@ -24,28 +24,28 @@ describe('selfServiceConfigurations reducer', () => {
                 )
             )
             expect(newState).toMatchInlineSnapshot(`
-                Object {
-                  "1": Object {
-                    "cancel_order_policy": Object {
-                      "eligibilities": Array [],
+                {
+                  "1": {
+                    "cancel_order_policy": {
+                      "eligibilities": [],
                       "enabled": true,
-                      "exceptions": Array [],
+                      "exceptions": [],
                     },
                     "created_datetime": "2021-02-07T06:07:46.097905+00:00",
                     "deactivated_datetime": null,
                     "id": 1,
-                    "quick_response_policies": Array [],
-                    "report_issue_policy": Object {
-                      "cases": Array [],
+                    "quick_response_policies": [],
+                    "report_issue_policy": {
+                      "cases": [],
                       "enabled": true,
                     },
-                    "return_order_policy": Object {
-                      "eligibilities": Array [],
+                    "return_order_policy": {
+                      "eligibilities": [],
                       "enabled": true,
-                      "exceptions": Array [],
+                      "exceptions": [],
                     },
                     "shop_name": "myMockedStoreName",
-                    "track_order_policy": Object {
+                    "track_order_policy": {
                       "enabled": true,
                     },
                     "type": "shopify",
@@ -63,28 +63,28 @@ describe('selfServiceConfigurations reducer', () => {
                 selfServiceConfigurationFetched(selfServiceConfiguration1)
             )
             expect(newState).toMatchInlineSnapshot(`
-                Object {
-                  "1": Object {
-                    "cancel_order_policy": Object {
-                      "eligibilities": Array [],
+                {
+                  "1": {
+                    "cancel_order_policy": {
+                      "eligibilities": [],
                       "enabled": true,
-                      "exceptions": Array [],
+                      "exceptions": [],
                     },
                     "created_datetime": "2021-02-07T06:07:46.097905+00:00",
                     "deactivated_datetime": null,
                     "id": 1,
-                    "quick_response_policies": Array [],
-                    "report_issue_policy": Object {
-                      "cases": Array [],
+                    "quick_response_policies": [],
+                    "report_issue_policy": {
+                      "cases": [],
                       "enabled": true,
                     },
-                    "return_order_policy": Object {
-                      "eligibilities": Array [],
+                    "return_order_policy": {
+                      "eligibilities": [],
                       "enabled": true,
-                      "exceptions": Array [],
+                      "exceptions": [],
                     },
                     "shop_name": "mystore",
-                    "track_order_policy": Object {
+                    "track_order_policy": {
                       "enabled": true,
                     },
                     "type": "shopify",
@@ -105,54 +105,54 @@ describe('selfServiceConfigurations reducer', () => {
                 ])
             )
             expect(newState).toMatchInlineSnapshot(`
-                Object {
-                  "1": Object {
-                    "cancel_order_policy": Object {
-                      "eligibilities": Array [],
+                {
+                  "1": {
+                    "cancel_order_policy": {
+                      "eligibilities": [],
                       "enabled": true,
-                      "exceptions": Array [],
+                      "exceptions": [],
                     },
                     "created_datetime": "2021-02-07T06:07:46.097905+00:00",
                     "deactivated_datetime": null,
                     "id": 1,
-                    "quick_response_policies": Array [],
-                    "report_issue_policy": Object {
-                      "cases": Array [],
+                    "quick_response_policies": [],
+                    "report_issue_policy": {
+                      "cases": [],
                       "enabled": true,
                     },
-                    "return_order_policy": Object {
-                      "eligibilities": Array [],
+                    "return_order_policy": {
+                      "eligibilities": [],
                       "enabled": true,
-                      "exceptions": Array [],
+                      "exceptions": [],
                     },
                     "shop_name": "mystore",
-                    "track_order_policy": Object {
+                    "track_order_policy": {
                       "enabled": true,
                     },
                     "type": "shopify",
                     "updated_datetime": "2021-02-07T09:07:46.097905+00:00",
                   },
-                  "2": Object {
-                    "cancel_order_policy": Object {
-                      "eligibilities": Array [],
+                  "2": {
+                    "cancel_order_policy": {
+                      "eligibilities": [],
                       "enabled": true,
-                      "exceptions": Array [],
+                      "exceptions": [],
                     },
                     "created_datetime": "2021-02-20T08:15:46.097905+00:00",
                     "deactivated_datetime": "2021-02-20T08:30:46.097905+00:00",
                     "id": 2,
-                    "quick_response_policies": Array [],
-                    "report_issue_policy": Object {
-                      "cases": Array [],
+                    "quick_response_policies": [],
+                    "report_issue_policy": {
+                      "cases": [],
                       "enabled": true,
                     },
-                    "return_order_policy": Object {
-                      "eligibilities": Array [],
+                    "return_order_policy": {
+                      "eligibilities": [],
                       "enabled": true,
-                      "exceptions": Array [],
+                      "exceptions": [],
                     },
                     "shop_name": "otherstore",
-                    "track_order_policy": Object {
+                    "track_order_policy": {
                       "enabled": true,
                     },
                     "type": "shopify",

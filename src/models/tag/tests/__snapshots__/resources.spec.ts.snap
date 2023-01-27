@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`tag resources createTag should resolve with a new Tag on success 1`] = `
-Object {
+{
   "created_datetime": "2021-01-21T13:10:46.444928+00:00",
   "decoration": null,
   "deleted_datetime": null,
@@ -14,17 +14,17 @@ Object {
 `;
 
 exports[`tag resources createTag should resolve with a new Tag on success 2`] = `
-Object {
-  "delete": Array [],
-  "get": Array [],
-  "head": Array [],
-  "list": Array [],
-  "options": Array [],
-  "patch": Array [],
-  "post": Array [
-    Object {
-      "data": "{\\"name\\":\\"billing\\"}",
-      "headers": Object {
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [
+    {
+      "data": "{"name":"billing"}",
+      "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
         "X-CSRF-Token": "abcd",
@@ -34,10 +34,10 @@ Object {
       "maxContentLength": -1,
       "method": "post",
       "timeout": 0,
-      "transformRequest": Array [
+      "transformRequest": [
         [Function],
       ],
-      "transformResponse": Array [
+      "transformResponse": [
         [Function],
       ],
       "url": "/api/tags/",
@@ -46,14 +46,14 @@ Object {
       "xsrfHeaderName": "X-XSRF-TOKEN",
     },
   ],
-  "put": Array [],
+  "put": [],
 }
 `;
 
 exports[`tag resources deleteTag should resolve on success 1`] = `undefined`;
 
 exports[`tag resources fetchTag should resolve with a Tag on success 1`] = `
-Object {
+{
   "created_datetime": "2021-01-21T13:10:46.444928+00:00",
   "decoration": null,
   "deleted_datetime": null,
@@ -66,24 +66,24 @@ Object {
 `;
 
 exports[`tag resources fetchTags should concat second sorting attribute when sorting by usage 1`] = `
-Object {
+{
   "limit": 30,
   "order_by": "usage:asc,name:asc",
 }
 `;
 
 exports[`tag resources fetchTags should concat second sorting attribute when sorting by usage 2`] = `
-Object {
+{
   "limit": 30,
   "order_by": "usage:desc,name:desc",
 }
 `;
 
 exports[`tag resources fetchTags should resolve with a Tag list on success 1`] = `
-Object {
-  "config": Object {
+{
+  "config": {
     "data": undefined,
-    "headers": Object {
+    "headers": {
       "Accept": "application/json, text/plain, */*",
       "X-CSRF-Token": "abcd",
       "X-Gorgias-User-Client": "web",
@@ -91,15 +91,15 @@ Object {
     "maxBodyLength": -1,
     "maxContentLength": -1,
     "method": "get",
-    "params": Object {
+    "params": {
       "limit": 30,
       "search": "hello",
     },
     "timeout": 0,
-    "transformRequest": Array [
+    "transformRequest": [
       [Function],
     ],
-    "transformResponse": Array [
+    "transformResponse": [
       [Function],
     ],
     "url": "/api/tags/",
@@ -107,9 +107,9 @@ Object {
     "xsrfCookieName": "XSRF-TOKEN",
     "xsrfHeaderName": "X-XSRF-TOKEN",
   },
-  "data": Object {
-    "data": Array [
-      Object {
+  "data": {
+    "data": [
+      {
         "created_datetime": "2021-01-21T13:10:46.444928+00:00",
         "decoration": null,
         "deleted_datetime": null,
@@ -119,7 +119,7 @@ Object {
         "uri": "/api/tags/2/",
         "usage": 10,
       },
-      Object {
+      {
         "created_datetime": "2021-01-21T13:10:46.435364+00:00",
         "decoration": null,
         "deleted_datetime": null,
@@ -129,7 +129,7 @@ Object {
         "uri": "/api/tags/1/",
         "usage": 20,
       },
-      Object {
+      {
         "created_datetime": "2021-01-21T13:10:46.446673+00:00",
         "decoration": null,
         "deleted_datetime": null,
@@ -139,7 +139,7 @@ Object {
         "uri": "/api/tags/4/",
         "usage": 0,
       },
-      Object {
+      {
         "created_datetime": "2021-01-21T13:10:46.445859+00:00",
         "decoration": null,
         "deleted_datetime": null,
@@ -150,13 +150,13 @@ Object {
         "usage": 0,
       },
     ],
-    "meta": Object {
+    "meta": {
       "next_cursor": null,
       "prev_cursor": null,
     },
   },
   "headers": undefined,
-  "request": Object {
+  "request": {
     "responseUrl": "/api/tags/",
   },
   "status": 200,
@@ -164,7 +164,7 @@ Object {
 `;
 
 exports[`tag resources updateTag should resolve with the updated tag on success 1`] = `
-Object {
+{
   "created_datetime": "2021-01-21T13:10:46.444928+00:00",
   "decoration": null,
   "deleted_datetime": null,
@@ -177,18 +177,18 @@ Object {
 `;
 
 exports[`tag resources updateTag should resolve with the updated tag on success 2`] = `
-Object {
-  "delete": Array [],
-  "get": Array [],
-  "head": Array [],
-  "list": Array [],
-  "options": Array [],
-  "patch": Array [],
-  "post": Array [],
-  "put": Array [
-    Object {
-      "data": "{\\"id\\":2,\\"created_datetime\\":\\"2021-01-21T13:10:46.444928+00:00\\",\\"decoration\\":null,\\"deleted_datetime\\":null,\\"description\\":null,\\"name\\":\\"billing\\",\\"usage\\":10,\\"uri\\":\\"/api/tags/2/\\"}",
-      "headers": Object {
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [
+    {
+      "data": "{"id":2,"created_datetime":"2021-01-21T13:10:46.444928+00:00","decoration":null,"deleted_datetime":null,"description":null,"name":"billing","usage":10,"uri":"/api/tags/2/"}",
+      "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
         "X-CSRF-Token": "abcd",
@@ -198,10 +198,10 @@ Object {
       "maxContentLength": -1,
       "method": "put",
       "timeout": 0,
-      "transformRequest": Array [
+      "transformRequest": [
         [Function],
       ],
-      "transformResponse": Array [
+      "transformResponse": [
         [Function],
       ],
       "url": "/api/tags/2/",

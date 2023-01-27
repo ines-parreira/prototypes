@@ -3,7 +3,7 @@
 exports[`FacebookIntegrationCustomerChat component should display the list of Shopify stores with the toggle checked or not depending on the installation status 1`] = `
 <Provider
   store={
-    Object {
+    {
       "clearActions": [Function],
       "dispatch": [Function],
       "getActions": [Function],
@@ -229,7 +229,7 @@ exports[`FacebookIntegrationCustomerChat component should display the list of Sh
             <Row
               tag="div"
               widths={
-                Array [
+                [
                   "xs",
                   "sm",
                   "md",
@@ -245,7 +245,7 @@ exports[`FacebookIntegrationCustomerChat component should display the list of Sh
                   md="6"
                   tag="div"
                   widths={
-                    Array [
+                    [
                       "xs",
                       "sm",
                       "md",
@@ -312,15 +312,15 @@ exports[`FacebookIntegrationCustomerChat component should display the list of Sh
     var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) {return;}
     js = d.createElement(s); js.id = id;
-    js.src = \\"https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js\\";
+    js.src = "https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js";
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));
 </script>
 
-<div class=\\"fb-customerchat\\"
-     page_id=\\"undefined\\"
-     minimized=\\"false\\"
-     ref=\\"g\\"
+<div class="fb-customerchat"
+     page_id="undefined"
+     minimized="false"
+     ref="g"
 >
 </div>
 <!-- Gorgias Messenger Widget End -->"
@@ -416,7 +416,7 @@ exports[`FacebookIntegrationCustomerChat component should display the list of Sh
                                 isOpen={true}
                                 tag="div"
                                 transition={
-                                  Object {
+                                  {
                                     "appear": true,
                                     "baseClass": "fade",
                                     "baseClassActive": "show",
@@ -559,7 +559,7 @@ exports[`FacebookIntegrationCustomerChat component should display the list of Sh
                   md="6"
                   tag="div"
                   widths={
-                    Array [
+                    [
                       "xs",
                       "sm",
                       "md",

@@ -4,7 +4,7 @@ exports[`<TicketReplyArea/> should block the reply area because the customer is 
 <TicketReplyArea
   applyMacro={[MockFunction]}
   cacheAdded={false}
-  currentMacro={Object {}}
+  currentMacro={{}}
   currentTicket={
     Immutable.Map {
       "id": null,
@@ -12,7 +12,7 @@ exports[`<TicketReplyArea/> should block the reply area because the customer is 
     }
   }
   currentUser={Immutable.Map {}}
-  customers={Object {}}
+  customers={{}}
   fetchMacrosCancellable={[Function]}
   lastMessage={
     Immutable.Map {
@@ -45,8 +45,8 @@ exports[`<TicketReplyArea/> should block the reply area because the customer is 
       requireCustomerSelection={true}
       searchMacros={[Function]}
       searchParams={
-        Object {
-          "languages": Array [],
+        {
+          "languages": [],
           "orderBy": "name:asc",
           "search": "",
         }
@@ -150,8 +150,8 @@ exports[`<TicketReplyArea/> should render 1`] = `
     requireCustomerSelection={false}
     searchMacros={[Function]}
     searchParams={
-      Object {
-        "languages": Array [],
+      {
+        "languages": [],
         "orderBy": "name:asc",
         "search": "",
       }

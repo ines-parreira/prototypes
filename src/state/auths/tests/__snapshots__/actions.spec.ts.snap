@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`auths actions should successfully fetch user's auths and store the result 1`] = `
-Array [
-  Object {
-    "resp": Array [
-      Object {
+[
+  {
+    "resp": [
+      {
         "id": 1,
       },
     ],
@@ -14,8 +14,8 @@ Array [
 `;
 
 exports[`auths actions should successfully reset user's API key and store the result 1`] = `
-Array [
-  Object {
+[
+  {
     "error": [Error: Request failed with status code 404],
     "reason": "Unable to get current authentification tokens.",
     "type": "FETCH_USER_AUTHS_ERROR",
@@ -24,8 +24,8 @@ Array [
 `;
 
 exports[`auths actions shouldn't store anything if there was any errors when fetching user's auths 1`] = `
-Array [
-  Object {
+[
+  {
     "error": [Error: Request failed with status code 403],
     "reason": "Unable to get current authentification tokens.",
     "type": "FETCH_USER_AUTHS_ERROR",
@@ -34,8 +34,8 @@ Array [
 `;
 
 exports[`auths actions shouldn't store anything if there was any errors when reseting user's API key 1`] = `
-Array [
-  Object {
+[
+  {
     "error": [Error: Request failed with status code 403],
     "reason": "Unable to get current authentification tokens.",
     "type": "FETCH_USER_AUTHS_ERROR",

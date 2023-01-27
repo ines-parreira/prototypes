@@ -1,17 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`infobarActions.shopify.cancelOrder actions on error onInit() should notify that an error occurred 1`] = `
-Array [
-  Object {
+[
+  {
     "loading": true,
     "message": "Calculating refund...",
     "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
   },
-  Object {
+  {
     "orderId": 1894175539223,
     "type": "infobarActions/shopify/cancelOrder/SET_ORDER_ID",
   },
-  Object {
+  {
     "payload": Immutable.Map {
       "reason": "customer",
       "email": true,
@@ -45,17 +45,17 @@ Array [
     },
     "type": "infobarActions/shopify/cancelOrder/SET_PAYLOAD",
   },
-  Object {
+  {
     "loading": true,
     "message": "Calculating refund...",
     "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
   },
-  Object {
+  {
     "loading": true,
     "message": "Calculating refund...",
     "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
   },
-  Object {
+  {
     "lineItems": Immutable.List [
       Immutable.Map {
         "quantity": 1,
@@ -118,15 +118,15 @@ Array [
     ],
     "type": "infobarActions/shopify/cancelOrder/SET_LINE_ITEMS",
   },
-  Object {
+  {
     "loading": false,
     "message": null,
     "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
   },
-  Object {
-    "payload": Object {
+  {
+    "payload": {
       "allowHTML": true,
-      "buttons": Array [],
+      "buttons": [],
       "closeButton": false,
       "dismissAfter": 3000,
       "dismissible": true,
@@ -142,17 +142,17 @@ Array [
 `;
 
 exports[`infobarActions.shopify.cancelOrder actions on not restockable onInit() should set \`restock\` to \`false\` because the line item is not restockable 1`] = `
-Array [
-  Object {
+[
+  {
     "loading": true,
     "message": "Calculating refund...",
     "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
   },
-  Object {
+  {
     "orderId": 1894175539223,
     "type": "infobarActions/shopify/cancelOrder/SET_ORDER_ID",
   },
-  Object {
+  {
     "payload": Immutable.Map {
       "reason": "customer",
       "email": true,
@@ -186,17 +186,17 @@ Array [
     },
     "type": "infobarActions/shopify/cancelOrder/SET_PAYLOAD",
   },
-  Object {
+  {
     "loading": true,
     "message": "Calculating refund...",
     "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
   },
-  Object {
+  {
     "loading": true,
     "message": "Calculating refund...",
     "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
   },
-  Object {
+  {
     "lineItems": Immutable.List [
       Immutable.Map {
         "quantity": 1,
@@ -259,7 +259,7 @@ Array [
     ],
     "type": "infobarActions/shopify/cancelOrder/SET_LINE_ITEMS",
   },
-  Object {
+  {
     "refund": Immutable.Map {
       "shipping": Immutable.Map {
         "amount": "0.00",
@@ -295,16 +295,16 @@ Array [
     },
     "type": "infobarActions/shopify/cancelOrder/SET_REFUND",
   },
-  Object {
+  {
     "amount": "1.20",
     "type": "infobarActions/shopify/cancelOrder/SET_REFUND_AMOUNT",
   },
-  Object {
+  {
     "loading": false,
     "message": null,
     "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
   },
-  Object {
+  {
     "restock": false,
     "type": "infobarActions/shopify/cancelOrder/SET_RESTOCK",
   },
@@ -312,17 +312,17 @@ Array [
 `;
 
 exports[`infobarActions.shopify.cancelOrder actions on restockable onInit() should set \`restock\` to \`true\` because the line item is restockable 1`] = `
-Array [
-  Object {
+[
+  {
     "loading": true,
     "message": "Calculating refund...",
     "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
   },
-  Object {
+  {
     "orderId": 1894175539223,
     "type": "infobarActions/shopify/cancelOrder/SET_ORDER_ID",
   },
-  Object {
+  {
     "payload": Immutable.Map {
       "reason": "customer",
       "email": true,
@@ -356,17 +356,17 @@ Array [
     },
     "type": "infobarActions/shopify/cancelOrder/SET_PAYLOAD",
   },
-  Object {
+  {
     "loading": true,
     "message": "Calculating refund...",
     "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
   },
-  Object {
+  {
     "loading": true,
     "message": "Calculating refund...",
     "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
   },
-  Object {
+  {
     "lineItems": Immutable.List [
       Immutable.Map {
         "quantity": 1,
@@ -429,7 +429,7 @@ Array [
     ],
     "type": "infobarActions/shopify/cancelOrder/SET_LINE_ITEMS",
   },
-  Object {
+  {
     "refund": Immutable.Map {
       "shipping": Immutable.Map {
         "amount": "0.00",
@@ -465,16 +465,16 @@ Array [
     },
     "type": "infobarActions/shopify/cancelOrder/SET_REFUND",
   },
-  Object {
+  {
     "amount": "1.20",
     "type": "infobarActions/shopify/cancelOrder/SET_REFUND_AMOUNT",
   },
-  Object {
+  {
     "loading": false,
     "message": null,
     "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
   },
-  Object {
+  {
     "restock": true,
     "type": "infobarActions/shopify/cancelOrder/SET_RESTOCK",
   },
@@ -482,8 +482,8 @@ Array [
 `;
 
 exports[`infobarActions.shopify.cancelOrder actions on success on initialized onLineItemChange() should set line item and calculate refund 1`] = `
-Array [
-  Object {
+[
+  {
     "lineItems": Immutable.List [
       Immutable.Map {
         "quantity": 1,
@@ -517,7 +517,7 @@ Array [
     ],
     "type": "infobarActions/shopify/cancelOrder/SET_LINE_ITEMS",
   },
-  Object {
+  {
     "payload": Immutable.Map {
       "reason": "customer",
       "email": true,
@@ -545,17 +545,17 @@ Array [
     },
     "type": "infobarActions/shopify/cancelOrder/SET_PAYLOAD",
   },
-  Object {
+  {
     "loading": true,
     "message": "Calculating refund...",
     "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
   },
-  Object {
+  {
     "loading": true,
     "message": "Calculating refund...",
     "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
   },
-  Object {
+  {
     "refund": Immutable.Map {
       "shipping": Immutable.Map {
         "amount": "10.00",
@@ -591,11 +591,11 @@ Array [
     },
     "type": "infobarActions/shopify/cancelOrder/SET_REFUND",
   },
-  Object {
+  {
     "amount": "1.20",
     "type": "infobarActions/shopify/cancelOrder/SET_REFUND_AMOUNT",
   },
-  Object {
+  {
     "loading": false,
     "message": null,
     "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
@@ -604,8 +604,8 @@ Array [
 `;
 
 exports[`infobarActions.shopify.cancelOrder actions on success on initialized onPayloadChange() should set payload and calculate refund 1`] = `
-Array [
-  Object {
+[
+  {
     "payload": Immutable.Map {
       "reason": "customer",
       "email": true,
@@ -633,17 +633,17 @@ Array [
     },
     "type": "infobarActions/shopify/cancelOrder/SET_PAYLOAD",
   },
-  Object {
+  {
     "loading": true,
     "message": "Calculating refund...",
     "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
   },
-  Object {
+  {
     "loading": true,
     "message": "Calculating refund...",
     "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
   },
-  Object {
+  {
     "refund": Immutable.Map {
       "shipping": Immutable.Map {
         "amount": "10.00",
@@ -679,11 +679,11 @@ Array [
     },
     "type": "infobarActions/shopify/cancelOrder/SET_REFUND",
   },
-  Object {
+  {
     "amount": "1.20",
     "type": "infobarActions/shopify/cancelOrder/SET_REFUND_AMOUNT",
   },
-  Object {
+  {
     "loading": false,
     "message": null,
     "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
@@ -692,17 +692,17 @@ Array [
 `;
 
 exports[`infobarActions.shopify.cancelOrder actions on success onInit() should init the state 1`] = `
-Array [
-  Object {
+[
+  {
     "loading": true,
     "message": "Calculating refund...",
     "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
   },
-  Object {
+  {
     "orderId": 1894175539223,
     "type": "infobarActions/shopify/cancelOrder/SET_ORDER_ID",
   },
-  Object {
+  {
     "payload": Immutable.Map {
       "reason": "customer",
       "email": true,
@@ -736,17 +736,17 @@ Array [
     },
     "type": "infobarActions/shopify/cancelOrder/SET_PAYLOAD",
   },
-  Object {
+  {
     "loading": true,
     "message": "Calculating refund...",
     "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
   },
-  Object {
+  {
     "loading": true,
     "message": "Calculating refund...",
     "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
   },
-  Object {
+  {
     "lineItems": Immutable.List [
       Immutable.Map {
         "quantity": 1,
@@ -809,7 +809,7 @@ Array [
     ],
     "type": "infobarActions/shopify/cancelOrder/SET_LINE_ITEMS",
   },
-  Object {
+  {
     "refund": Immutable.Map {
       "shipping": Immutable.Map {
         "amount": "10.00",
@@ -845,11 +845,11 @@ Array [
     },
     "type": "infobarActions/shopify/cancelOrder/SET_REFUND",
   },
-  Object {
+  {
     "amount": "1.20",
     "type": "infobarActions/shopify/cancelOrder/SET_REFUND_AMOUNT",
   },
-  Object {
+  {
     "loading": false,
     "message": null,
     "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
@@ -858,8 +858,8 @@ Array [
 `;
 
 exports[`infobarActions.shopify.cancelOrder actions onReset() should reset state 1`] = `
-Array [
-  Object {
+[
+  {
     "type": "infobarActions/shopify/cancelOrder/SET_INITIAL_STATE",
   },
 ]

@@ -2,15 +2,15 @@
 
 exports[`teams selectors getLabelledTeams() 1`] = `
 Immutable.List [
-  Object {
+  {
     "id": 1,
     "label": "Team 1",
-    "members": Array [],
+    "members": [],
   },
-  Object {
+  {
     "id": 2,
     "label": "Team 2",
-    "members": Array [],
+    "members": [],
   },
 ]
 `;

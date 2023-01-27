@@ -1,18 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`useRules should load the rules 1`] = `
-Array [
+[
   null,
   true,
 ]
 `;
 
 exports[`useRules should return the rules 1`] = `
-Array [
-  Object {
-    "1": Object {
+[
+  {
+    "1": {
       "code": "",
-      "code_ast": Object {},
+      "code_ast": {},
       "created_datetime": "2020-01-01T00:00:00",
       "deactivated_datetime": null,
       "description": "foo",

@@ -4,7 +4,7 @@ exports[`AddActionOrIfStatement component should render 1`] = `
 <UncontrolledButtonDropdown
   className="AddActionOrIfStatement"
   style={
-    Object {
+    {
       "paddingLeft": "18px",
     }
   }
@@ -46,7 +46,7 @@ exports[`AddActionOrIfStatement component should render a button to delete the b
 <UncontrolledButtonDropdown
   className="AddActionOrIfStatement"
   style={
-    Object {
+    {
       "paddingLeft": "18px",
     }
   }
@@ -101,7 +101,7 @@ exports[`AddActionOrIfStatement component should render with error 1`] = `
 <UncontrolledButtonDropdown
   className="AddActionOrIfStatement"
   style={
-    Object {
+    {
       "paddingLeft": "18px",
     }
   }

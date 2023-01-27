@@ -1,14 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`stats selectors getMessagingIntegrationsStatsFilter should return only message integrations 1`] = `
-Array [
+[
   1,
 ]
 `;
 
 exports[`stats selectors getStatsMessagingIntegrations should return only message integrations 1`] = `
-Array [
-  Object {
+[
+  {
     "id": 1,
     "type": "gmail",
   },
@@ -16,8 +16,8 @@ Array [
 `;
 
 exports[`stats selectors getStatsStoreIntegrations should return only store integrations 1`] = `
-Array [
-  Object {
+[
+  {
     "id": 2,
     "type": "shopify",
   },
@@ -25,7 +25,7 @@ Array [
 `;
 
 exports[`stats selectors getStoreIntegrationsStatsFilter should return only store integrations 1`] = `
-Array [
+[
   2,
 ]
 `;

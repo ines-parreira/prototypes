@@ -10,8 +10,6 @@ import {RootState} from '../../types'
 const DATE_TO_USE = new Date('2019-09-03')
 jest.spyOn(Date, 'now').mockImplementation(() => DATE_TO_USE.getTime())
 
-jest.addMatchers(immutableMatchers)
-
 const setStateWith = (
     state: RootState,
     pathInMeta: string[] = [],
@@ -29,6 +27,10 @@ describe('current account selectors', () => {
     const defaultState = {
         currentAccount: initialState.mergeDeep(fromJS(accountFixtures.account)),
     } as RootState
+
+    beforeEach(() => {
+        expect.extend(immutableMatchers)
+    })
 
     it('getCurrentAccountState', () => {
         expect(selectors.getCurrentAccountState(defaultState)).toEqualImmutable(

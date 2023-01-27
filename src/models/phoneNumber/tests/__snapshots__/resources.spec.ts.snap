@@ -1,50 +1,50 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`capabilities limitations fetchPhoneCapabilities should resolve with a map of phone number capabilities by country 1`] = `
-Object {
-  "AU": Object {
-    "Local": Object {
+{
+  "AU": {
+    "Local": {
       "mms": false,
       "sms": false,
       "voice": true,
     },
   },
-  "CA": Object {
-    "Local": Object {
+  "CA": {
+    "Local": {
       "mms": true,
       "sms": true,
       "voice": true,
     },
-    "TollFree": Object {
+    "TollFree": {
       "mms": true,
       "sms": true,
       "voice": true,
     },
   },
-  "GB": Object {
-    "Local": Object {
+  "GB": {
+    "Local": {
       "mms": false,
       "sms": true,
       "voice": true,
     },
-    "Mobile": Object {
+    "Mobile": {
       "mms": false,
       "sms": true,
       "voice": true,
     },
-    "National": Object {
+    "National": {
       "mms": false,
       "sms": true,
       "voice": true,
     },
   },
-  "US": Object {
-    "Local": Object {
+  "US": {
+    "Local": {
       "mms": true,
       "sms": true,
       "voice": true,
     },
-    "TollFree": Object {
+    "TollFree": {
       "mms": true,
       "sms": true,
       "voice": true,
@@ -54,8 +54,8 @@ Object {
 `;
 
 exports[`phone numbers resources createPhoneNumber should resolve with a new PhoneNumber on success 1`] = `
-Object {
-  "capabilities": Object {
+{
+  "capabilities": {
     "mms": true,
     "sms": true,
     "voice": true,
@@ -63,8 +63,8 @@ Object {
   "created_datetime": "2021-12-01T18:00:00.000000+00:00",
   "deleted_datetime": null,
   "id": 1,
-  "integrations": Array [],
-  "meta": Object {
+  "integrations": [],
+  "meta": {
     "area_code": 415,
     "country": "US",
     "emoji": "👍",
@@ -79,17 +79,17 @@ Object {
 `;
 
 exports[`phone numbers resources createPhoneNumber should resolve with a new PhoneNumber on success 2`] = `
-Object {
-  "delete": Array [],
-  "get": Array [],
-  "head": Array [],
-  "list": Array [],
-  "options": Array [],
-  "patch": Array [],
-  "post": Array [
-    Object {
-      "data": "{\\"name\\":\\"A Phone Number\\"}",
-      "headers": Object {
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [
+    {
+      "data": "{"name":"A Phone Number"}",
+      "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
         "X-CSRF-Token": "abcd",
@@ -99,10 +99,10 @@ Object {
       "maxContentLength": -1,
       "method": "post",
       "timeout": 0,
-      "transformRequest": Array [
+      "transformRequest": [
         [Function],
       ],
-      "transformResponse": Array [
+      "transformResponse": [
         [Function],
       ],
       "url": "/api/integrations/phone/phone-numbers/",
@@ -111,17 +111,17 @@ Object {
       "xsrfHeaderName": "X-XSRF-TOKEN",
     },
   ],
-  "put": Array [],
+  "put": [],
 }
 `;
 
 exports[`phone numbers resources deletePhoneNumber should resolve on success 1`] = `undefined`;
 
 exports[`phone numbers resources fetchPhoneNumbers should resolve with a PhoneNumber list on success 1`] = `
-Object {
-  "data": Array [
-    Object {
-      "capabilities": Object {
+{
+  "data": [
+    {
+      "capabilities": {
         "mms": true,
         "sms": true,
         "voice": true,
@@ -129,8 +129,8 @@ Object {
       "created_datetime": "2021-12-01T18:00:00.000000+00:00",
       "deleted_datetime": null,
       "id": 1,
-      "integrations": Array [],
-      "meta": Object {
+      "integrations": [],
+      "meta": {
         "area_code": 415,
         "country": "US",
         "emoji": "👍",
@@ -142,8 +142,8 @@ Object {
       "phone_number": "+14151112222",
       "updated_datetime": "2021-12-01T18:00:00.000000+00:00",
     },
-    Object {
-      "capabilities": Object {
+    {
+      "capabilities": {
         "mms": true,
         "sms": true,
         "voice": true,
@@ -151,8 +151,8 @@ Object {
       "created_datetime": "2021-12-01T18:00:00.000000+00:00",
       "deleted_datetime": null,
       "id": 2,
-      "integrations": Array [],
-      "meta": Object {
+      "integrations": [],
+      "meta": {
         "area_code": 813,
         "country": "CA",
         "emoji": "👍",
@@ -163,8 +163,8 @@ Object {
       "phone_number": "+14151112223",
       "updated_datetime": "2021-12-01T18:00:00.000000+00:00",
     },
-    Object {
-      "address": Object {
+    {
+      "address": {
         "address": "SomethingVile, Somewhere",
         "business_name": "ACME",
         "city": "SomethingVile",
@@ -173,7 +173,7 @@ Object {
         "region": "Somewhere",
         "type": "company",
       },
-      "capabilities": Object {
+      "capabilities": {
         "mms": false,
         "sms": false,
         "voice": true,
@@ -181,8 +181,8 @@ Object {
       "created_datetime": "2021-12-01T18:00:00.000000+00:00",
       "deleted_datetime": null,
       "id": 3,
-      "integrations": Array [],
-      "meta": Object {
+      "integrations": [],
+      "meta": {
         "area_code": 7,
         "country": "GB",
         "emoji": "👍",
@@ -194,15 +194,15 @@ Object {
       "updated_datetime": "2021-12-01T18:00:00.000000+00:00",
     },
   ],
-  "meta": Object {
+  "meta": {
     "current_page": 2,
   },
 }
 `;
 
 exports[`phone numbers resources updatePhoneNumber should resolve with the updated phone number on success 1`] = `
-Object {
-  "capabilities": Object {
+{
+  "capabilities": {
     "mms": true,
     "sms": true,
     "voice": true,
@@ -210,8 +210,8 @@ Object {
   "created_datetime": "2021-12-01T18:00:00.000000+00:00",
   "deleted_datetime": null,
   "id": 1,
-  "integrations": Array [],
-  "meta": Object {
+  "integrations": [],
+  "meta": {
     "area_code": 415,
     "country": "US",
     "emoji": "👍",
@@ -226,18 +226,18 @@ Object {
 `;
 
 exports[`phone numbers resources updatePhoneNumber should resolve with the updated phone number on success 2`] = `
-Object {
-  "delete": Array [],
-  "get": Array [],
-  "head": Array [],
-  "list": Array [],
-  "options": Array [],
-  "patch": Array [],
-  "post": Array [],
-  "put": Array [
-    Object {
-      "data": "{\\"id\\":1,\\"name\\":\\"A Phone Number\\",\\"phone_number\\":\\"+14151112222\\",\\"created_datetime\\":\\"2021-12-01T18:00:00.000000+00:00\\",\\"updated_datetime\\":\\"2021-12-01T18:00:00.000000+00:00\\",\\"deleted_datetime\\":null,\\"meta\\":{\\"type\\":\\"Local\\",\\"emoji\\":\\"👍\\",\\"friendly_name\\":\\"+1 415 111 2222\\",\\"state\\":\\"CA\\",\\"country\\":\\"US\\",\\"area_code\\":415},\\"integrations\\":[],\\"capabilities\\":{\\"sms\\":true,\\"voice\\":true,\\"mms\\":true}}",
-      "headers": Object {
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [
+    {
+      "data": "{"id":1,"name":"A Phone Number","phone_number":"+14151112222","created_datetime":"2021-12-01T18:00:00.000000+00:00","updated_datetime":"2021-12-01T18:00:00.000000+00:00","deleted_datetime":null,"meta":{"type":"Local","emoji":"👍","friendly_name":"+1 415 111 2222","state":"CA","country":"US","area_code":415},"integrations":[],"capabilities":{"sms":true,"voice":true,"mms":true}}",
+      "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
         "X-CSRF-Token": "abcd",
@@ -247,10 +247,10 @@ Object {
       "maxContentLength": -1,
       "method": "put",
       "timeout": 0,
-      "transformRequest": Array [
+      "transformRequest": [
         [Function],
       ],
-      "transformResponse": Array [
+      "transformResponse": [
         [Function],
       ],
       "url": "/api/integrations/phone/phone-numbers/1/",

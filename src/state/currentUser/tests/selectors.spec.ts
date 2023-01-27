@@ -8,12 +8,11 @@ import {user} from '../../../fixtures/users'
 import {DEFAULT_PREFERENCES} from '../../../config'
 import {RootState} from '../../types'
 
-jest.addMatchers(immutableMatchers)
-
 describe('current user selectors', () => {
     let state: RootState
 
     beforeEach(() => {
+        expect.extend(immutableMatchers)
         state = {
             currentUser: initialState.mergeDeep(
                 fromJS({

@@ -1,32 +1,32 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<TicketNavbarContent/> getNextSettings should move a root view to a root view 1`] = `
-Object {
-  "view_sections": Object {
-    "1": Object {
+{
+  "view_sections": {
+    "1": {
       "display_order": 2,
     },
-    "2": Object {
+    "2": {
       "display_order": 6,
     },
   },
-  "views": Object {
-    "1": Object {
+  "views": {
+    "1": {
       "display_order": 1,
     },
-    "2": Object {
+    "2": {
       "display_order": 0,
     },
-    "3": Object {
+    "3": {
       "display_order": 3,
     },
-    "4": Object {
+    "4": {
       "display_order": 4,
     },
-    "5": Object {
+    "5": {
       "display_order": 5,
     },
-    "6": Object {
+    "6": {
       "display_order": 7,
     },
   },
@@ -34,32 +34,32 @@ Object {
 `;
 
 exports[`<TicketNavbarContent/> getNextSettings should move a root view to a section view 1`] = `
-Object {
-  "view_sections": Object {
-    "1": Object {
+{
+  "view_sections": {
+    "1": {
       "display_order": 1,
     },
-    "2": Object {
+    "2": {
       "display_order": 6,
     },
   },
-  "views": Object {
-    "1": Object {
+  "views": {
+    "1": {
       "display_order": 3,
     },
-    "2": Object {
+    "2": {
       "display_order": 0,
     },
-    "3": Object {
+    "3": {
       "display_order": 2,
     },
-    "4": Object {
+    "4": {
       "display_order": 4,
     },
-    "5": Object {
+    "5": {
       "display_order": 5,
     },
-    "6": Object {
+    "6": {
       "display_order": 7,
     },
   },
@@ -67,32 +67,32 @@ Object {
 `;
 
 exports[`<TicketNavbarContent/> getNextSettings should move a section to a root view 1`] = `
-Object {
-  "view_sections": Object {
-    "1": Object {
+{
+  "view_sections": {
+    "1": {
       "display_order": 1,
     },
-    "2": Object {
+    "2": {
       "display_order": 6,
     },
   },
-  "views": Object {
-    "1": Object {
+  "views": {
+    "1": {
       "display_order": 0,
     },
-    "2": Object {
+    "2": {
       "display_order": 5,
     },
-    "3": Object {
+    "3": {
       "display_order": 2,
     },
-    "4": Object {
+    "4": {
       "display_order": 3,
     },
-    "5": Object {
+    "5": {
       "display_order": 4,
     },
-    "6": Object {
+    "6": {
       "display_order": 7,
     },
   },
@@ -100,32 +100,32 @@ Object {
 `;
 
 exports[`<TicketNavbarContent/> getNextSettings should move a section to a section 1`] = `
-Object {
-  "view_sections": Object {
-    "1": Object {
+{
+  "view_sections": {
+    "1": {
       "display_order": 4,
     },
-    "2": Object {
+    "2": {
       "display_order": 2,
     },
   },
-  "views": Object {
-    "1": Object {
+  "views": {
+    "1": {
       "display_order": 0,
     },
-    "2": Object {
+    "2": {
       "display_order": 1,
     },
-    "3": Object {
+    "3": {
       "display_order": 5,
     },
-    "4": Object {
+    "4": {
       "display_order": 6,
     },
-    "5": Object {
+    "5": {
       "display_order": 7,
     },
-    "6": Object {
+    "6": {
       "display_order": 3,
     },
   },
@@ -133,32 +133,32 @@ Object {
 `;
 
 exports[`<TicketNavbarContent/> getNextSettings should move a section to content boundary 1`] = `
-Object {
-  "view_sections": Object {
-    "1": Object {
+{
+  "view_sections": {
+    "1": {
       "display_order": 0,
     },
-    "2": Object {
+    "2": {
       "display_order": 6,
     },
   },
-  "views": Object {
-    "1": Object {
+  "views": {
+    "1": {
       "display_order": 4,
     },
-    "2": Object {
+    "2": {
       "display_order": 5,
     },
-    "3": Object {
+    "3": {
       "display_order": 1,
     },
-    "4": Object {
+    "4": {
       "display_order": 2,
     },
-    "5": Object {
+    "5": {
       "display_order": 3,
     },
-    "6": Object {
+    "6": {
       "display_order": 7,
     },
   },
@@ -166,32 +166,32 @@ Object {
 `;
 
 exports[`<TicketNavbarContent/> getNextSettings should move a section to content boundary 2`] = `
-Object {
-  "view_sections": Object {
-    "1": Object {
+{
+  "view_sections": {
+    "1": {
       "display_order": 4,
     },
-    "2": Object {
+    "2": {
       "display_order": 2,
     },
   },
-  "views": Object {
-    "1": Object {
+  "views": {
+    "1": {
       "display_order": 0,
     },
-    "2": Object {
+    "2": {
       "display_order": 1,
     },
-    "3": Object {
+    "3": {
       "display_order": 5,
     },
-    "4": Object {
+    "4": {
       "display_order": 6,
     },
-    "5": Object {
+    "5": {
       "display_order": 7,
     },
-    "6": Object {
+    "6": {
       "display_order": 3,
     },
   },
@@ -199,32 +199,32 @@ Object {
 `;
 
 exports[`<TicketNavbarContent/> getNextSettings should move a section view to a root view 1`] = `
-Object {
-  "view_sections": Object {
-    "1": Object {
+{
+  "view_sections": {
+    "1": {
       "display_order": 3,
     },
-    "2": Object {
+    "2": {
       "display_order": 6,
     },
   },
-  "views": Object {
-    "1": Object {
+  "views": {
+    "1": {
       "display_order": 0,
     },
-    "2": Object {
+    "2": {
       "display_order": 2,
     },
-    "3": Object {
+    "3": {
       "display_order": 4,
     },
-    "4": Object {
+    "4": {
       "display_order": 1,
     },
-    "5": Object {
+    "5": {
       "display_order": 5,
     },
-    "6": Object {
+    "6": {
       "display_order": 7,
     },
   },
@@ -232,32 +232,32 @@ Object {
 `;
 
 exports[`<TicketNavbarContent/> getNextSettings should move a section view to a section view 1`] = `
-Object {
-  "view_sections": Object {
-    "1": Object {
+{
+  "view_sections": {
+    "1": {
       "display_order": 2,
     },
-    "2": Object {
+    "2": {
       "display_order": 6,
     },
   },
-  "views": Object {
-    "1": Object {
+  "views": {
+    "1": {
       "display_order": 0,
     },
-    "2": Object {
+    "2": {
       "display_order": 1,
     },
-    "3": Object {
+    "3": {
       "display_order": 4,
     },
-    "4": Object {
+    "4": {
       "display_order": 3,
     },
-    "5": Object {
+    "5": {
       "display_order": 5,
     },
-    "6": Object {
+    "6": {
       "display_order": 7,
     },
   },
@@ -265,32 +265,32 @@ Object {
 `;
 
 exports[`<TicketNavbarContent/> getNextSettings should move a view down a section 1`] = `
-Object {
-  "view_sections": Object {
-    "1": Object {
+{
+  "view_sections": {
+    "1": {
       "display_order": 1,
     },
-    "2": Object {
+    "2": {
       "display_order": 6,
     },
   },
-  "views": Object {
-    "1": Object {
+  "views": {
+    "1": {
       "display_order": 2,
     },
-    "2": Object {
+    "2": {
       "display_order": 0,
     },
-    "3": Object {
+    "3": {
       "display_order": 3,
     },
-    "4": Object {
+    "4": {
       "display_order": 4,
     },
-    "5": Object {
+    "5": {
       "display_order": 5,
     },
-    "6": Object {
+    "6": {
       "display_order": 7,
     },
   },
@@ -298,32 +298,32 @@ Object {
 `;
 
 exports[`<TicketNavbarContent/> getNextSettings should move a view ontop of a section 1`] = `
-Object {
-  "view_sections": Object {
-    "1": Object {
+{
+  "view_sections": {
+    "1": {
       "display_order": 2,
     },
-    "2": Object {
+    "2": {
       "display_order": 6,
     },
   },
-  "views": Object {
-    "1": Object {
+  "views": {
+    "1": {
       "display_order": 1,
     },
-    "2": Object {
+    "2": {
       "display_order": 0,
     },
-    "3": Object {
+    "3": {
       "display_order": 3,
     },
-    "4": Object {
+    "4": {
       "display_order": 4,
     },
-    "5": Object {
+    "5": {
       "display_order": 5,
     },
-    "6": Object {
+    "6": {
       "display_order": 7,
     },
   },
@@ -331,32 +331,32 @@ Object {
 `;
 
 exports[`<TicketNavbarContent/> getNextSettings should move a view to content boundary 1`] = `
-Object {
-  "view_sections": Object {
-    "1": Object {
+{
+  "view_sections": {
+    "1": {
       "display_order": 2,
     },
-    "2": Object {
+    "2": {
       "display_order": 6,
     },
   },
-  "views": Object {
-    "1": Object {
+  "views": {
+    "1": {
       "display_order": 1,
     },
-    "2": Object {
+    "2": {
       "display_order": 0,
     },
-    "3": Object {
+    "3": {
       "display_order": 3,
     },
-    "4": Object {
+    "4": {
       "display_order": 4,
     },
-    "5": Object {
+    "5": {
       "display_order": 5,
     },
-    "6": Object {
+    "6": {
       "display_order": 7,
     },
   },
@@ -364,32 +364,32 @@ Object {
 `;
 
 exports[`<TicketNavbarContent/> getNextSettings should move a view to content boundary 2`] = `
-Object {
-  "view_sections": Object {
-    "1": Object {
+{
+  "view_sections": {
+    "1": {
       "display_order": 1,
     },
-    "2": Object {
+    "2": {
       "display_order": 5,
     },
   },
-  "views": Object {
-    "1": Object {
+  "views": {
+    "1": {
       "display_order": 0,
     },
-    "2": Object {
+    "2": {
       "display_order": 7,
     },
-    "3": Object {
+    "3": {
       "display_order": 2,
     },
-    "4": Object {
+    "4": {
       "display_order": 3,
     },
-    "5": Object {
+    "5": {
       "display_order": 4,
     },
-    "6": Object {
+    "6": {
       "display_order": 6,
     },
   },

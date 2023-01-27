@@ -37,9 +37,9 @@ exports[`Header should correctly display intents 1`] = `
     isLastRead={false}
     isMessageDeleted={false}
     message={
-      Object {
+      {
         "actions": null,
-        "attachments": Array [],
+        "attachments": [],
         "channel": "email",
         "created_datetime": "",
         "external_id": null,
@@ -52,7 +52,7 @@ exports[`Header should correctly display intents 1`] = `
         "meta": null,
         "opened_datetime": null,
         "public": true,
-        "receiver": Object {
+        "receiver": {
           "email": "mary.poppins@example.com",
           "firstname": "Mary",
           "id": 2,
@@ -60,7 +60,7 @@ exports[`Header should correctly display intents 1`] = `
           "name": "Mary Poppins",
         },
         "rule_id": null,
-        "sender": Object {
+        "sender": {
           "email": "john.doe@example.com",
           "firstname": "John",
           "id": 1,
@@ -117,9 +117,9 @@ exports[`Header should display header 1`] = `
     isLastRead={false}
     isMessageDeleted={false}
     message={
-      Object {
+      {
         "actions": null,
-        "attachments": Array [],
+        "attachments": [],
         "channel": "email",
         "created_datetime": "",
         "external_id": null,
@@ -132,7 +132,7 @@ exports[`Header should display header 1`] = `
         "meta": null,
         "opened_datetime": null,
         "public": true,
-        "receiver": Object {
+        "receiver": {
           "email": "mary.poppins@example.com",
           "firstname": "Mary",
           "id": 2,
@@ -140,7 +140,7 @@ exports[`Header should display header 1`] = `
           "name": "Mary Poppins",
         },
         "rule_id": null,
-        "sender": Object {
+        "sender": {
           "email": "john.doe@example.com",
           "firstname": "John",
           "id": 1,
@@ -195,9 +195,9 @@ exports[`Header should display header with metaContent = "Comment deleted on Fac
     isLastRead={false}
     isMessageDeleted={true}
     message={
-      Object {
+      {
         "actions": null,
-        "attachments": Array [],
+        "attachments": [],
         "channel": "email",
         "created_datetime": "",
         "external_id": null,
@@ -210,7 +210,7 @@ exports[`Header should display header with metaContent = "Comment deleted on Fac
         "meta": null,
         "opened_datetime": null,
         "public": true,
-        "receiver": Object {
+        "receiver": {
           "email": "mary.poppins@example.com",
           "firstname": "Mary",
           "id": 2,
@@ -218,7 +218,7 @@ exports[`Header should display header with metaContent = "Comment deleted on Fac
           "name": "Mary Poppins",
         },
         "rule_id": null,
-        "sender": Object {
+        "sender": {
           "email": "john.doe@example.com",
           "firstname": "John",
           "id": 1,
@@ -273,9 +273,9 @@ exports[`Header should display header with metaContent = "Message hidden" 1`] = 
     isLastRead={false}
     isMessageDeleted={false}
     message={
-      Object {
+      {
         "actions": null,
-        "attachments": Array [],
+        "attachments": [],
         "channel": "email",
         "created_datetime": "",
         "external_id": null,
@@ -288,7 +288,7 @@ exports[`Header should display header with metaContent = "Message hidden" 1`] = 
         "meta": null,
         "opened_datetime": null,
         "public": true,
-        "receiver": Object {
+        "receiver": {
           "email": "mary.poppins@example.com",
           "firstname": "Mary",
           "id": 2,
@@ -296,7 +296,7 @@ exports[`Header should display header with metaContent = "Message hidden" 1`] = 
           "name": "Mary Poppins",
         },
         "rule_id": null,
-        "sender": Object {
+        "sender": {
           "email": "john.doe@example.com",
           "firstname": "John",
           "id": 1,
@@ -343,13 +343,13 @@ exports[`Header should not display header with metaContent = "Message hidden" be
       id="some-header"
       isForwarded={false}
       source={
-        Object {
-          "from": Object {
+        {
+          "from": {
             "address": "657788504429455-657788504429455",
             "name": "Page",
           },
-          "to": Array [
-            Object {
+          "to": [
+            {
               "address": "657788504429455-4135481299826174",
               "name": "Cust Omer",
             },
@@ -361,22 +361,22 @@ exports[`Header should not display header with metaContent = "Message hidden" be
     <Meta
       messageCreatedDatetime=""
       meta={
-        Object {
+        {
           "hidden_datetime": "2020-06-18T14:10:14.291746",
           "is_duplicated": true,
-          "private_reply": Object {
+          "private_reply": {
             "original_ticket_id": 1234,
           },
         }
       }
       source={
-        Object {
-          "from": Object {
+        {
+          "from": {
             "address": "657788504429455-657788504429455",
             "name": "Page",
           },
-          "to": Array [
-            Object {
+          "to": [
+            {
               "address": "657788504429455-4135481299826174",
               "name": "Cust Omer",
             },
@@ -393,41 +393,41 @@ exports[`Header should not display header with metaContent = "Message hidden" be
     isLastRead={false}
     isMessageDeleted={false}
     message={
-      Object {
+      {
         "channel": "facebook",
         "created_datetime": "",
         "from_agent": false,
         "id": 1,
         "isMessage": true,
-        "meta": Object {
+        "meta": {
           "hidden_datetime": "2020-06-18T14:10:14.291746",
           "is_duplicated": true,
-          "private_reply": Object {
+          "private_reply": {
             "original_ticket_id": 1234,
           },
         },
         "public": true,
-        "receiver": Object {
+        "receiver": {
           "email": "mary.poppins@example.com",
           "firstname": "Mary",
           "id": 2,
           "lastname": "Poppins",
           "name": "Mary Poppins",
         },
-        "sender": Object {
+        "sender": {
           "email": "john.doe@example.com",
           "firstname": "John",
           "id": 1,
           "lastname": "Doe",
           "name": "John Doe",
         },
-        "source": Object {
-          "from": Object {
+        "source": {
+          "from": {
             "address": "657788504429455-657788504429455",
             "name": "Page",
           },
-          "to": Array [
-            Object {
+          "to": [
+            {
               "address": "657788504429455-4135481299826174",
               "name": "Cust Omer",
             },

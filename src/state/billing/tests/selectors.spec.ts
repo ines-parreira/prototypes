@@ -35,12 +35,11 @@ import {RootState} from 'state/types'
 import * as selectors from '../selectors'
 import {initialState} from '../reducers'
 
-jest.addMatchers(immutableMatchers)
-
 describe('billing selectors', () => {
     let state: RootState
 
     beforeEach(() => {
+        expect.extend(immutableMatchers)
         state = {
             currentAccount: fromJS({
                 current_subscription: {

@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TicketsCreatedPerChannelViewLink should log the event on click 1`] = `
-Array [
-  Array [
+[
+  [
     "stat-view-link-clicked",
-    Object {
+    {
       "stat": "tickets-created-per-channel-total",
     },
   ],

@@ -28,7 +28,7 @@ describe('HTTPIntegrationEvents', () => {
         })
 
         describe('fetchHTTPIntegrationEvents', () => {
-            it('should fetch events and dispatch FETCH_HTTP_INTEGRATION_EVENT_SUCCESS action', async (done) => {
+            it('should fetch events and dispatch FETCH_HTTP_INTEGRATION_EVENT_SUCCESS action', async () => {
                 const integrationId = 1
                 mockServer
                     .onGet(`/api/integrations/${integrationId}/events/`)
@@ -36,10 +36,9 @@ describe('HTTPIntegrationEvents', () => {
                 await store.dispatch(fetchHTTPIntegrationEvents(integrationId))
 
                 expect(store.getActions()).toMatchSnapshot()
-                done()
             })
 
-            it('should fetch events and dispatch ERROR action', async (done) => {
+            it('should fetch events and dispatch ERROR action', async () => {
                 const integrationId = 1
                 mockServer
                     .onGet(`/api/integrations/${integrationId}/events/`)
@@ -47,7 +46,6 @@ describe('HTTPIntegrationEvents', () => {
                 await store.dispatch(fetchHTTPIntegrationEvents(integrationId))
 
                 expect(store.getActions()).toMatchSnapshot()
-                done()
             })
         })
 
@@ -55,7 +53,7 @@ describe('HTTPIntegrationEvents', () => {
             const integrationId = 1
             const eventId = 2
 
-            it('should fetch events and dispatch FETCH_HTTP_INTEGRATION_EVENT_SUCCESS action', async (done) => {
+            it('should fetch events and dispatch FETCH_HTTP_INTEGRATION_EVENT_SUCCESS action', async () => {
                 mockServer
                     .onGet(
                         `/api/integrations/${integrationId}/events/${eventId}`
@@ -66,10 +64,9 @@ describe('HTTPIntegrationEvents', () => {
                 )
 
                 expect(store.getActions()).toMatchSnapshot()
-                done()
             })
 
-            it('should fetch events and dispatch ERROR action', async (done) => {
+            it('should fetch events and dispatch ERROR action', async () => {
                 mockServer
                     .onGet(
                         `/api/integrations/${integrationId}/events/${eventId}`
@@ -80,7 +77,6 @@ describe('HTTPIntegrationEvents', () => {
                 )
 
                 expect(store.getActions()).toMatchSnapshot()
-                done()
             })
         })
     })

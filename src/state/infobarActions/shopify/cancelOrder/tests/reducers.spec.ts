@@ -11,9 +11,11 @@ import {initRefundOrderLineItems} from '../../../../../business/shopify/order'
 import reducer, {initialState} from '../reducers'
 import * as constants from '../constants'
 
-jest.addMatchers(immutableMatchers)
-
 describe('infobarActions.shopify.cancelOrder reducer', () => {
+    beforeEach(() => {
+        expect.extend(immutableMatchers)
+    })
+
     describe('SET_LOADING', () => {
         it('should set loading state', () => {
             const action = {

@@ -71,7 +71,7 @@ exports[`<LineItemRow/> should render 1`] = `
       >
         <input
           class="quantityInput form-control"
-          pattern="\\\\d+"
+          pattern="\\d+"
           type="text"
           value="1"
         />
@@ -183,7 +183,7 @@ exports[`<LineItemRow/> should render for multi-currency order 1`] = `
       >
         <input
           class="quantityInput form-control"
-          pattern="\\\\d+"
+          pattern="\\d+"
           type="text"
           value="1"
         />
@@ -304,7 +304,7 @@ exports[`<LineItemRow/> should render with discounted price 1`] = `
       >
         <input
           class="quantityInput form-control"
-          pattern="\\\\d+"
+          pattern="\\d+"
           type="text"
           value="1"
         />
@@ -425,7 +425,7 @@ exports[`<LineItemRow/> should render with the zero quantity 1`] = `
       >
         <input
           class="quantityInput form-control"
-          pattern="\\\\d+"
+          pattern="\\d+"
           type="text"
           value="0"
         />

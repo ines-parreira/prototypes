@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`LiveAgents should fetch prev and next page when navigation buttons are clicked 1`] = `
-Array [
-  Array [
+[
+  [
     "prev-cursor",
   ],
-  Array [
+  [
     "next-cursor",
   ],
 ]

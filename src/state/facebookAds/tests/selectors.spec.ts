@@ -5,12 +5,11 @@ import {RootState} from '../../types'
 import * as selectors from '../selectors'
 import {initialState} from '../reducers'
 
-jest.addMatchers(immutableMatchers)
-
 describe('facebookAds selectors', () => {
     let state: RootState
 
     beforeEach(() => {
+        expect.extend(immutableMatchers)
         state = {
             facebookAds: initialState.mergeDeep({
                 loading: true,

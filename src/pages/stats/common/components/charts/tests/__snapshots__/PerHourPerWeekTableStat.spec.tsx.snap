@@ -15,14 +15,14 @@ exports[`PerHourPerWeekTableStat Table Should render the table with intervals 1`
   >
     <Legend
       labels={
-        Array [
-          Object {
+        [
+          {
             "aheadLabel": "Least busy",
             "background": "linear-gradient(90deg,#F6F9FF 25%, #D2E2FD 25%, #D2E2FD 50%, #9BC0FC 50%, #9BC0FC 75%, #77A9FA 75%, #77A9FA 100%)",
             "name": "Busiest",
             "shape": "rectangle",
           },
-          Object {
+          {
             "background": "repeating-linear-gradient(135deg, #FFFFFF, #FFFFFF 2px, #F4697D 2px, #F4697D 4px)",
             "name": "Business Hours",
             "shape": "square",
@@ -194,8 +194,8 @@ exports[`PerHourPerWeekTableStat Table Should render the table with no interval 
   >
     <Legend
       labels={
-        Array [
-          Object {
+        [
+          {
             "background": "repeating-linear-gradient(135deg, #FFFFFF, #FFFFFF 2px, #F4697D 2px, #F4697D 4px)",
             "name": "Business Hours",
             "shape": "square",
@@ -361,7 +361,7 @@ exports[`PerHourPerWeekTableStat Table Should render the table with no interval 
 `;
 
 exports[`PerHourPerWeekTableStat TableCells Should render with a different timezone between business hours and the current user 1`] = `
-Array [
+[
   <tr>
     <td
       style="background-color:#FFFFFF"
@@ -497,7 +497,7 @@ Array [
 `;
 
 exports[`PerHourPerWeekTableStat TableCells Should render with the same timezone for the business hours and the current user 1`] = `
-Array [
+[
   <tr>
     <td
       style="background-color:#FFFFFF"

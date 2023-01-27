@@ -94,7 +94,7 @@ describe('<Form/>', () => {
         fireEvent.change(screen.getByPlaceholderText('Key'), {
             target: {value: newValue},
         })
-        fireEvent.click(screen.getByRole('button', {name: 'Save'}))
+        fireEvent.submit(screen.getByRole('button', {name: 'Save'}))
         expect(onSubmit).toHaveBeenCalledWith(
             {
                 ...button,

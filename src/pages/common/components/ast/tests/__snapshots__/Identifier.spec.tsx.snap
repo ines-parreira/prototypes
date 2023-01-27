@@ -5,7 +5,7 @@ exports[`Identifier component should render 1`] = `
   className="Identifier"
 >
   <Connect(Widget)
-    actions={Object {}}
+    actions={{}}
     className="foo"
     leftsiblings={
       Immutable.List [

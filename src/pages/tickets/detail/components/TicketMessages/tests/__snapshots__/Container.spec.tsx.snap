@@ -11,7 +11,7 @@ exports[`Container should render container 1`] = `
       email="john.doe@example.com"
       name="John Doe"
       size={36}
-      style={Object {}}
+      style={{}}
       withTooltip={false}
     />
   </div>
@@ -26,9 +26,9 @@ exports[`Container should render container 1`] = `
       isMessageDeleted={false}
       isMessageHidden={false}
       message={
-        Object {
+        {
           "actions": null,
-          "attachments": Array [],
+          "attachments": [],
           "channel": "email",
           "created_datetime": "",
           "external_id": null,
@@ -41,7 +41,7 @@ exports[`Container should render container 1`] = `
           "meta": null,
           "opened_datetime": null,
           "public": true,
-          "receiver": Object {
+          "receiver": {
             "email": "mary.poppins@example.com",
             "firstname": "Mary",
             "id": 2,
@@ -49,7 +49,7 @@ exports[`Container should render container 1`] = `
             "name": "Mary Poppins",
           },
           "rule_id": null,
-          "sender": Object {
+          "sender": {
             "email": "john.doe@example.com",
             "firstname": "John",
             "id": 1,
@@ -71,9 +71,9 @@ exports[`Container should render container 1`] = `
       isMessageDeleted={false}
       isMessageHidden={false}
       message={
-        Object {
+        {
           "actions": null,
-          "attachments": Array [],
+          "attachments": [],
           "channel": "email",
           "created_datetime": "",
           "external_id": null,
@@ -86,7 +86,7 @@ exports[`Container should render container 1`] = `
           "meta": null,
           "opened_datetime": null,
           "public": true,
-          "receiver": Object {
+          "receiver": {
             "email": "mary.poppins@example.com",
             "firstname": "Mary",
             "id": 2,
@@ -94,7 +94,7 @@ exports[`Container should render container 1`] = `
             "name": "Mary Poppins",
           },
           "rule_id": null,
-          "sender": Object {
+          "sender": {
             "email": "john.doe@example.com",
             "firstname": "John",
             "id": 1,
@@ -125,7 +125,7 @@ exports[`Container should render container with an avatar because the hidden mes
       email="john.doe@example.com"
       name="John Doe"
       size={36}
-      style={Object {}}
+      style={{}}
       withTooltip={false}
     />
   </div>
@@ -140,41 +140,41 @@ exports[`Container should render container with an avatar because the hidden mes
       isMessageDeleted={false}
       isMessageHidden={true}
       message={
-        Object {
+        {
           "channel": "facebook",
           "created_datetime": "",
           "from_agent": false,
           "id": 1,
           "isMessage": true,
-          "meta": Object {
+          "meta": {
             "hidden_datetime": "2020-06-18T14:10:14.291746",
             "is_duplicated": true,
-            "private_reply": Object {
+            "private_reply": {
               "original_ticket_id": 1234,
             },
           },
           "public": true,
-          "receiver": Object {
+          "receiver": {
             "email": "mary.poppins@example.com",
             "firstname": "Mary",
             "id": 2,
             "lastname": "Poppins",
             "name": "Mary Poppins",
           },
-          "sender": Object {
+          "sender": {
             "email": "john.doe@example.com",
             "firstname": "John",
             "id": 1,
             "lastname": "Doe",
             "name": "John Doe",
           },
-          "source": Object {
-            "from": Object {
+          "source": {
+            "from": {
               "address": "657788504429455-657788504429455",
               "name": "Page",
             },
-            "to": Array [
-              Object {
+            "to": [
+              {
                 "address": "657788504429455-4135481299826174",
                 "name": "Cust Omer",
               },
@@ -193,41 +193,41 @@ exports[`Container should render container with an avatar because the hidden mes
       isMessageDeleted={false}
       isMessageHidden={true}
       message={
-        Object {
+        {
           "channel": "facebook",
           "created_datetime": "",
           "from_agent": false,
           "id": 1,
           "isMessage": true,
-          "meta": Object {
+          "meta": {
             "hidden_datetime": "2020-06-18T14:10:14.291746",
             "is_duplicated": true,
-            "private_reply": Object {
+            "private_reply": {
               "original_ticket_id": 1234,
             },
           },
           "public": true,
-          "receiver": Object {
+          "receiver": {
             "email": "mary.poppins@example.com",
             "firstname": "Mary",
             "id": 2,
             "lastname": "Poppins",
             "name": "Mary Poppins",
           },
-          "sender": Object {
+          "sender": {
             "email": "john.doe@example.com",
             "firstname": "John",
             "id": 1,
             "lastname": "Doe",
             "name": "John Doe",
           },
-          "source": Object {
-            "from": Object {
+          "source": {
+            "from": {
               "address": "657788504429455-657788504429455",
               "name": "Page",
             },
-            "to": Array [
-              Object {
+            "to": [
+              {
                 "address": "657788504429455-4135481299826174",
                 "name": "Cust Omer",
               },
@@ -259,9 +259,9 @@ exports[`Container should render container with isBodyHiglighted because it shou
       isMessageDeleted={true}
       isMessageHidden={false}
       message={
-        Object {
+        {
           "actions": null,
-          "attachments": Array [],
+          "attachments": [],
           "channel": "email",
           "created_datetime": "",
           "external_id": null,
@@ -274,7 +274,7 @@ exports[`Container should render container with isBodyHiglighted because it shou
           "meta": null,
           "opened_datetime": null,
           "public": true,
-          "receiver": Object {
+          "receiver": {
             "email": "mary.poppins@example.com",
             "firstname": "Mary",
             "id": 2,
@@ -282,7 +282,7 @@ exports[`Container should render container with isBodyHiglighted because it shou
             "name": "Mary Poppins",
           },
           "rule_id": null,
-          "sender": Object {
+          "sender": {
             "email": "john.doe@example.com",
             "firstname": "John",
             "id": 1,
@@ -304,9 +304,9 @@ exports[`Container should render container with isBodyHiglighted because it shou
       isMessageDeleted={true}
       isMessageHidden={false}
       message={
-        Object {
+        {
           "actions": null,
-          "attachments": Array [],
+          "attachments": [],
           "channel": "email",
           "created_datetime": "",
           "external_id": null,
@@ -319,7 +319,7 @@ exports[`Container should render container with isBodyHiglighted because it shou
           "meta": null,
           "opened_datetime": null,
           "public": true,
-          "receiver": Object {
+          "receiver": {
             "email": "mary.poppins@example.com",
             "firstname": "Mary",
             "id": 2,
@@ -327,7 +327,7 @@ exports[`Container should render container with isBodyHiglighted because it shou
             "name": "Mary Poppins",
           },
           "rule_id": null,
-          "sender": Object {
+          "sender": {
             "email": "john.doe@example.com",
             "firstname": "John",
             "id": 1,
@@ -362,9 +362,9 @@ exports[`Container should render container without an avatar because the message
       isMessageDeleted={true}
       isMessageHidden={false}
       message={
-        Object {
+        {
           "actions": null,
-          "attachments": Array [],
+          "attachments": [],
           "channel": "email",
           "created_datetime": "",
           "external_id": null,
@@ -377,7 +377,7 @@ exports[`Container should render container without an avatar because the message
           "meta": null,
           "opened_datetime": null,
           "public": true,
-          "receiver": Object {
+          "receiver": {
             "email": "mary.poppins@example.com",
             "firstname": "Mary",
             "id": 2,
@@ -385,7 +385,7 @@ exports[`Container should render container without an avatar because the message
             "name": "Mary Poppins",
           },
           "rule_id": null,
-          "sender": Object {
+          "sender": {
             "email": "john.doe@example.com",
             "firstname": "John",
             "id": 1,
@@ -407,9 +407,9 @@ exports[`Container should render container without an avatar because the message
       isMessageDeleted={true}
       isMessageHidden={false}
       message={
-        Object {
+        {
           "actions": null,
-          "attachments": Array [],
+          "attachments": [],
           "channel": "email",
           "created_datetime": "",
           "external_id": null,
@@ -422,7 +422,7 @@ exports[`Container should render container without an avatar because the message
           "meta": null,
           "opened_datetime": null,
           "public": true,
-          "receiver": Object {
+          "receiver": {
             "email": "mary.poppins@example.com",
             "firstname": "Mary",
             "id": 2,
@@ -430,7 +430,7 @@ exports[`Container should render container without an avatar because the message
             "name": "Mary Poppins",
           },
           "rule_id": null,
-          "sender": Object {
+          "sender": {
             "email": "john.doe@example.com",
             "firstname": "John",
             "id": 1,
@@ -465,9 +465,9 @@ exports[`Container should render container without an avatar because the message
       isMessageDeleted={false}
       isMessageHidden={true}
       message={
-        Object {
+        {
           "actions": null,
-          "attachments": Array [],
+          "attachments": [],
           "channel": "email",
           "created_datetime": "",
           "external_id": null,
@@ -480,7 +480,7 @@ exports[`Container should render container without an avatar because the message
           "meta": null,
           "opened_datetime": null,
           "public": true,
-          "receiver": Object {
+          "receiver": {
             "email": "mary.poppins@example.com",
             "firstname": "Mary",
             "id": 2,
@@ -488,7 +488,7 @@ exports[`Container should render container without an avatar because the message
             "name": "Mary Poppins",
           },
           "rule_id": null,
-          "sender": Object {
+          "sender": {
             "email": "john.doe@example.com",
             "firstname": "John",
             "id": 1,
@@ -510,9 +510,9 @@ exports[`Container should render container without an avatar because the message
       isMessageDeleted={false}
       isMessageHidden={true}
       message={
-        Object {
+        {
           "actions": null,
-          "attachments": Array [],
+          "attachments": [],
           "channel": "email",
           "created_datetime": "",
           "external_id": null,
@@ -525,7 +525,7 @@ exports[`Container should render container without an avatar because the message
           "meta": null,
           "opened_datetime": null,
           "public": true,
-          "receiver": Object {
+          "receiver": {
             "email": "mary.poppins@example.com",
             "firstname": "Mary",
             "id": 2,
@@ -533,7 +533,7 @@ exports[`Container should render container without an avatar because the message
             "name": "Mary Poppins",
           },
           "rule_id": null,
-          "sender": Object {
+          "sender": {
             "email": "john.doe@example.com",
             "firstname": "John",
             "id": 1,

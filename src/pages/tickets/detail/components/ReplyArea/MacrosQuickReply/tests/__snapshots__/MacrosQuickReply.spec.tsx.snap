@@ -56,10 +56,10 @@ exports[`<MacrosQuickReply /> should render the macros quick reply area 1`] = `
 `;
 
 exports[`<MacrosQuickReply /> should send an event to segment when applying a macro 1`] = `
-Array [
-  Array [
+[
+  [
     "macros-quick-reply-sent",
-    Object {
+    {
       "account_domain": "acme",
       "macro_id": 0,
       "macro_rank": 1,
@@ -67,9 +67,9 @@ Array [
       "user_id": 2,
     },
   ],
-  Array [
+  [
     "macros-quick-reply-sent",
-    Object {
+    {
       "account_domain": "acme",
       "macro_id": 1,
       "macro_rank": 2,
@@ -77,9 +77,9 @@ Array [
       "user_id": 2,
     },
   ],
-  Array [
+  [
     "macros-quick-reply-sent",
-    Object {
+    {
       "account_domain": "acme",
       "macro_id": 2,
       "macro_rank": 3,
@@ -91,10 +91,10 @@ Array [
 `;
 
 exports[`<MacrosQuickReply /> should send an event to segment when hovering over a macro 1`] = `
-Array [
-  Array [
+[
+  [
     "macros-quick-reply-get-details",
-    Object {
+    {
       "account_domain": "acme",
       "macroId": 0,
       "macroRank": 1,
@@ -106,10 +106,10 @@ Array [
 `;
 
 exports[`<MacrosQuickReply /> should send an event to segment when hovering the info icon 1`] = `
-Array [
-  Array [
+[
+  [
     "macros-quick-reply-tooltip",
-    Object {
+    {
       "account_domain": "acme",
       "ticket_id": 152,
       "user_id": 2,

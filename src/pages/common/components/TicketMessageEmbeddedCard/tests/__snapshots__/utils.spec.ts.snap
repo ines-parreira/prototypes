@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TicketMessageEmbeddedCard utils mapQuotedTweetTicketMessageToEmbeddedCard() should map TicketMessage for Quoted Tweet to EmbeddedCard 1`] = `
-Object {
+{
   "attachments": Immutable.List [
     Immutable.Map {
       "url": "https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/E-osiPxWYAEyISV-ff64f0b7-0f0d-4a24-97a2-949c6b8713fd.jpg",
@@ -28,26 +28,26 @@ Object {
   "externalId": "1435008444520615940",
   "integrationId": 18,
   "messageText": "pictures &lt;3 https://t.co/FcqJwG9tbn",
-  "sender": Object {
+  "sender": {
     "email": "",
     "firstname": "Ionut Gorgias",
     "id": 1377919371503415300,
     "lastname": "",
-    "meta": Object {
+    "meta": {
       "profile_picture_url": "",
     },
     "name": "Ionut Gorgias",
   },
-  "source": Object {
-    "extra": Object {
+  "source": {
+    "extra": {
       "conversation_id": "1435058157764685824",
     },
-    "from": Object {
+    "from": {
       "address": "1377919371503415307",
       "name": "GorgiasIonut",
     },
-    "to": Array [
-      Object {
+    "to": [
+      {
         "address": "",
         "name": "",
       },

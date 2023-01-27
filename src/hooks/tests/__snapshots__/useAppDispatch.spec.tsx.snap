@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`useAppDispatch should dispatch a sync action 1`] = `
-Array [
-  Object {
+[
+  {
     "payload": "foo",
     "type": "Foo",
   },
@@ -10,8 +10,8 @@ Array [
 `;
 
 exports[`useAppDispatch should dispatch an async action 1`] = `
-Array [
-  Object {
+[
+  {
     "payload": "bar",
     "type": "Bar",
   },

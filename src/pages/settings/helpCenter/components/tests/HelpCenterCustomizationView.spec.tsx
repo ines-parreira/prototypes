@@ -12,6 +12,7 @@ import HelpCenterCustomizationView from '../HelpCenterCustomizationView'
 import {getSingleHelpCenterResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
 import {useSupportedLocales} from '../../providers/SupportedLocales'
 import {getLocalesResponseFixture} from '../../fixtures/getLocalesResponse.fixtures'
+import * as helpCenterApi from '../../hooks/useHelpCenterApi'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
@@ -29,24 +30,8 @@ const defaultState: Partial<RootState> = {
 }
 const store = mockStore(defaultState)
 
-jest.mock('../../hooks/useHelpCenterApi', () => {
-    return {
-        useHelpCenterApi: () => ({
-            isReady: true,
-            client: {
-                createHelpCenter: jest
-                    .fn()
-                    .mockReturnValue(Promise.resolve({})),
-                listNavigationLinks: jest.fn().mockResolvedValue({
-                    data: {data: [], meta: {item_count: 0}},
-                }),
-                getExtraHTML: jest.fn().mockResolvedValue({
-                    data: {},
-                }),
-            },
-        }),
-        useAbilityChecker: () => ({isPassingRulesCheck: () => true}),
-    }
+jest.spyOn(helpCenterApi, 'useAbilityChecker').mockReturnValue({
+    isPassingRulesCheck: () => true,
 })
 
 jest.mock('../../providers/CurrentHelpCenter')

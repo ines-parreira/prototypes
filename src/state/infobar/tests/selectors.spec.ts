@@ -5,12 +5,11 @@ import {RootState} from '../../types'
 import * as selectors from '../selectors'
 import {initialState} from '../reducers'
 
-jest.addMatchers(immutableMatchers)
-
 describe('infobar selectors', () => {
     let state: RootState
 
     beforeEach(() => {
+        expect.extend(immutableMatchers)
         state = {
             infobar: initialState.mergeDeep(
                 fromJS({

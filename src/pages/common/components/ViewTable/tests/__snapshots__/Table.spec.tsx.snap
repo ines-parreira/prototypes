@@ -110,8 +110,8 @@ exports[`<Table /> should display a default view with option selectable set to f
 `;
 
 exports[`<Table /> should display a modified view with no items, should reset the view and fetch first items  1`] = `
-Array [
-  Object {
+[
+  {
     "configName": "ticket",
     "type": "RESET_VIEW",
   },
@@ -167,8 +167,8 @@ exports[`<Table /> should display a view with no fields 1`] = `
 `;
 
 exports[`<Table /> should select all items on the current page of the active view when there is a click on the "select all" checkbox 1`] = `
-Array [
-  Object {
+[
+  {
     "ids": Immutable.List [
       152,
     ],

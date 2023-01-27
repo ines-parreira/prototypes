@@ -78,7 +78,7 @@ describe('current user actions', () => {
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
 
-        it('should update available status and fetch chats', (done) => {
+        it('should update available status and fetch chats', () => {
             // the current user is available by default
             const settings = fromJS([
                 {
@@ -115,7 +115,6 @@ describe('current user actions', () => {
                 .then(() => {
                     setTimeout(() => {
                         expect(store.getActions()).toMatchSnapshot()
-                        done()
                     }, 1)
                 })
         })

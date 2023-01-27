@@ -19,7 +19,7 @@ jest.spyOn(window, 'removeEventListener')
 jest.mock('react-router-dom')
 jest.mock('reapop')
 jest.mock('../../../init', () => {
-    const {fromJS} = require.requireActual('immutable')
+    const {fromJS} = jest.requireActual('immutable')
     return {
         store: {
             dispatch: jest.fn(),

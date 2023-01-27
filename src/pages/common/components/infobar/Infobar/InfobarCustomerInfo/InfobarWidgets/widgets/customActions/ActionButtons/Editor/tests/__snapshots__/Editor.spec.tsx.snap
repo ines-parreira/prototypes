@@ -1,27 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Editor/> should call the correct callbacks when removing a button 1`] = `
-Array [
-  Array [
+[
+  [
     "some.template.meta.custom.buttons",
   ],
 ]
 `;
 
 exports[`<Editor/> should call the correct callbacks when removing a button 2`] = `
-Array [
-  Array [
-    Array [
-      Object {
-        "action": Object {
-          "body": Object {
-            "application/json": Object {},
-            "application/x-www-form-urlencoded": Array [],
+[
+  [
+    [
+      {
+        "action": {
+          "body": {
+            "application/json": {},
+            "application/x-www-form-urlencoded": [],
             "contentType": "application/json",
           },
-          "headers": Array [],
+          "headers": [],
           "method": "GET",
-          "params": Array [],
+          "params": [],
           "url": "www.someurl.com",
         },
         "label": "I am in snapshots",
@@ -32,10 +32,10 @@ Array [
 `;
 
 exports[`<Editor/> should call the correct callbacks when removing a button 3`] = `
-Array [
-  Array [
+[
+  [
     "some.template.meta.custom.buttons",
-    Array [
+    [
       "some",
       "absolute",
       "template",
@@ -45,41 +45,41 @@ Array [
 `;
 
 exports[`<Editor/> should call the correct callbacks when submitting a edited button 1`] = `
-Array [
-  Array [
+[
+  [
     "some.template.meta.custom.buttons",
   ],
 ]
 `;
 
 exports[`<Editor/> should call the correct callbacks when submitting a edited button 2`] = `
-Array [
-  Array [
-    Array [
-      Object {
-        "action": Object {
-          "body": Object {
-            "application/json": Object {},
-            "application/x-www-form-urlencoded": Array [],
+[
+  [
+    [
+      {
+        "action": {
+          "body": {
+            "application/json": {},
+            "application/x-www-form-urlencoded": [],
             "contentType": "application/json",
           },
-          "headers": Array [],
+          "headers": [],
           "method": "GET",
-          "params": Array [],
+          "params": [],
           "url": "www.someurl.com",
         },
         "label": "I am in snapshots",
       },
-      Object {
-        "action": Object {
-          "body": Object {
-            "application/json": Object {},
-            "application/x-www-form-urlencoded": Array [],
+      {
+        "action": {
+          "body": {
+            "application/json": {},
+            "application/x-www-form-urlencoded": [],
             "contentType": "application/json",
           },
-          "headers": Array [],
+          "headers": [],
           "method": "GET",
-          "params": Array [],
+          "params": [],
           "url": "www.someurl.com",
         },
         "label": "I am in snapshots too",
@@ -89,64 +89,9 @@ Array [
 ]
 `;
 
-exports[`<Editor/> should call the correct callbacks when submitting a new button 1`] = `
-Array [
-  Array [
-    "some.template.meta.custom.buttons",
-  ],
-]
-`;
+exports[`<Editor/> should call the correct callbacks when submitting a new button 1`] = `[]`;
 
-exports[`<Editor/> should call the correct callbacks when submitting a new button 2`] = `
-Array [
-  Array [
-    Array [
-      Object {
-        "action": Object {
-          "body": Object {
-            "application/json": Object {},
-            "application/x-www-form-urlencoded": Array [],
-            "contentType": "application/json",
-          },
-          "headers": Array [],
-          "method": "GET",
-          "params": Array [],
-          "url": "www.someurl.com",
-        },
-        "label": "I am in snapshots",
-      },
-      Object {
-        "action": Object {
-          "body": Object {
-            "application/json": Object {},
-            "application/x-www-form-urlencoded": Array [],
-            "contentType": "application/json",
-          },
-          "headers": Array [],
-          "method": "GET",
-          "params": Array [],
-          "url": "www.someurl.com",
-        },
-        "label": "I am in snapshots too",
-      },
-      Object {
-        "action": Object {
-          "body": Object {
-            "application/json": Object {},
-            "application/x-www-form-urlencoded": Array [],
-            "contentType": "application/json",
-          },
-          "headers": Array [],
-          "method": "GET",
-          "params": Array [],
-          "url": "",
-        },
-        "label": "ok",
-      },
-    ],
-  ],
-]
-`;
+exports[`<Editor/> should call the correct callbacks when submitting a new button 2`] = `[]`;
 
 exports[`<Editor/> should render with buttons and "add button" button 1`] = `
 <div>

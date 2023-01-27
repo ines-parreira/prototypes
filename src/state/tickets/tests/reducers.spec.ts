@@ -7,9 +7,11 @@ import * as ticketTypes from '../../ticket/constants'
 import * as types from '../constants'
 import reducer, {initialState} from '../reducers'
 
-jest.addMatchers(immutableMatchers)
-
 describe('tickets reducers', () => {
+    beforeEach(() => {
+        expect.extend(immutableMatchers)
+    })
+
     it('initial state', () => {
         expect(reducer(undefined, {} as GorgiasAction)).toEqualImmutable(
             initialState

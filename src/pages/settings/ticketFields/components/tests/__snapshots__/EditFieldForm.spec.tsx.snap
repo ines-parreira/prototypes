@@ -1,18 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<EditFieldForm/> should create custom field if the save button is clicked 1`] = `
-Object {
-  "delete": Array [],
-  "get": Array [],
-  "head": Array [],
-  "list": Array [],
-  "options": Array [],
-  "patch": Array [],
-  "post": Array [],
-  "put": Array [
-    Object {
-      "data": "{\\"object_type\\":\\"Ticket\\",\\"label\\":\\"Updated name\\",\\"priority\\":123,\\"required\\":false,\\"definition\\":{\\"data_type\\":\\"text\\",\\"input_settings\\":{\\"input_type\\":\\"input\\",\\"placeholder\\":\\"Test placeholder\\"}},\\"id\\":123,\\"created_datetime\\":\\"2022-01-02T03:04:05.123456+00:00\\",\\"updated_datetime\\":\\"2022-01-02T03:04:05.123456+00:00\\",\\"deactivated_datetime\\":null}",
-      "headers": Object {
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [
+    {
+      "data": "{"object_type":"Ticket","label":"Updated name","priority":123,"required":false,"definition":{"data_type":"text","input_settings":{"input_type":"input","placeholder":"Test placeholder"}},"id":123,"created_datetime":"2022-01-02T03:04:05.123456+00:00","updated_datetime":"2022-01-02T03:04:05.123456+00:00","deactivated_datetime":null}",
+      "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
         "X-CSRF-Token": "abcd",
@@ -22,10 +22,10 @@ Object {
       "maxContentLength": -1,
       "method": "put",
       "timeout": 0,
-      "transformRequest": Array [
+      "transformRequest": [
         [Function],
       ],
-      "transformResponse": Array [
+      "transformResponse": [
         [Function],
       ],
       "url": "/api/custom-fields/123",

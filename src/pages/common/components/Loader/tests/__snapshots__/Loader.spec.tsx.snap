@@ -7,7 +7,7 @@ exports[`Loader component simple message 1`] = `
   <div
     className="inner"
     style={
-      Object {
+      {
         "minHeight": "500px",
       }
     }
@@ -15,7 +15,7 @@ exports[`Loader component simple message 1`] = `
     <i
       className="icon-custom icon-circle-o-notch md-spin"
       style={
-        Object {
+        {
           "fontSize": "40px",
         }
       }

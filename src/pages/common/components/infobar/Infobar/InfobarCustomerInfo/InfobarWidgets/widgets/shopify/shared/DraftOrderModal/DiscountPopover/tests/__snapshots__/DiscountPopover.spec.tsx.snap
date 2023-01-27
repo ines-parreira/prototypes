@@ -46,7 +46,7 @@ exports[`<DiscountPopover/> render() should render with value 1`] = `
             for="discount-value"
             tag="label"
             widths={
-              Array [
+              [
                 "xs",
                 "sm",
                 "md",
@@ -112,7 +112,7 @@ exports[`<DiscountPopover/> render() should render with value 1`] = `
             for="title"
             tag="label"
             widths={
-              Array [
+              [
                 "xs",
                 "sm",
                 "md",
@@ -207,7 +207,7 @@ exports[`<DiscountPopover/> render() should render without value 1`] = `
             for="discount-value"
             tag="label"
             widths={
-              Array [
+              [
                 "xs",
                 "sm",
                 "md",
@@ -273,7 +273,7 @@ exports[`<DiscountPopover/> render() should render without value 1`] = `
             for="title"
             tag="label"
             widths={
-              Array [
+              [
                 "xs",
                 "sm",
                 "md",

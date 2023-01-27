@@ -45,7 +45,7 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when cre
     <Row
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -57,7 +57,7 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when cre
       <Col
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -116,44 +116,44 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when cre
                 label="Language"
                 onChange={[Function]}
                 options={
-                  Array [
-                    Object {
+                  [
+                    {
                       "label": "English US",
                       "value": "en-US",
                     },
-                    Object {
+                    {
                       "label": "French",
                       "value": "fr",
                     },
-                    Object {
+                    {
                       "label": "Spanish",
                       "value": "es",
                     },
-                    Object {
+                    {
                       "label": "Danish",
                       "value": "da",
                     },
-                    Object {
+                    {
                       "label": "Swedish",
                       "value": "sv",
                     },
-                    Object {
+                    {
                       "label": "Italian",
                       "value": "it",
                     },
-                    Object {
+                    {
                       "label": "Dutch",
                       "value": "nl",
                     },
-                    Object {
+                    {
                       "label": "German",
                       "value": "de",
                     },
-                    Object {
+                    {
                       "label": "Norwegian",
                       "value": "no",
                     },
-                    Object {
+                    {
                       "label": "Czech",
                       "value": "cz",
                     },
@@ -237,7 +237,7 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when cre
         className="p-0"
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -249,7 +249,7 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when cre
         <div
           className="d-flex justify-content-center align-items-center"
           style={
-            Object {
+            {
               "width": "30em",
             }
           }
@@ -349,7 +349,7 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when int
     <Row
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -361,7 +361,7 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when int
       <Col
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -409,12 +409,12 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when int
                 label="Avatar"
                 onChange={[Function]}
                 options={
-                  Array [
-                    Object {
+                  [
+                    {
                       "label": "Use team members' avatars",
                       "value": "team-members",
                     },
-                    Object {
+                    {
                       "caption": "For example, use your company's logo. The image needs to be a square of 500kb maximum.",
                       "label": "Use a single image for the whole team",
                       "value": "team-picture",
@@ -439,44 +439,44 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when int
                 label="Language"
                 onChange={[Function]}
                 options={
-                  Array [
-                    Object {
+                  [
+                    {
                       "label": "English US",
                       "value": "en-US",
                     },
-                    Object {
+                    {
                       "label": "French",
                       "value": "fr",
                     },
-                    Object {
+                    {
                       "label": "Spanish",
                       "value": "es",
                     },
-                    Object {
+                    {
                       "label": "Danish",
                       "value": "da",
                     },
-                    Object {
+                    {
                       "label": "Swedish",
                       "value": "sv",
                     },
-                    Object {
+                    {
                       "label": "Italian",
                       "value": "it",
                     },
-                    Object {
+                    {
                       "label": "Dutch",
                       "value": "nl",
                     },
-                    Object {
+                    {
                       "label": "German",
                       "value": "de",
                     },
-                    Object {
+                    {
                       "label": "Norwegian",
                       "value": "no",
                     },
-                    Object {
+                    {
                       "label": "Czech",
                       "value": "cz",
                     },
@@ -573,7 +573,7 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when int
         className="p-0"
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -585,7 +585,7 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when int
         <div
           className="d-flex justify-content-center align-items-center"
           style={
-            Object {
+            {
               "width": "30em",
             }
           }
@@ -685,7 +685,7 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when upd
     <Row
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -697,7 +697,7 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when upd
       <Col
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -745,12 +745,12 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when upd
                 label="Avatar"
                 onChange={[Function]}
                 options={
-                  Array [
-                    Object {
+                  [
+                    {
                       "label": "Use team members' avatars",
                       "value": "team-members",
                     },
-                    Object {
+                    {
                       "caption": "For example, use your company's logo. The image needs to be a square of 500kb maximum.",
                       "label": "Use a single image for the whole team",
                       "value": "team-picture",
@@ -775,44 +775,44 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when upd
                 label="Language"
                 onChange={[Function]}
                 options={
-                  Array [
-                    Object {
+                  [
+                    {
                       "label": "English US",
                       "value": "en-US",
                     },
-                    Object {
+                    {
                       "label": "French",
                       "value": "fr",
                     },
-                    Object {
+                    {
                       "label": "Spanish",
                       "value": "es",
                     },
-                    Object {
+                    {
                       "label": "Danish",
                       "value": "da",
                     },
-                    Object {
+                    {
                       "label": "Swedish",
                       "value": "sv",
                     },
-                    Object {
+                    {
                       "label": "Italian",
                       "value": "it",
                     },
-                    Object {
+                    {
                       "label": "Dutch",
                       "value": "nl",
                     },
-                    Object {
+                    {
                       "label": "German",
                       "value": "de",
                     },
-                    Object {
+                    {
                       "label": "Norwegian",
                       "value": "no",
                     },
-                    Object {
+                    {
                       "label": "Czech",
                       "value": "cz",
                     },
@@ -909,7 +909,7 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when upd
         className="p-0"
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -921,7 +921,7 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when upd
         <div
           className="d-flex justify-content-center align-items-center"
           style={
-            Object {
+            {
               "width": "30em",
             }
           }
@@ -1025,7 +1025,7 @@ exports[`<ChatIntegrationAppearance/> render() should mark the file field for te
     <Row
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -1037,7 +1037,7 @@ exports[`<ChatIntegrationAppearance/> render() should mark the file field for te
       <Col
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -1085,12 +1085,12 @@ exports[`<ChatIntegrationAppearance/> render() should mark the file field for te
                 label="Avatar"
                 onChange={[Function]}
                 options={
-                  Array [
-                    Object {
+                  [
+                    {
                       "label": "Use team members' avatars",
                       "value": "team-members",
                     },
-                    Object {
+                    {
                       "caption": "For example, use your company's logo. The image needs to be a square of 500kb maximum.",
                       "label": "Use a single image for the whole team",
                       "value": "team-picture",
@@ -1107,7 +1107,7 @@ exports[`<ChatIntegrationAppearance/> render() should mark the file field for te
                   noPreview={true}
                   onChange={[Function]}
                   params={
-                    Object {
+                    {
                       "integration_id": 2,
                     }
                   }
@@ -1132,44 +1132,44 @@ exports[`<ChatIntegrationAppearance/> render() should mark the file field for te
                 label="Language"
                 onChange={[Function]}
                 options={
-                  Array [
-                    Object {
+                  [
+                    {
                       "label": "English US",
                       "value": "en-US",
                     },
-                    Object {
+                    {
                       "label": "French",
                       "value": "fr",
                     },
-                    Object {
+                    {
                       "label": "Spanish",
                       "value": "es",
                     },
-                    Object {
+                    {
                       "label": "Danish",
                       "value": "da",
                     },
-                    Object {
+                    {
                       "label": "Swedish",
                       "value": "sv",
                     },
-                    Object {
+                    {
                       "label": "Italian",
                       "value": "it",
                     },
-                    Object {
+                    {
                       "label": "Dutch",
                       "value": "nl",
                     },
-                    Object {
+                    {
                       "label": "German",
                       "value": "de",
                     },
-                    Object {
+                    {
                       "label": "Norwegian",
                       "value": "no",
                     },
-                    Object {
+                    {
                       "label": "Czech",
                       "value": "cz",
                     },
@@ -1266,7 +1266,7 @@ exports[`<ChatIntegrationAppearance/> render() should mark the file field for te
         className="p-0"
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -1278,7 +1278,7 @@ exports[`<ChatIntegrationAppearance/> render() should mark the file field for te
         <div
           className="d-flex justify-content-center align-items-center"
           style={
-            Object {
+            {
               "width": "30em",
             }
           }
@@ -1382,7 +1382,7 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
     <Row
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -1394,7 +1394,7 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
       <Col
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -1442,12 +1442,12 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
                 label="Avatar"
                 onChange={[Function]}
                 options={
-                  Array [
-                    Object {
+                  [
+                    {
                       "label": "Use team members' avatars",
                       "value": "team-members",
                     },
-                    Object {
+                    {
                       "caption": "For example, use your company's logo. The image needs to be a square of 500kb maximum.",
                       "label": "Use a single image for the whole team",
                       "value": "team-picture",
@@ -1472,44 +1472,44 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
                 label="Language"
                 onChange={[Function]}
                 options={
-                  Array [
-                    Object {
+                  [
+                    {
                       "label": "English US",
                       "value": "en-US",
                     },
-                    Object {
+                    {
                       "label": "French",
                       "value": "fr",
                     },
-                    Object {
+                    {
                       "label": "Spanish",
                       "value": "es",
                     },
-                    Object {
+                    {
                       "label": "Danish",
                       "value": "da",
                     },
-                    Object {
+                    {
                       "label": "Swedish",
                       "value": "sv",
                     },
-                    Object {
+                    {
                       "label": "Italian",
                       "value": "it",
                     },
-                    Object {
+                    {
                       "label": "Dutch",
                       "value": "nl",
                     },
-                    Object {
+                    {
                       "label": "German",
                       "value": "de",
                     },
-                    Object {
+                    {
                       "label": "Norwegian",
                       "value": "no",
                     },
-                    Object {
+                    {
                       "label": "Czech",
                       "value": "cz",
                     },
@@ -1606,7 +1606,7 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
         className="p-0"
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -1618,7 +1618,7 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
         <div
           className="d-flex justify-content-center align-items-center"
           style={
-            Object {
+            {
               "width": "30em",
             }
           }
@@ -1722,7 +1722,7 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
     <Row
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -1734,7 +1734,7 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
       <Col
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -1782,12 +1782,12 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
                 label="Avatar"
                 onChange={[Function]}
                 options={
-                  Array [
-                    Object {
+                  [
+                    {
                       "label": "Use team members' avatars",
                       "value": "team-members",
                     },
-                    Object {
+                    {
                       "caption": "For example, use your company's logo. The image needs to be a square of 500kb maximum.",
                       "label": "Use a single image for the whole team",
                       "value": "team-picture",
@@ -1804,7 +1804,7 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
                   className="mr-3"
                   src="https://gorgias.io/teampicture.png"
                   style={
-                    Object {
+                    {
                       "maxWidth": "100px",
                     }
                   }
@@ -1814,7 +1814,7 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
                   noPreview={true}
                   onChange={[Function]}
                   params={
-                    Object {
+                    {
                       "integration_id": 2,
                     }
                   }
@@ -1839,44 +1839,44 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
                 label="Language"
                 onChange={[Function]}
                 options={
-                  Array [
-                    Object {
+                  [
+                    {
                       "label": "English US",
                       "value": "en-US",
                     },
-                    Object {
+                    {
                       "label": "French",
                       "value": "fr",
                     },
-                    Object {
+                    {
                       "label": "Spanish",
                       "value": "es",
                     },
-                    Object {
+                    {
                       "label": "Danish",
                       "value": "da",
                     },
-                    Object {
+                    {
                       "label": "Swedish",
                       "value": "sv",
                     },
-                    Object {
+                    {
                       "label": "Italian",
                       "value": "it",
                     },
-                    Object {
+                    {
                       "label": "Dutch",
                       "value": "nl",
                     },
-                    Object {
+                    {
                       "label": "German",
                       "value": "de",
                     },
-                    Object {
+                    {
                       "label": "Norwegian",
                       "value": "no",
                     },
-                    Object {
+                    {
                       "label": "Czech",
                       "value": "cz",
                     },
@@ -1973,7 +1973,7 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
         className="p-0"
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -1985,7 +1985,7 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
         <div
           className="d-flex justify-content-center align-items-center"
           style={
-            Object {
+            {
               "width": "30em",
             }
           }

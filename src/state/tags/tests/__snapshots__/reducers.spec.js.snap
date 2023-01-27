@@ -1,45 +1,45 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`tags reducers add tags 1`] = `
-Object {
-  "_internal": Object {},
-  "items": Array [
-    Object {
+{
+  "_internal": {},
+  "items": [
+    {
       "id": 1,
       "name": "current_fake_name",
     },
-    Object {
+    {
       "id": 2,
       "name": "other_current_fake_name",
     },
-    Object {
+    {
       "id": 3,
       "name": "new_fake_name",
     },
-    Object {
+    {
       "id": 4,
       "name": "other_new_fake_name",
     },
   ],
-  "meta": Object {},
+  "meta": {},
 }
 `;
 
 exports[`tags reducers cancel edit tag 1`] = `
-Object {
-  "_internal": Object {},
-  "items": Array [
-    Object {
+{
+  "_internal": {},
+  "items": [
+    {
       "id": 1,
       "name": "current_fake_name",
     },
-    Object {
+    {
       "id": 2,
       "name": "other_current_fake_name",
     },
   ],
-  "meta": Object {
-    "1": Object {
+  "meta": {
+    "1": {
       "edit": false,
     },
   },
@@ -47,55 +47,55 @@ Object {
 `;
 
 exports[`tags reducers create tag 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "creating": true,
   },
-  "items": Array [],
-  "meta": Object {},
+  "items": [],
+  "meta": {},
 }
 `;
 
 exports[`tags reducers create tag 2`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "creating": false,
   },
-  "items": Array [
-    Object {
+  "items": [
+    {
       "foo": "bar",
       "id": 1,
     },
   ],
-  "meta": Object {},
+  "meta": {},
 }
 `;
 
 exports[`tags reducers create tag 3`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "creating": false,
   },
-  "items": Array [],
-  "meta": Object {},
+  "items": [],
+  "meta": {},
 }
 `;
 
 exports[`tags reducers edit tag 1`] = `
-Object {
-  "_internal": Object {},
-  "items": Array [
-    Object {
+{
+  "_internal": {},
+  "items": [
+    {
       "id": 1,
       "name": "current_fake_name",
     },
-    Object {
+    {
       "id": 2,
       "name": "other_current_fake_name",
     },
   ],
-  "meta": Object {
-    "1": Object {
+  "meta": {
+    "1": {
       "edit": true,
     },
   },
@@ -103,54 +103,54 @@ Object {
 `;
 
 exports[`tags reducers fetch tag list 1`] = `
-Object {
-  "_internal": Object {
-    "pagination": Object {
+{
+  "_internal": {
+    "pagination": {
       "page": 1,
     },
   },
-  "items": Array [
-    Object {
+  "items": [
+    {
       "id": 3,
       "name": "new_fake_name",
     },
-    Object {
+    {
       "id": 4,
       "name": "other_new_fake_name",
     },
   ],
-  "meta": Object {},
+  "meta": {},
 }
 `;
 
 exports[`tags reducers remove tag 1`] = `
-Object {
-  "_internal": Object {},
-  "items": Array [
-    Object {
+{
+  "_internal": {},
+  "items": [
+    {
       "id": 2,
       "name": "other_current_fake_name",
     },
   ],
-  "meta": Object {},
+  "meta": {},
 }
 `;
 
 exports[`tags reducers save tag 1`] = `
-Object {
-  "_internal": Object {},
-  "items": Array [
-    Object {
+{
+  "_internal": {},
+  "items": [
+    {
       "id": 1,
       "name": "edited_name",
     },
-    Object {
+    {
       "id": 2,
       "name": "other_current_fake_name",
     },
   ],
-  "meta": Object {
-    "1": Object {
+  "meta": {
+    "1": {
       "edit": false,
     },
   },
@@ -158,25 +158,25 @@ Object {
 `;
 
 exports[`tags reducers select all tags 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "selectAll": true,
   },
-  "items": Array [
-    Object {
+  "items": [
+    {
       "id": 1,
       "name": "current_fake_name",
     },
-    Object {
+    {
       "id": 2,
       "name": "other_current_fake_name",
     },
   ],
-  "meta": Object {
-    "1": Object {
+  "meta": {
+    "1": {
       "selected": true,
     },
-    "2": Object {
+    "2": {
       "selected": true,
     },
   },
@@ -184,20 +184,20 @@ Object {
 `;
 
 exports[`tags reducers select tag 1`] = `
-Object {
-  "_internal": Object {},
-  "items": Array [
-    Object {
+{
+  "_internal": {},
+  "items": [
+    {
       "id": 1,
       "name": "current_fake_name",
     },
-    Object {
+    {
       "id": 2,
       "name": "other_current_fake_name",
     },
   ],
-  "meta": Object {
-    "1": Object {
+  "meta": {
+    "1": {
       "selected": true,
     },
   },

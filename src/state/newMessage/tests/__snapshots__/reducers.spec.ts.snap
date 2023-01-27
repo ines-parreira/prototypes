@@ -1,52 +1,52 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`new message reducer NEW_MESSAGE_RESET_FROM_MESSAGE should remove email extra from the content 1`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {
+{
+  "_internal": {
+    "loading": {
       "addAttachment": false,
       "submitMessage": false,
     },
   },
-  "newMessage": Object {
-    "actions": Array [],
-    "attachments": Array [],
+  "newMessage": {
+    "actions": [],
+    "attachments": [],
     "body_html": "<div><br></div>",
     "body_text": "",
     "channel": "email",
     "from_agent": true,
-    "macros": Array [],
-    "mention_ids": Array [],
+    "macros": [],
+    "mention_ids": [],
     "public": true,
-    "sender": Object {},
-    "source": Object {
-      "bcc": Array [],
-      "cc": Array [],
-      "extra": Object {
+    "sender": {},
+    "source": {
+      "bcc": [],
+      "cc": [],
+      "extra": {
         "include_thread": false,
       },
-      "from": Object {},
-      "to": Array [],
+      "from": {},
+      "to": [],
       "type": "email",
     },
     "subject": "",
     "via": "helpdesk",
   },
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "cacheAdded": true,
-    "contentState": Object {
-      "blockMap": Object {
-        "someRandomKey": Object {
-          "characterList": Array [],
-          "data": Object {},
+    "contentState": {
+      "blockMap": {
+        "someRandomKey": {
+          "characterList": [],
+          "data": {},
           "depth": 0,
           "key": "someRandomKey",
           "text": "",
           "type": "unstyled",
         },
       },
-      "entityMap": Object {
+      "entityMap": {
         "__add": [Function],
         "__create": [Function],
         "__get": [Function],
@@ -60,7 +60,7 @@ Object {
         "mergeData": [Function],
         "replaceData": [Function],
       },
-      "selectionAfter": Object {
+      "selectionAfter": {
         "anchorKey": "someRandomKey",
         "anchorOffset": 0,
         "focusKey": "someRandomKey",
@@ -68,7 +68,7 @@ Object {
         "hasFocus": false,
         "isBackward": false,
       },
-      "selectionBefore": Object {
+      "selectionBefore": {
         "anchorKey": "someRandomKey",
         "anchorOffset": 0,
         "focusKey": "someRandomKey",
@@ -82,7 +82,7 @@ Object {
     "firstNewMessage": true,
     "forceFocus": true,
     "forceUpdate": true,
-    "selectionState": Object {
+    "selectionState": {
       "anchorKey": "someRandomKey",
       "anchorOffset": 0,
       "focusKey": "someRandomKey",
@@ -95,77 +95,77 @@ Object {
 `;
 
 exports[`new message reducer NEW_MESSAGE_RESET_FROM_MESSAGE should reset the state from a message 1`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {
+{
+  "_internal": {
+    "loading": {
       "addAttachment": false,
       "submitMessage": false,
     },
   },
-  "newMessage": Object {
-    "actions": Array [],
-    "attachments": Array [],
+  "newMessage": {
+    "actions": [],
+    "attachments": [],
     "body_html": "<div>foobar</div>",
     "body_text": "foobar",
     "channel": "email",
     "from_agent": true,
-    "macros": Array [],
-    "mention_ids": Array [],
+    "macros": [],
+    "mention_ids": [],
     "public": true,
-    "sender": Object {},
-    "source": Object {
-      "bcc": Array [],
-      "cc": Array [],
-      "extra": Object {
+    "sender": {},
+    "source": {
+      "bcc": [],
+      "cc": [],
+      "extra": {
         "include_thread": false,
       },
-      "from": Object {},
-      "to": Array [],
+      "from": {},
+      "to": [],
       "type": "email",
     },
     "subject": "",
     "via": "helpdesk",
   },
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "cacheAdded": true,
-    "contentState": Object {
-      "blockMap": Object {
-        "someRandomKey": Object {
-          "characterList": Array [
-            Object {
+    "contentState": {
+      "blockMap": {
+        "someRandomKey": {
+          "characterList": [
+            {
               "entity": null,
-              "style": Array [],
+              "style": [],
             },
-            Object {
+            {
               "entity": null,
-              "style": Array [],
+              "style": [],
             },
-            Object {
+            {
               "entity": null,
-              "style": Array [],
+              "style": [],
             },
-            Object {
+            {
               "entity": null,
-              "style": Array [],
+              "style": [],
             },
-            Object {
+            {
               "entity": null,
-              "style": Array [],
+              "style": [],
             },
-            Object {
+            {
               "entity": null,
-              "style": Array [],
+              "style": [],
             },
           ],
-          "data": Object {},
+          "data": {},
           "depth": 0,
           "key": "someRandomKey",
           "text": "foobar",
           "type": "unstyled",
         },
       },
-      "entityMap": Object {
+      "entityMap": {
         "__add": [Function],
         "__create": [Function],
         "__get": [Function],
@@ -179,7 +179,7 @@ Object {
         "mergeData": [Function],
         "replaceData": [Function],
       },
-      "selectionAfter": Object {
+      "selectionAfter": {
         "anchorKey": "someRandomKey",
         "anchorOffset": 0,
         "focusKey": "someRandomKey",
@@ -187,7 +187,7 @@ Object {
         "hasFocus": false,
         "isBackward": false,
       },
-      "selectionBefore": Object {
+      "selectionBefore": {
         "anchorKey": "someRandomKey",
         "anchorOffset": 0,
         "focusKey": "someRandomKey",
@@ -201,7 +201,7 @@ Object {
     "firstNewMessage": true,
     "forceFocus": true,
     "forceUpdate": true,
-    "selectionState": Object {
+    "selectionState": {
       "anchorKey": "someRandomKey",
       "anchorOffset": 0,
       "focusKey": "someRandomKey",
@@ -214,15 +214,15 @@ Object {
 `;
 
 exports[`new message reducer NEW_MESSAGE_SET_SOURCE_EXTRA should set source extra 1`] = `
-Object {
+{
   "foo": "bar",
   "include_thread": false,
 }
 `;
 
 exports[`new message reducer SET_RESPONSE_TEXT action should add cache 1`] = `
-Object {
-  "action": Object {
+{
+  "action": {
     "args": Immutable.Map {
       "contentState": "<div>Hello</div>",
     },
@@ -292,7 +292,7 @@ Immutable.Map {
     "forceUpdate": false,
     "firstNewMessage": true,
     "contentState": Immutable.Record {
-      "entityMap": Object {
+      "entityMap": {
         "__add": [Function],
         "__create": [Function],
         "__get": [Function],
@@ -399,7 +399,7 @@ Immutable.Map {
     "forceUpdate": false,
     "firstNewMessage": true,
     "contentState": Immutable.Record {
-      "entityMap": Object {
+      "entityMap": {
         "__add": [Function],
         "__create": [Function],
         "__get": [Function],
@@ -485,7 +485,7 @@ Immutable.Map {
     "forceUpdate": false,
     "firstNewMessage": true,
     "contentState": Immutable.Record {
-      "entityMap": Object {
+      "entityMap": {
         "__add": [Function],
         "__create": [Function],
         "__get": [Function],
@@ -571,7 +571,7 @@ Immutable.Map {
     "forceUpdate": true,
     "firstNewMessage": true,
     "contentState": Immutable.Record {
-      "entityMap": Object {
+      "entityMap": {
         "__add": [Function],
         "__create": [Function],
         "__get": [Function],
@@ -657,7 +657,7 @@ Immutable.Map {
     "forceUpdate": false,
     "firstNewMessage": true,
     "contentState": Immutable.Record {
-      "entityMap": Object {
+      "entityMap": {
         "__add": [Function],
         "__create": [Function],
         "__get": [Function],

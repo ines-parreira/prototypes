@@ -36,18 +36,14 @@ describe('Avatar component', () => {
         })
     })
 
-    it('should render image in visible container', async (done) => {
+    it('should render image in visible container', async () => {
         // preload the image so the component can fetch it from the cache
         await getAvatar({email: 'alex@gorgias.io'})
         const component = mount(<Avatar email="alex@gorgias.io" />)
-        // wait for the DOM to be up-to-date
-        setTimeout(() => {
-            expect(component).toMatchSnapshot()
-            done()
-        })
+        expect(component).toMatchSnapshot()
     })
 
-    it('should not render image in invisible container', async (done) => {
+    it('should not render image in invisible container', async () => {
         // preload the image so the component can fetch it from the cache
         await getAvatar({email: 'alex@gorgias.io'})
         const container = document.createElement('div')
@@ -56,9 +52,6 @@ describe('Avatar component', () => {
         const component = mount(<Avatar email="pepperoni@gorgias.io" />, {
             attachTo: container,
         })
-        setTimeout(() => {
-            expect(component).toMatchSnapshot()
-            done()
-        })
+        expect(component).toMatchSnapshot()
     })
 })

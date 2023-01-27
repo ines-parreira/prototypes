@@ -21,6 +21,9 @@ jest.mock('socket.io-client', () => {
 })
 
 jest.useFakeTimers()
+jest.spyOn(global, 'setInterval')
+jest.spyOn(global, 'setTimeout')
+jest.spyOn(global, 'clearTimeout')
 
 class MockMessagePort {
     postMessage = jest.fn()

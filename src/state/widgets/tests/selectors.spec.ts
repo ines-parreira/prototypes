@@ -15,9 +15,11 @@ import {
     isEditing,
 } from '../selectors'
 
-jest.addMatchers(immutableMatchers)
-
 describe('widgets selectors', () => {
+    beforeEach(() => {
+        expect.extend(immutableMatchers)
+    })
+
     describe('getWidgetsState', () => {
         it('should return widgets state because it exists', () => {
             const state = {

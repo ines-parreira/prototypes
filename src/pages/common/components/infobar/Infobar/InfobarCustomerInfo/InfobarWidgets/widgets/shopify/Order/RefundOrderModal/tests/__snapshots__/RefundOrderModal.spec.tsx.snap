@@ -166,7 +166,7 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
               >
                 <input
                   class="quantityInput form-control"
-                  pattern="\\\\d+"
+                  pattern="\\d+"
                   type="text"
                   value="0"
                 />
@@ -284,7 +284,7 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
               >
                 <input
                   class="quantityInput form-control"
-                  pattern="\\\\d+"
+                  pattern="\\d+"
                   type="text"
                   value="0"
                 />

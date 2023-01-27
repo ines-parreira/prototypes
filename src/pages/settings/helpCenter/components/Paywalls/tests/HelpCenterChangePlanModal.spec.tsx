@@ -26,7 +26,7 @@ jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 const mockedHandleSubscriptionUpdate = jest.fn()
 jest.mock('react-use', () => {
     return {
-        ...require.requireActual('react-use'),
+        ...jest.requireActual('react-use'),
         useAsyncFn: () => [{loading: false}, mockedHandleSubscriptionUpdate],
     } as Record<string, unknown>
 })

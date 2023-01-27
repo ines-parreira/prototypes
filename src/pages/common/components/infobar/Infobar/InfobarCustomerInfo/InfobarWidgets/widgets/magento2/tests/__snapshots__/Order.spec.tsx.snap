@@ -292,7 +292,7 @@ exports[`Order <BeforeContent/> render() should display shipments with links bec
       class="widgetFieldValue"
     >
       <time
-        datetime="\\"2020-10-07 09:30:03\\""
+        datetime=""2020-10-07 09:30:03""
       />
     </span>
   </div>
@@ -539,7 +539,7 @@ exports[`Order <BeforeContent/> render() should display shipments without links 
       class="widgetFieldValue"
     >
       <time
-        datetime="\\"2020-10-07 09:30:03\\""
+        datetime=""2020-10-07 09:30:03""
       />
     </span>
   </div>
@@ -827,7 +827,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the canc
       class="widgetFieldValue"
     >
       <time
-        datetime="\\"2020-10-07 09:30:03\\""
+        datetime=""2020-10-07 09:30:03""
       />
     </span>
   </div>
@@ -870,7 +870,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the clos
       class="widgetFieldValue"
     >
       <time
-        datetime="\\"2020-10-07 09:30:03\\""
+        datetime=""2020-10-07 09:30:03""
       />
     </span>
   </div>
@@ -913,7 +913,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the comp
       class="widgetFieldValue"
     >
       <time
-        datetime="\\"2020-10-07 09:30:03\\""
+        datetime=""2020-10-07 09:30:03""
       />
     </span>
   </div>
@@ -956,7 +956,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the new 
       class="widgetFieldValue"
     >
       <time
-        datetime="\\"2020-10-07 09:30:03\\""
+        datetime=""2020-10-07 09:30:03""
       />
     </span>
   </div>
@@ -999,7 +999,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the on_h
       class="widgetFieldValue"
     >
       <time
-        datetime="\\"2020-10-07 09:30:03\\""
+        datetime=""2020-10-07 09:30:03""
       />
     </span>
   </div>
@@ -1042,7 +1042,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the pend
       class="widgetFieldValue"
     >
       <time
-        datetime="\\"2020-10-07 09:30:03\\""
+        datetime=""2020-10-07 09:30:03""
       />
     </span>
   </div>
@@ -1085,7 +1085,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the proc
       class="widgetFieldValue"
     >
       <time
-        datetime="\\"2020-10-07 09:30:03\\""
+        datetime=""2020-10-07 09:30:03""
       />
     </span>
   </div>

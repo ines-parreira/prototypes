@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`responseUtils addCache it should set the selection to end of user content if the removed email extras were selected 1`] = `
-Object {
-  "action": Object {
+{
+  "action": {
     "args": Immutable.Map {
-      "body_html": "<div><strong>Hello, check this out</strong></div><div><br></div><figure style=\\"display:inline-block;margin:0\\"><img src=\\"https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/image-e99e1a8a-990b-4df1-876d-cd1ced6df667.png\\" width=\\"400px\\" style=\\"max-width: 100%\\"></figure><br><div><em>should be good now</em></div>",
+      "body_html": "<div><strong>Hello, check this out</strong></div><div><br></div><figure style="display:inline-block;margin:0"><img src="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/image-e99e1a8a-990b-4df1-876d-cd1ced6df667.png" width="400px" style="max-width: 100%"></figure><br><div><em>should be good now</em></div>",
       "body_text": "Hello, check this out
 
  
@@ -22,7 +22,7 @@ should be good now",
   "emailExtraAdded": false,
   "forceFocus": true,
   "forceUpdate": true,
-  "selectionState": Object {
+  "selectionState": {
     "anchorBlockText": "Foo bar baz",
     "anchorOffset": 11,
     "focusBlockText": "Foo bar baz",
@@ -76,10 +76,10 @@ should be good now",
 `;
 
 exports[`responseUtils addCache should not restore the message if action is from macro 1`] = `
-Object {
-  "action": Object {
+{
+  "action": {
     "args": Immutable.Map {
-      "body_html": "<div><strong>Hello, check this out</strong></div><div><br></div><figure style=\\"display:inline-block;margin:0\\"><img src=\\"https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/image-e99e1a8a-990b-4df1-876d-cd1ced6df667.png\\" width=\\"400px\\" style=\\"max-width: 100%\\"></figure><br><div><em>should be good now</em></div>",
+      "body_html": "<div><strong>Hello, check this out</strong></div><div><br></div><figure style="display:inline-block;margin:0"><img src="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/image-e99e1a8a-990b-4df1-876d-cd1ced6df667.png" width="400px" style="max-width: 100%"></figure><br><div><em>should be good now</em></div>",
       "body_text": "Hello, check this out
 
  
@@ -142,10 +142,10 @@ should be good now",
 `;
 
 exports[`responseUtils addCache should remove the email extras from the restored message 1`] = `
-Object {
-  "action": Object {
+{
+  "action": {
     "args": Immutable.Map {
-      "body_html": "<div><strong>Hello, check this out</strong></div><div><br></div><figure style=\\"display:inline-block;margin:0\\"><img src=\\"https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/image-e99e1a8a-990b-4df1-876d-cd1ced6df667.png\\" width=\\"400px\\" style=\\"max-width: 100%\\"></figure><br><div><em>should be good now</em></div>",
+      "body_html": "<div><strong>Hello, check this out</strong></div><div><br></div><figure style="display:inline-block;margin:0"><img src="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/image-e99e1a8a-990b-4df1-876d-cd1ced6df667.png" width="400px" style="max-width: 100%"></figure><br><div><em>should be good now</em></div>",
       "body_text": "Hello, check this out
 
  
@@ -163,7 +163,7 @@ should be good now",
   "emailExtraAdded": false,
   "forceFocus": true,
   "forceUpdate": true,
-  "selectionState": Object {
+  "selectionState": {
     "anchorBlockText": "Foo bar baz",
     "anchorOffset": "1",
     "focusBlockText": "Foo bar baz",
@@ -217,10 +217,10 @@ should be good now",
 `;
 
 exports[`responseUtils addCache should restore message state from cache when cache is not added 1`] = `
-Object {
-  "action": Object {
+{
+  "action": {
     "args": Immutable.Map {
-      "body_html": "<div><strong>Hello, check this out</strong></div><div><br></div><figure style=\\"display:inline-block;margin:0\\"><img src=\\"https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/image-e99e1a8a-990b-4df1-876d-cd1ced6df667.png\\" width=\\"400px\\" style=\\"max-width: 100%\\"></figure><br><div><em>should be good now</em></div>",
+      "body_html": "<div><strong>Hello, check this out</strong></div><div><br></div><figure style="display:inline-block;margin:0"><img src="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/image-e99e1a8a-990b-4df1-876d-cd1ced6df667.png" width="400px" style="max-width: 100%"></figure><br><div><em>should be good now</em></div>",
       "body_text": "Hello, check this out
 
  
@@ -238,7 +238,7 @@ should be good now",
   "emailExtraAdded": false,
   "forceFocus": true,
   "forceUpdate": true,
-  "selectionState": Object {
+  "selectionState": {
     "anchorBlockText": "Foo bar baz",
     "anchorOffset": "1",
     "focusBlockText": "Foo bar baz",
@@ -292,10 +292,10 @@ should be good now",
 `;
 
 exports[`responseUtils addCache should set cacheAdded in context to true and not restore the message from storage when cache is added 1`] = `
-Object {
-  "action": Object {
+{
+  "action": {
     "args": Immutable.Map {
-      "body_html": "<div><strong>Hello, check this out</strong></div><div><br></div><figure style=\\"display:inline-block;margin:0\\"><img src=\\"https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/image-e99e1a8a-990b-4df1-876d-cd1ced6df667.png\\" width=\\"400px\\" style=\\"max-width: 100%\\"></figure><br><div><em>should be good now</em></div>",
+      "body_html": "<div><strong>Hello, check this out</strong></div><div><br></div><figure style="display:inline-block;margin:0"><img src="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/image-e99e1a8a-990b-4df1-876d-cd1ced6df667.png" width="400px" style="max-width: 100%"></figure><br><div><em>should be good now</em></div>",
       "body_text": "Hello, check this out
 
  
@@ -357,17 +357,17 @@ should be good now",
 }
 `;
 
-exports[`responseUtils applyMacro should display all HTML for email 1`] = `"<div><strong>Hello, check this out</strong></div><div><br></div><figure style=\\"display:inline-block;margin:0\\"><img src=\\"https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/image-e99e1a8a-990b-4df1-876d-cd1ced6df667.png\\" width=\\"400\\" style=\\"max-width: 100%\\"></figure><div><br></div><div><em>should be good now</em></div>"`;
+exports[`responseUtils applyMacro should display all HTML for email 1`] = `"<div><strong>Hello, check this out</strong></div><div><br></div><figure style="display:inline-block;margin:0"><img src="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/image-e99e1a8a-990b-4df1-876d-cd1ced6df667.png" width="400" style="max-width: 100%"></figure><div><br></div><div><em>should be good now</em></div>"`;
 
-exports[`responseUtils applyMacro should sanitize HTML for facebook messenger 1`] = `"<div>Hello, check this out</div><div><br></div><figure style=\\"display:inline-block;margin:0\\"><img src=\\"https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/image-e99e1a8a-990b-4df1-876d-cd1ced6df667.png\\" width=\\"400\\" style=\\"max-width: 100%\\"></figure><div><br></div><div>should be good now</div>"`;
+exports[`responseUtils applyMacro should sanitize HTML for facebook messenger 1`] = `"<div>Hello, check this out</div><div><br></div><figure style="display:inline-block;margin:0"><img src="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/image-e99e1a8a-990b-4df1-876d-cd1ced6df667.png" width="400" style="max-width: 100%"></figure><div><br></div><div>should be good now</div>"`;
 
 exports[`responseUtils toReplyAreaStateJS should convert immutable state to object 1`] = `
-Object {
+{
   "appliedMacro": null,
   "cacheAdded": true,
-  "contentState": Array [
-    Object {
-      "data": Object {},
+  "contentState": [
+    {
+      "data": {},
       "depth": 0,
       "text": "",
       "type": "unstyled",
@@ -382,24 +382,24 @@ Object {
 `;
 
 exports[`responseUtils updateNewMessageWithContentState should not mutate the arguments 1`] = `
-Object {
-  "attachments": Array [],
+{
+  "attachments": [],
   "body_html": "",
   "body_text": "",
   "channel": "email",
   "from_agent": true,
-  "macros": Array [],
-  "mention_ids": Array [],
+  "macros": [],
+  "mention_ids": [],
   "public": true,
   "sender": null,
-  "source": Object {
-    "bcc": Array [],
-    "cc": Array [],
-    "extra": Object {
+  "source": {
+    "bcc": [],
+    "cc": [],
+    "extra": {
       "include_thread": false,
     },
-    "from": Object {},
-    "to": Array [],
+    "from": {},
+    "to": [],
     "type": "email",
   },
   "subject": "",
@@ -408,26 +408,26 @@ Object {
 `;
 
 exports[`responseUtils updateNewMessageWithContentState should set stripped_text and stripped_body when contentState contains email extras 1`] = `
-Object {
-  "attachments": Array [],
+{
+  "attachments": [],
   "body_html": "<div>Foo bar</div><div><br></div><div>Signature</div>",
   "body_text": "Foo bar
 
 Signature",
   "channel": "email",
   "from_agent": true,
-  "macros": Array [],
-  "mention_ids": Array [],
+  "macros": [],
+  "mention_ids": [],
   "public": true,
   "sender": null,
-  "source": Object {
-    "bcc": Array [],
-    "cc": Array [],
-    "extra": Object {
+  "source": {
+    "bcc": [],
+    "cc": [],
+    "extra": {
       "include_thread": false,
     },
-    "from": Object {},
-    "to": Array [],
+    "from": {},
+    "to": [],
     "type": "email",
   },
   "stripped_html": "<div>Foo bar</div>",
@@ -438,24 +438,24 @@ Signature",
 `;
 
 exports[`responseUtils updateNewMessageWithContentState should unset emailExtraAdded, stripped_text and stripped_body when contentState does not contain email extras 1`] = `
-Object {
-  "attachments": Array [],
+{
+  "attachments": [],
   "body_html": "<div>No extras</div>",
   "body_text": "No extras",
   "channel": "email",
   "from_agent": true,
-  "macros": Array [],
-  "mention_ids": Array [],
+  "macros": [],
+  "mention_ids": [],
   "public": true,
   "sender": null,
-  "source": Object {
-    "bcc": Array [],
-    "cc": Array [],
-    "extra": Object {
+  "source": {
+    "bcc": [],
+    "cc": [],
+    "extra": {
       "include_thread": false,
     },
-    "from": Object {},
-    "to": Array [],
+    "from": {},
+    "to": [],
     "type": "email",
   },
   "subject": "",
@@ -464,24 +464,24 @@ Object {
 `;
 
 exports[`responseUtils updateNewMessageWithContentState should update body_html and body_text 1`] = `
-Object {
-  "attachments": Array [],
+{
+  "attachments": [],
   "body_html": "<div>Foo bar baz</div>",
   "body_text": "Foo bar baz",
   "channel": "email",
   "from_agent": true,
-  "macros": Array [],
-  "mention_ids": Array [],
+  "macros": [],
+  "mention_ids": [],
   "public": true,
   "sender": null,
-  "source": Object {
-    "bcc": Array [],
-    "cc": Array [],
-    "extra": Object {
+  "source": {
+    "bcc": [],
+    "cc": [],
+    "extra": {
       "include_thread": false,
     },
-    "from": Object {},
-    "to": Array [],
+    "from": {},
+    "to": [],
     "type": "email",
   },
   "subject": "",

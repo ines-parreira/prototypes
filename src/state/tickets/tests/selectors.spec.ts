@@ -5,9 +5,11 @@ import {RootState} from '../../types'
 import * as selectors from '../selectors'
 import {initialState} from '../reducers'
 
-jest.addMatchers(immutableMatchers)
-
 describe('selectors', () => {
+    beforeEach(() => {
+        expect.extend(immutableMatchers)
+    })
+
     describe('tickets', () => {
         let state: RootState
 

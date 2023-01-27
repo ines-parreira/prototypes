@@ -336,7 +336,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
 
             expect(mockCreateGorgiasChatIntegration.mock.calls[0])
                 .toMatchInlineSnapshot(`
-                Array [
+                [
                   Immutable.Map {
                     "type": "gorgias_chat",
                     "name": "myTestChat",
@@ -469,7 +469,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
 
             expect(mockUpdateOrCreateIntegration.mock.calls[0])
                 .toMatchInlineSnapshot(`
-                Array [
+                [
                   Immutable.Map {
                     "type": "gorgias_chat",
                     "name": "myTestChat",

@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<PeopleSearchResults/> render() should render 1`] = `
-Array [
+[
   <div
     class="dropdown-divider"
     tabindex="-1"
@@ -158,7 +158,7 @@ Array [
 `;
 
 exports[`<PeopleSearchResults/> render() should render with custom children displayed before teams 1`] = `
-Array [
+[
   <span>
     foo
   </span>,
@@ -318,7 +318,7 @@ Array [
 `;
 
 exports[`<PeopleSearchResults/> render() should render without teams 1`] = `
-Array [
+[
   <div
     class="dropdown-divider"
     tabindex="-1"
@@ -399,7 +399,7 @@ Array [
 `;
 
 exports[`<PeopleSearchResults/> render() should render without users 1`] = `
-Array [
+[
   <div
     class="dropdown-divider"
     tabindex="-1"

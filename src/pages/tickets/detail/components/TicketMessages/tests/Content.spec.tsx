@@ -142,9 +142,9 @@ describe('Content', () => {
             />
         )
         const link = component.render().find('a').first()
-        expect(link.prop('href')).toBe('http://gorgias.io')
+        expect(link.prop('href')).toBe('https://gorgias.io')
         expect(link.prop('target')).toBe('_blank')
-        expect(link.text()).toBe('http://gorgias.io')
+        expect(link.text()).toBe('gorgias.io')
     })
 
     it('should set target=_blank for linkified links', () => {

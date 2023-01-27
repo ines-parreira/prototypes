@@ -340,17 +340,17 @@ exports[`MultiSelectField select option should display max TAGS_LIMIT options 1`
 `;
 
 exports[`MultiSelectField should init state with custom props 1`] = `
-Object {
-  "filteredOptions": Array [
-    Object {
+{
+  "filteredOptions": [
+    {
       "label": "First",
       "value": "first",
     },
-    Object {
+    {
       "label": "Second",
       "value": "second",
     },
-    Object {
+    {
       "label": "Third",
       "value": "third",
     },
@@ -366,23 +366,23 @@ exports[`MultiSelectField should render a multi select input with custom props 1
   matchInput={false}
   onChange={[Function]}
   options={
-    Array [
-      Object {
+    [
+      {
         "label": "First",
         "value": "first",
       },
-      Object {
+      {
         "label": "Second",
         "value": "second",
       },
-      Object {
+      {
         "label": "Third",
         "value": "third",
       },
     ]
   }
   plural="tags"
-  selectedOptions={Array []}
+  selectedOptions={[]}
   singular="tag"
 >
   <div
@@ -401,16 +401,16 @@ exports[`MultiSelectField should render a multi select input with custom props 1
         onFocus={[Function]}
         onSelect={[Function]}
         options={
-          Array [
-            Object {
+          [
+            {
               "label": "First",
               "value": "first",
             },
-            Object {
+            {
               "label": "Second",
               "value": "second",
             },
-            Object {
+            {
               "label": "Third",
               "value": "third",
             },
@@ -501,16 +501,16 @@ exports[`MultiSelectField should render a multi select input with custom props 1
                         onActivate={[Function]}
                         onSelect={[Function]}
                         options={
-                          Array [
-                            Object {
+                          [
+                            {
                               "label": "First",
                               "value": "first",
                             },
-                            Object {
+                            {
                               "label": "Second",
                               "value": "second",
                             },
-                            Object {
+                            {
                               "label": "Third",
                               "value": "third",
                             },
@@ -623,9 +623,9 @@ exports[`MultiSelectField should render a select input with default props 1`] = 
   allowCustomOptions={false}
   matchInput={false}
   onChange={[Function]}
-  options={Array []}
+  options={[]}
   plural="items"
-  selectedOptions={Array []}
+  selectedOptions={[]}
   singular="item"
 >
   <div
@@ -643,7 +643,7 @@ exports[`MultiSelectField should render a select input with default props 1`] = 
         onDelete={[Function]}
         onFocus={[Function]}
         onSelect={[Function]}
-        options={Array []}
+        options={[]}
         placeholder="Add items..."
         value=""
       >
@@ -728,7 +728,7 @@ exports[`MultiSelectField should render a select input with default props 1`] = 
                         activeIndex={0}
                         onActivate={[Function]}
                         onSelect={[Function]}
-                        options={Array []}
+                        options={[]}
                       >
                         <DropdownItem
                           header={true}
@@ -758,37 +758,37 @@ exports[`MultiSelectField should render a select input with default props 1`] = 
 `;
 
 exports[`MultiSelectField should render a select input with default props 2`] = `
-Object {
+{
   "allowCustomOptions": false,
   "matchInput": false,
   "onChange": [Function],
-  "options": Array [],
+  "options": [],
   "plural": "items",
-  "selectedOptions": Array [],
+  "selectedOptions": [],
   "singular": "item",
 }
 `;
 
 exports[`MultiSelectField should render a select input with default props 3`] = `
-Object {
-  "filteredOptions": Array [],
+{
+  "filteredOptions": [],
   "input": "",
   "isFocused": false,
 }
 `;
 
 exports[`MultiSelectField should reset state on blur 1`] = `
-Object {
-  "filteredOptions": Array [
-    Object {
+{
+  "filteredOptions": [
+    {
       "label": "First",
       "value": "first",
     },
-    Object {
+    {
       "label": "Second",
       "value": "second",
     },
-    Object {
+    {
       "label": "Third",
       "value": "third",
     },
@@ -799,13 +799,13 @@ Object {
 `;
 
 exports[`MultiSelectField should update state when search changes (custom values NOT allowed) 1`] = `
-Object {
-  "filteredOptions": Array [
-    Object {
+{
+  "filteredOptions": [
+    {
       "label": "Hello",
       "value": "hello",
     },
-    Object {
+    {
       "label": "World",
       "value": "world",
     },
@@ -816,13 +816,13 @@ Object {
 `;
 
 exports[`MultiSelectField should update state when search changes (custom values NOT allowed) 2`] = `
-Object {
-  "filteredOptions": Array [
-    Object {
+{
+  "filteredOptions": [
+    {
       "label": "Hello",
       "value": "hello",
     },
-    Object {
+    {
       "label": "World",
       "value": "world",
     },
@@ -833,13 +833,13 @@ Object {
 `;
 
 exports[`MultiSelectField should update state when search changes (custom values allowed) 1`] = `
-Object {
-  "filteredOptions": Array [
-    Object {
+{
+  "filteredOptions": [
+    {
       "label": "Hello",
       "value": "hello",
     },
-    Object {
+    {
       "label": "World",
       "value": "world",
     },
@@ -850,13 +850,13 @@ Object {
 `;
 
 exports[`MultiSelectField should update state when search changes (custom values allowed) 2`] = `
-Object {
-  "filteredOptions": Array [
-    Object {
+{
+  "filteredOptions": [
+    {
       "label": "Hello",
       "value": "hello",
     },
-    Object {
+    {
       "label": "World",
       "value": "world",
     },
@@ -867,26 +867,26 @@ Object {
 `;
 
 exports[`MultiSelectField should use custom props 1`] = `
-Object {
+{
   "allowCustomOptions": false,
   "matchInput": false,
   "onChange": [Function],
-  "options": Array [
-    Object {
+  "options": [
+    {
       "label": "First",
       "value": "first",
     },
-    Object {
+    {
       "label": "Second",
       "value": "second",
     },
-    Object {
+    {
       "label": "Third",
       "value": "third",
     },
   ],
   "plural": "tags",
-  "selectedOptions": Array [],
+  "selectedOptions": [],
   "singular": "tag",
 }
 `;

@@ -1,16 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`quotesPlugin blockRenderMap should define quote wrappers for the wrappable block types 1`] = `
-Object {
-  "atomic": Object {
+{
+  "atomic": {
     "element": "figure",
     "wrapper": <QuotesWrapper />,
   },
-  "blockquote": Object {
+  "blockquote": {
     "element": "blockquote",
     "wrapper": <QuotesWrapper />,
   },
-  "code-block": Object {
+  "code-block": {
     "element": "pre",
     "wrapper": <QuotesWrapper
       innerWrapper={
@@ -20,31 +20,31 @@ Object {
       }
     />,
   },
-  "header-five": Object {
+  "header-five": {
     "element": "h5",
     "wrapper": <QuotesWrapper />,
   },
-  "header-four": Object {
+  "header-four": {
     "element": "h4",
     "wrapper": <QuotesWrapper />,
   },
-  "header-one": Object {
+  "header-one": {
     "element": "h1",
     "wrapper": <QuotesWrapper />,
   },
-  "header-six": Object {
+  "header-six": {
     "element": "h6",
     "wrapper": <QuotesWrapper />,
   },
-  "header-three": Object {
+  "header-three": {
     "element": "h3",
     "wrapper": <QuotesWrapper />,
   },
-  "header-two": Object {
+  "header-two": {
     "element": "h2",
     "wrapper": <QuotesWrapper />,
   },
-  "ordered-list-item": Object {
+  "ordered-list-item": {
     "element": "li",
     "wrapper": <QuotesWrapper
       innerWrapper={
@@ -54,7 +54,7 @@ Object {
       }
     />,
   },
-  "unordered-list-item": Object {
+  "unordered-list-item": {
     "element": "li",
     "wrapper": <QuotesWrapper
       innerWrapper={
@@ -64,8 +64,8 @@ Object {
       }
     />,
   },
-  "unstyled": Object {
-    "aliasedElements": Array [
+  "unstyled": {
+    "aliasedElements": [
       "p",
     ],
     "element": "div",

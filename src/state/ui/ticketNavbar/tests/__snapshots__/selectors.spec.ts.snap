@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`selectors getPrivateTicketNavbarElements should properly display a section view without section 1`] = `
-Array [
-  Object {
-    "data": Object {
+[
+  {
+    "data": {
       "id": 5,
       "section_id": null,
       "type": "ticket-list",
@@ -11,8 +11,8 @@ Array [
     },
     "type": "view",
   },
-  Object {
-    "data": Object {
+  {
+    "data": {
       "id": 123,
       "section_id": 3,
       "type": "ticket-list",
@@ -24,9 +24,9 @@ Array [
 `;
 
 exports[`selectors getPrivateTicketNavbarElements should return the elements 1`] = `
-Array [
-  Object {
-    "data": Object {
+[
+  {
+    "data": {
       "id": 5,
       "section_id": null,
       "type": "ticket-list",
@@ -34,16 +34,16 @@ Array [
     },
     "type": "view",
   },
-  Object {
-    "children": Array [
-      Object {
+  {
+    "children": [
+      {
         "id": 123,
         "section_id": 3,
         "type": "ticket-list",
         "visibility": "private",
       },
     ],
-    "data": Object {
+    "data": {
       "id": 3,
       "private": true,
     },
@@ -53,9 +53,9 @@ Array [
 `;
 
 exports[`selectors getPublicTicketNavbarElements should properly display a section view without section 1`] = `
-Array [
-  Object {
-    "data": Object {
+[
+  {
+    "data": {
       "id": 10,
       "section_id": 1,
       "type": "ticket-list",
@@ -63,8 +63,8 @@ Array [
     },
     "type": "view",
   },
-  Object {
-    "data": Object {
+  {
+    "data": {
       "id": 2,
       "section_id": 1,
       "type": "ticket-list",
@@ -72,8 +72,8 @@ Array [
     },
     "type": "view",
   },
-  Object {
-    "data": Object {
+  {
+    "data": {
       "id": 4,
       "section_id": null,
       "type": "ticket-list",
@@ -81,8 +81,8 @@ Array [
     },
     "type": "view",
   },
-  Object {
-    "data": Object {
+  {
+    "data": {
       "id": 1,
       "section_id": 2,
       "type": "ticket-list",

@@ -162,7 +162,7 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
               >
                 <input
                   class="quantityInput form-control"
-                  pattern="\\\\d+"
+                  pattern="\\d+"
                   type="text"
                   value="1"
                 />
@@ -280,7 +280,7 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
               >
                 <input
                   class="quantityInput form-control"
-                  pattern="\\\\d+"
+                  pattern="\\d+"
                   type="text"
                   value="4"
                 />

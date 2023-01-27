@@ -9,9 +9,11 @@ import * as ticketTypes from '../../ticket/constants'
 import * as types from '../constants'
 import {GorgiasAction} from '../../types'
 
-jest.addMatchers(immutableMatchers)
-
 describe('customers reducers', () => {
+    beforeEach(() => {
+        expect.extend(immutableMatchers)
+    })
+
     it('initial state', () => {
         expect(reducer(undefined, {} as GorgiasAction)).toEqualImmutable(
             initialState

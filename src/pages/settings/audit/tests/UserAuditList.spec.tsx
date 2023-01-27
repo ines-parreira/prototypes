@@ -112,6 +112,7 @@ describe('<UserAuditList/>', () => {
             fireEvent.click(getByText('Account created'))
             jest.advanceTimersByTime(1000)
             fireEvent.click(getByText('calendar_today'))
+            jest.advanceTimersByTime(1000)
             fireEvent.click(getByText('Last 3 days'))
             jest.advanceTimersByTime(1000)
         })

@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`current user selectors getViewsOrderingUserSetting should return the setting by type 1`] = `
-Object {
-  "data": Object {
+{
+  "data": {
     "foo": "bar",
   },
   "id": 3,

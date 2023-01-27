@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`stats reducer statFetched action should add the stat chart to the state 1`] = `
-Object {
-  "overview/total-tickets-replied": Object {
-    "data": Object {
-      "data": Object {
-        "axes": Object {
-          "x": Array [
+{
+  "overview/total-tickets-replied": {
+    "data": {
+      "data": {
+        "axes": {
+          "x": [
             1558760400,
             1558846800,
             1558933200,
@@ -15,11 +15,11 @@ Object {
             1559192400,
             1559278800,
           ],
-          "y": Array [],
+          "y": [],
         },
-        "lines": Array [
-          Object {
-            "data": Array [
+        "lines": [
+          {
+            "data": [
               0,
               0,
               0,
@@ -30,8 +30,8 @@ Object {
             ],
             "name": "50%",
           },
-          Object {
-            "data": Array [
+          {
+            "data": [
               0,
               0,
               0,
@@ -45,14 +45,14 @@ Object {
         ],
       },
       "label": "First response time (percentiles)",
-      "legend": Object {
-        "axes": Object {
+      "legend": {
+        "axes": {
           "x": "",
           "y": "First response time",
         },
       },
     },
-    "meta": Object {
+    "meta": {
       "end_datetime": "2019-05-31T23:59:59-05:00",
       "previous_end_datetime": "2019-05-25T00:00:00-05:00",
       "previous_start_datetime": "2019-05-18T00:00:01-05:00",

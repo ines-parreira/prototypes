@@ -26,30 +26,30 @@ describe('useCategoryRowActions()', () => {
         )
 
         expect(result.current).toMatchInlineSnapshot(`
-            Array [
-              Object {
+            [
+              {
                 "disabled": false,
                 "icon": "settings",
                 "name": "categorySettings",
-                "tooltip": Object {
+                "tooltip": {
                   "content": "Category settings",
                   "target": "categorySettings-1",
                 },
               },
-              Object {
+              {
                 "disabled": false,
                 "icon": "playlist_add",
                 "name": "createNestedCategory",
-                "tooltip": Object {
+                "tooltip": {
                   "content": "Create category",
                   "target": "createNestedCategory-1",
                 },
               },
-              Object {
+              {
                 "disabled": false,
                 "icon": "note_add",
                 "name": "createNestedArticle",
-                "tooltip": Object {
+                "tooltip": {
                   "content": "Create article",
                   "target": "createNestedArticle-1",
                 },
@@ -63,30 +63,30 @@ describe('useCategoryRowActions()', () => {
             useCategoryRowActions(categoryId, CATEGORY_TREE_MAX_LEVEL)
         )
         expect(result.current).toMatchInlineSnapshot(`
-            Array [
-              Object {
+            [
+              {
                 "disabled": false,
                 "icon": "settings",
                 "name": "categorySettings",
-                "tooltip": Object {
+                "tooltip": {
                   "content": "Category settings",
                   "target": "categorySettings-1",
                 },
               },
-              Object {
+              {
                 "disabled": true,
                 "icon": "playlist_add",
                 "name": "createNestedCategory",
-                "tooltip": Object {
+                "tooltip": {
                   "content": "Create category",
                   "target": "createNestedCategory-1",
                 },
               },
-              Object {
+              {
                 "disabled": false,
                 "icon": "note_add",
                 "name": "createNestedArticle",
-                "tooltip": Object {
+                "tooltip": {
                   "content": "Create article",
                   "target": "createNestedArticle-1",
                 },
@@ -104,30 +104,30 @@ describe('useCategoryRowActions()', () => {
             useCategoryRowActions(categoryId, level)
         )
         expect(result.current).toMatchInlineSnapshot(`
-            Array [
-              Object {
+            [
+              {
                 "disabled": true,
                 "icon": "settings",
                 "name": "categorySettings",
-                "tooltip": Object {
+                "tooltip": {
                   "content": "Category settings",
                   "target": "categorySettings-1",
                 },
               },
-              Object {
+              {
                 "disabled": true,
                 "icon": "playlist_add",
                 "name": "createNestedCategory",
-                "tooltip": Object {
+                "tooltip": {
                   "content": "Create category",
                   "target": "createNestedCategory-1",
                 },
               },
-              Object {
+              {
                 "disabled": true,
                 "icon": "note_add",
                 "name": "createNestedArticle",
-                "tooltip": Object {
+                "tooltip": {
                   "content": "Create article",
                   "target": "createNestedArticle-1",
                 },

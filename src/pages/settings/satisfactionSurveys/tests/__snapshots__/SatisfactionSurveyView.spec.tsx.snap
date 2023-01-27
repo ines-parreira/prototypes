@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SatisfactionSurveyView _onSubmit should submit user data 1`] = `Array []`;
+exports[`SatisfactionSurveyView _onSubmit should submit user data 1`] = `[]`;
 
 exports[`SatisfactionSurveyView render should render current survey settings form 1`] = `
 <Provider
   store={
-    Object {
+    {
       "clearActions": [Function],
       "dispatch": [Function],
       "getActions": [Function],
@@ -79,7 +79,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                           className="control-label"
                           tag="label"
                           widths={
-                            Array [
+                            [
                               "xs",
                               "sm",
                               "md",
@@ -102,44 +102,44 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                           onChange={[Function]}
                           onSearchChange={[Function]}
                           options={
-                            Array [
-                              Object {
+                            [
+                              {
                                 "label": "5 minutes",
                                 "value": 0,
                               },
-                              Object {
+                              {
                                 "label": "30 minutes",
                                 "value": 0.5,
                               },
-                              Object {
+                              {
                                 "label": "1 hour",
                                 "value": 1,
                               },
-                              Object {
+                              {
                                 "label": "2 hours",
                                 "value": 2,
                               },
-                              Object {
+                              {
                                 "label": "4 hours",
                                 "value": 4,
                               },
-                              Object {
+                              {
                                 "label": "6 hours",
                                 "value": 6,
                               },
-                              Object {
+                              {
                                 "label": "8 hours",
                                 "value": 8,
                               },
-                              Object {
+                              {
                                 "label": "1 day",
                                 "value": 24,
                               },
-                              Object {
+                              {
                                 "label": "2 days",
                                 "value": 48,
                               },
-                              Object {
+                              {
                                 "label": "7 days",
                                 "value": 168,
                               },
@@ -148,10 +148,10 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                           placeholder="Select an option"
                           required={false}
                           singular="option"
-                          style={Object {}}
+                          style={{}}
                         >
                           <div
-                            style={Object {}}
+                            style={{}}
                           >
                             <UncontrolledDropdown
                               isOpen={false}
@@ -197,7 +197,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                               <span
                                                 className="label placeholder"
                                                 style={
-                                                  Object {
+                                                  {
                                                     "minWidth": 10,
                                                     "opacity": 1,
                                                   }
@@ -215,7 +215,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                 onKeyDown={[Function]}
                                                 required={false}
                                                 style={
-                                                  Object {
+                                                  {
                                                     "minWidth": 10,
                                                   }
                                                 }
@@ -236,8 +236,8 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                       className="options optionsFullWidth"
                                       flip={true}
                                       modifiers={
-                                        Object {
-                                          "preventOverflow": Object {
+                                        {
+                                          "preventOverflow": {
                                             "boundariesElement": "viewport",
                                           },
                                         }
@@ -486,7 +486,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                           className="control-label mb8"
                           tag="label"
                           widths={
-                            Array [
+                            [
                               "xs",
                               "sm",
                               "md",
@@ -572,13 +572,13 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                           label="Survey message"
                           onChange={[Function]}
                           value={
-                            Object {
+                            {
                               "html": "<div><br></div>",
                               "text": "",
                             }
                           }
                           variableTypes={
-                            Array [
+                            [
                               "ticket.customer",
                               "current_user",
                               "survey",
@@ -592,7 +592,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                               className="control-label"
                               tag="label"
                               widths={
-                                Array [
+                                [
                                   "xs",
                                   "sm",
                                   "md",
@@ -963,7 +963,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                               allowExternalChanges={true}
                               onChange={[Function]}
                               value={
-                                Object {
+                                {
                                   "html": "<div><br></div>",
                                   "text": "",
                                 }
@@ -975,7 +975,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                 onChange={[Function]}
                                 onInsertVideoAddedFromPastedLink={[Function]}
                                 value={
-                                  Object {
+                                  {
                                     "html": "<div><br></div>",
                                     "text": "",
                                   }
@@ -989,7 +989,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                       "_immutable": Immutable.Record {
                                         "allowUndo": true,
                                         "currentContent": Immutable.Record {
-                                          "entityMap": Object {
+                                          "entityMap": {
                                             "__add": [Function],
                                             "__create": [Function],
                                             "__get": [Function],
@@ -1033,24 +1033,24 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                         "decorator": MultiDecorator {
                                           "decorators": Immutable.List [
                                             CompositeDraftDecorator {
-                                              "_decorators": Array [
-                                                Object {
+                                              "_decorators": [
+                                                {
                                                   "component": [Function],
                                                   "strategy": [Function],
                                                 },
-                                                Object {
+                                                {
                                                   "component": [Function],
                                                   "strategy": [Function],
                                                 },
-                                                Object {
+                                                {
                                                   "component": [Function],
                                                   "strategy": [Function],
                                                 },
-                                                Object {
+                                                {
                                                   "component": [Function],
                                                   "strategy": [Function],
                                                 },
-                                                Object {
+                                                {
                                                   "component": [Function],
                                                   "strategy": [Function],
                                                 },
@@ -1092,7 +1092,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                         },
                                         "undoStack": Immutable.Stack [
                                           Immutable.Record {
-                                            "entityMap": Object {
+                                            "entityMap": {
                                               "__add": [Function],
                                               "__create": [Function],
                                               "__get": [Function],
@@ -1143,7 +1143,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                   onFocus={[Function]}
                                   onInsertVideoAddedFromPastedLink={[Function]}
                                   value={
-                                    Object {
+                                    {
                                       "html": "<div><br></div>",
                                       "text": "",
                                     }
@@ -1158,7 +1158,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                         "_immutable": Immutable.Record {
                                           "allowUndo": true,
                                           "currentContent": Immutable.Record {
-                                            "entityMap": Object {
+                                            "entityMap": {
                                               "__add": [Function],
                                               "__create": [Function],
                                               "__get": [Function],
@@ -1202,24 +1202,24 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                           "decorator": MultiDecorator {
                                             "decorators": Immutable.List [
                                               CompositeDraftDecorator {
-                                                "_decorators": Array [
-                                                  Object {
+                                                "_decorators": [
+                                                  {
                                                     "component": [Function],
                                                     "strategy": [Function],
                                                   },
-                                                  Object {
+                                                  {
                                                     "component": [Function],
                                                     "strategy": [Function],
                                                   },
-                                                  Object {
+                                                  {
                                                     "component": [Function],
                                                     "strategy": [Function],
                                                   },
-                                                  Object {
+                                                  {
                                                     "component": [Function],
                                                     "strategy": [Function],
                                                   },
-                                                  Object {
+                                                  {
                                                     "component": [Function],
                                                     "strategy": [Function],
                                                   },
@@ -1261,7 +1261,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                           },
                                           "undoStack": Immutable.Stack [
                                             Immutable.Record {
-                                              "entityMap": Object {
+                                              "entityMap": {
                                                 "__add": [Function],
                                                 "__create": [Function],
                                                 "__get": [Function],
@@ -1312,7 +1312,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                     onFocus={[Function]}
                                     onInsertVideoAddedFromPastedLink={[Function]}
                                     value={
-                                      Object {
+                                      {
                                         "html": "<div><br></div>",
                                         "text": "",
                                       }
@@ -1328,7 +1328,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                           "_immutable": Immutable.Record {
                                             "allowUndo": true,
                                             "currentContent": Immutable.Record {
-                                              "entityMap": Object {
+                                              "entityMap": {
                                                 "__add": [Function],
                                                 "__create": [Function],
                                                 "__get": [Function],
@@ -1372,24 +1372,24 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                             "decorator": MultiDecorator {
                                               "decorators": Immutable.List [
                                                 CompositeDraftDecorator {
-                                                  "_decorators": Array [
-                                                    Object {
+                                                  "_decorators": [
+                                                    {
                                                       "component": [Function],
                                                       "strategy": [Function],
                                                     },
-                                                    Object {
+                                                    {
                                                       "component": [Function],
                                                       "strategy": [Function],
                                                     },
-                                                    Object {
+                                                    {
                                                       "component": [Function],
                                                       "strategy": [Function],
                                                     },
-                                                    Object {
+                                                    {
                                                       "component": [Function],
                                                       "strategy": [Function],
                                                     },
-                                                    Object {
+                                                    {
                                                       "component": [Function],
                                                       "strategy": [Function],
                                                     },
@@ -1431,7 +1431,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                             },
                                             "undoStack": Immutable.Stack [
                                               Immutable.Record {
-                                                "entityMap": Object {
+                                                "entityMap": {
                                                   "__add": [Function],
                                                   "__create": [Function],
                                                   "__get": [Function],
@@ -1489,7 +1489,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                       onLinkTextChange={[Function]}
                                       onLinkUrlChange={[Function]}
                                       value={
-                                        Object {
+                                        {
                                           "html": "<div><br></div>",
                                           "text": "",
                                         }
@@ -1508,7 +1508,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                             "_immutable": Immutable.Record {
                                               "allowUndo": true,
                                               "currentContent": Immutable.Record {
-                                                "entityMap": Object {
+                                                "entityMap": {
                                                   "__add": [Function],
                                                   "__create": [Function],
                                                   "__get": [Function],
@@ -1552,24 +1552,24 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                               "decorator": MultiDecorator {
                                                 "decorators": Immutable.List [
                                                   CompositeDraftDecorator {
-                                                    "_decorators": Array [
-                                                      Object {
+                                                    "_decorators": [
+                                                      {
                                                         "component": [Function],
                                                         "strategy": [Function],
                                                       },
-                                                      Object {
+                                                      {
                                                         "component": [Function],
                                                         "strategy": [Function],
                                                       },
-                                                      Object {
+                                                      {
                                                         "component": [Function],
                                                         "strategy": [Function],
                                                       },
-                                                      Object {
+                                                      {
                                                         "component": [Function],
                                                         "strategy": [Function],
                                                       },
-                                                      Object {
+                                                      {
                                                         "component": [Function],
                                                         "strategy": [Function],
                                                       },
@@ -1611,7 +1611,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                               },
                                               "undoStack": Immutable.Stack [
                                                 Immutable.Record {
-                                                  "entityMap": Object {
+                                                  "entityMap": {
                                                     "__add": [Function],
                                                     "__create": [Function],
                                                     "__get": [Function],
@@ -1673,7 +1673,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                         onLinkUrlChange={[Function]}
                                         onMentionSearchChange={[Function]}
                                         value={
-                                          Object {
+                                          {
                                             "html": "<div><br></div>",
                                             "text": "",
                                           }
@@ -1693,8 +1693,8 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                               className="withMinHeight"
                                             >
                                               <PluginEditor
-                                                customStyleMap={Object {}}
-                                                decorators={Array []}
+                                                customStyleMap={{}}
+                                                decorators={[]}
                                                 defaultBlockRenderMap={true}
                                                 defaultKeyBindings={true}
                                                 editorState={
@@ -1702,7 +1702,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                     "_immutable": Immutable.Record {
                                                       "allowUndo": true,
                                                       "currentContent": Immutable.Record {
-                                                        "entityMap": Object {
+                                                        "entityMap": {
                                                           "__add": [Function],
                                                           "__create": [Function],
                                                           "__get": [Function],
@@ -1746,24 +1746,24 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                       "decorator": MultiDecorator {
                                                         "decorators": Immutable.List [
                                                           CompositeDraftDecorator {
-                                                            "_decorators": Array [
-                                                              Object {
+                                                            "_decorators": [
+                                                              {
                                                                 "component": [Function],
                                                                 "strategy": [Function],
                                                               },
-                                                              Object {
+                                                              {
                                                                 "component": [Function],
                                                                 "strategy": [Function],
                                                               },
-                                                              Object {
+                                                              {
                                                                 "component": [Function],
                                                                 "strategy": [Function],
                                                               },
-                                                              Object {
+                                                              {
                                                                 "component": [Function],
                                                                 "strategy": [Function],
                                                               },
-                                                              Object {
+                                                              {
                                                                 "component": [Function],
                                                                 "strategy": [Function],
                                                               },
@@ -1805,7 +1805,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                       },
                                                       "undoStack": Immutable.Stack [
                                                         Immutable.Record {
-                                                          "entityMap": Object {
+                                                          "entityMap": {
                                                             "__add": [Function],
                                                             "__create": [Function],
                                                             "__get": [Function],
@@ -1856,26 +1856,26 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                 onChange={[Function]}
                                                 onFocus={[Function]}
                                                 plugins={
-                                                  Array [
-                                                    Object {
+                                                  [
+                                                    {
                                                       "handleDroppedFiles": [Function],
                                                     },
-                                                    Object {
+                                                    {
                                                       "handleReturn": [Function],
                                                     },
-                                                    Object {
+                                                    {
                                                       "blockRendererFn": [Function],
                                                       "decorator": [Function],
                                                       "initialize": [Function],
                                                     },
-                                                    Object {
+                                                    {
                                                       "blockRendererFn": [Function],
-                                                      "decorators": Array [
-                                                        Object {
+                                                      "decorators": [
+                                                        {
                                                           "component": [Function],
                                                           "strategy": [Function],
                                                         },
-                                                        Object {
+                                                        {
                                                           "component": [Function],
                                                           "strategy": [Function],
                                                         },
@@ -1883,14 +1883,14 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                       "handleKeyCommand": [Function],
                                                       "keyBindingFn": [Function],
                                                     },
-                                                    Object {
+                                                    {
                                                       "MentionSuggestions": [Function],
-                                                      "decorators": Array [
-                                                        Object {
+                                                      "decorators": [
+                                                        {
                                                           "component": [Function],
                                                           "strategy": [Function],
                                                         },
-                                                        Object {
+                                                        {
                                                           "component": [Function],
                                                           "strategy": [Function],
                                                         },
@@ -1904,24 +1904,24 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                       "onTab": [Function],
                                                       "onUpArrow": [Function],
                                                     },
-                                                    Object {
+                                                    {
                                                       "onChange": [Function],
                                                     },
-                                                    Object {
-                                                      "decorators": Array [
-                                                        Object {
+                                                    {
+                                                      "decorators": [
+                                                        {
                                                           "component": [Function],
                                                           "strategy": [Function],
                                                         },
                                                       ],
                                                       "onChange": [Function],
                                                     },
-                                                    Object {
+                                                    {
                                                       "handlePastedFiles": [Function],
                                                     },
-                                                    Object {
+                                                    {
                                                       "blockRenderMap": Immutable.Map {
-                                                        "ordered-list-item": Object {
+                                                        "ordered-list-item": {
                                                           "element": "li",
                                                           "wrapper": <QuotesWrapper
                                                             innerWrapper={
@@ -1931,19 +1931,19 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                             }
                                                           />,
                                                         },
-                                                        "header-six": Object {
+                                                        "header-six": {
                                                           "element": "h6",
                                                           "wrapper": <QuotesWrapper />,
                                                         },
-                                                        "header-four": Object {
+                                                        "header-four": {
                                                           "element": "h4",
                                                           "wrapper": <QuotesWrapper />,
                                                         },
-                                                        "header-one": Object {
+                                                        "header-one": {
                                                           "element": "h1",
                                                           "wrapper": <QuotesWrapper />,
                                                         },
-                                                        "unordered-list-item": Object {
+                                                        "unordered-list-item": {
                                                           "element": "li",
                                                           "wrapper": <QuotesWrapper
                                                             innerWrapper={
@@ -1953,21 +1953,21 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                             }
                                                           />,
                                                         },
-                                                        "atomic": Object {
+                                                        "atomic": {
                                                           "element": "figure",
                                                           "wrapper": <QuotesWrapper />,
                                                         },
-                                                        "unstyled": Object {
-                                                          "aliasedElements": Array [
+                                                        "unstyled": {
+                                                          "aliasedElements": [
                                                             "p",
                                                           ],
                                                           "element": "div",
                                                         },
-                                                        "header-two": Object {
+                                                        "header-two": {
                                                           "element": "h2",
                                                           "wrapper": <QuotesWrapper />,
                                                         },
-                                                        "code-block": Object {
+                                                        "code-block": {
                                                           "element": "pre",
                                                           "wrapper": <QuotesWrapper
                                                             innerWrapper={
@@ -1977,15 +1977,15 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                             }
                                                           />,
                                                         },
-                                                        "blockquote": Object {
+                                                        "blockquote": {
                                                           "element": "blockquote",
                                                           "wrapper": <QuotesWrapper />,
                                                         },
-                                                        "header-five": Object {
+                                                        "header-five": {
                                                           "element": "h5",
                                                           "wrapper": <QuotesWrapper />,
                                                         },
-                                                        "header-three": Object {
+                                                        "header-three": {
                                                           "element": "h3",
                                                           "wrapper": <QuotesWrapper />,
                                                         },
@@ -2001,7 +2001,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                   ariaHasPopup="false"
                                                   blockRenderMap={
                                                     Immutable.Map {
-                                                      "ordered-list-item": Object {
+                                                      "ordered-list-item": {
                                                         "element": "li",
                                                         "wrapper": <QuotesWrapper
                                                           innerWrapper={
@@ -2011,19 +2011,19 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                           }
                                                         />,
                                                       },
-                                                      "header-six": Object {
+                                                      "header-six": {
                                                         "element": "h6",
                                                         "wrapper": <QuotesWrapper />,
                                                       },
-                                                      "header-four": Object {
+                                                      "header-four": {
                                                         "element": "h4",
                                                         "wrapper": <QuotesWrapper />,
                                                       },
-                                                      "header-one": Object {
+                                                      "header-one": {
                                                         "element": "h1",
                                                         "wrapper": <QuotesWrapper />,
                                                       },
-                                                      "unordered-list-item": Object {
+                                                      "unordered-list-item": {
                                                         "element": "li",
                                                         "wrapper": <QuotesWrapper
                                                           innerWrapper={
@@ -2033,21 +2033,21 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                           }
                                                         />,
                                                       },
-                                                      "atomic": Object {
+                                                      "atomic": {
                                                         "element": "figure",
                                                         "wrapper": <QuotesWrapper />,
                                                       },
-                                                      "unstyled": Object {
-                                                        "aliasedElements": Array [
+                                                      "unstyled": {
+                                                        "aliasedElements": [
                                                           "p",
                                                         ],
                                                         "element": "div",
                                                       },
-                                                      "header-two": Object {
+                                                      "header-two": {
                                                         "element": "h2",
                                                         "wrapper": <QuotesWrapper />,
                                                       },
-                                                      "code-block": Object {
+                                                      "code-block": {
                                                         "element": "pre",
                                                         "wrapper": <QuotesWrapper
                                                           innerWrapper={
@@ -2057,15 +2057,15 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                           }
                                                         />,
                                                       },
-                                                      "blockquote": Object {
+                                                      "blockquote": {
                                                         "element": "blockquote",
                                                         "wrapper": <QuotesWrapper />,
                                                       },
-                                                      "header-five": Object {
+                                                      "header-five": {
                                                         "element": "h5",
                                                         "wrapper": <QuotesWrapper />,
                                                       },
-                                                      "header-three": Object {
+                                                      "header-three": {
                                                         "element": "h3",
                                                         "wrapper": <QuotesWrapper />,
                                                       },
@@ -2073,8 +2073,8 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                   }
                                                   blockRendererFn={[Function]}
                                                   blockStyleFn={[Function]}
-                                                  customStyleMap={Object {}}
-                                                  decorators={Array []}
+                                                  customStyleMap={{}}
+                                                  decorators={[]}
                                                   defaultBlockRenderMap={true}
                                                   defaultKeyBindings={true}
                                                   editorState={
@@ -2082,7 +2082,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                       "_immutable": Immutable.Record {
                                                         "allowUndo": true,
                                                         "currentContent": Immutable.Record {
-                                                          "entityMap": Object {
+                                                          "entityMap": {
                                                             "__add": [Function],
                                                             "__create": [Function],
                                                             "__get": [Function],
@@ -2126,24 +2126,24 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                         "decorator": MultiDecorator {
                                                           "decorators": Immutable.List [
                                                             CompositeDraftDecorator {
-                                                              "_decorators": Array [
-                                                                Object {
+                                                              "_decorators": [
+                                                                {
                                                                   "component": [Function],
                                                                   "strategy": [Function],
                                                                 },
-                                                                Object {
+                                                                {
                                                                   "component": [Function],
                                                                   "strategy": [Function],
                                                                 },
-                                                                Object {
+                                                                {
                                                                   "component": [Function],
                                                                   "strategy": [Function],
                                                                 },
-                                                                Object {
+                                                                {
                                                                   "component": [Function],
                                                                   "strategy": [Function],
                                                                 },
-                                                                Object {
+                                                                {
                                                                   "component": [Function],
                                                                   "strategy": [Function],
                                                                 },
@@ -2185,7 +2185,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                         },
                                                         "undoStack": Immutable.Stack [
                                                           Immutable.Record {
-                                                            "entityMap": Object {
+                                                            "entityMap": {
                                                               "__add": [Function],
                                                               "__create": [Function],
                                                               "__get": [Function],
@@ -2244,26 +2244,26 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                   onTab={[Function]}
                                                   onUpArrow={[Function]}
                                                   plugins={
-                                                    Array [
-                                                      Object {
+                                                    [
+                                                      {
                                                         "handleDroppedFiles": [Function],
                                                       },
-                                                      Object {
+                                                      {
                                                         "handleReturn": [Function],
                                                       },
-                                                      Object {
+                                                      {
                                                         "blockRendererFn": [Function],
                                                         "decorator": [Function],
                                                         "initialize": [Function],
                                                       },
-                                                      Object {
+                                                      {
                                                         "blockRendererFn": [Function],
-                                                        "decorators": Array [
-                                                          Object {
+                                                        "decorators": [
+                                                          {
                                                             "component": [Function],
                                                             "strategy": [Function],
                                                           },
-                                                          Object {
+                                                          {
                                                             "component": [Function],
                                                             "strategy": [Function],
                                                           },
@@ -2271,14 +2271,14 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                         "handleKeyCommand": [Function],
                                                         "keyBindingFn": [Function],
                                                       },
-                                                      Object {
+                                                      {
                                                         "MentionSuggestions": [Function],
-                                                        "decorators": Array [
-                                                          Object {
+                                                        "decorators": [
+                                                          {
                                                             "component": [Function],
                                                             "strategy": [Function],
                                                           },
-                                                          Object {
+                                                          {
                                                             "component": [Function],
                                                             "strategy": [Function],
                                                           },
@@ -2292,24 +2292,24 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                         "onTab": [Function],
                                                         "onUpArrow": [Function],
                                                       },
-                                                      Object {
+                                                      {
                                                         "onChange": [Function],
                                                       },
-                                                      Object {
-                                                        "decorators": Array [
-                                                          Object {
+                                                      {
+                                                        "decorators": [
+                                                          {
                                                             "component": [Function],
                                                             "strategy": [Function],
                                                           },
                                                         ],
                                                         "onChange": [Function],
                                                       },
-                                                      Object {
+                                                      {
                                                         "handlePastedFiles": [Function],
                                                       },
-                                                      Object {
+                                                      {
                                                         "blockRenderMap": Immutable.Map {
-                                                          "ordered-list-item": Object {
+                                                          "ordered-list-item": {
                                                             "element": "li",
                                                             "wrapper": <QuotesWrapper
                                                               innerWrapper={
@@ -2319,19 +2319,19 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                               }
                                                             />,
                                                           },
-                                                          "header-six": Object {
+                                                          "header-six": {
                                                             "element": "h6",
                                                             "wrapper": <QuotesWrapper />,
                                                           },
-                                                          "header-four": Object {
+                                                          "header-four": {
                                                             "element": "h4",
                                                             "wrapper": <QuotesWrapper />,
                                                           },
-                                                          "header-one": Object {
+                                                          "header-one": {
                                                             "element": "h1",
                                                             "wrapper": <QuotesWrapper />,
                                                           },
-                                                          "unordered-list-item": Object {
+                                                          "unordered-list-item": {
                                                             "element": "li",
                                                             "wrapper": <QuotesWrapper
                                                               innerWrapper={
@@ -2341,21 +2341,21 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                               }
                                                             />,
                                                           },
-                                                          "atomic": Object {
+                                                          "atomic": {
                                                             "element": "figure",
                                                             "wrapper": <QuotesWrapper />,
                                                           },
-                                                          "unstyled": Object {
-                                                            "aliasedElements": Array [
+                                                          "unstyled": {
+                                                            "aliasedElements": [
                                                               "p",
                                                             ],
                                                             "element": "div",
                                                           },
-                                                          "header-two": Object {
+                                                          "header-two": {
                                                             "element": "h2",
                                                             "wrapper": <QuotesWrapper />,
                                                           },
-                                                          "code-block": Object {
+                                                          "code-block": {
                                                             "element": "pre",
                                                             "wrapper": <QuotesWrapper
                                                               innerWrapper={
@@ -2365,15 +2365,15 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                               }
                                                             />,
                                                           },
-                                                          "blockquote": Object {
+                                                          "blockquote": {
                                                             "element": "blockquote",
                                                             "wrapper": <QuotesWrapper />,
                                                           },
-                                                          "header-five": Object {
+                                                          "header-five": {
                                                             "element": "h5",
                                                             "wrapper": <QuotesWrapper />,
                                                           },
-                                                          "header-three": Object {
+                                                          "header-three": {
                                                             "element": "h3",
                                                             "wrapper": <QuotesWrapper />,
                                                           },
@@ -2422,7 +2422,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                         role="combobox"
                                                         spellCheck={false}
                                                         style={
-                                                          Object {
+                                                          {
                                                             "WebkitUserSelect": "text",
                                                             "outline": "none",
                                                             "userSelect": "text",
@@ -2435,7 +2435,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                         <DraftEditorContents
                                                           blockRenderMap={
                                                             Immutable.Map {
-                                                              "ordered-list-item": Object {
+                                                              "ordered-list-item": {
                                                                 "element": "li",
                                                                 "wrapper": <QuotesWrapper
                                                                   innerWrapper={
@@ -2445,19 +2445,19 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                   }
                                                                 />,
                                                               },
-                                                              "header-six": Object {
+                                                              "header-six": {
                                                                 "element": "h6",
                                                                 "wrapper": <QuotesWrapper />,
                                                               },
-                                                              "header-four": Object {
+                                                              "header-four": {
                                                                 "element": "h4",
                                                                 "wrapper": <QuotesWrapper />,
                                                               },
-                                                              "header-one": Object {
+                                                              "header-one": {
                                                                 "element": "h1",
                                                                 "wrapper": <QuotesWrapper />,
                                                               },
-                                                              "unordered-list-item": Object {
+                                                              "unordered-list-item": {
                                                                 "element": "li",
                                                                 "wrapper": <QuotesWrapper
                                                                   innerWrapper={
@@ -2467,21 +2467,21 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                   }
                                                                 />,
                                                               },
-                                                              "atomic": Object {
+                                                              "atomic": {
                                                                 "element": "figure",
                                                                 "wrapper": <QuotesWrapper />,
                                                               },
-                                                              "unstyled": Object {
-                                                                "aliasedElements": Array [
+                                                              "unstyled": {
+                                                                "aliasedElements": [
                                                                   "p",
                                                                 ],
                                                                 "element": "div",
                                                               },
-                                                              "header-two": Object {
+                                                              "header-two": {
                                                                 "element": "h2",
                                                                 "wrapper": <QuotesWrapper />,
                                                               },
-                                                              "code-block": Object {
+                                                              "code-block": {
                                                                 "element": "pre",
                                                                 "wrapper": <QuotesWrapper
                                                                   innerWrapper={
@@ -2491,15 +2491,15 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                   }
                                                                 />,
                                                               },
-                                                              "blockquote": Object {
+                                                              "blockquote": {
                                                                 "element": "blockquote",
                                                                 "wrapper": <QuotesWrapper />,
                                                               },
-                                                              "header-five": Object {
+                                                              "header-five": {
                                                                 "element": "h5",
                                                                 "wrapper": <QuotesWrapper />,
                                                               },
-                                                              "header-three": Object {
+                                                              "header-three": {
                                                                 "element": "h3",
                                                                 "wrapper": <QuotesWrapper />,
                                                               },
@@ -2508,21 +2508,21 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                           blockRendererFn={[Function]}
                                                           blockStyleFn={[Function]}
                                                           customStyleMap={
-                                                            Object {
-                                                              "BOLD": Object {
+                                                            {
+                                                              "BOLD": {
                                                                 "fontWeight": "bold",
                                                               },
-                                                              "CODE": Object {
+                                                              "CODE": {
                                                                 "fontFamily": "monospace",
                                                                 "wordWrap": "break-word",
                                                               },
-                                                              "ITALIC": Object {
+                                                              "ITALIC": {
                                                                 "fontStyle": "italic",
                                                               },
-                                                              "STRIKETHROUGH": Object {
+                                                              "STRIKETHROUGH": {
                                                                 "textDecoration": "line-through",
                                                               },
-                                                              "UNDERLINE": Object {
+                                                              "UNDERLINE": {
                                                                 "textDecoration": "underline",
                                                               },
                                                             }
@@ -2533,7 +2533,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                               "_immutable": Immutable.Record {
                                                                 "allowUndo": true,
                                                                 "currentContent": Immutable.Record {
-                                                                  "entityMap": Object {
+                                                                  "entityMap": {
                                                                     "__add": [Function],
                                                                     "__create": [Function],
                                                                     "__get": [Function],
@@ -2577,24 +2577,24 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                 "decorator": MultiDecorator {
                                                                   "decorators": Immutable.List [
                                                                     CompositeDraftDecorator {
-                                                                      "_decorators": Array [
-                                                                        Object {
+                                                                      "_decorators": [
+                                                                        {
                                                                           "component": [Function],
                                                                           "strategy": [Function],
                                                                         },
-                                                                        Object {
+                                                                        {
                                                                           "component": [Function],
                                                                           "strategy": [Function],
                                                                         },
-                                                                        Object {
+                                                                        {
                                                                           "component": [Function],
                                                                           "strategy": [Function],
                                                                         },
-                                                                        Object {
+                                                                        {
                                                                           "component": [Function],
                                                                           "strategy": [Function],
                                                                         },
-                                                                        Object {
+                                                                        {
                                                                           "component": [Function],
                                                                           "strategy": [Function],
                                                                         },
@@ -2636,7 +2636,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                 },
                                                                 "undoStack": Immutable.Stack [
                                                                   Immutable.Record {
-                                                                    "entityMap": Object {
+                                                                    "entityMap": {
                                                                       "__add": [Function],
                                                                       "__create": [Function],
                                                                       "__get": [Function],
@@ -2707,7 +2707,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                 blockStyleFn={[Function]}
                                                                 contentState={
                                                                   Immutable.Record {
-                                                                    "entityMap": Object {
+                                                                    "entityMap": {
                                                                       "__add": [Function],
                                                                       "__create": [Function],
                                                                       "__get": [Function],
@@ -2750,21 +2750,21 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                   }
                                                                 }
                                                                 customStyleMap={
-                                                                  Object {
-                                                                    "BOLD": Object {
+                                                                  {
+                                                                    "BOLD": {
                                                                       "fontWeight": "bold",
                                                                     },
-                                                                    "CODE": Object {
+                                                                    "CODE": {
                                                                       "fontFamily": "monospace",
                                                                       "wordWrap": "break-word",
                                                                     },
-                                                                    "ITALIC": Object {
+                                                                    "ITALIC": {
                                                                       "fontStyle": "italic",
                                                                     },
-                                                                    "STRIKETHROUGH": Object {
+                                                                    "STRIKETHROUGH": {
                                                                       "textDecoration": "line-through",
                                                                     },
-                                                                    "UNDERLINE": Object {
+                                                                    "UNDERLINE": {
                                                                       "textDecoration": "underline",
                                                                     },
                                                                   }
@@ -2773,24 +2773,24 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                   MultiDecorator {
                                                                     "decorators": Immutable.List [
                                                                       CompositeDraftDecorator {
-                                                                        "_decorators": Array [
-                                                                          Object {
+                                                                        "_decorators": [
+                                                                          {
                                                                             "component": [Function],
                                                                             "strategy": [Function],
                                                                           },
-                                                                          Object {
+                                                                          {
                                                                             "component": [Function],
                                                                             "strategy": [Function],
                                                                           },
-                                                                          Object {
+                                                                          {
                                                                             "component": [Function],
                                                                             "strategy": [Function],
                                                                           },
-                                                                          Object {
+                                                                          {
                                                                             "component": [Function],
                                                                             "strategy": [Function],
                                                                           },
-                                                                          Object {
+                                                                          {
                                                                             "component": [Function],
                                                                             "strategy": [Function],
                                                                           },
@@ -2845,21 +2845,21 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                       }
                                                                     }
                                                                     customStyleMap={
-                                                                      Object {
-                                                                        "BOLD": Object {
+                                                                      {
+                                                                        "BOLD": {
                                                                           "fontWeight": "bold",
                                                                         },
-                                                                        "CODE": Object {
+                                                                        "CODE": {
                                                                           "fontFamily": "monospace",
                                                                           "wordWrap": "break-word",
                                                                         },
-                                                                        "ITALIC": Object {
+                                                                        "ITALIC": {
                                                                           "fontStyle": "italic",
                                                                         },
-                                                                        "STRIKETHROUGH": Object {
+                                                                        "STRIKETHROUGH": {
                                                                           "textDecoration": "line-through",
                                                                         },
-                                                                        "UNDERLINE": Object {
+                                                                        "UNDERLINE": {
                                                                           "textDecoration": "underline",
                                                                         },
                                                                       }
@@ -2884,7 +2884,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                   >
                                                                     <span
                                                                       data-offset-key="someRandomKey-0-0"
-                                                                      style={Object {}}
+                                                                      style={{}}
                                                                     >
                                                                       <DraftEditorTextNode>
                                                                         <br
@@ -2911,13 +2911,13 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                               >
                                                 <MentionSuggestions
                                                   ariaProps={
-                                                    Object {
+                                                    {
                                                       "ariaExpanded": "false",
                                                       "ariaHasPopup": "false",
                                                     }
                                                   }
                                                   callbacks={
-                                                    Object {
+                                                    {
                                                       "handleKeyCommand": undefined,
                                                       "handleReturn": undefined,
                                                       "keyBindingFn": undefined,
@@ -2935,7 +2935,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                   onSearchChange={[Function]}
                                                   positionSuggestions={[Function]}
                                                   store={
-                                                    Object {
+                                                    {
                                                       "escapeSearch": [Function],
                                                       "getAllSearches": [Function],
                                                       "getEditorState": [Function],
@@ -2950,7 +2950,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                   }
                                                   suggestions={Immutable.List []}
                                                   theme={
-                                                    Object {
+                                                    {
                                                       "mention": "mention",
                                                       "mentionSuggestions": "mentionSuggestions",
                                                       "mentionSuggestionsEntry": "mentionSuggestionsEntry",
@@ -2975,7 +2975,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                 "_immutable": Immutable.Record {
                                                   "allowUndo": true,
                                                   "currentContent": Immutable.Record {
-                                                    "entityMap": Object {
+                                                    "entityMap": {
                                                       "__add": [Function],
                                                       "__create": [Function],
                                                       "__get": [Function],
@@ -3019,24 +3019,24 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                   "decorator": MultiDecorator {
                                                     "decorators": Immutable.List [
                                                       CompositeDraftDecorator {
-                                                        "_decorators": Array [
-                                                          Object {
+                                                        "_decorators": [
+                                                          {
                                                             "component": [Function],
                                                             "strategy": [Function],
                                                           },
-                                                          Object {
+                                                          {
                                                             "component": [Function],
                                                             "strategy": [Function],
                                                           },
-                                                          Object {
+                                                          {
                                                             "component": [Function],
                                                             "strategy": [Function],
                                                           },
-                                                          Object {
+                                                          {
                                                             "component": [Function],
                                                             "strategy": [Function],
                                                           },
-                                                          Object {
+                                                          {
                                                             "component": [Function],
                                                             "strategy": [Function],
                                                           },
@@ -3078,7 +3078,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                   },
                                                   "undoStack": Immutable.Stack [
                                                     Immutable.Record {
-                                                      "entityMap": Object {
+                                                      "entityMap": {
                                                         "__add": [Function],
                                                         "__create": [Function],
                                                         "__get": [Function],
@@ -3147,7 +3147,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                             setEditorState={[Function]}
                                             setReadOnly={[Function]}
                                             value={
-                                              Object {
+                                              {
                                                 "html": "<div><br></div>",
                                                 "text": "",
                                               }
@@ -3156,7 +3156,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                             <Toolbar
                                               allowExternalChanges={true}
                                               attachFiles={[Function]}
-                                              buttons={Array []}
+                                              buttons={[]}
                                               canAddVideoPlayer={true}
                                               canDropFiles={false}
                                               canInsertInlineImages={true}
@@ -3168,7 +3168,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                   "_immutable": Immutable.Record {
                                                     "allowUndo": true,
                                                     "currentContent": Immutable.Record {
-                                                      "entityMap": Object {
+                                                      "entityMap": {
                                                         "__add": [Function],
                                                         "__create": [Function],
                                                         "__get": [Function],
@@ -3212,24 +3212,24 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                     "decorator": MultiDecorator {
                                                       "decorators": Immutable.List [
                                                         CompositeDraftDecorator {
-                                                          "_decorators": Array [
-                                                            Object {
+                                                          "_decorators": [
+                                                            {
                                                               "component": [Function],
                                                               "strategy": [Function],
                                                             },
-                                                            Object {
+                                                            {
                                                               "component": [Function],
                                                               "strategy": [Function],
                                                             },
-                                                            Object {
+                                                            {
                                                               "component": [Function],
                                                               "strategy": [Function],
                                                             },
-                                                            Object {
+                                                            {
                                                               "component": [Function],
                                                               "strategy": [Function],
                                                             },
-                                                            Object {
+                                                            {
                                                               "component": [Function],
                                                               "strategy": [Function],
                                                             },
@@ -3271,7 +3271,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                     },
                                                     "undoStack": Immutable.Stack [
                                                       Immutable.Record {
-                                                        "entityMap": Object {
+                                                        "entityMap": {
                                                           "__add": [Function],
                                                           "__create": [Function],
                                                           "__get": [Function],
@@ -3341,7 +3341,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                               setEditorState={[Function]}
                                               setReadOnly={[Function]}
                                               value={
-                                                Object {
+                                                {
                                                   "html": "<div><br></div>",
                                                   "text": "",
                                                 }
@@ -3464,7 +3464,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                     flip={true}
                                                                     hideArrow={false}
                                                                     isOpen={false}
-                                                                    modifiers={Object {}}
+                                                                    modifiers={{}}
                                                                     offset={0}
                                                                     onClosed={[Function]}
                                                                     placement="bottom"
@@ -3484,7 +3484,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                       </button>
                                                                     }
                                                                     transition={
-                                                                      Object {
+                                                                      {
                                                                         "appear": true,
                                                                         "baseClass": "fade",
                                                                         "baseClassActive": "show",
@@ -3616,7 +3616,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                     flip={true}
                                                                     hideArrow={false}
                                                                     isOpen={false}
-                                                                    modifiers={Object {}}
+                                                                    modifiers={{}}
                                                                     offset={0}
                                                                     onClosed={[Function]}
                                                                     placement="bottom"
@@ -3636,7 +3636,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                       </button>
                                                                     }
                                                                     transition={
-                                                                      Object {
+                                                                      {
                                                                         "appear": true,
                                                                         "baseClass": "fade",
                                                                         "baseClassActive": "show",
@@ -3768,7 +3768,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                     flip={true}
                                                                     hideArrow={false}
                                                                     isOpen={false}
-                                                                    modifiers={Object {}}
+                                                                    modifiers={{}}
                                                                     offset={0}
                                                                     onClosed={[Function]}
                                                                     placement="bottom"
@@ -3788,7 +3788,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                       </button>
                                                                     }
                                                                     transition={
-                                                                      Object {
+                                                                      {
                                                                         "appear": true,
                                                                         "baseClass": "fade",
                                                                         "baseClassActive": "show",
@@ -4108,7 +4108,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                         flip={true}
                                                                         hideArrow={false}
                                                                         isOpen={false}
-                                                                        modifiers={Object {}}
+                                                                        modifiers={{}}
                                                                         offset={0}
                                                                         onClosed={[Function]}
                                                                         placement="bottom"
@@ -4128,7 +4128,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                           </button>
                                                                         }
                                                                         transition={
-                                                                          Object {
+                                                                          {
                                                                             "appear": true,
                                                                             "baseClass": "fade",
                                                                             "baseClassActive": "show",
@@ -4283,7 +4283,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                         flip={true}
                                                                         hideArrow={false}
                                                                         isOpen={false}
-                                                                        modifiers={Object {}}
+                                                                        modifiers={{}}
                                                                         offset={0}
                                                                         onClosed={[Function]}
                                                                         placement="bottom"
@@ -4303,7 +4303,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                           </button>
                                                                         }
                                                                         transition={
-                                                                          Object {
+                                                                          {
                                                                             "appear": true,
                                                                             "baseClass": "fade",
                                                                             "baseClassActive": "show",

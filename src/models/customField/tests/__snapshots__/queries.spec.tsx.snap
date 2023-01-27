@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`queries.spec.tsx useCreateCustomField successful query hook 1`] = `
-Object {
+{
   "created_datetime": "2022-01-02T03:04:05.123456+00:00",
   "deactivated_datetime": null,
-  "definition": Object {
+  "definition": {
     "data_type": "text",
-    "input_settings": Object {
+    "input_settings": {
       "input_type": "input",
       "placeholder": "Test placeholder",
     },
@@ -21,12 +21,12 @@ Object {
 `;
 
 exports[`queries.spec.tsx useGetCustomFieldDefinition successful query hook 1`] = `
-Object {
+{
   "created_datetime": "2022-01-02T03:04:05.123456+00:00",
   "deactivated_datetime": null,
-  "definition": Object {
+  "definition": {
     "data_type": "text",
-    "input_settings": Object {
+    "input_settings": {
       "input_type": "input",
       "placeholder": "Test placeholder",
     },
@@ -41,14 +41,14 @@ Object {
 `;
 
 exports[`queries.spec.tsx useGetCustomFieldDefinitions successful query hook 1`] = `
-Object {
-  "data": Array [
-    Object {
+{
+  "data": [
+    {
       "created_datetime": "2022-01-02T03:04:05.123456+00:00",
       "deactivated_datetime": null,
-      "definition": Object {
+      "definition": {
         "data_type": "text",
-        "input_settings": Object {
+        "input_settings": {
           "input_type": "input",
           "placeholder": "Test placeholder",
         },
@@ -65,12 +65,12 @@ Object {
 `;
 
 exports[`queries.spec.tsx useUpdateCustomField successful query hook 1`] = `
-Object {
+{
   "created_datetime": "2022-01-02T03:04:05.123456+00:00",
   "deactivated_datetime": null,
-  "definition": Object {
+  "definition": {
     "data_type": "text",
-    "input_settings": Object {
+    "input_settings": {
       "input_type": "input",
       "placeholder": "Test placeholder",
     },
@@ -85,12 +85,12 @@ Object {
 `;
 
 exports[`queries.spec.tsx useUpdateCustomFieldStatus successful query hook 1`] = `
-Object {
+{
   "created_datetime": "2022-01-02T03:04:05.123456+00:00",
   "deactivated_datetime": null,
-  "definition": Object {
+  "definition": {
     "data_type": "text",
-    "input_settings": Object {
+    "input_settings": {
       "input_type": "input",
       "placeholder": "Test placeholder",
     },

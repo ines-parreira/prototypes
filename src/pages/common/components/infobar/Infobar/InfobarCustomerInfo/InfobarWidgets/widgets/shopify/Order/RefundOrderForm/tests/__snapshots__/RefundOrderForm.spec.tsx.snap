@@ -419,7 +419,7 @@ exports[`<RefundOrderForm/> render() should render with zero quantity 1`] = `
             >
               <input
                 class="quantityInput form-control"
-                pattern="\\\\d+"
+                pattern="\\d+"
                 type="text"
                 value="0"
               />

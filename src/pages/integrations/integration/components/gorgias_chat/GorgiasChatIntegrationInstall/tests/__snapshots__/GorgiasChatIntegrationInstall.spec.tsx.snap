@@ -3,7 +3,7 @@
 exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store if the chat as multiple shopify_integration_ids 1`] = `
 <Connect(GorgiasChatIntegrationInstall)
   actions={
-    Object {
+    {
       "activateIntegration": [MockFunction],
       "deactivateIntegration": [MockFunction],
       "deleteIntegration": [MockFunction],
@@ -29,7 +29,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
   loading={Immutable.Map {}}
   notify={[MockFunction]}
   store={
-    Object {
+    {
       "dispatch": [Function],
       "getState": [Function],
       "replaceReducer": [Function],
@@ -40,7 +40,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
 >
   <GorgiasChatIntegrationInstall
     actions={
-      Object {
+      {
         "activateIntegration": [MockFunction],
         "deactivateIntegration": [MockFunction],
         "deleteIntegration": [MockFunction],
@@ -70,7 +70,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
     loading={Immutable.Map {}}
     notify={[Function]}
     store={
-      Object {
+      {
         "dispatch": [Function],
         "getState": [Function],
         "replaceReducer": [Function],
@@ -271,7 +271,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
           <Row
             tag="div"
             widths={
-              Array [
+              [
                 "xs",
                 "sm",
                 "md",
@@ -288,7 +288,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                 md="8"
                 tag="div"
                 widths={
-                  Array [
+                  [
                     "xs",
                     "sm",
                     "md",
@@ -374,7 +374,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                               isChatInstalled={false}
                               isIntegrationDeactivated={true}
                               isLegacyInstallation={false}
-                              loading={Object {}}
+                              loading={{}}
                               onDisconnect={[Function]}
                               onInstall={[Function]}
                               onUninstall={[Function]}
@@ -487,13 +487,13 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                   >
                                     <ConfirmationPopover
                                       buttonProps={
-                                        Object {
+                                        {
                                           "intent": undefined,
                                           "type": "button",
                                         }
                                       }
                                       cancelButtonProps={
-                                        Object {
+                                        {
                                           "intent": "secondary",
                                         }
                                       }
@@ -597,7 +597,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                               isIntegrationDeactivated={false}
                               isLegacyInstallation={true}
                               key="2"
-                              loading={Object {}}
+                              loading={{}}
                               onDisconnect={[Function]}
                               onInstall={[Function]}
                               onUninstall={[Function]}
@@ -701,13 +701,13 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                   >
                                     <ConfirmationPopover
                                       buttonProps={
-                                        Object {
+                                        {
                                           "intent": undefined,
                                           "type": "button",
                                         }
                                       }
                                       cancelButtonProps={
-                                        Object {
+                                        {
                                           "intent": "secondary",
                                         }
                                       }
@@ -803,7 +803,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                               isIntegrationDeactivated={false}
                               isLegacyInstallation={true}
                               key="3"
-                              loading={Object {}}
+                              loading={{}}
                               onDisconnect={[Function]}
                               onInstall={[Function]}
                               onUninstall={[Function]}
@@ -907,13 +907,13 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                   >
                                     <ConfirmationPopover
                                       buttonProps={
-                                        Object {
+                                        {
                                           "intent": undefined,
                                           "type": "button",
                                         }
                                       }
                                       cancelButtonProps={
-                                        Object {
+                                        {
                                           "intent": "secondary",
                                         }
                                       }
@@ -1009,7 +1009,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                               isIntegrationDeactivated={false}
                               isLegacyInstallation={true}
                               key="1"
-                              loading={Object {}}
+                              loading={{}}
                               onDisconnect={[Function]}
                               onInstall={[Function]}
                               onUninstall={[Function]}
@@ -1113,13 +1113,13 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                   >
                                     <ConfirmationPopover
                                       buttonProps={
-                                        Object {
+                                        {
                                           "intent": undefined,
                                           "type": "button",
                                         }
                                       }
                                       cancelButtonProps={
-                                        Object {
+                                        {
                                           "intent": "secondary",
                                         }
                                       }
@@ -1215,7 +1215,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                     </Card>
                   </GorgiasChatIntegrationOneClickInstallationCard>
                   <GorgiasChatIntegrationCustomInstallationCard
-                    code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
+                    code="<!--Gorgias Chat Widget Start--><script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"></script><!--Gorgias Chat Widget End-->"
                     integrationId={2}
                     isShopifyChat={true}
                   >
@@ -1282,7 +1282,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                           >
                             <div
                               className="collapse"
-                              style={Object {}}
+                              style={{}}
                             >
                               <CardBody
                                 className="card-body"
@@ -1405,7 +1405,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                           className="tab-pane active"
                                         >
                                           <CustomInstallationShopifyTab
-                                            code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
+                                            code="<!--Gorgias Chat Widget Start--><script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"></script><!--Gorgias Chat Widget End-->"
                                             integrationId={2}
                                             sspAvailable={true}
                                           >
@@ -1523,7 +1523,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                                 </div>
                                               </Alert>
                                               <WithClipboardComponent
-                                                code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
+                                                code="<!--Gorgias Chat Widget Start--><script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"></script><!--Gorgias Chat Widget End-->"
                                               >
                                                 <div
                                                   className="container"
@@ -1531,7 +1531,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                                   onMouseLeave={[Function]}
                                                 >
                                                   <CodeSnippet
-                                                    code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
+                                                    code="<!--Gorgias Chat Widget Start--><script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"></script><!--Gorgias Chat Widget End-->"
                                                     id="code-snippet-4"
                                                   >
                                                     <Alert
@@ -1542,7 +1542,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                                       isOpen={true}
                                                       tag="div"
                                                       transition={
-                                                        Object {
+                                                        {
                                                           "appear": true,
                                                           "baseClass": "fade",
                                                           "baseClassActive": "show",
@@ -1627,7 +1627,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                           className="tab-pane"
                                         >
                                           <CustomInstallationOtherWebsiteTab
-                                            code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
+                                            code="<!--Gorgias Chat Widget Start--><script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"></script><!--Gorgias Chat Widget End-->"
                                           >
                                             <div
                                               className="wrapper"
@@ -1701,7 +1701,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                                 </div>
                                               </Alert>
                                               <WithClipboardComponent
-                                                code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
+                                                code="<!--Gorgias Chat Widget Start--><script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"></script><!--Gorgias Chat Widget End-->"
                                               >
                                                 <div
                                                   className="container"
@@ -1709,7 +1709,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                                   onMouseLeave={[Function]}
                                                 >
                                                   <CodeSnippet
-                                                    code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
+                                                    code="<!--Gorgias Chat Widget Start--><script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"></script><!--Gorgias Chat Widget End-->"
                                                     id="code-snippet-5"
                                                   >
                                                     <Alert
@@ -1720,7 +1720,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                                       isOpen={true}
                                                       tag="div"
                                                       transition={
-                                                        Object {
+                                                        {
                                                           "appear": true,
                                                           "baseClass": "fade",
                                                           "baseClassActive": "show",
@@ -1805,7 +1805,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                           className="tab-pane"
                                         >
                                           <CustomInstallationGTMTab
-                                            code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
+                                            code="<!--Gorgias Chat Widget Start--><script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"></script><!--Gorgias Chat Widget End-->"
                                           >
                                             <div
                                               className="wrapper"
@@ -1986,7 +1986,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                           delay={100}
                           placement="top-start"
                           style={
-                            Object {
+                            {
                               "textAlign": "left",
                             }
                           }
@@ -1998,7 +1998,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                             delay={100}
                             placement="top-start"
                             style={
-                              Object {
+                              {
                                 "textAlign": "left",
                               }
                             }
@@ -2012,7 +2012,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                               placement="top-start"
                               placementPrefix="bs-tooltip"
                               style={
-                                Object {
+                                {
                                   "textAlign": "left",
                                 }
                               }
@@ -2032,7 +2032,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                 placementPrefix="bs-tooltip"
                                 popperClassName="tooltip show"
                                 style={
-                                  Object {
+                                  {
                                     "textAlign": "left",
                                   }
                                 }
@@ -2060,7 +2060,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
 exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation block if shop_name & shop_type are not set and there is no shopify_integration_ids 1`] = `
 <Connect(GorgiasChatIntegrationInstall)
   actions={
-    Object {
+    {
       "activateIntegration": [MockFunction],
       "deactivateIntegration": [MockFunction],
       "deleteIntegration": [MockFunction],
@@ -2082,7 +2082,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
   loading={Immutable.Map {}}
   notify={[MockFunction]}
   store={
-    Object {
+    {
       "dispatch": [Function],
       "getState": [Function],
       "replaceReducer": [Function],
@@ -2093,7 +2093,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
 >
   <GorgiasChatIntegrationInstall
     actions={
-      Object {
+      {
         "activateIntegration": [MockFunction],
         "deactivateIntegration": [MockFunction],
         "deleteIntegration": [MockFunction],
@@ -2119,7 +2119,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
     loading={Immutable.Map {}}
     notify={[Function]}
     store={
-      Object {
+      {
         "dispatch": [Function],
         "getState": [Function],
         "replaceReducer": [Function],
@@ -2316,7 +2316,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
           <Row
             tag="div"
             widths={
-              Array [
+              [
                 "xs",
                 "sm",
                 "md",
@@ -2333,7 +2333,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                 md="8"
                 tag="div"
                 widths={
-                  Array [
+                  [
                     "xs",
                     "sm",
                     "md",
@@ -2454,7 +2454,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                       isOpen={false}
                       onClose={[Function]}
                       style={
-                        Object {
+                        {
                           "maxWidth": "600px",
                         }
                       }
@@ -2463,7 +2463,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                         autoFocus={true}
                         backdrop={true}
                         backdropTransition={
-                          Object {
+                          {
                             "mountOnEnter": true,
                             "timeout": 150,
                           }
@@ -2474,7 +2474,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                         isOpen={false}
                         keyboard={true}
                         modalTransition={
-                          Object {
+                          {
                             "timeout": 300,
                           }
                         }
@@ -2485,7 +2485,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                         role="dialog"
                         scrollable={false}
                         style={
-                          Object {
+                          {
                             "maxWidth": "600px",
                           }
                         }
@@ -2497,7 +2497,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                     </DEPRECATED_Modal>
                   </GorgiasChatIntegrationConnectToStoreCard>
                   <GorgiasChatIntegrationCustomInstallationCard
-                    code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
+                    code="<!--Gorgias Chat Widget Start--><script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"></script><!--Gorgias Chat Widget End-->"
                     integrationId={2}
                     isShopifyChat={false}
                   >
@@ -2564,7 +2564,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                           >
                             <div
                               className="collapse show"
-                              style={Object {}}
+                              style={{}}
                             >
                               <CardBody
                                 className="card-body"
@@ -2663,7 +2663,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                                           className="tab-pane active"
                                         >
                                           <CustomInstallationOtherWebsiteTab
-                                            code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
+                                            code="<!--Gorgias Chat Widget Start--><script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"></script><!--Gorgias Chat Widget End-->"
                                           >
                                             <div
                                               className="wrapper"
@@ -2737,7 +2737,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                                                 </div>
                                               </Alert>
                                               <WithClipboardComponent
-                                                code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
+                                                code="<!--Gorgias Chat Widget Start--><script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"></script><!--Gorgias Chat Widget End-->"
                                               >
                                                 <div
                                                   className="container"
@@ -2745,7 +2745,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                                                   onMouseLeave={[Function]}
                                                 >
                                                   <CodeSnippet
-                                                    code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
+                                                    code="<!--Gorgias Chat Widget Start--><script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"></script><!--Gorgias Chat Widget End-->"
                                                     id="code-snippet-7"
                                                   >
                                                     <Alert
@@ -2756,7 +2756,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                                                       isOpen={true}
                                                       tag="div"
                                                       transition={
-                                                        Object {
+                                                        {
                                                           "appear": true,
                                                           "baseClass": "fade",
                                                           "baseClassActive": "show",
@@ -2841,7 +2841,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                                           className="tab-pane"
                                         >
                                           <CustomInstallationGTMTab
-                                            code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
+                                            code="<!--Gorgias Chat Widget Start--><script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"></script><!--Gorgias Chat Widget End-->"
                                           >
                                             <div
                                               className="wrapper"
@@ -3022,7 +3022,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                           delay={100}
                           placement="top-start"
                           style={
-                            Object {
+                            {
                               "textAlign": "left",
                             }
                           }
@@ -3034,7 +3034,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                             delay={100}
                             placement="top-start"
                             style={
-                              Object {
+                              {
                                 "textAlign": "left",
                               }
                             }
@@ -3048,7 +3048,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                               placement="top-start"
                               placementPrefix="bs-tooltip"
                               style={
-                                Object {
+                                {
                                   "textAlign": "left",
                                 }
                               }
@@ -3068,7 +3068,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                                 placementPrefix="bs-tooltip"
                                 popperClassName="tooltip show"
                                 style={
-                                  Object {
+                                  {
                                     "textAlign": "left",
                                   }
                                 }
@@ -3096,7 +3096,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
 exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify store when shop_name and shop_type are defined and installed in shopify_integration_ids 1`] = `
 <Connect(GorgiasChatIntegrationInstall)
   actions={
-    Object {
+    {
       "activateIntegration": [MockFunction],
       "deactivateIntegration": [MockFunction],
       "deleteIntegration": [MockFunction],
@@ -3122,7 +3122,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
   loading={Immutable.Map {}}
   notify={[MockFunction]}
   store={
-    Object {
+    {
       "dispatch": [Function],
       "getState": [Function],
       "replaceReducer": [Function],
@@ -3133,7 +3133,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
 >
   <GorgiasChatIntegrationInstall
     actions={
-      Object {
+      {
         "activateIntegration": [MockFunction],
         "deactivateIntegration": [MockFunction],
         "deleteIntegration": [MockFunction],
@@ -3163,7 +3163,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
     loading={Immutable.Map {}}
     notify={[Function]}
     store={
-      Object {
+      {
         "dispatch": [Function],
         "getState": [Function],
         "replaceReducer": [Function],
@@ -3380,7 +3380,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
           <Row
             tag="div"
             widths={
-              Array [
+              [
                 "xs",
                 "sm",
                 "md",
@@ -3397,7 +3397,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                 md="8"
                 tag="div"
                 widths={
-                  Array [
+                  [
                     "xs",
                     "sm",
                     "md",
@@ -3485,7 +3485,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                               isIntegrationDeactivated={false}
                               isLegacyInstallation={false}
                               key="3"
-                              loading={Object {}}
+                              loading={{}}
                               onDisconnect={[Function]}
                               onInstall={[Function]}
                               onUninstall={[Function]}
@@ -3550,13 +3550,13 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                   >
                                     <ConfirmationPopover
                                       buttonProps={
-                                        Object {
+                                        {
                                           "intent": undefined,
                                           "type": "button",
                                         }
                                       }
                                       cancelButtonProps={
-                                        Object {
+                                        {
                                           "intent": "secondary",
                                         }
                                       }
@@ -3658,7 +3658,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                     </Card>
                   </GorgiasChatIntegrationOneClickInstallationCard>
                   <GorgiasChatIntegrationCustomInstallationCard
-                    code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
+                    code="<!--Gorgias Chat Widget Start--><script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"></script><!--Gorgias Chat Widget End-->"
                     integrationId={2}
                     isShopifyChat={true}
                   >
@@ -3725,7 +3725,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                           >
                             <div
                               className="collapse"
-                              style={Object {}}
+                              style={{}}
                             >
                               <CardBody
                                 className="card-body"
@@ -3848,7 +3848,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                           className="tab-pane active"
                                         >
                                           <CustomInstallationShopifyTab
-                                            code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
+                                            code="<!--Gorgias Chat Widget Start--><script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"></script><!--Gorgias Chat Widget End-->"
                                             integrationId={2}
                                             sspAvailable={true}
                                           >
@@ -3966,7 +3966,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                                 </div>
                                               </Alert>
                                               <WithClipboardComponent
-                                                code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
+                                                code="<!--Gorgias Chat Widget Start--><script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"></script><!--Gorgias Chat Widget End-->"
                                               >
                                                 <div
                                                   className="container"
@@ -3974,7 +3974,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                                   onMouseLeave={[Function]}
                                                 >
                                                   <CodeSnippet
-                                                    code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
+                                                    code="<!--Gorgias Chat Widget Start--><script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"></script><!--Gorgias Chat Widget End-->"
                                                     id="code-snippet-1"
                                                   >
                                                     <Alert
@@ -3985,7 +3985,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                                       isOpen={true}
                                                       tag="div"
                                                       transition={
-                                                        Object {
+                                                        {
                                                           "appear": true,
                                                           "baseClass": "fade",
                                                           "baseClassActive": "show",
@@ -4070,7 +4070,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                           className="tab-pane"
                                         >
                                           <CustomInstallationOtherWebsiteTab
-                                            code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
+                                            code="<!--Gorgias Chat Widget Start--><script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"></script><!--Gorgias Chat Widget End-->"
                                           >
                                             <div
                                               className="wrapper"
@@ -4144,7 +4144,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                                 </div>
                                               </Alert>
                                               <WithClipboardComponent
-                                                code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
+                                                code="<!--Gorgias Chat Widget Start--><script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"></script><!--Gorgias Chat Widget End-->"
                                               >
                                                 <div
                                                   className="container"
@@ -4152,7 +4152,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                                   onMouseLeave={[Function]}
                                                 >
                                                   <CodeSnippet
-                                                    code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
+                                                    code="<!--Gorgias Chat Widget Start--><script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"></script><!--Gorgias Chat Widget End-->"
                                                     id="code-snippet-2"
                                                   >
                                                     <Alert
@@ -4163,7 +4163,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                                       isOpen={true}
                                                       tag="div"
                                                       transition={
-                                                        Object {
+                                                        {
                                                           "appear": true,
                                                           "baseClass": "fade",
                                                           "baseClassActive": "show",
@@ -4248,7 +4248,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                           className="tab-pane"
                                         >
                                           <CustomInstallationGTMTab
-                                            code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
+                                            code="<!--Gorgias Chat Widget Start--><script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"></script><!--Gorgias Chat Widget End-->"
                                           >
                                             <div
                                               className="wrapper"
@@ -4429,7 +4429,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                           delay={100}
                           placement="top-start"
                           style={
-                            Object {
+                            {
                               "textAlign": "left",
                             }
                           }
@@ -4441,7 +4441,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                             delay={100}
                             placement="top-start"
                             style={
-                              Object {
+                              {
                                 "textAlign": "left",
                               }
                             }
@@ -4455,7 +4455,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                               placement="top-start"
                               placementPrefix="bs-tooltip"
                               style={
-                                Object {
+                                {
                                   "textAlign": "left",
                                 }
                               }
@@ -4475,7 +4475,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                 placementPrefix="bs-tooltip"
                                 popperClassName="tooltip show"
                                 style={
-                                  Object {
+                                  {
                                     "textAlign": "left",
                                   }
                                 }
@@ -4500,4 +4500,4 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
 </Connect(GorgiasChatIntegrationInstall)>
 `;
 
-exports[`renderChatCodeSnippet() should render correctly with new format 1`] = `"<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"`;
+exports[`renderChatCodeSnippet() should render correctly with new format 1`] = `"<!--Gorgias Chat Widget Start--><script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"></script><!--Gorgias Chat Widget End-->"`;

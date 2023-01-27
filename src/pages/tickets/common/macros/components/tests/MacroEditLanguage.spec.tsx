@@ -1,5 +1,5 @@
 import React from 'react'
-import {render, waitFor} from '@testing-library/react'
+import {render, waitFor, act} from '@testing-library/react'
 
 import MacroEditLanguage from '../MacroEditLanguage'
 
@@ -44,6 +44,7 @@ describe('<MacroEditLanguage />', () => {
                 text={'hello world'}
             />
         )
+        act(() => jest.runAllTimers())
         await waitFor(() => expect(setLanguage).toHaveBeenCalledWith('af'))
     })
 })

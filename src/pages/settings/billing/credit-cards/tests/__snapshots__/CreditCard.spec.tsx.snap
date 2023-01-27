@@ -116,8 +116,8 @@ exports[`CreditCard component should display credit card form 1`] = `
       className="plan"
       currency="usd"
       features={
-        Array [
-          Object {
+        [
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="playlist_add_check"
             />,
@@ -127,19 +127,19 @@ exports[`CreditCard component should display credit card form 1`] = `
               freeTickets={300}
             />,
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="thumb_up"
             />,
             "label": "Facebook, Messenger, Instagram",
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="forum"
             />,
             "label": "Live chat",
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="phone"
             />,
@@ -151,20 +151,20 @@ exports[`CreditCard component should display credit card form 1`] = `
                Phone number
             </React.Fragment>,
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="auto_awesome"
             />,
             "label": "Macros and rules",
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="insert_emoticon"
             />,
             "isDisabled": false,
             "label": "Satisfaction surveys",
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="web_asset"
             />,
@@ -173,7 +173,7 @@ exports[`CreditCard component should display credit card form 1`] = `
               disabled={false}
             />,
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="directions_walk"
             />,
@@ -184,28 +184,28 @@ exports[`CreditCard component should display credit card form 1`] = `
                onboarding
             </React.Fragment>,
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="attach_money"
             />,
             "isDisabled": true,
             "label": "Revenue statistics",
           },
-          Object {
+          {
             "icon": <PlanFeatureVectorIcon
               url="test-file-stub"
             />,
             "isDisabled": true,
             "label": "Magento integration",
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="person_pin"
             />,
             "isDisabled": true,
             "label": "Dedicated success manager",
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="blur_on"
             />,
@@ -348,8 +348,8 @@ exports[`CreditCard component should not render the billing address form when a 
       className="plan"
       currency="usd"
       features={
-        Array [
-          Object {
+        [
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="playlist_add_check"
             />,
@@ -359,19 +359,19 @@ exports[`CreditCard component should not render the billing address form when a 
               freeTickets={300}
             />,
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="thumb_up"
             />,
             "label": "Facebook, Messenger, Instagram",
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="forum"
             />,
             "label": "Live chat",
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="phone"
             />,
@@ -383,20 +383,20 @@ exports[`CreditCard component should not render the billing address form when a 
                Phone number
             </React.Fragment>,
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="auto_awesome"
             />,
             "label": "Macros and rules",
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="insert_emoticon"
             />,
             "isDisabled": false,
             "label": "Satisfaction surveys",
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="web_asset"
             />,
@@ -405,7 +405,7 @@ exports[`CreditCard component should not render the billing address form when a 
               disabled={false}
             />,
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="directions_walk"
             />,
@@ -416,28 +416,28 @@ exports[`CreditCard component should not render the billing address form when a 
                onboarding
             </React.Fragment>,
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="attach_money"
             />,
             "isDisabled": true,
             "label": "Revenue statistics",
           },
-          Object {
+          {
             "icon": <PlanFeatureVectorIcon
               url="test-file-stub"
             />,
             "isDisabled": true,
             "label": "Magento integration",
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="person_pin"
             />,
             "isDisabled": true,
             "label": "Dedicated success manager",
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="blur_on"
             />,
@@ -572,8 +572,8 @@ exports[`CreditCard component should render billing plan card with automation fo
       className="plan"
       currency="usd"
       features={
-        Array [
-          Object {
+        [
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="playlist_add_check"
             />,
@@ -583,19 +583,19 @@ exports[`CreditCard component should render billing plan card with automation fo
               freeTickets={300}
             />,
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="thumb_up"
             />,
             "label": "Facebook, Messenger, Instagram",
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="forum"
             />,
             "label": "Live chat",
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="phone"
             />,
@@ -607,20 +607,20 @@ exports[`CreditCard component should render billing plan card with automation fo
                Phone number
             </React.Fragment>,
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="auto_awesome"
             />,
             "label": "Macros and rules",
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="insert_emoticon"
             />,
             "isDisabled": false,
             "label": "Satisfaction surveys",
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="web_asset"
             />,
@@ -629,7 +629,7 @@ exports[`CreditCard component should render billing plan card with automation fo
               disabled={false}
             />,
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="directions_walk"
             />,
@@ -640,28 +640,28 @@ exports[`CreditCard component should render billing plan card with automation fo
                onboarding
             </React.Fragment>,
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="attach_money"
             />,
             "isDisabled": true,
             "label": "Revenue statistics",
           },
-          Object {
+          {
             "icon": <PlanFeatureVectorIcon
               url="test-file-stub"
             />,
             "isDisabled": true,
             "label": "Magento integration",
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="person_pin"
             />,
             "isDisabled": true,
             "label": "Dedicated success manager",
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="blur_on"
             />,
@@ -813,8 +813,8 @@ exports[`CreditCard component should render billing plan card with automation fo
       className="plan"
       currency="usd"
       features={
-        Array [
-          Object {
+        [
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="playlist_add_check"
             />,
@@ -824,19 +824,19 @@ exports[`CreditCard component should render billing plan card with automation fo
               freeTickets={300}
             />,
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="thumb_up"
             />,
             "label": "Facebook, Messenger, Instagram",
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="forum"
             />,
             "label": "Live chat",
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="phone"
             />,
@@ -848,20 +848,20 @@ exports[`CreditCard component should render billing plan card with automation fo
                Phone number
             </React.Fragment>,
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="auto_awesome"
             />,
             "label": "Macros and rules",
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="insert_emoticon"
             />,
             "isDisabled": false,
             "label": "Satisfaction surveys",
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="web_asset"
             />,
@@ -870,7 +870,7 @@ exports[`CreditCard component should render billing plan card with automation fo
               disabled={false}
             />,
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="directions_walk"
             />,
@@ -881,28 +881,28 @@ exports[`CreditCard component should render billing plan card with automation fo
                onboarding
             </React.Fragment>,
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="attach_money"
             />,
             "isDisabled": true,
             "label": "Revenue statistics",
           },
-          Object {
+          {
             "icon": <PlanFeatureVectorIcon
               url="test-file-stub"
             />,
             "isDisabled": true,
             "label": "Magento integration",
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="person_pin"
             />,
             "isDisabled": true,
             "label": "Dedicated success manager",
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="blur_on"
             />,
@@ -1053,8 +1053,8 @@ exports[`CreditCard component should render nothing if loaded, but no current su
       className="plan"
       currency="usd"
       features={
-        Array [
-          Object {
+        [
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="playlist_add_check"
             />,
@@ -1064,19 +1064,19 @@ exports[`CreditCard component should render nothing if loaded, but no current su
               freeTickets={300}
             />,
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="thumb_up"
             />,
             "label": "Facebook, Messenger, Instagram",
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="forum"
             />,
             "label": "Live chat",
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="phone"
             />,
@@ -1088,20 +1088,20 @@ exports[`CreditCard component should render nothing if loaded, but no current su
                Phone number
             </React.Fragment>,
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="auto_awesome"
             />,
             "label": "Macros and rules",
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="insert_emoticon"
             />,
             "isDisabled": false,
             "label": "Satisfaction surveys",
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="web_asset"
             />,
@@ -1110,7 +1110,7 @@ exports[`CreditCard component should render nothing if loaded, but no current su
               disabled={false}
             />,
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="directions_walk"
             />,
@@ -1121,28 +1121,28 @@ exports[`CreditCard component should render nothing if loaded, but no current su
                onboarding
             </React.Fragment>,
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="attach_money"
             />,
             "isDisabled": true,
             "label": "Revenue statistics",
           },
-          Object {
+          {
             "icon": <PlanFeatureVectorIcon
               url="test-file-stub"
             />,
             "isDisabled": true,
             "label": "Magento integration",
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="person_pin"
             />,
             "isDisabled": true,
             "label": "Dedicated success manager",
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="blur_on"
             />,
@@ -1260,10 +1260,10 @@ exports[`CreditCard component should render the billing address form when accoun
         <BillingAddressInputs
           onChange={[Function]}
           value={
-            Object {
+            {
               "email": "",
-              "shipping": Object {
-                "address": Object {
+              "shipping": {
+                "address": {
                   "city": "",
                   "country": "",
                   "line1": "",
@@ -1302,8 +1302,8 @@ exports[`CreditCard component should render the billing address form when accoun
       className="plan"
       currency="usd"
       features={
-        Array [
-          Object {
+        [
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="playlist_add_check"
             />,
@@ -1313,19 +1313,19 @@ exports[`CreditCard component should render the billing address form when accoun
               freeTickets={300}
             />,
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="thumb_up"
             />,
             "label": "Facebook, Messenger, Instagram",
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="forum"
             />,
             "label": "Live chat",
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="phone"
             />,
@@ -1337,20 +1337,20 @@ exports[`CreditCard component should render the billing address form when accoun
                Phone number
             </React.Fragment>,
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="auto_awesome"
             />,
             "label": "Macros and rules",
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="insert_emoticon"
             />,
             "isDisabled": false,
             "label": "Satisfaction surveys",
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="web_asset"
             />,
@@ -1359,7 +1359,7 @@ exports[`CreditCard component should render the billing address form when accoun
               disabled={false}
             />,
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="directions_walk"
             />,
@@ -1370,28 +1370,28 @@ exports[`CreditCard component should render the billing address form when accoun
                onboarding
             </React.Fragment>,
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="attach_money"
             />,
             "isDisabled": true,
             "label": "Revenue statistics",
           },
-          Object {
+          {
             "icon": <PlanFeatureVectorIcon
               url="test-file-stub"
             />,
             "isDisabled": true,
             "label": "Magento integration",
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="person_pin"
             />,
             "isDisabled": true,
             "label": "Dedicated success manager",
           },
-          Object {
+          {
             "icon": <PlanFeatureMaterialIcon
               icon="blur_on"
             />,

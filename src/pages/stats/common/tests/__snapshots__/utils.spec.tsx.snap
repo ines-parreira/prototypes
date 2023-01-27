@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`stats components utils useStatsViewFilters should not include a view filter if the corresponding stat filter is an empty array 1`] = `
-Array [
-  Object {
+[
+  {
     "left": "ticket.created_datetime",
     "operator": "gte",
     "right": "'2021-05-28T22:00:00Z'",
   },
-  Object {
+  {
     "left": "ticket.created_datetime",
     "operator": "lte",
     "right": "'2021-06-04T19:59:59Z'",
@@ -16,13 +16,13 @@ Array [
 `;
 
 exports[`stats components utils useStatsViewFilters should not include tags that don't exist in the store 1`] = `
-Array [
-  Object {
+[
+  {
     "left": "ticket.created_datetime",
     "operator": "gte",
     "right": "'2021-05-28T22:00:00Z'",
   },
-  Object {
+  {
     "left": "ticket.created_datetime",
     "operator": "lte",
     "right": "'2021-06-04T19:59:59Z'",
@@ -31,18 +31,18 @@ Array [
 `;
 
 exports[`stats components utils useStatsViewFilters should return view filters for multiple agents 1`] = `
-Array [
-  Object {
+[
+  {
     "left": "ticket.created_datetime",
     "operator": "gte",
     "right": "'2021-05-28T22:00:00Z'",
   },
-  Object {
+  {
     "left": "ticket.created_datetime",
     "operator": "lte",
     "right": "'2021-06-04T19:59:59Z'",
   },
-  Object {
+  {
     "left": "ticket.assignee_user.id",
     "operator": "containsAny",
     "right": "[1,2,3]",
@@ -51,38 +51,38 @@ Array [
 `;
 
 exports[`stats components utils useStatsViewFilters should return view filters for multiple channels 1`] = `
-Array [
-  Object {
+[
+  {
     "left": "ticket.created_datetime",
     "operator": "gte",
     "right": "'2021-05-28T22:00:00Z'",
   },
-  Object {
+  {
     "left": "ticket.created_datetime",
     "operator": "lte",
     "right": "'2021-06-04T19:59:59Z'",
   },
-  Object {
+  {
     "left": "ticket.channel",
     "operator": "containsAny",
-    "right": "[\\"email\\",\\"chat\\"]",
+    "right": "["email","chat"]",
   },
 ]
 `;
 
 exports[`stats components utils useStatsViewFilters should return view filters for multiple integrations 1`] = `
-Array [
-  Object {
+[
+  {
     "left": "ticket.created_datetime",
     "operator": "gte",
     "right": "'2021-05-28T22:00:00Z'",
   },
-  Object {
+  {
     "left": "ticket.created_datetime",
     "operator": "lte",
     "right": "'2021-06-04T19:59:59Z'",
   },
-  Object {
+  {
     "left": "ticket.messages.integration_id",
     "operator": "containsAny",
     "right": "[1,5]",
@@ -91,13 +91,13 @@ Array [
 `;
 
 exports[`stats components utils useStatsViewFilters should return view filters for period 1`] = `
-Array [
-  Object {
+[
+  {
     "left": "ticket.created_datetime",
     "operator": "gte",
     "right": "'2021-05-28T22:00:00Z'",
   },
-  Object {
+  {
     "left": "ticket.created_datetime",
     "operator": "lte",
     "right": "'2021-06-04T19:59:59Z'",
@@ -106,18 +106,18 @@ Array [
 `;
 
 exports[`stats components utils useStatsViewFilters should return view filters for single agent 1`] = `
-Array [
-  Object {
+[
+  {
     "left": "ticket.created_datetime",
     "operator": "gte",
     "right": "'2021-05-28T22:00:00Z'",
   },
-  Object {
+  {
     "left": "ticket.created_datetime",
     "operator": "lte",
     "right": "'2021-06-04T19:59:59Z'",
   },
-  Object {
+  {
     "left": "ticket.assignee_user.id",
     "operator": "eq",
     "right": "1",
@@ -126,38 +126,38 @@ Array [
 `;
 
 exports[`stats components utils useStatsViewFilters should return view filters for single channel 1`] = `
-Array [
-  Object {
+[
+  {
     "left": "ticket.created_datetime",
     "operator": "gte",
     "right": "'2021-05-28T22:00:00Z'",
   },
-  Object {
+  {
     "left": "ticket.created_datetime",
     "operator": "lte",
     "right": "'2021-06-04T19:59:59Z'",
   },
-  Object {
+  {
     "left": "ticket.channel",
     "operator": "eq",
-    "right": "\\"email\\"",
+    "right": ""email"",
   },
 ]
 `;
 
 exports[`stats components utils useStatsViewFilters should return view filters for single integration 1`] = `
-Array [
-  Object {
+[
+  {
     "left": "ticket.created_datetime",
     "operator": "gte",
     "right": "'2021-05-28T22:00:00Z'",
   },
-  Object {
+  {
     "left": "ticket.created_datetime",
     "operator": "lte",
     "right": "'2021-06-04T19:59:59Z'",
   },
-  Object {
+  {
     "left": "ticket.messages.integration_id",
     "operator": "eq",
     "right": "1",
@@ -166,21 +166,21 @@ Array [
 `;
 
 exports[`stats components utils useStatsViewFilters should return view filters for tags 1`] = `
-Array [
-  Object {
+[
+  {
     "left": "ticket.created_datetime",
     "operator": "gte",
     "right": "'2021-05-28T22:00:00Z'",
   },
-  Object {
+  {
     "left": "ticket.created_datetime",
     "operator": "lte",
     "right": "'2021-06-04T19:59:59Z'",
   },
-  Object {
+  {
     "left": "ticket.tags.name",
     "operator": "containsAny",
-    "right": "[\\"billing\\"]",
+    "right": "["billing"]",
   },
 ]
 `;

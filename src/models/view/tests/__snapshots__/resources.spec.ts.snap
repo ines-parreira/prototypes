@@ -1,42 +1,42 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`view resources createView should resolve with a new View on success 1`] = `
-Object {
+{
   "category": null,
   "created_datetime": "2017-07-31T21:43:10.610368+00:00",
   "deactivated_datetime": null,
   "decoration": null,
-  "fields": Array [
+  "fields": [
     "details",
     "tags",
     "customer",
     "created",
   ],
-  "filters": "neq(ticket.status, \\"closed\\")",
-  "filters_ast": Object {
-    "body": Array [
-      Object {
-        "expression": Object {
-          "arguments": Array [
-            Object {
+  "filters": "neq(ticket.status, "closed")",
+  "filters_ast": {
+    "body": [
+      {
+        "expression": {
+          "arguments": [
+            {
               "computed": false,
-              "loc": Object {
-                "end": Object {
+              "loc": {
+                "end": {
                   "column": 17,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 4,
                   "line": 1,
                 },
               },
-              "object": Object {
-                "loc": Object {
-                  "end": Object {
+              "object": {
+                "loc": {
+                  "end": {
                     "column": 10,
                     "line": 1,
                   },
-                  "start": Object {
+                  "start": {
                     "column": 4,
                     "line": 1,
                   },
@@ -44,13 +44,13 @@ Object {
                 "name": "ticket",
                 "type": "Identifier",
               },
-              "property": Object {
-                "loc": Object {
-                  "end": Object {
+              "property": {
+                "loc": {
+                  "end": {
                     "column": 17,
                     "line": 1,
                   },
-                  "start": Object {
+                  "start": {
                     "column": 11,
                     "line": 1,
                   },
@@ -60,29 +60,29 @@ Object {
               },
               "type": "MemberExpression",
             },
-            Object {
-              "loc": Object {
-                "end": Object {
+            {
+              "loc": {
+                "end": {
                   "column": 27,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 19,
                   "line": 1,
                 },
               },
-              "raw": "\\"closed\\"",
+              "raw": ""closed"",
               "type": "Literal",
               "value": "closed",
             },
           ],
-          "callee": Object {
-            "loc": Object {
-              "end": Object {
+          "callee": {
+            "loc": {
+              "end": {
                 "column": 3,
                 "line": 1,
               },
-              "start": Object {
+              "start": {
                 "column": 0,
                 "line": 1,
               },
@@ -90,24 +90,24 @@ Object {
             "name": "neq",
             "type": "Identifier",
           },
-          "loc": Object {
-            "end": Object {
+          "loc": {
+            "end": {
               "column": 28,
               "line": 1,
             },
-            "start": Object {
+            "start": {
               "column": 0,
               "line": 1,
             },
           },
           "type": "CallExpression",
         },
-        "loc": Object {
-          "end": Object {
+        "loc": {
+          "end": {
             "column": 28,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
@@ -115,12 +115,12 @@ Object {
         "type": "ExpressionStatement",
       },
     ],
-    "loc": Object {
-      "end": Object {
+    "loc": {
+      "end": {
         "column": 28,
         "line": 1,
       },
-      "start": Object {
+      "start": {
         "column": 0,
         "line": 1,
       },
@@ -143,17 +143,17 @@ Object {
 `;
 
 exports[`view resources createView should resolve with a new View on success 2`] = `
-Object {
-  "delete": Array [],
-  "get": Array [],
-  "head": Array [],
-  "list": Array [],
-  "options": Array [],
-  "patch": Array [],
-  "post": Array [
-    Object {
-      "data": "{\\"category\\":null,\\"order_by\\":\\"updated\\",\\"deactivated_datetime\\":null,\\"name\\":\\"New & Open Tickets\\",\\"slug\\":\\"new-&-open-tickets\\",\\"uri\\":\\"/api/views/7/\\",\\"decoration\\":null,\\"created_datetime\\":\\"2017-07-31T21:43:10.610368+00:00\\",\\"group_by\\":null,\\"fields\\":[\\"details\\",\\"tags\\",\\"customer\\",\\"created\\"],\\"section_id\\":null,\\"type\\":\\"ticket-list\\",\\"filters\\":\\"neq(ticket.status, \\\\\\"closed\\\\\\")\\",\\"order_dir\\":\\"desc\\",\\"visibility\\":\\"public\\",\\"filters_ast\\":{\\"sourceType\\":\\"script\\",\\"loc\\":{\\"start\\":{\\"column\\":0,\\"line\\":1},\\"end\\":{\\"column\\":28,\\"line\\":1}},\\"type\\":\\"Program\\",\\"body\\":[{\\"loc\\":{\\"start\\":{\\"column\\":0,\\"line\\":1},\\"end\\":{\\"column\\":28,\\"line\\":1}},\\"type\\":\\"ExpressionStatement\\",\\"expression\\":{\\"arguments\\":[{\\"object\\":{\\"type\\":\\"Identifier\\",\\"loc\\":{\\"start\\":{\\"column\\":4,\\"line\\":1},\\"end\\":{\\"column\\":10,\\"line\\":1}},\\"name\\":\\"ticket\\"},\\"property\\":{\\"type\\":\\"Identifier\\",\\"loc\\":{\\"start\\":{\\"column\\":11,\\"line\\":1},\\"end\\":{\\"column\\":17,\\"line\\":1}},\\"name\\":\\"status\\"},\\"loc\\":{\\"start\\":{\\"column\\":4,\\"line\\":1},\\"end\\":{\\"column\\":17,\\"line\\":1}},\\"type\\":\\"MemberExpression\\",\\"computed\\":false},{\\"value\\":\\"closed\\",\\"loc\\":{\\"start\\":{\\"column\\":19,\\"line\\":1},\\"end\\":{\\"column\\":27,\\"line\\":1}},\\"type\\":\\"Literal\\",\\"raw\\":\\"\\\\\\"closed\\\\\\"\\"}],\\"callee\\":{\\"type\\":\\"Identifier\\",\\"loc\\":{\\"start\\":{\\"column\\":0,\\"line\\":1},\\"end\\":{\\"column\\":3,\\"line\\":1}},\\"name\\":\\"neq\\"},\\"loc\\":{\\"start\\":{\\"column\\":0,\\"line\\":1},\\"end\\":{\\"column\\":28,\\"line\\":1}},\\"type\\":\\"CallExpression\\"}}]}}",
-      "headers": Object {
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [
+    {
+      "data": "{"category":null,"order_by":"updated","deactivated_datetime":null,"name":"New & Open Tickets","slug":"new-&-open-tickets","uri":"/api/views/7/","decoration":null,"created_datetime":"2017-07-31T21:43:10.610368+00:00","group_by":null,"fields":["details","tags","customer","created"],"section_id":null,"type":"ticket-list","filters":"neq(ticket.status, \\"closed\\")","order_dir":"desc","visibility":"public","filters_ast":{"sourceType":"script","loc":{"start":{"column":0,"line":1},"end":{"column":28,"line":1}},"type":"Program","body":[{"loc":{"start":{"column":0,"line":1},"end":{"column":28,"line":1}},"type":"ExpressionStatement","expression":{"arguments":[{"object":{"type":"Identifier","loc":{"start":{"column":4,"line":1},"end":{"column":10,"line":1}},"name":"ticket"},"property":{"type":"Identifier","loc":{"start":{"column":11,"line":1},"end":{"column":17,"line":1}},"name":"status"},"loc":{"start":{"column":4,"line":1},"end":{"column":17,"line":1}},"type":"MemberExpression","computed":false},{"value":"closed","loc":{"start":{"column":19,"line":1},"end":{"column":27,"line":1}},"type":"Literal","raw":"\\"closed\\""}],"callee":{"type":"Identifier","loc":{"start":{"column":0,"line":1},"end":{"column":3,"line":1}},"name":"neq"},"loc":{"start":{"column":0,"line":1},"end":{"column":28,"line":1}},"type":"CallExpression"}}]}}",
+      "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
         "X-CSRF-Token": "abcd",
@@ -163,10 +163,10 @@ Object {
       "maxContentLength": -1,
       "method": "post",
       "timeout": 0,
-      "transformRequest": Array [
+      "transformRequest": [
         [Function],
       ],
-      "transformResponse": Array [
+      "transformResponse": [
         [Function],
       ],
       "url": "/api/views/",
@@ -175,17 +175,17 @@ Object {
       "xsrfHeaderName": "X-XSRF-TOKEN",
     },
   ],
-  "put": Array [],
+  "put": [],
 }
 `;
 
 exports[`view resources deleteView should resolve on success 1`] = `undefined`;
 
 exports[`view resources fetchViewsPaginated should resolve with a View list on success 1`] = `
-Object {
-  "config": Object {
+{
+  "config": {
     "data": undefined,
-    "headers": Object {
+    "headers": {
       "Accept": "application/json, text/plain, */*",
       "X-CSRF-Token": "abcd",
       "X-Gorgias-User-Client": "web",
@@ -193,13 +193,13 @@ Object {
     "maxBodyLength": -1,
     "maxContentLength": -1,
     "method": "get",
-    "params": Object {},
+    "params": {},
     "paramsSerializer": [Function],
     "timeout": 0,
-    "transformRequest": Array [
+    "transformRequest": [
       [Function],
     ],
-    "transformResponse": Array [
+    "transformResponse": [
       [Function],
     ],
     "url": "/api/views/",
@@ -207,44 +207,44 @@ Object {
     "xsrfCookieName": "XSRF-TOKEN",
     "xsrfHeaderName": "X-XSRF-TOKEN",
   },
-  "data": Object {
-    "data": Array [
-      Object {
+  "data": {
+    "data": [
+      {
         "category": null,
         "created_datetime": "2017-07-31T21:43:10.610368+00:00",
         "deactivated_datetime": null,
         "decoration": null,
-        "fields": Array [
+        "fields": [
           "details",
           "tags",
           "customer",
           "created",
         ],
-        "filters": "neq(ticket.status, \\"closed\\")",
-        "filters_ast": Object {
-          "body": Array [
-            Object {
-              "expression": Object {
-                "arguments": Array [
-                  Object {
+        "filters": "neq(ticket.status, "closed")",
+        "filters_ast": {
+          "body": [
+            {
+              "expression": {
+                "arguments": [
+                  {
                     "computed": false,
-                    "loc": Object {
-                      "end": Object {
+                    "loc": {
+                      "end": {
                         "column": 17,
                         "line": 1,
                       },
-                      "start": Object {
+                      "start": {
                         "column": 4,
                         "line": 1,
                       },
                     },
-                    "object": Object {
-                      "loc": Object {
-                        "end": Object {
+                    "object": {
+                      "loc": {
+                        "end": {
                           "column": 10,
                           "line": 1,
                         },
-                        "start": Object {
+                        "start": {
                           "column": 4,
                           "line": 1,
                         },
@@ -252,13 +252,13 @@ Object {
                       "name": "ticket",
                       "type": "Identifier",
                     },
-                    "property": Object {
-                      "loc": Object {
-                        "end": Object {
+                    "property": {
+                      "loc": {
+                        "end": {
                           "column": 17,
                           "line": 1,
                         },
-                        "start": Object {
+                        "start": {
                           "column": 11,
                           "line": 1,
                         },
@@ -268,29 +268,29 @@ Object {
                     },
                     "type": "MemberExpression",
                   },
-                  Object {
-                    "loc": Object {
-                      "end": Object {
+                  {
+                    "loc": {
+                      "end": {
                         "column": 27,
                         "line": 1,
                       },
-                      "start": Object {
+                      "start": {
                         "column": 19,
                         "line": 1,
                       },
                     },
-                    "raw": "\\"closed\\"",
+                    "raw": ""closed"",
                     "type": "Literal",
                     "value": "closed",
                   },
                 ],
-                "callee": Object {
-                  "loc": Object {
-                    "end": Object {
+                "callee": {
+                  "loc": {
+                    "end": {
                       "column": 3,
                       "line": 1,
                     },
-                    "start": Object {
+                    "start": {
                       "column": 0,
                       "line": 1,
                     },
@@ -298,24 +298,24 @@ Object {
                   "name": "neq",
                   "type": "Identifier",
                 },
-                "loc": Object {
-                  "end": Object {
+                "loc": {
+                  "end": {
                     "column": 28,
                     "line": 1,
                   },
-                  "start": Object {
+                  "start": {
                     "column": 0,
                     "line": 1,
                   },
                 },
                 "type": "CallExpression",
               },
-              "loc": Object {
-                "end": Object {
+              "loc": {
+                "end": {
                   "column": 28,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 0,
                   "line": 1,
                 },
@@ -323,12 +323,12 @@ Object {
               "type": "ExpressionStatement",
             },
           ],
-          "loc": Object {
-            "end": Object {
+          "loc": {
+            "end": {
               "column": 28,
               "line": 1,
             },
-            "start": Object {
+            "start": {
               "column": 0,
               "line": 1,
             },
@@ -348,42 +348,42 @@ Object {
         "uri": "/api/views/7/",
         "visibility": "public",
       },
-      Object {
+      {
         "category": null,
         "created_datetime": "2017-07-31T21:43:10.610368+00:00",
         "deactivated_datetime": null,
         "decoration": null,
-        "fields": Array [
+        "fields": [
           "details",
           "tags",
           "customer",
           "created",
         ],
-        "filters": "neq(ticket.status, \\"closed\\")",
-        "filters_ast": Object {
-          "body": Array [
-            Object {
-              "expression": Object {
-                "arguments": Array [
-                  Object {
+        "filters": "neq(ticket.status, "closed")",
+        "filters_ast": {
+          "body": [
+            {
+              "expression": {
+                "arguments": [
+                  {
                     "computed": false,
-                    "loc": Object {
-                      "end": Object {
+                    "loc": {
+                      "end": {
                         "column": 17,
                         "line": 1,
                       },
-                      "start": Object {
+                      "start": {
                         "column": 4,
                         "line": 1,
                       },
                     },
-                    "object": Object {
-                      "loc": Object {
-                        "end": Object {
+                    "object": {
+                      "loc": {
+                        "end": {
                           "column": 10,
                           "line": 1,
                         },
-                        "start": Object {
+                        "start": {
                           "column": 4,
                           "line": 1,
                         },
@@ -391,13 +391,13 @@ Object {
                       "name": "ticket",
                       "type": "Identifier",
                     },
-                    "property": Object {
-                      "loc": Object {
-                        "end": Object {
+                    "property": {
+                      "loc": {
+                        "end": {
                           "column": 17,
                           "line": 1,
                         },
-                        "start": Object {
+                        "start": {
                           "column": 11,
                           "line": 1,
                         },
@@ -407,29 +407,29 @@ Object {
                     },
                     "type": "MemberExpression",
                   },
-                  Object {
-                    "loc": Object {
-                      "end": Object {
+                  {
+                    "loc": {
+                      "end": {
                         "column": 27,
                         "line": 1,
                       },
-                      "start": Object {
+                      "start": {
                         "column": 19,
                         "line": 1,
                       },
                     },
-                    "raw": "\\"closed\\"",
+                    "raw": ""closed"",
                     "type": "Literal",
                     "value": "closed",
                   },
                 ],
-                "callee": Object {
-                  "loc": Object {
-                    "end": Object {
+                "callee": {
+                  "loc": {
+                    "end": {
                       "column": 3,
                       "line": 1,
                     },
-                    "start": Object {
+                    "start": {
                       "column": 0,
                       "line": 1,
                     },
@@ -437,24 +437,24 @@ Object {
                   "name": "neq",
                   "type": "Identifier",
                 },
-                "loc": Object {
-                  "end": Object {
+                "loc": {
+                  "end": {
                     "column": 28,
                     "line": 1,
                   },
-                  "start": Object {
+                  "start": {
                     "column": 0,
                     "line": 1,
                   },
                 },
                 "type": "CallExpression",
               },
-              "loc": Object {
-                "end": Object {
+              "loc": {
+                "end": {
                   "column": 28,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 0,
                   "line": 1,
                 },
@@ -462,12 +462,12 @@ Object {
               "type": "ExpressionStatement",
             },
           ],
-          "loc": Object {
-            "end": Object {
+          "loc": {
+            "end": {
               "column": 28,
               "line": 1,
             },
-            "start": Object {
+            "start": {
               "column": 0,
               "line": 1,
             },
@@ -487,42 +487,42 @@ Object {
         "uri": "/api/views/7/",
         "visibility": "public",
       },
-      Object {
+      {
         "category": null,
         "created_datetime": "2017-07-31T21:43:10.610368+00:00",
         "deactivated_datetime": null,
         "decoration": null,
-        "fields": Array [
+        "fields": [
           "details",
           "tags",
           "customer",
           "created",
         ],
-        "filters": "neq(ticket.status, \\"closed\\")",
-        "filters_ast": Object {
-          "body": Array [
-            Object {
-              "expression": Object {
-                "arguments": Array [
-                  Object {
+        "filters": "neq(ticket.status, "closed")",
+        "filters_ast": {
+          "body": [
+            {
+              "expression": {
+                "arguments": [
+                  {
                     "computed": false,
-                    "loc": Object {
-                      "end": Object {
+                    "loc": {
+                      "end": {
                         "column": 17,
                         "line": 1,
                       },
-                      "start": Object {
+                      "start": {
                         "column": 4,
                         "line": 1,
                       },
                     },
-                    "object": Object {
-                      "loc": Object {
-                        "end": Object {
+                    "object": {
+                      "loc": {
+                        "end": {
                           "column": 10,
                           "line": 1,
                         },
-                        "start": Object {
+                        "start": {
                           "column": 4,
                           "line": 1,
                         },
@@ -530,13 +530,13 @@ Object {
                       "name": "ticket",
                       "type": "Identifier",
                     },
-                    "property": Object {
-                      "loc": Object {
-                        "end": Object {
+                    "property": {
+                      "loc": {
+                        "end": {
                           "column": 17,
                           "line": 1,
                         },
-                        "start": Object {
+                        "start": {
                           "column": 11,
                           "line": 1,
                         },
@@ -546,29 +546,29 @@ Object {
                     },
                     "type": "MemberExpression",
                   },
-                  Object {
-                    "loc": Object {
-                      "end": Object {
+                  {
+                    "loc": {
+                      "end": {
                         "column": 27,
                         "line": 1,
                       },
-                      "start": Object {
+                      "start": {
                         "column": 19,
                         "line": 1,
                       },
                     },
-                    "raw": "\\"closed\\"",
+                    "raw": ""closed"",
                     "type": "Literal",
                     "value": "closed",
                   },
                 ],
-                "callee": Object {
-                  "loc": Object {
-                    "end": Object {
+                "callee": {
+                  "loc": {
+                    "end": {
                       "column": 3,
                       "line": 1,
                     },
-                    "start": Object {
+                    "start": {
                       "column": 0,
                       "line": 1,
                     },
@@ -576,24 +576,24 @@ Object {
                   "name": "neq",
                   "type": "Identifier",
                 },
-                "loc": Object {
-                  "end": Object {
+                "loc": {
+                  "end": {
                     "column": 28,
                     "line": 1,
                   },
-                  "start": Object {
+                  "start": {
                     "column": 0,
                     "line": 1,
                   },
                 },
                 "type": "CallExpression",
               },
-              "loc": Object {
-                "end": Object {
+              "loc": {
+                "end": {
                   "column": 28,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 0,
                   "line": 1,
                 },
@@ -601,12 +601,12 @@ Object {
               "type": "ExpressionStatement",
             },
           ],
-          "loc": Object {
-            "end": Object {
+          "loc": {
+            "end": {
               "column": 28,
               "line": 1,
             },
-            "start": Object {
+            "start": {
               "column": 0,
               "line": 1,
             },
@@ -629,7 +629,7 @@ Object {
     ],
   },
   "headers": undefined,
-  "request": Object {
+  "request": {
     "responseUrl": "/api/views/",
   },
   "status": 200,
@@ -637,42 +637,42 @@ Object {
 `;
 
 exports[`view resources updateView should resolve with an updated View on success 1`] = `
-Object {
+{
   "category": null,
   "created_datetime": "2017-07-31T21:43:10.610368+00:00",
   "deactivated_datetime": null,
   "decoration": null,
-  "fields": Array [
+  "fields": [
     "details",
     "tags",
     "customer",
     "created",
   ],
-  "filters": "neq(ticket.status, \\"closed\\")",
-  "filters_ast": Object {
-    "body": Array [
-      Object {
-        "expression": Object {
-          "arguments": Array [
-            Object {
+  "filters": "neq(ticket.status, "closed")",
+  "filters_ast": {
+    "body": [
+      {
+        "expression": {
+          "arguments": [
+            {
               "computed": false,
-              "loc": Object {
-                "end": Object {
+              "loc": {
+                "end": {
                   "column": 17,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 4,
                   "line": 1,
                 },
               },
-              "object": Object {
-                "loc": Object {
-                  "end": Object {
+              "object": {
+                "loc": {
+                  "end": {
                     "column": 10,
                     "line": 1,
                   },
-                  "start": Object {
+                  "start": {
                     "column": 4,
                     "line": 1,
                   },
@@ -680,13 +680,13 @@ Object {
                 "name": "ticket",
                 "type": "Identifier",
               },
-              "property": Object {
-                "loc": Object {
-                  "end": Object {
+              "property": {
+                "loc": {
+                  "end": {
                     "column": 17,
                     "line": 1,
                   },
-                  "start": Object {
+                  "start": {
                     "column": 11,
                     "line": 1,
                   },
@@ -696,29 +696,29 @@ Object {
               },
               "type": "MemberExpression",
             },
-            Object {
-              "loc": Object {
-                "end": Object {
+            {
+              "loc": {
+                "end": {
                   "column": 27,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 19,
                   "line": 1,
                 },
               },
-              "raw": "\\"closed\\"",
+              "raw": ""closed"",
               "type": "Literal",
               "value": "closed",
             },
           ],
-          "callee": Object {
-            "loc": Object {
-              "end": Object {
+          "callee": {
+            "loc": {
+              "end": {
                 "column": 3,
                 "line": 1,
               },
-              "start": Object {
+              "start": {
                 "column": 0,
                 "line": 1,
               },
@@ -726,24 +726,24 @@ Object {
             "name": "neq",
             "type": "Identifier",
           },
-          "loc": Object {
-            "end": Object {
+          "loc": {
+            "end": {
               "column": 28,
               "line": 1,
             },
-            "start": Object {
+            "start": {
               "column": 0,
               "line": 1,
             },
           },
           "type": "CallExpression",
         },
-        "loc": Object {
-          "end": Object {
+        "loc": {
+          "end": {
             "column": 28,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
@@ -751,12 +751,12 @@ Object {
         "type": "ExpressionStatement",
       },
     ],
-    "loc": Object {
-      "end": Object {
+    "loc": {
+      "end": {
         "column": 28,
         "line": 1,
       },
-      "start": Object {
+      "start": {
         "column": 0,
         "line": 1,
       },
@@ -779,18 +779,18 @@ Object {
 `;
 
 exports[`view resources updateView should resolve with an updated View on success 2`] = `
-Object {
-  "delete": Array [],
-  "get": Array [],
-  "head": Array [],
-  "list": Array [],
-  "options": Array [],
-  "patch": Array [],
-  "post": Array [],
-  "put": Array [
-    Object {
-      "data": "{\\"category\\":null,\\"order_by\\":\\"updated\\",\\"deactivated_datetime\\":null,\\"name\\":\\"foo\\",\\"slug\\":\\"new-&-open-tickets\\",\\"uri\\":\\"/api/views/7/\\",\\"decoration\\":null,\\"created_datetime\\":\\"2017-07-31T21:43:10.610368+00:00\\",\\"group_by\\":null,\\"fields\\":[\\"details\\",\\"tags\\",\\"customer\\",\\"created\\"],\\"section_id\\":null,\\"type\\":\\"ticket-list\\",\\"filters\\":\\"neq(ticket.status, \\\\\\"closed\\\\\\")\\",\\"order_dir\\":\\"desc\\",\\"visibility\\":\\"public\\",\\"id\\":7,\\"shared_with_teams\\":[1],\\"shared_with_users\\":[1]}",
-      "headers": Object {
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [
+    {
+      "data": "{"category":null,"order_by":"updated","deactivated_datetime":null,"name":"foo","slug":"new-&-open-tickets","uri":"/api/views/7/","decoration":null,"created_datetime":"2017-07-31T21:43:10.610368+00:00","group_by":null,"fields":["details","tags","customer","created"],"section_id":null,"type":"ticket-list","filters":"neq(ticket.status, \\"closed\\")","order_dir":"desc","visibility":"public","id":7,"shared_with_teams":[1],"shared_with_users":[1]}",
+      "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
         "X-CSRF-Token": "abcd",
@@ -800,10 +800,10 @@ Object {
       "maxContentLength": -1,
       "method": "put",
       "timeout": 0,
-      "transformRequest": Array [
+      "transformRequest": [
         [Function],
       ],
-      "transformResponse": Array [
+      "transformResponse": [
         [Function],
       ],
       "url": "/api/views/7/",

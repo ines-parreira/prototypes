@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renderChatCodeSnippet() should render the snippet for development 1`] = `"<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https://chat-api.com/gorgias-chat-bundle-loader.js?applicationId=1\\"></script><!--Gorgias Chat Widget End-->"`;
+exports[`renderChatCodeSnippet() should render the snippet for development 1`] = `"<!--Gorgias Chat Widget Start--><script id="gorgias-chat-widget-install-v2" src="https://chat-api.com/gorgias-chat-bundle-loader.js?applicationId=1"></script><!--Gorgias Chat Widget End-->"`;
 
-exports[`renderChatCodeSnippet() should render the snippet for production 1`] = `"<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https://config.gorgias.chat/gorgias-chat-bundle-loader.js?applicationId=1\\"></script><!--Gorgias Chat Widget End-->"`;
+exports[`renderChatCodeSnippet() should render the snippet for production 1`] = `"<!--Gorgias Chat Widget Start--><script id="gorgias-chat-widget-install-v2" src="https://config.gorgias.chat/gorgias-chat-bundle-loader.js?applicationId=1"></script><!--Gorgias Chat Widget End-->"`;
 
-exports[`renderChatCodeSnippet() should render the snippet for staging 1`] = `"<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https://config.gorgias-staging.chat/gorgias-chat-bundle-loader.js?applicationId=1\\"></script><!--Gorgias Chat Widget End-->"`;
+exports[`renderChatCodeSnippet() should render the snippet for staging 1`] = `"<!--Gorgias Chat Widget Start--><script id="gorgias-chat-widget-install-v2" src="https://config.gorgias-staging.chat/gorgias-chat-bundle-loader.js?applicationId=1"></script><!--Gorgias Chat Widget End-->"`;

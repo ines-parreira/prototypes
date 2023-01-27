@@ -1107,7 +1107,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-add
       <TagLabel
         className="equalFiller"
         key="1"
-        style={Object {}}
+        style={{}}
       >
         tag-1
       </TagLabel>
@@ -1156,14 +1156,14 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-add
       <TagLabel
         className="equalFiller"
         key="1"
-        style={Object {}}
+        style={{}}
       >
         tag-1
       </TagLabel>
       <TagLabel
         className="equalFiller"
         key="2"
-        style={Object {}}
+        style={{}}
       >
         tag-2
       </TagLabel>
@@ -1212,7 +1212,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-rem
       <TagLabel
         className="equalFiller"
         key="1"
-        style={Object {}}
+        style={{}}
       >
         tag-1
       </TagLabel>
@@ -1261,14 +1261,14 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-rem
       <TagLabel
         className="equalFiller"
         key="1"
-        style={Object {}}
+        style={{}}
       >
         tag-1
       </TagLabel>
       <TagLabel
         className="equalFiller"
         key="2"
-        style={Object {}}
+        style={{}}
       >
         tag-2
       </TagLabel>

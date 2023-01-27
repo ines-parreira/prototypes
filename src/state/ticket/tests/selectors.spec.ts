@@ -10,12 +10,11 @@ import {ACTION_TEMPLATES} from 'config'
 import * as selectors from '../selectors'
 import {initialState} from '../reducers'
 
-jest.addMatchers(immutableMatchers)
-
 describe('ticket selectors', () => {
     let state: RootState
 
     beforeEach(() => {
+        expect.extend(immutableMatchers)
         state = {
             ticket: initialState.mergeDeep({
                 customer: {

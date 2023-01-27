@@ -1,25 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`facebookAds actions addFacebookAdsLoadingAd should return ADD_LOADING_FACEBOOK_AD action 1`] = `
-Object {
+{
   "payload": "postid1",
   "type": "ADD_LOADING_FACEBOOK_AD",
 }
 `;
 
 exports[`facebookAds actions removeFacebookAdsLoadingAd should return REMOVE_LOADING_FACEBOOK_AD action 1`] = `
-Object {
+{
   "payload": "postid1",
   "type": "REMOVE_LOADING_FACEBOOK_AD",
 }
 `;
 
 exports[`facebookAds actions setFacebookAdsInternals should return SET_FACEBOOK_ADS_INTERNALS action 1`] = `
-Object {
-  "payload": Object {
-    "1": Object {
-      "ads": Object {
-        "postid1": Object {
+{
+  "payload": {
+    "1": {
+      "ads": {
+        "postid1": {
           "comment_count": 0,
           "is_active": true,
           "name": "ad 1",
@@ -32,15 +32,15 @@ Object {
 `;
 
 exports[`facebookAds actions setFacebookAdsLoading should return SET_FACEBOOK_ADS_LOADING action 1`] = `
-Object {
+{
   "payload": true,
   "type": "SET_FACEBOOK_ADS_LOADING",
 }
 `;
 
 exports[`facebookAds actions updateFacebookAdsActiveAd should return UPDATE_ACTIVE_FACEBOOK_AD action 1`] = `
-Object {
-  "payload": Object {
+{
+  "payload": {
     "id": "postid1",
     "integrationId": 1,
     "isActive": true,

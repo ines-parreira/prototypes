@@ -8,9 +8,11 @@ import * as currentUserConstants from '../../currentUser/constants'
 import {StoreAction} from '../../types'
 import {UserRole} from '../../../config/types/user'
 
-jest.addMatchers(immutableMatchers)
-
 describe('agents reducers', () => {
+    beforeEach(() => {
+        expect.extend(immutableMatchers)
+    })
+
     it('initial state', () => {
         expect(reducer(undefined, {} as StoreAction)).toEqualImmutable(
             initialState

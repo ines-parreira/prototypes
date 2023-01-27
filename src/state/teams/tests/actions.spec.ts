@@ -14,8 +14,6 @@ const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
     middlewares
 )
 
-jest.addMatchers(immutableMatchers)
-
 jest.mock('../../notifications/actions', () => {
     return {
         notify: jest.fn(() => (args: Record<string, unknown>) => args),
@@ -27,6 +25,7 @@ describe('team actions', () => {
     let mockServer: MockAdapter
 
     beforeEach(() => {
+        expect.extend(immutableMatchers)
         store = mockStore()
         mockServer = new MockAdapter(client)
     })

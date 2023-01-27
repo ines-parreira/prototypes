@@ -9,13 +9,13 @@ import {RootState, StoreDispatch} from '../../types'
 import * as actions from '../actions'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
-jest.addMatchers(immutableMatchers)
 
 describe('auths actions', () => {
     let store: MockStoreEnhanced<Partial<RootState>, StoreDispatch>
     const mockServer = new MockAdapter(client)
 
     beforeEach(() => {
+        expect.extend(immutableMatchers)
         store = mockStore({auths: initialState})
         mockServer.reset()
     })

@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<NewReturnIntegrationModal /> should create new Loop Returns integration and call onCreate() handler 1`] = `
-Array [
-  Object {
+[
+  {
     "integration": Immutable.Map {
       "type": "http",
       "name": "mystore returns",

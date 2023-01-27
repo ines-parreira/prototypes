@@ -5,12 +5,12 @@ exports[`getPersonLabelFromSource() should return email label 1`] = `"Foo Bar (f
 exports[`getPersonLabelFromSource() should return phone label 1`] = `"Foo Bar (+14151235555)"`;
 
 exports[`getSortedIntegrationActions should return sorted integration actions names 1`] = `
-Object {
-  "recharge": Array [
+{
+  "recharge": [
     "rechargeCancelLastSubscription",
     "rechargeActivateLastSubscription",
   ],
-  "shopify": Array [
+  "shopify": [
     "shopifyCancelLastOrder",
     "shopifyCancelOrder",
     "shopifyEditShippingAddressOfLastOrder",
@@ -19,12 +19,12 @@ Object {
 `;
 
 exports[`getSortedIntegrationActionsNames should return sorted integration actions names 1`] = `
-Object {
-  "recharge": Array [
+{
+  "recharge": [
     "rechargeCancelLastSubscription",
     "rechargeActivateLastSubscription",
   ],
-  "shopify": Array [
+  "shopify": [
     "shopifyCancelLastOrder",
     "shopifyCancelOrder",
     "shopifyEditShippingAddressOfLastOrder",

@@ -217,32 +217,32 @@ exports[`<PrivateReplyEvent/> render should render a \`Responding to a Facebook 
       messageCreatedDatetime="2021-04-27T01:45:26+00:00"
       messageId="1537287279812902_1664359293772366"
       messageText="Nice post!"
-      meta={Object {}}
+      meta={{}}
       sender={
-        Object {
+        {
           "email": null,
           "firstname": "Mehdi",
           "id": 6,
           "lastname": "LA J",
-          "meta": Object {
+          "meta": {
             "name_set_via": "facebook",
           },
           "name": "Mehdi D LA J",
         }
       }
       source={
-        Object {
-          "extra": Object {
+        {
+          "extra": {
             "page_id": "657788504429455",
             "parent_id": "657788504429455_1537287279812902",
             "post_id": "657788504429455_1537287279812902",
           },
-          "from": Object {
+          "from": {
             "address": "657788504429455-3609805465727160",
             "name": "Mehdi D LA J",
           },
-          "to": Array [
-            Object {
+          "to": [
+            {
               "address": "657788504429455-657788504429455",
               "name": "L'acteur",
             },
@@ -303,9 +303,9 @@ exports[`<PrivateReplyEvent/> render should render a \`Responding to a Facebook 
     <TicketMessageEmbeddedCard
       integrationId={8}
       messageText="Nice post!"
-      meta={Object {}}
-      sender={Object {}}
-      source={Object {}}
+      meta={{}}
+      sender={{}}
+      source={{}}
       textBelowAvatar={false}
     />
   </div>
@@ -360,32 +360,32 @@ exports[`<PrivateReplyEvent/> render should render a \`Responding to an Instagra
       integrationId={8}
       messageCreatedDatetime="2021-04-27T01:45:26+00:00"
       messageId="1537287279812902_1664359293772366"
-      meta={Object {}}
+      meta={{}}
       sender={
-        Object {
+        {
           "email": null,
           "firstname": "Mehdi",
           "id": 6,
           "lastname": "LA J",
-          "meta": Object {
+          "meta": {
             "name_set_via": "facebook",
           },
           "name": "Mehdi D LA J",
         }
       }
       source={
-        Object {
-          "extra": Object {
+        {
+          "extra": {
             "page_id": "657788504429455",
             "parent_id": "657788504429455_1537287279812902",
             "post_id": "657788504429455_1537287279812902",
           },
-          "from": Object {
+          "from": {
             "address": "657788504429455-3609805465727160",
             "name": "Mehdi D LA J",
           },
-          "to": Array [
-            Object {
+          "to": [
+            {
               "address": "657788504429455-657788504429455",
               "name": "L'acteur",
             },

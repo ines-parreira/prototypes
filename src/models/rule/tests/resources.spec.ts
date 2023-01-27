@@ -19,7 +19,9 @@ describe('rule resources', () => {
     const mockDate = new Date(0).toUTCString()
     beforeEach(() => {
         mockedServer.reset()
-        jest.spyOn(global, 'Date').mockImplementation(() => mockDate) // mocks deactivated datetime
+        jest.spyOn(global, 'Date').mockImplementation(
+            () => mockDate as unknown as Date
+        ) // mocks deactivated datetime
     })
 
     describe('fetchRules', () => {

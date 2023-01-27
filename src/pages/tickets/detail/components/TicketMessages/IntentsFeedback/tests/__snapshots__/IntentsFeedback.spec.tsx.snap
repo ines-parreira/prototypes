@@ -1,24 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<IntentsFeedback /> Multiple initial intents Segment tracking should send event on curation 1`] = `
-Array [
-  Array [
+[
+  [
     "intent-feedback-user-submission",
-    Object {
+    {
       "account_domain": "acme",
       "message_id": 1,
-      "next_state": Array [
+      "next_state": [
         "foo/intent",
         "bar/intent",
         "baz/intent",
       ],
-      "previous_state": Array [
+      "previous_state": [
         "foo/intent",
         "bar/intent",
         "baz/intent",
       ],
-      "sub_events": Array [
-        Object {
+      "sub_events": [
+        {
           "event_type": "remove-intent",
           "intent": "foo/intent",
         },
@@ -31,10 +31,10 @@ Array [
 `;
 
 exports[`<IntentsFeedback /> Multiple initial intents Segment tracking should send event on menu toggle 1`] = `
-Array [
-  Array [
+[
+  [
     "intent-feedback-dropdown-open",
-    Object {
+    {
       "account_domain": "acme",
       "message_id": 1,
       "ticket_id": undefined,
@@ -661,11 +661,11 @@ exports[`<IntentsFeedback /> Single initial intent should render active and avai
 `;
 
 exports[`<IntentsFeedback /> Single initial intent should send the unsaved intents to the backend on dropdown toggle 1`] = `
-Array [
-  Array [
+[
+  [
     "/api/tickets/0/messages/1/intents/",
-    Object {
-      "active_intents": Array [
+    {
+      "active_intents": [
         "bar/intent",
         "foo/intent",
       ],

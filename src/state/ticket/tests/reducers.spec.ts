@@ -31,8 +31,7 @@ global.Date = jest.fn(() => DATE_TO_USE) as any
 ).toISOString = (Date as unknown as {toISOString: () => string}).toISOString
 
 jest.mock('../../newMessage/ticketReplyCache', () => {
-    const Immutable: {fromJS: typeof fromJS} =
-        require.requireActual('immutable')
+    const Immutable: {fromJS: typeof fromJS} = jest.requireActual('immutable')
 
     return {
         _keys: jest.fn(),
@@ -44,7 +43,7 @@ jest.mock('../../newMessage/ticketReplyCache', () => {
 })
 
 jest.mock('../helpers', () => {
-    const helpers = require.requireActual('../helpers')
+    const helpers = jest.requireActual('../helpers')
 
     return {
         ...helpers,
@@ -61,9 +60,11 @@ jest.mock('moment', () => {
     return fn
 })
 
-jest.addMatchers(immutableMatchers)
-
 describe('ticket reducers', () => {
+    beforeEach(() => {
+        expect.extend(immutableMatchers)
+    })
+
     it('initial state', () => {
         expect(
             reducer(undefined, {} as unknown as GorgiasAction)

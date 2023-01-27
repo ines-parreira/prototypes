@@ -44,30 +44,30 @@ describe('useArticleRowActions()', () => {
         const {result} = renderHook(() => useArticleRowActions(articleId))
 
         expect(result.current).toMatchInlineSnapshot(`
-            Array [
-              Object {
+            [
+              {
                 "disabled": false,
                 "icon": "settings",
                 "name": "articleSettings",
-                "tooltip": Object {
+                "tooltip": {
                   "content": "Article settings",
                   "target": "articleSettings-1",
                 },
               },
-              Object {
+              {
                 "disabled": false,
                 "icon": "content_copy",
                 "name": "duplicateArticle",
-                "tooltip": Object {
+                "tooltip": {
                   "content": "Duplicate article",
                   "target": "duplicateArticle-1",
                 },
               },
-              Object {
+              {
                 "disabled": false,
                 "icon": "share",
                 "name": "copyToClipboard",
-                "tooltip": Object {
+                "tooltip": {
                   "content": "Copy link to clipboard",
                   "target": "copyToClipboard-1",
                 },
@@ -96,30 +96,30 @@ describe('useArticleRowActions()', () => {
         const {result} = renderHook(() => useArticleRowActions(articleId))
 
         expect(result.current).toMatchInlineSnapshot(`
-            Array [
-              Object {
+            [
+              {
                 "disabled": true,
                 "icon": "settings",
                 "name": "articleSettings",
-                "tooltip": Object {
+                "tooltip": {
                   "content": "Article settings",
                   "target": "articleSettings-1",
                 },
               },
-              Object {
+              {
                 "disabled": true,
                 "icon": "content_copy",
                 "name": "duplicateArticle",
-                "tooltip": Object {
+                "tooltip": {
                   "content": "Duplicate article",
                   "target": "duplicateArticle-1",
                 },
               },
-              Object {
+              {
                 "disabled": false,
                 "icon": "share",
                 "name": "copyToClipboard",
-                "tooltip": Object {
+                "tooltip": {
                   "content": "Copy link to clipboard",
                   "target": "copyToClipboard-1",
                 },
@@ -135,30 +135,30 @@ describe('useArticleRowActions()', () => {
 
         const {result} = renderHook(() => useArticleRowActions(articleId))
         expect(result.current).toMatchInlineSnapshot(`
-            Array [
-              Object {
+            [
+              {
                 "disabled": true,
                 "icon": "settings",
                 "name": "articleSettings",
-                "tooltip": Object {
+                "tooltip": {
                   "content": "Article settings",
                   "target": "articleSettings-1",
                 },
               },
-              Object {
+              {
                 "disabled": true,
                 "icon": "content_copy",
                 "name": "duplicateArticle",
-                "tooltip": Object {
+                "tooltip": {
                   "content": "Duplicate article",
                   "target": "duplicateArticle-1",
                 },
               },
-              Object {
+              {
                 "disabled": false,
                 "icon": "share",
                 "name": "copyToClipboard",
-                "tooltip": Object {
+                "tooltip": {
                   "content": "Copy link to clipboard",
                   "target": "copyToClipboard-1",
                 },

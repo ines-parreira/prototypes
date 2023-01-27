@@ -15,8 +15,8 @@ exports[`RichFieldEditor should focus the end of input on initial focus 1`] = `
       className="withMinHeight"
     >
       <PluginEditor
-        customStyleMap={Object {}}
-        decorators={Array []}
+        customStyleMap={{}}
+        decorators={[]}
         defaultBlockRenderMap={true}
         defaultKeyBindings={true}
         editorKey="editor"
@@ -25,7 +25,7 @@ exports[`RichFieldEditor should focus the end of input on initial focus 1`] = `
             "_immutable": Immutable.Record {
               "allowUndo": true,
               "currentContent": Immutable.Record {
-                "entityMap": Object {
+                "entityMap": {
                   "__add": [Function],
                   "__create": [Function],
                   "__get": [Function],
@@ -122,26 +122,26 @@ exports[`RichFieldEditor should focus the end of input on initial focus 1`] = `
         onChange={[Function]}
         onFocus={[Function]}
         plugins={
-          Array [
-            Object {
+          [
+            {
               "handleDroppedFiles": [Function],
             },
-            Object {
+            {
               "handleReturn": [Function],
             },
-            Object {
+            {
               "blockRendererFn": [Function],
               "decorator": [Function],
               "initialize": [Function],
             },
-            Object {
+            {
               "blockRendererFn": [Function],
-              "decorators": Array [
-                Object {
+              "decorators": [
+                {
                   "component": [Function],
                   "strategy": [Function],
                 },
-                Object {
+                {
                   "component": [Function],
                   "strategy": [Function],
                 },
@@ -149,14 +149,14 @@ exports[`RichFieldEditor should focus the end of input on initial focus 1`] = `
               "handleKeyCommand": [Function],
               "keyBindingFn": [Function],
             },
-            Object {
+            {
               "MentionSuggestions": [Function],
-              "decorators": Array [
-                Object {
+              "decorators": [
+                {
                   "component": [Function],
                   "strategy": [Function],
                 },
-                Object {
+                {
                   "component": [Function],
                   "strategy": [Function],
                 },
@@ -170,24 +170,24 @@ exports[`RichFieldEditor should focus the end of input on initial focus 1`] = `
               "onTab": [Function],
               "onUpArrow": [Function],
             },
-            Object {
+            {
               "onChange": [Function],
             },
-            Object {
-              "decorators": Array [
-                Object {
+            {
+              "decorators": [
+                {
                   "component": [Function],
                   "strategy": [Function],
                 },
               ],
               "onChange": [Function],
             },
-            Object {
+            {
               "handlePastedFiles": [Function],
             },
-            Object {
+            {
               "blockRenderMap": Immutable.Map {
-                "ordered-list-item": Object {
+                "ordered-list-item": {
                   "element": "li",
                   "wrapper": <QuotesWrapper
                     innerWrapper={
@@ -197,19 +197,19 @@ exports[`RichFieldEditor should focus the end of input on initial focus 1`] = `
                     }
                   />,
                 },
-                "header-six": Object {
+                "header-six": {
                   "element": "h6",
                   "wrapper": <QuotesWrapper />,
                 },
-                "header-four": Object {
+                "header-four": {
                   "element": "h4",
                   "wrapper": <QuotesWrapper />,
                 },
-                "header-one": Object {
+                "header-one": {
                   "element": "h1",
                   "wrapper": <QuotesWrapper />,
                 },
-                "unordered-list-item": Object {
+                "unordered-list-item": {
                   "element": "li",
                   "wrapper": <QuotesWrapper
                     innerWrapper={
@@ -219,21 +219,21 @@ exports[`RichFieldEditor should focus the end of input on initial focus 1`] = `
                     }
                   />,
                 },
-                "atomic": Object {
+                "atomic": {
                   "element": "figure",
                   "wrapper": <QuotesWrapper />,
                 },
-                "unstyled": Object {
-                  "aliasedElements": Array [
+                "unstyled": {
+                  "aliasedElements": [
                     "p",
                   ],
                   "element": "div",
                 },
-                "header-two": Object {
+                "header-two": {
                   "element": "h2",
                   "wrapper": <QuotesWrapper />,
                 },
-                "code-block": Object {
+                "code-block": {
                   "element": "pre",
                   "wrapper": <QuotesWrapper
                     innerWrapper={
@@ -243,15 +243,15 @@ exports[`RichFieldEditor should focus the end of input on initial focus 1`] = `
                     }
                   />,
                 },
-                "blockquote": Object {
+                "blockquote": {
                   "element": "blockquote",
                   "wrapper": <QuotesWrapper />,
                 },
-                "header-five": Object {
+                "header-five": {
                   "element": "h5",
                   "wrapper": <QuotesWrapper />,
                 },
-                "header-three": Object {
+                "header-three": {
                   "element": "h3",
                   "wrapper": <QuotesWrapper />,
                 },
@@ -272,13 +272,13 @@ exports[`RichFieldEditor should focus the end of input on initial focus 1`] = `
 `;
 
 exports[`RichFieldEditor should handle shortcuts 1`] = `
-Array [
-  Array [
+[
+  [
     EditorState {
       "_immutable": Immutable.Record {
         "allowUndo": true,
         "currentContent": Immutable.Record {
-          "entityMap": Object {
+          "entityMap": {
             "__add": [Function],
             "__create": [Function],
             "__get": [Function],
@@ -335,24 +335,24 @@ Array [
         "decorator": MultiDecorator {
           "decorators": Immutable.List [
             CompositeDraftDecorator {
-              "_decorators": Array [
-                Object {
+              "_decorators": [
+                {
                   "component": [Function],
                   "strategy": [Function],
                 },
-                Object {
+                {
                   "component": [Function],
                   "strategy": [Function],
                 },
-                Object {
+                {
                   "component": [Function],
                   "strategy": [Function],
                 },
-                Object {
+                {
                   "component": [Function],
                   "strategy": [Function],
                 },
-                Object {
+                {
                   "component": [Function],
                   "strategy": [Function],
                 },
@@ -396,12 +396,12 @@ Array [
       },
     },
   ],
-  Array [
+  [
     EditorState {
       "_immutable": Immutable.Record {
         "allowUndo": true,
         "currentContent": Immutable.Record {
-          "entityMap": Object {
+          "entityMap": {
             "__add": [Function],
             "__create": [Function],
             "__get": [Function],

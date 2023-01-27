@@ -49,10 +49,8 @@ import {
     helpCenterContactFormTicket,
 } from './fixtures'
 
-jest.addMatchers(immutableMatchers)
-
 jest.mock('../../../config/ticket', () => {
-    const ticketConfig = require.requireActual('../../../config/ticket')
+    const ticketConfig = jest.requireActual('../../../config/ticket')
 
     return {
         ...ticketConfig,
@@ -238,6 +236,10 @@ const channels = getEmailChannels({
 const integrations = fromJS([])
 
 describe('ticket utils', () => {
+    beforeEach(() => {
+        expect.extend(immutableMatchers)
+    })
+
     describe('getSourceTypeOfResponse()', () => {
         it('should return message source type "internal-note" for Twilio ticket that has no message', () => {
             const messages: unknown[] = []

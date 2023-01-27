@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<TagsSelect /> should create a new tag 1`] = `
-Array [
-  Array [
-    Object {
+[
+  [
+    {
       "name": "new",
     },
   ],
@@ -43,9 +43,9 @@ exports[`<TagsSelect /> should render a single value 1`] = `
 `;
 
 exports[`<TagsSelect /> when multiple is set to true should create new tags 1`] = `
-Array [
-  Array [
-    Object {
+[
+  [
+    {
       "name": "new",
     },
   ],

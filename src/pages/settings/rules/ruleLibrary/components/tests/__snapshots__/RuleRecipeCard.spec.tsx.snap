@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<RuleRecipeCard/> install should install rule and rules in sections on click 1`] = `
-Array [
-  Array [
-    Object {
+[
+  [
+    {
       "name": "fooSection",
       "private": false,
     },
@@ -12,11 +12,11 @@ Array [
 `;
 
 exports[`<RuleRecipeCard/> install should install rule and rules in sections on click 2`] = `
-Array [
-  Array [
-    Object {
+[
+  [
+    {
       "code": "",
-      "code_ast": Object {},
+      "code_ast": {},
       "created_datetime": "2020-01-01T00:00:00",
       "deactivated_datetime": null,
       "description": "foo",
@@ -33,44 +33,44 @@ Array [
 `;
 
 exports[`<RuleRecipeCard/> install should install rule and rules in sections on click 3`] = `
-Array [
-  Array [
-    Object {
+[
+  [
+    {
       "category": null,
       "created_datetime": "2017-07-31T21:43:10.610368+00:00",
       "deactivated_datetime": null,
       "decoration": null,
-      "fields": Array [
+      "fields": [
         "details",
         "tags",
         "customer",
         "created",
       ],
-      "filters": "neq(ticket.status, \\"closed\\")",
-      "filters_ast": Object {
-        "body": Array [
-          Object {
-            "expression": Object {
-              "arguments": Array [
-                Object {
+      "filters": "neq(ticket.status, "closed")",
+      "filters_ast": {
+        "body": [
+          {
+            "expression": {
+              "arguments": [
+                {
                   "computed": false,
-                  "loc": Object {
-                    "end": Object {
+                  "loc": {
+                    "end": {
                       "column": 17,
                       "line": 1,
                     },
-                    "start": Object {
+                    "start": {
                       "column": 4,
                       "line": 1,
                     },
                   },
-                  "object": Object {
-                    "loc": Object {
-                      "end": Object {
+                  "object": {
+                    "loc": {
+                      "end": {
                         "column": 10,
                         "line": 1,
                       },
-                      "start": Object {
+                      "start": {
                         "column": 4,
                         "line": 1,
                       },
@@ -78,13 +78,13 @@ Array [
                     "name": "ticket",
                     "type": "Identifier",
                   },
-                  "property": Object {
-                    "loc": Object {
-                      "end": Object {
+                  "property": {
+                    "loc": {
+                      "end": {
                         "column": 17,
                         "line": 1,
                       },
-                      "start": Object {
+                      "start": {
                         "column": 11,
                         "line": 1,
                       },
@@ -94,29 +94,29 @@ Array [
                   },
                   "type": "MemberExpression",
                 },
-                Object {
-                  "loc": Object {
-                    "end": Object {
+                {
+                  "loc": {
+                    "end": {
                       "column": 27,
                       "line": 1,
                     },
-                    "start": Object {
+                    "start": {
                       "column": 19,
                       "line": 1,
                     },
                   },
-                  "raw": "\\"closed\\"",
+                  "raw": ""closed"",
                   "type": "Literal",
                   "value": "closed",
                 },
               ],
-              "callee": Object {
-                "loc": Object {
-                  "end": Object {
+              "callee": {
+                "loc": {
+                  "end": {
                     "column": 3,
                     "line": 1,
                   },
-                  "start": Object {
+                  "start": {
                     "column": 0,
                     "line": 1,
                   },
@@ -124,24 +124,24 @@ Array [
                 "name": "neq",
                 "type": "Identifier",
               },
-              "loc": Object {
-                "end": Object {
+              "loc": {
+                "end": {
                   "column": 28,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 0,
                   "line": 1,
                 },
               },
               "type": "CallExpression",
             },
-            "loc": Object {
-              "end": Object {
+            "loc": {
+              "end": {
                 "column": 28,
                 "line": 1,
               },
-              "start": Object {
+              "start": {
                 "column": 0,
                 "line": 1,
               },
@@ -149,12 +149,12 @@ Array [
             "type": "ExpressionStatement",
           },
         ],
-        "loc": Object {
-          "end": Object {
+        "loc": {
+          "end": {
             "column": 28,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
@@ -179,9 +179,9 @@ Array [
 `;
 
 exports[`<RuleRecipeCard/> install should install rule and rules in sections on click 4`] = `
-Array [
-  Array [
-    Object {
+[
+  [
+    {
       "created_datetime": "2021-01-21T13:10:46.444928+00:00",
       "decoration": null,
       "deleted_datetime": null,
@@ -192,8 +192,8 @@ Array [
       "usage": 10,
     },
   ],
-  Array [
-    Object {
+  [
+    {
       "created_datetime": "2021-01-21T13:10:46.435364+00:00",
       "decoration": null,
       "deleted_datetime": null,
@@ -204,8 +204,8 @@ Array [
       "usage": 20,
     },
   ],
-  Array [
-    Object {
+  [
+    {
       "created_datetime": "2021-01-21T13:10:46.446673+00:00",
       "decoration": null,
       "deleted_datetime": null,
@@ -216,8 +216,8 @@ Array [
       "usage": 0,
     },
   ],
-  Array [
-    Object {
+  [
+    {
       "created_datetime": "2021-01-21T13:10:46.445859+00:00",
       "decoration": null,
       "deleted_datetime": null,
@@ -232,11 +232,11 @@ Array [
 `;
 
 exports[`<RuleRecipeCard/> install should install rule on click 1`] = `
-Array [
-  Array [
-    Object {
+[
+  [
+    {
       "code": "",
-      "code_ast": Object {},
+      "code_ast": {},
       "created_datetime": "2020-01-01T00:00:00",
       "deactivated_datetime": null,
       "description": "foo",
@@ -253,44 +253,44 @@ Array [
 `;
 
 exports[`<RuleRecipeCard/> install should install rule on click 2`] = `
-Array [
-  Array [
-    Object {
+[
+  [
+    {
       "category": null,
       "created_datetime": "2017-07-31T21:43:10.610368+00:00",
       "deactivated_datetime": null,
       "decoration": null,
-      "fields": Array [
+      "fields": [
         "details",
         "tags",
         "customer",
         "created",
       ],
-      "filters": "neq(ticket.status, \\"closed\\")",
-      "filters_ast": Object {
-        "body": Array [
-          Object {
-            "expression": Object {
-              "arguments": Array [
-                Object {
+      "filters": "neq(ticket.status, "closed")",
+      "filters_ast": {
+        "body": [
+          {
+            "expression": {
+              "arguments": [
+                {
                   "computed": false,
-                  "loc": Object {
-                    "end": Object {
+                  "loc": {
+                    "end": {
                       "column": 17,
                       "line": 1,
                     },
-                    "start": Object {
+                    "start": {
                       "column": 4,
                       "line": 1,
                     },
                   },
-                  "object": Object {
-                    "loc": Object {
-                      "end": Object {
+                  "object": {
+                    "loc": {
+                      "end": {
                         "column": 10,
                         "line": 1,
                       },
-                      "start": Object {
+                      "start": {
                         "column": 4,
                         "line": 1,
                       },
@@ -298,13 +298,13 @@ Array [
                     "name": "ticket",
                     "type": "Identifier",
                   },
-                  "property": Object {
-                    "loc": Object {
-                      "end": Object {
+                  "property": {
+                    "loc": {
+                      "end": {
                         "column": 17,
                         "line": 1,
                       },
-                      "start": Object {
+                      "start": {
                         "column": 11,
                         "line": 1,
                       },
@@ -314,29 +314,29 @@ Array [
                   },
                   "type": "MemberExpression",
                 },
-                Object {
-                  "loc": Object {
-                    "end": Object {
+                {
+                  "loc": {
+                    "end": {
                       "column": 27,
                       "line": 1,
                     },
-                    "start": Object {
+                    "start": {
                       "column": 19,
                       "line": 1,
                     },
                   },
-                  "raw": "\\"closed\\"",
+                  "raw": ""closed"",
                   "type": "Literal",
                   "value": "closed",
                 },
               ],
-              "callee": Object {
-                "loc": Object {
-                  "end": Object {
+              "callee": {
+                "loc": {
+                  "end": {
                     "column": 3,
                     "line": 1,
                   },
-                  "start": Object {
+                  "start": {
                     "column": 0,
                     "line": 1,
                   },
@@ -344,24 +344,24 @@ Array [
                 "name": "neq",
                 "type": "Identifier",
               },
-              "loc": Object {
-                "end": Object {
+              "loc": {
+                "end": {
                   "column": 28,
                   "line": 1,
                 },
-                "start": Object {
+                "start": {
                   "column": 0,
                   "line": 1,
                 },
               },
               "type": "CallExpression",
             },
-            "loc": Object {
-              "end": Object {
+            "loc": {
+              "end": {
                 "column": 28,
                 "line": 1,
               },
-              "start": Object {
+              "start": {
                 "column": 0,
                 "line": 1,
               },
@@ -369,12 +369,12 @@ Array [
             "type": "ExpressionStatement",
           },
         ],
-        "loc": Object {
-          "end": Object {
+        "loc": {
+          "end": {
             "column": 28,
             "line": 1,
           },
-          "start": Object {
+          "start": {
             "column": 0,
             "line": 1,
           },
@@ -399,9 +399,9 @@ Array [
 `;
 
 exports[`<RuleRecipeCard/> install should install rule on click 3`] = `
-Array [
-  Array [
-    Object {
+[
+  [
+    {
       "created_datetime": "2021-01-21T13:10:46.444928+00:00",
       "decoration": null,
       "deleted_datetime": null,
@@ -412,8 +412,8 @@ Array [
       "usage": 10,
     },
   ],
-  Array [
-    Object {
+  [
+    {
       "created_datetime": "2021-01-21T13:10:46.435364+00:00",
       "decoration": null,
       "deleted_datetime": null,
@@ -424,8 +424,8 @@ Array [
       "usage": 20,
     },
   ],
-  Array [
-    Object {
+  [
+    {
       "created_datetime": "2021-01-21T13:10:46.446673+00:00",
       "decoration": null,
       "deleted_datetime": null,
@@ -436,8 +436,8 @@ Array [
       "usage": 0,
     },
   ],
-  Array [
-    Object {
+  [
+    {
       "created_datetime": "2021-01-21T13:10:46.445859+00:00",
       "decoration": null,
       "deleted_datetime": null,

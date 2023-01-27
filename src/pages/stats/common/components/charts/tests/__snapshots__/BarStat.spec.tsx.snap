@@ -7,12 +7,12 @@ exports[`BarStat should render a bar chart 1`] = `
   >
     <Legend
       labels={
-        Array [
-          Object {
+        [
+          {
             "background": "#8892f2",
             "name": "Ticket created",
           },
-          Object {
+          {
             "background": "#a5e5ab",
             "name": "Ticket closed",
           },
@@ -23,11 +23,11 @@ exports[`BarStat should render a bar chart 1`] = `
   <div>
     <ForwardRef
       data={
-        Object {
-          "datasets": Array [
-            Object {
+        {
+          "datasets": [
+            {
               "backgroundColor": "#8892f2",
-              "data": Array [
+              "data": [
                 23,
                 4,
                 445,
@@ -35,9 +35,9 @@ exports[`BarStat should render a bar chart 1`] = `
               ],
               "label": "Ticket created",
             },
-            Object {
+            {
               "backgroundColor": "#a5e5ab",
-              "data": Array [
+              "data": [
                 65,
                 45,
                 87,
@@ -46,7 +46,7 @@ exports[`BarStat should render a bar chart 1`] = `
               "label": "Ticket closed",
             },
           ],
-          "labels": Array [
+          "labels": [
             123434533,
             123435636,
             123456568,
@@ -56,12 +56,12 @@ exports[`BarStat should render a bar chart 1`] = `
       }
       height={360}
       options={
-        Object {
-          "scales": Object {
-            "x": Object {
-              "grid": Object {
+        {
+          "scales": {
+            "x": {
+              "grid": {
                 "borderColor": "#d2d7de",
-                "borderDash": Array [
+                "borderDash": [
                   2,
                   4,
                 ],
@@ -71,19 +71,19 @@ exports[`BarStat should render a bar chart 1`] = `
                 "z": -1,
               },
               "stacked": false,
-              "ticks": Object {
+              "ticks": {
                 "callback": [Function],
                 "color": "#b2bddd",
               },
-              "title": Object {
+              "title": {
                 "color": "#b2bddd",
                 "display": true,
                 "text": "created",
               },
             },
-            "y": Object {
-              "grid": Object {
-                "borderDash": Array [
+            "y": {
+              "grid": {
+                "borderDash": [
                   2,
                   4,
                 ],
@@ -94,11 +94,11 @@ exports[`BarStat should render a bar chart 1`] = `
               },
               "min": 0,
               "suggestedMax": 1,
-              "ticks": Object {
+              "ticks": {
                 "callback": [Function],
                 "color": "#b2bddd",
               },
-              "title": Object {
+              "title": {
                 "color": "#b2bddd",
                 "display": true,
                 "text": "closed",

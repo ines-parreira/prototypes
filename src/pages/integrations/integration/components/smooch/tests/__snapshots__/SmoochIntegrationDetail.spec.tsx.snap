@@ -61,7 +61,7 @@ exports[`<SmoochIntegrationDetail/> render() should render an active integration
     <Row
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -74,7 +74,7 @@ exports[`<SmoochIntegrationDetail/> render() should render an active integration
         md="8"
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -100,40 +100,40 @@ exports[`<SmoochIntegrationDetail/> render() should render an active integration
             label="Language"
             onChange={[Function]}
             options={
-              Array [
-                Object {
+              [
+                {
                   "label": "English US",
                   "value": "en-US",
                 },
-                Object {
+                {
                   "label": "French",
                   "value": "fr",
                 },
-                Object {
+                {
                   "label": "Spanish",
                   "value": "es",
                 },
-                Object {
+                {
                   "label": "Danish",
                   "value": "da",
                 },
-                Object {
+                {
                   "label": "Swedish",
                   "value": "sv",
                 },
-                Object {
+                {
                   "label": "Italian",
                   "value": "it",
                 },
-                Object {
+                {
                   "label": "Dutch",
                   "value": "nl",
                 },
-                Object {
+                {
                   "label": "German",
                   "value": "de",
                 },
-                Object {
+                {
                   "label": "Norwegian",
                   "value": "no",
                 },
@@ -300,7 +300,7 @@ exports[`<SmoochIntegrationDetail/> render() should render an inactive integrati
     <Row
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -313,7 +313,7 @@ exports[`<SmoochIntegrationDetail/> render() should render an inactive integrati
         md="8"
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -339,40 +339,40 @@ exports[`<SmoochIntegrationDetail/> render() should render an inactive integrati
             label="Language"
             onChange={[Function]}
             options={
-              Array [
-                Object {
+              [
+                {
                   "label": "English US",
                   "value": "en-US",
                 },
-                Object {
+                {
                   "label": "French",
                   "value": "fr",
                 },
-                Object {
+                {
                   "label": "Spanish",
                   "value": "es",
                 },
-                Object {
+                {
                   "label": "Danish",
                   "value": "da",
                 },
-                Object {
+                {
                   "label": "Swedish",
                   "value": "sv",
                 },
-                Object {
+                {
                   "label": "Italian",
                   "value": "it",
                 },
-                Object {
+                {
                   "label": "Dutch",
                   "value": "nl",
                 },
-                Object {
+                {
                   "label": "German",
                   "value": "de",
                 },
-                Object {
+                {
                   "label": "Norwegian",
                   "value": "no",
                 },
@@ -538,7 +538,7 @@ exports[`<SmoochIntegrationDetail/> render() should render an integration which 
     <Row
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -551,7 +551,7 @@ exports[`<SmoochIntegrationDetail/> render() should render an integration which 
         md="8"
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -577,40 +577,40 @@ exports[`<SmoochIntegrationDetail/> render() should render an integration which 
             label="Language"
             onChange={[Function]}
             options={
-              Array [
-                Object {
+              [
+                {
                   "label": "English US",
                   "value": "en-US",
                 },
-                Object {
+                {
                   "label": "French",
                   "value": "fr",
                 },
-                Object {
+                {
                   "label": "Spanish",
                   "value": "es",
                 },
-                Object {
+                {
                   "label": "Danish",
                   "value": "da",
                 },
-                Object {
+                {
                   "label": "Swedish",
                   "value": "sv",
                 },
-                Object {
+                {
                   "label": "Italian",
                   "value": "it",
                 },
-                Object {
+                {
                   "label": "Dutch",
                   "value": "nl",
                 },
-                Object {
+                {
                   "label": "German",
                   "value": "de",
                 },
-                Object {
+                {
                   "label": "Norwegian",
                   "value": "no",
                 },

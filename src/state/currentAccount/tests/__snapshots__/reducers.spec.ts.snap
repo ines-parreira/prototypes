@@ -21,8 +21,8 @@ Immutable.Map {
   "_internal": Immutable.Map {
     "loading": Immutable.Map {},
   },
-  "current_subscription": Object {
-    "products": Object {
+  "current_subscription": {
+    "products": {
       "prod_LsH6kV35G6zKWo": "price_1LJBjWI9qXomtXqSPZn8LqlD",
     },
     "staus": "past_due",
@@ -31,26 +31,26 @@ Immutable.Map {
 `;
 
 exports[`current account reducers update account 1`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {
+{
+  "_internal": {
+    "loading": {
       "updateAccount": true,
     },
   },
-  "settings": Array [],
+  "settings": [],
 }
 `;
 
 exports[`current account reducers update account 2`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {
+{
+  "_internal": {
+    "loading": {
       "updateAccount": false,
     },
   },
   "current_subscription": undefined,
-  "settings": Array [
-    Object {
+  "settings": [
+    {
       "id": 10,
     },
   ],
@@ -58,33 +58,33 @@ Object {
 `;
 
 exports[`current account reducers update account 3`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {
+{
+  "_internal": {
+    "loading": {
       "updateAccount": false,
     },
   },
-  "settings": Array [],
+  "settings": [],
 }
 `;
 
 exports[`current account reducers update account owner 1`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {},
+{
+  "_internal": {
+    "loading": {},
   },
-  "settings": Array [],
+  "settings": [],
   "user_id": 1,
 }
 `;
 
 exports[`current account reducers update setting 1`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {},
+{
+  "_internal": {
+    "loading": {},
   },
-  "settings": Array [
-    Object {
+  "settings": [
+    {
       "hello": "world",
     },
   ],
@@ -92,12 +92,12 @@ Object {
 `;
 
 exports[`current account reducers update setting 2`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {},
+{
+  "_internal": {
+    "loading": {},
   },
-  "settings": Array [
-    Object {
+  "settings": [
+    {
       "hello": "world",
       "id": 1,
     },
@@ -106,29 +106,29 @@ Object {
 `;
 
 exports[`current account reducers update subscription with an existing subscription 1`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {},
+{
+  "_internal": {
+    "loading": {},
   },
-  "current_subscription": Object {
-    "products": Object {
+  "current_subscription": {
+    "products": {
       "prod_LsH6kV35G6zKWo": "price_1LJBjdI9qXomtXqS8RzPPA7K",
     },
   },
-  "settings": Array [],
+  "settings": [],
 }
 `;
 
 exports[`current account reducers update subscription without any existing subscription 1`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {},
+{
+  "_internal": {
+    "loading": {},
   },
-  "current_subscription": Object {
-    "products": Object {
+  "current_subscription": {
+    "products": {
       "prod_LsH6kV35G6zKWo": "price_1LJBjWI9qXomtXqSPZn8LqlD",
     },
   },
-  "settings": Array [],
+  "settings": [],
 }
 `;

@@ -1,16 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`init notifyAccountNotVerified() should dispatch a notification because the base email integration is not verified 1`] = `
-Array [
-  Object {
-    "payload": Object {
+[
+  {
+    "payload": {
       "allowHTML": true,
-      "buttons": Array [],
+      "buttons": [],
       "closeButton": false,
       "dismissAfter": 0,
       "dismissible": false,
       "id": "account-not-verified-notification",
-      "message": "Your email address is not verified. <span class=\\"text-primary\\">Click here to resend the verification email.</span>",
+      "message": "Your email address is not verified. <span class="text-primary">Click here to resend the verification email.</span>",
       "onClick": [Function],
       "position": "top-center",
       "status": "warning",
@@ -21,19 +21,19 @@ Array [
 ]
 `;
 
-exports[`init notifyAccountNotVerified() should not do anything because the base email integration is verified 1`] = `Array []`;
+exports[`init notifyAccountNotVerified() should not do anything because the base email integration is verified 1`] = `[]`;
 
 exports[`init notifyDeprecatedTld() should dispatch a notification because the URL's TLD is \`.io\` 1`] = `
-Array [
-  Object {
-    "payload": Object {
+[
+  {
+    "payload": {
       "allowHTML": true,
-      "buttons": Array [],
+      "buttons": [],
       "closeButton": false,
       "dismissAfter": 0,
       "dismissible": false,
       "id": "deprecated-tld-notification",
-      "message": "We're now a dot-com 🎉 please update your helpdesk links and bookmarks to <span class=\\"text-primary\\">https://acme.gorgias.com/</span>. This message will be hidden after you login there.",
+      "message": "We're now a dot-com 🎉 please update your helpdesk links and bookmarks to <span class="text-primary">https://acme.gorgias.com/</span>. This message will be hidden after you login there.",
       "onClick": [Function],
       "position": "top-center",
       "status": "warning",
@@ -44,14 +44,14 @@ Array [
 ]
 `;
 
-exports[`init notifyDeprecatedTld() should not do anything because the URL's TLD is not \`.io\` 1`] = `Array []`;
+exports[`init notifyDeprecatedTld() should not do anything because the URL's TLD is not \`.io\` 1`] = `[]`;
 
 exports[`init notifyUserImpersonated() should dispatch a notification because user is impersonated 1`] = `
-Array [
-  Object {
-    "payload": Object {
+[
+  {
+    "payload": {
       "allowHTML": true,
-      "buttons": Array [],
+      "buttons": [],
       "closeButton": false,
       "dismissAfter": 0,
       "dismissible": false,
@@ -66,10 +66,10 @@ Array [
 ]
 `;
 
-exports[`init notifyUserImpersonated() should not do anything because user is not impersonated 1`] = `Array []`;
+exports[`init notifyUserImpersonated() should not do anything because user is not impersonated 1`] = `[]`;
 
 exports[`init toInitialStoreState() should return the expected store state 1`] = `
-Object {
+{
   "agents": Immutable.Map {
     "all": Immutable.List [
       Immutable.Map {
@@ -1302,12 +1302,12 @@ Object {
     "email": "alex@gorgias.io",
     "updated_datetime": "2016-12-22T19:36:12.489432+00:00",
   },
-  "entities": Object {
-    "phoneNumbers": Object {},
-    "sections": Object {
-      "1": Object {
+  "entities": {
+    "phoneNumbers": {},
+    "sections": {
+      "1": {
         "created_datetime": "2020-10-20T15:10:01.996156+00:00",
-        "decoration": Object {
+        "decoration": {
           "emoji": "😀",
         },
         "id": 1,
@@ -1317,10 +1317,10 @@ Object {
         "uri": "/api/view-sections/1/",
       },
     },
-    "tags": Object {
-      "4": Object {
+    "tags": {
+      "4": {
         "created_datetime": "2020-10-20T14:57:28.155180+00:00",
-        "decoration": Object {
+        "decoration": {
           "color": "#ABB8C3",
         },
         "deleted_datetime": null,
@@ -1330,20 +1330,20 @@ Object {
         "uri": "/api/tags/4/",
       },
     },
-    "views": Object {
-      "9": Object {
+    "views": {
+      "9": {
         "category": "system",
         "created_datetime": "2020-10-20T14:57:27.612323+00:00",
         "deactivated_datetime": null,
         "decoration": null,
-        "fields": Array [
+        "fields": [
           "name",
           "email",
           "created",
           "updated",
         ],
-        "filters": "eq(user.roles.name, \\"user\\")",
-        "filters_ast": Object {},
+        "filters": "eq(user.roles.name, "user")",
+        "filters_ast": {},
         "group_by": null,
         "id": 9,
         "name": "All customers",
@@ -1464,7 +1464,7 @@ Object {
         ],
         "type": "customer-list",
         "id": 9,
-        "filters": "eq(user.roles.name, \\"user\\")",
+        "filters": "eq(user.roles.name, "user")",
         "order_dir": "desc",
         "filters_ast": Immutable.Map {},
         "category": "system",

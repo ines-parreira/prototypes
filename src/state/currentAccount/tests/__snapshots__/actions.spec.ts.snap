@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`current account actions setCurrentSubscription() should return a Redux action to set the current subscription. 1`] = `
-Object {
+{
   "subscription": Immutable.Map {
     "products": Immutable.Map {
       "prod_LsH6kV35G6zKWo": "price_1LJBjWI9qXomtXqSPZn8LqlD",
@@ -13,10 +13,10 @@ Object {
 `;
 
 exports[`current account actions submit setting creation 1`] = `
-Array [
-  Object {
+[
+  {
     "isUpdate": false,
-    "setting": Object {
+    "setting": {
       "hello": "world",
     },
     "type": "UPDATE_ACCOUNT_SETTING",
@@ -25,10 +25,10 @@ Array [
 `;
 
 exports[`current account actions submit setting update 1`] = `
-Array [
-  Object {
+[
+  {
     "isUpdate": true,
-    "setting": Object {
+    "setting": {
       "hello": "world",
       "id": 1,
     },
@@ -38,14 +38,14 @@ Array [
 `;
 
 exports[`current account actions submitSettingSuccess should dispatch the next setting 1`] = `
-Array [
-  Object {
+[
+  {
     "isUpdate": false,
-    "setting": Object {
-      "data": Object {
-        "view_sections": Object {},
-        "views": Object {
-          "1": Object {
+    "setting": {
+      "data": {
+        "view_sections": {},
+        "views": {
+          "1": {
             "display_order": 2,
           },
         },
@@ -59,12 +59,12 @@ Array [
 `;
 
 exports[`current account actions update account 1`] = `
-Array [
-  Object {
+[
+  {
     "type": "UPDATE_ACCOUNT_START",
   },
-  Object {
-    "resp": Object {
+  {
+    "resp": {
       "id": 2,
     },
     "type": "UPDATE_ACCOUNT_SUCCESS",
@@ -73,8 +73,8 @@ Array [
 `;
 
 exports[`current account actions update account owner update account owner 1`] = `
-Array [
-  Object {
+[
+  {
     "type": "UPDATE_ACCOUNT_OWNER_SUCCESS",
     "userId": 1,
   },
@@ -82,10 +82,10 @@ Array [
 `;
 
 exports[`current account actions update subscription update subscription 1`] = `
-Array [
-  Object {
-    "subscription": Object {
-      "prices": Array [
+[
+  {
+    "subscription": {
+      "prices": [
         "price_1LJBjWI9qXomtXqSPZn8LqlD",
       ],
     },

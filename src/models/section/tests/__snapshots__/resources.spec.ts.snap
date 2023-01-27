@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`section resources createSection should resolve with a new Section on success 1`] = `
-Object {
+{
   "created_datetime": "2020-10-14T14:26:35.921523+00:00",
   "decoration": null,
   "id": 1,
@@ -13,17 +13,17 @@ Object {
 `;
 
 exports[`section resources createSection should resolve with a new Section on success 2`] = `
-Object {
-  "delete": Array [],
-  "get": Array [],
-  "head": Array [],
-  "list": Array [],
-  "options": Array [],
-  "patch": Array [],
-  "post": Array [
-    Object {
-      "data": "{\\"name\\":\\"foo\\",\\"private\\":false,\\"decoration\\":null}",
-      "headers": Object {
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [
+    {
+      "data": "{"name":"foo","private":false,"decoration":null}",
+      "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
         "X-CSRF-Token": "abcd",
@@ -33,10 +33,10 @@ Object {
       "maxContentLength": -1,
       "method": "post",
       "timeout": 0,
-      "transformRequest": Array [
+      "transformRequest": [
         [Function],
       ],
-      "transformResponse": Array [
+      "transformResponse": [
         [Function],
       ],
       "url": "/api/view-sections/",
@@ -45,16 +45,16 @@ Object {
       "xsrfHeaderName": "X-XSRF-TOKEN",
     },
   ],
-  "put": Array [],
+  "put": [],
 }
 `;
 
 exports[`section resources deleteSection should resolve on success 1`] = `undefined`;
 
 exports[`section resources fetchSections should resolve with a Section list on success 1`] = `
-Object {
-  "data": Array [
-    Object {
+{
+  "data": [
+    {
       "created_datetime": "2020-10-14T14:26:35.921523+00:00",
       "decoration": null,
       "id": 1,
@@ -63,7 +63,7 @@ Object {
       "updated_datetime": "2020-10-14T14:26:35.921523+00:00",
       "uri": "foo",
     },
-    Object {
+    {
       "created_datetime": "2020-10-14T14:26:35.921523+00:00",
       "decoration": null,
       "id": 1,
@@ -72,7 +72,7 @@ Object {
       "updated_datetime": "2020-10-14T14:26:35.921523+00:00",
       "uri": "foo",
     },
-    Object {
+    {
       "created_datetime": "2020-10-14T14:26:35.921523+00:00",
       "decoration": null,
       "id": 1,
@@ -86,7 +86,7 @@ Object {
 `;
 
 exports[`section resources updateSection should resolve with an updated Section on success 1`] = `
-Object {
+{
   "created_datetime": "2020-10-14T14:26:35.921523+00:00",
   "decoration": null,
   "id": 1,
@@ -98,18 +98,18 @@ Object {
 `;
 
 exports[`section resources updateSection should resolve with an updated Section on success 2`] = `
-Object {
-  "delete": Array [],
-  "get": Array [],
-  "head": Array [],
-  "list": Array [],
-  "options": Array [],
-  "patch": Array [],
-  "post": Array [],
-  "put": Array [
-    Object {
-      "data": "{\\"decoration\\":null,\\"name\\":\\"foo\\"}",
-      "headers": Object {
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [
+    {
+      "data": "{"decoration":null,"name":"foo"}",
+      "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
         "X-CSRF-Token": "abcd",
@@ -119,10 +119,10 @@ Object {
       "maxContentLength": -1,
       "method": "put",
       "timeout": 0,
-      "transformRequest": Array [
+      "transformRequest": [
         [Function],
       ],
-      "transformResponse": Array [
+      "transformResponse": [
         [Function],
       ],
       "url": "/api/view-sections/1/",

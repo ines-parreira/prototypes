@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`macro actions deleteMacro should dispatch a notify action on success 1`] = `
-Array [
-  Object {
+[
+  {
     "payload": 1,
     "type": "DELETE_MACRO",
   },
@@ -10,8 +10,8 @@ Array [
 `;
 
 exports[`macro actions deleteMacro should dispatch an error action 1`] = `
-Array [
-  Object {
+[
+  {
     "error": [Error: Request failed with status code 404],
     "reason": "Failed to delete macro",
     "type": "DELETE_MACRO_ERROR",

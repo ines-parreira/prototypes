@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`errors util initErrorReporter should init sentry 1`] = `
-Array [
-  Array [
-    Object {
-      "denyUrls": Array [
+[
+  [
+    {
+      "denyUrls": [
         /extensions\\\\//i,
         /\\^chrome:\\\\/\\\\//i,
         /draft-js\\\\/lib/i,
@@ -13,7 +13,7 @@ Array [
       "dsn": "https://example.com/error",
       "enabled": true,
       "environment": "development",
-      "ignoreErrors": Array [
+      "ignoreErrors": [
         "fb_xd_fragment",
         "ResizeObserver loop completed with undelivered notifications",
         "TypeError: Failed to fetch",
@@ -22,11 +22,11 @@ Array [
         /\\^Error: timeout of \\\\d\\+ms exceeded\\$/,
         "ResizeObserver loop limit exceeded",
       ],
-      "integrations": Array [
+      "integrations": [
         BrowserTracing {
           "_createRouteTransaction": [Function],
           "name": "BrowserTracing",
-          "options": Object {
+          "options": {
             "finalTimeout": 30000,
             "idleTimeout": 1000,
             "markBackgroundTransactions": true,
@@ -35,7 +35,7 @@ Array [
             "startTransactionOnPageLoad": true,
             "traceFetch": true,
             "traceXHR": true,
-            "tracingOrigins": Array [
+            "tracingOrigins": [
               "localhost",
               /\\^\\\\//,
             ],
@@ -50,9 +50,9 @@ Array [
 `;
 
 exports[`errors util initErrorReporter should set user when currentUser option is defined 1`] = `
-Array [
-  Array [
-    Object {
+[
+  [
+    {
       "email": "alex@gorgias.io",
       "id": "2",
       "name": "Alex Plugaru",
@@ -62,13 +62,13 @@ Array [
 `;
 
 exports[`errors util reportError should only display error on the console in development environment 1`] = `
-Array [
-  Array [
+[
+  [
     [Error: Test error],
   ],
-  Array [
+  [
     "Error extra:",
-    Object {
+    {
       "foo": "bar",
     },
   ],
@@ -76,11 +76,11 @@ Array [
 `;
 
 exports[`errors util reportError should only report error to Sentry in production environment 1`] = `
-Array [
-  Array [
+[
+  [
     [Error: Test error],
-    Object {
-      "extra": Object {
+    {
+      "extra": {
         "foo": "bar",
       },
     },
@@ -89,11 +89,11 @@ Array [
 `;
 
 exports[`errors util reportError should report error to Sentry and display error on the console in staging environment 1`] = `
-Array [
-  Array [
+[
+  [
     [Error: Test error],
-    Object {
-      "extra": Object {
+    {
+      "extra": {
         "foo": "bar",
       },
     },
@@ -102,13 +102,13 @@ Array [
 `;
 
 exports[`errors util reportError should report error to Sentry and display error on the console in staging environment 2`] = `
-Array [
-  Array [
+[
+  [
     [Error: Test error],
   ],
-  Array [
+  [
     "Error extra:",
-    Object {
+    {
       "foo": "bar",
     },
   ],

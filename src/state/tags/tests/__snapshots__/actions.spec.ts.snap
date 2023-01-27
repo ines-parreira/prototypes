@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`tags actions addTags 1`] = `
-Array [
-  Object {
-    "tags": Array [
+[
+  {
+    "tags": [
       "refund",
       "rejected",
     ],
@@ -13,8 +13,8 @@ Array [
 `;
 
 exports[`tags actions bulkDelete 1`] = `
-Array [
-  Object {
+[
+  {
     "error": [Error: Request failed with status code 404],
     "type": "REMOVE_TAG_ERROR",
     "verbose": true,
@@ -23,8 +23,8 @@ Array [
 `;
 
 exports[`tags actions bulkDelete error 1`] = `
-Array [
-  Object {
+[
+  {
     "error": [Error: Request failed with status code 404],
     "type": "REMOVE_TAG_ERROR",
     "verbose": true,
@@ -33,9 +33,9 @@ Array [
 `;
 
 exports[`tags actions cancel 1`] = `
-Array [
-  Object {
-    "tag": Object {
+[
+  {
+    "tag": {
       "id": 1,
     },
     "type": "EDIT_TAG_CANCEL",
@@ -44,15 +44,15 @@ Array [
 `;
 
 exports[`tags actions create 1`] = `
-Array [
-  Object {
-    "tag": Object {
+[
+  {
+    "tag": {
       "id": 1,
     },
     "type": "CREATE_TAG_START",
   },
-  Object {
-    "tag": Object {
+  {
+    "tag": {
       "id": 1,
     },
     "type": "CREATE_TAG_SUCCESS",
@@ -61,9 +61,9 @@ Array [
 `;
 
 exports[`tags actions edit 1`] = `
-Array [
-  Object {
-    "tag": Object {
+[
+  {
+    "tag": {
       "id": 1,
     },
     "type": "EDIT_TAG",
@@ -72,14 +72,14 @@ Array [
 `;
 
 exports[`tags actions fetchTags params change reverse 1`] = `
-Object {
+{
   "limit": 100,
   "order_by": "usage:asc,name:asc",
 }
 `;
 
 exports[`tags actions fetchTags params search 1`] = `
-Object {
+{
   "limit": 100,
   "order_by": "name:asc",
   "search": "something",
@@ -87,15 +87,15 @@ Object {
 `;
 
 exports[`tags actions fetchTags success actions 1`] = `
-Array [
-  Object {
+[
+  {
     "type": "FETCH_TAG_LIST_START",
   },
-  Object {
-    "resp": Object {
-      "data": Array [
-        Object {
-          "data": Array [
+  {
+    "resp": {
+      "data": [
+        {
+          "data": [
             "refund",
           ],
         },
@@ -107,8 +107,8 @@ Array [
 `;
 
 exports[`tags actions merge 1`] = `
-Array [
-  Object {
+[
+  {
     "ids": Immutable.List [
       1,
       2,
@@ -116,7 +116,7 @@ Array [
     ],
     "type": "MERGE_TAGS",
   },
-  Object {
+  {
     "error": [Error: Request failed with status code 400],
     "reason": "Unable to merge these tags",
     "type": "ERROR",
@@ -125,15 +125,15 @@ Array [
 `;
 
 exports[`tags actions merge error 1`] = `
-Array [
-  Object {
+[
+  {
     "ids": Immutable.List [
       2,
       3,
     ],
     "type": "MERGE_TAGS",
   },
-  Object {
+  {
     "error": [Error: Request failed with status code 400],
     "reason": "Unable to merge these tags",
     "type": "ERROR",
@@ -141,11 +141,11 @@ Array [
 ]
 `;
 
-exports[`tags actions remove 1`] = `Array []`;
+exports[`tags actions remove 1`] = `[]`;
 
 exports[`tags actions remove error 1`] = `
-Array [
-  Object {
+[
+  {
     "error": [Error: Request failed with status code 400],
     "type": "REMOVE_TAG_ERROR",
     "verbose": true,
@@ -154,17 +154,17 @@ Array [
 `;
 
 exports[`tags actions reset meta of tags 1`] = `
-Array [
-  Object {
+[
+  {
     "type": "RESET_META",
   },
 ]
 `;
 
 exports[`tags actions save 1`] = `
-Array [
-  Object {
-    "tag": Object {
+[
+  {
+    "tag": {
       "id": 1,
     },
     "type": "SAVE_TAG",
@@ -173,9 +173,9 @@ Array [
 `;
 
 exports[`tags actions select 1`] = `
-Array [
-  Object {
-    "tag": Object {
+[
+  {
+    "tag": {
       "id": 1,
     },
     "type": "SELECT_TAG",
@@ -184,10 +184,10 @@ Array [
 `;
 
 exports[`tags actions selectAll 1`] = `
-Array [
-  Object {
-    "tags": Array [
-      Object {
+[
+  {
+    "tags": [
+      {
         "id": 1,
       },
     ],

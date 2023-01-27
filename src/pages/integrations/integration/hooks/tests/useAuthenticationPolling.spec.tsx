@@ -121,8 +121,8 @@ describe('useAuthenticationPolling()', () => {
         expect(fetchIntegration).toHaveBeenCalledTimes(0)
         jest.runAllTimers()
         expect(fetchIntegration.mock.calls).toMatchInlineSnapshot(`
-            Array [
-              Array [
+            [
+              [
                 "someId",
                 "someType",
                 true,
@@ -139,12 +139,12 @@ describe('useAuthenticationPolling()', () => {
         expect(history.location.search).toBe('?something=see_me')
         expect(history.location.pathname).toBe('test.com')
         expect(triggerCreateSuccess.mock.calls).toMatchInlineSnapshot(`
-            Array [
-              Array [
-                Object {
+            [
+              [
+                {
                   "id": "someid",
-                  "meta": Object {
-                    "oauth": Object {
+                  "meta": {
+                    "oauth": {
                       "status": "not pending",
                     },
                   },

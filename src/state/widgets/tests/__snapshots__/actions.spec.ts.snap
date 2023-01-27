@@ -1,17 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`actions fetchWidgets() should dispatch results 1`] = `
-Object {
-  "items": Array [
-    Object {
+{
+  "items": [
+    {
       "id": 1,
       "order": 0,
     },
-    Object {
+    {
       "id": 2,
       "order": 1,
     },
-    Object {
+    {
       "id": 3,
       "order": 2,
     },

@@ -5,7 +5,7 @@ exports[`<ViewSharingModal/> render() should render as private 1`] = `
   autoFocus={true}
   backdrop={true}
   backdropTransition={
-    Object {
+    {
       "mountOnEnter": true,
       "timeout": 150,
     }
@@ -16,7 +16,7 @@ exports[`<ViewSharingModal/> render() should render as private 1`] = `
   isOpen={true}
   keyboard={true}
   modalTransition={
-    Object {
+    {
       "timeout": 300,
     }
   }
@@ -85,7 +85,7 @@ exports[`<ViewSharingModal/> render() should render as public 1`] = `
   autoFocus={true}
   backdrop={true}
   backdropTransition={
-    Object {
+    {
       "mountOnEnter": true,
       "timeout": 150,
     }
@@ -96,7 +96,7 @@ exports[`<ViewSharingModal/> render() should render as public 1`] = `
   isOpen={true}
   keyboard={true}
   modalTransition={
-    Object {
+    {
       "timeout": 300,
     }
   }
@@ -165,7 +165,7 @@ exports[`<ViewSharingModal/> render() should render as shared 1`] = `
   autoFocus={true}
   backdrop={true}
   backdropTransition={
-    Object {
+    {
       "mountOnEnter": true,
       "timeout": 150,
     }
@@ -176,7 +176,7 @@ exports[`<ViewSharingModal/> render() should render as shared 1`] = `
   isOpen={true}
   keyboard={true}
   modalTransition={
-    Object {
+    {
       "timeout": 300,
     }
   }

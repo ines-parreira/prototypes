@@ -32,8 +32,6 @@ type MockedRootState = {
     views?: Map<any, any>
 }
 
-jest.addMatchers(immutableMatchers)
-
 const middlewares = [thunk]
 const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
     middlewares
@@ -53,7 +51,7 @@ jest.mock('push.js', () => {
 })
 
 jest.mock('utils', () => {
-    const utils = require.requireActual('utils')
+    const utils = jest.requireActual('utils')
 
     return {
         ...utils,
@@ -86,6 +84,7 @@ describe('ticket actions', () => {
     let mockServer: MockAdapter
 
     beforeEach(() => {
+        expect.extend(immutableMatchers)
         store = mockStore({
             ticket: initialState,
             newMessage: newMessageState,

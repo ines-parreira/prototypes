@@ -1,16 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`FacebookIntegrationInstagramAds actions fetchAds() should fetch ads 1`] = `
-Array [
-  Object {
+[
+  {
     "payload": true,
     "type": "SET_FACEBOOK_ADS_LOADING",
   },
-  Object {
-    "payload": Object {
-      "1": Object {
-        "ads": Object {
-          "postid1": Object {
+  {
+    "payload": {
+      "1": {
+        "ads": {
+          "postid1": {
             "is_active": true,
             "name": "ad 1",
           },
@@ -19,7 +19,7 @@ Array [
     },
     "type": "SET_FACEBOOK_ADS_INTERNALS",
   },
-  Object {
+  {
     "payload": false,
     "type": "SET_FACEBOOK_ADS_LOADING",
   },
@@ -27,20 +27,20 @@ Array [
 `;
 
 exports[`FacebookIntegrationInstagramAds actions updateAd() should activate ad 1`] = `
-Array [
-  Object {
+[
+  {
     "payload": "postid1",
     "type": "ADD_LOADING_FACEBOOK_AD",
   },
-  Object {
-    "payload": Object {
+  {
+    "payload": {
       "id": "postid1",
       "integrationId": 1,
       "isActive": true,
     },
     "type": "UPDATE_ACTIVE_FACEBOOK_AD",
   },
-  Object {
+  {
     "payload": "postid1",
     "type": "REMOVE_LOADING_FACEBOOK_AD",
   },
@@ -48,20 +48,20 @@ Array [
 `;
 
 exports[`FacebookIntegrationInstagramAds actions updateAd() should deactivate ad 1`] = `
-Array [
-  Object {
+[
+  {
     "payload": "postid1",
     "type": "ADD_LOADING_FACEBOOK_AD",
   },
-  Object {
-    "payload": Object {
+  {
+    "payload": {
       "id": "postid1",
       "integrationId": 1,
       "isActive": false,
     },
     "type": "UPDATE_ACTIVE_FACEBOOK_AD",
   },
-  Object {
+  {
     "payload": "postid1",
     "type": "REMOVE_LOADING_FACEBOOK_AD",
   },

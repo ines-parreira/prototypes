@@ -8,12 +8,12 @@ import * as agentFixtures from '../../../fixtures/agents'
 import * as userFixtures from '../../../fixtures/users'
 import {RootState} from '../../types'
 
-jest.addMatchers(immutableMatchers)
-
 describe('agents selectors', () => {
     let state: RootState
 
     beforeEach(() => {
+        expect.extend(immutableMatchers)
+
         state = {
             currentUser: (currentUserInitialState as Map<any, any>).mergeDeep(
                 (fromJS(userFixtures.user) as Map<any, any>).set('id', 2)

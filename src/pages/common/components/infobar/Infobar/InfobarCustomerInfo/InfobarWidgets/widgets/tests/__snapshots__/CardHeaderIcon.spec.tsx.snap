@@ -6,7 +6,7 @@ exports[`<CardHeaderIcon/> render() should render icon 1`] = `
   className="container"
   src="foo.png"
   style={
-    Object {
+    {
       "backgroundColor": "rgba(0, 0, 0, 0)",
     }
   }
@@ -19,7 +19,7 @@ exports[`<CardHeaderIcon/> render() should render icon with color as background-
   className="container"
   src="foo.png"
   style={
-    Object {
+    {
       "backgroundColor": "#123",
     }
   }

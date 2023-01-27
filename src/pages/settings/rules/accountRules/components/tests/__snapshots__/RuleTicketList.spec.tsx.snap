@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<RuleTicketList/> should fetch the tickets on render 1`] = `
-Array [
-  Array [
+[
+  [
     1,
-    Object {
+    {
       "cursor": undefined,
       "limit": 10,
     },

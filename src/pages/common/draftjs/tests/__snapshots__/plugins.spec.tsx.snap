@@ -35,7 +35,7 @@ exports[`DraftJS Plugins render bold text 1`] = `
       role="textbox"
       spellCheck={false}
       style={
-        Object {
+        {
           "WebkitUserSelect": "text",
           "outline": "none",
           "userSelect": "text",
@@ -60,7 +60,7 @@ exports[`DraftJS Plugins render bold text 1`] = `
           >
             <span
               data-offset-key="123-0-0"
-              style={Object {}}
+              style={{}}
             >
               <span
                 data-text="true"
@@ -71,7 +71,7 @@ exports[`DraftJS Plugins render bold text 1`] = `
             <span
               data-offset-key="123-0-1"
               style={
-                Object {
+                {
                   "fontWeight": "bold",
                 }
               }
@@ -84,7 +84,7 @@ exports[`DraftJS Plugins render bold text 1`] = `
             </span>
             <span
               data-offset-key="123-0-2"
-              style={Object {}}
+              style={{}}
             >
               <span
                 data-text="true"
@@ -135,7 +135,7 @@ exports[`DraftJS Plugins render link found in text 1`] = `
       role="textbox"
       spellCheck={false}
       style={
-        Object {
+        {
           "WebkitUserSelect": "text",
           "outline": "none",
           "userSelect": "text",
@@ -160,7 +160,7 @@ exports[`DraftJS Plugins render link found in text 1`] = `
           >
             <span
               data-offset-key="123-0-0"
-              style={Object {}}
+              style={{}}
             >
               <span
                 data-text="true"
@@ -170,7 +170,7 @@ exports[`DraftJS Plugins render link found in text 1`] = `
             </span>
             <span
               data-offset-key="123-0-1"
-              style={Object {}}
+              style={{}}
             >
               <span
                 data-text="true"
@@ -221,7 +221,7 @@ exports[`DraftJS Plugins render simple text 1`] = `
       role="textbox"
       spellCheck={false}
       style={
-        Object {
+        {
           "WebkitUserSelect": "text",
           "outline": "none",
           "userSelect": "text",
@@ -246,7 +246,7 @@ exports[`DraftJS Plugins render simple text 1`] = `
           >
             <span
               data-offset-key="123-0-0"
-              style={Object {}}
+              style={{}}
             >
               <span
                 data-text="true"

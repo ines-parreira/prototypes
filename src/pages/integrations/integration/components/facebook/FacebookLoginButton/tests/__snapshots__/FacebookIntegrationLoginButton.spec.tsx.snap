@@ -3,7 +3,7 @@
 exports[`FacebookIntegrationLoginButton component should render a log in link 1`] = `
 <Provider
   store={
-    Object {
+    {
       "clearActions": [Function],
       "dispatch": [Function],
       "getActions": [Function],
@@ -35,7 +35,7 @@ exports[`FacebookIntegrationLoginButton component should render a log in link 1`
 exports[`FacebookIntegrationLoginButton component should render a reconnect button 1`] = `
 <Provider
   store={
-    Object {
+    {
       "clearActions": [Function],
       "dispatch": [Function],
       "getActions": [Function],

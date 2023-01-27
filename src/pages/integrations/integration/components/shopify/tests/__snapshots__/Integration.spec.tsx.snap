@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<ShopifyIntegration/> render() should have a disabled update button that gets enabled when synchronization is changed and trigger an update 1`] = `
-Array [
-  Array [
+[
+  [
     Immutable.Map {
       "meta": Immutable.Map {
         "sync_customer_notes": false,
@@ -183,8 +183,8 @@ exports[`<ShopifyIntegration/> render() should render an integration with a dele
 `;
 
 exports[`<ShopifyIntegration/> render() should render an integration with a delete button that deletes the integration 2`] = `
-Array [
-  Array [
+[
+  [
     Immutable.Map {},
   ],
 ]

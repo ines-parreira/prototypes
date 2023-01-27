@@ -106,7 +106,7 @@ exports[`ViewTable::Table::Cell default cell with no click handler passed (cant 
 `;
 
 exports[`ViewTable::Table::Cell should use default props 1`] = `
-Object {
+{
   "children": <div
     className="cell-wrapper"
   >

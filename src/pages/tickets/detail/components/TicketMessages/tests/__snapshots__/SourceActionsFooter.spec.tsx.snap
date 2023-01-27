@@ -39,7 +39,7 @@ exports[`<SourceActionsFooter/> should only render a \`Like\` action because it'
 `;
 
 exports[`<SourceActionsFooter/> should render a \`Unlike\` action because it's a Facebook message with already a page reaction 1`] = `
-Array [
+[
   <span
     class="pageReactionBadge badge badge-light badge-pill"
   >
@@ -80,7 +80,7 @@ Array [
 `;
 
 exports[`<SourceActionsFooter/> should render a \`Unlike\` action because it's a Facebook message with already a page reaction 2`] = `
-Array [
+[
   <span
     class="pageReactionBadge badge badge-light badge-pill"
   >
@@ -125,7 +125,7 @@ exports[`<SourceActionsFooter/> should render nothing because it's a duplicated 
 exports[`<SourceActionsFooter/> should render nothing because it's a duplicated Facebook message 2`] = `null`;
 
 exports[`<SourceActionsFooter/> should render page, customer and other reactions because we have all three types of reactions 1`] = `
-Array [
+[
   <span
     class="pageReactionBadge badge badge-light badge-pill"
   >
@@ -176,7 +176,7 @@ Array [
 `;
 
 exports[`<SourceActionsFooter/> should render page, customer and other reactions because we have all three types of reactions 2`] = `
-Array [
+[
   <span
     class="pageReactionBadge badge badge-light badge-pill"
   >
@@ -227,7 +227,7 @@ Array [
 `;
 
 exports[`<SourceActionsFooter/> should render text reactions because the reactions types have no corresponding icons 1`] = `
-Array [
+[
   <span
     class="pageReactionBadge badge badge-light badge-pill"
   >
@@ -285,7 +285,7 @@ Array [
 `;
 
 exports[`<SourceActionsFooter/> should render text reactions because the reactions types have no corresponding icons 2`] = `
-Array [
+[
   <span
     class="pageReactionBadge badge badge-light badge-pill"
   >
@@ -343,7 +343,7 @@ Array [
 `;
 
 exports[`<SourceActionsFooter/> should render the customer's reaction and a \`Like\` action because the message has a customer reaction and no page reaction 1`] = `
-Array [
+[
   <span
     class="mr-3"
   >
@@ -399,7 +399,7 @@ Array [
 `;
 
 exports[`<SourceActionsFooter/> should render the customer's reaction and a \`Like\` action because the message has a customer reaction and no page reaction 2`] = `
-Array [
+[
   <span
     class="mr-3"
   >

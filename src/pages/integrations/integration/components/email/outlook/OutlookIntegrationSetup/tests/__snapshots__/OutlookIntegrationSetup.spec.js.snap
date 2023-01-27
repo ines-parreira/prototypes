@@ -36,7 +36,7 @@ exports[`<OutlookIntegrationSetup/> render() should render the list of integrati
       onChange={[Function]}
       placeholder="Search addresses..."
       searchDebounceTime={300}
-      style={Object {}}
+      style={{}}
     />
   </PageHeader>
   <Container
@@ -110,7 +110,7 @@ exports[`<OutlookIntegrationSetup/> render() should render the list of integrati
       onChange={[Function]}
       placeholder="Search addresses..."
       searchDebounceTime={300}
-      style={Object {}}
+      style={{}}
     />
   </PageHeader>
   <Container
@@ -223,7 +223,7 @@ exports[`<OutlookIntegrationSetup/> render() should render the list of integrati
       onChange={[Function]}
       placeholder="Search addresses..."
       searchDebounceTime={300}
-      style={Object {}}
+      style={{}}
     />
   </PageHeader>
   <Container

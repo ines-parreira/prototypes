@@ -57,12 +57,12 @@ describe('<ManualIntegrationForm/>', () => {
                 target: {value: 'tokensecret'},
             })
 
-            fireEvent.click(screen.getByRole('button', {name: 'Connect App'}))
+            fireEvent.submit(screen.getByRole('button', {name: 'Connect App'}))
 
             expect(updateOrCreateIntegrationRequest.mock.calls)
                 .toMatchInlineSnapshot(`
-                Array [
-                  Array [
+                [
+                  [
                     Immutable.Map {
                       "type": "magento2",
                       "connections": Immutable.List [
@@ -129,8 +129,8 @@ describe('<ManualIntegrationForm/>', () => {
 
             expect(updateOrCreateIntegrationRequest.mock.calls)
                 .toMatchInlineSnapshot(`
-                Array [
-                  Array [
+                [
+                  [
                     Immutable.Map {
                       "meta": Immutable.Map {
                         "admin_url_suffix": "admin",
@@ -182,8 +182,8 @@ describe('<ManualIntegrationForm/>', () => {
             )
 
             expect(deleteIntegration.mock.calls).toMatchInlineSnapshot(`
-                Array [
-                  Array [
+                [
+                  [
                     Immutable.Map {
                       "meta": Immutable.Map {
                         "admin_url_suffix": "admin",

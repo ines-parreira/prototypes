@@ -12,7 +12,7 @@ exports[`NormalizedLineStat should render a line chart with total and disabled l
 <Row
   tag="div"
   widths={
-    Array [
+    [
       "xs",
       "sm",
       "md",
@@ -27,7 +27,7 @@ exports[`NormalizedLineStat should render a line chart with total and disabled l
     sm={12}
     tag="div"
     widths={
-      Array [
+      [
         "xs",
         "sm",
         "md",
@@ -39,13 +39,13 @@ exports[`NormalizedLineStat should render a line chart with total and disabled l
     <div>
       <ForwardRef
         data={
-          Object {
-            "datasets": Array [
-              Object {
+          {
+            "datasets": [
+              {
                 "backgroundColor": "#1D786B",
                 "borderColor": "#1D786B",
                 "borderWidth": 1,
-                "data": Array [
+                "data": [
                   23,
                   4,
                   445,
@@ -60,11 +60,11 @@ exports[`NormalizedLineStat should render a line chart with total and disabled l
                 "pointHoverRadius": 6,
                 "pointRadius": 4,
               },
-              Object {
+              {
                 "backgroundColor": "#001874",
                 "borderColor": "#001874",
                 "borderWidth": 1,
-                "data": Array [
+                "data": [
                   65,
                   45,
                   87,
@@ -79,11 +79,11 @@ exports[`NormalizedLineStat should render a line chart with total and disabled l
                 "pointHoverRadius": 6,
                 "pointRadius": 4,
               },
-              Object {
+              {
                 "backgroundColor": "#4A8DF9",
                 "borderColor": "#4A8DF9",
                 "borderWidth": 1,
-                "data": Array [
+                "data": [
                   65,
                   45,
                   87,
@@ -98,11 +98,11 @@ exports[`NormalizedLineStat should render a line chart with total and disabled l
                 "pointHoverRadius": 6,
                 "pointRadius": 4,
               },
-              Object {
+              {
                 "backgroundColor": "#74B510",
                 "borderColor": "#74B510",
                 "borderWidth": 1,
-                "data": Array [
+                "data": [
                   65,
                   45,
                   87,
@@ -118,7 +118,7 @@ exports[`NormalizedLineStat should render a line chart with total and disabled l
                 "pointRadius": 4,
               },
             ],
-            "labels": Array [
+            "labels": [
               123434533,
               123435636,
               123456568,
@@ -128,53 +128,53 @@ exports[`NormalizedLineStat should render a line chart with total and disabled l
         }
         height={360}
         options={
-          Object {
-            "plugins": Object {
-              "tooltip": Object {
+          {
+            "plugins": {
+              "tooltip": {
                 "intersect": true,
                 "position": "nearest",
               },
             },
-            "scales": Object {
-              "x": Object {
-                "grid": Object {
+            "scales": {
+              "x": {
+                "grid": {
                   "borderColor": "#d2d7de",
-                  "borderDash": Array [
+                  "borderDash": [
                     2,
                   ],
                   "color": "#dfe3f1",
                   "display": true,
                   "drawBorder": true,
-                  "tickBorderDash": Array [
+                  "tickBorderDash": [
                     2,
                   ],
                   "z": -1,
                 },
                 "offset": true,
-                "ticks": Object {
+                "ticks": {
                   "callback": [Function],
                   "color": "#b2bddd",
                 },
               },
-              "y": Object {
-                "grid": Object {
-                  "borderDash": Array [
+              "y": {
+                "grid": {
+                  "borderDash": [
                     2,
                   ],
                   "color": "#dfe3f1",
                   "drawBorder": true,
                   "drawTicks": false,
-                  "tickBorderDash": Array [
+                  "tickBorderDash": [
                     2,
                   ],
                   "z": -1,
                 },
                 "min": 0,
-                "ticks": Object {
+                "ticks": {
                   "color": "#b2bddd",
                   "padding": 10,
                 },
-                "title": Object {
+                "title": {
                   "color": "#b2bddd",
                   "display": true,
                   "text": "Interactions",
@@ -193,7 +193,7 @@ exports[`NormalizedLineStat should render a line chart with total and disabled l
     sm={12}
     tag="div"
     widths={
-      Array [
+      [
         "xs",
         "sm",
         "md",
@@ -216,7 +216,7 @@ exports[`NormalizedLineStat should render a line chart with total and disabled l
           <span
             className="circle mr-2"
             style={
-              Object {
+              {
                 "backgroundColor": "#1D786B",
               }
             }
@@ -240,7 +240,7 @@ exports[`NormalizedLineStat should render a line chart with total and disabled l
           <span
             className="circle mr-2"
             style={
-              Object {
+              {
                 "backgroundColor": "#001874",
               }
             }
@@ -264,7 +264,7 @@ exports[`NormalizedLineStat should render a line chart with total and disabled l
           <span
             className="circle mr-2"
             style={
-              Object {
+              {
                 "backgroundColor": "#4A8DF9",
               }
             }
@@ -288,7 +288,7 @@ exports[`NormalizedLineStat should render a line chart with total and disabled l
           <span
             className="circle mr-2"
             style={
-              Object {
+              {
                 "backgroundColor": "#74B510",
               }
             }

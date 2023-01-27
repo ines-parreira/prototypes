@@ -1,20 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SearchResults utils searchResultsTreeFromAlgolia returns a result tree with lazy articles and categories 1`] = `
-Object {
-  "categorized": Array [
-    Object {
-      "algoliaHits": Object {},
-      "category": Object {
-        "available_locales": Array [
+{
+  "categorized": [
+    {
+      "algoliaHits": {},
+      "category": {
+        "available_locales": [
           "en-US",
         ],
-        "children": Array [],
+        "children": [],
         "created_datetime": "2022-03-07T14:46:47.212Z",
         "deleted_datetime": null,
         "help_center_id": 1,
         "id": 28,
-        "translation": Object {
+        "translation": {
           "category_id": 28,
           "category_unlisted_id": "my-unlisted-id-28",
           "created_datetime": "2022-03-07T14:47:03.686Z",
@@ -22,7 +22,7 @@ Object {
           "description": "",
           "locale": "en-US",
           "parent_category_id": null,
-          "seo_meta": Object {
+          "seo_meta": {
             "description": null,
             "title": null,
           },
@@ -34,51 +34,51 @@ Object {
         "unlisted_id": "my-unlisted-id-28",
         "updated_datetime": "2022-03-07T14:46:47.212Z",
       },
-      "children": Array [
-        Object {
-          "algoliaHits": Object {
-            "en-US": Object {
-              "_highlightResult": Object {
-                "parent_category_1": Object {
-                  "description": Object {
+      "children": [
+        {
+          "algoliaHits": {
+            "en-US": {
+              "_highlightResult": {
+                "parent_category_1": {
+                  "description": {
                     "matchLevel": "none",
-                    "matchedWords": Array [],
+                    "matchedWords": [],
                     "value": "",
                   },
-                  "title": Object {
+                  "title": {
                     "matchLevel": "none",
-                    "matchedWords": Array [],
+                    "matchedWords": [],
                     "value": "Cat 1 mod",
                   },
                 },
-                "preview": Object {
+                "preview": {
                   "matchLevel": "none",
-                  "matchedWords": Array [],
+                  "matchedWords": [],
                   "value": "",
                 },
-                "preview_draft": Object {
+                "preview_draft": {
                   "matchLevel": "none",
-                  "matchedWords": Array [],
+                  "matchedWords": [],
                   "value": "",
                 },
-                "title": Object {
+                "title": {
                   "fullyHighlighted": false,
                   "matchLevel": "full",
-                  "matchedWords": Array [
+                  "matchedWords": [
                     "sub",
                   ],
-                  "value": "<span class=\\"search-highlight\\">Sub</span> cat 5 mod",
+                  "value": "<span class="search-highlight">Sub</span> cat 5 mod",
                 },
-                "title_draft": Object {
+                "title_draft": {
                   "fullyHighlighted": false,
                   "matchLevel": "full",
-                  "matchedWords": Array [
+                  "matchedWords": [
                     "sub",
                   ],
-                  "value": "<span class=\\"search-highlight\\">Sub</span> cat 5 mod",
+                  "value": "<span class="search-highlight">Sub</span> cat 5 mod",
                 },
               },
-              "_tags": Array [
+              "_tags": [
                 "level1",
                 "latest_draft",
                 "current",
@@ -89,7 +89,7 @@ Object {
               "id": 39,
               "locale": "en-US",
               "objectID": "category-39/en-US",
-              "parent_category_1": Object {
+              "parent_category_1": {
                 "description": "",
                 "id": 28,
                 "title": "Cat 1 mod",
@@ -108,82 +108,82 @@ Object {
             },
           },
           "category": "loading",
-          "children": Array [
-            Object {
-              "algoliaHits": Object {
-                "en-US": Object {
-                  "_highlightResult": Object {
-                    "article_content": Object {
+          "children": [
+            {
+              "algoliaHits": {
+                "en-US": {
+                  "_highlightResult": {
+                    "article_content": {
                       "fullyHighlighted": false,
                       "matchLevel": "full",
-                      "matchedWords": Array [
+                      "matchedWords": [
                         "sub",
                       ],
-                      "value": "content of art in <span class=\\"search-highlight\\">sub</span> cat 5",
+                      "value": "content of art in <span class="search-highlight">sub</span> cat 5",
                     },
-                    "article_content_draft": Object {
+                    "article_content_draft": {
                       "fullyHighlighted": false,
                       "matchLevel": "full",
-                      "matchedWords": Array [
+                      "matchedWords": [
                         "sub",
                       ],
-                      "value": "content of art in <span class=\\"search-highlight\\">sub</span> cat 5",
+                      "value": "content of art in <span class="search-highlight">sub</span> cat 5",
                     },
-                    "parent_category_1": Object {
-                      "description": Object {
+                    "parent_category_1": {
+                      "description": {
                         "matchLevel": "none",
-                        "matchedWords": Array [],
+                        "matchedWords": [],
                         "value": "",
                       },
-                      "title": Object {
+                      "title": {
                         "fullyHighlighted": false,
                         "matchLevel": "full",
-                        "matchedWords": Array [
+                        "matchedWords": [
                           "sub",
                         ],
-                        "value": "<span class=\\"search-highlight\\">Sub</span> cat 5 mod",
+                        "value": "<span class="search-highlight">Sub</span> cat 5 mod",
                       },
                     },
-                    "parent_category_2": Object {
-                      "description": Object {
+                    "parent_category_2": {
+                      "description": {
                         "matchLevel": "none",
-                        "matchedWords": Array [],
+                        "matchedWords": [],
                         "value": "",
                       },
-                      "title": Object {
+                      "title": {
                         "matchLevel": "none",
-                        "matchedWords": Array [],
+                        "matchedWords": [],
                         "value": "Cat 1 mod",
                       },
                     },
-                    "preview": Object {
+                    "preview": {
                       "matchLevel": "none",
-                      "matchedWords": Array [],
+                      "matchedWords": [],
                       "value": "",
                     },
-                    "preview_draft": Object {
+                    "preview_draft": {
                       "matchLevel": "none",
-                      "matchedWords": Array [],
+                      "matchedWords": [],
                       "value": "",
                     },
-                    "title": Object {
+                    "title": {
                       "fullyHighlighted": false,
                       "matchLevel": "full",
-                      "matchedWords": Array [
+                      "matchedWords": [
                         "sub",
                       ],
-                      "value": "art in <span class=\\"search-highlight\\">sub</span> cat 5 mod",
+                      "value": "art in <span class="search-highlight">sub</span> cat 5 mod",
                     },
-                    "title_draft": Object {
+                    "title_draft": {
                       "fullyHighlighted": false,
                       "matchLevel": "full",
-                      "matchedWords": Array [
+                      "matchedWords": [
                         "sub",
                       ],
-                      "value": "art in <span class=\\"search-highlight\\">sub</span> cat 5 mod",
+                      "value": "art in <span class="search-highlight">sub</span> cat 5 mod",
                     },
                   },
-                  "_tags": Array [
+                  "_tags": [
                     "level1",
                     "level2",
                     "latest_draft",
@@ -197,13 +197,13 @@ Object {
                   "id": 34,
                   "locale": "en-US",
                   "objectID": "article-34/en-US",
-                  "parent_category_1": Object {
+                  "parent_category_1": {
                     "description": "",
                     "id": 39,
                     "title": "Sub cat 5 mod",
                     "visibility_status": "PUBLIC",
                   },
-                  "parent_category_2": Object {
+                  "parent_category_2": {
                     "description": "",
                     "id": 28,
                     "title": "Cat 1 mod",
@@ -229,50 +229,50 @@ Object {
           "id": 39,
           "type": "category",
         },
-        Object {
-          "algoliaHits": Object {
-            "en-US": Object {
-              "_highlightResult": Object {
-                "parent_category_1": Object {
-                  "description": Object {
+        {
+          "algoliaHits": {
+            "en-US": {
+              "_highlightResult": {
+                "parent_category_1": {
+                  "description": {
                     "matchLevel": "none",
-                    "matchedWords": Array [],
+                    "matchedWords": [],
                     "value": "",
                   },
-                  "title": Object {
+                  "title": {
                     "matchLevel": "none",
-                    "matchedWords": Array [],
+                    "matchedWords": [],
                     "value": "Cat 1 mod",
                   },
                 },
-                "preview": Object {
+                "preview": {
                   "matchLevel": "none",
-                  "matchedWords": Array [],
+                  "matchedWords": [],
                   "value": "",
                 },
-                "preview_draft": Object {
+                "preview_draft": {
                   "matchLevel": "none",
-                  "matchedWords": Array [],
+                  "matchedWords": [],
                   "value": "",
                 },
-                "title": Object {
+                "title": {
                   "fullyHighlighted": false,
                   "matchLevel": "full",
-                  "matchedWords": Array [
+                  "matchedWords": [
                     "sub",
                   ],
-                  "value": "<span class=\\"search-highlight\\">Sub</span> cat 4",
+                  "value": "<span class="search-highlight">Sub</span> cat 4",
                 },
-                "title_draft": Object {
+                "title_draft": {
                   "fullyHighlighted": false,
                   "matchLevel": "full",
-                  "matchedWords": Array [
+                  "matchedWords": [
                     "sub",
                   ],
-                  "value": "<span class=\\"search-highlight\\">Sub</span> cat 4",
+                  "value": "<span class="search-highlight">Sub</span> cat 4",
                 },
               },
-              "_tags": Array [
+              "_tags": [
                 "level1",
                 "latest_draft",
                 "current",
@@ -283,7 +283,7 @@ Object {
               "id": 38,
               "locale": "en-US",
               "objectID": "category-38/en-US",
-              "parent_category_1": Object {
+              "parent_category_1": {
                 "description": "",
                 "id": 28,
                 "title": "Cat 1 mod",
@@ -302,54 +302,54 @@ Object {
             },
           },
           "category": "loading",
-          "children": Array [],
+          "children": [],
           "id": 38,
           "type": "category",
         },
-        Object {
-          "algoliaHits": Object {
-            "en-US": Object {
-              "_highlightResult": Object {
-                "parent_category_1": Object {
-                  "description": Object {
+        {
+          "algoliaHits": {
+            "en-US": {
+              "_highlightResult": {
+                "parent_category_1": {
+                  "description": {
                     "matchLevel": "none",
-                    "matchedWords": Array [],
+                    "matchedWords": [],
                     "value": "",
                   },
-                  "title": Object {
+                  "title": {
                     "matchLevel": "none",
-                    "matchedWords": Array [],
+                    "matchedWords": [],
                     "value": "Cat 1 mod",
                   },
                 },
-                "preview": Object {
+                "preview": {
                   "matchLevel": "none",
-                  "matchedWords": Array [],
+                  "matchedWords": [],
                   "value": "",
                 },
-                "preview_draft": Object {
+                "preview_draft": {
                   "matchLevel": "none",
-                  "matchedWords": Array [],
+                  "matchedWords": [],
                   "value": "",
                 },
-                "title": Object {
+                "title": {
                   "fullyHighlighted": false,
                   "matchLevel": "full",
-                  "matchedWords": Array [
+                  "matchedWords": [
                     "sub",
                   ],
-                  "value": "<span class=\\"search-highlight\\">Sub</span> cat 3",
+                  "value": "<span class="search-highlight">Sub</span> cat 3",
                 },
-                "title_draft": Object {
+                "title_draft": {
                   "fullyHighlighted": false,
                   "matchLevel": "full",
-                  "matchedWords": Array [
+                  "matchedWords": [
                     "sub",
                   ],
-                  "value": "<span class=\\"search-highlight\\">Sub</span> cat 3",
+                  "value": "<span class="search-highlight">Sub</span> cat 3",
                 },
               },
-              "_tags": Array [
+              "_tags": [
                 "level1",
                 "latest_draft",
                 "current",
@@ -360,7 +360,7 @@ Object {
               "id": 37,
               "locale": "en-US",
               "objectID": "category-37/en-US",
-              "parent_category_1": Object {
+              "parent_category_1": {
                 "description": "",
                 "id": 28,
                 "title": "Cat 1 mod",
@@ -379,54 +379,54 @@ Object {
             },
           },
           "category": "loading",
-          "children": Array [],
+          "children": [],
           "id": 37,
           "type": "category",
         },
-        Object {
-          "algoliaHits": Object {
-            "en-US": Object {
-              "_highlightResult": Object {
-                "parent_category_1": Object {
-                  "description": Object {
+        {
+          "algoliaHits": {
+            "en-US": {
+              "_highlightResult": {
+                "parent_category_1": {
+                  "description": {
                     "matchLevel": "none",
-                    "matchedWords": Array [],
+                    "matchedWords": [],
                     "value": "",
                   },
-                  "title": Object {
+                  "title": {
                     "matchLevel": "none",
-                    "matchedWords": Array [],
+                    "matchedWords": [],
                     "value": "Cat 1 mod",
                   },
                 },
-                "preview": Object {
+                "preview": {
                   "matchLevel": "none",
-                  "matchedWords": Array [],
+                  "matchedWords": [],
                   "value": "",
                 },
-                "preview_draft": Object {
+                "preview_draft": {
                   "matchLevel": "none",
-                  "matchedWords": Array [],
+                  "matchedWords": [],
                   "value": "",
                 },
-                "title": Object {
+                "title": {
                   "fullyHighlighted": false,
                   "matchLevel": "full",
-                  "matchedWords": Array [
+                  "matchedWords": [
                     "sub",
                   ],
-                  "value": "<span class=\\"search-highlight\\">Sub</span> cat 2",
+                  "value": "<span class="search-highlight">Sub</span> cat 2",
                 },
-                "title_draft": Object {
+                "title_draft": {
                   "fullyHighlighted": false,
                   "matchLevel": "full",
-                  "matchedWords": Array [
+                  "matchedWords": [
                     "sub",
                   ],
-                  "value": "<span class=\\"search-highlight\\">Sub</span> cat 2",
+                  "value": "<span class="search-highlight">Sub</span> cat 2",
                 },
               },
-              "_tags": Array [
+              "_tags": [
                 "level1",
                 "latest_draft",
                 "current",
@@ -437,7 +437,7 @@ Object {
               "id": 35,
               "locale": "en-US",
               "objectID": "category-35/en-US",
-              "parent_category_1": Object {
+              "parent_category_1": {
                 "description": "",
                 "id": 28,
                 "title": "Cat 1 mod",
@@ -456,66 +456,66 @@ Object {
             },
           },
           "category": "loading",
-          "children": Array [
-            Object {
-              "algoliaHits": Object {
-                "en-US": Object {
-                  "_highlightResult": Object {
-                    "parent_category_1": Object {
-                      "description": Object {
+          "children": [
+            {
+              "algoliaHits": {
+                "en-US": {
+                  "_highlightResult": {
+                    "parent_category_1": {
+                      "description": {
                         "matchLevel": "none",
-                        "matchedWords": Array [],
+                        "matchedWords": [],
                         "value": "",
                       },
-                      "title": Object {
+                      "title": {
                         "fullyHighlighted": false,
                         "matchLevel": "full",
-                        "matchedWords": Array [
+                        "matchedWords": [
                           "sub",
                         ],
-                        "value": "<span class=\\"search-highlight\\">Sub</span> cat 2",
+                        "value": "<span class="search-highlight">Sub</span> cat 2",
                       },
                     },
-                    "parent_category_2": Object {
-                      "description": Object {
+                    "parent_category_2": {
+                      "description": {
                         "matchLevel": "none",
-                        "matchedWords": Array [],
+                        "matchedWords": [],
                         "value": "",
                       },
-                      "title": Object {
+                      "title": {
                         "matchLevel": "none",
-                        "matchedWords": Array [],
+                        "matchedWords": [],
                         "value": "Cat 1 mod",
                       },
                     },
-                    "preview": Object {
+                    "preview": {
                       "matchLevel": "none",
-                      "matchedWords": Array [],
+                      "matchedWords": [],
                       "value": "",
                     },
-                    "preview_draft": Object {
+                    "preview_draft": {
                       "matchLevel": "none",
-                      "matchedWords": Array [],
+                      "matchedWords": [],
                       "value": "",
                     },
-                    "title": Object {
+                    "title": {
                       "fullyHighlighted": false,
                       "matchLevel": "full",
-                      "matchedWords": Array [
+                      "matchedWords": [
                         "sub",
                       ],
-                      "value": "<span class=\\"search-highlight\\">Sub</span> <span class=\\"search-highlight\\">sub</span> cat 2",
+                      "value": "<span class="search-highlight">Sub</span> <span class="search-highlight">sub</span> cat 2",
                     },
-                    "title_draft": Object {
+                    "title_draft": {
                       "fullyHighlighted": false,
                       "matchLevel": "full",
-                      "matchedWords": Array [
+                      "matchedWords": [
                         "sub",
                       ],
-                      "value": "<span class=\\"search-highlight\\">Sub</span> <span class=\\"search-highlight\\">sub</span> cat 2",
+                      "value": "<span class="search-highlight">Sub</span> <span class="search-highlight">sub</span> cat 2",
                     },
                   },
-                  "_tags": Array [
+                  "_tags": [
                     "level1",
                     "level2",
                     "latest_draft",
@@ -527,13 +527,13 @@ Object {
                   "id": 36,
                   "locale": "en-US",
                   "objectID": "category-36/en-US",
-                  "parent_category_1": Object {
+                  "parent_category_1": {
                     "description": "",
                     "id": 35,
                     "title": "Sub cat 2",
                     "visibility_status": "PUBLIC",
                   },
-                  "parent_category_2": Object {
+                  "parent_category_2": {
                     "description": "",
                     "id": 28,
                     "title": "Cat 1 mod",
@@ -551,7 +551,7 @@ Object {
                 },
               },
               "category": "loading",
-              "children": Array [],
+              "children": [],
               "id": 36,
               "type": "category",
             },
@@ -559,50 +559,50 @@ Object {
           "id": 35,
           "type": "category",
         },
-        Object {
-          "algoliaHits": Object {
-            "en-US": Object {
-              "_highlightResult": Object {
-                "parent_category_1": Object {
-                  "description": Object {
+        {
+          "algoliaHits": {
+            "en-US": {
+              "_highlightResult": {
+                "parent_category_1": {
+                  "description": {
                     "matchLevel": "none",
-                    "matchedWords": Array [],
+                    "matchedWords": [],
                     "value": "",
                   },
-                  "title": Object {
+                  "title": {
                     "matchLevel": "none",
-                    "matchedWords": Array [],
+                    "matchedWords": [],
                     "value": "Cat 1 mod",
                   },
                 },
-                "preview": Object {
+                "preview": {
                   "matchLevel": "none",
-                  "matchedWords": Array [],
+                  "matchedWords": [],
                   "value": "",
                 },
-                "preview_draft": Object {
+                "preview_draft": {
                   "matchLevel": "none",
-                  "matchedWords": Array [],
+                  "matchedWords": [],
                   "value": "",
                 },
-                "title": Object {
+                "title": {
                   "fullyHighlighted": false,
                   "matchLevel": "full",
-                  "matchedWords": Array [
+                  "matchedWords": [
                     "sub",
                   ],
-                  "value": "<span class=\\"search-highlight\\">Sub</span> cat 1",
+                  "value": "<span class="search-highlight">Sub</span> cat 1",
                 },
-                "title_draft": Object {
+                "title_draft": {
                   "fullyHighlighted": false,
                   "matchLevel": "full",
-                  "matchedWords": Array [
+                  "matchedWords": [
                     "sub",
                   ],
-                  "value": "<span class=\\"search-highlight\\">Sub</span> cat 1",
+                  "value": "<span class="search-highlight">Sub</span> cat 1",
                 },
               },
-              "_tags": Array [
+              "_tags": [
                 "level1",
                 "latest_draft",
                 "current",
@@ -613,7 +613,7 @@ Object {
               "id": 29,
               "locale": "en-US",
               "objectID": "category-29/en-US",
-              "parent_category_1": Object {
+              "parent_category_1": {
                 "description": "",
                 "id": 28,
                 "title": "Cat 1 mod",
@@ -632,66 +632,66 @@ Object {
             },
           },
           "category": "loading",
-          "children": Array [
-            Object {
-              "algoliaHits": Object {
-                "en-US": Object {
-                  "_highlightResult": Object {
-                    "parent_category_1": Object {
-                      "description": Object {
+          "children": [
+            {
+              "algoliaHits": {
+                "en-US": {
+                  "_highlightResult": {
+                    "parent_category_1": {
+                      "description": {
                         "matchLevel": "none",
-                        "matchedWords": Array [],
+                        "matchedWords": [],
                         "value": "",
                       },
-                      "title": Object {
+                      "title": {
                         "fullyHighlighted": false,
                         "matchLevel": "full",
-                        "matchedWords": Array [
+                        "matchedWords": [
                           "sub",
                         ],
-                        "value": "<span class=\\"search-highlight\\">Sub</span> cat 1",
+                        "value": "<span class="search-highlight">Sub</span> cat 1",
                       },
                     },
-                    "parent_category_2": Object {
-                      "description": Object {
+                    "parent_category_2": {
+                      "description": {
                         "matchLevel": "none",
-                        "matchedWords": Array [],
+                        "matchedWords": [],
                         "value": "",
                       },
-                      "title": Object {
+                      "title": {
                         "matchLevel": "none",
-                        "matchedWords": Array [],
+                        "matchedWords": [],
                         "value": "Cat 1 mod",
                       },
                     },
-                    "preview": Object {
+                    "preview": {
                       "matchLevel": "none",
-                      "matchedWords": Array [],
+                      "matchedWords": [],
                       "value": "",
                     },
-                    "preview_draft": Object {
+                    "preview_draft": {
                       "matchLevel": "none",
-                      "matchedWords": Array [],
+                      "matchedWords": [],
                       "value": "",
                     },
-                    "title": Object {
+                    "title": {
                       "fullyHighlighted": false,
                       "matchLevel": "full",
-                      "matchedWords": Array [
+                      "matchedWords": [
                         "sub",
                       ],
-                      "value": "<span class=\\"search-highlight\\">Sub</span> <span class=\\"search-highlight\\">sub</span> cat 1",
+                      "value": "<span class="search-highlight">Sub</span> <span class="search-highlight">sub</span> cat 1",
                     },
-                    "title_draft": Object {
+                    "title_draft": {
                       "fullyHighlighted": false,
                       "matchLevel": "full",
-                      "matchedWords": Array [
+                      "matchedWords": [
                         "sub",
                       ],
-                      "value": "<span class=\\"search-highlight\\">Sub</span> <span class=\\"search-highlight\\">sub</span> cat 1",
+                      "value": "<span class="search-highlight">Sub</span> <span class="search-highlight">sub</span> cat 1",
                     },
                   },
-                  "_tags": Array [
+                  "_tags": [
                     "level1",
                     "level2",
                     "latest_draft",
@@ -703,13 +703,13 @@ Object {
                   "id": 30,
                   "locale": "en-US",
                   "objectID": "category-30/en-US",
-                  "parent_category_1": Object {
+                  "parent_category_1": {
                     "description": "",
                     "id": 29,
                     "title": "Sub cat 1",
                     "visibility_status": "PUBLIC",
                   },
-                  "parent_category_2": Object {
+                  "parent_category_2": {
                     "description": "",
                     "id": 28,
                     "title": "Cat 1 mod",
@@ -727,81 +727,81 @@ Object {
                 },
               },
               "category": "loading",
-              "children": Array [
-                Object {
-                  "algoliaHits": Object {
-                    "en-US": Object {
-                      "_highlightResult": Object {
-                        "parent_category_1": Object {
-                          "description": Object {
+              "children": [
+                {
+                  "algoliaHits": {
+                    "en-US": {
+                      "_highlightResult": {
+                        "parent_category_1": {
+                          "description": {
                             "matchLevel": "none",
-                            "matchedWords": Array [],
+                            "matchedWords": [],
                             "value": "",
                           },
-                          "title": Object {
+                          "title": {
                             "fullyHighlighted": false,
                             "matchLevel": "full",
-                            "matchedWords": Array [
+                            "matchedWords": [
                               "sub",
                             ],
-                            "value": "<span class=\\"search-highlight\\">Sub</span> <span class=\\"search-highlight\\">sub</span> cat 1",
+                            "value": "<span class="search-highlight">Sub</span> <span class="search-highlight">sub</span> cat 1",
                           },
                         },
-                        "parent_category_2": Object {
-                          "description": Object {
+                        "parent_category_2": {
+                          "description": {
                             "matchLevel": "none",
-                            "matchedWords": Array [],
+                            "matchedWords": [],
                             "value": "",
                           },
-                          "title": Object {
+                          "title": {
                             "fullyHighlighted": false,
                             "matchLevel": "full",
-                            "matchedWords": Array [
+                            "matchedWords": [
                               "sub",
                             ],
-                            "value": "<span class=\\"search-highlight\\">Sub</span> cat 1",
+                            "value": "<span class="search-highlight">Sub</span> cat 1",
                           },
                         },
-                        "parent_category_3": Object {
-                          "description": Object {
+                        "parent_category_3": {
+                          "description": {
                             "matchLevel": "none",
-                            "matchedWords": Array [],
+                            "matchedWords": [],
                             "value": "",
                           },
-                          "title": Object {
+                          "title": {
                             "matchLevel": "none",
-                            "matchedWords": Array [],
+                            "matchedWords": [],
                             "value": "Cat 1 mod",
                           },
                         },
-                        "preview": Object {
+                        "preview": {
                           "matchLevel": "none",
-                          "matchedWords": Array [],
+                          "matchedWords": [],
                           "value": "",
                         },
-                        "preview_draft": Object {
+                        "preview_draft": {
                           "matchLevel": "none",
-                          "matchedWords": Array [],
+                          "matchedWords": [],
                           "value": "",
                         },
-                        "title": Object {
+                        "title": {
                           "fullyHighlighted": false,
                           "matchLevel": "full",
-                          "matchedWords": Array [
+                          "matchedWords": [
                             "sub",
                           ],
-                          "value": "<span class=\\"search-highlight\\">Sub</span> <span class=\\"search-highlight\\">sub</span> <span class=\\"search-highlight\\">sub</span> cat 1",
+                          "value": "<span class="search-highlight">Sub</span> <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> cat 1",
                         },
-                        "title_draft": Object {
+                        "title_draft": {
                           "fullyHighlighted": false,
                           "matchLevel": "full",
-                          "matchedWords": Array [
+                          "matchedWords": [
                             "sub",
                           ],
-                          "value": "<span class=\\"search-highlight\\">Sub</span> <span class=\\"search-highlight\\">sub</span> <span class=\\"search-highlight\\">sub</span> cat 1",
+                          "value": "<span class="search-highlight">Sub</span> <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> cat 1",
                         },
                       },
-                      "_tags": Array [
+                      "_tags": [
                         "level1",
                         "level2",
                         "level3",
@@ -814,19 +814,19 @@ Object {
                       "id": 31,
                       "locale": "en-US",
                       "objectID": "category-31/en-US",
-                      "parent_category_1": Object {
+                      "parent_category_1": {
                         "description": "",
                         "id": 30,
                         "title": "Sub sub cat 1",
                         "visibility_status": "PUBLIC",
                       },
-                      "parent_category_2": Object {
+                      "parent_category_2": {
                         "description": "",
                         "id": 29,
                         "title": "Sub cat 1",
                         "visibility_status": "PUBLIC",
                       },
-                      "parent_category_3": Object {
+                      "parent_category_3": {
                         "description": "",
                         "id": 28,
                         "title": "Cat 1 mod",
@@ -843,112 +843,112 @@ Object {
                     },
                   },
                   "category": "loading",
-                  "children": Array [
-                    Object {
-                      "algoliaHits": Object {
-                        "en-US": Object {
-                          "_highlightResult": Object {
-                            "article_content": Object {
+                  "children": [
+                    {
+                      "algoliaHits": {
+                        "en-US": {
+                          "_highlightResult": {
+                            "article_content": {
                               "fullyHighlighted": false,
                               "matchLevel": "full",
-                              "matchedWords": Array [
+                              "matchedWords": [
                                 "sub",
                               ],
-                              "value": "Contents of article 2 in <span class=\\"search-highlight\\">sub</span> <span class=\\"search-highlight\\">sub</span> <span class=\\"search-highlight\\">sub</span> cat 1 caaaat",
+                              "value": "Contents of article 2 in <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> cat 1 caaaat",
                             },
-                            "article_content_draft": Object {
+                            "article_content_draft": {
                               "fullyHighlighted": false,
                               "matchLevel": "full",
-                              "matchedWords": Array [
+                              "matchedWords": [
                                 "sub",
                               ],
-                              "value": "Contents of article 2 in <span class=\\"search-highlight\\">sub</span> <span class=\\"search-highlight\\">sub</span> <span class=\\"search-highlight\\">sub</span> cat 1 caaaat",
+                              "value": "Contents of article 2 in <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> cat 1 caaaat",
                             },
-                            "parent_category_1": Object {
-                              "description": Object {
+                            "parent_category_1": {
+                              "description": {
                                 "matchLevel": "none",
-                                "matchedWords": Array [],
+                                "matchedWords": [],
                                 "value": "",
                               },
-                              "title": Object {
+                              "title": {
                                 "fullyHighlighted": false,
                                 "matchLevel": "full",
-                                "matchedWords": Array [
+                                "matchedWords": [
                                   "sub",
                                 ],
-                                "value": "<span class=\\"search-highlight\\">Sub</span> <span class=\\"search-highlight\\">sub</span> <span class=\\"search-highlight\\">sub</span> cat 1",
+                                "value": "<span class="search-highlight">Sub</span> <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> cat 1",
                               },
                             },
-                            "parent_category_2": Object {
-                              "description": Object {
+                            "parent_category_2": {
+                              "description": {
                                 "matchLevel": "none",
-                                "matchedWords": Array [],
+                                "matchedWords": [],
                                 "value": "",
                               },
-                              "title": Object {
+                              "title": {
                                 "fullyHighlighted": false,
                                 "matchLevel": "full",
-                                "matchedWords": Array [
+                                "matchedWords": [
                                   "sub",
                                 ],
-                                "value": "<span class=\\"search-highlight\\">Sub</span> <span class=\\"search-highlight\\">sub</span> cat 1",
+                                "value": "<span class="search-highlight">Sub</span> <span class="search-highlight">sub</span> cat 1",
                               },
                             },
-                            "parent_category_3": Object {
-                              "description": Object {
+                            "parent_category_3": {
+                              "description": {
                                 "matchLevel": "none",
-                                "matchedWords": Array [],
+                                "matchedWords": [],
                                 "value": "",
                               },
-                              "title": Object {
+                              "title": {
                                 "fullyHighlighted": false,
                                 "matchLevel": "full",
-                                "matchedWords": Array [
+                                "matchedWords": [
                                   "sub",
                                 ],
-                                "value": "<span class=\\"search-highlight\\">Sub</span> cat 1",
+                                "value": "<span class="search-highlight">Sub</span> cat 1",
                               },
                             },
-                            "parent_category_4": Object {
-                              "description": Object {
+                            "parent_category_4": {
+                              "description": {
                                 "matchLevel": "none",
-                                "matchedWords": Array [],
+                                "matchedWords": [],
                                 "value": "",
                               },
-                              "title": Object {
+                              "title": {
                                 "matchLevel": "none",
-                                "matchedWords": Array [],
+                                "matchedWords": [],
                                 "value": "Cat 1 mod",
                               },
                             },
-                            "preview": Object {
+                            "preview": {
                               "matchLevel": "none",
-                              "matchedWords": Array [],
+                              "matchedWords": [],
                               "value": "",
                             },
-                            "preview_draft": Object {
+                            "preview_draft": {
                               "matchLevel": "none",
-                              "matchedWords": Array [],
+                              "matchedWords": [],
                               "value": "",
                             },
-                            "title": Object {
+                            "title": {
                               "fullyHighlighted": false,
                               "matchLevel": "full",
-                              "matchedWords": Array [
+                              "matchedWords": [
                                 "sub",
                               ],
-                              "value": "Article 2 in <span class=\\"search-highlight\\">sub</span> <span class=\\"search-highlight\\">sub</span> <span class=\\"search-highlight\\">sub</span> cat 1 copy new title",
+                              "value": "Article 2 in <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> cat 1 copy new title",
                             },
-                            "title_draft": Object {
+                            "title_draft": {
                               "fullyHighlighted": false,
                               "matchLevel": "full",
-                              "matchedWords": Array [
+                              "matchedWords": [
                                 "sub",
                               ],
-                              "value": "Article 2 in <span class=\\"search-highlight\\">sub</span> <span class=\\"search-highlight\\">sub</span> <span class=\\"search-highlight\\">sub</span> cat 1 copy new title",
+                              "value": "Article 2 in <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> cat 1 copy new title",
                             },
                           },
-                          "_tags": Array [
+                          "_tags": [
                             "level1",
                             "level2",
                             "level3",
@@ -964,25 +964,25 @@ Object {
                           "id": 32,
                           "locale": "en-US",
                           "objectID": "article-32/en-US",
-                          "parent_category_1": Object {
+                          "parent_category_1": {
                             "description": "",
                             "id": 31,
                             "title": "Sub sub sub cat 1",
                             "visibility_status": "PUBLIC",
                           },
-                          "parent_category_2": Object {
+                          "parent_category_2": {
                             "description": "",
                             "id": 30,
                             "title": "Sub sub cat 1",
                             "visibility_status": "PUBLIC",
                           },
-                          "parent_category_3": Object {
+                          "parent_category_3": {
                             "description": "",
                             "id": 29,
                             "title": "Sub cat 1",
                             "visibility_status": "PUBLIC",
                           },
-                          "parent_category_4": Object {
+                          "parent_category_4": {
                             "description": "",
                             "id": 28,
                             "title": "Cat 1 mod",
@@ -1002,117 +1002,117 @@ Object {
                       "id": 32,
                       "type": "article",
                     },
-                    Object {
-                      "algoliaHits": Object {
-                        "en-US": Object {
-                          "_highlightResult": Object {
-                            "article_content": Object {
+                    {
+                      "algoliaHits": {
+                        "en-US": {
+                          "_highlightResult": {
+                            "article_content": {
                               "fullyHighlighted": false,
                               "matchLevel": "full",
-                              "matchedWords": Array [
+                              "matchedWords": [
                                 "sub",
                               ],
-                              "value": "Contents of article 2 in <span class=\\"search-highlight\\">sub</span> <span class=\\"search-highlight\\">sub</span> <span class=\\"search-highlight\\">sub</span> cat 1 tt",
+                              "value": "Contents of article 2 in <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> cat 1 tt",
                             },
-                            "article_content_draft": Object {
+                            "article_content_draft": {
                               "fullyHighlighted": false,
                               "matchLevel": "full",
-                              "matchedWords": Array [
+                              "matchedWords": [
                                 "sub",
                               ],
-                              "value": "Contents of article 2 in <span class=\\"search-highlight\\">sub</span> <span class=\\"search-highlight\\">sub</span> <span class=\\"search-highlight\\">sub</span> cat 1 tt",
+                              "value": "Contents of article 2 in <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> cat 1 tt",
                             },
-                            "parent_category_1": Object {
-                              "description": Object {
+                            "parent_category_1": {
+                              "description": {
                                 "matchLevel": "none",
-                                "matchedWords": Array [],
+                                "matchedWords": [],
                                 "value": "",
                               },
-                              "title": Object {
+                              "title": {
                                 "fullyHighlighted": false,
                                 "matchLevel": "full",
-                                "matchedWords": Array [
+                                "matchedWords": [
                                   "sub",
                                 ],
-                                "value": "<span class=\\"search-highlight\\">Sub</span> <span class=\\"search-highlight\\">sub</span> <span class=\\"search-highlight\\">sub</span> cat 1",
+                                "value": "<span class="search-highlight">Sub</span> <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> cat 1",
                               },
                             },
-                            "parent_category_2": Object {
-                              "description": Object {
+                            "parent_category_2": {
+                              "description": {
                                 "matchLevel": "none",
-                                "matchedWords": Array [],
+                                "matchedWords": [],
                                 "value": "",
                               },
-                              "title": Object {
+                              "title": {
                                 "fullyHighlighted": false,
                                 "matchLevel": "full",
-                                "matchedWords": Array [
+                                "matchedWords": [
                                   "sub",
                                 ],
-                                "value": "<span class=\\"search-highlight\\">Sub</span> <span class=\\"search-highlight\\">sub</span> cat 1",
+                                "value": "<span class="search-highlight">Sub</span> <span class="search-highlight">sub</span> cat 1",
                               },
                             },
-                            "parent_category_3": Object {
-                              "description": Object {
+                            "parent_category_3": {
+                              "description": {
                                 "matchLevel": "none",
-                                "matchedWords": Array [],
+                                "matchedWords": [],
                                 "value": "",
                               },
-                              "title": Object {
+                              "title": {
                                 "fullyHighlighted": false,
                                 "matchLevel": "full",
-                                "matchedWords": Array [
+                                "matchedWords": [
                                   "sub",
                                 ],
-                                "value": "<span class=\\"search-highlight\\">Sub</span> cat 1",
+                                "value": "<span class="search-highlight">Sub</span> cat 1",
                               },
                             },
-                            "parent_category_4": Object {
-                              "description": Object {
+                            "parent_category_4": {
+                              "description": {
                                 "matchLevel": "none",
-                                "matchedWords": Array [],
+                                "matchedWords": [],
                                 "value": "",
                               },
-                              "title": Object {
+                              "title": {
                                 "matchLevel": "none",
-                                "matchedWords": Array [],
+                                "matchedWords": [],
                                 "value": "Cat 1 mod",
                               },
                             },
-                            "preview": Object {
+                            "preview": {
                               "fullyHighlighted": false,
                               "matchLevel": "full",
-                              "matchedWords": Array [
+                              "matchedWords": [
                                 "sub",
                               ],
-                              "value": "Contents of article 2 in <span class=\\"search-highlight\\">sub</span> <span class=\\"search-highlight\\">sub</span> <span class=\\"search-highlight\\">sub</span> cat 1 bis",
+                              "value": "Contents of article 2 in <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> cat 1 bis",
                             },
-                            "preview_draft": Object {
+                            "preview_draft": {
                               "fullyHighlighted": false,
                               "matchLevel": "full",
-                              "matchedWords": Array [
+                              "matchedWords": [
                                 "sub",
                               ],
-                              "value": "Contents of article 2 in <span class=\\"search-highlight\\">sub</span> <span class=\\"search-highlight\\">sub</span> <span class=\\"search-highlight\\">sub</span> cat 1 bis",
+                              "value": "Contents of article 2 in <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> cat 1 bis",
                             },
-                            "title": Object {
+                            "title": {
                               "fullyHighlighted": false,
                               "matchLevel": "full",
-                              "matchedWords": Array [
+                              "matchedWords": [
                                 "sub",
                               ],
-                              "value": "Article 2 in <span class=\\"search-highlight\\">sub</span> <span class=\\"search-highlight\\">sub</span> <span class=\\"search-highlight\\">sub</span> cat 1 copy new ti",
+                              "value": "Article 2 in <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> cat 1 copy new ti",
                             },
-                            "title_draft": Object {
+                            "title_draft": {
                               "fullyHighlighted": false,
                               "matchLevel": "full",
-                              "matchedWords": Array [
+                              "matchedWords": [
                                 "sub",
                               ],
-                              "value": "Article 2 in <span class=\\"search-highlight\\">sub</span> <span class=\\"search-highlight\\">sub</span> <span class=\\"search-highlight\\">sub</span> cat 1 copy new ti",
+                              "value": "Article 2 in <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> cat 1 copy new ti",
                             },
                           },
-                          "_tags": Array [
+                          "_tags": [
                             "level1",
                             "level2",
                             "level3",
@@ -1128,25 +1128,25 @@ Object {
                           "id": 31,
                           "locale": "en-US",
                           "objectID": "article-31/en-US",
-                          "parent_category_1": Object {
+                          "parent_category_1": {
                             "description": "",
                             "id": 31,
                             "title": "Sub sub sub cat 1",
                             "visibility_status": "PUBLIC",
                           },
-                          "parent_category_2": Object {
+                          "parent_category_2": {
                             "description": "",
                             "id": 30,
                             "title": "Sub sub cat 1",
                             "visibility_status": "PUBLIC",
                           },
-                          "parent_category_3": Object {
+                          "parent_category_3": {
                             "description": "",
                             "id": 29,
                             "title": "Sub cat 1",
                             "visibility_status": "PUBLIC",
                           },
-                          "parent_category_4": Object {
+                          "parent_category_4": {
                             "description": "",
                             "id": 28,
                             "title": "Cat 1 mod",
@@ -1166,111 +1166,111 @@ Object {
                       "id": 31,
                       "type": "article",
                     },
-                    Object {
-                      "algoliaHits": Object {
-                        "en-US": Object {
-                          "_highlightResult": Object {
-                            "article_content": Object {
+                    {
+                      "algoliaHits": {
+                        "en-US": {
+                          "_highlightResult": {
+                            "article_content": {
                               "fullyHighlighted": false,
                               "matchLevel": "full",
-                              "matchedWords": Array [
+                              "matchedWords": [
                                 "sub",
                               ],
-                              "value": "Contents of article 2 in <span class=\\"search-highlight\\">sub</span> <span class=\\"search-highlight\\">sub</span> <span class=\\"search-highlight\\">sub</span> cat 1",
+                              "value": "Contents of article 2 in <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> cat 1",
                             },
-                            "article_content_draft": Object {
+                            "article_content_draft": {
                               "fullyHighlighted": false,
                               "matchLevel": "full",
-                              "matchedWords": Array [
+                              "matchedWords": [
                                 "sub",
                               ],
-                              "value": "Contents of article 2 in <span class=\\"search-highlight\\">sub</span> <span class=\\"search-highlight\\">sub</span> <span class=\\"search-highlight\\">sub</span> cat 1",
+                              "value": "Contents of article 2 in <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> cat 1",
                             },
-                            "parent_category_1": Object {
-                              "description": Object {
+                            "parent_category_1": {
+                              "description": {
                                 "matchLevel": "none",
-                                "matchedWords": Array [],
+                                "matchedWords": [],
                                 "value": "",
                               },
-                              "title": Object {
+                              "title": {
                                 "fullyHighlighted": false,
                                 "matchLevel": "full",
-                                "matchedWords": Array [
+                                "matchedWords": [
                                   "sub",
                                 ],
-                                "value": "<span class=\\"search-highlight\\">Sub</span> <span class=\\"search-highlight\\">sub</span> <span class=\\"search-highlight\\">sub</span> cat 1",
+                                "value": "<span class="search-highlight">Sub</span> <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> cat 1",
                               },
                             },
-                            "parent_category_2": Object {
-                              "description": Object {
+                            "parent_category_2": {
+                              "description": {
                                 "matchLevel": "none",
-                                "matchedWords": Array [],
+                                "matchedWords": [],
                                 "value": "",
                               },
-                              "title": Object {
+                              "title": {
                                 "fullyHighlighted": false,
                                 "matchLevel": "full",
-                                "matchedWords": Array [
+                                "matchedWords": [
                                   "sub",
                                 ],
-                                "value": "<span class=\\"search-highlight\\">Sub</span> <span class=\\"search-highlight\\">sub</span> cat 1",
+                                "value": "<span class="search-highlight">Sub</span> <span class="search-highlight">sub</span> cat 1",
                               },
                             },
-                            "parent_category_3": Object {
-                              "description": Object {
+                            "parent_category_3": {
+                              "description": {
                                 "matchLevel": "none",
-                                "matchedWords": Array [],
+                                "matchedWords": [],
                                 "value": "",
                               },
-                              "title": Object {
+                              "title": {
                                 "fullyHighlighted": false,
                                 "matchLevel": "full",
-                                "matchedWords": Array [
+                                "matchedWords": [
                                   "sub",
                                 ],
-                                "value": "<span class=\\"search-highlight\\">Sub</span> cat 1",
+                                "value": "<span class="search-highlight">Sub</span> cat 1",
                               },
                             },
-                            "parent_category_4": Object {
-                              "description": Object {
+                            "parent_category_4": {
+                              "description": {
                                 "matchLevel": "none",
-                                "matchedWords": Array [],
+                                "matchedWords": [],
                                 "value": "",
                               },
-                              "title": Object {
+                              "title": {
                                 "matchLevel": "none",
-                                "matchedWords": Array [],
+                                "matchedWords": [],
                                 "value": "Cat 1 mod",
                               },
                             },
-                            "preview": Object {
+                            "preview": {
                               "matchLevel": "none",
-                              "matchedWords": Array [],
+                              "matchedWords": [],
                               "value": "",
                             },
-                            "preview_draft": Object {
+                            "preview_draft": {
                               "matchLevel": "none",
-                              "matchedWords": Array [],
+                              "matchedWords": [],
                               "value": "",
                             },
-                            "title": Object {
+                            "title": {
                               "fullyHighlighted": false,
                               "matchLevel": "full",
-                              "matchedWords": Array [
+                              "matchedWords": [
                                 "sub",
                               ],
-                              "value": "Article 2 in <span class=\\"search-highlight\\">sub</span> <span class=\\"search-highlight\\">sub</span> <span class=\\"search-highlight\\">sub</span> cat 1",
+                              "value": "Article 2 in <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> cat 1",
                             },
-                            "title_draft": Object {
+                            "title_draft": {
                               "fullyHighlighted": false,
                               "matchLevel": "full",
-                              "matchedWords": Array [
+                              "matchedWords": [
                                 "sub",
                               ],
-                              "value": "Article 2 in <span class=\\"search-highlight\\">sub</span> <span class=\\"search-highlight\\">sub</span> <span class=\\"search-highlight\\">sub</span> cat 1",
+                              "value": "Article 2 in <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> cat 1",
                             },
                           },
-                          "_tags": Array [
+                          "_tags": [
                             "level1",
                             "level2",
                             "level3",
@@ -1286,25 +1286,25 @@ Object {
                           "id": 29,
                           "locale": "en-US",
                           "objectID": "article-29/en-US",
-                          "parent_category_1": Object {
+                          "parent_category_1": {
                             "description": "",
                             "id": 31,
                             "title": "Sub sub sub cat 1",
                             "visibility_status": "PUBLIC",
                           },
-                          "parent_category_2": Object {
+                          "parent_category_2": {
                             "description": "",
                             "id": 30,
                             "title": "Sub sub cat 1",
                             "visibility_status": "PUBLIC",
                           },
-                          "parent_category_3": Object {
+                          "parent_category_3": {
                             "description": "",
                             "id": 29,
                             "title": "Sub cat 1",
                             "visibility_status": "PUBLIC",
                           },
-                          "parent_category_4": Object {
+                          "parent_category_4": {
                             "description": "",
                             "id": 28,
                             "title": "Cat 1 mod",
@@ -1341,6 +1341,6 @@ Object {
       "type": "category",
     },
   ],
-  "uncategorized": Array [],
+  "uncategorized": [],
 }
 `;

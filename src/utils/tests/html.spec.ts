@@ -1,4 +1,4 @@
-import jsdom from 'jsdom'
+import jsdom, {BaseOptions} from 'jsdom'
 
 import {
     focusElement,
@@ -13,10 +13,10 @@ describe('html util', () => {
     describe('parseHtml', () => {
         const {JSDOM} = jsdom
         const doc = '<!doctype><body></body>'
-        const domOptions = {
+        const domOptions: BaseOptions = {
             runScripts: 'dangerously',
             resources: 'usable',
-        } as any
+        }
         const htmlWithEvent =
             '<iframe src="/" onload="window._xss=true;"></iframe>'
         let dom: jsdom.JSDOM

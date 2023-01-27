@@ -104,7 +104,7 @@ exports[`<OrderTable/> should render 1`] = `
           >
             <input
               class="quantityInput form-control"
-              pattern="\\\\d+"
+              pattern="\\d+"
               type="text"
               value="1"
             />
@@ -222,7 +222,7 @@ exports[`<OrderTable/> should render 1`] = `
           >
             <input
               class="quantityInput form-control"
-              pattern="\\\\d+"
+              pattern="\\d+"
               type="text"
               value="4"
             />
@@ -378,7 +378,7 @@ exports[`<OrderTable/> should render for multi-currency order 1`] = `
           >
             <input
               class="quantityInput form-control"
-              pattern="\\\\d+"
+              pattern="\\d+"
               type="text"
               value="1"
             />
@@ -496,7 +496,7 @@ exports[`<OrderTable/> should render for multi-currency order 1`] = `
           >
             <input
               class="quantityInput form-control"
-              pattern="\\\\d+"
+              pattern="\\d+"
               type="text"
               value="4"
             />
@@ -652,7 +652,7 @@ exports[`<OrderTable/> should render with zero quantity 1`] = `
           >
             <input
               class="quantityInput form-control"
-              pattern="\\\\d+"
+              pattern="\\d+"
               type="text"
               value="0"
             />
@@ -770,7 +770,7 @@ exports[`<OrderTable/> should render with zero quantity 1`] = `
           >
             <input
               class="quantityInput form-control"
-              pattern="\\\\d+"
+              pattern="\\d+"
               type="text"
               value="0"
             />

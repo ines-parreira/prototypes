@@ -5,7 +5,7 @@ exports[`ast expressions ArrayExpression should display an error because the fie
   className="Literal"
 >
   <Connect(Widget)
-    actions={Object {}}
+    actions={{}}
     className="LiteralWidget"
     compact={true}
     leftsiblings={Immutable.List []}
@@ -21,7 +21,7 @@ exports[`ast expressions ArrayExpression should display an error because the fie
     }
     rule={Immutable.Map {}}
     schemas={Immutable.Map {}}
-    value={Array []}
+    value={[]}
   />
   <Errors
     inline={true}
@@ -36,7 +36,7 @@ exports[`ast expressions ArrayExpression should render component and not display
   className="Literal"
 >
   <Connect(Widget)
-    actions={Object {}}
+    actions={{}}
     className="LiteralWidget"
     compact={true}
     leftsiblings={Immutable.List []}
@@ -53,7 +53,7 @@ exports[`ast expressions ArrayExpression should render component and not display
     rule={Immutable.Map {}}
     schemas={Immutable.Map {}}
     value={
-      Array [
+      [
         "hello",
         "world!",
       ]

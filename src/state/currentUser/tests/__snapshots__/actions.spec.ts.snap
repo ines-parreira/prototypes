@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`current user actions change password 1`] = `
-Array [
-  Object {
+[
+  {
     "type": "CHANGE_PASSWORD_START",
   },
-  Object {
-    "resp": Object {
+  {
+    "resp": {
       "new_password": "newPassword",
       "old_password": "password",
     },
@@ -16,11 +16,11 @@ Array [
 `;
 
 exports[`current user actions handle2FAEnforced() should display the banner 1`] = `
-Array [
-  Array [
-    Object {
-      "actionHTML": "<span class=\\"d-inline-flex align-items-baseline\\">
-                             <span class=\\"text-primary\\">Setup 2FA</span>
+[
+  [
+    {
+      "actionHTML": "<span class="d-inline-flex align-items-baseline">
+                             <span class="text-primary">Setup 2FA</span>
                          </span>",
       "dismissible": false,
       "id": "two-fa-setup-required-banner",
@@ -35,8 +35,8 @@ Array [
 `;
 
 exports[`current user actions setIsAvailable() should dispatch with status 1`] = `
-Array [
-  Object {
+[
+  {
     "payload": true,
     "type": "SET_IS_AVAILABLE",
   },
@@ -44,8 +44,8 @@ Array [
 `;
 
 exports[`current user actions setIsAvailable() should dispatch with status 2`] = `
-Array [
-  Object {
+[
+  {
     "payload": false,
     "type": "SET_IS_AVAILABLE",
   },
@@ -53,15 +53,15 @@ Array [
 `;
 
 exports[`current user actions submit setting creation 1`] = `
-Array [
-  Object {
+[
+  {
     "settingType": "macro",
     "type": "SUBMIT_SETTING_START",
   },
-  Object {
+  {
     "isUpdate": false,
-    "resp": Object {
-      "data": Object {},
+    "resp": {
+      "data": {},
       "id": 1,
       "type": "macro",
     },
@@ -71,45 +71,16 @@ Array [
 ]
 `;
 
-exports[`current user actions submit setting should update available status and fetch chats 1`] = `
-Array [
-  Object {
-    "settingType": "preferences",
-    "type": "SUBMIT_SETTING_START",
-  },
-  Object {
-    "isUpdate": false,
-    "resp": Object {
-      "data": Object {
-        "available": false,
-      },
-      "id": 1,
-      "type": "preferences",
-    },
-    "settingType": "preferences",
-    "type": "SUBMIT_SETTING_SUCCESS",
-  },
-  Object {
-    "tickets": Array [
-      Object {
-        "id": 1,
-      },
-    ],
-    "type": "SET_CHATS",
-  },
-]
-`;
-
 exports[`current user actions submit setting update 1`] = `
-Array [
-  Object {
+[
+  {
     "settingType": "macro",
     "type": "SUBMIT_SETTING_START",
   },
-  Object {
+  {
     "isUpdate": true,
-    "resp": Object {
-      "data": Object {},
+    "resp": {
+      "data": {},
       "id": 1,
       "type": "macro",
     },
@@ -120,12 +91,12 @@ Array [
 `;
 
 exports[`current user actions submitSettingSuccess should dispatch the next setting 1`] = `
-Array [
-  Object {
+[
+  {
     "isUpdate": true,
-    "resp": Object {
-      "data": Object {
-        "1": Object {
+    "resp": {
+      "data": {
+        "1": {
           "display_order": 2,
           "hide": false,
         },
@@ -140,8 +111,8 @@ Array [
 `;
 
 exports[`current user actions update2FAEnabled should dispatch when the status is the same 1`] = `
-Array [
-  Object {
+[
+  {
     "status": true,
     "type": "UPDATE_2FA_STATUS",
   },
@@ -149,8 +120,8 @@ Array [
 `;
 
 exports[`current user actions update2FAEnabled should dispatch with status 1`] = `
-Array [
-  Object {
+[
+  {
     "status": true,
     "type": "UPDATE_2FA_STATUS",
   },
@@ -158,8 +129,8 @@ Array [
 `;
 
 exports[`current user actions update2FAEnabled should dispatch with status 2`] = `
-Array [
-  Object {
+[
+  {
     "status": false,
     "type": "UPDATE_2FA_STATUS",
   },

@@ -11,7 +11,7 @@ exports[`Legend should render a legend 1`] = `
     <span
       className="circle mr-2"
       style={
-        Object {
+        {
           "background": "#000",
         }
       }
@@ -25,7 +25,7 @@ exports[`Legend should render a legend 1`] = `
     <span
       className="circle mr-2"
       style={
-        Object {
+        {
           "background": "#fff",
         }
       }
@@ -39,7 +39,7 @@ exports[`Legend should render a legend 1`] = `
     <span
       className="square mr-2"
       style={
-        Object {
+        {
           "background": "repeating-linear-gradient (60deg, red 80%, red 90%, white 0px, white 100%)",
         }
       }
@@ -58,7 +58,7 @@ exports[`Legend should render a legend 1`] = `
     <span
       className="rectangle mr-2"
       style={
-        Object {
+        {
           "background": "red",
         }
       }

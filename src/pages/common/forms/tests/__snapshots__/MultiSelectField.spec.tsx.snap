@@ -5,16 +5,16 @@ exports[`MultiSelectField should render the select field with no selected option
   allowCustomValues={true}
   onChange={[Function]}
   options={
-    Array [
-      Object {
+    [
+      {
         "label": "First",
         "value": 1,
       },
-      Object {
+      {
         "label": "Second",
         "value": 2,
       },
-      Object {
+      {
         "label": "Third",
         "value": 3,
       },
@@ -29,23 +29,23 @@ exports[`MultiSelectField should render the select field with no selected option
     matchInput={true}
     onChange={[Function]}
     options={
-      Array [
-        Object {
+      [
+        {
           "label": "First",
           "value": 1,
         },
-        Object {
+        {
           "label": "Second",
           "value": 2,
         },
-        Object {
+        {
           "label": "Third",
           "value": 3,
         },
       ]
     }
     plural="tags"
-    selectedOptions={Array []}
+    selectedOptions={[]}
     singular="tag"
   >
     <div
@@ -64,16 +64,16 @@ exports[`MultiSelectField should render the select field with no selected option
           onFocus={[Function]}
           onSelect={[Function]}
           options={
-            Array [
-              Object {
+            [
+              {
                 "label": "First",
                 "value": 1,
               },
-              Object {
+              {
                 "label": "Second",
                 "value": 2,
               },
-              Object {
+              {
                 "label": "Third",
                 "value": 3,
               },
@@ -164,16 +164,16 @@ exports[`MultiSelectField should render the select field with no selected option
                           onActivate={[Function]}
                           onSelect={[Function]}
                           options={
-                            Array [
-                              Object {
+                            [
+                              {
                                 "label": "First",
                                 "value": 1,
                               },
-                              Object {
+                              {
                                 "label": "Second",
                                 "value": 2,
                               },
-                              Object {
+                              {
                                 "label": "Third",
                                 "value": 3,
                               },

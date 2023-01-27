@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`helpCenters reducer createHelpCenter action should add a new help center to the state 1`] = `
-Object {
-  "helpCentersById": Object {
-    "1": Object {
+{
+  "helpCentersById": {
+    "1": {
       "algolia_api_key": null,
       "algolia_app_id": "my-algolia-app-id-1",
       "algolia_index_name": "my-algolia-index-1",
@@ -24,7 +24,7 @@ Object {
       "shop_name": null,
       "source": "manual",
       "subdomain": "acme",
-      "supported_locales": Array [
+      "supported_locales": [
         "en-US",
       ],
       "theme": "light",
@@ -35,9 +35,9 @@ Object {
 `;
 
 exports[`helpCenters reducer deleteHelpCenter action should delete a help center from the state 1`] = `
-Object {
-  "helpCentersById": Object {
-    "2": Object {
+{
+  "helpCentersById": {
+    "2": {
       "algolia_api_key": null,
       "algolia_app_id": "my-algolia-app-id-2",
       "algolia_index_name": "my-algolia-index-2",
@@ -58,7 +58,7 @@ Object {
       "shop_name": null,
       "source": "manual",
       "subdomain": "acme2",
-      "supported_locales": Array [
+      "supported_locales": [
         "en-US",
         "de-DE",
       ],
@@ -70,9 +70,9 @@ Object {
 `;
 
 exports[`helpCenters reducer fetchHelpCenter action should add a new help center to the state 1`] = `
-Object {
-  "helpCentersById": Object {
-    "1": Object {
+{
+  "helpCentersById": {
+    "1": {
       "algolia_api_key": null,
       "algolia_app_id": "my-algolia-app-id-1",
       "algolia_index_name": "my-algolia-index-1",
@@ -93,7 +93,7 @@ Object {
       "shop_name": null,
       "source": "manual",
       "subdomain": "acme",
-      "supported_locales": Array [
+      "supported_locales": [
         "en-US",
       ],
       "theme": "light",
@@ -104,9 +104,9 @@ Object {
 `;
 
 exports[`helpCenters reducer fetchHelpCenters action should add the help centers to the state 1`] = `
-Object {
-  "helpCentersById": Object {
-    "1": Object {
+{
+  "helpCentersById": {
+    "1": {
       "algolia_api_key": null,
       "algolia_app_id": "my-algolia-app-id-1",
       "algolia_index_name": "my-algolia-index-1",
@@ -127,13 +127,13 @@ Object {
       "shop_name": null,
       "source": "manual",
       "subdomain": "acme",
-      "supported_locales": Array [
+      "supported_locales": [
         "en-US",
       ],
       "theme": "light",
       "updated_datetime": "2021-05-17T18:21:42.022Z",
     },
-    "2": Object {
+    "2": {
       "algolia_api_key": null,
       "algolia_app_id": "my-algolia-app-id-2",
       "algolia_index_name": "my-algolia-index-2",
@@ -154,14 +154,14 @@ Object {
       "shop_name": null,
       "source": "manual",
       "subdomain": "acme2",
-      "supported_locales": Array [
+      "supported_locales": [
         "en-US",
         "de-DE",
       ],
       "theme": "light",
       "updated_datetime": "2021-05-17T18:22:42.022Z",
     },
-    "3": Object {
+    "3": {
       "algolia_api_key": null,
       "algolia_app_id": "my-algolia-app-id-3",
       "algolia_index_name": "my-algolia-index-3",
@@ -182,14 +182,14 @@ Object {
       "shop_name": null,
       "source": "manual",
       "subdomain": "acme3",
-      "supported_locales": Array [
+      "supported_locales": [
         "en-US",
         "fr-FR",
       ],
       "theme": "light",
       "updated_datetime": "2021-05-17T18:23:42.022Z",
     },
-    "4": Object {
+    "4": {
       "algolia_api_key": null,
       "algolia_app_id": "my-algolia-app-id-4",
       "algolia_index_name": "my-algolia-index-4",
@@ -210,7 +210,7 @@ Object {
       "shop_name": null,
       "source": "manual",
       "subdomain": "acme4",
-      "supported_locales": Array [
+      "supported_locales": [
         "en-US",
         "fr-FR",
       ],
@@ -222,9 +222,9 @@ Object {
 `;
 
 exports[`helpCenters reducer updateHelpCenter action should replace an existing help center in the state 1`] = `
-Object {
-  "helpCentersById": Object {
-    "1": Object {
+{
+  "helpCentersById": {
+    "1": {
       "algolia_api_key": null,
       "algolia_app_id": "my-algolia-app-id-1",
       "algolia_index_name": "my-algolia-index-1",
@@ -245,13 +245,13 @@ Object {
       "shop_name": null,
       "source": "manual",
       "subdomain": "acme",
-      "supported_locales": Array [
+      "supported_locales": [
         "en-US",
       ],
       "theme": "light",
       "updated_datetime": "2021-05-17T18:21:42.022Z",
     },
-    "2": Object {
+    "2": {
       "algolia_api_key": null,
       "algolia_app_id": "my-algolia-app-id-2",
       "algolia_index_name": "my-algolia-index-2",
@@ -272,7 +272,7 @@ Object {
       "shop_name": null,
       "source": "manual",
       "subdomain": "acme2",
-      "supported_locales": Array [
+      "supported_locales": [
         "en-US",
         "de-DE",
       ],

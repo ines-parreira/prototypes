@@ -83,8 +83,7 @@ describe('<OneClickIntegrationForm/>', () => {
                 target: {value: 'myShopURL1/admin'},
             })
 
-            fireEvent.click(screen.getByRole('button', {name: 'Connect App'}))
-
+            fireEvent.submit(screen.getByRole('button', {name: 'Connect App'}))
             expect(window.location.href).toBe(
                 `something?store_url=myShopURL1&admin_url_suffix=admin`
             )
@@ -117,8 +116,8 @@ describe('<OneClickIntegrationForm/>', () => {
 
             expect(updateOrCreateIntegrationRequest.mock.calls)
                 .toMatchInlineSnapshot(`
-                Array [
-                  Array [
+                [
+                  [
                     Immutable.Map {
                       "meta": Immutable.Map {
                         "admin_url_suffix": "admin",
@@ -159,8 +158,8 @@ describe('<OneClickIntegrationForm/>', () => {
             )
 
             expect(deleteIntegration.mock.calls).toMatchInlineSnapshot(`
-                Array [
-                  Array [
+                [
+                  [
                     Immutable.Map {
                       "meta": Immutable.Map {
                         "admin_url_suffix": "admin",

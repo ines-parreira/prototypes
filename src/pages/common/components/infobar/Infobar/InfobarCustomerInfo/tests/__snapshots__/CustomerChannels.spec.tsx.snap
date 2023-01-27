@@ -35,7 +35,7 @@ exports[`CustomerChannels component should display all passed channels (includin
         </i>
         <Tooltip
           delay={
-            Object {
+            {
               "hide": 0,
               "show": 1000,
             }
@@ -46,7 +46,7 @@ exports[`CustomerChannels component should display all passed channels (includin
           <UncontrolledTooltip
             className="tooltip"
             delay={
-              Object {
+              {
                 "hide": 0,
                 "show": 1000,
               }
@@ -58,7 +58,7 @@ exports[`CustomerChannels component should display all passed channels (includin
               autohide={true}
               className="tooltip"
               delay={
-                Object {
+                {
                   "hide": 0,
                   "show": 1000,
                 }
@@ -74,7 +74,7 @@ exports[`CustomerChannels component should display all passed channels (includin
                 autohide={true}
                 className="tooltip"
                 delay={
-                  Object {
+                  {
                     "hide": 0,
                     "show": 1000,
                   }
@@ -127,7 +127,7 @@ exports[`CustomerChannels component should display all passed channels (includin
         </i>
         <Tooltip
           delay={
-            Object {
+            {
               "hide": 0,
               "show": 1000,
             }
@@ -138,7 +138,7 @@ exports[`CustomerChannels component should display all passed channels (includin
           <UncontrolledTooltip
             className="tooltip"
             delay={
-              Object {
+              {
                 "hide": 0,
                 "show": 1000,
               }
@@ -150,7 +150,7 @@ exports[`CustomerChannels component should display all passed channels (includin
               autohide={true}
               className="tooltip"
               delay={
-                Object {
+                {
                   "hide": 0,
                   "show": 1000,
                 }
@@ -166,7 +166,7 @@ exports[`CustomerChannels component should display all passed channels (includin
                 autohide={true}
                 className="tooltip"
                 delay={
-                  Object {
+                  {
                     "hide": 0,
                     "show": 1000,
                   }
@@ -261,7 +261,7 @@ exports[`CustomerChannels component should display all passed channels (includin
         </i>
         <Tooltip
           delay={
-            Object {
+            {
               "hide": 0,
               "show": 1000,
             }
@@ -272,7 +272,7 @@ exports[`CustomerChannels component should display all passed channels (includin
           <UncontrolledTooltip
             className="tooltip"
             delay={
-              Object {
+              {
                 "hide": 0,
                 "show": 1000,
               }
@@ -284,7 +284,7 @@ exports[`CustomerChannels component should display all passed channels (includin
               autohide={true}
               className="tooltip"
               delay={
-                Object {
+                {
                   "hide": 0,
                   "show": 1000,
                 }
@@ -300,7 +300,7 @@ exports[`CustomerChannels component should display all passed channels (includin
                 autohide={true}
                 className="tooltip"
                 delay={
-                  Object {
+                  {
                     "hide": 0,
                     "show": 1000,
                   }
@@ -353,7 +353,7 @@ exports[`CustomerChannels component should display all passed channels (includin
         </i>
         <Tooltip
           delay={
-            Object {
+            {
               "hide": 0,
               "show": 1000,
             }
@@ -364,7 +364,7 @@ exports[`CustomerChannels component should display all passed channels (includin
           <UncontrolledTooltip
             className="tooltip"
             delay={
-              Object {
+              {
                 "hide": 0,
                 "show": 1000,
               }
@@ -376,7 +376,7 @@ exports[`CustomerChannels component should display all passed channels (includin
               autohide={true}
               className="tooltip"
               delay={
-                Object {
+                {
                   "hide": 0,
                   "show": 1000,
                 }
@@ -392,7 +392,7 @@ exports[`CustomerChannels component should display all passed channels (includin
                 autohide={true}
                 className="tooltip"
                 delay={
-                  Object {
+                  {
                     "hide": 0,
                     "show": 1000,
                   }
@@ -445,7 +445,7 @@ exports[`CustomerChannels component should display all passed channels (includin
         </i>
         <Tooltip
           delay={
-            Object {
+            {
               "hide": 0,
               "show": 1000,
             }
@@ -456,7 +456,7 @@ exports[`CustomerChannels component should display all passed channels (includin
           <UncontrolledTooltip
             className="tooltip"
             delay={
-              Object {
+              {
                 "hide": 0,
                 "show": 1000,
               }
@@ -468,7 +468,7 @@ exports[`CustomerChannels component should display all passed channels (includin
               autohide={true}
               className="tooltip"
               delay={
-                Object {
+                {
                   "hide": 0,
                   "show": 1000,
                 }
@@ -484,7 +484,7 @@ exports[`CustomerChannels component should display all passed channels (includin
                 autohide={true}
                 className="tooltip"
                 delay={
-                  Object {
+                  {
                     "hide": 0,
                     "show": 1000,
                   }
@@ -544,7 +544,7 @@ exports[`CustomerChannels component should display all passed channels (includin
         </i>
         <Tooltip
           delay={
-            Object {
+            {
               "hide": 0,
               "show": 1000,
             }
@@ -555,7 +555,7 @@ exports[`CustomerChannels component should display all passed channels (includin
           <UncontrolledTooltip
             className="tooltip"
             delay={
-              Object {
+              {
                 "hide": 0,
                 "show": 1000,
               }
@@ -567,7 +567,7 @@ exports[`CustomerChannels component should display all passed channels (includin
               autohide={true}
               className="tooltip"
               delay={
-                Object {
+                {
                   "hide": 0,
                   "show": 1000,
                 }
@@ -583,7 +583,7 @@ exports[`CustomerChannels component should display all passed channels (includin
                 autohide={true}
                 className="tooltip"
                 delay={
-                  Object {
+                  {
                     "hide": 0,
                     "show": 1000,
                   }
@@ -643,7 +643,7 @@ exports[`CustomerChannels component should display all passed channels (includin
         </i>
         <Tooltip
           delay={
-            Object {
+            {
               "hide": 0,
               "show": 1000,
             }
@@ -654,7 +654,7 @@ exports[`CustomerChannels component should display all passed channels (includin
           <UncontrolledTooltip
             className="tooltip"
             delay={
-              Object {
+              {
                 "hide": 0,
                 "show": 1000,
               }
@@ -666,7 +666,7 @@ exports[`CustomerChannels component should display all passed channels (includin
               autohide={true}
               className="tooltip"
               delay={
-                Object {
+                {
                   "hide": 0,
                   "show": 1000,
                 }
@@ -682,7 +682,7 @@ exports[`CustomerChannels component should display all passed channels (includin
                 autohide={true}
                 className="tooltip"
                 delay={
-                  Object {
+                  {
                     "hide": 0,
                     "show": 1000,
                   }
@@ -742,7 +742,7 @@ exports[`CustomerChannels component should display all passed channels (includin
         </i>
         <Tooltip
           delay={
-            Object {
+            {
               "hide": 0,
               "show": 1000,
             }
@@ -753,7 +753,7 @@ exports[`CustomerChannels component should display all passed channels (includin
           <UncontrolledTooltip
             className="tooltip"
             delay={
-              Object {
+              {
                 "hide": 0,
                 "show": 1000,
               }
@@ -765,7 +765,7 @@ exports[`CustomerChannels component should display all passed channels (includin
               autohide={true}
               className="tooltip"
               delay={
-                Object {
+                {
                   "hide": 0,
                   "show": 1000,
                 }
@@ -781,7 +781,7 @@ exports[`CustomerChannels component should display all passed channels (includin
                 autohide={true}
                 className="tooltip"
                 delay={
-                  Object {
+                  {
                     "hide": 0,
                     "show": 1000,
                   }
@@ -890,7 +890,7 @@ exports[`CustomerChannels component should display all passed channels and not d
         </i>
         <Tooltip
           delay={
-            Object {
+            {
               "hide": 0,
               "show": 1000,
             }
@@ -989,7 +989,7 @@ exports[`CustomerChannels component should display first few passed channels and
         </i>
         <Tooltip
           delay={
-            Object {
+            {
               "hide": 0,
               "show": 1000,
             }
@@ -1027,7 +1027,7 @@ exports[`CustomerChannels component should display first few passed channels and
         </i>
         <Tooltip
           delay={
-            Object {
+            {
               "hide": 0,
               "show": 1000,
             }
@@ -1065,7 +1065,7 @@ exports[`CustomerChannels component should display first few passed channels and
         </i>
         <Tooltip
           delay={
-            Object {
+            {
               "hide": 0,
               "show": 1000,
             }
@@ -1103,7 +1103,7 @@ exports[`CustomerChannels component should display first few passed channels and
         </i>
         <Tooltip
           delay={
-            Object {
+            {
               "hide": 0,
               "show": 1000,
             }
@@ -1141,7 +1141,7 @@ exports[`CustomerChannels component should display first few passed channels and
         </i>
         <Tooltip
           delay={
-            Object {
+            {
               "hide": 0,
               "show": 1000,
             }
@@ -1179,7 +1179,7 @@ exports[`CustomerChannels component should display first few passed channels and
         </i>
         <Tooltip
           delay={
-            Object {
+            {
               "hide": 0,
               "show": 1000,
             }
@@ -1244,7 +1244,7 @@ exports[`CustomerChannels component should display the email channel and the loc
         </i>
         <Tooltip
           delay={
-            Object {
+            {
               "hide": 0,
               "show": 1000,
             }
@@ -1309,7 +1309,7 @@ exports[`CustomerChannels component should display the email channel and the loc
         </i>
         <Tooltip
           delay={
-            Object {
+            {
               "hide": 0,
               "show": 1000,
             }

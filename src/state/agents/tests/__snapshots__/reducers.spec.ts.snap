@@ -1,35 +1,35 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`agents reducers create agent 1`] = `
-Object {
-  "all": Array [
-    Object {
+{
+  "all": [
+    {
       "id": 1,
       "name": "Romain",
     },
   ],
-  "locations": Object {},
-  "pagination": Array [],
-  "typingStatuses": Object {},
+  "locations": {},
+  "pagination": [],
+  "typingStatuses": {},
 }
 `;
 
 exports[`agents reducers delete agent 1`] = `
-Object {
-  "agents": Array [
-    Object {
+{
+  "agents": [
+    {
       "id": 1,
       "name": "Romain",
     },
-    Object {
+    {
       "id": 2,
       "name": "John",
     },
   ],
-  "all": Array [],
-  "locations": Object {},
-  "pagination": Array [],
-  "typingStatuses": Object {},
+  "all": [],
+  "locations": {},
+  "pagination": [],
+  "typingStatuses": {},
 }
 `;
 
@@ -90,44 +90,44 @@ Immutable.Map {
 `;
 
 exports[`agents reducers set agents location 1`] = `
-Object {
-  "all": Array [],
-  "locations": Array [
-    Object {
-      "customers": Array [
+{
+  "all": [],
+  "locations": [
+    {
+      "customers": [
         "1",
         "2",
       ],
       "ticket": "1",
     },
-    Object {
-      "customers": Array [
+    {
+      "customers": [
         "1",
       ],
       "ticket": "2",
     },
   ],
-  "pagination": Array [],
-  "typingStatuses": Object {},
+  "pagination": [],
+  "typingStatuses": {},
 }
 `;
 
 exports[`agents reducers set agents typing status 1`] = `
-Object {
-  "all": Array [],
-  "locations": Object {},
-  "pagination": Array [],
-  "typingStatuses": Array [
-    Object {
+{
+  "all": [],
+  "locations": {},
+  "pagination": [],
+  "typingStatuses": [
+    {
       "ticket": "1",
-      "users": Array [
+      "users": [
         "1",
         "2",
       ],
     },
-    Object {
+    {
       "ticket": "2",
-      "users": Array [
+      "users": [
         "1",
       ],
     },
@@ -136,73 +136,73 @@ Object {
 `;
 
 exports[`agents reducers should update the matching row in the list of agents when the current user is updated 1`] = `
-Object {
-  "all": Array [
-    Object {
+{
+  "all": [
+    {
       "id": 1,
       "name": "Alex",
     },
-    Object {
+    {
       "id": 2,
       "name": "John",
     },
   ],
-  "locations": Object {},
-  "pagination": Array [],
-  "typingStatuses": Object {},
+  "locations": {},
+  "pagination": [],
+  "typingStatuses": {},
 }
 `;
 
 exports[`agents reducers should update the matching row in the list of agents when the current user is updated 2`] = `
-Object {
-  "all": Array [
-    Object {
+{
+  "all": [
+    {
       "id": 1,
       "name": "Romain",
     },
-    Object {
+    {
       "id": 2,
       "name": "John",
     },
   ],
-  "locations": Object {},
-  "pagination": Array [],
-  "typingStatuses": Object {},
+  "locations": {},
+  "pagination": [],
+  "typingStatuses": {},
 }
 `;
 
 exports[`agents reducers update agent 1`] = `
-Object {
-  "all": Array [
-    Object {
+{
+  "all": [
+    {
       "id": 1,
       "name": "Alex",
     },
-    Object {
+    {
       "id": 2,
       "name": "John",
     },
   ],
-  "locations": Object {},
-  "pagination": Array [],
-  "typingStatuses": Object {},
+  "locations": {},
+  "pagination": [],
+  "typingStatuses": {},
 }
 `;
 
 exports[`agents reducers update agent 2`] = `
-Object {
-  "all": Array [
-    Object {
+{
+  "all": [
+    {
       "id": 1,
       "name": "Romain",
     },
-    Object {
+    {
       "id": 2,
       "name": "John",
     },
   ],
-  "locations": Object {},
-  "pagination": Array [],
-  "typingStatuses": Object {},
+  "locations": {},
+  "pagination": [],
+  "typingStatuses": {},
 }
 `;

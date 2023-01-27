@@ -28,7 +28,7 @@ type fromJSType = typeof fromJS
 
 jest.mock('init', () => {
     /* eslint-disable @typescript-eslint/no-var-requires,@typescript-eslint/no-unsafe-member-access */
-    const {fromJS} = require.requireActual('immutable')
+    const {fromJS} = jest.requireActual('immutable')
     const {billingState} = require('fixtures/billing')
     return {
         store: {
@@ -90,7 +90,7 @@ describe('current account actions', () => {
     })
 
     describe('update account owner', () => {
-        it('update account owner', (done) => {
+        it('update account owner', () => {
             const userId = 1
 
             mockServer.onPut('/api/account/owner/', {id: userId}).reply(202)
@@ -99,7 +99,6 @@ describe('current account actions', () => {
                 .dispatch(actions.updateAccountOwner(userId))
                 .then(() => {
                     expect(store.getActions()).toMatchSnapshot()
-                    done()
                 })
         })
     })

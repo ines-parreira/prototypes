@@ -64,7 +64,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
             >
               <TagLabel
                 className={null}
-                style={Object {}}
+                style={{}}
               >
                 refund
               </TagLabel>
@@ -75,7 +75,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
               </Component>
               <TagLabel
                 className="text-info"
-                style={Object {}}
+                style={{}}
               >
                 +
                 1
@@ -136,7 +136,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
           </ForwardRef>
           <ConfirmationPopover
             buttonProps={
-              Object {
+              {
                 "intent": "destructive",
               }
             }
@@ -189,7 +189,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
             >
               <TagLabel
                 className={null}
-                style={Object {}}
+                style={{}}
               >
                 rejectedTag
               </TagLabel>
@@ -249,7 +249,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
           </ForwardRef>
           <ConfirmationPopover
             buttonProps={
-              Object {
+              {
                 "intent": "destructive",
               }
             }
@@ -278,11 +278,11 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
 `;
 
 exports[`<MacrosSettingsTable/> should notify when failing to delete macro 1`] = `
-Array [
-  Object {
+[
+  {
     "allowHTML": true,
     "message": "
-        <ul className=\\"m-0\\">
+        <ul className="m-0">
             <li>Rules: Rule1</li><li>Rules: Rule2</li>
         </ul>
     ",

@@ -8,7 +8,7 @@ Immutable.Map {
   },
   "customerId": "gid://shopify/Customer/2721145061399",
   "lineItems": Immutable.List [
-    Object {
+    {
       "appliedDiscount": null,
       "originalUnitPrice": "1.00",
       "quantity": 1,
@@ -18,7 +18,7 @@ Immutable.Map {
       "title": "Acidulous candy",
       "variantId": undefined,
     },
-    Object {
+    {
       "appliedDiscount": null,
       "originalUnitPrice": "1.00",
       "quantity": 4,
@@ -51,7 +51,7 @@ Immutable.Map {
   "appliedDiscount": null,
   "customerId": "gid://shopify/Customer/2721145061399",
   "lineItems": Immutable.List [
-    Object {
+    {
       "appliedDiscount": null,
       "originalUnitPrice": "1.00",
       "quantity": 1,
@@ -61,7 +61,7 @@ Immutable.Map {
       "title": "Acidulous candy",
       "variantId": undefined,
     },
-    Object {
+    {
       "appliedDiscount": null,
       "originalUnitPrice": "1.00",
       "quantity": 4,
@@ -93,7 +93,7 @@ Immutable.Map {
   },
   "customerId": "gid://shopify/Customer/2721145061399",
   "lineItems": Immutable.List [
-    Object {
+    {
       "appliedDiscount": null,
       "originalUnitPrice": "1.00",
       "quantity": 1,
@@ -103,7 +103,7 @@ Immutable.Map {
       "title": "Acidulous candy",
       "variantId": undefined,
     },
-    Object {
+    {
       "appliedDiscount": null,
       "originalUnitPrice": "1.00",
       "quantity": 4,
@@ -128,7 +128,7 @@ Immutable.Map {
   },
   "customerId": "gid://shopify/Customer/2721145061399",
   "lineItems": Immutable.List [
-    Object {
+    {
       "appliedDiscount": null,
       "originalUnitPrice": "1.00",
       "quantity": 1,
@@ -138,7 +138,7 @@ Immutable.Map {
       "title": "Acidulous candy",
       "variantId": undefined,
     },
-    Object {
+    {
       "appliedDiscount": null,
       "originalUnitPrice": "1.00",
       "quantity": 4,

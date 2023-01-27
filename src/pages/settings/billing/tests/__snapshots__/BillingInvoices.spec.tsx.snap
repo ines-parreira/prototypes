@@ -94,7 +94,7 @@ exports[`BillingInvoices component should display invoices, without PDF download
                   <div
                     className="badge"
                     style={
-                      Object {
+                      {
                         "backgroundColor": "var(--background-error)",
                       }
                     }
@@ -152,7 +152,7 @@ exports[`BillingInvoices component should display invoices, without PDF download
                   <div
                     className="badge"
                     style={
-                      Object {
+                      {
                         "backgroundColor": "var(--background-success)",
                       }
                     }
@@ -258,7 +258,7 @@ exports[`BillingInvoices component should display loader 1`] = `
       <div
         className="inner"
         style={
-          Object {
+          {
             "minHeight": "500px",
           }
         }
@@ -266,7 +266,7 @@ exports[`BillingInvoices component should display loader 1`] = `
         <i
           className="icon-custom icon-circle-o-notch md-spin"
           style={
-            Object {
+            {
               "fontSize": "40px",
             }
           }

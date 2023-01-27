@@ -19,7 +19,7 @@ exports[`RestrictedFeature component should render alert with a link and an acti
     arrows={false}
     autoplay={true}
     imagesUrl={
-      Array [
+      [
         "url1",
         "url2",
       ]
@@ -34,11 +34,11 @@ exports[`RestrictedFeature component should render alert with a link and an acti
     enableKeyboardInput={true}
     imageCountSeparator=" of "
     images={
-      Array [
-        Object {
+      [
+        {
           "src": "url1",
         },
-        Object {
+        {
           "src": "url2",
         },
       ]
@@ -55,7 +55,7 @@ exports[`RestrictedFeature component should render alert with a link and an acti
     showCloseButton={true}
     showImageCount={true}
     showThumbnails={true}
-    theme={Object {}}
+    theme={{}}
     thumbnailOffset={2}
     width={1024}
   />
@@ -80,7 +80,7 @@ exports[`RestrictedFeature component should render image carousel and Lightbox 1
     arrows={false}
     autoplay={true}
     imagesUrl={
-      Array [
+      [
         "url1",
         "url2",
       ]
@@ -95,11 +95,11 @@ exports[`RestrictedFeature component should render image carousel and Lightbox 1
     enableKeyboardInput={true}
     imageCountSeparator=" of "
     images={
-      Array [
-        Object {
+      [
+        {
           "src": "url1",
         },
-        Object {
+        {
           "src": "url2",
         },
       ]
@@ -116,7 +116,7 @@ exports[`RestrictedFeature component should render image carousel and Lightbox 1
     showCloseButton={true}
     showImageCount={true}
     showThumbnails={true}
-    theme={Object {}}
+    theme={{}}
     thumbnailOffset={2}
     width={1024}
   />

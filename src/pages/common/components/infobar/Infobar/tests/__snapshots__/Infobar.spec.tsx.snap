@@ -71,9 +71,9 @@ exports[`<Infobar/> onSearchResultClick() should reset spinner and keep customer
 `;
 
 exports[`<Infobar/> should register search rank scenario event when user clicks the result 1`] = `
-Array [
-  Array [
-    Object {
+[
+  [
+    {
       "query": "query",
       "requestTime": 1487076708000,
     },
@@ -82,9 +82,9 @@ Array [
 `;
 
 exports[`<Infobar/> should register search rank scenario event when user clicks the result 2`] = `
-Array [
-  Array [
-    Object {
+[
+  [
+    {
       "numberOfResults": 20,
       "responseTime": 1487076708011,
       "searchEngine": "ES",
@@ -94,9 +94,9 @@ Array [
 `;
 
 exports[`<Infobar/> should register search rank scenario event when user clicks the result 3`] = `
-Array [
-  Array [
-    Object {
+[
+  [
+    {
       "id": 7,
       "index": 0,
     },

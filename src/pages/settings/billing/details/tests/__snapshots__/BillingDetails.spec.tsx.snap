@@ -19,7 +19,7 @@ exports[`BillingDetails component should display billing contact information 1`]
         className="row"
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -32,7 +32,7 @@ exports[`BillingDetails component should display billing contact information 1`]
           sm={8}
           tag="div"
           widths={
-            Array [
+            [
               "xs",
               "sm",
               "md",
@@ -79,7 +79,7 @@ exports[`BillingDetails component should display billing contact information 1`]
           sm={4}
           tag="div"
           widths={
-            Array [
+            [
               "xs",
               "sm",
               "md",
@@ -109,7 +109,7 @@ exports[`BillingDetails component should display loader while fetching a contact
   <div
     className="inner"
     style={
-      Object {
+      {
         "minHeight": "500px",
       }
     }
@@ -117,7 +117,7 @@ exports[`BillingDetails component should display loader while fetching a contact
     <i
       className="icon-custom icon-circle-o-notch md-spin"
       style={
-        Object {
+        {
           "fontSize": "40px",
         }
       }

@@ -22,10 +22,10 @@ exports[`TicketBody last read message should pass \`isLastReadMessage\` only for
     lastMessageDatetimeAfterMount={"2017-07-01T20:00:00.000Z"}
     lastReadMessageId={1}
     messages={
-      Array [
-        Object {
+      [
+        {
           "actions": null,
-          "attachments": Array [],
+          "attachments": [],
           "channel": "email",
           "created_datetime": "2017-07-01T18:00:00",
           "external_id": null,
@@ -38,7 +38,7 @@ exports[`TicketBody last read message should pass \`isLastReadMessage\` only for
           "meta": null,
           "opened_datetime": null,
           "public": true,
-          "receiver": Object {
+          "receiver": {
             "email": "mary.poppins@example.com",
             "firstname": "Mary",
             "id": 2,
@@ -46,7 +46,7 @@ exports[`TicketBody last read message should pass \`isLastReadMessage\` only for
             "name": "Mary Poppins",
           },
           "rule_id": null,
-          "sender": Object {
+          "sender": {
             "email": "john.doe@example.com",
             "firstname": "John",
             "id": 1,
@@ -75,10 +75,10 @@ exports[`TicketBody last read message should pass \`isLastReadMessage\` only for
     lastMessageDatetimeAfterMount={"2017-07-01T20:00:00.000Z"}
     lastReadMessageId={1}
     messages={
-      Array [
-        Object {
+      [
+        {
           "actions": null,
-          "attachments": Array [],
+          "attachments": [],
           "channel": "email",
           "created_datetime": "2017-07-01T19:00:00",
           "external_id": null,
@@ -91,7 +91,7 @@ exports[`TicketBody last read message should pass \`isLastReadMessage\` only for
           "meta": null,
           "opened_datetime": null,
           "public": true,
-          "receiver": Object {
+          "receiver": {
             "email": "mary.poppins@example.com",
             "firstname": "Mary",
             "id": 2,
@@ -99,7 +99,7 @@ exports[`TicketBody last read message should pass \`isLastReadMessage\` only for
             "name": "Mary Poppins",
           },
           "rule_id": null,
-          "sender": Object {
+          "sender": {
             "email": "john.doe@example.com",
             "firstname": "John",
             "id": 1,
@@ -128,10 +128,10 @@ exports[`TicketBody last read message should pass \`isLastReadMessage\` only for
     lastMessageDatetimeAfterMount={"2017-07-01T20:00:00.000Z"}
     lastReadMessageId={1}
     messages={
-      Array [
-        Object {
+      [
+        {
           "actions": null,
-          "attachments": Array [],
+          "attachments": [],
           "channel": "email",
           "created_datetime": "2017-07-01T20:00:00",
           "external_id": null,
@@ -144,7 +144,7 @@ exports[`TicketBody last read message should pass \`isLastReadMessage\` only for
           "meta": null,
           "opened_datetime": null,
           "public": true,
-          "receiver": Object {
+          "receiver": {
             "email": "mary.poppins@example.com",
             "firstname": "Mary",
             "id": 2,
@@ -152,7 +152,7 @@ exports[`TicketBody last read message should pass \`isLastReadMessage\` only for
             "name": "Mary Poppins",
           },
           "rule_id": null,
-          "sender": Object {
+          "sender": {
             "email": "john.doe@example.com",
             "firstname": "John",
             "id": 1,
@@ -183,7 +183,7 @@ exports[`TicketBody should display and highlight the messages 1`] = `
   <TicketMessages
     hasCursor={false}
     highlightedElements={
-      Object {
+      {
         "first": 1,
       }
     }
@@ -193,10 +193,10 @@ exports[`TicketBody should display and highlight the messages 1`] = `
     lastMessageDatetimeAfterMount={"2017-07-01T18:00:00.000Z"}
     lastReadMessageId={1}
     messages={
-      Array [
-        Object {
+      [
+        {
           "actions": null,
-          "attachments": Array [],
+          "attachments": [],
           "channel": "email",
           "created_datetime": "2017-07-01T18:00:00",
           "external_id": null,
@@ -209,7 +209,7 @@ exports[`TicketBody should display and highlight the messages 1`] = `
           "meta": null,
           "opened_datetime": null,
           "public": true,
-          "receiver": Object {
+          "receiver": {
             "email": "mary.poppins@example.com",
             "firstname": "Mary",
             "id": 2,
@@ -217,7 +217,7 @@ exports[`TicketBody should display and highlight the messages 1`] = `
             "name": "Mary Poppins",
           },
           "rule_id": null,
-          "sender": Object {
+          "sender": {
             "email": "john.doe@example.com",
             "firstname": "John",
             "id": 1,
@@ -248,7 +248,7 @@ exports[`TicketBody should display and not highlight the messages 1`] = `
   <TicketMessages
     hasCursor={false}
     highlightedElements={
-      Object {
+      {
         "first": 2,
       }
     }
@@ -258,10 +258,10 @@ exports[`TicketBody should display and not highlight the messages 1`] = `
     lastMessageDatetimeAfterMount={"2017-07-01T18:00:00.000Z"}
     lastReadMessageId={1}
     messages={
-      Array [
-        Object {
+      [
+        {
           "actions": null,
-          "attachments": Array [],
+          "attachments": [],
           "channel": "email",
           "created_datetime": "2017-07-01T18:00:00",
           "external_id": null,
@@ -274,7 +274,7 @@ exports[`TicketBody should display and not highlight the messages 1`] = `
           "meta": null,
           "opened_datetime": null,
           "public": true,
-          "receiver": Object {
+          "receiver": {
             "email": "mary.poppins@example.com",
             "firstname": "Mary",
             "id": 2,
@@ -282,7 +282,7 @@ exports[`TicketBody should display and not highlight the messages 1`] = `
             "name": "Mary Poppins",
           },
           "rule_id": null,
-          "sender": Object {
+          "sender": {
             "email": "john.doe@example.com",
             "firstname": "John",
             "id": 1,
@@ -319,10 +319,10 @@ exports[`TicketBody should display audit log events with messages 1`] = `
     lastMessageDatetimeAfterMount={"2019-11-15T19:00:00.000Z"}
     lastReadMessageId={1}
     messages={
-      Array [
-        Object {
+      [
+        {
           "actions": null,
-          "attachments": Array [],
+          "attachments": [],
           "channel": "email",
           "created_datetime": "2017-07-01T18:00:00",
           "external_id": null,
@@ -335,7 +335,7 @@ exports[`TicketBody should display audit log events with messages 1`] = `
           "meta": null,
           "opened_datetime": null,
           "public": true,
-          "receiver": Object {
+          "receiver": {
             "email": "mary.poppins@example.com",
             "firstname": "Mary",
             "id": 2,
@@ -343,7 +343,7 @@ exports[`TicketBody should display audit log events with messages 1`] = `
             "name": "Mary Poppins",
           },
           "rule_id": null,
-          "sender": Object {
+          "sender": {
             "email": "john.doe@example.com",
             "firstname": "John",
             "id": 1,
@@ -399,10 +399,10 @@ exports[`TicketBody should display events with messages 1`] = `
     lastMessageDatetimeAfterMount={"2017-07-01T19:00:00.000Z"}
     lastReadMessageId={1}
     messages={
-      Array [
-        Object {
+      [
+        {
           "actions": null,
-          "attachments": Array [],
+          "attachments": [],
           "channel": "email",
           "created_datetime": "2017-07-01T18:00:00",
           "external_id": null,
@@ -415,7 +415,7 @@ exports[`TicketBody should display events with messages 1`] = `
           "meta": null,
           "opened_datetime": null,
           "public": true,
-          "receiver": Object {
+          "receiver": {
             "email": "mary.poppins@example.com",
             "firstname": "Mary",
             "id": 2,
@@ -423,7 +423,7 @@ exports[`TicketBody should display events with messages 1`] = `
             "name": "Mary Poppins",
           },
           "rule_id": null,
-          "sender": Object {
+          "sender": {
             "email": "john.doe@example.com",
             "firstname": "John",
             "id": 1,
@@ -507,10 +507,10 @@ exports[`TicketBody should display messages 1`] = `
     lastMessageDatetimeAfterMount={"2017-07-01T18:00:00.000Z"}
     lastReadMessageId={1}
     messages={
-      Array [
-        Object {
+      [
+        {
           "actions": null,
-          "attachments": Array [],
+          "attachments": [],
           "channel": "email",
           "created_datetime": "2017-07-01T18:00:00",
           "external_id": null,
@@ -523,7 +523,7 @@ exports[`TicketBody should display messages 1`] = `
           "meta": null,
           "opened_datetime": null,
           "public": true,
-          "receiver": Object {
+          "receiver": {
             "email": "mary.poppins@example.com",
             "firstname": "Mary",
             "id": 2,
@@ -531,7 +531,7 @@ exports[`TicketBody should display messages 1`] = `
             "name": "Mary Poppins",
           },
           "rule_id": null,
-          "sender": Object {
+          "sender": {
             "email": "john.doe@example.com",
             "firstname": "John",
             "id": 1,
@@ -602,10 +602,10 @@ exports[`TicketBody should display rule suggestion in correct order 1`] = `
     lastMessageDatetimeAfterMount={"2017-07-01T18:30:00.000Z"}
     lastReadMessageId={1}
     messages={
-      Array [
-        Object {
+      [
+        {
           "actions": null,
-          "attachments": Array [],
+          "attachments": [],
           "channel": "email",
           "created_datetime": "2017-07-01T18:00:00",
           "external_id": null,
@@ -618,7 +618,7 @@ exports[`TicketBody should display rule suggestion in correct order 1`] = `
           "meta": null,
           "opened_datetime": null,
           "public": true,
-          "receiver": Object {
+          "receiver": {
             "email": "mary.poppins@example.com",
             "firstname": "Mary",
             "id": 2,
@@ -626,7 +626,7 @@ exports[`TicketBody should display rule suggestion in correct order 1`] = `
             "name": "Mary Poppins",
           },
           "rule_id": null,
-          "sender": Object {
+          "sender": {
             "email": "john.doe@example.com",
             "firstname": "John",
             "id": 1,
@@ -650,7 +650,7 @@ exports[`TicketBody should display rule suggestion in correct order 1`] = `
     isCollapsed={true}
     key="rule-suggestion-2"
     ticket={
-      Object {
+      {
         "id": 1,
       }
     }
@@ -664,10 +664,10 @@ exports[`TicketBody should display rule suggestion in correct order 1`] = `
     lastMessageDatetimeAfterMount={"2017-07-01T18:30:00.000Z"}
     lastReadMessageId={1}
     messages={
-      Array [
-        Object {
+      [
+        {
           "actions": null,
-          "attachments": Array [],
+          "attachments": [],
           "channel": "email",
           "created_datetime": "2017-07-01T18:30:00",
           "external_id": null,
@@ -680,7 +680,7 @@ exports[`TicketBody should display rule suggestion in correct order 1`] = `
           "meta": null,
           "opened_datetime": null,
           "public": true,
-          "receiver": Object {
+          "receiver": {
             "email": "mary.poppins@example.com",
             "firstname": "Mary",
             "id": 2,
@@ -688,7 +688,7 @@ exports[`TicketBody should display rule suggestion in correct order 1`] = `
             "name": "Mary Poppins",
           },
           "rule_id": null,
-          "sender": Object {
+          "sender": {
             "email": "john.doe@example.com",
             "firstname": "John",
             "id": 1,

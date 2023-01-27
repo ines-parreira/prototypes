@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<ChatIntegrationPreferences/> _setLinkedEmailIntegration() should update the linked email integration in the state. 1`] = `
-Object {
+{
   "autoResponderEnabled": false,
   "autoResponderReply": "reply-shortly",
   "emailCaptureEnforcement": "optional",
@@ -13,7 +13,7 @@ Object {
 `;
 
 exports[`<ChatIntegrationPreferences/> _setLinkedEmailIntegration() should update the linked email integration in the state. 2`] = `
-Object {
+{
   "autoResponderEnabled": false,
   "autoResponderReply": "reply-shortly",
   "emailCaptureEnforcement": "optional",
@@ -26,8 +26,8 @@ Object {
 
 exports[`<ChatIntegrationPreferences/> _submitPreferences() should submit the form with defaults 1`] = `
 [MockFunction] {
-  "calls": Array [
-    Array [
+  "calls": [
+    [
       Immutable.Map {
         "id": undefined,
         "meta": Immutable.Map {
@@ -44,8 +44,8 @@ exports[`<ChatIntegrationPreferences/> _submitPreferences() should submit the fo
       },
     ],
   ],
-  "results": Array [
-    Object {
+  "results": [
+    {
       "type": "return",
       "value": undefined,
     },
@@ -55,8 +55,8 @@ exports[`<ChatIntegrationPreferences/> _submitPreferences() should submit the fo
 
 exports[`<ChatIntegrationPreferences/> _submitPreferences() should submit the form with loaded values 1`] = `
 [MockFunction] {
-  "calls": Array [
-    Array [
+  "calls": [
+    [
       Immutable.Map {
         "id": 1,
         "meta": Immutable.Map {
@@ -73,8 +73,8 @@ exports[`<ChatIntegrationPreferences/> _submitPreferences() should submit the fo
       },
     ],
   ],
-  "results": Array [
-    Object {
+  "results": [
+    {
       "type": "return",
       "value": undefined,
     },
@@ -83,7 +83,7 @@ exports[`<ChatIntegrationPreferences/> _submitPreferences() should submit the fo
 `;
 
 exports[`<ChatIntegrationPreferences/> componentDidMount() should initialize the state using the integration passed 1`] = `
-Object {
+{
   "autoResponderEnabled": true,
   "autoResponderReply": "reply-in-minutes",
   "emailCaptureEnforcement": "always-required",
@@ -95,7 +95,7 @@ Object {
 `;
 
 exports[`<ChatIntegrationPreferences/> componentDidUpdate() should initialize the state using the integration passed because the state was not initialized yet and the integration passed is not empty 1`] = `
-Object {
+{
   "autoResponderEnabled": true,
   "autoResponderReply": "reply-in-minutes",
   "emailCaptureEnforcement": "always-required",
@@ -164,7 +164,7 @@ exports[`<ChatIntegrationPreferences/> render() should render buttons in loading
     <Row
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -176,7 +176,7 @@ exports[`<ChatIntegrationPreferences/> render() should render buttons in loading
       <Col
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -224,18 +224,18 @@ exports[`<ChatIntegrationPreferences/> render() should render buttons in loading
             <RadioFieldSet
               onChange={[Function]}
               options={
-                Array [
-                  Object {
+                [
+                  {
                     "description": "Leaving your email is optional, everyone can start a conversation. Maximise conversation volume",
                     "label": "Optional",
                     "value": "optional",
                   },
-                  Object {
+                  {
                     "description": "Reduces conversation volume by around 5%",
                     "label": "Required only outside business hours",
                     "value": "required-outside-business-hours",
                   },
-                  Object {
+                  {
                     "description": "Reduces conversation volume by around 30%",
                     "label": "Always required",
                     "value": "always-required",
@@ -288,21 +288,21 @@ exports[`<ChatIntegrationPreferences/> render() should render buttons in loading
                 isDisabled={true}
                 onChange={[Function]}
                 options={
-                  Array [
-                    Object {
-                      "label": "\\"Thanks for reaching out! Our team will get back to you shortly.\\"",
+                  [
+                    {
+                      "label": ""Thanks for reaching out! Our team will get back to you shortly."",
                       "value": "reply-shortly",
                     },
-                    Object {
-                      "label": "\\"Thanks for reaching out! We typically reply in a few minutes.\\"",
+                    {
+                      "label": ""Thanks for reaching out! We typically reply in a few minutes."",
                       "value": "reply-in-minutes",
                     },
-                    Object {
-                      "label": "\\"Thanks for reaching out! We typically reply in a few hours.\\"",
+                    {
+                      "label": ""Thanks for reaching out! We typically reply in a few hours."",
                       "value": "reply-in-hours",
                     },
-                    Object {
-                      "label": "\\"Thanks for reaching out! We typically reply in a day.\\"",
+                    {
+                      "label": ""Thanks for reaching out! We typically reply in a day."",
                       "value": "reply-in-day",
                     },
                   ]
@@ -348,7 +348,7 @@ exports[`<ChatIntegrationPreferences/> render() should render buttons in loading
               for="linkedEmailIntegration"
               tag="label"
               widths={
-                Array [
+                [
                   "xs",
                   "sm",
                   "md",
@@ -366,11 +366,11 @@ exports[`<ChatIntegrationPreferences/> render() should render buttons in loading
               id={null}
               onChange={[Function]}
               onSearchChange={[Function]}
-              options={Array []}
+              options={[]}
               placeholder="Select an email integration"
               required={false}
               singular="option"
-              style={Object {}}
+              style={{}}
               value={null}
             />
           </div>
@@ -390,7 +390,7 @@ exports[`<ChatIntegrationPreferences/> render() should render buttons in loading
       <Col
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -474,7 +474,7 @@ exports[`<ChatIntegrationPreferences/> render() should render the Chat preferenc
     <Row
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -486,7 +486,7 @@ exports[`<ChatIntegrationPreferences/> render() should render the Chat preferenc
       <Col
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -534,18 +534,18 @@ exports[`<ChatIntegrationPreferences/> render() should render the Chat preferenc
             <RadioFieldSet
               onChange={[Function]}
               options={
-                Array [
-                  Object {
+                [
+                  {
                     "description": "Leaving your email is optional, everyone can start a conversation. Maximise conversation volume",
                     "label": "Optional",
                     "value": "optional",
                   },
-                  Object {
+                  {
                     "description": "Reduces conversation volume by around 5%",
                     "label": "Required only outside business hours",
                     "value": "required-outside-business-hours",
                   },
-                  Object {
+                  {
                     "description": "Reduces conversation volume by around 30%",
                     "label": "Always required",
                     "value": "always-required",
@@ -598,21 +598,21 @@ exports[`<ChatIntegrationPreferences/> render() should render the Chat preferenc
                 isDisabled={true}
                 onChange={[Function]}
                 options={
-                  Array [
-                    Object {
-                      "label": "\\"Thanks for reaching out! Our team will get back to you shortly.\\"",
+                  [
+                    {
+                      "label": ""Thanks for reaching out! Our team will get back to you shortly."",
                       "value": "reply-shortly",
                     },
-                    Object {
-                      "label": "\\"Thanks for reaching out! We typically reply in a few minutes.\\"",
+                    {
+                      "label": ""Thanks for reaching out! We typically reply in a few minutes."",
                       "value": "reply-in-minutes",
                     },
-                    Object {
-                      "label": "\\"Thanks for reaching out! We typically reply in a few hours.\\"",
+                    {
+                      "label": ""Thanks for reaching out! We typically reply in a few hours."",
                       "value": "reply-in-hours",
                     },
-                    Object {
-                      "label": "\\"Thanks for reaching out! We typically reply in a day.\\"",
+                    {
+                      "label": ""Thanks for reaching out! We typically reply in a day."",
                       "value": "reply-in-day",
                     },
                   ]
@@ -658,7 +658,7 @@ exports[`<ChatIntegrationPreferences/> render() should render the Chat preferenc
               for="linkedEmailIntegration"
               tag="label"
               widths={
-                Array [
+                [
                   "xs",
                   "sm",
                   "md",
@@ -676,11 +676,11 @@ exports[`<ChatIntegrationPreferences/> render() should render the Chat preferenc
               id={null}
               onChange={[Function]}
               onSearchChange={[Function]}
-              options={Array []}
+              options={[]}
               placeholder="Select an email integration"
               required={false}
               singular="option"
-              style={Object {}}
+              style={{}}
               value={null}
             />
           </div>
@@ -700,7 +700,7 @@ exports[`<ChatIntegrationPreferences/> render() should render the Chat preferenc
       <Col
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",

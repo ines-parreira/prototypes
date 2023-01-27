@@ -11,7 +11,7 @@ exports[`DEPRECATED_InputField should render a basic text input 1`] = `
     htmlFor="id-input-2"
     tag="label"
     widths={
-      Array [
+      [
         "xs",
         "sm",
         "md",
@@ -301,7 +301,7 @@ exports[`DEPRECATED_InputField should render a tooltip next to the label 1`] = `
       htmlFor="id-input-6"
       tag="label"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -323,7 +323,7 @@ exports[`DEPRECATED_InputField should render a tooltip next to the label 1`] = `
     </span>
     <Tooltip
       style={
-        Object {
+        {
           "textAlign": "left",
         }
       }
@@ -411,7 +411,7 @@ exports[`DEPRECATED_InputField should render the input with an error 1`] = `
 `;
 
 exports[`DEPRECATED_InputField should use default props 1`] = `
-Object {
+{
   "onChange": [Function],
   "type": "text",
   "value": "value",

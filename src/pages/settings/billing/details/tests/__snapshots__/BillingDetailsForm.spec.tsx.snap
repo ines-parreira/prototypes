@@ -3,7 +3,7 @@
 exports[`BillingDetailsForm component should display loader 1`] = `
 <Provider
   store={
-    Object {
+    {
       "clearActions": [Function],
       "dispatch": [Function],
       "getActions": [Function],
@@ -110,7 +110,7 @@ exports[`BillingDetailsForm component should display loader 1`] = `
           <Row
             tag="div"
             widths={
-              Array [
+              [
                 "xs",
                 "sm",
                 "md",
@@ -126,7 +126,7 @@ exports[`BillingDetailsForm component should display loader 1`] = `
                 lg={6}
                 tag="div"
                 widths={
-                  Array [
+                  [
                     "xs",
                     "sm",
                     "md",
@@ -149,7 +149,7 @@ exports[`BillingDetailsForm component should display loader 1`] = `
                       <div
                         className="inner"
                         style={
-                          Object {
+                          {
                             "minHeight": "500px",
                           }
                         }
@@ -157,7 +157,7 @@ exports[`BillingDetailsForm component should display loader 1`] = `
                         <i
                           className="icon-custom icon-circle-o-notch md-spin"
                           style={
-                            Object {
+                            {
                               "fontSize": "40px",
                             }
                           }
@@ -179,7 +179,7 @@ exports[`BillingDetailsForm component should display loader 1`] = `
 exports[`BillingDetailsForm component should display not display the form 1`] = `
 <Provider
   store={
-    Object {
+    {
       "clearActions": [Function],
       "dispatch": [Function],
       "getActions": [Function],
@@ -286,7 +286,7 @@ exports[`BillingDetailsForm component should display not display the form 1`] = 
           <Row
             tag="div"
             widths={
-              Array [
+              [
                 "xs",
                 "sm",
                 "md",
@@ -302,7 +302,7 @@ exports[`BillingDetailsForm component should display not display the form 1`] = 
                 lg={6}
                 tag="div"
                 widths={
-                  Array [
+                  [
                     "xs",
                     "sm",
                     "md",
@@ -325,10 +325,10 @@ exports[`BillingDetailsForm component should display not display the form 1`] = 
                       <BillingAddressInputs
                         onChange={[Function]}
                         value={
-                          Object {
+                          {
                             "email": "",
-                            "shipping": Object {
-                              "address": Object {
+                            "shipping": {
+                              "address": {
                                 "city": "",
                                 "country": "",
                                 "line1": "",
@@ -664,7 +664,7 @@ exports[`BillingDetailsForm component should display not display the form 1`] = 
                                   htmlFor="id-country"
                                   tag="label"
                                   widths={
-                                    Array [
+                                    [
                                       "xs",
                                       "sm",
                                       "md",
@@ -882,7 +882,7 @@ exports[`BillingDetailsForm component should display not display the form 1`] = 
 exports[`BillingDetailsForm component should display the form with billing contact information 1`] = `
 <Provider
   store={
-    Object {
+    {
       "clearActions": [Function],
       "dispatch": [Function],
       "getActions": [Function],
@@ -1005,7 +1005,7 @@ exports[`BillingDetailsForm component should display the form with billing conta
           <Row
             tag="div"
             widths={
-              Array [
+              [
                 "xs",
                 "sm",
                 "md",
@@ -1021,7 +1021,7 @@ exports[`BillingDetailsForm component should display the form with billing conta
                 lg={6}
                 tag="div"
                 widths={
-                  Array [
+                  [
                     "xs",
                     "sm",
                     "md",
@@ -1044,10 +1044,10 @@ exports[`BillingDetailsForm component should display the form with billing conta
                       <BillingAddressInputs
                         onChange={[Function]}
                         value={
-                          Object {
+                          {
                             "email": "hello@acme.gorgias.io",
-                            "shipping": Object {
-                              "address": Object {
+                            "shipping": {
+                              "address": {
                                 "city": "San Francisco",
                                 "country": "United States",
                                 "line1": "52 Washburn St",
@@ -1383,7 +1383,7 @@ exports[`BillingDetailsForm component should display the form with billing conta
                                   htmlFor="id-country"
                                   tag="label"
                                   widths={
-                                    Array [
+                                    [
                                       "xs",
                                       "sm",
                                       "md",

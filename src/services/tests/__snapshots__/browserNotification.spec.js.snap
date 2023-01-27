@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`services browserNotification newMessage() should create a browser notification 1`] = `
-Array [
-  Object {
+[
+  {
     "body": "body",
     "icon": "/assets/img/icons/logo.png",
     "onClick": [Function],
@@ -14,8 +14,8 @@ Array [
 `;
 
 exports[`services browserNotification newMessage() should create a browser notification with default values (empty values) 1`] = `
-Array [
-  Object {
+[
+  {
     "body": "You received an answer",
     "icon": "/assets/img/icons/logo.png",
     "onClick": [Function],
@@ -27,8 +27,8 @@ Array [
 `;
 
 exports[`services browserNotification newMessage() should create a browser notification with default values (empty) 1`] = `
-Array [
-  Object {
+[
+  {
     "body": "You received an answer",
     "icon": "/assets/img/icons/logo.png",
     "onClick": [Function],
@@ -40,8 +40,8 @@ Array [
 `;
 
 exports[`services browserNotification newMessage() should create a browser notification with default values (invalid values) 1`] = `
-Array [
-  Object {
+[
+  {
     "body": "You received an answer",
     "icon": "/assets/img/icons/logo.png",
     "onClick": [Function],
@@ -53,8 +53,8 @@ Array [
 `;
 
 exports[`services browserNotification newMessage() should create a browser notification with default values (null values) 1`] = `
-Array [
-  Object {
+[
+  {
     "body": "You received an answer",
     "icon": "/assets/img/icons/logo.png",
     "onClick": [Function],
@@ -66,8 +66,8 @@ Array [
 `;
 
 exports[`services browserNotification newMessage() should display several notifications but play sound once 1`] = `
-Array [
-  Object {
+[
+  {
     "body": "body",
     "icon": "/assets/img/icons/logo.png",
     "onClick": [Function],
@@ -75,7 +75,7 @@ Array [
     "timeout": 5000,
     "title": "title",
   },
-  Object {
+  {
     "body": "body",
     "icon": "/assets/img/icons/logo.png",
     "onClick": [Function],
@@ -87,8 +87,8 @@ Array [
 `;
 
 exports[`services browserNotification newMessage() should not throw unhandled promise rejection when the audio playing fails 1`] = `
-Array [
-  Object {
+[
+  {
     "body": "body",
     "icon": "/assets/img/icons/logo.png",
     "onClick": [Function],
@@ -100,8 +100,8 @@ Array [
 `;
 
 exports[`services browserNotification newMessage() should require interaction 1`] = `
-Array [
-  Object {
+[
+  {
     "body": "You received an answer",
     "icon": "/assets/img/icons/logo.png",
     "onClick": [Function],
@@ -113,8 +113,8 @@ Array [
 `;
 
 exports[`services browserNotification newMessageThrottled() should display a single notification when called several times 1`] = `
-Array [
-  Object {
+[
+  {
     "body": "body",
     "icon": "/assets/img/icons/logo.png",
     "onClick": [Function],

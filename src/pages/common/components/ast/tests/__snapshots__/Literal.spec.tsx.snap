@@ -5,7 +5,7 @@ exports[`Literal component should display an error because the value is empty 1`
   className="Literal"
 >
   <Connect(Widget)
-    actions={Object {}}
+    actions={{}}
     className="LiteralWidget"
     compact={true}
     leftsiblings={
@@ -48,7 +48,7 @@ exports[`Literal component should not display an error because the value is not 
   className="Literal"
 >
   <Connect(Widget)
-    actions={Object {}}
+    actions={{}}
     className="LiteralWidget"
     compact={true}
     leftsiblings={

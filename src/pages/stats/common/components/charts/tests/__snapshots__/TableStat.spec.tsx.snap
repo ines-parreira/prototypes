@@ -361,7 +361,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                 agentId={1}
                 agentName="Foo"
                 channelsBreakdown={
-                  Object {
+                  {
                     "aircall": 10,
                     "api": 10,
                     "chat": 10,
@@ -682,7 +682,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                 agentId={1}
                 agentName="Foo"
                 channelsBreakdown={
-                  Object {
+                  {
                     "aircall": 10,
                     "api": 10,
                     "chat": 10,
@@ -1224,7 +1224,7 @@ exports[`TableStat should render a table chart 1`] = `
                 agentId={1}
                 agentName="Foo"
                 channelsBreakdown={
-                  Object {
+                  {
                     "aircall": 10,
                     "api": 10,
                     "chat": 10,
@@ -1761,7 +1761,7 @@ exports[`TableStat should render a table with the expand button and one line vis
                 agentId={1}
                 agentName="Foo"
                 channelsBreakdown={
-                  Object {
+                  {
                     "aircall": 10,
                     "api": 10,
                     "chat": 10,

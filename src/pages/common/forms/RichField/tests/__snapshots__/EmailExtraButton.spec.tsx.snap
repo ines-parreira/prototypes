@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<EmailExtraButton /> should add signature on click 1`] = `
-Array [
-  Array [
-    Object {
+[
+  [
+    {
       "contentState": Immutable.Record {
-        "entityMap": Object {
+        "entityMap": {
           "__add": [Function],
           "__create": [Function],
           "__get": [Function],
@@ -46,12 +46,12 @@ Array [
           "hasFocus": false,
         },
       },
-      "emailExtraArgs": Object {
+      "emailExtraArgs": {
         "isForwarded": true,
-        "replyThreadMessages": Array [
-          Object {
+        "replyThreadMessages": [
+          {
             "actions": null,
-            "attachments": Array [],
+            "attachments": [],
             "body_html": "<div>Hi! How are <strong>you</strong>?</div>",
             "body_text": "Hi! How are you?",
             "channel": "email",
@@ -67,7 +67,7 @@ Array [
             "meta": null,
             "opened_datetime": null,
             "public": true,
-            "receiver": Object {
+            "receiver": {
               "email": "jeanbon@gorgias.io",
               "firstname": "Jean",
               "id": 34,
@@ -75,7 +75,7 @@ Array [
               "name": "Jean Bon",
             },
             "rule_id": null,
-            "sender": Object {
+            "sender": {
               "email": "alex@gorgias.io",
               "firstname": "Alex",
               "id": 2,
@@ -83,13 +83,13 @@ Array [
               "name": "Alex Plugaru",
             },
             "sent_datetime": "2017-07-31T23:07:36.946068+00:00",
-            "source": Object {
-              "from": Object {
+            "source": {
+              "from": {
                 "address": "support@acme.gorgias.io",
                 "name": "Acme Support",
               },
-              "to": Array [
-                Object {
+              "to": [
+                {
                   "address": "jeanbon@gorgias.io",
                   "name": "Jean Bon",
                 },
@@ -110,8 +110,8 @@ Array [
           "text": "
 Some signature",
         },
-        "ticket": Object {
-          "assignee_user": Object {
+        "ticket": {
+          "assignee_user": {
             "email": "alex@gorgias.io",
             "firstname": "Alex",
             "id": 2,
@@ -121,10 +121,10 @@ Some signature",
           "channel": "email",
           "closed_datetime": null,
           "created_datetime": "2017-07-31T23:07:35.150000+00:00",
-          "custom_fields": Array [],
-          "customer": Object {
-            "channels": Array [
-              Object {
+          "custom_fields": [],
+          "customer": {
+            "channels": [
+              {
                 "address": "jeanbon@gorgias.io",
                 "created_datetime": "2017-07-31T21:45:03.399819+00:00",
                 "deleted_datetime": null,
@@ -133,7 +133,7 @@ Some signature",
                 "type": "email",
                 "updated_datetime": "2017-07-31T21:45:03.399828+00:00",
               },
-              Object {
+              {
                 "address": "+1 415-548-9999",
                 "created_datetime": "2017-07-31T21:45:03.416965+00:00",
                 "deleted_datetime": null,
@@ -147,13 +147,13 @@ Some signature",
             "email": "jeanbon@gorgias.io",
             "firstname": "Jean",
             "id": 34,
-            "integrations": Object {
-              "2": Object {
+            "integrations": {
+              "2": {
                 "__integration_type__": "http",
-                "args": Object {
+                "args": {
                   "name": "Jean Bon",
                 },
-                "headers": Object {
+                "headers": {
                   "Accept": "*/*",
                   "Accept-Encoding": "gzip, deflate",
                   "Connection": "close",
@@ -164,12 +164,12 @@ Some signature",
                 "origin": "199.188.194.25",
                 "url": "https://httpbin.org/get?name=Jean Bon",
               },
-              "5": Object {
+              "5": {
                 "__integration_type__": "shopify",
-                "customer": Object {
+                "customer": {
                   "accepts_marketing": false,
-                  "addresses": Array [
-                    Object {
+                  "addresses": [
+                    {
                       "address1": "3 rue des volailles",
                       "address2": "",
                       "city": "Paris",
@@ -190,7 +190,7 @@ Some signature",
                     },
                   ],
                   "created_at": "2017-03-17T21:26:16-04:00",
-                  "default_address": Object {
+                  "default_address": {
                     "address1": "12 rue du poisson cru",
                     "address2": "unit 3",
                     "city": "Paris",
@@ -226,9 +226,9 @@ Some signature",
                   "updated_at": "2017-07-12T20:44:14-04:00",
                   "verified_email": true,
                 },
-                "orders": Array [
-                  Object {
-                    "billing_address": Object {
+                "orders": [
+                  {
+                    "billing_address": {
                       "address1": "12 rue du poisson cru",
                       "address2": "unit 3",
                       "city": "Paris",
@@ -257,10 +257,10 @@ Some signature",
                     "contact_email": "jeanbon@gorgias.io",
                     "created_at": "2017-07-12T16:14:09-04:00",
                     "currency": "EUR",
-                    "customer": Object {
+                    "customer": {
                       "accepts_marketing": false,
                       "created_at": "2017-03-17T21:26:16-04:00",
-                      "default_address": Object {
+                      "default_address": {
                         "address1": "12 rue du poisson cru",
                         "address2": "unit 3",
                         "city": "Paris",
@@ -298,17 +298,17 @@ Some signature",
                     },
                     "customer_locale": null,
                     "device_id": null,
-                    "discount_codes": Array [],
+                    "discount_codes": [],
                     "email": "jeanbon@gorgias.io",
                     "financial_status": "paid",
                     "fulfillment_status": null,
-                    "fulfillments": Array [],
+                    "fulfillments": [],
                     "gateway": "manual",
                     "id": 4236385803,
                     "landing_site": null,
                     "landing_site_ref": null,
-                    "line_items": Array [
-                      Object {
+                    "line_items": [
+                      {
                         "fulfillable_quantity": 1,
                         "fulfillment_service": "manual",
                         "fulfillment_status": null,
@@ -319,12 +319,12 @@ Some signature",
                         "price": "9.00",
                         "product_exists": true,
                         "product_id": 9211387275,
-                        "properties": Array [],
+                        "properties": [],
                         "quantity": 1,
                         "requires_shipping": true,
                         "sku": "1234567890",
-                        "tax_lines": Array [
-                          Object {
+                        "tax_lines": [
+                          {
                             "price": "1.50",
                             "rate": 0.2,
                             "title": "TVA",
@@ -342,11 +342,11 @@ Some signature",
                     "location_id": null,
                     "name": "#1202",
                     "note": null,
-                    "note_attributes": Array [],
+                    "note_attributes": [],
                     "number": 202,
                     "order_number": 1202,
                     "order_status_url": null,
-                    "payment_gateway_names": Array [
+                    "payment_gateway_names": [
                       "manual",
                     ],
                     "phone": null,
@@ -354,8 +354,8 @@ Some signature",
                     "processing_method": "manual",
                     "reference": null,
                     "referring_site": null,
-                    "refunds": Array [],
-                    "shipping_address": Object {
+                    "refunds": [],
+                    "shipping_address": {
                       "address1": "12 rue du poisson cru",
                       "address2": "unit 3",
                       "city": "Paris",
@@ -372,14 +372,14 @@ Some signature",
                       "province_code": null,
                       "zip": "75012",
                     },
-                    "shipping_lines": Array [],
+                    "shipping_lines": [],
                     "source_identifier": null,
                     "source_name": "shopify_draft_order",
                     "source_url": null,
                     "subtotal_price": "9.00",
                     "tags": "",
-                    "tax_lines": Array [
-                      Object {
+                    "tax_lines": [
+                      {
                         "price": "1.50",
                         "rate": 0.2,
                         "title": "TVA",
@@ -397,7 +397,7 @@ Some signature",
                     "updated_at": "2017-07-12T16:14:10-04:00",
                     "user_id": 95205899,
                   },
-                  Object {
+                  {
                     "browser_ip": null,
                     "buyer_accepts_marketing": false,
                     "cancel_reason": null,
@@ -410,10 +410,10 @@ Some signature",
                     "contact_email": "jean@gorgias.io",
                     "created_at": "2017-06-16T20:06:10-04:00",
                     "currency": "EUR",
-                    "customer": Object {
+                    "customer": {
                       "accepts_marketing": false,
                       "created_at": "2017-03-17T21:26:16-04:00",
-                      "default_address": Object {
+                      "default_address": {
                         "address1": "12 rue du poisson cru",
                         "address2": "unit 3",
                         "city": "Paris",
@@ -451,17 +451,17 @@ Some signature",
                     },
                     "customer_locale": null,
                     "device_id": null,
-                    "discount_codes": Array [],
+                    "discount_codes": [],
                     "email": "jean@gorgias.io",
                     "financial_status": "paid",
                     "fulfillment_status": null,
-                    "fulfillments": Array [],
+                    "fulfillments": [],
                     "gateway": "",
                     "id": 4194477515,
                     "landing_site": null,
                     "landing_site_ref": null,
-                    "line_items": Array [
-                      Object {
+                    "line_items": [
+                      {
                         "fulfillable_quantity": 1,
                         "fulfillment_service": "manual",
                         "fulfillment_status": null,
@@ -472,11 +472,11 @@ Some signature",
                         "price": "0.10",
                         "product_exists": true,
                         "product_id": 8345093387,
-                        "properties": Array [],
+                        "properties": [],
                         "quantity": 1,
                         "requires_shipping": true,
                         "sku": "0987654321",
-                        "tax_lines": Array [],
+                        "tax_lines": [],
                         "taxable": true,
                         "title": "Bonbon acidulé",
                         "total_discount": "0.00",
@@ -489,18 +489,18 @@ Some signature",
                     "location_id": null,
                     "name": "#1199",
                     "note": null,
-                    "note_attributes": Array [],
+                    "note_attributes": [],
                     "number": 199,
                     "order_number": 1199,
                     "order_status_url": null,
-                    "payment_gateway_names": Array [],
+                    "payment_gateway_names": [],
                     "phone": null,
                     "processed_at": "2017-06-16T20:06:10-04:00",
                     "processing_method": "",
                     "reference": null,
                     "referring_site": null,
-                    "refunds": Array [],
-                    "shipping_address": Object {
+                    "refunds": [],
+                    "shipping_address": {
                       "address1": "12 rue du poisson cru",
                       "address2": "unit 3",
                       "city": "Paris",
@@ -517,13 +517,13 @@ Some signature",
                       "province_code": null,
                       "zip": "75012",
                     },
-                    "shipping_lines": Array [],
+                    "shipping_lines": [],
                     "source_identifier": null,
                     "source_name": "1424624",
                     "source_url": null,
                     "subtotal_price": "0.10",
                     "tags": "",
-                    "tax_lines": Array [],
+                    "tax_lines": [],
                     "taxes_included": false,
                     "test": false,
                     "token": "0fbe98fcc45da2abe985cc7eea5a5cf4",
@@ -542,17 +542,17 @@ Some signature",
             "lastname": "Bon",
             "name": "Jean Bon",
           },
-          "events": Array [],
+          "events": [],
           "external_id": null,
           "from_agent": true,
           "id": 152,
           "is_unread": true,
           "last_message_datetime": "2017-07-31T23:07:35.150000+00:00",
           "last_received_message_datetime": null,
-          "messages": Array [
-            Object {
+          "messages": [
+            {
               "actions": null,
-              "attachments": Array [],
+              "attachments": [],
               "body_html": "<div>Hi! How are <strong>you</strong>?</div>",
               "body_text": "Hi! How are you?",
               "channel": "email",
@@ -568,7 +568,7 @@ Some signature",
               "meta": null,
               "opened_datetime": null,
               "public": true,
-              "receiver": Object {
+              "receiver": {
                 "email": "jeanbon@gorgias.io",
                 "firstname": "Jean",
                 "id": 34,
@@ -576,7 +576,7 @@ Some signature",
                 "name": "Jean Bon",
               },
               "rule_id": null,
-              "sender": Object {
+              "sender": {
                 "email": "alex@gorgias.io",
                 "firstname": "Alex",
                 "id": 2,
@@ -584,13 +584,13 @@ Some signature",
                 "name": "Alex Plugaru",
               },
               "sent_datetime": "2017-07-31T23:07:36.946068+00:00",
-              "source": Object {
-                "from": Object {
+              "source": {
+                "from": {
                   "address": "support@acme.gorgias.io",
                   "name": "Acme Support",
                 },
-                "to": Array [
-                  Object {
+                "to": [
+                  {
                     "address": "jeanbon@gorgias.io",
                     "name": "Jean Bon",
                   },
@@ -608,14 +608,14 @@ Some signature",
           ],
           "meta": null,
           "opened_datetime": null,
-          "receiver": Object {
+          "receiver": {
             "email": "jeanbon@gorgias.io",
             "firstname": "Jean",
             "id": 34,
             "lastname": "Bon",
             "name": "Jean Bon",
           },
-          "sender": Object {
+          "sender": {
             "email": "alex@gorgias.io",
             "firstname": "Alex",
             "id": 2,
@@ -625,8 +625,8 @@ Some signature",
           "snooze_datetime": null,
           "status": "open",
           "subject": "Great ticket",
-          "tags": Array [
-            Object {
+          "tags": [
+            {
               "decoration": null,
               "id": 1,
               "name": "refund",

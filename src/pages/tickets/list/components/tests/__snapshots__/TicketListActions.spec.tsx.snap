@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TicketListActions component should bind keyboard shortcuts on mount 1`] = `
-Array [
+[
   "CREATE_TICKET",
   "OPEN_TICKET",
   "CLOSE_TICKET",

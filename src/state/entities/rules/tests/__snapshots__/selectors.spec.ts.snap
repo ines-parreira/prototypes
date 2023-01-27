@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`rules selectors getSortedRules should return the sorted list of rules by priority 1`] = `
-Array [
-  Object {
+[
+  {
     "code": "",
-    "code_ast": Object {},
+    "code_ast": {},
     "created_datetime": "2020-01-01T00:00:00",
     "deactivated_datetime": null,
     "description": "foo",
@@ -16,9 +16,9 @@ Array [
     "updated_datetime": "2020-01-01T00:00:00",
     "uri": "/api/rule/17",
   },
-  Object {
+  {
     "code": "",
-    "code_ast": Object {},
+    "code_ast": {},
     "created_datetime": "2020-01-01T00:00:00",
     "deactivated_datetime": null,
     "description": "foo",
@@ -30,9 +30,9 @@ Array [
     "updated_datetime": "2020-01-01T00:00:00",
     "uri": "/api/rule/17",
   },
-  Object {
+  {
     "code": "",
-    "code_ast": Object {},
+    "code_ast": {},
     "created_datetime": "2020-01-01T00:00:00",
     "deactivated_datetime": null,
     "description": "foo",

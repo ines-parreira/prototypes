@@ -1,21 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`current user reducers change password 1`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {
+{
+  "_internal": {
+    "loading": {
       "currentUser": true,
-      "settings": Object {},
+      "settings": {},
     },
   },
-  "settings": Array [],
+  "settings": [],
 }
 `;
 
 exports[`current user reducers change password 2`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {
+{
+  "_internal": {
+    "loading": {
       "currentUser": false,
     },
   },
@@ -26,28 +26,28 @@ Object {
 `;
 
 exports[`current user reducers change password 3`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {
+{
+  "_internal": {
+    "loading": {
       "currentUser": false,
-      "settings": Object {},
+      "settings": {},
     },
   },
-  "settings": Array [],
+  "settings": [],
 }
 `;
 
 exports[`current user reducers should handle SET_IS_AVAILABLE 1`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {
+{
+  "_internal": {
+    "loading": {
       "currentUser": false,
-      "settings": Object {},
+      "settings": {},
     },
   },
-  "settings": Array [
-    Object {
-      "data": Object {
+  "settings": [
+    {
+      "data": {
         "available": true,
       },
       "type": "preferences",
@@ -57,16 +57,16 @@ Object {
 `;
 
 exports[`current user reducers should handle SET_IS_AVAILABLE 2`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {
+{
+  "_internal": {
+    "loading": {
       "currentUser": false,
-      "settings": Object {},
+      "settings": {},
     },
   },
-  "settings": Array [
-    Object {
-      "data": Object {
+  "settings": [
+    {
+      "data": {
         "available": false,
       },
       "type": "preferences",
@@ -76,21 +76,21 @@ Object {
 `;
 
 exports[`current user reducers submit current user 1`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {
+{
+  "_internal": {
+    "loading": {
       "currentUser": true,
-      "settings": Object {},
+      "settings": {},
     },
   },
-  "settings": Array [],
+  "settings": [],
 }
 `;
 
 exports[`current user reducers submit current user 2`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {
+{
+  "_internal": {
+    "loading": {
       "currentUser": false,
     },
   },
@@ -101,44 +101,44 @@ Object {
 `;
 
 exports[`current user reducers submit current user 3`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {
+{
+  "_internal": {
+    "loading": {
       "currentUser": false,
-      "settings": Object {},
+      "settings": {},
     },
   },
-  "settings": Array [],
+  "settings": [],
 }
 `;
 
 exports[`current user reducers submit setting 1`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {
+{
+  "_internal": {
+    "loading": {
       "currentUser": false,
-      "settings": Object {
+      "settings": {
         "view": true,
       },
     },
   },
-  "settings": Array [],
+  "settings": [],
 }
 `;
 
 exports[`current user reducers submit setting 2`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {
+{
+  "_internal": {
+    "loading": {
       "currentUser": false,
-      "settings": Object {
+      "settings": {
         "view": false,
       },
     },
   },
-  "settings": Array [
-    Object {
-      "data": Object {
+  "settings": [
+    {
+      "data": {
         "value": 1,
       },
     },
@@ -147,18 +147,18 @@ Object {
 `;
 
 exports[`current user reducers submit setting 3`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {
+{
+  "_internal": {
+    "loading": {
       "currentUser": false,
-      "settings": Object {
+      "settings": {
         "view": false,
       },
     },
   },
-  "settings": Array [
-    Object {
-      "data": Object {
+  "settings": [
+    {
+      "data": {
         "value": 1,
       },
       "id": 1,
@@ -168,15 +168,15 @@ Object {
 `;
 
 exports[`current user reducers submit setting 4`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {
+{
+  "_internal": {
+    "loading": {
       "currentUser": false,
-      "settings": Object {
+      "settings": {
         "view": false,
       },
     },
   },
-  "settings": Array [],
+  "settings": [],
 }
 `;

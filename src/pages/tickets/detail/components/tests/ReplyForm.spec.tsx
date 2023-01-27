@@ -43,7 +43,7 @@ jest.mock(
             )
         }
 )
-
+jest.mock('hooks/useAppDispatch', () => () => jest.fn())
 jest.mock('state/ui/editor/actions')
 
 const mockStore = configureMockStore([thunk])

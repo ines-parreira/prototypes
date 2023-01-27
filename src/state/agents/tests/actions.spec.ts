@@ -19,8 +19,6 @@ const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
     middlewares
 )
 
-jest.addMatchers(immutableMatchers)
-
 jest.mock('../../notifications/actions.ts', () => {
     return {
         notify: jest.fn(
@@ -36,6 +34,7 @@ describe('agents actions', () => {
     let mockServer: MockAdapter
 
     beforeEach(() => {
+        expect.extend(immutableMatchers)
         store = mockStore({agents: initialState})
         mockServer = new MockAdapter(client)
     })

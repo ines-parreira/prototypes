@@ -30,7 +30,7 @@ exports[`<ErrorBoundary/> should render an error message because an error occurr
         >
           <span
             style={
-              Object {
+              {
                 "backgroundImage": "url(https://unpkg.com/emoji-datasource-apple@^3.0.0/img/apple/sheets/32.png)",
                 "backgroundPosition": "2.0833333333333335% 33.333333333333336%",
                 "backgroundSize": "4900%",
@@ -114,7 +114,7 @@ exports[`<ErrorBoundary/> should render an error message because an error occurr
       >
         <div
           className="collapse"
-          style={Object {}}
+          style={{}}
         >
           <Card
             className="mb-2"

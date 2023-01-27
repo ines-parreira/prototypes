@@ -91,6 +91,7 @@ describe('connectDevice', () => {
         )
 
         void connectDevice(dispatch, 0)
+        jest.advanceTimersToNextTimer()
 
         await waitFor(() => {
             expect(dispatch).toHaveBeenCalledWith(setIsConnecting())
@@ -126,6 +127,7 @@ describe('connectDevice', () => {
         jest.spyOn(api, 'getToken').mockReturnValue(Promise.resolve(null))
 
         void connectDevice(dispatch, 0)
+        jest.advanceTimersToNextTimer()
 
         await waitFor(() => {
             expect(dispatch).toHaveBeenCalledWith(setIsConnecting())
@@ -155,6 +157,7 @@ describe('connectDevice', () => {
         const register = jest.spyOn(utils, 'registerDevice')
 
         void connectDevice(dispatch, 0)
+        jest.advanceTimersToNextTimer()
 
         await waitFor(() => {
             expect(dispatch).toHaveBeenCalledWith(setIsConnecting())

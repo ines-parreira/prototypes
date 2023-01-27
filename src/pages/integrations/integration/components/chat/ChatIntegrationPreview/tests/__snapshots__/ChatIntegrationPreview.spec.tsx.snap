@@ -13,7 +13,7 @@ exports[`<ChatIntegrationPreview/> render() should display auto responder 1`] = 
     <div
       className="header"
       style={
-        Object {
+        {
           "backgroundColor": "#123456",
         }
       }
@@ -53,7 +53,7 @@ exports[`<ChatIntegrationPreview/> render() should display auto responder 1`] = 
   <div
     className="button"
     style={
-      Object {
+      {
         "backgroundColor": "#123456",
       }
     }
@@ -85,7 +85,7 @@ exports[`<ChatIntegrationPreview/> render() should display optional email captur
     <div
       className="header"
       style={
-        Object {
+        {
           "backgroundColor": "#123456",
         }
       }
@@ -136,7 +136,7 @@ exports[`<ChatIntegrationPreview/> render() should display optional email captur
   <div
     className="button"
     style={
-      Object {
+      {
         "backgroundColor": "#123456",
       }
     }
@@ -168,7 +168,7 @@ exports[`<ChatIntegrationPreview/> render() should display quickReplies 1`] = `
     <div
       className="header"
       style={
-        Object {
+        {
           "backgroundColor": "#123456",
         }
       }
@@ -223,7 +223,7 @@ exports[`<ChatIntegrationPreview/> render() should display quickReplies 1`] = `
   <div
     className="button"
     style={
-      Object {
+      {
         "backgroundColor": "#123456",
       }
     }
@@ -255,7 +255,7 @@ exports[`<ChatIntegrationPreview/> render() should display required email captur
     <div
       className="header"
       style={
-        Object {
+        {
           "backgroundColor": "#123456",
         }
       }
@@ -293,7 +293,7 @@ exports[`<ChatIntegrationPreview/> render() should display required email captur
   <div
     className="button"
     style={
-      Object {
+      {
         "backgroundColor": "#123456",
       }
     }
@@ -325,7 +325,7 @@ exports[`<ChatIntegrationPreview/> render() should display the avatar team pictu
     <div
       className="header"
       style={
-        Object {
+        {
           "backgroundColor": "#123456",
         }
       }
@@ -354,7 +354,7 @@ exports[`<ChatIntegrationPreview/> render() should display the avatar team pictu
     </div>
     <Provider
       store={
-        Object {
+        {
           "clearActions": [Function],
           "dispatch": [Function],
           "getActions": [Function],
@@ -389,7 +389,7 @@ exports[`<ChatIntegrationPreview/> render() should display the avatar team pictu
   <div
     className="button"
     style={
-      Object {
+      {
         "backgroundColor": "#123456",
       }
     }
@@ -421,7 +421,7 @@ exports[`<ChatIntegrationPreview/> render() should display the offline status be
     <div
       className="header"
       style={
-        Object {
+        {
           "backgroundColor": "#A1A9B6",
         }
       }
@@ -475,7 +475,7 @@ exports[`<ChatIntegrationPreview/> render() should display the offline status be
   <div
     className="button"
     style={
-      Object {
+      {
         "backgroundColor": "#123456",
       }
     }
@@ -507,7 +507,7 @@ exports[`<ChatIntegrationPreview/> render() should display the online status bec
     <div
       className="header"
       style={
-        Object {
+        {
           "backgroundColor": "#123456",
         }
       }
@@ -534,7 +534,7 @@ exports[`<ChatIntegrationPreview/> render() should display the online status bec
     </div>
     <Provider
       store={
-        Object {
+        {
           "clearActions": [Function],
           "dispatch": [Function],
           "getActions": [Function],
@@ -569,7 +569,7 @@ exports[`<ChatIntegrationPreview/> render() should display the online status bec
   <div
     className="button"
     style={
-      Object {
+      {
         "backgroundColor": "#123456",
       }
     }

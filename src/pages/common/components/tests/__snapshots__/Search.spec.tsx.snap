@@ -6,11 +6,11 @@ exports[`Search component handle change function 1`] = `
   onChange={[Function]}
   placeholder="Search..."
   searchDebounceTime={0}
-  style={Object {}}
+  style={{}}
 >
   <div
     className="component"
-    style={Object {}}
+    style={{}}
   >
     <ForwardRef(TextInput)
       className="input"
@@ -66,11 +66,11 @@ exports[`Search component reset function 1`] = `
   onChange={[Function]}
   placeholder="Search..."
   searchDebounceTime={0}
-  style={Object {}}
+  style={{}}
 >
   <div
     className="component"
-    style={Object {}}
+    style={{}}
   >
     <ForwardRef(TextInput)
       className="input"
@@ -126,11 +126,11 @@ exports[`Search component reset function 2`] = `
   onChange={[Function]}
   placeholder="Search..."
   searchDebounceTime={0}
-  style={Object {}}
+  style={{}}
 >
   <div
     className="component"
-    style={Object {}}
+    style={{}}
   >
     <ForwardRef(TextInput)
       className="input"

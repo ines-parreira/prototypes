@@ -8,9 +8,11 @@ import {
 import reducer, {initialState} from '../reducers'
 import * as constants from '../constants'
 
-jest.addMatchers(immutableMatchers)
-
 describe('infobarActions.shopify.createOrder reducer', () => {
+    beforeEach(() => {
+        expect.extend(immutableMatchers)
+    })
+
     describe('SET_LOADING', () => {
         it('should set loading state', () => {
             const action = {

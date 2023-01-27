@@ -18,7 +18,7 @@ jest.mock('../../notifications/actions.ts', () => {
     }
 })
 jest.mock('reapop', () => {
-    const reapop: Record<string, unknown> = require.requireActual('reapop')
+    const reapop: Record<string, unknown> = jest.requireActual('reapop')
 
     return {
         ...reapop,

@@ -41,7 +41,7 @@ exports[`<EmailInvoicePopover/> render() should render 1`] = `
             for="to"
             tag="label"
             widths={
-              Array [
+              [
                 "xs",
                 "sm",
                 "md",
@@ -69,7 +69,7 @@ exports[`<EmailInvoicePopover/> render() should render 1`] = `
             for="custom-message"
             tag="label"
             widths={
-              Array [
+              [
                 "xs",
                 "sm",
                 "md",

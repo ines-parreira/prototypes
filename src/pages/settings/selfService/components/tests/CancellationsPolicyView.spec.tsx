@@ -245,44 +245,44 @@ describe('<CancellationsPolicyView/>', () => {
             await waitFor(() => {
                 expect(updateSelfServiceConfigurationMock.mock.calls[0])
                     .toMatchInlineSnapshot(`
-                    Array [
-                      Object {
-                        "cancel_order_policy": Object {
-                          "action": Object {
-                            "response_message_content": Object {
+                    [
+                      {
+                        "cancel_order_policy": {
+                          "action": {
+                            "response_message_content": {
                               "html": "",
                               "text": "",
                             },
                             "type": "automated_response",
                           },
-                          "eligibilities": Array [
-                            Object {
+                          "eligibilities": [
+                            {
                               "key": "gorgias_order_status",
                               "operator": "oneOf",
-                              "value": Array [
+                              "value": [
                                 "unfulfilled",
                                 "processing_fulfillment",
                               ],
                             },
                           ],
                           "enabled": false,
-                          "exceptions": Array [],
+                          "exceptions": [],
                         },
                         "created_datetime": "2021-01-26T00:29:00Z",
                         "deactivated_datetime": null,
                         "id": 1,
-                        "quick_response_policies": Array [],
-                        "report_issue_policy": Object {
-                          "cases": Array [],
+                        "quick_response_policies": [],
+                        "report_issue_policy": {
+                          "cases": [],
                           "enabled": false,
                         },
-                        "return_order_policy": Object {
-                          "eligibilities": Array [],
+                        "return_order_policy": {
+                          "eligibilities": [],
                           "enabled": true,
-                          "exceptions": Array [],
+                          "exceptions": [],
                         },
                         "shop_name": "myStore1",
-                        "track_order_policy": Object {
+                        "track_order_policy": {
                           "enabled": true,
                         },
                         "type": "shopify",

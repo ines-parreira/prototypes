@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Slides should have a carousel displaying all screenshots 1`] = `
-Array [
+[
   <img
     alt="Showcase number 1 of things this app allows you to do in Gorgias"
     class="sliderPicture"

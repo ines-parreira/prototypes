@@ -9,9 +9,11 @@ import {
 } from '../selectors'
 import {initialState} from '../reducers'
 
-jest.addMatchers(immutableMatchers)
-
 describe('HTTPIntegrationEvents', () => {
+    beforeEach(() => {
+        expect.extend(immutableMatchers)
+    })
+
     describe('selectors', () => {
         describe('getHTTPIntegrationEventsState', () => {
             it('should return the initial state', () => {

@@ -57,7 +57,7 @@ exports[`<EmailIntegrationCreateVerification/> render() should render instructio
           className="p-0"
           color="link"
           style={
-            Object {
+            {
               "verticalAlign": "initial",
             }
           }

@@ -92,21 +92,21 @@ jest.mock('../../init', () => {
 
 jest.mock('../../state/currentAccount/selectors', () => {
     return {
-        ...require.requireActual('../../state/currentAccount/selectors'),
+        ...jest.requireActual('../../state/currentAccount/selectors'),
         getTicketAssignmentSettings: jest.fn(),
     } as Record<string, unknown>
 })
 
 jest.mock('../../business/recentChats', () => {
     return {
-        ...require.requireActual('../../business/recentChats.ts'),
+        ...jest.requireActual('../../business/recentChats.ts'),
         shouldTicketBeDisplayedInRecentChats: jest.fn(),
     } as Record<string, unknown>
 })
 
 jest.mock('../../utils', () => {
     return {
-        ...require.requireActual('../../utils'),
+        ...jest.requireActual('../../utils'),
         isCurrentlyOnTicket: jest.fn(),
     } as Record<string, unknown>
 })

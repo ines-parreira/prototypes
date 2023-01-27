@@ -17,10 +17,8 @@ import {mockSearchRank} from 'fixtures/searchRank'
 
 import {ViewTableContainer} from '../ViewTable'
 
-jest.addMatchers(immutableMatchers)
-
 jest.mock('state/views/actions', () => {
-    const {updateView} = require.requireActual('state/views/actions')
+    const {updateView} = jest.requireActual('state/views/actions')
     return {
         fetchViewItems: jest.fn().mockReturnValue(() => Promise.resolve()),
         setViewActive: jest.fn().mockReturnValue(() => Promise.resolve()),
@@ -67,6 +65,7 @@ const minProps = {
 } as unknown as ComponentProps<typeof ViewTableContainer>
 
 beforeEach(() => {
+    expect.extend(immutableMatchers)
     jest.clearAllMocks()
     history.push = jest.fn()
     ;(

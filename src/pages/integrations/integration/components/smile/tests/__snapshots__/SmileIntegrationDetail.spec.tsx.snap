@@ -1,37 +1,37 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<SmileIntegrationDetail/> componentDidMount() should set the integration's name in the state 1`] = `
-Object {
+{
   "name": "foo",
 }
 `;
 
 exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should not do anything because the previous integration was not empty 1`] = `
-Object {
+{
   "name": "foo",
 }
 `;
 
 exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should not do anything because there is no integration 1`] = `
-Object {
+{
   "name": "",
 }
 `;
 
 exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should set the name of the integration in the state because there was no integration before and there is one now 1`] = `
-Object {
+{
   "name": "foo",
 }
 `;
 
 exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should set the name of the integration the state and set a timeout to fetch the integration because the action in the URL is set to \`authentication\` and the integration is not yet authenticated 1`] = `
-Object {
+{
   "name": "foo",
 }
 `;
 
 exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should set the name of the integration the state and trigger a success notification because the action in the URL is set to \`authentication\` and the integration is already authenticated 1`] = `
-Object {
+{
   "name": "foo",
 }
 `;
@@ -80,7 +80,7 @@ exports[`<SmileIntegrationDetail/> render() should not render anything about the
     <Row
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -93,7 +93,7 @@ exports[`<SmileIntegrationDetail/> render() should not render anything about the
         md="8"
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -193,7 +193,7 @@ exports[`<SmileIntegrationDetail/> render() should render a small paragraph beca
     <Row
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -206,7 +206,7 @@ exports[`<SmileIntegrationDetail/> render() should render a small paragraph beca
         md="8"
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -301,7 +301,7 @@ exports[`<SmileIntegrationDetail/> render() should render an alert because the i
     <Row
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -314,7 +314,7 @@ exports[`<SmileIntegrationDetail/> render() should render an alert because the i
         md="8"
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -421,7 +421,7 @@ exports[`<SmileIntegrationDetail/> render() should render buttons loading and di
     <Row
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -434,7 +434,7 @@ exports[`<SmileIntegrationDetail/> render() should render buttons loading and di
         md="8"
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",
@@ -543,7 +543,7 @@ exports[`<SmileIntegrationDetail/> render() should render not render deactivate 
     <Row
       tag="div"
       widths={
-        Array [
+        [
           "xs",
           "sm",
           "md",
@@ -556,7 +556,7 @@ exports[`<SmileIntegrationDetail/> render() should render not render deactivate 
         md="8"
         tag="div"
         widths={
-          Array [
+          [
             "xs",
             "sm",
             "md",

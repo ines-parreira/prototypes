@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Agents resources fetchAgents should resolve with a list of agents on success 1`] = `
-Object {
-  "config": Object {
+{
+  "config": {
     "data": undefined,
-    "headers": Object {
+    "headers": {
       "Accept": "application/json, text/plain, */*",
       "X-CSRF-Token": "abcd",
       "X-Gorgias-User-Client": "web",
@@ -12,9 +12,9 @@ Object {
     "maxBodyLength": -1,
     "maxContentLength": -1,
     "method": "get",
-    "params": Object {
+    "params": {
       "limit": 30,
-      "roles": Array [
+      "roles": [
         "observer-agent",
         "lite-agent",
         "basic-agent",
@@ -24,10 +24,10 @@ Object {
     },
     "paramsSerializer": [Function],
     "timeout": 0,
-    "transformRequest": Array [
+    "transformRequest": [
       [Function],
     ],
-    "transformResponse": Array [
+    "transformResponse": [
       [Function],
     ],
     "url": "/api/users/",
@@ -35,12 +35,12 @@ Object {
     "xsrfCookieName": "XSRF-TOKEN",
     "xsrfHeaderName": "X-XSRF-TOKEN",
   },
-  "data": Object {
-    "data": Object {
-      "data": Array [
-        Object {
+  "data": {
+    "data": {
+      "data": [
+        {
           "active": true,
-          "availability_status": Object {
+          "availability_status": {
             "channel": "phone",
             "status": "offline",
             "status_detail_code": 1,
@@ -56,18 +56,18 @@ Object {
           "id": 1,
           "language": "en-US",
           "lastname": "Support",
-          "meta": Object {
+          "meta": {
             "profile_picture_url": null,
           },
           "name": "Acme Support",
-          "role": Object {
+          "role": {
             "name": "agent",
           },
-          "settings": Array [],
+          "settings": [],
           "timezone": "UTC",
           "updated_datetime": "2017-07-31T21:43:05.502541+00:00",
         },
-        Object {
+        {
           "active": true,
           "bio": null,
           "country": "US",
@@ -80,26 +80,26 @@ Object {
           "id": 2,
           "language": "en-US",
           "lastname": "Smith",
-          "meta": Object {
+          "meta": {
             "profile_picture_url": null,
           },
           "name": "Bob Smith",
-          "role": Object {
+          "role": {
             "name": "agent",
           },
-          "settings": Array [],
+          "settings": [],
           "timezone": "UTC",
           "updated_datetime": "2017-07-31T21:43:08.033390+00:00",
         },
       ],
-      "meta": Object {
+      "meta": {
         "next_cursor": null,
         "prev_cursor": null,
       },
     },
   },
   "headers": undefined,
-  "request": Object {
+  "request": {
     "responseUrl": "/api/users/",
   },
   "status": 200,

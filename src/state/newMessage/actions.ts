@@ -988,10 +988,7 @@ export function prepareTicketMessage({
 
             // Execute front-end validations for each action of the message
             if (messageToSend.actions) {
-                for (const messageAction of messageToSend.actions as unknown as Map<
-                    any,
-                    any
-                >[]) {
+                for (const messageAction of messageToSend.actions as any) {
                     const template = getActionTemplate(
                         (fromJS(messageAction) as Map<any, any>).get('name')
                     )

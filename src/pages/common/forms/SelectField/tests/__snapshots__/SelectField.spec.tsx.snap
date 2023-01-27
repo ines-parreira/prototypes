@@ -1,42 +1,42 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SelectField select with headers, dividers and actions should filter corresponding headers and dividers when search applied 1`] = `
-Object {
-  "filteredOptions": Array [
-    Object {
+{
+  "filteredOptions": [
+    {
       "isHeader": true,
       "label": "Group 1",
     },
-    Object {
+    {
       "isAction": true,
       "node": <span>
         Action 1
       </span>,
       "onClick": [MockFunction],
     },
-    Object {
+    {
       "label": "Bar",
       "value": "bar",
     },
-    Object {
+    {
       "isDivider": true,
     },
-    Object {
+    {
       "isHeader": true,
       "label": "Group 2",
     },
-    Object {
+    {
       "label": "Baz",
       "value": "baz",
     },
-    Object {
+    {
       "isDivider": true,
     },
-    Object {
+    {
       "isHeader": true,
       "label": "Group 3",
     },
-    Object {
+    {
       "label": "Lorem ipsum",
       "value": "loremipsum",
     },
@@ -49,31 +49,31 @@ Object {
 `;
 
 exports[`SelectField select with headers, dividers and actions should filter corresponding headers and dividers when search applied 2`] = `
-Object {
-  "filteredOptions": Array [
-    Object {
+{
+  "filteredOptions": [
+    {
       "isHeader": true,
       "label": "Group 1",
     },
-    Object {
+    {
       "isAction": true,
       "node": <span>
         Action 1
       </span>,
       "onClick": [MockFunction],
     },
-    Object {
+    {
       "label": "Bar",
       "value": "bar",
     },
-    Object {
+    {
       "isDivider": true,
     },
-    Object {
+    {
       "isHeader": true,
       "label": "Group 2",
     },
-    Object {
+    {
       "label": "Baz",
       "value": "baz",
     },
@@ -86,9 +86,9 @@ Object {
 `;
 
 exports[`SelectField should filter when rerendered 1`] = `
-Object {
-  "filteredOptions": Array [
-    Object {
+{
+  "filteredOptions": [
+    {
       "label": "Hello",
       "value": "hello",
     },
@@ -101,14 +101,14 @@ Object {
 `;
 
 exports[`SelectField should handle key down event Enter/Tab (existing value) 1`] = `
-Object {
-  "filteredOptions": Array [
-    Object {
+{
+  "filteredOptions": [
+    {
       "label": "First",
       "text": "first",
       "value": 1,
     },
-    Object {
+    {
       "label": "Second",
       "text": "second",
       "value": 2,
@@ -122,14 +122,14 @@ Object {
 `;
 
 exports[`SelectField should handle key down event Enter/Tab (existing value) 2`] = `
-Object {
-  "filteredOptions": Array [
-    Object {
+{
+  "filteredOptions": [
+    {
       "label": "First",
       "text": "first",
       "value": 1,
     },
-    Object {
+    {
       "label": "Second",
       "text": "second",
       "value": 2,
@@ -143,8 +143,8 @@ Object {
 `;
 
 exports[`SelectField should handle key down event Enter/tab (custom value) 1`] = `
-Object {
-  "filteredOptions": Array [],
+{
+  "filteredOptions": [],
   "input": "",
   "isFocused": false,
   "optionsOpen": true,
@@ -153,8 +153,8 @@ Object {
 `;
 
 exports[`SelectField should handle key down event Enter/tab (custom value) 2`] = `
-Object {
-  "filteredOptions": Array [],
+{
+  "filteredOptions": [],
   "input": "",
   "isFocused": false,
   "optionsOpen": true,
@@ -163,9 +163,9 @@ Object {
 `;
 
 exports[`SelectField should handle key down event Escape 1`] = `
-Object {
-  "filteredOptions": Array [
-    Object {
+{
+  "filteredOptions": [
+    {
       "label": "Second",
       "text": "second",
       "value": 2,
@@ -179,9 +179,9 @@ Object {
 `;
 
 exports[`SelectField should init state with custom props 1`] = `
-Object {
-  "filteredOptions": Array [
-    Object {
+{
+  "filteredOptions": [
+    {
       "label": "Second",
       "text": "second",
       "value": 2,
@@ -195,8 +195,8 @@ Object {
 `;
 
 exports[`SelectField should init state with default props 1`] = `
-Object {
-  "filteredOptions": Array [],
+{
+  "filteredOptions": [],
   "input": "",
   "isFocused": false,
   "optionsOpen": false,
@@ -207,7 +207,7 @@ Object {
 exports[`SelectField should render a select input with custom props 1`] = `
 <div
   style={
-    Object {
+    {
       "background": "red",
     }
   }
@@ -230,8 +230,8 @@ exports[`SelectField should render a select input with custom props 1`] = `
       className="options"
       flip={true}
       modifiers={
-        Object {
-          "preventOverflow": Object {
+        {
+          "preventOverflow": {
             "boundariesElement": "viewport",
           },
         }
@@ -257,7 +257,7 @@ exports[`SelectField should render a select input with custom props 1`] = `
 
 exports[`SelectField should render a select input with default props 1`] = `
 <div
-  style={Object {}}
+  style={{}}
 >
   <UncontrolledDropdown
     isOpen={false}
@@ -277,8 +277,8 @@ exports[`SelectField should render a select input with default props 1`] = `
       className="options"
       flip={true}
       modifiers={
-        Object {
-          "preventOverflow": Object {
+        {
+          "preventOverflow": {
             "boundariesElement": "viewport",
           },
         }
@@ -298,9 +298,9 @@ exports[`SelectField should render a select input with default props 1`] = `
 `;
 
 exports[`SelectField should reset state on blur 1`] = `
-Object {
-  "filteredOptions": Array [
-    Object {
+{
+  "filteredOptions": [
+    {
       "label": "Second",
       "text": "second",
       "value": 2,
@@ -316,7 +316,7 @@ Object {
 exports[`SelectField should set the minWidth of the input according to the length of the longest label 1`] = `
 <div
   style={
-    Object {
+    {
       "background": "red",
     }
   }
@@ -339,8 +339,8 @@ exports[`SelectField should set the minWidth of the input according to the lengt
       className="options"
       flip={true}
       modifiers={
-        Object {
-          "preventOverflow": Object {
+        {
+          "preventOverflow": {
             "boundariesElement": "viewport",
           },
         }
@@ -365,9 +365,9 @@ exports[`SelectField should set the minWidth of the input according to the lengt
 `;
 
 exports[`SelectField should update state when search changes (custom NOT values allowed) 1`] = `
-Object {
-  "filteredOptions": Array [
-    Object {
+{
+  "filteredOptions": [
+    {
       "label": "Hello",
       "value": "hello",
     },
@@ -380,13 +380,13 @@ Object {
 `;
 
 exports[`SelectField should update state when search changes (custom NOT values allowed) 2`] = `
-Object {
-  "filteredOptions": Array [
-    Object {
+{
+  "filteredOptions": [
+    {
       "label": "Hello",
       "value": "hello",
     },
-    Object {
+    {
       "label": "World",
       "value": "world",
     },
@@ -399,9 +399,9 @@ Object {
 `;
 
 exports[`SelectField should update state when search changes (custom values allowed) 1`] = `
-Object {
-  "filteredOptions": Array [
-    Object {
+{
+  "filteredOptions": [
+    {
       "label": "Hello",
       "value": "hello",
     },
@@ -414,13 +414,13 @@ Object {
 `;
 
 exports[`SelectField should update state when search changes (custom values allowed) 2`] = `
-Object {
-  "filteredOptions": Array [
-    Object {
+{
+  "filteredOptions": [
+    {
       "label": "Hello",
       "value": "hello",
     },
-    Object {
+    {
       "label": "World",
       "value": "world",
     },
@@ -433,20 +433,20 @@ Object {
 `;
 
 exports[`SelectField should use custom props 1`] = `
-Object {
+{
   "allowCustomValue": false,
   "fixedWidth": false,
   "fullWidth": false,
   "id": null,
   "onChange": [MockFunction],
   "onSearchChange": [Function],
-  "options": Array [
-    Object {
+  "options": [
+    {
       "label": "First",
       "text": "first",
       "value": 1,
     },
-    Object {
+    {
       "label": "Second",
       "text": "second",
       "value": 2,
@@ -455,7 +455,7 @@ Object {
   "placeholder": "placeholder",
   "required": false,
   "singular": "option",
-  "style": Object {
+  "style": {
     "background": "red",
   },
   "value": 1,
@@ -463,17 +463,17 @@ Object {
 `;
 
 exports[`SelectField should use default props 1`] = `
-Object {
+{
   "allowCustomValue": false,
   "fixedWidth": false,
   "fullWidth": false,
   "id": null,
   "onChange": [MockFunction],
   "onSearchChange": [Function],
-  "options": Array [],
+  "options": [],
   "placeholder": "Select an option",
   "required": false,
   "singular": "option",
-  "style": Object {},
+  "style": {},
 }
 `;

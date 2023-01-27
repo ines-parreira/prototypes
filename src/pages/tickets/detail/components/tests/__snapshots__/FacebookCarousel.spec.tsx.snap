@@ -9,24 +9,24 @@ exports[`FacebookCarousel component default props 1`] = `
 exports[`FacebookCarousel component render generic template 1`] = `
 <FacebookCarousel
   data={
-    Array [
-      Object {
-        "payload": Object {
-          "elements": Array [
-            Object {
-              "buttons": Array [
-                Object {
+    [
+      {
+        "payload": {
+          "elements": [
+            {
+              "buttons": [
+                {
                   "title": "View details",
                   "type": "web_url",
                   "url": "https://sfbicycles.myshopify.com/",
                   "webview_height_ratio": "tall",
                 },
-                Object {
+                {
                   "title": "test",
                   "type": "element_share",
                   "url": "https://sfbicycles.myshopify.com/test",
                 },
-                Object {
+                {
                   "title": "Buy now",
                   "type": "web_url",
                   "url": "https://messenger-commerce.shopifyapps.com/",
@@ -54,16 +54,16 @@ exports[`FacebookCarousel component render generic template 1`] = `
       infinite={false}
       key="0"
       responsive={
-        Array [
-          Object {
+        [
+          {
             "breakpoint": 769,
-            "settings": Object {
+            "settings": {
               "slidesToShow": 1,
             },
           },
-          Object {
+          {
             "breakpoint": 1441,
-            "settings": Object {
+            "settings": {
               "slidesToShow": 2,
             },
           },
@@ -105,16 +105,16 @@ exports[`FacebookCarousel component render generic template 1`] = `
         pauseOnHover={true}
         prevArrow={null}
         responsive={
-          Array [
-            Object {
+          [
+            {
               "breakpoint": 769,
-              "settings": Object {
+              "settings": {
                 "slidesToShow": 1,
               },
             },
-            Object {
+            {
               "breakpoint": 1441,
-              "settings": Object {
+              "settings": {
                 "slidesToShow": 2,
               },
             },
@@ -155,7 +155,7 @@ exports[`FacebookCarousel component render generic template 1`] = `
               infinite={false}
               lazyLoad={null}
               lazyLoadedList={
-                Array [
+                [
                   0,
                   1,
                   2,
@@ -174,7 +174,7 @@ exports[`FacebookCarousel component render generic template 1`] = `
               speed={500}
               targetSlide={0}
               trackStyle={
-                Object {
+                {
                   "WebkitTransform": "translate3d(0px, 0px, 0px)",
                   "WebkitTransition": "",
                   "msTransform": "translateX(0px)",
@@ -194,7 +194,7 @@ exports[`FacebookCarousel component render generic template 1`] = `
                 onMouseLeave={[Function]}
                 onMouseOver={[Function]}
                 style={
-                  Object {
+                  {
                     "WebkitTransform": "translate3d(0px, 0px, 0px)",
                     "WebkitTransition": "",
                     "msTransform": "translateX(0px)",
@@ -211,7 +211,7 @@ exports[`FacebookCarousel component render generic template 1`] = `
                   key="original0"
                   onClick={[Function]}
                   style={
-                    Object {
+                    {
                       "outline": "none",
                       "width": 0,
                     }
@@ -225,7 +225,7 @@ exports[`FacebookCarousel component render generic template 1`] = `
                       className="carouselCardContainer"
                       key="0"
                       style={
-                        Object {
+                        {
                           "display": "inline-block",
                           "width": "100%",
                         }
@@ -359,18 +359,18 @@ exports[`FacebookCarousel component render generic template 1`] = `
 exports[`FacebookCarousel component should render empty with template_type=button 1`] = `
 <FacebookCarousel
   data={
-    Array [
-      Object {
-        "payload": Object {
-          "elements": Array [
-            Object {
-              "buttons": Array [
-                Object {
+    [
+      {
+        "payload": {
+          "elements": [
+            {
+              "buttons": [
+                {
                   "title": "What?!😱",
                   "type": "postback",
                   "url": "ACT::3fb3ff8b9e10dcf67efbc0f7943c825f",
                 },
-                Object {
+                {
                   "title": "I don't get scared🙄",
                   "type": "postback",
                   "url": "ACT::8d539d3ba2f4904acf5c54162f06f573",

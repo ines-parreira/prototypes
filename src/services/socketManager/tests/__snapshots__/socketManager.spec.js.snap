@@ -1,20 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SocketManager onConnect() should update the manager's \`isConnected\` status and remove the websocket notification 1`] = `
-Array [
-  Array [
+[
+  [
     "696480246",
   ],
 ]
 `;
 
 exports[`SocketManager onDisconnect() should update the manager's \`isConnected\` status and dispatch the websocket notification 1`] = `
-Array [
-  Array [
-    Object {
-      "actionHTML": "<span class=\\"d-inline-flex align-items-baseline\\">
-                              <img src=test-file-stub class=\\"align-self-center\\" style=\\"margin-right: 8px\\"/>
-                              <span class=\\"text-primary\\">Reload page</span>
+[
+  [
+    {
+      "actionHTML": "<span class="d-inline-flex align-items-baseline">
+                              <img src=test-file-stub class="align-self-center" style="margin-right: 8px"/>
+                              <span class="text-primary">Reload page</span>
                              </span>",
       "allowHTML": true,
       "dismissible": false,

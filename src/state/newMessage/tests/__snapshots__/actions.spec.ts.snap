@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`actions addProductCardAttachments() should dispatch NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS when successfully adding attachments 1`] = `
-Array [
-  Object {
-    "resp": Array [
-      Object {
+[
+  {
+    "resp": [
+      {
         "content_type": "application/productCard",
-        "extra": Object {
+        "extra": {
           "currency": "USD",
           "featured_image": "https://cdn.shopify.com/s/files/1/1781/7573/products/candy.jpg?v=1575311784",
           "price": "1.00",
@@ -25,17 +25,17 @@ Array [
 ]
 `;
 
-exports[`actions addProductCardAttachments() should not dispatch NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS when successfully adding attachments in another ticket 1`] = `Array []`;
+exports[`actions addProductCardAttachments() should not dispatch NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS when successfully adding attachments in another ticket 1`] = `[]`;
 
 exports[`actions new message addAttachments() should dispatch NEW_MESSAGE_ADD_ATTACHMENT_ERROR when adding more than 1 attachement in a facebook comment 1`] = `
-Array [
-  Object {
+[
+  {
     "type": "NEW_MESSAGE_ADD_ATTACHMENT_START",
   },
-  Object {
-    "payload": Object {
+  {
+    "payload": {
       "allowHTML": true,
-      "buttons": Array [],
+      "buttons": [],
       "closeButton": false,
       "dismissAfter": 9000,
       "dismissible": true,
@@ -54,20 +54,20 @@ Array [
     },
     "type": "reapop/upsertNotification",
   },
-  Object {
+  {
     "type": "NEW_MESSAGE_ADD_ATTACHMENT_ERROR",
   },
 ]
 `;
 
 exports[`actions new message addAttachments() should dispatch NEW_MESSAGE_ADD_ATTACHMENT_ERROR when failing to add attachment 1`] = `
-Array [
-  Object {
+[
+  {
     "type": "NEW_MESSAGE_ADD_ATTACHMENT_START",
   },
-  Object {
-    "error": Object {
-      "response": Object {},
+  {
+    "error": {
+      "response": {},
     },
     "reason": "Failed to upload files. Please try again later",
     "type": "NEW_MESSAGE_ADD_ATTACHMENT_ERROR",
@@ -76,14 +76,14 @@ Array [
 `;
 
 exports[`actions new message addAttachments() should dispatch NEW_MESSAGE_ADD_ATTACHMENT_ERROR when source is facebook comment and file has wrong type 1`] = `
-Array [
-  Object {
+[
+  {
     "type": "NEW_MESSAGE_ADD_ATTACHMENT_START",
   },
-  Object {
-    "payload": Object {
+  {
+    "payload": {
       "allowHTML": true,
-      "buttons": Array [],
+      "buttons": [],
       "closeButton": false,
       "dismissAfter": 9000,
       "dismissible": true,
@@ -102,20 +102,20 @@ Array [
     },
     "type": "reapop/upsertNotification",
   },
-  Object {
+  {
     "type": "NEW_MESSAGE_ADD_ATTACHMENT_ERROR",
   },
 ]
 `;
 
 exports[`actions new message addAttachments() should dispatch NEW_MESSAGE_ADD_ATTACHMENT_ERROR with a reason  when error code is 413 1`] = `
-Array [
-  Object {
+[
+  {
     "type": "NEW_MESSAGE_ADD_ATTACHMENT_START",
   },
-  Object {
-    "error": Object {
-      "response": Object {
+  {
+    "error": {
+      "response": {
         "status": 413,
       },
     },
@@ -126,31 +126,31 @@ Array [
 `;
 
 exports[`actions new message addAttachments() should dispatch NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS when successfully adding attachments 1`] = `
-Array [
-  Object {
+[
+  {
     "type": "NEW_MESSAGE_ADD_ATTACHMENT_START",
   },
-  Object {
-    "resp": Array [],
+  {
+    "resp": [],
     "type": "NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS",
   },
 ]
 `;
 
 exports[`actions new message addAttachments() should not dispatch NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS when successfully adding attachments in another ticket 1`] = `
-Array [
-  Object {
+[
+  {
     "type": "NEW_MESSAGE_ADD_ATTACHMENT_START",
   },
 ]
 `;
 
 exports[`actions new message addEmailExtra() should dispatch NEW_MESSAGE_ADD_EMAIL_EXTRA action 1`] = `
-Array [
-  Object {
-    "payload": Object {
+[
+  {
+    "payload": {
       "contentState": Immutable.Record {
-        "entityMap": Object {
+        "entityMap": {
           "__add": [Function],
           "__create": [Function],
           "__get": [Function],
@@ -204,15 +204,15 @@ Array [
           "hasFocus": false,
         },
       },
-      "emailExtraArgs": Object {
+      "emailExtraArgs": {
         "isForwarded": true,
-        "replyThreadMessages": Array [],
+        "replyThreadMessages": [],
         "signature": Immutable.Map {
           "text": "Cheers, Steve",
           "html": "Cheers, <strong>Steve</strong>",
         },
-        "ticket": Object {
-          "assignee_user": Object {
+        "ticket": {
+          "assignee_user": {
             "email": "alex@gorgias.io",
             "firstname": "Alex",
             "id": 2,
@@ -222,10 +222,10 @@ Array [
           "channel": "email",
           "closed_datetime": null,
           "created_datetime": "2017-07-31T23:07:35.150000+00:00",
-          "custom_fields": Array [],
-          "customer": Object {
-            "channels": Array [
-              Object {
+          "custom_fields": [],
+          "customer": {
+            "channels": [
+              {
                 "address": "jeanbon@gorgias.io",
                 "created_datetime": "2017-07-31T21:45:03.399819+00:00",
                 "deleted_datetime": null,
@@ -234,7 +234,7 @@ Array [
                 "type": "email",
                 "updated_datetime": "2017-07-31T21:45:03.399828+00:00",
               },
-              Object {
+              {
                 "address": "+1 415-548-9999",
                 "created_datetime": "2017-07-31T21:45:03.416965+00:00",
                 "deleted_datetime": null,
@@ -248,13 +248,13 @@ Array [
             "email": "jeanbon@gorgias.io",
             "firstname": "Jean",
             "id": 34,
-            "integrations": Object {
-              "2": Object {
+            "integrations": {
+              "2": {
                 "__integration_type__": "http",
-                "args": Object {
+                "args": {
                   "name": "Jean Bon",
                 },
-                "headers": Object {
+                "headers": {
                   "Accept": "*/*",
                   "Accept-Encoding": "gzip, deflate",
                   "Connection": "close",
@@ -265,12 +265,12 @@ Array [
                 "origin": "199.188.194.25",
                 "url": "https://httpbin.org/get?name=Jean Bon",
               },
-              "5": Object {
+              "5": {
                 "__integration_type__": "shopify",
-                "customer": Object {
+                "customer": {
                   "accepts_marketing": false,
-                  "addresses": Array [
-                    Object {
+                  "addresses": [
+                    {
                       "address1": "3 rue des volailles",
                       "address2": "",
                       "city": "Paris",
@@ -291,7 +291,7 @@ Array [
                     },
                   ],
                   "created_at": "2017-03-17T21:26:16-04:00",
-                  "default_address": Object {
+                  "default_address": {
                     "address1": "12 rue du poisson cru",
                     "address2": "unit 3",
                     "city": "Paris",
@@ -327,9 +327,9 @@ Array [
                   "updated_at": "2017-07-12T20:44:14-04:00",
                   "verified_email": true,
                 },
-                "orders": Array [
-                  Object {
-                    "billing_address": Object {
+                "orders": [
+                  {
+                    "billing_address": {
                       "address1": "12 rue du poisson cru",
                       "address2": "unit 3",
                       "city": "Paris",
@@ -358,10 +358,10 @@ Array [
                     "contact_email": "jeanbon@gorgias.io",
                     "created_at": "2017-07-12T16:14:09-04:00",
                     "currency": "EUR",
-                    "customer": Object {
+                    "customer": {
                       "accepts_marketing": false,
                       "created_at": "2017-03-17T21:26:16-04:00",
-                      "default_address": Object {
+                      "default_address": {
                         "address1": "12 rue du poisson cru",
                         "address2": "unit 3",
                         "city": "Paris",
@@ -399,17 +399,17 @@ Array [
                     },
                     "customer_locale": null,
                     "device_id": null,
-                    "discount_codes": Array [],
+                    "discount_codes": [],
                     "email": "jeanbon@gorgias.io",
                     "financial_status": "paid",
                     "fulfillment_status": null,
-                    "fulfillments": Array [],
+                    "fulfillments": [],
                     "gateway": "manual",
                     "id": 4236385803,
                     "landing_site": null,
                     "landing_site_ref": null,
-                    "line_items": Array [
-                      Object {
+                    "line_items": [
+                      {
                         "fulfillable_quantity": 1,
                         "fulfillment_service": "manual",
                         "fulfillment_status": null,
@@ -420,12 +420,12 @@ Array [
                         "price": "9.00",
                         "product_exists": true,
                         "product_id": 9211387275,
-                        "properties": Array [],
+                        "properties": [],
                         "quantity": 1,
                         "requires_shipping": true,
                         "sku": "1234567890",
-                        "tax_lines": Array [
-                          Object {
+                        "tax_lines": [
+                          {
                             "price": "1.50",
                             "rate": 0.2,
                             "title": "TVA",
@@ -443,11 +443,11 @@ Array [
                     "location_id": null,
                     "name": "#1202",
                     "note": null,
-                    "note_attributes": Array [],
+                    "note_attributes": [],
                     "number": 202,
                     "order_number": 1202,
                     "order_status_url": null,
-                    "payment_gateway_names": Array [
+                    "payment_gateway_names": [
                       "manual",
                     ],
                     "phone": null,
@@ -455,8 +455,8 @@ Array [
                     "processing_method": "manual",
                     "reference": null,
                     "referring_site": null,
-                    "refunds": Array [],
-                    "shipping_address": Object {
+                    "refunds": [],
+                    "shipping_address": {
                       "address1": "12 rue du poisson cru",
                       "address2": "unit 3",
                       "city": "Paris",
@@ -473,14 +473,14 @@ Array [
                       "province_code": null,
                       "zip": "75012",
                     },
-                    "shipping_lines": Array [],
+                    "shipping_lines": [],
                     "source_identifier": null,
                     "source_name": "shopify_draft_order",
                     "source_url": null,
                     "subtotal_price": "9.00",
                     "tags": "",
-                    "tax_lines": Array [
-                      Object {
+                    "tax_lines": [
+                      {
                         "price": "1.50",
                         "rate": 0.2,
                         "title": "TVA",
@@ -498,7 +498,7 @@ Array [
                     "updated_at": "2017-07-12T16:14:10-04:00",
                     "user_id": 95205899,
                   },
-                  Object {
+                  {
                     "browser_ip": null,
                     "buyer_accepts_marketing": false,
                     "cancel_reason": null,
@@ -511,10 +511,10 @@ Array [
                     "contact_email": "jean@gorgias.io",
                     "created_at": "2017-06-16T20:06:10-04:00",
                     "currency": "EUR",
-                    "customer": Object {
+                    "customer": {
                       "accepts_marketing": false,
                       "created_at": "2017-03-17T21:26:16-04:00",
-                      "default_address": Object {
+                      "default_address": {
                         "address1": "12 rue du poisson cru",
                         "address2": "unit 3",
                         "city": "Paris",
@@ -552,17 +552,17 @@ Array [
                     },
                     "customer_locale": null,
                     "device_id": null,
-                    "discount_codes": Array [],
+                    "discount_codes": [],
                     "email": "jean@gorgias.io",
                     "financial_status": "paid",
                     "fulfillment_status": null,
-                    "fulfillments": Array [],
+                    "fulfillments": [],
                     "gateway": "",
                     "id": 4194477515,
                     "landing_site": null,
                     "landing_site_ref": null,
-                    "line_items": Array [
-                      Object {
+                    "line_items": [
+                      {
                         "fulfillable_quantity": 1,
                         "fulfillment_service": "manual",
                         "fulfillment_status": null,
@@ -573,11 +573,11 @@ Array [
                         "price": "0.10",
                         "product_exists": true,
                         "product_id": 8345093387,
-                        "properties": Array [],
+                        "properties": [],
                         "quantity": 1,
                         "requires_shipping": true,
                         "sku": "0987654321",
-                        "tax_lines": Array [],
+                        "tax_lines": [],
                         "taxable": true,
                         "title": "Bonbon acidulé",
                         "total_discount": "0.00",
@@ -590,18 +590,18 @@ Array [
                     "location_id": null,
                     "name": "#1199",
                     "note": null,
-                    "note_attributes": Array [],
+                    "note_attributes": [],
                     "number": 199,
                     "order_number": 1199,
                     "order_status_url": null,
-                    "payment_gateway_names": Array [],
+                    "payment_gateway_names": [],
                     "phone": null,
                     "processed_at": "2017-06-16T20:06:10-04:00",
                     "processing_method": "",
                     "reference": null,
                     "referring_site": null,
-                    "refunds": Array [],
-                    "shipping_address": Object {
+                    "refunds": [],
+                    "shipping_address": {
                       "address1": "12 rue du poisson cru",
                       "address2": "unit 3",
                       "city": "Paris",
@@ -618,13 +618,13 @@ Array [
                       "province_code": null,
                       "zip": "75012",
                     },
-                    "shipping_lines": Array [],
+                    "shipping_lines": [],
                     "source_identifier": null,
                     "source_name": "1424624",
                     "source_url": null,
                     "subtotal_price": "0.10",
                     "tags": "",
-                    "tax_lines": Array [],
+                    "tax_lines": [],
                     "taxes_included": false,
                     "test": false,
                     "token": "0fbe98fcc45da2abe985cc7eea5a5cf4",
@@ -643,17 +643,17 @@ Array [
             "lastname": "Bon",
             "name": "Jean Bon",
           },
-          "events": Array [],
+          "events": [],
           "external_id": null,
           "from_agent": true,
           "id": 152,
           "is_unread": true,
           "last_message_datetime": "2017-07-31T23:07:35.150000+00:00",
           "last_received_message_datetime": null,
-          "messages": Array [
-            Object {
+          "messages": [
+            {
               "actions": null,
-              "attachments": Array [],
+              "attachments": [],
               "body_html": "<div>Hi! How are <strong>you</strong>?</div>",
               "body_text": "Hi! How are you?",
               "channel": "email",
@@ -669,7 +669,7 @@ Array [
               "meta": null,
               "opened_datetime": null,
               "public": true,
-              "receiver": Object {
+              "receiver": {
                 "email": "jeanbon@gorgias.io",
                 "firstname": "Jean",
                 "id": 34,
@@ -677,7 +677,7 @@ Array [
                 "name": "Jean Bon",
               },
               "rule_id": null,
-              "sender": Object {
+              "sender": {
                 "email": "alex@gorgias.io",
                 "firstname": "Alex",
                 "id": 2,
@@ -685,13 +685,13 @@ Array [
                 "name": "Alex Plugaru",
               },
               "sent_datetime": "2017-07-31T23:07:36.946068+00:00",
-              "source": Object {
-                "from": Object {
+              "source": {
+                "from": {
                   "address": "support@acme.gorgias.io",
                   "name": "Acme Support",
                 },
-                "to": Array [
-                  Object {
+                "to": [
+                  {
                     "address": "jeanbon@gorgias.io",
                     "name": "Jean Bon",
                   },
@@ -709,14 +709,14 @@ Array [
           ],
           "meta": null,
           "opened_datetime": null,
-          "receiver": Object {
+          "receiver": {
             "email": "jeanbon@gorgias.io",
             "firstname": "Jean",
             "id": 34,
             "lastname": "Bon",
             "name": "Jean Bon",
           },
-          "sender": Object {
+          "sender": {
             "email": "alex@gorgias.io",
             "firstname": "Alex",
             "id": 2,
@@ -726,8 +726,8 @@ Array [
           "snooze_datetime": null,
           "status": "open",
           "subject": "Great ticket",
-          "tags": Array [
-            Object {
+          "tags": [
+            {
               "decoration": null,
               "id": 1,
               "name": "refund",
@@ -748,9 +748,9 @@ Array [
 `;
 
 exports[`actions new message newMessageResetFromMessage should send the message data to reset the state 1`] = `
-Array [
-  Object {
-    "payload": Object {
+[
+  {
+    "payload": {
       "body_text": "foo",
     },
     "type": "NEW_MESSAGE_RESET_FROM_MESSAGE",
@@ -759,12 +759,12 @@ Array [
 `;
 
 exports[`actions new message prepare() email-forward should cast chat react player videos content into hypertexts when newMessage source is not \`chat\` 1`] = `
-Array [
-  Object {
+[
+  {
     "subject": "",
     "type": "NEW_MESSAGE_SET_SUBJECT",
   },
-  Object {
+  {
     "messages": Immutable.List [
       Immutable.Map {
         "source": Immutable.Map {
@@ -807,14 +807,14 @@ Array [
     "sourceType": "email",
     "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
   },
-  Object {
-    "extra": Object {},
+  {
+    "extra": {},
     "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
   },
-  Object {
-    "receivers": Object {
-      "to": Array [
-        Object {
+  {
+    "receivers": {
+      "to": [
+        {
           "address": "1232353100194770",
           "name": "Paul Atréides",
         },
@@ -823,18 +823,18 @@ Array [
     "replaceAll": true,
     "type": "NEW_MESSAGE_SET_RECEIVERS",
   },
-  Object {
+  {
     "sender": Immutable.Map {
       "name": "Chani",
       "address": "8765645678",
     },
     "type": "NEW_MESSAGE_SET_SENDER",
   },
-  Object {
+  {
     "subject": "",
     "type": "NEW_MESSAGE_SET_SUBJECT",
   },
-  Object {
+  {
     "messages": Immutable.List [
       Immutable.Map {
         "source": Immutable.Map {
@@ -877,14 +877,14 @@ Array [
     "sourceType": "sms",
     "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
   },
-  Object {
-    "extra": Object {},
+  {
+    "extra": {},
     "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
   },
-  Object {
-    "receivers": Object {
-      "to": Array [
-        Object {
+  {
+    "receivers": {
+      "to": [
+        {
           "address": "1232353100194770",
           "name": "Paul Atréides",
         },
@@ -893,7 +893,7 @@ Array [
     "replaceAll": true,
     "type": "NEW_MESSAGE_SET_RECEIVERS",
   },
-  Object {
+  {
     "sender": Immutable.Map {
       "name": "Chani",
       "address": "8765645678",
@@ -904,12 +904,12 @@ Array [
 `;
 
 exports[`actions new message prepare() email-forward should not set an attachment in the newMessage if it is already there 1`] = `
-Array [
-  Object {
+[
+  {
     "subject": "Fwd: ",
     "type": "NEW_MESSAGE_SET_SUBJECT",
   },
-  Object {
+  {
     "messages": Immutable.List [
       Immutable.Map {
         "source": Immutable.Map {
@@ -962,27 +962,27 @@ Array [
     "sourceType": "email",
     "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
   },
-  Object {
-    "extra": Object {
+  {
+    "extra": {
       "forward": true,
     },
     "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
   },
-  Object {
+  {
     "sender": Immutable.Map {
       "name": "Acme Support",
       "address": "support@acme.gorgias.io",
     },
     "type": "NEW_MESSAGE_SET_SENDER",
   },
-  Object {
-    "receivers": Object {},
+  {
+    "receivers": {},
     "replaceAll": true,
     "type": "NEW_MESSAGE_SET_RECEIVERS",
   },
-  Object {
-    "resp": Array [
-      Object {
+  {
+    "resp": [
+      {
         "url": "bar",
       },
     ],
@@ -992,12 +992,12 @@ Array [
 `;
 
 exports[`actions new message prepare() email-forward should prepare an email forward 1`] = `
-Array [
-  Object {
+[
+  {
     "subject": "Fwd: ",
     "type": "NEW_MESSAGE_SET_SUBJECT",
   },
-  Object {
+  {
     "messages": Immutable.List [
       Immutable.Map {
         "source": Immutable.Map {
@@ -1042,38 +1042,38 @@ Array [
     "sourceType": "email",
     "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
   },
-  Object {
-    "extra": Object {
+  {
+    "extra": {
       "forward": true,
     },
     "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
   },
-  Object {
+  {
     "sender": Immutable.Map {
       "name": "Acme Support",
       "address": "support@acme.gorgias.io",
     },
     "type": "NEW_MESSAGE_SET_SENDER",
   },
-  Object {
-    "receivers": Object {},
+  {
+    "receivers": {},
     "replaceAll": true,
     "type": "NEW_MESSAGE_SET_RECEIVERS",
   },
-  Object {
-    "resp": Array [],
+  {
+    "resp": [],
     "type": "NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS",
   },
 ]
 `;
 
 exports[`actions new message prepare() email-forward should set all attachments of the ticket as attachment of the newMessage 1`] = `
-Array [
-  Object {
+[
+  {
     "subject": "Fwd: ",
     "type": "NEW_MESSAGE_SET_SUBJECT",
   },
-  Object {
+  {
     "messages": Immutable.List [
       Immutable.Map {
         "source": Immutable.Map {
@@ -1134,36 +1134,36 @@ Array [
     "sourceType": "email",
     "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
   },
-  Object {
-    "extra": Object {
+  {
+    "extra": {
       "forward": true,
     },
     "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
   },
-  Object {
+  {
     "sender": Immutable.Map {
       "name": "Acme Support",
       "address": "support@acme.gorgias.io",
     },
     "type": "NEW_MESSAGE_SET_SENDER",
   },
-  Object {
-    "receivers": Object {},
+  {
+    "receivers": {},
     "replaceAll": true,
     "type": "NEW_MESSAGE_SET_RECEIVERS",
   },
-  Object {
-    "resp": Array [
-      Object {
+  {
+    "resp": [
+      {
         "url": "foo",
       },
-      Object {
+      {
         "url": "bar",
       },
-      Object {
+      {
         "url": "baz",
       },
-      Object {
+      {
         "url": "far",
       },
     ],
@@ -1173,12 +1173,12 @@ Array [
 `;
 
 exports[`actions new message prepare() instagram comment should add prefix 1`] = `
-Array [
-  Object {
+[
+  {
     "subject": "",
     "type": "NEW_MESSAGE_SET_SUBJECT",
   },
-  Object {
+  {
     "messages": Immutable.List [
       Immutable.Map {
         "source": Immutable.Map {
@@ -1225,14 +1225,14 @@ Array [
     "sourceType": "instagram-comment",
     "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
   },
-  Object {
-    "extra": Object {},
+  {
+    "extra": {},
     "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
   },
-  Object {
-    "receivers": Object {
-      "to": Array [
-        Object {
+  {
+    "receivers": {
+      "to": [
+        {
           "address": "a4sd684a6sd4a5sd",
           "name": "instagramuser",
         },
@@ -1241,18 +1241,18 @@ Array [
     "replaceAll": true,
     "type": "NEW_MESSAGE_SET_RECEIVERS",
   },
-  Object {
+  {
     "sender": Immutable.Map {
       "name": "myinstagrampage",
       "address": "1232353100194770",
     },
     "type": "NEW_MESSAGE_SET_SENDER",
   },
-  Object {
+  {
     "appliedMacro": undefined,
     "args": Immutable.Map {
       "contentState": Immutable.Record {
-        "entityMap": Object {
+        "entityMap": {
           "__add": [Function],
           "__create": [Function],
           "__get": [Function],
@@ -1408,12 +1408,12 @@ Array [
 `;
 
 exports[`actions new message prepare() instagram comment should not add prefix if there is no receiver name 1`] = `
-Array [
-  Object {
+[
+  {
     "subject": "",
     "type": "NEW_MESSAGE_SET_SUBJECT",
   },
-  Object {
+  {
     "messages": Immutable.List [
       Immutable.Map {
         "source": Immutable.Map {
@@ -1460,14 +1460,14 @@ Array [
     "sourceType": "instagram-comment",
     "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
   },
-  Object {
-    "extra": Object {},
+  {
+    "extra": {},
     "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
   },
-  Object {
-    "receivers": Object {
-      "to": Array [
-        Object {
+  {
+    "receivers": {
+      "to": [
+        {
           "address": "a4sd684a6sd4a5sd",
           "name": "instagramuser",
         },
@@ -1476,7 +1476,7 @@ Array [
     "replaceAll": true,
     "type": "NEW_MESSAGE_SET_RECEIVERS",
   },
-  Object {
+  {
     "sender": Immutable.Map {
       "name": "myinstagrampage",
       "address": "1232353100194770",
@@ -1487,12 +1487,12 @@ Array [
 `;
 
 exports[`actions new message prepare() instagram comment should not add prefix if there is text already 1`] = `
-Array [
-  Object {
+[
+  {
     "subject": "",
     "type": "NEW_MESSAGE_SET_SUBJECT",
   },
-  Object {
+  {
     "messages": Immutable.List [
       Immutable.Map {
         "source": Immutable.Map {
@@ -1539,14 +1539,14 @@ Array [
     "sourceType": "instagram-comment",
     "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
   },
-  Object {
-    "extra": Object {},
+  {
+    "extra": {},
     "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
   },
-  Object {
-    "receivers": Object {
-      "to": Array [
-        Object {
+  {
+    "receivers": {
+      "to": [
+        {
           "address": "a4sd684a6sd4a5sd",
           "name": "instagramuser",
         },
@@ -1555,7 +1555,7 @@ Array [
     "replaceAll": true,
     "type": "NEW_MESSAGE_SET_RECEIVERS",
   },
-  Object {
+  {
     "sender": Immutable.Map {
       "name": "myinstagrampage",
       "address": "1232353100194770",
@@ -1566,12 +1566,12 @@ Array [
 `;
 
 exports[`actions new message prepare() other types 1`] = `
-Array [
-  Object {
+[
+  {
     "subject": "",
     "type": "NEW_MESSAGE_SET_SUBJECT",
   },
-  Object {
+  {
     "messages": Immutable.List [
       Immutable.Map {
         "source": Immutable.Map {
@@ -1616,14 +1616,14 @@ Array [
     "sourceType": "email",
     "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
   },
-  Object {
-    "extra": Object {},
+  {
+    "extra": {},
     "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
   },
-  Object {
-    "receivers": Object {
-      "to": Array [
-        Object {
+  {
+    "receivers": {
+      "to": [
+        {
           "address": "steve.frizeli@gmail.com",
           "name": "Steve Frizeli",
         },
@@ -1632,7 +1632,7 @@ Array [
     "replaceAll": true,
     "type": "NEW_MESSAGE_SET_RECEIVERS",
   },
-  Object {
+  {
     "sender": Immutable.Map {
       "name": "Acme Support",
       "address": "support@acme.gorgias.io",
@@ -1643,12 +1643,12 @@ Array [
 `;
 
 exports[`actions new message prepare() other types 2`] = `
-Array [
-  Object {
+[
+  {
     "subject": "",
     "type": "NEW_MESSAGE_SET_SUBJECT",
   },
-  Object {
+  {
     "messages": Immutable.List [
       Immutable.Map {
         "source": Immutable.Map {
@@ -1693,14 +1693,14 @@ Array [
     "sourceType": "chat",
     "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
   },
-  Object {
-    "extra": Object {},
+  {
+    "extra": {},
     "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
   },
-  Object {
-    "receivers": Object {
-      "to": Array [
-        Object {
+  {
+    "receivers": {
+      "to": [
+        {
           "address": "steve.frizeli@gmail.com",
           "name": "Steve Frizeli",
         },
@@ -1709,7 +1709,7 @@ Array [
     "replaceAll": true,
     "type": "NEW_MESSAGE_SET_RECEIVERS",
   },
-  Object {
+  {
     "sender": Immutable.Map {
       "name": "Acme Support",
       "address": "support@acme.gorgias.io",
@@ -1720,12 +1720,12 @@ Array [
 `;
 
 exports[`actions new message prepare() other types 3`] = `
-Array [
-  Object {
+[
+  {
     "subject": "",
     "type": "NEW_MESSAGE_SET_SUBJECT",
   },
-  Object {
+  {
     "messages": Immutable.List [
       Immutable.Map {
         "source": Immutable.Map {
@@ -1770,14 +1770,14 @@ Array [
     "sourceType": "facebook-comment",
     "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
   },
-  Object {
-    "extra": Object {},
+  {
+    "extra": {},
     "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
   },
-  Object {
-    "receivers": Object {
-      "to": Array [
-        Object {
+  {
+    "receivers": {
+      "to": [
+        {
           "address": "steve.frizeli@gmail.com",
           "name": "Steve Frizeli",
         },
@@ -1786,7 +1786,7 @@ Array [
     "replaceAll": true,
     "type": "NEW_MESSAGE_SET_RECEIVERS",
   },
-  Object {
+  {
     "sender": Immutable.Map {
       "name": "Acme Support",
       "address": "support@acme.gorgias.io",
@@ -1797,12 +1797,12 @@ Array [
 `;
 
 exports[`actions new message prepare() other types 4`] = `
-Array [
-  Object {
+[
+  {
     "subject": "",
     "type": "NEW_MESSAGE_SET_SUBJECT",
   },
-  Object {
+  {
     "messages": Immutable.List [
       Immutable.Map {
         "source": Immutable.Map {
@@ -1847,14 +1847,14 @@ Array [
     "sourceType": "facebook-message",
     "type": "NEW_MESSAGE_SET_SOURCE_TYPE",
   },
-  Object {
-    "extra": Object {},
+  {
+    "extra": {},
     "type": "NEW_MESSAGE_SET_SOURCE_EXTRA",
   },
-  Object {
-    "receivers": Object {
-      "to": Array [
-        Object {
+  {
+    "receivers": {
+      "to": [
+        {
           "address": "steve.frizeli@gmail.com",
           "name": "Steve Frizeli",
         },
@@ -1863,7 +1863,7 @@ Array [
     "replaceAll": true,
     "type": "NEW_MESSAGE_SET_RECEIVERS",
   },
-  Object {
+  {
     "sender": Immutable.Map {
       "name": "Acme Support",
       "address": "support@acme.gorgias.io",
@@ -1874,10 +1874,10 @@ Array [
 `;
 
 exports[`actions new message prepareTicketDataToSend() should add email extra to the message when source type is email 1`] = `
-Array [
-  Array [
+[
+  [
     Immutable.Record {
-      "entityMap": Object {
+      "entityMap": {
         "__add": [Function],
         "__create": [Function],
         "__get": [Function],
@@ -1931,12 +1931,12 @@ Array [
         "hasFocus": false,
       },
     },
-    Object {
+    {
       "isForwarded": false,
-      "replyThreadMessages": Array [
-        Object {
+      "replyThreadMessages": [
+        {
           "actions": null,
-          "attachments": Array [],
+          "attachments": [],
           "body_html": "<div>Hi! How are <strong>you</strong>?</div>",
           "body_text": "Hi! How are you?",
           "channel": "email",
@@ -1952,7 +1952,7 @@ Array [
           "meta": null,
           "opened_datetime": null,
           "public": true,
-          "receiver": Object {
+          "receiver": {
             "email": "jeanbon@gorgias.io",
             "firstname": "Jean",
             "id": 34,
@@ -1960,7 +1960,7 @@ Array [
             "name": "Jean Bon",
           },
           "rule_id": null,
-          "sender": Object {
+          "sender": {
             "email": "alex@gorgias.io",
             "firstname": "Alex",
             "id": 2,
@@ -1968,13 +1968,13 @@ Array [
             "name": "Alex Plugaru",
           },
           "sent_datetime": "2017-07-31T23:07:36.946068+00:00",
-          "source": Object {
-            "from": Object {
+          "source": {
+            "from": {
               "address": "support@acme.gorgias.io",
               "name": "Acme Support",
             },
-            "to": Array [
-              Object {
+            "to": [
+              {
                 "address": "jeanbon@gorgias.io",
                 "name": "Jean Bon",
               },
@@ -1994,12 +1994,12 @@ Array [
         "text": "cheers, Steve",
         "html": "cheers, <strong>Steve</strong>",
       },
-      "ticket": Object {
+      "ticket": {
         "channel": "",
-        "messages": Array [
-          Object {
+        "messages": [
+          {
             "actions": null,
-            "attachments": Array [],
+            "attachments": [],
             "body_html": "<div>Hi! How are <strong>you</strong>?</div>",
             "body_text": "Hi! How are you?",
             "channel": "email",
@@ -2015,7 +2015,7 @@ Array [
             "meta": null,
             "opened_datetime": null,
             "public": true,
-            "receiver": Object {
+            "receiver": {
               "email": "jeanbon@gorgias.io",
               "firstname": "Jean",
               "id": 34,
@@ -2023,7 +2023,7 @@ Array [
               "name": "Jean Bon",
             },
             "rule_id": null,
-            "sender": Object {
+            "sender": {
               "email": "alex@gorgias.io",
               "firstname": "Alex",
               "id": 2,
@@ -2031,13 +2031,13 @@ Array [
               "name": "Alex Plugaru",
             },
             "sent_datetime": "2017-07-31T23:07:36.946068+00:00",
-            "source": Object {
-              "from": Object {
+            "source": {
+              "from": {
                 "address": "support@acme.gorgias.io",
                 "name": "Acme Support",
               },
-              "to": Array [
-                Object {
+              "to": [
+                {
                   "address": "jeanbon@gorgias.io",
                   "name": "Jean Bon",
                 },
@@ -2062,7 +2062,7 @@ Array [
 `;
 
 exports[`actions new message prepareTicketDataToSend() should add email extra to the message when source type is email 2`] = `
-Object {
+{
   "actions": Immutable.List [],
   "body_html": "<div>Extra <strong>content</strong></div>",
   "body_text": "Extra content",
@@ -2070,8 +2070,8 @@ Object {
     "id": 1,
     "name": "Steve",
   },
-  "source": Object {
-    "from": Object {
+  "source": {
+    "from": {
       "address": "support@acme.gorgias.io",
     },
     "type": "email",
@@ -2080,10 +2080,10 @@ Object {
 `;
 
 exports[`actions new message prepareTicketDataToSend() should add email extra to the message when source type is email 3`] = `
-Object {
-  "contentState": Array [
-    Object {
-      "data": Object {},
+{
+  "contentState": [
+    {
+      "data": {},
       "depth": 0,
       "text": "Extra content",
       "type": "unstyled",
@@ -2094,7 +2094,7 @@ Object {
 `;
 
 exports[`actions new message prepareTicketDataToSend() should not add email extra to the message when source type is not email 1`] = `
-Object {
+{
   "actions": Immutable.List [],
   "body_html": "original html",
   "body_text": "original text",
@@ -2102,17 +2102,17 @@ Object {
     "id": 1,
     "name": "Steve",
   },
-  "source": Object {
+  "source": {
     "type": "facebook-message",
   },
 }
 `;
 
 exports[`actions new message prepareTicketDataToSend() should not add email extra to the message when source type is not email 2`] = `
-Object {
-  "contentState": Array [
-    Object {
-      "data": Object {},
+{
+  "contentState": [
+    {
+      "data": {},
       "depth": 0,
       "text": "Hi ",
       "type": "unstyled",
@@ -2122,7 +2122,7 @@ Object {
 `;
 
 exports[`actions new message prepareTicketDataToSend() should replace empty message with intenal note text from internal note action 1`] = `
-Object {
+{
   "actions": Immutable.List [],
   "body_html": "<div>Hello</div>",
   "body_text": "Hello",
@@ -2131,8 +2131,8 @@ Object {
     "id": 1,
     "name": "Steve",
   },
-  "source": Object {
-    "from": Object {
+  "source": {
+    "from": {
       "address": "",
       "name": "",
     },
@@ -2142,17 +2142,17 @@ Object {
 `;
 
 exports[`actions new message prepareTicketDataToSend() should transform empty message with macro to internal note 1`] = `
-Object {
+{
   "actions": Immutable.List [],
-  "body_html": "<div>Applied macro \\"Macro 1\\"</div>",
-  "body_text": "Applied macro \\"Macro 1\\"",
+  "body_html": "<div>Applied macro "Macro 1"</div>",
+  "body_text": "Applied macro "Macro 1"",
   "public": false,
   "sender": Immutable.Map {
     "id": 1,
     "name": "Steve",
   },
-  "source": Object {
-    "from": Object {
+  "source": {
+    "from": {
       "address": "",
       "name": "",
     },
@@ -2162,25 +2162,25 @@ Object {
 `;
 
 exports[`actions new message prepareTicketMessage should prepare next new message after we submitted an instagram comment 1`] = `
-Object {
-  "attachments": Array [],
+{
+  "attachments": [],
   "body_html": "",
   "body_text": "",
   "channel": "email",
   "from_agent": true,
-  "macros": Array [],
-  "mention_ids": Array [],
+  "macros": [],
+  "mention_ids": [],
   "public": true,
   "sender": Immutable.Map {
     "id": 1,
     "name": "foo",
   },
-  "source": Object {
-    "extra": Object {
+  "source": {
+    "extra": {
       "media_id": "519388858269125_626477354226941",
     },
-    "to": Array [
-      Object {
+    "to": [
+      {
         "name": "messagereceiver",
       },
     ],
@@ -2192,12 +2192,12 @@ Object {
 `;
 
 exports[`actions new message prepareTicketMessage should prepare next new message after we submitted an instagram comment 2`] = `
-Object {
+{
   "appliedMacro": null,
   "cacheAdded": false,
-  "contentState": Array [
-    Object {
-      "data": Object {},
+  "contentState": [
+    {
+      "data": {},
       "depth": 0,
       "text": "",
       "type": "unstyled",
@@ -2212,29 +2212,29 @@ Object {
 `;
 
 exports[`actions new message sendTicketMessage should submit new message 1`] = `
-Array [
-  Object {
-    "message": Object {
-      "attachments": Array [],
+[
+  {
+    "message": {
+      "attachments": [],
       "body_html": "<div><br></div>",
       "body_text": "",
       "channel": "email",
       "from_agent": true,
-      "macros": Array [],
-      "mention_ids": Array [],
+      "macros": [],
+      "mention_ids": [],
       "public": true,
       "sender": Immutable.Map {
         "id": 1,
         "name": "foo",
       },
-      "source": Object {
-        "bcc": Array [],
-        "cc": Array [],
-        "extra": Object {
+      "source": {
+        "bcc": [],
+        "cc": [],
+        "extra": {
           "include_thread": false,
         },
-        "from": Object {},
-        "to": Array [],
+        "from": {},
+        "to": [],
         "type": "email",
       },
       "subject": "",
@@ -2249,11 +2249,11 @@ Array [
     "ticketVia": "helpdesk",
     "type": "NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START",
   },
-  Object {
+  {
     "macro": undefined,
     "type": "APPLY_MACRO",
   },
-  Object {
+  {
     "appliedMacro": null,
     "args": Immutable.Map {
       "forceFocus": true,
@@ -2317,21 +2317,21 @@ Array [
     "topRankMacroState": null,
     "type": "setResponseText",
   },
-  Object {
-    "receivers": Object {
-      "to": Array [],
+  {
+    "receivers": {
+      "to": [],
     },
     "replaceAll": true,
     "type": "NEW_MESSAGE_SET_RECEIVERS",
   },
-  Object {
+  {
     "sender": Immutable.Map {
       "name": "Acme Support",
       "address": "support@acme.gorgias.io",
     },
     "type": "NEW_MESSAGE_SET_SENDER",
   },
-  Object {
+  {
     "ticketId": 12,
     "topRankMacroState": null,
     "type": "SET_TOP_RANK_MACRO_STATE",
@@ -2340,12 +2340,12 @@ Array [
 `;
 
 exports[`actions new message setResponseText() should always pass the args to the reducer 1`] = `
-Array [
-  Object {
+[
+  {
     "appliedMacro": undefined,
     "args": Immutable.Map {
       "contentState": Immutable.Record {
-        "entityMap": Object {
+        "entityMap": {
           "__add": [Function],
           "__create": [Function],
           "__get": [Function],
@@ -2456,12 +2456,12 @@ Array [
 `;
 
 exports[`actions new message setResponseText() should not send a typing event when the reply area only contains a signature 1`] = `
-Array [
-  Object {
+[
+  {
     "appliedMacro": undefined,
     "args": Immutable.Map {
       "contentState": Immutable.Record {
-        "entityMap": Object {
+        "entityMap": {
           "__add": [Function],
           "__create": [Function],
           "__get": [Function],
@@ -2556,12 +2556,12 @@ Array [
 `;
 
 exports[`actions new message setResponseText() should not send a typing event when the user is typing in an internal note 1`] = `
-Array [
-  Object {
+[
+  {
     "appliedMacro": undefined,
     "args": Immutable.Map {
       "contentState": Immutable.Record {
-        "entityMap": Object {
+        "entityMap": {
           "__add": [Function],
           "__create": [Function],
           "__get": [Function],
@@ -2632,12 +2632,12 @@ Array [
 `;
 
 exports[`actions new message setResponseText() should not send an end typing event when the user is not typing and not in ticket 1`] = `
-Array [
-  Object {
+[
+  {
     "appliedMacro": undefined,
     "args": Immutable.Map {
       "contentState": Immutable.Record {
-        "entityMap": Object {
+        "entityMap": {
           "__add": [Function],
           "__create": [Function],
           "__get": [Function],
@@ -2697,12 +2697,12 @@ Array [
 `;
 
 exports[`actions new message setResponseText() should send an end typing event on ticket when the user is not typing but is in the room 1`] = `
-Array [
-  Object {
+[
+  {
     "appliedMacro": undefined,
     "args": Immutable.Map {
       "contentState": Immutable.Record {
-        "entityMap": Object {
+        "entityMap": {
           "__add": [Function],
           "__create": [Function],
           "__get": [Function],
@@ -2762,12 +2762,12 @@ Array [
 `;
 
 exports[`actions new message setResponseText() should send typing event when the user is typing 1`] = `
-Array [
-  Object {
+[
+  {
     "appliedMacro": undefined,
     "args": Immutable.Map {
       "contentState": Immutable.Record {
-        "entityMap": Object {
+        "entityMap": {
           "__add": [Function],
           "__create": [Function],
           "__get": [Function],
@@ -2838,8 +2838,8 @@ Array [
 `;
 
 exports[`actions new message setSender action should handle phone channel 1`] = `
-Array [
-  Object {
+[
+  {
     "sender": Immutable.Map {
       "name": "Acme Phone",
       "address": "+14151112223",
@@ -2851,8 +2851,8 @@ Array [
 `;
 
 exports[`actions new message setSender action with address 1`] = `
-Array [
-  Object {
+[
+  {
     "sender": Immutable.Map {
       "name": "Acme Support",
       "address": "support@acme.gorgias.io",
@@ -2863,8 +2863,8 @@ Array [
 `;
 
 exports[`actions new message setSubject() default value 1`] = `
-Array [
-  Object {
+[
+  {
     "subject": "",
     "type": "NEW_MESSAGE_SET_SUBJECT",
   },
@@ -2872,8 +2872,8 @@ Array [
 `;
 
 exports[`actions new message setSubject() given value 1`] = `
-Array [
-  Object {
+[
+  {
     "subject": "hello world",
     "type": "NEW_MESSAGE_SET_SUBJECT",
   },
@@ -2881,11 +2881,11 @@ Array [
 `;
 
 exports[`actions setActiveCustomerAsReceiver should set email receiver based on active customer 1`] = `
-Array [
-  Object {
-    "receivers": Object {
-      "to": Array [
-        Object {
+[
+  {
+    "receivers": {
+      "to": [
+        {
           "address": "marc.wall@gmail.com",
           "name": "Marc",
         },
@@ -2900,24 +2900,24 @@ Array [
 exports[`actions updatePotentialCustomers should resolve when cancelled 1`] = `undefined`;
 
 exports[`actions updatePotentialCustomers should return a list of potential customer on success 1`] = `
-Object {
-  "data": Array [
-    Object {
+{
+  "data": [
+    {
       "address": "marie@gorgias.io",
-      "customer": Object {
+      "customer": {
         "id": 4,
         "name": "Marie Curie",
       },
       "id": 4,
       "name": "Marie Curie",
       "type": "email",
-      "user": Object {
+      "user": {
         "id": 4,
         "name": "Marie Curie",
       },
     },
   ],
-  "meta": Object {},
+  "meta": {},
   "object": "list",
   "uri": "",
 }

@@ -757,7 +757,7 @@ exports[`Event component should display correctly a successful event for a Shopi
             <JSONPretty
               className="d-inline-flex"
               data={
-                Object {
+                {
                   "foo": "bar",
                 }
               }

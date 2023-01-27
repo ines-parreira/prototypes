@@ -1,18 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<WidgetEdit/> should call the correct action when cancelling 1`] = `Array []`;
+exports[`<WidgetEdit/> should call the correct action when cancelling 1`] = `[]`;
 
 exports[`<WidgetEdit/> should call the correct action when cancelling 2`] = `
-Array [
-  Array [],
+[
+  [],
 ]
 `;
 
 exports[`<WidgetEdit/> should call the correct action with correct data when submitting the form 1`] = `
-Array [
-  Array [
-    Object {
-      "meta": Object {
+[
+  [
+    {
+      "meta": {
         "color": "#EB144C",
         "displayCard": true,
         "link": "https://link.com",
@@ -26,24 +26,24 @@ Array [
 `;
 
 exports[`<WidgetEdit/> should call the correct action with correct data when submitting the form 2`] = `
-Array [
-  Array [],
+[
+  [],
 ]
 `;
 
 exports[`<WidgetEdit/> should handle the list case 1`] = `
-Array [
-  Array [
-    Object {
-      "meta": Object {
+[
+  [
+    {
+      "meta": {
         "limit": 9,
         "orderBy": "-value",
       },
       "title": "List title",
       "type": "list",
-      "widgets": Array [
-        Object {
-          "meta": Object {
+      "widgets": [
+        {
+          "meta": {
             "color": "",
             "displayCard": true,
             "link": "",
@@ -59,8 +59,8 @@ Array [
 `;
 
 exports[`<WidgetEdit/> should handle the list case 2`] = `
-Array [
-  Array [],
+[
+  [],
 ]
 `;
 

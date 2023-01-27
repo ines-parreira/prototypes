@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`customers actions bulkDeleteCustomer() 1`] = `
-Object {
-  "delete": Array [
-    Object {
-      "data": "{\\"ids\\":[1,2,3,4,5]}",
-      "headers": Object {
+{
+  "delete": [
+    {
+      "data": "{"ids":[1,2,3,4,5]}",
+      "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
         "X-CSRF-Token": "abcd",
@@ -15,10 +15,10 @@ Object {
       "maxContentLength": -1,
       "method": "delete",
       "timeout": 0,
-      "transformRequest": Array [
+      "transformRequest": [
         [Function],
       ],
-      "transformResponse": Array [
+      "transformResponse": [
         [Function],
       ],
       "url": "/api/customers/",
@@ -27,22 +27,22 @@ Object {
       "xsrfHeaderName": "X-XSRF-TOKEN",
     },
   ],
-  "get": Array [],
-  "head": Array [],
-  "list": Array [],
-  "options": Array [],
-  "patch": Array [],
-  "post": Array [],
-  "put": Array [],
+  "get": [],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [],
 }
 `;
 
 exports[`customers actions bulkDeleteCustomer() 2`] = `
-Array [
-  Object {
+[
+  {
     "type": "BULK_DELETE_START",
   },
-  Object {
+  {
     "ids": Immutable.List [
       1,
       2,
@@ -57,14 +57,14 @@ Array [
 `;
 
 exports[`customers actions create customer 1`] = `
-Array [
-  Object {
+[
+  {
     "type": "SUBMIT_CUSTOMER_START",
   },
-  Object {
+  {
     "isUpdate": false,
-    "resp": Object {
-      "data": Object {
+    "resp": {
+      "data": {
         "email": "steve@acme.gorgias.io",
         "name": "Steve",
       },
@@ -75,11 +75,11 @@ Array [
 `;
 
 exports[`customers actions delete customer 1`] = `
-Array [
-  Object {
+[
+  {
     "type": "DELETE_CUSTOMER_START",
   },
-  Object {
+  {
     "customerId": 2,
     "type": "DELETE_CUSTOMER_SUCCESS",
   },
@@ -87,13 +87,13 @@ Array [
 `;
 
 exports[`customers actions fetch customer 1`] = `
-Array [
-  Object {
+[
+  {
     "type": "FETCH_CUSTOMER_START",
   },
-  Object {
-    "resp": Object {
-      "data": Object {
+  {
+    "resp": {
+      "data": {
         "id": 2,
       },
     },
@@ -103,14 +103,14 @@ Array [
 `;
 
 exports[`customers actions fetch customer history 1`] = `
-Array [
-  Object {
+[
+  {
     "type": "FETCH_CUSTOMER_HISTORY_START",
   },
-  Object {
-    "resp": Object {
-      "data": Array [
-        Object {
+  {
+    "resp": {
+      "data": [
+        {
           "id": 1,
         },
       ],
@@ -121,22 +121,22 @@ Array [
 `;
 
 exports[`customers actions fetch customer history 2`] = `
-Array [
-  Object {
+[
+  {
     "type": "FETCH_CUSTOMER_HISTORY_START",
   },
 ]
 `;
 
 exports[`customers actions merge customers 1`] = `
-Array [
-  Object {
+[
+  {
     "type": "MERGE_CUSTOMERS_START",
   },
-  Object {
-    "resp": Object {
-      "data": Array [
-        Object {
+  {
+    "resp": {
+      "data": [
+        {
           "id": 1,
         },
       ],
@@ -147,14 +147,14 @@ Array [
 `;
 
 exports[`customers actions update customer 1`] = `
-Array [
-  Object {
+[
+  {
     "type": "SUBMIT_CUSTOMER_START",
   },
-  Object {
+  {
     "isUpdate": true,
-    "resp": Object {
-      "data": Object {
+    "resp": {
+      "data": {
         "email": "steve@acme.gorgias.io",
         "id": 2,
         "name": "Steve",

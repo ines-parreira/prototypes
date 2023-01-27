@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`billing actions fetch billing contact information failure 1`] = `
-Array [
-  Object {
+[
+  {
     "error": [Error: Request failed with status code 400],
     "reason": "Unable to get billing contact information.",
     "type": "FETCH_BILLING_CONTACT_ERROR",
@@ -11,12 +11,12 @@ Array [
 `;
 
 exports[`billing actions fetch billing contact information success 1`] = `
-Array [
-  Object {
-    "billingContact": Object {
+[
+  {
+    "billingContact": {
       "email": "hello@acme.gorgias.io",
-      "shipping": Object {
-        "address": Object {
+      "shipping": {
+        "address": {
           "city": "San Francisco",
           "country": "United States",
           "line1": "52 Washburn St",
@@ -34,9 +34,9 @@ Array [
 `;
 
 exports[`billing actions fetch credit card 1`] = `
-Array [
-  Object {
-    "resp": Object {
+[
+  {
+    "resp": {
       "brand": "visa",
       "exp_month": 12,
       "exp_year": 35,
@@ -48,14 +48,14 @@ Array [
 `;
 
 exports[`billing actions fetch current usage 1`] = `
-Array [
-  Object {
-    "resp": Object {
-      "data": Object {
+[
+  {
+    "resp": {
+      "data": {
         "cost": 12.35,
         "ticket": 12323,
       },
-      "meta": Object {
+      "meta": {
         "endDate": "2016-12-13T18:30:19+00:00",
         "startDate": "2016-11-13T18:30:19+00:00",
       },
@@ -66,13 +66,13 @@ Array [
 `;
 
 exports[`billing actions fetch invoices 1`] = `
-Array [
-  Object {
-    "resp": Array [
-      Object {
+[
+  {
+    "resp": [
+      {
         "amount_due": 1234,
         "date": "2016-11-13T18:30:19+00:00",
-        "metadata": Object {},
+        "metadata": {},
         "paid": true,
       },
     ],
@@ -82,9 +82,9 @@ Array [
 `;
 
 exports[`billing actions fetch payment method 1`] = `
-Array [
-  Object {
-    "resp": Object {
+[
+  {
+    "resp": {
       "active": false,
       "method": "stripe",
     },
@@ -94,7 +94,7 @@ Array [
 `;
 
 exports[`billing actions setCreditCard() should return a Redux action to set the credit card of the current account. 1`] = `
-Object {
+{
   "creditCard": Immutable.Map {
     "last4": "6412",
     "brand": "mastercard",
@@ -107,8 +107,8 @@ Object {
 `;
 
 exports[`billing actions update billing contact information failure 1`] = `
-Array [
-  Object {
+[
+  {
     "error": [Error: Request failed with status code 400],
     "reason": "Unable to update billing contact information.",
     "type": "UPDATE_BILLING_CONTACT_ERROR",
@@ -118,12 +118,12 @@ Array [
 `;
 
 exports[`billing actions update billing contact information success 1`] = `
-Array [
-  Object {
-    "billingContact": Object {
+[
+  {
+    "billingContact": {
       "email": "hello@acme.gorgias.io",
-      "shipping": Object {
-        "address": Object {
+      "shipping": {
+        "address": {
           "city": "San Francisco",
           "country": "United States",
           "line1": "52 Washburn St",
@@ -141,7 +141,7 @@ Array [
 `;
 
 exports[`billing actions updateInvoiceInList() should return a Redux action to update an invoice in a list of invoices. 1`] = `
-Object {
+{
   "invoice": Immutable.Map {
     "id": "in_dnu3xd0i2n3f0",
     "paid": false,

@@ -81,10 +81,10 @@ exports[`MacroList component should render the macro list 1`] = `
 `;
 
 exports[`MacroList component should send event to segment on send 1`] = `
-Array [
-  Array [
+[
+  [
     "macro-applied-searchbar",
-    Object {
+    {
       "rank": undefined,
       "user_id": 2,
     },

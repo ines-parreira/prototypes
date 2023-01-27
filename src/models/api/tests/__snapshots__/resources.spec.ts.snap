@@ -1,34 +1,34 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`client resources createClient should return a proper new instance of axios 1`] = `
-Object {
+{
   "adapter": [Function],
-  "headers": Object {
+  "headers": {
     "X-CSRF-Token": "abcd",
     "X-Gorgias-User-Client": "web",
-    "common": Object {
+    "common": {
       "Accept": "application/json, text/plain, */*",
     },
-    "delete": Object {},
-    "get": Object {},
-    "head": Object {},
-    "patch": Object {
+    "delete": {},
+    "get": {},
+    "head": {},
+    "patch": {
       "Content-Type": "application/x-www-form-urlencoded",
     },
-    "post": Object {
+    "post": {
       "Content-Type": "application/x-www-form-urlencoded",
     },
-    "put": Object {
+    "put": {
       "Content-Type": "application/x-www-form-urlencoded",
     },
   },
   "maxBodyLength": -1,
   "maxContentLength": -1,
   "timeout": 0,
-  "transformRequest": Array [
+  "transformRequest": [
     [Function],
   ],
-  "transformResponse": Array [
+  "transformResponse": [
     [Function],
   ],
   "validateStatus": [Function],
@@ -38,12 +38,12 @@ Object {
 `;
 
 exports[`client resources handleNewRelease interceptor should notify and reload on new release 1`] = `
-Array [
-  Array [
-    Object {
+[
+  [
+    {
       "allowHTML": true,
-      "buttons": Array [
-        Object {
+      "buttons": [
+        {
           "name": "Reload",
           "onClick": [Function],
           "primary": true,
@@ -59,10 +59,10 @@ Array [
 `;
 
 exports[`client resources resources axios instance should resolve with data 1`] = `
-Object {
-  "config": Object {
+{
+  "config": {
     "data": undefined,
-    "headers": Object {
+    "headers": {
       "Accept": "application/json, text/plain, */*",
       "X-CSRF-Token": "abcd",
       "X-Gorgias-User-Client": "web",
@@ -71,10 +71,10 @@ Object {
     "maxContentLength": -1,
     "method": "get",
     "timeout": 0,
-    "transformRequest": Array [
+    "transformRequest": [
       [Function],
     ],
-    "transformResponse": Array [
+    "transformResponse": [
       [Function],
     ],
     "url": "/api",
@@ -82,15 +82,15 @@ Object {
     "xsrfCookieName": "XSRF-TOKEN",
     "xsrfHeaderName": "X-XSRF-TOKEN",
   },
-  "data": Object {
-    "data": Object {
+  "data": {
+    "data": {
       "foo_bar": 1,
     },
   },
-  "headers": Object {
+  "headers": {
     "x-gorgias-release": "1",
   },
-  "request": Object {
+  "request": {
     "responseUrl": "/api",
   },
   "status": 200,
@@ -98,17 +98,17 @@ Object {
 `;
 
 exports[`client resources resources axios instance should send a request with data 1`] = `
-Object {
-  "delete": Array [],
-  "get": Array [],
-  "head": Array [],
-  "list": Array [],
-  "options": Array [],
-  "patch": Array [],
-  "post": Array [
-    Object {
-      "data": "{\\"foo_bar\\":\\"foo\\",\\"foo\\":[{\\"foo_bar\\":\\"foo\\"}]}",
-      "headers": Object {
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [
+    {
+      "data": "{"foo_bar":"foo","foo":[{"foo_bar":"foo"}]}",
+      "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
         "X-CSRF-Token": "abcd",
@@ -118,10 +118,10 @@ Object {
       "maxContentLength": -1,
       "method": "post",
       "timeout": 0,
-      "transformRequest": Array [
+      "transformRequest": [
         [Function],
       ],
-      "transformResponse": Array [
+      "transformResponse": [
         [Function],
       ],
       "url": "/api",
@@ -130,6 +130,6 @@ Object {
       "xsrfHeaderName": "X-XSRF-TOKEN",
     },
   ],
-  "put": Array [],
+  "put": [],
 }
 `;

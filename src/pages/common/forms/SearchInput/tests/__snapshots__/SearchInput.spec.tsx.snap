@@ -159,9 +159,9 @@ exports[`<SearchInput/> render() should render an open dropdown because input is
     >
       <Result
         result={
-          Object {
+          {
             "id": 1,
-            "subResults": Array [],
+            "subResults": [],
           }
         }
       />
@@ -176,9 +176,9 @@ exports[`<SearchInput/> render() should render an open dropdown because input is
     >
       <Result
         result={
-          Object {
+          {
             "id": 2,
-            "subResults": Array [],
+            "subResults": [],
           }
         }
       />
@@ -193,9 +193,9 @@ exports[`<SearchInput/> render() should render an open dropdown because input is
     >
       <Result
         result={
-          Object {
+          {
             "id": 3,
-            "subResults": Array [],
+            "subResults": [],
           }
         }
       />
@@ -273,20 +273,20 @@ exports[`<SearchInput/> render() should render sub results 1`] = `
     >
       <SubResult
         result={
-          Object {
+          {
             "id": 2,
-            "subResults": Array [
-              Object {
+            "subResults": [
+              {
                 "id": 20,
               },
-              Object {
+              {
                 "id": 21,
               },
             ],
           }
         }
         subResult={
-          Object {
+          {
             "id": 20,
           }
         }
@@ -302,20 +302,20 @@ exports[`<SearchInput/> render() should render sub results 1`] = `
     >
       <SubResult
         result={
-          Object {
+          {
             "id": 2,
-            "subResults": Array [
-              Object {
+            "subResults": [
+              {
                 "id": 20,
               },
-              Object {
+              {
                 "id": 21,
               },
             ],
           }
         }
         subResult={
-          Object {
+          {
             "id": 21,
           }
         }

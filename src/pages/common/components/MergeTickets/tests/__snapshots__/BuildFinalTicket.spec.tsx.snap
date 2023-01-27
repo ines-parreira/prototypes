@@ -9,12 +9,12 @@ exports[`BuildFinalTicket component should display all fields because everything
     label="Subject"
     onChange={[Function]}
     options={
-      Array [
-        Object {
+      [
+        {
           "label": "foo",
           "value": "foo",
         },
-        Object {
+        {
           "label": "bar",
           "value": "bar",
         },
@@ -26,8 +26,8 @@ exports[`BuildFinalTicket component should display all fields because everything
     label="Customer"
     onChange={[Function]}
     options={
-      Array [
-        Object {
+      [
+        {
           "label": <span>
             <i
               className="material-icons mr-2"
@@ -38,7 +38,7 @@ exports[`BuildFinalTicket component should display all fields because everything
           </span>,
           "value": 22,
         },
-        Object {
+        {
           "label": <span>
             <i
               className="material-icons mr-2"
@@ -57,28 +57,28 @@ exports[`BuildFinalTicket component should display all fields because everything
     label="Assignee"
     onChange={[Function]}
     options={
-      Array [
-        Object {
+      [
+        {
           "label": <span>
             <Avatar
               className="d-inline-block mr-2"
               email=""
               name="John Smith"
               size={26}
-              style={Object {}}
+              style={{}}
             />
             John Smith
           </span>,
           "value": 1,
         },
-        Object {
+        {
           "label": <span>
             <Avatar
               className="d-inline-block mr-2"
               email=""
               name="Jack Ryan"
               size={26}
-              style={Object {}}
+              style={{}}
             />
             Jack Ryan
           </span>,
@@ -100,28 +100,28 @@ exports[`BuildFinalTicket component should display the assignee field because th
     label="Assignee"
     onChange={[Function]}
     options={
-      Array [
-        Object {
+      [
+        {
           "label": <span>
             <Avatar
               className="d-inline-block mr-2"
               email=""
               name="John Smith"
               size={26}
-              style={Object {}}
+              style={{}}
             />
             John Smith
           </span>,
           "value": 1,
         },
-        Object {
+        {
           "label": <span>
             <Avatar
               className="d-inline-block mr-2"
               email=""
               name="Jack Ryan"
               size={26}
-              style={Object {}}
+              style={{}}
             />
             Jack Ryan
           </span>,
@@ -143,8 +143,8 @@ exports[`BuildFinalTicket component should display the customer field because th
     label="Customer"
     onChange={[Function]}
     options={
-      Array [
-        Object {
+      [
+        {
           "label": <span>
             <i
               className="material-icons mr-2"
@@ -155,7 +155,7 @@ exports[`BuildFinalTicket component should display the customer field because th
           </span>,
           "value": 22,
         },
-        Object {
+        {
           "label": <span>
             <i
               className="material-icons mr-2"
@@ -182,12 +182,12 @@ exports[`BuildFinalTicket component should display the subject field because the
     label="Subject"
     onChange={[Function]}
     options={
-      Array [
-        Object {
+      [
+        {
           "label": "foo",
           "value": "foo",
         },
-        Object {
+        {
           "label": "bar",
           "value": "bar",
         },
@@ -206,7 +206,7 @@ exports[`BuildFinalTicket component should not display any fields because they a
   <p
     className="mt-2 mb=2"
     style={
-      Object {
+      {
         "textAlign": "center",
       }
     }
@@ -224,7 +224,7 @@ exports[`BuildFinalTicket component should not display the assignee field becaus
   <p
     className="mt-2 mb=2"
     style={
-      Object {
+      {
         "textAlign": "center",
       }
     }

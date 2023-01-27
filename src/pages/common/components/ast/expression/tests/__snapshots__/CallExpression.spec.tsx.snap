@@ -2,7 +2,7 @@
 
 exports[`CallExpression component Action call should render 1`] = `
 <Action
-  actions={Object {}}
+  actions={{}}
   depth={0}
   leftsiblings={
     Immutable.List [
@@ -30,7 +30,7 @@ exports[`CallExpression component Action call should render 1`] = `
   }
 >
   <ObjectExpression
-    actions={Object {}}
+    actions={{}}
     className="ActionWidget"
     leftsiblings={
       Immutable.List [
@@ -65,7 +65,7 @@ exports[`CallExpression component test condition should not render delete widget
 <Fragment>
   <Expression
     0="a"
-    actions={Object {}}
+    actions={{}}
     className="IdentifierDropdown"
     leftsiblings={
       Immutable.List [
@@ -94,7 +94,7 @@ exports[`CallExpression component test condition should not render delete widget
     }
   />
   <Expression
-    actions={Object {}}
+    actions={{}}
     className="OperatorDropdown"
     leftsiblings={
       Immutable.List [
@@ -128,9 +128,9 @@ exports[`CallExpression component test condition should not render delete widget
     type="Identifier"
   />
   <Expression
-    actions={Object {}}
+    actions={{}}
     callee={
-      Object {
+      {
         "name": "eq",
         "type": "Identifier",
       }
@@ -170,7 +170,7 @@ exports[`CallExpression component test condition should not render delete widget
 <Fragment>
   <Expression
     0="a"
-    actions={Object {}}
+    actions={{}}
     className="IdentifierDropdown"
     leftsiblings={
       Immutable.List [
@@ -198,7 +198,7 @@ exports[`CallExpression component test condition should not render delete widget
     }
   />
   <Expression
-    actions={Object {}}
+    actions={{}}
     className="OperatorDropdown"
     leftsiblings={
       Immutable.List [
@@ -231,9 +231,9 @@ exports[`CallExpression component test condition should not render delete widget
     type="Identifier"
   />
   <Expression
-    actions={Object {}}
+    actions={{}}
     callee={
-      Object {
+      {
         "name": "eq",
         "type": "Identifier",
       }
@@ -272,7 +272,7 @@ exports[`CallExpression component test condition should not render delete widget
 <Fragment>
   <Expression
     0="a"
-    actions={Object {}}
+    actions={{}}
     className="IdentifierDropdown"
     leftsiblings={
       Immutable.List [
@@ -300,7 +300,7 @@ exports[`CallExpression component test condition should not render delete widget
     }
   />
   <Expression
-    actions={Object {}}
+    actions={{}}
     className="OperatorDropdown"
     leftsiblings={
       Immutable.List [
@@ -333,9 +333,9 @@ exports[`CallExpression component test condition should not render delete widget
     type="Identifier"
   />
   <Expression
-    actions={Object {}}
+    actions={{}}
     callee={
-      Object {
+      {
         "name": "eq",
         "type": "Identifier",
       }
@@ -374,7 +374,7 @@ exports[`CallExpression component test condition should render delete widget bec
 <Fragment>
   <Expression
     0="a"
-    actions={Object {}}
+    actions={{}}
     className="IdentifierDropdown"
     leftsiblings={
       Immutable.List [
@@ -403,7 +403,7 @@ exports[`CallExpression component test condition should render delete widget bec
     }
   />
   <Expression
-    actions={Object {}}
+    actions={{}}
     className="OperatorDropdown"
     leftsiblings={
       Immutable.List [
@@ -437,9 +437,9 @@ exports[`CallExpression component test condition should render delete widget bec
     type="Identifier"
   />
   <Expression
-    actions={Object {}}
+    actions={{}}
     callee={
-      Object {
+      {
         "name": "eq",
         "type": "Identifier",
       }
@@ -473,7 +473,7 @@ exports[`CallExpression component test condition should render delete widget bec
     }
   />
   <DeleteBinaryExpression
-    actions={Object {}}
+    actions={{}}
     parent={
       Immutable.List [
         "body",

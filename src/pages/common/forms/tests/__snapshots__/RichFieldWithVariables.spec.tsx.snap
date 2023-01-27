@@ -144,7 +144,7 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
   <ForwardRef
     onChange={[Function]}
     value={
-      Object {
+      {
         "html": "html",
         "text": "text",
       }

@@ -7,12 +7,11 @@ import * as selectors from '../selectors'
 import {initialState} from '../reducers'
 import {RootState} from '../../types'
 
-jest.addMatchers(immutableMatchers)
-
 describe('customers selectors', () => {
     let state: RootState
 
     beforeEach(() => {
+        expect.extend(immutableMatchers)
         state = {
             customers: initialState.mergeDeep({
                 active: customer,

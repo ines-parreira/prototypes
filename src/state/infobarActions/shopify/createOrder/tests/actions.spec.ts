@@ -371,7 +371,7 @@ describe('infobarActions.shopify.createOrder actions', () => {
                 .reply(error ? 500 : 200, response)
         }
 
-        it('should email invoice', (done) => {
+        it('should email invoice', () => {
             initTest(false)
 
             const promise = store.dispatch(
@@ -388,11 +388,10 @@ describe('infobarActions.shopify.createOrder actions', () => {
                 jest.runAllTimers()
                 await promise
                 expect(getActions()).toMatchSnapshot()
-                done()
             })
         })
 
-        it('should display an error', (done) => {
+        it('should display an error', () => {
             initTest(true)
 
             const promise = store.dispatch(
@@ -409,7 +408,6 @@ describe('infobarActions.shopify.createOrder actions', () => {
                 jest.runAllTimers()
                 await promise
                 expect(getActions()).toMatchSnapshot()
-                done()
             })
         })
     })

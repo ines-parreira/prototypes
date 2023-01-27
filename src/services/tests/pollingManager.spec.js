@@ -18,6 +18,8 @@ describe('services', () => {
             pollingManager.store = store
             window.DISABLE_ACTIVITY_POLLING = 'False'
             spy = jest.fn()
+            jest.spyOn(global, 'setInterval')
+            jest.spyOn(global, 'clearInterval')
         })
 
         afterEach(() => {

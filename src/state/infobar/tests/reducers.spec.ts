@@ -5,9 +5,11 @@ import reducer, {initialState} from '../reducers'
 import * as types from '../constants'
 import * as utils from '../utils'
 
-jest.addMatchers(immutableMatchers)
-
 describe('infobar reducers', () => {
+    beforeEach(() => {
+        expect.extend(immutableMatchers)
+    })
+
     it('initial state', () => {
         expect(reducer(undefined, {type: 'FOO_TYPE'})).toEqualImmutable(
             initialState

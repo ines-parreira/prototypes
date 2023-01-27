@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`user resources createUserSetting should resolve on success 1`] = `
-Object {
-  "config": Object {
-    "data": "{\\"data\\":{\\"1\\":{\\"display_order\\":1,\\"hide\\":false}},\\"type\\":\\"ticket-views\\"}",
-    "headers": Object {
+{
+  "config": {
+    "data": "{"data":{"1":{"display_order":1,"hide":false}},"type":"ticket-views"}",
+    "headers": {
       "Accept": "application/json, text/plain, */*",
       "Content-Type": "application/json;charset=utf-8",
       "X-CSRF-Token": "abcd",
@@ -14,10 +14,10 @@ Object {
     "maxContentLength": -1,
     "method": "post",
     "timeout": 0,
-    "transformRequest": Array [
+    "transformRequest": [
       [Function],
     ],
-    "transformResponse": Array [
+    "transformResponse": [
       [Function],
     ],
     "url": "/api/users/0/settings/",
@@ -25,9 +25,9 @@ Object {
     "xsrfCookieName": "XSRF-TOKEN",
     "xsrfHeaderName": "X-XSRF-TOKEN",
   },
-  "data": Object {
-    "data": Object {
-      "1": Object {
+  "data": {
+    "data": {
+      "1": {
         "display_order": 1,
         "hide": false,
       },
@@ -36,7 +36,7 @@ Object {
     "type": "ticket-views",
   },
   "headers": undefined,
-  "request": Object {
+  "request": {
     "responseUrl": "/api/users/0/settings/",
   },
   "status": 200,
@@ -44,10 +44,10 @@ Object {
 `;
 
 exports[`user resources updateUserSetting should resolve on success 1`] = `
-Object {
-  "config": Object {
-    "data": "{\\"data\\":{\\"1\\":{\\"display_order\\":1,\\"hide\\":false}},\\"id\\":2,\\"type\\":\\"ticket-views\\"}",
-    "headers": Object {
+{
+  "config": {
+    "data": "{"data":{"1":{"display_order":1,"hide":false}},"id":2,"type":"ticket-views"}",
+    "headers": {
       "Accept": "application/json, text/plain, */*",
       "Content-Type": "application/json;charset=utf-8",
       "X-CSRF-Token": "abcd",
@@ -57,10 +57,10 @@ Object {
     "maxContentLength": -1,
     "method": "put",
     "timeout": 0,
-    "transformRequest": Array [
+    "transformRequest": [
       [Function],
     ],
-    "transformResponse": Array [
+    "transformResponse": [
       [Function],
     ],
     "url": "/api/users/0/settings/2/",
@@ -68,9 +68,9 @@ Object {
     "xsrfCookieName": "XSRF-TOKEN",
     "xsrfHeaderName": "X-XSRF-TOKEN",
   },
-  "data": Object {
-    "data": Object {
-      "1": Object {
+  "data": {
+    "data": {
+      "1": {
         "display_order": 1,
         "hide": false,
       },
@@ -79,7 +79,7 @@ Object {
     "type": "ticket-views",
   },
   "headers": undefined,
-  "request": Object {
+  "request": {
     "responseUrl": "/api/users/0/settings/2/",
   },
   "status": 200,
@@ -87,18 +87,18 @@ Object {
 `;
 
 exports[`user resources updateUserSetting should resolve on success 2`] = `
-Object {
-  "delete": Array [],
-  "get": Array [],
-  "head": Array [],
-  "list": Array [],
-  "options": Array [],
-  "patch": Array [],
-  "post": Array [],
-  "put": Array [
-    Object {
-      "data": "{\\"data\\":{\\"1\\":{\\"display_order\\":1,\\"hide\\":false}},\\"id\\":2,\\"type\\":\\"ticket-views\\"}",
-      "headers": Object {
+{
+  "delete": [],
+  "get": [],
+  "head": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [
+    {
+      "data": "{"data":{"1":{"display_order":1,"hide":false}},"id":2,"type":"ticket-views"}",
+      "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
         "X-CSRF-Token": "abcd",
@@ -108,10 +108,10 @@ Object {
       "maxContentLength": -1,
       "method": "put",
       "timeout": 0,
-      "transformRequest": Array [
+      "transformRequest": [
         [Function],
       ],
-      "transformResponse": Array [
+      "transformResponse": [
         [Function],
       ],
       "url": "/api/users/0/settings/2/",

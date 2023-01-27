@@ -4,17 +4,21 @@ import {fireEvent, render, waitFor} from '@testing-library/react'
 import InfiniteScroll from '../InfiniteScroll'
 
 describe('InfiniteScroll component', () => {
-    const originalClientHeight =
-        Object.getOwnPropertyDescriptor(
-            HTMLElement.prototype,
-            'clientHeight'
-        ) || 0
+    const originalClientHeight = Object.getOwnPropertyDescriptor(
+        Element.prototype,
+        'clientHeight'
+    ) || {
+        configurable: true,
+        value: 0,
+    }
 
-    const originalScrollHeight =
-        Object.getOwnPropertyDescriptor(
-            HTMLElement.prototype,
-            'scrollHeight'
-        ) || 0
+    const originalScrollHeight = Object.getOwnPropertyDescriptor(
+        Element.prototype,
+        'scrollHeight'
+    ) || {
+        configurable: true,
+        value: 0,
+    }
 
     beforeAll(() => {
         Object.defineProperty(HTMLElement.prototype, 'clientHeight', {

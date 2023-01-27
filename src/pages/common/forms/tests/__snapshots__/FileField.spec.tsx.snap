@@ -42,7 +42,7 @@ exports[`<FileField/> render() should display a remove button 1`] = `
         disabled={false}
         id="id-input-1"
         innerRef={
-          Object {
+          {
             "current": null,
           }
         }
@@ -93,7 +93,7 @@ exports[`<FileField/> render() should display loading when loading 1`] = `
         disabled={true}
         id="id-input-1"
         innerRef={
-          Object {
+          {
             "current": null,
           }
         }
@@ -131,7 +131,7 @@ exports[`<FileField/> render() should not render preview 1`] = `
         disabled={false}
         id="id-input-1"
         innerRef={
-          Object {
+          {
             "current": null,
           }
         }
@@ -178,7 +178,7 @@ exports[`<FileField/> render() should render a basic file input 1`] = `
         disabled={false}
         id="id-input-1"
         innerRef={
-          Object {
+          {
             "current": null,
           }
         }
@@ -224,7 +224,7 @@ exports[`<FileField/> render() should render preview 1`] = `
         disabled={false}
         id="id-input-1"
         innerRef={
-          Object {
+          {
             "current": null,
           }
         }

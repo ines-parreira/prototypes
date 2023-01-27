@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TicketsClosedPerAgentViewLink should log the event on click 1`] = `
-Array [
-  Array [
+[
+  [
     "stat-view-link-clicked",
-    Object {
+    {
       "stat": "tickets-closed-per-agent-total",
     },
   ],

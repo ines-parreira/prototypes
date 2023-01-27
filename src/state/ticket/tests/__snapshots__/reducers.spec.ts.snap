@@ -1,32 +1,32 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ticket reducers action ADD_TICKET_AUDIT_LOG_EVENTS should add new received event, and update existing one 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [
-    Object {
+  "events": [
+    {
       "context": "foo",
       "created_datetime": "2019-11-15 19:00:00.000000",
-      "data": Object {
+      "data": {
         "foo": "bar",
       },
       "id": 1,
@@ -36,7 +36,7 @@ Object {
       "uri": "/api/events/3265847/",
       "user_id": 1,
     },
-    Object {
+    {
       "context": "foo",
       "created_datetime": "2019-11-15 19:00:00.000000",
       "data": null,
@@ -49,54 +49,54 @@ Object {
     },
   ],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers action ADD_TICKET_AUDIT_LOG_EVENTS should add received event when it is not in the store yet 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [
-    Object {
+  "events": [
+    {
       "context": "foo",
       "created_datetime": "2019-11-15 19:00:00.000000",
       "data": null,
@@ -109,105 +109,105 @@ Object {
     },
   ],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers action ADD_TICKET_AUDIT_LOG_EVENTS should not add received event when it is a phone event 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers action ADD_TICKET_AUDIT_LOG_EVENTS should update stored event when received event already exists in the store 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [
-    Object {
+  "events": [
+    {
       "context": "foo",
       "created_datetime": "2019-11-15 19:00:00.000000",
-      "data": Object {
+      "data": {
         "foo": "bar",
       },
       "id": 1,
@@ -219,54 +219,54 @@ Object {
     },
   ],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers action REMOVE_TICKET_AUDIT_LOG_EVENTS should remove audit log events 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [
-    Object {
+  "events": [
+    {
       "account_id": 1,
       "context": "foo",
       "created_datetime": "2019-11-15 19:00:00.000000",
@@ -279,69 +279,69 @@ Object {
     },
   ],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers action SEND_INTENT_FEEDBACK_SUCCESS should update the intents with the new ones 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [
-    Object {
+  "messages": [
+    {
       "id": 1,
-      "intents": Array [
-        Object {
+      "intents": [
+        {
           "is_user_feedback": false,
           "name": "return/request",
           "rejected": false,
         },
-        Object {
+        {
           "is_user_feedback": false,
           "name": "return/status",
           "rejected": true,
         },
-        Object {
+        {
           "is_user_feedback": false,
           "name": "shipping/change",
           "rejected": true,
@@ -350,449 +350,449 @@ Object {
     },
   ],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers action TICKET_MESSAGE_DELETED should remove message 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers handle MERGE_CUSTOMER should do nothing since there is no customer in state for now 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers handle MERGE_CUSTOMER should update customer and no change to the external_data as there is no old external_data 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
-  "customer": Object {
+  "custom_fields": {},
+  "customer": {
     "id": 1,
     "name": "Alex",
   },
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers handle MERGE_CUSTOMER should update customer and the external_data 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
-  "customer": Object {
-    "external_data": Object {
-      "my-awesome-app-id-1": Object {
+  "custom_fields": {},
+  "customer": {
+    "external_data": {
+      "my-awesome-app-id-1": {
         "badge": "WORST customer",
       },
-      "my-awesome-app-id-2": Object {
+      "my-awesome-app-id-2": {
         "points": 500,
       },
     },
     "id": 1,
     "name": "Alex",
   },
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers handle MERGE_CUSTOMER should update customer keeping the old external_data 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
-  "customer": Object {
-    "external_data": Object {
-      "my-awesome-app-id-1": Object {
+  "custom_fields": {},
+  "customer": {
+    "external_data": {
+      "my-awesome-app-id-1": {
         "badge": "Best customer",
       },
     },
     "id": 1,
     "name": "Alex",
   },
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers handle MERGE_CUSTOMER_EXTERNAL_DATA should do nothing since there is no customer in state 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers handle MERGE_CUSTOMER_EXTERNAL_DATA should update the external_data of the customer 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
-  "customer": Object {
-    "external_data": Object {
-      "my-awesome-app-id-1": Object {
+  "custom_fields": {},
+  "customer": {
+    "external_data": {
+      "my-awesome-app-id-1": {
         "badge": "WORST customer",
       },
-      "my-awesome-app-id-2": Object {
+      "my-awesome-app-id-2": {
         "points": 500,
       },
     },
     "id": 1,
     "name": "Romain",
   },
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers handle MERGE_TICKET should keep audit log events 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
-  "customer": Object {
-    "data": Object {
+  "custom_fields": {},
+  "customer": {
+    "data": {
       "hello": "world!",
     },
     "id": 1,
   },
-  "events": Array [
-    Object {
+  "events": [
+    {
       "object_id": 1,
       "type": "ticket-created",
     },
-    Object {
+    {
       "object_id": 1,
       "type": "ticket-closed",
     },
-    Object {
+    {
       "object_id": 1,
       "type": "ticket-reopened",
     },
   ],
   "id": 1,
   "is_unread": false,
-  "messages": Array [
-    Object {
+  "messages": [
+    {
       "body_html": "<div>hi</div>",
       "body_text": "hi",
       "channel": "email",
       "created_datetime": "2017-07-28T22:00:00",
       "id": 1,
     },
-    Object {
+    {
       "body_html": "<div>hello</div>",
       "body_text": "hello",
       "channel": "email",
@@ -801,72 +801,72 @@ Object {
     },
   ],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "title",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers handle MERGE_TICKET should keep old ticket.customer.external_data 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
-  "customer": Object {
-    "data": Object {
+  "custom_fields": {},
+  "customer": {
+    "data": {
       "hello": "world!",
     },
-    "external_data": Object {
-      "my-awesome-app-id-1": Object {
+    "external_data": {
+      "my-awesome-app-id-1": {
         "badge": "Best customer",
       },
     },
     "id": 1,
   },
-  "events": Array [],
+  "events": [],
   "id": 1,
   "is_unread": false,
-  "messages": Array [
-    Object {
+  "messages": [
+    {
       "body_html": "<div>hi</div>",
       "body_text": "hi",
       "channel": "email",
       "created_datetime": "2017-07-28T22:00:00",
       "id": 1,
     },
-    Object {
+    {
       "body_html": "<div>hello</div>",
       "body_text": "hello",
       "channel": "email",
@@ -875,67 +875,67 @@ Object {
     },
   ],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "title",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers handle MERGE_TICKET should merge ticket and order messages 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
-  "customer": Object {
-    "data": Object {
+  "custom_fields": {},
+  "customer": {
+    "data": {
       "hello": "world!",
     },
     "id": 1,
   },
-  "events": Array [],
+  "events": [],
   "id": 1,
   "is_unread": false,
-  "messages": Array [
-    Object {
+  "messages": [
+    {
       "body_html": "<div>hi</div>",
       "body_text": "hi",
       "channel": "email",
       "created_datetime": "2017-07-28T22:00:00",
       "id": 1,
     },
-    Object {
+    {
       "body_html": "<div>hello</div>",
       "body_text": "hello",
       "channel": "email",
@@ -944,67 +944,67 @@ Object {
     },
   ],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "title",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers handle MERGE_TICKET should remove pending message 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
-  "customer": Object {
-    "data": Object {
+  "custom_fields": {},
+  "customer": {
+    "data": {
       "hello": "world!",
     },
     "id": 1,
   },
-  "events": Array [],
+  "events": [],
   "id": 1,
   "is_unread": false,
-  "messages": Array [
-    Object {
+  "messages": [
+    {
       "body_html": "<div>hi</div>",
       "body_text": "hi",
       "channel": "email",
       "created_datetime": "2017-07-28T22:00:00",
       "id": 1,
     },
-    Object {
+    {
       "body_html": "<div>hello</div>",
       "body_text": "hello",
       "channel": "email",
@@ -1013,75 +1013,75 @@ Object {
     },
   ],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "title",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers handle MERGE_TICKET should update ticket.customer.external_data 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
-  "customer": Object {
-    "data": Object {
+  "custom_fields": {},
+  "customer": {
+    "data": {
       "hello": "world!",
     },
-    "external_data": Object {
-      "my-awesome-app-id-1": Object {
+    "external_data": {
+      "my-awesome-app-id-1": {
         "badge": "WORST customer",
       },
-      "my-awesome-app-id-2": Object {
+      "my-awesome-app-id-2": {
         "points": 500,
       },
     },
     "id": 1,
   },
-  "events": Array [],
+  "events": [],
   "id": 1,
   "is_unread": false,
-  "messages": Array [
-    Object {
+  "messages": [
+    {
       "body_html": "<div>hi</div>",
       "body_text": "hi",
       "channel": "email",
       "created_datetime": "2017-07-28T22:00:00",
       "id": 1,
     },
-    Object {
+    {
       "body_html": "<div>hello</div>",
       "body_text": "hello",
       "channel": "email",
@@ -1090,75 +1090,75 @@ Object {
     },
   ],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "title",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle ADD_TICKET_TAGS 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [
-    Object {
+  "tags": [
+    {
       "name": "billing",
     },
-    Object {
+    {
       "name": "refund",
     },
   ],
@@ -1168,52 +1168,52 @@ Object {
 `;
 
 exports[`ticket reducers should handle ADD_TICKET_TAGS 2`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [
-    Object {
+  "tags": [
+    {
       "name": "billing",
     },
-    Object {
+    {
       "name": "refund",
     },
   ],
@@ -1223,49 +1223,49 @@ Object {
 `;
 
 exports[`ticket reducers should handle ADD_TICKET_TAGS 3`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [
-    Object {
+  "tags": [
+    {
       "name": "billing",
     },
   ],
@@ -1275,42 +1275,42 @@ Object {
 `;
 
 exports[`ticket reducers should handle APPLY_MACRO 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
-    "appliedMacro": Object {
+  "state": {
+    "appliedMacro": {
       "id": 1,
     },
     "dirty": false,
@@ -1318,49 +1318,49 @@ Object {
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle APPLY_MACRO 2`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
-    "appliedMacro": Object {
+  "state": {
+    "appliedMacro": {
       "id": 2,
     },
     "dirty": false,
@@ -1368,148 +1368,148 @@ Object {
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle CLEAR_APPLIED_MACRO 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle CLEAR_TICKET 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle DELETE_ACTION_ON_APPLIED 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
-    "appliedMacro": Object {
-      "actions": Object {
-        "1": Object {
-          "arguments": Object {
+  "state": {
+    "appliedMacro": {
+      "actions": {
+        "1": {
+          "arguments": {
             "foo": "bar",
           },
         },
@@ -1521,80 +1521,80 @@ Object {
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle DELETE_TICKET_MESSAGE_SUCCESS 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [
-    Object {
+  "messages": [
+    {
       "id": 1,
     },
   ],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle DELETE_TICKET_PENDING_MESSAGE 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [
-      Object {
-        "_internal": Object {
+    "pendingMessages": [
+      {
+        "_internal": {
           "id": 2,
         },
         "body_html": "<div>hello</div>",
@@ -1608,210 +1608,210 @@ Object {
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle DISPLAY_HISTORY_ON_NEXT_PAGE 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": true,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle DISPLAY_HISTORY_ON_NEXT_PAGE 2`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle FETCH_TICKET_START 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": true,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle FETCH_TICKET_START 2`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
-  "customer": Object {
-    "data": Object {
+  "custom_fields": {},
+  "customer": {
+    "data": {
       "hello": "world!",
     },
     "id": 1,
   },
-  "events": Array [],
+  "events": [],
   "id": 1,
   "is_unread": false,
-  "messages": Array [
-    Object {
+  "messages": [
+    {
       "body_html": "<div>hello</div>",
       "body_text": "hello",
       "channel": "email",
@@ -1819,287 +1819,287 @@ Object {
     },
   ],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "title",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle FETCH_TICKET_START 3`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle MARK_TICKET_DIRTY 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": true,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle MARK_TICKET_DIRTY 2`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle MERGE_CUSTOMERS_SUCCESS 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle MERGE_CUSTOMERS_SUCCESS 2`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
-  "customer": Object {
+  "custom_fields": {},
+  "customer": {
     "id": 1,
     "name": "Alex",
   },
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START and NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [
-      Object {
-        "_internal": Object {
+    "pendingMessages": [
+      {
+        "_internal": {
           "id": "123",
           "status": "open",
         },
@@ -2107,28 +2107,28 @@ Object {
         "body_text": "hello",
         "channel": "email",
         "created_datetime": "2017-01-01T00:00:00.000Z",
-        "originalMessage": Object {
+        "originalMessage": {
           "body_html": "<div>hello</div>",
           "body_text": "hello",
           "channel": "email",
-          "source": Object {
-            "bcc": Array [],
-            "cc": Array [],
-            "from": Object {},
-            "to": Array [
-              Object {
+          "source": {
+            "bcc": [],
+            "cc": [],
+            "from": {},
+            "to": [
+              {
                 "address": "alex@gorgias.io",
               },
             ],
             "type": "email",
           },
         },
-        "source": Object {
-          "bcc": Array [],
-          "cc": Array [],
-          "from": Object {},
-          "to": Array [
-            Object {
+        "source": {
+          "bcc": [],
+          "cc": [],
+          "from": {},
+          "to": [
+            {
               "address": "alex@gorgias.io",
             },
           ],
@@ -2142,50 +2142,50 @@ Object {
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START and NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR 2`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [
-      Object {
-        "_internal": Object {
+    "pendingMessages": [
+      {
+        "_internal": {
           "id": 1,
           "status": "open",
         },
@@ -2194,28 +2194,28 @@ Object {
         "channel": "email",
         "created_datetime": "2017-07-29T22:00:00",
         "failed_datetime": "2017-01-01T00:00:00.000Z",
-        "originalMessage": Object {
+        "originalMessage": {
           "body_html": "<div>hello</div>",
           "body_text": "hello",
           "channel": "email",
-          "source": Object {
-            "bcc": Array [],
-            "cc": Array [],
-            "from": Object {},
-            "to": Array [
-              Object {
+          "source": {
+            "bcc": [],
+            "cc": [],
+            "from": {},
+            "to": [
+              {
                 "address": "alex@gorgias.io",
               },
             ],
             "type": "email",
           },
         },
-        "source": Object {
-          "bcc": Array [],
-          "cc": Array [],
-          "from": Object {},
-          "to": Array [
-            Object {
+        "source": {
+          "bcc": [],
+          "cc": [],
+          "from": {},
+          "to": [
+            {
               "address": "alex@gorgias.io",
             },
           ],
@@ -2229,50 +2229,50 @@ Object {
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START and NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR 3`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [
-      Object {
-        "_internal": Object {
+    "pendingMessages": [
+      {
+        "_internal": {
           "id": 1,
           "status": "open",
         },
@@ -2280,28 +2280,28 @@ Object {
         "body_text": "hello",
         "channel": "email",
         "created_datetime": "2017-07-29T22:00:00",
-        "originalMessage": Object {
+        "originalMessage": {
           "body_html": "<div>hello</div>",
           "body_text": "hello",
           "channel": "email",
-          "source": Object {
-            "bcc": Array [],
-            "cc": Array [],
-            "from": Object {},
-            "to": Array [
-              Object {
+          "source": {
+            "bcc": [],
+            "cc": [],
+            "from": {},
+            "to": [
+              {
                 "address": "alex@gorgias.io",
               },
             ],
             "type": "email",
           },
         },
-        "source": Object {
-          "bcc": Array [],
-          "cc": Array [],
-          "from": Object {},
-          "to": Array [
-            Object {
+        "source": {
+          "bcc": [],
+          "cc": [],
+          "from": {},
+          "to": [
+            {
               "address": "alex@gorgias.io",
             },
           ],
@@ -2315,180 +2315,180 @@ Object {
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle NEW_MESSAGE_SUBMIT_TICKET_SUCCESS 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "id": 12,
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "title",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle REMOVE_TICKET_MESSAGE_REQUEST 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [
-    Object {
+  "messages": [
+    {
       "id": 1,
       "request_id": null,
     },
   ],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle REMOVE_TICKET_TAG 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [
-    Object {
+  "tags": [
+    {
       "name": "refund",
     },
   ],
@@ -2498,49 +2498,49 @@ Object {
 `;
 
 exports[`ticket reducers should handle REMOVE_TICKET_TAG 2`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [
-    Object {
+  "tags": [
+    {
       "name": "billing",
     },
   ],
@@ -2550,875 +2550,875 @@ Object {
 `;
 
 exports[`ticket reducers should handle SET_AGENT 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
-  "assignee_user": Object {
+  "assignee_user": {
     "id": 1,
   },
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle SET_AGENT 2`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle SET_CUSTOMER 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
-  "customer": Object {
-    "data": Object {
+  "custom_fields": {},
+  "customer": {
+    "data": {
       "hello": "world!",
     },
     "id": 1,
   },
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle SET_SPAM_START 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": true,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": true,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle SET_SPAM_START 2`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle SET_SPAM_SUCCESS 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle SET_STATUS 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "closed",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle SET_SUBJECT 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "another title",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle SET_TEAM 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
-  "assignee_team": Object {
+  "assignee_team": {
     "id": 1,
   },
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle SET_TEAM 2`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle SET_TICKET_MESSAGE_REQUEST 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [
-    Object {
+  "messages": [
+    {
       "id": 1,
       "request_id": 2,
     },
   ],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle SET_TYPING_ACTIVITY_SHOPPER 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle SET_TYPING_ACTIVITY_SHOPPER 2`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": true,
     "isShopperTypingTimeoutId": 100,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle SET_TYPING_ACTIVITY_SHOPPER 3`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle TOGGLE_HISTORY 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": true,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle TOGGLE_HISTORY 2`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle TOGGLE_HISTORY 3`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": true,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle UPDATE_ACTION_ARGS_ON_APPLIED 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
-    "appliedMacro": Object {
-      "actions": Object {
-        "0": Object {
-          "arguments": Object {
+  "state": {
+    "appliedMacro": {
+      "actions": {
+        "0": {
+          "arguments": {
             "hello": "world",
           },
         },
@@ -3430,73 +3430,73 @@ Object {
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle UPDATE_TICKET_MESSAGE_START 1`] = `
-Object {
-  "_internal": Object {
+{
+  "_internal": {
     "displayHistory": false,
     "isPartialUpdating": false,
     "isShopperTyping": false,
     "isShopperTypingTimeoutId": undefined,
-    "loading": Object {
+    "loading": {
       "deleteMessage": false,
       "fetchTicket": false,
       "setSpam": false,
       "setTrash": false,
     },
-    "pendingMessages": Array [],
+    "pendingMessages": [],
     "shouldDisplayAuditLogEvents": false,
     "shouldDisplayHistoryOnNextPage": false,
   },
   "assignee_team": null,
   "assignee_user": null,
   "channel": "email",
-  "custom_fields": Object {},
+  "custom_fields": {},
   "customer": null,
-  "events": Array [],
+  "events": [],
   "is_unread": false,
-  "messages": Array [],
+  "messages": [],
   "priority": "normal",
-  "reply_options": Object {
-    "email": Object {
+  "reply_options": {
+    "email": {
       "answerable": true,
     },
-    "internal-note": Object {
+    "internal-note": {
       "answerable": true,
     },
   },
   "spam": false,
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "dirty": false,
     "latestEventDatetime": null,
   },
   "status": "open",
   "subject": "",
-  "tags": Array [],
+  "tags": [],
   "trashed_datetime": null,
   "via": "helpdesk",
 }
 `;
 
 exports[`ticket reducers should handle same actions stacking 1`] = `
-Object {
-  "actions": Array [
-    Object {
-      "arguments": Object {
+{
+  "actions": [
+    {
+      "arguments": {
         "status": "closed",
       },
       "name": "setStatus",
       "title": "Set status",
       "type": "user",
     },
-    Object {
-      "arguments": Object {
+    {
+      "arguments": {
         "subject": "Test Verb",
       },
       "name": "setSubject",

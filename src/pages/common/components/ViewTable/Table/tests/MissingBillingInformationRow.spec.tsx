@@ -136,7 +136,7 @@ describe('<MissingBillingInformationRow />', () => {
         fireEvent.change(getByPlaceholderText('New York'), {
             target: {value: 'Paris'},
         })
-        fireEvent.click(getByText('Update Address'))
+        fireEvent.submit(getByText('Update Address'))
         expect(billingActions.updateContact).toHaveBeenCalledWith(
             (initialState.billing.get('contact') as Map<any, any>).setIn(
                 ['shipping', 'address', 'city'],

@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`infobarActions.shopify.editOrder actions onLineItemChange() should edit the payload with the first product quantity set to 6 1`] = `
-Array [
-  Object {
+[
+  {
     "loading": true,
     "message": "Calculating edit order...",
     "type": "infobarActions/shopify/editOrder/SET_LOADING",
   },
-  Object {
+  {
     "calculatedEditOrder": Immutable.Map {
       "calculatedOrderId": "123456789",
       "total_line_items_price": "140.0",
@@ -19,7 +19,7 @@ Array [
     },
     "type": "infobarActions/shopify/editOrder/SET_CALCULATED_EDIT_ORDER",
   },
-  Object {
+  {
     "payload": Immutable.Map {
       "shipping_address": Immutable.Map {
         "zip": null,
@@ -151,7 +151,7 @@ Array [
     },
     "type": "infobarActions/shopify/editOrder/SET_PAYLOAD",
   },
-  Object {
+  {
     "loading": false,
     "message": null,
     "type": "infobarActions/shopify/editOrder/SET_LOADING",
@@ -160,13 +160,13 @@ Array [
 `;
 
 exports[`infobarActions.shopify.editOrder actions onLineItemChange() should edit the payload with the removed product line 1`] = `
-Array [
-  Object {
+[
+  {
     "loading": true,
     "message": "Calculating edit order...",
     "type": "infobarActions/shopify/editOrder/SET_LOADING",
   },
-  Object {
+  {
     "calculatedEditOrder": Immutable.Map {
       "calculatedOrderId": "123456789",
       "total_line_items_price": "140.0",
@@ -178,7 +178,7 @@ Array [
     },
     "type": "infobarActions/shopify/editOrder/SET_CALCULATED_EDIT_ORDER",
   },
-  Object {
+  {
     "payload": Immutable.Map {
       "shipping_address": Immutable.Map {
         "zip": null,
@@ -248,7 +248,7 @@ Array [
     },
     "type": "infobarActions/shopify/editOrder/SET_PAYLOAD",
   },
-  Object {
+  {
     "loading": false,
     "message": null,
     "type": "infobarActions/shopify/editOrder/SET_LOADING",

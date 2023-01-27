@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`datadog initDatadogLogger should init datadog logger 1`] = `
-Array [
-  Array [
-    Object {
+[
+  [
+    {
       "clientToken": "pubc9857173f4901f3b10fc39dfcde707c6",
       "env": "helpdesk-web-client-production",
       "forwardErrorsToLogs": true,
@@ -17,13 +17,13 @@ Array [
 `;
 
 exports[`datadog initDatadogLogger should init datadog logger 2`] = `
-Array [
-  Array [
-    Object {
-      "account": Object {
+[
+  [
+    {
+      "account": {
         "domain": "acme",
       },
-      "user": Object {
+      "user": {
         "email": "alex@gorgias.io",
         "id": 2,
       },
@@ -33,9 +33,9 @@ Array [
 `;
 
 exports[`datadog initDatadogRum should init datadog rum 1`] = `
-Array [
-  Array [
-    Object {
+[
+  [
+    {
       "applicationId": "a9fcd4e9-2ebd-47e7-92c2-9438dd12c9df",
       "clientToken": "pube64f1e4ec3c5172711f0a2d03cb1a0ff",
       "sampleRate": 1,
@@ -51,10 +51,10 @@ Array [
 `;
 
 exports[`datadog initDatadogRum should report INP 1`] = `
-Array [
-  Array [
+[
+  [
     "customWebVital",
-    Object {
+    {
       "inp": 123,
     },
   ],

@@ -58,12 +58,12 @@ describe('<Collapse />', () => {
         const {rerender} = render(<Collapse isOpen={false}>FooBar</Collapse>)
         rerender(<Collapse isOpen>FooBar</Collapse>)
         expect(screen.getByText('FooBar')).toHaveClass('isCollapsing')
-        jest.runTimersToTime(350)
+        jest.advanceTimersByTime(350)
         expect(screen.getByText('FooBar')).not.toHaveClass('isCollapsed')
 
         rerender(<Collapse isOpen={false}>FooBar</Collapse>)
         expect(screen.getByText('FooBar')).toHaveClass('isCollapsing')
-        jest.runTimersToTime(350)
+        jest.advanceTimersByTime(350)
         expect(screen.getByText('FooBar')).toHaveClass('isCollapsed')
     })
 
@@ -84,7 +84,7 @@ describe('<Collapse />', () => {
                 </Collapse>
             )
             expect(screen.getByText('FooBar').style[prop]).toBe('0px')
-            jest.runTimersToTime(350)
+            jest.advanceTimersByTime(350)
             expect(screen.getByText('FooBar').style[prop]).toBe('')
         }
     )

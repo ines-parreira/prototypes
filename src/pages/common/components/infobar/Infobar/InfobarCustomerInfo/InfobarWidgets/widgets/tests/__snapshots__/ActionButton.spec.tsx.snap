@@ -29,14 +29,14 @@ exports[`ActionButton component should display a single option with a checkbox p
     placementPrefix="bs-popover"
     target="action-button-4"
     tether={
-      Object {
-        "constraints": Array [
-          Object {
+      {
+        "constraints": [
+          {
             "attachment": "together none",
             "pin": true,
             "to": "scrollParent",
           },
-          Object {
+          {
             "attachment": "together none",
             "pin": true,
             "to": "window",
@@ -121,14 +121,14 @@ exports[`ActionButton component should display a single option with a number par
     placementPrefix="bs-popover"
     target="action-button-3"
     tether={
-      Object {
-        "constraints": Array [
-          Object {
+      {
+        "constraints": [
+          {
             "attachment": "together none",
             "pin": true,
             "to": "scrollParent",
           },
-          Object {
+          {
             "attachment": "together none",
             "pin": true,
             "to": "window",
@@ -217,14 +217,14 @@ exports[`ActionButton component should display a single option with a select par
     placementPrefix="bs-popover"
     target="action-button-5"
     tether={
-      Object {
-        "constraints": Array [
-          Object {
+      {
+        "constraints": [
+          {
             "attachment": "together none",
             "pin": true,
             "to": "scrollParent",
           },
-          Object {
+          {
             "attachment": "together none",
             "pin": true,
             "to": "window",
@@ -271,12 +271,12 @@ exports[`ActionButton component should display a single option with a select par
           onChange={[Function]}
           onSearchChange={[Function]}
           options={
-            Array [
-              Object {
+            [
+              {
                 "label": "Foo",
                 "value": "foo",
               },
-              Object {
+              {
                 "label": "Bar",
                 "value": "bar",
               },
@@ -285,7 +285,7 @@ exports[`ActionButton component should display a single option with a select par
           placeholder="Select an option"
           required={false}
           singular="option"
-          style={Object {}}
+          style={{}}
           type="select"
           value={true}
         />
@@ -330,14 +330,14 @@ exports[`ActionButton component should display a single option with a text param
     placementPrefix="bs-popover"
     target="action-button-2"
     tether={
-      Object {
-        "constraints": Array [
-          Object {
+      {
+        "constraints": [
+          {
             "attachment": "together none",
             "pin": true,
             "to": "scrollParent",
           },
-          Object {
+          {
             "attachment": "together none",
             "pin": true,
             "to": "window",
@@ -423,14 +423,14 @@ exports[`ActionButton component should display a single option with no parameter
     placementPrefix="bs-popover"
     target="action-button-1"
     tether={
-      Object {
-        "constraints": Array [
-          Object {
+      {
+        "constraints": [
+          {
             "attachment": "together none",
             "pin": true,
             "to": "scrollParent",
           },
-          Object {
+          {
             "attachment": "together none",
             "pin": true,
             "to": "window",
@@ -506,14 +506,14 @@ exports[`ActionButton component should display multiple options with a common pa
     placementPrefix="bs-popover"
     target="action-button-7"
     tether={
-      Object {
-        "constraints": Array [
-          Object {
+      {
+        "constraints": [
+          {
             "attachment": "together none",
             "pin": true,
             "to": "scrollParent",
           },
-          Object {
+          {
             "attachment": "together none",
             "pin": true,
             "to": "window",
@@ -552,7 +552,7 @@ exports[`ActionButton component should display multiple options with a common pa
           key="label"
           tag="label"
           widths={
-            Array [
+            [
               "xs",
               "sm",
               "md",
@@ -572,12 +572,12 @@ exports[`ActionButton component should display multiple options with a common pa
           onChange={[Function]}
           onSearchChange={[Function]}
           options={
-            Array [
-              Object {
+            [
+              {
                 "label": "My little action",
                 "value": "myLittleAction",
               },
-              Object {
+              {
                 "label": "My big action",
                 "value": "myBigAction",
               },
@@ -587,7 +587,7 @@ exports[`ActionButton component should display multiple options with a common pa
           required={false}
           singular="option"
           style={
-            Object {
+            {
               "marginBottom": "1rem",
             }
           }
@@ -644,14 +644,14 @@ exports[`ActionButton component should display multiple options with different p
     placementPrefix="bs-popover"
     target="action-button-8"
     tether={
-      Object {
-        "constraints": Array [
-          Object {
+      {
+        "constraints": [
+          {
             "attachment": "together none",
             "pin": true,
             "to": "scrollParent",
           },
-          Object {
+          {
             "attachment": "together none",
             "pin": true,
             "to": "window",
@@ -690,7 +690,7 @@ exports[`ActionButton component should display multiple options with different p
           key="label"
           tag="label"
           widths={
-            Array [
+            [
               "xs",
               "sm",
               "md",
@@ -710,12 +710,12 @@ exports[`ActionButton component should display multiple options with different p
           onChange={[Function]}
           onSearchChange={[Function]}
           options={
-            Array [
-              Object {
+            [
+              {
                 "label": "My little action",
                 "value": "myLittleAction",
               },
-              Object {
+              {
                 "label": "My big action",
                 "value": "myBigAction",
               },
@@ -725,7 +725,7 @@ exports[`ActionButton component should display multiple options with different p
           required={false}
           singular="option"
           style={
-            Object {
+            {
               "marginBottom": "1rem",
             }
           }
@@ -782,14 +782,14 @@ exports[`ActionButton component should display multiple options without paramete
     placementPrefix="bs-popover"
     target="action-button-6"
     tether={
-      Object {
-        "constraints": Array [
-          Object {
+      {
+        "constraints": [
+          {
             "attachment": "together none",
             "pin": true,
             "to": "scrollParent",
           },
-          Object {
+          {
             "attachment": "together none",
             "pin": true,
             "to": "window",
@@ -828,7 +828,7 @@ exports[`ActionButton component should display multiple options without paramete
           key="label"
           tag="label"
           widths={
-            Array [
+            [
               "xs",
               "sm",
               "md",
@@ -848,12 +848,12 @@ exports[`ActionButton component should display multiple options without paramete
           onChange={[Function]}
           onSearchChange={[Function]}
           options={
-            Array [
-              Object {
+            [
+              {
                 "label": "My little action",
                 "value": "myLittleAction",
               },
-              Object {
+              {
                 "label": "My big action",
                 "value": "myBigAction",
               },
@@ -863,7 +863,7 @@ exports[`ActionButton component should display multiple options without paramete
           required={false}
           singular="option"
           style={
-            Object {
+            {
               "marginBottom": "1rem",
             }
           }

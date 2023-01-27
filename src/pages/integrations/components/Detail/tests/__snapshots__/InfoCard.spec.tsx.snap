@@ -17,9 +17,9 @@ exports[`InfoCard should add a domain query param to connectUrl if an App 1`] = 
 `;
 
 exports[`InfoCard should have a failed disconnection flow 1`] = `
-Array [
-  Array [
-    Object {
+[
+  [
+    {
       "message": "Sorry, something went wrong. My test app is still connected.",
       "status": "error",
     },
@@ -28,9 +28,9 @@ Array [
 `;
 
 exports[`InfoCard should have a functionnal disconnect flow 1`] = `
-Array [
-  Array [
-    Object {
+[
+  [
+    {
       "message": "My test app has been disconnected.",
       "status": "success",
     },

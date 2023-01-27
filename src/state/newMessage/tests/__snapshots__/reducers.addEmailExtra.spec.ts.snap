@@ -1,16 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`new message reducer NEW_MESSAGE_ADD_EMAIL_EXTRA action should add email extra content 1`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {
+{
+  "_internal": {
+    "loading": {
       "addAttachment": false,
       "submitMessage": false,
     },
   },
-  "newMessage": Object {
-    "attachments": Array [],
-    "body_html": "<div>Hello</div><div><br></div><div>Foo <strong>signature</strong></div><div><br></div><div>On Mon, Jul 31, 2017, at 11:07 PM, Acme Support &lt;<a href=\\"mailto:support@acme.gorgias.io\\" target=\\"_blank\\">support@acme.gorgias.io</a>&gt; wrote:</div><blockquote class=\\"gorgias_quote\\" style=\\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex;overflow:auto\\"><div data-gorgias-quote-depth=\\"1\\">Hi! How are <strong>you</strong>?</div></blockquote>",
+  "newMessage": {
+    "attachments": [],
+    "body_html": "<div>Hello</div><div><br></div><div>Foo <strong>signature</strong></div><div><br></div><div>On Mon, Jul 31, 2017, at 11:07 PM, Acme Support &lt;<a href="mailto:support@acme.gorgias.io" target="_blank">support@acme.gorgias.io</a>&gt; wrote:</div><blockquote class="gorgias_quote" style="margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex;overflow:auto"><div data-gorgias-quote-depth="1">Hi! How are <strong>you</strong>?</div></blockquote>",
     "body_text": "Hello
 
 Foo signature
@@ -19,18 +19,18 @@ On Mon, Jul 31, 2017, at 11:07 PM, Acme Support <support@acme.gorgias.io> wrote:
 Hi! How are you?",
     "channel": "email",
     "from_agent": true,
-    "macros": Array [],
-    "mention_ids": Array [],
+    "macros": [],
+    "mention_ids": [],
     "public": true,
     "sender": null,
-    "source": Object {
-      "bcc": Array [],
-      "cc": Array [],
-      "extra": Object {
+    "source": {
+      "bcc": [],
+      "cc": [],
+      "extra": {
         "include_thread": false,
       },
-      "from": Object {},
-      "to": Array [],
+      "from": {},
+      "to": [],
       "type": "email",
     },
     "stripped_html": "<div>Hello</div>",
@@ -38,18 +38,18 @@ Hi! How are you?",
     "subject": "",
     "via": "helpdesk",
   },
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "cacheAdded": false,
-    "contentState": Array [
-      Object {
-        "data": Object {},
+    "contentState": [
+      {
+        "data": {},
         "depth": 0,
         "text": "Hello",
         "type": "unstyled",
       },
-      Object {
-        "data": Object {
+      {
+        "data": {
           "emailExtra": true,
           "signature": true,
         },
@@ -57,8 +57,8 @@ Hi! How are you?",
         "text": "",
         "type": "unstyled",
       },
-      Object {
-        "data": Object {
+      {
+        "data": {
           "emailExtra": true,
           "signature": true,
         },
@@ -66,8 +66,8 @@ Hi! How are you?",
         "text": "Foo signature",
         "type": "unstyled",
       },
-      Object {
-        "data": Object {
+      {
+        "data": {
           "emailExtra": true,
           "replyThread": true,
         },
@@ -75,8 +75,8 @@ Hi! How are you?",
         "text": "",
         "type": "unstyled",
       },
-      Object {
-        "data": Object {
+      {
+        "data": {
           "emailExtra": true,
           "replyThread": true,
         },
@@ -84,8 +84,8 @@ Hi! How are you?",
         "text": "On Mon, Jul 31, 2017, at 11:07 PM, Acme Support <support@acme.gorgias.io> wrote:",
         "type": "unstyled",
       },
-      Object {
-        "data": Object {
+      {
+        "data": {
           "emailExtra": true,
           "quoteDepth": 1,
           "replyThread": true,
@@ -106,42 +106,42 @@ Hi! How are you?",
 `;
 
 exports[`new message reducer NEW_MESSAGE_ADD_EMAIL_EXTRA action should not add the email extra content if it is already added 1`] = `
-Object {
-  "_internal": Object {
-    "loading": Object {
+{
+  "_internal": {
+    "loading": {
       "addAttachment": false,
       "submitMessage": false,
     },
   },
-  "newMessage": Object {
-    "attachments": Array [],
+  "newMessage": {
+    "attachments": [],
     "body_html": "<div>Hello</div>",
     "body_text": "Hello",
     "channel": "email",
     "from_agent": true,
-    "macros": Array [],
-    "mention_ids": Array [],
+    "macros": [],
+    "mention_ids": [],
     "public": true,
     "sender": null,
-    "source": Object {
-      "bcc": Array [],
-      "cc": Array [],
-      "extra": Object {
+    "source": {
+      "bcc": [],
+      "cc": [],
+      "extra": {
         "include_thread": false,
       },
-      "from": Object {},
-      "to": Array [],
+      "from": {},
+      "to": [],
       "type": "email",
     },
     "subject": "",
     "via": "helpdesk",
   },
-  "state": Object {
+  "state": {
     "appliedMacro": null,
     "cacheAdded": false,
-    "contentState": Array [
-      Object {
-        "data": Object {},
+    "contentState": [
+      {
+        "data": {},
         "depth": 0,
         "text": "Hello",
         "type": "unstyled",

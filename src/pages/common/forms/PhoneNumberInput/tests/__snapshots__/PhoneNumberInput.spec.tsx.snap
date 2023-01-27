@@ -45,12 +45,12 @@ exports[`<PhoneNumberInput/> should render 1`] = `
 `;
 
 exports[`<PhoneNumberInput/> should report an error if the default country is not allowed 1`] = `
-Array [
-  Array [
+[
+  [
     [Error: Wrong props passed to PhoneNumberInput],
-    Object {
-      "extra": Object {
-        "allowedCountries": Array [
+    {
+      "extra": {
+        "allowedCountries": [
           "US",
           "CA",
         ],

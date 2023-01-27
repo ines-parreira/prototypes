@@ -3,9 +3,11 @@ import * as immutableMatchers from 'jest-immutable-matchers'
 import reducer, {initialState} from '../reducers'
 import * as types from '../constants'
 
-jest.addMatchers(immutableMatchers)
-
 describe('facebookAds reducer', () => {
+    beforeEach(() => {
+        expect.extend(immutableMatchers)
+    })
+
     it('should return initial state', () => {
         expect(reducer(undefined, {type: 'FOO_ACTION'})).toEqualImmutable(
             initialState

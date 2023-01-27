@@ -639,9 +639,9 @@ exports[`FacebookIntegrationSetup should render an integration for: account elig
                           <UpgradeButton
                             className="ml-1 py-0 px-1"
                             segmentEventToSend={
-                              Object {
+                              {
                                 "name": "paywall-upgrade-button-selected",
-                                "props": Object {
+                                "props": {
                                   "current_price": "Basic",
                                   "domain": "acme",
                                   "paywall_feature": "instagram_dm",
@@ -909,14 +909,14 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                             <div
                               id="instagram_direct_message-1"
                               style={
-                                Object {
+                                {
                                   "cursor": "pointer",
                                 }
                               }
                             >
                               <span
                                 style={
-                                  Object {
+                                  {
                                     "borderBottom": "1px dashed #D2D7DE",
                                   }
                                 }
@@ -928,7 +928,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                                 className="ml-3"
                                 src="test-file-stub"
                                 style={
-                                  Object {
+                                  {
                                     "verticalAlign": "text-bottom",
                                   }
                                 }
@@ -1243,9 +1243,9 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                           <UpgradeButton
                             className="ml-1 py-0 px-1"
                             segmentEventToSend={
-                              Object {
+                              {
                                 "name": "paywall-upgrade-button-selected",
-                                "props": Object {
+                                "props": {
                                   "current_price": "Basic",
                                   "domain": "acme",
                                   "paywall_feature": "instagram_dm",
@@ -1937,14 +1937,14 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
                             <div
                               id="instagram_direct_message-1"
                               style={
-                                Object {
+                                {
                                   "cursor": "pointer",
                                 }
                               }
                             >
                               <span
                                 style={
-                                  Object {
+                                  {
                                     "borderBottom": "1px dashed #D2D7DE",
                                   }
                                 }
@@ -1956,7 +1956,7 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
                                 className="ml-3"
                                 src="test-file-stub"
                                 style={
-                                  Object {
+                                  {
                                     "verticalAlign": "text-bottom",
                                   }
                                 }
@@ -2689,14 +2689,14 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                             <div
                               id="instagram_direct_message-1"
                               style={
-                                Object {
+                                {
                                   "cursor": "pointer",
                                 }
                               }
                             >
                               <span
                                 style={
-                                  Object {
+                                  {
                                     "borderBottom": "1px dashed #D2D7DE",
                                   }
                                 }
@@ -2708,7 +2708,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                                 className="ml-3"
                                 src="test-file-stub"
                                 style={
-                                  Object {
+                                  {
                                     "verticalAlign": "text-bottom",
                                   }
                                 }
@@ -3141,14 +3141,14 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                             <div
                               id="instagram_direct_message-1"
                               style={
-                                Object {
+                                {
                                   "cursor": "pointer",
                                 }
                               }
                             >
                               <span
                                 style={
-                                  Object {
+                                  {
                                     "borderBottom": "1px dashed #D2D7DE",
                                   }
                                 }
@@ -3160,7 +3160,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                                 className="ml-3"
                                 src="test-file-stub"
                                 style={
-                                  Object {
+                                  {
                                     "verticalAlign": "text-bottom",
                                   }
                                 }
@@ -3450,14 +3450,14 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                             <div
                               id="instagram_direct_message-1"
                               style={
-                                Object {
+                                {
                                   "cursor": "pointer",
                                 }
                               }
                             >
                               <span
                                 style={
-                                  Object {
+                                  {
                                     "borderBottom": "1px dashed #D2D7DE",
                                   }
                                 }
@@ -3469,7 +3469,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                                 className="ml-3"
                                 src="test-file-stub"
                                 style={
-                                  Object {
+                                  {
                                     "verticalAlign": "text-bottom",
                                   }
                                 }
@@ -3759,14 +3759,14 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                             <div
                               id="instagram_direct_message-1"
                               style={
-                                Object {
+                                {
                                   "cursor": "pointer",
                                 }
                               }
                             >
                               <span
                                 style={
-                                  Object {
+                                  {
                                     "borderBottom": "1px dashed #D2D7DE",
                                   }
                                 }
@@ -3778,7 +3778,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                                 className="ml-3"
                                 src="test-file-stub"
                                 style={
-                                  Object {
+                                  {
                                     "verticalAlign": "text-bottom",
                                   }
                                 }
@@ -4211,14 +4211,14 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                             <div
                               id="instagram_direct_message-1"
                               style={
-                                Object {
+                                {
                                   "cursor": "pointer",
                                 }
                               }
                             >
                               <span
                                 style={
-                                  Object {
+                                  {
                                     "borderBottom": "1px dashed #D2D7DE",
                                   }
                                 }
@@ -4230,7 +4230,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                                 className="ml-3"
                                 src="test-file-stub"
                                 style={
-                                  Object {
+                                  {
                                     "verticalAlign": "text-bottom",
                                   }
                                 }
@@ -4663,14 +4663,14 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                             <div
                               id="instagram_direct_message-1"
                               style={
-                                Object {
+                                {
                                   "cursor": "pointer",
                                 }
                               }
                             >
                               <span
                                 style={
-                                  Object {
+                                  {
                                     "borderBottom": "1px dashed #D2D7DE",
                                   }
                                 }
@@ -4682,7 +4682,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                                 className="ml-3"
                                 src="test-file-stub"
                                 style={
-                                  Object {
+                                  {
                                     "verticalAlign": "text-bottom",
                                   }
                                 }
@@ -5115,14 +5115,14 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                             <div
                               id="instagram_direct_message-1"
                               style={
-                                Object {
+                                {
                                   "cursor": "pointer",
                                 }
                               }
                             >
                               <span
                                 style={
-                                  Object {
+                                  {
                                     "borderBottom": "1px dashed #D2D7DE",
                                   }
                                 }
@@ -5134,7 +5134,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                                 className="ml-3"
                                 src="test-file-stub"
                                 style={
-                                  Object {
+                                  {
                                     "verticalAlign": "text-bottom",
                                   }
                                 }
@@ -5991,14 +5991,14 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                             <div
                               id="instagram_direct_message-1"
                               style={
-                                Object {
+                                {
                                   "cursor": "pointer",
                                 }
                               }
                             >
                               <span
                                 style={
-                                  Object {
+                                  {
                                     "borderBottom": "1px dashed #D2D7DE",
                                   }
                                 }
@@ -6010,7 +6010,7 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                                 className="ml-3"
                                 src="test-file-stub"
                                 style={
-                                  Object {
+                                  {
                                     "verticalAlign": "text-bottom",
                                   }
                                 }

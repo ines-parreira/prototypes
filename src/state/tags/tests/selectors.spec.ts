@@ -5,13 +5,12 @@ import {RootState} from '../../types'
 import * as selectors from '../selectors'
 import {initialState} from '../reducers'
 
-jest.addMatchers(immutableMatchers)
-
 describe('tags selectors', () => {
     let state: RootState
     const selectedTagId = 123
 
     beforeEach(() => {
+        expect.extend(immutableMatchers)
         state = {
             tags: initialState
                 .mergeDeep({

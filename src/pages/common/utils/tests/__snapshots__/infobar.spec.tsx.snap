@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renderInfobarTemplate() should render given template with icons 1`] = `
-Array [
+[
   <i
     className="material-icons"
   >
