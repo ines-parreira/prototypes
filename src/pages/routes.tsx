@@ -1,4 +1,4 @@
-import React, {ComponentType, ReactNode} from 'react'
+import React, {ComponentType, ReactNode, useEffect} from 'react'
 import {
     Redirect,
     Route,
@@ -6,7 +6,6 @@ import {
     Switch,
     useLocation,
 } from 'react-router-dom'
-import {useUpdateEffect} from 'react-use'
 import _memoize from 'lodash/memoize'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
@@ -140,12 +139,6 @@ const appRender =
     }
 
 export default function Routes() {
-    const location = useLocation()
-
-    useUpdateEffect(() => {
-        logPageChange()
-    }, [location.pathname])
-
     return <Route path="/app" component={AppRoutes} />
 }
 
@@ -439,11 +432,14 @@ export function TicketsRoutes({match: {path}}: RouteComponentProps) {
 }
 
 export function StatsRoutes({match: {path}}: RouteComponentProps) {
+    const location = useLocation()
     const hasLiveOverviewFeature = useAppSelector(
         currentAccountHasFeature(AccountFeature.OverviewLiveStatistics)
     )
     const hasAnalyticsBeta: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsBetaTesters]
+
+    useEffect(logPageChange, [location.pathname])
 
     return (
         <DefaultStatsFilters
