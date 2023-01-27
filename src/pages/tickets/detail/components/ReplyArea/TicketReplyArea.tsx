@@ -289,8 +289,9 @@ export class TicketReplyArea extends Component<Props, State> {
                 this.props.newMessage?.getIn(['newMessage', 'body_text'])
 
             if (
-                contentState.getPlainText() !== newMessageBodyText ||
-                !this.props.appliedMacro.equals(this.state.topRankMacro)
+                this.props.appliedMacro.has('id') &&
+                (contentState.getPlainText() !== newMessageBodyText ||
+                    !this.props.appliedMacro.equals(this.state.topRankMacro))
             ) {
                 this.acceptTopRankMacro()
             }
@@ -642,7 +643,7 @@ export class TicketReplyArea extends Component<Props, State> {
                         />
                     ) : (
                         <TicketReply
-                            replyAreaFooter={
+                            replyAreaHeader={
                                 this.props.topRankMacroState?.state ===
                                     'pending' && (
                                     <PrefillMacroAlert

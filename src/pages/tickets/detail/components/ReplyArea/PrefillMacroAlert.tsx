@@ -33,18 +33,21 @@ export default function PrefillMacroAlert({onRemoveMacro, onKeepMacro}: Props) {
                             color="secondary"
                             fillStyle="ghost"
                         >
-                            <i className="material-icons pr-1">close</i>
+                            <i className="material-icons pr-1 md-2">delete</i>
                             Remove Macro
                         </Button>
-                        <Button
-                            onClick={onKeepMacro}
-                            className="p-0"
-                            color="primary"
-                            fillStyle="ghost"
-                        >
-                            <i className="material-icons pr-1">done</i>
-                            Keep Macro
-                        </Button>
+                        <div>
+                            <Button
+                                onClick={onKeepMacro}
+                                className="p-0"
+                                color="primary"
+                                fillStyle="ghost"
+                            >
+                                <i className="material-icons-round md-2">
+                                    close
+                                </i>
+                            </Button>
+                        </div>
                     </div>
                 </Group>
             </Alert>

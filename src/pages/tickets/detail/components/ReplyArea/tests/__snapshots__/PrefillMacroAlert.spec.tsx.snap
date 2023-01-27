@@ -36,24 +36,25 @@ exports[`<PrefillMacroAlert /> should render alert 1`] = `
                   type="button"
                 >
                   <i
-                    class="material-icons pr-1"
+                    class="material-icons pr-1 md-2"
                   >
-                    close
+                    delete
                   </i>
                   Remove Macro
                 </button>
-                <button
-                  class="wrapper p-0 ghost primary medium right"
-                  color="primary"
-                  type="button"
-                >
-                  <i
-                    class="material-icons pr-1"
+                <div>
+                  <button
+                    class="wrapper p-0 ghost primary medium right"
+                    color="primary"
+                    type="button"
                   >
-                    done
-                  </i>
-                  Keep Macro
-                </button>
+                    <i
+                      class="material-icons-round md-2"
+                    >
+                      close
+                    </i>
+                  </button>
+                </div>
               </div>
             </span>
           </span>

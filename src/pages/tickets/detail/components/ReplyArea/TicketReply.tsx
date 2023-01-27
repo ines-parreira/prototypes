@@ -17,7 +17,7 @@ import TicketReplyEditor from './TicketReplyEditor'
 import TicketReplyActions from './TicketReplyActions'
 
 type Props = {
-    replyAreaFooter?: ReactNode
+    replyAreaHeader?: ReactNode
     appliedMacro?: Map<any, any>
     applyMacro: (macro: Map<any, any>) => void
     className?: string
@@ -53,7 +53,7 @@ export class TicketReplyContainer extends Component<Props> {
             applyMacro,
             shouldDisplayQuickReply,
             deleteActionOnApplied,
-            replyAreaFooter,
+            replyAreaHeader,
         } = this.props
 
         const canReplyResult = canReply(
@@ -77,7 +77,7 @@ export class TicketReplyContainer extends Component<Props> {
                         macros={macros}
                         applyMacro={applyMacro}
                         shouldDisplayQuickReply={shouldDisplayQuickReply}
-                        replyAreaFooter={replyAreaFooter}
+                        replyAreaHeader={replyAreaHeader}
                     />
                 )}
                 {this.renderAttachments()}

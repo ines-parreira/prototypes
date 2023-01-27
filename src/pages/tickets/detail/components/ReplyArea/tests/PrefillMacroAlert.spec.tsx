@@ -49,7 +49,7 @@ describe('<PrefillMacroAlert />', () => {
             </Provider>
         )
 
-        fireEvent.click(screen.getByText(/keep macro/i))
+        fireEvent.click(screen.getByText(/close/))
         fireEvent.click(screen.getByText(/remove macro/i))
 
         expect(handleRemoveMacro).toHaveBeenCalled()

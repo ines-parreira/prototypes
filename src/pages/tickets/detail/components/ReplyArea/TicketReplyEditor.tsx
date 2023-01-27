@@ -42,7 +42,7 @@ import MacrosQuickReply from './MacrosQuickReply/MacrosQuickReply'
 import css from './TicketReplyEditor.less'
 
 type Props = {
-    replyAreaFooter?: ReactNode
+    replyAreaHeader?: ReactNode
     applyMacro: (macro: Map<any, any>) => void
     macros: List<any>
     richAreaRef: (ref: RichField | null) => void
@@ -363,7 +363,7 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
             macros,
             applyMacro,
             shouldDisplayQuickReply,
-            replyAreaFooter,
+            replyAreaHeader,
         } = this.props
 
         const isNewMessageRichType = isRichType(newMessageType)
@@ -438,7 +438,7 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
                     className={classnames(css.richField, {
                         [css.isInternal]: !isNewMessagePublic,
                     })}
-                    footer={replyAreaFooter}
+                    header={replyAreaHeader}
                     ref={(richArea) => {
                         this.richArea = richArea
                         richAreaRef(richArea)

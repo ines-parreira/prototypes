@@ -10,6 +10,7 @@ import axios, {AxiosError, CancelToken} from 'axios'
 
 import * as ticketConstants from 'state/ticket/constants'
 import {notify} from 'state/notifications/actions'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import * as ticketActions from 'state/ticket/actions'
 import {Context, renderTemplate} from 'pages/common/utils/template'
 import {
@@ -1042,6 +1043,21 @@ export function prepareTicketMessage({
             }
 
             const state = getState()
+
+            const topRankMacroState =
+                ticketSelectors.getTopRankMacroState(state)
+            const appliedMacro = ticketSelectors.getAppliedMacro(state)
+            if (
+                topRankMacroState?.state === 'pending' &&
+                appliedMacro.get('id') === topRankMacroState.macroId
+            ) {
+                logEvent(SegmentEvent.TopRankMacro, {
+                    action: 'accepted',
+                    user_id: state.currentUser.get('id'),
+                    ticketId: state.ticket.get('id'),
+                    macro: appliedMacro.toJS(),
+                })
+            }
 
             dispatch({
                 type: constants.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START,
