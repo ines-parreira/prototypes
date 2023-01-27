@@ -189,9 +189,74 @@ export type BigCommerceProduct = {
     created_at: string
     image_url: string
     options: Array<Record<string, any>>
+    modifiers: BigCommerceProductModifiers[]
     variants: BigCommerceProductVariant[]
     calculated_price: number
 }
+
+export interface BigCommerceProductModifiersBase<
+    ValueData extends Record<string, unknown> | null
+    // Type extends
+    //     | 'checkbox' // Show checkbox component
+    //     | 'swatch' // Show dropdown with colors
+    //     | 'radio_buttons' // Show dropdown
+    //     | 'rectangles' // Show dropdown
+    //     | 'dropdown' // Show dropdown
+    //     | 'product_list' // Show dropdown
+    //     | 'product_list_with_images' // Show dropdown
+    //     | 'date' // Not used
+    //     | 'file' // Not used
+    //     | 'text' // Not used
+    //     | 'multi_line_text' // Not used
+    //     | 'numbers_only_text', // Not used
+> {
+    id: number
+    display_name: string
+    name: string
+    required: boolean
+    sort_order: number
+    product_id: number
+    // type: Type
+    // config: Config
+    option_values: Array<{
+        id: number
+        option_id: number
+        is_default: boolean
+        label: string
+        sort_order: number
+        value_data: ValueData
+    }>
+}
+
+export interface BigCommerceProductCheckboxModifier
+    extends BigCommerceProductModifiersBase<{checked_value: boolean}> {
+    type: 'checkbox'
+    config: {checked_by_default: boolean; checkbox_label: string}
+}
+
+export interface BigCommerceProductSwatchModifier
+    extends BigCommerceProductModifiersBase<
+        | {colors: [string] | [string, string] | [string, string, string]}
+        | {image_url: string}
+    > {
+    type: 'swatch'
+    config: []
+}
+
+export interface BigCommerceProductSelectModifier
+    extends BigCommerceProductModifiersBase<null> {
+    type:
+        | 'radio_buttons'
+        | 'rectangles'
+        | 'dropdown'
+        | 'product_list_with_images'
+    config: []
+}
+
+export type BigCommerceProductModifiers =
+    | BigCommerceProductCheckboxModifier
+    | BigCommerceProductSwatchModifier
+    | BigCommerceProductSelectModifier
 
 export type BigCommerceCustomProduct = {
     id?: Maybe<string>

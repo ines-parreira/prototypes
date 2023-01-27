@@ -285,6 +285,220 @@ export const bigCommerceProductFixture = (): BigCommerceProduct => ({
     options: [],
     variants: [bigCommerceVariantFixture()],
     calculated_price: 78,
+    modifiers: [
+        {
+            id: 163,
+            name: 'Test-Radio-Buttons1674575885-248',
+            type: 'radio_buttons',
+            config: [],
+            required: true,
+            product_id: 248,
+            sort_order: 3,
+            display_name: 'Test Radio Buttons',
+            option_values: [
+                {
+                    id: 284,
+                    label: 'Test 1',
+                    option_id: 163,
+                    is_default: false,
+                    sort_order: 0,
+                    value_data: null,
+                },
+                {
+                    id: 285,
+                    label: 'Test 2',
+                    option_id: 163,
+                    is_default: false,
+                    sort_order: 1,
+                    value_data: null,
+                },
+            ],
+        },
+        {
+            id: 164,
+            name: 'Include-Insurance?1674575885-248',
+            type: 'checkbox',
+            config: {
+                checkbox_label: '',
+                checked_by_default: false,
+            },
+            required: true,
+            product_id: 248,
+            sort_order: 4,
+            display_name: 'Include Insurance?',
+            option_values: [
+                {
+                    id: 286,
+                    label: 'Yes',
+                    option_id: 164,
+                    is_default: false,
+                    sort_order: 0,
+                    value_data: {
+                        checked_value: true,
+                    },
+                },
+                {
+                    id: 287,
+                    label: 'No',
+                    option_id: 164,
+                    is_default: true,
+                    sort_order: 1,
+                    value_data: {
+                        checked_value: false,
+                    },
+                },
+            ],
+        },
+        {
+            id: 165,
+            name: 'Colors1674575886-248',
+            type: 'swatch',
+            config: [],
+            required: true,
+            product_id: 248,
+            sort_order: 5,
+            display_name: 'Colors',
+            option_values: [
+                {
+                    id: 288,
+                    label: 'Pattern',
+                    option_id: 165,
+                    is_default: false,
+                    sort_order: 0,
+                    value_data: {
+                        image_url:
+                            'https://cdn11.bigcommerce.com/s-pk360c6roo/product_images/attribute_value_images/288.preview.png?t=1674575890',
+                    },
+                },
+                {
+                    id: 289,
+                    label: 'One colors',
+                    option_id: 165,
+                    is_default: false,
+                    sort_order: 1,
+                    value_data: {
+                        colors: ['#C2D750'],
+                    },
+                },
+                {
+                    id: 290,
+                    label: 'Two Colors',
+                    option_id: 165,
+                    is_default: false,
+                    sort_order: 2,
+                    value_data: {
+                        colors: ['#00FF91', '#0052FF'],
+                    },
+                },
+                {
+                    id: 291,
+                    label: 'Three Colors',
+                    option_id: 165,
+                    is_default: false,
+                    sort_order: 3,
+                    value_data: {
+                        colors: ['#FFC100', '#FF00AE', '#8500FF'],
+                    },
+                },
+            ],
+        },
+        {
+            id: 166,
+            name: 'Rectangles1674575890-248',
+            type: 'rectangles',
+            config: [],
+            required: true,
+            product_id: 248,
+            sort_order: 5,
+            display_name: 'Rectangles',
+            option_values: [
+                {
+                    id: 292,
+                    label: 'One',
+
+                    option_id: 166,
+                    is_default: false,
+                    sort_order: 0,
+                    value_data: null,
+                },
+                {
+                    id: 293,
+                    label: 'Two',
+
+                    option_id: 166,
+                    is_default: false,
+                    sort_order: 1,
+                    value_data: null,
+                },
+                {
+                    id: 294,
+                    label: 'Three',
+
+                    option_id: 166,
+                    is_default: false,
+                    sort_order: 2,
+                    value_data: null,
+                },
+            ],
+        },
+        {
+            id: 167,
+            name: 'Just-a-drodown1674575891-248',
+            type: 'dropdown',
+            config: [],
+            required: false,
+            product_id: 248,
+            sort_order: 5,
+            display_name: 'Just a drodown',
+            option_values: [
+                {
+                    id: 295,
+                    label: 'Dropdown 1',
+                    option_id: 167,
+                    is_default: false,
+                    sort_order: 0,
+                    value_data: null,
+                },
+                {
+                    id: 296,
+                    label: 'Dropdown 2',
+
+                    option_id: 167,
+                    is_default: false,
+                    sort_order: 1,
+                    value_data: null,
+                },
+            ],
+        },
+        {
+            id: 143,
+            name: 'test51673517148-244',
+            type: 'product_list_with_images',
+            required: true,
+            product_id: 244,
+            config: [],
+            sort_order: 6,
+            display_name: 'test5',
+            option_values: [
+                {
+                    id: 250,
+                    label: '[Sample] Terrarium Orbit - Petit modèle',
+                    option_id: 143,
+                    is_default: false,
+                    sort_order: 0,
+                    value_data: null,
+                },
+                {
+                    id: 251,
+                    label: '[Sample] Système Able Brewing',
+                    option_id: 143,
+                    is_default: false,
+                    sort_order: 1,
+                    value_data: null,
+                },
+            ],
+        },
+    ],
 })
 
 export const bigCommerceConsignmentFixture: BigCommerceConsignment = {

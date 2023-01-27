@@ -6,6 +6,30 @@ import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 
 import css from './PopoverContainer.less'
 
+type PopoverContainerBodyProps = {
+    body: React.ReactNode
+    footer: React.ReactNode
+}
+
+export const PopoverContainerBody = ({
+    body,
+    footer,
+}: PopoverContainerBodyProps) => (
+    <>
+        <DropdownBody
+            className={css.body}
+            onClick={(event) => {
+                // stop event from propagating to modal and closing it
+                event.stopPropagation()
+            }}
+        >
+            {body}
+        </DropdownBody>
+
+        <div className={css.footer}>{footer}</div>
+    </>
+)
+
 export const PopoverContainer = ({
     body,
     footer,
@@ -18,25 +42,13 @@ export const PopoverContainer = ({
     onToggle: () => void
     target: RefObject<HTMLButtonElement | null>
     dropdownPlacement?: Placement
-    body: React.ReactNode
-    footer: React.ReactNode
-}) => (
+} & PopoverContainerBodyProps) => (
     <Dropdown
         isOpen={isOpen}
         onToggle={onToggle}
         target={target}
         placement={dropdownPlacement}
     >
-        <DropdownBody
-            className={css.body}
-            onClick={(event) => {
-                // stop event from propagating to modal and closing it
-                event.stopPropagation()
-            }}
-        >
-            {body}
-        </DropdownBody>
-
-        <div className={css.footer}>{footer}</div>
+        <PopoverContainerBody body={body} footer={footer} />
     </Dropdown>
 )
