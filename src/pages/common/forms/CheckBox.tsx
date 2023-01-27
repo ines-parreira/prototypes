@@ -21,6 +21,7 @@ export type Props = {
     className?: string
     isChecked?: boolean
     isDisabled?: boolean
+    isRequired?: boolean
     isIndeterminate?: boolean
     labelClassName?: string
     name?: string
@@ -37,6 +38,7 @@ function CheckBox(
         className,
         isChecked,
         isDisabled = false,
+        isRequired = false,
         isIndeterminate = false,
         labelClassName,
         name,
@@ -63,6 +65,7 @@ function CheckBox(
                 className={classnames(css.label, labelClassName)}
                 isDisabled={isDisabled}
                 htmlFor={labelId}
+                isRequired={isRequired}
             >
                 <input
                     type="checkbox"

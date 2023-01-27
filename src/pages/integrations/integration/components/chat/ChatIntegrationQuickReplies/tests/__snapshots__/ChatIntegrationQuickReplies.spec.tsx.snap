@@ -329,6 +329,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                                 className="label"
                                 htmlFor="quickRepliesEnabled"
                                 isDisabled={false}
+                                isRequired={false}
                               >
                                 <label
                                   className="label label"
@@ -1156,6 +1157,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                                 className="label"
                                 htmlFor="quickRepliesEnabled"
                                 isDisabled={false}
+                                isRequired={false}
                               >
                                 <label
                                   className="label label"

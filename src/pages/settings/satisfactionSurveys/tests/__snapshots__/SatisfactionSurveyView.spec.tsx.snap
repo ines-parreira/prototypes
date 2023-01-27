@@ -513,6 +513,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                               className="label"
                               htmlFor="send_survey_on_email"
                               isDisabled={false}
+                              isRequired={false}
                             >
                               <label
                                 className="label label"
@@ -540,6 +541,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                               className="label"
                               htmlFor="send_survey_on_chat"
                               isDisabled={false}
+                              isRequired={false}
                             >
                               <label
                                 className="label label"
