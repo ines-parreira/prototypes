@@ -38,7 +38,7 @@ exports[`<SubjectLines /> should render the component and show the "Other" toggl
     >
       <div
         class="wrapper"
-        data-handler-id="T6"
+        data-handler-id="T0"
         style="opacity: 1;"
       >
         <div
@@ -55,8 +55,8 @@ exports[`<SubjectLines /> should render the component and show the "Other" toggl
         >
           <input
             class="input"
-            id="input-text-11"
-            name="input-text-11"
+            id="input-text-5"
+            name="input-text-5"
             type="text"
             value="Option 1"
           />
@@ -69,7 +69,7 @@ exports[`<SubjectLines /> should render the component and show the "Other" toggl
       </div>
       <div
         class="wrapper"
-        data-handler-id="T8"
+        data-handler-id="T2"
         style="opacity: 1;"
       >
         <div
@@ -86,8 +86,8 @@ exports[`<SubjectLines /> should render the component and show the "Other" toggl
         >
           <input
             class="input"
-            id="input-text-12"
-            name="input-text-12"
+            id="input-text-6"
+            name="input-text-6"
             type="text"
             value="Option 2"
           />
@@ -100,7 +100,7 @@ exports[`<SubjectLines /> should render the component and show the "Other" toggl
       </div>
       <div
         class="wrapper"
-        data-handler-id="T10"
+        data-handler-id="T4"
         style="opacity: 1;"
       >
         <div
@@ -117,8 +117,8 @@ exports[`<SubjectLines /> should render the component and show the "Other" toggl
         >
           <input
             class="input"
-            id="input-text-13"
-            name="input-text-13"
+            id="input-text-7"
+            name="input-text-7"
             type="text"
             value="Option 3"
           />

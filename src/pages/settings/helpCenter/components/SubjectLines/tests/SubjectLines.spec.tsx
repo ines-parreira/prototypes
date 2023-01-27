@@ -15,7 +15,7 @@ import {initialState as categoriesState} from 'state/entities/helpCenter/categor
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
 import {HelpCenterTranslationProvider} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
 import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
-import {UpdateContactForm} from 'models/helpCenter/types'
+import {ContactForm, UpdateContactForm} from 'models/helpCenter/types'
 import SubjectLines from '../SubjectLines'
 
 jest.mock('lodash/uniqueId', () => {
@@ -73,22 +73,15 @@ const subjectLines = {
 const setIsDirty = jest.fn()
 
 const renderComponent = (
-    subjectLines: UpdateContactForm['subject_lines'],
+    subjectLines: ContactForm['subject_lines'],
     updateContactForm: React.Dispatch<React.SetStateAction<UpdateContactForm>>
 ) =>
     renderWithRouter(
         <DefaultProviders>
             <DndProvider backend={HTML5Backend}>
                 <SubjectLines
-                    contactForm={{
-                        helpdesk_integration_email: 'irinel@gorgias.com',
-                        helpdesk_integration_id: 123,
-                        card_enabled: true,
-                        subject_lines: subjectLines,
-                    }}
+                    subjectLines={subjectLines}
                     setIsDirty={setIsDirty}
-                    translationsLoaded={true}
-                    helpCenter={getSingleHelpCenterResponseFixture}
                     currentLocale="en-US"
                     updateContactForm={updateContactForm}
                 />

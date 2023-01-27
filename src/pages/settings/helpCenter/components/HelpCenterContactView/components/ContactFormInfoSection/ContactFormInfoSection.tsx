@@ -274,16 +274,16 @@ const ContactFormInfoSection = ({helpCenter}: ContactFormInfoSectionProps) => {
                                 : undefined
                         }
                     />
-                    {isSubjectLinesAvailable && (
-                        <SubjectLines
-                            helpCenter={helpCenter}
-                            contactForm={contactForm}
-                            currentLocale={viewLanguage}
-                            updateContactForm={updateContactForm}
-                            setIsDirty={setIsDirty}
-                            translationsLoaded={translationsLoaded}
-                        />
-                    )}
+                    {isSubjectLinesAvailable &&
+                        translationsLoaded &&
+                        contactForm.subject_lines && (
+                            <SubjectLines
+                                subjectLines={contactForm.subject_lines}
+                                currentLocale={viewLanguage}
+                                updateContactForm={updateContactForm}
+                                setIsDirty={setIsDirty}
+                            />
+                        )}
                     <div
                         className={css.embedWrapper}
                         id="embedded-contact-form"

@@ -1,5 +1,4 @@
-import {Components} from 'rest_api/help_center_api/client.generated'
-import {HelpCentersListPage} from 'models/helpCenter/types'
+import {HelpCenter, HelpCentersListPage} from 'models/helpCenter/types'
 
 export const getHelpCentersResponseFixture: HelpCentersListPage = {
     data: [
@@ -114,32 +113,82 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
     },
 }
 
-export const getSingleHelpCenterResponseFixture: Components.Schemas.HelpCenterDto =
-    {
-        id: 1,
-        source: 'manual',
-        subdomain: 'acme',
-        name: 'ACME Help Center',
-        deactivated_datetime: null,
-        default_locale: 'en-US',
-        supported_locales: ['en-US', 'fr-FR'],
-        favicon_url: null,
-        brand_logo_url: null,
-        brand_logo_light_url: null,
-        search_deactivated_datetime: '2021-05-17T18:21:42.022Z',
-        powered_by_deactivated_datetime: null,
-        gaid: null,
-        algolia_api_key: null,
-        algolia_app_id: 'my-algolia-app-id',
-        algolia_index_name: 'my-algolia-index',
-        primary_color: '#4A8DF9',
-        primary_font_family: 'Inter',
-        theme: 'light',
-        hotswap_session_token: null,
-        self_service_deactivated_datetime: '2021-05-17T18:21:42.022Z',
-        shop_name: null,
-        created_datetime: '2021-05-17T18:21:42.022Z',
-        updated_datetime: '2021-05-17T18:21:42.022Z',
-        deleted_datetime: null,
-        contact_form: null,
-    }
+export const getSingleHelpCenterResponseFixture: HelpCenter = {
+    id: 1,
+    source: 'manual',
+    subdomain: 'acme',
+    name: 'ACME Help Center',
+    deactivated_datetime: null,
+    default_locale: 'en-US',
+    supported_locales: ['en-US', 'fr-FR'],
+    favicon_url: null,
+    brand_logo_url: null,
+    brand_logo_light_url: null,
+    search_deactivated_datetime: '2021-05-17T18:21:42.022Z',
+    powered_by_deactivated_datetime: null,
+    gaid: null,
+    algolia_api_key: null,
+    algolia_app_id: 'my-algolia-app-id',
+    algolia_index_name: 'my-algolia-index',
+    primary_color: '#4A8DF9',
+    primary_font_family: 'Inter',
+    theme: 'light',
+    hotswap_session_token: null,
+    self_service_deactivated_datetime: '2021-05-17T18:21:42.022Z',
+    shop_name: null,
+    created_datetime: '2021-05-17T18:21:42.022Z',
+    updated_datetime: '2021-05-17T18:21:42.022Z',
+    deleted_datetime: null,
+    contact_form: null,
+}
+
+export const getSingleHelpCenterResponseFixtureWithTranslation: HelpCenter = {
+    ...getSingleHelpCenterResponseFixture,
+    translations: [
+        {
+            help_center_id: 1,
+            locale: 'en-US',
+            seo_meta: {title: null, description: null},
+            extra_html: {
+                custom_footer: 'Custom footer',
+                custom_header: 'Custom header',
+                extra_head: 'Extra head',
+                custom_footer_deactivated_datetime: null,
+                custom_header_deactivated_datetime: null,
+                extra_head_deactivated_datetime: null,
+            },
+            created_datetime: '2022-02-04T14:20:23.469Z',
+            updated_datetime: '2022-02-22T15:23:55.843Z',
+            banner_image_vertical_offset: 0,
+            banner_text: 'Banner text',
+            chat_application_id: 0,
+            contact_info: {
+                email: {
+                    deactivated_datetime: null,
+                    email: 'yolo@yolo.com',
+                    description: 'yolo',
+                },
+                phone: {
+                    deactivated_datetime: '2022-02-04T14:20:23.000Z',
+                    description: '',
+                    phone_numbers: [],
+                },
+                chat: {
+                    deactivated_datetime: '2022-02-04T14:20:23.000Z',
+                    description: '',
+                },
+            },
+        },
+    ],
+    contact_form: {
+        card_enabled: true,
+        helpdesk_integration_email: 'sample@example.com',
+        helpdesk_integration_id: 123456,
+        subject_lines: {
+            'en-US': {
+                allow_other: true,
+                options: ['I have a question'],
+            },
+        },
+    },
+}

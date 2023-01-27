@@ -3220,6 +3220,17 @@
                 },
                 "required": ["progress"]
             },
+            "SubjectLineDto": {
+                "type": "object",
+                "properties": {
+                    "allow_other": {"type": "boolean"},
+                    "options": {
+                        "type": "array",
+                        "items": {"type": "string", "maxLength": 50}
+                    }
+                },
+                "required": ["allow_other", "options"]
+            },
             "UpdateContactFormDto": {
                 "type": "object",
                 "properties": {
@@ -3231,6 +3242,12 @@
                     "helpdesk_integration_id": {
                         "type": "number",
                         "nullable": true
+                    },
+                    "subject_lines": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "$ref": "#/components/schemas/SubjectLineDto"
+                        }
                     }
                 },
                 "required": [
@@ -3316,14 +3333,6 @@
                 },
                 "required": ["name", "default_locale"]
             },
-            "SubjectLineDto": {
-                "type": "object",
-                "properties": {
-                    "allow_other": {"type": "boolean"},
-                    "options": {"type": "array", "items": {"type": "string"}}
-                },
-                "required": ["allow_other", "options"]
-            },
             "ContactFormDto": {
                 "type": "object",
                 "properties": {
@@ -3346,7 +3355,8 @@
                 "required": [
                     "card_enabled",
                     "helpdesk_integration_email",
-                    "helpdesk_integration_id"
+                    "helpdesk_integration_id",
+                    "subject_lines"
                 ]
             },
             "HelpCenterDto": {

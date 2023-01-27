@@ -15,7 +15,7 @@ import {initialState as categoriesState} from 'state/entities/helpCenter/categor
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
 import {FeatureFlagKey} from 'config/featureFlags'
 import ContactFormInfoSection from '../ContactFormInfoSection'
-import {getSingleHelpCenterResponseFixture} from '../../../../../fixtures/getHelpCentersResponse.fixture'
+import {getSingleHelpCenterResponseFixtureWithTranslation} from '../../../../../fixtures/getHelpCentersResponse.fixture'
 import {getHelpCenterTranslationsResponseFixture} from '../../../../../fixtures/getHelpCenterTranslationsResponse.fixture'
 import {getLocalesResponseFixture} from '../../../../../fixtures/getLocalesResponse.fixtures'
 import {useCurrentHelpCenter} from '../../../../../providers/CurrentHelpCenter'
@@ -30,7 +30,7 @@ const defaultState: Partial<RootState> = {
         helpCenter: {
             helpCenters: {
                 helpCentersById: {
-                    '1': getSingleHelpCenterResponseFixture,
+                    '1': getSingleHelpCenterResponseFixtureWithTranslation,
                 },
             },
             articles: articlesState,
@@ -43,13 +43,13 @@ const defaultState: Partial<RootState> = {
     ui: {helpCenter: {...uiState, currentId: 1}} as any,
 }
 
-const mockedUpdateHelpCenter = jest
-    .fn()
-    .mockResolvedValue({data: getSingleHelpCenterResponseFixture})
+const mockedUpdateHelpCenter = jest.fn().mockResolvedValue({
+    data: getSingleHelpCenterResponseFixtureWithTranslation,
+})
 
-const mockedGetHelpCenter = jest
-    .fn()
-    .mockResolvedValue({data: getSingleHelpCenterResponseFixture})
+const mockedGetHelpCenter = jest.fn().mockResolvedValue({
+    data: getSingleHelpCenterResponseFixtureWithTranslation,
+})
 
 const mockedUpdateHelpCenterTranslation = jest.fn()
 const mockedListHelpCenterTranslations = jest
@@ -80,7 +80,7 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
 
 jest.mock('pages/settings/helpCenter/providers/CurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
-    getSingleHelpCenterResponseFixture
+    getSingleHelpCenterResponseFixtureWithTranslation
 )
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
@@ -89,7 +89,7 @@ jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 const DefaultProviders: FC = ({children}) => (
     <Provider store={mockedStore(defaultState)}>
         <HelpCenterTranslationProvider
-            helpCenter={getSingleHelpCenterResponseFixture}
+            helpCenter={getSingleHelpCenterResponseFixtureWithTranslation}
         >
             {children}
         </HelpCenterTranslationProvider>
@@ -113,7 +113,9 @@ describe('<ContactFormInfoSection />', () => {
             <DefaultProviders>
                 <DndProvider backend={HTML5Backend}>
                     <ContactFormInfoSection
-                        helpCenter={getSingleHelpCenterResponseFixture}
+                        helpCenter={
+                            getSingleHelpCenterResponseFixtureWithTranslation
+                        }
                     />
                 </DndProvider>
             </DefaultProviders>

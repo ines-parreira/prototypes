@@ -428,7 +428,7 @@ declare namespace Components {
       card_enabled: boolean;
       helpdesk_integration_email: string | null;
       helpdesk_integration_id: number | null;
-      subject_lines?: {
+      subject_lines: {
         [name: string]: SubjectLineDto;
       };
     }
@@ -831,6 +831,9 @@ declare namespace Components {
         card_enabled?: boolean;
         helpdesk_integration_email: string | null;
         helpdesk_integration_id: number | null;
+        subject_lines?: {
+          [name: string]: SubjectLineDto;
+        };
       };
       source?: "manual" | "automation";
       gaid?: string | null;
@@ -1001,7 +1004,7 @@ declare namespace Components {
         card_enabled: boolean;
         helpdesk_integration_email: string | null;
         helpdesk_integration_id: number | null;
-        subject_lines?: {
+        subject_lines: {
           [name: string]: SubjectLineDto;
         };
       } | null;
@@ -1038,7 +1041,7 @@ declare namespace Components {
         card_enabled: boolean;
         helpdesk_integration_email: string | null;
         helpdesk_integration_id: number | null;
-        subject_lines?: {
+        subject_lines: {
           [name: string]: SubjectLineDto;
         };
       } | null;
@@ -1593,6 +1596,9 @@ declare namespace Components {
         card_enabled?: boolean;
         helpdesk_integration_email: string | null;
         helpdesk_integration_id: number | null;
+        subject_lines?: {
+          [name: string]: SubjectLineDto;
+        };
       };
       gaid?: string | null;
       /**
