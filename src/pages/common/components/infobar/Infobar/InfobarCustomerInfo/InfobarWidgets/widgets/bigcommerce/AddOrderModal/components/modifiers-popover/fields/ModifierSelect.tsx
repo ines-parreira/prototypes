@@ -1,7 +1,8 @@
 import React, {useRef, useState} from 'react'
 
-import {BigCommerceProductSelectModifier} from 'models/integration/types'
+import classnames from 'classnames'
 
+import {BigCommerceProductSelectModifier} from 'models/integration/types'
 import Label from 'pages/common/forms/Label/Label'
 import SelectInputBox, {
     SelectInputBoxContext,
@@ -10,19 +11,22 @@ import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 
+import {FieldProps} from './types'
 import sharedCss from './Shared.less'
 
-type Props = {
-    modifier: BigCommerceProductSelectModifier
-    value: number | undefined
-    onSetValue: (modifierId: number, optionId: number) => void
-}
-export const ModifierSelect = ({modifier, value, onSetValue}: Props) => {
+export const ModifierSelect = ({
+    modifier,
+    value,
+    error,
+    onSetValue,
+}: FieldProps<BigCommerceProductSelectModifier>) => {
     const selectRef = useRef(null)
     const floatingSelectRef = useRef(null)
 
     const [isSelectOpen, setIsSelectOpen] = useState(false)
+
     const label = modifier.option_values.find(({id}) => id === value)?.label
+    const hasError = Boolean(error)
 
     return (
         <div className={sharedCss.inputContainer}>
@@ -34,6 +38,7 @@ export const ModifierSelect = ({modifier, value, onSetValue}: Props) => {
                 floating={floatingSelectRef}
                 onToggle={setIsSelectOpen}
                 label={label}
+                hasError={hasError}
             >
                 <SelectInputBoxContext.Consumer>
                     {(context) => (
@@ -68,6 +73,9 @@ export const ModifierSelect = ({modifier, value, onSetValue}: Props) => {
                     )}
                 </SelectInputBoxContext.Consumer>
             </SelectInputBox>
+            {hasError ? (
+                <p className={classnames(sharedCss.error)}>{error}</p>
+            ) : null}
         </div>
     )
 }

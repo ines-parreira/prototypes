@@ -11,6 +11,8 @@ import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 
+import {FieldProps} from './types'
+
 import sharedCss from './Shared.less'
 import css from './ModifierSwatch.less'
 
@@ -95,18 +97,19 @@ const ColorLabel = ({
     return null
 }
 
-type Props = {
-    modifier: BigCommerceProductSwatchModifier
-    value: number | undefined
-    onSetValue: (modifierId: number, optionId: number) => void
-}
-
-export const ModifierSwatch = ({modifier, value, onSetValue}: Props) => {
+export const ModifierSwatch = ({
+    modifier,
+    value,
+    error,
+    onSetValue,
+}: FieldProps<BigCommerceProductSwatchModifier>) => {
     const selectRef = useRef(null)
     const floatingSelectRef = useRef(null)
 
     const [isSelectOpen, setIsSelectOpen] = useState(false)
+
     const label = modifier.option_values.find(({id}) => id === value)?.label
+    const hasError = Boolean(error)
 
     return (
         <div className={sharedCss.inputContainer}>
@@ -118,6 +121,7 @@ export const ModifierSwatch = ({modifier, value, onSetValue}: Props) => {
                 floating={floatingSelectRef}
                 onToggle={setIsSelectOpen}
                 label={label}
+                hasError={hasError}
             >
                 <SelectInputBoxContext.Consumer>
                     {(context) => (
@@ -162,6 +166,9 @@ export const ModifierSwatch = ({modifier, value, onSetValue}: Props) => {
                     )}
                 </SelectInputBoxContext.Consumer>
             </SelectInputBox>
+            {hasError ? (
+                <p className={classnames(sharedCss.error)}>{error}</p>
+            ) : null}
         </div>
     )
 }

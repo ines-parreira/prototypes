@@ -1,8 +1,7 @@
-import React, {useState} from 'react'
+import React from 'react'
 
 import {
     BigCommerceProduct,
-    BigCommerceProductModifiers,
     BigCommerceProductVariant,
 } from 'models/integration/types'
 
@@ -15,12 +14,14 @@ import {ModifierSwatch} from './fields/ModifierSwatch'
 import {ModifierCheckbox} from './fields/ModifierCheckbox'
 
 import css from './ModifiersPopoverComponent.less'
+import {ModifierErrors, ModifierValues, useModifierValues} from './hooks'
 
 export type ModifierPopoverBodyProps = {
     product: BigCommerceProduct
     variant: BigCommerceProductVariant
     storeHash: string
     modifierValues: ModifierValues
+    modifierErrors: ModifierErrors
     onSetModifierValue: (modifierId: number, optionId: number) => void
 }
 
@@ -29,6 +30,7 @@ export const ModifiersPopoverBody = ({
     variant,
     storeHash,
     modifierValues,
+    modifierErrors,
     onSetModifierValue,
 }: ModifierPopoverBodyProps) => {
     return (
@@ -42,6 +44,7 @@ export const ModifiersPopoverBody = ({
                 const fieldProps = {
                     key: modifier.id,
                     value: modifierValues[modifier.id],
+                    error: modifierErrors[modifier.id],
                     onSetValue: onSetModifierValue,
                 }
 
@@ -86,25 +89,6 @@ export const ModifiersPopoverFooter = ({
     </>
 )
 
-type ModifierValues = Record<string, number | undefined>
-
-const useModifierValues = (modifiers: BigCommerceProductModifiers[]) => {
-    const [modifierValues, setModifierValues] = useState<ModifierValues>(
-        modifiers.reduce((accum, {id}) => {
-            accum[id] = undefined
-
-            return accum
-        }, {} as ModifierValues)
-    )
-
-    const handleSetValue = (modifierId: number, optionId: number) =>
-        setModifierValues({
-            ...modifierValues,
-            [modifierId]: optionId,
-        })
-
-    return {modifierValues, handleSetValue}
-}
 export const ModifiersPopover = ({
     product,
     variant,
@@ -113,9 +97,14 @@ export const ModifiersPopover = ({
     onApply,
 }: Pick<ModifierPopoverBodyProps, 'product' | 'variant' | 'storeHash'> &
     Pick<ModifiersPopoverFooterProps, 'onClose' | 'onApply'>) => {
-    const {modifierValues, handleSetValue} = useModifierValues(
-        product.modifiers
-    )
+    const {modifierValues, modifierErrors, handleSetValue, handleValidate} =
+        useModifierValues(product.modifiers)
+
+    const handleApply = () => {
+        if (handleValidate()) {
+            onApply()
+        }
+    }
 
     return (
         <div className={css.wrapper}>
@@ -126,13 +115,14 @@ export const ModifiersPopover = ({
                         variant={variant}
                         storeHash={storeHash}
                         modifierValues={modifierValues}
+                        modifierErrors={modifierErrors}
                         onSetModifierValue={handleSetValue}
                     />
                 }
                 footer={
                     <ModifiersPopoverFooter
                         onClose={onClose}
-                        onApply={onApply}
+                        onApply={handleApply}
                     />
                 }
             />

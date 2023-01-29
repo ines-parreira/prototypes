@@ -1,17 +1,18 @@
 import React from 'react'
 
+import classnames from 'classnames'
 import {BigCommerceProductCheckboxModifier} from 'models/integration/types'
-
 import CheckBox from 'pages/common/forms/CheckBox'
+
+import {FieldProps} from './types'
 import sharedCss from './Shared.less'
 
-type Props = {
-    modifier: BigCommerceProductCheckboxModifier
-    value: number | undefined
-    onSetValue: (modifierId: number, optionId: number) => void
-}
-
-export const ModifierCheckbox = ({modifier, value, onSetValue}: Props) => {
+export const ModifierCheckbox = ({
+    modifier,
+    value,
+    error,
+    onSetValue,
+}: FieldProps<BigCommerceProductCheckboxModifier>) => {
     const findOptionIdByValue = (value: boolean) =>
         modifier.option_values.find(
             ({value_data: {checked_value}}) => checked_value === value
@@ -22,6 +23,8 @@ export const ModifierCheckbox = ({modifier, value, onSetValue}: Props) => {
             modifier.option_values.find(({id}) => id === findId)?.value_data
                 .checked_value
         )
+
+    const hasError = Boolean(error)
 
     return (
         <div className={sharedCss.inputContainer}>
@@ -35,6 +38,9 @@ export const ModifierCheckbox = ({modifier, value, onSetValue}: Props) => {
             >
                 {modifier.display_name}
             </CheckBox>
+            {hasError ? (
+                <p className={classnames(sharedCss.error)}>{error}</p>
+            ) : null}
         </div>
     )
 }

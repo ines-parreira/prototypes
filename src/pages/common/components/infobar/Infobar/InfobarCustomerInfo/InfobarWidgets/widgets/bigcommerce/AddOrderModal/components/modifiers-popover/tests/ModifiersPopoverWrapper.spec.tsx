@@ -39,4 +39,43 @@ describe('<ModifiersPopover/>', () => {
             screen.getByRole('checkbox', {name: /Include Insurance?/i})
         ).toBeChecked()
     })
+
+    it('can submit the form when all required fields are filled out', () => {
+        const onApplyMock = jest.fn()
+
+        const {container} = render(
+            <ModifiersPopover {...defaultProps} onApply={onApplyMock} />
+        )
+
+        // Does not call `onApply` callback because the form is not completed
+        userEvent.click(screen.getByRole('button', {name: /Apply/i}))
+        expect(onApplyMock).not.toHaveBeenCalled()
+
+        // Snap with all the errors
+        expect(container).toMatchSnapshot('visible error messages')
+
+        // Fill out required fields
+        userEvent.click(screen.getAllByRole('listbox')[0])
+        userEvent.click(screen.getByText(/Test 1/i))
+
+        userEvent.click(screen.getAllByRole('listbox')[1])
+        userEvent.click(screen.getByText(/Pattern/i))
+
+        userEvent.click(screen.getAllByRole('listbox')[2])
+        userEvent.click(screen.getByText(/Three/i))
+
+        // userEvent.click(screen.getAllByRole('listbox')[3])
+        // userEvent.click(screen.getByText(/Dropdown 2/i))
+
+        userEvent.click(screen.getAllByRole('listbox')[4])
+        userEvent.click(screen.getByText(/Terrarium Orbit/i))
+
+        userEvent.click(
+            screen.getByRole('checkbox', {name: /Include Insurance?/i})
+        )
+
+        // `onApply` is now called after all required fields are completed
+        userEvent.click(screen.getByRole('button', {name: /Apply/i}))
+        expect(onApplyMock).toHaveBeenCalled()
+    })
 })

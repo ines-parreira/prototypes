@@ -1,4 +1,6 @@
 @import '~css/new/layout';
+@import '~css/new/colorTokens';
+@import (reference) '~css/typography';
 
 :local {
     .label {
@@ -11,5 +13,11 @@
         &:last-child {
             margin-bottom: 0;
         }
+    }
+
+    .error {
+        .caption-regular();
+        color: @classic-feedback-error;
+        margin: 0.25rem 0 1rem;
     }
 }
