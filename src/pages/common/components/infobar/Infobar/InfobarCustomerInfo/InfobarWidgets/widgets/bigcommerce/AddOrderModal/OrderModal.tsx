@@ -34,7 +34,6 @@ import {
     BigCommerceProductsListType,
     BigCommerceProductVariant,
     CreateOrderValidationResult,
-    IntegrationDataItem,
     IntegrationType,
 } from 'models/integration/types'
 import {getIntegrationsByType} from 'state/integrations/selectors'
@@ -77,6 +76,7 @@ import {CurrencyPickerDropdown} from './CurrencyPickerDropdown'
 
 import css from './OrderModal.less'
 import {ProductSearch} from './ProductSearch'
+import {useModifiersPopover} from './components/modifiers-popover/hooks'
 
 type Props = {
     integration: BigCommerceIntegration
@@ -514,6 +514,65 @@ export function OrderModal({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currency])
 
+    const handleAddRow = (
+        props:
+            | {
+                  product: BigCommerceProduct
+                  variant: BigCommerceProductVariant
+                  optionSelections?: {option_id: number; option_value: number}[]
+              }
+            | {
+                  customProduct: BigCommerceCustomProduct
+              }
+    ) => {
+        if ('customProduct' in props) {
+            return void addRow({
+                integrationId: integration.id,
+                customProduct: props.customProduct,
+                products,
+                cart,
+                setIsLoading,
+                setCart,
+                setProducts,
+                setLineItemWithError,
+            })
+        }
+
+        const {product, variant, optionSelections} = props
+
+        return void addRow({
+            integrationId: integration.id,
+            lineProduct: product,
+            variant,
+            optionSelections,
+            products,
+            cart,
+            setIsLoading,
+            setCart,
+            setProducts,
+            setLineItemWithError,
+        })
+    }
+
+    const {
+        getReferenceProps,
+        setReference,
+        modifiersPopover,
+        maybeOpenModifierPopover,
+    } = useModifiersPopover(
+        integration.meta.store_hash,
+        ({product, variant, modifierValues}) => {
+            const optionSelections = Object.entries(modifierValues)
+                .filter(([, option_value]) => Boolean(option_value))
+                .map(([option_id, option_value]) => ({
+                    option_id: parseInt(option_id),
+                    option_value: option_value!,
+                }))
+
+            handleAddRow({product, variant, optionSelections})
+        }
+    )
+
     return (
         <Modal
             isOpen
@@ -521,6 +580,8 @@ export function OrderModal({
             isClosable={false}
             onClose={() => handleCancel('header')}
             size="medium"
+            ref={setReference}
+            {...getReferenceProps()}
         >
             <ModalHeader title="Create order" forceCloseButton />
             <div className={css.scrollable}>
@@ -578,35 +639,21 @@ export function OrderModal({
                         <ProductSearch
                             currency={currency}
                             validationStatus={validationStatus}
-                            onAddCustomProduct={(
-                                customItem: BigCommerceCustomProduct
-                            ) => {
-                                void addRow({
-                                    integrationId: integration.id,
-                                    customProduct: customItem,
-                                    setIsLoading,
-                                    cart,
-                                    setCart,
-                                    products,
-                                    setProducts,
-                                    setLineItemWithError,
-                                })
-                            }}
-                            onVariantClicked={(
-                                item: IntegrationDataItem<BigCommerceProduct>,
-                                variant: BigCommerceProductVariant
-                            ) => {
-                                void addRow({
-                                    integrationId: integration.id,
-                                    lineProduct: item.data,
-                                    variant: variant,
-                                    setIsLoading,
-                                    cart,
-                                    setCart,
-                                    products,
-                                    setProducts,
-                                    setLineItemWithError,
-                                })
+                            onAddCustomProduct={(customItem) =>
+                                handleAddRow({customProduct: customItem})
+                            }
+                            onVariantClicked={(item, variant) => {
+                                if (
+                                    maybeOpenModifierPopover({
+                                        product: item.data,
+                                        variant,
+                                    })
+                                ) {
+                                    // If modifier popover opened - do not proceed further
+                                    return
+                                }
+
+                                handleAddRow({product: item.data, variant})
                             }}
                         />
                         {validationStatus?.products === false && (
@@ -762,6 +809,7 @@ export function OrderModal({
                     </Button>
                 </div>
             </ModalFooter>
+            {modifiersPopover}
         </Modal>
     )
 }

@@ -1,25 +1,24 @@
 import {
     BigCommerceProductCheckboxModifier,
+    bigCommerceProductCheckboxModifierTypes,
     BigCommerceProductModifiers,
     BigCommerceProductSelectModifier,
+    bigCommerceProductSelectModifierTypes,
     BigCommerceProductSwatchModifier,
+    bigCommerceProductSwatchModifierTypes,
 } from 'models/integration/types'
 
 export const isSelectModifier = (
     modifier: BigCommerceProductModifiers
 ): modifier is BigCommerceProductSelectModifier =>
-    [
-        'radio_buttons',
-        'rectangles',
-        'dropdown',
-        'product_list_with_images',
-    ].includes(modifier.type)
+    bigCommerceProductSelectModifierTypes.includes(modifier.type as any)
 
 export const isSwatchModifier = (
     modifier: BigCommerceProductModifiers
-): modifier is BigCommerceProductSwatchModifier => modifier.type === 'swatch'
+): modifier is BigCommerceProductSwatchModifier =>
+    bigCommerceProductSwatchModifierTypes.includes(modifier.type as any)
 
 export const isCheckboxModifier = (
     modifier: BigCommerceProductModifiers
 ): modifier is BigCommerceProductCheckboxModifier =>
-    modifier.type === 'checkbox'
+    bigCommerceProductCheckboxModifierTypes.includes(modifier.type as any)

@@ -23,6 +23,7 @@ const defaultProps: ComponentProps<typeof ModifiersPopover> = {
     variant: bigCommerceVariantFixture(),
     onClose: () => action('Close'),
     onApply: () => action('Apply'),
+    setReference: () => action('Reference set'),
 }
 
 export const Default = Template.bind({})

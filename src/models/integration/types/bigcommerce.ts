@@ -228,28 +228,36 @@ export interface BigCommerceProductModifiersBase<
     }>
 }
 
+export const bigCommerceProductCheckboxModifierTypes = ['checkbox'] as const
+
 export interface BigCommerceProductCheckboxModifier
     extends BigCommerceProductModifiersBase<{checked_value: boolean}> {
-    type: 'checkbox'
+    type: typeof bigCommerceProductCheckboxModifierTypes[number]
     config: {checked_by_default: boolean; checkbox_label: string}
 }
+
+export const bigCommerceProductSwatchModifierTypes = ['swatch'] as const
 
 export interface BigCommerceProductSwatchModifier
     extends BigCommerceProductModifiersBase<
         | {colors: [string] | [string, string] | [string, string, string]}
         | {image_url: string}
     > {
-    type: 'swatch'
+    type: typeof bigCommerceProductSwatchModifierTypes[number]
     config: []
 }
 
+export const bigCommerceProductSelectModifierTypes = [
+    'radio_buttons',
+    'rectangles',
+    'dropdown',
+    'product_list',
+    'product_list_with_images',
+] as const
+
 export interface BigCommerceProductSelectModifier
     extends BigCommerceProductModifiersBase<null> {
-    type:
-        | 'radio_buttons'
-        | 'rectangles'
-        | 'dropdown'
-        | 'product_list_with_images'
+    type: typeof bigCommerceProductSelectModifierTypes[number]
     config: []
 }
 

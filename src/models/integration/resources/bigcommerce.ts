@@ -73,12 +73,14 @@ export async function addBigCommerceLineItem({
     cartId,
     productId,
     variantId,
+    optionSelections,
     customProduct,
 }: {
     integrationId: number
     cartId: string
     productId?: number
     variantId?: number
+    optionSelections?: {option_id: number; option_value: number}[]
     customProduct?: BigCommerceCustomProduct
 }): Promise<BigCommerceCart> {
     // Add a line item or a custom line item to the Cart.
@@ -95,6 +97,7 @@ export async function addBigCommerceLineItem({
                       product_id: productId,
                       variant_id: variantId,
                       quantity: 1,
+                      option_selections: optionSelections,
                   },
               ],
           } // Line Item

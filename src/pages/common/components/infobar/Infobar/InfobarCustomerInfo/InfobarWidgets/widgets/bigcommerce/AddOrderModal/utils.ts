@@ -140,22 +140,24 @@ export const addRow = async ({
     integrationId,
     lineProduct,
     customProduct,
-    variant,
-    setIsLoading,
-    cart,
-    setCart,
     products,
+    variant,
+    optionSelections,
+    cart,
+    setIsLoading,
+    setCart,
     setProducts,
     setLineItemWithError,
 }: {
     integrationId: number
     lineProduct?: BigCommerceProduct
     customProduct?: BigCommerceCustomProduct
-    variant?: BigCommerceProductVariant
-    setIsLoading: (state: boolean) => void
-    cart: Maybe<BigCommerceCart>
-    setCart: (cart: BigCommerceCart) => void
     products: BigCommerceProductsListType
+    optionSelections?: {option_id: number; option_value: number}[]
+    variant?: BigCommerceProductVariant
+    cart: Maybe<BigCommerceCart>
+    setIsLoading: (state: boolean) => void
+    setCart: (cart: BigCommerceCart) => void
     setProducts: (products: BigCommerceProductsListType) => void
     setLineItemWithError: (value: BigCommerceCreateOrderErrorType) => void
 }) => {
@@ -212,6 +214,7 @@ export const addRow = async ({
                 cartId: cartId,
                 productId: lineProduct.id,
                 variantId: variant.id,
+                optionSelections,
             })
 
             // Line Items are identified by their ID in the Products list
@@ -713,3 +716,6 @@ export const exportedForTesting = {
 
 export const useCanViewBigCommerceV1Features = () =>
     Boolean(useFlags()[FeatureFlagKey.BigCommerceCreateOrderV1])
+
+export const useCanViewBigCommerceCreateOrderModifiers = () =>
+    Boolean(useFlags()[FeatureFlagKey.BigcommerceCreateOrderModifiers])

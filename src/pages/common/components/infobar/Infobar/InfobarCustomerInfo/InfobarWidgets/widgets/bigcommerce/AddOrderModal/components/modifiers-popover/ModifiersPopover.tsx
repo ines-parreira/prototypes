@@ -89,25 +89,31 @@ export const ModifiersPopoverFooter = ({
     </>
 )
 
+type Props = {
+    setReference: (node: HTMLElement | null) => void
+    onApply: (values: ModifierValues) => void
+} & Pick<ModifierPopoverBodyProps, 'product' | 'variant' | 'storeHash'> &
+    Pick<ModifiersPopoverFooterProps, 'onClose'>
+
 export const ModifiersPopover = ({
     product,
     variant,
     storeHash,
     onClose,
     onApply,
-}: Pick<ModifierPopoverBodyProps, 'product' | 'variant' | 'storeHash'> &
-    Pick<ModifiersPopoverFooterProps, 'onClose' | 'onApply'>) => {
+    setReference,
+}: Props) => {
     const {modifierValues, modifierErrors, handleSetValue, handleValidate} =
         useModifierValues(product.modifiers)
 
     const handleApply = () => {
         if (handleValidate()) {
-            onApply()
+            onApply(modifierValues)
         }
     }
 
     return (
-        <div className={css.wrapper}>
+        <div className={css.wrapper} ref={setReference}>
             <PopoverContainerBody
                 body={
                     <ModifiersPopoverBody

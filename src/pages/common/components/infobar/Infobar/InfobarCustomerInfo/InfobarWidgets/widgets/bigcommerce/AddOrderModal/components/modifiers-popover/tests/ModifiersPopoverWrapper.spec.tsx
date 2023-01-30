@@ -13,6 +13,7 @@ const defaultProps = {
     variant: bigCommerceVariantFixture(),
     onClose: jest.fn(),
     onApply: jest.fn(),
+    setReference: jest.fn(),
 }
 describe('<ModifiersPopover/>', () => {
     it('renders as expected', () => {
@@ -70,6 +71,21 @@ describe('<ModifiersPopover/>', () => {
         userEvent.click(screen.getAllByRole('listbox')[4])
         userEvent.click(screen.getByText(/Terrarium Orbit/i))
 
+        // Set "true" value for a checkbox
+        userEvent.click(
+            screen.getByRole('checkbox', {name: /Include Insurance?/i})
+        )
+
+        // Set "false" value for a checkbox
+        userEvent.click(
+            screen.getByRole('checkbox', {name: /Include Insurance?/i})
+        )
+
+        // Cannot call onApply because validation is failing due to checkbox with "false" value
+        userEvent.click(screen.getByRole('button', {name: /Apply/i}))
+        expect(onApplyMock).not.toHaveBeenCalled()
+
+        // Set "true" value for a checkbox
         userEvent.click(
             screen.getByRole('checkbox', {name: /Include Insurance?/i})
         )
