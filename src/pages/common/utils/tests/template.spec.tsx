@@ -1,4 +1,8 @@
-import {LDMLToMomentFormat, renderTemplate} from '../template'
+import {
+    LDMLToMomentFormat,
+    MAX_OBJECT_RENDER_LENGTH,
+    renderTemplate,
+} from '../template'
 
 describe('utils', () => {
     describe('template', () => {
@@ -279,6 +283,33 @@ describe('utils', () => {
                         },
                     })
                 ).toBe('foo')
+            })
+
+            it('should render objects in stringified JSON', () => {
+                expect(
+                    renderTemplate('{{x}}', {
+                        x: {
+                            customer: {
+                                integrations: {
+                                    14: {
+                                        orders: ['foo'],
+                                    },
+                                },
+                            },
+                        },
+                    })
+                ).toBe(
+                    '{"customer":{"integrations":{"14":{"orders":["foo"]}}}}'
+                )
+            })
+            it('should trim too long objects in stringified JSON', () => {
+                expect(
+                    renderTemplate('{{x}}', {
+                        x: {
+                            customer: 'customer_name'.repeat(1000),
+                        },
+                    }).length
+                ).toBe(MAX_OBJECT_RENDER_LENGTH)
             })
         })
     })

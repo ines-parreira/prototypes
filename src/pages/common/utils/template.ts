@@ -12,6 +12,8 @@ export const templateRegex =
 export const indexArrayRegex = /\[(?:\-)?\d+\]/
 export const stringStartIndexArrayRegex = /^\[(?:\-)?\d+\]/
 
+export const MAX_OBJECT_RENDER_LENGTH = 4096
+
 /**
  * Transforms a formatting string pattern in LDML to `moment.js` format.
  * LDML is the Unicode standard for date formatting patterns: https://unicode.org/reports/tr35/tr35-dates.html#Contents
@@ -112,6 +114,13 @@ export const renderTemplate = (
                     }
                     value = filters[filterFunc](value, filterArgs)
                 }
+                if (typeof value === 'object' && value !== null) {
+                    value = JSON.stringify(value)
+                    if (value.length > MAX_OBJECT_RENDER_LENGTH)
+                        value =
+                            value.slice(0, MAX_OBJECT_RENDER_LENGTH - 3) + '...'
+                }
+
                 return value
             } catch (e) {
                 console.error('Failed to render template', match, variable, e)
