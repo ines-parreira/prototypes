@@ -1,0 +1,43 @@
+@import '~css/new/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+
+    .contentContainer {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .titlePlaceholder {
+        opacity: 0.7;
+    }
+
+    .repliesContainer {
+        display: flex;
+        flex-direction: column;
+        row-gap: @layout-spacing-xs;
+        justify-content: flex-end;
+        align-items: flex-end;
+        margin-top: auto;
+    }
+
+    .reply {
+        .body-medium();
+        padding: 6px 16px;
+        border-width: 1px;
+        border-style: solid;
+        border-radius: 4px;
+
+        :global {
+            animation: fadeIn 0.2s ease-in;
+        }
+    }
+}

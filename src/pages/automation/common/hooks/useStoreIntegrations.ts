@@ -1,4 +1,5 @@
 import {useMemo} from 'react'
+
 import {getIntegrationsByTypes} from 'state/integrations/selectors'
 import {
     IntegrationType,
@@ -9,7 +10,7 @@ import {
 import useAppSelector from 'hooks/useAppSelector'
 
 const useStoreIntegrations = () => {
-    const getStoreIntegration = useMemo(
+    const getStoreIntegrations = useMemo(
         () =>
             getIntegrationsByTypes([
                 IntegrationType.Shopify,
@@ -19,7 +20,7 @@ const useStoreIntegrations = () => {
         []
     )
 
-    return useAppSelector(getStoreIntegration) as (
+    return useAppSelector(getStoreIntegrations) as (
         | ShopifyIntegration
         | Magento2Integration
         | BigCommerceIntegration

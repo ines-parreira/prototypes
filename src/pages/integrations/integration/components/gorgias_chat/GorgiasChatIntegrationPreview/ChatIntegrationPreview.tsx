@@ -1,5 +1,4 @@
 import classnames from 'classnames'
-import {Map} from 'immutable'
 import moment from 'moment'
 import React, {ReactNode} from 'react'
 
@@ -30,7 +29,6 @@ import GorgiasChatPoweredBy from './GorgiasChatPoweredBy'
 
 type Props = {
     name: string
-    currentUser?: Map<any, any>
     introductionText?: string
     offlineIntroductionText?: string
     headerText?: string

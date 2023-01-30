@@ -6,6 +6,7 @@ export type SortableAccordionContextType = {
     isDisabled: boolean
     onMove: (dragIndex: number, hoverIndex: number) => void
     onDrop: () => void
+    onCancel: () => void
 }
 
 const SortableAccordionContext = createContext<SortableAccordionContextType>({
@@ -13,6 +14,7 @@ const SortableAccordionContext = createContext<SortableAccordionContextType>({
     isDisabled: false,
     onMove: _noop,
     onDrop: _noop,
+    onCancel: _noop,
 })
 
 export const useSortableAccordionContext = () =>

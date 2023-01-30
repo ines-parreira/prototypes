@@ -449,7 +449,6 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                 </Button>
             </Group>
             <ChatIntegrationPreview
-                currentUser={currentUser}
                 name={name}
                 avatarType={avatarType}
                 avatarTeamPictureUrl={avatarTeamPictureUrl}

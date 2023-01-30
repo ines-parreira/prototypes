@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useMemo} from 'react'
+import React, {useMemo, useRef, useState} from 'react'
 import {Container} from 'reactstrap'
 import {useParams} from 'react-router-dom'
 import classnames from 'classnames'
@@ -11,6 +11,10 @@ import Loader from 'pages/common/components/Loader/Loader'
 import Button from 'pages/common/components/button/Button'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import {QuickResponsePolicy} from 'models/selfServiceConfiguration/types'
+import useSelfServiceChatIntegrations from 'pages/automation/common/hooks/useSelfServiceChatIntegrations'
+import SelfServicePreviewContainer from 'pages/automation/common/components/preview/SelfServicePreviewContainer'
+import SelfServiceChatIntegrationPreview from 'pages/automation/common/components/preview/SelfServiceChatIntegrationPreview'
+import SelfServiceQuickResponseChatIntegrationPreview from 'pages/automation/common/components/preview/SelfServiceQuickResponseChatIntegrationPreview'
 
 import QuickResponsesAccordionCaption from './components/QuickResponsesAccordionCaption'
 import QuickResponsesAccordion from './components/QuickResponsesAccordion'
@@ -26,28 +30,35 @@ import {
 import css from './QuickResponsesView.less'
 
 const QuickResponsesView = () => {
-    const {integrationType, integrationId} = useParams<{
-        integrationType: string
-        integrationId: string
+    const {shopType, shopName} = useParams<{
+        shopType: string
+        shopName: string
     }>()
     const {
-        isFetchPending,
         isUpdatePending,
         quickResponses,
+        selfServiceConfiguration,
         handleQuickResponsesUpdate,
         handleQuickResponsesDelete,
-    } = useQuickResponses(integrationType, integrationId)
+    } = useQuickResponses(shopType, shopName)
+    const chatIntegrations = useSelfServiceChatIntegrations(shopType, shopName)
 
     const [errors, setErrors] = useState<Record<string, true>>({})
     const [dirtyQuickResponses, setDirtyQuickResponses] =
         useState(quickResponses)
-    const [expandedQuickResponse, setExpandedQuickResponse] = useState<
-        QuickResponsePolicy['id'] | false
-    >(false)
+    const [expandedQuickResponseId, setExpandedQuickResponseId] = useState<
+        QuickResponsePolicy['id'] | null
+    >(null)
+    const [hoveredQuickResponseId, setHoveredQuickResponseId] = useState<
+        QuickResponsePolicy['id'] | null
+    >(null)
+    const previousQuickResponses = useRef(quickResponses)
 
-    useEffect(() => {
+    if (previousQuickResponses.current !== quickResponses) {
+        previousQuickResponses.current = quickResponses
+
         setDirtyQuickResponses(quickResponses)
-    }, [quickResponses])
+    }
 
     const activeQuickResponsesCount = quickResponses.filter(
         (quickResponse) => !quickResponse.deactivated_datetime
@@ -92,7 +103,7 @@ const QuickResponsesView = () => {
         }
 
         setDirtyQuickResponses([...dirtyQuickResponses, newQuickResponse])
-        setExpandedQuickResponse(newQuickResponse.id)
+        setExpandedQuickResponseId(newQuickResponse.id)
     }
     const handleSubmit = () => {
         handleQuickResponsesUpdate(dirtyQuickResponses)
@@ -106,15 +117,21 @@ const QuickResponsesView = () => {
         dirtyQuickResponses,
         quickResponses
     )
+    const expandedQuickResponse = dirtyQuickResponses.find(
+        (dirtyQuickResponse) =>
+            dirtyQuickResponse.id === expandedQuickResponseId
+    )
 
     return (
         <div className="full-width">
             <PageHeader title="Quick responses" />
             <Container
                 fluid
-                className={classnames({[css.container]: !isFetchPending})}
+                className={classnames({
+                    [css.container]: Boolean(selfServiceConfiguration),
+                })}
             >
-                {isFetchPending ? (
+                {!selfServiceConfiguration ? (
                     <Loader />
                 ) : (
                     <QuickResponsesViewContext.Provider
@@ -147,8 +164,11 @@ const QuickResponsesView = () => {
                             )}
                             <QuickResponsesAccordion
                                 items={dirtyQuickResponses}
-                                expandedItem={expandedQuickResponse}
-                                onExpandedItemChange={setExpandedQuickResponse}
+                                expandedItem={expandedQuickResponseId}
+                                onExpandedItemChange={
+                                    setExpandedQuickResponseId
+                                }
+                                onHoveredItemChange={setHoveredQuickResponseId}
                                 onPreviewChange={setDirtyQuickResponses}
                                 onChange={handleQuickResponsesUpdate}
                                 onDelete={handleQuickResponsesDelete}
@@ -195,7 +215,33 @@ const QuickResponsesView = () => {
                                 }
                             />
                         </div>
-                        <div />
+                        <SelfServicePreviewContainer
+                            channels={chatIntegrations}
+                            alertActionMessage="Go to chat settings"
+                            alertActionHref="/app/settings/channels/gorgias_chat"
+                            alertMessage="Connect a chat to your store to use this feature."
+                        >
+                            {(channel) =>
+                                expandedQuickResponse ? (
+                                    <SelfServiceQuickResponseChatIntegrationPreview
+                                        integration={channel}
+                                        quickResponse={expandedQuickResponse}
+                                    />
+                                ) : (
+                                    <SelfServiceChatIntegrationPreview
+                                        integration={channel}
+                                        selfServiceConfiguration={{
+                                            ...selfServiceConfiguration,
+                                            quick_response_policies:
+                                                dirtyQuickResponses,
+                                        }}
+                                        highlightedQuickResponseId={
+                                            hoveredQuickResponseId
+                                        }
+                                    />
+                                )
+                            }
+                        </SelfServicePreviewContainer>
                     </QuickResponsesViewContext.Provider>
                 )}
             </Container>

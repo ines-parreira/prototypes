@@ -207,7 +207,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
           <a
             class="link isNested"
             data-active-class-name="active"
-            href="/app/automation/self-service/shopify/My shop/preferences/quick-response"
+            href="/app/automation/shopify/My shop/quick-responses"
           >
             Quick responses
           </a>
@@ -971,7 +971,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
           <a
             class="link isNested"
             data-active-class-name="active"
-            href="/app/automation/self-service/shopify/My shop/preferences/quick-response"
+            href="/app/automation/shopify/My shop/quick-responses"
           >
             Quick responses
           </a>

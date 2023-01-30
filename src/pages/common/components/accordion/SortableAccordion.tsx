@@ -5,8 +5,8 @@ import React, {
     ReactComponentElement,
     useMemo,
     useState,
+    useRef,
 } from 'react'
-import {useDeepCompareEffect} from 'react-use'
 import _isEqual from 'lodash/isEqual'
 
 import Accordion, {AccordionProps} from './Accordion'
@@ -42,14 +42,17 @@ const SortableAccordion = ({
     const itemsById = items.reduce<
         Record<string, SortableAccordionItemComponent>
     >((acc, item) => ({...acc, [item.props.id]: item}), {})
-    const orderedItems = items.map((item) => item.props.id)
-    const [dirtyOrderedItems, setDirtyOrderedItems] = useState(orderedItems)
+    const nextOrderedItems = items.map((item) => item.props.id)
+    const orderedItems = useRef(nextOrderedItems)
+    const [dirtyOrderedItems, setDirtyOrderedItems] = useState(
+        orderedItems.current
+    )
 
-    useDeepCompareEffect(() => {
-        setDirtyOrderedItems(orderedItems)
-    }, [orderedItems])
+    if (!_isEqual(orderedItems.current, nextOrderedItems)) {
+        orderedItems.current = nextOrderedItems
 
-    const areOrderedItemsDirty = !_isEqual(dirtyOrderedItems, orderedItems)
+        setDirtyOrderedItems(orderedItems.current)
+    }
 
     const sortableAccordionContext: SortableAccordionContextType = useMemo(
         () => ({
@@ -69,12 +72,17 @@ const SortableAccordion = ({
                 setDirtyOrderedItems(nextDirtyOrderedItems)
             },
             onDrop: () => {
-                if (areOrderedItemsDirty) {
+                if (!_isEqual(dirtyOrderedItems, orderedItems.current)) {
                     onReorder(dirtyOrderedItems)
                 }
             },
+            onCancel: () => {
+                if (!_isEqual(dirtyOrderedItems, orderedItems.current)) {
+                    setDirtyOrderedItems(orderedItems.current)
+                }
+            },
         }),
-        [type, isDisabled, onReorder, dirtyOrderedItems, areOrderedItemsDirty]
+        [type, isDisabled, onReorder, dirtyOrderedItems]
     )
 
     return (

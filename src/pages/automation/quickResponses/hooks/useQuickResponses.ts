@@ -1,15 +1,15 @@
-import {useCallback} from 'react'
+import {useCallback, useMemo} from 'react'
 
 import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfServiceConfiguration'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 
-const useQuickResponses = (integrationType: string, integrationId: string) => {
+const useQuickResponses = (shopType: string, shopName: string) => {
     const {
         isFetchPending,
         isUpdatePending,
         selfServiceConfiguration,
         handleSelfServiceConfigurationUpdate,
-    } = useSelfServiceConfiguration(integrationType, integrationId)
+    } = useSelfServiceConfiguration(shopType, shopName)
 
     const handleQuickResponsesUpdate = useCallback(
         (
@@ -44,11 +44,16 @@ const useQuickResponses = (integrationType: string, integrationId: string) => {
         },
         [selfServiceConfiguration, handleSelfServiceConfigurationUpdate]
     )
+    const quickResponses = useMemo(
+        () => selfServiceConfiguration?.quick_response_policies ?? [],
+        [selfServiceConfiguration?.quick_response_policies]
+    )
 
     return {
         isFetchPending,
         isUpdatePending,
-        quickResponses: selfServiceConfiguration?.quick_response_policies ?? [],
+        quickResponses,
+        selfServiceConfiguration,
         handleQuickResponsesUpdate,
         handleQuickResponsesDelete,
     }

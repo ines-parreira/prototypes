@@ -17,24 +17,23 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 
-import useStoreIntegrations from './useStoreIntegrations'
-import {getShopNameFromStoreIntegration} from './utils'
+import useSelfServiceStoreIntegration from './useSelfServiceStoreIntegration'
 
-const useSelfServiceConfiguration = (
-    integrationType: string,
-    integrationId: string
-) => {
+const useSelfServiceConfiguration = (shopType: string, shopName: string) => {
     const history = useHistory()
     const dispatch = useAppDispatch()
-    const storeIntegrations = useStoreIntegrations()
     const selfServiceConfigurations = useAppSelector(
         getSelfServiceConfigurations
     )
+    const storeIntegration = useSelfServiceStoreIntegration(shopType, shopName)
+    const storeIntegrationId = storeIntegration?.id
 
     const [{loading: isFetchPending}, handleSelfServiceConfigurationFetch] =
-        useAsyncFn(async () => {
+        useAsyncFn(async (storeIntegrationId: number) => {
             try {
-                const res = await fetchSelfServiceConfiguration(integrationId)
+                const res = await fetchSelfServiceConfiguration(
+                    storeIntegrationId
+                )
                 void dispatch(selfServiceConfigurationFetched(res))
             } catch (error) {
                 void dispatch(
@@ -45,7 +44,7 @@ const useSelfServiceConfiguration = (
                 )
                 history.push('/app/automation')
             }
-        }, [integrationId])
+        }, [])
     const [{loading: isUpdatePending}, handleSelfServiceConfigurationUpdate] =
         useAsyncFn(
             async (
@@ -76,38 +75,34 @@ const useSelfServiceConfiguration = (
         )
 
     const selfServiceConfiguration = useMemo(() => {
-        const storeIntegrationId = parseInt(integrationId, 10)
-        const storeIntegration = storeIntegrations.find(
-            (storeIntegration) =>
-                storeIntegration.type === integrationType &&
-                storeIntegration.id === storeIntegrationId
+        return selfServiceConfigurations.find(
+            (selfServiceConfiguration) =>
+                selfServiceConfiguration.type === shopType &&
+                selfServiceConfiguration.shop_name === shopName
         )
-
-        if (!storeIntegration) {
-            return null
-        }
-
-        const shopName = getShopNameFromStoreIntegration(storeIntegration)
-
-        return (
-            selfServiceConfigurations.find(
-                (selfServiceConfiguration) =>
-                    selfServiceConfiguration.type === integrationType &&
-                    selfServiceConfiguration.shop_name === shopName
-            ) ?? null
-        )
-    }, [
-        integrationType,
-        integrationId,
-        storeIntegrations,
-        selfServiceConfigurations,
-    ])
+    }, [shopType, shopName, selfServiceConfigurations])
 
     useEffect(() => {
-        if (!selfServiceConfiguration) {
-            void handleSelfServiceConfigurationFetch()
+        if (!storeIntegrationId) {
+            void dispatch(
+                notify({
+                    message: 'Failed to fetch',
+                    status: NotificationStatus.Error,
+                })
+            )
+            history.push('/app/automation')
         }
-    }, [selfServiceConfiguration, handleSelfServiceConfigurationFetch])
+    }, [storeIntegrationId, dispatch, history])
+
+    useEffect(() => {
+        if (!selfServiceConfiguration && storeIntegrationId) {
+            void handleSelfServiceConfigurationFetch(storeIntegrationId)
+        }
+    }, [
+        selfServiceConfiguration,
+        storeIntegrationId,
+        handleSelfServiceConfigurationFetch,
+    ])
 
     return {
         isFetchPending,

@@ -998,8 +998,9 @@ export function SelfServiceSettingsRoutes({
                             : `order-management`
                     }`}
                 />
-                <Route
+                <MaybeDeprecatedRoute
                     path={`${path}/:integrationType/:shopName/preferences/quick-response`}
+                    redirectTo="/app/automation/:integrationType/:shopName/quick-responses"
                     exact
                     render={appRender({
                         content: memoizedWithUserRoleRequired(
@@ -1009,6 +1010,7 @@ export function SelfServiceSettingsRoutes({
                         ),
                         navbar,
                     })}
+                    isDeprecated={isDeprecated}
                 />
                 <Route
                     path={`${path}/:integrationType/:shopName/preferences/quick-response/new`}
@@ -1284,7 +1286,7 @@ export function AutomationRoutes({match: {path}}: RouteComponentProps) {
                 )}
             />
             <Route
-                path={`${path}/:integrationType/:integrationId/quick-responses`}
+                path={`${path}/:shopType/:shopName/quick-responses`}
                 exact
                 render={appRender({
                     content: QuickResponsesViewContainer,

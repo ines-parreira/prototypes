@@ -45,9 +45,7 @@ export const SelfServiceSection = ({
                     shopifyIntegration.get('id')
 
                 const {deactivated_datetime} =
-                    await fetchSelfServiceConfiguration(
-                        `${shopifyIntegrationId}`
-                    )
+                    await fetchSelfServiceConfiguration(shopifyIntegrationId)
 
                 setSspShopState(
                     deactivated_datetime

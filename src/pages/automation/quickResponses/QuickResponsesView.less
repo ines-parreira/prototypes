@@ -3,12 +3,10 @@
 
 :local {
     .container {
-        display: grid;
         padding: @layout-spacing-m;
-        grid-template-columns: 1fr;
-        row-gap: @layout-spacing-xl;
 
         @media @desktops {
+            display: grid;
             grid-template-columns: 1fr 452px;
             column-gap: @layout-spacing-m;
         }

@@ -72,6 +72,31 @@ export const renderWithDnD = (
     })
 }
 
+export type RenderWithRouterAndDnDParams = RenderWithRouterParams &
+    RenderWithDnDParams
+
+export const renderWithRouterAndDnD = (
+    ui: ReactElement,
+    {
+        options,
+        path = '/',
+        route = '/',
+        history = createMemoryHistory({initialEntries: [route]}),
+        backend = HTML5Backend,
+    }: RenderWithRouterAndDnDParams = {}
+) => {
+    return render(ui, {
+        wrapper: ({children}: any) => (
+            <DndProvider backend={backend}>
+                <Router history={history}>
+                    <Route path={path}>{children}</Route>
+                </Router>
+            </DndProvider>
+        ),
+        ...options,
+    })
+}
+
 export type ContextConsumerMock<ContextValue> = ComponentType & {
     getLastContextValue: () => ContextValue | undefined
 }

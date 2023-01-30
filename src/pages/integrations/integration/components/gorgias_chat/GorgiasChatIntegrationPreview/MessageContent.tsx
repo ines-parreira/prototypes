@@ -1,6 +1,6 @@
 import classnames from 'classnames'
 import {Map} from 'immutable'
-import React, {Component} from 'react'
+import React, {Component, ReactNode, Ref} from 'react'
 
 import Avatar from '../../../../../common/components/Avatar/Avatar'
 
@@ -19,10 +19,13 @@ export type AgentMessages = {
 }[]
 
 type Props = {
+    className?: string
+    innerRef?: Ref<HTMLDivElement>
     conversationColor: string
     currentUser?: Map<any, any>
-    customerInitialMessages: string[] | JSX.Element[]
+    customerInitialMessages: ReactNode[]
     agentMessages: AgentMessages
+    hideConversationTimestamp?: boolean
     hideMessageTimestamp?: boolean
     enableAgentMessagesAnimations?: boolean
 }
@@ -71,12 +74,16 @@ const renderAgentMessage = ({
 export default class MessageContent extends Component<Props> {
     render() {
         const {
+            className,
+            innerRef,
             conversationColor,
             currentUser,
             customerInitialMessages,
             agentMessages,
+            hideConversationTimestamp,
             hideMessageTimestamp,
             enableAgentMessagesAnimations,
+            children,
         } = this.props
 
         if (!currentUser) {
@@ -84,10 +91,11 @@ export default class MessageContent extends Component<Props> {
         }
 
         return (
-            <div className={css.content}>
+            <div ref={innerRef} className={classnames(css.content, className)}>
                 <CustomerInitialMessages
                     conversationColor={conversationColor}
                     messages={customerInitialMessages}
+                    hideConversationTimestamp={hideConversationTimestamp}
                     hideMessageTimestamp={hideMessageTimestamp}
                 />
 
@@ -137,6 +145,8 @@ export default class MessageContent extends Component<Props> {
                         </div>
                     </div>
                 )}
+
+                {children}
             </div>
         )
     }

@@ -24,7 +24,8 @@ const AccordionItem = ({
     const randomId = useId()
     const id = idProp || randomId
 
-    const {expandedItem, toggleItem} = useAccordionContext()
+    const {expandedItem, toggleItem, onHoveredItemChange} =
+        useAccordionContext()
 
     const accordionItemContext: AccordionItemContextType = useMemo(
         () => ({
@@ -39,9 +40,18 @@ const AccordionItem = ({
         [expandedItem, id, isDisabled, toggleItem]
     )
 
+    const handleMouseEnter = () => {
+        onHoveredItemChange(id)
+    }
+    const handleMouseLeave = () => {
+        onHoveredItemChange(null)
+    }
+
     return (
         <AccordionItemContext.Provider value={accordionItemContext}>
             <div
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
                 className={classnames(css.container, {
                     [css.isExpanded]: accordionItemContext.isExpanded,
                     [css.isDisabled]: accordionItemContext.isDisabled,

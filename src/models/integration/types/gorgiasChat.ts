@@ -24,7 +24,7 @@ export type GorgiasChatIntegrationMeta = {
         email_capture_enforcement: GorgiasChatEmailCaptureType
         auto_responder?: {
             enabled: boolean
-            description: string
+            reply: string
         }
         linked_email_integration?: Maybe<number>
     }

@@ -1,5 +1,5 @@
 import classnames from 'classnames'
-import React from 'react'
+import React, {ReactNode} from 'react'
 
 import css from './ChatIntegrationPreview.less'
 import {getTextColorBasedOnBackground} from './color-utils'
@@ -8,29 +8,33 @@ import MessageTimestamp from './MessageTimestamp'
 
 type Props = {
     conversationColor: string
-    messages: string[] | JSX.Element[]
+    messages: ReactNode[]
+    hideConversationTimestamp?: boolean
     hideMessageTimestamp?: boolean
 }
 
-const CustomerInitialMessages = (props: Props) => {
-    const contrastColor = getTextColorBasedOnBackground(props.conversationColor)
+const CustomerInitialMessages = ({
+    conversationColor,
+    messages,
+    hideConversationTimestamp,
+    hideMessageTimestamp,
+}: Props) => {
+    const contrastColor = getTextColorBasedOnBackground(conversationColor)
     return (
         <div>
-            <ConversationTimestamp />
+            {!hideConversationTimestamp && <ConversationTimestamp />}
 
-            {props.messages.map((message, index) => (
+            {messages.map((message, index) => (
                 <div
                     className={classnames(
                         css.bubble,
                         css.primary,
                         index === 0 ? css.firstMessageOfAppUser : null,
-                        index === props.messages.length - 1
-                            ? css.lastMessage
-                            : null
+                        index === messages.length - 1 ? css.lastMessage : null
                     )}
                     key={index}
                     style={{
-                        backgroundColor: props.conversationColor,
+                        backgroundColor: conversationColor,
                         color: contrastColor,
                     }}
                 >
@@ -38,7 +42,7 @@ const CustomerInitialMessages = (props: Props) => {
                 </div>
             ))}
 
-            {!props.hideMessageTimestamp && <MessageTimestamp />}
+            {!hideMessageTimestamp && <MessageTimestamp />}
         </div>
     )
 }

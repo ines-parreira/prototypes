@@ -10,10 +10,11 @@ import QuickResponsesAccordionItem from './QuickResponsesAccordionItem'
 
 type Props = {
     items: QuickResponsePolicy[]
-    expandedItem: QuickResponsePolicy['id'] | false
+    expandedItem: QuickResponsePolicy['id'] | null
     onExpandedItemChange: (
-        expandedItem: QuickResponsePolicy['id'] | false
+        expandedItem: QuickResponsePolicy['id'] | null
     ) => void
+    onHoveredItemChange: (hoveredItem: QuickResponsePolicy['id'] | null) => void
     onPreviewChange: (items: QuickResponsePolicy[]) => void
     onChange: (items: QuickResponsePolicy[]) => void
     onDelete: (items: QuickResponsePolicy[]) => void
@@ -23,6 +24,7 @@ const QuickResponsesAccordion = ({
     items,
     expandedItem,
     onExpandedItemChange,
+    onHoveredItemChange,
     onPreviewChange,
     onChange,
     onDelete,
@@ -83,6 +85,7 @@ const QuickResponsesAccordion = ({
             onReorder={handleReorder}
             expandedItem={expandedItem}
             onChange={onExpandedItemChange}
+            onHoveredItemChange={onHoveredItemChange}
             isDisabled={isUpdatePending || hasError}
         >
             {items.map((item) => (

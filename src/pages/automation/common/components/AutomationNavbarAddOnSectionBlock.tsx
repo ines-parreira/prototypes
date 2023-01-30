@@ -40,7 +40,7 @@ const AutomationNavbarAddOnSectionBlock = ({
         >
             {hasAutomationAddOn ? (
                 <NavbarLink
-                    to={`/app/automation/self-service/shopify/${shopName}/preferences/quick-response`}
+                    to={`/app/automation/shopify/${shopName}/quick-responses`}
                     isNested
                 >
                     Quick responses

@@ -5,6 +5,7 @@ import {
     Redirect,
     useLocation,
     useRouteMatch,
+    generatePath,
 } from 'react-router-dom'
 
 type Props = Omit<RouteProps, 'path'> & {
@@ -24,14 +25,12 @@ const MaybeDeprecatedRoute = ({
     const match = useRouteMatch(path)
 
     const redirectTo = useMemo(() => {
-        if (match && !exact) {
-            return redirectToProp.concat(
-                pathname.substring(match.path.length),
-                search
-            )
-        }
+        const redirectTo =
+            match && !exact
+                ? pathname.substring(match.path.length)
+                : redirectToProp
 
-        return redirectToProp.concat(search)
+        return generatePath(redirectTo.concat(search), match?.params)
     }, [match, exact, pathname, search, redirectToProp])
 
     if (isDeprecated) {

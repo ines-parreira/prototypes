@@ -36,7 +36,6 @@ describe('<ChatIntegrationPreview/>', () => {
             name: 'My little chat integration',
             mainColor: mainColor,
             isOnline: true,
-            currentUser: currentUser,
             language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
             position: GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
             introductionText: 'intro',
@@ -123,7 +122,7 @@ describe('<ChatIntegrationPreview/>', () => {
 
         it('should display the sliders when editing the position', () => {
             const component = shallow(
-                <ChatIntegrationPreview {...minProps} currentUser={currentUser}>
+                <ChatIntegrationPreview {...minProps}>
                     <MessageContent {...messageContentMinProps} />
                 </ChatIntegrationPreview>
             )

@@ -14,12 +14,13 @@ type DragItem = {id: string} & DragItemRequired
 
 const SortableAccordionItem = ({index = 1, ...props}: Props) => {
     const {id} = props
-    const {type, isDisabled, onMove, onDrop} = useSortableAccordionContext()
+    const {type, isDisabled, onMove, onDrop, onCancel} =
+        useSortableAccordionContext()
 
     const {dragRef, dropRef, handlerId, isDragging} = useReorderDnD<DragItem>(
         {id, type, position: index},
         [type],
-        {onHover: onMove, onDrop},
+        {onHover: onMove, onDrop, onCancel},
         !isDisabled
     )
 

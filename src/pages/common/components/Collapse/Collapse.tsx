@@ -1,4 +1,5 @@
 import React, {ReactNode, useMemo, useRef, useState} from 'react'
+import {usePrevious} from 'react-use'
 import {Transition} from 'react-transition-group'
 import classnames from 'classnames'
 
@@ -9,6 +10,7 @@ type Props = {
     direction?: 'vertical' | 'horizontal'
     // https://reactcommunity.org/react-transition-group/transition#Transition-prop-appear
     appear?: boolean
+    memoizeOnExit?: boolean
     children: ReactNode
 }
 
@@ -18,10 +20,18 @@ const Collapse = ({
     isOpen,
     direction = 'vertical',
     appear,
+    memoizeOnExit,
     children,
 }: Props) => {
     const [dimension, setDimension] = useState<number | null>(null)
     const nodeRef = useRef<HTMLDivElement>(null)
+    const prevChildren = usePrevious(children)
+    const memoizedChildren = useRef(children)
+    const prevIsOpen = usePrevious(isOpen)
+
+    if (prevIsOpen && !isOpen) {
+        memoizedChildren.current = prevChildren
+    }
 
     const {
         handleEntering,
@@ -95,7 +105,9 @@ const Collapse = ({
                     })}
                     ref={nodeRef}
                 >
-                    {children}
+                    {!isOpen && memoizeOnExit
+                        ? memoizedChildren.current
+                        : children}
                 </div>
             )}
         </Transition>

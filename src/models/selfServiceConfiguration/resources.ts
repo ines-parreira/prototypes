@@ -23,11 +23,11 @@ export const fetchSelfServiceConfigurations = async (): Promise<
 }
 
 export const fetchSelfServiceConfiguration = async (
-    shopifyIntegrationId: string
+    storeIntegrationId: number
 ): Promise<SelfServiceConfiguration> => {
     return client
         .get<SelfServiceConfiguration_DEPRECATED>(
-            `/api/self_service_configurations/${shopifyIntegrationId}`
+            `/api/self_service_configurations/${storeIntegrationId}`
         )
         .then(({data}) => selfServiceConfigurationFromDeprecated(data))
 }

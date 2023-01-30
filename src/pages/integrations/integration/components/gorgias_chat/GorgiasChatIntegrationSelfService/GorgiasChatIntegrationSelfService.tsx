@@ -121,9 +121,7 @@ export function GorgiasChatIntegrationSelfServiceComponent({
                     shopifyIntegration.get('id')
 
                 const {deactivated_datetime} =
-                    await fetchSelfServiceConfiguration(
-                        `${shopifyIntegrationId}`
-                    )
+                    await fetchSelfServiceConfiguration(shopifyIntegrationId)
 
                 const sspGloballyDeactivated =
                     deactivated_datetime !== null &&

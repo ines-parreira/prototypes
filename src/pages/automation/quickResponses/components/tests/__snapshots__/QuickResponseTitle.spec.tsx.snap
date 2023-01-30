@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<QuickResponseTitle /> should render the title component 1`] = `
+<div>
+  <div
+    class="wrapper input"
+  >
+    <input
+      class="input"
+      id="input-text-1"
+      maxlength="50"
+      name="input-text-1"
+      placeholder="Button text"
+      type="text"
+      value="How do I choose the right size?"
+    />
+  </div>
+</div>
+`;

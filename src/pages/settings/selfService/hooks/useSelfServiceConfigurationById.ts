@@ -32,7 +32,7 @@ export const useSelfServiceConfigurationById = (
             void (async () => {
                 try {
                     const res = await fetchSelfServiceConfiguration(
-                        integrationId.toString()
+                        integrationId
                     )
                     void dispatch(selfServiceConfigurationFetched(res))
                     setIsLoading(false)

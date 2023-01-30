@@ -5,15 +5,17 @@ import AccordionContext, {AccordionContextType} from './AccordionContext'
 import css from './Accordion.less'
 
 export type AccordionProps = {
-    defaultExpandedItem?: string | false
-    expandedItem?: string | false
-    onChange?: (expandedItem: string | false) => void
+    defaultExpandedItem?: string | null
+    expandedItem?: string | null
+    onChange?: (expandedItem: string | null) => void
+    onHoveredItemChange?: (hoveredItem: string | null) => void
     children?: ReactNode
 }
 
 const Accordion = ({
-    defaultExpandedItem = false,
+    defaultExpandedItem = null,
     expandedItem: expandedItemProp,
+    onHoveredItemChange,
     onChange,
     children,
 }: AccordionProps) => {
@@ -37,15 +39,18 @@ const Accordion = ({
         () => ({
             expandedItem,
             toggleItem: (itemId) => {
-                const newExpandedItem = expandedItem === itemId ? false : itemId
+                const newExpandedItem = expandedItem === itemId ? null : itemId
 
                 if (!isControlled) {
                     setExpandedItem(newExpandedItem)
                 }
                 onChange?.(newExpandedItem)
             },
+            onHoveredItemChange: (itemId) => {
+                onHoveredItemChange?.(itemId)
+            },
         }),
-        [expandedItem, isControlled, onChange]
+        [expandedItem, isControlled, onChange, onHoveredItemChange]
     )
 
     return (
