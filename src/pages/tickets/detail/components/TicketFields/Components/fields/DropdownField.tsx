@@ -9,6 +9,7 @@ import React, {
 
 import {CustomFieldValue} from 'models/customField/types'
 import {DROPDOWN_NESTING_DELIMITER} from 'models/customField/constants'
+import {OnMutateSettings} from 'models/customField/queries'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
@@ -27,8 +28,8 @@ type Value = string | number | readonly string[]
 
 // Symbol prevents admin settings to override the key of the Set of end values
 // Set removes duplicate end values
-type MappedChoices = {
-    [key: string]: MappedChoices
+type ChoicesTree = {
+    [key: string]: ChoicesTree
     [CHOICE_VALUES_SYMBOL]: Set<string>
 }
 
@@ -38,7 +39,10 @@ type Props = {
     choices: string[]
     placeholder?: string
     isRequired?: boolean
-    onChange: (newValue: CustomFieldValue['value'], leading?: boolean) => void
+    onChange: (
+        newValue: CustomFieldValue['value'],
+        settings?: OnMutateSettings
+    ) => void
 }
 
 export default function DropdownField({
@@ -52,9 +56,9 @@ export default function DropdownField({
     const modalRef = useRef<HTMLDivElement>(null)
 
     const [currentPath, setCurrentPath] = useState<string[]>(
-        (typeof value === 'string' &&
-            value.split(DROPDOWN_NESTING_DELIMITER)) ||
-            []
+        typeof value === 'string' && value.includes(DROPDOWN_NESTING_DELIMITER)
+            ? value.split(DROPDOWN_NESTING_DELIMITER).slice(0, -1)
+            : []
     )
 
     const goPrevious = useCallback(() => {
@@ -76,11 +80,16 @@ export default function DropdownField({
     )
 
     const handleChange = useCallback(
-        (value: string) => {
-            onChange([...currentPath, value].join(DROPDOWN_NESTING_DELIMITER))
+        (newValue: string) => {
+            onChange(
+                [...currentPath, newValue].join(DROPDOWN_NESTING_DELIMITER),
+                {
+                    previousValue: value?.toString() || '',
+                }
+            )
             setActive(false)
         },
-        [currentPath, onChange, setActive]
+        [currentPath, onChange, setActive, value]
     )
 
     const resetValue = useCallback(() => {
@@ -89,21 +98,20 @@ export default function DropdownField({
         setActive(false)
     }, [onChange, setActive])
 
-    const mappedChoices = useMemo(() => {
-        const mappedChoices: MappedChoices = {[CHOICE_VALUES_SYMBOL]: new Set()}
+    const choicesTree = useMemo(() => {
+        const choicesTree: ChoicesTree = {[CHOICE_VALUES_SYMBOL]: new Set()}
         choices.forEach((choice) => {
             recursivelyMapChoice(
-                mappedChoices,
+                choicesTree,
                 choice.split(DROPDOWN_NESTING_DELIMITER)
             )
         })
-        return mappedChoices
+        return choicesTree
     }, [choices])
 
-    const currentNode = currentPath.reduce(
-        (currentNode, crumb) => currentNode[crumb],
-        mappedChoices
-    )
+    const currentBranch = currentPath.reduce((currentBranch, nextBranch) => {
+        return currentBranch[nextBranch] || currentBranch
+    }, choicesTree)
 
     return (
         <>
@@ -144,7 +152,7 @@ export default function DropdownField({
                     </DropdownHeader>
                 )}
                 <DropdownBody>
-                    {Object.keys(currentNode).map((key) => (
+                    {Object.keys(currentBranch).map((key) => (
                         <DropdownItem
                             key={key}
                             tag="button"
@@ -161,7 +169,7 @@ export default function DropdownField({
                             </span>
                         </DropdownItem>
                     ))}
-                    {Array.from(currentNode[CHOICE_VALUES_SYMBOL]).map(
+                    {Array.from(currentBranch[CHOICE_VALUES_SYMBOL]).map(
                         (choice) => {
                             return (
                                 <DropdownItem
@@ -205,22 +213,22 @@ export default function DropdownField({
     )
 }
 
-function recursivelyMapChoice(currentNode: MappedChoices, values: string[]) {
+function recursivelyMapChoice(currentBranch: ChoicesTree, values: string[]) {
     const currentValue = values.shift()
 
     if (!currentValue) return
 
     if (values.length === 0) {
-        currentNode[CHOICE_VALUES_SYMBOL].add(currentValue)
+        currentBranch[CHOICE_VALUES_SYMBOL].add(currentValue)
         return
     }
 
-    if (!currentNode[currentValue]) {
-        currentNode[currentValue] = {
+    if (!currentBranch[currentValue]) {
+        currentBranch[currentValue] = {
             [CHOICE_VALUES_SYMBOL]: new Set(),
         }
     }
-    recursivelyMapChoice(currentNode[currentValue], values)
+    recursivelyMapChoice(currentBranch[currentValue], values)
 }
 
 function useA11yDropdown(

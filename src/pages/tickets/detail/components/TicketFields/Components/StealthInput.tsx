@@ -14,6 +14,8 @@ function StealthInput(
         isActive: isExternalActive,
         hasError = false,
         onChange,
+        onFocus,
+        onBlur,
         type = 'text',
         value,
         className,
@@ -42,13 +44,13 @@ function StealthInput(
             onFocus={(evt) => {
                 if (!isActive) {
                     setInputActive(true)
-                    props.onFocus && props.onFocus(evt)
+                    onFocus?.(evt)
                 }
             }}
             onBlur={(evt) => {
                 if (isActive) {
                     setInputActive(false)
-                    props.onBlur && props.onBlur(evt)
+                    onBlur?.(evt)
                 }
             }}
             placeholder={placeholder}

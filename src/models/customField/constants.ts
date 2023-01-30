@@ -13,10 +13,4 @@ export const VALUE_TYPES = [
     },
 ]
 
-export enum CustomFieldQueryKeys {
-    customFieldDefinition = 'customFieldDefinition',
-    customFieldDefinitionList = 'customFieldDefinitionList',
-    customFieldDefinitionEdit = 'customFieldDefinitionEdit',
-}
-
 export const DROPDOWN_NESTING_DELIMITER = '::'

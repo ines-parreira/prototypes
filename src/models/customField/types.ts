@@ -20,7 +20,7 @@ interface CustomTypeDefinitionText {
 }
 
 export interface CustomFieldInput {
-    object_type: 'Ticket'
+    object_type: 'Ticket' | 'Customer'
     label: string
     description?: string
     priority?: number

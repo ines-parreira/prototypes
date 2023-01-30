@@ -1333,10 +1333,17 @@ export function setInTicketSuggestionState(
 // http call to update the value on the back-end is done
 // (and in some case debounced) at the component level
 export const updateCustomFieldValue = (
-    value: CustomFieldValue['value'],
-    id: number
+    id: number,
+    value: CustomFieldValue['value']
 ) => ({
     type: types.UPDATE_CUSTOM_FIELD_VALUE,
     id,
     value,
+})
+
+// http call to update the value on the back-end is done
+// (and in some case debounced) at the component level
+export const deleteCustomFieldValue = (id: number) => ({
+    type: types.DELETE_CUSTOM_FIELD_VALUE,
+    id,
 })

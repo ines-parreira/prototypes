@@ -1,6 +1,7 @@
 import React, {useCallback, useState} from 'react'
 
 import {CustomFieldValue} from 'models/customField/types'
+import {OnMutateSettings} from 'models/customField/queries'
 
 import Label from '../Label'
 import StealthInput from '../StealthInput'
@@ -12,7 +13,10 @@ type Props = {
     value?: Value
     placeholder?: string
     isRequired?: boolean
-    onChange: (newValue: CustomFieldValue['value'], leading?: boolean) => void
+    onChange: (
+        value: CustomFieldValue['value'],
+        settings: OnMutateSettings
+    ) => void
 }
 
 export default function TextField({
@@ -22,24 +26,30 @@ export default function TextField({
     onChange,
     isRequired,
 }: Props) {
+    const initialValue = value?.toString() || ''
     // Almost unnecessary intermediate state here because redux
     //  action/selector flow makes the input laggy otherwise :'(
-    const [currentValue, setCurrentValue] = useState(value)
-    const handleChange = useCallback(
-        (newValue: CustomFieldValue['value']) => {
-            setCurrentValue(newValue)
-            onChange(newValue, false)
-        },
-        [onChange]
-    )
+    const [currentValue, setCurrentValue] = useState(initialValue)
+    const handleChange = useCallback((newValue: string) => {
+        setCurrentValue(newValue)
+    }, [])
 
     return (
         <Label label={label} isRequired={isRequired}>
             <StealthInput
                 name={label}
-                value={currentValue || ''}
+                type="text"
+                value={currentValue}
                 placeholder={placeholder}
                 onChange={handleChange}
+                onBlur={() => {
+                    if (currentValue !== initialValue) {
+                        onChange(currentValue, {
+                            previousValue: initialValue,
+                            onError: () => setCurrentValue(initialValue),
+                        })
+                    }
+                }}
             />
         </Label>
     )

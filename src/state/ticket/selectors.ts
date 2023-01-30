@@ -2,7 +2,6 @@ import {fromJS, Map, List} from 'immutable'
 import {createSelector} from 'reselect'
 
 import {InTicketSuggestionState} from 'state/entities/rules/types'
-import {CustomFieldValue} from 'models/customField/types'
 import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'
 import {createImmutableSelector} from 'utils'
 import {RootState} from 'state/types'
@@ -303,10 +302,7 @@ export const getInTicketSuggestionState = createImmutableSelector(
     }
 )
 
-export const getCustomFieldValueById = createSelector(
-    [getTicketState, (state, id: number) => id],
-    (state, id) =>
-        state.getIn(['custom_fields', id], undefined) as
-            | CustomFieldValue
-            | undefined
+export const getTicketFieldValues = createSelector(
+    getTicket,
+    (state) => state.custom_fields
 )

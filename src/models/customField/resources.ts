@@ -3,11 +3,11 @@ import {
     ApiCursorPaginationParams,
     ApiListResponseCursorPagination,
 } from 'models/api/types'
-import {CustomField, CustomFieldInput} from './types'
+import {CustomField, CustomFieldInput, CustomFieldValue} from './types'
 
 export type ListParams = ApiCursorPaginationParams & {
     archived: boolean
-    object_type: string
+    object_type: CustomFieldInput['object_type']
 }
 
 export async function getCustomFields(
@@ -53,4 +53,46 @@ export async function updatePartialCustomField(
         data
     )
     return response.data
+}
+
+export async function updateCustomFieldValue({
+    fieldType,
+    holderId,
+    fieldId,
+    value,
+}: {
+    fieldType: CustomFieldInput['object_type']
+    holderId: number
+    fieldId: CustomField['id']
+    value: CustomFieldValue['value']
+}): Promise<CustomField> {
+    const response = await client.put<CustomField>(
+        `/api/${
+            fieldType === 'Ticket' ? 'tickets' : 'customers'
+        }/${holderId}/custom-fields/${fieldId}`,
+        `"${value || ''}"`,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }
+    )
+    return response.data
+}
+
+export async function deleteCustomFieldValue({
+    fieldType,
+    holderId,
+    fieldId,
+}: {
+    fieldType: CustomFieldInput['object_type']
+    holderId: number
+    fieldId: CustomField['id']
+}): Promise<undefined> {
+    await client.delete(
+        `/api/${
+            fieldType === 'Ticket' ? 'tickets' : 'customers'
+        }/${holderId}/custom-fields/${fieldId}`
+    )
+    return undefined
 }

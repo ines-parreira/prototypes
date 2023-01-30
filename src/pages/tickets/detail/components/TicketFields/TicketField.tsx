@@ -1,31 +1,26 @@
-import React, {useCallback} from 'react'
+import React, {memo, useCallback} from 'react'
 
-import useAppSelector from 'hooks/useAppSelector'
-import {getCustomFieldValueById} from 'state/ticket/selectors'
 import {CustomField, CustomFieldValue} from 'models/customField/types'
+import {OnMutateSettings} from 'models/customField/queries'
 import TextField from './Components/fields/TextField'
 import DropdownField from './Components/fields/DropdownField'
 
 type Props = {
     fieldData: CustomField
+    value: CustomFieldValue['value']
     onChange: (
-        leading: boolean,
-        newValue: CustomFieldValue['value'],
-        id: CustomFieldValue['id']
+        id: CustomFieldValue['id'],
+        value: CustomFieldValue['value'],
+        settings?: OnMutateSettings
     ) => void
 }
 
-export default function TicketField({fieldData, onChange}: Props) {
+function TicketField({fieldData, value, onChange}: Props) {
     const {id, label, required, definition} = fieldData
-    const value = useAppSelector((state) =>
-        getCustomFieldValueById(state, id)
-    )?.value
 
     const handleChange = useCallback(
-        (
-            newValue: CustomFieldValue['value'],
-            leading: boolean | undefined = true
-        ) => onChange(leading, newValue, id),
+        (value: CustomFieldValue['value'], settings) =>
+            onChange(id, value, settings),
         [id, onChange]
     )
 
@@ -51,3 +46,5 @@ export default function TicketField({fieldData, onChange}: Props) {
 
     return <div>Coming soon</div>
 }
+
+export default memo(TicketField)

@@ -1,199 +1,44 @@
 import React, {memo, useCallback} from 'react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import debounce from 'lodash/debounce'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import useAppSelector from 'hooks/useAppSelector'
+import {CustomFieldValue} from 'models/customField/types'
+import {
+    useGetCustomFieldDefinitions,
+    useUpdateOrDeleteTicketFieldValue,
+    OnMutateSettings,
+} from 'models/customField/queries'
 
-// import useAppSelector from 'hooks/useAppSelector'
-import {CustomField, CustomFieldValue} from 'models/customField/types'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {updateCustomFieldValue} from 'state/ticket/actions'
-
-import {StoreDispatch} from 'state/types'
+import {getTicket, getTicketFieldValues} from 'state/ticket/selectors'
 import TicketField from './TicketField'
 import css from './TicketFields.less'
 
-const fakeCustomFieldsData: CustomField[] = [
-    {
-        id: 1,
-        created_datetime: '2022-12-16T10:34:27.490915+00:00',
-        updated_datetime: '2022-12-16T13:41:08.944435+00:00',
-        deactivated_datetime: null,
-        object_type: 'Ticket',
-        label: 'Dispositions',
-        description: 'useless field',
-        priority: 1,
-        required: true,
-        definition: {
-            data_type: 'text',
-            input_settings: {
-                input_type: 'input',
-                placeholder: 'plholder',
-            },
-        },
-    },
-    {
-        id: 2,
-        created_datetime: '2022-12-16T10:34:27.490915+00:00',
-        updated_datetime: '2022-12-16T13:41:08.944435+00:00',
-        deactivated_datetime: null,
-        object_type: 'Ticket',
-        label: 'Resolution',
-        description: 'useless field',
-        priority: 2,
-        required: true,
-        definition: {
-            data_type: 'text',
-            input_settings: {
-                input_type: 'dropdown',
-                choices: [
-                    'Choice 4 Vdxbxdbxdbxdbxdbdxbxddvsvesvsevesvevsevesvesvesbdxbdxbdxbdxbdxbxdbxdbdxbxbdx',
-                    'Choice 3',
-                    'Category 1::Sub-category 1::Choice 1',
-                    'Category 1::Sub-category 1::Choice 2',
-                    'Category 1::Sub-category 1::Sub-Sub-category 1::Choice 1',
-                    'Category 1::Sub-category 1::Choice 3',
-                    'Category 1::Sub-category 2::Sub-Sub-category 1::Choice 1',
-                    'Category 1::Sub-category 2::Sub-Sub-category 1::Choice 2',
-                    'Category 1::Sub-category 3::',
-                    'Category 2::Choice 1',
-                    'Category 2::Choice 2',
-                    'Category 2::Choice 3',
-                    'Category 2::Choice 4',
-                    'Category 2::Choice 5',
-                    'Category 2::Choice 6',
-                    'Category 2::Choice 7',
-                    'Category 2::Choice 8',
-                    'Category 2::Choice 9',
-                    'Category 2::Choice 10',
-                    'Category 2::Choice 11',
-                    'Category 2::Choice 12',
-                    'Category 2::Choice 13',
-                    'Category 2::Choice 14',
-                    'Category 2::Choice 15',
-                    'Category 2::Choice 16',
-                    'Category 2::Choice 17',
-                    'Category 2::Choice 18',
-                    'Category 2::Choice 19',
-                    'Category 2::Choice 20',
-                    'Category 2::Choice 21',
-                    'Category 2::Choice 22',
-                    'Category 2::Choice 23',
-                    'Category 2::Choice 24',
-                    'Category 2::Choice 25',
-                    'Category 2::Choice 26',
-                    'Category 2::Choice 27',
-                    'Category 2::Choice 28',
-                    'Category 2::Choice 29',
-                ],
-            },
-        },
-    },
-    {
-        id: 3,
-        created_datetime: '2022-12-16T10:34:27.490915+00:00',
-        updated_datetime: '2022-12-16T13:41:08.944435+00:00',
-        deactivated_datetime: null,
-        object_type: 'Ticket',
-        label: 'Region',
-        description: 'useless field',
-        priority: 3,
-        required: false,
-        definition: {
-            data_type: 'text',
-            input_settings: {
-                input_type: 'dropdown',
-                choices: [
-                    'Choice 1',
-                    'Choice 2',
-                    'Category 1::Sub-category 1::Choice 1',
-                    'Category 1::Sub-category 1::Choice 2',
-                    'Category 1::Sub-category 1::Sub-Sub-category 1::Choice 1',
-                    'Category 1::Sub-category 1::Choice 3',
-                    'Category 1::Sub-category 2::Sub-Sub-category 1::Choice 1',
-                    'Category 1::Sub-category 2::Sub-Sub-category 1::Choice 2',
-                    'Category 1::Sub-category 3::',
-                    'Category 2 sseklbnkeslbnklsbnklsenbklesbnesklnbsln::Choice 1',
-                    'Category 2 sseklbnkeslbnklsbnklsenbklesbnesklnbsln::Choice 2',
-                    'Category 2 sseklbnkeslbnklsbnklsenbklesbnesklnbsln::Choice 3',
-                    'Category 2 sseklbnkeslbnklsbnklsenbklesbnesklnbsln::Choice 4',
-                    'Category 2 sseklbnkeslbnklsbnklsenbklesbnesklnbsln::Choice 5',
-                    'Category 2 sseklbnkeslbnklsbnklsenbklesbnesklnbsln::Choice 6',
-                    'Category 2 sseklbnkeslbnklsbnklsenbklesbnesklnbsln::Choice 7',
-                    'Category 2 sseklbnkeslbnklsbnklsenbklesbnesklnbsln::Choice 8',
-                    'Category 2 sseklbnkeslbnklsbnklsenbklesbnesklnbsln::Choice 9',
-                    'Category 2 sseklbnkeslbnklsbnklsenbklesbnesklnbsln::Choice 10',
-                ],
-            },
-        },
-    },
-    {
-        id: 4,
-        created_datetime: '2022-12-16T10:34:27.490915+00:00',
-        updated_datetime: '2022-12-16T13:41:08.944435+00:00',
-        deactivated_datetime: null,
-        object_type: 'Ticket',
-        label: 'Note',
-        description: 'useless field',
-        priority: 4,
-        required: false,
-        definition: {
-            data_type: 'text',
-            input_settings: {
-                input_type: 'input',
-            },
-        },
-    },
-]
-
-const ANTI_LAG_SPAM_DELAY = 300
-
-function dispatchCustomFieldsUpdate(
-    dispatch: StoreDispatch,
-    newValue: CustomFieldValue['value'],
-    id: CustomFieldValue['id']
-) {
-    void dispatch(updateCustomFieldValue(newValue, id))
-}
-
-// useful to have immediate feedback on change
-// for fully controlled components
-const leadingDebouncedCustomFieldsUpdate = debounce(
-    dispatchCustomFieldsUpdate,
-    ANTI_LAG_SPAM_DELAY,
-    {leading: true}
-)
-
-const debouncedCustomFieldsUpdate = debounce(
-    dispatchCustomFieldsUpdate,
-    ANTI_LAG_SPAM_DELAY
-)
-
 function TicketFields() {
-    // get config here once available in redux
-    // const ticketFieldsConfig = useAppSelector(getCustomFieldsConfig)
-    const dispatch = useAppDispatch()
+    const ticketId = useAppSelector(getTicket).id
+    const ticketFieldValues = useAppSelector(getTicketFieldValues)
+    const {mutate} = useUpdateOrDeleteTicketFieldValue(ticketId)
 
-    // spamming actions here makes the helpdesk laggy, hence the debounce
+    const {data: {data: ticketFieldDefinitions = []} = {}, isLoading} =
+        useGetCustomFieldDefinitions({
+            archived: false,
+            object_type: 'Ticket',
+        })
+
     const handleChange = useCallback(
         (
-            leading: boolean,
-            ...params: [CustomFieldValue['value'], CustomFieldValue['id']]
-        ) =>
-            leading
-                ? leadingDebouncedCustomFieldsUpdate(dispatch, ...params)
-                : debouncedCustomFieldsUpdate(dispatch, ...params),
-        [dispatch]
+            id: CustomFieldValue['id'],
+            value: CustomFieldValue['value'],
+            settings?: OnMutateSettings
+        ) => mutate({id, value, settings}),
+        [mutate]
     )
 
-    const ticketFieldsEnabled = useFlags()[FeatureFlagKey.TicketFields]
-    if (!ticketFieldsEnabled) {
+    if (isLoading || !ticketFieldDefinitions.length) {
         return null
     }
 
     return (
         <div className={css.wrapper}>
-            {fakeCustomFieldsData
+            {ticketFieldDefinitions
                 .sort(
                     ({priority: previousPriority}, {priority: nextPriority}) =>
                         previousPriority - nextPriority
@@ -203,6 +48,7 @@ function TicketFields() {
                         <TicketField
                             key={fieldData.id}
                             fieldData={fieldData}
+                            value={ticketFieldValues[fieldData.id]?.value}
                             onChange={handleChange}
                         />
                     )

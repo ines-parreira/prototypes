@@ -737,7 +737,12 @@ export default function reducer(
 
         case types.UPDATE_CUSTOM_FIELD_VALUE: {
             const {id, value} = action
-            return state.setIn(['custom_fields', id], {id, value})
+            return state.setIn(['custom_fields', String(id)], {id, value})
+        }
+
+        case types.DELETE_CUSTOM_FIELD_VALUE: {
+            const {id} = action
+            return state.deleteIn(['custom_fields', String(id)])
         }
 
         default:

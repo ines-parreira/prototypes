@@ -9,6 +9,7 @@ import React from 'react'
 import client from 'models/api/resources'
 import {createTestQueryClient} from 'tests/reactQueryTestingUtils'
 import {
+    customFieldDefinitionKeys,
     useCreateCustomField,
     useGetCustomFieldDefinition,
     useGetCustomFieldDefinitions,
@@ -17,7 +18,6 @@ import {
 } from 'models/customField/queries'
 import {customField, customFieldInput} from 'fixtures/customField'
 import {NotificationStatus} from 'state/notifications/types'
-import {CustomFieldQueryKeys} from 'models/customField/constants'
 
 const mockedServer = new MockAdapter(client)
 const queryClient = createTestQueryClient()
@@ -165,7 +165,7 @@ describe('queries.spec.tsx', () => {
                 expect(result.current.isSuccess).toBe(true)
                 expect(result.current.data).toMatchSnapshot()
                 expect(invalidateQueriesSpy).toHaveBeenCalledWith({
-                    queryKey: [CustomFieldQueryKeys.customFieldDefinition],
+                    queryKey: customFieldDefinitionKeys.all,
                 })
                 expect(mockStore.getActions()).toMatchObject([
                     {
@@ -243,7 +243,7 @@ describe('queries.spec.tsx', () => {
                 expect(result.current.isSuccess).toBe(true)
                 expect(result.current.data).toMatchSnapshot()
                 expect(invalidateQueriesSpy).toHaveBeenCalledWith({
-                    queryKey: [CustomFieldQueryKeys.customFieldDefinition],
+                    queryKey: customFieldDefinitionKeys.all,
                 })
                 expect(mockStore.getActions()).toMatchObject([
                     {
@@ -321,7 +321,7 @@ describe('queries.spec.tsx', () => {
                 expect(result.current.isSuccess).toBe(true)
                 expect(result.current.data).toMatchSnapshot()
                 expect(invalidateQueriesSpy).toHaveBeenCalledWith({
-                    queryKey: [CustomFieldQueryKeys.customFieldDefinition],
+                    queryKey: customFieldDefinitionKeys.all,
                 })
                 expect(mockStore.getActions()).toMatchObject([
                     {
