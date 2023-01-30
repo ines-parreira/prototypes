@@ -35,6 +35,7 @@ type Props = {
     profilePictureUrl?: string
     className?: string
     transparent?: boolean
+    bindKeys?: boolean
 } & ConnectedProps<typeof connector>
 
 type State = {
@@ -80,6 +81,7 @@ export class TicketAssigneeContainer extends Component<Props, State> {
     }
 
     _bindKeys = () => {
+        if (!this.props.bindKeys) return
         shortcutManager.bind('TicketDetailContainer', {
             OPEN_ASSIGNEE: {
                 action: (e) => {

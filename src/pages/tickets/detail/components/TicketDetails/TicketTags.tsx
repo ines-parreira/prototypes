@@ -32,6 +32,7 @@ type OwnProps = {
     right?: boolean
     dropdownContainer?: HTMLElement
     disabled?: boolean
+    bindKeys?: boolean
 }
 
 type Props = OwnProps &
@@ -90,6 +91,7 @@ export class TicketTags extends Component<Props, State> {
     }
 
     bindKeys = () => {
+        if (!this.props.bindKeys) return
         shortcutManager.bind('TicketDetailContainer', {
             OPEN_TAGS: {
                 action: (e) => {

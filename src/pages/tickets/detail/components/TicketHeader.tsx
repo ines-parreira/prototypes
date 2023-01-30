@@ -476,6 +476,7 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
                             addTag={addTags}
                             removeTag={removeTag}
                             transparent
+                            bindKeys
                         />
                     </div>
                     <div className="d-inline-flex align-items-top">
@@ -493,6 +494,7 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
                             setTeam={setTeam}
                             className={css.assignee}
                             transparent
+                            bindKeys
                         />
                     </div>
                 </div>
