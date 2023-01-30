@@ -47,7 +47,7 @@ type Props = {
     updateMacros: (macro: Macro) => void
     activeView: Map<any, any>
     currentMacro: Map<any, any>
-    toggleCreateMacro?: (toggle?: boolean) => Promise<void>
+    toggleCreateMacro?: (toggle?: boolean) => void
     onSearch: (searchParams: FetchMacrosOptions) => void
     firstLoad: boolean
     selectedItemsIds: List<any>
@@ -176,12 +176,12 @@ export class MacroModalContainer extends Component<Props, State> {
 
     _addNewMacro = () => {
         const {toggleCreateMacro} = this.props
-        toggleCreateMacro &&
-            toggleCreateMacro(true).then(() => {
-                this._setName(this.props.currentMacro.get('name'))
-                this._setActions(this.props.currentMacro.get('actions'))
-                this._setLanguage(this.props.currentMacro.get('language'))
-            })
+        if (!toggleCreateMacro) return
+
+        toggleCreateMacro(true)
+        this._setName(this.props.currentMacro.get('name'))
+        this._setActions(this.props.currentMacro.get('actions'))
+        this._setLanguage(this.props.currentMacro.get('language'))
     }
 
     filterActions = (actions: List<any>) =>

@@ -26,7 +26,7 @@ type Props = {
     activeView?: Map<any, any>
     closeModal: () => void
     isCreatingMacro?: boolean
-    toggleCreateMacro?: (toggle?: boolean) => Promise<void>
+    toggleCreateMacro?: (toggle?: boolean) => void
     // macro to select when modal opens, selects first macro of list otherwise
     selectedMacro?: Map<any, any>
     selectedItemsIds?: List<any>

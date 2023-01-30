@@ -1,10 +1,13 @@
 import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 import {render} from '@testing-library/react'
 import {fromJS, List, Map} from 'immutable'
 
-import {TicketMessageSourceType} from 'business/types/ticket'
-import {user} from 'fixtures/users'
 import {UserRole} from 'config/types/user'
+import {user} from 'fixtures/users'
+import {RootState} from 'state/types'
 
 import {TicketMacrosContainer} from '../TicketMacros'
 
@@ -17,20 +20,22 @@ jest.mock(
     () => () => 'Macro list'
 )
 
+const mockStore = configureMockStore([thunk])
+
 describe('<TicketMacros />', () => {
+    const defaultUser = fromJS(user) as Map<any, any>
+    const defaultState: Partial<RootState> = {
+        currentUser: defaultUser,
+    }
+
     const minProps: ComponentProps<typeof TicketMacrosContainer> = {
         applyMacro: jest.fn(),
         currentMacro: fromJS({}),
-        currentTicket: fromJS({}),
         fetchMacros: jest.fn(),
         isInitialMacrosLoading: false,
         macros: fromJS({}),
-        selectMacro: jest.fn(),
         searchParams: {},
-        currentUser: fromJS(user) as Map<any, any>,
-        newMessageType: TicketMessageSourceType.Email,
-        notify: jest.fn(),
-        deleteMacro: jest.fn(),
+        selectMacro: jest.fn(),
     }
 
     const macros: List<any> = fromJS([
@@ -54,18 +59,24 @@ describe('<TicketMacros />', () => {
     ])
 
     it("should display an empty state if there's no macros", () => {
-        const {getByText} = render(<TicketMacrosContainer {...minProps} />)
+        const {getByText} = render(
+            <Provider store={mockStore(defaultState)}>
+                <TicketMacrosContainer {...minProps} />
+            </Provider>
+        )
 
         expect(getByText('No macros found')).toBeTruthy()
     })
 
     it('should display macros list, and selected macro', () => {
         const {container} = render(
-            <TicketMacrosContainer
-                {...minProps}
-                macros={macros}
-                currentMacro={macros.get(1)}
-            />
+            <Provider store={mockStore(defaultState)}>
+                <TicketMacrosContainer
+                    {...minProps}
+                    macros={macros}
+                    currentMacro={macros.get(1)}
+                />
+            </Provider>
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -73,14 +84,17 @@ describe('<TicketMacros />', () => {
 
     it('should not display the edition dropdown when the user is observer, lite or basic agent', () => {
         const {queryByText} = render(
-            <TicketMacrosContainer
-                {...minProps}
-                currentUser={minProps.currentUser.setIn(
-                    ['role', 'name'],
-                    UserRole.BasicAgent
-                )}
-                macros={macros}
-            />
+            <Provider
+                store={mockStore({
+                    ...defaultState,
+                    currentUser: defaultUser.setIn(
+                        ['role', 'name'],
+                        UserRole.BasicAgent
+                    ),
+                })}
+            >
+                <TicketMacrosContainer {...minProps} macros={macros} />
+            </Provider>
         )
 
         expect(queryByText('settings')).toBeNull()

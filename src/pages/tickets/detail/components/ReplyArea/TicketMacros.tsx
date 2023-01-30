@@ -1,8 +1,13 @@
-import React, {Component, MouseEvent} from 'react'
-import ReactDOM from 'react-dom'
+import React, {
+    MouseEvent,
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+} from 'react'
 import {fromJS, Map, List} from 'immutable'
 import classnames from 'classnames'
-import {connect, ConnectedProps} from 'react-redux'
+import {usePrevious} from 'react-use'
 import {
     Dropdown,
     DropdownItem,
@@ -12,8 +17,11 @@ import {
     PopoverBody,
 } from 'reactstrap'
 
+import {TicketMessageSourceType} from 'business/types/ticket'
 import {UserRole} from 'config/types/user'
 import history from 'pages/history'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {FetchMacrosOptions} from 'models/macro/types'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -21,10 +29,10 @@ import Preview from 'pages/tickets/common/macros/Preview'
 import MacroList from 'pages/tickets/common/macros/components/MacroList'
 import MacroNoResults from 'pages/tickets/common/macros/components/MacroNoResults'
 import MacroContainer from 'pages/tickets/common/macros/MacroContainer'
+import {getCurrentUser} from 'state/currentUser/selectors'
+import {CurrentUserState} from 'state/currentUser/types'
 import {deleteMacro} from 'state/macro/actions'
-import * as newMessageSelectors from 'state/newMessage/selectors'
-import {notify} from 'state/notifications/actions'
-import {RootState} from 'state/types'
+import {getNewMessageType} from 'state/newMessage/selectors'
 import {hasRole} from 'utils'
 
 import css from './TicketMacros.less'
@@ -33,7 +41,6 @@ type Props = {
     applyMacro: (macro: Map<any, any>) => void
     className?: string
     currentMacro: Map<any, any>
-    currentTicket: Map<any, any>
     fetchMacros: (
         params: FetchMacrosOptions,
         retainPreviousResults?: boolean
@@ -43,287 +50,221 @@ type Props = {
     selectMacro: (macro: Map<any, any>) => void
     searchParams: FetchMacrosOptions
     hasDataToLoad?: boolean
-} & ConnectedProps<typeof connector>
-
-type State = {
-    isCreatingMacro: boolean
-    isDeleteConfirmOpen: boolean
-    isModalOpen: boolean
-    macroDropdownOpen: boolean
 }
 
-export class TicketMacrosContainer extends Component<Props, State> {
-    static defaultProps: Pick<
-        Props,
-        'currentTicket' | 'macros' | 'searchParams'
-    > = {
-        currentTicket: fromJS({}),
-        macros: fromJS([]),
-        searchParams: {search: ''},
-    }
-    previewContainerRef: Maybe<HTMLDivElement>
+export function TicketMacrosContainer({
+    applyMacro,
+    className,
+    currentMacro,
+    fetchMacros,
+    hasDataToLoad,
+    isInitialMacrosLoading,
+    macros = fromJS([]),
+    searchParams = {search: ''},
+    selectMacro,
+}: Props) {
+    const dispatch = useAppDispatch()
+    const currentUser = useAppSelector<CurrentUserState>(getCurrentUser)
+    const newMessageType =
+        useAppSelector<TicketMessageSourceType>(getNewMessageType)
+    const previewContainerRef = useRef<HTMLDivElement | null>(null)
+    const [macroDropdownOpen, setMacroDropdownOpen] = useState(false)
+    const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false)
+    const [isDeleting, setIsDeleting] = useState(false)
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [isCreatingMacro, setIsCreatingMacro] = useState(false)
+    const prevIsDeleting = usePrevious(isDeleting)
 
-    constructor(props: Props) {
-        super(props)
+    // brings the preview to top when previewing another macro
+    useEffect(() => {
+        if (!previewContainerRef.current) return
+        previewContainerRef.current.scrollTop = 0
+    }, [currentMacro])
 
-        this.state = {
-            macroDropdownOpen: false,
-            isDeleteConfirmOpen: false,
-            isModalOpen: false,
-            isCreatingMacro: false,
-        }
-    }
+    const toggleMacroDropdown = useCallback(() => {
+        setMacroDropdownOpen((s) => !s)
+    }, [])
 
-    componentDidUpdate(prevProps: Props) {
-        // brings the preview to top when previewing another macro
-        if (
-            this.props.currentMacro.get('id') !==
-            prevProps.currentMacro.get('id')
-        ) {
-            const element = ReactDOM.findDOMNode(
-                this.previewContainerRef
-            ) as HTMLDivElement
+    const toggleMacroDeleteConfirmOpen = useCallback(() => {
+        setIsDeleteConfirmOpen((s) => !s)
+    }, [])
 
-            if (element) {
-                element.scrollTop = 0
-            }
-        }
-    }
+    const openMacroModal = useCallback((e?: MouseEvent, create = false) => {
+        setIsModalOpen(true)
+        setIsCreatingMacro(create)
+    }, [])
 
-    _toggleMacroDropdown = () => {
-        this.setState({
-            macroDropdownOpen: !this.state.macroDropdownOpen,
-        })
-    }
+    const closeMacroModal = useCallback(() => {
+        setIsModalOpen(false)
 
-    toggleMacroDeleteConfirmOpen = () => {
-        this.setState({
-            isDeleteConfirmOpen: !this.state.isDeleteConfirmOpen,
-        })
-    }
-
-    openMacroModal = (e?: MouseEvent, create = false) => {
-        this.setState({
-            isModalOpen: true,
-            isCreatingMacro: create,
-        })
-    }
-
-    closeMacroModal = () => {
-        this.setState({isModalOpen: false})
         // reload macros, in case they changed in the modal
-        void this.props.fetchMacros({
-            ...this.props.searchParams,
-            cursor: null,
-        })
-    }
+        void fetchMacros({...searchParams, cursor: null})
+    }, [fetchMacros, searchParams])
 
-    toggleCreateMacro = (isCreatingMacro = false): Promise<void> => {
-        return new Promise((resolve) => {
-            this.setState({isCreatingMacro}, resolve)
-        })
-    }
+    const toggleCreateMacro = useCallback((isCreatingMacro = false): void => {
+        setIsCreatingMacro(isCreatingMacro)
+    }, [])
 
-    deleteMacro = () => {
-        this.toggleMacroDeleteConfirmOpen()
-        const macroId = this.props.currentMacro.get('id', '')
-        return this.props.deleteMacro(macroId).then(() => {
-            void this.props.fetchMacros({
-                ...this.props.searchParams,
-                cursor: null,
-            })
-        })
-    }
+    const handleDeleteMacro = useCallback(async () => {
+        toggleMacroDeleteConfirmOpen()
+        const macroId = currentMacro.get('id', '')
+        setIsDeleting(true)
 
-    render() {
-        const {
-            currentUser,
-            macros,
-            newMessageType,
-            className,
-            currentMacro,
-            selectMacro,
-            isInitialMacrosLoading,
-            fetchMacros,
-            hasDataToLoad,
-        } = this.props
+        await dispatch(deleteMacro(macroId))
+        setIsDeleting(false)
+    }, [currentMacro, dispatch, toggleMacroDeleteConfirmOpen])
 
-        let content = null
-        if (macros.isEmpty() && isInitialMacrosLoading) {
-            content = <Loader minHeight="100%" message="Loading macros..." />
-        } else if (macros.isEmpty()) {
-            content = (
-                <MacroNoResults
-                    searchParams={this.props.searchParams}
-                    newAction={() => this.openMacroModal(undefined, true)}
+    useEffect(() => {
+        if (prevIsDeleting && isDeleting !== prevIsDeleting) {
+            void fetchMacros({...searchParams, cursor: null})
+        }
+    }, [fetchMacros, isDeleting, prevIsDeleting, searchParams])
+
+    let content = null
+    if (macros.isEmpty() && isInitialMacrosLoading) {
+        content = <Loader minHeight="100%" message="Loading macros..." />
+    } else if (macros.isEmpty()) {
+        content = (
+            <MacroNoResults
+                searchParams={searchParams}
+                newAction={() => openMacroModal(undefined, true)}
+            />
+        )
+    } else {
+        content = (
+            <div className={css.content}>
+                <MacroList
+                    className={css.macroList}
+                    currentMacro={currentMacro}
+                    searchResults={macros}
+                    onClickItem={applyMacro}
+                    onHoverItem={selectMacro}
+                    loadMore={() => fetchMacros(searchParams, true)}
+                    hasDataToLoad={hasDataToLoad}
                 />
-            )
-        } else {
-            content = (
-                <div className={css.content}>
-                    <MacroList
-                        className={css.macroList}
-                        currentMacro={currentMacro}
-                        searchResults={macros}
-                        onClickItem={this.props.applyMacro}
-                        onHoverItem={selectMacro}
-                        loadMore={() =>
-                            fetchMacros(this.props.searchParams, true)
-                        }
-                        hasDataToLoad={hasDataToLoad}
-                    />
-                    <div
-                        className={css.previewContainer}
-                        ref={(ref) => (this.previewContainerRef = ref)}
-                    >
-                        {hasRole(currentUser, UserRole.Agent) && (
-                            <>
-                                <Dropdown
-                                    isOpen={this.state.macroDropdownOpen}
-                                    toggle={this._toggleMacroDropdown}
+                <div className={css.previewContainer} ref={previewContainerRef}>
+                    {hasRole(currentUser, UserRole.Agent) && (
+                        <>
+                            <Dropdown
+                                isOpen={macroDropdownOpen}
+                                toggle={toggleMacroDropdown}
+                            >
+                                <DropdownToggle
+                                    caret
+                                    className={classnames(css.manageMacros)}
                                 >
-                                    <DropdownToggle
-                                        caret
-                                        className={classnames(css.manageMacros)}
+                                    <i className="material-icons">settings</i>
+                                    <div
+                                        className={css.deletePopoverTarget}
+                                        id="deleteMacroTarget"
+                                    />
+                                </DropdownToggle>
+                                <DropdownMenu>
+                                    <DropdownItem
+                                        onClick={openMacroModal}
+                                        className="cursor-pointer"
                                     >
                                         <i className="material-icons">
                                             settings
-                                        </i>
-                                        <div
-                                            className={
-                                                css['deletePopoverTarget']
-                                            }
-                                            id="deleteMacroTarget"
-                                        />
-                                    </DropdownToggle>
-                                    <DropdownMenu>
-                                        <DropdownItem
-                                            onClick={this.openMacroModal}
-                                            className="cursor-pointer"
-                                        >
-                                            <i className="material-icons">
-                                                settings
-                                            </i>{' '}
-                                            Manage macros
-                                        </DropdownItem>
-                                        <DropdownItem
-                                            onClick={this.openMacroModal}
-                                            className="cursor-pointer"
-                                        >
-                                            <i className="material-icons">
-                                                mode_edit
-                                            </i>{' '}
-                                            Edit macro
-                                        </DropdownItem>
-                                        <DropdownItem
-                                            onClick={(e) =>
-                                                this.openMacroModal(e, true)
-                                            }
-                                            className="cursor-pointer"
-                                        >
-                                            <i className="material-icons">
-                                                add
-                                            </i>{' '}
-                                            Create new macro
-                                        </DropdownItem>
-                                        <DropdownItem
-                                            id="deleteButtonMenuItem"
-                                            onClick={
-                                                this
-                                                    .toggleMacroDeleteConfirmOpen
-                                            }
-                                            className="cursor-pointer"
-                                        >
-                                            <i className="material-icons text-danger">
-                                                delete
-                                            </i>{' '}
-                                            Delete macro
-                                        </DropdownItem>
-                                        <DropdownItem
-                                            onClick={() =>
-                                                history.push(
-                                                    '/app/settings/profile'
-                                                )
-                                            }
-                                            className="cursor-pointer"
-                                        >
-                                            <i className="material-icons-round">
-                                                how_to_reg
-                                            </i>{' '}
-                                            My macro preferences
-                                        </DropdownItem>
-                                    </DropdownMenu>
-                                </Dropdown>
+                                        </i>{' '}
+                                        Manage macros
+                                    </DropdownItem>
+                                    <DropdownItem
+                                        onClick={openMacroModal}
+                                        className="cursor-pointer"
+                                    >
+                                        <i className="material-icons">
+                                            mode_edit
+                                        </i>{' '}
+                                        Edit macro
+                                    </DropdownItem>
+                                    <DropdownItem
+                                        onClick={(e) => openMacroModal(e, true)}
+                                        className="cursor-pointer"
+                                    >
+                                        <i className="material-icons">add</i>{' '}
+                                        Create new macro
+                                    </DropdownItem>
+                                    <DropdownItem
+                                        id="deleteButtonMenuItem"
+                                        onClick={toggleMacroDeleteConfirmOpen}
+                                        className="cursor-pointer"
+                                    >
+                                        <i className="material-icons text-danger">
+                                            delete
+                                        </i>{' '}
+                                        Delete macro
+                                    </DropdownItem>
+                                    <DropdownItem
+                                        onClick={() =>
+                                            history.push(
+                                                '/app/settings/profile'
+                                            )
+                                        }
+                                        className="cursor-pointer"
+                                    >
+                                        <i className="material-icons-round">
+                                            how_to_reg
+                                        </i>{' '}
+                                        My macro preferences
+                                    </DropdownItem>
+                                </DropdownMenu>
+                            </Dropdown>
 
-                                <Popover
-                                    placement="bottom"
-                                    target="deleteMacroTarget"
-                                    isOpen={this.state.isDeleteConfirmOpen}
-                                    toggle={this.toggleMacroDeleteConfirmOpen}
-                                    trigger="legacy"
-                                    fade={false}
-                                >
-                                    <PopoverBody>
-                                        <p>
-                                            Are you sure you want to delete '
-                                            {currentMacro.get('name')}'?
-                                        </p>
-                                        <Button
-                                            onClick={this.deleteMacro}
-                                            intent="destructive"
-                                        >
-                                            Delete macro
-                                        </Button>
-                                        <Button
-                                            onClick={
-                                                this
-                                                    .toggleMacroDeleteConfirmOpen
-                                            }
-                                            className="float-right"
-                                            intent="secondary"
-                                        >
-                                            Cancel
-                                        </Button>
-                                    </PopoverBody>
-                                </Popover>
-                            </>
-                        )}
+                            <Popover
+                                placement="bottom"
+                                target="deleteMacroTarget"
+                                isOpen={isDeleteConfirmOpen}
+                                toggle={toggleMacroDeleteConfirmOpen}
+                                trigger="legacy"
+                                fade={false}
+                            >
+                                <PopoverBody>
+                                    <p>
+                                        Are you sure you want to delete '
+                                        {currentMacro.get('name')}'?
+                                    </p>
+                                    <Button
+                                        onClick={handleDeleteMacro}
+                                        intent="destructive"
+                                    >
+                                        Delete macro
+                                    </Button>
+                                    <Button
+                                        onClick={toggleMacroDeleteConfirmOpen}
+                                        className="float-right"
+                                        intent="secondary"
+                                    >
+                                        Cancel
+                                    </Button>
+                                </PopoverBody>
+                            </Popover>
+                        </>
+                    )}
 
-                        <Preview
-                            ticketMessageSourceType={newMessageType}
-                            actions={currentMacro.get('actions')}
-                            className={css.preview}
-                        />
-                    </div>
-                </div>
-            )
-        }
-
-        return (
-            <div className={classnames(css.component, className)}>
-                {content}
-                {this.state.isModalOpen && (
-                    <MacroContainer
-                        selectedMacro={this.props.currentMacro}
-                        closeModal={this.closeMacroModal}
-                        isCreatingMacro={this.state.isCreatingMacro}
-                        toggleCreateMacro={this.toggleCreateMacro}
+                    <Preview
+                        ticketMessageSourceType={newMessageType}
+                        actions={currentMacro.get('actions')}
+                        className={css.preview}
                     />
-                )}
+                </div>
             </div>
         )
     }
+
+    return (
+        <div className={classnames(css.component, className)}>
+            {content}
+            {isModalOpen && (
+                <MacroContainer
+                    selectedMacro={currentMacro}
+                    closeModal={closeMacroModal}
+                    isCreatingMacro={isCreatingMacro}
+                    toggleCreateMacro={toggleCreateMacro}
+                />
+            )}
+        </div>
+    )
 }
 
-const connector = connect(
-    (state: RootState) => ({
-        currentUser: state.currentUser,
-        newMessageType: newMessageSelectors.getNewMessageType(state),
-    }),
-    {
-        notify,
-        deleteMacro,
-    }
-)
-
-export default connector(TicketMacrosContainer)
+export default TicketMacrosContainer
