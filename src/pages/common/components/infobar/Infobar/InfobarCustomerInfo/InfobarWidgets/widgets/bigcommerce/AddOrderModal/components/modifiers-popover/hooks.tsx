@@ -10,15 +10,13 @@ import {
     BigCommerceProduct,
     BigCommerceProductModifiers,
     BigCommerceProductVariant,
-    bigCommerceProductCheckboxModifierTypes,
-    bigCommerceProductSelectModifierTypes,
-    bigCommerceProductSwatchModifierTypes,
 } from 'models/integration/types'
 
 import {useCanViewBigCommerceCreateOrderModifiers} from '../../utils'
 import {ModifiersPopover} from './ModifiersPopover'
 
 import css from './ModifiersPopover.less'
+import {supportedBigCommerceModifierTypes} from './consts'
 
 export type ModifierValues = Record<string, number | undefined>
 
@@ -26,11 +24,7 @@ export type ModifierErrors = Record<string, string | undefined>
 
 export const useModifierValues = (modifiers: BigCommerceProductModifiers[]) => {
     const usableModifiers = modifiers.filter(({type}) =>
-        [
-            ...bigCommerceProductSelectModifierTypes,
-            ...bigCommerceProductSwatchModifierTypes,
-            ...bigCommerceProductCheckboxModifierTypes,
-        ].includes(type)
+        supportedBigCommerceModifierTypes.includes(type)
     )
 
     const [modifierValues, setModifierValues] = useState<ModifierValues>(

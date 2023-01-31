@@ -1,4 +1,5 @@
 @import '~css/new/colors';
+@import '~css/new/layout';
 
 :local {
     .dropdown {
@@ -11,8 +12,37 @@
         }
     }
 
-    .dropdownItem:hover,
-    .dropdownItem:focus,
+    .dropdownItem {
+        &[aria-disabled='true'] {
+            cursor: not-allowed;
+            outline: none;
+
+            &:focus {
+                background-color: inherit;
+            }
+
+            &:hover {
+                background-color: @classic-neutral-grey-2;
+            }
+        }
+
+        &:not([aria-disabled='true']) {
+            &:hover,
+            &:focus {
+                background: @ultraLightBlue;
+                outline: none;
+            }
+        }
+    }
+
+    .tooltip {
+        :global .tooltip-inner {
+            text-align: center;
+            max-width: 190px;
+            padding: @layout-spacing-xs;
+        }
+    }
+
     .hoveredDropdownItem {
         background: @ultraLightBlue;
         outline: none;

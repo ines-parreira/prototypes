@@ -150,7 +150,9 @@ exports[`<SearchInput/> render() should render an open dropdown because input is
       3 results
     </DropdownItem>
     <DropdownItem
+      aria-disabled={true}
       className="dropdownItem"
+      id="dropdown-item-1"
       key="result-1"
       onClick={[Function]}
       onMouseEnter={[Function]}
@@ -165,9 +167,18 @@ exports[`<SearchInput/> render() should render an open dropdown because input is
           }
         }
       />
+      <Tooltip
+        className="tooltip"
+        placement="top"
+        target="dropdown-item-1"
+      >
+        This item cannot be selected.
+      </Tooltip>
     </DropdownItem>
     <DropdownItem
+      aria-disabled={false}
       className="dropdownItem"
+      id="dropdown-item-2"
       key="result-2"
       onClick={[Function]}
       onMouseEnter={[Function]}
@@ -184,7 +195,9 @@ exports[`<SearchInput/> render() should render an open dropdown because input is
       />
     </DropdownItem>
     <DropdownItem
+      aria-disabled={false}
       className="dropdownItem"
+      id="dropdown-item-3"
       key="result-3"
       onClick={[Function]}
       onMouseEnter={[Function]}

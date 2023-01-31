@@ -1,6 +1,6 @@
 import React from 'react'
-import {shallow} from 'enzyme'
 
+import {render, screen} from '@testing-library/react'
 import {IntegrationDataItem} from 'models/integration/types'
 import {
     integrationDataItemProductFixture,
@@ -18,7 +18,7 @@ import {shopifyDataMappers} from '../Mappings'
 describe('<Result/>', () => {
     describe('render()', () => {
         it('should render with image and subtitle', () => {
-            const component = shallow(
+            const {container} = render(
                 <Result
                     title="Title"
                     image={{src: 'https://foo.bar/image.jpg', alt: 'alt'}}
@@ -27,11 +27,26 @@ describe('<Result/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
+        })
+
+        it('should render with disabled style', () => {
+            const {container} = render(
+                <Result
+                    title="Title"
+                    image={{src: 'https://foo.bar/image.jpg', alt: 'alt'}}
+                    subtitle="Subtitle"
+                    stock={{quantity: 1, tracked: true, totalVariants: 1}}
+                    disabled
+                />
+            )
+
+            expect(screen.getByText(/in stock/i)).toHaveClass('disabled')
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render with default image', () => {
-            const component = shallow(
+            const {container} = render(
                 <Result
                     title="Title"
                     image={null}
@@ -40,11 +55,11 @@ describe('<Result/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render without subtitle', () => {
-            const component = shallow(
+            const {container} = render(
                 <Result
                     title="Title"
                     image={{src: 'https://foo.bar/image.jpg', alt: 'alt'}}
@@ -53,11 +68,11 @@ describe('<Result/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render without product stock quantity', () => {
-            const component = shallow(
+            const {container} = render(
                 <Result
                     title="Title"
                     image={{src: 'https://foo.bar/image.jpg', alt: 'alt'}}
@@ -66,16 +81,16 @@ describe('<Result/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render with SKU as subtitle', () => {
             const item: IntegrationDataItem<Product> =
                 integrationDataItemProductFixture()
             const mappedItem = shopifyDataMappers.product(item)
-            const component = shallow(<Result {...mappedItem} />)
+            const {container} = render(<Result {...mappedItem} />)
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render with number of variants as subtitle', () => {
@@ -88,9 +103,9 @@ describe('<Result/>', () => {
                 integrationDataItemProductFixture({data: product})
             const mappedItem = shopifyDataMappers.product(item)
 
-            const component = shallow(<Result {...mappedItem} />)
+            const {container} = render(<Result {...mappedItem} />)
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render without subtitle', () => {
@@ -101,9 +116,9 @@ describe('<Result/>', () => {
             const item: IntegrationDataItem<Product> =
                 integrationDataItemProductFixture({data: product})
             const mappedItem = shopifyDataMappers.product(item)
-            const component = shallow(<Result {...mappedItem} />)
+            const {container} = render(<Result {...mappedItem} />)
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render with product stock quantity', () => {
@@ -117,9 +132,9 @@ describe('<Result/>', () => {
             const item: IntegrationDataItem<Product> =
                 integrationDataItemProductFixture({data: product})
             const mappedItem = shopifyDataMappers.product(item)
-            const component = shallow(<Result {...mappedItem} />)
+            const {container} = render(<Result {...mappedItem} />)
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render with product total stock quantity of all variants', () => {
@@ -139,9 +154,9 @@ describe('<Result/>', () => {
             const item: IntegrationDataItem<Product> =
                 integrationDataItemProductFixture({data: product})
             const mappedItem = shopifyDataMappers.product(item)
-            const component = shallow(<Result {...mappedItem} />)
+            const {container} = render(<Result {...mappedItem} />)
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render with product negative stock quantity', () => {
@@ -161,9 +176,9 @@ describe('<Result/>', () => {
             const item: IntegrationDataItem<Product> =
                 integrationDataItemProductFixture({data: product})
             const mappedItem = shopifyDataMappers.product(item)
-            const component = shallow(<Result {...mappedItem} />)
+            const {container} = render(<Result {...mappedItem} />)
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render with product title as title, and SKU as subtitle', () => {
@@ -174,8 +189,8 @@ describe('<Result/>', () => {
             const item: IntegrationDataItem<Product> =
                 integrationDataItemProductFixture({data: product})
             const mappedItem = shopifyDataMappers.variants(item, variant)
-            const component = shallow(<Result {...mappedItem} />)
-            expect(component).toMatchSnapshot()
+            const {container} = render(<Result {...mappedItem} />)
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render with variant title in title', () => {
@@ -196,9 +211,9 @@ describe('<Result/>', () => {
                 integrationDataItemProductFixture({data: product})
 
             const mappedItem = shopifyDataMappers.variants(item, variant2)
-            const component = shallow(<Result {...mappedItem} />)
+            const {container} = render(<Result {...mappedItem} />)
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render without subtitle', () => {
@@ -210,9 +225,9 @@ describe('<Result/>', () => {
                 integrationDataItemProductFixture({data: product})
 
             const mappedItem = shopifyDataMappers.variants(item, variant)
-            const component = shallow(<Result {...mappedItem} />)
+            const {container} = render(<Result {...mappedItem} />)
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render with product stock quantity', () => {
@@ -227,9 +242,9 @@ describe('<Result/>', () => {
                 integrationDataItemProductFixture({data: product})
 
             const mappedItem = shopifyDataMappers.variants(item, variant)
-            const component = shallow(<Result {...mappedItem} />)
+            const {container} = render(<Result {...mappedItem} />)
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render without product stock quantity because the inventory is not tracked', () => {
@@ -244,9 +259,9 @@ describe('<Result/>', () => {
                 integrationDataItemProductFixture({data: product})
 
             const mappedItem = shopifyDataMappers.variants(item, variant)
-            const component = shallow(<Result {...mappedItem} />)
+            const {container} = render(<Result {...mappedItem} />)
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 })

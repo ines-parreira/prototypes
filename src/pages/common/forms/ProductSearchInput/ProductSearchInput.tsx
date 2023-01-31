@@ -1,4 +1,4 @@
-import React, {ComponentProps, useCallback, useContext} from 'react'
+import React, {useCallback, useContext} from 'react'
 import _noop from 'lodash/noop'
 
 import {IntegrationDataItem} from 'models/integration/types'
@@ -6,11 +6,10 @@ import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {INTEGRATION_DATA_ITEM_TYPE_PRODUCT} from 'constants/integration'
 
 import {SearchResultType} from 'services/gorgiasApi'
-import SearchInput from '../SearchInput/SearchInput'
-import {
-    SearchInputResultProps,
-    SearchInputSubResultProps,
-} from '../SearchInput/types'
+import SearchInput, {
+    Props as SearchInputProps,
+} from '../SearchInput/SearchInput'
+
 import Result, {Props as ResultProps} from './Result'
 
 export default function ProductSearchInput<
@@ -24,6 +23,7 @@ export default function ProductSearchInput<
     dataMappers,
     hasError = false,
     renderResultsAppendix,
+    renderResultItemProps,
 }: {
     className?: string
     autoFocus?: boolean
@@ -35,7 +35,10 @@ export default function ProductSearchInput<
         variants: (item: ItemType, variant: Variant) => ResultProps
     }
     hasError?: boolean
-} & Pick<ComponentProps<typeof SearchInput>, 'renderResultsAppendix'>) {
+} & Pick<
+    SearchInputProps<ItemType, Variant>,
+    'renderResultsAppendix' | 'renderResultItemProps'
+>) {
     const {integrationId} = useContext(IntegrationContext)
 
     const handleProductClicked = useCallback(
@@ -52,18 +55,16 @@ export default function ProductSearchInput<
     )
 
     return (
-        <SearchInput
+        <SearchInput<ItemType, Variant>
             endpoint={`/api/integrations/${
                 integrationId || ''
             }/${INTEGRATION_DATA_ITEM_TYPE_PRODUCT}/`}
             placeholder="Search products..."
-            renderResult={(props: SearchInputResultProps<ItemType>) => {
+            renderResult={(props) => {
                 const resultProps = dataMappers.product(props.result)
                 return <Result {...resultProps} />
             }}
-            renderSubResult={(
-                props: SearchInputSubResultProps<ItemType, Variant>
-            ) => {
+            renderSubResult={(props) => {
                 const resultProps = dataMappers.variants(
                     props.result,
                     props.subResult
@@ -81,6 +82,7 @@ export default function ProductSearchInput<
             subResultLabelPlural="variants"
             hasError={hasError}
             renderResultsAppendix={renderResultsAppendix}
+            renderResultItemProps={renderResultItemProps}
         />
     )
 }

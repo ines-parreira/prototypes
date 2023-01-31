@@ -65,7 +65,13 @@ describe('<SearchInput/>', () => {
 
         it('should render an open dropdown because input is focused and value is not empty', (done) => {
             const component = shallow(
-                <SearchInput endpoint={endpoint} renderResult={Result} />
+                <SearchInput
+                    endpoint={endpoint}
+                    renderResult={Result}
+                    renderResultItemProps={({result: {id}}) =>
+                        id === 1 ? {disabled: true} : {disabled: false}
+                    }
+                />
             )
 
             const results: ResultType[] = [

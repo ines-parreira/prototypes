@@ -4,20 +4,26 @@ import css from './ProductStockQuantity.less'
 
 type Props = {
     value: number
+    disabled?: boolean
 }
 
-export function ProductStockQuantity({value}: Props) {
-    let className
-    if (value < 1) {
-        className = css.danger
-    } else if (value < 10) {
-        className = css.grey
-    } else {
-        className = css.success
+const getClassName = ({value, disabled}: Props) => {
+    if (disabled) {
+        return css.grey
     }
 
+    if (value < 1) {
+        return css.danger
+    } else if (value < 10) {
+        return css.grey
+    }
+
+    return css.success
+}
+
+export function ProductStockQuantity({value, disabled}: Props) {
     return (
-        <span className={className}>
+        <span className={getClassName({value, disabled})}>
             {new Intl.NumberFormat().format(value)}
         </span>
     )

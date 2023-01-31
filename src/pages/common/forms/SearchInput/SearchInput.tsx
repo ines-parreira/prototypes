@@ -15,11 +15,12 @@ import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
 import GorgiasApi, {SearchResultType} from 'services/gorgiasApi'
+import Tooltip from 'pages/common/components/Tooltip'
 
 import {SearchInputResultProps, SearchInputSubResultProps} from './types'
 import css from './SearchInput.less'
 
-type Props<ResultType, SubResultType> = {
+export type Props<ResultType, SubResultType> = {
     endpoint: string
     autoFocus?: boolean
     searchOnFocus?: boolean
@@ -40,6 +41,10 @@ type Props<ResultType, SubResultType> = {
         onMouseOver: () => void
         onMouseClick: () => void
     }) => JSX.Element | ConcatArray<JSX.Element>
+    renderResultItemProps?: (props: SearchInputResultProps<ResultType>) => {
+        disabled?: boolean
+        disabledReason?: string
+    }
 }
 
 type State<ResultType extends SearchResultType, SubResultType> = {
@@ -307,23 +312,50 @@ export default class SearchInput<
     }
 
     _renderResults = () => {
-        const {renderResult: Result, renderResultsAppendix} = this.props
+        const {
+            renderResult: Result,
+            renderResultsAppendix,
+            renderResultItemProps,
+        } = this.props
         const {results, hoveredIndex} = this.state
 
         let dropdownItems = results.length
-            ? results.map((result, index) => (
-                  <DropdownItem
-                      key={`result-${result.id}`}
-                      onMouseEnter={() => this.setState({hoveredIndex: index})}
-                      onClick={() => this._onResultClicked(index)}
-                      className={classnames(css.dropdownItem, {
-                          [css.hoveredDropdownItem]: hoveredIndex === index,
-                      })}
-                      toggle={false}
-                  >
-                      <Result result={result} />
-                  </DropdownItem>
-              ))
+            ? results.map((result, index) => {
+                  const itemProps = renderResultItemProps?.({result})
+                  const disabled = itemProps?.disabled
+
+                  return (
+                      <DropdownItem
+                          key={`result-${result.id}`}
+                          onMouseEnter={() =>
+                              this.setState({hoveredIndex: index})
+                          }
+                          onClick={() =>
+                              !disabled
+                                  ? this._onResultClicked(index)
+                                  : undefined
+                          }
+                          className={classnames(css.dropdownItem, {
+                              [css.hoveredDropdownItem]: hoveredIndex === index,
+                          })}
+                          toggle={false}
+                          aria-disabled={disabled}
+                          id={`dropdown-item-${result.id}`}
+                      >
+                          <Result result={result} />
+                          {disabled ? (
+                              <Tooltip
+                                  target={`dropdown-item-${result.id}`}
+                                  placement="top"
+                                  className={css.tooltip}
+                              >
+                                  {itemProps?.disabledReason ??
+                                      'This item cannot be selected.'}
+                              </Tooltip>
+                          ) : null}
+                      </DropdownItem>
+                  )
+              })
             : []
 
         if (renderResultsAppendix) {

@@ -17,15 +17,31 @@ export type Props = {
         quantity: number | null
         totalVariants?: number
     }
+    disabled?: boolean
+    disabledReason?: string
 }
 
-export default function Result({image, title, subtitle, stock}: Props) {
-    let imageSrc = !!image ? image.src : defaultImage
-    if (image && image.src && image.type === IntegrationType.Shopify) {
+const getImageSrc = (
+    image: {src?: string; alt?: string; type?: IntegrationType} | null
+) => {
+    let imageSrc = image?.src
+
+    if (image?.src && image.type === IntegrationType.Shopify) {
         imageSrc = getSizedImageUrl(image.src, 'small')
     }
-    imageSrc = imageSrc || defaultImage
-    const imageAlt = !!image ? image.alt : ''
+
+    return imageSrc || (defaultImage as string)
+}
+
+export default function Result({
+    image,
+    title,
+    subtitle,
+    stock,
+    disabled,
+}: Props) {
+    const imageSrc = getImageSrc(image)
+    const imageAlt = !!image ? image.alt : 'Product'
 
     return (
         <div className={css.container}>
@@ -37,8 +53,16 @@ export default function Result({image, title, subtitle, stock}: Props) {
                 {subtitle && <div className={css.subtitle}>{subtitle}</div>}
             </div>
             {stock.tracked ? (
-                <div className={css.stock}>
-                    <ProductStockQuantity value={stock.quantity!} /> in stock{' '}
+                <div
+                    className={classnames(css.stock, {
+                        [css.disabled]: disabled,
+                    })}
+                >
+                    <ProductStockQuantity
+                        value={stock.quantity!}
+                        disabled={disabled}
+                    />{' '}
+                    in stock{' '}
                     {stock.totalVariants && stock.totalVariants > 1
                         ? `for ${stock.totalVariants} variants`
                         : null}

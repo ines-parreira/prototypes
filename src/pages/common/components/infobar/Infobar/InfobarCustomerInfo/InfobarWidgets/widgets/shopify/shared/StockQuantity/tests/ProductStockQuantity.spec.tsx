@@ -6,16 +6,19 @@ import {ProductStockQuantity} from '../ProductStockQuantity'
 describe('<ProductStockQuantity/>', () => {
     describe('rendering', () => {
         it.each([
-            [0, 'danger'],
-            [1, 'grey'],
-            [10, 'success'],
-        ])('should render with given CSS class', (value, className) => {
-            const {getByText} = render(<ProductStockQuantity value={value} />)
-            const element = getByText(value.toString())
+            [0, 'danger', false],
+            [1, 'grey', false],
+            [10, 'success', false],
+            [10, 'grey', true],
+        ])(
+            'should render with given CSS class',
+            (value, className, disabled) => {
+                const {getByText} = render(
+                    <ProductStockQuantity value={value} disabled={disabled} />
+                )
 
-            expect(element.getAttribute('class')?.includes(className)).toBe(
-                true
-            )
-        })
+                expect(getByText(value.toString())).toHaveClass(className)
+            }
+        )
     })
 })

@@ -173,7 +173,8 @@ exports[`<ShopifyProductLine/> should render the product picker with products 1`
               >
                 2,563
               </span>
-               in stock
+               
+              in stock
                
               for 6 variants
             </div>
@@ -217,7 +218,8 @@ exports[`<ShopifyProductLine/> should render the product picker with products 1`
               >
                 3,307
               </span>
-               in stock
+               
+              in stock
                
             </div>
           </div>
@@ -337,7 +339,8 @@ exports[`<ShopifyProductLine/> should render the variants picker of a product 1`
               >
                 493
               </span>
-               in stock
+               
+              in stock
                
             </div>
           </div>
@@ -379,7 +382,8 @@ exports[`<ShopifyProductLine/> should render the variants picker of a product 1`
               >
                 486
               </span>
-               in stock
+               
+              in stock
                
             </div>
           </div>
@@ -421,7 +425,8 @@ exports[`<ShopifyProductLine/> should render the variants picker of a product 1`
               >
                 488
               </span>
-               in stock
+               
+              in stock
                
             </div>
           </div>
@@ -463,7 +468,8 @@ exports[`<ShopifyProductLine/> should render the variants picker of a product 1`
               >
                 498
               </span>
-               in stock
+               
+              in stock
                
             </div>
           </div>
@@ -505,7 +511,8 @@ exports[`<ShopifyProductLine/> should render the variants picker of a product 1`
               >
                 299
               </span>
-               in stock
+               
+              in stock
                
             </div>
           </div>
@@ -547,7 +554,8 @@ exports[`<ShopifyProductLine/> should render the variants picker of a product 1`
               >
                 299
               </span>
-               in stock
+               
+              in stock
                
             </div>
           </div>

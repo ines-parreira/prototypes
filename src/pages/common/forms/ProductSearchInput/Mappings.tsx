@@ -9,6 +9,7 @@ import {
     Variant as ShopifyVariant,
 } from 'constants/integrations/types/shopify'
 
+import {supportedBigCommerceModifierTypes} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/components/modifiers-popover/consts'
 import {Props as ResultProps} from './Result'
 
 export const shopifyDataMappers = {
@@ -82,10 +83,18 @@ export const bigcommerceDataMappers = {
     ): ResultProps => {
         const product = integrationItem.data
         const image = {src: product.image_url, alt: product.name} as const
+        const isDisabled = product.modifiers.some(
+            ({type}) => !supportedBigCommerceModifierTypes.includes(type)
+        )
+
         return {
             image: image,
             title: product.name,
-            subtitle: product.sku,
+            subtitle: product.sku
+                ? `SKU: ${product.sku}`
+                : product.variants.length > 1
+                ? `${product.variants.length} variants`
+                : '',
             stock: {
                 tracked: ['variant', 'product'].includes(
                     product.inventory_tracking
@@ -93,6 +102,10 @@ export const bigcommerceDataMappers = {
                 quantity: product.inventory_level,
                 totalVariants: product.variants ? product.variants.length : 0,
             },
+            disabled: isDisabled,
+            disabledReason: isDisabled
+                ? 'Product cannot be added due to unsupported modifiers.'
+                : undefined,
         }
     },
     variants: (
