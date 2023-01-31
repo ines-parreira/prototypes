@@ -36,13 +36,14 @@ export interface CustomField extends CustomFieldInput {
     deactivated_datetime: string | null
 }
 
-export type CustomFieldValue = {
-    id: number
-    value: string | number | undefined
+export type CustomFieldState = {
+    id: CustomField['id']
+    value?: string | number
+    hasError?: boolean
 }
 
-export type NormalizedCustomFieldValues = {
-    [id: number]: CustomFieldValue | undefined
+export type NormalizedCustomFieldState = {
+    [id: number]: CustomFieldState | undefined
 }
 
 export function isCustomField(

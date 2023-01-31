@@ -7,9 +7,14 @@ import React, {
     useState,
 } from 'react'
 
-import {CustomFieldValue} from 'models/customField/types'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {CustomFieldState} from 'models/customField/types'
 import {DROPDOWN_NESTING_DELIMITER} from 'models/customField/constants'
 import {OnMutateSettings} from 'models/customField/queries'
+import {
+    updateCustomFieldError,
+    updateCustomFieldValue,
+} from 'state/ticket/actions'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
@@ -24,8 +29,6 @@ import css from './DropdownField.less'
 const CHOICE_VALUES_SYMBOL = Symbol('value')
 const PREVIOUS_BUTTON_ID = 'previous-dropdown-modal-id'
 
-type Value = string | number | readonly string[]
-
 // Symbol prevents admin settings to override the key of the Set of end values
 // Set removes duplicate end values
 type ChoicesTree = {
@@ -34,29 +37,35 @@ type ChoicesTree = {
 }
 
 type Props = {
+    id: CustomFieldState['id']
     label: string
-    value?: Value
+    fieldState?: CustomFieldState
     choices: string[]
     placeholder?: string
     isRequired?: boolean
     onChange: (
-        newValue: CustomFieldValue['value'],
+        newValue: CustomFieldState['value'],
         settings?: OnMutateSettings
     ) => void
 }
 
 export default function DropdownField({
+    id,
     label,
-    value,
+    fieldState,
     choices,
     onChange,
     isRequired,
 }: Props) {
+    const dispatch = useAppDispatch()
     const inputRef = useRef<HTMLInputElement>(null)
     const modalRef = useRef<HTMLDivElement>(null)
 
+    const value = fieldState?.value?.toString() || ''
+    const hasError = fieldState?.hasError
+
     const [currentPath, setCurrentPath] = useState<string[]>(
-        typeof value === 'string' && value.includes(DROPDOWN_NESTING_DELIMITER)
+        value.includes(DROPDOWN_NESTING_DELIMITER)
             ? value.split(DROPDOWN_NESTING_DELIMITER).slice(0, -1)
             : []
     )
@@ -84,19 +93,38 @@ export default function DropdownField({
             onChange(
                 [...currentPath, newValue].join(DROPDOWN_NESTING_DELIMITER),
                 {
-                    previousValue: value?.toString() || '',
+                    previousState: {
+                        id,
+                        hasError: Boolean((isRequired && !value) || hasError),
+                        value,
+                    },
                 }
             )
             setActive(false)
+            dispatch(updateCustomFieldValue(id, newValue))
+            dispatch(updateCustomFieldError(id, false))
         },
-        [currentPath, onChange, setActive, value]
+        [
+            dispatch,
+            id,
+            currentPath,
+            onChange,
+            setActive,
+            isRequired,
+            value,
+            hasError,
+        ]
     )
 
     const resetValue = useCallback(() => {
-        setCurrentPath([])
+        dispatch(updateCustomFieldValue(id, ''))
         onChange('')
+        setCurrentPath([])
+        if (isRequired) {
+            dispatch(updateCustomFieldError(id, true))
+        }
         setActive(false)
-    }, [onChange, setActive])
+    }, [dispatch, isRequired, id, onChange, setActive])
 
     const choicesTree = useMemo(() => {
         const choicesTree: ChoicesTree = {[CHOICE_VALUES_SYMBOL]: new Set()}
@@ -109,6 +137,15 @@ export default function DropdownField({
         return choicesTree
     }, [choices])
 
+    // Must be inside an useEffect to avoid concurrency
+    // issues with other dispatch
+    useEffect(() => {
+        // value is outdated
+        if (value && !choices.includes(value)) {
+            dispatch(updateCustomFieldError(id, true))
+        }
+    }, [dispatch, value, choices, id])
+
     const currentBranch = currentPath.reduce((currentBranch, nextBranch) => {
         return currentBranch[nextBranch] || currentBranch
     }, choicesTree)
@@ -119,15 +156,21 @@ export default function DropdownField({
                 <StealthInput
                     ref={inputRef}
                     name={label}
-                    value={value || ''}
+                    value={value.split(DROPDOWN_NESTING_DELIMITER).pop()}
                     isActive={isActive}
                     onFocus={() => setActive(true)}
                     onClick={() => setActive(true)}
+                    hasError={hasError}
                 />
             </Label>
             <Dropdown
                 isOpen={isActive}
-                onToggle={setActive}
+                onToggle={(isActive) => {
+                    if (isActive === false && !value && isRequired) {
+                        dispatch(updateCustomFieldError(id, true))
+                    }
+                    setActive(isActive)
+                }}
                 target={inputRef}
                 ref={modalRef}
                 className={css.dropdown}

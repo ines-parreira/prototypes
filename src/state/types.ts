@@ -182,6 +182,7 @@ export type GorgiasAction = {
     attachments?: List<any>
     externalData?: CustomerExternalData
     chatStatus?: GorgiasChatStatusEnum
+    hasError?: boolean
 }
 
 export type CurrentUser = Map<any, any>

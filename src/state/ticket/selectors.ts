@@ -302,7 +302,7 @@ export const getInTicketSuggestionState = createImmutableSelector(
     }
 )
 
-export const getTicketFieldValues = createSelector(
+export const getTicketFieldState = createSelector(
     getTicket,
     (state) => state.custom_fields
 )

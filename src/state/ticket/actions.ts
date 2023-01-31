@@ -19,7 +19,7 @@ import {getLDClient} from 'utils/launchDarkly'
 import {MacroActionName} from 'models/macroAction/types'
 import {search} from 'models/search/resources'
 import {InTicketSuggestionState} from 'state/entities/rules/types'
-import {CustomFieldValue} from 'models/customField/types'
+import {CustomFieldState} from 'models/customField/types'
 import {SearchType, UserSearchResult} from 'models/search/types'
 import browserNotification from 'services/browserNotification'
 import GorgiasApi from 'services/gorgiasApi'
@@ -1330,20 +1330,25 @@ export function setInTicketSuggestionState(
     }
 }
 
-// http call to update the value on the back-end is done
-// (and in some case debounced) at the component level
-export const updateCustomFieldValue = (
-    id: number,
-    value: CustomFieldValue['value']
-) => ({
-    type: types.UPDATE_CUSTOM_FIELD_VALUE,
-    id,
-    value,
+export const updateCustomFieldState = (state: CustomFieldState) => ({
+    type: types.UPDATE_CUSTOM_FIELD_STATE,
+    payload: state,
 })
 
 // http call to update the value on the back-end is done
 // (and in some case debounced) at the component level
-export const deleteCustomFieldValue = (id: number) => ({
-    type: types.DELETE_CUSTOM_FIELD_VALUE,
-    id,
+export const updateCustomFieldValue = (
+    id: CustomFieldState['id'],
+    value: CustomFieldState['value']
+) => ({
+    type: types.UPDATE_CUSTOM_FIELD_VALUE,
+    payload: {id, value},
+})
+
+export const updateCustomFieldError = (
+    id: CustomFieldState['id'],
+    hasError: CustomFieldState['hasError']
+) => ({
+    type: types.UPDATE_CUSTOM_FIELD_ERROR,
+    payload: {id, hasError},
 })

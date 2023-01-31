@@ -1,20 +1,20 @@
 import React, {memo, useCallback} from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {CustomFieldValue} from 'models/customField/types'
+import {CustomFieldState} from 'models/customField/types'
 import {
     useGetCustomFieldDefinitions,
     useUpdateOrDeleteTicketFieldValue,
     OnMutateSettings,
 } from 'models/customField/queries'
 
-import {getTicket, getTicketFieldValues} from 'state/ticket/selectors'
+import {getTicket, getTicketFieldState} from 'state/ticket/selectors'
 import TicketField from './TicketField'
 import css from './TicketFields.less'
 
 function TicketFields() {
     const ticketId = useAppSelector(getTicket).id
-    const ticketFieldValues = useAppSelector(getTicketFieldValues)
+    const ticketFieldState = useAppSelector(getTicketFieldState)
     const {mutate} = useUpdateOrDeleteTicketFieldValue(ticketId)
 
     const {data: {data: ticketFieldDefinitions = []} = {}, isLoading} =
@@ -25,8 +25,8 @@ function TicketFields() {
 
     const handleChange = useCallback(
         (
-            id: CustomFieldValue['id'],
-            value: CustomFieldValue['value'],
+            id: CustomFieldState['id'],
+            value: CustomFieldState['value'],
             settings?: OnMutateSettings
         ) => mutate({id, value, settings}),
         [mutate]
@@ -38,21 +38,16 @@ function TicketFields() {
 
     return (
         <div className={css.wrapper}>
-            {ticketFieldDefinitions
-                .sort(
-                    ({priority: previousPriority}, {priority: nextPriority}) =>
-                        previousPriority - nextPriority
+            {ticketFieldDefinitions.map((fieldDefinition) => {
+                return (
+                    <TicketField
+                        key={fieldDefinition.id}
+                        fieldDefinition={fieldDefinition}
+                        fieldState={ticketFieldState[fieldDefinition.id]}
+                        onChange={handleChange}
+                    />
                 )
-                .map((fieldData) => {
-                    return (
-                        <TicketField
-                            key={fieldData.id}
-                            fieldData={fieldData}
-                            value={ticketFieldValues[fieldData.id]?.value}
-                            onChange={handleChange}
-                        />
-                    )
-                })}
+            })}
         </div>
     )
 }

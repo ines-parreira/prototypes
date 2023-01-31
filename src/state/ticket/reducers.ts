@@ -3,7 +3,10 @@ import moment from 'moment'
 
 import {Ticket} from 'models/ticket/types'
 import {TICKET_EVENT_TYPES} from 'models/event/types'
-import {NormalizedCustomFieldValues} from 'models/customField/types'
+import {
+    CustomFieldState,
+    NormalizedCustomFieldState,
+} from 'models/customField/types'
 import {MacroActionName} from 'models/macroAction/types'
 import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
 import * as customerTypes from 'state/customers/constants'
@@ -161,7 +164,7 @@ export default function reducer(
             if (customFields) {
                 // normalize the data for better render handling
                 data.custom_fields =
-                    customFields.reduce<NormalizedCustomFieldValues>(
+                    customFields.reduce<NormalizedCustomFieldState>(
                         (accumulator, customField) => {
                             accumulator[customField.id] = customField
                             return accumulator
@@ -735,14 +738,28 @@ export default function reducer(
             )
         }
 
-        case types.UPDATE_CUSTOM_FIELD_VALUE: {
-            const {id, value} = action
-            return state.setIn(['custom_fields', String(id)], {id, value})
+        case types.UPDATE_CUSTOM_FIELD_STATE: {
+            const {id} = action.payload as CustomFieldState
+            return state.setIn(['custom_fields', String(id)], action.payload)
         }
 
-        case types.DELETE_CUSTOM_FIELD_VALUE: {
-            const {id} = action
-            return state.deleteIn(['custom_fields', String(id)])
+        case types.UPDATE_CUSTOM_FIELD_VALUE: {
+            const {id, value} = action.payload as {
+                id: CustomFieldState['id']
+                value: CustomFieldState['value']
+            }
+            return state.mergeIn(['custom_fields', String(id)], {
+                id,
+                value,
+            })
+        }
+
+        case types.UPDATE_CUSTOM_FIELD_ERROR: {
+            const {id, hasError} = action.payload as {
+                id: CustomFieldState['id']
+                hasError: CustomFieldState['hasError']
+            }
+            return state.mergeIn(['custom_fields', String(id)], {id, hasError})
         }
 
         default:

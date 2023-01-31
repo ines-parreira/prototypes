@@ -14,13 +14,10 @@ import {
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
-import {
-    deleteCustomFieldValue as deleteCustomFieldValueAction,
-    updateCustomFieldValue as updateCustomFieldValueAction,
-} from 'state/ticket/actions'
+import {updateCustomFieldState} from 'state/ticket/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {GorgiasApiError} from 'models/api/types'
-import {CustomFieldInput, CustomFieldValue} from 'models/customField/types'
+import {CustomFieldInput, CustomFieldState} from 'models/customField/types'
 import {errorToChildren} from 'utils'
 
 export const customFieldDefinitionKeys = {
@@ -169,11 +166,11 @@ export const useUpdateCustomFieldStatus = (id: number) => {
 
 // this empty check will need to be more elaborate
 // in the future as more types kick in
-const isValueEmpty = (value: CustomFieldValue['value']) =>
+const isValueEmpty = (value: CustomFieldState['value']) =>
     typeof value !== 'number' && !value
 
 export type OnMutateSettings = {
-    previousValue?: CustomFieldValue['value']
+    previousState?: CustomFieldState
     onError?: () => void
 }
 
@@ -185,7 +182,7 @@ export const useUpdateOrDeleteTicketFieldValue = (ticketId: number) => {
         mutationFn: ({
             id,
             value,
-        }: CustomFieldValue & {settings?: OnMutateSettings}) => {
+        }: CustomFieldState & {settings?: OnMutateSettings}) => {
             const params = {
                 fieldType: 'Ticket',
                 holderId: ticketId,
@@ -198,14 +195,7 @@ export const useUpdateOrDeleteTicketFieldValue = (ticketId: number) => {
             }
             return updateCustomFieldValue(params)
         },
-        onMutate: ({id, value}) => {
-            if (isValueEmpty(value)) {
-                dispatch(deleteCustomFieldValueAction(id))
-            } else {
-                dispatch(updateCustomFieldValueAction(id, value))
-            }
-        },
-        onError: (error: GorgiasApiError, {id, settings}) => {
+        onError: (error: GorgiasApiError, {settings}) => {
             void dispatch(
                 notify({
                     title: `Failed to update ticket field value. Please try again in a few seconds.`,
@@ -214,11 +204,9 @@ export const useUpdateOrDeleteTicketFieldValue = (ticketId: number) => {
                     status: NotificationStatus.Error,
                 })
             )
-            const previousValue = settings?.previousValue
-            if (previousValue && !isValueEmpty(previousValue)) {
-                dispatch(updateCustomFieldValueAction(id, previousValue))
-            } else {
-                dispatch(deleteCustomFieldValueAction(id))
+            const previousState = settings?.previousState
+            if (previousState) {
+                dispatch(updateCustomFieldState(previousState))
             }
             settings?.onError?.()
         },
