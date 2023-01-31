@@ -1,10 +1,10 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import {EmailIntegrationCreateForwarding} from '../EmailIntegrationCreateForwarding.tsx'
+import {EmailIntegrationCreateForwarding} from '../EmailIntegrationCreateForwarding'
 
-const commonProps = {
+const commonProps: ComponentProps<typeof EmailIntegrationCreateForwarding> = {
     integration: fromJS({
         id: 1,
         name: 'my integration',
@@ -13,6 +13,8 @@ const commonProps = {
         },
     }),
     forwardingEmailAddress: 'forwardingaddress@emails.gorgias.com',
+    notify: jest.fn(),
+    sendVerificationEmail: jest.fn(),
 }
 
 describe('EmailIntegrationCreateForwarding component', () => {

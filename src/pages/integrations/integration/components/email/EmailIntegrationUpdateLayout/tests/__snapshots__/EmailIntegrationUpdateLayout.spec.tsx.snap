@@ -32,7 +32,7 @@ exports[`EmailIntegrationUpdateLayout should render the layout for an email inte
             <span
               class="text-faded align-top"
             >
-              some-email@addres.com
+              some-email@address.com
             </span>
           </li>
         </ol>

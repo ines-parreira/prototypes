@@ -1,12 +1,15 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import {OutlookIntegrationSetupContainer} from '../OutlookIntegrationSetup.tsx'
+import {OutlookIntegrationSetupContainer} from '../OutlookIntegrationSetup'
 
 describe('<OutlookIntegrationSetup/>', () => {
     describe('render()', () => {
-        const minProps = {
+        const minProps: ComponentProps<
+            typeof OutlookIntegrationSetupContainer
+        > = {
+            fetchIntegrations: jest.fn(),
             activateOnboardingIntegrations: jest.fn(),
             fetchOutlookOnboardingIntegrations: () => Promise.resolve(),
             integrations: fromJS([]),

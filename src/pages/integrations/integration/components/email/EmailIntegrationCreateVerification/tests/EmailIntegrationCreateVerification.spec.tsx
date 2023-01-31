@@ -1,14 +1,13 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import * as helpers from '../../helpers'
-
-import {EmailIntegrationCreateVerification} from '../EmailIntegrationCreateVerification.tsx'
+import * as helpers from 'pages/integrations/integration/components/email/helpers'
+import {EmailIntegrationCreateVerification} from '../EmailIntegrationCreateVerification'
 
 const isBaseEmailAddressSpy = jest.spyOn(helpers, 'isBaseEmailAddress')
 
-const commonProps = {
+const commonProps: ComponentProps<typeof EmailIntegrationCreateVerification> = {
     forwardingEmailAddress: 'hmq29fh29zfmh29fzq2f3@emails-acme.gorgi.us',
     integration: fromJS({
         id: 1,
@@ -17,9 +16,12 @@ const commonProps = {
             address: 'myintegration@gorgias.io',
         },
     }),
-    verify: jest.fn(),
+    emailForwardingActivated: false,
+    deleteIntegration: jest.fn(),
     sendVerificationEmail: jest.fn(),
     notify: jest.fn(),
+    resendAccountVerificationEmail: jest.fn(),
+    verifyEmailIntegrationManually: jest.fn(),
 }
 
 describe('<EmailIntegrationCreateVerification/>', () => {
@@ -49,6 +51,19 @@ describe('<EmailIntegrationCreateVerification/>', () => {
                 <EmailIntegrationCreateVerification
                     {...commonProps}
                     integration={integration}
+                />
+            )
+
+            expect(component).toMatchSnapshot()
+        })
+
+        it('should render instructions for the activated forwarding email', () => {
+            isBaseEmailAddressSpy.mockImplementation(() => false)
+
+            const component = shallow(
+                <EmailIntegrationCreateVerification
+                    {...commonProps}
+                    emailForwardingActivated
                 />
             )
 

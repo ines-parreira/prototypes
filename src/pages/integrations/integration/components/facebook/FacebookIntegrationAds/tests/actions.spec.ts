@@ -1,13 +1,14 @@
-import configureMockStore from 'redux-mock-store'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import MockAdapter from 'axios-mock-adapter'
 
-import client from '../../../../../../../models/api/resources.ts'
-import * as actions from '../actions.ts'
+import {StoreDispatch} from 'state/types'
+import client from 'models/api/resources'
+import * as actions from '../actions'
 
 describe('FacebookIntegrationInstagramAds actions', () => {
-    let store
-    let mockServer
+    let store: MockStoreEnhanced<unknown, StoreDispatch>
+    let mockServer: MockAdapter
 
     const middlewares = [thunk]
     const mockStore = configureMockStore(middlewares)

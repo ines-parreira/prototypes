@@ -1,14 +1,11 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {render, fireEvent} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
-import * as helpers from '../../helpers'
-
-import {EmailIntegrationUpdateContainer} from '../EmailIntegrationUpdate.tsx'
-
+import {assumeMock} from 'utils/testing'
 import {getLDClient} from 'utils/launchDarkly'
 import {FeatureFlagKey} from 'config/featureFlags'
 
@@ -18,8 +15,11 @@ import {
     GMAIL_INTEGRATION_TYPE,
     OUTLOOK_INTEGRATION_TYPE,
     EMAIL_INTEGRATION_TYPE,
-} from 'constants/integration.ts'
-import {isBoolean} from 'pages/common/components/infobar/utils.tsx'
+} from 'constants/integration'
+import {isBoolean} from 'pages/common/components/infobar/utils'
+import * as helpers from '../../helpers'
+
+import {EmailIntegrationUpdateContainer} from '../EmailIntegrationUpdate'
 
 const isOutboundDomainVerifiedSpy = jest.spyOn(
     helpers,
@@ -27,15 +27,19 @@ const isOutboundDomainVerifiedSpy = jest.spyOn(
 )
 
 const INTEGRATION_NAME = 'My Integration'
-const commonProps = {
+const commonProps: ComponentProps<typeof EmailIntegrationUpdateContainer> = {
     loading: fromJS({integration: false}),
-    actions: {
-        deleteIntegration: jest.fn(),
-    },
+    domain: 'test',
+    forwardingEmailAddress: '',
+    gmailRedirectUri: '',
+    integration: fromJS({}),
+    importEmails: jest.fn(),
+    updateOrCreateIntegration: jest.fn(),
+    deleteIntegration: jest.fn(),
 }
 
 jest.mock('utils/launchDarkly')
-const allFlagsMock = getLDClient().allFlags
+const allFlagsMock = assumeMock(getLDClient().allFlags)
 allFlagsMock.mockReturnValue({[FeatureFlagKey.ChatVideoSharingExtra]: true})
 
 describe('<EmailIntegrationUpdateContainer />', () => {
@@ -95,9 +99,9 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             expect(getByText('Save changes')).toBeDisabled()
 
             if (isBoolean(selector.newValue)) {
-                fireEvent.click(container.querySelector(selector.selector))
+                fireEvent.click(container.querySelector(selector.selector)!)
             } else {
-                fireEvent.change(container.querySelector(selector.selector), {
+                fireEvent.change(container.querySelector(selector.selector)!, {
                     target: {value: selector.newValue},
                 })
             }
@@ -107,9 +111,9 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             ).toBeFalsy()
 
             if (isBoolean(selector.newValue)) {
-                fireEvent.click(container.querySelector(selector.selector))
+                fireEvent.click(container.querySelector(selector.selector)!)
             } else {
-                fireEvent.change(container.querySelector(selector.selector), {
+                fireEvent.change(container.querySelector(selector.selector)!, {
                     target: {value: selector.finalValue},
                 })
             }
@@ -151,9 +155,9 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             ).toBeTruthy()
 
             if (isBoolean(selector.newValue)) {
-                fireEvent.click(container.querySelector(selector.selector))
+                fireEvent.click(container.querySelector(selector.selector)!)
             } else {
-                fireEvent.change(container.querySelector(selector.selector), {
+                fireEvent.change(container.querySelector(selector.selector)!, {
                     target: {value: selector.newValue},
                 })
             }
@@ -163,9 +167,9 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             ).toBeFalsy()
 
             if (isBoolean(selector.newValue)) {
-                fireEvent.click(container.querySelector(selector.selector))
+                fireEvent.click(container.querySelector(selector.selector)!)
             } else {
-                fireEvent.change(container.querySelector(selector.selector), {
+                fireEvent.change(container.querySelector(selector.selector)!, {
                     target: {value: selector.finalValue},
                 })
             }
@@ -208,14 +212,14 @@ describe('<EmailIntegrationUpdateContainer />', () => {
                 getByText('Save changes').hasAttribute('disabled')
             ).toBeTruthy()
 
-            fireEvent.change(container.querySelector(field.selector), {
+            fireEvent.change(container.querySelector(field.selector)!, {
                 target: {value: field.newValue},
             })
             expect(
                 getByText('Save changes').hasAttribute('disabled')
             ).toBeFalsy()
 
-            fireEvent.change(container.querySelector(field.selector), {
+            fireEvent.change(container.querySelector(field.selector)!, {
                 target: {value: field.finalValue},
             })
             expect(

@@ -1,18 +1,20 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
 
-import EmailIntegrationUpdateLayout from '../EmailIntegrationUpdateLayout.tsx'
+import EmailIntegrationUpdateLayout from '../EmailIntegrationUpdateLayout'
 
-const EmailIntegration = fromJS({
-    id: 1,
-    meta: {address: 'some-email@addres.com'},
-})
+const minProps: ComponentProps<typeof EmailIntegrationUpdateLayout> = {
+    integration: fromJS({
+        id: 1,
+        meta: {address: 'some-email@address.com'},
+    }),
+}
 
 describe('EmailIntegrationUpdateLayout', () => {
     it('should render the layout for an email integration update', () => {
         const {container} = render(
-            <EmailIntegrationUpdateLayout integration={EmailIntegration}>
+            <EmailIntegrationUpdateLayout {...minProps}>
                 <span>
                     Praesent commodo cursus magna, vel scelerisque nisl
                     consectetur et.

@@ -14,7 +14,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render a spinner 1`]
   }
 >
   <Connect(FacebookIntegrationInstagramAds)
-    fetchAds={[Function]}
+    fetchAds={[MockFunction]}
     integration={
       Immutable.Map {
         "id": 1,
@@ -33,7 +33,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render a spinner 1`]
         },
       ]
     }
-    updateAd={[Function]}
+    updateAd={[MockFunction]}
   >
     <FacebookIntegrationInstagramAds
       fetchAds={[Function]}
@@ -356,7 +356,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
   }
 >
   <Connect(FacebookIntegrationInstagramAds)
-    fetchAds={[Function]}
+    fetchAds={[MockFunction]}
     integration={
       Immutable.Map {
         "id": 1,
@@ -375,7 +375,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
         },
       ]
     }
-    updateAd={[Function]}
+    updateAd={[MockFunction]}
   >
     <FacebookIntegrationInstagramAds
       fetchAds={[Function]}
@@ -1396,7 +1396,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
   }
 >
   <Connect(FacebookIntegrationInstagramAds)
-    fetchAds={[Function]}
+    fetchAds={[MockFunction]}
     integration={
       Immutable.Map {
         "id": 1,
@@ -1415,7 +1415,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
         },
       ]
     }
-    updateAd={[Function]}
+    updateAd={[MockFunction]}
   >
     <FacebookIntegrationInstagramAds
       fetchAds={[Function]}
@@ -1905,7 +1905,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
   }
 >
   <Connect(FacebookIntegrationInstagramAds)
-    fetchAds={[Function]}
+    fetchAds={[MockFunction]}
     integration={
       Immutable.Map {
         "id": 1,
@@ -1924,7 +1924,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
         },
       ]
     }
-    updateAd={[Function]}
+    updateAd={[MockFunction]}
   >
     <FacebookIntegrationInstagramAds
       fetchAds={[Function]}
@@ -2581,7 +2581,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render without ad 1`
   }
 >
   <Connect(FacebookIntegrationInstagramAds)
-    fetchAds={[Function]}
+    fetchAds={[MockFunction]}
     integration={
       Immutable.Map {
         "id": 1,
@@ -2600,7 +2600,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render without ad 1`
         },
       ]
     }
-    updateAd={[Function]}
+    updateAd={[MockFunction]}
   >
     <FacebookIntegrationInstagramAds
       fetchAds={[Function]}

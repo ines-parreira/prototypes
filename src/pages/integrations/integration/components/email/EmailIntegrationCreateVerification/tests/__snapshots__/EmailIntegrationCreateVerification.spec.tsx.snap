@@ -1,5 +1,121 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<EmailIntegrationCreateVerification/> render() should render instructions for the activated forwarding email 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        aria-label="breadcrumb"
+        listTag="ol"
+        tag="nav"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            to="/app/settings/channels/email"
+          >
+            Email
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          my integration
+           
+          <span
+            className="text-faded"
+          >
+            myintegration@gorgias.io
+          </span>
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <Container
+    className="pageContainer"
+    fluid={true}
+    tag="div"
+  >
+    <h1>
+      <i
+        className="material-icons"
+      />
+      Verification in progress...
+    </h1>
+    <div>
+      <div>
+        if you've received the verification email but your integration still reads "Verification in progress...", you can manually input the verification code listed in the verification email.
+        <br />
+        <br />
+        <Form
+          onSubmit={[Function]}
+          tag="form"
+        >
+          <InputField
+            label="Input verification code manually"
+            name="code"
+            onChange={[Function]}
+            placeholder="f69a26"
+            type="text"
+          />
+          <ForwardRef
+            className=""
+            color="primary"
+            isDisabled={false}
+            type="submit"
+          >
+            Verify your integration
+          </ForwardRef>
+        </Form>
+        <br />
+      </div>
+      <p>
+        If you haven't set up the forwarding yet, you'll find the instructions
+         
+        <Link
+          to="/app/settings/channels/email/1/forwarding"
+        >
+          there
+        </Link>
+        .
+        <br />
+        If you have setup forwarding after having received the verification email, click on the button below to re-send it.
+      </p>
+      <ForwardRef
+        className=""
+        intent="primary"
+        isDisabled={false}
+        onClick={[Function]}
+      >
+        <i
+          className="material-icons mr-2"
+        >
+          mail
+        </i>
+         Re-send verification email
+      </ForwardRef>
+      <ConfirmButton
+        className="float-right"
+        confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+        intent="destructive"
+        isDisabled={false}
+        onConfirm={[Function]}
+      >
+        <ButtonIconLabel
+          icon="delete"
+        >
+          Delete email address
+        </ButtonIconLabel>
+      </ConfirmButton>
+    </div>
+  </Container>
+</div>
+`;
+
 exports[`<EmailIntegrationCreateVerification/> render() should render instructions for the base email integration 1`] = `
 <div
   className="full-width"
@@ -56,6 +172,7 @@ exports[`<EmailIntegrationCreateVerification/> render() should render instructio
         <Button
           className="p-0"
           color="link"
+          onClick={[MockFunction]}
           style={
             {
               "verticalAlign": "initial",

@@ -1,11 +1,11 @@
 import {fromJS} from 'immutable'
 import {mount} from 'enzyme'
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 
-import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../../constants/integration.ts'
+import {FACEBOOK_INTEGRATION_TYPE} from 'constants/integration'
 import FacebookIntegrationInstagramAds from '../FacebookIntegrationInstagramAds'
 
 describe('<FacebookIntegrationInstagramAds/>', () => {
@@ -18,14 +18,22 @@ describe('<FacebookIntegrationInstagramAds/>', () => {
         },
     ]
 
-    const props = {
+    const minProps = {
         integrations: fromJS(integrations),
         integration: fromJS(integrations[0]),
-        fetchAds: () => null,
-        updateAd: () => null,
-    }
+        fetchAds: jest.fn(),
+        updateAd: jest.fn(),
+    } as unknown as ComponentProps<typeof FacebookIntegrationInstagramAds>
 
-    const getStore = ({maxAccountAds, internal, loading}) => {
+    const getStore = ({
+        maxAccountAds,
+        internal,
+        loading,
+    }: {
+        maxAccountAds?: number
+        loading?: boolean
+        internal?: Record<string, unknown>
+    }) => {
         const middlewares = [thunk]
         const mockStore = configureMockStore(middlewares)
 
@@ -48,6 +56,10 @@ describe('<FacebookIntegrationInstagramAds/>', () => {
                 },
                 loadingAds: [],
             }),
+            internals: fromJS({}),
+            loadingAds: fromJS([]),
+            maxAccountAds: 0,
+            loading: false,
         })
     }
 
@@ -67,7 +79,7 @@ describe('<FacebookIntegrationInstagramAds/>', () => {
 
     afterAll(() => {
         tooltipIds.forEach((tooltipId) => {
-            document.getElementById(tooltipId).remove()
+            document.getElementById(tooltipId)?.remove()
         })
 
         global.Math.random = random
@@ -85,7 +97,7 @@ describe('<FacebookIntegrationInstagramAds/>', () => {
                         },
                     })}
                 >
-                    <FacebookIntegrationInstagramAds {...props} />
+                    <FacebookIntegrationInstagramAds {...minProps} />
                 </Provider>
             )
 
@@ -102,7 +114,7 @@ describe('<FacebookIntegrationInstagramAds/>', () => {
                         },
                     })}
                 >
-                    <FacebookIntegrationInstagramAds {...props} />
+                    <FacebookIntegrationInstagramAds {...minProps} />
                 </Provider>
             )
 
@@ -127,7 +139,7 @@ describe('<FacebookIntegrationInstagramAds/>', () => {
                         },
                     })}
                 >
-                    <FacebookIntegrationInstagramAds {...props} />
+                    <FacebookIntegrationInstagramAds {...minProps} />
                 </Provider>
             )
 
@@ -159,7 +171,7 @@ describe('<FacebookIntegrationInstagramAds/>', () => {
                         },
                     })}
                 >
-                    <FacebookIntegrationInstagramAds {...props} />
+                    <FacebookIntegrationInstagramAds {...minProps} />
                 </Provider>
             )
 
@@ -198,7 +210,7 @@ describe('<FacebookIntegrationInstagramAds/>', () => {
                         },
                     })}
                 >
-                    <FacebookIntegrationInstagramAds {...props} />
+                    <FacebookIntegrationInstagramAds {...minProps} />
                 </Provider>
             )
 

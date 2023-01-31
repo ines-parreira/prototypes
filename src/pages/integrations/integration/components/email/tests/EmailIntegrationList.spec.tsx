@@ -7,18 +7,16 @@ import {Provider} from 'react-redux'
 import {MemoryRouter} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
-import EmailIntegrationList from '../EmailIntegrationList.tsx'
-import {fetchEmailDomains} from '../resources.ts'
-import {IntegrationType} from '../../../../../../models/integration/constants.ts'
+import {renderWithRouter, assumeMock} from 'utils/testing'
+import {IntegrationType, EmailProvider} from 'models/integration/constants'
+import EmailIntegrationList from '../EmailIntegrationList'
+import {fetchEmailDomains} from '../resources'
 
-import {EmailProvider} from 'models/integration/constants'
-
-import {renderWithRouter} from 'utils/testing'
-
-jest.mock('../resources.ts')
+jest.mock('../resources')
+const fetchEmailDomainsMock = assumeMock(fetchEmailDomains)
 
 describe('<EmailIntegrationList/>', () => {
-    function getEmailIntegration(id) {
+    function getEmailIntegration(id: number) {
         return {
             id,
             type: IntegrationType.Email,
@@ -28,7 +26,7 @@ describe('<EmailIntegrationList/>', () => {
             },
         }
     }
-    function getGmailIntegration(id, sendingEnabled) {
+    function getGmailIntegration(id: number, sendingEnabled: boolean) {
         return {
             id,
             type: IntegrationType.Gmail,
@@ -54,7 +52,7 @@ describe('<EmailIntegrationList/>', () => {
 
     describe('render()', () => {
         it('should render the page with a warning when the domain is not verified', async () => {
-            const get = fetchEmailDomains.mockResolvedValueOnce([])
+            const get = fetchEmailDomainsMock.mockResolvedValueOnce([])
 
             const {container} = render(
                 <Provider store={store}>
@@ -68,7 +66,7 @@ describe('<EmailIntegrationList/>', () => {
         })
 
         it('should render the page when there are no integrations', async () => {
-            const get = fetchEmailDomains.mockResolvedValueOnce([])
+            const get = fetchEmailDomainsMock.mockResolvedValueOnce([])
 
             const {container} = render(
                 <Provider store={store}>
@@ -85,10 +83,21 @@ describe('<EmailIntegrationList/>', () => {
         })
 
         it('should render the page without warning when the email is verified', async () => {
-            const get = fetchEmailDomains.mockResolvedValueOnce([
+            const get = fetchEmailDomainsMock.mockResolvedValueOnce([
                 {
                     name: 'gorgias-test.com',
                     verified: true,
+                    data: fromJS({
+                        sending_dns_records: [
+                            {
+                                verified: true,
+                                record_type: 'AA',
+                                host: 'gorgias-test.com',
+                                value: 'test',
+                                current_values: ['test1', 'test2'],
+                            },
+                        ],
+                    }),
                 },
             ])
 
@@ -104,7 +113,7 @@ describe('<EmailIntegrationList/>', () => {
         })
 
         it('should render the page with a warning when a GMail integration has sending disabled', async () => {
-            const get = fetchEmailDomains.mockResolvedValueOnce([])
+            const get = fetchEmailDomainsMock.mockResolvedValueOnce([])
 
             const {container} = render(
                 <Provider store={store}>
@@ -121,7 +130,7 @@ describe('<EmailIntegrationList/>', () => {
         })
 
         it('should render the page without warning when a GMail integration has sending enabled', async () => {
-            const get = fetchEmailDomains.mockResolvedValueOnce([])
+            const get = fetchEmailDomainsMock.mockResolvedValueOnce([])
 
             const {container} = render(
                 <Provider store={store}>
@@ -138,7 +147,7 @@ describe('<EmailIntegrationList/>', () => {
         })
 
         it('should redirect to preferences tab when provider is not Sendgrid', async () => {
-            fetchEmailDomains.mockResolvedValueOnce([])
+            fetchEmailDomainsMock.mockResolvedValueOnce([])
             const integration = getEmailIntegration(1)
 
             const component = renderWithRouter(
@@ -157,15 +166,22 @@ describe('<EmailIntegrationList/>', () => {
         })
 
         it('should redirect to domain settings tab when provider is Sendgrid', async () => {
-            fetchEmailDomains.mockResolvedValueOnce([])
+            fetchEmailDomainsMock.mockResolvedValueOnce([])
             const integration = getEmailIntegration(1)
-            integration.meta.provider = EmailProvider.Sendgrid
 
             const component = renderWithRouter(
                 <Provider store={store}>
                     <EmailIntegrationList
                         {...commonProps}
-                        integrations={fromJS([integration])}
+                        integrations={fromJS([
+                            {
+                                ...integration,
+                                meta: {
+                                    ...integration.meta,
+                                    provider: EmailProvider.Sendgrid,
+                                },
+                            },
+                        ])}
                     />
                 </Provider>
             )
