@@ -78,6 +78,9 @@ const regularMerchantCampaign: ChatCampaign = {
 
 const revenueMerchantCampaign: ChatCampaign = {
     ...regularMerchantCampaign,
+    meta: {
+        delay: 15000,
+    },
     triggers: [
         {
             key: CampaignTriggerKey.BusinessHours,
@@ -478,6 +481,23 @@ describe('<AdvancedCampaignDetails />', () => {
                     name: 'Business hours',
                 })
             }).toThrowError()
+        })
+
+        it('updates the delay', () => {
+            screen.getByText('15 seconds')
+
+            act(() => {
+                fireEvent.click(screen.getByText('15 seconds'))
+                fireEvent.click(screen.getByText('0 seconds'))
+            })
+
+            screen.getByText('0 seconds')
+
+            act(() => {
+                screen.getByRole('button', {name: 'Save'})
+            })
+
+            screen.getByText('0 seconds')
         })
 
         it('updates the value of the current trigger', () => {

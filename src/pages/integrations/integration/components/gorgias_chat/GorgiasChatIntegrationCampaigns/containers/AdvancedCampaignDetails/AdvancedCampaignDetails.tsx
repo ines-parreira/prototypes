@@ -92,7 +92,7 @@ export const AdvancedCampaignDetails = memo(
         const [campaignName, setCampaignName] = useState<string>(
             campaign.name ?? ''
         )
-        const [campaignDelay, setCampaignDelay] = useState<number>()
+        const [campaignDelay, setCampaignDelay] = useState<number>(0)
         const [campaignAgent, setCampaignAgent] = useState<CampaignAuthor>()
         const [campaignMessageHTML, setCampaignMessageHTML] =
             useState<string>('')
@@ -285,7 +285,7 @@ export const AdvancedCampaignDetails = memo(
                     triggers: triggersArr,
                 }
 
-                if (campaignDelay && campaignDelay >= 0) {
+                if (isRevenueBetaTester) {
                     payload = {
                         ...payload,
                         meta: {
