@@ -644,9 +644,7 @@ exports[`<Infobar/> should render widgets edition mode 1`] = `
         </div>
       </div>
     </div>
-    <div
-      class="footer"
-    >
+    <div>
       <button
         class="wrapper mr-2 fill primary medium isDisabled"
         disabled=""

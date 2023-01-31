@@ -1,12 +1,10 @@
-const path = require('path')
-
 const webpack = require('webpack')
-
+const path = require('path')
 const TerserPlugin = require('terser-webpack-plugin')
-const {WebpackManifestPlugin} = require('webpack-manifest-plugin')
+const ManifestPlugin = require('webpack-manifest-plugin')
 
 const __PRODUCTION__ = process.env.NODE_ENV === 'production'
-const HASH = process.env.RELEASE ? process.env.RELEASE : '[contenthash]'
+const HASH = process.env.RELEASE ? process.env.RELEASE : '[hash]'
 
 const srcDir = path.join(__dirname, 'src')
 const buildDir = path.join(__dirname, 'build')
@@ -14,11 +12,9 @@ const buildDir = path.join(__dirname, 'build')
 const optimization = {
     minimizer: [
         new TerserPlugin({
+            cache: true,
             parallel: true,
-            terserOptions: {
-                nameCache: {},
-                sourceMap: true,
-            },
+            sourceMap: true,
         }),
     ],
 }
@@ -33,7 +29,6 @@ module.exports = () => {
         },
         output: {
             path: buildDir,
-            publicPath: '',
             filename: __PRODUCTION__
                 ? `helpdesk.shared-worker.${HASH}.js`
                 : 'helpdesk.shared-worker.js',
@@ -42,12 +37,12 @@ module.exports = () => {
             rules: [
                 {
                     test: /\.js$/i,
-                    use: [{loader: 'babel-loader?cacheDirectory'}],
+                    loader: 'babel-loader?cacheDirectory',
                 },
             ],
         },
         plugins: [
-            new WebpackManifestPlugin({
+            new ManifestPlugin({
                 seed: require(`${buildDir}/manifest.json`),
             }),
             new webpack.ProvidePlugin({

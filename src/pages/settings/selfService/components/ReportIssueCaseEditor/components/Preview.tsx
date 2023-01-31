@@ -1,5 +1,5 @@
 import React, {useMemo} from 'react'
-import {useRouteMatch} from 'react-router-dom'
+import {useRouteMatch} from 'react-router'
 import classNames from 'classnames'
 
 import ChatIntegrationPreview from 'pages/integrations/integration/components/chat/ChatIntegrationPreview/ChatIntegrationPreview'
