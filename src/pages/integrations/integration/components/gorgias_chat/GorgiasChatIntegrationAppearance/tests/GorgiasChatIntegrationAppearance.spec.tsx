@@ -352,6 +352,9 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                         "offsetX": 0,
                         "offsetY": 0,
                       },
+                      "launcher": Immutable.Map {
+                        "type": "icon",
+                      },
                     },
                     "meta": Immutable.Map {
                       "language": "en-US",
@@ -484,6 +487,9 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                         "alignment": "bottom-right",
                         "offsetX": 0,
                         "offsetY": 0,
+                      },
+                      "launcher": Immutable.Map {
+                        "type": "icon",
                       },
                     },
                     "meta": Immutable.Map {

@@ -33,4 +33,5 @@ export enum FeatureFlagKey {
     SpotlightGlobalSearch = 'spotlight-global-search',
     TicketFields = 'ticket-fields',
     TicketMessagesVirtualization = 'ticket-messages-virtualization',
+    ChatLauncherCustomization = 'chat-launcher-customization',
 }

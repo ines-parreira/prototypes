@@ -9,7 +9,7 @@ const DEFAULT_CONTRAST_LEVEL = 2.8
 export function getTextColorBasedOnBackground(
     mainColor: string,
     contrastLevel = DEFAULT_CONTRAST_LEVEL
-): string {
+): CONSTRAST_COLORS {
     if (!mainColor) {
         return CONSTRAST_COLORS.LIGHT
     }

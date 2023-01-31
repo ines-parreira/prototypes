@@ -23,12 +23,18 @@
 
     .preview {
         position: relative;
-        border-radius: 5px;
-        width: 384px;
+        border-radius: 4px;
+        width: 432px;
+        min-height: 728px;
         color: @textColor;
+        background: #f4f5f7;
 
         font-weight: 600;
         pointer-events: none;
+        padding: 24px;
+
+        display: flex;
+        flex-direction: column;
     }
 
     .dialog {
@@ -447,17 +453,11 @@
         }
     }
 
-    .button {
+    .buttonWrapper {
         position: relative;
         display: flex;
-        justify-content: center;
+        justify-content: flex-end;
         align-items: center;
-        float: right;
-        width: 3.625em;
-        height: 3.625em;
-        background: @primary;
-        border-radius: 50%;
-        box-shadow: 0 2px 5px 0 fade(black, 26%);
 
         .axis-x {
             position: absolute;
@@ -528,7 +528,7 @@
         }
 
         &.top-left {
-            float: left;
+            justify-content: flex-start;
             margin-bottom: 1em;
             .axis-x  {
                 left: -40px;
@@ -545,7 +545,7 @@
         }
 
         &.bottom-left {
-            float: left;
+            justify-content: flex-start;
             margin-top: 1em;
             .axis-x  {
                 left: -40px;
@@ -559,6 +559,10 @@
                     left: 12px;
                 }
             }
+
+            &.onlyButton {
+                margin-top: auto;
+            }
         }
 
         &.bottom-right {
@@ -569,37 +573,9 @@
             .axis-y  {
                 bottom: -40px;
             }
-        }
 
-        .iconWrapper {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            .icon {
-                z-index: 1;
-                position: absolute;
-                width: 55%;
-                height: 55%;
-                background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="overflow: visible; shape-rendering: geometricPrecision;"><filter id="dots"><feGaussianBlur stdDeviation="0,4" in="SourceAlpha"></feGaussianBlur><feOffset dx="0" dy="4" result="offsetblur"></feOffset><feComponentTransfer><feFuncA type="linear" slope="0.4"></feFuncA></feComponentTransfer><feComposite operator="in" in2="offsetblur"></feComposite><feMerge><feMergeNode></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge></filter><path fill="%23@{light-contrast-color}" filter="url(%23dots)" d="M50,0C22.4,0,0,22.4,0,50s22.4,50,50,50h30.8l0-10.6C92.5,80.2,100,66,100,50C100,22.4,77.6,0,50,0z M32,54.5 c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5C36.5,52.5,34.5,54.5,32,54.5z M50,54.5c-2.5,0-4.5-2-4.5-4.5 c0-2.5,2-4.5,4.5-4.5c2.5,0,4.5,2,4.5,4.5C54.5,52.5,52.5,54.5,50,54.5z M68,54.5c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5 s4.5,2,4.5,4.5C72.5,52.5,70.5,54.5,68,54.5z"></path></svg>');
-            }
-            .iconDark {
-                z-index: 1;
-                position: absolute;
-                width: 55%;
-                height: 55%;
-                background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="overflow: visible; shape-rendering: geometricPrecision;"><filter id="dots"><feGaussianBlur stdDeviation="0,4" in="SourceAlpha"></feGaussianBlur><feOffset dx="0" dy="4" result="offsetblur"></feOffset><feComponentTransfer><feFuncA type="linear" slope="0.4"></feFuncA></feComponentTransfer><feComposite operator="in" in2="offsetblur"></feComposite><feMerge><feMergeNode></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge></filter><path fill="%23@{dark-contrast-color}" filter="url(%23dots)" d="M50,0C22.4,0,0,22.4,0,50s22.4,50,50,50h30.8l0-10.6C92.5,80.2,100,66,100,50C100,22.4,77.6,0,50,0z M32,54.5 c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5s4.5,2,4.5,4.5C36.5,52.5,34.5,54.5,32,54.5z M50,54.5c-2.5,0-4.5-2-4.5-4.5 c0-2.5,2-4.5,4.5-4.5c2.5,0,4.5,2,4.5,4.5C54.5,52.5,52.5,54.5,50,54.5z M68,54.5c-2.5,0-4.5-2-4.5-4.5c0-2.5,2-4.5,4.5-4.5 s4.5,2,4.5,4.5C72.5,52.5,70.5,54.5,68,54.5z"></path></svg>');
-            }
-
-            .shadow {
-                position: absolute;
-                width: 55%;
-                height: 55%;
-                border-radius: 100px;
-                box-shadow: 0 13px 26px 0 fade(black, 20%);
+            &.onlyButton {
+                margin-top: auto;
             }
         }
     }

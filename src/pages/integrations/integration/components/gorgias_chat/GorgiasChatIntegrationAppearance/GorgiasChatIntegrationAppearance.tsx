@@ -1,4 +1,4 @@
-import React, {SyntheticEvent, useEffect, useState} from 'react'
+import React, {SyntheticEvent, useEffect, useState, useRef} from 'react'
 import {Link} from 'react-router-dom'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map} from 'immutable'
@@ -8,6 +8,7 @@ import {Breadcrumb, BreadcrumbItem, Form, Label} from 'reactstrap'
 import classNames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
+import InputField from 'pages/common/forms/input/InputField'
 import wrench from 'assets/img/icons/wrench.svg'
 import storefront from 'assets/img/icons/storefront.svg'
 
@@ -38,6 +39,7 @@ import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {
     GorgiasChatPosition,
     GorgiasChatPositionAlignmentEnum,
+    GorgiasChatLauncherType,
     IntegrationType,
     ShopifyIntegration,
 } from 'models/integration/types'
@@ -49,13 +51,16 @@ import FileField from 'pages/common/forms/FileField'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
+import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
 import GorgiasChatIntegrationNavigation from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationNavigation'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import MessageContentPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/MessageContent'
 import GorgiasChatIntegrationPreviewContainer from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
+import ChatLauncher from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatLauncher'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {SegmentEvent} from 'store/middlewares/segmentTracker'
 
+import {useOnClickOutside} from 'pages/common/hooks/useOnClickOutside'
 import useIntegrationPageViewLogEvent from '../../../hooks/useIntegrationPageViewLogEvent'
 
 import css from './GorgiasChatIntegrationAppearance.less'
@@ -81,6 +86,9 @@ export const defaultContent = {
     avatarType: GORGIAS_CHAT_WIDGET_AVATAR_TYPE_DEFAULT,
     avatarTeamPictureUrl: undefined,
     position: GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
+    launcher: {
+        type: GorgiasChatLauncherType.ICON,
+    },
 }
 
 const avatarTypeOptions = [
@@ -122,13 +130,17 @@ type State = {
     isInitialized: boolean
     position: GorgiasChatPosition
     editedPositionAxis: PositionAxis | null
+    launcher: {
+        type: GorgiasChatLauncherType
+        label?: string
+    }
 }
 
 type SubmitForm = {
     type: IntegrationType
     id?: number
     name: string
-    decoration: any
+    decoration: Record<string, any>
     meta: any
 }
 
@@ -156,6 +168,8 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
     )
     const viewTranslateEdit =
         useFlags()[FeatureFlagKey.ChatEnableTranslationEdit]
+    const shouldShowLauncherCustomization =
+        useFlags()[FeatureFlagKey.ChatLauncherCustomization]
 
     const [storeName, setStoreName] = useState(
         integration.getIn(['meta', 'shop_name'], null)
@@ -251,6 +265,13 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                     isCopied: false,
                     isShopifyInstructions: true,
                     editedPositionAxis: null,
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+                    launcher: integration
+                        .getIn(
+                            ['decoration', 'launcher'],
+                            fromJS({type: GorgiasChatLauncherType.ICON})
+                        )
+                        .toJS(),
                 },
                 defaultContent
             )
@@ -311,6 +332,17 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                         GORGIAS_CHAT_OFFLINE_MODE_ENABLED_DATETIME_DEFAULT,
                 },
             },
+        }
+
+        if (state.launcher.type === GorgiasChatLauncherType.ICON_AND_LABEL) {
+            form.decoration.launcher = {
+                type: GorgiasChatLauncherType.ICON_AND_LABEL,
+                label: state.launcher.label,
+            }
+        } else if (state.launcher.type === GorgiasChatLauncherType.ICON) {
+            form.decoration.launcher = {
+                type: GorgiasChatLauncherType.ICON,
+            }
         }
 
         let actionToUse = actions.createGorgiasChatIntegration
@@ -422,6 +454,12 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         'reply',
     ])
 
+    const launcherCustomizationRef = useRef<HTMLDivElement>(null)
+    const [isChatOpenInPreview, setIsChatOpenInPreview] = useState(true)
+    useOnClickOutside(launcherCustomizationRef, () => {
+        setIsChatOpenInPreview(true)
+    })
+
     const chatPreview = (
         <div className={css.container}>
             <Group className="mb-3">
@@ -461,6 +499,8 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                 editedPositionAxis={editedPositionAxis}
                 autoResponderEnabled={autoResponderEnabled}
                 autoResponderReply={autoResponderReply}
+                launcher={state.launcher}
+                isOpen={isChatOpenInPreview}
             >
                 <MessageContentPreview
                     conversationColor={conversationColor}
@@ -480,6 +520,11 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
             </ChatIntegrationPreview>
         </div>
     )
+
+    const launcherLabel =
+        'label' in state.launcher
+            ? state.launcher.label
+            : GORGIAS_CHAT_WIDGET_TEXTS[state.language].chatWithUs
 
     return (
         <div className="full-width">
@@ -590,91 +635,134 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                     />
                                 </>
                             ) : null}
-                            <DEPRECATED_InputField
-                                className={css.formGroup}
-                                type="text"
-                                label="Chat title"
-                                value={name}
-                                onChange={(value: string) =>
-                                    setState((prevState) => ({
-                                        ...prevState,
-                                        name: value,
-                                    }))
-                                }
-                                placeholder="Ex: Company Support"
-                                required
-                            />
-                            <DEPRECATED_InputField
-                                className={css.formGroup}
-                                type="select"
-                                value={language}
-                                options={GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.toJS()}
-                                onChange={setLanguage}
-                                label="Language"
-                            >
-                                {GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.map(
-                                    (option) => {
-                                        const value = option?.get('value')
-                                        const label = option?.get('label')
-                                        return (
-                                            <option key={value} value={value}>
-                                                {label}
-                                            </option>
-                                        )
-                                    }
-                                )}
-                            </DEPRECATED_InputField>
-                            <DEPRECATED_InputField
-                                className={css.formGroup}
-                                type="text"
-                                value={introductionText}
-                                onFocus={() =>
-                                    setState((prevState) => ({
-                                        ...prevState,
-                                        isOnline: true,
-                                    }))
-                                }
-                                onChange={(value: string) =>
-                                    setState((prevState) => ({
-                                        ...prevState,
-                                        introductionText: value,
-                                    }))
-                                }
-                                label="Introduction text during business hours"
-                                maxLength={
-                                    GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH
-                                }
-                            />
-                            <DEPRECATED_InputField
-                                className={css.formGroup}
-                                type="text"
-                                value={offlineIntroductionText}
-                                onFocus={() => {
-                                    setState((prevState) => ({
-                                        ...prevState,
-                                        isOnline: false,
-                                    }))
-                                }}
-                                onChange={(value: string) => {
-                                    setState((prevState) => ({
-                                        ...prevState,
-                                        offlineIntroductionText: value,
-                                    }))
-                                }}
-                                label="Introduction text outside business hours"
-                                maxLength={
-                                    GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH
-                                }
-                            />
 
-                            {viewTranslateEdit && isUpdate && (
-                                <CustomizeToneOfVoiceBlock
-                                    integrationId={integration.get('id')}
+                            <div className={css.formSection}>
+                                <DEPRECATED_InputField
+                                    className={css.formGroup}
+                                    type="text"
+                                    label="Chat title"
+                                    value={name}
+                                    onChange={(value: string) =>
+                                        setState((prevState) => ({
+                                            ...prevState,
+                                            name: value,
+                                        }))
+                                    }
+                                    placeholder="Ex: Company Support"
+                                    required
                                 />
-                            )}
+                                <DEPRECATED_InputField
+                                    className={css.formGroup}
+                                    type="select"
+                                    value={language}
+                                    options={GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.toJS()}
+                                    onChange={setLanguage}
+                                    label="Language"
+                                >
+                                    {GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.map(
+                                        (option) => {
+                                            const value = option?.get('value')
+                                            const label = option?.get('label')
+                                            return (
+                                                <option
+                                                    key={value}
+                                                    value={value}
+                                                >
+                                                    {label}
+                                                </option>
+                                            )
+                                        }
+                                    )}
+                                </DEPRECATED_InputField>
+                            </div>
+
+                            <div className={css.formSection}>
+                                <h2 className={css.title}>Intro message</h2>
+                                <DEPRECATED_InputField
+                                    className={css.formGroup}
+                                    type="text"
+                                    value={introductionText}
+                                    onFocus={() =>
+                                        setState((prevState) => ({
+                                            ...prevState,
+                                            isOnline: true,
+                                        }))
+                                    }
+                                    onChange={(value: string) =>
+                                        setState((prevState) => ({
+                                            ...prevState,
+                                            introductionText: value,
+                                        }))
+                                    }
+                                    label="Introduction text during business hours"
+                                    maxLength={
+                                        GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH
+                                    }
+                                />
+                                <DEPRECATED_InputField
+                                    className={css.formGroup}
+                                    type="text"
+                                    value={offlineIntroductionText}
+                                    onFocus={() => {
+                                        setState((prevState) => ({
+                                            ...prevState,
+                                            isOnline: false,
+                                        }))
+                                    }}
+                                    onChange={(value: string) => {
+                                        setState((prevState) => ({
+                                            ...prevState,
+                                            offlineIntroductionText: value,
+                                        }))
+                                    }}
+                                    label="Introduction text outside business hours"
+                                    maxLength={
+                                        GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH
+                                    }
+                                />
+
+                                {viewTranslateEdit && isUpdate && (
+                                    <CustomizeToneOfVoiceBlock
+                                        integrationId={integration.get('id')}
+                                    />
+                                )}
+                            </div>
+
+                            <div className={css.formSection}>
+                                <h2 className={css.title}>Colors</h2>
+
+                                <div
+                                    className={classNames(
+                                        css.colorPickersWrapper
+                                    )}
+                                >
+                                    <ColorField
+                                        value={mainColor}
+                                        onChange={(value: string) => {
+                                            setState((prevState) => ({
+                                                ...prevState,
+                                                mainColor: value,
+                                            }))
+                                        }}
+                                        label="Main color"
+                                    />
+                                    <ColorField
+                                        value={conversationColor}
+                                        onChange={(value: string) =>
+                                            setState((prevState) => ({
+                                                ...prevState,
+                                                conversationColor: value,
+                                            }))
+                                        }
+                                        label="Conversation color"
+                                    />
+                                </div>
+                            </div>
 
                             {isUpdate && (
-                                <>
+                                <div className={css.formSection}>
+                                    <h2 className={css.title}>Chat header</h2>
+
                                     <RadioFieldSet
                                         name="type-field"
                                         className="mb-3"
@@ -686,7 +774,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                                 avatarType: value,
                                             }))
                                         }
-                                        label="Avatar"
+                                        label="Image"
                                     />
                                     {isTeamPictureAvatarSelected && (
                                         <div
@@ -727,191 +815,298 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                             />
                                         </div>
                                     )}
-                                </>
+                                </div>
                             )}
-                            <div
-                                className={classNames(
-                                    css.colorPickersWrapper,
-                                    css.formGroup
-                                )}
-                            >
-                                <ColorField
-                                    value={mainColor}
-                                    onChange={(value: string) => {
-                                        setState((prevState) => ({
-                                            ...prevState,
-                                            mainColor: value,
-                                        }))
-                                    }}
-                                    label="Main color"
-                                />
-                                <ColorField
-                                    value={conversationColor}
-                                    onChange={(value: string) =>
-                                        setState((prevState) => ({
-                                            ...prevState,
-                                            conversationColor: value,
-                                        }))
-                                    }
-                                    label="Conversation color"
-                                />
-                            </div>
-                            <div className={css.positionWrapper}>
-                                <DEPRECATED_InputField
-                                    className={css.formGroup}
-                                    type="select"
-                                    value={position.alignment}
-                                    options={GORGIAS_CHAT_WIDGET_POSITION_OPTIONS.toJS()}
-                                    onChange={(
-                                        alignment: GorgiasChatPositionAlignmentEnum
-                                    ) => {
-                                        setState((prevState) => ({
-                                            ...prevState,
-                                            position: {
-                                                ...position,
-                                                alignment,
-                                            },
-                                        }))
-                                    }}
-                                    label="Chat position"
-                                >
-                                    {GORGIAS_CHAT_WIDGET_POSITION_OPTIONS.map(
-                                        (option) => {
-                                            const value = option?.get('value')
-                                            const label = option?.get('label')
-                                            return (
-                                                <option
-                                                    key={value}
-                                                    value={value}
-                                                >
-                                                    {label}
-                                                </option>
-                                            )
-                                        }
-                                    )}
-                                </DEPRECATED_InputField>
-                                <div className={css.positionInputsWrapper}>
-                                    <div
-                                        className={classNames(
-                                            css.fieldset,
-                                            css.formGroup
+
+                            <div className={css.formSection}>
+                                <h2 className={css.title}>Launcher</h2>
+
+                                {shouldShowLauncherCustomization && (
+                                    <div ref={launcherCustomizationRef}>
+                                        <div className={css.launcherTypes}>
+                                            <PreviewRadioButton
+                                                isSelected={
+                                                    state.launcher.type ===
+                                                    GorgiasChatLauncherType.ICON
+                                                }
+                                                label="Icon"
+                                                preview={
+                                                    <div
+                                                        className={
+                                                            css.launcherPreview
+                                                        }
+                                                    >
+                                                        <ChatLauncher
+                                                            type={
+                                                                GorgiasChatLauncherType.ICON
+                                                            }
+                                                            backgroundColor={
+                                                                mainColor
+                                                            }
+                                                            windowState="closed"
+                                                        />
+                                                    </div>
+                                                }
+                                                value={
+                                                    GorgiasChatLauncherType.ICON
+                                                }
+                                                onClick={() => {
+                                                    setState((prevState) => ({
+                                                        ...prevState,
+                                                        launcher: {
+                                                            ...prevState.launcher,
+                                                            type: GorgiasChatLauncherType.ICON,
+                                                        },
+                                                    }))
+                                                    setIsChatOpenInPreview(
+                                                        false
+                                                    )
+                                                }}
+                                            />
+
+                                            <PreviewRadioButton
+                                                isSelected={
+                                                    state.launcher.type ===
+                                                    GorgiasChatLauncherType.ICON_AND_LABEL
+                                                }
+                                                label="Icon and label"
+                                                preview={
+                                                    <div
+                                                        className={
+                                                            css.launcherPreview
+                                                        }
+                                                    >
+                                                        <ChatLauncher
+                                                            type={
+                                                                GorgiasChatLauncherType.ICON_AND_LABEL
+                                                            }
+                                                            backgroundColor={
+                                                                mainColor
+                                                            }
+                                                            label={
+                                                                launcherLabel
+                                                            }
+                                                            windowState="closed"
+                                                        />
+                                                    </div>
+                                                }
+                                                value={
+                                                    GorgiasChatLauncherType.ICON_AND_LABEL
+                                                }
+                                                onClick={() => {
+                                                    setState((prevState) => ({
+                                                        ...prevState,
+                                                        launcher: {
+                                                            type: GorgiasChatLauncherType.ICON_AND_LABEL,
+                                                            label: launcherLabel,
+                                                        },
+                                                    }))
+                                                    setIsChatOpenInPreview(
+                                                        false
+                                                    )
+                                                }}
+                                            />
+                                        </div>
+                                        {state.launcher.type ===
+                                            GorgiasChatLauncherType.ICON_AND_LABEL && (
+                                            <>
+                                                <InputField
+                                                    className={css.formGroup}
+                                                    type="text"
+                                                    label="Label"
+                                                    value={state.launcher.label}
+                                                    onChange={(value: string) =>
+                                                        setState(
+                                                            (prevState) => ({
+                                                                ...prevState,
+                                                                launcher: {
+                                                                    type: GorgiasChatLauncherType.ICON_AND_LABEL,
+                                                                    label: value,
+                                                                },
+                                                            })
+                                                        )
+                                                    }
+                                                    isRequired
+                                                    maxLength={20}
+                                                    caption={`${
+                                                        state.launcher.label
+                                                            ?.length || 0
+                                                    }/20 characters`}
+                                                />
+                                            </>
                                         )}
-                                    >
-                                        <Label className={css.bold}>
-                                            Move widget left / right
-                                            <span id="move-widget-left-right">
-                                                <i
-                                                    className={classNames(
-                                                        'material-icons-outlined',
-                                                        css.tooltipIcon
-                                                    )}
-                                                >
-                                                    info
-                                                </i>
-                                                <Tooltip
-                                                    style={{textAlign: 'left'}}
-                                                    target="move-widget-left-right"
-                                                >
-                                                    Move the chat left or right
-                                                    to avoid overlap with other
-                                                    widgets you might have. By
-                                                    default, the chat icon is
-                                                    displayed at 22px from the
-                                                    left/right edges and and
-                                                    22px from the top/bottom
-                                                    edges.
-                                                </Tooltip>
-                                            </span>
-                                        </Label>
-                                        <NumberInput
-                                            value={position.offsetX}
-                                            onChange={(offsetX) => {
-                                                setState((prevState) => ({
-                                                    ...prevState,
-                                                    position: {
-                                                        ...position,
-                                                        offsetX: offsetX || 0,
-                                                    },
-                                                }))
-                                            }}
-                                            min={-20}
-                                            max={200}
-                                            suffix="px"
-                                            onFocus={() => {
-                                                setState((prevState) => ({
-                                                    ...prevState,
-                                                    editedPositionAxis:
-                                                        PositionAxis.AXIS_X,
-                                                }))
-                                            }}
-                                            onBlur={() => {
-                                                setState((prevState) => ({
-                                                    ...prevState,
-                                                    editedPositionAxis: null,
-                                                }))
-                                            }}
-                                        />
                                     </div>
-                                    <div
-                                        className={classNames(
-                                            css.fieldset,
-                                            css.formGroup
-                                        )}
+                                )}
+
+                                <div className={css.positionWrapper}>
+                                    <DEPRECATED_InputField
+                                        className={css.formGroup}
+                                        type="select"
+                                        value={position.alignment}
+                                        options={GORGIAS_CHAT_WIDGET_POSITION_OPTIONS.toJS()}
+                                        onChange={(
+                                            alignment: GorgiasChatPositionAlignmentEnum
+                                        ) => {
+                                            setState((prevState) => ({
+                                                ...prevState,
+                                                position: {
+                                                    ...position,
+                                                    alignment,
+                                                },
+                                            }))
+                                        }}
+                                        label="Widget position on page"
                                     >
-                                        <Label className={css.bold}>
-                                            Move widget up / down
-                                            <span id="move-widget-up-down">
-                                                <i
-                                                    className={classNames(
-                                                        'material-icons-outlined',
-                                                        css.tooltipIcon
-                                                    )}
-                                                >
-                                                    info
-                                                </i>
-                                                <Tooltip
-                                                    style={{textAlign: 'left'}}
-                                                    target="move-widget-up-down"
-                                                >
-                                                    Move the chat up or down to
-                                                    avoid overlap with other
-                                                    widgets you might have. By
-                                                    default, the chat icon is
-                                                    displayed at 22px from the
-                                                    left/right edges and and
-                                                    22px from the top/bottom
-                                                    edges.
-                                                </Tooltip>
-                                            </span>
-                                        </Label>
-                                        <NumberInput
-                                            value={position.offsetY}
-                                            onChange={(offsetY) => {
-                                                setState((prevState) => ({
-                                                    ...prevState,
-                                                    position: {
-                                                        ...position,
-                                                        offsetY: offsetY || 0,
-                                                    },
-                                                }))
-                                            }}
-                                            min={-20}
-                                            max={200}
-                                            suffix="px"
-                                            onFocus={() => {
-                                                setState((prevState) => ({
-                                                    ...prevState,
-                                                    editedPositionAxis:
-                                                        PositionAxis.AXIS_Y,
-                                                }))
-                                            }}
-                                            onBlur={() => {
-                                                setState((prevState) => ({
-                                                    ...prevState,
-                                                    editedPositionAxis: null,
-                                                }))
-                                            }}
-                                        />
+                                        {GORGIAS_CHAT_WIDGET_POSITION_OPTIONS.map(
+                                            (option) => {
+                                                const value =
+                                                    option?.get('value')
+                                                const label =
+                                                    option?.get('label')
+                                                return (
+                                                    <option
+                                                        key={value}
+                                                        value={value}
+                                                    >
+                                                        {label}
+                                                    </option>
+                                                )
+                                            }
+                                        )}
+                                    </DEPRECATED_InputField>
+                                    <div className={css.positionInputsWrapper}>
+                                        <div
+                                            className={classNames(
+                                                css.fieldset,
+                                                css.formGroup
+                                            )}
+                                        >
+                                            <Label className={css.bold}>
+                                                Move left / right
+                                                <span id="move-widget-left-right">
+                                                    <i
+                                                        className={classNames(
+                                                            'material-icons-outlined',
+                                                            css.tooltipIcon
+                                                        )}
+                                                    >
+                                                        info
+                                                    </i>
+                                                    <Tooltip
+                                                        style={{
+                                                            textAlign: 'left',
+                                                        }}
+                                                        target="move-widget-left-right"
+                                                    >
+                                                        Move the chat left or
+                                                        right to avoid overlap
+                                                        with other widgets you
+                                                        might have. By default,
+                                                        the chat icon is
+                                                        displayed at 20px from
+                                                        the left/right edges and
+                                                        and 20px from the
+                                                        top/bottom edges.
+                                                    </Tooltip>
+                                                </span>
+                                            </Label>
+                                            <NumberInput
+                                                value={position.offsetX}
+                                                onChange={(offsetX) => {
+                                                    setState((prevState) => ({
+                                                        ...prevState,
+                                                        position: {
+                                                            ...position,
+                                                            offsetX:
+                                                                offsetX || 0,
+                                                        },
+                                                    }))
+                                                }}
+                                                min={-20}
+                                                max={200}
+                                                suffix="px"
+                                                onFocus={() => {
+                                                    setState((prevState) => ({
+                                                        ...prevState,
+                                                        editedPositionAxis:
+                                                            PositionAxis.AXIS_X,
+                                                    }))
+                                                }}
+                                                onBlur={() => {
+                                                    setState((prevState) => ({
+                                                        ...prevState,
+                                                        editedPositionAxis:
+                                                            null,
+                                                    }))
+                                                }}
+                                            />
+                                        </div>
+                                        <div
+                                            className={classNames(
+                                                css.fieldset,
+                                                css.formGroup
+                                            )}
+                                        >
+                                            <Label className={css.bold}>
+                                                Move up / down
+                                                <span id="move-widget-up-down">
+                                                    <i
+                                                        className={classNames(
+                                                            'material-icons-outlined',
+                                                            css.tooltipIcon
+                                                        )}
+                                                    >
+                                                        info
+                                                    </i>
+                                                    <Tooltip
+                                                        style={{
+                                                            textAlign: 'left',
+                                                        }}
+                                                        target="move-widget-up-down"
+                                                    >
+                                                        Move the chat up or down
+                                                        to avoid overlap with
+                                                        other widgets you might
+                                                        have. By default, the
+                                                        chat icon is displayed
+                                                        at 20px from the
+                                                        left/right edges and and
+                                                        20px from the top/bottom
+                                                        edges.
+                                                    </Tooltip>
+                                                </span>
+                                            </Label>
+                                            <NumberInput
+                                                value={position.offsetY}
+                                                onChange={(offsetY) => {
+                                                    setState((prevState) => ({
+                                                        ...prevState,
+                                                        position: {
+                                                            ...position,
+                                                            offsetY:
+                                                                offsetY || 0,
+                                                        },
+                                                    }))
+                                                }}
+                                                min={-20}
+                                                max={200}
+                                                suffix="px"
+                                                onFocus={() => {
+                                                    setState((prevState) => ({
+                                                        ...prevState,
+                                                        editedPositionAxis:
+                                                            PositionAxis.AXIS_Y,
+                                                    }))
+                                                }}
+                                                onBlur={() => {
+                                                    setState((prevState) => ({
+                                                        ...prevState,
+                                                        editedPositionAxis:
+                                                            null,
+                                                    }))
+                                                }}
+                                            />
+                                        </div>
                                     </div>
                                 </div>
                             </div>

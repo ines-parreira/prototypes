@@ -1,4 +1,5 @@
 @import '~css/new/colorTokens';
+@import '~css/new/layout';
 
 :local {
     .bold {
@@ -19,11 +20,13 @@
     }
 
     .title {
-        margin-bottom: 16px;
+        margin-bottom: @layout-spacing-m;
+        font-size: 20px;
+        font-weight: 600;
     }
 
     .formSection {
-        margin-bottom: 32px;
+        margin-bottom: @layout-spacing-xl;
     }
 
     .formGroup {

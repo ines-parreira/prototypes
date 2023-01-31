@@ -97,3 +97,8 @@ export enum GorgiasChatStatusEnum {
     HIDDEN = 'hidden',
     HIDDEN_OUTSIDE_BUSINESS_HOURS = 'hidden-outside-business-hours',
 }
+
+export enum GorgiasChatLauncherType {
+    ICON = 'icon',
+    ICON_AND_LABEL = 'icon-label',
+}

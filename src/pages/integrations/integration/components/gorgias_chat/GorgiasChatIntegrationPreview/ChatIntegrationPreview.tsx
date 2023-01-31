@@ -2,7 +2,9 @@ import classnames from 'classnames'
 import moment from 'moment'
 import React, {ReactNode} from 'react'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import Collapse from 'pages/common/components/Collapse/Collapse'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import {
     CHAT_AUTO_RESPONDER_REPLY_IN_DAY,
@@ -19,13 +21,15 @@ import {
 import {
     GorgiasChatPosition,
     GorgiasChatPositionAlignmentEnum,
+    GorgiasChatLauncherType,
 } from '../../../../../../models/integration/types'
 import {PositionAxis} from '../GorgiasChatIntegrationAppearance/GorgiasChatIntegrationAppearance'
 
 import ChatIntegrationAvatar from './ChatIntegrationAvatar'
 import css from './ChatIntegrationPreview.less'
-import {getTextColorBasedOnBackground, CONSTRAST_COLORS} from './color-utils'
+import {getTextColorBasedOnBackground} from './color-utils'
 import GorgiasChatPoweredBy from './GorgiasChatPoweredBy'
+import ChatLauncher from './ChatLauncher'
 
 type Props = {
     name: string
@@ -48,6 +52,11 @@ type Props = {
     shouldHideAvatarOnlineMarker?: boolean
     showGoBackButton?: boolean
     enableAnimations?: boolean
+    launcher?: {
+        type: GorgiasChatLauncherType
+        label?: string
+    }
+    isOpen?: boolean
 }
 
 const ChatIntegrationPreview = (props: Props) => {
@@ -75,7 +84,14 @@ const ChatIntegrationPreview = (props: Props) => {
         hideButton,
         showGoBackButton,
         enableAnimations,
+        launcher = {
+            type: GorgiasChatLauncherType.ICON,
+        },
+        isOpen = true,
     } = props
+
+    const isLauncherCustomizationEnabled =
+        useFlags()[FeatureFlagKey.ChatLauncherCustomization]
 
     // Preserve the space which should be occupied by a string when the string is empty
     const nonbreak = (str?: string) => {
@@ -148,13 +164,6 @@ const ChatIntegrationPreview = (props: Props) => {
         isOnline ? mainColor : offlineColor
     )
 
-    const BubbleIcon =
-        contrastColor === CONSTRAST_COLORS.DARK ? (
-            <i className={css.iconDark} />
-        ) : (
-            <i className={css.icon} />
-        )
-
     const ClockIcon = (
         <i className="material-icons" style={{color: contrastColor}}>
             schedule
@@ -176,17 +185,69 @@ const ChatIntegrationPreview = (props: Props) => {
         )
     }
 
+    if (!isOpen) {
+        return (
+            <div className={css.preview} style={{...getPreviewCustomStyle()}}>
+                <div
+                    className={classnames(
+                        css.buttonWrapper,
+                        css[position.alignment],
+                        css.onlyButton
+                    )}
+                >
+                    <ChatLauncher
+                        {...launcher}
+                        backgroundColor={mainColor}
+                        windowState="closed"
+                    />
+                    {editedPositionAxis === PositionAxis.AXIS_X && (
+                        <div
+                            className={css['axis-x']}
+                            style={{...getOffsetBarCustomStyle()}}
+                        >
+                            <div className={css.offsetLine} />
+                            <div className={css.offsetContent}>
+                                {`${position.offsetX}px`}
+                            </div>
+                        </div>
+                    )}
+                    {editedPositionAxis === PositionAxis.AXIS_Y && (
+                        <div className={css['axis-y']}>
+                            <div className={css.offsetLine} />
+                            <div className={css.offsetContent}>
+                                {`${position.offsetY}px`}
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </div>
+        )
+    }
+
+    const ChatButton = isLauncherCustomizationEnabled ? (
+        <ChatLauncher
+            {...launcher}
+            backgroundColor={mainColor}
+            windowState="opened"
+        />
+    ) : (
+        <ChatLauncher
+            {...launcher}
+            backgroundColor={mainColor}
+            windowState="closed"
+        />
+    )
+
     return (
         <div className={css.preview} style={{...getPreviewCustomStyle()}}>
             {isButtonOnTop && !hideButton && (
                 <div
-                    className={classnames(css.button, css[position.alignment])}
-                    style={{backgroundColor: mainColor}}
+                    className={classnames(
+                        css.buttonWrapper,
+                        css[position.alignment]
+                    )}
                 >
-                    <div className={css.iconWrapper}>
-                        {BubbleIcon}
-                        <div className={css.shadow} />
-                    </div>
+                    {ChatButton}
                     {editedPositionAxis === PositionAxis.AXIS_X && (
                         <div
                             className={css['axis-x']}
@@ -296,15 +357,12 @@ const ChatIntegrationPreview = (props: Props) => {
 
             {!isButtonOnTop && !hideButton && (
                 <div
-                    className={classnames(css.button, css[position.alignment])}
-                    style={{
-                        backgroundColor: isOnline ? mainColor : offlineColor,
-                    }}
+                    className={classnames(
+                        css.buttonWrapper,
+                        css[position.alignment]
+                    )}
                 >
-                    <div className={css.iconWrapper}>
-                        {BubbleIcon}
-                        <div className={css.shadow} />
-                    </div>
+                    {ChatButton}
                     {editedPositionAxis === PositionAxis.AXIS_X && (
                         <div
                             className={css['axis-x']}

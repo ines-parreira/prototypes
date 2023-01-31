@@ -60,6 +60,7 @@ exports[`<ChatIntegrationPreview/> render() should display auto responder 1`] = 
           "backLabelBackInMinutes": "Back in {value} minutes",
           "backLabelBackTomorrow": "Back tomorrow",
           "campaignClickToReply": "Click to reply",
+          "chatWithUs": "Chat with us",
           "clickToRetry": "Message not delivered. Click to retry.",
           "conversationTimestampHeaderFormat": "MMMM D",
           "emailCaptureInputLabel": "Get notified by email",
@@ -103,23 +104,13 @@ exports[`<ChatIntegrationPreview/> render() should display auto responder 1`] = 
     />
   </div>
   <div
-    className="button bottom-right"
-    style={
-      {
-        "backgroundColor": "#123456",
-      }
-    }
+    className="buttonWrapper bottom-right"
   >
-    <div
-      className="iconWrapper"
-    >
-      <i
-        className="icon"
-      />
-      <div
-        className="shadow"
-      />
-    </div>
+    <ChatLauncher
+      backgroundColor="#123456"
+      type="icon"
+      windowState="closed"
+    />
   </div>
 </div>
 `;
@@ -201,6 +192,7 @@ exports[`<ChatIntegrationPreview/> render() should display display the offsets w
           "backLabelBackInMinutes": "Back in {value} minutes",
           "backLabelBackTomorrow": "Back tomorrow",
           "campaignClickToReply": "Click to reply",
+          "chatWithUs": "Chat with us",
           "clickToRetry": "Message not delivered. Click to retry.",
           "conversationTimestampHeaderFormat": "MMMM D",
           "emailCaptureInputLabel": "Get notified by email",
@@ -244,23 +236,13 @@ exports[`<ChatIntegrationPreview/> render() should display display the offsets w
     />
   </div>
   <div
-    className="button bottom-right"
-    style={
-      {
-        "backgroundColor": "#123456",
-      }
-    }
+    className="buttonWrapper bottom-right"
   >
-    <div
-      className="iconWrapper"
-    >
-      <i
-        className="icon"
-      />
-      <div
-        className="shadow"
-      />
-    </div>
+    <ChatLauncher
+      backgroundColor="#123456"
+      type="icon"
+      windowState="closed"
+    />
     <div
       className="axis-x"
       style={
@@ -355,6 +337,7 @@ exports[`<ChatIntegrationPreview/> render() should display display the offsets w
           "backLabelBackInMinutes": "Back in {value} minutes",
           "backLabelBackTomorrow": "Back tomorrow",
           "campaignClickToReply": "Click to reply",
+          "chatWithUs": "Chat with us",
           "clickToRetry": "Message not delivered. Click to retry.",
           "conversationTimestampHeaderFormat": "MMMM D",
           "emailCaptureInputLabel": "Get notified by email",
@@ -398,23 +381,13 @@ exports[`<ChatIntegrationPreview/> render() should display display the offsets w
     />
   </div>
   <div
-    className="button bottom-right"
-    style={
-      {
-        "backgroundColor": "#123456",
-      }
-    }
+    className="buttonWrapper bottom-right"
   >
-    <div
-      className="iconWrapper"
-    >
-      <i
-        className="icon"
-      />
-      <div
-        className="shadow"
-      />
-    </div>
+    <ChatLauncher
+      backgroundColor="#123456"
+      type="icon"
+      windowState="closed"
+    />
     <div
       className="axis-y"
     >
@@ -490,6 +463,7 @@ exports[`<ChatIntegrationPreview/> render() should display optional email captur
           "backLabelBackInMinutes": "Back in {value} minutes",
           "backLabelBackTomorrow": "Back tomorrow",
           "campaignClickToReply": "Click to reply",
+          "chatWithUs": "Chat with us",
           "clickToRetry": "Message not delivered. Click to retry.",
           "conversationTimestampHeaderFormat": "MMMM D",
           "emailCaptureInputLabel": "Get notified by email",
@@ -545,23 +519,13 @@ exports[`<ChatIntegrationPreview/> render() should display optional email captur
     </div>
   </div>
   <div
-    className="button bottom-right"
-    style={
-      {
-        "backgroundColor": "#123456",
-      }
-    }
+    className="buttonWrapper bottom-right"
   >
-    <div
-      className="iconWrapper"
-    >
-      <i
-        className="icon"
-      />
-      <div
-        className="shadow"
-      />
-    </div>
+    <ChatLauncher
+      backgroundColor="#123456"
+      type="icon"
+      windowState="closed"
+    />
   </div>
 </div>
 `;
@@ -625,6 +589,7 @@ exports[`<ChatIntegrationPreview/> render() should display required email captur
           "backLabelBackInMinutes": "Back in {value} minutes",
           "backLabelBackTomorrow": "Back tomorrow",
           "campaignClickToReply": "Click to reply",
+          "chatWithUs": "Chat with us",
           "clickToRetry": "Message not delivered. Click to retry.",
           "conversationTimestampHeaderFormat": "MMMM D",
           "emailCaptureInputLabel": "Get notified by email",
@@ -668,23 +633,13 @@ exports[`<ChatIntegrationPreview/> render() should display required email captur
     />
   </div>
   <div
-    className="button bottom-right"
-    style={
-      {
-        "backgroundColor": "#123456",
-      }
-    }
+    className="buttonWrapper bottom-right"
   >
-    <div
-      className="iconWrapper"
-    >
-      <i
-        className="icon"
-      />
-      <div
-        className="shadow"
-      />
-    </div>
+    <ChatLauncher
+      backgroundColor="#123456"
+      type="icon"
+      windowState="closed"
+    />
   </div>
 </div>
 `;
@@ -763,6 +718,7 @@ exports[`<ChatIntegrationPreview/> render() should display the avatar team pictu
           "backLabelBackInMinutes": "Back in {value} minutes",
           "backLabelBackTomorrow": "Back tomorrow",
           "campaignClickToReply": "Click to reply",
+          "chatWithUs": "Chat with us",
           "clickToRetry": "Message not delivered. Click to retry.",
           "conversationTimestampHeaderFormat": "MMMM D",
           "emailCaptureInputLabel": "Get notified by email",
@@ -818,23 +774,13 @@ exports[`<ChatIntegrationPreview/> render() should display the avatar team pictu
     </div>
   </div>
   <div
-    className="button bottom-right"
-    style={
-      {
-        "backgroundColor": "#123456",
-      }
-    }
+    className="buttonWrapper bottom-right"
   >
-    <div
-      className="iconWrapper"
-    >
-      <i
-        className="icon"
-      />
-      <div
-        className="shadow"
-      />
-    </div>
+    <ChatLauncher
+      backgroundColor="#123456"
+      type="icon"
+      windowState="closed"
+    />
   </div>
 </div>
 `;
@@ -926,6 +872,7 @@ exports[`<ChatIntegrationPreview/> render() should display the offline status be
           "backLabelBackInMinutes": "Back in {value} minutes",
           "backLabelBackTomorrow": "Back tomorrow",
           "campaignClickToReply": "Click to reply",
+          "chatWithUs": "Chat with us",
           "clickToRetry": "Message not delivered. Click to retry.",
           "conversationTimestampHeaderFormat": "MMMM D",
           "emailCaptureInputLabel": "Get notified by email",
@@ -981,23 +928,13 @@ exports[`<ChatIntegrationPreview/> render() should display the offline status be
     </div>
   </div>
   <div
-    className="button bottom-right"
-    style={
-      {
-        "backgroundColor": "#EBEBEB",
-      }
-    }
+    className="buttonWrapper bottom-right"
   >
-    <div
-      className="iconWrapper"
-    >
-      <i
-        className="iconDark"
-      />
-      <div
-        className="shadow"
-      />
-    </div>
+    <ChatLauncher
+      backgroundColor="#123456"
+      type="icon"
+      windowState="closed"
+    />
   </div>
 </div>
 `;
@@ -1074,6 +1011,7 @@ exports[`<ChatIntegrationPreview/> render() should display the online status bec
           "backLabelBackInMinutes": "Back in {value} minutes",
           "backLabelBackTomorrow": "Back tomorrow",
           "campaignClickToReply": "Click to reply",
+          "chatWithUs": "Chat with us",
           "clickToRetry": "Message not delivered. Click to retry.",
           "conversationTimestampHeaderFormat": "MMMM D",
           "emailCaptureInputLabel": "Get notified by email",
@@ -1129,23 +1067,13 @@ exports[`<ChatIntegrationPreview/> render() should display the online status bec
     </div>
   </div>
   <div
-    className="button bottom-right"
-    style={
-      {
-        "backgroundColor": "#123456",
-      }
-    }
+    className="buttonWrapper bottom-right"
   >
-    <div
-      className="iconWrapper"
-    >
-      <i
-        className="icon"
-      />
-      <div
-        className="shadow"
-      />
-    </div>
+    <ChatLauncher
+      backgroundColor="#123456"
+      type="icon"
+      windowState="closed"
+    />
   </div>
 </div>
 `;
@@ -1222,6 +1150,7 @@ exports[`<ChatIntegrationPreview/> render() should display the sliders when edit
           "backLabelBackInMinutes": "Back in {value} minutes",
           "backLabelBackTomorrow": "Back tomorrow",
           "campaignClickToReply": "Click to reply",
+          "chatWithUs": "Chat with us",
           "clickToRetry": "Message not delivered. Click to retry.",
           "conversationTimestampHeaderFormat": "MMMM D",
           "emailCaptureInputLabel": "Get notified by email",
@@ -1277,23 +1206,13 @@ exports[`<ChatIntegrationPreview/> render() should display the sliders when edit
     </div>
   </div>
   <div
-    className="button bottom-right"
-    style={
-      {
-        "backgroundColor": "#123456",
-      }
-    }
+    className="buttonWrapper bottom-right"
   >
-    <div
-      className="iconWrapper"
-    >
-      <i
-        className="icon"
-      />
-      <div
-        className="shadow"
-      />
-    </div>
+    <ChatLauncher
+      backgroundColor="#123456"
+      type="icon"
+      windowState="closed"
+    />
   </div>
 </div>
 `;
@@ -1385,6 +1304,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
           "backLabelBackInMinutes": "Back in {value} minutes",
           "backLabelBackTomorrow": "Back tomorrow",
           "campaignClickToReply": "Click to reply",
+          "chatWithUs": "Chat with us",
           "clickToRetry": "Message not delivered. Click to retry.",
           "conversationTimestampHeaderFormat": "MMMM D",
           "emailCaptureInputLabel": "Get notified by email",
@@ -1428,23 +1348,13 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
     />
   </div>
   <div
-    className="button bottom-right"
-    style={
-      {
-        "backgroundColor": "#123456",
-      }
-    }
+    className="buttonWrapper bottom-right"
   >
-    <div
-      className="iconWrapper"
-    >
-      <i
-        className="icon"
-      />
-      <div
-        className="shadow"
-      />
-    </div>
+    <ChatLauncher
+      backgroundColor="#123456"
+      type="icon"
+      windowState="closed"
+    />
     <div
       className="axis-y"
     >
@@ -1548,6 +1458,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
           "backLabelBackInMinutes": "Back in {value} minutes",
           "backLabelBackTomorrow": "Back tomorrow",
           "campaignClickToReply": "Click to reply",
+          "chatWithUs": "Chat with us",
           "clickToRetry": "Message not delivered. Click to retry.",
           "conversationTimestampHeaderFormat": "MMMM D",
           "emailCaptureInputLabel": "Get notified by email",
@@ -1591,23 +1502,13 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
     />
   </div>
   <div
-    className="button bottom-right"
-    style={
-      {
-        "backgroundColor": "#123456",
-      }
-    }
+    className="buttonWrapper bottom-right"
   >
-    <div
-      className="iconWrapper"
-    >
-      <i
-        className="icon"
-      />
-      <div
-        className="shadow"
-      />
-    </div>
+    <ChatLauncher
+      backgroundColor="#123456"
+      type="icon"
+      windowState="closed"
+    />
     <div
       className="axis-y"
     >
@@ -1711,6 +1612,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
           "backLabelBackInMinutes": "Back in {value} minutes",
           "backLabelBackTomorrow": "Back tomorrow",
           "campaignClickToReply": "Click to reply",
+          "chatWithUs": "Chat with us",
           "clickToRetry": "Message not delivered. Click to retry.",
           "conversationTimestampHeaderFormat": "MMMM D",
           "emailCaptureInputLabel": "Get notified by email",
@@ -1754,23 +1656,13 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
     />
   </div>
   <div
-    className="button bottom-right"
-    style={
-      {
-        "backgroundColor": "#123456",
-      }
-    }
+    className="buttonWrapper bottom-right"
   >
-    <div
-      className="iconWrapper"
-    >
-      <i
-        className="icon"
-      />
-      <div
-        className="shadow"
-      />
-    </div>
+    <ChatLauncher
+      backgroundColor="#123456"
+      type="icon"
+      windowState="closed"
+    />
     <div
       className="axis-y"
     >
@@ -1874,6 +1766,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
           "backLabelBackInMinutes": "Back in {value} minutes",
           "backLabelBackTomorrow": "Back tomorrow",
           "campaignClickToReply": "Click to reply",
+          "chatWithUs": "Chat with us",
           "clickToRetry": "Message not delivered. Click to retry.",
           "conversationTimestampHeaderFormat": "MMMM D",
           "emailCaptureInputLabel": "Get notified by email",
@@ -1917,23 +1810,13 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
     />
   </div>
   <div
-    className="button bottom-right"
-    style={
-      {
-        "backgroundColor": "#123456",
-      }
-    }
+    className="buttonWrapper bottom-right"
   >
-    <div
-      className="iconWrapper"
-    >
-      <i
-        className="icon"
-      />
-      <div
-        className="shadow"
-      />
-    </div>
+    <ChatLauncher
+      backgroundColor="#123456"
+      type="icon"
+      windowState="closed"
+    />
     <div
       className="axis-y"
     >
@@ -2022,6 +1905,7 @@ exports[`<ChatIntegrationPreview/> render() should not display button if hideBut
           "backLabelBackInMinutes": "Back in {value} minutes",
           "backLabelBackTomorrow": "Back tomorrow",
           "campaignClickToReply": "Click to reply",
+          "chatWithUs": "Chat with us",
           "clickToRetry": "Message not delivered. Click to retry.",
           "conversationTimestampHeaderFormat": "MMMM D",
           "emailCaptureInputLabel": "Get notified by email",
