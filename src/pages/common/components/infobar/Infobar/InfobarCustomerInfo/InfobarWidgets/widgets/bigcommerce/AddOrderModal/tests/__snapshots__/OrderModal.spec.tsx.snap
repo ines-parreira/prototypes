@@ -37,6 +37,8 @@ exports[`OrderModal should render 1`] = `
           </i>
         </div>
         <div
+          aria-expanded="false"
+          aria-haspopup="dialog"
           class="scrollable"
         >
           <div

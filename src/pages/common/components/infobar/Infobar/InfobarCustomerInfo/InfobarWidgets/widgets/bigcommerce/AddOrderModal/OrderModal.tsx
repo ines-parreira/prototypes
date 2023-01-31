@@ -580,11 +580,13 @@ export function OrderModal({
             isClosable={false}
             onClose={() => handleCancel('header')}
             size="medium"
-            ref={setReference}
-            {...getReferenceProps()}
         >
             <ModalHeader title="Create order" forceCloseButton />
-            <div className={css.scrollable}>
+            <div
+                className={css.scrollable}
+                ref={setReference}
+                {...getReferenceProps()}
+            >
                 <div className={css.formBody}>
                     <div className={css.alerts}>
                         <Tip
@@ -786,6 +788,7 @@ export function OrderModal({
                         </p>
                     </div>
                 </div>
+                {modifiersPopover}
             </div>
             <ModalFooter className={css.wrapper}>
                 <div className={css.actions}>
@@ -809,7 +812,6 @@ export function OrderModal({
                     </Button>
                 </div>
             </ModalFooter>
-            {modifiersPopover}
         </Modal>
     )
 }
