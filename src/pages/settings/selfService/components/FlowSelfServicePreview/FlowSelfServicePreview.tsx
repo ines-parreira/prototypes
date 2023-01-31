@@ -1,5 +1,5 @@
 import React, {useMemo} from 'react'
-import {useRouteMatch} from 'react-router'
+import {useRouteMatch} from 'react-router-dom'
 import {ListGroup, Button, ButtonGroup} from 'reactstrap'
 import {ConnectedProps, connect} from 'react-redux'
 

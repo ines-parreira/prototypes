@@ -8,7 +8,7 @@ import {
     submitWidgets,
 } from '../../../../../state/widgets/actions'
 import {WidgetContextType} from '../../../../../state/widgets/types'
-import * as css from '../Infobar.less'
+import css from '../Infobar.less'
 
 type Props = {
     widgets: Map<any, any>

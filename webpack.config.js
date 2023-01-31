@@ -1,14 +1,17 @@
-const webpack = require('webpack')
 const path = require('path')
+
+const webpack = require('webpack')
+
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
-const ManifestPlugin = require('webpack-manifest-plugin')
+const {WebpackManifestPlugin} = require('webpack-manifest-plugin')
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin')
 
 const pkg = require('./package.json')
 
 const __PRODUCTION__ = process.env.NODE_ENV === 'production'
-const HASH = process.env.RELEASE ? process.env.RELEASE : '[hash]'
+const HASH = process.env.RELEASE ? process.env.RELEASE : '[contenthash]'
 
 const ASSETS_URL = process.env.GORGIAS_ASSETS_URL ?? ''
 
@@ -29,27 +32,39 @@ const vendorsBundleFile = __PRODUCTION__
 const mode = __PRODUCTION__ ? 'production' : 'development'
 const devtool = __PRODUCTION__ ? 'source-map' : 'cheap-module-source-map'
 const devServer = {
-    contentBase: [buildDir, path.join(__dirname, 'src')],
-    clientLogLevel: 'error',
+    static: [{directory: buildDir}, {directory: srcDir}],
+    client: {
+        logging: 'error',
+    },
     host: '0.0.0.0',
-    // disable host check for dev env (if using proxy)
-    disableHostCheck: !__PRODUCTION__,
+    /**
+     * Disable host check for dev env (if using proxy).
+     * When set to 'all' this option bypasses host checking.
+     * THIS IS NOT RECOMMENDED as apps that do not check the host are vulnerable to DNS rebinding attacks.
+     */
+    allowedHosts: !__PRODUCTION__ ? 'all' : 'auto',
     headers: {
         'Access-Control-Allow-Origin': '*',
     },
-    stats: 'minimal',
+    devMiddleware: {
+        stats: 'minimal',
+    },
 }
 const optimization = {
     minimizer: [
         new TerserPlugin({
-            cache: true,
             parallel: true,
-            sourceMap: true,
+            terserOptions: {
+                nameCache: {},
+                sourceMap: true,
+            },
         }),
-        new OptimizeCSSAssetsPlugin({
-            cssProcessorOptions: {
-                map: {
-                    inline: false,
+        new CssMinimizerPlugin({
+            minimizerOptions: {
+                processorOptions: {
+                    map: {
+                        inline: false,
+                    },
                 },
             },
         }),
@@ -79,7 +94,9 @@ const vendors = Object.keys(pkg.dependencies).filter(
     (m) => !cssOnlyPackages.includes(m)
 )
 
-const outputOptions = __PRODUCTION__ ? {} : {publicPath: BUNDLE_PUBLIC_PATH}
+const outputOptions = __PRODUCTION__
+    ? {publicPath: ''}
+    : {publicPath: BUNDLE_PUBLIC_PATH}
 const aliasOptions = __PRODUCTION__
     ? {}
     : {'react-dom': '@hot-loader/react-dom'}
@@ -95,6 +112,7 @@ module.exports = (env = {}) => {
             },
             output: {
                 path: buildDir,
+                publicPath: '',
                 filename: vendorsBundleFile,
                 library: 'vendors',
             },
@@ -108,7 +126,8 @@ module.exports = (env = {}) => {
                     name: '[name]',
                     path: path.join(buildDir, `[name].${mode}.manifest.json`),
                 }),
-                new ManifestPlugin(),
+                new WebpackManifestPlugin(),
+                new NodePolyfillPlugin(),
             ],
             module: {
                 rules: [
@@ -126,9 +145,6 @@ module.exports = (env = {}) => {
         optimization,
         devServer,
         devtool,
-        node: {
-            fs: 'empty',
-        },
         entry: {
             build: `${srcDir}/main.tsx`,
         },
@@ -142,7 +158,7 @@ module.exports = (env = {}) => {
                 {
                     test: /\.(js|tsx?)$/i,
                     exclude: /node_modules/,
-                    loader: 'babel-loader?cacheDirectory',
+                    use: [{loader: 'babel-loader?cacheDirectory'}],
                 },
                 {
                     test: /\.css$/i,
@@ -159,10 +175,6 @@ module.exports = (env = {}) => {
                     use: [
                         {
                             loader: MiniCssExtractPlugin.loader,
-                            options: {
-                                hmr: !__PRODUCTION__,
-                                reloadAll: false,
-                            },
                         },
                         {
                             loader: 'css-loader',
@@ -177,18 +189,21 @@ module.exports = (env = {}) => {
                 {
                     test: imageExtRegex,
                     exclude: /node_modules/,
-                    use: urlLoader,
+                    type: 'javascript/auto',
+                    use: [urlLoader],
                 },
                 // custom fonts
                 {
                     test: fontExtRegex,
                     exclude: /node_modules/,
-                    loader: urlLoader,
+                    type: 'javascript/auto',
+                    use: [urlLoader],
                 },
                 // audio
                 {
                     test: /\.mp3$/i,
-                    loader: urlLoader,
+                    type: 'javascript/auto',
+                    use: [urlLoader],
                 },
                 // embed node_modules assets
                 {
@@ -196,7 +211,8 @@ module.exports = (env = {}) => {
                         or: [imageExtRegex, fontExtRegex],
                     },
                     include: /node_modules/,
-                    loader: 'url-loader',
+                    type: 'javascript/auto',
+                    use: [{loader: 'url-loader'}],
                 },
             ],
         },
@@ -207,7 +223,7 @@ module.exports = (env = {}) => {
             new webpack.DllReferencePlugin({
                 manifest: require(`${buildDir}/vendors.${mode}.manifest.json`),
             }),
-            new ManifestPlugin({
+            new WebpackManifestPlugin({
                 seed: require(`${buildDir}/manifest.json`),
             }),
             new webpack.ProvidePlugin({
@@ -216,6 +232,7 @@ module.exports = (env = {}) => {
             new webpack.EnvironmentPlugin({
                 GORGIAS_ASSETS_URL: 'http://localhost:8080/',
             }),
+            new NodePolyfillPlugin(),
         ],
         resolve: {
             alias: {
