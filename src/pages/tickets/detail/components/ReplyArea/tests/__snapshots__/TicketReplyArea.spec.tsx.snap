@@ -94,8 +94,8 @@ exports[`<TicketReplyArea/> should block the reply area because the customer is 
             <input
               className="input searchInput"
               disabled={true}
-              id="input-text-3"
-              name="input-text-3"
+              id="input-text-4"
+              name="input-text-4"
               onChange={[Function]}
               onFocus={[Function]}
               onKeyDown={[Function]}

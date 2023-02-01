@@ -15,6 +15,7 @@ import {
     TicketSatisfactionSurvey,
 } from 'models/ticket/types'
 import {
+    isTicketAISuggestion,
     isTicketEvent,
     isTicketMessage,
     isTicketRuleSuggestion,
@@ -38,6 +39,7 @@ import {PRIVATE_REPLY_ACTIONS} from './PrivateReplyEvent/constants'
 import css from './TicketBody.less'
 import RuleSuggestion from './RuleSuggestion/RuleSuggestion'
 import {MessageQuoteContext} from './TicketBodyVirtualized'
+import AISuggestion from './RuleSuggestion/AISuggestion'
 
 // $TSFixMe replace with importing HighlightedElements from AuditLogEvent.tsx on migration
 type HighlightedElements = {
@@ -284,14 +286,18 @@ export class TicketBodyNonVirtualized extends React.Component<Props, State> {
                             }
 
                             if (isTicketRuleSuggestion(element))
-                                return elements.find(
-                                    (element: Map<any, any>) =>
-                                        !!element.getIn([
-                                            'meta',
-                                            'rule_suggestion_slug',
-                                        ])
-                                ) ? null : (
+                                return (
                                     <RuleSuggestion
+                                        key={`rule-suggestion-${index}`}
+                                        ticket={ticket.toJS()}
+                                        isCollapsed={!isLast}
+                                    />
+                                )
+
+                            if (isTicketAISuggestion(element))
+                                return (
+                                    <AISuggestion
+                                        key={`ai-suggestion-${index}`}
                                         ticket={ticket.toJS()}
                                         isCollapsed={!isLast}
                                     />

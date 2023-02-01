@@ -242,7 +242,7 @@ export class TicketReplyArea extends Component<Props, State> {
     }
 
     componentDidUpdate = (prevProps: Props, prevState: State) => {
-        const {shouldFocusEditor} = this.state
+        const {shouldFocusEditor, macrosVisible} = this.state
 
         if (this.props.cacheAdded && this.cacheAdded !== true) {
             this.showMacrosDefault()
@@ -258,6 +258,15 @@ export class TicketReplyArea extends Component<Props, State> {
             // hide macros on internal-note
             this.hideMacros()
         }
+
+        // Hide macros if text has been pushed to editor
+        const getContextState = (props: Props) =>
+            props.newMessage.getIn(CONTENT_STATE_PATH) as ContentState
+        if (
+            macrosVisible &&
+            getContextState(prevProps) !== getContextState(this.props)
+        )
+            this.hideMacros()
 
         if (shouldFocusEditor && !prevState.shouldFocusEditor) {
             this.setState({shouldFocusEditor: false})

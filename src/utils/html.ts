@@ -235,3 +235,9 @@ export function unescapeQuoteEntities(html: string): string {
 
     return html.replace(rex, (matched) => quoteEntities[matched])
 }
+
+export function textToHTML(text: string): string {
+    const div = document.createElement('div')
+    div.innerHTML = text.replace(/\n/g, '<br>')
+    return div.outerHTML
+}

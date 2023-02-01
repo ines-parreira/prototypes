@@ -16,6 +16,7 @@ import {
     TicketSatisfactionSurvey,
 } from 'models/ticket/types'
 import {
+    isTicketAISuggestion,
     isTicketEvent,
     isTicketMessage,
     isTicketRuleSuggestion,
@@ -43,6 +44,7 @@ import RuleSuggestion from './RuleSuggestion/RuleSuggestion'
 import {ReplyFormWithVirtuosoContext} from './ReplyForm'
 
 import css from './TicketBody.less'
+import AISuggestion from './RuleSuggestion/AISuggestion'
 
 type FakeVirtuosoItems = 'header'
 
@@ -374,6 +376,14 @@ export class TicketBodyVirtualized extends React.Component<Props, State> {
                                 itemContent = (
                                     <RuleSuggestion
                                         key={`rule-suggestion-${index}`}
+                                        ticket={ticket.toJS()}
+                                        isCollapsed={!isLast}
+                                    />
+                                )
+                            else if (isTicketAISuggestion(element))
+                                itemContent = (
+                                    <AISuggestion
+                                        key={`ai-suggestion-${index}`}
                                         ticket={ticket.toJS()}
                                         isCollapsed={!isLast}
                                     />

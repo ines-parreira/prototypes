@@ -6,6 +6,7 @@ import {
     parseHtml,
     sanitizeHtmlDefault,
     sanitizeHtmlForFacebookMessenger,
+    textToHTML,
     unescapeQuoteEntities,
 } from '../html'
 
@@ -333,6 +334,16 @@ describe('html util', () => {
                 "bla bla entities &amp;, &lt;, &gt;, \", ', then ', ', ', ', \", \", \""
 
             expect(unescapeQuoteEntities(input_html)).toBe(expected)
+        })
+    })
+
+    describe('textToHTML', () => {
+        it.each([
+            ['text', '<div>text</div>'],
+            ['text\ntext2', '<div>text<br>text2</div>'],
+            ['a\nb\n\n\nc\n', '<div>a<br>b<br><br><br>c<br></div>'],
+        ])('should return text in html', (text, html) => {
+            expect(textToHTML(text)).toBe(html)
         })
     })
 })

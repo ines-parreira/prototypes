@@ -5,6 +5,7 @@ import {waitFor} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
+import {ContentState} from 'draft-js'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {Macro} from 'state/macro/types'
 import TicketReply from '../TicketReply'
@@ -104,6 +105,21 @@ describe('<TicketReplyArea/>', () => {
         expect(component.find(TicketMacros)).toHaveLength(1)
         component.setProps({
             newMessageType: TicketMessageSourceType.InternalNote,
+        })
+        component.update()
+        expect(component.find(TicketMacros)).toHaveLength(0)
+    })
+
+    it('should hide macros when editor has text', () => {
+        const component = mount(<TicketReplyArea {...minProps} />)
+
+        focusMacroInput(component)
+        expect(component.find(TicketMacros)).toHaveLength(1)
+        component.setProps({
+            newMessage: fromJS({
+                state: {contentState: ContentState.createFromText('test')},
+                newMessage: {body_text: 'test'},
+            }),
         })
         component.update()
         expect(component.find(TicketMacros)).toHaveLength(0)

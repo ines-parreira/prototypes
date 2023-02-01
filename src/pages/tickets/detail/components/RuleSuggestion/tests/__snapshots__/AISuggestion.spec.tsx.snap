@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AISuggestion should display AISuggestion 1`] = `
+<div>
+  <div
+    class="container"
+  >
+    <div
+      class="avatar"
+    >
+      <div
+        class="component hasImage"
+        style="width: 36px; height: 36px;"
+      >
+        <div
+          class="initials"
+          style="width: 36px; height: 36px; font-size: 15px;"
+        >
+          <span
+            style="line-height: 38px;"
+          >
+            GT
+          </span>
+        </div>
+        <img
+          alt="avatar"
+          class="gravatar"
+          src="/assets/img/icons/gorgias-icon-logo-white.png"
+        />
+      </div>
+    </div>
+    <header
+      class="container"
+    >
+      <div
+        class="infoContainer"
+      >
+        <div
+          class="title"
+        >
+          <span>
+            Gorgias Tips
+          </span>
+          <span>
+            Only visible to you
+          </span>
+        </div>
+        <div
+          class="info"
+        >
+          <span>
+            Gorgias AI wrote a suggested answer for you!
+          </span>
+        </div>
+      </div>
+      <div
+        class="buttonsContainer"
+      >
+        <div
+          class="buttons"
+        >
+          <button
+            class="wrapper fill primary small"
+            type="button"
+          >
+            Copy suggestion & Edit
+          </button>
+        </div>
+      </div>
+      <div
+        class="chevron"
+      >
+        <i
+          class="material-icons-round"
+        >
+          expand_more
+        </i>
+      </div>
+    </header>
+    <div
+      class="container collapse"
+      style="display: block; position: absolute; left: -999px;"
+    >
+      <div>
+        <div
+          class="text"
+        >
+          <div>
+            <div>
+              suggested text
+            </div>
+          </div>
+        </div>
+        <div />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AISuggestion should not display AISuggestion (no suggestion) 1`] = `<div />`;
