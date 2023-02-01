@@ -1,15 +1,15 @@
 import React, {useMemo} from 'react'
 import {NavLink} from 'react-router-dom'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import standalonePreview from 'assets/img/presentationals/standalone-self-service-portal.png'
-
 import {HelpCenter} from 'models/helpCenter/types'
 import {
     getAbsoluteUrl,
     getHelpCenterDomain,
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
-
 import {Banner} from 'pages/common/components/Banner'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import css from './StandaloneBanner.less'
 
@@ -22,6 +22,8 @@ export const StandaloneBanner = ({
     helpCenters,
     onClose,
 }: Props): JSX.Element => {
+    const isAutomationSettingsRevampEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
     const title = useMemo(() => {
         if (helpCenters.length === 1 && helpCenters[0].shop_name) {
             return `We created a Help Center for ${helpCenters[0].shop_name} to help you get started.`
@@ -42,7 +44,11 @@ export const StandaloneBanner = ({
                         brand by adding a logo, background image, your brand
                         color and fonts, and more! Use your{' '}
                         <a href={url}>Help Center’s live</a> URL to redirect
-                        shoppers to self-service.
+                        shoppers to{' '}
+                        {isAutomationSettingsRevampEnabled
+                            ? 'manage their orders'
+                            : 'self-service'}
+                        .
                     </div>
                     <NavLink
                         className={css.nextLink}
@@ -70,7 +76,7 @@ export const StandaloneBanner = ({
                 </NavLink>
             </div>
         )
-    }, [helpCenters])
+    }, [helpCenters, isAutomationSettingsRevampEnabled])
 
     return (
         <div className={css.wrapper}>
