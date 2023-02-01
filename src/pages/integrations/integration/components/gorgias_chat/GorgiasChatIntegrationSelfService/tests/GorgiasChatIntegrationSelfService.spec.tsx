@@ -12,7 +12,10 @@ import {Provider} from 'react-redux'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {RootState, StoreDispatch} from 'state/types'
 import {IntegrationType} from 'models/integration/types'
-import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
+import {
+    SelfServiceConfiguration,
+    ShopType,
+} from 'models/selfServiceConfiguration/types'
 import {updateOrCreateIntegration} from 'state/integrations/actions'
 import {billingState} from 'fixtures/billing'
 import {automationPriceFeatures} from 'fixtures/productPrices'
@@ -26,7 +29,7 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 jest.mock('models/selfServiceConfiguration/resources', () => ({
     fetchSelfServiceConfiguration: (id: any): SelfServiceConfiguration => ({
         id,
-        type: 'shopify',
+        type: 'shopify' as ShopType,
         shop_name: 'my-shop',
         created_datetime: '2019-11-15 19:00:00.000000',
         updated_datetime: '2019-11-15 19:00:00.000000',

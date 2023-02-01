@@ -1,4 +1,5 @@
 import {List} from 'immutable'
+import {IntegrationType} from 'models/integration/constants'
 
 export type SelfServiceConfigurationFilter = {
     key: string
@@ -161,7 +162,10 @@ export type PolicyKey =
 export type ApiListResponse<T> = {
     data: T
 }
-export type ShopType = 'shopify'
+export type ShopType =
+    | IntegrationType.Shopify
+    | IntegrationType.Magento2
+    | IntegrationType.BigCommerce
 
 export enum PolicyEnum {
     TRACK_ORDER_POLICY = 'track_order_policy',

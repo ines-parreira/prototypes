@@ -44,7 +44,7 @@ describe('<QuickResponsesView />', () => {
         deactivated_datetime: null,
         title: 'How do I choose the right size?',
         response_message_content: {
-            html: '<div><br></div>',
+            html: '',
             text: '',
             attachments: fromJS([]),
         },

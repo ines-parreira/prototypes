@@ -1,10 +1,12 @@
-import React, {useState} from 'react'
+import React, {useState, useMemo} from 'react'
 import {useLocalStorage} from 'react-use'
 
-import useShopifyIntegrations from 'pages/automation/common/hooks/useShopifyIntegrations'
+import useStoreIntegrations from 'pages/automation/common/hooks/useStoreIntegrations'
 import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
 import {ShopType} from 'models/selfServiceConfiguration/types'
+import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import {compare} from 'utils'
 
 import AutomationNavbarAddOnSectionBlock from './AutomationNavbarAddOnSectionBlock'
 
@@ -20,7 +22,11 @@ const AutomationNavbarAddOnView = () => {
         []
     )
 
-    const shopifyIntegrations = useShopifyIntegrations()
+    const storeIntegrations = useStoreIntegrations()
+    const sortedStoreIntegrations = useMemo(
+        () => [...storeIntegrations].sort((a, b) => compare(a.name, b.name)),
+        [storeIntegrations]
+    )
 
     const handleToggle = (key: `${ShopType}:${string}`) => {
         if (!collapsedSections) {
@@ -43,14 +49,18 @@ const AutomationNavbarAddOnView = () => {
     return (
         <>
             <div className="mt-3">
-                {shopifyIntegrations.map((shopifyIntegration) => {
-                    const shopName = shopifyIntegration.meta.shop_name
-                    const key = `shopify:${shopName}` as const
+                {sortedStoreIntegrations.map((storeIntegration) => {
+                    const shopType = storeIntegration.type
+                    const shopName =
+                        getShopNameFromStoreIntegration(storeIntegration)
+                    const key = `${shopType}:${shopName}` as const
 
                     return (
                         <AutomationNavbarAddOnSectionBlock
                             key={key}
-                            shopifyIntegration={shopifyIntegration}
+                            name={storeIntegration.name}
+                            shopType={shopType}
+                            shopName={shopName}
                             onToggle={() => {
                                 handleToggle(key)
                             }}
@@ -64,7 +74,7 @@ const AutomationNavbarAddOnView = () => {
                         />
                     )
                 })}
-                {!shopifyIntegrations.length && (
+                {!storeIntegrations.length && (
                     <Alert
                         className="mx-3 py-3 px-2 mt-4"
                         type={AlertType.Error}

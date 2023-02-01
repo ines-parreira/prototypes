@@ -34,19 +34,20 @@ describe('<AutomationNavbar />', () => {
         currentAccount: fromJS(account),
         billing: fromJS(billingState),
     }
-    const integrations = (fromJS(integrationsState) as Map<any, any>).mergeDeep(
-        fromJS({
-            integrations: [
-                {
-                    deleted_datetime: null,
-                    meta: {
-                        shop_name: 'My shop',
-                    },
-                    deactivated_datetime: null,
-                    type: 'shopify',
+    const integrations = (fromJS(integrationsState) as Map<any, any>).mergeIn(
+        ['integrations'],
+        fromJS([
+            {
+                id: 99,
+                name: 'gorgiastest',
+                deleted_datetime: null,
+                meta: {
+                    shop_name: 'gorgiastest',
                 },
-            ],
-        })
+                deactivated_datetime: null,
+                type: 'shopify',
+            },
+        ])
     )
 
     describe('render()', () => {

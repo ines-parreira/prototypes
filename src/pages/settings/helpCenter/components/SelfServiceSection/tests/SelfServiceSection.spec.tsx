@@ -13,7 +13,10 @@ import {initialState as categoriesState} from 'state/entities/helpCenter/categor
 import {renderWithRouter} from 'utils/testing'
 import {HelpCenter} from 'models/helpCenter/types'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
+import {
+    SelfServiceConfiguration,
+    ShopType,
+} from 'models/selfServiceConfiguration/types'
 import SelfServiceSection from '../SelfServiceSection'
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
@@ -48,7 +51,7 @@ const mockedUpdateHelpCenter = jest.fn().mockResolvedValue({
 jest.mock('models/selfServiceConfiguration/resources', () => ({
     fetchSelfServiceConfiguration: (id: any): SelfServiceConfiguration => ({
         id,
-        type: 'shopify',
+        type: 'shopify' as ShopType,
         shop_name: 'my-shop',
         created_datetime: '2019-11-15 19:00:00.000000',
         updated_datetime: '2019-11-15 19:00:00.000000',

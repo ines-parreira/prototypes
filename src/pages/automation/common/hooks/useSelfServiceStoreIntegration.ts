@@ -1,7 +1,8 @@
 import {useMemo} from 'react'
 
+import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
+
 import useStoreIntegrations from './useStoreIntegrations'
-import {getShopNameFromStoreIntegration} from './utils'
 
 const useSelfServiceStoreIntegration = (shopType: string, shopName: string) => {
     const storeIntegrations = useStoreIntegrations()

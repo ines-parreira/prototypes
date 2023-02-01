@@ -186,13 +186,13 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
             </div>
             <div
               class="nameWrapper d-flex align-items-center flex-grow"
-              title="My shop"
+              title="gorgiastest"
             >
               <div
                 class="iconWrapper"
               >
                 <img
-                  alt="Shopify logo"
+                  alt="shopify logo"
                   role="presentation"
                   src="test-file-stub"
                 />
@@ -200,23 +200,62 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
               <span
                 class="name"
               >
-                My shop
+                gorgiastest
               </span>
             </div>
           </div>
           <a
             class="link isNested"
             data-active-class-name="active"
-            href="/app/automation/shopify/My shop/quick-responses"
+            href="/app/automation/shopify/gorgiastest/quick-responses"
           >
             Quick responses
           </a>
           <a
             class="link isNested"
             data-active-class-name="active"
-            href="/app/automation/self-service/shopify/My shop/preferences/order-management"
+            href="/app/automation/self-service/shopify/gorgiastest/preferences/order-management"
           >
             Order management
+          </a>
+          <div
+            class="section d-flex align-items-center flex-grow"
+          >
+            <div
+              class="toggleSectionIconWrapper"
+            >
+              <i
+                class="toggleSectionIcon material-icons"
+              >
+                arrow_drop_down
+              </i>
+            </div>
+            <div
+              class="nameWrapper d-flex align-items-center flex-grow"
+              title="gorgiastest.mybigcommerce.com"
+            >
+              <div
+                class="iconWrapper"
+              >
+                <img
+                  alt="bigcommerce logo"
+                  role="presentation"
+                  src="test-file-stub"
+                />
+              </div>
+              <span
+                class="name"
+              >
+                gorgiastest.mybigcommerce.com
+              </span>
+            </div>
+          </div>
+          <a
+            class="link isNested"
+            data-active-class-name="active"
+            href="/app/automation/bigcommerce/xb107iaz1n/quick-responses"
+          >
+            Quick responses
           </a>
         </div>
       </div>
@@ -445,13 +484,13 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
             </div>
             <div
               class="nameWrapper d-flex align-items-center flex-grow"
-              title="My shop"
+              title="gorgiastest"
             >
               <div
                 class="iconWrapper"
               >
                 <img
-                  alt="Shopify logo"
+                  alt="shopify logo"
                   role="presentation"
                   src="test-file-stub"
                 />
@@ -459,7 +498,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
               <span
                 class="name"
               >
-                My shop
+                gorgiastest
               </span>
             </div>
           </div>
@@ -476,10 +515,52 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
           <a
             class="link isNested"
             data-active-class-name="active"
-            href="/app/automation/self-service/shopify/My shop/preferences/order-management"
+            href="/app/automation/self-service/shopify/gorgiastest/preferences/order-management"
           >
             Order management
           </a>
+          <div
+            class="section d-flex align-items-center flex-grow"
+          >
+            <div
+              class="toggleSectionIconWrapper"
+            >
+              <i
+                class="toggleSectionIcon material-icons"
+              >
+                arrow_drop_down
+              </i>
+            </div>
+            <div
+              class="nameWrapper d-flex align-items-center flex-grow"
+              title="gorgiastest.mybigcommerce.com"
+            >
+              <div
+                class="iconWrapper"
+              >
+                <img
+                  alt="bigcommerce logo"
+                  role="presentation"
+                  src="test-file-stub"
+                />
+              </div>
+              <span
+                class="name"
+              >
+                gorgiastest.mybigcommerce.com
+              </span>
+            </div>
+          </div>
+          <span
+            class="item isNested"
+          >
+            Quick responses
+            <i
+              class="material-icons md-2 icon"
+            >
+              lock
+            </i>
+          </span>
         </div>
       </div>
     </div>
@@ -950,13 +1031,13 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
             </div>
             <div
               class="nameWrapper d-flex align-items-center flex-grow"
-              title="My shop"
+              title="gorgiastest"
             >
               <div
                 class="iconWrapper"
               >
                 <img
-                  alt="Shopify logo"
+                  alt="shopify logo"
                   role="presentation"
                   src="test-file-stub"
                 />
@@ -964,23 +1045,62 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
               <span
                 class="name"
               >
-                My shop
+                gorgiastest
               </span>
             </div>
           </div>
           <a
             class="link isNested"
             data-active-class-name="active"
-            href="/app/automation/shopify/My shop/quick-responses"
+            href="/app/automation/shopify/gorgiastest/quick-responses"
           >
             Quick responses
           </a>
           <a
             class="link isNested"
             data-active-class-name="active"
-            href="/app/automation/self-service/shopify/My shop/preferences/order-management"
+            href="/app/automation/self-service/shopify/gorgiastest/preferences/order-management"
           >
             Order management
+          </a>
+          <div
+            class="section d-flex align-items-center flex-grow"
+          >
+            <div
+              class="toggleSectionIconWrapper"
+            >
+              <i
+                class="toggleSectionIcon material-icons"
+              >
+                arrow_drop_down
+              </i>
+            </div>
+            <div
+              class="nameWrapper d-flex align-items-center flex-grow"
+              title="gorgiastest.mybigcommerce.com"
+            >
+              <div
+                class="iconWrapper"
+              >
+                <img
+                  alt="bigcommerce logo"
+                  role="presentation"
+                  src="test-file-stub"
+                />
+              </div>
+              <span
+                class="name"
+              >
+                gorgiastest.mybigcommerce.com
+              </span>
+            </div>
+          </div>
+          <a
+            class="link isNested"
+            data-active-class-name="active"
+            href="/app/automation/bigcommerce/xb107iaz1n/quick-responses"
+          >
+            Quick responses
           </a>
         </div>
       </div>
@@ -1209,13 +1329,13 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
             </div>
             <div
               class="nameWrapper d-flex align-items-center flex-grow"
-              title="My shop"
+              title="gorgiastest"
             >
               <div
                 class="iconWrapper"
               >
                 <img
-                  alt="Shopify logo"
+                  alt="shopify logo"
                   role="presentation"
                   src="test-file-stub"
                 />
@@ -1223,7 +1343,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
               <span
                 class="name"
               >
-                My shop
+                gorgiastest
               </span>
             </div>
           </div>
@@ -1240,10 +1360,52 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
           <a
             class="link isNested"
             data-active-class-name="active"
-            href="/app/automation/self-service/shopify/My shop/preferences/order-management"
+            href="/app/automation/self-service/shopify/gorgiastest/preferences/order-management"
           >
             Order management
           </a>
+          <div
+            class="section d-flex align-items-center flex-grow"
+          >
+            <div
+              class="toggleSectionIconWrapper"
+            >
+              <i
+                class="toggleSectionIcon material-icons"
+              >
+                arrow_drop_down
+              </i>
+            </div>
+            <div
+              class="nameWrapper d-flex align-items-center flex-grow"
+              title="gorgiastest.mybigcommerce.com"
+            >
+              <div
+                class="iconWrapper"
+              >
+                <img
+                  alt="bigcommerce logo"
+                  role="presentation"
+                  src="test-file-stub"
+                />
+              </div>
+              <span
+                class="name"
+              >
+                gorgiastest.mybigcommerce.com
+              </span>
+            </div>
+          </div>
+          <span
+            class="item isNested"
+          >
+            Quick responses
+            <i
+              class="material-icons md-2 icon"
+            >
+              lock
+            </i>
+          </span>
         </div>
       </div>
     </div>

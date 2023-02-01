@@ -1,8 +1,7 @@
 import React from 'react'
 
 import {getIconFromType} from 'state/integrations/helpers'
-import {IntegrationType} from 'models/integration/constants'
-import {ShopifyIntegration} from 'models/integration/types'
+import {ShopType} from 'models/selfServiceConfiguration/types'
 import NavbarLink from 'pages/common/components/navbar/NavbarLink'
 import NavbarSectionBlock from 'pages/common/components/navbar/NavbarSectionBlock'
 import useAppSelector from 'hooks/useAppSelector'
@@ -11,36 +10,36 @@ import {getHasAutomationAddOn} from 'state/billing/selectors'
 import AutomationNavbarAddOnPaywallViewItem from './AutomationNavbarAddOnPaywallViewItem'
 
 type Props = {
-    shopifyIntegration: ShopifyIntegration
+    shopType: ShopType
+    shopName: string
     onToggle: () => void
     onSubscribeToAutomationAddOnClick: () => void
+    name: string
     isExpanded: boolean
 }
 
 const AutomationNavbarAddOnSectionBlock = ({
-    shopifyIntegration,
+    shopType,
+    shopName,
     onSubscribeToAutomationAddOnClick,
     ...props
 }: Props) => {
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
 
-    const shopName = shopifyIntegration.meta.shop_name
-
     return (
         <NavbarSectionBlock
-            name={shopName}
             icon={
                 <img
-                    alt="Shopify logo"
+                    alt={`${shopType} logo`}
                     role="presentation"
-                    src={getIconFromType(IntegrationType.Shopify)}
+                    src={getIconFromType(shopType)}
                 />
             }
             {...props}
         >
             {hasAutomationAddOn ? (
                 <NavbarLink
-                    to={`/app/automation/shopify/${shopName}/quick-responses`}
+                    to={`/app/automation/${shopType}/${shopName}/quick-responses`}
                     isNested
                 >
                     Quick responses
@@ -55,12 +54,14 @@ const AutomationNavbarAddOnSectionBlock = ({
                     Quick responses
                 </AutomationNavbarAddOnPaywallViewItem>
             )}
-            <NavbarLink
-                to={`/app/automation/self-service/shopify/${shopName}/preferences/order-management`}
-                isNested
-            >
-                Order management
-            </NavbarLink>
+            {shopType === 'shopify' && (
+                <NavbarLink
+                    to={`/app/automation/self-service/shopify/${shopName}/preferences/order-management`}
+                    isNested
+                >
+                    Order management
+                </NavbarLink>
+            )}
         </NavbarSectionBlock>
     )
 }

@@ -9,6 +9,11 @@ import {
 } from 'models/integration/types'
 import useAppSelector from 'hooks/useAppSelector'
 
+type StoreIntegration =
+    | ShopifyIntegration
+    | Magento2Integration
+    | BigCommerceIntegration
+
 const useStoreIntegrations = () => {
     const getStoreIntegrations = useMemo(
         () =>
@@ -20,11 +25,7 @@ const useStoreIntegrations = () => {
         []
     )
 
-    return useAppSelector(getStoreIntegrations) as (
-        | ShopifyIntegration
-        | Magento2Integration
-        | BigCommerceIntegration
-    )[]
+    return useAppSelector(getStoreIntegrations) as StoreIntegration[]
 }
 
 export default useStoreIntegrations

@@ -3,7 +3,6 @@ import {Map} from 'immutable'
 import {Link} from 'react-router-dom'
 
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import {generateConfiguration} from 'pages/settings/selfService/utils/generateConfiguration'
 import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
 import {
     PolicyEnum,
@@ -63,13 +62,10 @@ export const PolicyRow = ({
     const onChange = async (value: boolean) => {
         setLoading(true)
 
-        const baseConfiguration =
-            configuration || generateConfiguration(0, integrationType, shopName)
-
         const newConfiguration = {
-            ...baseConfiguration,
+            ...configuration,
             [policyKey]: {
-                ...baseConfiguration[policyKey],
+                ...configuration[policyKey],
                 enabled: value,
             },
         }

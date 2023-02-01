@@ -44,12 +44,18 @@ const QuickResponseResponseMessageContent = ({
 
     const handleTextChange = (editorState: EditorState) => {
         const content = editorState.getCurrentContent()
+        const text = content.getPlainText()
 
-        onChange({
-            ...responseMessageContent,
-            html: convertToHTML(content),
-            text: content.getPlainText(),
-        })
+        // Trigger a change only when a plain text value has changed. This is needed because the default value of the
+        // html content is an empty string, but draft-js translates it to <div><br></div>, which then creates a false positive
+        // that there is a change to save.
+        if (text !== responseMessageContent.text) {
+            onChange({
+                ...responseMessageContent,
+                html: convertToHTML(content),
+                text,
+            })
+        }
     }
     const handleAddAttachment = (attachment: ProductCardAttachment) => {
         onChange({

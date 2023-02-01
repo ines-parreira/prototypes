@@ -9,7 +9,10 @@ import _cloneDeep from 'lodash/cloneDeep'
 import {AUTOMATION_OVERVIEW, stats as statsConfig} from 'config/stats'
 import {AutomationStatsSelfServiceMetric} from 'pages/stats/AutomationStatsSelfServiceMetric'
 import {RootState, StoreDispatch} from 'state/types'
-import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
+import {
+    SelfServiceConfiguration,
+    ShopType,
+} from 'models/selfServiceConfiguration/types'
 import {billingState} from 'fixtures/billing'
 import {
     HELPDESK_PRODUCT_ID,
@@ -73,7 +76,7 @@ describe('<AutomationStatsSelfServiceMetric />', () => {
 
     const selfServiceConfiguration: SelfServiceConfiguration = {
         id: 1,
-        type: 'shopify',
+        type: 'shopify' as ShopType,
         shop_name: 'my-shop',
         created_datetime: '2019-11-15 19:00:00.000000',
         updated_datetime: '2019-11-15 19:00:00.000000',
