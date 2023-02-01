@@ -224,7 +224,9 @@ export const getBody = createImmutableSelector(
         const getSuggestionPosition = () => {
             const index = body.findIndex(
                 (message: Map<any, any>) =>
-                    !!message.get('isMessage') && !!message.get('from_agent')
+                    !!message.get('isMessage') &&
+                    !!message.get('from_agent') &&
+                    message.get('via') !== TicketVia.Rule
             )
             return index !== -1 ? index : body.size
         }

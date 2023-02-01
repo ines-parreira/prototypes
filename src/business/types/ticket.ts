@@ -79,4 +79,5 @@ export enum TicketVia {
     Twitter = 'twitter',
     SelfService = 'self_service',
     WhatsApp = 'whatsapp',
+    Rule = 'rule',
 }
