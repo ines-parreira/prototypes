@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo} from 'react'
+import React, {useMemo} from 'react'
 import classnames from 'classnames'
 import moment from 'moment'
 import {
@@ -8,10 +8,17 @@ import {
     Progress,
     UncontrolledTooltip,
 } from 'reactstrap'
-import {useAsyncFn} from 'react-use'
+import {useAsyncFn, useEffectOnce} from 'react-use'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
-import {PlanInterval} from 'models/billing/types'
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import {PlanInterval} from 'models/billing/types'
+import Button from 'pages/common/components/button/Button'
+import LegacyPlanBanner from 'pages/common/components/LegacyPlanBanner'
+import Loader from 'pages/common/components/Loader/Loader'
+import history from 'pages/history'
 import {fetchCurrentUsage} from 'state/billing/actions'
 import {
     getCurrentUsage,
@@ -24,15 +31,7 @@ import {
 import {getCurrentSubscription} from 'state/currentAccount/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import LegacyPlanBadge from 'pages/common/components/LegacyPlanBadge'
-import LegacyPlanBanner from 'pages/common/components/LegacyPlanBanner'
-import Loader from 'pages/common/components/Loader/Loader'
-import Button from 'pages/common/components/button/Button'
-import history from 'pages/history'
-import useAppSelector from 'hooks/useAppSelector'
 import {convertLegacyPlanNameToPublicPlanName} from 'utils/paywalls'
-
-import CurrentPlanBadge from './plans/CurrentPlanBadge'
 
 import css from './BillingHelpdeskUsage.less'
 import BillingHeader from './common/BillingHeader'
@@ -51,6 +50,9 @@ const BillingHelpdeskUsage = () => {
     const freeTickets = useAppSelector(getCurrentHelpdeskFreeTickets)
     const interval = useAppSelector(getCurrentHelpdeskInterval)
     const isCustom = useAppSelector(getIsCurrentHelpdeskCustom)
+
+    const hasProgressBarHidden =
+        useFlags()[FeatureFlagKey.HideBillableTicketsProgressBar]
 
     const hasSubscription = useMemo(
         () => !currentSubscription.isEmpty(),
@@ -147,10 +149,10 @@ const BillingHelpdeskUsage = () => {
             }
         }, [])
 
-    useEffect(() => {
+    useEffectOnce(() => {
         void handleCurrentUsageFetch()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    })
 
     return isLoading ? (
         <Loader />
@@ -169,26 +171,11 @@ const BillingHelpdeskUsage = () => {
                 <CardTitle
                     className={classnames(css['card-title'], {
                         [css['current-plan-title']]: hasSubscription,
-                        [css[formattedPriceName.toLowerCase()]]:
-                            hasSubscription,
                         [css.legacy]: isCurrentHelpdeskLegacy,
                     })}
                 >
                     {hasSubscription ? (
-                        <>
-                            <div className={css.planTitle}>{planTitle}</div>
-                            {isCurrentHelpdeskLegacy ? (
-                                <LegacyPlanBadge />
-                            ) : (
-                                <CurrentPlanBadge
-                                    className={
-                                        css[
-                                            `badge-${formattedPriceName.toLowerCase()}`
-                                        ]
-                                    }
-                                />
-                            )}
-                        </>
+                        <div className={css.planTitle}>{planTitle}</div>
                     ) : (
                         'No active plan'
                     )}
@@ -219,38 +206,54 @@ const BillingHelpdeskUsage = () => {
                                 {periodStart} and {periodEnd}
                             </UncontrolledTooltip>
 
-                            <Progress multi className={css['usage-progress']}>
+                            {hasProgressBarHidden && (
+                                <div data-candu-id="candu-billing-usage"></div>
+                            )}
+                            {!hasProgressBarHidden && (
                                 <Progress
-                                    bar
-                                    value={percentUsed}
-                                    barClassName={classnames(css.progressBar, {
-                                        [css.isWarning]:
-                                            freeTickets &&
-                                            usedTickets >= freeTickets &&
-                                            percentRemaining === 0,
-                                    })}
-                                />
-                                {!!freeTickets &&
-                                    usedTickets >= freeTickets &&
-                                    percentRemaining > 0 && (
-                                        <Progress
-                                            bar
-                                            value={percentRemaining}
-                                            barClassName={classnames(
-                                                css.remainingProgressBar,
-                                                {
-                                                    [css.isDanger]:
-                                                        percentRemaining >= 20,
-                                                }
-                                            )}
-                                        />
-                                    )}
-                            </Progress>
+                                    multi
+                                    className={css['usage-progress']}
+                                >
+                                    <Progress
+                                        bar
+                                        value={percentUsed}
+                                        barClassName={classnames(
+                                            css.progressBar,
+                                            {
+                                                [css.isWarning]:
+                                                    freeTickets &&
+                                                    usedTickets >=
+                                                        freeTickets &&
+                                                    percentRemaining === 0,
+                                            }
+                                        )}
+                                    />
+                                    {!!freeTickets &&
+                                        usedTickets >= freeTickets &&
+                                        percentRemaining > 0 && (
+                                            <Progress
+                                                bar
+                                                value={percentRemaining}
+                                                barClassName={classnames(
+                                                    css.remainingProgressBar,
+                                                    {
+                                                        [css.isDanger]:
+                                                            percentRemaining >=
+                                                            20,
+                                                    }
+                                                )}
+                                            />
+                                        )}
+                                </Progress>
+                            )}
                             <div className="flex justify-content-between">
                                 <div>${extraCost} extra cost</div>
-                                <div>
-                                    <strong>Usage reset on:</strong> {periodEnd}
-                                </div>
+                                {!hasProgressBarHidden && (
+                                    <div>
+                                        <strong>Usage reset on:</strong>{' '}
+                                        {periodEnd}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     )}

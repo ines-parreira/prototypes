@@ -57,17 +57,12 @@ exports[`<BillingHelpdeskUsage /> should display price 1`] = `
     class="card-current-plan card card"
   >
     <div
-      class="card-title current-plan-title pro card-title"
+      class="card-title current-plan-title card-title"
     >
       <div
         class="planTitle"
       >
         Pro monthly plan
-      </div>
-      <div
-        class="badge badge-pro"
-      >
-        CURRENT PLAN
       </div>
     </div>
     <div
@@ -190,17 +185,12 @@ exports[`<BillingHelpdeskUsage /> should load with empty props 1`] = `
     class="card-current-plan card card"
   >
     <div
-      class="card-title current-plan-title pro card-title"
+      class="card-title current-plan-title card-title"
     >
       <div
         class="planTitle"
       >
         Pro monthly plan
-      </div>
-      <div
-        class="badge badge-pro"
-      >
-        CURRENT PLAN
       </div>
     </div>
     <div

@@ -18,6 +18,7 @@ export enum FeatureFlagKey {
     ElasticsearchTicketSearch = 'elasticsearch-ticket-search',
     DefaultMacroToSearch = 'default-macro-to-search',
     HelpCenterSubjectLines = 'help-center-subject-lines',
+    HideBillableTicketsProgressBar = 'hide-billable-tickets-progress-bar',
     MacroForwardByEmail = 'macro-forward-by-email',
     MacroResponseTextCcBcc = 'macro-response-text-cc-bcc',
     NewPhoneErrorHandling = 'new-phone-error-handling',

@@ -4,14 +4,17 @@ import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import {RootState} from 'state/types'
+import LD from 'launchdarkly-react-client-sdk'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {
     HELPDESK_PRODUCT_ID,
     proMonthlyHelpdeskPrice,
 } from 'fixtures/productPrices'
+import {RootState} from 'state/types'
+
 import BillingHelpdeskUsage from '../BillingHelpdeskUsage'
 
 jest.mock('pages/common/components/LegacyPlanBanner', () => () => (
@@ -51,7 +54,8 @@ describe('<BillingHelpdeskUsage />', () => {
     window.GORGIAS_SUPPORT_EMAIL = 'support@gorgias.com'
 
     beforeEach(() => {
-        jest.resetAllMocks()
+        jest.clearAllMocks()
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({}))
     })
 
     it('should display loader', () => {
@@ -143,6 +147,28 @@ describe('<BillingHelpdeskUsage />', () => {
         expect(
             document.getElementsByClassName('usage-progress')[0]
         ).toMatchSnapshot()
+    })
+
+    it('should hide progress bar', async () => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.HideBillableTicketsProgressBar]: true,
+        }))
+
+        const {getByText, queryByText} = render(
+            <Provider store={mockStore(defaultState)}>
+                <BillingHelpdeskUsage />
+            </Provider>
+        )
+
+        await waitFor(() => getByText('Usage & Plans'))
+
+        expect(
+            document.querySelector('[data-candu-id="candu-billing-usage"]')
+        ).toBeInTheDocument()
+        expect(document.getElementsByClassName('usage-progress')).toHaveLength(
+            0
+        )
+        expect(queryByText(/Usage reset on/i)).not.toBeInTheDocument()
     })
 
     it('should display tooltip', async () => {
