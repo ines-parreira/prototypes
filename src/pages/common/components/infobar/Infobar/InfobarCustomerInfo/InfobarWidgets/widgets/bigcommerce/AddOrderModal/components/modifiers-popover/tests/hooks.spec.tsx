@@ -70,7 +70,7 @@ describe('useModifiersPopover', () => {
     it('does not return component when maybeOpenModifierPopover is triggered but no required modifiers', async () => {
         const onApplyMock = jest.fn()
         const productWithoutRequiredModifiers = produce(product, (draft) => {
-            draft.modifiers = draft.modifiers.map((modifier) => ({
+            draft.modifiers = (draft.modifiers ?? []).map((modifier) => ({
                 ...modifier,
                 required: false,
             }))

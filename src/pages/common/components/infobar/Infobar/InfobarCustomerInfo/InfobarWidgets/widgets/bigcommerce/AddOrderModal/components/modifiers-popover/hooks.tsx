@@ -134,7 +134,7 @@ export const useModifiersPopover = (
         }
 
         // Do not open if we do not have required modifiers
-        if (!props.product.modifiers.some(({required}) => required)) {
+        if (!(props.product.modifiers ?? []).some(({required}) => required)) {
             return false
         }
 

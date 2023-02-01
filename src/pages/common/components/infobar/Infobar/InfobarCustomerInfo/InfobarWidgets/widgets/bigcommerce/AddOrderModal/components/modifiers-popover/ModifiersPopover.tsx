@@ -40,7 +40,7 @@ export const ModifiersPopoverBody = ({
                 product={product}
                 storeHash={storeHash}
             />
-            {product.modifiers.map((modifier) => {
+            {(product.modifiers ?? []).map((modifier) => {
                 const fieldProps = {
                     key: modifier.id,
                     value: modifierValues[modifier.id],
@@ -104,7 +104,7 @@ export const ModifiersPopover = ({
     setReference,
 }: Props) => {
     const {modifierValues, modifierErrors, handleSetValue, handleValidate} =
-        useModifierValues(product.modifiers)
+        useModifierValues(product.modifiers ?? [])
 
     const handleApply = () => {
         if (handleValidate()) {

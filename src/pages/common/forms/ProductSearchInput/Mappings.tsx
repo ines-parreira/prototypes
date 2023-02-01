@@ -83,7 +83,7 @@ export const bigcommerceDataMappers = {
     ): ResultProps => {
         const product = integrationItem.data
         const image = {src: product.image_url, alt: product.name} as const
-        const isDisabled = product.modifiers.some(
+        const isDisabled = (product.modifiers ?? []).some(
             ({type}) => !supportedBigCommerceModifierTypes.includes(type)
         )
 

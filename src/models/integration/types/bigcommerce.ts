@@ -189,7 +189,7 @@ export type BigCommerceProduct = {
     created_at: string
     image_url: string
     options: Array<Record<string, any>>
-    modifiers: BigCommerceProductModifiers[]
+    modifiers?: BigCommerceProductModifiers[]
     variants: BigCommerceProductVariant[]
     calculated_price: number
 }
