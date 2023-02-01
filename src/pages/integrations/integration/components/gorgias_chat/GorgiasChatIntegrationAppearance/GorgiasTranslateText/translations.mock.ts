@@ -263,6 +263,7 @@ export function getTranslations() {
                 'You must provide an email and an order number',
             quantityToReturn: 'Quantity to return',
             quickAnswers: 'Quick answers',
+            quickResponses: 'Quick responses',
             readyForPickup: 'Ready for pickup',
             reasonCancelOrder: "I'd like to cancel my order",
             reasonCancelSubscription: "I'd like to cancel my subscription",

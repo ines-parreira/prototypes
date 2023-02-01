@@ -94,7 +94,7 @@ exports[`<ChatIntegrationPreview/> render() displays landing page 1`] = `
             <li
               class="button header list-group-item"
             >
-              Quick answers
+              Quick responses
             </li>
             <li
               class="button list-group-item"
@@ -277,7 +277,7 @@ exports[`<ChatIntegrationPreview/> render() displays landing page with the merge
             <li
               class="button header list-group-item"
             >
-              Quick answers
+              Quick responses
             </li>
             <li
               class="button list-group-item"

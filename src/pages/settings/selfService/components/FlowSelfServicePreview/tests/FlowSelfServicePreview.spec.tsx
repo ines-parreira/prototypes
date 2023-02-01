@@ -70,7 +70,7 @@ describe('<ChatIntegrationPreview/>', () => {
                 </Provider>
             )
 
-            getByText('Quick answers')
+            getByText('Quick responses')
             getByText('question')
 
             expect(container).toMatchSnapshot()
@@ -94,7 +94,7 @@ describe('<ChatIntegrationPreview/>', () => {
                 </Provider>
             )
 
-            getByText('Quick answers')
+            getByText('Quick responses')
             getByText('question')
 
             expect(container).toMatchSnapshot()

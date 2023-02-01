@@ -111,7 +111,7 @@ const SelfServicePreview = ({showHelpCenterPreview = false}: Props) => {
                         {visibleQuickReplies.length > 0 && (
                             <ListGroup className={css.buttons}>
                                 <HomePageListGroupItem header>
-                                    {sspTexts.quickAnswers}
+                                    {sspTexts.quickResponses}
                                 </HomePageListGroupItem>
                                 {visibleQuickReplies.map((policy) => (
                                     <HomePageListGroupItem

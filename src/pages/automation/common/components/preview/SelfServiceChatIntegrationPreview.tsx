@@ -64,8 +64,7 @@ const SelfServiceChatIntegrationPreview = ({
                 <Collapse isOpen={quickResponses.length > 0} memoizeOnExit>
                     <div className={css.listGroup}>
                         <div className={css.listGroupItemHeading}>
-                            {/*TODO: change to quickResponses once available*/}
-                            {sspTexts.quickAnswers}
+                            {sspTexts.quickResponses}
                         </div>
                         {quickResponses.map((quickResponse) => (
                             <div

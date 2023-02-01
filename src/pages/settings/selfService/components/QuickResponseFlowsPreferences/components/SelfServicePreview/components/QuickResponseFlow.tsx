@@ -17,7 +17,7 @@ export const QuickResponseFlow = ({sspTexts, quickResponses}: Props) => {
     return (
         <ListGroup className={css.buttons}>
             <HomePageListGroupItem header>
-                {sspTexts.quickAnswers}
+                {sspTexts.quickResponses}
             </HomePageListGroupItem>
             {quickResponses.map((response) => (
                 <HomePageListGroupItem key={response} arrowRight>
