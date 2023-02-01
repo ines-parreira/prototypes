@@ -1,7 +1,7 @@
 import React from 'react'
 import {act, fireEvent, render} from '@testing-library/react'
 
-import CloseTabModal from '../CloseTabModal'
+import CloseTabModal from '../PendingChangesModal'
 
 jest.mock('react-router-dom', () => ({
     useHistory: () => ({

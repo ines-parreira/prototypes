@@ -5,7 +5,6 @@ import {useHelpCenterActions} from '../../hooks/useHelpCenterActions'
 import {useCurrentHelpCenter} from '../../providers/CurrentHelpCenter'
 import {useHelpCenterPreferencesSettings} from '../../providers/HelpCenterPreferencesSettings'
 import {useSupportedLocales} from '../../providers/SupportedLocales'
-import CloseTabModal from '../CloseTabModal'
 import HelpCenterPageWrapper from '../HelpCenterPageWrapper'
 import {AvailableLanguagesTags} from './components/AvailableLanguagesTags'
 import {DefaultLanguageSelect} from './components/DefaultLanguageSelect'
@@ -25,7 +24,12 @@ export const HelpCenterPreferencesView: React.FC = () => {
     }, [])
 
     return (
-        <HelpCenterPageWrapper helpCenter={helpCenter} showLanguageSelector>
+        <HelpCenterPageWrapper
+            helpCenter={helpCenter}
+            showLanguageSelector
+            onSaveChanges={savePreferences}
+            isDirty={canSavePreferences}
+        >
             <section className={settingsCss.mb40}>
                 <h3>Languages</h3>
                 <DefaultLanguageSelect availableLocales={locales} />
@@ -33,7 +37,6 @@ export const HelpCenterPreferencesView: React.FC = () => {
             </section>
             <SEO helpCenter={helpCenter} />
             <FooterActions />
-            <CloseTabModal when={canSavePreferences} onSave={savePreferences} />
         </HelpCenterPageWrapper>
     )
 }

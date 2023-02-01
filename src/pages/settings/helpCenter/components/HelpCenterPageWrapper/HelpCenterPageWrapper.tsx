@@ -1,4 +1,4 @@
-import React, {ReactNode, useMemo} from 'react'
+import React, {ReactNode, useMemo, useState} from 'react'
 import classNames from 'classnames'
 import {Container} from 'reactstrap'
 
@@ -22,6 +22,7 @@ import {HelpCenterDetailsBreadcrumb} from '../HelpCenterDetailsBreadcrumb'
 import {HelpCenterNavigation} from '../HelpCenterNavigation'
 
 import {useAbilityChecker} from '../../hooks/useHelpCenterApi'
+import PendingChangesModal from '../PendingChangesModal'
 import css from './HelpCenterPageWrapper.less'
 
 type Props = {
@@ -31,6 +32,8 @@ type Props = {
     showLanguageSelector?: boolean
     className?: string
     wrapperClassName?: string
+    isDirty?: boolean
+    onSaveChanges?: () => Promise<void>
 }
 
 export const HelpCenterPageWrapper: React.FC<Props> = ({
@@ -40,11 +43,16 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
     showLanguageSelector = false,
     className,
     wrapperClassName = settingsCss.contentWrapper,
+    isDirty,
+    onSaveChanges,
 }: Props) => {
     const dispatch = useAppDispatch()
     const locales = useSupportedLocales()
     const viewLanguage =
         useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
+
+    const [showCloseModal, setShowCloseModal] = useState(false)
+    const [locale, setLocale] = useState(viewLanguage)
 
     const helpCenterUrl = useMemo(() => {
         const domain = getHelpCenterDomain(helpCenter)
@@ -58,7 +66,31 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
     )
 
     const handleOnChangeLocale = (value: React.ReactText) => {
+        if (isDirty) {
+            setShowCloseModal(true)
+            setLocale(validLocaleCode(value))
+            return
+        }
         dispatch(changeViewLanguage(validLocaleCode(value)))
+    }
+
+    const onDiscard = () => {
+        dispatch(changeViewLanguage(locale))
+        setShowCloseModal(false)
+    }
+
+    const onSave = !onSaveChanges
+        ? null
+        : async () => {
+              try {
+                  await onSaveChanges()
+              } finally {
+                  setShowCloseModal(false)
+              }
+          }
+
+    const onContinueEditing = () => {
+        setShowCloseModal(false)
     }
 
     const {isPassingRulesCheck} = useAbilityChecker()
@@ -110,6 +142,16 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
                 </Container>
             ) : (
                 children
+            )}
+
+            {onSave && (
+                <PendingChangesModal
+                    show={showCloseModal}
+                    onSave={onSave}
+                    onDiscard={onDiscard}
+                    onContinueEditing={onContinueEditing}
+                    when={!!isDirty}
+                />
             )}
         </div>
     )

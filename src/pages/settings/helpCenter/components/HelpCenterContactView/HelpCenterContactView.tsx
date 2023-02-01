@@ -2,7 +2,6 @@ import React from 'react'
 
 import {useCurrentHelpCenter} from '../../providers/CurrentHelpCenter'
 import {useHelpCenterTranslation} from '../../providers/HelpCenterTranslation'
-import CloseTabModal from '../CloseTabModal'
 import HelpCenterPageWrapper from '../HelpCenterPageWrapper'
 import ChatApplication from './components/ChatApplication'
 import ContactFormInfoSection from './components/ContactFormInfoSection'
@@ -20,12 +19,13 @@ const HelpCenterContactView: React.FC = () => {
             helpCenter={helpCenter}
             showLanguageSelector
             wrapperClassName={css.contentWrapper}
+            isDirty={isDirty}
+            onSaveChanges={updateHelpCenter}
         >
             <ContactFormInfoSection helpCenter={helpCenter} />
             <ChatApplication helpCenterId={helpCenter.id} />
             <PhoneContactInfoSection />
             <FooterActions />
-            <CloseTabModal onSave={updateHelpCenter} when={isDirty} />
         </HelpCenterPageWrapper>
     )
 }

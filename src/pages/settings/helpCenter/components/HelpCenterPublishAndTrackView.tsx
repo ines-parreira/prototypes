@@ -34,7 +34,6 @@ import {SubdomainSection} from './SubdomainSection'
 
 import css from './HelpCenterPublishAndTrackView.less'
 import GoogleAnalyticsSection from './GoogleAnalyticSection'
-import CloseTabModal from './CloseTabModal'
 import {UpdateToggle} from './UpdateToggle'
 
 export const HelpCenterInstallationView: React.FC = () => {
@@ -49,6 +48,16 @@ export const HelpCenterInstallationView: React.FC = () => {
     const [isSubdomainAvailable, setIsSubdomainAvailable] = useState(true)
     const [deleteModalConfirmation, setDeleteModalConfirmation] = useState('')
     const [showWarning, setShowWarning] = useState(true)
+
+    const subdomainError = subdomainValue
+        ? getSubdomainValidationError(subdomainValue, isSubdomainAvailable)
+        : null
+    const isNewSubdomainValid =
+        subdomainValue &&
+        subdomainValue !== helpCenter.subdomain &&
+        !subdomainError
+    const isUpdatedGaid =
+        helpCenter.gaid === null ? !!gaid : helpCenter.gaid !== gaid
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const checkSubdomainAvailability = useCallback(
@@ -101,43 +110,60 @@ export const HelpCenterInstallationView: React.FC = () => {
         }
     }
 
-    const handleOnUpdateHelpCenter = (
-        delta: Partial<Paths.UpdateHelpCenter.RequestBody>
-    ) => {
-        if (client) {
-            void client
-                .updateHelpCenter(
+    const handleOnUpdateHelpCenter = useCallback(
+        async (delta: Partial<Paths.UpdateHelpCenter.RequestBody>) => {
+            if (!client) {
+                return
+            }
+
+            try {
+                const response = await client.updateHelpCenter(
                     {
                         help_center_id: helpCenterId,
                     },
                     delta
                 )
-                .then((response) => {
-                    dispatch(helpCenterUpdated(response.data))
-                    void dispatch(
-                        notify({
-                            message: 'Help Center updated with success',
-                            status: NotificationStatus.Success,
-                        })
-                    )
-                })
-                .catch((err) => {
-                    // TODO: Add different messages based on error response code
-                    void dispatch(
-                        notify({
-                            message: 'Could not update the Help Center',
-                            status: NotificationStatus.Error,
-                        })
-                    )
-                    console.error(err)
-                })
-        }
-    }
+
+                dispatch(helpCenterUpdated(response.data))
+                void dispatch(
+                    notify({
+                        message: 'Help Center updated with success',
+                        status: NotificationStatus.Success,
+                    })
+                )
+            } catch (err) {
+                // TODO: Add different messages based on error response code
+                void dispatch(
+                    notify({
+                        message: 'Could not update the Help Center',
+                        status: NotificationStatus.Error,
+                    })
+                )
+                console.error(err)
+            }
+        },
+        [client, dispatch, helpCenterId]
+    )
 
     const handleOnCancel = () => {
         setSubdomainValue(helpCenter.subdomain)
         setGaid(helpCenter.gaid)
     }
+
+    const handleOnSave = useCallback(
+        async () =>
+            await handleOnUpdateHelpCenter({
+                ...(isNewSubdomainValid ? {subdomain: subdomainValue} : {}),
+                ...(isUpdatedGaid ? {gaid} : {}),
+            }),
+        [
+            handleOnUpdateHelpCenter,
+            isNewSubdomainValid,
+            subdomainValue,
+            isUpdatedGaid,
+            gaid,
+        ]
+    )
 
     useEffect(() => {
         setIsSubdomainAvailable(true)
@@ -156,20 +182,12 @@ export const HelpCenterInstallationView: React.FC = () => {
         setGaid(helpCenter.gaid)
     }, [helpCenter.subdomain, helpCenter.gaid])
 
-    const subdomainError = subdomainValue
-        ? getSubdomainValidationError(subdomainValue, isSubdomainAvailable)
-        : null
-    const isNewSubdomainValid =
-        subdomainValue &&
-        subdomainValue !== helpCenter.subdomain &&
-        !subdomainError
-    const isUpdatedGaid =
-        helpCenter.gaid === null ? !!gaid : helpCenter.gaid !== gaid
-
     return (
         <HelpCenterPageWrapper
             helpCenter={helpCenter}
             className={css.container}
+            isDirty={isNewSubdomainValid || isUpdatedGaid}
+            onSaveChanges={handleOnSave}
         >
             <section className="mb-4">
                 <h3 className={css.sectionTitle}>Publish</h3>
@@ -218,7 +236,7 @@ export const HelpCenterInstallationView: React.FC = () => {
                 onDelete={
                     helpCenter.gaid
                         ? () => {
-                              handleOnUpdateHelpCenter({gaid: null})
+                              void handleOnUpdateHelpCenter({gaid: null})
                           }
                         : null
                 }
@@ -315,17 +333,6 @@ export const HelpCenterInstallationView: React.FC = () => {
                     )}
                 </ConfirmModalAction>
             </div>
-            <CloseTabModal
-                when={isNewSubdomainValid || isUpdatedGaid}
-                onSave={() =>
-                    handleOnUpdateHelpCenter({
-                        ...(isNewSubdomainValid
-                            ? {subdomain: subdomainValue}
-                            : {}),
-                        ...(isUpdatedGaid ? {gaid} : {}),
-                    })
-                }
-            />
         </HelpCenterPageWrapper>
     )
 }

@@ -10,7 +10,7 @@ type ClosePromptProps = {
     show?: boolean
     onDiscard?: () => void
     onContinueEditing?: () => void
-    onSave: () => void
+    onSave: () => Promise<void>
 }
 
 const ClosePrompt = ({
@@ -24,13 +24,9 @@ const ClosePrompt = ({
     const history = useHistory()
 
     const [showPrompt, setShowPrompt] = useState(show)
-    const [currentPath, setCurrentPath] = useState('')
+    const [nextPath, setNextPath] = useState('')
 
     const unblockRef = useRef<UnregisterCallback>()
-
-    function handleShowModal() {
-        setShowPrompt(true)
-    }
 
     function onCancel() {
         setShowPrompt(false)
@@ -39,8 +35,8 @@ const ClosePrompt = ({
     useEffect(() => {
         unblockRef.current = history.block((location) => {
             if (when) {
-                setCurrentPath(location.pathname)
-                handleShowModal()
+                setNextPath(location.pathname)
+                setShowPrompt(true)
                 return false
             }
         })
@@ -54,12 +50,14 @@ const ClosePrompt = ({
             unblockRef.current()
         }
         setShowPrompt(false)
-        history.push(currentPath)
+        if (nextPath) {
+            history.push(nextPath)
+        }
     }
 
     return (
         <CloseModal
-            isOpen={showPrompt}
+            isOpen={showPrompt || show}
             style={{width: '100%', maxWidth: 400}}
             title={<span>Unsaved changes</span>}
             saveText="Save"
@@ -73,8 +71,8 @@ const ClosePrompt = ({
                 onContinueEditing?.()
                 onCancel()
             }}
-            onSave={() => {
-                onSave()
+            onSave={async () => {
+                await onSave()
                 onConfirm()
             }}
         >

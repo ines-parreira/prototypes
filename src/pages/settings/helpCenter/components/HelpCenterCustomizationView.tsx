@@ -32,8 +32,6 @@ import Tooltip from '../../../common/components/Tooltip'
 import HelpCenterPageWrapper from './HelpCenterPageWrapper'
 import {LinkList} from './LinkList'
 import css from './HelpCenterCustomizationView.less'
-import {LanguageSelect} from './LanguageSelect'
-import CloseTabModal from './CloseTabModal'
 import {UpdateToggle} from './UpdateToggle'
 
 export const HelpCenterCustomizationView = () => {
@@ -258,13 +256,18 @@ export const HelpCenterCustomizationView = () => {
     }, [extraHTML])
 
     return (
-        <HelpCenterPageWrapper helpCenter={helpCenter} className={css.wrapper}>
+        <HelpCenterPageWrapper
+            helpCenter={helpCenter}
+            className={css.wrapper}
+            isDirty={isDirty}
+            onSaveChanges={handleOnSave}
+            showLanguageSelector
+        >
             <section className={settingsCss.mb40}>
                 <div className={css.heading}>
                     <div>
                         <div className={css.headingInner}>
                             <h3>Customization</h3>
-                            <LanguageSelect />
                         </div>
                     </div>
                 </div>
@@ -557,7 +560,6 @@ export const HelpCenterCustomizationView = () => {
                     Cancel
                 </Button>
             </FormGroup>
-            <CloseTabModal when={isDirty} onSave={handleOnSave} />
         </HelpCenterPageWrapper>
     )
 }

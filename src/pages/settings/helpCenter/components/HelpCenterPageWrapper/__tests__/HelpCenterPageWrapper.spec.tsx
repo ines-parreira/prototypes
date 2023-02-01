@@ -1,5 +1,5 @@
 import React, {ComponentProps} from 'react'
-import {fireEvent, render} from '@testing-library/react'
+import {fireEvent, screen} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -12,8 +12,27 @@ import {
     getAbsoluteUrl,
     getHelpCenterDomain,
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
+import {renderWithRouter} from 'utils/testing'
 import HelpCenterPageWrapper from '../HelpCenterPageWrapper'
 
+jest.mock('pages/settings/helpCenter/utils/localeSelectOptions', () => {
+    const dep: Record<string, unknown> = jest.requireActual(
+        'pages/settings/helpCenter/utils/localeSelectOptions'
+    )
+    return {
+        ...dep,
+        getLocaleSelectOptions: () => [
+            {
+                label: 'English',
+                value: 'en-US',
+            },
+            {
+                label: 'Spanish',
+                value: 'es-ES',
+            },
+        ],
+    }
+})
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
     const dep: Record<string, unknown> = jest.requireActual(
         'pages/settings/helpCenter/hooks/useHelpCenterApi'
@@ -63,7 +82,7 @@ describe('<HelpCenterPageWrapper />', () => {
     })
 
     it('should render the component', () => {
-        const {container} = render(
+        const {container} = renderWithRouter(
             <Provider store={store}>
                 <HelpCenterPageWrapper {...props} />
             </Provider>
@@ -73,7 +92,7 @@ describe('<HelpCenterPageWrapper />', () => {
     })
 
     it('should display a preview button', () => {
-        const {getByRole} = render(
+        const {getByRole} = renderWithRouter(
             <Provider store={store}>
                 <HelpCenterPageWrapper {...props} />
             </Provider>
@@ -89,14 +108,60 @@ describe('<HelpCenterPageWrapper />', () => {
     })
 
     it('should display a language selector', () => {
-        const {getByRole} = render(
+        const {getByRole} = renderWithRouter(
             <Provider store={store}>
                 <HelpCenterPageWrapper {...props} showLanguageSelector />
             </Provider>
         )
 
-        const languageSelector = getByRole('textbox')
+        getByRole('textbox')
+    })
 
-        expect(languageSelector).toBeTruthy()
+    it('should display the close modal', () => {
+        const onSaveChanges = jest.fn(() => Promise.resolve())
+        renderWithRouter(
+            <Provider store={store}>
+                <HelpCenterPageWrapper
+                    {...props}
+                    isDirty={true}
+                    showLanguageSelector
+                    onSaveChanges={onSaveChanges}
+                />
+            </Provider>
+        )
+
+        const englishBtn = screen.getByText(/english/i)
+        fireEvent.click(englishBtn)
+
+        const spanishBtn = screen.getByText(/spanish/i)
+        fireEvent.click(spanishBtn)
+
+        screen.getByText(/unsaved changes/i)
+    })
+
+    it('should trigger the onSave callback', () => {
+        const onSave = jest.fn(() => Promise.resolve())
+        renderWithRouter(
+            <Provider store={store}>
+                <HelpCenterPageWrapper
+                    {...props}
+                    onSaveChanges={onSave}
+                    showLanguageSelector
+                    isDirty={true}
+                />
+            </Provider>
+        )
+
+        const englishBtn = screen.getByText(/english/i)
+        fireEvent.click(englishBtn)
+
+        const spanishBtn = screen.getByText(/spanish/i)
+        fireEvent.click(spanishBtn)
+
+        const saveBtn = screen.getByRole('button', {name: /save/i})
+
+        fireEvent.click(saveBtn)
+
+        expect(onSave).toHaveBeenCalled()
     })
 })

@@ -49,7 +49,7 @@ import {ThemeSwitch} from '../ThemeSwitch'
 import {ImageRepositioningModal} from '../ImageRepositioningModal'
 
 import {RepositionableImageUpload} from '../RepositionableImageUpload/RepositionableImageUpload'
-import CloseTabModal from '../CloseTabModal'
+
 import css from './HelpCenterAppearanceView.less'
 
 export const HelpCenterAppearanceView: React.FC = () => {
@@ -379,7 +379,11 @@ export const HelpCenterAppearanceView: React.FC = () => {
     }
 
     return (
-        <HelpCenterPageWrapper helpCenter={helpCenter}>
+        <HelpCenterPageWrapper
+            helpCenter={helpCenter}
+            isDirty={canSaveCurrentAppearance}
+            onSaveChanges={saveCurrentAppearance}
+        >
             <section className={settingsCss.mb40}>
                 <div className={css.heading}>
                     <h3>Branding</h3>
@@ -620,10 +624,6 @@ export const HelpCenterAppearanceView: React.FC = () => {
                     </Button>
                 </FormGroup>
             </footer>
-            <CloseTabModal
-                when={canSaveCurrentAppearance}
-                onSave={saveCurrentAppearance}
-            />
         </HelpCenterPageWrapper>
     )
 }
