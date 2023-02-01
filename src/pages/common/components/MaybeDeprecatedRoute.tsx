@@ -27,7 +27,7 @@ const MaybeDeprecatedRoute = ({
     const redirectTo = useMemo(() => {
         const redirectTo =
             match && !exact
-                ? pathname.substring(match.path.length)
+                ? redirectToProp.concat(pathname.substring(match.path.length))
                 : redirectToProp
 
         return generatePath(redirectTo.concat(search), match?.params)
