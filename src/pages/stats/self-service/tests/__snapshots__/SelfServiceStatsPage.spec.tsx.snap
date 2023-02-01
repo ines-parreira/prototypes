@@ -1878,7 +1878,7 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
             <div
               class="description"
             >
-              Enable and customize up to 4 quick response flows at a time in Self-service.
+              Enable and customize up to 6 quick response flows at a time in Self-service.
             </div>
             <button
               class="wrapper fill primary medium"

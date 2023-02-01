@@ -344,8 +344,8 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                         statsFilters={pageStatsFilters}
                         helpText={
                             <span>
-                                You can enable up to four Quick Response flows
-                                at a time to automatically answer shopper
+                                You can enable up to six Quick Response flows at
+                                a time to automatically answer shopper
                                 questions. Only flows enabled during the
                                 selected time period are displayed below.{' '}
                                 <a
@@ -369,7 +369,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                                         interactions with quick
                                                         response flows"
                                         description="Enable and customize up
-                                                        to 4 quick response
+                                                        to 6 quick response
                                                         flows at a time in
                                                         Self-service."
                                         buttonText="Check out quick response"

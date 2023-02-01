@@ -46,7 +46,7 @@ const QuickResponseFlowsPreferences = () => {
                     <Col data-testid="configurationColumn">
                         <p>
                             Deflect tickets and allow shoppers to find answers
-                            to common questions by displaying up to 4 quick
+                            to common questions by displaying up to 6 quick
                             response flows that send automated responses when
                             shoppers click on them.
                         </p>

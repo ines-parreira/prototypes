@@ -84,7 +84,7 @@ const QuickResponseList = () => {
         ).length
     }, [quickResponses])
 
-    const isLimitReached = numberOfActiveFlows >= 4
+    const isLimitReached = numberOfActiveFlows >= 6
 
     return (
         <>

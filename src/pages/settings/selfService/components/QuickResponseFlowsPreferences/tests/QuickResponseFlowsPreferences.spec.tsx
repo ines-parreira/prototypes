@@ -87,7 +87,7 @@ describe('<QuickResponseFlowsPreferences />', () => {
         })
     })
 
-    it('should limit enabled quick response flows to 4', () => {
+    it('should limit enabled quick response flows to 6', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <QuickResponseFlowsPreferences />

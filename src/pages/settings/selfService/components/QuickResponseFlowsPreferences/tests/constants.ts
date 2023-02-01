@@ -94,6 +94,26 @@ export const defaultState = {
                         deactivated_datetime: '2020-01-01T00:00:00Z',
                         id: '5',
                     },
+                    {
+                        response_message_content: {
+                            html: 'content',
+                            text: 'content',
+                            attachments: List(),
+                        },
+                        title: 'Sixth',
+                        deactivated_datetime: null,
+                        id: '6',
+                    },
+                    {
+                        response_message_content: {
+                            html: 'content',
+                            text: 'content',
+                            attachments: List(),
+                        },
+                        title: 'Seventh',
+                        deactivated_datetime: null,
+                        id: '7',
+                    },
                 ],
             },
         },

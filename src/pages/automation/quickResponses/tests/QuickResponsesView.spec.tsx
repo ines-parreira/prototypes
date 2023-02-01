@@ -3,6 +3,8 @@ import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
 import {act, fireEvent, screen, within} from '@testing-library/react'
+import {v4 as uuidv4} from 'uuid'
+import _times from 'lodash/times'
 
 import {renderWithRouterAndDnD} from 'utils/testing'
 import {getLDClient} from 'utils/launchDarkly'
@@ -12,6 +14,7 @@ import useSelfServiceConfiguration from 'pages/automation/common/hooks/useSelfSe
 import useSelfServiceChatIntegrations from 'pages/automation/common/hooks/useSelfServiceChatIntegrations'
 import {GorgiasChatIntegration} from 'models/integration/types'
 import {GORGIAS_CHAT_DEFAULT_COLOR} from 'config/integrations/gorgias_chat'
+import {MAX_ACTIVE_QUICK_RESPONSES} from '../constants'
 
 import QuickResponsesView from '../QuickResponsesView'
 
@@ -341,19 +344,10 @@ describe('<QuickResponsesView />', () => {
             selfServiceConfiguration: {
                 ...selfServiceConfiguration1,
                 quick_response_policies: [
-                    quickResponse1,
-                    {
+                    ..._times(MAX_ACTIVE_QUICK_RESPONSES, () => ({
                         ...quickResponse1,
-                        id: 'c1aea3e7-71c7-415e-80df-34fd06fb644a',
-                    },
-                    {
-                        ...quickResponse1,
-                        id: '197a21a9-54c0-4cd3-94fb-48a5a7296e58',
-                    },
-                    {
-                        ...quickResponse1,
-                        id: 'f4853bb3-9545-4c0d-a872-3c3a728c9e82',
-                    },
+                        id: uuidv4(),
+                    })),
                     quickResponse5,
                 ],
             },

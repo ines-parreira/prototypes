@@ -72,7 +72,7 @@ const QuickResponseListItem: React.FC<QuickResponseListItemProps> = ({
                         target={toggleId}
                         trigger={['hover']}
                     >
-                        There are already 4 active flows. Disable one of them to
+                        There are already 6 active flows. Disable one of them to
                         activate.
                     </Tooltip>
                 )}
