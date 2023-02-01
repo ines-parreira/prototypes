@@ -545,7 +545,7 @@ const ReportIssueReasonEditor: ComponentType = () => {
                         </Form>
                     </Col>
 
-                    <Col xs="auto">
+                    <Col>
                         <ReportIssuePreview
                             mode={previewMode}
                             setMode={setPreviewMode}

@@ -1,4 +1,3 @@
-import classNames from 'classnames'
 import React from 'react'
 import {useRouteMatch} from 'react-router'
 import {Button, ButtonGroup} from 'reactstrap'
@@ -17,12 +16,13 @@ import useAppSelector from 'hooks/useAppSelector'
 import {RootState} from 'state/types'
 
 import {toJS} from 'utils'
-import quickResponseCss from '../QuickResponseFlowItem/QuickResponseFlowItem.less'
 import {useChatIntegration} from '../QuickResponseFlowsPreferences/components/SelfServicePreview/hooks'
 import QuickResponseReplies from '../QuickResponseFlowItem/components/QuickResponseReplies/QuickResponseReplies'
 
-import css from './ReportIssuePreview.less'
 import {buildReportIssueCustomerMessage} from './utils'
+import ReportIssuePreviewAllOptions from './ReportIssuePreviewAllOptions/ReportIssuePreviewAllOptions'
+
+import css from './ReportIssuePreview.less'
 
 export type ReportIssuePreviewMode = 'alloptions' | 'messagethread'
 
@@ -87,7 +87,7 @@ const ReportIssuePreview = ({
     }
 
     return (
-        <div className={quickResponseCss.container}>
+        <div className={css.container}>
             <ButtonGroup className="mb-4">
                 <Button
                     type="button"
@@ -113,35 +113,16 @@ const ReportIssuePreview = ({
                     chatIntegration.decoration?.avatar_team_picture_url ??
                     undefined
                 }
+                hideButton={true}
                 avatarType={chatIntegration.decoration?.avatar_type}
                 isOnline
                 language={chatIntegration.meta.language}
                 renderFooter={false}
             >
                 {mode === 'alloptions' ? (
-                    <>
-                        <span className={css.header}>
-                            {sspTexts.whatIsWrongWithOrder}
-                        </span>
-                        <ul className={css.list}>
-                            {reasonOptions.map((reason) => (
-                                <li className={css.listItem} key={reason.value}>
-                                    <span>
-                                        {sspTexts[reason.value] ?? reason.label}
-                                    </span>
-
-                                    <span
-                                        className={classNames(
-                                            'material-icons-outlined',
-                                            css.chevronIcon
-                                        )}
-                                    >
-                                        chevron_right
-                                    </span>
-                                </li>
-                            ))}
-                        </ul>
-                    </>
+                    <ReportIssuePreviewAllOptions
+                        reasonOptions={reasonOptions}
+                    />
                 ) : (
                     <>
                         <MessageContentPreview

@@ -36,13 +36,19 @@ import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
+import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
+import {getIntegrations} from 'state/integrations/selectors'
+import useAppSelector from 'hooks/useAppSelector'
+import {SelectableOption} from 'pages/common/forms/SelectField/types'
 
 import SelfServicePreferencesNavbar from '../SelfServicePreferencesNavbar'
 import BackButton from '../BackButton'
+import {useChatIntegration} from '../QuickResponseFlowsPreferences/components/SelfServicePreview/hooks'
+import ReportIssuePreviewAllOptions from '../ReportIssuePreview/ReportIssuePreviewAllOptions/ReportIssuePreviewAllOptions'
 import Reasons from './components/Reasons'
 import Conditions from './components/Conditions'
-import Preview from './components/Preview'
 import css from './ReportIssueCaseEditor.less'
+import {SELECTABLE_REASONS_DROPDOWN_OPTIONS} from './constants'
 
 type ErrorFormState = {
     [key in keyof SelfServiceReportIssueCase]?: string
@@ -87,6 +93,25 @@ const ReportIssueCaseEditor: ComponentType = () => {
 
     const automatedResponsesEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.SelfServiceAutomatedResponseOrderManagement]
+
+    const integrations = useAppSelector(getIntegrations)
+
+    const {chatIntegration} = useChatIntegration({integrations, shopName})
+
+    const previewReasons = useMemo(
+        () =>
+            reasons
+                .map(({reasonKey: optionReasonKey}) =>
+                    SELECTABLE_REASONS_DROPDOWN_OPTIONS.find(
+                        ({value}) => value === optionReasonKey
+                    )
+                )
+                .filter(
+                    (o: SelectableOption | undefined): o is SelectableOption =>
+                        o !== undefined
+                ),
+        [reasons]
+    )
 
     useEffect(() => {
         unblockRef.current = history.block((location) => {
@@ -478,8 +503,34 @@ const ReportIssueCaseEditor: ComponentType = () => {
                         </Form>
                     </Col>
 
-                    <Col xs="auto">
-                        <Preview reasons={reasons} />
+                    <Col>
+                        <div className={css.previewContainer}>
+                            <ChatIntegrationPreview
+                                name={chatIntegration.name}
+                                introductionText={
+                                    chatIntegration.decoration
+                                        ?.introduction_text
+                                }
+                                mainColor={
+                                    chatIntegration.decoration?.main_color
+                                }
+                                avatarTeamPictureUrl={
+                                    chatIntegration.decoration
+                                        ?.avatar_team_picture_url ?? undefined
+                                }
+                                hideButton={true}
+                                avatarType={
+                                    chatIntegration.decoration?.avatar_type
+                                }
+                                isOnline
+                                language={chatIntegration.meta.language}
+                                renderFooter={false}
+                            >
+                                <ReportIssuePreviewAllOptions
+                                    reasonOptions={previewReasons}
+                                />
+                            </ChatIntegrationPreview>
+                        </div>
                     </Col>
                 </Row>
             </Container>
