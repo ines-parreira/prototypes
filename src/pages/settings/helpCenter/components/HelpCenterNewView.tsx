@@ -7,13 +7,15 @@ import _debounce from 'lodash/debounce'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link, useHistory, useLocation} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+
 import * as integrationsSelectors from 'state/integrations/selectors'
 
 import shopify from 'assets/img/integrations/shopify.png'
 
 import Button from 'pages/common/components/button/Button'
 import useAppSelector from 'hooks/useAppSelector'
-
+import {FeatureFlagKey} from 'config/featureFlags'
 import {withFeaturePaywall} from 'pages/common/utils/withFeaturePaywall'
 import {AccountFeature} from 'state/currentAccount/types'
 import {CreateHelpCenterDto, LocaleCode} from 'models/helpCenter/types'
@@ -82,6 +84,8 @@ const initialFormState: CreateHelpCenterPayload = {
 }
 
 const HelpCenterNewView = ({notify, helpCenterCreated}: Props): JSX.Element => {
+    const isAutomationSettingsRevampEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
     const dispatch = useAppDispatch()
     const history = useHistory()
     const location = useLocation()
@@ -485,7 +489,11 @@ const HelpCenterNewView = ({notify, helpCenterCreated}: Props): JSX.Element => {
                                     // this type cast is safe as all values are string
                                     handleChangeShopifyStore(value as string)
                                 }}
-                                caption="Connect this Help Center to a Shopify store to enable Self-service flows."
+                                caption={
+                                    isAutomationSettingsRevampEnabled
+                                        ? 'Connect this Help Center to a Shopify store to enable Automation Add-on features.'
+                                        : 'Connect this Help Center to a Shopify store to enable Self-service flows.'
+                                }
                             />
                         )}
                     </section>

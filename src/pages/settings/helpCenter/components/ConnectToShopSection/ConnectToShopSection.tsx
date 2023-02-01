@@ -1,6 +1,7 @@
 import React, {useMemo, useRef, useState} from 'react'
 import {Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 import classNames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import shopify from 'assets/img/integrations/shopify.png'
 
@@ -12,6 +13,7 @@ import {Option} from 'pages/common/forms/SelectField/types'
 import {HelpCenter} from 'models/helpCenter/types'
 import Tooltip from 'pages/common/components/Tooltip'
 import useAppSelector from 'hooks/useAppSelector'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import settingsCss from 'pages/settings/settings.less'
 
@@ -53,6 +55,8 @@ export const ConnectToShopSection = ({
     helpCenter,
     onUpdate,
 }: Props): JSX.Element | null => {
+    const isAutomationSettingsRevampEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
     const [disconnectModalOpen, setDisconnectModalOpen] = useState(false)
     const [connectModalOpen, setConnectModalOpen] = useState(false)
     const [selectedShop, setSelectedShop] = useState<string>(
@@ -95,8 +99,9 @@ export const ConnectToShopSection = ({
             <h4>Connect to Shopify store</h4>
 
             <p className={css.connectDescription}>
-                Connect this Help Center to a Shopify store to enable
-                Self-service flows.
+                {isAutomationSettingsRevampEnabled
+                    ? 'Connect this Help Center to a Shopify store to enable Automation Add-on features.'
+                    : 'Connect this Help Center to a Shopify store to enable Self-service flows.'}
             </p>
 
             {helpCenter.shop_name ? (

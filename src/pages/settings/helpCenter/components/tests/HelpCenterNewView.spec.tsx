@@ -3,6 +3,7 @@ import {fromJS} from 'immutable'
 import {act, screen, fireEvent, waitFor} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+import {mockFlags} from 'jest-launchdarkly-mock'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {renderWithRouter} from 'utils/testing'
@@ -57,6 +58,7 @@ describe('<HelpCenterNewView />', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+        mockFlags({})
     })
 
     it('should render the component', async () => {

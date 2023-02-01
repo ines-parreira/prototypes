@@ -2,9 +2,8 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-
+import {mockFlags} from 'jest-launchdarkly-mock'
 import {act, fireEvent, render, waitFor} from '@testing-library/react'
-
 import {fromJS} from 'immutable'
 
 import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
@@ -84,6 +83,7 @@ const ReduxProvider = ({children}: {children?: React.ReactNode}) => (
 describe('<ConnectToShopSection />', () => {
     beforeEach(() => {
         store.clearActions()
+        mockFlags({})
     })
 
     it('renders in disabled state while fetching data', async () => {
