@@ -186,6 +186,7 @@
         "@types/aphrodite": "2.0.0",
         "@types/bytes": "^3.1.1",
         "@types/classnames": "2.2.10",
+        "@types/css-font-loading-module": "0.0.7",
         "@types/daterangepicker": "3.1.0",
         "@types/domhandler": "2.4.1",
         "@types/draft-convert": "2.1.4",

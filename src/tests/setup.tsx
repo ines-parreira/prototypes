@@ -318,3 +318,16 @@ global.setImmediate = setImmediate
 
 // LaunchDarkly
 mockFlags({})
+
+// Font loading
+Object.defineProperty(document, 'fonts', {
+    value: jest.fn(() => {
+        return {ready: Promise.resolve({})}
+    }),
+})
+
+// Mock scrollIntoView element property
+Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
+    value: jest.fn(),
+    writable: true,
+})

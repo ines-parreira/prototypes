@@ -1,0 +1,55 @@
+@import '~css/new/colorTokens';
+@import '~css/typography';
+
+:local {
+    .container {
+        width: 100%;
+        padding: 0 8px;
+        position: relative;
+        overflow-x: hidden;
+    }
+
+    .tabContainer {
+        display: flex;
+        flex-direction: row;
+        width: fit-content;
+    }
+
+    .tab {
+        padding: 16px;
+        cursor: pointer;
+        position: relative;
+        flex-shrink: 0;
+
+        &:hover {
+            .tabLabel {
+                color: @classic-neutral-grey-6;
+            }
+        }
+
+        &:focus-visible {
+            outline: none;
+        }
+
+        &.activeTab {
+            .tabLabel {
+                color: @classic-neutral-grey-6;
+            }
+        }
+    }
+
+    .tabLabel {
+        .component-button-medium();
+        color: @classic-neutral-grey-5;
+        transition: color 200ms ease;
+    }
+
+    .activeIndicator {
+        position: absolute;
+        bottom: 0;
+        height: 2px;
+        border-radius: 2px;
+        background-color: @classic-main-primary;
+        transition: all 200ms ease-out;
+    }
+}

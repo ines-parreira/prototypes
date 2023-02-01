@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TabNavigator /> should render 1`] = `
+<div
+  class="container"
+>
+  <div
+    class="tabContainer"
+  >
+    <div
+      class="tab activeTab"
+      tabindex="1"
+    >
+      <span
+        class="tabLabel"
+      >
+        Tab One
+      </span>
+    </div>
+    <div
+      class="tab"
+      tabindex="2"
+    >
+      <span
+        class="tabLabel"
+      >
+        Tab Two
+      </span>
+    </div>
+  </div>
+  <div
+    class="activeIndicator"
+    style="width: 0px; left: 0px;"
+  />
+</div>
+`;

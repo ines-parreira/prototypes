@@ -26,7 +26,8 @@
             "stripe-v2",
             "webpack-env",
             "@types/resize-observer-browser",
-            "facebook-js-sdk"
+            "facebook-js-sdk",
+            "@types/css-font-loading-module"
         ]
     },
     "include": ["**/*.ts", "**/*.d.ts", "**/*.tsx"]
