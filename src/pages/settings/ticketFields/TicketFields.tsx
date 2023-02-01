@@ -3,7 +3,6 @@ import React, {useState} from 'react'
 import {Container} from 'reactstrap'
 
 import {Link, NavLink, useParams} from 'react-router-dom'
-import {useHistory} from 'react-router'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useTitle from 'hooks/useTitle'
 import {useGetCustomFieldDefinitions} from 'models/customField/queries'
@@ -14,6 +13,7 @@ import Navigation from 'pages/common/components/Navigation/Navigation'
 import Loader from 'pages/common/components/Loader/Loader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import css from './TicketFields.less'
 
 type TicketFieldsTab = 'active' | 'archived'
@@ -21,7 +21,6 @@ type TicketFieldsTab = 'active' | 'archived'
 export default function TicketFields() {
     useTitle('Ticket fields')
     const {activeTab} = useParams<{activeTab: TicketFieldsTab | string}>()
-    const history = useHistory()
     const [activeCursor, setActiveCursor] = useState<Maybe<string>>(null)
     const [archivedCursor, setArchivedCursor] = useState<Maybe<string>>(null)
 
@@ -65,18 +64,21 @@ export default function TicketFields() {
     const hasTicketFields = hasActiveFields || hasArchivedFields
     const isLoading = isLoadingActive || isLoadingArchived
 
+    const createFieldButton =
+        activeFields.length >= 4 ? (
+            <Button isDisabled>Create Field</Button>
+        ) : (
+            <Link to="/app/settings/ticket-fields/add">
+                <Button>Create Field</Button>
+            </Link>
+        )
+
     return (
         <div className={`full-width overflow-auto ${css.pageContainer}`}>
             <div className={css.pageHeaderContainer}>
                 <PageHeader title="Ticket Fields">
                     <div className={css.headerContainer}>
-                        {hasTicketFields && (
-                            <Link to="/app/settings/ticket-fields/add">
-                                <Button className="float-right">
-                                    Create Field
-                                </Button>
-                            </Link>
-                        )}
+                        {hasTicketFields && createFieldButton}
                     </div>
                 </PageHeader>
                 {hasTicketFields && (
@@ -110,16 +112,7 @@ export default function TicketFields() {
                                 reason, product or even the resolution provided
                                 in the ticket.
                             </p>
-                            <Button
-                                className="mt-2"
-                                onClick={() =>
-                                    history.push(
-                                        '/app/settings/ticket-fields/add'
-                                    )
-                                }
-                            >
-                                Create Field
-                            </Button>
+                            {createFieldButton}
                         </div>
                     ) : (
                         hasTicketFields && (
@@ -136,6 +129,18 @@ export default function TicketFields() {
                                     </div>
                                 ) : (
                                     <>
+                                        {activeTab === 'active' &&
+                                            activeFields.length >= 4 && (
+                                                <Alert
+                                                    type={AlertType.Warning}
+                                                    icon
+                                                    className="m-4"
+                                                >
+                                                    Only 4 active fields
+                                                    allowed. Archive some fields
+                                                    to create a new one.
+                                                </Alert>
+                                            )}
                                         <List ticketFields={ticketFields} />
                                         <Navigation
                                             className={css.navigation}

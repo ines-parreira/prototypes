@@ -23,7 +23,7 @@ exports[`<TicketFields/> account has the feature flag should render active ticke
             to="/app/settings/ticket-fields/add"
           >
             <button
-              class="wrapper float-right fill primary medium"
+              class="wrapper fill primary medium"
               type="button"
             >
               Create Field
@@ -86,7 +86,7 @@ exports[`<TicketFields/> account has the feature flag should render archived tic
             to="/app/settings/ticket-fields/add"
           >
             <button
-              class="wrapper float-right fill primary medium"
+              class="wrapper fill primary medium"
               type="button"
             >
               Create Field
@@ -161,12 +161,16 @@ exports[`<TicketFields/> account has the feature flag should render get started 
     >
       Set up custom fields to make sure your team handle tickets efficiently and consistently. You can create a custom field to track the contact reason, product or even the resolution provided in the ticket.
     </p>
-    <button
-      class="wrapper mt-2 fill primary medium"
-      type="button"
+    <a
+      to="/app/settings/ticket-fields/add"
     >
-      Create Field
-    </button>
+      <button
+        class="wrapper fill primary medium"
+        type="button"
+      >
+        Create Field
+      </button>
+    </a>
   </div>
 </div>
 `;
@@ -194,7 +198,7 @@ exports[`<TicketFields/> account has the feature flag should render no active ti
             to="/app/settings/ticket-fields/add"
           >
             <button
-              class="wrapper float-right fill primary medium"
+              class="wrapper fill primary medium"
               type="button"
             >
               Create Field
@@ -263,7 +267,7 @@ exports[`<TicketFields/> account has the feature flag should render no archived 
             to="/app/settings/ticket-fields/add"
           >
             <button
-              class="wrapper float-right fill primary medium"
+              class="wrapper fill primary medium"
               type="button"
             >
               Create Field
