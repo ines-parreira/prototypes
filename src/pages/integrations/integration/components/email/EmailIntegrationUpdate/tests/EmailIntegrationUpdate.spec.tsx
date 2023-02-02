@@ -1,5 +1,5 @@
 import React, {ComponentProps} from 'react'
-import {render, fireEvent} from '@testing-library/react'
+import {render, fireEvent, RenderResult} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -59,17 +59,22 @@ describe('<EmailIntegrationUpdateContainer />', () => {
 
     it.each([
         {
-            selector: '#id-name',
+            selector: ({getByRole}: RenderResult) =>
+                getByRole('textbox', {
+                    name: /display name required/i,
+                }),
             newValue: 'Some New Name',
             finalValue: INTEGRATION_NAME,
         },
         {
-            selector: '#use_gmail_categories',
+            selector: ({container}: RenderResult) =>
+                container.querySelector('#use_gmail_categories')!,
             newValue: true,
             finalValue: false,
         },
         {
-            selector: '#enable_gmail_sending',
+            selector: ({container}: RenderResult) =>
+                container.querySelector('#enable_gmail_sending')!,
             newValue: false,
             finalValue: true,
         },
@@ -94,39 +99,40 @@ describe('<EmailIntegrationUpdateContainer />', () => {
                 }),
             }
 
-            const {container, getByText} = renderWithStore(props)
+            const helpers = renderWithStore(props)
+            const {getByText} = helpers
+            const saveButton = getByText('Save changes')
 
-            expect(getByText('Save changes')).toBeDisabled()
+            expect(saveButton).toBeDisabled()
 
             if (isBoolean(selector.newValue)) {
-                fireEvent.click(container.querySelector(selector.selector)!)
+                fireEvent.click(selector.selector(helpers))
             } else {
-                fireEvent.change(container.querySelector(selector.selector)!, {
+                fireEvent.change(selector.selector(helpers), {
                     target: {value: selector.newValue},
                 })
             }
 
-            expect(
-                getByText('Save changes').hasAttribute('disabled')
-            ).toBeFalsy()
+            expect(saveButton.hasAttribute('disabled')).toBeFalsy()
 
             if (isBoolean(selector.newValue)) {
-                fireEvent.click(container.querySelector(selector.selector)!)
+                fireEvent.click(selector.selector(helpers))
             } else {
-                fireEvent.change(container.querySelector(selector.selector)!, {
+                fireEvent.change(selector.selector(helpers), {
                     target: {value: selector.finalValue},
                 })
             }
 
-            expect(
-                getByText('Save changes').hasAttribute('disabled')
-            ).toBeTruthy()
+            expect(saveButton.hasAttribute('disabled')).toBeTruthy()
         }
     )
 
     it.each([
         {
-            selector: '#id-name',
+            selector: ({getByRole}: RenderResult) =>
+                getByRole('textbox', {
+                    name: /display name required/i,
+                }),
             newValue: 'Some New Name',
             finalValue: INTEGRATION_NAME,
         },
@@ -148,47 +154,46 @@ describe('<EmailIntegrationUpdateContainer />', () => {
                 }),
             }
 
-            const {container, getByText} = renderWithStore(props)
+            const helpers = renderWithStore(props)
+            const {getByText} = helpers
+            const saveButton = getByText('Save changes')
 
-            expect(
-                getByText('Save changes').hasAttribute('disabled')
-            ).toBeTruthy()
+            expect(saveButton.hasAttribute('disabled')).toBeTruthy()
 
             if (isBoolean(selector.newValue)) {
-                fireEvent.click(container.querySelector(selector.selector)!)
+                fireEvent.click(selector.selector(helpers))
             } else {
-                fireEvent.change(container.querySelector(selector.selector)!, {
+                fireEvent.change(selector.selector(helpers), {
                     target: {value: selector.newValue},
                 })
             }
 
-            expect(
-                getByText('Save changes').hasAttribute('disabled')
-            ).toBeFalsy()
+            expect(saveButton.hasAttribute('disabled')).toBeFalsy()
 
             if (isBoolean(selector.newValue)) {
-                fireEvent.click(container.querySelector(selector.selector)!)
+                fireEvent.click(selector.selector(helpers))
             } else {
-                fireEvent.change(container.querySelector(selector.selector)!, {
+                fireEvent.change(selector.selector(helpers), {
                     target: {value: selector.finalValue},
                 })
             }
 
-            expect(
-                getByText('Save changes').hasAttribute('disabled')
-            ).toBeTruthy()
+            expect(saveButton.hasAttribute('disabled')).toBeTruthy()
         }
     )
 
     it.each([
         {
-            selector: '#id-name',
+            selector: ({getByRole}: RenderResult) =>
+                getByRole('textbox', {
+                    name: /display name required/i,
+                }),
             newValue: 'Some New Name',
             finalValue: INTEGRATION_NAME,
         },
     ])(
         'should enable the submit button only if form values changed [outlook]',
-        (field) => {
+        (selector) => {
             const props = {
                 integration: fromJS({
                     id: 1,
@@ -206,29 +211,25 @@ describe('<EmailIntegrationUpdateContainer />', () => {
                 }),
             }
 
-            const {container, getByText} = renderWithStore(props)
+            const helpers = renderWithStore(props)
+            const {getByText} = helpers
+            const saveButton = getByText('Save changes')
 
-            expect(
-                getByText('Save changes').hasAttribute('disabled')
-            ).toBeTruthy()
+            expect(saveButton).toBeDisabled()
 
-            fireEvent.change(container.querySelector(field.selector)!, {
-                target: {value: field.newValue},
+            fireEvent.change(selector.selector(helpers), {
+                target: {value: selector.newValue},
             })
-            expect(
-                getByText('Save changes').hasAttribute('disabled')
-            ).toBeFalsy()
+            expect(saveButton).not.toBeDisabled()
 
-            fireEvent.change(container.querySelector(field.selector)!, {
-                target: {value: field.finalValue},
+            fireEvent.change(selector.selector(helpers), {
+                target: {value: selector.finalValue},
             })
-            expect(
-                getByText('Save changes').hasAttribute('disabled')
-            ).toBeTruthy()
+            expect(saveButton).toBeDisabled()
         }
     )
 
-    it('disables gmail sending checkbox', () => {
+    it('disables gmail sending checkbox when domain is not verified [sendgrid]', () => {
         isOutboundDomainVerifiedSpy.mockReturnValue(false)
 
         const props = {
@@ -246,16 +247,15 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             }),
         }
 
-        const {getByRole} = renderWithStore(props)
+        const {getAllByRole} = renderWithStore(props)
+        const gmailSendingToggle = getAllByRole('switch')[1]
 
-        expect(
-            getByRole('checkbox', {
-                name: /enable sending emails with gmail/i,
-            }).hasAttribute('disabled')
-        ).toBeTruthy()
+        expect(gmailSendingToggle).toBeChecked()
+        fireEvent.click(gmailSendingToggle)
+        expect(gmailSendingToggle).toBeChecked()
     })
 
-    it('does not disable gmail sending checkbox', () => {
+    it('does not disable gmail sending checkbox when domain is verified [sendgrid]', () => {
         isOutboundDomainVerifiedSpy.mockReturnValue(true)
 
         const props = {
@@ -273,12 +273,11 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             }),
         }
 
-        const {getByRole} = renderWithStore(props)
+        const {getAllByRole} = renderWithStore(props)
+        const gmailSendingToggle = getAllByRole('switch')[1]
 
-        expect(
-            getByRole('checkbox', {
-                name: /enable sending emails with gmail/i,
-            }).hasAttribute('disabled')
-        ).toBeFalsy()
+        expect(gmailSendingToggle).toBeChecked()
+        fireEvent.click(gmailSendingToggle)
+        expect(gmailSendingToggle).not.toBeChecked()
     })
 })

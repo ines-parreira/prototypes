@@ -12,6 +12,7 @@ import {
     InputGroupAddon,
     Input,
     FormGroup,
+    Col,
 } from 'reactstrap'
 import copy from 'copy-to-clipboard'
 import Button from 'pages/common/components/button/Button'
@@ -21,10 +22,8 @@ import {
 } from 'config'
 import {EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS} from 'constants/integration'
 import {IntegrationType} from 'models/integration/types'
-import Alert from 'pages/common/components/Alert/Alert'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Loader from 'pages/common/components/Loader/Loader'
-import CheckBox from 'pages/common/forms/CheckBox'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import RichFieldWithVariables from 'pages/common/forms/RichFieldWithVariables'
 import {
     deleteIntegration,
@@ -45,6 +44,8 @@ import {EmailProvider} from 'models/integration/constants'
 import settingsCss from 'pages/settings/settings.less'
 import warningIcon from 'assets/img/icons/warning2.svg'
 import Tooltip from 'pages/common/components/Tooltip'
+import ToggleInput from 'pages/common/forms/ToggleInput'
+import InputField from 'pages/common/forms/input/InputField'
 import {isOutboundDomainVerified} from '../helpers'
 
 import css from './EmailIntegrationUpdate.less'
@@ -101,12 +102,14 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
     }
 
     componentDidUpdate() {
-        const currentFormValues = this._getFormValues()
         const {integration} = this.props
+        const integrationHasSignature = integration.getIn(['meta', 'signature'])
+        const currentFormValues = this._getFormValues(!integrationHasSignature)
         const {dirty: dirtyState} = this.state
 
         const dirty =
-            JSON.stringify(integration) !== JSON.stringify(currentFormValues)
+            JSON.stringify(integration.toJS()) !==
+            JSON.stringify(currentFormValues.toJS())
 
         if (dirty !== dirtyState) {
             this.setState({dirty})
@@ -135,7 +138,7 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
         }
     }
 
-    _getFormValues = (): Map<any, any> => {
+    _getFormValues = (removeSignatureWhenEmpty?: boolean): Map<any, any> => {
         const {integration} = this.props
         let form
 
@@ -143,6 +146,19 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
             .set('name', this.state.name)
             .setIn(['meta', 'signature', 'text'], this.state.signature_text)
             .setIn(['meta', 'signature', 'html'], this.state.signature_html)
+
+        /**
+         * when the integration object doesn't have the "signature" key,
+         * the form values object will always be different from the integration
+         * object because the initial state of the form contains the "signature"
+         * property
+         * in this case, if the text value of the signature is also empty,
+         * remove the property from the form values before comparing the
+         * form values with the integration values
+         */
+        if (!this.state.signature_text && removeSignatureWhenEmpty) {
+            form = integration.removeIn(['meta', 'signature'])
+        }
 
         if (integration.get('type') === IntegrationType.Gmail) {
             form = form
@@ -229,13 +245,13 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                 <Link to="/app/tickets">All tickets</Link>
             </span>
         ) : (
-            <span>
+            <Alert type={AlertType.Success} icon className="mt-3">
                 Completed: <b>{mailsImported}</b> emails have been imported.
-            </span>
+            </Alert>
         )
 
         return (
-            <div>
+            <div className={css.importSection}>
                 <h2>
                     {isImporting && (
                         <i className="material-icons md-spin mr-2">autorenew</i>
@@ -247,9 +263,8 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                         statusSentence
                     ) : (
                         <span>
-                            We will import {importDescription} from{' '}
-                            <b>{email}</b> into Gorgias <b>as closed tickets</b>
-                            .
+                            Import {importDescription} from <b>{email}</b> as
+                            closed tickets.
                         </span>
                     )}
                 </p>
@@ -258,6 +273,7 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                         isLoading={isLoading}
                         onConfirm={importMethod}
                         confirmationContent="Are you sure you want to import emails?"
+                        intent="secondary"
                     >
                         Import emails
                     </ConfirmButton>
@@ -456,36 +472,22 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
 
         const hasErrors = Object.values(errors).some((val) => val != null)
 
-        const nameHelp =
-            'The name that customers will see when they receive emails from you. ' +
-            `Cannot contain these characters: ${displayRestrictedSymbols(
-                EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS as string[]
-            )}`
+        const nameHelp = `The display name appears on outgoing emails. It cannot contain the following characters: ${displayRestrictedSymbols(
+            EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS as string[]
+        )}`
 
         const enableGmailSendingHelp = (
             <div>
-                Disable this option if you face connectivity issues with your
-                Gmail integration, or if Gmail keeps identifying your inbox as
-                spam. If you disable this option, we will send those emails
-                directly instead of going through Gmail. In order to keep a good
-                deliverability in this case, you will need to{' '}
+                Outbound emails will be sent through Gmail and appear in Gmail’s
+                “Sent” folder. Make sure to verify your domain before enabling
+                this option.{' '}
                 <a
                     href="https://docs.gorgias.com/email-integrations/spf-dkim-support"
                     target="_blank"
                     rel="noopener noreferrer"
                 >
-                    setup SPF
+                    Learn more
                 </a>
-                . Also, if you disable this option, your emails will not be
-                synchronized in the Sent folder of your Gmail inbox anymore.
-            </div>
-        )
-
-        const enableGmailThreadingHelp = (
-            <div>
-                Disable this option if you experience issues with contact form
-                responses from different customers being merged into the same
-                ticket.
             </div>
         )
 
@@ -493,34 +495,18 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
             <div className="mt-4">
                 <h3>Settings</h3>
                 <Form onSubmit={this._handleSubmit}>
-                    <DEPRECATED_InputField
+                    <InputField
                         type="text"
                         name="name"
-                        label="Address name"
+                        label="Display name"
                         placeholder={`${_capitalize(domain)} Support`}
-                        required
-                        help={nameHelp}
-                        error={errors.name}
+                        isRequired
+                        caption={nameHelp}
+                        error={errors.name ?? ''}
                         value={name}
                         onChange={(name) => this._setName(name)}
                     />
-                    {isGmail && (
-                        <FormGroup>
-                            <CheckBox
-                                name="use_gmail_categories"
-                                isChecked={use_gmail_categories}
-                                onChange={(value: boolean) =>
-                                    this.setState({
-                                        use_gmail_categories: value,
-                                    })
-                                }
-                            >
-                                Tag Gorgias tickets with Gmail categories
-                                (Social, Promotions, Updates, Forums)
-                            </CheckBox>
-                        </FormGroup>
-                    )}
-                    <FormGroup>
+                    <FormGroup className={css.textEditor}>
                         <RichFieldWithVariables
                             allowExternalChanges
                             label="Signature"
@@ -543,18 +529,30 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                         />
                     </FormGroup>
                     {isGmail && (
-                        <FormGroup>
-                            <CheckBox
+                        <FormGroup className={css.gmailTogglesWrapper}>
+                            <ToggleInput
+                                name="use_gmail_categories"
+                                isToggled={use_gmail_categories}
+                                onClick={(value: boolean) =>
+                                    this.setState({
+                                        use_gmail_categories: value,
+                                    })
+                                }
+                                caption="Categories include Social, Promotions, Updates, and Forums"
+                            >
+                                Tag tickets with Gmail categories
+                            </ToggleInput>
+
+                            <ToggleInput
                                 name="enable_gmail_sending"
                                 caption={enableGmailSendingHelp}
-                                isChecked={enable_gmail_sending}
+                                isToggled={enable_gmail_sending}
                                 isDisabled={isGmailSendingCheckboxDisabled}
-                                onChange={(value: boolean) =>
+                                onClick={(value: boolean) =>
                                     this.setState({
                                         enable_gmail_sending: value,
                                     })
                                 }
-                                className="mb-3"
                             >
                                 <div
                                     id="enable-gmail-sending-wrapper"
@@ -564,7 +562,7 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                                     })}
                                 >
                                     <span className={css.labelText}>
-                                        Enable sending emails with Gmail
+                                        Send emails from Gorgias with Gmail
                                     </span>
                                     {isGmailSendingCheckboxDisabled && (
                                         <img
@@ -592,23 +590,23 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                                         Sending with Gmail.
                                     </Tooltip>
                                 )}
-                            </CheckBox>
-                            <CheckBox
-                                name="enable_gmail_threading"
-                                caption={enableGmailThreadingHelp}
-                                isChecked={enable_gmail_threading}
-                                onChange={(value: boolean) =>
+                            </ToggleInput>
+
+                            <ToggleInput
+                                isToggled={enable_gmail_threading}
+                                onClick={(value: boolean) =>
                                     this.setState({
                                         enable_gmail_threading: value,
                                     })
                                 }
-                                className="mb-5"
+                                caption="Group emails if they have the same recipients, sender, or subject. "
+                                name="enable_gmail_threading"
                             >
-                                Enable Gmail conversation grouping
-                            </CheckBox>
+                                Group emails into conversations
+                            </ToggleInput>
                         </FormGroup>
                     )}
-                    <div>
+                    <div className={css.buttonsWrapper}>
                         <Button
                             type="submit"
                             intent="primary"
@@ -665,16 +663,18 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
 
         return (
             <Container fluid className={settingsCss.pageContainer}>
-                {integration.get('type') === IntegrationType.Email &&
-                    this._renderInstructions()}
+                <Col lg={6} xl={7}>
+                    {integration.get('type') === IntegrationType.Email &&
+                        this._renderInstructions()}
 
-                {integration.get('type') === IntegrationType.Gmail &&
-                    this._gmailRenderImport()}
+                    {integration.get('type') === IntegrationType.Gmail &&
+                        this._gmailRenderImport()}
 
-                {integration.get('type') === IntegrationType.Outlook &&
-                    this._outlookRenderImport()}
+                    {integration.get('type') === IntegrationType.Outlook &&
+                        this._outlookRenderImport()}
 
-                {this._renderSettings()}
+                    {this._renderSettings()}
+                </Col>
             </Container>
         )
     }

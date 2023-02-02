@@ -1,4 +1,5 @@
 @import '~css/new/colorTokens';
+@import '~css/new/layout';
 
 :local {
     .checkboxLabel.disabled {
@@ -12,5 +13,28 @@
             margin-left: 12px;
             vertical-align: text-bottom;
         }
+    }
+
+    .gmailTogglesWrapper {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+        margin-top: @layout-spacing-l;
+    }
+
+    .buttonsWrapper {
+        margin-top: @layout-spacing-xl;
+    }
+
+    .importSection {
+        margin-bottom: @layout-spacing-xl;
+    }
+
+    h3 {
+        margin-bottom: @layout-spacing-m;
+    }
+
+    .textEditor {
+        margin-top: @layout-spacing-s;
     }
 }
