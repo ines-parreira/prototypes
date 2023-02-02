@@ -9,6 +9,7 @@ import {mergeStatsFilters} from 'state/stats/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {StatsFilters} from 'models/stat/types'
 
+import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
 import SelectFilter from './common/SelectFilter'
 import SelectStatsFilter from './common/SelectStatsFilter'
 
@@ -50,7 +51,10 @@ export default function ChannelsStatsFilter({
             {channelsToDisplay.map((channel) => (
                 <Component.Item
                     key={channel}
-                    label={_upperFirst(channel.replace(/-/g, ' '))}
+                    label={
+                        TICKET_CHANNEL_NAMES[channel] ??
+                        _upperFirst(channel.replace(/-/g, ' '))
+                    }
                     value={channel}
                 />
             ))}

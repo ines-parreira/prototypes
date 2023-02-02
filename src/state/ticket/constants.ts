@@ -98,7 +98,7 @@ export const TICKET_CHANNEL_NAMES: Record<TicketChannel, string> =
         [TicketChannel.InstagramMention]: 'Instagram Mention',
         [TicketChannel.InstagramDirectMessage]: 'Instagram Direct Message',
         [TicketChannel.Phone]: 'Phone',
-        [TicketChannel.Sms]: 'Sms',
+        [TicketChannel.Sms]: 'SMS',
         [TicketChannel.Twitter]: 'Twitter',
         [TicketChannel.TwitterDirectMessage]: 'Twitter Direct Message',
         [TicketChannel.YotpoReview]: 'Yotpo Review',

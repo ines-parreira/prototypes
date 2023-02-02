@@ -622,19 +622,19 @@ export const stats = toImmutable<
         downloadable: true,
         lines: {
             'instagram-comment': {
-                label: 'Instagram comment',
+                label: 'Instagram Comment',
                 color: '#5c9dbb',
             },
             'instagram-ad-comment': {
-                label: 'Instagram ad comment',
+                label: 'Instagram Ad Comment',
                 color: '#4ca4d9',
             },
             'instagram-mention-comment': {
-                label: 'Instagram mention comment',
+                label: 'Instagram Mention Comment',
                 color: '#64A7D0',
             },
             'instagram-direct-message': {
-                label: 'Instagram direct message',
+                label: 'Instagram Direct Message',
                 color: '#249ae0',
             },
             facebook: {
@@ -646,7 +646,7 @@ export const stats = toImmutable<
                 color: '#1787fb',
             },
             'facebook-recommendations': {
-                label: 'Facebook recommendations',
+                label: 'Facebook Recommendations',
                 color: '#4887cd',
             },
             twitter: {
@@ -654,7 +654,7 @@ export const stats = toImmutable<
                 color: '#00aced',
             },
             'twitter-direct-message': {
-                label: 'Twitter direct message',
+                label: 'Twitter Direct Message',
                 color: '#0089b3',
             },
             chat: {
@@ -682,8 +682,12 @@ export const stats = toImmutable<
                 color: '#064296',
             },
             sms: {
-                label: 'Sms',
+                label: 'SMS',
                 color: '#69c473',
+            },
+            whatsapp: {
+                label: 'WhatsApp',
+                color: '#25D366',
             },
         },
         options: (legend: Map<any, any>) => ({

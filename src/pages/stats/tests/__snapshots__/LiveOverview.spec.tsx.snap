@@ -196,7 +196,7 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                       name="checkbox-7"
                       type="checkbox"
                     />
-                     Facebook mention
+                     Facebook Mention
                   </label>
                 </div>
                 <div
@@ -212,7 +212,7 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                       name="checkbox-8"
                       type="checkbox"
                     />
-                     Facebook messenger
+                     Facebook Messenger
                   </label>
                 </div>
                 <div
@@ -228,7 +228,7 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                       name="checkbox-9"
                       type="checkbox"
                     />
-                     Facebook recommendations
+                     Facebook Recommendations
                   </label>
                 </div>
                 <div
@@ -244,7 +244,7 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                       name="checkbox-10"
                       type="checkbox"
                     />
-                     Help center
+                     Help Center
                   </label>
                 </div>
                 <div
@@ -260,7 +260,7 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                       name="checkbox-11"
                       type="checkbox"
                     />
-                     Instagram ad comment
+                     Instagram Ad Comment
                   </label>
                 </div>
                 <div
@@ -276,7 +276,7 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                       name="checkbox-12"
                       type="checkbox"
                     />
-                     Instagram comment
+                     Instagram Comment
                   </label>
                 </div>
                 <div
@@ -292,7 +292,7 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                       name="checkbox-13"
                       type="checkbox"
                     />
-                     Instagram mention
+                     Instagram Mention
                   </label>
                 </div>
                 <div
@@ -308,7 +308,7 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                       name="checkbox-14"
                       type="checkbox"
                     />
-                     Instagram direct message
+                     Instagram Direct Message
                   </label>
                 </div>
                 <div
@@ -340,7 +340,7 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                       name="checkbox-16"
                       type="checkbox"
                     />
-                     Sms
+                     SMS
                   </label>
                 </div>
                 <div
@@ -372,7 +372,7 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                       name="checkbox-18"
                       type="checkbox"
                     />
-                     Twitter direct message
+                     Twitter Direct Message
                   </label>
                 </div>
                 <div
@@ -388,7 +388,7 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                       name="checkbox-19"
                       type="checkbox"
                     />
-                     Yotpo review
+                     Yotpo Review
                   </label>
                 </div>
               </div>

@@ -262,7 +262,7 @@ exports[`SupportPerformanceChannels should render the filters and stats when sta
                       name="checkbox-8"
                       type="checkbox"
                     />
-                     Facebook mention
+                     Facebook Mention
                   </label>
                 </div>
                 <div
@@ -278,7 +278,7 @@ exports[`SupportPerformanceChannels should render the filters and stats when sta
                       name="checkbox-9"
                       type="checkbox"
                     />
-                     Facebook messenger
+                     Facebook Messenger
                   </label>
                 </div>
                 <div
@@ -294,7 +294,7 @@ exports[`SupportPerformanceChannels should render the filters and stats when sta
                       name="checkbox-10"
                       type="checkbox"
                     />
-                     Facebook recommendations
+                     Facebook Recommendations
                   </label>
                 </div>
                 <div
@@ -310,7 +310,7 @@ exports[`SupportPerformanceChannels should render the filters and stats when sta
                       name="checkbox-11"
                       type="checkbox"
                     />
-                     Help center
+                     Help Center
                   </label>
                 </div>
                 <div
@@ -326,7 +326,7 @@ exports[`SupportPerformanceChannels should render the filters and stats when sta
                       name="checkbox-12"
                       type="checkbox"
                     />
-                     Instagram ad comment
+                     Instagram Ad Comment
                   </label>
                 </div>
                 <div
@@ -342,7 +342,7 @@ exports[`SupportPerformanceChannels should render the filters and stats when sta
                       name="checkbox-13"
                       type="checkbox"
                     />
-                     Instagram comment
+                     Instagram Comment
                   </label>
                 </div>
                 <div
@@ -358,7 +358,7 @@ exports[`SupportPerformanceChannels should render the filters and stats when sta
                       name="checkbox-14"
                       type="checkbox"
                     />
-                     Instagram mention
+                     Instagram Mention
                   </label>
                 </div>
                 <div
@@ -374,7 +374,7 @@ exports[`SupportPerformanceChannels should render the filters and stats when sta
                       name="checkbox-15"
                       type="checkbox"
                     />
-                     Instagram direct message
+                     Instagram Direct Message
                   </label>
                 </div>
                 <div
@@ -406,7 +406,7 @@ exports[`SupportPerformanceChannels should render the filters and stats when sta
                       name="checkbox-17"
                       type="checkbox"
                     />
-                     Sms
+                     SMS
                   </label>
                 </div>
                 <div
@@ -438,7 +438,7 @@ exports[`SupportPerformanceChannels should render the filters and stats when sta
                       name="checkbox-19"
                       type="checkbox"
                     />
-                     Twitter direct message
+                     Twitter Direct Message
                   </label>
                 </div>
                 <div
@@ -454,7 +454,7 @@ exports[`SupportPerformanceChannels should render the filters and stats when sta
                       name="checkbox-20"
                       type="checkbox"
                     />
-                     Yotpo review
+                     Yotpo Review
                   </label>
                 </div>
               </div>
@@ -577,7 +577,7 @@ exports[`SupportPerformanceChannels should render the filters and stats when sta
                   class="circle mr-2"
                   style="background: rgb(36, 154, 224);"
                 />
-                Instagram direct message
+                Instagram Direct Message
               </span>
               <span
                 class="label mr-4 mb-2"

@@ -410,7 +410,7 @@ exports[`SupportPerformanceTags should render the filters and stats when stats f
                       name="checkbox-15"
                       type="checkbox"
                     />
-                     Facebook mention
+                     Facebook Mention
                   </label>
                 </div>
                 <div
@@ -426,7 +426,7 @@ exports[`SupportPerformanceTags should render the filters and stats when stats f
                       name="checkbox-16"
                       type="checkbox"
                     />
-                     Facebook messenger
+                     Facebook Messenger
                   </label>
                 </div>
                 <div
@@ -442,7 +442,7 @@ exports[`SupportPerformanceTags should render the filters and stats when stats f
                       name="checkbox-17"
                       type="checkbox"
                     />
-                     Facebook recommendations
+                     Facebook Recommendations
                   </label>
                 </div>
                 <div
@@ -458,7 +458,7 @@ exports[`SupportPerformanceTags should render the filters and stats when stats f
                       name="checkbox-18"
                       type="checkbox"
                     />
-                     Help center
+                     Help Center
                   </label>
                 </div>
                 <div
@@ -474,7 +474,7 @@ exports[`SupportPerformanceTags should render the filters and stats when stats f
                       name="checkbox-19"
                       type="checkbox"
                     />
-                     Instagram ad comment
+                     Instagram Ad Comment
                   </label>
                 </div>
                 <div
@@ -490,7 +490,7 @@ exports[`SupportPerformanceTags should render the filters and stats when stats f
                       name="checkbox-20"
                       type="checkbox"
                     />
-                     Instagram comment
+                     Instagram Comment
                   </label>
                 </div>
                 <div
@@ -506,7 +506,7 @@ exports[`SupportPerformanceTags should render the filters and stats when stats f
                       name="checkbox-21"
                       type="checkbox"
                     />
-                     Instagram mention
+                     Instagram Mention
                   </label>
                 </div>
                 <div
@@ -522,7 +522,7 @@ exports[`SupportPerformanceTags should render the filters and stats when stats f
                       name="checkbox-22"
                       type="checkbox"
                     />
-                     Instagram direct message
+                     Instagram Direct Message
                   </label>
                 </div>
                 <div
@@ -554,7 +554,7 @@ exports[`SupportPerformanceTags should render the filters and stats when stats f
                       name="checkbox-24"
                       type="checkbox"
                     />
-                     Sms
+                     SMS
                   </label>
                 </div>
                 <div
@@ -586,7 +586,7 @@ exports[`SupportPerformanceTags should render the filters and stats when stats f
                       name="checkbox-26"
                       type="checkbox"
                     />
-                     Twitter direct message
+                     Twitter Direct Message
                   </label>
                 </div>
                 <div
@@ -602,7 +602,7 @@ exports[`SupportPerformanceTags should render the filters and stats when stats f
                       name="checkbox-27"
                       type="checkbox"
                     />
-                     Yotpo review
+                     Yotpo Review
                   </label>
                 </div>
               </div>
