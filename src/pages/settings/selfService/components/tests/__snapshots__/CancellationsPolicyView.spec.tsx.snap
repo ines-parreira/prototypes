@@ -875,7 +875,7 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
               </button>
             </div>
             <div
-              class="preview"
+              class="preview previewWithBackground"
             >
               <div
                 class="dialog"

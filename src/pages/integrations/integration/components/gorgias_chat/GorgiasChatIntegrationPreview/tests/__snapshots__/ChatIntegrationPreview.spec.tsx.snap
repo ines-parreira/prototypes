@@ -2,7 +2,7 @@
 
 exports[`<ChatIntegrationPreview/> render() should display auto responder 1`] = `
 <div
-  className="preview"
+  className="preview previewWithBackground"
   style={{}}
 >
   <div
@@ -117,7 +117,7 @@ exports[`<ChatIntegrationPreview/> render() should display auto responder 1`] = 
 
 exports[`<ChatIntegrationPreview/> render() should display display the offsets when editing axis x 1`] = `
 <div
-  className="preview"
+  className="preview previewWithBackground"
   style={
     {
       "paddingRight": 60,
@@ -267,7 +267,7 @@ exports[`<ChatIntegrationPreview/> render() should display display the offsets w
 
 exports[`<ChatIntegrationPreview/> render() should display display the offsets when editing axis y 1`] = `
 <div
-  className="preview"
+  className="preview previewWithBackground"
   style={{}}
 >
   <div
@@ -406,7 +406,7 @@ exports[`<ChatIntegrationPreview/> render() should display display the offsets w
 
 exports[`<ChatIntegrationPreview/> render() should display optional email capture 1`] = `
 <div
-  className="preview"
+  className="preview previewWithBackground"
   style={{}}
 >
   <div
@@ -532,7 +532,7 @@ exports[`<ChatIntegrationPreview/> render() should display optional email captur
 
 exports[`<ChatIntegrationPreview/> render() should display required email capture 1`] = `
 <div
-  className="preview"
+  className="preview previewWithBackground"
   style={{}}
 >
   <div
@@ -646,7 +646,7 @@ exports[`<ChatIntegrationPreview/> render() should display required email captur
 
 exports[`<ChatIntegrationPreview/> render() should display the avatar team picture in the header because the URL is set and the option is enabled 1`] = `
 <div
-  className="preview"
+  className="preview previewWithBackground"
   style={{}}
 >
   <div
@@ -787,7 +787,7 @@ exports[`<ChatIntegrationPreview/> render() should display the avatar team pictu
 
 exports[`<ChatIntegrationPreview/> render() should display the offline status because chat is offline 1`] = `
 <div
-  className="preview"
+  className="preview previewWithBackground"
   style={{}}
 >
   <div
@@ -941,7 +941,7 @@ exports[`<ChatIntegrationPreview/> render() should display the offline status be
 
 exports[`<ChatIntegrationPreview/> render() should display the online status because chat is online 1`] = `
 <div
-  className="preview"
+  className="preview previewWithBackground"
   style={{}}
 >
   <div
@@ -1080,7 +1080,7 @@ exports[`<ChatIntegrationPreview/> render() should display the online status bec
 
 exports[`<ChatIntegrationPreview/> render() should display the sliders when editing the position 1`] = `
 <div
-  className="preview"
+  className="preview previewWithBackground"
   style={{}}
 >
   <div
@@ -1219,7 +1219,7 @@ exports[`<ChatIntegrationPreview/> render() should display the sliders when edit
 
 exports[`<ChatIntegrationPreview/> render() should display typical response time for reply-in-day 1`] = `
 <div
-  className="preview"
+  className="preview previewWithBackground"
   style={{}}
 >
   <div
@@ -1373,7 +1373,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
 
 exports[`<ChatIntegrationPreview/> render() should display typical response time for reply-in-hours 1`] = `
 <div
-  className="preview"
+  className="preview previewWithBackground"
   style={{}}
 >
   <div
@@ -1527,7 +1527,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
 
 exports[`<ChatIntegrationPreview/> render() should display typical response time for reply-in-minutes 1`] = `
 <div
-  className="preview"
+  className="preview previewWithBackground"
   style={{}}
 >
   <div
@@ -1681,7 +1681,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
 
 exports[`<ChatIntegrationPreview/> render() should display typical response time for reply-shortly 1`] = `
 <div
-  className="preview"
+  className="preview previewWithBackground"
   style={{}}
 >
   <div
@@ -1835,7 +1835,7 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
 
 exports[`<ChatIntegrationPreview/> render() should not display button if hideButton provided 1`] = `
 <div
-  className="preview"
+  className="preview previewWithBackground"
   style={{}}
 >
   <div

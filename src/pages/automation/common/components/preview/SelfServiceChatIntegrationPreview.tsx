@@ -59,6 +59,7 @@ const SelfServiceChatIntegrationPreview = ({
             renderPoweredBy={false}
             hideButton
             enableAnimations
+            showBackground={false}
         >
             <div className={css.contentContainer}>
                 <Collapse isOpen={quickResponses.length > 0} memoizeOnExit>

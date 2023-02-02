@@ -57,6 +57,7 @@ type Props = {
         label?: string
     }
     isOpen?: boolean
+    showBackground?: boolean
 }
 
 const ChatIntegrationPreview = (props: Props) => {
@@ -88,6 +89,7 @@ const ChatIntegrationPreview = (props: Props) => {
             type: GorgiasChatLauncherType.ICON,
         },
         isOpen = true,
+        showBackground = true,
     } = props
 
     const isLauncherCustomizationEnabled =
@@ -187,7 +189,13 @@ const ChatIntegrationPreview = (props: Props) => {
 
     if (!isOpen) {
         return (
-            <div className={css.preview} style={{...getPreviewCustomStyle()}}>
+            <div
+                className={classnames(
+                    css.preview,
+                    showBackground && css.previewWithBackground
+                )}
+                style={{...getPreviewCustomStyle()}}
+            >
                 <div
                     className={classnames(
                         css.buttonWrapper,
@@ -239,7 +247,13 @@ const ChatIntegrationPreview = (props: Props) => {
     )
 
     return (
-        <div className={css.preview} style={{...getPreviewCustomStyle()}}>
+        <div
+            className={classnames(
+                css.preview,
+                showBackground && css.previewWithBackground
+            )}
+            style={{...getPreviewCustomStyle()}}
+        >
             {isButtonOnTop && !hideButton && (
                 <div
                     className={classnames(

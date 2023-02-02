@@ -653,7 +653,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 </button>
               </span>
               <div
-                class="preview"
+                class="preview previewWithBackground"
               >
                 <div
                   class="dialog"
@@ -1507,7 +1507,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 </button>
               </span>
               <div
-                class="preview"
+                class="preview previewWithBackground"
               >
                 <div
                   class="dialog"
@@ -2331,7 +2331,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 </button>
               </span>
               <div
-                class="preview"
+                class="preview previewWithBackground"
               >
                 <div
                   class="dialog"
@@ -3163,7 +3163,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                 </button>
               </span>
               <div
-                class="preview"
+                class="preview previewWithBackground"
               >
                 <div
                   class="dialog"
@@ -3987,7 +3987,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 </button>
               </span>
               <div
-                class="preview"
+                class="preview previewWithBackground"
               >
                 <div
                   class="dialog"
@@ -4825,7 +4825,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 </button>
               </span>
               <div
-                class="preview"
+                class="preview previewWithBackground"
               >
                 <div
                   class="dialog"
@@ -5634,7 +5634,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                 </button>
               </span>
               <div
-                class="preview"
+                class="preview previewWithBackground"
               >
                 <div
                   class="dialog"
@@ -6524,7 +6524,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                 </button>
               </span>
               <div
-                class="preview"
+                class="preview previewWithBackground"
               >
                 <div
                   class="dialog"
@@ -7356,7 +7356,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                 </button>
               </span>
               <div
-                class="preview"
+                class="preview previewWithBackground"
               >
                 <div
                   class="dialog"

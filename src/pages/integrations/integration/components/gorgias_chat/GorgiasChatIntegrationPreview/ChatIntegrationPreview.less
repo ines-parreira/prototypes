@@ -24,17 +24,21 @@
     .preview {
         position: relative;
         border-radius: 4px;
-        width: 432px;
-        min-height: 728px;
+        width: 384px;
         color: @textColor;
-        background: #f4f5f7;
 
         font-weight: 600;
         pointer-events: none;
-        padding: 24px;
 
         display: flex;
         flex-direction: column;
+
+        &.previewWithBackground {
+            width: 432px;
+            background: @classic-neutral-grey-2;
+            padding: 24px;
+            min-height: 728px;
+        }
     }
 
     .dialog {
