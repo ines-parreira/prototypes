@@ -1,0 +1,55 @@
+import React, {useState} from 'react'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+
+import {FeatureFlagKey} from 'config/featureFlags'
+import useAppSelector from 'hooks/useAppSelector'
+import {CurrentAccountState} from 'state/currentAccount/types'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {getCurrentProducts} from 'state/billing/selectors'
+import {SegmentEvent} from 'store/middlewares/segmentTracker'
+import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionButton'
+import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
+
+const SelfServiceStatsPagePaywallCustomCta = () => {
+    const isAutomationSettingsRevampEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
+
+    const [isAutomationModalOpened, setIsAutomationModalOpened] =
+        useState(false)
+    const account = useAppSelector<CurrentAccountState>(getCurrentAccountState)
+    const currentProducts = useAppSelector(getCurrentProducts)
+
+    const segmentEventToSend = {
+        name: SegmentEvent.PaywallUpgradeButtonSelected,
+        props: {
+            domain: account.get('domain'),
+            current_prices: Object.values(currentProducts || {})?.map(
+                (product) => product.price_id
+            ),
+            paywall_feature: 'automation_addon',
+        },
+    }
+
+    return (
+        <>
+            <AutomationSubscriptionButton
+                onClick={() => {
+                    setIsAutomationModalOpened(true)
+                }}
+                label={
+                    isAutomationSettingsRevampEnabled
+                        ? 'Get Automation Add-on'
+                        : 'Add Automation Features'
+                }
+                segmentEventToSend={segmentEventToSend}
+            />
+            <AutomationSubscriptionModal
+                confirmLabel="Confirm"
+                isOpen={isAutomationModalOpened}
+                onClose={() => setIsAutomationModalOpened(false)}
+            />
+        </>
+    )
+}
+
+export default SelfServiceStatsPagePaywallCustomCta

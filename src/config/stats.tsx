@@ -67,6 +67,7 @@ export const AUTOMATION_FLOW = 'automation-flow'
 export const AUTOMATION_PER_CHANNEL = 'automation-per-channel'
 export const SELF_SERVICE_OVERVIEW = 'self-service-overview'
 export const SELF_SERVICE_OVERVIEW_V2 = 'self-service-overview-v2'
+export const AUTOMATION_ADD_ON_OVERVIEW = 'automation-add-on-overview'
 export const SELF_SERVICE_VOLUME_PER_FLOW = 'self-service-volume-per-flow'
 export const SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE =
     'self-service-article-recommendation-performance'
@@ -1441,6 +1442,35 @@ export const stats = toImmutable<
                 label: 'Served by an agent after Self-service',
                 tooltip:
                     'Number of Self-service interactions that resulted in a chat ticket for an agent to handle.',
+            },
+        ],
+    },
+    [AUTOMATION_ADD_ON_OVERVIEW]: {
+        style: 'key-metrics',
+        api_resource_name: SELF_SERVICE_OVERVIEW_V2,
+        metrics: [
+            {
+                name: 'total_self_service_interaction_count',
+                label: 'Total Add-on interactions',
+                tooltip: 'Total number of interactions started by shoppers.',
+            },
+            {
+                name: 'self_service_automation_rate',
+                label: 'Add-on automation rate',
+                tooltip:
+                    'The number of interactions resolved by Add-on features, divided by total Add-on interactions.',
+            },
+            {
+                name: 'automated_self_service_interaction_count',
+                label: 'Automated Add-on interaction',
+                tooltip:
+                    'Number of interactions automated by Quick responses, Order management flows, or Article recommendation.',
+            },
+            {
+                name: 'not_automated_self_service_interaction_count',
+                label: 'Served by an agent',
+                tooltip:
+                    'Number of interactions that resulted in a ticket for an agent to handle.',
             },
         ],
     },

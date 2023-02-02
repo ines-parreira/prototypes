@@ -4,12 +4,20 @@ import classnames from 'classnames'
 
 import css from 'assets/css/navbar.less'
 
-type Props = Pick<NavLinkProps, 'to' | 'exact' | 'children'> & {
+export type NavbarLinkProps = Pick<
+    NavLinkProps,
+    'to' | 'exact' | 'children'
+> & {
     isNested?: boolean
     className?: string
 }
 
-const NavbarLink = ({isNested, className, exact = false, ...props}: Props) => {
+const NavbarLink = ({
+    isNested,
+    className,
+    exact = false,
+    ...props
+}: NavbarLinkProps) => {
     return (
         <NavLink
             className={classnames(

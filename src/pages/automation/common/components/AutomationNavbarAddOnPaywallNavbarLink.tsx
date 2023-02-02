@@ -4,19 +4,21 @@ import {Popover, PopoverBody} from 'reactstrap'
 
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import NavbarLink, {
+    NavbarLinkProps,
+} from 'pages/common/components/navbar/NavbarLink'
 
-import css from './AutomationNavbarAddOnPaywallViewItem.less'
+import css from './AutomationNavbarAddOnPaywallNavbarLink.less'
 
 type Props = {
     children: ReactNode
     onSubscribeToAutomationAddOnClick: () => void
-    isNested?: boolean
-}
+} & NavbarLinkProps
 
-const AutomationNavbarAddOnPaywallViewItem = ({
+const AutomationNavbarAddOnPaywallNavbarLink = ({
     children,
     onSubscribeToAutomationAddOnClick,
-    isNested,
+    ...props
 }: Props) => {
     const iconRef = useRef<HTMLElement>(null)
     const [isPopoverOpen, setIsPopoverOpen] = useState(false)
@@ -28,7 +30,7 @@ const AutomationNavbarAddOnPaywallViewItem = ({
 
     return (
         <>
-            <span className={classnames(css.item, {[css.isNested]: isNested})}>
+            <NavbarLink className={classnames(css.item)} {...props}>
                 {children}
                 <i
                     ref={iconRef}
@@ -39,7 +41,7 @@ const AutomationNavbarAddOnPaywallViewItem = ({
                 >
                     lock
                 </i>
-            </span>
+            </NavbarLink>
             {iconRef.current && (
                 <Popover
                     placement="top"
@@ -70,4 +72,4 @@ const AutomationNavbarAddOnPaywallViewItem = ({
     )
 }
 
-export default AutomationNavbarAddOnPaywallViewItem
+export default AutomationNavbarAddOnPaywallNavbarLink

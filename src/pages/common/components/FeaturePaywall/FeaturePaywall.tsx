@@ -57,14 +57,17 @@ const FeaturePaywall = ({
     return config && requiredPriceName ? (
         <Paywall
             pageHeader={config.pageHeader}
-            requiredUpgrade={requiredPriceName}
-            upgradeType={UpgradeType.Plan}
+            requiredUpgrade={config.requiredUpgrade ?? requiredPriceName}
+            upgradeType={config.upgradeType ?? UpgradeType.Plan}
             header={config.header}
             description={config.description}
             previewImage={config.preview}
             shouldKeepPrice={shouldKeepPrice}
-            paywallTheme={requiredPriceName as PaywallTheme}
+            paywallTheme={
+                config.paywallTheme ?? (requiredPriceName as PaywallTheme)
+            }
             showUpgradeCta
+            customCta={config.customCta}
             testimonial={config.testimonial}
         />
     ) : (

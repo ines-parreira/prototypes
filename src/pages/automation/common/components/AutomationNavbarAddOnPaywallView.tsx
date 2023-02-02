@@ -1,8 +1,9 @@
 import React, {useState} from 'react'
 
 import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
+import {slugify} from 'utils'
 
-import AutomationNavbarAddOnPaywallViewItem from './AutomationNavbarAddOnPaywallViewItem'
+import AutomationNavbarAddOnPaywallNavbarLink from './AutomationNavbarAddOnPaywallNavbarLink'
 
 const PAYWALL_ITEMS = [
     'Quick responses',
@@ -20,14 +21,15 @@ const AutomationNavbarAddOnPaywallView = () => {
         <>
             <div className="mt-4">
                 {PAYWALL_ITEMS.map((paywallItem) => (
-                    <AutomationNavbarAddOnPaywallViewItem
+                    <AutomationNavbarAddOnPaywallNavbarLink
                         key={paywallItem}
+                        to={`/app/automation/${slugify(paywallItem)}`}
                         onSubscribeToAutomationAddOnClick={() => {
                             setIsAutomationSubscriptionModal(true)
                         }}
                     >
                         {paywallItem}
-                    </AutomationNavbarAddOnPaywallViewItem>
+                    </AutomationNavbarAddOnPaywallNavbarLink>
                 ))}
             </div>
             <AutomationSubscriptionModal

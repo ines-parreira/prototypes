@@ -35,6 +35,7 @@ import css from './StatWrapper.less'
 
 type Props = {
     stat: Stat<TwoDimensionalChart | SankeyDiagram> | null
+    statDataLabelOverride?: ReactNode
     isFetchingStat: boolean
     resourceName: string
     statsFilters: StatsFilters
@@ -47,6 +48,7 @@ type Props = {
 
 export default function StatWrapper({
     stat,
+    statDataLabelOverride,
     isFetchingStat,
     helpText,
     isDownloadable,
@@ -122,7 +124,7 @@ export default function StatWrapper({
             {stat && (
                 <div className="mb-3 d-flex justify-content-between align-items-baseline">
                     <h5 className={classnames('mb-0', 'd-flex', css.header)}>
-                        {stat.data.label}
+                        {statDataLabelOverride ?? stat.data.label}
                         {helpText && (
                             <span>
                                 <StatsHelpIcon id={`tooltip-${resourceName}`} />

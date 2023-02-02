@@ -1,12 +1,10 @@
 import React from 'react'
-import {act, render} from '@testing-library/react'
+import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import _noop from 'lodash/noop'
-
-import _cloneDeep from 'lodash/cloneDeep'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {flushPromises, renderWithRouter} from 'utils/testing'
@@ -36,12 +34,6 @@ import {
 import {StatsFilters} from 'models/stat/types'
 
 import {billingState} from 'fixtures/billing'
-import {
-    starterHelpdeskPriceFeatures,
-    starterHelpdeskPrice,
-    products,
-    HELPDESK_PRODUCT_ID,
-} from 'fixtures/productPrices'
 import {account} from 'fixtures/account'
 import {entitiesInitialState} from 'fixtures/entities'
 import useStatResource from '../../useStatResource'
@@ -102,37 +94,6 @@ describe('<SelfServiceStatsPage />', () => {
             </Provider>
         )
         expect(container).toMatchSnapshot()
-    })
-
-    it('should render the automation add-on upgrade paywall if the current account doesnt have the feature', () => {
-        const productsWithStarterPrice = _cloneDeep(products)
-        productsWithStarterPrice[0].prices.push(starterHelpdeskPrice)
-
-        act(() => {
-            const {container} = render(
-                <Provider
-                    store={mockStore({
-                        ...defaultState,
-                        currentAccount: fromJS({
-                            current_subscription: {
-                                products: {
-                                    [HELPDESK_PRODUCT_ID]:
-                                        starterHelpdeskPrice.price_id,
-                                },
-                            },
-                            features: starterHelpdeskPriceFeatures,
-                        }),
-                        billing: fromJS({
-                            ...billingState,
-                            products: productsWithStarterPrice,
-                        }),
-                    })}
-                >
-                    <SelfServiceStatsPage />
-                </Provider>
-            )
-            expect(container).toMatchSnapshot()
-        })
     })
 
     it('should render the filters and stats when stats filters are defined', async () => {

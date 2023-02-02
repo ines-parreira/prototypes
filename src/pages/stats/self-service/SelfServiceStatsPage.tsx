@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {useAsyncFn} from 'react-use'
 import {fromJS, Map} from 'immutable'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {assetsUrl} from 'utils'
 import {
@@ -12,6 +13,7 @@ import {
     SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE,
     SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES_AND_RETURN_REQUESTS,
     SELF_SERVICE_OVERVIEW_V2,
+    AUTOMATION_ADD_ON_OVERVIEW,
 } from 'config/stats'
 import {fetchSelfServiceConfigurations} from 'models/selfServiceConfiguration/resources'
 import {
@@ -26,62 +28,47 @@ import useAppSelector from 'hooks/useAppSelector'
 import {selfServiceConfigurationsFetched} from 'state/entities/selfServiceConfigurations/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {
-    currentAccountHasFeature,
-    getCurrentAccountState,
-} from 'state/currentAccount/selectors'
-import {AccountFeature, CurrentAccountState} from 'state/currentAccount/types'
-import {SegmentEvent} from 'store/middlewares/segmentTracker'
 import {getStatsFilters} from 'state/stats/selectors'
 import {mergeStatsFilters} from 'state/stats/actions'
 import Loader from 'pages/common/components/Loader/Loader'
-import HeaderTitle from 'pages/common/components/HeaderTitle'
-import PageHeader from 'pages/common/components/PageHeader'
-import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
-import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionButton'
-
-import {getCurrentProducts} from 'state/billing/selectors'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {getSelfServiceConfigurations} from 'state/entities/selfServiceConfigurations/selectors'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {getIntegrations} from 'state/integrations/selectors'
+import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
+import {AccountFeature} from 'state/currentAccount/types'
+import {
+    PaywallConfig,
+    paywallConfigs as defaultPaywallConfigs,
+} from 'config/paywalls'
+import PageHeader from 'pages/common/components/PageHeader'
+import HeaderTitle from 'pages/common/components/HeaderTitle'
+
 import KeyMetricStat from '../common/components/charts/KeyMetricStat/KeyMetricStat'
 import TableStat from '../common/components/charts/TableStat/TableStat'
+import NormalizedLineStat from '../common/components/charts/NormalizedLineStat'
 import KeyMetricStatWrapper from '../KeyMetricStatWrapper'
 import PeriodStatsFilter from '../PeriodStatsFilter'
 import StatsPage from '../StatsPage'
 import StatWrapper from '../StatWrapper'
 import useStatResource from '../useStatResource'
 
-import Paywall, {UpgradeType} from '../../common/components/Paywall/Paywall'
-import {paywallConfigs} from '../../../config/paywalls'
-import NormalizedLineStat from '../common/components/charts/NormalizedLineStat'
-import {getSelfServiceConfigurations} from '../../../state/entities/selfServiceConfigurations/selectors'
-import Alert, {AlertType} from '../../common/components/Alert/Alert'
 import SelfServiceIntegrationsFilter from './SelfServiceIntegrationsFilter'
-import css from './SelfServiceStatsPage.less'
 import {SelfServiceFeaturePreview} from './SelfServiceFeaturePreview'
 import {useIsArticleRecommendationDisabled} from './self-service-stats.utils'
+import SelfServiceStatsPageDescription from './SelfServiceStatsPageDescription'
+import SelfServiceStatsPageTitle from './SelfServiceStatsPageTitle'
+import SelfServiceStatsPagePaywallCustomCta from './SelfServiceStatsPagePaywallCustomCta'
+import {AUTOMATION_SELF_SERVICE_STAT_NAME, HELP_URL} from './constants'
 
-const AUTOMATION_SELF_SERVICE_STAT_NAME = 'automation-self-service'
-const TITLE = 'Self-service'
-const DESCRIPTION = (
-    <div>
-        Self-service statistics give you an overview of the performance of your
-        self-service features which can automate tickets and save you time. This
-        view shows data from <b>chat and help centers combined</b>.
-    </div>
-)
-const HELP_URL = 'https://docs.gorgias.com/statistics/self-service-statistics'
+import css from './SelfServiceStatsPage.less'
 
 export const SelfServiceStatsPage = (): JSX.Element => {
-    const [isAutomationModalOpened, setIsAutomationModalOpened] =
-        useState(false)
+    const isAutomationSettingsRevampEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
     const [noActivityAlertDismissed, setNoActivityAlertDismissed] =
         useState(false)
     const dispatch = useAppDispatch()
-    const hasSelfServiceStatisticsFeature = useAppSelector(
-        currentAccountHasFeature(AccountFeature.AutomationSelfServiceStatistics)
-    )
-    const account = useAppSelector<CurrentAccountState>(getCurrentAccountState)
-    const currentProducts = useAppSelector(getCurrentProducts)
     const integrations = useAppSelector(getIntegrations)
     const statsFilters = useAppSelector(getStatsFilters)
 
@@ -93,16 +80,6 @@ export const SelfServiceStatsPage = (): JSX.Element => {
         }
     }, [statsFilters])
 
-    const segmentEventToSend = {
-        name: SegmentEvent.PaywallUpgradeButtonSelected,
-        props: {
-            domain: account.get('domain'),
-            current_prices: Object.values(currentProducts || {})?.map(
-                (product) => product.price_id
-            ),
-            paywall_feature: 'automation_addon',
-        },
-    }
     const [{loading}, retrieveSelfServiceConfigurations] =
         useAsyncFn(async () => {
             try {
@@ -228,9 +205,6 @@ export const SelfServiceStatsPage = (): JSX.Element => {
         [dispatch]
     )
 
-    const paywallConfig =
-        paywallConfigs[AccountFeature.AutomationSelfServiceStatistics]!
-
     const allSectionsNoData =
         overviewNoData &&
         volumePerFlowNoData &&
@@ -241,49 +215,12 @@ export const SelfServiceStatsPage = (): JSX.Element => {
 
     if (loading) {
         return <Loader />
-    } else if (!hasSelfServiceStatisticsFeature) {
-        return (
-            <Paywall
-                pageHeader={
-                    <PageHeader
-                        title={
-                            <HeaderTitle
-                                title={TITLE}
-                                description={DESCRIPTION}
-                                helpUrl={HELP_URL}
-                            />
-                        }
-                    />
-                }
-                requiredUpgrade="Automation"
-                upgradeType={UpgradeType.AddOn}
-                header={paywallConfig.header}
-                description={paywallConfig.description}
-                previewImage={paywallConfig.preview}
-                customCta={
-                    <AutomationSubscriptionButton
-                        onClick={() => {
-                            setIsAutomationModalOpened(true)
-                        }}
-                        label="Add Automation Features"
-                        segmentEventToSend={segmentEventToSend}
-                    />
-                }
-                modal={
-                    <AutomationSubscriptionModal
-                        confirmLabel="Confirm"
-                        isOpen={isAutomationModalOpened}
-                        onClose={() => setIsAutomationModalOpened(false)}
-                    />
-                }
-            />
-        )
     }
 
     return (
         <StatsPage
-            title={TITLE}
-            description={DESCRIPTION}
+            title={<SelfServiceStatsPageTitle />}
+            description={<SelfServiceStatsPageDescription />}
             helpUrl={HELP_URL}
             filters={
                 pageStatsFilters && (
@@ -304,7 +241,11 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                             data={immutableOverview.getIn(['data', 'data'])}
                             meta={immutableOverview.get('meta')}
                             loading={isFetchingOverview}
-                            config={statsConfig.get(SELF_SERVICE_OVERVIEW_V2)}
+                            config={statsConfig.get(
+                                isAutomationSettingsRevampEnabled
+                                    ? AUTOMATION_ADD_ON_OVERVIEW
+                                    : SELF_SERVICE_OVERVIEW_V2
+                            )}
                         />
                     </KeyMetricStatWrapper>
                     {allSectionsNoData && !noActivityAlertDismissed && (
@@ -316,12 +257,18 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                 setNoActivityAlertDismissed(true)
                             }}
                         >
-                            There is no Self-service activity. Your Chat or Help
-                            Center may not be properly installed.
+                            {isAutomationSettingsRevampEnabled
+                                ? 'There is no activity for these features. Your chat or help center may not be properly installed.'
+                                : 'There is no Self-service activity. Your Chat or Help Center may not be properly installed.'}
                         </Alert>
                     )}
                     <StatWrapper
                         stat={volumePerFlow}
+                        statDataLabelOverride={
+                            isAutomationSettingsRevampEnabled
+                                ? 'Volume per flow'
+                                : undefined
+                        }
                         isFetchingStat={isFetchingVolumePerFlow}
                         resourceName={SELF_SERVICE_VOLUME_PER_FLOW}
                         statsFilters={pageStatsFilters}
@@ -368,11 +315,16 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                         title="Automate up to 14% of
                                                         interactions with quick
                                                         response flows"
-                                        description="Enable and customize up
-                                                        to 6 quick response
-                                                        flows at a time in
-                                                        Self-service."
-                                        buttonText="Check out quick response"
+                                        description={
+                                            isAutomationSettingsRevampEnabled
+                                                ? 'Enable and display up to 6 custom Quick Responses to provide shoppers with automated responses to common questions.'
+                                                : 'Enable and customize up to 6 quick response flows at a time in Self-service.'
+                                        }
+                                        buttonText={
+                                            isAutomationSettingsRevampEnabled
+                                                ? 'Go to quick responses'
+                                                : 'Check out quick response'
+                                        }
                                         buttonRedirectUrl="/app/settings/self-service"
                                         imageUrl={assetsUrl(
                                             '/img/presentationals/quick-response-preview.png'
@@ -432,8 +384,16 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                 articleRecommendationDisabled ? (
                                     <SelfServiceFeaturePreview
                                         title="Leverage your Help Center to automate tickets"
-                                        description="Enable article recommendation in Chat settings to automatically recommend relevant Help Center articles to shoppers."
-                                        buttonText="Set up article recommendation"
+                                        description={
+                                            isAutomationSettingsRevampEnabled
+                                                ? 'Enable Article Recommendation to automatically recommend relevant help center articles to shoppers.'
+                                                : 'Enable article recommendation in Chat settings to automatically recommend relevant Help Center articles to shoppers.'
+                                        }
+                                        buttonText={
+                                            isAutomationSettingsRevampEnabled
+                                                ? 'Go to article recommendation'
+                                                : 'Set up article recommendation'
+                                        }
                                         buttonRedirectUrl="/app/settings/channels/gorgias_chat"
                                         imageUrl={assetsUrl(
                                             '/img/presentationals/article-recommendation-preview.png'
@@ -483,10 +443,22 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                 {topReportedIssuesNoData &&
                                 reportIssueDisabled ? (
                                     <SelfServiceFeaturePreview
-                                        title="Track order issues by enabling the report issue flow"
-                                        description="Enable and customize the report issue flow in Self-service."
+                                        title={
+                                            isAutomationSettingsRevampEnabled
+                                                ? 'Monitor order issues with the report issue flow'
+                                                : 'Track order issues by enabling the report issue flow'
+                                        }
+                                        description={
+                                            isAutomationSettingsRevampEnabled
+                                                ? 'Monitor order issues with the report issue flow'
+                                                : 'Enable and customize the report issue flow in Self-service.'
+                                        }
                                         buttonText="Customize Report Issue Flow"
-                                        buttonRedirectUrl="/app/settings/self-service"
+                                        buttonRedirectUrl={
+                                            isAutomationSettingsRevampEnabled
+                                                ? 'Go to order management'
+                                                : '/app/settings/self-service'
+                                        }
                                         imageUrl={assetsUrl(
                                             '/img/presentationals/report-issue-preview.png'
                                         )}
@@ -525,8 +497,16 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                 reportIssueDisabled ? (
                                     <SelfServiceFeaturePreview
                                         title="Gain product insights by enabling the report issue and return flows"
-                                        description="Enable and customize these order management flows in Self-service."
-                                        buttonText="Check out order management flows"
+                                        description={
+                                            isAutomationSettingsRevampEnabled
+                                                ? 'Enable and customize these flows in Order Management.'
+                                                : 'Enable and customize these order management flows in Self-service.'
+                                        }
+                                        buttonText={
+                                            isAutomationSettingsRevampEnabled
+                                                ? 'Go to Order Management'
+                                                : 'Check out order management flows'
+                                        }
                                         buttonRedirectUrl="/app/settings/self-service"
                                         imageUrl={assetsUrl(
                                             '/img/presentationals/return-order-preview.png'
@@ -551,4 +531,27 @@ export const SelfServiceStatsPage = (): JSX.Element => {
         </StatsPage>
     )
 }
-export default SelfServiceStatsPage
+
+export default withFeaturePaywall(
+    AccountFeature.AutomationSelfServiceStatistics,
+    undefined,
+    {
+        [AccountFeature.AutomationSelfServiceStatistics]: {
+            ...defaultPaywallConfigs[
+                AccountFeature.AutomationSelfServiceStatistics
+            ],
+            pageHeader: (
+                <PageHeader
+                    title={
+                        <HeaderTitle
+                            title={<SelfServiceStatsPageTitle />}
+                            description={<SelfServiceStatsPageDescription />}
+                            helpUrl={HELP_URL}
+                        />
+                    }
+                />
+            ),
+            customCta: <SelfServiceStatsPagePaywallCustomCta />,
+        } as PaywallConfig,
+    }
+)(SelfServiceStatsPage)

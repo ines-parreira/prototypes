@@ -6,7 +6,7 @@ import PopoverModal from 'pages/common/components/PopoverModal'
 import css from './HeaderTitle.less'
 
 type Props = {
-    title: string
+    title: ReactNode
     description?: ReactNode
     helpUrl?: string
 }

@@ -1,10 +1,15 @@
-import React, {ReactElement} from 'react'
-import {assetsUrl} from 'utils'
+import React, {ReactElement, ReactNode} from 'react'
 
-import {AccountFeature} from '../state/currentAccount/types'
+import {assetsUrl} from 'utils'
+import {
+    PaywallTheme,
+    UpgradeType,
+} from 'pages/common/components/Paywall/Paywall'
+import {AccountFeature} from 'state/currentAccount/types'
 
 export type PaywallConfig = {
-    pageHeader?: string
+    pageHeader?: ReactNode
+    paywallTheme?: PaywallTheme
     header: string
     description: string | ReactElement
     testimonial?: {
@@ -20,6 +25,9 @@ export type PaywallConfig = {
         text: string
     }
     preview: string
+    requiredUpgrade?: string
+    upgradeType?: UpgradeType
+    customCta?: ReactNode
 }
 
 export const paywallConfigs: Partial<Record<AccountFeature, PaywallConfig>> = {
@@ -64,6 +72,7 @@ export const paywallConfigs: Partial<Record<AccountFeature, PaywallConfig>> = {
         preview: assetsUrl('/img/paywalls/screens/live-agents-statistic.png'),
     },
     [AccountFeature.AutomationSelfServiceStatistics]: {
+        paywallTheme: PaywallTheme.Default,
         header: 'Track self-service performance',
         description: (
             <div>
@@ -74,5 +83,7 @@ export const paywallConfigs: Partial<Record<AccountFeature, PaywallConfig>> = {
         preview: assetsUrl(
             '/img/paywalls/screens/self-service-statistics-v2.png'
         ),
+        requiredUpgrade: 'Automation',
+        upgradeType: UpgradeType.AddOn,
     },
 }

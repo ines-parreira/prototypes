@@ -502,8 +502,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
               </span>
             </div>
           </div>
-          <span
-            class="item isNested"
+          <a
+            class="link isNested item"
+            data-active-class-name="active"
+            href="/app/automation/quick-responses"
           >
             Quick responses
             <i
@@ -511,7 +513,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
             >
               lock
             </i>
-          </span>
+          </a>
           <a
             class="link isNested"
             data-active-class-name="active"
@@ -551,8 +553,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
               </span>
             </div>
           </div>
-          <span
-            class="item isNested"
+          <a
+            class="link isNested item"
+            data-active-class-name="active"
+            href="/app/automation/quick-responses"
           >
             Quick responses
             <i
@@ -560,7 +564,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
             >
               lock
             </i>
-          </span>
+          </a>
         </div>
       </div>
     </div>
@@ -774,8 +778,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
         <div
           class="mt-4"
         >
-          <span
-            class="item"
+          <a
+            class="link item"
+            data-active-class-name="active"
+            href="/app/automation/quick-responses"
           >
             Quick responses
             <i
@@ -783,9 +789,11 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
             >
               lock
             </i>
-          </span>
-          <span
-            class="item"
+          </a>
+          <a
+            class="link item"
+            data-active-class-name="active"
+            href="/app/automation/order-management"
           >
             Order management
             <i
@@ -793,9 +801,11 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
             >
               lock
             </i>
-          </span>
-          <span
-            class="item"
+          </a>
+          <a
+            class="link item"
+            data-active-class-name="active"
+            href="/app/automation/article-recommendation"
           >
             Article recommendation
             <i
@@ -803,7 +813,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for admin
             >
               lock
             </i>
-          </span>
+          </a>
         </div>
       </div>
     </div>
@@ -1347,8 +1357,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
               </span>
             </div>
           </div>
-          <span
-            class="item isNested"
+          <a
+            class="link isNested item"
+            data-active-class-name="active"
+            href="/app/automation/quick-responses"
           >
             Quick responses
             <i
@@ -1356,7 +1368,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
             >
               lock
             </i>
-          </span>
+          </a>
           <a
             class="link isNested"
             data-active-class-name="active"
@@ -1396,8 +1408,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
               </span>
             </div>
           </div>
-          <span
-            class="item isNested"
+          <a
+            class="link isNested item"
+            data-active-class-name="active"
+            href="/app/automation/quick-responses"
           >
             Quick responses
             <i
@@ -1405,7 +1419,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
             >
               lock
             </i>
-          </span>
+          </a>
         </div>
       </div>
     </div>
@@ -1619,8 +1633,10 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
         <div
           class="mt-4"
         >
-          <span
-            class="item"
+          <a
+            class="link item"
+            data-active-class-name="active"
+            href="/app/automation/quick-responses"
           >
             Quick responses
             <i
@@ -1628,9 +1644,11 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
             >
               lock
             </i>
-          </span>
-          <span
-            class="item"
+          </a>
+          <a
+            class="link item"
+            data-active-class-name="active"
+            href="/app/automation/order-management"
           >
             Order management
             <i
@@ -1638,9 +1656,11 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
             >
               lock
             </i>
-          </span>
-          <span
-            class="item"
+          </a>
+          <a
+            class="link item"
+            data-active-class-name="active"
+            href="/app/automation/article-recommendation"
           >
             Article recommendation
             <i
@@ -1648,7 +1668,7 @@ exports[`<AutomationNavbar /> render() should render automation navbar for agent
             >
               lock
             </i>
-          </span>
+          </a>
         </div>
       </div>
     </div>

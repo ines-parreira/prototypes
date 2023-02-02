@@ -24,12 +24,12 @@ exports[`<AutomationStatsSelfServiceMetric /> should render legacy 1`] = `
             <span
               class="wrapper"
             >
-              Get Automation Features
               <i
-                class="material-icons icon isRight medium"
+                class="material-icons icon isLeft medium"
               >
                 auto_awesome
               </i>
+              Get Automation Features
             </span>
           </button>
         </div>
@@ -66,12 +66,12 @@ exports[`<AutomationStatsSelfServiceMetric /> should render paywall 1`] = `
               <span
                 class="wrapper"
               >
-                Upgrade
                 <i
-                  class="material-icons icon isRight medium"
+                  class="material-icons icon isLeft medium"
                 >
                   auto_awesome
                 </i>
+                Upgrade
               </span>
             </button>
           </a>

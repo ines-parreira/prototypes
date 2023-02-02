@@ -12,6 +12,7 @@ export default function AutomationSubscriptionButton({
     state,
     label,
     onClick,
+    position = 'left',
     ...rest
 }: ComponentProps<typeof UpgradeButton>) {
     const addons = useAppSelector(getCurrentHelpdeskAddons)
@@ -34,6 +35,7 @@ export default function AutomationSubscriptionButton({
             label={automationAddOnAvailable ? label : 'Upgrade'}
             onClick={automationAddOnAvailable ? onClick : undefined}
             state={automationAddOnState}
+            position={position}
         />
     )
 }

@@ -120,6 +120,12 @@ import MaybeDeprecatedRoute from './common/components/MaybeDeprecatedRoute'
 import {ClickTrackingApiClientProvider} from './settings/revenue/hooks/useClickTrackingApi'
 import {ClickTrackingSettingsView} from './settings/revenue/components/ClickTrackingSettingsView'
 import QuickResponsesViewContainer from './automation/quickResponses/QuickResponsesViewContainer'
+import PageHeader from './common/components/PageHeader'
+import HeaderTitle from './common/components/HeaderTitle'
+import SelfServiceStatsPageTitle from './stats/self-service/SelfServiceStatsPageTitle'
+import SelfServiceStatsPageDescription from './stats/self-service/SelfServiceStatsPageDescription'
+import {HELP_URL} from './stats/self-service/constants'
+import SelfServiceStatsPagePaywallCustomCta from './stats/self-service/SelfServiceStatsPagePaywallCustomCta'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -438,6 +444,8 @@ export function StatsRoutes({match: {path}}: RouteComponentProps) {
     )
     const hasAnalyticsBeta: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsBetaTesters]
+    const isAutomationSettingsRevampEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
 
     useEffect(logPageChange, [location.pathname])
 
@@ -566,14 +574,67 @@ export function StatsRoutes({match: {path}}: RouteComponentProps) {
                         navbar: StatsNavbarContainer,
                     })}
                 />
-                <Route
-                    exact
-                    path={`${path}/self-service`}
-                    render={appRender({
-                        content: SelfServiceStatsPage,
-                        navbar: StatsNavbarContainer,
-                    })}
-                />
+                {isAutomationSettingsRevampEnabled ? (
+                    <Route
+                        exact
+                        path={`${path}/automation-add-on`}
+                        render={appRender({
+                            content: withFeaturePaywall(
+                                AccountFeature.AutomationSelfServiceStatistics,
+                                undefined,
+                                {
+                                    [AccountFeature.AutomationSelfServiceStatistics]:
+                                        {
+                                            ...defaultPaywallConfigs[
+                                                AccountFeature
+                                                    .AutomationSelfServiceStatistics
+                                            ],
+                                            pageHeader: (
+                                                <PageHeader
+                                                    title={
+                                                        <HeaderTitle
+                                                            title={
+                                                                <SelfServiceStatsPageTitle />
+                                                            }
+                                                            description={
+                                                                <SelfServiceStatsPageDescription />
+                                                            }
+                                                            helpUrl={HELP_URL}
+                                                        />
+                                                    }
+                                                />
+                                            ),
+                                            customCta: (
+                                                <SelfServiceStatsPagePaywallCustomCta />
+                                            ),
+                                            header: 'Track Automation Add-on performance',
+                                            description: (
+                                                <div>
+                                                    Monitor automated shopper
+                                                    interactions, gain insights
+                                                    to improve your automation
+                                                    rate, and more!
+                                                </div>
+                                            ),
+                                            preview: assetsUrl(
+                                                '/img/paywalls/screens/automation-add-on-statistics.png'
+                                            ),
+                                        },
+                                }
+                            )(SelfServiceStatsPage),
+                            navbar: StatsNavbarContainer,
+                        })}
+                    />
+                ) : (
+                    <Route
+                        exact
+                        path={`${path}/self-service`}
+                        render={appRender({
+                            content: SelfServiceStatsPage,
+                            navbar: StatsNavbarContainer,
+                        })}
+                    />
+                )}
             </Switch>
         </DefaultStatsFilters>
     )
@@ -1290,6 +1351,45 @@ export function AutomationRoutes({match: {path}}: RouteComponentProps) {
                 exact
                 render={appRender({
                     content: QuickResponsesViewContainer,
+                    navbar: AutomationNavbar,
+                })}
+            />
+            <Route
+                path={`${path}/quick-responses`}
+                exact
+                render={appRender({
+                    children: (
+                        <CanduContent
+                            containerId="candu-quick-responses"
+                            title="Quick responses"
+                        />
+                    ),
+                    navbar: AutomationNavbar,
+                })}
+            />
+            <Route
+                path={`${path}/order-management`}
+                exact
+                render={appRender({
+                    children: (
+                        <CanduContent
+                            containerId="candu-order-management"
+                            title="Order management"
+                        />
+                    ),
+                    navbar: AutomationNavbar,
+                })}
+            />
+            <Route
+                path={`${path}/article-recommendation`}
+                exact
+                render={appRender({
+                    children: (
+                        <CanduContent
+                            containerId="candu-article-recommendation"
+                            title="Article recommendation"
+                        />
+                    ),
                     navbar: AutomationNavbar,
                 })}
             />

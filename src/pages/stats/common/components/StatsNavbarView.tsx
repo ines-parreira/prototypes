@@ -1,46 +1,57 @@
-import React, {ComponentProps} from 'react'
-import {NavLink} from 'react-router-dom'
-import classnames from 'classnames'
+import React, {useState} from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import cssNavbar from 'assets/css/navbar.less'
 import {FeatureFlagKey} from 'config/featureFlags'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import NavbarBlock from 'pages/common/components/navbar/NavbarBlock'
+import AutomationNavbarAddOnPaywallNavbarLink from 'pages/automation/common/components/AutomationNavbarAddOnPaywallNavbarLink'
+import AutomationSubscriptionModal from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionModal'
+import useAppSelector from 'hooks/useAppSelector'
+import {getHasAutomationAddOn} from 'state/billing/selectors'
+import NavbarLink, {
+    NavbarLinkProps,
+} from 'pages/common/components/navbar/NavbarLink'
 
 import css from './StatsNavbarView.less'
 
-const COMMON_NAV_LINK_PROPS: Partial<ComponentProps<NavLink>> = {
-    className: classnames(cssNavbar.link, css.link),
-    activeClassName: 'active',
+const COMMON_NAV_LINK_PROPS: Partial<NavbarLinkProps> = {
+    className: css.link,
     exact: true,
 }
 
 export default function StatsNavbarView() {
     const hasAnalyticsBeta: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsBetaTesters]
+    const isAutomationSettingsRevampEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
+    const [
+        isAutomationSubscriptionModalOpen,
+        setIsAutomationSubscriptionModal,
+    ] = useState(false)
+    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
 
     return (
         <>
             <NavbarBlock icon="adjust" title="Live">
                 <div className={cssNavbar.menu}>
-                    <NavLink
+                    <NavbarLink
                         {...COMMON_NAV_LINK_PROPS}
                         to="/app/stats/live-overview"
                     >
                         Overview
-                    </NavLink>
-                    <NavLink
+                    </NavbarLink>
+                    <NavbarLink
                         {...COMMON_NAV_LINK_PROPS}
                         to="/app/stats/live-agents"
                     >
                         Agents
-                    </NavLink>
+                    </NavbarLink>
                 </div>
             </NavbarBlock>
             <NavbarBlock icon="insights" title="Support Performance">
                 <div className={cssNavbar.menu}>
-                    <NavLink
+                    <NavbarLink
                         {...COMMON_NAV_LINK_PROPS}
                         to="/app/stats/support-performance-overview"
                     >
@@ -50,66 +61,105 @@ export default function StatsNavbarView() {
                                 new
                             </Badge>
                         )}
-                    </NavLink>
+                    </NavbarLink>
 
                     {hasAnalyticsBeta && (
-                        <NavLink
+                        <NavbarLink
                             {...COMMON_NAV_LINK_PROPS}
                             to="/app/stats/weekly-ticket-load"
                         >
                             Weekly ticket load
-                        </NavLink>
+                        </NavbarLink>
                     )}
 
-                    <NavLink {...COMMON_NAV_LINK_PROPS} to="/app/stats/tags">
+                    <NavbarLink {...COMMON_NAV_LINK_PROPS} to="/app/stats/tags">
                         Tags
-                    </NavLink>
-                    <NavLink
+                    </NavbarLink>
+                    <NavbarLink
                         {...COMMON_NAV_LINK_PROPS}
                         to="/app/stats/channels"
                     >
                         Channels
-                    </NavLink>
-                    <NavLink
+                    </NavbarLink>
+                    <NavbarLink
                         {...COMMON_NAV_LINK_PROPS}
                         to="/app/stats/support-performance-agents"
                     >
                         Agents
-                    </NavLink>
-                    <NavLink
+                    </NavbarLink>
+                    <NavbarLink
                         {...COMMON_NAV_LINK_PROPS}
                         to="/app/stats/satisfaction"
                     >
                         Satisfaction
-                    </NavLink>
-                    <NavLink {...COMMON_NAV_LINK_PROPS} to="/app/stats/revenue">
+                    </NavbarLink>
+                    <NavbarLink
+                        {...COMMON_NAV_LINK_PROPS}
+                        to="/app/stats/revenue"
+                    >
                         Revenue
-                    </NavLink>
+                    </NavbarLink>
                 </div>
             </NavbarBlock>
             <NavbarBlock icon="bolt" title="Automations">
                 <div className={cssNavbar.menu}>
                     {
                         // TMP: This link will come back when the page will be reworked
-                        // <NavLink
+                        // <NavbarLink
                         //     {...COMMON_NAV_LINK_PROPS}
                         //     to="/app/stats/automation"
                         // >
                         //     Overview
-                        // </NavLink>
+                        // </NavbarLink>
                     }
-                    <NavLink {...COMMON_NAV_LINK_PROPS} to="/app/stats/macros">
-                        Macros
-                    </NavLink>
-                    <NavLink {...COMMON_NAV_LINK_PROPS} to="/app/stats/intents">
-                        Intents
-                    </NavLink>
-                    <NavLink
+                    <NavbarLink
                         {...COMMON_NAV_LINK_PROPS}
-                        to="/app/stats/self-service"
+                        to="/app/stats/macros"
                     >
-                        Self-service
-                    </NavLink>
+                        Macros
+                    </NavbarLink>
+                    <NavbarLink
+                        {...COMMON_NAV_LINK_PROPS}
+                        to="/app/stats/intents"
+                    >
+                        Intents
+                    </NavbarLink>
+                    {isAutomationSettingsRevampEnabled ? (
+                        !hasAutomationAddOn ? (
+                            <>
+                                <AutomationNavbarAddOnPaywallNavbarLink
+                                    to="/app/stats/automation-add-on"
+                                    exact
+                                    onSubscribeToAutomationAddOnClick={() => {
+                                        setIsAutomationSubscriptionModal(true)
+                                    }}
+                                >
+                                    Automation Add-on
+                                </AutomationNavbarAddOnPaywallNavbarLink>
+                                <AutomationSubscriptionModal
+                                    confirmLabel="Subscribe"
+                                    isOpen={isAutomationSubscriptionModalOpen}
+                                    onClose={() =>
+                                        setIsAutomationSubscriptionModal(false)
+                                    }
+                                />
+                            </>
+                        ) : (
+                            <NavbarLink
+                                {...COMMON_NAV_LINK_PROPS}
+                                to="/app/stats/automation-add-on"
+                            >
+                                Automation Add-on
+                            </NavbarLink>
+                        )
+                    ) : (
+                        <NavbarLink
+                            {...COMMON_NAV_LINK_PROPS}
+                            to="/app/stats/self-service"
+                        >
+                            Self-service
+                        </NavbarLink>
+                    )}
                 </div>
             </NavbarBlock>
         </>

@@ -7,7 +7,7 @@ import NavbarSectionBlock from 'pages/common/components/navbar/NavbarSectionBloc
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 
-import AutomationNavbarAddOnPaywallViewItem from './AutomationNavbarAddOnPaywallViewItem'
+import AutomationNavbarAddOnPaywallNavbarLink from './AutomationNavbarAddOnPaywallNavbarLink'
 
 type Props = {
     shopType: ShopType
@@ -45,14 +45,15 @@ const AutomationNavbarAddOnSectionBlock = ({
                     Quick responses
                 </NavbarLink>
             ) : (
-                <AutomationNavbarAddOnPaywallViewItem
+                <AutomationNavbarAddOnPaywallNavbarLink
+                    to="/app/automation/quick-responses"
                     onSubscribeToAutomationAddOnClick={
                         onSubscribeToAutomationAddOnClick
                     }
                     isNested
                 >
                     Quick responses
-                </AutomationNavbarAddOnPaywallViewItem>
+                </AutomationNavbarAddOnPaywallNavbarLink>
             )}
             {shopType === 'shopify' && (
                 <NavbarLink

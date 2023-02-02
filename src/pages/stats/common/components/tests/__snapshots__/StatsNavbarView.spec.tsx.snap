@@ -1,121 +1,350 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`StatsNavbarView should render 1`] = `
-<Fragment>
-  <NavbarBlock
-    icon="adjust"
-    title="Live"
-  >
-    <div
-      className="menu"
-    >
-      <NavLink
-        activeClassName="active"
-        className="link link"
-        exact={true}
-        to="/app/stats/live-overview"
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="category"
       >
-        Overview
-      </NavLink>
-      <NavLink
-        activeClassName="active"
-        className="link link"
-        exact={true}
-        to="/app/stats/live-agents"
+        <h4
+          class="category-title"
+        >
+          <div
+            class="title"
+          >
+            <i
+              class="material-icons icon"
+            >
+              adjust
+            </i>
+            Live
+          </div>
+        </h4>
+        <div
+          class="menu"
+        >
+          <a
+            class="link link"
+            data-active-class-name="active"
+            href="/app/stats/live-overview"
+          >
+            Overview
+          </a>
+          <a
+            class="link link"
+            data-active-class-name="active"
+            href="/app/stats/live-agents"
+          >
+            Agents
+          </a>
+        </div>
+      </div>
+      <div
+        class="category"
       >
-        Agents
-      </NavLink>
+        <h4
+          class="category-title"
+        >
+          <div
+            class="title"
+          >
+            <i
+              class="material-icons icon"
+            >
+              insights
+            </i>
+            Support Performance
+          </div>
+        </h4>
+        <div
+          class="menu"
+        >
+          <a
+            class="link link"
+            data-active-class-name="active"
+            href="/app/stats/support-performance-overview"
+          >
+            Overview
+          </a>
+          <a
+            class="link link"
+            data-active-class-name="active"
+            href="/app/stats/tags"
+          >
+            Tags
+          </a>
+          <a
+            class="link link"
+            data-active-class-name="active"
+            href="/app/stats/channels"
+          >
+            Channels
+          </a>
+          <a
+            class="link link"
+            data-active-class-name="active"
+            href="/app/stats/support-performance-agents"
+          >
+            Agents
+          </a>
+          <a
+            class="link link"
+            data-active-class-name="active"
+            href="/app/stats/satisfaction"
+          >
+            Satisfaction
+          </a>
+          <a
+            class="link link"
+            data-active-class-name="active"
+            href="/app/stats/revenue"
+          >
+            Revenue
+          </a>
+        </div>
+      </div>
+      <div
+        class="category"
+      >
+        <h4
+          class="category-title"
+        >
+          <div
+            class="title"
+          >
+            <i
+              class="material-icons icon"
+            >
+              bolt
+            </i>
+            Automations
+          </div>
+        </h4>
+        <div
+          class="menu"
+        >
+          <a
+            class="link link"
+            data-active-class-name="active"
+            href="/app/stats/macros"
+          >
+            Macros
+          </a>
+          <a
+            class="link link"
+            data-active-class-name="active"
+            href="/app/stats/intents"
+          >
+            Intents
+          </a>
+          <a
+            class="link link"
+            data-active-class-name="active"
+            href="/app/stats/self-service"
+          >
+            Self-service
+          </a>
+        </div>
+      </div>
     </div>
-  </NavbarBlock>
-  <NavbarBlock
-    icon="insights"
-    title="Support Performance"
-  >
+  </body>,
+  "container": <div>
     <div
-      className="menu"
+      class="category"
     >
-      <NavLink
-        activeClassName="active"
-        className="link link"
-        exact={true}
-        to="/app/stats/support-performance-overview"
+      <h4
+        class="category-title"
       >
-        Overview
-      </NavLink>
-      <NavLink
-        activeClassName="active"
-        className="link link"
-        exact={true}
-        to="/app/stats/tags"
+        <div
+          class="title"
+        >
+          <i
+            class="material-icons icon"
+          >
+            adjust
+          </i>
+          Live
+        </div>
+      </h4>
+      <div
+        class="menu"
       >
-        Tags
-      </NavLink>
-      <NavLink
-        activeClassName="active"
-        className="link link"
-        exact={true}
-        to="/app/stats/channels"
-      >
-        Channels
-      </NavLink>
-      <NavLink
-        activeClassName="active"
-        className="link link"
-        exact={true}
-        to="/app/stats/support-performance-agents"
-      >
-        Agents
-      </NavLink>
-      <NavLink
-        activeClassName="active"
-        className="link link"
-        exact={true}
-        to="/app/stats/satisfaction"
-      >
-        Satisfaction
-      </NavLink>
-      <NavLink
-        activeClassName="active"
-        className="link link"
-        exact={true}
-        to="/app/stats/revenue"
-      >
-        Revenue
-      </NavLink>
+        <a
+          class="link link"
+          data-active-class-name="active"
+          href="/app/stats/live-overview"
+        >
+          Overview
+        </a>
+        <a
+          class="link link"
+          data-active-class-name="active"
+          href="/app/stats/live-agents"
+        >
+          Agents
+        </a>
+      </div>
     </div>
-  </NavbarBlock>
-  <NavbarBlock
-    icon="bolt"
-    title="Automations"
-  >
     <div
-      className="menu"
+      class="category"
     >
-      <NavLink
-        activeClassName="active"
-        className="link link"
-        exact={true}
-        to="/app/stats/macros"
+      <h4
+        class="category-title"
       >
-        Macros
-      </NavLink>
-      <NavLink
-        activeClassName="active"
-        className="link link"
-        exact={true}
-        to="/app/stats/intents"
+        <div
+          class="title"
+        >
+          <i
+            class="material-icons icon"
+          >
+            insights
+          </i>
+          Support Performance
+        </div>
+      </h4>
+      <div
+        class="menu"
       >
-        Intents
-      </NavLink>
-      <NavLink
-        activeClassName="active"
-        className="link link"
-        exact={true}
-        to="/app/stats/self-service"
-      >
-        Self-service
-      </NavLink>
+        <a
+          class="link link"
+          data-active-class-name="active"
+          href="/app/stats/support-performance-overview"
+        >
+          Overview
+        </a>
+        <a
+          class="link link"
+          data-active-class-name="active"
+          href="/app/stats/tags"
+        >
+          Tags
+        </a>
+        <a
+          class="link link"
+          data-active-class-name="active"
+          href="/app/stats/channels"
+        >
+          Channels
+        </a>
+        <a
+          class="link link"
+          data-active-class-name="active"
+          href="/app/stats/support-performance-agents"
+        >
+          Agents
+        </a>
+        <a
+          class="link link"
+          data-active-class-name="active"
+          href="/app/stats/satisfaction"
+        >
+          Satisfaction
+        </a>
+        <a
+          class="link link"
+          data-active-class-name="active"
+          href="/app/stats/revenue"
+        >
+          Revenue
+        </a>
+      </div>
     </div>
-  </NavbarBlock>
-</Fragment>
+    <div
+      class="category"
+    >
+      <h4
+        class="category-title"
+      >
+        <div
+          class="title"
+        >
+          <i
+            class="material-icons icon"
+          >
+            bolt
+          </i>
+          Automations
+        </div>
+      </h4>
+      <div
+        class="menu"
+      >
+        <a
+          class="link link"
+          data-active-class-name="active"
+          href="/app/stats/macros"
+        >
+          Macros
+        </a>
+        <a
+          class="link link"
+          data-active-class-name="active"
+          href="/app/stats/intents"
+        >
+          Intents
+        </a>
+        <a
+          class="link link"
+          data-active-class-name="active"
+          href="/app/stats/self-service"
+        >
+          Self-service
+        </a>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
 `;
