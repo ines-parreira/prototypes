@@ -105,6 +105,7 @@ const SelfServicePreview = ({showHelpCenterPreview = false}: Props) => {
                     renderFooter={false}
                     renderPoweredBy={false}
                     position={chatIntegration.decoration?.position}
+                    showBackground={false}
                     hideButton
                 >
                     <div className={css.content}>

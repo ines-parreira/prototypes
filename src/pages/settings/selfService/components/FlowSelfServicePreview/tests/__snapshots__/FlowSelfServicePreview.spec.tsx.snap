@@ -23,7 +23,7 @@ exports[`<ChatIntegrationPreview/> render() displays landing page 1`] = `
       </button>
     </div>
     <div
-      class="preview previewWithBackground"
+      class="preview"
     >
       <div
         class="dialog"
@@ -206,7 +206,7 @@ exports[`<ChatIntegrationPreview/> render() displays landing page with the merge
       </button>
     </div>
     <div
-      class="preview previewWithBackground"
+      class="preview"
     >
       <div
         class="dialog"
@@ -354,7 +354,7 @@ exports[`<ChatIntegrationPreview/> render() displays thread page with answer 1`]
       </button>
     </div>
     <div
-      class="preview previewWithBackground"
+      class="preview"
     >
       <div
         class="dialog"
@@ -538,7 +538,7 @@ exports[`<ChatIntegrationPreview/> render() displays thread page with answer wit
       </button>
     </div>
     <div
-      class="preview previewWithBackground"
+      class="preview"
     >
       <div
         class="dialog"
@@ -709,7 +709,7 @@ exports[`<ChatIntegrationPreview/> render() displays thread page without answer 
       </button>
     </div>
     <div
-      class="preview previewWithBackground"
+      class="preview"
     >
       <div
         class="dialog"

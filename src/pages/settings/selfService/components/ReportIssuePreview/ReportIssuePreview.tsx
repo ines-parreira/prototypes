@@ -118,6 +118,7 @@ const ReportIssuePreview = ({
                 isOnline
                 language={chatIntegration.meta.language}
                 renderFooter={false}
+                showBackground={false}
             >
                 {mode === 'alloptions' ? (
                     <ReportIssuePreviewAllOptions

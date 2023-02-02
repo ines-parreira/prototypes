@@ -135,6 +135,7 @@ const FlowSelfServicePreview = ({
                 }
                 renderPoweredBy={!isLandingPage}
                 position={chatIntegration.decoration?.position}
+                showBackground={false}
                 hideButton
             >
                 {isLandingPage ? (

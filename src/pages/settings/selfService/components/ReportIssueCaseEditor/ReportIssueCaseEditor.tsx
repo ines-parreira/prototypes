@@ -525,6 +525,7 @@ const ReportIssueCaseEditor: ComponentType = () => {
                                 isOnline
                                 language={chatIntegration.meta.language}
                                 renderFooter={false}
+                                showBackground={false}
                             >
                                 <ReportIssuePreviewAllOptions
                                     reasonOptions={previewReasons}

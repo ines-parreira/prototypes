@@ -389,7 +389,7 @@ exports[`<OrderManagementFlowsPreferences/> ToggleInput.onChange() should deacti
                 </button>
               </div>
               <div
-                class="preview previewWithBackground"
+                class="preview"
               >
                 <div
                   class="dialog"
@@ -904,7 +904,7 @@ exports[`<OrderManagementFlowsPreferences/> render() should render the 4 policy 
                 </button>
               </div>
               <div
-                class="preview previewWithBackground"
+                class="preview"
               >
                 <div
                   class="dialog"
