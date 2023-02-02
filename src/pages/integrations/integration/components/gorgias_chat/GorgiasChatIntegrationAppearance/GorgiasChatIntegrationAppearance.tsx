@@ -170,6 +170,8 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         useFlags()[FeatureFlagKey.ChatEnableTranslationEdit]
     const shouldShowLauncherCustomization =
         useFlags()[FeatureFlagKey.ChatLauncherCustomization]
+    const isAutomationSettingsRevampEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
 
     const [storeName, setStoreName] = useState(
         integration.getIn(['meta', 'shop_name'], null)
@@ -600,10 +602,13 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                             }}
                                         >
                                             We currently only support automatic
-                                            installation and self-service
-                                            features with Shopify stores. Use
-                                            the custom live chat option for any
-                                            other ecommerce platform.
+                                            installation and{' '}
+                                            {isAutomationSettingsRevampEnabled
+                                                ? 'order management flows'
+                                                : 'self-service features'}{' '}
+                                            with Shopify stores. Use the custom
+                                            live chat option for any other
+                                            ecommerce platform.
                                             <a
                                                 target="_blank"
                                                 rel="noopener noreferrer"

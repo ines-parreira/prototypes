@@ -3,6 +3,9 @@ import {Link} from 'react-router-dom'
 import {Card, CardBody, CardHeader} from 'reactstrap'
 import {fromJS, Map, List} from 'immutable'
 import moment from 'moment'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import css from './GorgiasChatIntegrationOneClickInstallationCard.less'
 import {OneClickInstallationCardStoreRow} from './OneClickInstallationCardStoreRow'
@@ -11,15 +14,17 @@ type Props = {
     integration: Map<any, any>
     updateOrCreateIntegration: (integration: Map<any, any>) => Promise<void>
     shopifyIntegrations: List<Map<any, any>>
-    hasAutomationAddOn: boolean
+    hasOrderManagement: boolean
 }
 
 export function GorgiasChatIntegrationOneClickInstallationCard({
     integration,
     updateOrCreateIntegration,
     shopifyIntegrations,
-    hasAutomationAddOn,
+    hasOrderManagement,
 }: Props) {
+    const isAutomationSettingsRevampEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
     const [loading, setLoading] = useState<{
         [key: string]: {installation?: boolean; disconnection?: boolean} | null
     }>({})
@@ -158,13 +163,17 @@ export function GorgiasChatIntegrationOneClickInstallationCard({
                 <p>
                     Activate the customer chat widget on your Shopify store in
                     one click.
-                    {hasAutomationAddOn && (
+                    {hasOrderManagement && (
                         <span>
                             {' '}
                             Note that this will automatically enable{' '}
-                            <Link to={`/app/settings/self-service`}>
-                                Self-Service
-                            </Link>
+                            {isAutomationSettingsRevampEnabled ? (
+                                'order management flows'
+                            ) : (
+                                <Link to="/app/settings/self-service">
+                                    Self-Service
+                                </Link>
+                            )}
                             .
                         </span>
                     )}

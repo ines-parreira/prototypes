@@ -1,6 +1,7 @@
 import React from 'react'
 import {fromJS, Map} from 'immutable'
 import {render, fireEvent} from '@testing-library/react'
+import {mockFlags} from 'jest-launchdarkly-mock'
 
 import {
     GORGIAS_CHAT_INTEGRATION_TYPE,
@@ -13,6 +14,7 @@ describe('<GorgiasChatIntegrationConnectToStoreCard/>', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
+        mockFlags({})
     })
     it('should render the component correctly', () => {
         const chatIntegration: Map<any, any> = fromJS({
@@ -46,6 +48,7 @@ describe('<GorgiasChatIntegrationConnectToStoreCard/>', () => {
                         created_datetime: '2019-01-01 00:00:00',
                     },
                 ])}
+                hasOrderManagement
             />
         )
         expect(container).toMatchSnapshot()
@@ -83,6 +86,7 @@ describe('<GorgiasChatIntegrationConnectToStoreCard/>', () => {
                         created_datetime: '2019-01-01 00:00:00',
                     },
                 ])}
+                hasOrderManagement
             />
         )
 

@@ -3,10 +3,13 @@ import {Map, List, fromJS} from 'immutable'
 import classnames from 'classnames'
 import {Card, CardBody, Button} from 'reactstrap'
 import {Link} from 'react-router-dom'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
-import DEPRECATED_Modal from '../../../../../common/components/DEPRECATED_Modal'
+import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
+import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
+import {FeatureFlagKey} from 'config/featureFlags'
+
 import {StoreNameDropdown} from '../GorgiasChatIntegrationAppearance/StoreNameDropdown'
-import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../constants/integration'
 
 import css from './GorgiasChatIntegrationConnectToStoreCard.less'
 
@@ -15,6 +18,7 @@ type Props = {
     updateOrCreateIntegration: (integration: Map<any, any>) => Promise<void>
     shopifyIntegrations: List<Map<any, any>>
     gorgiasChatIntegrations: List<Map<any, any>>
+    hasOrderManagement: boolean
 }
 
 export const GorgiasChatIntegrationConnectToStoreCard = ({
@@ -22,7 +26,10 @@ export const GorgiasChatIntegrationConnectToStoreCard = ({
     updateOrCreateIntegration,
     shopifyIntegrations,
     gorgiasChatIntegrations,
+    hasOrderManagement,
 }: Props) => {
+    const isAutomationSettingsRevampEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
     const [isLoading, setIsLoading] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [selectedShopifyIntegration, setSelectedShopifyIntegration] =
@@ -64,10 +71,9 @@ export const GorgiasChatIntegrationConnectToStoreCard = ({
                     <div>
                         <h3>Connect to store</h3>
                         <p>
-                            By connecting your live chat to an online store, you
-                            can leverage all the store's information for
-                            automation such as self-service flows and help
-                            articles.
+                            {hasOrderManagement
+                                ? 'By connecting your live chat to an online store, you can leverage the store’s information for automation features including quick response flows, order management flows, and help center article recommendation.'
+                                : "By connecting your live chat to an online store, you can leverage all the store's information for automation such as self-service flows and help articles."}
                         </p>
                     </div>
                     <div className={css['connect-button-wrapper']}>
@@ -105,8 +111,21 @@ export const GorgiasChatIntegrationConnectToStoreCard = ({
             >
                 <p>
                     Activate the customer chat widget on your Shopify store in
-                    one click. Note that this will automatically enable{' '}
-                    <Link to={`/app/settings/self-service`}>Self-Service</Link>.
+                    one click.
+                    {hasOrderManagement && (
+                        <span>
+                            {' '}
+                            Note that this will automatically enable{' '}
+                            {isAutomationSettingsRevampEnabled ? (
+                                'order management flows'
+                            ) : (
+                                <Link to="/app/settings/self-service">
+                                    Self-Service
+                                </Link>
+                            )}
+                            .
+                        </span>
+                    )}
                 </p>
                 <StoreNameDropdown
                     value={selectedShopifyIntegration?.getIn([

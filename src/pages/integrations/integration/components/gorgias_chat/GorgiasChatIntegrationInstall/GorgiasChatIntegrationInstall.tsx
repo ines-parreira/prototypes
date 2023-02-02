@@ -5,7 +5,10 @@ import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Col, Container, Row} from 'reactstrap'
 import classnames from 'classnames'
 
-import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {
+    getHasAutomationAddOn,
+    getHasLegacyAutomationAddOnFeatures,
+} from 'state/billing/selectors'
 import {
     deleteIntegration,
     activateIntegration,
@@ -49,6 +52,8 @@ const mapStateToProps = (state: RootState) => {
     return {
         domain: state.currentAccount.get('domain'),
         hasAutomationAddOn: getHasAutomationAddOn(state),
+        hasLegacyAutomationAddOnFeatures:
+            getHasLegacyAutomationAddOnFeatures(state),
         getIntegrationsByTypes:
             integrationSelectors.makeGetIntegrationsByTypes(state),
         gorgiasChatExtraState:
@@ -68,6 +73,7 @@ function GorgiasChatIntegrationInstall({
     actions,
     gorgiasChatExtraState,
     hasAutomationAddOn,
+    hasLegacyAutomationAddOnFeatures,
     isUpdate,
     loading,
 }: OwnProps & ReturnType<typeof mapStateToProps>) {
@@ -109,6 +115,8 @@ function GorgiasChatIntegrationInstall({
     }
 
     const isLoading = loading.get('updateIntegration') === integration.get('id')
+    const hasOrderManagement =
+        hasAutomationAddOn || hasLegacyAutomationAddOnFeatures
 
     return (
         <div className="full-width">
@@ -141,7 +149,7 @@ function GorgiasChatIntegrationInstall({
                                     actions.updateOrCreateIntegration
                                 }
                                 shopifyIntegrations={shopifyIntegrations}
-                                hasAutomationAddOn={hasAutomationAddOn}
+                                hasOrderManagement={hasOrderManagement}
                             />
                         ) : (
                             <GorgiasChatIntegrationConnectToStoreCard
@@ -153,6 +161,7 @@ function GorgiasChatIntegrationInstall({
                                 gorgiasChatIntegrations={
                                     gorgiasChatIntegrations
                                 }
+                                hasOrderManagement={hasOrderManagement}
                             />
                         )}
 

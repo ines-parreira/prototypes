@@ -1,6 +1,7 @@
 import React from 'react'
 import {fireEvent, render, screen} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
+import {mockFlags} from 'jest-launchdarkly-mock'
 
 import {
     GORGIAS_CHAT_INTEGRATION_TYPE,
@@ -14,6 +15,7 @@ describe('<GorgiasChatIntegrationOneClickInstallationCard/>', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
+        mockFlags({})
     })
 
     it('should display one shopify integration and call updateOrCreateIntegration with uninstall arguments', () => {
@@ -41,7 +43,7 @@ describe('<GorgiasChatIntegrationOneClickInstallationCard/>', () => {
                         created_datetime: '2019-01-01 00:00:00',
                     },
                 ])}
-                hasAutomationAddOn={true}
+                hasOrderManagement={true}
             />
         )
         expect(container).toMatchSnapshot()
@@ -89,7 +91,7 @@ describe('<GorgiasChatIntegrationOneClickInstallationCard/>', () => {
                         created_datetime: '2019-01-01 00:00:00',
                     },
                 ])}
-                hasAutomationAddOn={true}
+                hasOrderManagement={true}
             />
         )
 
@@ -153,7 +155,7 @@ describe('<GorgiasChatIntegrationOneClickInstallationCard/>', () => {
                         created_datetime: '2019-01-01 00:00:00',
                     },
                 ])}
-                hasAutomationAddOn={true}
+                hasOrderManagement={true}
             />
         )
         expect(container).toMatchSnapshot()
@@ -203,7 +205,7 @@ describe('<GorgiasChatIntegrationOneClickInstallationCard/>', () => {
                 integration={chatIntegration}
                 updateOrCreateIntegration={mockedUpdateOrCreateIntegration}
                 shopifyIntegrations={defaultShopifyIntegration}
-                hasAutomationAddOn={false}
+                hasOrderManagement={false}
             />
         )
 
@@ -231,7 +233,7 @@ describe('<GorgiasChatIntegrationOneClickInstallationCard/>', () => {
                 integration={chatIntegration}
                 updateOrCreateIntegration={mockedUpdateOrCreateIntegration}
                 shopifyIntegrations={defaultShopifyIntegration}
-                hasAutomationAddOn={true}
+                hasOrderManagement={true}
             />
         )
 

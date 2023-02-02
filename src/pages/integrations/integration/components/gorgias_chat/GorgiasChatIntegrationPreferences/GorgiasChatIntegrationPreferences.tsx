@@ -6,10 +6,13 @@ import _omitBy from 'lodash/omitBy'
 import {fromJS, Map} from 'immutable'
 import {Breadcrumb, BreadcrumbItem, Button, Form, Label} from 'reactstrap'
 import classnames from 'classnames'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 import {IntegrationType} from 'models/integration/constants'
+import {getLDClient} from 'utils/launchDarkly'
+import {FeatureFlagKey} from 'config/featureFlags'
+
 import {
     CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
     CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
@@ -462,6 +465,9 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             },
         ]
 
+        const isAutomationSettingsRevampEnabled =
+            getLDClient().allFlags()[FeatureFlagKey.AutomationSettingsRevamp]
+
         return (
             <div className="full-width">
                 <PageHeader
@@ -557,8 +563,11 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                                 Let customers start live
                                                 conversations with agents. When
                                                 disabled, customers can interact
-                                                with self-service features and
-                                                fill the contact form.
+                                                with{' '}
+                                                {isAutomationSettingsRevampEnabled
+                                                    ? 'quick response flows and order management flows'
+                                                    : 'self-service features'}{' '}
+                                                and fill the contact form.
                                             </div>
                                         </div>
                                     </div>

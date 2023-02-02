@@ -51,6 +51,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
     getIntegrationsByTypes={[Function]}
     gorgiasChatExtraState={Immutable.Map {}}
     hasAutomationAddOn={false}
+    hasLegacyAutomationAddOnFeatures={false}
     integration={
       Immutable.Map {
         "id": 2,
@@ -301,7 +302,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                   className="pageColumn col-md-8"
                 >
                   <GorgiasChatIntegrationOneClickInstallationCard
-                    hasAutomationAddOn={false}
+                    hasOrderManagement={false}
                     integration={
                       Immutable.Map {
                         "id": 2,
@@ -2104,6 +2105,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
     getIntegrationsByTypes={[Function]}
     gorgiasChatExtraState={Immutable.Map {}}
     hasAutomationAddOn={false}
+    hasLegacyAutomationAddOnFeatures={false}
     integration={
       Immutable.Map {
         "id": 2,
@@ -2347,6 +2349,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                 >
                   <GorgiasChatIntegrationConnectToStoreCard
                     gorgiasChatIntegrations={Immutable.List []}
+                    hasOrderManagement={false}
                     integration={
                       Immutable.Map {
                         "id": 2,
@@ -3144,6 +3147,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
     getIntegrationsByTypes={[Function]}
     gorgiasChatExtraState={Immutable.Map {}}
     hasAutomationAddOn={false}
+    hasLegacyAutomationAddOnFeatures={false}
     integration={
       Immutable.Map {
         "id": 2,
@@ -3410,7 +3414,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                   className="pageColumn col-md-8"
                 >
                   <GorgiasChatIntegrationOneClickInstallationCard
-                    hasAutomationAddOn={false}
+                    hasOrderManagement={false}
                     integration={
                       Immutable.Map {
                         "id": 2,

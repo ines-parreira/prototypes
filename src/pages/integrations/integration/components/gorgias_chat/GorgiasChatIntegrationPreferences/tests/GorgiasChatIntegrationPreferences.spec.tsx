@@ -16,6 +16,7 @@ import {
 } from 'config/integrations/index'
 import {GORGIAS_CHAT_INTEGRATION_TYPE} from 'constants/integration'
 import {SPANISH_LANGUAGE} from 'constants/languages'
+import {getLDClient} from 'utils/launchDarkly'
 
 import {
     GorgiasChatIntegrationPreferencesComponent,
@@ -23,6 +24,11 @@ import {
     PREVIEW_EMAIL_CAPTURE,
     PREVIEW_LIVE_CHAT_AVAILABILITY,
 } from '../GorgiasChatIntegrationPreferences'
+
+jest.mock('utils/launchDarkly')
+
+const allFlagsMock = getLDClient().allFlags as jest.Mock
+allFlagsMock.mockReturnValue({})
 
 describe('<GorgiasChatIntegrationPreferences/>', () => {
     const minProps: ComponentProps<
