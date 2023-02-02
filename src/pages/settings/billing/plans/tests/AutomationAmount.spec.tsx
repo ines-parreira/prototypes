@@ -1,5 +1,6 @@
 import React, {ComponentProps} from 'react'
 import {render, fireEvent} from '@testing-library/react'
+import {mockFlags} from 'jest-launchdarkly-mock'
 
 import {starterHelpdeskPrice} from 'fixtures/productPrices'
 
@@ -12,6 +13,10 @@ describe('<AutomationAmount />', () => {
         isAutomationChecked: false,
         onAutomationChange: jest.fn(),
     }
+
+    beforeEach(() => {
+        mockFlags({})
+    })
 
     it('should render a string as amount', () => {
         const {container} = render(<AutomationAmount {...minProps} />)

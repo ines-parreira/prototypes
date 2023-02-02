@@ -117,7 +117,9 @@ exports[`<AutomationSubscriptionModal /> should render for customers already wit
                     .
                     <br />
                     <br />
-                    If you cancel now, you will lose access to self-service
+                    If you cancel now, you will lose access to
+                     
+                    self-service
                      
                     immediately.
                   </div>

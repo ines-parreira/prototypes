@@ -1,4 +1,5 @@
 import React, {ComponentProps, useEffect, useMemo, useState} from 'react'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {
     getAutomationPricesMap,
@@ -13,6 +14,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {HelpdeskPrice} from 'models/billing/types'
 import {getFormattedAmount, getFullPrice} from 'models/billing/utils'
 import {convertLegacyPlanNameToPublicPlanName} from 'utils/paywalls'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import BillingPlanCard from './BillingPlanCard'
 import ChangePlanModal from './ChangePlanModal'
@@ -56,6 +58,8 @@ export default function BillingComparisonPlanCard({
     onAutomationChange,
     ...billingCardProps
 }: Props) {
+    const isAutomationSettingsRevampEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
     const [isPriceChangeModalOpen, setIsPriceChangeModalOpen] = useState(
         defaultIsPriceChangeModalOpen
     )
@@ -160,7 +164,13 @@ export default function BillingComparisonPlanCard({
         </>
     ) : isSwitchingToAutomation ? (
         <>
-            With <b>self-service</b>, let your customers{' '}
+            With{' '}
+            <b>
+                {isAutomationSettingsRevampEnabled
+                    ? 'Automation Add-on'
+                    : 'self-service'}
+            </b>
+            , let your customers{' '}
             <b>track their orders, request a return or a cancel</b>, report an
             issue (according to your customized workflows) in a click, 24/7!
             Questions?{' '}

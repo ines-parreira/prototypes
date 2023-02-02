@@ -1,6 +1,7 @@
 import React from 'react'
 import moment from 'moment-timezone'
 import classnames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {getCurrentSubscription} from 'state/currentAccount/selectors'
 import {
@@ -13,12 +14,15 @@ import {
 } from 'state/billing/selectors'
 import SubscriptionAmount from 'pages/settings/common/SubscriptionAmount'
 import useAppSelector from 'hooks/useAppSelector'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import AutomationSubscriptionFeatures from './AutomationSubscriptionFeatures'
 
 import css from './AutomationSubscriptionDescription.less'
 
 const AutomationSubscriptionDescription = () => {
+    const isAutomationSettingsRevampEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
     const currentSubscription = useAppSelector(getCurrentSubscription)
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
     const currentSubscriptionStart = currentSubscription.get('start_datetime')
@@ -53,14 +57,23 @@ const AutomationSubscriptionDescription = () => {
                         .
                         <br />
                         <br />
-                        If you cancel now, you will lose access to self-service{' '}
-                        {isSelfServeLegacy && 'custom report issue flow '}
+                        If you cancel now, you will lose access to{' '}
+                        {isAutomationSettingsRevampEnabled
+                            ? 'Automation Add-on'
+                            : `self-service${
+                                  isSelfServeLegacy
+                                      ? ' custom report issue flow'
+                                      : ''
+                              }`}{' '}
                         immediately.
                     </div>
                 ) : isSelfServeLegacy ? (
                     <div>
-                        Unlock advanced features of the self-service, and track
-                        the performance!
+                        Unlock advanced features of the{' '}
+                        {isAutomationSettingsRevampEnabled
+                            ? 'Automation Add-on'
+                            : 'self-service'}
+                        , and track the performance!
                         <br />
                         Questions?{' '}
                         <a href={`mailto:${window.GORGIAS_SUPPORT_EMAIL}`}>

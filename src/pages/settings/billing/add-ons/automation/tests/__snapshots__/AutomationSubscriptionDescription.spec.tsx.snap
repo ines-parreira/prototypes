@@ -16,7 +16,9 @@ exports[`<AutomationSubscriptionDescription /> should render a discounted price 
       .
       <br />
       <br />
-      If you cancel now, you will lose access to self-service
+      If you cancel now, you will lose access to
+       
+      self-service
        
       immediately.
     </div>
@@ -60,7 +62,9 @@ exports[`<AutomationSubscriptionDescription /> should render for customers alrea
       .
       <br />
       <br />
-      If you cancel now, you will lose access to self-service
+      If you cancel now, you will lose access to
+       
+      self-service
        
       immediately.
     </div>
@@ -90,7 +94,10 @@ exports[`<AutomationSubscriptionDescription /> should render for customers with 
     class="flex"
   >
     <div>
-      Unlock advanced features of the self-service, and track the performance!
+      Unlock advanced features of the
+       
+      self-service
+      , and track the performance!
       <br />
       Questions?
        

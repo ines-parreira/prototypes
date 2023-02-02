@@ -5,6 +5,7 @@ import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import _cloneDeep from 'lodash/cloneDeep'
+import {mockFlags} from 'jest-launchdarkly-mock'
 
 import {HelpdeskPrice} from 'models/billing/types'
 import {RootState, StoreDispatch} from 'state/types'
@@ -43,6 +44,7 @@ describe('<BillingComparisonPlanCard />', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
+        mockFlags({})
     })
 
     const defaultState: Partial<RootState> = {

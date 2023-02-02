@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import {Card, CardBody, CardTitle} from 'reactstrap'
 import classnames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {
     getCurrentHelpdeskAutomationAddonAmount,
@@ -16,6 +17,7 @@ import Button from 'pages/common/components/button/Button'
 import useAppSelector from 'hooks/useAppSelector'
 import AutomationSubscriptionButton from 'pages/settings/billing/add-ons/automation/AutomationSubscriptionButton'
 import {convertLegacyPlanNameToPublicPlanName} from 'utils/paywalls'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import css from '../AddOnCard.less'
 
@@ -26,6 +28,8 @@ type Props = {
 }
 
 const AutomationCard = ({className}: Props) => {
+    const isAutomationSettingsRevampEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AutomationSettingsRevamp]
     const currency = useAppSelector(getCurrentHelpdeskCurrency)
     const interval = useAppSelector(getCurrentHelpdeskInterval)
     const addOnAmount = useAppSelector(getCurrentHelpdeskAutomationAddonAmount)
@@ -83,9 +87,18 @@ const AutomationCard = ({className}: Props) => {
                     ) : isSelfServeLegacy ? (
                         <p>
                             Leverage the power of the{' '}
-                            <b>advanced self-service features</b> like
-                            customized report issue flow and self-service
-                            integrated in help center!
+                            <b>
+                                advanced{' '}
+                                {isAutomationSettingsRevampEnabled
+                                    ? 'Automation Add-on'
+                                    : 'self-service'}{' '}
+                                features
+                            </b>{' '}
+                            like customized report issue flow and{' '}
+                            {isAutomationSettingsRevampEnabled
+                                ? 'order management flows'
+                                : 'self-service integrated'}{' '}
+                            in help center!
                             <br />
                             <b>Track</b> your customers’ requests and see{' '}
                             <b>how many you automate</b>.
