@@ -12,8 +12,6 @@ import {
     PopoverBody,
     Table,
 } from 'reactstrap'
-
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import {
     fetchIntegration,
     updateOrCreateIntegration,
@@ -35,6 +33,7 @@ import {ImportStatus} from './types'
 import {getImportCompletionDate} from './utils'
 import ImportStatusAlert from './ImportStatusAlert'
 import css from './ImportZendeskDetail.less'
+import EditCredentialsForm from './EditCredentialsForm'
 
 export const ImportZendeskDetail = (
     props: RouteComponentProps<{integrationId: string}> &
@@ -119,17 +118,7 @@ export const ImportZendeskDetail = (
                 </div>
                 <div className="row mb-4">
                     <div className="col-sm-12 col-md-7 col-lg-4">
-                        <div className="md-4">
-                            <DEPRECATED_InputField
-                                readOnly
-                                type="text"
-                                name="domain"
-                                value={integration.name}
-                                label="Account name"
-                                rightAddon=".zendesk.com"
-                                disabled
-                            />
-                        </div>
+                        <EditCredentialsForm integration={integration} />
                     </div>
                 </div>
                 <div className="row mb-5">

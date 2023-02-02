@@ -2,6 +2,8 @@ import React, {ComponentProps} from 'react'
 import {render, RenderResult, fireEvent} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
+import {Provider} from 'react-redux'
+import {mockStore} from 'utils/testing'
 import {ImportZendeskDetail} from '../ImportZendeskDetail'
 
 import {
@@ -14,7 +16,15 @@ import {failedImport, pendingImport, successImport} from './fixtures'
 const renderComponent = (
     props: ComponentProps<typeof ImportZendeskDetail>
 ): RenderResult => {
-    return render(<ImportZendeskDetail {...props} />)
+    return render(
+        <Provider
+            store={mockStore({
+                integrations: fromJS({}),
+            } as any)}
+        >
+            <ImportZendeskDetail {...props} />
+        </Provider>
+    )
 }
 
 describe('<ImportZendeskDetail/>', () => {
@@ -83,20 +93,26 @@ describe('<ImportZendeskDetail/>', () => {
                 })
             )
             rerender(
-                <ImportZendeskDetail
-                    {...{
-                        ...props,
-                        integrations: [
-                            {
-                                ...successImport,
-                                meta: {
-                                    ...successImport.meta,
-                                    continuous_import_enabled: true,
+                <Provider
+                    store={mockStore({
+                        integrations: fromJS({}),
+                    } as any)}
+                >
+                    <ImportZendeskDetail
+                        {...{
+                            ...props,
+                            integrations: [
+                                {
+                                    ...successImport,
+                                    meta: {
+                                        ...successImport.meta,
+                                        continuous_import_enabled: true,
+                                    },
                                 },
-                            },
-                        ],
-                    }}
-                />
+                            ],
+                        }}
+                    />
+                </Provider>
             )
             expect(getByText('Pause')).toBeDefined()
         })

@@ -1,5 +1,6 @@
 // g/integrations/zendesk/schemas.py
 
+import {ImportStatus} from 'pages/settings/importData/zendesk/types'
 import {createTypeGuard} from '../../../utils'
 
 import {IntegrationType} from '../constants'
@@ -29,7 +30,7 @@ export type ZendeskIntegrationMeta = {
     account_stats: {
         tickets_count?: number
     }
-    status?: string
+    status?: ImportStatus
     error?: string
     display_import_stats?: string
     continuous_import_enabled?: boolean

@@ -72,16 +72,16 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
         <div
           class="col-sm-12 col-md-7 col-lg-4"
         >
-          <div
-            class="md-4"
+          <form
+            class=""
           >
             <div
-              class="InputField form-group"
+              class="InputField mb-3 form-group"
               color=""
             >
               <label
                 class="control-label"
-                for="id-domain"
+                for="id-integration"
               >
                 Account name
               </label>
@@ -91,7 +91,7 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
                 <input
                   class="field form-control"
                   disabled=""
-                  id="id-domain"
+                  id="id-integration"
                   readonly=""
                   type="text"
                   value="gorgias-au"
@@ -107,7 +107,7 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
                 </span>
               </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
       <div
@@ -296,16 +296,16 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
         <div
           class="col-sm-12 col-md-7 col-lg-4"
         >
-          <div
-            class="md-4"
+          <form
+            class=""
           >
             <div
-              class="InputField form-group"
+              class="InputField mb-3 form-group"
               color=""
             >
               <label
                 class="control-label"
-                for="id-domain"
+                for="id-integration"
               >
                 Account name
               </label>
@@ -315,7 +315,7 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
                 <input
                   class="field form-control"
                   disabled=""
-                  id="id-domain"
+                  id="id-integration"
                   readonly=""
                   type="text"
                   value="gorgias-eu"
@@ -331,7 +331,66 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
                 </span>
               </div>
             </div>
-          </div>
+            <div
+              class="inputField mb-3"
+            >
+              <label
+                class="label label"
+                for="input-text-1"
+              >
+                Login email
+              </label>
+              <div
+                class="wrapper"
+              >
+                <input
+                  class="input"
+                  id="input-text-1"
+                  name="email"
+                  placeholder="•••••••••••••••"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              class="inputField mb-4"
+            >
+              <label
+                class="label label"
+                for="input-text-3"
+              >
+                <span>
+                  API Key
+                   
+                  <i
+                    class="material-icons"
+                    id="api-key-info"
+                  >
+                    info_outline
+                  </i>
+                </span>
+              </label>
+              <div
+                class="wrapper"
+              >
+                <input
+                  class="input"
+                  id="input-text-3"
+                  name="apiKey"
+                  placeholder="•••••••••••••••••••••••••••••••"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <button
+              class="wrapper mb-4 fill primary medium"
+              type="submit"
+            >
+              Restart import
+            </button>
+          </form>
         </div>
       </div>
       <div
@@ -503,16 +562,16 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
         <div
           class="col-sm-12 col-md-7 col-lg-4"
         >
-          <div
-            class="md-4"
+          <form
+            class=""
           >
             <div
-              class="InputField form-group"
+              class="InputField mb-3 form-group"
               color=""
             >
               <label
                 class="control-label"
-                for="id-domain"
+                for="id-integration"
               >
                 Account name
               </label>
@@ -522,7 +581,7 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
                 <input
                   class="field form-control"
                   disabled=""
-                  id="id-domain"
+                  id="id-integration"
                   readonly=""
                   type="text"
                   value="gorgias-us"
@@ -538,7 +597,7 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
                 </span>
               </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
       <div
