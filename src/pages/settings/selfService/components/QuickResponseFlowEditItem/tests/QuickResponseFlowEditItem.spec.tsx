@@ -155,7 +155,7 @@ describe('<QuickResponseFlowEditItem />', () => {
                 {
                     deactivated_datetime: null,
                     response_message_content: {
-                        html: '<div><br></div>',
+                        html: '',
                         text: '',
                         attachments: List(),
                     },
@@ -247,7 +247,7 @@ describe('<QuickResponseFlowEditItem />', () => {
                     title: 'title',
                     id: 'some-id',
                     response_message_content: {
-                        html: '<div><br></div>',
+                        html: '',
                         text: '',
                         attachments: List(),
                     },

@@ -44,8 +44,8 @@ describe('<QuickResponsesView />', () => {
         deactivated_datetime: null,
         title: 'How do I choose the right size?',
         response_message_content: {
-            html: '',
-            text: '',
+            html: '<div>text</div>',
+            text: 'text',
             attachments: fromJS([]),
         },
     }
@@ -198,7 +198,7 @@ describe('<QuickResponsesView />', () => {
             deactivated_datetime: null,
             title: 'What is your shipping policy?',
             response_message_content: {
-                html: '<div><br></div>',
+                html: '',
                 text: '',
                 attachments: fromJS([]),
             },
@@ -291,7 +291,12 @@ describe('<QuickResponsesView />', () => {
             expect.objectContaining({
                 quick_response_policies: [
                     expect.objectContaining({
-                        ...quickResponse1,
+                        title: quickResponse1.title,
+                        response_message_content: {
+                            html: '',
+                            text: '',
+                            attachments: fromJS([]),
+                        },
                         id: expect.any(String),
                         deactivated_datetime: expect.any(String),
                     }),

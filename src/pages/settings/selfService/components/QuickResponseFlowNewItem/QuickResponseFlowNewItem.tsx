@@ -3,6 +3,7 @@ import {produce} from 'immer'
 import {v4 as uuidv4} from 'uuid'
 import {List, Map} from 'immutable'
 
+import {trimHTML} from 'utils/html'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {useConfigurationData} from 'pages/settings/selfService/components/hooks'
 import history from 'pages/history'
@@ -49,8 +50,10 @@ const QuickResponseFlowNewItem = () => {
                     title: buttonLabel,
                     deactivated_datetime: deactivatedDatetime,
                     response_message_content: {
-                        html: responseText.message.get('html'),
-                        text: responseText.message.get('text'),
+                        html: trimHTML(responseText.message.get('html')),
+                        text: (
+                            responseText.message.get('text') as string
+                        ).trim(),
                         attachments,
                     },
                 })

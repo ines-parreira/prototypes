@@ -241,3 +241,15 @@ export function textToHTML(text: string): string {
     div.innerHTML = text.replace(/\n/g, '<br>')
     return div.outerHTML
 }
+
+export function trimHTML(html: string): string {
+    const {body} = parseHtml(html.trim())
+
+    while (body.lastChild?.textContent?.trim().length === 0) {
+        body.lastChild.remove()
+    }
+    while (body.firstChild?.textContent?.trim().length === 0) {
+        body.firstChild.remove()
+    }
+    return body.innerHTML
+}

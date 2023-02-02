@@ -7,6 +7,7 @@ import {
     sanitizeHtmlDefault,
     sanitizeHtmlForFacebookMessenger,
     textToHTML,
+    trimHTML,
     unescapeQuoteEntities,
 } from '../html'
 
@@ -344,6 +345,30 @@ describe('html util', () => {
             ['a\nb\n\n\nc\n', '<div>a<br>b<br><br><br>c<br></div>'],
         ])('should return text in html', (text, html) => {
             expect(textToHTML(text)).toBe(html)
+        })
+    })
+
+    describe('trimHTML', () => {
+        it.each([
+            ['<div><br></div>', ''],
+            ['<br><div></div><br>', ''],
+            ['<br><div>text text</div><br>', '<div>text text</div>'],
+            ['<div>text text</div><div></div>', '<div>text text</div>'],
+            ['   <div>text text</div>  ', '<div>text text</div>'],
+            [
+                '<div></br></div><div>text text</div><div><br></div>',
+                '<div>text text</div>',
+            ],
+            [
+                '<div><br></div><div>text </div><br><div>text text</div><div></div>',
+                '<div>text </div><br><div>text text</div>',
+            ],
+            [
+                '<div>text text</div><div><br></div><div>text</div><div><br></div><br><div><br></div><div><br></div>',
+                '<div>text text</div><div><br></div><div>text</div>',
+            ],
+        ])('should return text in html', (html, trimmedHTML) => {
+            expect(trimHTML(html)).toBe(trimmedHTML)
         })
     })
 })

@@ -5,6 +5,7 @@ import {List, Map} from 'immutable'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {useConfigurationData} from 'pages/settings/selfService/components/hooks'
 import history from 'pages/history'
+import {trimHTML} from 'utils/html'
 
 import QuickResponseFlowItem from '../QuickResponseFlowItem/QuickResponseFlowItem'
 import {useUpdateQuickReplyPolicies} from '../QuickResponseFlowItem/hooks'
@@ -49,8 +50,10 @@ const QuickResponseFlowEditItem = () => {
                       ...quickResponse,
                       title: buttonLabel,
                       response_message_content: {
-                          html: responseText.message.get('html'),
-                          text: responseText.message.get('text'),
+                          html: trimHTML(responseText.message.get('html')),
+                          text: (
+                              responseText.message.get('text') as string
+                          ).trim(),
                           attachments,
                       },
                   }
