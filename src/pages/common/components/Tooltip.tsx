@@ -22,7 +22,7 @@ export default function Tooltip({
     children,
     className,
     delay,
-    autohide,
+    autohide = true,
     disabled = false,
     trigger,
     ...rest
@@ -45,7 +45,9 @@ export default function Tooltip({
 
     return (
         <UncontrolledTooltip
-            className={classnames(css.tooltip, className)}
+            className={classnames(css.tooltip, className, {
+                [css.noPointerEvents]: autohide,
+            })}
             {...rest}
             autohide={autohide}
             delay={tooltipDelay}

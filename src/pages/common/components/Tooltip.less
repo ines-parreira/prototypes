@@ -1,6 +1,10 @@
 @import '~css/new/colors';
 
 :local .tooltip {
+    &.noPointerEvents {
+        pointer-events: none;
+    }
+
     :global .tooltip-inner {
         background-color: @TEMP_neutral5;
         box-shadow: 0px 2px 3px fade(black, 20%);

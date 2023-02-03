@@ -1016,7 +1016,8 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                                 target="datetime-tooltip-pjpsszd2icb"
                               >
                                 <UncontrolledTooltip
-                                  className="tooltip datetimeTooltip"
+                                  autohide={true}
+                                  className="tooltip datetimeTooltip noPointerEvents"
                                   delay={
                                     {
                                       "hide": 0,
@@ -1028,7 +1029,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                                 >
                                   <Tooltip
                                     autohide={true}
-                                    className="tooltip datetimeTooltip"
+                                    className="tooltip datetimeTooltip noPointerEvents"
                                     delay={
                                       {
                                         "hide": 0,
@@ -1044,7 +1045,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                                   >
                                     <TooltipPopoverWrapper
                                       autohide={true}
-                                      className="tooltip datetimeTooltip"
+                                      className="tooltip datetimeTooltip noPointerEvents"
                                       delay={
                                         {
                                           "hide": 0,
@@ -1166,7 +1167,8 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                                 target="datetime-tooltip-pjpsszd2icb"
                               >
                                 <UncontrolledTooltip
-                                  className="tooltip datetimeTooltip"
+                                  autohide={true}
+                                  className="tooltip datetimeTooltip noPointerEvents"
                                   delay={
                                     {
                                       "hide": 0,
@@ -1178,7 +1180,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                                 >
                                   <Tooltip
                                     autohide={true}
-                                    className="tooltip datetimeTooltip"
+                                    className="tooltip datetimeTooltip noPointerEvents"
                                     delay={
                                       {
                                         "hide": 0,
@@ -1194,7 +1196,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                                   >
                                     <TooltipPopoverWrapper
                                       autohide={true}
-                                      className="tooltip datetimeTooltip"
+                                      className="tooltip datetimeTooltip noPointerEvents"
                                       delay={
                                         {
                                           "hide": 0,
@@ -1316,7 +1318,8 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                                 target="datetime-tooltip-pjpsszd2icb"
                               >
                                 <UncontrolledTooltip
-                                  className="tooltip datetimeTooltip"
+                                  autohide={true}
+                                  className="tooltip datetimeTooltip noPointerEvents"
                                   delay={
                                     {
                                       "hide": 0,
@@ -1328,7 +1331,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                                 >
                                   <Tooltip
                                     autohide={true}
-                                    className="tooltip datetimeTooltip"
+                                    className="tooltip datetimeTooltip noPointerEvents"
                                     delay={
                                       {
                                         "hide": 0,
@@ -1344,7 +1347,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                                   >
                                     <TooltipPopoverWrapper
                                       autohide={true}
-                                      className="tooltip datetimeTooltip"
+                                      className="tooltip datetimeTooltip noPointerEvents"
                                       delay={
                                         {
                                           "hide": 0,
@@ -1825,7 +1828,8 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
                                 target="datetime-tooltip-pjpsszd2icb"
                               >
                                 <UncontrolledTooltip
-                                  className="tooltip datetimeTooltip"
+                                  autohide={true}
+                                  className="tooltip datetimeTooltip noPointerEvents"
                                   delay={
                                     {
                                       "hide": 0,
@@ -1837,7 +1841,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
                                 >
                                   <Tooltip
                                     autohide={true}
-                                    className="tooltip datetimeTooltip"
+                                    className="tooltip datetimeTooltip noPointerEvents"
                                     delay={
                                       {
                                         "hide": 0,
@@ -1853,7 +1857,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
                                   >
                                     <TooltipPopoverWrapper
                                       autohide={true}
-                                      className="tooltip datetimeTooltip"
+                                      className="tooltip datetimeTooltip noPointerEvents"
                                       delay={
                                         {
                                           "hide": 0,
@@ -2351,7 +2355,8 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                                 target="datetime-tooltip-pjpsszd2icb"
                               >
                                 <UncontrolledTooltip
-                                  className="tooltip datetimeTooltip"
+                                  autohide={true}
+                                  className="tooltip datetimeTooltip noPointerEvents"
                                   delay={
                                     {
                                       "hide": 0,
@@ -2363,7 +2368,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                                 >
                                   <Tooltip
                                     autohide={true}
-                                    className="tooltip datetimeTooltip"
+                                    className="tooltip datetimeTooltip noPointerEvents"
                                     delay={
                                       {
                                         "hide": 0,
@@ -2379,7 +2384,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                                   >
                                     <TooltipPopoverWrapper
                                       autohide={true}
-                                      className="tooltip datetimeTooltip"
+                                      className="tooltip datetimeTooltip noPointerEvents"
                                       delay={
                                         {
                                           "hide": 0,
@@ -2501,7 +2506,8 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                                 target="datetime-tooltip-pjpsszd2icb"
                               >
                                 <UncontrolledTooltip
-                                  className="tooltip datetimeTooltip"
+                                  autohide={true}
+                                  className="tooltip datetimeTooltip noPointerEvents"
                                   delay={
                                     {
                                       "hide": 0,
@@ -2513,7 +2519,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                                 >
                                   <Tooltip
                                     autohide={true}
-                                    className="tooltip datetimeTooltip"
+                                    className="tooltip datetimeTooltip noPointerEvents"
                                     delay={
                                       {
                                         "hide": 0,
@@ -2529,7 +2535,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                                   >
                                     <TooltipPopoverWrapper
                                       autohide={true}
-                                      className="tooltip datetimeTooltip"
+                                      className="tooltip datetimeTooltip noPointerEvents"
                                       delay={
                                         {
                                           "hide": 0,

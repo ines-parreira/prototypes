@@ -403,14 +403,15 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                     target="deactivated-integration-undefined"
                                   >
                                     <UncontrolledTooltip
-                                      className="tooltip"
+                                      autohide={true}
+                                      className="tooltip noPointerEvents"
                                       delay={0}
                                       placement="top"
                                       target="deactivated-integration-undefined"
                                     >
                                       <Tooltip
                                         autohide={true}
-                                        className="tooltip"
+                                        className="tooltip noPointerEvents"
                                         delay={0}
                                         isOpen={false}
                                         placement="top"
@@ -421,7 +422,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                       >
                                         <TooltipPopoverWrapper
                                           autohide={true}
-                                          className="tooltip"
+                                          className="tooltip noPointerEvents"
                                           delay={0}
                                           fade={true}
                                           hideArrow={false}
@@ -555,14 +556,15 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                     target="disconnect-button-undefined"
                                   >
                                     <UncontrolledTooltip
-                                      className="tooltip"
+                                      autohide={true}
+                                      className="tooltip noPointerEvents"
                                       delay={0}
                                       placement="top"
                                       target="disconnect-button-undefined"
                                     >
                                       <Tooltip
                                         autohide={true}
-                                        className="tooltip"
+                                        className="tooltip noPointerEvents"
                                         delay={0}
                                         isOpen={false}
                                         placement="top"
@@ -573,7 +575,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                       >
                                         <TooltipPopoverWrapper
                                           autohide={true}
-                                          className="tooltip"
+                                          className="tooltip noPointerEvents"
                                           delay={0}
                                           fade={true}
                                           hideArrow={false}
@@ -630,14 +632,15 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                     target="legacy-installation-2"
                                   >
                                     <UncontrolledTooltip
-                                      className="tooltip"
+                                      autohide={true}
+                                      className="tooltip noPointerEvents"
                                       delay={0}
                                       placement="top"
                                       target="legacy-installation-2"
                                     >
                                       <Tooltip
                                         autohide={true}
-                                        className="tooltip"
+                                        className="tooltip noPointerEvents"
                                         delay={0}
                                         isOpen={false}
                                         placement="top"
@@ -648,7 +651,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                       >
                                         <TooltipPopoverWrapper
                                           autohide={true}
-                                          className="tooltip"
+                                          className="tooltip noPointerEvents"
                                           delay={0}
                                           fade={true}
                                           hideArrow={false}
@@ -761,14 +764,15 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                     target="disconnect-button-2"
                                   >
                                     <UncontrolledTooltip
-                                      className="tooltip"
+                                      autohide={true}
+                                      className="tooltip noPointerEvents"
                                       delay={0}
                                       placement="top"
                                       target="disconnect-button-2"
                                     >
                                       <Tooltip
                                         autohide={true}
-                                        className="tooltip"
+                                        className="tooltip noPointerEvents"
                                         delay={0}
                                         isOpen={false}
                                         placement="top"
@@ -779,7 +783,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                       >
                                         <TooltipPopoverWrapper
                                           autohide={true}
-                                          className="tooltip"
+                                          className="tooltip noPointerEvents"
                                           delay={0}
                                           fade={true}
                                           hideArrow={false}
@@ -836,14 +840,15 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                     target="legacy-installation-3"
                                   >
                                     <UncontrolledTooltip
-                                      className="tooltip"
+                                      autohide={true}
+                                      className="tooltip noPointerEvents"
                                       delay={0}
                                       placement="top"
                                       target="legacy-installation-3"
                                     >
                                       <Tooltip
                                         autohide={true}
-                                        className="tooltip"
+                                        className="tooltip noPointerEvents"
                                         delay={0}
                                         isOpen={false}
                                         placement="top"
@@ -854,7 +859,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                       >
                                         <TooltipPopoverWrapper
                                           autohide={true}
-                                          className="tooltip"
+                                          className="tooltip noPointerEvents"
                                           delay={0}
                                           fade={true}
                                           hideArrow={false}
@@ -967,14 +972,15 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                     target="disconnect-button-3"
                                   >
                                     <UncontrolledTooltip
-                                      className="tooltip"
+                                      autohide={true}
+                                      className="tooltip noPointerEvents"
                                       delay={0}
                                       placement="top"
                                       target="disconnect-button-3"
                                     >
                                       <Tooltip
                                         autohide={true}
-                                        className="tooltip"
+                                        className="tooltip noPointerEvents"
                                         delay={0}
                                         isOpen={false}
                                         placement="top"
@@ -985,7 +991,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                       >
                                         <TooltipPopoverWrapper
                                           autohide={true}
-                                          className="tooltip"
+                                          className="tooltip noPointerEvents"
                                           delay={0}
                                           fade={true}
                                           hideArrow={false}
@@ -1042,14 +1048,15 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                     target="legacy-installation-1"
                                   >
                                     <UncontrolledTooltip
-                                      className="tooltip"
+                                      autohide={true}
+                                      className="tooltip noPointerEvents"
                                       delay={0}
                                       placement="top"
                                       target="legacy-installation-1"
                                     >
                                       <Tooltip
                                         autohide={true}
-                                        className="tooltip"
+                                        className="tooltip noPointerEvents"
                                         delay={0}
                                         isOpen={false}
                                         placement="top"
@@ -1060,7 +1067,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                       >
                                         <TooltipPopoverWrapper
                                           autohide={true}
-                                          className="tooltip"
+                                          className="tooltip noPointerEvents"
                                           delay={0}
                                           fade={true}
                                           hideArrow={false}
@@ -1173,14 +1180,15 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                     target="disconnect-button-1"
                                   >
                                     <UncontrolledTooltip
-                                      className="tooltip"
+                                      autohide={true}
+                                      className="tooltip noPointerEvents"
                                       delay={0}
                                       placement="top"
                                       target="disconnect-button-1"
                                     >
                                       <Tooltip
                                         autohide={true}
-                                        className="tooltip"
+                                        className="tooltip noPointerEvents"
                                         delay={0}
                                         isOpen={false}
                                         placement="top"
@@ -1191,7 +1199,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                       >
                                         <TooltipPopoverWrapper
                                           autohide={true}
-                                          className="tooltip"
+                                          className="tooltip noPointerEvents"
                                           delay={0}
                                           fade={true}
                                           hideArrow={false}
@@ -3619,14 +3627,15 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                     target="disconnect-button-3"
                                   >
                                     <UncontrolledTooltip
-                                      className="tooltip"
+                                      autohide={true}
+                                      className="tooltip noPointerEvents"
                                       delay={0}
                                       placement="top"
                                       target="disconnect-button-3"
                                     >
                                       <Tooltip
                                         autohide={true}
-                                        className="tooltip"
+                                        className="tooltip noPointerEvents"
                                         delay={0}
                                         isOpen={false}
                                         placement="top"
@@ -3637,7 +3646,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                       >
                                         <TooltipPopoverWrapper
                                           autohide={true}
-                                          className="tooltip"
+                                          className="tooltip noPointerEvents"
                                           delay={0}
                                           fade={true}
                                           hideArrow={false}

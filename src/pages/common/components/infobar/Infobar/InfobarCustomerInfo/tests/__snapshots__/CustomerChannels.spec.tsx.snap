@@ -44,7 +44,8 @@ exports[`CustomerChannels component should display all passed channels (includin
           target="copy-icon-0"
         >
           <UncontrolledTooltip
-            className="tooltip"
+            autohide={true}
+            className="tooltip noPointerEvents"
             delay={
               {
                 "hide": 0,
@@ -56,7 +57,7 @@ exports[`CustomerChannels component should display all passed channels (includin
           >
             <Tooltip
               autohide={true}
-              className="tooltip"
+              className="tooltip noPointerEvents"
               delay={
                 {
                   "hide": 0,
@@ -72,7 +73,7 @@ exports[`CustomerChannels component should display all passed channels (includin
             >
               <TooltipPopoverWrapper
                 autohide={true}
-                className="tooltip"
+                className="tooltip noPointerEvents"
                 delay={
                   {
                     "hide": 0,
@@ -136,7 +137,8 @@ exports[`CustomerChannels component should display all passed channels (includin
           target="copy-icon-1"
         >
           <UncontrolledTooltip
-            className="tooltip"
+            autohide={true}
+            className="tooltip noPointerEvents"
             delay={
               {
                 "hide": 0,
@@ -148,7 +150,7 @@ exports[`CustomerChannels component should display all passed channels (includin
           >
             <Tooltip
               autohide={true}
-              className="tooltip"
+              className="tooltip noPointerEvents"
               delay={
                 {
                   "hide": 0,
@@ -164,7 +166,7 @@ exports[`CustomerChannels component should display all passed channels (includin
             >
               <TooltipPopoverWrapper
                 autohide={true}
-                className="tooltip"
+                className="tooltip noPointerEvents"
                 delay={
                   {
                     "hide": 0,
@@ -270,7 +272,8 @@ exports[`CustomerChannels component should display all passed channels (includin
           target="copy-icon-0"
         >
           <UncontrolledTooltip
-            className="tooltip"
+            autohide={true}
+            className="tooltip noPointerEvents"
             delay={
               {
                 "hide": 0,
@@ -282,7 +285,7 @@ exports[`CustomerChannels component should display all passed channels (includin
           >
             <Tooltip
               autohide={true}
-              className="tooltip"
+              className="tooltip noPointerEvents"
               delay={
                 {
                   "hide": 0,
@@ -298,7 +301,7 @@ exports[`CustomerChannels component should display all passed channels (includin
             >
               <TooltipPopoverWrapper
                 autohide={true}
-                className="tooltip"
+                className="tooltip noPointerEvents"
                 delay={
                   {
                     "hide": 0,
@@ -362,7 +365,8 @@ exports[`CustomerChannels component should display all passed channels (includin
           target="copy-icon-1"
         >
           <UncontrolledTooltip
-            className="tooltip"
+            autohide={true}
+            className="tooltip noPointerEvents"
             delay={
               {
                 "hide": 0,
@@ -374,7 +378,7 @@ exports[`CustomerChannels component should display all passed channels (includin
           >
             <Tooltip
               autohide={true}
-              className="tooltip"
+              className="tooltip noPointerEvents"
               delay={
                 {
                   "hide": 0,
@@ -390,7 +394,7 @@ exports[`CustomerChannels component should display all passed channels (includin
             >
               <TooltipPopoverWrapper
                 autohide={true}
-                className="tooltip"
+                className="tooltip noPointerEvents"
                 delay={
                   {
                     "hide": 0,
@@ -454,7 +458,8 @@ exports[`CustomerChannels component should display all passed channels (includin
           target="copy-icon-2"
         >
           <UncontrolledTooltip
-            className="tooltip"
+            autohide={true}
+            className="tooltip noPointerEvents"
             delay={
               {
                 "hide": 0,
@@ -466,7 +471,7 @@ exports[`CustomerChannels component should display all passed channels (includin
           >
             <Tooltip
               autohide={true}
-              className="tooltip"
+              className="tooltip noPointerEvents"
               delay={
                 {
                   "hide": 0,
@@ -482,7 +487,7 @@ exports[`CustomerChannels component should display all passed channels (includin
             >
               <TooltipPopoverWrapper
                 autohide={true}
-                className="tooltip"
+                className="tooltip noPointerEvents"
                 delay={
                   {
                     "hide": 0,
@@ -553,7 +558,8 @@ exports[`CustomerChannels component should display all passed channels (includin
           target="copy-icon-3"
         >
           <UncontrolledTooltip
-            className="tooltip"
+            autohide={true}
+            className="tooltip noPointerEvents"
             delay={
               {
                 "hide": 0,
@@ -565,7 +571,7 @@ exports[`CustomerChannels component should display all passed channels (includin
           >
             <Tooltip
               autohide={true}
-              className="tooltip"
+              className="tooltip noPointerEvents"
               delay={
                 {
                   "hide": 0,
@@ -581,7 +587,7 @@ exports[`CustomerChannels component should display all passed channels (includin
             >
               <TooltipPopoverWrapper
                 autohide={true}
-                className="tooltip"
+                className="tooltip noPointerEvents"
                 delay={
                   {
                     "hide": 0,
@@ -652,7 +658,8 @@ exports[`CustomerChannels component should display all passed channels (includin
           target="copy-icon-4"
         >
           <UncontrolledTooltip
-            className="tooltip"
+            autohide={true}
+            className="tooltip noPointerEvents"
             delay={
               {
                 "hide": 0,
@@ -664,7 +671,7 @@ exports[`CustomerChannels component should display all passed channels (includin
           >
             <Tooltip
               autohide={true}
-              className="tooltip"
+              className="tooltip noPointerEvents"
               delay={
                 {
                   "hide": 0,
@@ -680,7 +687,7 @@ exports[`CustomerChannels component should display all passed channels (includin
             >
               <TooltipPopoverWrapper
                 autohide={true}
-                className="tooltip"
+                className="tooltip noPointerEvents"
                 delay={
                   {
                     "hide": 0,
@@ -751,7 +758,8 @@ exports[`CustomerChannels component should display all passed channels (includin
           target="copy-icon-5"
         >
           <UncontrolledTooltip
-            className="tooltip"
+            autohide={true}
+            className="tooltip noPointerEvents"
             delay={
               {
                 "hide": 0,
@@ -763,7 +771,7 @@ exports[`CustomerChannels component should display all passed channels (includin
           >
             <Tooltip
               autohide={true}
-              className="tooltip"
+              className="tooltip noPointerEvents"
               delay={
                 {
                   "hide": 0,
@@ -779,7 +787,7 @@ exports[`CustomerChannels component should display all passed channels (includin
             >
               <TooltipPopoverWrapper
                 autohide={true}
-                className="tooltip"
+                className="tooltip noPointerEvents"
                 delay={
                   {
                     "hide": 0,

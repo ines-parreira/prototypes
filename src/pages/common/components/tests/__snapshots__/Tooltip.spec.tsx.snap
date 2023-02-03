@@ -23,7 +23,7 @@ HTMLCollection [
   <div />,
   <div>
     <div
-      class="tooltip fade show"
+      class="tooltip noPointerEvents fade show"
     >
       <div
         class="tooltip show bs-tooltip-auto"
