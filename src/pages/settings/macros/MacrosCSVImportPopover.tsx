@@ -161,6 +161,10 @@ export const MacrosCSVImportPopover = ({isOpen, onClose}: Props) => {
                             existing macro.
                         </Alert>
                         <br />
+                        <Alert type={AlertType.Warning} icon>
+                            CSV file must be encoded in UTF-8.
+                        </Alert>
+                        <br />
                         <input
                             type="file"
                             accept=".csv"

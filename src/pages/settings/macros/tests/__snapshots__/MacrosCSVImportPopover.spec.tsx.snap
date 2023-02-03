@@ -121,6 +121,28 @@ exports[`<MacrosCSVImportPopover/> should render 2`] = `
                   </div>
                 </div>
                 <br />
+                <div
+                  class="alert warning"
+                >
+                  <div
+                    class="iconContainer"
+                  >
+                    <img
+                      alt="icon"
+                      src="test-file-stub"
+                    />
+                  </div>
+                  <div
+                    class="content"
+                  >
+                    <span
+                      class="label"
+                    >
+                      CSV file must be encoded in UTF-8.
+                    </span>
+                  </div>
+                </div>
+                <br />
                 <input
                   accept=".csv"
                   style="display: none;"
