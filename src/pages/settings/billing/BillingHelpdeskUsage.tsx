@@ -190,6 +190,9 @@ const BillingHelpdeskUsage = () => {
                 >
                     {hasSubscription && (
                         <div className={css['billable-tickets']}>
+                            {hasProgressBarHidden && (
+                                <div data-candu-id="candu-billing-usage"></div>
+                            )}
                             <div className={css['ticket-numbers']}>
                                 {usedTickets.toLocaleString()}/
                                 {freeTickets.toLocaleString()} tickets{' '}
@@ -206,9 +209,6 @@ const BillingHelpdeskUsage = () => {
                                 {periodStart} and {periodEnd}
                             </UncontrolledTooltip>
 
-                            {hasProgressBarHidden && (
-                                <div data-candu-id="candu-billing-usage"></div>
-                            )}
                             {!hasProgressBarHidden && (
                                 <Progress
                                     multi
