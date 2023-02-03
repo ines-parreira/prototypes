@@ -197,12 +197,16 @@ exports[`<GorgiasChatIntegrationList /> should display correcty the list of chat
             <div
               class="cellContent"
             >
-              <span
-                class="chatStatusDot chatStatusDotOnline"
-              />
-              <span>
-                Online
-              </span>
+              <div
+                id="chat-status-1"
+              >
+                <span
+                  class="chatStatusDot chatStatusDotOnline"
+                />
+                <span>
+                  Online
+                </span>
+              </div>
             </div>
           </td>
           <td

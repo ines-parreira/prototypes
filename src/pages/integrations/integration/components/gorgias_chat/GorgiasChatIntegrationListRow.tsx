@@ -26,6 +26,7 @@ export const GorgiasChatIntegrationStatusFeedbackMapping = {
     [GorgiasChatStatusEnum.OFFLINE]: 'Offline',
     [GorgiasChatStatusEnum.HIDDEN]: 'Hidden',
     [GorgiasChatStatusEnum.HIDDEN_OUTSIDE_BUSINESS_HOURS]: 'Hidden',
+    [GorgiasChatStatusEnum.NOT_INSTALLED]: 'Not Installed',
 }
 
 export type GorgiasChatIntegrationListRowProps = {
@@ -103,7 +104,7 @@ const GorgiasChatIntegrationListRow = ({
                     </span>
                 ) : (
                     chatStatus && (
-                        <>
+                        <div id={`chat-status-${integrationId}`}>
                             <span
                                 className={classnames(css.chatStatusDot, {
                                     [css.chatStatusDotOnline]:
@@ -112,6 +113,9 @@ const GorgiasChatIntegrationListRow = ({
                                     [css.chatStatusDotOffline]:
                                         chatStatus ===
                                         GorgiasChatStatusEnum.OFFLINE,
+                                    [css.chatStatusDotNotInstalled]:
+                                        chatStatus ===
+                                        GorgiasChatStatusEnum.NOT_INSTALLED,
                                 })}
                             />
                             <span>
@@ -155,7 +159,25 @@ const GorgiasChatIntegrationListRow = ({
                                     </Tooltip>
                                 </>
                             )}
-                        </>
+                            {chatStatus ===
+                                GorgiasChatStatusEnum.NOT_INSTALLED && (
+                                <>
+                                    <Tooltip
+                                        autohide={false}
+                                        delay={100}
+                                        placement="top"
+                                        style={{
+                                            textAlign: 'center',
+                                            width: 180,
+                                        }}
+                                        target={`chat-status-${integrationId}`}
+                                    >
+                                        Chat widget was not loaded on a webpage
+                                        in the last 72 hours.
+                                    </Tooltip>
+                                </>
+                            )}
+                        </div>
                     )
                 )}
             </BodyCell>

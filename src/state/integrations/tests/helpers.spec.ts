@@ -12,12 +12,28 @@ import {
     AccountSettingBusinessHours,
     AccountSettingType,
 } from 'state/currentAccount/types'
+import {getLDClient} from 'utils/launchDarkly'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {InstallationStatus} from 'rest_api/gorgias_chat_protected_api/types'
 import * as helpers from '../helpers'
+
+jest.mock('utils/launchDarkly')
+const allFlagsMock = getLDClient().allFlags as jest.Mock
+allFlagsMock.mockReturnValue({
+    [FeatureFlagKey.ChatNotIntalledStatus]: true,
+})
+
+const neutralInstallationStatus: InstallationStatus = {
+    applicationId: 1,
+    hasBeenRequestedOnce: true,
+    installed: true,
+}
 
 describe('integrations helpers', () => {
     describe('computeChatIntegrationStatus()', () => {
         it('should return `hidden` status when chat is deactivated', () => {
             const integrationState = fromJS({
+                created_datetime: '2022-11-21T11:07:43.481450+00:00',
                 deactivated_datetime: '2022-11-22T11:07:43.481450+00:00',
                 meta: {
                     preferences: {
@@ -29,7 +45,11 @@ describe('integrations helpers', () => {
             })
 
             expect(
-                helpers.computeChatIntegrationStatus(integrationState, true)
+                helpers.computeChatIntegrationStatus(
+                    integrationState,
+                    true,
+                    neutralInstallationStatus
+                )
             ).toEqual(GorgiasChatStatusEnum.HIDDEN)
         })
 
@@ -46,7 +66,11 @@ describe('integrations helpers', () => {
             })
 
             expect(
-                helpers.computeChatIntegrationStatus(integrationState, false)
+                helpers.computeChatIntegrationStatus(
+                    integrationState,
+                    false,
+                    neutralInstallationStatus
+                )
             ).toEqual(GorgiasChatStatusEnum.HIDDEN_OUTSIDE_BUSINESS_HOURS)
         })
 
@@ -63,7 +87,11 @@ describe('integrations helpers', () => {
             })
 
             expect(
-                helpers.computeChatIntegrationStatus(integrationState, false)
+                helpers.computeChatIntegrationStatus(
+                    integrationState,
+                    false,
+                    neutralInstallationStatus
+                )
             ).toEqual(GorgiasChatStatusEnum.OFFLINE)
         })
 
@@ -79,7 +107,11 @@ describe('integrations helpers', () => {
             })
 
             expect(
-                helpers.computeChatIntegrationStatus(integrationState, true)
+                helpers.computeChatIntegrationStatus(
+                    integrationState,
+                    true,
+                    neutralInstallationStatus
+                )
             ).toEqual(GorgiasChatStatusEnum.OFFLINE)
         })
 
@@ -96,7 +128,11 @@ describe('integrations helpers', () => {
             })
 
             expect(
-                helpers.computeChatIntegrationStatus(integrationState, true)
+                helpers.computeChatIntegrationStatus(
+                    integrationState,
+                    true,
+                    neutralInstallationStatus
+                )
             ).toEqual(GorgiasChatStatusEnum.ONLINE)
         })
 
@@ -113,8 +149,32 @@ describe('integrations helpers', () => {
             })
 
             expect(
-                helpers.computeChatIntegrationStatus(integrationState, true)
+                helpers.computeChatIntegrationStatus(
+                    integrationState,
+                    true,
+                    neutralInstallationStatus
+                )
             ).toEqual(null)
+        })
+
+        it('should return `not-installed` status when installationStatus report uninstalled', () => {
+            const integrationState = fromJS({
+                deactivated_datetime: null,
+                meta: {
+                    preferences: {
+                        hide_outside_business_hours: false,
+                        live_chat_availability:
+                            GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS,
+                    },
+                },
+            })
+
+            expect(
+                helpers.computeChatIntegrationStatus(integrationState, true, {
+                    ...neutralInstallationStatus,
+                    installed: false,
+                })
+            ).toEqual(GorgiasChatStatusEnum.NOT_INSTALLED)
         })
     })
 

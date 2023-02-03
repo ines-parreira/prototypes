@@ -11,6 +11,9 @@ import {
 import {IntegrationType} from 'models/integration/constants'
 import {GorgiasChatStatusEnum} from 'models/integration/types'
 import {AccountSettingBusinessHours} from 'state/currentAccount/types'
+import {InstallationStatus} from 'rest_api/gorgias_chat_protected_api/types'
+import {getLDClient} from 'utils/launchDarkly'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {getIconFromUrl} from '../../utils'
 
 export const getIntegrationsByTypes = (
@@ -100,10 +103,19 @@ export function isAccountDuringBusinessHours(
  */
 export const computeChatIntegrationStatus = (
     chat: Map<any, any>,
-    isBusinessHours: boolean
+    isBusinessHours: boolean,
+    installationStatus: InstallationStatus
 ): GorgiasChatStatusEnum | null => {
     if (!!chat.get('deactivated_datetime')) {
         return GorgiasChatStatusEnum.HIDDEN
+    }
+
+    const chatNotIntalledStatusFlag: boolean | undefined =
+        getLDClient().allFlags()[FeatureFlagKey.ChatNotIntalledStatus] as
+            | boolean
+            | undefined
+    if (chatNotIntalledStatusFlag && !installationStatus.installed) {
+        return GorgiasChatStatusEnum.NOT_INSTALLED
     }
 
     const isHideOutsideBusinessHoursEnabled = !!chat.getIn(

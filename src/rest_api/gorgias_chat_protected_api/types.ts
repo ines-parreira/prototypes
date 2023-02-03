@@ -7,3 +7,9 @@ export type Texts = {
     texts: Record<string, string>
     sspTexts: Record<string, string>
 }
+
+export type InstallationStatus = {
+    applicationId: number
+    hasBeenRequestedOnce: boolean
+    installed: boolean
+}

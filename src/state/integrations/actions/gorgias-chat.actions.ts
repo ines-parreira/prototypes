@@ -2,6 +2,7 @@ import {getGorgiasChatProtectedApiClient} from 'rest_api/gorgias_chat_protected_
 import {
     Texts,
     Translations,
+    InstallationStatus,
 } from '../../../rest_api/gorgias_chat_protected_api/types'
 
 export async function getTranslations(lang: string) {
@@ -35,4 +36,13 @@ export async function updateApplicationTexts(
             sspTexts: texts.sspTexts,
         }
     )
+}
+
+export async function getInstallationStatus(applicationId: string) {
+    const client = await getGorgiasChatProtectedApiClient()
+    const {data}: {data: InstallationStatus} =
+        await client.getInstallationStatus({
+            applicationId,
+        })
+    return data
 }

@@ -6,9 +6,11 @@ import {
     getTranslations,
     getApplicationTexts,
     updateApplicationTexts,
+    getInstallationStatus,
 } from '../actions/gorgias-chat.actions'
 import client from '../../../models/api/resources'
 import {
+    InstallationStatus,
     Texts,
     Translations,
 } from '../../../rest_api/gorgias_chat_protected_api/types'
@@ -205,6 +207,58 @@ describe('gorgias-chat.actions', () => {
             it('it should throw error', async () => {
                 await expect(
                     updateApplicationTexts(applicationId, data)
+                ).rejects.toThrow()
+            })
+        })
+    })
+
+    describe('"getInstallationStatus"', () => {
+        describe('when it works', () => {
+            const okApiResponse: InstallationStatus = {
+                applicationId: 1,
+                hasBeenRequestedOnce: false,
+                installed: false,
+            }
+            const applicationId = '1'
+            let mockServer: MockAdapter
+
+            beforeAll(() => {
+                mockServer = new MockAdapter(chatClient)
+
+                mockServer
+                    .onGet(`/applications/${applicationId}/installation-status`)
+                    .reply(200, okApiResponse)
+            })
+            afterAll(() => {
+                mockServer.reset()
+            })
+
+            it('it should return correct data', async () => {
+                const response = await getInstallationStatus(applicationId)
+                expect(JSON.stringify(response)).toBe(
+                    JSON.stringify(okApiResponse)
+                )
+            })
+        })
+
+        describe('when it fails', () => {
+            const applicationId = '1'
+            let mockServer: MockAdapter
+
+            beforeAll(() => {
+                mockServer = new MockAdapter(chatClient)
+
+                mockServer
+                    .onGet(`/applications/${applicationId}/installation-status`)
+                    .reply(500, {error: 'Error'})
+            })
+            afterAll(() => {
+                mockServer.reset()
+            })
+
+            it('it should throw error', async () => {
+                await expect(
+                    getInstallationStatus(applicationId)
                 ).rejects.toThrow()
             })
         })

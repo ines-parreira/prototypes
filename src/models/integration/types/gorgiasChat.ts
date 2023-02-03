@@ -96,6 +96,10 @@ export enum GorgiasChatStatusEnum {
     OFFLINE = 'offline',
     HIDDEN = 'hidden',
     HIDDEN_OUTSIDE_BUSINESS_HOURS = 'hidden-outside-business-hours',
+    /**
+     * Assumed not-installed because the chat bundle-loader was not requested recently.
+     */
+    NOT_INSTALLED = 'not-installed',
 }
 
 export enum GorgiasChatLauncherType {

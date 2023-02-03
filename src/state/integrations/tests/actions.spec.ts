@@ -5,6 +5,8 @@ import MockAdapter from 'axios-mock-adapter'
 
 import {getGorgiasChatApiClient} from 'rest_api/gorgias_chat_api/client'
 import type {Client} from 'rest_api/gorgias_chat_api/client.generated'
+import {InstallationStatus} from 'rest_api/gorgias_chat_protected_api/types'
+import * as constants from 'state/integrations/constants'
 import history from '../../../pages/history'
 import * as actions from '../actions'
 import * as helpers from '../helpers'
@@ -16,6 +18,8 @@ import {
     Integration,
     IntegrationType,
 } from '../../../models/integration/types'
+
+import * as gorgiasChatActions from '../actions/gorgias-chat.actions'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -30,6 +34,12 @@ jest.mock('../../../pages/history.ts')
 window.location = {
     pathname: '/integration/1',
 } as Location
+
+const neutralInstallationStatus: InstallationStatus = {
+    applicationId: 1,
+    hasBeenRequestedOnce: true,
+    installed: true,
+}
 
 describe('integrations actions', () => {
     let store: MockStoreEnhanced<unknown, StoreDispatch>
@@ -272,15 +282,19 @@ describe('integrations actions', () => {
 
         beforeEach(async () => {
             chatClient = await getGorgiasChatApiClient()
+            jest.resetAllMocks()
         })
 
-        it('should set status if computed', async () => {
+        it('should set status if computed and not call `getApplicationAgents`', async () => {
             const spyGetApplicationAgents = jest
                 .spyOn(chatClient, 'getApplicationAgents')
                 .mockResolvedValue(defaultApiResponse)
             const spyIsAccountDuringBusinessHours = jest
                 .spyOn(helpers, 'isAccountDuringBusinessHours')
                 .mockImplementation(() => true)
+            const spyGetInstallationStatusAction = jest
+                .spyOn(gorgiasChatActions, 'getInstallationStatus')
+                .mockReturnValue(Promise.resolve(neutralInstallationStatus))
             const spyComputeChatIntegrationStatus = jest
                 .spyOn(helpers, 'computeChatIntegrationStatus')
                 .mockImplementation(() => GorgiasChatStatusEnum.HIDDEN)
@@ -288,6 +302,7 @@ describe('integrations actions', () => {
             await store.dispatch(actions.fetchChatIntegrationStatus(1))
 
             expect(spyIsAccountDuringBusinessHours).toHaveBeenCalled()
+            expect(spyGetInstallationStatusAction).toHaveBeenCalled()
             expect(spyComputeChatIntegrationStatus).toHaveBeenCalled()
             expect(spyGetApplicationAgents).not.toHaveBeenCalled()
             expect(store.getActions()).toMatchSnapshot()
@@ -305,6 +320,9 @@ describe('integrations actions', () => {
             const spyIsAccountDuringBusinessHours = jest
                 .spyOn(helpers, 'isAccountDuringBusinessHours')
                 .mockImplementation(() => true)
+            const spyGetInstallationStatusAction = jest
+                .spyOn(gorgiasChatActions, 'getInstallationStatus')
+                .mockReturnValue(Promise.resolve(neutralInstallationStatus))
             const spyComputeChatIntegrationStatus = jest
                 .spyOn(helpers, 'computeChatIntegrationStatus')
                 .mockImplementation(() => null)
@@ -312,6 +330,7 @@ describe('integrations actions', () => {
             await store.dispatch(actions.fetchChatIntegrationStatus(1))
 
             expect(spyIsAccountDuringBusinessHours).toHaveBeenCalled()
+            expect(spyGetInstallationStatusAction).toHaveBeenCalled()
             expect(spyComputeChatIntegrationStatus).toHaveBeenCalled()
             expect(spyGetApplicationAgents).toHaveBeenCalled()
             expect(store.getActions()).toMatchSnapshot()
@@ -329,6 +348,9 @@ describe('integrations actions', () => {
             const spyIsAccountDuringBusinessHours = jest
                 .spyOn(helpers, 'isAccountDuringBusinessHours')
                 .mockImplementation(() => true)
+            const spyGetInstallationStatusAction = jest
+                .spyOn(gorgiasChatActions, 'getInstallationStatus')
+                .mockReturnValue(Promise.resolve(neutralInstallationStatus))
             const spyComputeChatIntegrationStatus = jest
                 .spyOn(helpers, 'computeChatIntegrationStatus')
                 .mockImplementation(() => null)
@@ -336,6 +358,7 @@ describe('integrations actions', () => {
             await store.dispatch(actions.fetchChatIntegrationStatus(1))
 
             expect(spyIsAccountDuringBusinessHours).toHaveBeenCalled()
+            expect(spyGetInstallationStatusAction).toHaveBeenCalled()
             expect(spyComputeChatIntegrationStatus).toHaveBeenCalled()
             expect(spyGetApplicationAgents).toHaveBeenCalled()
             expect(store.getActions()).toMatchSnapshot()
@@ -351,6 +374,9 @@ describe('integrations actions', () => {
             const spyIsAccountDuringBusinessHours = jest
                 .spyOn(helpers, 'isAccountDuringBusinessHours')
                 .mockImplementation(() => true)
+            const spyGetInstallationStatusAction = jest
+                .spyOn(gorgiasChatActions, 'getInstallationStatus')
+                .mockReturnValue(Promise.resolve(neutralInstallationStatus))
             const spyComputeChatIntegrationStatus = jest
                 .spyOn(helpers, 'computeChatIntegrationStatus')
                 .mockImplementation(() => null)
@@ -358,8 +384,19 @@ describe('integrations actions', () => {
             await store.dispatch(actions.fetchChatIntegrationStatus(1))
 
             expect(spyIsAccountDuringBusinessHours).toHaveBeenCalled()
+            expect(spyGetInstallationStatusAction).toHaveBeenCalled()
             expect(spyComputeChatIntegrationStatus).toHaveBeenCalled()
             expect(spyGetApplicationAgents).toHaveBeenCalled()
+            expect(store.getActions()).toEqual(
+                expect.arrayContaining([
+                    expect.objectContaining({
+                        type: constants.FETCH_CHAT_STATUS_START,
+                    }),
+                    expect.objectContaining({
+                        type: constants.FETCH_CHAT_STATUS_ERROR,
+                    }),
+                ])
+            )
             expect(store.getActions()).toMatchSnapshot()
         })
     })

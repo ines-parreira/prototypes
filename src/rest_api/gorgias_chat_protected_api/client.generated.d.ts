@@ -20,6 +20,20 @@ declare namespace Paths {
             applicationId: Parameters.ApplicationId
         }
     }
+    namespace GetInstallationStatus {
+        export interface HeaderParameters {
+            'Content-Type'?: Parameters.ContentType
+            Authorization?: Parameters.Authorization
+        }
+        namespace Parameters {
+            export type ApplicationId = string
+            export type Authorization = string
+            export type ContentType = string
+        }
+        export interface PathParameters {
+            applicationId: Parameters.ApplicationId
+        }
+    }
     namespace GetTranslations {
         export interface HeaderParameters {
             'Content-Type'?: Parameters.ContentType
@@ -74,6 +88,17 @@ export interface OperationMethods {
         config?: AxiosRequestConfig
     ): OperationResponse<any>
     /**
+     * getInstallationStatus - GET installation status
+     */
+    'getInstallationStatus'(
+        parameters?: Parameters<
+            Paths.GetInstallationStatus.PathParameters &
+                Paths.GetInstallationStatus.HeaderParameters
+        > | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<any>
+    /**
      * getTranslations - Get translations
      */
     'getTranslations'(
@@ -106,6 +131,19 @@ export interface PathsDictionary {
             parameters?: Parameters<
                 Paths.UpdateApplicationTexts.PathParameters &
                     Paths.UpdateApplicationTexts.HeaderParameters
+            > | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<any>
+    }
+    ['/applications/{applicationId}/installation-status']: {
+        /**
+         * getInstallationStatus - GET installation status
+         */
+        'get'(
+            parameters?: Parameters<
+                Paths.GetInstallationStatus.PathParameters &
+                    Paths.GetInstallationStatus.HeaderParameters
             > | null,
             data?: any,
             config?: AxiosRequestConfig

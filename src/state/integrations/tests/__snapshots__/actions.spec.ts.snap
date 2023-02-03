@@ -132,7 +132,7 @@ exports[`integrations actions fetchChatIntegrationStatus action should set onlin
 ]
 `;
 
-exports[`integrations actions fetchChatIntegrationStatus action should set status if computed 1`] = `
+exports[`integrations actions fetchChatIntegrationStatus action should set status if computed and not call \`getApplicationAgents\` 1`] = `
 [
   {
     "chatStatus": "hidden",

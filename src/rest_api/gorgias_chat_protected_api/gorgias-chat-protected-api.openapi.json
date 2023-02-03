@@ -99,6 +99,49 @@
                 }
             }
         },
+        "/applications/{applicationId}/installation-status": {
+            "get": {
+                "tags": [
+                    "gorgias-chat-api"
+                ],
+                "summary": "GET installation status",
+                "operationId": "getInstallationStatus",
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "in": "header",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "application/json"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Bearer {{accessToken}}"
+                    },
+                    {
+                        "name": "applicationId",
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
         "/translations": {
             "get": {
                 "tags": [

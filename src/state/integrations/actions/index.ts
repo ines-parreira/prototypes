@@ -29,6 +29,7 @@ import {
     getTranslations as getTranslationsAction,
     getApplicationTexts as getApplicationTextsAction,
     updateApplicationTexts as updateApplicationTextsAction,
+    getInstallationStatus as getInstallationStatusAction,
 } from './gorgias-chat.actions'
 
 export function fetchIntegrations() {
@@ -954,9 +955,15 @@ export function fetchChatIntegrationStatus(integrationId: number) {
             const isBusinessHours = helpers.isAccountDuringBusinessHours(
                 currentAccountSelectors.getBusinessHoursSettings(state)
             )
+
+            const installationStatus = await getInstallationStatusAction(
+                integration.getIn(['meta', 'app_id'])
+            )
+
             const chatStatus = helpers.computeChatIntegrationStatus(
                 integration,
-                isBusinessHours
+                isBusinessHours,
+                installationStatus
             )
 
             if (chatStatus) {
@@ -1006,3 +1013,4 @@ export function fetchChatIntegrationStatus(integrationId: number) {
 export const getTranslations = getTranslationsAction
 export const getApplicationTexts = getApplicationTextsAction
 export const updateApplicationTexts = updateApplicationTextsAction
+export const getInstallationStatus = getInstallationStatusAction

@@ -241,6 +241,7 @@ describe('<IntegrationDetail />', () => {
             getTranslations: jest.fn(),
             getApplicationTexts: jest.fn(),
             updateApplicationTexts: jest.fn(),
+            getInstallationStatus: jest.fn(),
         },
         integrations: fromJS([]),
         hasTwitterFeature: true,
