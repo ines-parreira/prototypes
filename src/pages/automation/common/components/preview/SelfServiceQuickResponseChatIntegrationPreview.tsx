@@ -125,6 +125,7 @@ const SelfServiceQuickResponseChatIntegrationPreview = ({
             hideButton
             showGoBackButton
             enableAnimations
+            showBackground={false}
         >
             <MessageContent
                 key={quickResponse.id}
