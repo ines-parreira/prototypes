@@ -2,8 +2,8 @@ import React, {memo, useCallback} from 'react'
 
 import {CustomField, CustomFieldState} from 'models/customField/types'
 import {OnMutateSettings} from 'models/customField/queries'
-import TextField from './Components/fields/TextField'
-import DropdownField from './Components/fields/DropdownField'
+import TextField from './components/fields/TextField'
+import DropdownField from './components/fields/DropdownField'
 
 type Props = {
     fieldDefinition: CustomField

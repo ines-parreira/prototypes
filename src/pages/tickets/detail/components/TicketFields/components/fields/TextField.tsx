@@ -8,8 +8,11 @@ import {
     updateCustomFieldValue,
 } from 'state/ticket/actions'
 
-import Label from '../Label'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import useAppSelector from 'hooks/useAppSelector'
+import {getTicket} from 'state/ticket/selectors'
 import StealthInput from '../StealthInput'
+import Label from '../Label'
 
 type Props = {
     id: CustomFieldState['id']
@@ -32,6 +35,8 @@ export default function TextField({
     isRequired,
 }: Props) {
     const dispatch = useAppDispatch()
+
+    const ticketId = useAppSelector(getTicket).id
     const initialValue = fieldState?.value?.toString() || ''
     const hasError = fieldState?.hasError
 
@@ -55,6 +60,13 @@ export default function TextField({
                 placeholder={placeholder}
                 onChange={handleChange}
                 hasError={hasError}
+                onFocus={() => {
+                    logEvent(SegmentEvent.CustomFieldTicketValueInputFocused, {
+                        ticketId,
+                        id,
+                        label,
+                    })
+                }}
                 onBlur={() => {
                     if (currentValue === '' && isRequired) {
                         dispatch(updateCustomFieldValue(id, currentValue))

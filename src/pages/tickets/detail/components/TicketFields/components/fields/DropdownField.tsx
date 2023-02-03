@@ -22,6 +22,9 @@ import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DropdownFooter from 'pages/common/components/dropdown/DropdownFooter'
 import Button from 'pages/common/components/button/Button'
 
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import useAppSelector from 'hooks/useAppSelector'
+import {getTicket} from 'state/ticket/selectors'
 import Label from '../Label'
 import StealthInput from '../StealthInput'
 import css from './DropdownField.less'
@@ -61,6 +64,7 @@ export default function DropdownField({
     const inputRef = useRef<HTMLInputElement>(null)
     const modalRef = useRef<HTMLDivElement>(null)
 
+    const ticketId = useAppSelector(getTicket).id
     const value = fieldState?.value?.toString() || ''
     const hasError = fieldState?.hasError
 
@@ -158,7 +162,17 @@ export default function DropdownField({
                     name={label}
                     value={value.split(DROPDOWN_NESTING_DELIMITER).pop()}
                     isActive={isActive}
-                    onFocus={() => setActive(true)}
+                    onFocus={() => {
+                        logEvent(
+                            SegmentEvent.CustomFieldTicketValueDropdownFocused,
+                            {
+                                ticketId,
+                                id,
+                                label,
+                            }
+                        )
+                        setActive(true)
+                    }}
                     onClick={() => setActive(true)}
                     hasError={hasError}
                 />
@@ -334,6 +348,7 @@ function useA11yDropdown(
                     break
             }
         }
+
         let currentModalRef: HTMLDivElement | null = null
         if (isActive) {
             // we need to wait for the ref to update itself :/
