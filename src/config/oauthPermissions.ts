@@ -91,6 +91,11 @@ export const oauthPermissions: Record<string, OAuthPermission> = {
         name: 'Self Service',
         description: 'Self-Service related settings.',
     },
+    help_center: {
+        icon: 'web_asset',
+        name: 'Help Center',
+        description: 'Help Center related configurations.',
+    },
 
     // Legacy scope
     'write:all': {
