@@ -636,7 +636,7 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
                   Response text
                 </label>
                 <p>
-                  After customers request a return in chat, reply with an automated message.
+                  After customers request a cancellation, reply with an automated message.
                 </p>
                 <div
                   class="rich-textarea-wrapper"
@@ -658,7 +658,7 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
                             id="placeholder-someRandomKey"
                             style="white-space: pre-wrap;"
                           >
-                            Ex: We offer free shipping on all U.S. orders $100+. Shipping rates vary based on weight and delivery destination and is chosen by the customer at checkout. Check out our Shipping & Returns page for more information about shipping rates.
+                            Add a response
                           </div>
                         </div>
                         <div

@@ -537,7 +537,11 @@ export const ReturnsPolicyView = () => {
                                             {hasAutomatedResponseOrderManagementFlag &&
                                                 returnAction?.type ===
                                                     ReturnActionType.AutomatedResponse && (
-                                                    <FormGroup>
+                                                    <FormGroup
+                                                        className={
+                                                            css.automatedResponseBlock
+                                                        }
+                                                    >
                                                         <Label
                                                             for="responseText"
                                                             className="control-label"

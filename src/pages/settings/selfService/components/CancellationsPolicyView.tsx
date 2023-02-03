@@ -379,15 +379,15 @@ export const CancellationsPolicyView = () => {
                                                 </Label>
                                                 <p>
                                                     After customers request a
-                                                    return in chat, reply with
-                                                    an automated message.
+                                                    cancellation, reply with an
+                                                    automated message.
                                                 </p>
                                                 <TicketRichField
                                                     value={{
                                                         html: responseMessageContent.html,
                                                     }}
                                                     onChange={handleChange}
-                                                    placeholder="Ex: We offer free shipping on all U.S. orders $100+. Shipping rates vary based on weight and delivery destination and is chosen by the customer at checkout. Check out our Shipping & Returns page for more information about shipping rates."
+                                                    placeholder="Add a response"
                                                 />
                                                 <FormText
                                                     color={
