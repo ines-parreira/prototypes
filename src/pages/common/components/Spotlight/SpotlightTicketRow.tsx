@@ -31,6 +31,7 @@ const SpotlightTicketRow = ({
         info={
             <SpotlightTicketInfo
                 customerName={item.customer.name}
+                customerEmail={item.customer.email}
                 customerId={item.customer.id}
                 assignee={item.assignee_user}
                 date={item.created_datetime}
@@ -67,11 +68,13 @@ const SpotlightTicketIcon = ({
 
 const SpotlightTicketInfo = ({
     customerName,
+    customerEmail,
     customerId,
     assignee,
     date,
 }: {
     customerName: string | null
+    customerEmail: string | null
     customerId: number
     assignee?: TicketAssignee | null
     date: string
@@ -87,7 +90,9 @@ const SpotlightTicketInfo = ({
 
     return (
         <div className={css.ticketInfo}>
-            <span>{customerName || `Customer #${customerId}`}</span>
+            <span>
+                {customerName || customerEmail || `Customer #${customerId}`}
+            </span>
             {!!assignee && (
                 <>
                     <span className={css.infoSeparator}>•</span>

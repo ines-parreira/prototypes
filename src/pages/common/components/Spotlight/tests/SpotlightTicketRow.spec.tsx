@@ -86,11 +86,14 @@ describe('<SpotlightTicketRow/>', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should render without customer name', () => {
+    it('should render without customer name and without email', () => {
         const {container} = render(
             <WrappedSpotlightTicketIcon
                 {...defaultProps}
-                item={{...ticket, customer: {...ticket.customer, name: null}}}
+                item={{
+                    ...ticket,
+                    customer: {...ticket.customer, name: null, email: null},
+                }}
             />
         )
 

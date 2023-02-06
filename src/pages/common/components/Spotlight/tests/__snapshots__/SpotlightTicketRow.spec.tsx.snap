@@ -358,7 +358,7 @@ exports[`<SpotlightTicketRow/> should render without customer name 1`] = `
       class="ticketInfo"
     >
       <span>
-        Customer #34
+        jeanbon@gorgias.io
       </span>
       <span
         class="infoSeparator"
@@ -400,7 +400,7 @@ exports[`<SpotlightTicketRow/> should render without customer name 1`] = `
 </a>
 `;
 
-exports[`<SpotlightTicketRow/> should render without customer name 2`] = `
+exports[`<SpotlightTicketRow/> should render without customer name and without email 1`] = `
 <a
   class="container"
   to="/app/ticket/152"
