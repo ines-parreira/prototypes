@@ -157,7 +157,7 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
          * form values with the integration values
          */
         if (!this.state.signature_text && removeSignatureWhenEmpty) {
-            form = integration.removeIn(['meta', 'signature'])
+            form = form.removeIn(['meta', 'signature'])
         }
 
         if (integration.get('type') === IntegrationType.Gmail) {

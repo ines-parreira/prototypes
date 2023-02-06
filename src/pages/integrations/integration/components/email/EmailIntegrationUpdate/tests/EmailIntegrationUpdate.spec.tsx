@@ -182,6 +182,48 @@ describe('<EmailIntegrationUpdateContainer />', () => {
         }
     )
 
+    it('should enable the submit button if form values change - integration has no signature [email]', () => {
+        const props = {
+            integration: fromJS({
+                id: 1,
+                name: INTEGRATION_NAME,
+                type: EMAIL_INTEGRATION_TYPE,
+                meta: {
+                    address: 'myintegration@gorgias.io',
+                },
+            }),
+        }
+
+        const helpers = renderWithStore(props)
+        const {getByText, getByRole} = helpers
+        const displayNameInput = getByRole('textbox', {
+            name: /display name required/i,
+        })
+        const saveButton = getByText('Save changes')
+
+        expect(saveButton.hasAttribute('disabled')).toBeTruthy()
+
+        if (isBoolean('Some New Name')) {
+            fireEvent.click(displayNameInput)
+        } else {
+            fireEvent.change(displayNameInput, {
+                target: {value: 'Some New Name'},
+            })
+        }
+
+        expect(saveButton.hasAttribute('disabled')).toBeFalsy()
+
+        if (isBoolean('Some New Name')) {
+            fireEvent.click(displayNameInput)
+        } else {
+            fireEvent.change(displayNameInput, {
+                target: {value: INTEGRATION_NAME},
+            })
+        }
+
+        expect(saveButton.hasAttribute('disabled')).toBeTruthy()
+    })
+
     it.each([
         {
             selector: ({getByRole}: RenderResult) =>
