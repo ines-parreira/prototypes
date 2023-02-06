@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
+import _debounce from 'lodash/debounce'
 
 import {
     BigCommerceCartLineItem,
@@ -7,7 +8,10 @@ import {
     BigCommerceCustomProduct,
 } from 'models/integration/types'
 
-import {isBigCommerceProduct} from '../../utils'
+import {OptionSelection} from 'models/integration/resources/bigcommerce'
+import {isBigCommerceCartLineItem, isBigCommerceProduct} from '../../utils'
+import {useEditModifiersPopover} from '../modifiers-popover/hooks'
+import {modifierValuesToOptionSelections} from '../modifiers-popover/utils'
 import ProductComponent from './ProductComponent'
 import {TotalPriceComponent} from './TotalPriceComponent'
 import {QuantityComponent} from './QuantityComponent'
@@ -22,11 +26,13 @@ type Props = {
     currencyCode: string | undefined
     removable: boolean
     onDelete: (index: number) => void
-    onChange: (
-        index: number,
-        newQuantity: number,
-        setQuantity: (quantity: number) => void
-    ) => void
+    onChange: (index: number, quantity: number) => Promise<void>
+    onChangeModifiers: (props: {
+        index: number
+        quantity: number
+        optionSelections: OptionSelection[]
+    }) => Promise<void>
+
     hasError: boolean
     onLineItemDiscount: (index: number, discountAmount: number) => void
 }
@@ -40,23 +46,71 @@ export default function OrderLineItemRow({
     removable,
     onDelete,
     onChange,
+    onChangeModifiers,
     hasError,
     onLineItemDiscount,
 }: Props) {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const debounceOnChange = useCallback(
+        _debounce(async (newQuantity: number, oldQuantity: number) => {
+            try {
+                await onChange(index, newQuantity)
+            } catch (error) {
+                setQuantity(oldQuantity)
+            }
+        }, 250),
+        [index]
+    )
+
     const handleQuantityChange = (value: string) => {
         if (product && !isBigCommerceProduct(product)) {
             // Custom Product - cannot update via API
             setQuantity(lineItem.quantity)
-            onChange(index, lineItem.quantity, setQuantity)
+            void debounceOnChange(lineItem.quantity, lineItem.quantity)
             return
         }
+
+        const oldQuantity = lineItem.quantity
 
         let newQuantity = Number.parseInt(value, 10)
         if (newQuantity < 1 || !newQuantity) {
             newQuantity = 1
         }
+
         setQuantity(newQuantity)
-        onChange(index, newQuantity, setQuantity)
+
+        void debounceOnChange(newQuantity, oldQuantity)
+    }
+
+    const {
+        getReferenceProps,
+        setReference,
+        modifiersPopover,
+        openModifierPopover,
+    } = useEditModifiersPopover(storeHash, ({modifierValues}) => {
+        const optionSelections =
+            modifierValuesToOptionSelections(modifierValues)
+
+        void onChangeModifiers({
+            index,
+            quantity: lineItem.quantity,
+            optionSelections,
+        })
+    })
+
+    const handleOpenEditModifiers = () => {
+        if (
+            !product ||
+            !isBigCommerceProduct(product) ||
+            !isBigCommerceCartLineItem(lineItem)
+        ) {
+            return
+        }
+
+        openModifierPopover({
+            product,
+            lineItem,
+        })
     }
 
     const handleDiscount = (newPrice: number) => {
@@ -70,11 +124,12 @@ export default function OrderLineItemRow({
     }, [lineItem.quantity])
 
     return (
-        <tr>
+        <tr {...getReferenceProps()} ref={setReference}>
             <ProductComponent
                 product={product}
                 lineItem={lineItem}
                 storeHash={storeHash}
+                onOpenModifiers={handleOpenEditModifiers}
             />
             <PriceComponent
                 lineItem={lineItem}
@@ -93,6 +148,7 @@ export default function OrderLineItemRow({
                 currencyCode={currencyCode}
                 lineItem={lineItem}
             />
+            {modifiersPopover}
         </tr>
     )
 }

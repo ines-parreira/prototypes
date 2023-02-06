@@ -36,7 +36,7 @@ exports[`<ModifiersPopover/> can submit the form when all required fields are fi
               class="subTitle"
             >
               SKU: 
-              SLCTBS-A9615491
+              THIS IS SKU
             </div>
           </div>
         </div>
@@ -311,7 +311,7 @@ exports[`<ModifiersPopover/> renders as expected 1`] = `
               class="subTitle"
             >
               SKU: 
-              SLCTBS-A9615491
+              THIS IS SKU
             </div>
           </div>
         </div>

@@ -95,6 +95,11 @@ export type BigCommerceCartLineItem = {
     discount_amount: number
     coupon_amount: number
     original_price: number
+    options: (
+        | {name: string; nameId: number; value: string; valueId: number}
+        // Sometimes BC just feels like returning snake_case
+        | {name: string; name_id: number; value: string; value_id: number}
+    )[]
     list_price: number
     sale_price: number
     extended_list_price: number

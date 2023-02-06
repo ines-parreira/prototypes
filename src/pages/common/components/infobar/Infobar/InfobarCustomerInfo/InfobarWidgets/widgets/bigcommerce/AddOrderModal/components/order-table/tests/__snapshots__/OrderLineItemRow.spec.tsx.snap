@@ -1,7 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<OrderLineItemRow/> render() should render 1`] = `
-<tr>
+<tr
+  aria-expanded="false"
+  aria-haspopup="dialog"
+>
   <td
     class="descriptionCol"
   >
@@ -36,6 +39,130 @@ exports[`<OrderLineItemRow/> render() should render 1`] = `
           N/A
         </span>
       </div>
+      <button
+        class="modifierButton"
+      >
+        <i
+          class="material-icons"
+        >
+          tune
+        </i>
+        Modify
+      </button>
+    </div>
+  </td>
+  <td
+    class="numberCol"
+  >
+    <button
+      class="actionButton"
+      id="discount-button"
+    >
+      <span>
+        $78.00
+      </span>
+    </button>
+  </td>
+  <td
+    class="quantityCol"
+  >
+    <div
+      class="d-flex"
+    >
+      <div
+        class="wrapper input"
+      >
+        <input
+          class="input"
+          id="input-text-mocked"
+          min="1"
+          name="input-text-mocked"
+          type="text"
+          value="1"
+        />
+      </div>
+      <span>
+        <button
+          class="wrapper wrapper ghost ghost destructive medium"
+          id="tooltip-0"
+          tabindex="0"
+          type="button"
+        >
+          <i
+            class="material-icons icon"
+          >
+            close
+          </i>
+        </button>
+      </span>
+    </div>
+  </td>
+  <td
+    class="numberCol"
+  >
+    <span>
+      $78.00
+    </span>
+  </td>
+</tr>
+`;
+
+exports[`<OrderLineItemRow/> render() should render with modifiers visible 1`] = `
+<tr
+  aria-expanded="false"
+  aria-haspopup="dialog"
+>
+  <td
+    class="descriptionCol"
+  >
+    <div
+      class="imgContainer"
+    >
+      <img
+        alt="[Sample] Serviette de plage Fog Linen en chambray - Beige rayé"
+        class="img"
+        src="https://cdn11.bigcommerce.com/s-pk360c6roo/products/77/images/266/foglinenbeigestripetowel1b.1650970371.220.290.jpg?c=1"
+      />
+    </div>
+    <div
+      class="legend"
+    >
+      <div>
+        <a
+          class="title"
+          href="https://store-storeHash.mybigcommerce.com/manage/products/edit/245/"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          test 102
+        </a>
+      </div>
+      <div
+        class="subtitle"
+      >
+        <span
+          class="text-muted"
+        >
+          N/A
+        </span>
+      </div>
+      <ul
+        class="modifiersList"
+      >
+        <li>
+          Option Value
+        </li>
+      </ul>
+      <button
+        class="modifierButton"
+      >
+        <i
+          class="material-icons"
+        >
+          tune
+        </i>
+        Modify
+      </button>
     </div>
   </td>
   <td
@@ -95,7 +222,10 @@ exports[`<OrderLineItemRow/> render() should render 1`] = `
 `;
 
 exports[`<OrderLineItemRow/> render() should render with the default image 1`] = `
-<tr>
+<tr
+  aria-expanded="false"
+  aria-haspopup="dialog"
+>
   <td
     class="descriptionCol"
   >
@@ -130,6 +260,16 @@ exports[`<OrderLineItemRow/> render() should render with the default image 1`] =
           N/A
         </span>
       </div>
+      <button
+        class="modifierButton"
+      >
+        <i
+          class="material-icons"
+        >
+          tune
+        </i>
+        Modify
+      </button>
     </div>
   </td>
   <td
@@ -189,7 +329,10 @@ exports[`<OrderLineItemRow/> render() should render with the default image 1`] =
 `;
 
 exports[`<OrderLineItemRow/> render() should render without quantity and without price 1`] = `
-<tr>
+<tr
+  aria-expanded="false"
+  aria-haspopup="dialog"
+>
   <td
     class="descriptionCol"
   >
@@ -224,6 +367,16 @@ exports[`<OrderLineItemRow/> render() should render without quantity and without
           N/A
         </span>
       </div>
+      <button
+        class="modifierButton"
+      >
+        <i
+          class="material-icons"
+        >
+          tune
+        </i>
+        Modify
+      </button>
     </div>
   </td>
   <td

@@ -1,6 +1,7 @@
 import React, {ComponentProps} from 'react'
 import {render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import produce from 'immer'
 import {
     bigCommerceLineItemFixture,
     bigCommerceProductFixture,
@@ -22,14 +23,18 @@ const defaultProps: ComponentProps<typeof OrderLineItemRow> = {
     onLineItemDiscount: jest.fn(),
     lineItem,
     product,
+    onChangeModifiers: jest.fn(),
 }
 
 jest.mock('../../../utils', () => ({
     ...jest.requireActual<Record<string, unknown>>('../../../utils'),
     useCanViewBigCommerceV1Features: jest.fn(() => true),
+    useCanViewBigCommerceCreateOrderModifiers: jest.fn(() => true),
 }))
 
 jest.mock('hooks/useId', () => jest.fn(() => 'mocked'))
+
+jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
 
 describe('<OrderLineItemRow/>', () => {
     describe('render()', () => {
@@ -69,6 +74,39 @@ describe('<OrderLineItemRow/>', () => {
             )
 
             expect(container.firstChild).toMatchSnapshot()
+        })
+
+        it('should render with modifiers visible', () => {
+            const lineItem = produce(bigCommerceLineItemFixture(), (draft) => {
+                draft.options = [
+                    {
+                        name: 'Option Name',
+                        value: 'Option Value',
+                        nameId: 166,
+                        valueId: 1,
+                    },
+                ]
+            })
+            const product = bigCommerceProductFixture()
+            const {container} = render(
+                <OrderLineItemRow
+                    {...defaultProps}
+                    lineItem={lineItem}
+                    product={product}
+                />
+            )
+
+            expect(screen.getByText(/Option Value/i)).toBeInTheDocument()
+            expect(container.firstChild).toMatchSnapshot()
+
+            // Opens the modifiers popover
+            expect(
+                screen.queryByText(/Test Radio Buttons/i)
+            ).not.toBeInTheDocument()
+
+            userEvent.click(screen.getByRole('button', {name: /modify/i}))
+
+            expect(screen.getByText(/Test Radio Buttons/i)).toBeInTheDocument()
         })
     })
 

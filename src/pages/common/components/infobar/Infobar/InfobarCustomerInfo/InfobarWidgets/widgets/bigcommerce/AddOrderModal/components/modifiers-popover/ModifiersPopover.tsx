@@ -1,8 +1,8 @@
 import React from 'react'
 
 import {
+    BigCommerceCartLineItem,
     BigCommerceProduct,
-    BigCommerceProductVariant,
 } from 'models/integration/types'
 
 import Button from 'pages/common/components/button/Button'
@@ -18,7 +18,7 @@ import {ModifierErrors, ModifierValues, useModifierValues} from './hooks'
 
 export type ModifierPopoverBodyProps = {
     product: BigCommerceProduct
-    variant: BigCommerceProductVariant
+    sku?: string
     storeHash: string
     modifierValues: ModifierValues
     modifierErrors: ModifierErrors
@@ -27,7 +27,7 @@ export type ModifierPopoverBodyProps = {
 
 export const ModifiersPopoverBody = ({
     product,
-    variant,
+    sku,
     storeHash,
     modifierValues,
     modifierErrors,
@@ -36,7 +36,7 @@ export const ModifiersPopoverBody = ({
     return (
         <div className={css.bodyContainer}>
             <ModifierProductComponent
-                variant={variant}
+                sku={sku}
                 product={product}
                 storeHash={storeHash}
             />
@@ -92,19 +92,21 @@ export const ModifiersPopoverFooter = ({
 type Props = {
     setReference: (node: HTMLElement | null) => void
     onApply: (values: ModifierValues) => void
-} & Pick<ModifierPopoverBodyProps, 'product' | 'variant' | 'storeHash'> &
+    lineItem?: BigCommerceCartLineItem
+} & Pick<ModifierPopoverBodyProps, 'product' | 'sku' | 'storeHash'> &
     Pick<ModifiersPopoverFooterProps, 'onClose'>
 
 export const ModifiersPopover = ({
     product,
-    variant,
+    lineItem,
+    sku,
     storeHash,
     onClose,
     onApply,
     setReference,
 }: Props) => {
     const {modifierValues, modifierErrors, handleSetValue, handleValidate} =
-        useModifierValues(product.modifiers ?? [])
+        useModifierValues(product.modifiers ?? [], lineItem)
 
     const handleApply = () => {
         if (handleValidate()) {
@@ -118,7 +120,7 @@ export const ModifiersPopover = ({
                 body={
                     <ModifiersPopoverBody
                         product={product}
-                        variant={variant}
+                        sku={sku}
                         storeHash={storeHash}
                         modifierValues={modifierValues}
                         modifierErrors={modifierErrors}

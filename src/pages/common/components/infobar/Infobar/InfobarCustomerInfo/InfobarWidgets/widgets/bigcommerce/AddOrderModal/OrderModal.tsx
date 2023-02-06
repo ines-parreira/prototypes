@@ -48,6 +48,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {CustomerContext} from 'providers/infobar/CustomerContext'
 import {
     deleteBigCommerceCoupon,
+    OptionSelection,
     updateBigCommerceCheckoutDiscount,
     updateBigCommerceCoupon,
 } from 'models/integration/resources/bigcommerce'
@@ -67,6 +68,7 @@ import {
     removeRow,
     setLineItemDiscount,
     updateCheckoutConsignmentShippingMethod,
+    updateLineItemModifiers,
     updateRow,
     upsertCheckoutConsignment,
     useCanViewBigCommerceV1Features,
@@ -76,7 +78,8 @@ import {CurrencyPickerDropdown} from './CurrencyPickerDropdown'
 
 import css from './OrderModal.less'
 import {ProductSearch} from './ProductSearch'
-import {useModifiersPopover} from './components/modifiers-popover/hooks'
+import {useAddModifiersPopover} from './components/modifiers-popover/hooks'
+import {modifierValuesToOptionSelections} from './components/modifiers-popover/utils'
 
 type Props = {
     integration: BigCommerceIntegration
@@ -519,7 +522,7 @@ export function OrderModal({
             | {
                   product: BigCommerceProduct
                   variant: BigCommerceProductVariant
-                  optionSelections?: {option_id: number; option_value: number}[]
+                  optionSelections?: OptionSelection[]
               }
             | {
                   customProduct: BigCommerceCustomProduct
@@ -559,15 +562,11 @@ export function OrderModal({
         setReference,
         modifiersPopover,
         maybeOpenModifierPopover,
-    } = useModifiersPopover(
+    } = useAddModifiersPopover(
         integration.meta.store_hash,
         ({product, variant, modifierValues}) => {
-            const optionSelections = Object.entries(modifierValues)
-                .filter(([, option_value]) => Boolean(option_value))
-                .map(([option_id, option_value]) => ({
-                    option_id: parseInt(option_id),
-                    option_value: option_value!,
-                }))
+            const optionSelections =
+                modifierValuesToOptionSelections(modifierValues)
 
             handleAddRow({product, variant, optionSelections})
         }
@@ -692,23 +691,34 @@ export function OrderModal({
                                         listPrice,
                                     })
                                 }
-                                onLineItemUpdate={(
-                                    index,
-                                    newQuantity,
-                                    setQuantity
-                                ) => {
-                                    void updateRow({
+                                onLineItemUpdate={async (index, quantity) =>
+                                    await updateRow({
                                         integrationId: integration.id,
                                         index,
-                                        newQuantity,
+                                        quantity,
                                         setIsLoading,
                                         cart,
                                         setCart,
-                                        setQuantity,
                                         lineItemWithError,
                                         setLineItemWithError,
                                     })
-                                }}
+                                }
+                                onLineItemModifiersUpdate={async ({
+                                    index,
+                                    quantity,
+                                    optionSelections,
+                                }) =>
+                                    await updateLineItemModifiers({
+                                        integrationId: integration.id,
+                                        index,
+                                        quantity,
+                                        optionSelections,
+                                        setIsLoading,
+                                        cart,
+                                        setCart,
+                                        setLineItemWithError,
+                                    })
+                                }
                                 onLineItemDelete={(index) => {
                                     void removeRow({
                                         integrationId: integration.id,

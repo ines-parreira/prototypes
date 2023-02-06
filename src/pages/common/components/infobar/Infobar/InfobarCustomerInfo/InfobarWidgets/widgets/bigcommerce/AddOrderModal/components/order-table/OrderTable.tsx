@@ -8,6 +8,7 @@ import {
     BigCommerceProductsListType,
 } from 'models/integration/types'
 
+import {OptionSelection} from 'models/integration/resources/bigcommerce'
 import {isBigCommerceCartLineItem} from '../../utils'
 
 import OrderLineItemRow from './OrderLineItemRow'
@@ -23,9 +24,14 @@ type Props = {
     onLineItemDelete: (index: number) => void
     onLineItemUpdate: (
         index: number,
-        newQuantity: number,
-        setQuantity: (quantity: number) => void
-    ) => void
+        quantity: number,
+        optionSelections?: OptionSelection[]
+    ) => Promise<void>
+    onLineItemModifiersUpdate: (props: {
+        index: number
+        quantity: number
+        optionSelections: OptionSelection[]
+    }) => Promise<void>
 }
 
 function getOrderLineItemInfo(
@@ -56,6 +62,7 @@ export default function OrderTable({
     storeHash,
     currencyCode,
     onLineItemUpdate,
+    onLineItemModifiersUpdate,
     onLineItemDelete,
     onLineItemDiscount,
 }: Props) {
@@ -97,6 +104,7 @@ export default function OrderTable({
                             removable={lineItems.length > 1}
                             onDelete={onLineItemDelete}
                             onChange={onLineItemUpdate}
+                            onChangeModifiers={onLineItemModifiersUpdate}
                             onLineItemDiscount={onLineItemDiscount}
                             hasError={hasError}
                         />

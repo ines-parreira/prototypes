@@ -4,13 +4,16 @@ import {
     BigCommerceCart,
     BigCommerceCartLineItem,
     BigCommerceCustomerAddress,
-    BigCommerceNestedCart,
     BigCommerceCheckout,
     BigCommerceCreateConsignmentPayload,
     BigCommerceUpsertConsignmentPayload,
     BigCommerceNestedCheckout,
     BigCommerceCustomProduct,
+    BigCommerceNestedCart,
+    BigCommerceProduct,
+    BigCommerceErrorMessage,
 } from '../types'
+export type OptionSelection = {option_id: number; option_value: number}
 
 export async function createBigCommerceCart(
     integrationId: number,
@@ -68,6 +71,16 @@ export async function addBigCommerceCheckoutBillingAddress(
     return response.data
 }
 
+type AddLineItemResponse =
+    | {
+          cart: BigCommerceCart
+      }
+    | {
+          cart: Record<string, unknown>
+          error: string
+          updated_product?: BigCommerceProduct
+      }
+
 export async function addBigCommerceLineItem({
     integrationId,
     cartId,
@@ -80,7 +93,7 @@ export async function addBigCommerceLineItem({
     cartId: string
     productId?: number
     variantId?: number
-    optionSelections?: {option_id: number; option_value: number}[]
+    optionSelections?: OptionSelection[]
     customProduct?: BigCommerceCustomProduct
 }): Promise<BigCommerceCart> {
     // Add a line item or a custom line item to the Cart.
@@ -102,15 +115,52 @@ export async function addBigCommerceLineItem({
               ],
           } // Line Item
 
-    const response = await client.post<BigCommerceCart>(url, payload, {
+    const response = await client.post<AddLineItemResponse>(url, payload, {
         params: {
             integration_id: integrationId,
             cart_id: cartId,
         },
     })
 
-    return response.data
+    // TODO:https://linear.app/gorgias/issue/APPED-1319/fe-handle-modifier-changes-while-adding-line-item
+    if ('error' in response.data) {
+        throw Error(response.data.error)
+    }
+
+    return response.data.cart
 }
+
+export type EditLineItemResponse = {
+    data:
+        | {
+              cart: BigCommerceCart
+          }
+        | {
+              cart: Record<string, unknown>
+              error: string
+              updated_product?: BigCommerceProduct
+          }
+}
+
+export class EditBigCommerceLineItemError extends Error {
+    public message: string
+
+    constructor(message: string) {
+        super()
+        this.message = message
+    }
+}
+
+/**
+ * Below RegExp works on a line like this
+ * "[BIGCOMMERCE][update_line_item_from_cart] BigCommerce API has returned an error: (422): You can only purchase a maximum of 10 of the whatsupp33 per order."
+ *
+ * Captured "message" will be " You can only purchase a maximum of 10 of the whatsupp33 per order."
+ *
+ * Need to change TS target to use RegExp named capturing groups :(
+ */
+const editBigCommerceLineItemRegExp =
+    /BigCommerce API has returned an error: \((?<code>[0-9]{3})\):(?<message>.*)/i
 
 export async function editBigCommerceLineItem({
     integrationId,
@@ -138,7 +188,7 @@ export async function editBigCommerceLineItem({
         },
     }
 
-    const response = await client.put<BigCommerceNestedCart>(url, payload, {
+    const {data} = await client.put<EditLineItemResponse>(url, payload, {
         params: {
             integration_id: integrationId,
             line_item_id: lineItem.id,
@@ -146,7 +196,60 @@ export async function editBigCommerceLineItem({
         },
     })
 
-    return response.data.data
+    if ('error' in data.data) {
+        const regexpMatch = editBigCommerceLineItemRegExp.exec(data.data.error)
+
+        throw new EditBigCommerceLineItemError(
+            regexpMatch
+                ? regexpMatch[2].trim()
+                : BigCommerceErrorMessage.defaultError
+        )
+    }
+
+    return data.data.cart
+}
+
+export async function editBigCommerceLineItemModifiers({
+    integrationId,
+    cartId,
+    lineItem,
+    quantity,
+    optionSelections,
+}: {
+    integrationId: number
+    cartId: string
+    lineItem: BigCommerceCartLineItem
+    quantity: number
+    optionSelections: OptionSelection[]
+}): Promise<BigCommerceCart> {
+    const url = '/integrations/bigcommerce/order/line-item/modifiers'
+
+    const payload = {
+        product_id: lineItem.product_id,
+        variant_id: lineItem.variant_id,
+        option_selections: optionSelections,
+        quantity,
+    }
+
+    const {data} = await client.put<EditLineItemResponse>(url, payload, {
+        params: {
+            integration_id: integrationId,
+            line_item_id: lineItem.id,
+            cart_id: cartId,
+        },
+    })
+
+    if ('error' in data.data) {
+        const regexpMatch = editBigCommerceLineItemRegExp.exec(data.data.error)
+
+        throw new EditBigCommerceLineItemError(
+            regexpMatch
+                ? regexpMatch[2].trim()
+                : BigCommerceErrorMessage.defaultError
+        )
+    }
+
+    return data.data.cart
 }
 
 export async function removeBigCommerceLineItem(

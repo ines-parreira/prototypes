@@ -9,7 +9,10 @@ import {
     createBigCommerceCheckoutConsignment,
     deleteBigCommerceCart,
     editBigCommerceLineItem,
+    EditBigCommerceLineItemError,
+    editBigCommerceLineItemModifiers,
     getBigCommerceCheckout,
+    OptionSelection,
     removeBigCommerceLineItem,
     updateBigCommerceCheckoutConsignment,
 } from 'models/integration/resources/bigcommerce'
@@ -153,7 +156,7 @@ export const addRow = async ({
     lineProduct?: BigCommerceProduct
     customProduct?: BigCommerceCustomProduct
     products: BigCommerceProductsListType
-    optionSelections?: {option_id: number; option_value: number}[]
+    optionSelections?: OptionSelection[]
     variant?: BigCommerceProductVariant
     cart: Maybe<BigCommerceCart>
     setIsLoading: (state: boolean) => void
@@ -161,12 +164,14 @@ export const addRow = async ({
     setProducts: (products: BigCommerceProductsListType) => void
     setLineItemWithError: (value: BigCommerceCreateOrderErrorType) => void
 }) => {
-    setIsLoading(true)
     const newProducts = new Map(products)
     const cartId = cart ? cart.id : null
+
     if (!cartId || !cart) {
         return
     }
+
+    setIsLoading(true)
 
     let newCart
 
@@ -312,90 +317,151 @@ export const removeRow = async ({
     setLineItemWithError({id: null, message: ''})
 }
 
-export const updateRow = _debounce(
-    async ({
-        integrationId,
-        index,
-        newQuantity,
-        setQuantity,
-        setIsLoading,
-        cart,
-        setCart,
-        lineItemWithError,
-        setLineItemWithError,
-    }: {
-        integrationId: number
-        index: number
-        newQuantity: number
-        setQuantity: (value: number) => void
-        setIsLoading: (state: boolean) => void
-        cart: Maybe<BigCommerceCart>
-        setCart: (cart: BigCommerceCart) => void
-        lineItemWithError?: BigCommerceCreateOrderErrorType
-        setLineItemWithError: (value: BigCommerceCreateOrderErrorType) => void
-    }) => {
-        setIsLoading(true)
-        if (!cart) {
-            return
-        }
-        const lineItem:
-            | BigCommerceCartLineItem
-            | BigCommerceCustomCartLineItem = [
-            ...cart.line_items.physical_items,
-            ...cart.line_items.digital_items,
-            ...cart.line_items.custom_items,
-        ][index]
+export const updateRow = async ({
+    integrationId,
+    index,
+    quantity,
+    setIsLoading,
+    cart,
+    setCart,
+    lineItemWithError,
+    setLineItemWithError,
+}: {
+    integrationId: number
+    index: number
+    quantity: number
+    setIsLoading: (state: boolean) => void
+    cart: Maybe<BigCommerceCart>
+    setCart: (cart: BigCommerceCart) => void
+    lineItemWithError?: BigCommerceCreateOrderErrorType
+    setLineItemWithError: (value: BigCommerceCreateOrderErrorType) => void
+}) => {
+    if (!cart) {
+        return
+    }
 
-        try {
-            if (!isBigCommerceCartLineItem(lineItem)) {
-                // Custom Line Item - cannot be updated via API
-                if (
-                    lineItem.quantity === newQuantity &&
-                    lineItemWithError &&
-                    lineItemWithError.message
-                ) {
-                    setLineItemWithError({id: null, message: ''})
-                    return
-                }
+    setIsLoading(true)
 
-                setLineItemWithError({
-                    id: lineItem.id,
-                    message:
-                        BigCommerceErrorMessage.customLineItemCannotBeUpdatedError,
-                    type: 'warning',
-                })
+    const lineItem: BigCommerceCartLineItem | BigCommerceCustomCartLineItem = [
+        ...cart.line_items.physical_items,
+        ...cart.line_items.digital_items,
+        ...cart.line_items.custom_items,
+    ][index]
+
+    try {
+        if (!isBigCommerceCartLineItem(lineItem)) {
+            // Custom Line Item - cannot be updated via API
+            if (
+                lineItem.quantity === quantity &&
+                lineItemWithError &&
+                lineItemWithError.message
+            ) {
+                setLineItemWithError({id: null, message: ''})
                 return
             }
 
-            const newCart = await editBigCommerceLineItem({
-                integrationId: integrationId,
-                cartId: cart.id,
-                lineItem: lineItem,
-                quantity: newQuantity,
-            })
-
-            setCart(newCart)
-
-            const eventName = SegmentEvent.BigCommerceCreateOrderUpdateRow
-            logEvent(eventName, {
-                integrationId: integrationId,
-                index: index,
-                newQuantity: newQuantity,
-                newCart: newCart,
-            })
-            setLineItemWithError({id: null, message: ''})
-        } catch (error) {
-            setQuantity(lineItem.quantity)
             setLineItemWithError({
                 id: lineItem.id,
-                message: BigCommerceErrorMessage.defaultError,
+                message:
+                    BigCommerceErrorMessage.customLineItemCannotBeUpdatedError,
+                type: 'warning',
             })
-        } finally {
-            setIsLoading(false)
+            return
         }
-    },
-    250
-)
+
+        const newCart = await editBigCommerceLineItem({
+            integrationId,
+            cartId: cart.id,
+            lineItem,
+            quantity,
+        })
+
+        setCart(newCart)
+
+        logEvent(SegmentEvent.BigCommerceCreateOrderUpdateRow, {
+            integrationId,
+            index,
+            quantity,
+            newCart,
+        })
+        setLineItemWithError({id: null, message: ''})
+    } catch (error) {
+        setLineItemWithError({
+            id: lineItem.id,
+            message:
+                error instanceof EditBigCommerceLineItemError
+                    ? error.message
+                    : BigCommerceErrorMessage.defaultError,
+        })
+
+        // Rethrow the error on purpose here
+        throw error
+    } finally {
+        setIsLoading(false)
+    }
+}
+
+export const updateLineItemModifiers = async ({
+    integrationId,
+    index,
+    quantity,
+    optionSelections,
+    setIsLoading,
+    cart,
+    setCart,
+    setLineItemWithError,
+}: {
+    integrationId: number
+    index: number
+    quantity: number
+    optionSelections: OptionSelection[]
+    setIsLoading: (state: boolean) => void
+    cart: Maybe<BigCommerceCart>
+    setCart: (cart: BigCommerceCart) => void
+    setLineItemWithError: (value: BigCommerceCreateOrderErrorType) => void
+}) => {
+    if (!cart) {
+        return
+    }
+
+    setIsLoading(true)
+
+    const lineItem: BigCommerceCartLineItem | BigCommerceCustomCartLineItem = [
+        ...cart.line_items.physical_items,
+        ...cart.line_items.digital_items,
+        ...cart.line_items.custom_items,
+    ][index]
+
+    try {
+        if (!isBigCommerceCartLineItem(lineItem)) {
+            return
+        }
+
+        const newCart = await editBigCommerceLineItemModifiers({
+            integrationId,
+            cartId: cart.id,
+            lineItem,
+            optionSelections,
+            quantity,
+        })
+
+        setCart(newCart)
+
+        setLineItemWithError({id: null, message: ''})
+    } catch (error) {
+        setLineItemWithError({
+            id: lineItem.id,
+            message:
+                error instanceof EditBigCommerceLineItemError
+                    ? error.message
+                    : BigCommerceErrorMessage.defaultError,
+        })
+
+        throw error
+    } finally {
+        setIsLoading(false)
+    }
+}
 
 export const setLineItemDiscount = async ({
     integrationId,

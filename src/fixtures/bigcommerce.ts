@@ -166,6 +166,7 @@ export const bigCommerceLineItemFixture = (): BigCommerceCartLineItem => ({
         'https://cdn11.bigcommerce.com/r-4b20dad619e29ebf3490f7f35369a8220637ce48/themes/ClassicNext/images/ProductDefault.gif',
     discounts: [],
     coupons: [],
+    options: [],
     discount_amount: 0,
     coupon_amount: 0,
     original_price: 78,

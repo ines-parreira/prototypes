@@ -7,6 +7,7 @@ import {
     useRole,
 } from '@floating-ui/react'
 import {
+    BigCommerceCartLineItem,
     BigCommerceProduct,
     BigCommerceProductModifiers,
     BigCommerceProductVariant,
@@ -22,14 +23,30 @@ export type ModifierValues = Record<string, number | undefined>
 
 export type ModifierErrors = Record<string, string | undefined>
 
-export const useModifierValues = (modifiers: BigCommerceProductModifiers[]) => {
+export const useModifierValues = (
+    modifiers: BigCommerceProductModifiers[],
+    lineItem?: BigCommerceCartLineItem
+) => {
     const usableModifiers = modifiers.filter(({type}) =>
         supportedBigCommerceModifierTypes.includes(type)
     )
 
     const [modifierValues, setModifierValues] = useState<ModifierValues>(
         usableModifiers.reduce((accum, {id}) => {
-            accum[id] = undefined
+            const option = lineItem?.options.find((option) => {
+                if ('nameId' in option) {
+                    return option.nameId === id
+                }
+
+                return option.name_id === id
+            })
+
+            if (!option) {
+                accum[id] = undefined
+            } else {
+                accum[id] =
+                    'valueId' in option ? option?.valueId : option.value_id
+            }
 
             return accum
         }, {} as ModifierValues)
@@ -106,12 +123,12 @@ export const useModifierValues = (modifiers: BigCommerceProductModifiers[]) => {
     return {modifierValues, modifierErrors, handleSetValue, handleValidate}
 }
 
-type State = {
+type AddModifiersPopoverState = {
     product: BigCommerceProduct
     variant: BigCommerceProductVariant
 }
 
-export const useModifiersPopover = (
+export const useAddModifiersPopover = (
     storeHash: string,
     onApply: (props: {
         product: BigCommerceProduct
@@ -121,13 +138,15 @@ export const useModifiersPopover = (
 ) => {
     const canViewModifiers = useCanViewBigCommerceCreateOrderModifiers()
 
-    const [props, setProps] = useState<State | null>(null)
+    const [props, setProps] = useState<AddModifiersPopoverState | null>(null)
 
     /**
      * If it returns false, the modifier won't get opened
      * If true - it will get opened
      */
-    const maybeOpenModifierPopover = (props: State): boolean => {
+    const maybeOpenModifierPopover = (
+        props: AddModifiersPopoverState
+    ): boolean => {
         // Do not open if we do not have LD flag set
         if (!canViewModifiers) {
             return false
@@ -155,7 +174,7 @@ export const useModifiersPopover = (
             <FloatingFocusManager context={context}>
                 <ModifiersPopover
                     product={props.product}
-                    variant={props.variant}
+                    sku={props.variant.sku}
                     storeHash={storeHash}
                     onClose={onClose}
                     onApply={(modifierValues) => {
@@ -177,6 +196,58 @@ export const useModifiersPopover = (
         getReferenceProps,
         setReference: refs.setReference,
         maybeOpenModifierPopover,
+        modifiersPopover,
+    }
+}
+
+type EditModifiersPopoverState = {
+    product: BigCommerceProduct
+    lineItem: BigCommerceCartLineItem
+}
+
+export const useEditModifiersPopover = (
+    storeHash: string,
+    onApply: (props: {
+        product: BigCommerceProduct
+        modifierValues: ModifierValues
+    }) => void
+) => {
+    const [props, setProps] = useState<EditModifiersPopoverState | null>(null)
+
+    const {refs, context} = useFloating({open: Boolean(props)})
+    const role = useRole(context)
+
+    const {getReferenceProps} = useInteractions([role])
+
+    const onClose = () => setProps(null)
+
+    const modifiersPopover = props ? (
+        <FloatingOverlay className={css.overlay}>
+            <FloatingFocusManager context={context}>
+                <ModifiersPopover
+                    product={props.product}
+                    sku={props.lineItem.sku}
+                    lineItem={props.lineItem}
+                    storeHash={storeHash}
+                    onClose={onClose}
+                    onApply={(modifierValues) => {
+                        onApply({
+                            product: props.product,
+                            modifierValues,
+                        })
+
+                        onClose()
+                    }}
+                    setReference={refs.setReference}
+                />
+            </FloatingFocusManager>
+        </FloatingOverlay>
+    ) : null
+
+    return {
+        getReferenceProps,
+        setReference: refs.setReference,
+        openModifierPopover: setProps,
         modifiersPopover,
     }
 }

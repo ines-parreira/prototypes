@@ -2,10 +2,11 @@ import {renderHook} from 'react-hooks-testing-library'
 import {waitFor} from '@testing-library/react'
 import produce from 'immer'
 import {
+    bigCommerceLineItemFixture,
     bigCommerceProductFixture,
     bigCommerceVariantFixture,
 } from 'fixtures/bigcommerce'
-import {useModifiersPopover} from '../hooks'
+import {useAddModifiersPopover, useEditModifiersPopover} from '../hooks'
 import {useCanViewBigCommerceCreateOrderModifiers} from '../../../utils'
 
 jest.mock('../../../utils', () => ({
@@ -29,7 +30,7 @@ describe('useModifiersPopover', () => {
         const onApplyMock = jest.fn()
 
         const {result} = renderHook(() =>
-            useModifiersPopover('storeHash', onApplyMock)
+            useAddModifiersPopover('storeHash', onApplyMock)
         )
 
         // `modifiersPopover` components is `null` initially
@@ -53,7 +54,7 @@ describe('useModifiersPopover', () => {
         ).mockImplementationOnce(() => false)
 
         const {result} = renderHook(() =>
-            useModifiersPopover('storeHash', onApplyMock)
+            useAddModifiersPopover('storeHash', onApplyMock)
         )
 
         expect(result.current.modifiersPopover).toBeNull()
@@ -77,7 +78,7 @@ describe('useModifiersPopover', () => {
         })
 
         const {result} = renderHook(() =>
-            useModifiersPopover('storeHash', onApplyMock)
+            useAddModifiersPopover('storeHash', onApplyMock)
         )
 
         expect(result.current.modifiersPopover).toBeNull()
@@ -91,6 +92,28 @@ describe('useModifiersPopover', () => {
 
         await waitFor(() => {
             expect(result.current.modifiersPopover).toBeNull()
+        })
+    })
+})
+
+describe('useEditModifiersPopover', () => {
+    it('returns component when openModifierPopover is triggered', async () => {
+        const onApplyMock = jest.fn()
+
+        const {result} = renderHook(() =>
+            useEditModifiersPopover('storeHash', onApplyMock)
+        )
+
+        // `modifiersPopover` components is `null` initially
+        expect(result.current.modifiersPopover).toBeNull()
+
+        result.current.openModifierPopover({
+            product,
+            lineItem: bigCommerceLineItemFixture(),
+        })
+
+        await waitFor(() => {
+            expect(result.current.modifiersPopover).toBeTruthy()
         })
     })
 })

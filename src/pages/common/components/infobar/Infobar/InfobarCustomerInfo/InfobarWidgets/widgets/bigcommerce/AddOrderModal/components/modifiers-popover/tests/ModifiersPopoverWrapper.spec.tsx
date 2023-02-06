@@ -1,16 +1,18 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import produce from 'immer'
 import {
+    bigCommerceLineItemFixture,
     bigCommerceProductFixture,
-    bigCommerceVariantFixture,
 } from 'fixtures/bigcommerce'
 import {ModifiersPopover} from '../ModifiersPopover'
 
-const defaultProps = {
+const defaultProps: ComponentProps<typeof ModifiersPopover> = {
     storeHash: 'Hello',
     product: bigCommerceProductFixture(),
-    variant: bigCommerceVariantFixture(),
+    lineItem: bigCommerceLineItemFixture(),
+    sku: 'THIS IS SKU',
     onClose: jest.fn(),
     onApply: jest.fn(),
     setReference: jest.fn(),
@@ -39,6 +41,24 @@ describe('<ModifiersPopover/>', () => {
         expect(
             screen.getByRole('checkbox', {name: /Include Insurance?/i})
         ).toBeChecked()
+    })
+
+    it('has inputs filled with values from line item', () => {
+        const lineItem = produce(bigCommerceLineItemFixture(), (draft) => {
+            draft.options = [
+                {
+                    nameId: 163,
+                    valueId: 285,
+                    name: 'Test Radio Buttons',
+                    value: 'Test 2',
+                },
+            ]
+        })
+
+        render(<ModifiersPopover {...defaultProps} lineItem={lineItem} />)
+
+        // Confirm that values is visible because it is selected from existing line item
+        expect(screen.getByText(/Test 2/i)).toBeInTheDocument()
     })
 
     it('can submit the form when all required fields are filled out', () => {

@@ -2,8 +2,8 @@ import {Meta, Story} from '@storybook/react'
 import React, {ComponentProps} from 'react'
 import {action} from '@storybook/addon-actions'
 import {
-    bigCommerceVariantFixture,
     bigCommerceProductFixture,
+    bigCommerceLineItemFixture,
 } from 'fixtures/bigcommerce'
 import {ModifiersPopoverBody, ModifiersPopover} from './ModifiersPopover'
 
@@ -20,7 +20,8 @@ const Template: Story<ComponentProps<typeof ModifiersPopover>> = (props) => (
 const defaultProps: ComponentProps<typeof ModifiersPopover> = {
     storeHash: 'Hello',
     product: bigCommerceProductFixture(),
-    variant: bigCommerceVariantFixture(),
+    lineItem: bigCommerceLineItemFixture(),
+    sku: 'THIS IS SKU',
     onClose: () => action('Close'),
     onApply: () => action('Apply'),
     setReference: () => action('Reference set'),

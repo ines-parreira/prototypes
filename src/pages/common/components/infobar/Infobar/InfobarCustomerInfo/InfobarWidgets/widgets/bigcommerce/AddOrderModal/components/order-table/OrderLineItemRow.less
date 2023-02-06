@@ -1,4 +1,6 @@
 @import '~css/new/colors';
+@import '~css/new/layout';
+@import (reference) '~css/typography';
 
 :local {
     .container {
@@ -84,5 +86,31 @@
 
     .priceComponentPopover {
         min-width: 225px;
+    }
+
+    .modifiersList {
+        list-style-type: none;
+        padding-left: 0;
+        margin-bottom: 0;
+
+        li {
+            .body-regular();
+            color: @classic-neutral-grey-5;
+        }
+    }
+
+    .modifierButton {
+        .body-medium();
+        color: @classic-main-primary;
+        cursor: pointer;
+        text-align: left;
+
+        border: 0;
+        background: none;
+        padding: 0;
+
+        i {
+            margin-right: @layout-spacing-xxs;
+        }
     }
 }

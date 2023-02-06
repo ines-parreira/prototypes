@@ -1,4 +1,5 @@
 import React, {useCallback} from 'react'
+import classnames from 'classnames'
 import {
     BigCommerceCartLineItem,
     BigCommerceCustomCartLineItem,
@@ -8,20 +9,89 @@ import {
 } from 'models/integration/types'
 import defaultImage from 'assets/img/presentationals/shopify-product-default-image.png'
 import {ProductStockQuantity} from '../../ProductStockQuantity'
-import {isBigCommerceCartLineItem, isBigCommerceProduct} from '../../utils'
+import {
+    isBigCommerceCartLineItem,
+    isBigCommerceProduct,
+    useCanViewBigCommerceCreateOrderModifiers,
+} from '../../utils'
 import css from './OrderLineItemRow.less'
 
 type Props = {
     product?: BigCommerceProduct | BigCommerceCustomProduct
     lineItem: BigCommerceCartLineItem | BigCommerceCustomCartLineItem
     storeHash: string
+    onOpenModifiers: () => void
 }
 const StockNotAvailable = () => <span className="text-muted">N/A</span>
+
+const Modifiers = ({
+    lineItem,
+    product,
+    onOpenModifiers,
+}: {
+    product?: BigCommerceProduct | BigCommerceCustomProduct
+    lineItem: BigCommerceCartLineItem | BigCommerceCustomCartLineItem
+    onOpenModifiers: () => void
+}) => {
+    const canViewModifiers = useCanViewBigCommerceCreateOrderModifiers()
+
+    if (!canViewModifiers || !isBigCommerceCartLineItem(lineItem)) {
+        return null
+    }
+
+    if (
+        !product ||
+        !isBigCommerceProduct(product) ||
+        !product.modifiers?.length
+    ) {
+        return null
+    }
+
+    const viewableModifiers = lineItem.options
+        .map((option) => {
+            const modifier = (product.modifiers ?? []).find(({id}) => {
+                if ('nameId' in option) {
+                    return option.nameId === id
+                }
+
+                return option.name_id === id
+            })
+
+            if (!modifier) {
+                return null
+            }
+
+            // Display checkbox value as name of the checkbox, instead of yes/no
+            if (modifier.type === 'checkbox') {
+                return modifier.display_name
+            }
+
+            return option.value
+        })
+        .filter((value): value is string => Boolean(value))
+
+    return (
+        <>
+            {viewableModifiers.length ? (
+                <ul className={css.modifiersList}>
+                    {viewableModifiers.map((value) => (
+                        <li key={value}>{value}</li>
+                    ))}
+                </ul>
+            ) : null}
+            <button onClick={onOpenModifiers} className={css.modifierButton}>
+                <i className={classnames('material-icons')}>tune</i>
+                Modify
+            </button>
+        </>
+    )
+}
 
 export default function ProductComponent({
     product,
     lineItem,
     storeHash,
+    onOpenModifiers,
 }: Props) {
     const sku = lineItem.sku
     const renderImage = () => {
@@ -126,6 +196,11 @@ export default function ProductComponent({
                 {renderTitle()}
                 {!!sku && <div className={css.subtitle}>SKU: {sku}</div>}
                 {<div className={css.subtitle}>{renderStock()}</div>}
+                <Modifiers
+                    lineItem={lineItem}
+                    product={product}
+                    onOpenModifiers={onOpenModifiers}
+                />
             </div>
         </td>
     )
