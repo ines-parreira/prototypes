@@ -803,6 +803,13 @@ export function OrderModal({
             <ModalFooter className={css.wrapper}>
                 <div className={css.actions}>
                     <Button
+                        tabIndex={0}
+                        intent="secondary"
+                        onClick={() => handleCancel('footer')}
+                    >
+                        Cancel
+                    </Button>
+                    <Button
                         intent="primary"
                         tabIndex={0}
                         onClick={handleAddOrder}
@@ -812,13 +819,6 @@ export function OrderModal({
                         }
                     >
                         Create order
-                    </Button>
-                    <Button
-                        tabIndex={0}
-                        intent="secondary"
-                        onClick={() => handleCancel('footer')}
-                    >
-                        Cancel
                     </Button>
                 </div>
             </ModalFooter>

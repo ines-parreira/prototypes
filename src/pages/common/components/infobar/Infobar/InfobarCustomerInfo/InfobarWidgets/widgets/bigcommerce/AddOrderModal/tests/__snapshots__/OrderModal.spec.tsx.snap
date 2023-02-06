@@ -264,18 +264,18 @@ exports[`OrderModal should render 1`] = `
             class="actions"
           >
             <button
-              class="wrapper fill primary medium"
-              tabindex="0"
-              type="button"
-            >
-              Create order
-            </button>
-            <button
               class="wrapper fill secondary medium"
               tabindex="0"
               type="button"
             >
               Cancel
+            </button>
+            <button
+              class="wrapper fill primary medium"
+              tabindex="0"
+              type="button"
+            >
+              Create order
             </button>
           </div>
         </div>
