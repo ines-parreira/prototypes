@@ -1,6 +1,350 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<SpotlightModal/> should render 1`] = `
+exports[`<SpotlightModal/> should fetch customers on enter keypress 1`] = `
+[
+  {
+    "cancelToken": CancelToken {
+      "promise": Promise {},
+    },
+    "data": "{"search":"foo2"}",
+    "headers": {
+      "Accept": "application/json, text/plain, */*",
+      "Content-Type": "application/json;charset=utf-8",
+      "X-CSRF-Token": "abcd",
+      "X-Gorgias-User-Client": "web",
+    },
+    "maxBodyLength": -1,
+    "maxContentLength": -1,
+    "method": "post",
+    "params": {
+      "order_by": "_score:desc",
+    },
+    "timeout": 0,
+    "transformRequest": [
+      [Function],
+    ],
+    "transformResponse": [
+      [Function],
+    ],
+    "url": "/api/customers/search",
+    "validateStatus": [Function],
+    "xsrfCookieName": "XSRF-TOKEN",
+    "xsrfHeaderName": "X-XSRF-TOKEN",
+  },
+]
+`;
+
+exports[`<SpotlightModal/> should fetch customers on enter keypress from the old search endpoint  1`] = `
+[
+  {
+    "cancelToken": CancelToken {
+      "promise": Promise {},
+    },
+    "data": "{"view":{"search":"foo2","type":"customer-list"}}",
+    "headers": {
+      "Accept": "application/json, text/plain, */*",
+      "Content-Type": "application/json;charset=utf-8",
+      "X-CSRF-Token": "abcd",
+      "X-Gorgias-User-Client": "web",
+    },
+    "maxBodyLength": -1,
+    "maxContentLength": -1,
+    "method": "put",
+    "timeout": 0,
+    "transformRequest": [
+      [Function],
+    ],
+    "transformResponse": [
+      [Function],
+    ],
+    "url": "/api/views/0/items/",
+    "validateStatus": [Function],
+    "xsrfCookieName": "XSRF-TOKEN",
+    "xsrfHeaderName": "X-XSRF-TOKEN",
+  },
+]
+`;
+
+exports[`<SpotlightModal/> should fetch tickets on enter keypress from the new search endpoint when on the tickets tab 1`] = `
+[
+  {
+    "cancelToken": CancelToken {
+      "promise": Promise {},
+    },
+    "data": "{"search":"foo","filters":""}",
+    "headers": {
+      "Accept": "application/json, text/plain, */*",
+      "Content-Type": "application/json;charset=utf-8",
+      "X-CSRF-Token": "abcd",
+      "X-Gorgias-User-Client": "web",
+    },
+    "maxBodyLength": -1,
+    "maxContentLength": -1,
+    "method": "post",
+    "params": {},
+    "timeout": 0,
+    "transformRequest": [
+      [Function],
+    ],
+    "transformResponse": [
+      [Function],
+    ],
+    "url": "/api/tickets/search",
+    "validateStatus": [Function],
+    "xsrfCookieName": "XSRF-TOKEN",
+    "xsrfHeaderName": "X-XSRF-TOKEN",
+  },
+]
+`;
+
+exports[`<SpotlightModal/> should fetch tickets on enter keypress from the old search endpoint if on the tickets tab 1`] = `
+[
+  {
+    "cancelToken": CancelToken {
+      "promise": Promise {},
+    },
+    "data": "{"view":{"search":"foo2","type":"ticket-list"}}",
+    "headers": {
+      "Accept": "application/json, text/plain, */*",
+      "Content-Type": "application/json;charset=utf-8",
+      "X-CSRF-Token": "abcd",
+      "X-Gorgias-User-Client": "web",
+    },
+    "maxBodyLength": -1,
+    "maxContentLength": -1,
+    "method": "put",
+    "timeout": 0,
+    "transformRequest": [
+      [Function],
+    ],
+    "transformResponse": [
+      [Function],
+    ],
+    "url": "/api/views/0/items/",
+    "validateStatus": [Function],
+    "xsrfCookieName": "XSRF-TOKEN",
+    "xsrfHeaderName": "X-XSRF-TOKEN",
+  },
+]
+`;
+
+exports[`<SpotlightModal/> should render the fetched result set with SpotlightRow for Customers tab 1`] = `
+<div
+  aria-describedby="modal-51-desc"
+  aria-labelledby="modal-51-title"
+  aria-modal="true"
+  class="modal spotlightModal default open"
+  role="dialog"
+>
+  <div
+    class="dialog large scrollableDialog"
+  >
+    <div
+      class="modalContent scrollableContent default spotlightModalContent"
+    >
+      <div
+        class="component searchInput"
+      >
+        <div
+          class="wrapper isFocused input textInput shortcuts-enable"
+        >
+          <span
+            class="prefix"
+          >
+            <i
+              class="material-icons icon"
+            >
+              search
+            </i>
+          </span>
+          <input
+            class="input"
+            id="input-text-52"
+            name="input-text-52"
+            placeholder="Search..."
+            type="text"
+            value="foo"
+          />
+        </div>
+      </div>
+      <div
+        class="container tabNavigator"
+      >
+        <div
+          class="tabContainer"
+        >
+          <div
+            class="tab activeTab"
+            tabindex="1"
+          >
+            <span
+              class="tabLabel"
+            >
+              Customers
+            </span>
+          </div>
+          <div
+            class="tab"
+            tabindex="2"
+          >
+            <span
+              class="tabLabel"
+            >
+              Tickets
+            </span>
+          </div>
+        </div>
+        <div
+          class="activeIndicator"
+          style="width: 0px; left: 0px;"
+        />
+      </div>
+      <div
+        class="wrapper scrollable modalBody"
+        id="modal-51-desc"
+      >
+        <div>
+          <div>
+            SpotlightCustomerRow
+          </div>
+        </div>
+      </div>
+      <div
+        class="wrapper footer"
+      >
+        <button
+          class="wrapper ghost secondary small"
+          type="button"
+        >
+          <span>
+            Advanced Search
+          </span>
+          <div
+            class="wrapper classic shortcut"
+          >
+            ⇧
+          </div>
+          <div
+            class="wrapper classic shortcut"
+          >
+            ↩
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<SpotlightModal/> should render the fetched result set with SpotlightRow for Tickets tab 1`] = `
+<div
+  aria-describedby="modal-49-desc"
+  aria-labelledby="modal-49-title"
+  aria-modal="true"
+  class="modal spotlightModal default open"
+  role="dialog"
+>
+  <div
+    class="dialog large scrollableDialog"
+  >
+    <div
+      class="modalContent scrollableContent default spotlightModalContent"
+    >
+      <div
+        class="component searchInput"
+      >
+        <div
+          class="wrapper isFocused input textInput shortcuts-enable"
+        >
+          <span
+            class="prefix"
+          >
+            <i
+              class="material-icons icon"
+            >
+              search
+            </i>
+          </span>
+          <input
+            class="input"
+            id="input-text-50"
+            name="input-text-50"
+            placeholder="Search..."
+            type="text"
+            value="foo"
+          />
+        </div>
+      </div>
+      <div
+        class="container tabNavigator"
+      >
+        <div
+          class="tabContainer"
+        >
+          <div
+            class="tab"
+            tabindex="1"
+          >
+            <span
+              class="tabLabel"
+            >
+              Customers
+            </span>
+          </div>
+          <div
+            class="tab activeTab"
+            tabindex="2"
+          >
+            <span
+              class="tabLabel"
+            >
+              Tickets
+            </span>
+          </div>
+        </div>
+        <div
+          class="activeIndicator"
+          style="width: 0px; left: 0px;"
+        />
+      </div>
+      <div
+        class="wrapper scrollable modalBody"
+        id="modal-49-desc"
+      >
+        <div>
+          <div>
+            SpotlightTicketRow
+          </div>
+        </div>
+      </div>
+      <div
+        class="wrapper footer"
+      >
+        <button
+          class="wrapper ghost secondary small"
+          type="button"
+        >
+          <span>
+            Advanced Search
+          </span>
+          <div
+            class="wrapper classic shortcut"
+          >
+            ⇧
+          </div>
+          <div
+            class="wrapper classic shortcut"
+          >
+            ↩
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<SpotlightModal/> should render with customer tab as default 1`] = `
 <div
   aria-describedby="modal-1-desc"
   aria-labelledby="modal-1-title"
@@ -40,159 +384,39 @@ exports[`<SpotlightModal/> should render 1`] = `
         </div>
       </div>
       <div
+        class="container tabNavigator"
+      >
+        <div
+          class="tabContainer"
+        >
+          <div
+            class="tab activeTab"
+            tabindex="1"
+          >
+            <span
+              class="tabLabel"
+            >
+              Customers
+            </span>
+          </div>
+          <div
+            class="tab"
+            tabindex="2"
+          >
+            <span
+              class="tabLabel"
+            >
+              Tickets
+            </span>
+          </div>
+        </div>
+        <div
+          class="activeIndicator"
+          style="width: 0px; left: 0px;"
+        />
+      </div>
+      <div
         class="wrapper footer cleanSearchFooter"
-      >
-        <button
-          class="wrapper ghost secondary small"
-          type="button"
-        >
-          <span>
-            Advanced Search
-          </span>
-          <div
-            class="wrapper classic shortcut"
-          >
-            ⇧
-          </div>
-          <div
-            class="wrapper classic shortcut"
-          >
-            ↩
-          </div>
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`<SpotlightModal/> should render the fetched result set with SpotlightRow for /app/customers route 1`] = `
-<div
-  aria-describedby="modal-37-desc"
-  aria-labelledby="modal-37-title"
-  aria-modal="true"
-  class="modal spotlightModal default open"
-  role="dialog"
->
-  <div
-    class="dialog large scrollableDialog"
-  >
-    <div
-      class="modalContent scrollableContent default spotlightModalContent"
-    >
-      <div
-        class="component searchInput"
-      >
-        <div
-          class="wrapper isFocused input textInput shortcuts-enable"
-        >
-          <span
-            class="prefix"
-          >
-            <i
-              class="material-icons icon"
-            >
-              search
-            </i>
-          </span>
-          <input
-            class="input"
-            id="input-text-38"
-            name="input-text-38"
-            placeholder="Search..."
-            type="text"
-            value="foo"
-          />
-        </div>
-      </div>
-      <div
-        class="wrapper scrollable modalBody"
-        id="modal-37-desc"
-      >
-        <div>
-          <div>
-            SpotlightCustomerRow
-          </div>
-        </div>
-      </div>
-      <div
-        class="wrapper footer"
-      >
-        <button
-          class="wrapper ghost secondary small"
-          type="button"
-        >
-          <span>
-            Advanced Search
-          </span>
-          <div
-            class="wrapper classic shortcut"
-          >
-            ⇧
-          </div>
-          <div
-            class="wrapper classic shortcut"
-          >
-            ↩
-          </div>
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`<SpotlightModal/> should render the fetched result set with SpotlightRow for /app/tickets route 1`] = `
-<div
-  aria-describedby="modal-35-desc"
-  aria-labelledby="modal-35-title"
-  aria-modal="true"
-  class="modal spotlightModal default open"
-  role="dialog"
->
-  <div
-    class="dialog large scrollableDialog"
-  >
-    <div
-      class="modalContent scrollableContent default spotlightModalContent"
-    >
-      <div
-        class="component searchInput"
-      >
-        <div
-          class="wrapper isFocused input textInput shortcuts-enable"
-        >
-          <span
-            class="prefix"
-          >
-            <i
-              class="material-icons icon"
-            >
-              search
-            </i>
-          </span>
-          <input
-            class="input"
-            id="input-text-36"
-            name="input-text-36"
-            placeholder="Search..."
-            type="text"
-            value="foo"
-          />
-        </div>
-      </div>
-      <div
-        class="wrapper scrollable modalBody"
-        id="modal-35-desc"
-      >
-        <div>
-          <div>
-            SpotlightTicketRow
-          </div>
-        </div>
-      </div>
-      <div
-        class="wrapper footer"
       >
         <button
           class="wrapper ghost secondary small"
@@ -220,8 +444,8 @@ exports[`<SpotlightModal/> should render the fetched result set with SpotlightRo
 
 exports[`<SpotlightModal/> should reset search after closing 1`] = `
 <div
-  aria-describedby="modal-39-desc"
-  aria-labelledby="modal-39-title"
+  aria-describedby="modal-53-desc"
+  aria-labelledby="modal-53-title"
   aria-modal="true"
   class="modal spotlightModal default open"
   role="dialog"
@@ -249,13 +473,143 @@ exports[`<SpotlightModal/> should reset search after closing 1`] = `
           </span>
           <input
             class="input"
-            id="input-text-40"
-            name="input-text-40"
+            id="input-text-54"
+            name="input-text-54"
             placeholder="Search..."
             type="text"
             value=""
           />
         </div>
+      </div>
+      <div
+        class="container tabNavigator"
+      >
+        <div
+          class="tabContainer"
+        >
+          <div
+            class="tab activeTab"
+            tabindex="1"
+          >
+            <span
+              class="tabLabel"
+            >
+              Customers
+            </span>
+          </div>
+          <div
+            class="tab"
+            tabindex="2"
+          >
+            <span
+              class="tabLabel"
+            >
+              Tickets
+            </span>
+          </div>
+        </div>
+        <div
+          class="activeIndicator"
+          style="width: 0px; left: 0px;"
+        />
+      </div>
+      <div
+        class="wrapper footer cleanSearchFooter"
+      >
+        <button
+          class="wrapper ghost secondary small"
+          type="button"
+        >
+          <span>
+            Advanced Search
+          </span>
+          <div
+            class="wrapper classic shortcut"
+          >
+            ⇧
+          </div>
+          <div
+            class="wrapper classic shortcut"
+          >
+            ↩
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<SpotlightModal/> should set tickets tab on click 1`] = `
+<div
+  aria-describedby="modal-3-desc"
+  aria-labelledby="modal-3-title"
+  aria-modal="true"
+  class="modal spotlightModal default open"
+  role="dialog"
+>
+  <div
+    class="dialog large scrollableDialog"
+  >
+    <div
+      class="modalContent scrollableContent default spotlightModalContent"
+    >
+      <div
+        class="component searchInput"
+      >
+        <div
+          class="wrapper input textInput shortcuts-enable"
+        >
+          <span
+            class="prefix"
+          >
+            <i
+              class="material-icons icon"
+            >
+              search
+            </i>
+          </span>
+          <input
+            class="input"
+            id="input-text-4"
+            name="input-text-4"
+            placeholder="Search..."
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+      <div
+        class="container tabNavigator"
+      >
+        <div
+          class="tabContainer"
+        >
+          <div
+            class="tab"
+            tabindex="1"
+          >
+            <span
+              class="tabLabel"
+            >
+              Customers
+            </span>
+          </div>
+          <div
+            class="tab activeTab"
+            tabindex="2"
+          >
+            <span
+              class="tabLabel"
+            >
+              Tickets
+            </span>
+          </div>
+        </div>
+        <div
+          class="activeIndicator"
+          style="width: 0px; left: 0px;"
+        />
       </div>
       <div
         class="wrapper footer cleanSearchFooter"
@@ -286,8 +640,8 @@ exports[`<SpotlightModal/> should reset search after closing 1`] = `
 
 exports[`<SpotlightModal/> should show SpotlightLoader component while results are fetched 1`] = `
 <div
-  aria-describedby="modal-31-desc"
-  aria-labelledby="modal-31-title"
+  aria-describedby="modal-43-desc"
+  aria-labelledby="modal-43-title"
   aria-modal="true"
   class="modal spotlightModal default open"
   role="dialog"
@@ -315,8 +669,8 @@ exports[`<SpotlightModal/> should show SpotlightLoader component while results a
           </span>
           <input
             class="input"
-            id="input-text-32"
-            name="input-text-32"
+            id="input-text-44"
+            name="input-text-44"
             placeholder="Search..."
             type="text"
             value="foo"
@@ -324,8 +678,40 @@ exports[`<SpotlightModal/> should show SpotlightLoader component while results a
         </div>
       </div>
       <div
+        class="container tabNavigator"
+      >
+        <div
+          class="tabContainer"
+        >
+          <div
+            class="tab activeTab"
+            tabindex="1"
+          >
+            <span
+              class="tabLabel"
+            >
+              Customers
+            </span>
+          </div>
+          <div
+            class="tab"
+            tabindex="2"
+          >
+            <span
+              class="tabLabel"
+            >
+              Tickets
+            </span>
+          </div>
+        </div>
+        <div
+          class="activeIndicator"
+          style="width: 0px; left: 0px;"
+        />
+      </div>
+      <div
         class="wrapper scrollable modalBody"
-        id="modal-31-desc"
+        id="modal-43-desc"
       >
         <div>
           SpotlightLoader
@@ -358,10 +744,10 @@ exports[`<SpotlightModal/> should show SpotlightLoader component while results a
 </div>
 `;
 
-exports[`<SpotlightModal/> should show SpotlightNoResults component when no results are available and notify when an error occurs 1`] = `
+exports[`<SpotlightModal/> should show SpotlightNoResults component when no results are available  1`] = `
 <div
-  aria-describedby="modal-33-desc"
-  aria-labelledby="modal-33-title"
+  aria-describedby="modal-45-desc"
+  aria-labelledby="modal-45-title"
   aria-modal="true"
   class="modal spotlightModal default open"
   role="dialog"
@@ -389,8 +775,8 @@ exports[`<SpotlightModal/> should show SpotlightNoResults component when no resu
           </span>
           <input
             class="input"
-            id="input-text-34"
-            name="input-text-34"
+            id="input-text-46"
+            name="input-text-46"
             placeholder="Search..."
             type="text"
             value="foo"
@@ -398,8 +784,40 @@ exports[`<SpotlightModal/> should show SpotlightNoResults component when no resu
         </div>
       </div>
       <div
+        class="container tabNavigator"
+      >
+        <div
+          class="tabContainer"
+        >
+          <div
+            class="tab activeTab"
+            tabindex="1"
+          >
+            <span
+              class="tabLabel"
+            >
+              Customers
+            </span>
+          </div>
+          <div
+            class="tab"
+            tabindex="2"
+          >
+            <span
+              class="tabLabel"
+            >
+              Tickets
+            </span>
+          </div>
+        </div>
+        <div
+          class="activeIndicator"
+          style="width: 0px; left: 0px;"
+        />
+      </div>
+      <div
         class="wrapper scrollable modalBody"
-        id="modal-33-desc"
+        id="modal-45-desc"
       >
         <div
           class="wrapper"

@@ -9,7 +9,7 @@ import React, {
 import {stringify} from 'qs'
 import {useLocation} from 'react-router-dom'
 import classnames from 'classnames'
-import {usePrevious, useUnmount, useUpdateEffect} from 'react-use'
+import {useAsyncFn, useUnmount, useUpdateEffect} from 'react-use'
 import _isEmpty from 'lodash/isEmpty'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {CancelToken} from 'axios'
@@ -20,6 +20,7 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
 import Search from 'pages/common/components/Search'
+import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {ViewType} from 'models/view/types'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -48,6 +49,16 @@ type Props = {
     onCloseModal: () => void
 }
 
+enum Tabs {
+    Tickets = 'tickets',
+    Customers = 'customers',
+}
+
+const navigatorTabs = [
+    {label: 'Customers', value: Tabs.Customers},
+    {label: 'Tickets', value: Tabs.Tickets},
+]
+
 const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
     const {pathname} = useLocation()
     const dispatch = useAppDispatch()
@@ -57,23 +68,25 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
     const isESCustomerSearchEnabled =
         useFlags()[FeatureFlagKey.ElasticsearchCustomerSearch]
 
-    const isOnCustomerPage = useMemo(
-        () => pathname.includes('/app/customer'),
-        [pathname]
-    )
-
     const [searchQuery, setSearchQuery] = useState<string>()
-    const previousSearchQuery = usePrevious(searchQuery)
+    const [lastSearchQueries, setLastSearchQueries] = useState<{
+        [Tabs.Tickets]: string
+        [Tabs.Customers]: string
+    }>({customers: '', tickets: ''})
     const [hasSearched, setHasSearched] = useState<boolean>(false)
-    const [items, setItems] = useState<Ticket[] | Customer[]>([])
-    const [itemsType, setItemsType] = useState<ViewType | undefined>()
+    const [tickets, setTickets] = useState<Ticket[]>([])
+    const [customers, setCustomers] = useState<Customer[]>([])
+    const [searchItemsType, setSearchItemsType] = useState<ViewType>(
+        ViewType.CustomerList
+    )
 
     const goToAdvancedSearch = useCallback(() => {
         onCloseModal()
 
-        const advancedSearchPathname = isOnCustomerPage
-            ? '/app/customers/search'
-            : '/app/tickets/search'
+        const advancedSearchPathname =
+            searchItemsType === ViewType.CustomerList
+                ? '/app/customers/search'
+                : '/app/tickets/search'
 
         history.push({
             pathname: advancedSearchPathname,
@@ -83,7 +96,7 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                 }),
             }),
         })
-    }, [isOnCustomerPage, onCloseModal, searchQuery])
+    }, [searchItemsType, onCloseModal, searchQuery])
 
     useEffect(() => {
         shortcutManager.bind('SpotlightModal', {
@@ -128,9 +141,10 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
 
     const resetSearch = () => {
         searchQuery && setSearchQuery('')
-        !_isEmpty(items) && setItems([])
+        !_isEmpty(tickets) && setTickets([])
+        !_isEmpty(customers) && setCustomers([])
         hasSearched && setHasSearched(false)
-        itemsType && setItemsType(undefined)
+        setSearchItemsType(ViewType.CustomerList)
     }
 
     const createFetchSearchItems = useCallback(
@@ -158,7 +172,9 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                     })
                 } else {
                     const url = `/api/views/${0}/items/`
-                    promise = client.put<ApiListResponsePagination<Ticket[]>>(
+                    promise = client.put<
+                        ApiListResponsePagination<Ticket[] | Customer[]>
+                    >(
                         url,
                         {
                             view: {search: searchTerm, type: viewType},
@@ -169,7 +185,19 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
 
                 try {
                     const {data} = await promise
-                    setItems(data.data)
+                    if (viewType === ViewType.TicketList) {
+                        setLastSearchQueries({
+                            ...lastSearchQueries,
+                            tickets: searchTerm,
+                        })
+                        setTickets(data.data as Ticket[])
+                    } else if (viewType === ViewType.CustomerList) {
+                        setLastSearchQueries({
+                            ...lastSearchQueries,
+                            customers: searchTerm,
+                        })
+                        setCustomers(data.data as Customer[])
+                    }
                 } catch (e) {
                     void dispatch(
                         notify({
@@ -179,23 +207,40 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                     )
                 }
             },
-        [dispatch, isESCustomerSearchEnabled, isESTicketSearchEnabled]
+        [
+            dispatch,
+            isESCustomerSearchEnabled,
+            isESTicketSearchEnabled,
+            lastSearchQueries,
+        ]
     )
 
     const [cancellableFetchSearchItems] = useCancellableRequest(
         createFetchSearchItems
     )
 
-    const [{loading: isLoading}, fetchSearchItems] = useDelayedAsyncFn(
+    const [{loading: isRequestLoading}, fetchSearchItems] = useAsyncFn(
         cancellableFetchSearchItems,
-        [createFetchSearchItems],
-        300
+        [cancellableFetchSearchItems]
     )
 
-    const handleSearch = (query: string) => {
+    const [{loading: isDelayedRequestLoading}, delayedFetchSearchItems] =
+        useDelayedAsyncFn(
+            cancellableFetchSearchItems,
+            [cancellableFetchSearchItems],
+            300
+        )
+
+    const isLoading = useMemo(
+        () => isRequestLoading || isDelayedRequestLoading,
+        [isRequestLoading, isDelayedRequestLoading]
+    )
+
+    const handleSearchInput = (query: string) => {
         if (!query && searchQuery) {
             setHasSearched(false)
-            setItems([])
+            setTickets([])
+            setCustomers([])
         }
         setSearchQuery(query)
     }
@@ -204,16 +249,52 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
         if (
             event.key === 'Enter' &&
             searchQuery &&
-            previousSearchQuery !== searchQuery
+            ((searchItemsType === ViewType.CustomerList &&
+                lastSearchQueries.customers !== searchQuery) ||
+                (searchItemsType === ViewType.TicketList &&
+                    lastSearchQueries.tickets !== searchQuery) ||
+                !hasSearched)
         ) {
-            const searchItemsType = isOnCustomerPage
-                ? ViewType.CustomerList
-                : ViewType.TicketList
-            await fetchSearchItems(searchQuery, searchItemsType)
-            setItemsType(searchItemsType)
+            await delayedFetchSearchItems(searchQuery, searchItemsType)
             setHasSearched(true)
         }
     }
+
+    const handleTabChange = (tab: Tabs) => {
+        if (tab === Tabs.Customers) {
+            setSearchItemsType(ViewType.CustomerList)
+        } else if (tab === Tabs.Tickets) {
+            setSearchItemsType(ViewType.TicketList)
+        }
+    }
+
+    const activeTab: string = useMemo(() => {
+        if (searchItemsType === ViewType.CustomerList) {
+            return Tabs.Customers
+        } else if (searchItemsType === ViewType.TicketList) {
+            return Tabs.Tickets
+        }
+
+        return Tabs.Customers
+    }, [searchItemsType])
+
+    useUpdateEffect(() => {
+        if (searchQuery && hasSearched) {
+            if (
+                searchItemsType === ViewType.CustomerList &&
+                lastSearchQueries.customers !== searchQuery &&
+                lastSearchQueries[Tabs.Tickets] === searchQuery
+            ) {
+                void fetchSearchItems(searchQuery, ViewType.CustomerList)
+            } else if (
+                searchItemsType === ViewType.TicketList &&
+                lastSearchQueries.tickets !== searchQuery &&
+                lastSearchQueries[Tabs.Customers] === searchQuery
+            ) {
+                void fetchSearchItems(searchQuery, ViewType.TicketList)
+            }
+        }
+    }, [searchItemsType])
 
     return (
         <Modal
@@ -230,10 +311,16 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                     css.textInput,
                     'shortcuts-enable'
                 )}
-                onChange={handleSearch}
+                onChange={handleSearchInput}
                 onKeyDown={handleKeyDown}
                 externalInputRef={spotlightSearchInputRef}
                 shouldResetInput={!isOpen}
+            />
+            <TabNavigator
+                tabs={navigatorTabs}
+                activeTab={activeTab}
+                onTabChange={handleTabChange as (tab: string) => void}
+                className={css.tabNavigator}
             />
             {(hasSearched || isLoading) && (
                 <ModalBody className={css.modalBody}>
@@ -241,42 +328,32 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                         <SpotlightLoader className={css.loader} />
                     ) : (
                         <>
-                            {_isEmpty(items) ? (
+                            {(_isEmpty(tickets) &&
+                                searchItemsType === ViewType.TicketList) ||
+                            (_isEmpty(customers) &&
+                                searchItemsType === ViewType.CustomerList) ? (
                                 <SpotlightNoResults
                                     handleAdvancedSearch={goToAdvancedSearch}
                                 />
                             ) : (
                                 <SpotlightScrollArea>
-                                    {itemsType &&
-                                        items.map((item) => {
-                                            if (
-                                                itemsType ===
-                                                ViewType.TicketList
-                                            ) {
-                                                return (
-                                                    <SpotlightTicketRow
-                                                        key={item.id}
-                                                        item={item as Ticket}
-                                                        onCloseModal={
-                                                            onCloseModal
-                                                        }
-                                                    />
-                                                )
-                                            } else if (
-                                                itemsType ===
-                                                ViewType.CustomerList
-                                            ) {
-                                                return (
-                                                    <SpotlightCustomerRow
-                                                        key={item.id}
-                                                        item={item as Customer}
-                                                        onCloseModal={
-                                                            onCloseModal
-                                                        }
-                                                    />
-                                                )
-                                            }
-                                        })}
+                                    {searchItemsType === ViewType.TicketList &&
+                                        tickets.map((ticket) => (
+                                            <SpotlightTicketRow
+                                                key={ticket.id}
+                                                item={ticket}
+                                                onCloseModal={onCloseModal}
+                                            />
+                                        ))}
+                                    {searchItemsType ===
+                                        ViewType.CustomerList &&
+                                        customers.map((customer) => (
+                                            <SpotlightCustomerRow
+                                                key={customer.id}
+                                                item={customer}
+                                                onCloseModal={onCloseModal}
+                                            />
+                                        ))}
                                 </SpotlightScrollArea>
                             )}
                         </>
