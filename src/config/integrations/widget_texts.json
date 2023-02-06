@@ -197,7 +197,7 @@
         "usualReplyTimeMinutes": "Nous répondons généralement en quelques minutes",
         "backLabelBackAt": "Retour en ligne à {time}",
         "waitTimeMediumReply": "Merci de nous avoir contactés! Un agent vous répondra dans environ {waitTime} minutes.",
-        "chatWithUs": "Clavardez avec nous"
+        "chatWithUs": "Discutez avec nous"
     },
     "es": {
         "introductionText": "¿Cómo podemos ayudarte?",
@@ -597,6 +597,6 @@
         "usualReplyTimeMinutes": "Obyčeně odpoví za několik minut",
         "backLabelBackAt": "Zpátky on-line v {time}",
         "waitTimeMediumReply": "Děkujeme, že jste se ozvali! Agent se s vámi spojí přibližně za {waitTime} minut.",
-        "chatWithUs": "Pojďte chatovat"
+        "chatWithUs": "Chatujte s námi"
     }
 }
