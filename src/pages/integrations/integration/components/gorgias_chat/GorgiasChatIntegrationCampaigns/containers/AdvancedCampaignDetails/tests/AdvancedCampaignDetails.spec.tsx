@@ -494,7 +494,7 @@ describe('<AdvancedCampaignDetails />', () => {
             screen.getByText('0 seconds')
 
             act(() => {
-                screen.getByRole('button', {name: 'Save'})
+                screen.getByText('Save Changes')
             })
 
             screen.getByText('0 seconds')
@@ -563,11 +563,9 @@ describe('<AdvancedCampaignDetails />', () => {
             agentsContainer.getByText('AP')
         })
 
-        it('shows and enables the "Save" button', () => {
+        it('shows and enables the "Save Changes" button', () => {
             expect(
-                screen
-                    .getByRole('button', {name: 'Save'})
-                    .hasAttribute('disabled')
+                screen.getByText('Save Changes').hasAttribute('disabled')
             ).toBeFalsy()
         })
 
@@ -579,9 +577,7 @@ describe('<AdvancedCampaignDetails />', () => {
             })
 
             expect(
-                screen
-                    .getByRole('button', {name: 'Save'})
-                    .hasAttribute('disabled')
+                screen.getByText('Save Changes').hasAttribute('disabled')
             ).toBeTruthy()
         })
     })

@@ -24,7 +24,7 @@ export const CampaignFooter = ({
         <div>
             <Button
                 intent="primary"
-                aria-label={isUpdate ? 'Save' : 'Create & activate'}
+                aria-label={isUpdate ? 'Save Changes' : 'Create & activate'}
                 className={classnames({
                     'btn-loading': isActionInProgress,
                 })}
@@ -32,7 +32,7 @@ export const CampaignFooter = ({
                 isDisabled={!isCampaignValid}
                 onClick={onSave}
             >
-                {isUpdate ? 'Save' : 'Create & activate'}
+                {isUpdate ? 'Save Changes' : 'Create & activate'}
             </Button>
             {isUpdate && (
                 <ConfirmButton

@@ -2,10 +2,11 @@ import React, {Component, FormEvent} from 'react'
 import {Link} from 'react-router-dom'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map, List} from 'immutable'
-import {Breadcrumb, BreadcrumbItem, Button, Form} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem, Form} from 'reactstrap'
 import classnames from 'classnames'
 import {RootState} from 'state/types'
 
+import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import ListField from 'pages/common/forms/ListField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
@@ -256,13 +257,10 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
                         <div>
                             <Button
                                 type="submit"
-                                color="success"
-                                className={classnames({
-                                    'btn-loading': isUpdating,
-                                })}
-                                disabled={isUpdating}
+                                isLoading={isUpdating}
+                                isDisabled={isUpdating}
                             >
-                                Save changes
+                                Save Changes
                             </Button>
                         </div>
                     </Form>

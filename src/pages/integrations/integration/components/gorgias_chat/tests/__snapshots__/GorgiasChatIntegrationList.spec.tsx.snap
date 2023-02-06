@@ -25,19 +25,10 @@ exports[`<GorgiasChatIntegrationList /> should display correcty the list of chat
       </nav>
       <div>
         <button
-          class="btn btn-success"
-          type="submit"
+          class="wrapper fill primary medium"
+          type="button"
         >
-          <div
-            class="createIntegrationBtn"
-          >
-            <i
-              class="material-icons mr-2"
-            >
-              add
-            </i>
-            Add New
-          </div>
+          Add Chat
         </button>
       </div>
     </div>

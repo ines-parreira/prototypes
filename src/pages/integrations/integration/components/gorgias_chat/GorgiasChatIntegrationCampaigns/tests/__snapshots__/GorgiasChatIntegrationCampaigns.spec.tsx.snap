@@ -33,10 +33,14 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the empty st
       </nav>
       <div>
         <a
-          class="btn btn-success"
           to="/app/settings/channels/gorgias_chat/118/campaigns/new"
         >
-          Create campaign
+          <button
+            class="wrapper fill primary medium"
+            type="button"
+          >
+            Create Campaign
+          </button>
         </a>
       </div>
     </div>
@@ -130,10 +134,14 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
       </nav>
       <div>
         <a
-          class="btn btn-success"
           to="/app/settings/channels/gorgias_chat/118/campaigns/new"
         >
-          Create campaign
+          <button
+            class="wrapper fill primary medium"
+            type="button"
+          >
+            Create Campaign
+          </button>
         </a>
       </div>
     </div>

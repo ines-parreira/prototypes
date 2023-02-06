@@ -543,15 +543,13 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
           />
         </div>
       </div>
-      <Button
-        className="btn-loading"
-        color="success"
-        disabled={true}
-        tag="button"
+      <ForwardRef
+        isDisabled={true}
+        isLoading={true}
         type="submit"
       >
-        Save changes
-      </Button>
+        Save Changes
+      </ForwardRef>
     </Form>
   </GorgiasChatIntegrationPreviewContainer>
 </div>
@@ -962,15 +960,13 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
           />
         </div>
       </div>
-      <Button
-        className=""
-        color="success"
-        disabled={false}
-        tag="button"
+      <ForwardRef
+        isDisabled={false}
+        isLoading={false}
         type="submit"
       >
-        Save changes
-      </Button>
+        Save Changes
+      </ForwardRef>
     </Form>
   </GorgiasChatIntegrationPreviewContainer>
 </div>

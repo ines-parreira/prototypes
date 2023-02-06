@@ -3,10 +3,11 @@ import {Link} from 'react-router-dom'
 import {Map, fromJS, List} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 import moment from 'moment'
-import {Breadcrumb, BreadcrumbItem, Button, Container, Table} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem, Container, Table} from 'reactstrap'
 import classnames from 'classnames'
 
 import {updateCampaign} from 'state/campaigns/actions'
+import Button from 'pages/common/components/button/Button'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import PageHeader from 'pages/common/components/PageHeader'
 import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
@@ -57,16 +58,14 @@ export class GorgiasChatIntegrationCampaignsComponent extends Component<Props> {
                         </Breadcrumb>
                     }
                 >
-                    <Button
-                        tag={Link}
-                        color="success"
+                    <Link
                         to={
                             `/app/settings/channels/${IntegrationType.GorgiasChat}/` +
                             `${integration.get('id') as string}/campaigns/new`
                         }
                     >
-                        Create campaign
-                    </Button>
+                        <Button>Create Campaign</Button>
+                    </Link>
                 </PageHeader>
 
                 <GorgiasChatIntegrationNavigation integration={integration} />

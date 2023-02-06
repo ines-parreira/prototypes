@@ -1,7 +1,9 @@
 import React, {useMemo} from 'react'
 import {List, Map} from 'immutable'
 import classnames from 'classnames'
-import {Breadcrumb, BreadcrumbItem, Button, Container} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
+
+import Button from 'pages/common/components/button/Button'
 
 import {getIntegrationConfig} from 'state/integrations/helpers'
 
@@ -68,17 +70,13 @@ function GorgiasChatIntegrationList({integrations, loading}: Props) {
                 }
             >
                 <Button
-                    type="submit"
-                    color="success"
                     onClick={() =>
                         history.push(
                             `/app/settings/channels/${IntegrationType.GorgiasChat}/new/appearance`
                         )
                     }
                 >
-                    <div className={css.createIntegrationBtn}>
-                        <i className="material-icons mr-2">add</i>Add New
-                    </div>
+                    Add Chat
                 </Button>
             </PageHeader>
 

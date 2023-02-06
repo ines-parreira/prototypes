@@ -590,23 +590,24 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                             </div>
                           </ListField>
                           <div>
-                            <Button
-                              className=""
-                              color="success"
-                              disabled={false}
-                              tag="button"
+                            <ForwardRef
+                              isDisabled={false}
+                              isLoading={false}
                               type="submit"
                             >
-                              <button
-                                aria-label={null}
-                                className="btn btn-success"
-                                disabled={false}
-                                onClick={[Function]}
-                                type="submit"
+                              <BaseButton
+                                isDisabled={false}
+                                isLoading={false}
                               >
-                                Save changes
-                              </button>
-                            </Button>
+                                <button
+                                  className="wrapper fill primary medium"
+                                  disabled={false}
+                                  type="submit"
+                                >
+                                  Save Changes
+                                </button>
+                              </BaseButton>
+                            </ForwardRef>
                           </div>
                         </form>
                       </Form>
@@ -1549,23 +1550,24 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                             </div>
                           </ListField>
                           <div>
-                            <Button
-                              className=""
-                              color="success"
-                              disabled={false}
-                              tag="button"
+                            <ForwardRef
+                              isDisabled={false}
+                              isLoading={false}
                               type="submit"
                             >
-                              <button
-                                aria-label={null}
-                                className="btn btn-success"
-                                disabled={false}
-                                onClick={[Function]}
-                                type="submit"
+                              <BaseButton
+                                isDisabled={false}
+                                isLoading={false}
                               >
-                                Save changes
-                              </button>
-                            </Button>
+                                <button
+                                  className="wrapper fill primary medium"
+                                  disabled={false}
+                                  type="submit"
+                                >
+                                  Save Changes
+                                </button>
+                              </BaseButton>
+                            </ForwardRef>
                           </div>
                         </form>
                       </Form>
