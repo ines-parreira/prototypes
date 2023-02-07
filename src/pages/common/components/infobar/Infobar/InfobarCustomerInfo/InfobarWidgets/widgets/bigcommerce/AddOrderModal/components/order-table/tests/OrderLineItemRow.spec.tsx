@@ -159,7 +159,7 @@ describe('<OrderLineItemRow/>', () => {
 
         await waitFor(() => {
             expect(
-                screen.getByText('Discount cannot be more than the price')
+                screen.getByText('Discount cannot be higher than the price.')
             ).toBeInTheDocument()
         })
 

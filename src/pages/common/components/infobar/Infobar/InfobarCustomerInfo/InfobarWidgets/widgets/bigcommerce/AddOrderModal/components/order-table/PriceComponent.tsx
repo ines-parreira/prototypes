@@ -130,7 +130,7 @@ export default function PriceComponent({
                         {hasError ? (
                             <Caption
                                 id="discount-amount-caption"
-                                error="Discount cannot be more than the price"
+                                error="Discount cannot be higher than the price."
                             />
                         ) : null}
                     </div>
