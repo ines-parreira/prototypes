@@ -1,0 +1,37 @@
+@import '~css/new/layout.less';
+@import '~css/new/colorTokens.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        display: flex;
+        align-items: center;
+        padding: @layout-spacing-s @layout-spacing-m;
+        border-bottom: 1px solid @classic-neutral-grey-3;
+        column-gap: @layout-spacing-xs;
+
+        &:hover {
+            background-color: @classic-neutral-grey-2;
+        }
+    }
+
+    .title {
+        .body-semibold();
+    }
+
+    .description {
+        .caption-regular();
+        margin-top: @layout-spacing-xs;
+        color: @classic-neutral-grey-5;
+    }
+
+    .defaultAction {
+        font-size: 20px;
+    }
+
+    .action {
+        color: @classic-main-primary;
+        padding: 8px;
+        margin-left: auto;
+    }
+}

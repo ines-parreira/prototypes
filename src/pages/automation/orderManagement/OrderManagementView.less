@@ -1,0 +1,22 @@
+@import '~css/new/layout.less';
+@import '~css/new/mixins.less';
+
+:local {
+    .container {
+        padding: @layout-spacing-m;
+
+        @media @desktops {
+            display: grid;
+            grid-template-columns: 1fr 452px;
+            column-gap: @layout-spacing-m;
+        }
+    }
+
+    .descriptionContainer {
+        margin-bottom: @layout-spacing-m;
+    }
+
+    .flowsContainer {
+        margin-top: @layout-spacing-m;
+    }
+}

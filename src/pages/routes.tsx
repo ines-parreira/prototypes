@@ -119,6 +119,7 @@ import EditTicketField from './settings/ticketFields/EditTicketField'
 import MaybeDeprecatedRoute from './common/components/MaybeDeprecatedRoute'
 import {ClickTrackingApiClientProvider} from './settings/revenue/hooks/useClickTrackingApi'
 import {ClickTrackingSettingsView} from './settings/revenue/components/ClickTrackingSettingsView'
+import OrderManagementViewContainer from './automation/orderManagement/OrderManagementViewContainer'
 import QuickResponsesViewContainer from './automation/quickResponses/QuickResponsesViewContainer'
 import PageHeader from './common/components/PageHeader'
 import HeaderTitle from './common/components/HeaderTitle'
@@ -1350,7 +1351,21 @@ export function AutomationRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/:shopType/:shopName/quick-responses`}
                 exact
                 render={appRender({
-                    content: QuickResponsesViewContainer,
+                    content: memoizedWithUserRoleRequired(
+                        QuickResponsesViewContainer,
+                        AGENT_ROLE
+                    ),
+                    navbar: AutomationNavbar,
+                })}
+            />
+            <Route
+                path={`${path}/shopify/:shopName/order-management`}
+                exact
+                render={appRender({
+                    content: memoizedWithUserRoleRequired(
+                        OrderManagementViewContainer,
+                        AGENT_ROLE
+                    ),
                     navbar: AutomationNavbar,
                 })}
             />

@@ -14,7 +14,7 @@ const PAYWALL_ITEMS = [
 const AutomationNavbarAddOnPaywallView = () => {
     const [
         isAutomationSubscriptionModalOpen,
-        setIsAutomationSubscriptionModal,
+        setIsAutomationSubscriptionModalOpen,
     ] = useState(false)
 
     return (
@@ -25,7 +25,7 @@ const AutomationNavbarAddOnPaywallView = () => {
                         key={paywallItem}
                         to={`/app/automation/${slugify(paywallItem)}`}
                         onSubscribeToAutomationAddOnClick={() => {
-                            setIsAutomationSubscriptionModal(true)
+                            setIsAutomationSubscriptionModalOpen(true)
                         }}
                     >
                         {paywallItem}
@@ -35,7 +35,7 @@ const AutomationNavbarAddOnPaywallView = () => {
             <AutomationSubscriptionModal
                 confirmLabel="Subscribe"
                 isOpen={isAutomationSubscriptionModalOpen}
-                onClose={() => setIsAutomationSubscriptionModal(false)}
+                onClose={() => setIsAutomationSubscriptionModalOpen(false)}
             />
         </>
     )
