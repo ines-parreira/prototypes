@@ -19,7 +19,7 @@ import {useDebounce} from 'react-use'
 import classnames from 'classnames'
 import Group from 'pages/common/components/layout/Group'
 import IconButton from 'pages/common/components/button/IconButton'
-import {renderTemplate} from 'pages/common/utils/template'
+import {renderTemplate, Context} from 'pages/common/utils/template'
 import {getTicket} from 'state/ticket/selectors'
 import {getActiveCustomer} from 'state/customers/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
@@ -105,7 +105,11 @@ function ButtonsGroup({buttons, source}: Props) {
     useDebounce(
         () => {
             setNbButtonDisplayed(
-                computeNbButtonDisplayed(buttons, availableSpace)
+                computeNbButtonDisplayed(
+                    buttons,
+                    templateContext,
+                    availableSpace
+                )
             )
         },
         200,
@@ -177,6 +181,7 @@ export default memo(ButtonsGroup)
 
 function computeNbButtonDisplayed(
     buttons: ButtonType[],
+    templateContext: Context,
     availableSpace: number | undefined
 ) {
     if (buttons.length <= NB_MIN_BUTTON_DISPLAYED || !availableSpace)
@@ -189,7 +194,10 @@ function computeNbButtonDisplayed(
         nbButtonDisplayed < buttons.length &&
         computedLength <= availableSpace
     ) {
-        computedLength += computeButtonLength(buttons[nbButtonDisplayed])
+        computedLength += computeButtonLength(
+            buttons[nbButtonDisplayed],
+            templateContext
+        )
         nbButtonDisplayed++
     }
 
@@ -199,7 +207,10 @@ function computeNbButtonDisplayed(
 
     while (computedLength > newAvailablePxSpace && nbButtonDisplayed > 0) {
         nbButtonDisplayed--
-        computedLength -= computeButtonLength(buttons[nbButtonDisplayed])
+        computedLength -= computeButtonLength(
+            buttons[nbButtonDisplayed],
+            templateContext
+        )
         if (nbButtonDisplayed < buttons.length)
             newAvailablePxSpace = availableSpace - SHOW_MORE_WIDTH
     }
@@ -209,6 +220,12 @@ function computeNbButtonDisplayed(
         : nbButtonDisplayed
 }
 
-function computeButtonLength(button: ButtonType) {
-    return button.label.length * FONT_SIZE + BUTTON_SPACING
+export function computeButtonLength(
+    button: ButtonType,
+    templateContext: Context
+) {
+    return (
+        renderTemplate(button.label, templateContext).length * FONT_SIZE +
+        BUTTON_SPACING
+    )
 }

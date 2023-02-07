@@ -6,6 +6,7 @@ import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 
 import * as infobarActions from 'state/infobar/actions'
+
 const mockedActionId = 'someActionId'
 jest.mock('state/infobar/actions', () => ({
     executeAction: jest.fn(() => () => mockedActionId),
@@ -13,7 +14,8 @@ jest.mock('state/infobar/actions', () => ({
 
 import {actionFixture} from 'fixtures/infobarCustomActions'
 
-import ButtonsGroup from '../ButtonsGroup'
+import {Context} from 'pages/common/utils/template'
+import ButtonsGroup, {computeButtonLength} from '../ButtonsGroup'
 
 const mockStore = configureMockStore([thunk])
 
@@ -191,4 +193,15 @@ describe('<ButtonsGroup/>', () => {
                 .hasAttribute('disabled')
         ).toBeTruthy()
     })
+
+    it.each([
+        ['label', {}, 78],
+        ['label{{var}}', {}, 78],
+        ['label{{var}}', {var: 'xxx'}, 114],
+    ])(
+        'computeButtonLength(%p) with context %p should equal %p',
+        (label: string, context: Context, expected: number) => {
+            expect(computeButtonLength({label, action}, context)).toBe(expected)
+        }
+    )
 })
