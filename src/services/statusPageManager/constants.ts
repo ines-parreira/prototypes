@@ -77,6 +77,7 @@ export const INTEGRATION_COMPONENTS_TYPES: {
           '212dg2c2png1': IntegrationType.Shopify, // Shopify API & Mobile,
           '3503769485p2': IntegrationType.Yotpo,
           ccg4qppx1spl: IntegrationType.Recharge,
+          nd755d0bdslv: IntegrationType.Twitter,
       })
     : Object.freeze({
           ykr08lvqnb66: IntegrationType.Aircall,
