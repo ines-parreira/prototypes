@@ -6,9 +6,21 @@ import {TicketVia} from 'business/types/ticket'
 import {RootState} from 'state/types'
 import {MacroActionName} from 'models/macroAction/types'
 import {ACTION_TEMPLATES} from 'config'
+import {shouldMessagesBeGrouped} from 'models/ticket/predicates'
+import {assumeMock} from 'utils/testing'
 
 import * as selectors from '../selectors'
 import {initialState} from '../reducers'
+
+jest.mock('models/ticket/predicates', () => {
+    const originalModule = jest.requireActual('models/ticket/predicates')
+    return {
+        ...originalModule,
+        shouldMessagesBeGrouped: jest.fn(() => false),
+    } as Record<any, any>
+})
+
+const mockShouldMessagesBeGrouped = assumeMock(shouldMessagesBeGrouped)
 
 describe('ticket selectors', () => {
     let state: RootState
@@ -468,6 +480,149 @@ describe('ticket selectors', () => {
             expect(selectors.hasContentlessAction({...state, ticket})).toBe(
                 true
             )
+        })
+    })
+
+    describe('getTicketBodyElements', () => {
+        beforeEach(() => {
+            mockShouldMessagesBeGrouped.mockReturnValue(false)
+        })
+
+        it('should add the element to the body if it is not a message', () => {
+            state = {
+                ticket: initialState.mergeDeep({
+                    events: [
+                        {
+                            id: 1,
+                            created_datetime: '2023-02-01T12:00:00',
+                        },
+                    ],
+                }),
+            } as RootState
+
+            expect(selectors.getTicketBodyElements(state)).toEqual([
+                {id: 1, isEvent: true, created_datetime: '2023-02-01T12:00:00'},
+            ])
+        })
+
+        it('should add the element to the body, in an array, if it is the first item being added', () => {
+            state = {
+                ticket: initialState.mergeDeep({
+                    messages: [
+                        {
+                            id: 1,
+                            created_datetime: '2023-02-02T12:00:00',
+                        },
+                    ],
+                }),
+            } as RootState
+
+            expect(selectors.getTicketBodyElements(state)).toEqual([
+                [
+                    {
+                        id: 1,
+                        isMessage: true,
+                        created_datetime: '2023-02-02T12:00:00',
+                    },
+                ],
+            ])
+        })
+
+        it('should add the element to the body, in an array, if the previous item is not an array', () => {
+            state = {
+                ticket: initialState.mergeDeep({
+                    messages: [
+                        {
+                            id: 1,
+                            created_datetime: '2023-02-02T12:00:00',
+                        },
+                    ],
+                    events: [
+                        {
+                            id: 1,
+                            created_datetime: '2023-02-02T11:00:00',
+                        },
+                    ],
+                }),
+            } as RootState
+
+            expect(selectors.getTicketBodyElements(state)).toEqual([
+                {id: 1, isEvent: true, created_datetime: '2023-02-02T11:00:00'},
+                [
+                    {
+                        id: 1,
+                        isMessage: true,
+                        created_datetime: '2023-02-02T12:00:00',
+                    },
+                ],
+            ])
+        })
+
+        it('should add the element to the body, the previous array, if grouping criteria are met', () => {
+            state = {
+                ticket: initialState.mergeDeep({
+                    messages: [
+                        {
+                            id: 1,
+                            created_datetime: '2023-02-02T12:00:00',
+                        },
+                        {
+                            id: 2,
+                            created_datetime: '2023-02-02T12:01:00',
+                        },
+                    ],
+                }),
+            } as RootState
+            mockShouldMessagesBeGrouped.mockReturnValue(true)
+
+            expect(selectors.getTicketBodyElements(state)).toEqual([
+                [
+                    {
+                        id: 1,
+                        isMessage: true,
+                        created_datetime: '2023-02-02T12:00:00',
+                    },
+                    {
+                        id: 2,
+                        isMessage: true,
+                        created_datetime: '2023-02-02T12:01:00',
+                    },
+                ],
+            ])
+        })
+
+        it('should add the element to the array, in an array, if the previous element is an array but longer than 5 minutes have passed', () => {
+            state = {
+                ticket: initialState.mergeDeep({
+                    messages: [
+                        {
+                            id: 1,
+                            created_datetime: '2023-02-02T12:00:00',
+                        },
+                        {
+                            id: 2,
+                            created_datetime: '2023-02-02T12:10:00',
+                        },
+                    ],
+                }),
+            } as RootState
+
+            expect(selectors.getTicketBodyElements(state)).toEqual([
+                [
+                    {
+                        id: 1,
+                        isMessage: true,
+                        created_datetime: '2023-02-02T12:00:00',
+                    },
+                ],
+                [
+                    {
+                        id: 2,
+                        isMessage: true,
+                        created_datetime: '2023-02-02T12:10:00',
+                    },
+                ],
+            ])
         })
     })
 })

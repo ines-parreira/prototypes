@@ -7,6 +7,16 @@ import {createImmutableSelector} from 'utils'
 import {RootState} from 'state/types'
 import {TicketVia} from 'business/types/ticket'
 import {MacroActionName} from 'models/macroAction/types'
+import {
+    isTicketMessage,
+    shouldMessagesBeGrouped,
+} from 'models/ticket/predicates'
+import {
+    TicketElement,
+    TicketEvent,
+    TicketMessage,
+    TicketSatisfactionSurvey,
+} from 'models/ticket/types'
 
 import {TicketState, TicketStateWithoutImmutable} from './types'
 
@@ -308,3 +318,40 @@ export const getTicketFieldState = createSelector(
     getTicket,
     (state) => state.custom_fields
 )
+
+export const getTicketBodyElements = createSelector(getBody, (body) => {
+    const elements = body.toJS() as TicketElement[]
+
+    return elements.reduce(
+        (
+            acc: (TicketElement | TicketMessage[])[],
+            element: TicketElement | TicketMessage[]
+        ) => {
+            if (!isTicketMessage(element as TicketElement)) {
+                return [
+                    ...acc,
+                    element as TicketEvent | TicketSatisfactionSurvey,
+                ]
+            }
+
+            const prevGroup = acc[acc.length - 1]
+            if (!Array.isArray(prevGroup)) {
+                return [...acc, [element as TicketMessage]]
+            }
+
+            const firstInPrevGroup = prevGroup[0]
+            if (
+                shouldMessagesBeGrouped(
+                    firstInPrevGroup,
+                    element as TicketMessage
+                )
+            ) {
+                prevGroup.push(element as TicketMessage)
+                return acc
+            }
+
+            return [...acc, [element as TicketMessage]]
+        },
+        [] as TicketElement[]
+    )
+})

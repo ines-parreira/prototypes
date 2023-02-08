@@ -1,9 +1,13 @@
-import {TicketMessageSourceType} from '../../../business/types/ticket'
+import {
+    TicketChannel,
+    TicketMessageSourceType,
+} from '../../../business/types/ticket'
 import {
     hasFailedAction,
     hasPendingAction,
     isFailed,
     isPending,
+    shouldMessagesBeGrouped,
 } from '../predicates'
 import {TicketMessage, ActionStatus} from '../types'
 
@@ -173,6 +177,102 @@ describe('predicates', () => {
                 ],
             }
             expect(isFailed(message)).toBe(false)
+        })
+    })
+
+    describe('shouldMessagesBeGrouped', () => {
+        it('should return false if either object is not a message', () => {
+            const msg1 = {} as TicketMessage
+            const msg2 = {} as TicketMessage
+            expect(shouldMessagesBeGrouped(msg1, msg2)).toBeFalsy()
+        })
+
+        it('should return false if the senders are different', () => {
+            const msg1 = {
+                ...defaultMessage,
+                sender: {...defaultMessage.sender, id: 1},
+            }
+            const msg2 = {
+                ...defaultMessage,
+                sender: {...defaultMessage.sender, id: 2},
+            }
+            expect(shouldMessagesBeGrouped(msg1, msg2)).toBeFalsy()
+        })
+
+        it('should return false if the channels are different', () => {
+            const msg1 = {
+                ...defaultMessage,
+                channel: TicketChannel.Chat,
+            }
+            const msg2 = {
+                ...defaultMessage,
+                channel: TicketChannel.FacebookMessenger,
+            }
+            expect(shouldMessagesBeGrouped(msg1, msg2)).toBeFalsy()
+        })
+
+        it('should return false if the public settings are different', () => {
+            const msg1 = {
+                ...defaultMessage,
+                public: true,
+            }
+            const msg2 = {
+                ...defaultMessage,
+                public: false,
+            }
+            expect(shouldMessagesBeGrouped(msg1, msg2)).toBeFalsy()
+        })
+
+        it('should return false if the messages are not both (not) from an agend', () => {
+            const msg1 = {
+                ...defaultMessage,
+                from_agent: true,
+            }
+            const msg2 = {
+                ...defaultMessage,
+                from_agent: false,
+            }
+            expect(shouldMessagesBeGrouped(msg1, msg2)).toBeFalsy()
+        })
+
+        it('should return false if the channel does not qualify for grouping', () => {
+            const msg1 = {
+                ...defaultMessage,
+                channel: TicketChannel.Phone,
+            }
+            const msg2 = {
+                ...defaultMessage,
+                channel: TicketChannel.Phone,
+            }
+            expect(shouldMessagesBeGrouped(msg1, msg2)).toBeFalsy()
+        })
+
+        it('should return false if the messages are more than 5 minutes apart', () => {
+            const msg1 = {
+                ...defaultMessage,
+                channel: TicketChannel.Chat,
+                created_datetime: '2023-02-02T14:50:00',
+            }
+            const msg2 = {
+                ...defaultMessage,
+                channel: TicketChannel.Chat,
+                created_datetime: '2023-02-02T14:56:00',
+            }
+            expect(shouldMessagesBeGrouped(msg1, msg2)).toBeFalsy()
+        })
+
+        it('should return true if the messages satisfy all grouping conditions', () => {
+            const msg1 = {
+                ...defaultMessage,
+                channel: TicketChannel.Chat,
+                created_datetime: '2023-02-02T14:50:00',
+            }
+            const msg2 = {
+                ...defaultMessage,
+                channel: TicketChannel.Chat,
+                created_datetime: '2023-02-02T14:54:00',
+            }
+            expect(shouldMessagesBeGrouped(msg1, msg2)).toBeTruthy()
         })
     })
 })

@@ -8,21 +8,13 @@ import _xor from 'lodash/xor'
 import _noop from 'lodash/noop'
 import classnames from 'classnames'
 
-import {
-    Channel,
-    TicketElement,
-    TicketEvent,
-    TicketMessage,
-    TicketSatisfactionSurvey,
-} from 'models/ticket/types'
+import {TicketElement, TicketMessage} from 'models/ticket/types'
 import {
     isTicketAISuggestion,
     isTicketEvent,
-    isTicketMessage,
     isTicketRuleSuggestion,
     isTicketSatisfactionSurvey,
 } from 'models/ticket/predicates'
-import {TicketChannel} from 'business/types/ticket'
 import * as ticketSelectors from 'state/ticket/selectors'
 import shortcutManager from 'services/shortcutManager/index'
 import {moveIndex, MoveIndexDirection} from 'pages/common/utils/keyboard'
@@ -73,8 +65,6 @@ type HighlightedElements = {
 type OwnProps = {
     elements: List<any>
     setStatus?: (s: string) => void
-    messageGroupingChannels: Channel[]
-    messageGroupingDuration: string
     customScrollParentRef?: React.RefObject<HTMLDivElement>
     submit: (params: SubmitArgs) => any
     hideTicket: () => Promise<void>
@@ -92,17 +82,6 @@ type State = {
 }
 
 export class TicketBodyVirtualized extends React.Component<Props, State> {
-    static defaultProps: Pick<
-        Props,
-        'messageGroupingChannels' | 'messageGroupingDuration'
-    > = {
-        messageGroupingChannels: [
-            TicketChannel.FacebookMessenger,
-            TicketChannel.Chat,
-        ],
-        messageGroupingDuration: 'PT5M',
-    }
-
     lastMessageDatetimeAfterMount: Moment | null
 
     _messageCursor = 0
@@ -177,89 +156,27 @@ export class TicketBodyVirtualized extends React.Component<Props, State> {
         })
     }
 
-    _shouldMessagesBeGrouped = (msg1: TicketMessage, msg2: TicketMessage) => {
-        const groupingDuration = moment.duration(
-            this.props.messageGroupingDuration
-        )
-
-        if (
-            !isTicketMessage(msg1) ||
-            !isTicketMessage(msg2) ||
-            msg1.sender.id !== msg2.sender.id ||
-            msg1.channel !== msg2.channel ||
-            !this.props.messageGroupingChannels.includes(msg1.channel) ||
-            moment(msg2.created_datetime).isAfter(
-                moment(msg1.created_datetime).add(groupingDuration)
-            ) ||
-            msg1.public !== msg2.public ||
-            msg1.from_agent !== msg2.from_agent
-        ) {
-            return false
-        }
-
-        return true
-    }
-
     _getGroupedElements() {
-        const {elements} = this.props
+        const groupedElements = this.props.groupedElements.filter((element) => {
+            // filtering is applied to remove elements that would result in a null node rendered
+            // react-virtuoso yields a warning when a null node is passed because it shouldn't handle zero-sized elements
+            if (Array.isArray(element) || !isTicketEvent(element)) {
+                return true
+            }
 
-        const groupedElements = (elements.toJS() as TicketElement[])
-            .reduce(
-                (
-                    acc: (TicketElement | TicketMessage[])[],
-                    element: TicketElement | TicketMessage[]
-                ) => {
-                    if (!isTicketMessage(element as TicketElement)) {
-                        return acc.concat([
-                            element as TicketEvent | TicketSatisfactionSurvey,
-                        ])
-                    }
+            const elementMap: Map<any, any> = fromJS(element)
+            const actionName = elementMap.getIn(['data', 'action_name'])
+            const actionConfig = getActionByName(actionName)
 
-                    if (!acc.length) {
-                        return acc.concat([[element as TicketMessage]])
-                    }
-
-                    const prevGroup = acc[acc.length - 1]
-                    if (!Array.isArray(prevGroup)) {
-                        return acc.concat([[element as TicketMessage]])
-                    }
-
-                    const firstInPrevGroup = prevGroup[0]
-                    if (
-                        this._shouldMessagesBeGrouped(
-                            firstInPrevGroup,
-                            element as TicketMessage
-                        )
-                    ) {
-                        prevGroup.push(element as TicketMessage)
-                        return acc
-                    }
-
-                    return acc.concat([[element as TicketMessage]])
-                },
-                [] as TicketElement[]
+            return (
+                contentfulEventTypesValues.includes(
+                    element.type as typeof contentfulEventTypesValues[number]
+                ) ||
+                PHONE_EVENTS.includes(element.type) ||
+                (PRIVATE_REPLY_ACTIONS.includes(actionName) && !!actionName) ||
+                !!actionConfig
             )
-            .filter((element) => {
-                // filtering is applied to remove elements that would result in a null node rendered
-                // react-virtuoso yields a warning when a null node is passed because it shouldn't handle zero-sized elements
-                if (Array.isArray(element) || !isTicketEvent(element)) {
-                    return true
-                }
-
-                const elementMap: Map<any, any> = fromJS(element)
-                const actionName = elementMap.getIn(['data', 'action_name'])
-                const actionConfig = getActionByName(actionName)
-
-                return (
-                    contentfulEventTypesValues.includes(
-                        element.type as typeof contentfulEventTypesValues[number]
-                    ) ||
-                    PHONE_EVENTS.includes(element.type) ||
-                    (PRIVATE_REPLY_ACTIONS.includes(actionName) &&
-                        !!actionName) ||
-                    !!actionConfig
-                )
-            })
+        })
 
         return ['header' as FakeVirtuosoItems, ...groupedElements]
     }
@@ -459,6 +376,7 @@ export class TicketBodyVirtualized extends React.Component<Props, State> {
 
 const connector = connect((state: RootState) => ({
     currentUser: state.currentUser,
+    groupedElements: ticketSelectors.getTicketBodyElements(state),
     ticket: state.ticket,
     lastReadMessage: ticketSelectors.getLastReadMessage(state),
     isHistoryDisplayed: ticketSelectors.getDisplayHistory(state),

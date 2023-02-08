@@ -1,6 +1,10 @@
 import memoizeOne from 'memoize-one'
+import moment from 'moment'
 
-import {TicketMessageSourceType} from '../../business/types/ticket'
+import {
+    TicketChannel,
+    TicketMessageSourceType,
+} from '../../business/types/ticket'
 
 import type {TicketEvent, TicketMessage} from './types'
 
@@ -86,4 +90,31 @@ export const isTicketMessageDeleted = (message: TicketMessage): boolean => {
         }
     }
     return false
+}
+
+export const shouldMessagesBeGrouped = (
+    msg1: TicketMessage,
+    msg2: TicketMessage
+): boolean => {
+    if (!isTicketMessage(msg1) || !isTicketMessage(msg2)) {
+        return false
+    }
+
+    const groupingChannels = [
+        TicketChannel.FacebookMessenger,
+        TicketChannel.Chat,
+    ]
+    const groupingDuration = moment.duration('PT5M')
+
+    const msg1Created = moment(msg1.created_datetime)
+    const msg2Created = moment(msg2.created_datetime)
+
+    return (
+        msg1.sender.id === msg2.sender.id &&
+        msg1.channel === msg2.channel &&
+        msg1.public === msg2.public &&
+        msg1.from_agent === msg2.from_agent &&
+        groupingChannels.includes(msg1.channel) &&
+        msg2Created.isBefore(msg1Created.add(groupingDuration))
+    )
 }
