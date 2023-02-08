@@ -2,6 +2,7 @@ import React, {
     KeyboardEvent,
     useCallback,
     useEffect,
+    useLayoutEffect,
     useMemo,
     useRef,
     useState,
@@ -9,10 +10,10 @@ import React, {
 import {stringify} from 'qs'
 import {useLocation} from 'react-router-dom'
 import classnames from 'classnames'
-import {useAsyncFn, useUnmount, useUpdateEffect} from 'react-use'
+import {useAsyncFn, usePrevious, useUnmount, useUpdateEffect} from 'react-use'
 import _isEmpty from 'lodash/isEmpty'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import {CancelToken} from 'axios'
+import axios, {CancelToken} from 'axios'
 
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
@@ -79,6 +80,7 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
     const [searchItemsType, setSearchItemsType] = useState<ViewType>(
         ViewType.CustomerList
     )
+    const previousSearchItemsType = usePrevious(searchItemsType)
 
     const goToAdvancedSearch = useCallback(() => {
         onCloseModal()
@@ -145,6 +147,8 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
         !_isEmpty(customers) && setCustomers([])
         hasSearched && setHasSearched(false)
         setSearchItemsType(ViewType.CustomerList)
+        setLastSearchQueries({customers: '', tickets: ''})
+        cancelSearch()
     }
 
     const createFetchSearchItems = useCallback(
@@ -199,12 +203,14 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                         setCustomers(data.data as Customer[])
                     }
                 } catch (e) {
-                    void dispatch(
-                        notify({
-                            message: 'Failed to fetch search results',
-                            status: NotificationStatus.Error,
-                        })
-                    )
+                    if (!axios.isCancel(e)) {
+                        void dispatch(
+                            notify({
+                                message: 'Failed to fetch search results',
+                                status: NotificationStatus.Error,
+                            })
+                        )
+                    }
                 }
             },
         [
@@ -215,7 +221,7 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
         ]
     )
 
-    const [cancellableFetchSearchItems] = useCancellableRequest(
+    const [cancellableFetchSearchItems, cancelSearch] = useCancellableRequest(
         createFetchSearchItems
     )
 
@@ -238,6 +244,7 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
 
     const handleSearchInput = (query: string) => {
         if (!query && searchQuery) {
+            cancelSearch()
             setHasSearched(false)
             setTickets([])
             setCustomers([])
@@ -278,23 +285,44 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
         return Tabs.Customers
     }, [searchItemsType])
 
-    useUpdateEffect(() => {
-        if (searchQuery && hasSearched) {
+    useLayoutEffect(() => {
+        if (
+            searchItemsType !== previousSearchItemsType &&
+            searchQuery &&
+            (hasSearched || isLoading)
+        ) {
             if (
                 searchItemsType === ViewType.CustomerList &&
-                lastSearchQueries.customers !== searchQuery &&
-                lastSearchQueries[Tabs.Tickets] === searchQuery
+                lastSearchQueries[Tabs.Customers] !== searchQuery
             ) {
-                void fetchSearchItems(searchQuery, ViewType.CustomerList)
+                const query =
+                    lastSearchQueries[Tabs.Tickets] &&
+                    searchQuery !== lastSearchQueries[Tabs.Tickets]
+                        ? lastSearchQueries[Tabs.Tickets]
+                        : searchQuery
+                void fetchSearchItems(query, ViewType.CustomerList)
             } else if (
                 searchItemsType === ViewType.TicketList &&
-                lastSearchQueries.tickets !== searchQuery &&
-                lastSearchQueries[Tabs.Customers] === searchQuery
+                lastSearchQueries[Tabs.Tickets] !== searchQuery
             ) {
-                void fetchSearchItems(searchQuery, ViewType.TicketList)
+                const query =
+                    lastSearchQueries[Tabs.Customers] &&
+                    searchQuery !== lastSearchQueries[Tabs.Customers]
+                        ? lastSearchQueries[Tabs.Customers]
+                        : searchQuery
+                void fetchSearchItems(query, ViewType.TicketList)
             }
         }
-    }, [searchItemsType])
+    }, [
+        fetchSearchItems,
+        cancelSearch,
+        hasSearched,
+        isLoading,
+        searchItemsType,
+        previousSearchItemsType,
+        searchQuery,
+        lastSearchQueries,
+    ])
 
     return (
         <Modal
