@@ -132,13 +132,14 @@ export default function TicketFields() {
                                         {activeTab === 'active' &&
                                             activeFields.length >= 4 && (
                                                 <Alert
-                                                    type={AlertType.Warning}
+                                                    type={AlertType.Info}
                                                     icon
                                                     className="m-4"
                                                 >
-                                                    Only 4 active fields
-                                                    allowed. Archive some fields
-                                                    to create a new one.
+                                                    You can only have 4 active
+                                                    fields at a time. Please
+                                                    archive some fields before
+                                                    creating a new one.
                                                 </Alert>
                                             )}
                                         <List ticketFields={ticketFields} />
