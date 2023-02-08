@@ -94,30 +94,18 @@ export default function DropdownField({
 
     const handleChange = useCallback(
         (newValue: string) => {
-            onChange(
-                [...currentPath, newValue].join(DROPDOWN_NESTING_DELIMITER),
-                {
-                    previousState: {
-                        id,
-                        hasError: Boolean((isRequired && !value) || hasError),
-                        value,
-                    },
-                }
-            )
+            onChange(newValue, {
+                previousState: {
+                    id,
+                    hasError: Boolean((isRequired && !value) || hasError),
+                    value,
+                },
+            })
             setActive(false)
             dispatch(updateCustomFieldValue(id, newValue))
             dispatch(updateCustomFieldError(id, false))
         },
-        [
-            dispatch,
-            id,
-            currentPath,
-            onChange,
-            setActive,
-            isRequired,
-            value,
-            hasError,
-        ]
+        [dispatch, id, onChange, setActive, isRequired, value, hasError]
     )
 
     const resetValue = useCallback(() => {
@@ -232,7 +220,13 @@ export default function DropdownField({
                                 <DropdownItem
                                     key={choice}
                                     tag="button"
-                                    onClick={() => handleChange(choice)}
+                                    onClick={() =>
+                                        handleChange(
+                                            [...currentPath, choice].join(
+                                                DROPDOWN_NESTING_DELIMITER
+                                            )
+                                        )
+                                    }
                                     option={{label: choice, value: choice}}
                                 >
                                     <span className={css.choiceButton}>
