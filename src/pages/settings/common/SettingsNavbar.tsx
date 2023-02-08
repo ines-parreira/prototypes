@@ -114,6 +114,28 @@ const CATEGORIES: Category[] = [
         ],
     },
     {
+        name: 'Data',
+        icon: 'hub',
+        links: [
+            {
+                requiredRole: ADMIN_ROLE,
+                requiredFeatureFlag: FeatureFlagKey.TicketFields,
+                to: 'ticket-fields',
+                text: 'Ticket fields',
+            },
+            {
+                requiredRole: AGENT_ROLE,
+                to: 'manage-tags',
+                text: 'Tags',
+            },
+            {
+                requiredRole: ADMIN_ROLE,
+                to: 'import-data',
+                text: 'Import data',
+            },
+        ],
+    },
+    {
         name: 'Revenue',
         icon: 'paid',
         links: [
@@ -161,17 +183,6 @@ const CATEGORIES: Category[] = [
                 text: 'Phone numbers',
             },
             {
-                requiredRole: AGENT_ROLE,
-                to: 'manage-tags',
-                text: 'Tags',
-            },
-            {
-                requiredRole: ADMIN_ROLE,
-                requiredFeatureFlag: FeatureFlagKey.TicketFields,
-                to: 'ticket-fields',
-                text: 'Ticket fields',
-            },
-            {
                 requiredRole: ADMIN_ROLE,
                 to: 'business-hours',
                 text: 'Business hours',
@@ -185,11 +196,6 @@ const CATEGORIES: Category[] = [
                 requiredRole: ADMIN_ROLE,
                 to: 'billing',
                 text: 'Billing & usage',
-            },
-            {
-                requiredRole: ADMIN_ROLE,
-                to: 'import-data',
-                text: 'Import data',
             },
         ],
     },
