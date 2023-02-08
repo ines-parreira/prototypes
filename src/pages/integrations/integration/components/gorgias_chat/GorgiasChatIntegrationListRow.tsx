@@ -5,6 +5,10 @@ import classnames from 'classnames'
 
 import shopifyLogo from 'assets/img/integrations/shopify.png'
 import warningIcon from 'assets/img/icons/warning.svg'
+import dotSuccess from 'assets/img/icons/dot-success.svg'
+import dotWarning from 'assets/img/icons/dot-warning.svg'
+import dotNeutral from 'assets/img/icons/dot-neutral.svg'
+import dotError from 'assets/img/icons/dot-error.svg'
 
 import {useGorgiasChatIntegrationStatusData} from 'pages/integrations/integration/hooks/useGorgiasChatIntegrationStatusData'
 import Tooltip from '../../../../common/components/Tooltip'
@@ -105,18 +109,22 @@ const GorgiasChatIntegrationListRow = ({
                 ) : (
                     chatStatus && (
                         <div id={`chat-status-${integrationId}`}>
-                            <span
-                                className={classnames(css.chatStatusDot, {
-                                    [css.chatStatusDotOnline]:
-                                        chatStatus ===
-                                        GorgiasChatStatusEnum.ONLINE,
-                                    [css.chatStatusDotOffline]:
-                                        chatStatus ===
-                                        GorgiasChatStatusEnum.OFFLINE,
-                                    [css.chatStatusDotNotInstalled]:
-                                        chatStatus ===
-                                        GorgiasChatStatusEnum.NOT_INSTALLED,
-                                })}
+                            <img
+                                alt="status icon"
+                                src={
+                                    chatStatus === GorgiasChatStatusEnum.ONLINE
+                                        ? dotSuccess
+                                        : chatStatus ===
+                                              GorgiasChatStatusEnum.HIDDEN ||
+                                          chatStatus ===
+                                              GorgiasChatStatusEnum.HIDDEN_OUTSIDE_BUSINESS_HOURS
+                                        ? dotNeutral
+                                        : chatStatus ===
+                                          GorgiasChatStatusEnum.OFFLINE
+                                        ? dotWarning
+                                        : dotError
+                                }
+                                className={css.chatStatusDot}
                             />
                             <span>
                                 {
@@ -172,8 +180,8 @@ const GorgiasChatIntegrationListRow = ({
                                         }}
                                         target={`chat-status-${integrationId}`}
                                     >
-                                        Chat widget was not loaded on a webpage
-                                        in the last 72 hours.
+                                        Chat widget was not loaded on your
+                                        website in the past 72 hours.
                                     </Tooltip>
                                 </>
                             )}

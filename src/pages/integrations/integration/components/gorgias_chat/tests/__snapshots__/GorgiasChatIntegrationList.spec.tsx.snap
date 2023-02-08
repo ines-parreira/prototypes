@@ -191,8 +191,10 @@ exports[`<GorgiasChatIntegrationList /> should display correcty the list of chat
               <div
                 id="chat-status-1"
               >
-                <span
-                  class="chatStatusDot chatStatusDotOnline"
+                <img
+                  alt="status icon"
+                  class="chatStatusDot"
+                  src="test-file-stub"
                 />
                 <span>
                   Online
