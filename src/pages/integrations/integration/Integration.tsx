@@ -31,9 +31,14 @@ import {
 } from 'state/entities/phoneNumbers/actions'
 import {AccountFeature} from 'state/currentAccount/types'
 import {compare} from 'utils'
+import {reportError} from 'utils/errors'
 import useAppDispatch from 'hooks/useAppDispatch'
 
 import {EmailProvider} from 'models/integration/constants'
+import {
+    chatInstallationStatusFetched,
+    resetChatInstallationStatus,
+} from 'state/entities/chatInstallationStatus/actions'
 import history from '../../history'
 
 import AircallIntegrationList from './components/aircall/AircallIntegrationList'
@@ -224,6 +229,25 @@ export const IntegrationDetail = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    const enableChatInstallationStatusHint =
+        useFlags()[FeatureFlagKey.ChatNotIntalledStatus]
+
+    useUpdateEffect(() => {
+        if (!enableChatInstallationStatusHint) {
+            return
+        }
+
+        const appId = integration.getIn(['meta', 'app_id'])
+        if (integrationType === IntegrationType.GorgiasChat) {
+            if (appId) {
+                void handleFetchGorgiasChatInstallationStatus(appId)
+            } else {
+                dispatch(resetChatInstallationStatus())
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [integration, integrationType])
+
     const dispatch = useAppDispatch()
     const enableWhatsApp = useFlags()[FeatureFlagKey.EnableWhatsApp]
 
@@ -246,6 +270,28 @@ export const IntegrationDetail = ({
             )
         }
     })
+
+    const [, handleFetchGorgiasChatInstallationStatus] = useAsyncFn(
+        async (applicationId: string) => {
+            try {
+                const installationStatus =
+                    await IntegrationsActions.getInstallationStatus(
+                        applicationId
+                    )
+
+                if (installationStatus) {
+                    dispatch(chatInstallationStatusFetched(installationStatus))
+                }
+            } catch (error) {
+                reportError(
+                    new Error(`Failed to fetch chat installation status`),
+                    {
+                        extra: {applicationId},
+                    }
+                )
+            }
+        }
+    )
 
     useUpdateEffect(() => {
         if (integrationId && isIntegrationId) {

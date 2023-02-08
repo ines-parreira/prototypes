@@ -1,6 +1,8 @@
+@import '~css/new/layout.less';
+
 :local {
     .pageContainer {
-        padding: 24px;
+        padding: @layout-spacing-m;
         .pageColumn {
             max-width: 680px;
         }
@@ -11,5 +13,9 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+    }
+
+    .installationStatusIssue {
+        margin-bottom: @layout-spacing-l;
     }
 }

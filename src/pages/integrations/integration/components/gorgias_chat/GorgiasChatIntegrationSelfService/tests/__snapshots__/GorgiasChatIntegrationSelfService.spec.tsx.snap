@@ -79,6 +79,7 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the self se
       data-exact="true"
       href="/app/settings/channels/gorgias_chat/7/installation"
     >
+      
       Installation
     </a>
   </nav>

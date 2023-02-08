@@ -13,6 +13,10 @@ import GorgiasChatIntegrationQuickReplies, {
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
+jest.mock('../GorgiasChatIntegrationNavigation', () => () => {
+    return <div data-testid="GorgiasChatIntegrationNavigation" />
+})
+
 describe('<GorgiasChatIntegrationQuickReplies/>', () => {
     const integration: Map<any, any> = fromJS({
         id: 7,

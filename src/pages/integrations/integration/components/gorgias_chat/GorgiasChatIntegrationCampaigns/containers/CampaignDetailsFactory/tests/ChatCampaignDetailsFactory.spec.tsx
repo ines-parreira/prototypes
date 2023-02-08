@@ -9,6 +9,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 
 import {RootState, StoreDispatch} from 'state/types'
 
+import {entitiesInitialState} from 'fixtures/entities'
 import * as revenueBetaHook from '../../../hooks/useIsRevenueBetaTester'
 
 import {ChatCampaignDetailsFactory} from '../ChatCampaignDetailsFactory'
@@ -24,7 +25,7 @@ const allFlagsMock = getLDClient().allFlags as jest.Mock
 allFlagsMock.mockReturnValue({[FeatureFlagKey.ChatVideoSharingExtra]: true})
 
 describe('<ChatCampaignDetailsFactory />', () => {
-    const defaultState = {} as RootState
+    const defaultState = {entities: entitiesInitialState} as RootState
 
     describe('Merchant is an alpha tester', () => {
         beforeAll(() => {

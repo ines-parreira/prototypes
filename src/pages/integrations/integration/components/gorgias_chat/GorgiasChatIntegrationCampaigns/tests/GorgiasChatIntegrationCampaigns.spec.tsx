@@ -6,6 +6,7 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import {RootState, StoreDispatch} from 'state/types'
 
+import {entitiesInitialState} from 'fixtures/entities'
 import GorgiasChatIntegrationCampaigns from '../GorgiasChatIntegrationCampaigns'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -14,7 +15,7 @@ describe('<GorgiasChatIntegrationCampaigns/>', () => {
     let store: MockStoreEnhanced<Partial<RootState>, StoreDispatch>
 
     beforeEach(() => {
-        store = mockStore({})
+        store = mockStore({entities: entitiesInitialState})
     })
 
     const minProps: ComponentProps<typeof GorgiasChatIntegrationCampaigns> = {

@@ -30,6 +30,10 @@ jest.mock('utils/launchDarkly')
 const allFlagsMock = getLDClient().allFlags as jest.Mock
 allFlagsMock.mockReturnValue({})
 
+jest.mock('../../GorgiasChatIntegrationNavigation', () => () => {
+    return <div data-testid="GorgiasChatIntegrationNavigation" />
+})
+
 describe('<GorgiasChatIntegrationPreferences/>', () => {
     const minProps: ComponentProps<
         typeof GorgiasChatIntegrationPreferencesComponent

@@ -72,6 +72,7 @@ exports[`<BaseCampaignDetails /> matches snapshot 1`] = `
         data-exact="true"
         href="/app/settings/channels/gorgias_chat/1/installation"
       >
+        
         Installation
       </a>
     </nav>

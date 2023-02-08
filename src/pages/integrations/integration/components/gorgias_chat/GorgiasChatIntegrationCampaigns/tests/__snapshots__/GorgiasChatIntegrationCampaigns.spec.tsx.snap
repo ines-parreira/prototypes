@@ -84,6 +84,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the empty st
         data-exact="true"
         href="/app/settings/channels/gorgias_chat/118/installation"
       >
+        
         Installation
       </a>
     </nav>
@@ -185,6 +186,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
         data-exact="true"
         href="/app/settings/channels/gorgias_chat/118/installation"
       >
+        
         Installation
       </a>
     </nav>

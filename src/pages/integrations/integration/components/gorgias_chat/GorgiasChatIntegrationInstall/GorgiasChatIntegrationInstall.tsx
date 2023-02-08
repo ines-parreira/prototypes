@@ -18,6 +18,9 @@ import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import Tooltip from 'pages/common/components/Tooltip'
+import {getChatInstallationStatus} from 'state/entities/chatInstallationStatus/selectors'
+import {ChatInstallationStatusState} from 'state/entities/chatInstallationStatus'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {
     GORGIAS_CHAT_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
@@ -46,6 +49,7 @@ type OwnProps = {
     }
     isUpdate: boolean
     loading: Map<any, any>
+    installationStatus: ChatInstallationStatusState
 }
 
 const mapStateToProps = (state: RootState) => {
@@ -60,6 +64,7 @@ const mapStateToProps = (state: RootState) => {
             integrationSelectors.getIntegrationTypeExtraState(
                 GORGIAS_CHAT_INTEGRATION_TYPE as IntegrationType
             )(state),
+        installationStatus: getChatInstallationStatus(state),
     }
 }
 
@@ -76,6 +81,7 @@ function GorgiasChatIntegrationInstall({
     hasLegacyAutomationAddOnFeatures,
     isUpdate,
     loading,
+    installationStatus,
 }: OwnProps & ReturnType<typeof mapStateToProps>) {
     // During the chat creation, the user associated this chat to a shopify store.
     // This chat can only be installed on this specific store
@@ -114,6 +120,38 @@ function GorgiasChatIntegrationInstall({
         }
     }
 
+    const generateFaultyInstallationBannerContent = () => (
+        <>
+            <b>
+                The Chat widget was not loaded on your website in the past 72
+                hours.
+            </b>
+            {isShopifyChat && (
+                <span>
+                    {' '}
+                    Please check your website. If you are using the 1-click
+                    installation, you may try to reinstall again. If you are
+                    using a custom installation method, you may review the
+                    installation.
+                </span>
+            )}
+            {!isShopifyChat && (
+                <span>
+                    {' '}
+                    Please check your website and review the installation.
+                </span>
+            )}
+            {isDisabled && (
+                <span>
+                    <br></br>
+                    Please note that the Chat widget is currently set to be
+                    hidden. You may want to turn off the <b>Hide Chat</b> option
+                    before checking your website.
+                </span>
+            )}
+        </>
+    )
+
     const isLoading = loading.get('updateIntegration') === integration.get('id')
     const hasOrderManagement =
         hasAutomationAddOn || hasLegacyAutomationAddOnFeatures
@@ -142,6 +180,13 @@ function GorgiasChatIntegrationInstall({
             <Container fluid className={css.pageContainer}>
                 <Row>
                     <Col className={css.pageColumn} md="8">
+                        {!installationStatus.installed && (
+                            <div className={css.installationStatusIssue}>
+                                <Alert type={AlertType.Error} icon>
+                                    {generateFaultyInstallationBannerContent()}
+                                </Alert>
+                            </div>
+                        )}
                         {isShopifyChat ? (
                             <GorgiasChatIntegrationOneClickInstallationCard
                                 integration={integration}
@@ -188,7 +233,7 @@ function GorgiasChatIntegrationInstall({
                                     aria-label="Hide chat"
                                 />
                                 <div className="ml-2">
-                                    <b>Hide chat</b>{' '}
+                                    <b>Hide Chat</b>{' '}
                                     <i
                                         id="hide-chat-help"
                                         className="material-icons-outlined"
@@ -229,7 +274,7 @@ function GorgiasChatIntegrationInstall({
                                     intent="destructive"
                                 >
                                     <ButtonIconLabel icon="delete">
-                                        Delete chat
+                                        Delete Chat
                                     </ButtonIconLabel>
                                 </ConfirmButton>
                             )}

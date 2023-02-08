@@ -117,7 +117,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
             </Breadcrumb>
           </div>
         </PageHeader>
-        <GorgiasChatIntegrationNavigation
+        <Component
           integration={
             Immutable.Map {
               "id": 7,
@@ -131,97 +131,10 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
             }
           }
         >
-          <SecondaryNavbar>
-            <Navbar
-              className="navbar"
-              expand={false}
-              tag="nav"
-            >
-              <nav
-                className="navbar navbar"
-              >
-                <NavLink
-                  activeClassName="active"
-                  className="link"
-                  key=".0"
-                  to="/app/settings/channels/gorgias_chat/7/campaigns"
-                >
-                  <a
-                    className="link"
-                    data-active-class-name="active"
-                    href="/app/settings/channels/gorgias_chat/7/campaigns"
-                  >
-                    Campaigns
-                  </a>
-                </NavLink>
-                <NavLink
-                  activeClassName="active"
-                  className="link"
-                  exact={true}
-                  key=".1"
-                  to="/app/settings/channels/gorgias_chat/7/quick_replies"
-                >
-                  <a
-                    className="link"
-                    data-active-class-name="active"
-                    data-exact={true}
-                    href="/app/settings/channels/gorgias_chat/7/quick_replies"
-                  >
-                    Quick replies
-                  </a>
-                </NavLink>
-                <NavLink
-                  activeClassName="active"
-                  className="link"
-                  exact={true}
-                  key=".2"
-                  to="/app/settings/channels/gorgias_chat/7/appearance"
-                >
-                  <a
-                    className="link"
-                    data-active-class-name="active"
-                    data-exact={true}
-                    href="/app/settings/channels/gorgias_chat/7/appearance"
-                  >
-                    Appearance
-                  </a>
-                </NavLink>
-                <NavLink
-                  activeClassName="active"
-                  className="link"
-                  exact={true}
-                  key=".3"
-                  to="/app/settings/channels/gorgias_chat/7/preferences"
-                >
-                  <a
-                    className="link"
-                    data-active-class-name="active"
-                    data-exact={true}
-                    href="/app/settings/channels/gorgias_chat/7/preferences"
-                  >
-                    Preferences
-                  </a>
-                </NavLink>
-                <NavLink
-                  activeClassName="active"
-                  className="link"
-                  exact={true}
-                  key=".5"
-                  to="/app/settings/channels/gorgias_chat/7/installation"
-                >
-                  <a
-                    className="link"
-                    data-active-class-name="active"
-                    data-exact={true}
-                    href="/app/settings/channels/gorgias_chat/7/installation"
-                  >
-                    Installation
-                  </a>
-                </NavLink>
-              </nav>
-            </Navbar>
-          </SecondaryNavbar>
-        </GorgiasChatIntegrationNavigation>
+          <div
+            data-testid="GorgiasChatIntegrationNavigation"
+          />
+        </Component>
         <GorgiasChatIntegrationPreviewContainer
           preview={
             <ChatIntegrationPreview
@@ -1069,7 +982,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
             </Breadcrumb>
           </div>
         </PageHeader>
-        <GorgiasChatIntegrationNavigation
+        <Component
           integration={
             Immutable.Map {
               "id": 7,
@@ -1091,97 +1004,10 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
             }
           }
         >
-          <SecondaryNavbar>
-            <Navbar
-              className="navbar"
-              expand={false}
-              tag="nav"
-            >
-              <nav
-                className="navbar navbar"
-              >
-                <NavLink
-                  activeClassName="active"
-                  className="link"
-                  key=".0"
-                  to="/app/settings/channels/gorgias_chat/7/campaigns"
-                >
-                  <a
-                    className="link"
-                    data-active-class-name="active"
-                    href="/app/settings/channels/gorgias_chat/7/campaigns"
-                  >
-                    Campaigns
-                  </a>
-                </NavLink>
-                <NavLink
-                  activeClassName="active"
-                  className="link"
-                  exact={true}
-                  key=".1"
-                  to="/app/settings/channels/gorgias_chat/7/quick_replies"
-                >
-                  <a
-                    className="link"
-                    data-active-class-name="active"
-                    data-exact={true}
-                    href="/app/settings/channels/gorgias_chat/7/quick_replies"
-                  >
-                    Quick replies
-                  </a>
-                </NavLink>
-                <NavLink
-                  activeClassName="active"
-                  className="link"
-                  exact={true}
-                  key=".2"
-                  to="/app/settings/channels/gorgias_chat/7/appearance"
-                >
-                  <a
-                    className="link"
-                    data-active-class-name="active"
-                    data-exact={true}
-                    href="/app/settings/channels/gorgias_chat/7/appearance"
-                  >
-                    Appearance
-                  </a>
-                </NavLink>
-                <NavLink
-                  activeClassName="active"
-                  className="link"
-                  exact={true}
-                  key=".3"
-                  to="/app/settings/channels/gorgias_chat/7/preferences"
-                >
-                  <a
-                    className="link"
-                    data-active-class-name="active"
-                    data-exact={true}
-                    href="/app/settings/channels/gorgias_chat/7/preferences"
-                  >
-                    Preferences
-                  </a>
-                </NavLink>
-                <NavLink
-                  activeClassName="active"
-                  className="link"
-                  exact={true}
-                  key=".5"
-                  to="/app/settings/channels/gorgias_chat/7/installation"
-                >
-                  <a
-                    className="link"
-                    data-active-class-name="active"
-                    data-exact={true}
-                    href="/app/settings/channels/gorgias_chat/7/installation"
-                  >
-                    Installation
-                  </a>
-                </NavLink>
-              </nav>
-            </Navbar>
-          </SecondaryNavbar>
-        </GorgiasChatIntegrationNavigation>
+          <div
+            data-testid="GorgiasChatIntegrationNavigation"
+          />
+        </Component>
         <GorgiasChatIntegrationPreviewContainer
           preview={
             <ChatIntegrationPreview

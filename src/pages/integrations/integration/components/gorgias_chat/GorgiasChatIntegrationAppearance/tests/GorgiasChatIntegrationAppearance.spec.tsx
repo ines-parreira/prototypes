@@ -37,6 +37,10 @@ jest.mock('pages/common/forms/FileField', () => {
 
 type Props = ComponentProps<typeof GorgiasChatIntegrationAppearanceComponent>
 
+jest.mock('../../GorgiasChatIntegrationNavigation', () => () => {
+    return <div data-testid="GorgiasChatIntegrationNavigation" />
+})
+
 describe('<GorgiasChatIntegrationAppearance/>', () => {
     const realCSS = global.CSS
 

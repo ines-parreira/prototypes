@@ -27,6 +27,8 @@ import auditLogEvents from './auditLogEvents/reducer'
 import {AuditLogEventsState} from './auditLogEvents/types'
 import {SingleSenderVerificationsState} from './singleSenderVerification/types'
 import singleSenderVerifications from './singleSenderVerification/reducer'
+import {ChatInstallationStatusState} from './chatInstallationStatus/types'
+import chatInstallationStatus from './chatInstallationStatus/reducer'
 
 const entitiesReducers = combineReducers<{
     macros: MacrosState
@@ -36,6 +38,7 @@ const entitiesReducers = combineReducers<{
     views: ViewsState
     viewsCount: ViewsCountState
     helpCenter: HelpCenterState
+    chatInstallationStatus: ChatInstallationStatusState
     selfServiceConfigurations: SelfServiceConfigurationsState
     rules: RulesState
     phoneNumbers: PhoneNumbersState
@@ -53,6 +56,7 @@ const entitiesReducers = combineReducers<{
     views,
     viewsCount,
     helpCenter,
+    chatInstallationStatus,
     selfServiceConfigurations,
     phoneNumbers,
     newPhoneNumbers,
