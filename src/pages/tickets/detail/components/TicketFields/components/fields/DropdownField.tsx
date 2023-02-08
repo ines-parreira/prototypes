@@ -25,6 +25,7 @@ import Button from 'pages/common/components/button/Button'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import useAppSelector from 'hooks/useAppSelector'
 import {getTicket} from 'state/ticket/selectors'
+import Tooltip from 'pages/common/components/Tooltip'
 import Label from '../Label'
 import StealthInput from '../StealthInput'
 import css from './DropdownField.less'
@@ -67,6 +68,8 @@ export default function DropdownField({
     const ticketId = useAppSelector(getTicket).id
     const value = fieldState?.value?.toString() || ''
     const hasError = fieldState?.hasError
+
+    const inputId = `ticket-${ticketId}-custom-field-value-input-${id}`
 
     const [currentPath, setCurrentPath] = useState<string[]>(
         value.includes(DROPDOWN_NESTING_DELIMITER)
@@ -145,7 +148,13 @@ export default function DropdownField({
     return (
         <>
             <Label label={label} isRequired={isRequired}>
+                {!!value && !isActive && (
+                    <Tooltip placement="left" target={inputId} autohide={false}>
+                        {value}
+                    </Tooltip>
+                )}
                 <StealthInput
+                    id={inputId}
                     ref={inputRef}
                     name={label}
                     value={value.split(DROPDOWN_NESTING_DELIMITER).pop()}

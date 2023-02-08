@@ -7,6 +7,7 @@ type Props = {
     isActive?: boolean
     hasError?: boolean
     onChange?: (nextValue: string) => void
+    id: string
 } & Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'required'>
 
 function StealthInput(
@@ -20,6 +21,7 @@ function StealthInput(
         value,
         className,
         placeholder = '+Add',
+        id,
         ...props
     }: Props,
     ref: Ref<HTMLInputElement>
@@ -29,6 +31,7 @@ function StealthInput(
 
     return (
         <input
+            id={id}
             ref={ref}
             type={type}
             className={classnames(css.baseStyles, className, {

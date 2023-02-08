@@ -11,6 +11,7 @@ import {
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import useAppSelector from 'hooks/useAppSelector'
 import {getTicket} from 'state/ticket/selectors'
+import Tooltip from 'pages/common/components/Tooltip'
 import StealthInput from '../StealthInput'
 import Label from '../Label'
 
@@ -40,6 +41,8 @@ export default function TextField({
     const initialValue = fieldState?.value?.toString() || ''
     const hasError = fieldState?.hasError
 
+    const inputId = `ticket-${ticketId}-custom-field-value-input-${id}`
+
     const [currentValue, setCurrentValue] = useState(initialValue)
     const handleChange = useCallback(
         (newValue: string) => {
@@ -51,9 +54,17 @@ export default function TextField({
         [dispatch, id, hasError]
     )
 
+    const [isActive, setActive] = useState(false)
+
     return (
         <Label label={label} isRequired={isRequired}>
+            {!!currentValue && !isActive && (
+                <Tooltip placement="left" target={inputId} autohide={false}>
+                    {currentValue}
+                </Tooltip>
+            )}
             <StealthInput
+                id={inputId}
                 name={label}
                 type="text"
                 value={currentValue}
@@ -61,6 +72,7 @@ export default function TextField({
                 onChange={handleChange}
                 hasError={hasError}
                 onFocus={() => {
+                    setActive(true)
                     logEvent(SegmentEvent.CustomFieldTicketValueInputFocused, {
                         ticketId,
                         id,
@@ -68,6 +80,7 @@ export default function TextField({
                     })
                 }}
                 onBlur={() => {
+                    setActive(false)
                     if (currentValue === '' && isRequired) {
                         dispatch(updateCustomFieldValue(id, currentValue))
                         dispatch(updateCustomFieldError(id, true))
