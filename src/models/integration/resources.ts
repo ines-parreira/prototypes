@@ -54,6 +54,7 @@ export const appDataToAppDetailMapper = (data: AppData): AppDetail => ({
     freeTrialPeriod: data.free_trial_period,
     supportEmail: data.support_email,
     supportPhone: data.support_phone,
+    alloyIntegrationId: data.alloy_integration_id,
 })
 
 export const fetchApps = async (): Promise<AppListItem[]> => {

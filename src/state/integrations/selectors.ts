@@ -588,6 +588,11 @@ export const getAreIntegrationsLoading = createSelector(
     (state) => state?.state?.loading?.integrations === true
 )
 
+export const getIntegrationsLoading = createSelector(
+    getIntegrationsState,
+    (state) => state?.state?.loading
+)
+
 export const getIsChatIntegrationStatusLoading = (id: number) =>
     createSelector(
         getIntegrationsState,

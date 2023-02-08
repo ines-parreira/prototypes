@@ -2,6 +2,7 @@ import type {EmailIntegration} from './email'
 import type {GmailIntegration} from './gmail'
 import type {OutlookIntegration} from './outlook'
 import type {AircallIntegration} from './aircall'
+import type {AlloyIntegration} from './alloy'
 import type {GorgiasChatIntegration} from './gorgiasChat'
 import type {SmoochIntegration} from './smooch'
 import type {SmoochInsideIntegration} from './smoochInside'
@@ -57,6 +58,7 @@ export type Integration =
     | GmailIntegration
     | OutlookIntegration
     | AircallIntegration
+    | AlloyIntegration
     | GorgiasChatIntegration
     | SmoochIntegration
     | SmoochInsideIntegration

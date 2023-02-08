@@ -4,6 +4,7 @@ exports[`integration resource disconnectApp should return disconnect response 1`
 
 exports[`integration resource fetchApp should return a formatted app 1`] = `
 {
+  "alloyIntegrationId": undefined,
   "appId": "someid",
   "categories": [
     "Ecommerce",

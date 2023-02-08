@@ -65,6 +65,7 @@ export type AppData = AppListData & {
     free_trial_period: TrialPeriod
     support_email: string
     support_phone: string
+    alloy_integration_id?: string
 }
 
 export type AppListItem = Omit<IntegrationListItem, 'count'> & {
@@ -84,6 +85,7 @@ export type AppDetail = Omit<IntegrationConfig, 'isExternalConnectUrl'> & {
     connectUrl: AppData['app_url']
     supportEmail: AppData['support_email']
     supportPhone: AppData['support_phone']
+    alloyIntegrationId?: AppData['alloy_integration_id']
     connectTitle?: string
     icon?: string
     hideInfoCard?: boolean

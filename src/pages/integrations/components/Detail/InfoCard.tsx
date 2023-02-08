@@ -22,6 +22,7 @@ import {disconnectApp} from 'models/integration/resources'
 
 import css from './Detail.less'
 import ConnectLink from './ConnectLink'
+import AlloyConnectButton from './AlloyConnectButton'
 
 export type InfoCardProps =
     | AppDetail
@@ -123,7 +124,13 @@ export default function InfoCard(props: InfoCardProps) {
             )}
             <CardBody>
                 <div className={css.connectWrapper}>
-                    {isAppInstalled ? (
+                    {isAppDetail(props) && props.alloyIntegrationId ? (
+                        <AlloyConnectButton
+                            appId={props.appId}
+                            integrationId={props.alloyIntegrationId}
+                            name={props.title}
+                        />
+                    ) : isAppInstalled ? (
                         <Button
                             intent="destructive"
                             className={css.actionButton}
