@@ -1,5 +1,6 @@
 import React from 'react'
 
+import {TicketStatus as TicketStatusEnum} from 'business/types/ticket'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -11,7 +12,7 @@ type Props = {
 }
 
 const TicketStatus = ({setQuickStatus, currentStatus}: Props) => {
-    const toClose = currentStatus !== 'closed'
+    const toClose = currentStatus !== TicketStatusEnum.Closed
 
     return (
         <div className="d-inline-block mr-2">

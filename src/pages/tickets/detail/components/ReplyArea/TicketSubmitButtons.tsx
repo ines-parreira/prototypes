@@ -72,19 +72,9 @@ export function TicketSubmitButtonsContainer({
 
     const handleSubmit = useCallback(
         (status?: TicketStatus, next?: any) => {
-            const isSending = newMessage.getIn([
-                '_internal',
-                'loading',
-                'submitMessage',
-            ])
-
-            if (isSending) {
-                return
-            }
-
             submit({status, next})
         },
-        [newMessage, submit]
+        [submit]
     )
 
     const handleClickHideTips = useCallback(() => {

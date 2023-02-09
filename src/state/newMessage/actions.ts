@@ -1263,12 +1263,6 @@ export function submitTicket(
                         return Promise.resolve({resp})
                     }
 
-                    // dispatch for ticket reducer branch
-                    dispatch({
-                        type: ticketConstants.SUBMIT_TICKET_SUCCESS,
-                        resp,
-                    })
-
                     // dispatch for newMessage reducer branch
                     dispatch({
                         type: constants.NEW_MESSAGE_SUBMIT_TICKET_SUCCESS,

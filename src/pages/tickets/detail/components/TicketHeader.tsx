@@ -10,6 +10,7 @@ import {
 } from 'reactstrap'
 import {Map} from 'immutable'
 
+import {TicketStatus as TicketStatusEnum} from 'business/types/ticket'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import MergeTicketsContainer from 'pages/common/components/MergeTickets/MergeTicketsContainer'
 import EditableTitle from 'pages/common/components/EditableTitle'
@@ -78,7 +79,10 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
     }
 
     _toggleStatus = (status: string) => {
-        const newStatus = status === 'closed' ? 'open' : 'closed'
+        const newStatus =
+            status === TicketStatusEnum.Closed
+                ? TicketStatusEnum.Open
+                : TicketStatusEnum.Closed
         return this._setStatus(newStatus)
     }
 
@@ -169,12 +173,12 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
         shortcutManager.bind('TicketDetailContainer', {
             CLOSE_TICKET: {
                 action: () => {
-                    void this._setStatus('closed')
+                    void this._setStatus(TicketStatusEnum.Closed)
                 },
             },
             OPEN_TICKET: {
                 action: () => {
-                    void this._setStatus('open')
+                    void this._setStatus(TicketStatusEnum.Open)
                 },
             },
             DELETE_TICKET: {

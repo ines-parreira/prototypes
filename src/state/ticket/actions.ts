@@ -261,42 +261,38 @@ export const setSpam =
         // execute callback immediately, do not wait for server answer
         callback()
 
-        return (dispatch(ticketPartialUpdate({spam})) as Promise<void>).then(
-            () => {
-                dispatch({
-                    type: types.SET_SPAM_SUCCESS,
-                })
-                if (spam) {
-                    return dispatch(
-                        notify({
-                            id: `spam-${ticketId}`,
-                            dismissAfter: 5000,
-                            buttons: [
-                                {
-                                    name: 'Undo',
-                                    onClick: () => {
-                                        void dispatch(
-                                            dismissNotification(
-                                                `spam-${ticketId}`
-                                            )
-                                        )
-                                        history.push(`/app/ticket/${ticketId}`)
-                                        return dispatch(
-                                            fetchTicket(ticketId)
-                                        ).then(() => {
+        return dispatch(ticketPartialUpdate({spam})).then(() => {
+            dispatch({
+                type: types.SET_SPAM_SUCCESS,
+            })
+            if (spam) {
+                return dispatch(
+                    notify({
+                        id: `spam-${ticketId}`,
+                        dismissAfter: 5000,
+                        buttons: [
+                            {
+                                name: 'Undo',
+                                onClick: () => {
+                                    void dispatch(
+                                        dismissNotification(`spam-${ticketId}`)
+                                    )
+                                    history.push(`/app/ticket/${ticketId}`)
+                                    return dispatch(fetchTicket(ticketId)).then(
+                                        () => {
                                             void dispatch(setSpam(false))
-                                        })
-                                    },
-                                    primary: true,
+                                        }
+                                    )
                                 },
-                            ],
-                            status: NotificationStatus.Success,
-                            message: 'Ticket has been marked as spam',
-                        })
-                    )
-                }
+                                primary: true,
+                            },
+                        ],
+                        status: NotificationStatus.Success,
+                        message: 'Ticket has been marked as spam',
+                    })
+                )
             }
-        )
+        })
     }
 
 export const setTrashed =

@@ -12,6 +12,7 @@ import {
     updatePartialCustomField,
 } from 'models/customField/resources'
 
+import {isCustomFieldValueEmpty} from 'business/customFields'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import {updateCustomFieldState} from 'state/ticket/actions'
@@ -164,11 +165,6 @@ export const useUpdateCustomFieldStatus = (id: number) => {
     })
 }
 
-// this empty check will need to be more elaborate
-// in the future as more types kick in
-const isValueEmpty = (value: CustomFieldState['value']) =>
-    typeof value !== 'number' && !value
-
 export type OnMutateSettings = {
     previousState?: CustomFieldState
     onError?: () => void
@@ -190,7 +186,7 @@ export const useUpdateOrDeleteTicketFieldValue = (ticketId: number) => {
                 value,
             } as const
 
-            if (isValueEmpty(value)) {
+            if (isCustomFieldValueEmpty(value)) {
                 return deleteCustomFieldValue(params)
             }
             return updateCustomFieldValue(params)

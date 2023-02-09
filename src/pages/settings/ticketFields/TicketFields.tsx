@@ -1,6 +1,6 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useState} from 'react'
 import {Container} from 'reactstrap'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {Link, NavLink, useParams} from 'react-router-dom'
 import {FeatureFlagKey} from 'config/featureFlags'

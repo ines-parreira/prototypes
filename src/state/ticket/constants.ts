@@ -9,9 +9,6 @@ export const DELETE_TICKET_ERROR = 'DELETE_TICKET_ERROR'
 
 export const TICKET_MESSAGE_DELETED = 'TICKET_MESSAGE_DELETED'
 
-// Reply to a ticket
-export const SUBMIT_TICKET_SUCCESS = 'SUBMIT_TICKET_SUCCESS'
-
 // Fetching a single ticket life-cycle
 export const FETCH_TICKET_START = 'FETCH_TICKET_START'
 export const FETCH_TICKET_SUCCESS = 'FETCH_TICKET_SUCCESS'
