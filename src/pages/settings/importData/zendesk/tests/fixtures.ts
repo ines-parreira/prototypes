@@ -17,7 +17,7 @@ export const successImport = {
         display_import_stats: true,
     },
     type: IntegrationType.Zendesk,
-} as unknown as ZendeskIntegration
+} as ZendeskIntegration
 
 export const pendingImport = {
     id: 2,
@@ -35,7 +35,7 @@ export const pendingImport = {
         display_import_stats: true,
     },
     type: IntegrationType.Zendesk,
-} as unknown as ZendeskIntegration
+} as ZendeskIntegration
 
 export const failedImport = {
     id: 3,
@@ -54,7 +54,7 @@ export const failedImport = {
         display_import_stats: true,
     },
     type: IntegrationType.Zendesk,
-} as unknown as ZendeskIntegration
+} as ZendeskIntegration
 
 export const timezoneUtc = 'UTC'
 export const timezoneParis = 'Europe/Paris'

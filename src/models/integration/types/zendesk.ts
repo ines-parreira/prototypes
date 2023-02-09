@@ -32,7 +32,7 @@ export type ZendeskIntegrationMeta = {
     }
     status?: ImportStatus
     error?: string
-    display_import_stats?: string
+    display_import_stats?: boolean
     continuous_import_enabled?: boolean
 }
 
