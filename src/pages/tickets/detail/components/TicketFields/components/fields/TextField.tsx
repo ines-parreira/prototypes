@@ -81,10 +81,7 @@ export default function TextField({
                 }}
                 onBlur={() => {
                     setActive(false)
-                    if (currentValue === '' && isRequired) {
-                        dispatch(updateCustomFieldValue(id, currentValue))
-                        dispatch(updateCustomFieldError(id, true))
-                    }
+                    dispatch(updateCustomFieldValue(id, currentValue))
                     if (currentValue !== initialValue) {
                         onChange(currentValue, {
                             previousState: {

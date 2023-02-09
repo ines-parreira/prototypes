@@ -115,11 +115,8 @@ export default function DropdownField({
         dispatch(updateCustomFieldValue(id, ''))
         onChange('')
         setCurrentPath([])
-        if (isRequired) {
-            dispatch(updateCustomFieldError(id, true))
-        }
         setActive(false)
-    }, [dispatch, isRequired, id, onChange, setActive])
+    }, [dispatch, id, onChange, setActive])
 
     const choicesTree = useMemo(() => {
         const choicesTree: ChoicesTree = {[CHOICE_VALUES_SYMBOL]: new Set()}
@@ -176,12 +173,7 @@ export default function DropdownField({
             </Label>
             <Dropdown
                 isOpen={isActive}
-                onToggle={(isActive) => {
-                    if (isActive === false && !value && isRequired) {
-                        dispatch(updateCustomFieldError(id, true))
-                    }
-                    setActive(isActive)
-                }}
+                onToggle={setActive}
                 target={inputRef}
                 ref={modalRef}
                 className={css.dropdown}
