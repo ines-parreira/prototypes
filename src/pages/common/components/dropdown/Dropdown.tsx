@@ -26,7 +26,7 @@ import React, {
     useMemo,
     useState,
 } from 'react'
-import {useEvent, usePrevious, useUpdateEffect} from 'react-use'
+import {useEvent, useKey, usePrevious, useUpdateEffect} from 'react-use'
 
 import css from './Dropdown.less'
 
@@ -183,7 +183,16 @@ const Dropdown = forwardRef(
             },
             [isOpen, onToggle, refs]
         )
-
+        useKey(
+            'Escape',
+            () => {
+                if (isOpen) {
+                    onToggle(false)
+                }
+            },
+            undefined,
+            [isOpen, onToggle]
+        )
         const handleQueryChange = useCallback((nextQuery: string) => {
             setQuery(nextQuery.trim())
         }, [])

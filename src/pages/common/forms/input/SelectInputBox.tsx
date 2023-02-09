@@ -14,7 +14,7 @@ import React, {
     useRef,
     RefObject,
 } from 'react'
-import {useEffectOnce, useKey, useUpdateEffect} from 'react-use'
+import {useEffectOnce, useUpdateEffect} from 'react-use'
 
 import {
     GroupContext,
@@ -128,23 +128,6 @@ const SelectInputBox = forwardRef(
                 onToggle(isFocused)
             }
         }, [isFocused, onToggle])
-
-        useKey(
-            'Escape',
-            () => {
-                const currentElement = inputElement.current
-
-                if (!currentElement) {
-                    return
-                }
-                if (document.activeElement !== currentElement) {
-                    currentElement.focus()
-                }
-                currentElement.blur()
-            },
-            undefined,
-            []
-        )
 
         const contextValue = useMemo<SelectInputBoxContextState>(
             () => ({
