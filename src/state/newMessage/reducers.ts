@@ -493,6 +493,10 @@ export default function reducer(
             return state.setIn(['newMessage', 'subject'], action.subject)
         }
 
+        case types.NEW_MESSAGE_SET_META: {
+            return state.setIn(['newMessage', 'meta'], action.meta)
+        }
+
         case types.NEW_MESSAGE_SET_RECEIVERS: {
             const receivers = _pick(action.receivers, getReceiversProperties())
             const replaceAll = action.replaceAll

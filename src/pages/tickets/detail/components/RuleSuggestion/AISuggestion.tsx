@@ -3,7 +3,7 @@ import React, {useState} from 'react'
 import {Modifier} from 'draft-js'
 import Button from 'pages/common/components/button/Button'
 import {Ticket} from 'models/ticket/types'
-import {setResponseText} from 'state/newMessage/actions'
+import {setMeta, setResponseText} from 'state/newMessage/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {textToHTML} from 'utils/html'
 import {getNewMessageContentState} from 'state/newMessage/selectors'
@@ -60,6 +60,7 @@ export default function AISuggestion({ticket, isCollapsed: collapsed}: Props) {
                                     })
                                 )
                             )
+                            dispatch(setMeta({ai_suggestion: true}))
                         }}
                     >
                         Copy suggestion & Edit

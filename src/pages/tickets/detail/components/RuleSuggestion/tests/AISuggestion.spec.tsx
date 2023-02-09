@@ -8,7 +8,7 @@ import {fromJS} from 'immutable'
 import {ContentState} from 'draft-js'
 import {emailTicket} from 'state/ticket/tests/fixtures'
 import {toJS} from 'utils'
-import {setResponseText} from 'state/newMessage/actions'
+import {setMeta, setResponseText} from 'state/newMessage/actions'
 import AISuggestion from '../AISuggestion'
 
 jest.mock('state/newMessage/actions.ts')
@@ -59,5 +59,6 @@ describe('AISuggestion', () => {
         )
         fireEvent.click(screen.getByText(/Copy/))
         expect(setResponseText as jest.Mock).toHaveBeenCalled()
+        expect(setMeta as jest.Mock).toHaveBeenCalled()
     })
 })

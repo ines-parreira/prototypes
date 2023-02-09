@@ -419,6 +419,11 @@ export const setSourceExtra = (extra: Record<string, unknown>) => ({
     extra,
 })
 
+export const setMeta = (meta: Record<string, unknown>) => ({
+    type: constants.NEW_MESSAGE_SET_META,
+    meta,
+})
+
 /**
  * Prepare default message
  */
