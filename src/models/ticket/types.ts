@@ -227,6 +227,7 @@ export type Meta = {
     quoted_tweet?: QuotedTweet
     product?: ProductDetails
     rule_suggestion_slug?: string
+    ai_suggestion?: boolean
 }
 
 export type FacebookPrivateReply = {

@@ -136,6 +136,20 @@ describe('ticket message meta', () => {
         await screen.findByText(emptyRuleRecipeFixture.rule.name)
     })
 
+    it('should display AI suggestion', async () => {
+        render(
+            <Provider store={store}>
+                <Meta
+                    messageId="some-id"
+                    via="something"
+                    meta={{ai_suggestion: true}}
+                />
+            </Provider>
+        )
+
+        await screen.findByText('answer suggested from Gorgias AI')
+    })
+
     it(
         'should add a -sent via campaign- label because the message was sent by a campaign on a ' +
             'smooch_inside integration',

@@ -388,6 +388,13 @@ export default function Meta(props: Props) {
                 </b>
             </From>
         )
+    } else if (meta && meta.ai_suggestion) {
+        widgets.push(
+            <From
+                key="via-widget"
+                label="answer suggested from Gorgias AI"
+            ></From>
+        )
     }
 
     return <>{widgets}</>
