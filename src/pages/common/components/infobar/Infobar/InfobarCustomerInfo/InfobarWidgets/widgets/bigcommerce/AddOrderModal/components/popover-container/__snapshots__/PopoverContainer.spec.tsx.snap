@@ -4,6 +4,8 @@ exports[`<PopoverContainer /> renders 1`] = `
 <div>
   <div
     class="wrapper body"
+    data-testid="popover-container-body"
+    tabindex="-1"
   >
     <div>
       <span>
@@ -13,6 +15,8 @@ exports[`<PopoverContainer /> renders 1`] = `
   </div>
   <div
     class="footer"
+    data-testid="popover-container-footer"
+    tabindex="-1"
   >
     <div>
       <footer>

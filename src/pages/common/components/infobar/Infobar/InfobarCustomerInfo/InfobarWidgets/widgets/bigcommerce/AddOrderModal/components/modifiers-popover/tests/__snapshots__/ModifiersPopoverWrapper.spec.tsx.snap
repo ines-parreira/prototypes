@@ -7,6 +7,8 @@ exports[`<ModifiersPopover/> can submit the form when all required fields are fi
   >
     <div
       class="wrapper body"
+      data-testid="popover-container-body"
+      tabindex="-1"
     >
       <div
         class="bodyContainer"
@@ -257,6 +259,8 @@ exports[`<ModifiersPopover/> can submit the form when all required fields are fi
     </div>
     <div
       class="footer"
+      data-testid="popover-container-footer"
+      tabindex="-1"
     >
       <button
         class="wrapper fill secondary medium"
@@ -282,6 +286,8 @@ exports[`<ModifiersPopover/> renders as expected 1`] = `
   >
     <div
       class="wrapper body"
+      data-testid="popover-container-body"
+      tabindex="-1"
     >
       <div
         class="bodyContainer"
@@ -507,6 +513,8 @@ exports[`<ModifiersPopover/> renders as expected 1`] = `
     </div>
     <div
       class="footer"
+      data-testid="popover-container-footer"
+      tabindex="-1"
     >
       <button
         class="wrapper fill secondary medium"

@@ -59,6 +59,8 @@ exports[`ShippingMethod create/update consignment and change shipping method: dr
       >
         <div
           class="wrapper body"
+          data-testid="popover-container-body"
+          tabindex="-1"
         >
           <fieldset
             name="radio-field-1"
@@ -125,6 +127,8 @@ exports[`ShippingMethod create/update consignment and change shipping method: dr
         </div>
         <div
           class="footer"
+          data-testid="popover-container-footer"
+          tabindex="-1"
         >
           <button
             class="wrapper fill secondary medium"

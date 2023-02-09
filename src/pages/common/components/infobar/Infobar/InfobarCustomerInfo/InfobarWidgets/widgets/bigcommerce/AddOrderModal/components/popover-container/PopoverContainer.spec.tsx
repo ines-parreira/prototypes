@@ -1,6 +1,6 @@
-import React, {PropsWithChildren, useRef} from 'react'
+import React, {ComponentProps, PropsWithChildren, useRef} from 'react'
 
-import {render} from '@testing-library/react'
+import {fireEvent, render, screen} from '@testing-library/react'
 import {PopoverContainer} from './PopoverContainer'
 
 // We don't care about internals of `Dropdown`, just want to render out the children that we pass
@@ -9,7 +9,9 @@ jest.mock('pages/common/components/dropdown/Dropdown', () => ({
     default: ({children}: PropsWithChildren<unknown>) => <>{children}</>,
 }))
 
-const WrapperComponent = () => {
+const WrapperComponent = (
+    props: Partial<ComponentProps<typeof PopoverContainer>>
+) => {
     const mockReference = useRef<HTMLButtonElement>(null)
 
     return (
@@ -27,6 +29,7 @@ const WrapperComponent = () => {
                     <footer>A footer</footer>
                 </div>
             }
+            {...props}
         />
     )
 }
@@ -36,5 +39,15 @@ describe('<PopoverContainer />', () => {
         const {container} = render(<WrapperComponent />)
 
         expect(container).toMatchSnapshot()
+    })
+
+    it('calls `onToggle` on "Escape" key press', function () {
+        const onToggleMock = jest.fn()
+        render(<WrapperComponent onToggle={onToggleMock} />)
+
+        fireEvent.keyDown(screen.getByTestId('popover-container-body')!, {
+            key: 'Escape',
+        })
+        expect(onToggleMock).toHaveBeenCalled()
     })
 })
