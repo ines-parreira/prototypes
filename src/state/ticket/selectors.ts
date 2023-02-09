@@ -255,10 +255,14 @@ export const getBody = createImmutableSelector(
         }
 
         if (aiSuggestion && !ruleSuggestion) {
-            body = body.insert(
-                getSuggestionPosition(),
-                aiSuggestion.set('isAISuggestion', true)
+            const hasAISuggestionApplied = body.some((element: Map<any, any>) =>
+                element.hasIn(['meta', 'ai_suggestion'])
             )
+            if (!hasAISuggestionApplied)
+                body = body.insert(
+                    getSuggestionPosition(),
+                    aiSuggestion.set('isAISuggestion', true)
+                )
         }
 
         return body

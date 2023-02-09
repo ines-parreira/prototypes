@@ -406,6 +406,36 @@ describe('ticket selectors', () => {
                 expect(ruleSuggestionIndex).toBe(expectedIndex)
             }
         )
+
+        it('should remove ai suggestion if already applied', () => {
+            const messages = [
+                {
+                    id: 1,
+                    sent_datetime: '2017-07-25T21:01:00',
+                    created_datetime: '2017-07-24T21:00:00',
+                    from_agent: false,
+                },
+                {
+                    id: 2,
+                    sent_datetime: '2017-07-29T21:01:00',
+                    created_datetime: '2017-07-29T21:00:00',
+                    from_agent: true,
+                    meta: {ai_suggestion: true},
+                },
+            ]
+            const newState = {
+                ...state,
+                ticket: state.ticket
+                    .setIn(['messages'], fromJS(messages))
+                    .setIn(['meta'], fromJS({ai_suggestion: {}})),
+            }
+            const body = selectors.getBody(newState)
+            const aiSuggestionIndex = body.findIndex(
+                (element: Map<any, any>) =>
+                    element.get('isAISuggestion') as boolean
+            )
+            expect(aiSuggestionIndex).toBe(-1)
+        })
     })
 
     it('getAppliedMacro', () => {
