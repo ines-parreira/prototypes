@@ -59,7 +59,7 @@ export default function OrderLineItemRow({
                 setQuantity(oldQuantity)
             }
         }, 250),
-        [index]
+        [index, onChange]
     )
 
     const handleQuantityChange = (value: string) => {

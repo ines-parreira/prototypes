@@ -29,6 +29,7 @@ import {
     BigCommerceCustomer,
     BigCommerceCustomerAddress,
     BigCommerceCustomProduct,
+    BigCommerceErrorMessage,
     BigCommerceIntegration,
     BigCommerceProduct,
     BigCommerceProductsListType,
@@ -49,6 +50,7 @@ import {CustomerContext} from 'providers/infobar/CustomerContext'
 import {
     deleteBigCommerceCoupon,
     OptionSelection,
+    ProductModifiersChangedError,
     updateBigCommerceCheckoutDiscount,
     updateBigCommerceCoupon,
 } from 'models/integration/resources/bigcommerce'
@@ -57,7 +59,8 @@ import OrderTable from './components/order-table/OrderTable'
 import OrderTotals from './OrderTotals'
 import {
     addCheckoutBillingAddress,
-    addRow,
+    addCustomLineItem,
+    addLineItem,
     bigcommerceCreateOrder,
     checkCheckoutValidity,
     checkProductsValidity,
@@ -517,35 +520,28 @@ export function OrderModal({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currency])
 
-    const handleAddRow = (
-        props:
-            | {
-                  product: BigCommerceProduct
-                  variant: BigCommerceProductVariant
-                  optionSelections?: OptionSelection[]
-              }
-            | {
-                  customProduct: BigCommerceCustomProduct
-              }
-    ) => {
-        if ('customProduct' in props) {
-            return void addRow({
-                integrationId: integration.id,
-                customProduct: props.customProduct,
-                products,
-                cart,
-                setIsLoading,
-                setCart,
-                setProducts,
-                setLineItemWithError,
-            })
-        }
+    const handleAddCustomProduct = (customProduct: BigCommerceCustomProduct) =>
+        void addCustomLineItem({
+            integrationId: integration.id,
+            customProduct,
+            products,
+            cart,
+            setIsLoading,
+            setCart,
+            setProducts,
+            setLineItemWithError,
+        })
 
+    const handleAddRow = async (props: {
+        product: BigCommerceProduct
+        variant: BigCommerceProductVariant
+        optionSelections?: OptionSelection[]
+    }) => {
         const {product, variant, optionSelections} = props
 
-        return void addRow({
+        return addLineItem({
             integrationId: integration.id,
-            lineProduct: product,
+            product: product,
             variant,
             optionSelections,
             products,
@@ -564,11 +560,21 @@ export function OrderModal({
         maybeOpenModifierPopover,
     } = useAddModifiersPopover(
         integration.meta.store_hash,
-        ({product, variant, modifierValues}) => {
+        async ({product, variant, modifierValues}) => {
             const optionSelections =
                 modifierValuesToOptionSelections(modifierValues)
 
-            handleAddRow({product, variant, optionSelections})
+            try {
+                await handleAddRow({product, variant, optionSelections})
+            } catch (error) {
+                if (error instanceof ProductModifiersChangedError) {
+                    maybeOpenModifierPopover({
+                        product: error.product,
+                        variant,
+                        modifierValues,
+                    })
+                }
+            }
         }
     )
 
@@ -638,12 +644,12 @@ export function OrderModal({
                             </Tooltip>
                         )}
                         <ProductSearch
+                            // Evict the search result after new product is added
+                            key={Array.from(products.values()).pop()?.id}
                             currency={currency}
                             validationStatus={validationStatus}
-                            onAddCustomProduct={(customItem) =>
-                                handleAddRow({customProduct: customItem})
-                            }
-                            onVariantClicked={(item, variant) => {
+                            onAddCustomProduct={handleAddCustomProduct}
+                            onVariantClicked={async (item, variant) => {
                                 if (
                                     maybeOpenModifierPopover({
                                         product: item.data,
@@ -654,7 +660,23 @@ export function OrderModal({
                                     return
                                 }
 
-                                handleAddRow({product: item.data, variant})
+                                try {
+                                    await handleAddRow({
+                                        product: item.data,
+                                        variant,
+                                    })
+                                } catch (error) {
+                                    if (
+                                        error instanceof
+                                        ProductModifiersChangedError
+                                    ) {
+                                        setLineItemWithError({
+                                            id: null,
+                                            message:
+                                                BigCommerceErrorMessage.defaultError,
+                                        })
+                                    }
+                                }
                             }}
                         />
                         {validationStatus?.products === false && (

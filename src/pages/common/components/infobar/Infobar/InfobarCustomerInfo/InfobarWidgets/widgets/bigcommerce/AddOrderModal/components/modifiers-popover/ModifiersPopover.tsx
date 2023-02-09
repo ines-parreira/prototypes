@@ -93,12 +93,14 @@ type Props = {
     setReference: (node: HTMLElement | null) => void
     onApply: (values: ModifierValues) => void
     lineItem?: BigCommerceCartLineItem
+    initialModifierValues?: ModifierValues
 } & Pick<ModifierPopoverBodyProps, 'product' | 'sku' | 'storeHash'> &
     Pick<ModifiersPopoverFooterProps, 'onClose'>
 
 export const ModifiersPopover = ({
     product,
     lineItem,
+    initialModifierValues,
     sku,
     storeHash,
     onClose,
@@ -106,7 +108,11 @@ export const ModifiersPopover = ({
     setReference,
 }: Props) => {
     const {modifierValues, modifierErrors, handleSetValue, handleValidate} =
-        useModifierValues(product.modifiers ?? [], lineItem)
+        useModifierValues({
+            modifiers: product.modifiers ?? [],
+            lineItem: lineItem,
+            initialModifierValues,
+        })
 
     const handleApply = () => {
         if (handleValidate()) {

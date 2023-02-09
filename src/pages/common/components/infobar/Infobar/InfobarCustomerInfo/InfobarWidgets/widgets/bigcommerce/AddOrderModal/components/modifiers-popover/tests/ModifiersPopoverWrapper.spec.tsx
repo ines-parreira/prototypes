@@ -24,6 +24,25 @@ describe('<ModifiersPopover/>', () => {
         expect(container).toMatchSnapshot()
     })
 
+    it('prefills values based on initialModifierValues and performs validation', () => {
+        const {container} = render(
+            <ModifiersPopover
+                {...defaultProps}
+                initialModifierValues={{
+                    163: 284,
+                    165: 288,
+                    166: 292,
+                    167: 295,
+                    143: 250,
+                }}
+            />
+        )
+
+        expect(screen.getByText('Please check this box.')).toBeInTheDocument()
+
+        expect(container).toMatchSnapshot()
+    })
+
     it('is able to perform actions with inputs', () => {
         render(<ModifiersPopover {...defaultProps} />)
 

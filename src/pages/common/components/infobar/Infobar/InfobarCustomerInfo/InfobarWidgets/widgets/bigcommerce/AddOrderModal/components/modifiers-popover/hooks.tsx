@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {
     FloatingFocusManager,
     FloatingOverlay,
@@ -23,34 +23,47 @@ export type ModifierValues = Record<string, number | undefined>
 
 export type ModifierErrors = Record<string, string | undefined>
 
-export const useModifierValues = (
-    modifiers: BigCommerceProductModifiers[],
+export const useModifierValues = ({
+    modifiers,
+    lineItem,
+    initialModifierValues,
+}: {
+    modifiers: BigCommerceProductModifiers[]
     lineItem?: BigCommerceCartLineItem
-) => {
+    initialModifierValues?: ModifierValues
+}) => {
+    const [isInitialValidationDone, setIsInitialValidationDone] =
+        useState(false)
+
     const usableModifiers = modifiers.filter(({type}) =>
         supportedBigCommerceModifierTypes.includes(type)
     )
 
-    const [modifierValues, setModifierValues] = useState<ModifierValues>(
-        usableModifiers.reduce((accum, {id}) => {
-            const option = lineItem?.options.find((option) => {
-                if ('nameId' in option) {
-                    return option.nameId === id
+    const [modifierValues, setModifierValues] = useState<ModifierValues>(() => {
+        const valuesFromUsableModifiers = usableModifiers.reduce(
+            (accum, {id}) => {
+                const option = lineItem?.options.find((option) => {
+                    if ('nameId' in option) {
+                        return option.nameId === id
+                    }
+
+                    return option.name_id === id
+                })
+
+                if (!option) {
+                    accum[id] = undefined
+                } else {
+                    accum[id] =
+                        'valueId' in option ? option?.valueId : option.value_id
                 }
 
-                return option.name_id === id
-            })
+                return accum
+            },
+            {} as ModifierValues
+        )
 
-            if (!option) {
-                accum[id] = undefined
-            } else {
-                accum[id] =
-                    'valueId' in option ? option?.valueId : option.value_id
-            }
-
-            return accum
-        }, {} as ModifierValues)
-    )
+        return {...valuesFromUsableModifiers, ...initialModifierValues}
+    })
 
     const [modifierErrors, setModifierErrors] = useState<ModifierErrors>(
         usableModifiers.reduce((accum, {id}) => {
@@ -72,6 +85,9 @@ export const useModifierValues = (
         })
     }
 
+    // `useEffect` which is using `handleValidate` does not depend on `handleValidate` identity to
+    // trigger the wrapped function
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const handleValidate = () => {
         const newModifierErrors = Object.entries(modifierValues).reduce(
             (accum, [modifierId, modifierValue]) => {
@@ -120,12 +136,29 @@ export const useModifierValues = (
         return !hasErrors
     }
 
+    useEffect(() => {
+        if (
+            !isInitialValidationDone &&
+            initialModifierValues &&
+            modifierValues
+        ) {
+            handleValidate()
+            setIsInitialValidationDone(true)
+        }
+    }, [
+        handleValidate,
+        initialModifierValues,
+        isInitialValidationDone,
+        modifierValues,
+    ])
+
     return {modifierValues, modifierErrors, handleSetValue, handleValidate}
 }
 
 type AddModifiersPopoverState = {
     product: BigCommerceProduct
     variant: BigCommerceProductVariant
+    modifierValues?: ModifierValues
 }
 
 export const useAddModifiersPopover = (
@@ -134,7 +167,7 @@ export const useAddModifiersPopover = (
         product: BigCommerceProduct
         variant: BigCommerceProductVariant
         modifierValues: ModifierValues
-    }) => void
+    }) => Promise<void>
 ) => {
     const canViewModifiers = useCanViewBigCommerceCreateOrderModifiers()
 
@@ -174,11 +207,12 @@ export const useAddModifiersPopover = (
             <FloatingFocusManager context={context}>
                 <ModifiersPopover
                     product={props.product}
+                    initialModifierValues={props.modifierValues}
                     sku={props.variant.sku}
                     storeHash={storeHash}
                     onClose={onClose}
                     onApply={(modifierValues) => {
-                        onApply({
+                        void onApply({
                             product: props.product,
                             variant: props.variant,
                             modifierValues,

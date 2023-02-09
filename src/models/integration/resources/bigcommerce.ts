@@ -71,15 +71,47 @@ export async function addBigCommerceCheckoutBillingAddress(
     return response.data
 }
 
-type AddLineItemResponse =
+export type AddLineItemResponse =
     | {
           cart: BigCommerceCart
       }
     | {
-          cart: Record<string, unknown>
-          error: string
-          updated_product?: BigCommerceProduct
+          error?: {
+              data: {
+                  cart: Record<string, unknown>
+                  updated_product?: BigCommerceProduct
+              }
+              msg?: string
+          }
       }
+
+export class ProductModifiersChangedError extends Error {
+    public product: BigCommerceProduct
+    constructor(product: BigCommerceProduct) {
+        super()
+        this.product = product
+    }
+}
+
+export class AddLineItemError extends Error {
+    public message: string
+
+    constructor(message: string) {
+        super()
+        this.message = message
+    }
+}
+
+/**
+ * Below RegExp works on a line like this
+ * "[BIGCOMMERCE][update_line_item_from_cart] BigCommerce API has returned an error: (422): You can only purchase a maximum of 10 of the whatsupp33 per order."
+ *
+ * Captured "message" will be " You can only purchase a maximum of 10 of the whatsupp33 per order."
+ *
+ * Need to change TS target to use RegExp named capturing groups :(
+ */
+const bigCommerceAddEditLineItemErrorRegExp =
+    /BigCommerce API has returned an error: \((?<code>[0-9]{3})\):(?<message>.*)/i
 
 export async function addBigCommerceLineItem({
     integrationId,
@@ -115,32 +147,52 @@ export async function addBigCommerceLineItem({
               ],
           } // Line Item
 
-    const response = await client.post<AddLineItemResponse>(url, payload, {
+    const {data} = await client.post<AddLineItemResponse>(url, payload, {
         params: {
             integration_id: integrationId,
             cart_id: cartId,
         },
+        validateStatus: (status) => status < 500,
     })
 
-    // TODO:https://linear.app/gorgias/issue/APPED-1319/fe-handle-modifier-changes-while-adding-line-item
-    if ('error' in response.data) {
-        throw Error(response.data.error)
+    if ('error' in data && data.error?.data?.updated_product) {
+        throw new ProductModifiersChangedError(data.error.data.updated_product)
     }
 
-    return response.data.cart
+    if ('error' in data && data.error?.msg) {
+        const regexpMatch = bigCommerceAddEditLineItemErrorRegExp.exec(
+            data.error?.msg
+        )
+
+        throw new AddLineItemError(
+            regexpMatch
+                ? regexpMatch[2].trim()
+                : BigCommerceErrorMessage.defaultError
+        )
+    }
+
+    if (!('cart' in data)) {
+        throw new AddLineItemError(BigCommerceErrorMessage.defaultError)
+    }
+
+    return data.cart
 }
 
-export type EditLineItemResponse = {
-    data:
-        | {
+export type EditLineItemResponse =
+    | {
+          data: {
               cart: BigCommerceCart
           }
-        | {
-              cart: Record<string, unknown>
-              error: string
-              updated_product?: BigCommerceProduct
+      }
+    | {
+          error?: {
+              data: {
+                  cart: Record<string, unknown>
+                  // updated_product?: BigCommerceProduct
+              }
+              msg?: string
           }
-}
+      }
 
 export class EditBigCommerceLineItemError extends Error {
     public message: string
@@ -150,17 +202,6 @@ export class EditBigCommerceLineItemError extends Error {
         this.message = message
     }
 }
-
-/**
- * Below RegExp works on a line like this
- * "[BIGCOMMERCE][update_line_item_from_cart] BigCommerce API has returned an error: (422): You can only purchase a maximum of 10 of the whatsupp33 per order."
- *
- * Captured "message" will be " You can only purchase a maximum of 10 of the whatsupp33 per order."
- *
- * Need to change TS target to use RegExp named capturing groups :(
- */
-const editBigCommerceLineItemRegExp =
-    /BigCommerce API has returned an error: \((?<code>[0-9]{3})\):(?<message>.*)/i
 
 export async function editBigCommerceLineItem({
     integrationId,
@@ -194,15 +235,24 @@ export async function editBigCommerceLineItem({
             line_item_id: lineItem.id,
             cart_id: cartId,
         },
+        validateStatus: (status) => status < 500,
     })
 
-    if ('error' in data.data) {
-        const regexpMatch = editBigCommerceLineItemRegExp.exec(data.data.error)
+    if ('error' in data && data.error?.msg) {
+        const regexpMatch = bigCommerceAddEditLineItemErrorRegExp.exec(
+            data.error.msg
+        )
 
         throw new EditBigCommerceLineItemError(
             regexpMatch
                 ? regexpMatch[2].trim()
                 : BigCommerceErrorMessage.defaultError
+        )
+    }
+
+    if (!('data' in data)) {
+        throw new EditBigCommerceLineItemError(
+            BigCommerceErrorMessage.defaultError
         )
     }
 
@@ -229,6 +279,7 @@ export async function editBigCommerceLineItemModifiers({
         variant_id: lineItem.variant_id,
         option_selections: optionSelections,
         quantity,
+        list_price: lineItem.list_price,
     }
 
     const {data} = await client.put<EditLineItemResponse>(url, payload, {
@@ -237,15 +288,24 @@ export async function editBigCommerceLineItemModifiers({
             line_item_id: lineItem.id,
             cart_id: cartId,
         },
+        validateStatus: (status) => status < 500,
     })
 
-    if ('error' in data.data) {
-        const regexpMatch = editBigCommerceLineItemRegExp.exec(data.data.error)
+    if ('error' in data && data.error?.msg) {
+        const regexpMatch = bigCommerceAddEditLineItemErrorRegExp.exec(
+            data.error.msg
+        )
 
         throw new EditBigCommerceLineItemError(
             regexpMatch
                 ? regexpMatch[2].trim()
                 : BigCommerceErrorMessage.defaultError
+        )
+    }
+
+    if (!('data' in data)) {
+        throw new EditBigCommerceLineItemError(
+            BigCommerceErrorMessage.defaultError
         )
     }
 

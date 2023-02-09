@@ -5,6 +5,7 @@ import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {
     addBigCommerceCheckoutBillingAddress,
     addBigCommerceLineItem,
+    AddLineItemError,
     createBigCommerceCart,
     createBigCommerceCheckoutConsignment,
     deleteBigCommerceCart,
@@ -13,6 +14,7 @@ import {
     editBigCommerceLineItemModifiers,
     getBigCommerceCheckout,
     OptionSelection,
+    ProductModifiersChangedError,
     removeBigCommerceLineItem,
     updateBigCommerceCheckoutConsignment,
 } from 'models/integration/resources/bigcommerce'
@@ -139,10 +141,100 @@ const deleteCart = async ({
     await deleteBigCommerceCart(integrationId, cartId)
 }
 
-export const addRow = async ({
+const logAddProduct = ({
     integrationId,
-    lineProduct,
+    cart,
+    product,
+    variant,
+}: {
+    integrationId: number
+    cart: BigCommerceCart
+    product: BigCommerceProduct | BigCommerceCustomProduct
+    variant?: BigCommerceProductVariant
+}) => {
+    logEvent(SegmentEvent.BigCommerceCreateOrderSetProducts, {
+        productId: product.id,
+        variantId: variant?.id,
+    })
+    logEvent(SegmentEvent.BigCommerceCreateOrderAddRow, {
+        integrationId,
+        product,
+        newCart: cart,
+        variant,
+    })
+}
+
+export const addCustomLineItem = async ({
+    integrationId,
     customProduct,
+    products,
+    cart,
+    setIsLoading,
+    setCart,
+    setProducts,
+    setLineItemWithError,
+}: {
+    integrationId: number
+    customProduct: BigCommerceCustomProduct
+    products: BigCommerceProductsListType
+    cart: Maybe<BigCommerceCart>
+    setIsLoading: (state: boolean) => void
+    setCart: (cart: BigCommerceCart) => void
+    setProducts: (products: BigCommerceProductsListType) => void
+    setLineItemWithError: (value: BigCommerceCreateOrderErrorType) => void
+}) => {
+    if (!cart?.id) {
+        return
+    }
+
+    setIsLoading(true)
+
+    try {
+        const newCart = await addBigCommerceLineItem({
+            integrationId: integrationId,
+            cartId: cart.id,
+            customProduct: customProduct,
+        })
+
+        const newCustomProduct = newCart.line_items.custom_items.find(
+            (item) =>
+                item.name === customProduct.name &&
+                item.list_price === customProduct.list_price
+        )
+
+        if (!newCustomProduct) {
+            return
+        }
+
+        const newProducts = new Map(products)
+        // Custom Items are identified by their ID, computed after adding them to the cart, in the Products list
+        if (newCustomProduct.id && !newProducts.has(newCustomProduct.id)) {
+            newProducts.set(newCustomProduct.id, newCustomProduct)
+        }
+
+        setProducts(newProducts)
+        setCart(newCart)
+        setLineItemWithError({id: null, message: ''})
+
+        logAddProduct({integrationId, cart: newCart, product: newCustomProduct})
+    } catch (error) {
+        const message =
+            error instanceof AddLineItemError
+                ? error.message
+                : BigCommerceErrorMessage.defaultError
+
+        setLineItemWithError({
+            id: null,
+            message,
+        })
+    } finally {
+        setIsLoading(false)
+    }
+}
+
+export const addLineItem = async ({
+    integrationId,
+    product,
     products,
     variant,
     optionSelections,
@@ -153,123 +245,62 @@ export const addRow = async ({
     setLineItemWithError,
 }: {
     integrationId: number
-    lineProduct?: BigCommerceProduct
-    customProduct?: BigCommerceCustomProduct
+    product: BigCommerceProduct
     products: BigCommerceProductsListType
+    variant: BigCommerceProductVariant
     optionSelections?: OptionSelection[]
-    variant?: BigCommerceProductVariant
     cart: Maybe<BigCommerceCart>
     setIsLoading: (state: boolean) => void
     setCart: (cart: BigCommerceCart) => void
     setProducts: (products: BigCommerceProductsListType) => void
     setLineItemWithError: (value: BigCommerceCreateOrderErrorType) => void
 }) => {
-    const newProducts = new Map(products)
-    const cartId = cart ? cart.id : null
-
-    if (!cartId || !cart) {
+    if (!cart?.id) {
         return
     }
 
     setIsLoading(true)
 
-    let newCart
-
     try {
-        if (customProduct) {
-            newCart = await addBigCommerceLineItem({
-                integrationId: integrationId,
-                cartId: cartId,
-                customProduct: customProduct,
-            })
+        const newCart = await addBigCommerceLineItem({
+            integrationId: integrationId,
+            cartId: cart.id,
+            productId: product.id,
+            variantId: variant.id,
+            optionSelections,
+        })
 
-            const newCustomProduct: Maybe<BigCommerceCustomCartLineItem> =
-                newCart.line_items.custom_items.find(
-                    (item: BigCommerceCustomProduct) =>
-                        item.name === customProduct.name &&
-                        item.list_price === customProduct.list_price
-                )
-
-            if (!newCustomProduct) {
-                return
-            }
-
-            // Custom Items are identified by their ID, computed after adding them to the cart, in the Products list
-            if (newCustomProduct.id && !newProducts.has(newCustomProduct.id)) {
-                newProducts.set(newCustomProduct.id, newCustomProduct)
-            }
-            let eventName = SegmentEvent.BigCommerceCreateOrderSetProducts
-
-            logEvent(eventName, {
-                productId: newCustomProduct.id,
-            })
-            setIsLoading(false)
-            setProducts(newProducts)
-            setCart(newCart)
-
-            eventName = SegmentEvent.BigCommerceCreateOrderAddRow
-            logEvent(eventName, {
-                integrationId: integrationId,
-                product: newCustomProduct,
-                newCart: newCart,
-            })
-        } else if (lineProduct && variant) {
-            newCart = await addBigCommerceLineItem({
-                integrationId: integrationId,
-                cartId: cartId,
-                productId: lineProduct.id,
-                variantId: variant.id,
-                optionSelections,
-            })
-
-            // Line Items are identified by their ID in the Products list
-            if (!newProducts.has(lineProduct.id)) {
-                newProducts.set(lineProduct.id, lineProduct)
-            }
-            let eventName = SegmentEvent.BigCommerceCreateOrderSetProducts
-
-            logEvent(eventName, {
-                productId: lineProduct.id,
-                variantId: variant.id,
-            })
-            setIsLoading(false)
-            setProducts(newProducts)
-            setCart(newCart)
-
-            eventName = SegmentEvent.BigCommerceCreateOrderAddRow
-            logEvent(eventName, {
-                integrationId: integrationId,
-                product: lineProduct,
-                variant: variant,
-                newCart: newCart,
-            })
-        } else {
-            return
+        const newProducts = new Map(products)
+        // Line Items are identified by their ID in the Products list
+        if (!newProducts.has(product.id)) {
+            newProducts.set(product.id, product)
         }
 
+        setProducts(newProducts)
+        setCart(newCart)
         setLineItemWithError({id: null, message: ''})
+
+        logAddProduct({integrationId, cart: newCart, product, variant})
     } catch (error) {
-        if (lineProduct && variant) {
-            // Line Item
-            const lineItems = cart.line_items.physical_items.concat(
-                cart.line_items.digital_items
-            )
-            const lineItem = lineItems.find(
-                (l) =>
-                    l.product_id === lineProduct.id &&
-                    l.variant_id === variant.id
-            )
-            setLineItemWithError({
-                id: lineItem ? lineItem.id : null,
-                message: BigCommerceErrorMessage.defaultError,
-            })
-        } else {
-            // Custom Line Item
-            setLineItemWithError({
-                id: null,
-                message: BigCommerceErrorMessage.defaultError,
-            })
+        // Bubble  `ProductModifiersChangedError` up, instead of calling `setLineItemWithError`
+        if (error instanceof ProductModifiersChangedError) {
+            throw error
         }
+
+        const lineItems = cart.line_items.physical_items.concat(
+            cart.line_items.digital_items
+        )
+        const lineItem = lineItems.find(
+            (l) => l.product_id === product.id && l.variant_id === variant.id
+        )
+
+        setLineItemWithError({
+            id: lineItem ? lineItem.id : null,
+            message:
+                error instanceof AddLineItemError
+                    ? error.message
+                    : BigCommerceErrorMessage.defaultError,
+        })
     } finally {
         setIsLoading(false)
     }

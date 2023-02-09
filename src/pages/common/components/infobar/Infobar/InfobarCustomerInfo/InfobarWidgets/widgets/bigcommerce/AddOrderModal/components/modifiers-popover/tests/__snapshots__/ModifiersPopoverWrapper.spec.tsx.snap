@@ -279,6 +279,275 @@ exports[`<ModifiersPopover/> can submit the form when all required fields are fi
 </div>
 `;
 
+exports[`<ModifiersPopover/> prefills values based on initialModifierValues and performs validation 1`] = `
+<div>
+  <div
+    class="wrapper"
+  >
+    <div
+      class="wrapper body"
+      data-testid="popover-container-body"
+      tabindex="-1"
+    >
+      <div
+        class="bodyContainer"
+      >
+        <div
+          class="container"
+        >
+          <div
+            class="imgContainer"
+          >
+            <img
+              alt="[Sample] Serviette de plage Fog Linen en chambray - Beige rayé"
+              class="img"
+              src="https://cdn11.bigcommerce.com/s-pk360c6roo/products/77/images/266/foglinenbeigestripetowel1b.1650970371.220.290.jpg?c=1"
+            />
+          </div>
+          <div>
+            <a
+              class="title"
+              href="https://store-Hello.mybigcommerce.com/manage/products/edit/77/"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              [Sample] Serviette de plage Fog Linen en chambray - Beige rayé
+            </a>
+            <div
+              class="subTitle"
+            >
+              SKU: 
+              THIS IS SKU
+            </div>
+          </div>
+        </div>
+        <div
+          class="inputContainer"
+        >
+          <label
+            class="label label"
+          >
+            Test Radio Buttons
+            <abbr
+              aria-label="required"
+              class="abbr"
+              title="required"
+            >
+              *
+            </abbr>
+          </label>
+          <div
+            class="wrapper"
+            role="listbox"
+            tabindex="0"
+          >
+            <div
+              class="inputWrapper"
+            >
+              <div
+                class="input"
+              >
+                Test 1
+              </div>
+              <i
+                class="affix suffix toggle material-icons"
+              >
+                arrow_drop_down
+              </i>
+            </div>
+          </div>
+        </div>
+        <div
+          class="inputContainer"
+        >
+          <div>
+            <label
+              class="label label"
+              for="164"
+            >
+              <input
+                class="input"
+                id="164"
+                name="164"
+                type="checkbox"
+              />
+              Include Insurance?
+              <abbr
+                aria-label="required"
+                class="abbr"
+                title="required"
+              >
+                *
+              </abbr>
+            </label>
+          </div>
+          <p
+            class="error"
+          >
+            Please check this box.
+          </p>
+        </div>
+        <div
+          class="inputContainer"
+        >
+          <label
+            class="label label"
+          >
+            Colors
+            <abbr
+              aria-label="required"
+              class="abbr"
+              title="required"
+            >
+              *
+            </abbr>
+          </label>
+          <div
+            class="wrapper"
+            role="listbox"
+            tabindex="0"
+          >
+            <div
+              class="inputWrapper"
+            >
+              <div
+                class="input"
+              >
+                Pattern
+              </div>
+              <i
+                class="affix suffix toggle material-icons"
+              >
+                arrow_drop_down
+              </i>
+            </div>
+          </div>
+        </div>
+        <div
+          class="inputContainer"
+        >
+          <label
+            class="label label"
+          >
+            Rectangles
+            <abbr
+              aria-label="required"
+              class="abbr"
+              title="required"
+            >
+              *
+            </abbr>
+          </label>
+          <div
+            class="wrapper"
+            role="listbox"
+            tabindex="0"
+          >
+            <div
+              class="inputWrapper"
+            >
+              <div
+                class="input"
+              >
+                One
+              </div>
+              <i
+                class="affix suffix toggle material-icons"
+              >
+                arrow_drop_down
+              </i>
+            </div>
+          </div>
+        </div>
+        <div
+          class="inputContainer"
+        >
+          <label
+            class="label label"
+          >
+            Just a drodown
+          </label>
+          <div
+            class="wrapper"
+            role="listbox"
+            tabindex="0"
+          >
+            <div
+              class="inputWrapper"
+            >
+              <div
+                class="input"
+              >
+                Dropdown 1
+              </div>
+              <i
+                class="affix suffix toggle material-icons"
+              >
+                arrow_drop_down
+              </i>
+            </div>
+          </div>
+        </div>
+        <div
+          class="inputContainer"
+        >
+          <label
+            class="label label"
+          >
+            test5
+            <abbr
+              aria-label="required"
+              class="abbr"
+              title="required"
+            >
+              *
+            </abbr>
+          </label>
+          <div
+            class="wrapper"
+            role="listbox"
+            tabindex="0"
+          >
+            <div
+              class="inputWrapper"
+            >
+              <div
+                class="input"
+              >
+                [Sample] Terrarium Orbit - Petit modèle
+              </div>
+              <i
+                class="affix suffix toggle material-icons"
+              >
+                arrow_drop_down
+              </i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="footer"
+      data-testid="popover-container-footer"
+      tabindex="-1"
+    >
+      <button
+        class="wrapper fill secondary medium"
+        type="button"
+      >
+        Close
+      </button>
+      <button
+        class="wrapper fill primary medium"
+        type="button"
+      >
+        Apply
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`<ModifiersPopover/> renders as expected 1`] = `
 <div>
   <div
