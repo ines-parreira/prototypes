@@ -41,9 +41,9 @@
         "gorgiaschat:generate-openapi:protected": "p2o ./src/rest_api/gorgias_chat_protected_api/gorgias-chat-protected-api.postman_collection.json -f ./src/rest_api/gorgias_chat_protected_api/gorgias-chat-protected-api.openapi.json -o ./src/rest_api/gorgias_chat_protected_api/gorgias-chat-protected-api.p2o_options.json",
         "gorgiaschat:generate-types:protected": "typegen ./src/rest_api/gorgias_chat_protected_api/gorgias-chat-protected-api.openapi.json > ./src/rest_api/gorgias_chat_protected_api/client.generated.d.ts",
         "gorgiaschat:update-client": "yarn run gorgiaschat:generate-openapi:public && yarn run gorgiaschat:generate-types:public && yarn run gorgiaschat:generate-openapi:protected && yarn run gorgiaschat:generate-types:protected",
-        "click-tracking:fetch-openapi": "curl http://localhost:8095/openapi.json > ./src/rest_api/click_tracking_api/click-tracking.openapi.json && prettier --write ./src/rest_api/click_tracking_api/click-tracking.openapi.json",
-        "click-tracking:generate-types": "typegen ./src/rest_api/click_tracking_api/click-tracking.openapi.json > ./src/rest_api/click_tracking_api/client.generated.d.ts",
-        "click-tracking:update-client": "yarn run click-tracking:fetch-openapi && yarn run click-tracking:generate-types"
+        "revenue-addon:fetch-openapi": "curl http://localhost:8095/openapi.json > src/rest_api/revenue_addon_api/revenue-addon.openapi.json && prettier --write src/rest_api/revenue_addon_api/revenue-addon.openapi.json",
+        "revenue-addon:generate-types": "typegen src/rest_api/revenue_addon_api/revenue-addon.openapi.json > src/rest_api/revenue_addon_api/client.generated.d.ts",
+        "revenue-addon:update-client": "yarn run revenue-addon:fetch-openapi && yarn run revenue-addon:generate-types"
     },
     "author": "Alex Plugaru <alex@gorgias.com>",
     "license": "UNLICENSED",

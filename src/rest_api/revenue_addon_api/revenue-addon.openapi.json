@@ -1,12 +1,29 @@
 {
     "openapi": "3.0.2",
-    "info": {"title": "FastAPI", "version": "0.1.0"},
+    "info": {
+        "title": "Revenue Addon API",
+        "description": "It's mission is to increase merchants revenue",
+        "version": "0.1.0"
+    },
     "paths": {
-        "/health-check": {
+        "/attribution/health-check": {
             "get": {
                 "tags": ["healthcheck"],
                 "summary": "Health Check",
-                "operationId": "health_check_health_check_get",
+                "operationId": "health_check_attribution_health_check_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {"application/json": {"schema": {}}}
+                    }
+                }
+            }
+        },
+        "/click-tracking/health-check": {
+            "get": {
+                "tags": ["healthcheck"],
+                "summary": "Health Check",
+                "operationId": "health_check_click_tracking_health_check_get",
                 "responses": {
                     "200": {
                         "description": "Successful Response",
@@ -33,6 +50,45 @@
                 "tags": ["urls"],
                 "summary": "Create",
                 "operationId": "create_track_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/JWTTokenSchema"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/URLSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/click-tracking": {
+            "post": {
+                "tags": ["urls"],
+                "summary": "Create",
+                "operationId": "create_click_tracking_post",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -100,11 +156,44 @@
                 }
             }
         },
-        "/check": {
+        "/click-tracking/bulk": {
+            "post": {
+                "tags": ["urls"],
+                "summary": "Create Bulk",
+                "operationId": "create_bulk_click_tracking_bulk_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/JWTTokenSchema"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {"application/json": {"schema": {}}}
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/click-tracking/check": {
             "post": {
                 "tags": ["urls"],
                 "summary": "Retrieve Urls By Meta",
-                "operationId": "retrieve_urls_by_meta_check_post",
+                "operationId": "retrieve_urls_by_meta_click_tracking_check_post",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -121,7 +210,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "title": "Response Retrieve Urls By Meta Check Post",
+                                    "title": "Response Retrieve Urls By Meta Click Tracking Check Post",
                                     "type": "array",
                                     "items": {
                                         "$ref": "#/components/schemas/URLWithClicksSchema"
@@ -186,7 +275,7 @@
                 }
             }
         },
-        "/custom-domains": {
+        "/click-tracking/custom-domains": {
             "get": {
                 "tags": ["custom_domains"],
                 "summary": "Retrieve",
@@ -203,7 +292,7 @@
                         }
                     }
                 },
-                "security": [{"OAuth2PasswordBearer": []}]
+                "security": [{"HTTPBearer": []}]
             },
             "post": {
                 "tags": ["custom_domains"],
@@ -241,17 +330,17 @@
                         }
                     }
                 },
-                "security": [{"OAuth2PasswordBearer": []}]
+                "security": [{"HTTPBearer": []}]
             },
             "delete": {
                 "tags": ["custom_domains"],
                 "summary": "Delete",
                 "operationId": "delete_custom_domain",
                 "responses": {"204": {"description": "Successful Response"}},
-                "security": [{"OAuth2PasswordBearer": []}]
+                "security": [{"HTTPBearer": []}]
             }
         },
-        "/custom-domains/check": {
+        "/click-tracking/custom-domains/check": {
             "post": {
                 "tags": ["custom_domains"],
                 "summary": "Check",
@@ -268,7 +357,92 @@
                         }
                     }
                 },
-                "security": [{"OAuth2PasswordBearer": []}]
+                "security": [{"HTTPBearer": []}]
+            }
+        },
+        "/custom-domains": {
+            "get": {
+                "tags": ["custom_domains"],
+                "summary": "Retrieve",
+                "operationId": "retrieve_custom_domains_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CustomDomainSchema"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [{"HTTPBearer": []}]
+            },
+            "post": {
+                "tags": ["custom_domains"],
+                "summary": "Create",
+                "operationId": "create_custom_domains_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CustomDomainOperationSchema"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CustomDomainSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [{"HTTPBearer": []}]
+            },
+            "delete": {
+                "tags": ["custom_domains"],
+                "summary": "Delete",
+                "operationId": "delete_custom_domains_delete",
+                "responses": {"204": {"description": "Successful Response"}},
+                "security": [{"HTTPBearer": []}]
+            }
+        },
+        "/custom-domains/check": {
+            "post": {
+                "tags": ["custom_domains"],
+                "summary": "Check",
+                "operationId": "check_custom_domains_check_post",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CustomDomainSchema"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [{"HTTPBearer": []}]
             }
         }
     },
@@ -279,7 +453,11 @@
                 "required": ["hostname"],
                 "type": "object",
                 "properties": {
-                    "hostname": {"title": "Hostname", "type": "string"}
+                    "hostname": {
+                        "title": "Hostname",
+                        "pattern": "^((?!-))(xn--)?[a-z0-9][a-z0-9-_]{0,61}[a-z0-9]{0,1}\\.(xn--)?([a-z0-9\\-]{1,61}|[a-z0-9-]{1,30}\\.[a-z]{2,})$",
+                        "type": "string"
+                    }
                 }
             },
             "CustomDomainSchema": {
@@ -425,11 +603,6 @@
                 }
             }
         },
-        "securitySchemes": {
-            "OAuth2PasswordBearer": {
-                "type": "oauth2",
-                "flows": {"password": {"scopes": {}, "tokenUrl": "token"}}
-            }
-        }
+        "securitySchemes": {"HTTPBearer": {"type": "http", "scheme": "bearer"}}
     }
 }

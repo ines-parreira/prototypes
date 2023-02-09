@@ -117,7 +117,7 @@ import SelfServiceStatsPage from './stats/self-service/SelfServiceStatsPage'
 import TwilioSubaccountStatusForm from './tasks/detail/TwilioSubaccountStatusForm'
 import EditTicketField from './settings/ticketFields/EditTicketField'
 import MaybeDeprecatedRoute from './common/components/MaybeDeprecatedRoute'
-import {ClickTrackingApiClientProvider} from './settings/revenue/hooks/useClickTrackingApi'
+import {RevenueAddonApiClientProvider} from './settings/revenue/hooks/useRevenueAddonApi'
 import {ClickTrackingSettingsView} from './settings/revenue/components/ClickTrackingSettingsView'
 import OrderManagementViewContainer from './automation/orderManagement/OrderManagementViewContainer'
 import QuickResponsesViewContainer from './automation/quickResponses/QuickResponsesViewContainer'
@@ -1500,7 +1500,7 @@ export function UsersSettingsRoutes({match: {path}}: RouteComponentProps) {
 
 export function RevenueSettingsRoutes({match: {path}}: RouteComponentProps) {
     return (
-        <ClickTrackingApiClientProvider>
+        <RevenueAddonApiClientProvider>
             <Switch>
                 <Route
                     path={`${path}/click-tracking`}
@@ -1514,7 +1514,7 @@ export function RevenueSettingsRoutes({match: {path}}: RouteComponentProps) {
                     })}
                 />
             </Switch>
-        </ClickTrackingApiClientProvider>
+        </RevenueAddonApiClientProvider>
     )
 }
 

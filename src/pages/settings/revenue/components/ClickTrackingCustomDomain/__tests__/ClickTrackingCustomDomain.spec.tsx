@@ -20,9 +20,9 @@ const ReduxProvider = ({children}: {children?: React.ReactNode}) => (
     <Provider store={store}>{children}</Provider>
 )
 
-jest.mock('pages/settings/revenue/hooks/useClickTrackingApi', () => {
+jest.mock('pages/settings/revenue/hooks/useRevenueAddonApi', () => {
     return {
-        useClickTrackingApi: jest.fn().mockReturnValue({
+        useRevenueAddonApi: jest.fn().mockReturnValue({
             isReady: true,
             client: {
                 get_custom_domain: () =>

@@ -15,7 +15,7 @@ declare namespace Components {
             /**
              * Hostname
              */
-            hostname: string
+            hostname: string // ^((?!-))(xn--)?[a-z0-9][a-z0-9-_]{0,61}[a-z0-9]{0,1}\.(xn--)?([a-z0-9\-]{1,61}|[a-z0-9-]{1,30}\.[a-z]{2,})$
         }
         /**
          * CustomDomainSchema
@@ -166,6 +166,18 @@ declare namespace Paths {
             export type $200 = Components.Schemas.CustomDomainSchema
         }
     }
+    namespace CheckCustomDomainsCheckPost {
+        namespace Responses {
+            export type $200 = Components.Schemas.CustomDomainSchema
+        }
+    }
+    namespace CreateBulkClickTrackingBulkPost {
+        export type RequestBody = Components.Schemas.JWTTokenSchema
+        namespace Responses {
+            export type $201 = any
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
     namespace CreateBulkTrackBulkPost {
         export type RequestBody = Components.Schemas.JWTTokenSchema
         namespace Responses {
@@ -173,7 +185,21 @@ declare namespace Paths {
             export type $422 = Components.Schemas.HTTPValidationError
         }
     }
+    namespace CreateClickTrackingPost {
+        export type RequestBody = Components.Schemas.JWTTokenSchema
+        namespace Responses {
+            export type $201 = Components.Schemas.URLSchema
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
     namespace CreateCustomDomain {
+        export type RequestBody = Components.Schemas.CustomDomainOperationSchema
+        namespace Responses {
+            export type $201 = Components.Schemas.CustomDomainSchema
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
+    namespace CreateCustomDomainsPost {
         export type RequestBody = Components.Schemas.CustomDomainOperationSchema
         namespace Responses {
             export type $201 = Components.Schemas.CustomDomainSchema
@@ -192,7 +218,12 @@ declare namespace Paths {
             export type $200 = Components.Schemas.CustomDomainSchema
         }
     }
-    namespace HealthCheckHealthCheckGet {
+    namespace HealthCheckAttributionHealthCheckGet {
+        namespace Responses {
+            export type $200 = any
+        }
+    }
+    namespace HealthCheckClickTrackingHealthCheckGet {
         namespace Responses {
             export type $200 = any
         }
@@ -229,11 +260,16 @@ declare namespace Paths {
             export type $422 = Components.Schemas.HTTPValidationError
         }
     }
-    namespace RetrieveUrlsByMetaCheckPost {
+    namespace RetrieveCustomDomainsGet {
+        namespace Responses {
+            export type $200 = Components.Schemas.CustomDomainSchema
+        }
+    }
+    namespace RetrieveUrlsByMetaClickTrackingCheckPost {
         export type RequestBody = Components.Schemas.JWTTokenSchema
         namespace Responses {
             /**
-             * Response Retrieve Urls By Meta Check Post
+             * Response Retrieve Urls By Meta Click Tracking Check Post
              */
             export type $201 = Components.Schemas.URLWithClicksSchema[]
             export type $422 = Components.Schemas.HTTPValidationError
@@ -243,13 +279,21 @@ declare namespace Paths {
 
 export interface OperationMethods {
     /**
-     * health_check_health_check_get - Health Check
+     * health_check_attribution_health_check_get - Health Check
      */
-    'health_check_health_check_get'(
+    'health_check_attribution_health_check_get'(
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: any,
         config?: AxiosRequestConfig
-    ): OperationResponse<Paths.HealthCheckHealthCheckGet.Responses.$200>
+    ): OperationResponse<Paths.HealthCheckAttributionHealthCheckGet.Responses.$200>
+    /**
+     * health_check_click_tracking_health_check_get - Health Check
+     */
+    'health_check_click_tracking_health_check_get'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<Paths.HealthCheckClickTrackingHealthCheckGet.Responses.$200>
     /**
      * health_check__get - Health Check
      */
@@ -270,6 +314,17 @@ export interface OperationMethods {
         | Paths.CreateTrackPost.Responses.$422
     >
     /**
+     * create_click_tracking_post - Create
+     */
+    'create_click_tracking_post'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: Paths.CreateClickTrackingPost.RequestBody,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.CreateClickTrackingPost.Responses.$201
+        | Paths.CreateClickTrackingPost.Responses.$422
+    >
+    /**
      * create_bulk_track_bulk_post - Create Bulk
      */
     'create_bulk_track_bulk_post'(
@@ -281,15 +336,26 @@ export interface OperationMethods {
         | Paths.CreateBulkTrackBulkPost.Responses.$422
     >
     /**
-     * retrieve_urls_by_meta_check_post - Retrieve Urls By Meta
+     * create_bulk_click_tracking_bulk_post - Create Bulk
      */
-    'retrieve_urls_by_meta_check_post'(
+    'create_bulk_click_tracking_bulk_post'(
         parameters?: Parameters<UnknownParamsObject> | null,
-        data?: Paths.RetrieveUrlsByMetaCheckPost.RequestBody,
+        data?: Paths.CreateBulkClickTrackingBulkPost.RequestBody,
         config?: AxiosRequestConfig
     ): OperationResponse<
-        | Paths.RetrieveUrlsByMetaCheckPost.Responses.$201
-        | Paths.RetrieveUrlsByMetaCheckPost.Responses.$422
+        | Paths.CreateBulkClickTrackingBulkPost.Responses.$201
+        | Paths.CreateBulkClickTrackingBulkPost.Responses.$422
+    >
+    /**
+     * retrieve_urls_by_meta_click_tracking_check_post - Retrieve Urls By Meta
+     */
+    'retrieve_urls_by_meta_click_tracking_check_post'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: Paths.RetrieveUrlsByMetaClickTrackingCheckPost.RequestBody,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.RetrieveUrlsByMetaClickTrackingCheckPost.Responses.$201
+        | Paths.RetrieveUrlsByMetaClickTrackingCheckPost.Responses.$422
     >
     /**
      * redirect_r__alias__get - Redirect
@@ -340,18 +406,63 @@ export interface OperationMethods {
         data?: any,
         config?: AxiosRequestConfig
     ): OperationResponse<Paths.CheckCustomDomain.Responses.$200>
+    /**
+     * retrieve_custom_domains_get - Retrieve
+     */
+    'retrieve_custom_domains_get'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<Paths.RetrieveCustomDomainsGet.Responses.$200>
+    /**
+     * create_custom_domains_post - Create
+     */
+    'create_custom_domains_post'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: Paths.CreateCustomDomainsPost.RequestBody,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.CreateCustomDomainsPost.Responses.$201
+        | Paths.CreateCustomDomainsPost.Responses.$422
+    >
+    /**
+     * delete_custom_domains_delete - Delete
+     */
+    'delete_custom_domains_delete'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<any>
+    /**
+     * check_custom_domains_check_post - Check
+     */
+    'check_custom_domains_check_post'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<Paths.CheckCustomDomainsCheckPost.Responses.$200>
 }
 
 export interface PathsDictionary {
-    ['/health-check']: {
+    ['/attribution/health-check']: {
         /**
-         * health_check_health_check_get - Health Check
+         * health_check_attribution_health_check_get - Health Check
          */
         'get'(
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: any,
             config?: AxiosRequestConfig
-        ): OperationResponse<Paths.HealthCheckHealthCheckGet.Responses.$200>
+        ): OperationResponse<Paths.HealthCheckAttributionHealthCheckGet.Responses.$200>
+    }
+    ['/click-tracking/health-check']: {
+        /**
+         * health_check_click_tracking_health_check_get - Health Check
+         */
+        'get'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<Paths.HealthCheckClickTrackingHealthCheckGet.Responses.$200>
     }
     ['/']: {
         /**
@@ -376,6 +487,19 @@ export interface PathsDictionary {
             | Paths.CreateTrackPost.Responses.$422
         >
     }
+    ['/click-tracking']: {
+        /**
+         * create_click_tracking_post - Create
+         */
+        'post'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: Paths.CreateClickTrackingPost.RequestBody,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.CreateClickTrackingPost.Responses.$201
+            | Paths.CreateClickTrackingPost.Responses.$422
+        >
+    }
     ['/track/bulk']: {
         /**
          * create_bulk_track_bulk_post - Create Bulk
@@ -389,17 +513,30 @@ export interface PathsDictionary {
             | Paths.CreateBulkTrackBulkPost.Responses.$422
         >
     }
-    ['/check']: {
+    ['/click-tracking/bulk']: {
         /**
-         * retrieve_urls_by_meta_check_post - Retrieve Urls By Meta
+         * create_bulk_click_tracking_bulk_post - Create Bulk
          */
         'post'(
             parameters?: Parameters<UnknownParamsObject> | null,
-            data?: Paths.RetrieveUrlsByMetaCheckPost.RequestBody,
+            data?: Paths.CreateBulkClickTrackingBulkPost.RequestBody,
             config?: AxiosRequestConfig
         ): OperationResponse<
-            | Paths.RetrieveUrlsByMetaCheckPost.Responses.$201
-            | Paths.RetrieveUrlsByMetaCheckPost.Responses.$422
+            | Paths.CreateBulkClickTrackingBulkPost.Responses.$201
+            | Paths.CreateBulkClickTrackingBulkPost.Responses.$422
+        >
+    }
+    ['/click-tracking/check']: {
+        /**
+         * retrieve_urls_by_meta_click_tracking_check_post - Retrieve Urls By Meta
+         */
+        'post'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: Paths.RetrieveUrlsByMetaClickTrackingCheckPost.RequestBody,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.RetrieveUrlsByMetaClickTrackingCheckPost.Responses.$201
+            | Paths.RetrieveUrlsByMetaClickTrackingCheckPost.Responses.$422
         >
     }
     ['/r/{alias}']: {
@@ -418,7 +555,7 @@ export interface PathsDictionary {
             | Paths.RedirectR_Alias_Get.Responses.$422
         >
     }
-    ['/custom-domains']: {
+    ['/click-tracking/custom-domains']: {
         /**
          * get_custom_domain - Retrieve
          */
@@ -447,7 +584,7 @@ export interface PathsDictionary {
             config?: AxiosRequestConfig
         ): OperationResponse<any>
     }
-    ['/custom-domains/check']: {
+    ['/click-tracking/custom-domains/check']: {
         /**
          * check_custom_domain - Check
          */
@@ -456,6 +593,45 @@ export interface PathsDictionary {
             data?: any,
             config?: AxiosRequestConfig
         ): OperationResponse<Paths.CheckCustomDomain.Responses.$200>
+    }
+    ['/custom-domains']: {
+        /**
+         * retrieve_custom_domains_get - Retrieve
+         */
+        'get'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<Paths.RetrieveCustomDomainsGet.Responses.$200>
+        /**
+         * create_custom_domains_post - Create
+         */
+        'post'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: Paths.CreateCustomDomainsPost.RequestBody,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.CreateCustomDomainsPost.Responses.$201
+            | Paths.CreateCustomDomainsPost.Responses.$422
+        >
+        /**
+         * delete_custom_domains_delete - Delete
+         */
+        'delete'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<any>
+    }
+    ['/custom-domains/check']: {
+        /**
+         * check_custom_domains_check_post - Check
+         */
+        'post'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<Paths.CheckCustomDomainsCheckPost.Responses.$200>
     }
 }
 

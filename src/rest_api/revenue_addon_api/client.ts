@@ -5,15 +5,15 @@ import {isProduction, isStaging} from 'utils/environment'
 import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
 import {Client} from './client.generated'
 
-import OpenAPIDoc from './click-tracking.openapi.json'
+import OpenAPIDoc from './revenue-addon.openapi.json'
 
-function getGorgiasClickTrackingApiBaseUrl(): string {
+function getGorgiasRevenueAddonApiBaseUrl(): string {
     if (isProduction()) {
-        return 'https://link.gorgias.win'
+        return 'https://gorgias.win'
     }
 
     if (isStaging()) {
-        return 'https://staging-click-tracking.gorgias.win'
+        return 'https://staging.gorgias.win'
     }
 
     return 'http://acme.gorgias.docker:8095'
@@ -21,12 +21,12 @@ function getGorgiasClickTrackingApiBaseUrl(): string {
 
 let apiClient: Client
 
-async function buildGorgiasClickTrackingApiClient() {
+async function buildGorgiasRevenueAddonApiClient() {
     if (apiClient) {
         return apiClient
     }
 
-    const baseUrl = getGorgiasClickTrackingApiBaseUrl()
+    const baseUrl = getGorgiasRevenueAddonApiBaseUrl()
 
     const api = new OpenAPIClientAxios({
         definition: OpenAPIDoc as Document,
@@ -38,8 +38,8 @@ async function buildGorgiasClickTrackingApiClient() {
     return apiClient
 }
 
-export const getClickTrackingApiClient = memoize(
-    buildGorgiasClickTrackingApiClient
+export const getRevenueAddonApiClient = memoize(
+    buildGorgiasRevenueAddonApiClient
 )
 
-export type ClickTrackingClient = Client
+export type RevenueAddonClient = Client
