@@ -1,6 +1,7 @@
-import React, {ReactNode, useContext, useEffect, useState} from 'react'
+import React, {ReactNode, useEffect, useState} from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {SpotlightContext} from 'providers/ui/SpotlightContext'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -15,7 +16,6 @@ const Spotlight = ({children}: Props) => {
     const isSpotlightEnabled = useFlags()[FeatureFlagKey.SpotlightGlobalSearch]
 
     const [isOpen, setIsOpen] = useState(false)
-    const {isOpen: isOpenContext} = useContext(SpotlightContext)
 
     useEffect(() => {
         shortcutManager.bind('SpotlightModal', {
@@ -23,15 +23,16 @@ const Spotlight = ({children}: Props) => {
                 action: (e) => {
                     if (isSpotlightEnabled) {
                         e.preventDefault()
-                        setIsOpen(!isOpenContext)
+                        setIsOpen(true)
                     }
+                    logEvent(SegmentEvent.GlobalSearchOpenShortcut)
                 },
             },
         })
         return () => {
             shortcutManager.unbind('SpotlightModal')
         }
-    }, [isSpotlightEnabled, isOpenContext, setIsOpen])
+    }, [isSpotlightEnabled, setIsOpen])
 
     return (
         <SpotlightContext.Provider value={{isOpen, setIsOpen}}>

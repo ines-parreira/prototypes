@@ -1,9 +1,12 @@
 import React from 'react'
 import {fireEvent, render, waitFor} from '@testing-library/react'
 
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import * as platform from 'utils/platform'
 
 import Button from '../SpotlightButton'
+
+jest.mock('store/middlewares/segmentTracker')
 
 describe('<SpotlightSearchButton />', () => {
     it('should render a search button', () => {
@@ -36,5 +39,14 @@ describe('<SpotlightSearchButton />', () => {
         await waitFor(() => {
             expect(getByRole('tooltip')).toMatchSnapshot()
         })
+    })
+
+    it('should log an event when the button is clicked', () => {
+        const {getByRole} = render(<Button />)
+        fireEvent.click(getByRole('button'))
+
+        expect(logEvent).toHaveBeenCalledWith(
+            SegmentEvent.GlobalSearchOpenButtonClick
+        )
     })
 })

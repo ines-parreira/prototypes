@@ -1,5 +1,6 @@
 import React, {useContext} from 'react'
 
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import useId from 'hooks/useId'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -15,13 +16,18 @@ const SpotlightButton = () => {
     const id = useId()
     const buttonId = 'spotlight-button-' + id
 
+    const handleClick = () => {
+        logEvent(SegmentEvent.GlobalSearchOpenButtonClick)
+        setIsOpen(!isOpen)
+    }
+
     return (
         <>
             <Button
                 id={buttonId}
                 className={css.button}
                 fillStyle="ghost"
-                onClick={() => setIsOpen(!isOpen)}
+                onClick={handleClick}
             >
                 <ButtonIconLabel icon="search" />
                 Search

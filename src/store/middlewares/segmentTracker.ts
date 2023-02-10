@@ -239,10 +239,11 @@ export enum SegmentEvent {
     ChatSettingsToneOfVoicePageSaved = 'settings-tone-of-voice-page-saved',
     CustomFieldTicketValueInputFocused = 'custom-fields/ticket/input-focused',
     CustomFieldTicketValueDropdownFocused = 'custom-fields/ticket/dropdown-focused',
-
     CustomFieldTicketValueRequiredMissingError = 'custom-fields/ticket/value-required-missing-error',
     TicketCloseAction = 'ticket/close-action',
     TicketSendAndCloseButtonClicked = 'ticket/send-and-close-button-clicked',
+    GlobalSearchOpenButtonClick = 'search-open-button-click',
+    GlobalSearchOpenShortcut = 'search-open-shortcut',
 }
 
 export enum StatViewLinkClickedStat {
