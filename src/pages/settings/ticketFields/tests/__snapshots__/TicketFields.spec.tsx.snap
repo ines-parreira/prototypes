@@ -159,7 +159,7 @@ exports[`<TicketFields/> account has the feature flag should render get started 
     <p
       class="emptyViewContainerText"
     >
-      Set up custom fields to make sure your team handle tickets efficiently and consistently. You can create a custom field to track the contact reason, product or even the resolution provided in the ticket.
+      Create custom fields to track and report common ticket categories.
     </p>
     <a
       to="/app/settings/ticket-fields/add"

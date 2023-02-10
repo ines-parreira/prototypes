@@ -106,11 +106,8 @@ export default function TicketFields() {
                                 Get started with Ticket Fields
                             </h2>
                             <p className={css.emptyViewContainerText}>
-                                Set up custom fields to make sure your team
-                                handle tickets efficiently and consistently. You
-                                can create a custom field to track the contact
-                                reason, product or even the resolution provided
-                                in the ticket.
+                                Create custom fields to track and report common
+                                ticket categories.
                             </p>
                             {createFieldButton}
                         </div>
